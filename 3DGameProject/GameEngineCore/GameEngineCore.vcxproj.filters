@@ -1,0 +1,599 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="GameEngineCore.h" />
+    <ClInclude Include="GameEngineLevel.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineActor.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineComponent.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineResource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineCamera.h">
+      <Filter>Object\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineTransform.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineRenderer.h">
+      <Filter>Object\Rendering\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineCollision.h">
+      <Filter>Object\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineObjectBase.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineNameObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineDevice.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="PrecompileHeader.h" />
+    <ClInclude Include="GameEngineRenderingPipeLine.h">
+      <Filter>Object\Rendering\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineShader.h">
+      <Filter>Resources\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineVertexShader.h">
+      <Filter>Resources\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEnginePixelShader.h">
+      <Filter>Resources\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineEnum.h" />
+    <ClInclude Include="GameEngineDirectBuffer.h">
+      <Filter>Resources\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineIndexBuffer.h">
+      <Filter>Resources\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineVertexBuffer.h">
+      <Filter>Resources\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineRenderTarget.h">
+      <Filter>Resources\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineTexture.h">
+      <Filter>Resources\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineMesh.h">
+      <Filter>Resources\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineVertex.h">
+      <Filter>Resources\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineInputLayOut.h">
+      <Filter>Resources\RenderingSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineRasterizer.h">
+      <Filter>Resources\RenderingSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineConstantBuffer.h">
+      <Filter>Resources\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineShaderResHelper.h">
+      <Filter>Object\Rendering\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\DirectXTex\inc\DirectXTex.h">
+      <Filter>ThirdParty\DirectXTex\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineSampler.h">
+      <Filter>Resources\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineSpriteRenderer.h">
+      <Filter>Object\Rendering\Component\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineBlend.h">
+      <Filter>Resources\RenderingSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineVideo.h">
+      <Filter>Resources\Movie</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineDepthState.h">
+      <Filter>Resources\RenderingSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="imconfig.h">
+      <Filter>UI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui.h">
+      <Filter>UI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_dx11.h">
+      <Filter>UI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_win32.h">
+      <Filter>UI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_internal.h">
+      <Filter>UI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_rectpack.h">
+      <Filter>UI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_textedit.h">
+      <Filter>UI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_truetype.h">
+      <Filter>UI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineGUI.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineCoreWindow.h">
+      <Filter>UI\SubWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineSprite.h">
+      <Filter>Resources\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineTileMapRenderer.h">
+      <Filter>Object\Rendering\Component\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineUIRenderer.h">
+      <Filter>Object\Rendering\Component\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineFSM.h">
+      <Filter>Content\Patten</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineButton.h">
+      <Filter>Content\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineDebug3D.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\FW1Font\Inc\FW1FontWrapper.h">
+      <Filter>ThirdParty\Fw1Font\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineFont.h">
+      <Filter>Resources\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineFontRenderer.h">
+      <Filter>Object\Rendering\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="BlurEffect.h">
+      <Filter>Content\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineFBXMesh.h">
+      <Filter>Resources\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineFBXAnimation.h">
+      <Filter>Resources\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineFBX.h">
+      <Filter>Resources\Mesh</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GameEngineCore.cpp" />
+    <ClCompile Include="GameEngineLevel.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineObject.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineActor.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineComponent.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineResource.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineCamera.cpp">
+      <Filter>Object\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineTransform.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineRenderer.cpp">
+      <Filter>Object\Rendering\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineCollision.cpp">
+      <Filter>Object\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineObjectBase.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineNameObject.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineCore_Resources.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineDevice.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="PrecompileHeader.cpp" />
+    <ClCompile Include="GameEngineRenderingPipeLine.cpp">
+      <Filter>Object\Rendering\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineShader.cpp">
+      <Filter>Resources\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineVertexShader.cpp">
+      <Filter>Resources\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEnginePixelShader.cpp">
+      <Filter>Resources\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineDirectBuffer.cpp">
+      <Filter>Resources\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineIndexBuffer.cpp">
+      <Filter>Resources\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineVertexBuffer.cpp">
+      <Filter>Resources\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineRenderTarget.cpp">
+      <Filter>Resources\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineTexture.cpp">
+      <Filter>Resources\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineMesh.cpp">
+      <Filter>Resources\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineVertex.cpp">
+      <Filter>Resources\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineInputLayOut.cpp">
+      <Filter>Resources\RenderingSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineRasterizer.cpp">
+      <Filter>Resources\RenderingSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineConstantBuffer.cpp">
+      <Filter>Resources\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineShaderResHelper.cpp">
+      <Filter>Object\Rendering\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineSampler.cpp">
+      <Filter>Resources\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineSpriteRenderer.cpp">
+      <Filter>Object\Rendering\Component\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineBlend.cpp">
+      <Filter>Resources\RenderingSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineVideo.cpp">
+      <Filter>Resources\Movie</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineDepthState.cpp">
+      <Filter>Resources\RenderingSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui.cpp">
+      <Filter>UI\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_demo.cpp">
+      <Filter>UI\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>UI\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_dx11.cpp">
+      <Filter>UI\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_win32.cpp">
+      <Filter>UI\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_tables.cpp">
+      <Filter>UI\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_widgets.cpp">
+      <Filter>UI\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineGUI.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineCoreWindow.cpp">
+      <Filter>UI\SubWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineSprite.cpp">
+      <Filter>Resources\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineTileMapRenderer.cpp">
+      <Filter>Object\Rendering\Component\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineUIRenderer.cpp">
+      <Filter>Object\Rendering\Component\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineFSM.cpp">
+      <Filter>Content\Patten</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineButton.cpp">
+      <Filter>Content\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineDebug3D.cpp">
+      <Filter>Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineFont.cpp">
+      <Filter>Resources\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineFontRenderer.cpp">
+      <Filter>Object\Rendering\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="BlurEffect.cpp">
+      <Filter>Content\PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineFBXMesh.cpp">
+      <Filter>Resources\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineFBXAnimation.cpp">
+      <Filter>Resources\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineFBX.cpp">
+      <Filter>Resources\Mesh</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Object">
+      <UniqueIdentifier>{1189cbc5-1179-4a91-a047-0f66642d14d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{c16991ef-8e9a-49d8-b420-853cff2955d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Rendering">
+      <UniqueIdentifier>{6e970db4-fd75-4e59-8a4d-7b21615522d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Rendering\Component">
+      <UniqueIdentifier>{f3e34708-461c-4917-b95d-a8a102a5db52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Collision">
+      <UniqueIdentifier>{3dbe9019-535c-4c9f-aa31-c8224e96e539}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Device">
+      <UniqueIdentifier>{912f4888-0107-43c1-a4a3-ed450b50069c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Shader">
+      <UniqueIdentifier>{bde1d68e-2fec-4cf5-b959-c44aeb0fd9df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Buffer">
+      <UniqueIdentifier>{d556acda-5ce1-4dcd-822d-de021ef20113}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Texture">
+      <UniqueIdentifier>{0a70c050-d852-4563-8333-4a24134fabc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Mesh">
+      <UniqueIdentifier>{000cb8ac-71ff-46b9-ac15-26c892332f90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\RenderingSetting">
+      <UniqueIdentifier>{a8bf701a-f489-444e-b5dd-208bf9fa554c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{62388acb-3a2b-4860-bb86-2f306dbd2b29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\DirectXTex">
+      <UniqueIdentifier>{499d1ceb-48c3-48cf-89d6-0e062d91007a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\DirectXTex\bin">
+      <UniqueIdentifier>{50e6f3a7-94f1-4576-9bff-4e714bb6179d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\DirectXTex\Header">
+      <UniqueIdentifier>{409840f9-8d27-4b2c-beda-631d45461368}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\DirectXTex\bin\Debug">
+      <UniqueIdentifier>{dc2c8aa7-982e-406c-bf2e-d6ba3461fdc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\DirectXTex\bin\Release">
+      <UniqueIdentifier>{751c2843-6bfa-4251-a6dc-6fef84080d9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Rendering\Component\2D">
+      <UniqueIdentifier>{90a6147b-b313-40db-99b0-8f952e7a45a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Movie">
+      <UniqueIdentifier>{1170661b-aa82-40fd-bd8b-768071db3115}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{8a671e32-3cf5-4234-a5d7-b44b136d22c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\ImGui">
+      <UniqueIdentifier>{a9a101b7-b3e7-4533-bad3-1b44301f77e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\SubWindow">
+      <UniqueIdentifier>{652ba404-c390-4c5a-b3af-a2c8b2f3336d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content">
+      <UniqueIdentifier>{0ea0f19a-ed9f-42de-afea-08993b589204}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Patten">
+      <UniqueIdentifier>{362f2a30-aba2-474b-8e0b-b5619d8a40f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\UI">
+      <UniqueIdentifier>{b4085df0-93a0-48a0-9313-f2e07587dcce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{e4061487-0602-4e9b-bae7-727663d40d33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Fw1Font">
+      <UniqueIdentifier>{faa3abdd-e3d9-42c5-b479-b4f328524a6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Fw1Font\Header">
+      <UniqueIdentifier>{04f945cd-bdb5-47ce-a6b9-2dcb5cfaa543}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Fw1Font\bin">
+      <UniqueIdentifier>{c222c17d-9afd-43e4-a7b1-9718e6e18088}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Fw1Font\bin\Debug">
+      <UniqueIdentifier>{36fa6dfb-3509-4e7d-8f7d-8553cf263482}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Fw1Font\bin\Release">
+      <UniqueIdentifier>{c9a2e2ec-0a21-4f6e-85a7-897e30369c14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Font">
+      <UniqueIdentifier>{a1cce2ad-1d76-4ebf-a170-51f35fee46c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\PostEffect">
+      <UniqueIdentifier>{52096e8f-43e8-4674-be03-00a90e23b6f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\FBX">
+      <UniqueIdentifier>{53e800e8-f63a-46b5-9906-c993beb66600}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\FBX\Header">
+      <UniqueIdentifier>{b5c5192f-a2a2-4d75-8b95-4da2cee88a39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\FBX\bin">
+      <UniqueIdentifier>{9d9324fd-2363-485b-a598-4344c2fac9df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\FBX\bin\Debug">
+      <UniqueIdentifier>{f0f76fbe-702f-4557-a2ea-d842d04c8c38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\FBX\bin\Release">
+      <UniqueIdentifier>{9f77ce30-651b-4257-ba50-f3d88c06f813}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ThirdParty\DirectXTex\inc\DirectXTex.inl">
+      <Filter>ThirdParty\DirectXTex\Header</Filter>
+    </None>
+    <None Include="ThirdParty\DirectXTex\lib\x64\Debug\DirectXTex.lib">
+      <Filter>ThirdParty\DirectXTex\bin\Debug</Filter>
+    </None>
+    <None Include="ThirdParty\DirectXTex\lib\x64\Release\DirectXTex.lib">
+      <Filter>ThirdParty\DirectXTex\bin\Release</Filter>
+    </None>
+    <None Include="ThirdParty\FBX\lib\x64\Debug\libfbxsdk-md.zip">
+      <Filter>ThirdParty\FBX\bin\Debug</Filter>
+    </None>
+    <None Include="ThirdParty\FBX\lib\x64\Debug\libfbxsdk-mt.zip">
+      <Filter>ThirdParty\FBX\bin\Debug</Filter>
+    </None>
+    <None Include="ThirdParty\FBX\lib\x64\Release\libfbxsdk-md.zip">
+      <Filter>ThirdParty\FBX\bin\Release</Filter>
+    </None>
+    <None Include="ThirdParty\FBX\lib\x64\Release\libfbxsdk-mt.zip">
+      <Filter>ThirdParty\FBX\bin\Release</Filter>
+    </None>
+    <None Include="ThirdParty\FBX\lib\x64\Release\zlib-md.pdb">
+      <Filter>ThirdParty\FBX\bin\Release</Filter>
+    </None>
+    <None Include="ThirdParty\FBX\lib\x64\Release\libxml2-mt.pdb">
+      <Filter>ThirdParty\FBX\bin\Release</Filter>
+    </None>
+    <None Include="ThirdParty\FBX\lib\x64\Release\libxml2-md.pdb">
+      <Filter>ThirdParty\FBX\bin\Release</Filter>
+    </None>
+    <None Include="ThirdParty\FBX\lib\x64\Release\libfbxsdk-mt.pdb">
+      <Filter>ThirdParty\FBX\bin\Release</Filter>
+    </None>
+    <None Include="ThirdParty\FBX\lib\x64\Release\libfbxsdk-md.pdb">
+      <Filter>ThirdParty\FBX\bin\Release</Filter>
+    </None>
+    <None Include="ThirdParty\FBX\lib\x64\Release\libfbxsdk.pdb">
+      <Filter>ThirdParty\FBX\bin\Release</Filter>
+    </None>
+    <None Include="ThirdParty\FBX\lib\x64\Release\alembic-mt.pdb">
+      <Filter>ThirdParty\FBX\bin\Release</Filter>
+    </None>
+    <None Include="ThirdParty\FBX\lib\x64\Release\alembic-md.pdb">
+      <Filter>ThirdParty\FBX\bin\Release</Filter>
+    </None>
+    <None Include="ThirdParty\FBX\lib\x64\Release\zlib-mt.pdb">
+      <Filter>ThirdParty\FBX\bin\Release</Filter>
+    </None>
+    <None Include="ThirdParty\FBX\lib\x64\Debug\alembic-md.pdb">
+      <Filter>ThirdParty\FBX\bin\Debug</Filter>
+    </None>
+    <None Include="ThirdParty\FBX\lib\x64\Debug\alembic-mt.pdb">
+      <Filter>ThirdParty\FBX\bin\Debug</Filter>
+    </None>
+    <None Include="ThirdParty\FBX\lib\x64\Debug\libfbxsdk.pdb">
+      <Filter>ThirdParty\FBX\bin\Debug</Filter>
+    </None>
+    <None Include="ThirdParty\FBX\lib\x64\Debug\libfbxsdk-md.pdb">
+      <Filter>ThirdParty\FBX\bin\Debug</Filter>
+    </None>
+    <None Include="ThirdParty\FBX\lib\x64\Debug\libfbxsdk-mt.pdb">
+      <Filter>ThirdParty\FBX\bin\Debug</Filter>
+    </None>
+    <None Include="ThirdParty\FBX\lib\x64\Debug\libxml2-md.pdb">
+      <Filter>ThirdParty\FBX\bin\Debug</Filter>
+    </None>
+    <None Include="ThirdParty\FBX\lib\x64\Debug\libxml2-mt.pdb">
+      <Filter>ThirdParty\FBX\bin\Debug</Filter>
+    </None>
+    <None Include="ThirdParty\FBX\lib\x64\Debug\zlib-md.pdb">
+      <Filter>ThirdParty\FBX\bin\Debug</Filter>
+    </None>
+    <None Include="ThirdParty\FBX\lib\x64\Debug\zlib-mt.pdb">
+      <Filter>ThirdParty\FBX\bin\Debug</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.lib">
+      <Filter>ThirdParty\Fw1Font\bin\Debug</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Release\FW1FontWrapper.lib">
+      <Filter>ThirdParty\Fw1Font\bin\Release</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.dll">
+      <Filter>ThirdParty\Fw1Font\bin\Debug</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Release\FW1FontWrapper.dll">
+      <Filter>ThirdParty\Fw1Font\bin\Release</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\FBX\lib\x64\Debug\libfbxsdk.dll">
+      <Filter>ThirdParty\FBX\bin\Debug</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\FBX\lib\x64\Release\libfbxsdk.dll">
+      <Filter>ThirdParty\FBX\bin\Release</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\FBX\lib\x64\Debug\libfbxsdk.lib">
+      <Filter>ThirdParty\FBX\bin\Debug</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\FBX\lib\x64\Debug\libfbxsdk-md.lib">
+      <Filter>ThirdParty\FBX\bin\Debug</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\FBX\lib\x64\Debug\libfbxsdk-mt.lib">
+      <Filter>ThirdParty\FBX\bin\Debug</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\FBX\lib\x64\Debug\libxml2-md.lib">
+      <Filter>ThirdParty\FBX\bin\Debug</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\FBX\lib\x64\Debug\libxml2-mt.lib">
+      <Filter>ThirdParty\FBX\bin\Debug</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\FBX\lib\x64\Debug\zlib-md.lib">
+      <Filter>ThirdParty\FBX\bin\Debug</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\FBX\lib\x64\Debug\zlib-mt.lib">
+      <Filter>ThirdParty\FBX\bin\Debug</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\FBX\lib\x64\Release\libfbxsdk.lib">
+      <Filter>ThirdParty\FBX\bin\Release</Filter>
+    </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="ThirdParty\FBX\lib\x64\Release\libxml2-md.lib">
+      <Filter>ThirdParty\FBX\bin\Release</Filter>
+    </Library>
+    <Library Include="ThirdParty\FBX\lib\x64\Release\libxml2-mt.lib">
+      <Filter>ThirdParty\FBX\bin\Release</Filter>
+    </Library>
+    <Library Include="ThirdParty\FBX\lib\x64\Release\zlib-md.lib">
+      <Filter>ThirdParty\FBX\bin\Release</Filter>
+    </Library>
+    <Library Include="ThirdParty\FBX\lib\x64\Release\zlib-mt.lib">
+      <Filter>ThirdParty\FBX\bin\Release</Filter>
+    </Library>
+    <Library Include="ThirdParty\FBX\lib\x64\Release\libfbxsdk-mt.lib">
+      <Filter>ThirdParty\FBX\bin\Release</Filter>
+    </Library>
+    <Library Include="ThirdParty\FBX\lib\x64\Release\libfbxsdk-md.lib">
+      <Filter>ThirdParty\FBX\bin\Release</Filter>
+    </Library>
+  </ItemGroup>
+</Project>

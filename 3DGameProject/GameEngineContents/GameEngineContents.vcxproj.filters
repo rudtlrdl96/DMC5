@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="ContentsCore.h" />
+    <ClInclude Include="PlayLevel.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="PrecompileHeader.h" />
+    <ClInclude Include="MyContentSpriteRenderer.h" />
+    <ClInclude Include="FadeEffect.h">
+      <Filter>PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="OldFilm.h">
+      <Filter>PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="OldTVEffect.h">
+      <Filter>PostEffect</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ContentsCore.cpp" />
+    <ClCompile Include="PlayLevel.cpp">
+      <Filter>Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="PrecompileHeader.cpp" />
+    <ClCompile Include="MyContentSpriteRenderer.cpp" />
+    <ClCompile Include="FadeEffect.cpp">
+      <Filter>PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Contents_Resources.cpp" />
+    <ClCompile Include="OldFilm.cpp">
+      <Filter>PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="OldTVEffect.cpp">
+      <Filter>PostEffect</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Levels">
+      <UniqueIdentifier>{3d17108a-64cc-412c-add8-c9f82f90c9e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PostEffect">
+      <UniqueIdentifier>{8b278d14-8721-4921-8f5e-5601845f39f3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

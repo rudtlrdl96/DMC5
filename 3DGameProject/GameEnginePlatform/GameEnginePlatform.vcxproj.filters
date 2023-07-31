@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="GameEngineWindow.h" />
+    <ClInclude Include="GameEngineInput.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineImage.h">
+      <Filter>Resources\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineSound.h">
+      <Filter>Resources\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\FMOD\inc\fmod.h">
+      <Filter>ThirdParty\FMOD\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\FMOD\inc\fmod.hpp">
+      <Filter>ThirdParty\FMOD\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\FMOD\inc\fmod_codec.h">
+      <Filter>ThirdParty\FMOD\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\FMOD\inc\fmod_common.h">
+      <Filter>ThirdParty\FMOD\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\FMOD\inc\fmod_dsp.h">
+      <Filter>ThirdParty\FMOD\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\FMOD\inc\fmod_dsp_effects.h">
+      <Filter>ThirdParty\FMOD\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\FMOD\inc\fmod_errors.h">
+      <Filter>ThirdParty\FMOD\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\FMOD\inc\fmod_output.h">
+      <Filter>ThirdParty\FMOD\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="PrecompileHeader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GameEngineWindow.cpp" />
+    <ClCompile Include="GameEngineInput.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineImage.cpp">
+      <Filter>Resources\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineSound.cpp">
+      <Filter>Resources\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="PrecompileHeader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{d2314684-f88d-4599-9b84-cea1e0a2b067}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{ce6b1d63-9200-4a26-8532-7b97964ae652}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Sound">
+      <UniqueIdentifier>{839e8743-cc2b-4c9e-ba34-b1c48428f5b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Image">
+      <UniqueIdentifier>{2e17277b-f541-4ef1-b7ac-c241a09caaa8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{52bb531e-19e2-4036-8e93-2dd1455c924b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\FMOD">
+      <UniqueIdentifier>{1d4b399d-dc8d-4858-83be-c1fbe81f69a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\FMOD\Header">
+      <UniqueIdentifier>{b4462e91-fa51-4f01-aac9-395d33b3ceca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\FMOD\bin">
+      <UniqueIdentifier>{3eb608e5-2383-4cfb-b7a5-3b1572654fb1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ThirdParty\FMOD\inc\fmod.cs">
+      <Filter>ThirdParty\FMOD\Header</Filter>
+    </None>
+    <None Include="ThirdParty\FMOD\inc\fmod_dsp.cs">
+      <Filter>ThirdParty\FMOD\Header</Filter>
+    </None>
+    <None Include="ThirdParty\FMOD\inc\fmod_errors.cs">
+      <Filter>ThirdParty\FMOD\Header</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="ThirdParty\FMOD\lib\x64\fmod_vc.lib">
+      <Filter>ThirdParty\FMOD\bin</Filter>
+    </Library>
+    <Library Include="ThirdParty\FMOD\lib\x64\fmodL_vc.lib">
+      <Filter>ThirdParty\FMOD\bin</Filter>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="ThirdParty\FMOD\lib\x64\fmod.dll">
+      <Filter>ThirdParty\FMOD\bin</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\FMOD\lib\x64\fmodL.dll">
+      <Filter>ThirdParty\FMOD\bin</Filter>
+    </CopyFileToFolders>
+  </ItemGroup>
+</Project>

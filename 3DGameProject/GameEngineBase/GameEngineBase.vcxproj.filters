@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="GameEngineDebug.cpp">
+      <Filter>Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineMath.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineString.cpp">
+      <Filter>String</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEnginePath.cpp">
+      <Filter>IO%28File%29</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineFile.cpp">
+      <Filter>IO%28File%29</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineDirectory.cpp">
+      <Filter>IO%28File%29</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineRandom.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineSerializer.cpp">
+      <Filter>IO%28File%29</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineTime.cpp">
+      <Filter>Time</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineTimeEvent.cpp">
+      <Filter>Time</Filter>
+    </ClCompile>
+    <ClCompile Include="PrecompileHeader.cpp" />
+    <ClCompile Include="GameEngineThread.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineThreadJobQueue.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="JPSCollision.cpp">
+      <Filter>JPS</Filter>
+    </ClCompile>
+    <ClCompile Include="JPSPath.cpp">
+      <Filter>JPS</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameEngineDebug.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineMath.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineString.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEnginePath.h">
+      <Filter>IO%28File%29</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineFile.h">
+      <Filter>IO%28File%29</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineDirectory.h">
+      <Filter>IO%28File%29</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineRandom.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineSerializer.h">
+      <Filter>IO%28File%29</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineTime.h">
+      <Filter>Time</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineTimeEvent.h">
+      <Filter>Time</Filter>
+    </ClInclude>
+    <ClInclude Include="PrecompileHeader.h" />
+    <ClInclude Include="GameEngineThread.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineThreadJobQueue.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="JPSCollision.h">
+      <Filter>JPS</Filter>
+    </ClInclude>
+    <ClInclude Include="JPSHeap.h">
+      <Filter>JPS</Filter>
+    </ClInclude>
+    <ClInclude Include="JPSPath.h">
+      <Filter>JPS</Filter>
+    </ClInclude>
+    <ClInclude Include="Base.h">
+      <Filter>JPS</Filter>
+    </ClInclude>
+    <ClInclude Include="BitArray.h">
+      <Filter>JPS</Filter>
+    </ClInclude>
+    <ClInclude Include="CoreTypeDef.h">
+      <Filter>JPS</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{9c94a961-a504-4826-bba6-4e7b41ba32e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{974906c9-3284-46a4-b1f0-5001e2e57aaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="String">
+      <UniqueIdentifier>{557f9c6c-2a9e-40e8-9980-0ac42daa4826}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IO%28File%29">
+      <UniqueIdentifier>{fd2da30f-43c8-40aa-84ce-9d81d85250b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Time">
+      <UniqueIdentifier>{28f62796-1428-4e66-98e0-f556fc4d23d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Thread">
+      <UniqueIdentifier>{190aee9b-465e-4821-bb11-32daccb7dcfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="JPS">
+      <UniqueIdentifier>{f5e898f2-bbfa-4fd3-95d1-b97200ffa2f5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
