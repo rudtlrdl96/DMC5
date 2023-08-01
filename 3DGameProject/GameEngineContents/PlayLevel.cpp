@@ -30,26 +30,9 @@ void PlayLevel::Update(float _DeltaTime)
 
 void PlayLevel::Start()
 {
-	Col = std::make_shared<JPSCollision>();
-	// GetMainCamera()->GetCamTarget()->DepthSettingOff();
+	//Col = std::make_shared<JPSCollision>();
 
 	GetCamera(0)->SetProjectionType(CameraType::Orthogonal);
-
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("ContentResources");
-		NewDir.Move("ContentResources");
-		NewDir.Move("Texture");
-		NewDir.Move("Test");
-
-		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
-
-
-		for (size_t i = 0; i < File.size(); i++)
-		{
-			GameEngineTexture::Load(File[i].GetFullPath());
-		}
-	}
 }
 void PlayLevel::LevelChangeStart()
 {
