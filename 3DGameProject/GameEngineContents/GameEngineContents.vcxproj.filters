@@ -6,7 +6,6 @@
       <Filter>Levels</Filter>
     </ClInclude>
     <ClInclude Include="PrecompileHeader.h" />
-    <ClInclude Include="MyContentSpriteRenderer.h" />
     <ClInclude Include="FadeEffect.h">
       <Filter>PostEffect</Filter>
     </ClInclude>
@@ -23,7 +22,6 @@
       <Filter>Levels</Filter>
     </ClCompile>
     <ClCompile Include="PrecompileHeader.cpp" />
-    <ClCompile Include="MyContentSpriteRenderer.cpp" />
     <ClCompile Include="FadeEffect.cpp">
       <Filter>PostEffect</Filter>
     </ClCompile>

@@ -171,10 +171,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="MyContentSpriteRenderer.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="OldFilm.h">
       <SubType>
       </SubType>
@@ -193,10 +189,6 @@
     </ClCompile>
     <ClCompile Include="Contents_Resources.cpp" />
     <ClCompile Include="FadeEffect.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="MyContentSpriteRenderer.cpp">
       <SubType>
       </SubType>
     </ClCompile>
