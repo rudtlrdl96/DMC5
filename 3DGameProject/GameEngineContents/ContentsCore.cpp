@@ -4,7 +4,8 @@
 #include <GameEngineCore/GameEngineCore.h>
 #include <GameEngineCore/GameEngineCoreWindow.h>
 
-#include "PlayLevel.h"
+#include "MainLevel.h"
+#include "TestLevel.h"
 
 ContentsCore::ContentsCore() 
 {
@@ -20,8 +21,10 @@ void ContentsCore::GameStart()
 
 	ContentsResourcesCreate();
 
-	GameEngineCore::CreateLevel<PlayLevel>();
-	GameEngineCore::ChangeLevel("PlayLevel");
+	GameEngineCore::CreateLevel<MainLevel>();
+	GameEngineCore::CreateLevel<TestLevel>();
+
+	GameEngineCore::ChangeLevel("MainLevel");
 }
 
 void ContentsCore::GameEnd() 

@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="ContentsCore.h" />
-    <ClInclude Include="PlayLevel.h">
-      <Filter>Levels</Filter>
-    </ClInclude>
     <ClInclude Include="PrecompileHeader.h" />
     <ClInclude Include="FadeEffect.h">
       <Filter>PostEffect</Filter>
@@ -15,12 +11,15 @@
     <ClInclude Include="OldTVEffect.h">
       <Filter>PostEffect</Filter>
     </ClInclude>
+    <ClInclude Include="MainLevel.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="TestLevel.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="ContentsCore.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ContentsCore.cpp" />
-    <ClCompile Include="PlayLevel.cpp">
-      <Filter>Levels</Filter>
-    </ClCompile>
     <ClCompile Include="PrecompileHeader.cpp" />
     <ClCompile Include="FadeEffect.cpp">
       <Filter>PostEffect</Filter>
@@ -32,6 +31,13 @@
     <ClCompile Include="OldTVEffect.cpp">
       <Filter>PostEffect</Filter>
     </ClCompile>
+    <ClCompile Include="TestLevel.cpp">
+      <Filter>Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="MainLevel.cpp">
+      <Filter>Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="ContentsCore.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
