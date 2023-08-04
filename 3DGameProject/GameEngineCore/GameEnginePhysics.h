@@ -4,17 +4,6 @@
 #include "ThirdParty/PhysX_5/inc/extensions/PxDefaultAllocator.h"
 #include "ThirdParty/PhysX_5/inc/extensions/PxDefaultErrorCallback.h"
 
-#ifdef _DEBUG
-#pragma comment(lib, "PhysX_64.lib")
-#pragma comment(lib, "PhysXCommon_64.lib")
-#pragma comment(lib, "PhysXFoundation_64.lib")
-#pragma comment(lib, "PhysXTask_static_64.lib")
-#pragma comment(lib, "PhysXPvdSDK_static_64.lib")
-#else
-//#pragma comment(lib, "..\\GameEnginePlatform\\ThirdParty\\FMOD\\lib\\x64\\fmod_vc.lib")
-#endif
-
-
 // Ό³Έν :
 class GameEnginePhysics
 {
