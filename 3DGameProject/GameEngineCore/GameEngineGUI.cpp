@@ -122,7 +122,6 @@ void GameEngineGUI::Render(std::shared_ptr<class GameEngineLevel> Level, float _
         ImGui::UpdatePlatformWindows();
         ImGui::RenderPlatformWindowsDefault();
     }
-
 }
 
 void GameEngineGUI::Release()

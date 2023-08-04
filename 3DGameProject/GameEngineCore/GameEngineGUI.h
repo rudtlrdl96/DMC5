@@ -89,7 +89,6 @@ public:
 		}
 
 		return FindIter->second;
-
 	}
 
 protected:

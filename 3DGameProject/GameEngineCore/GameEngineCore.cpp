@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 #include "GameEngineCore.h"
+
 #include <GameEngineBase\GameEngineDebug.h>
 #include <GameEngineBase\GameEngineThread.h>
 #include <GameEnginePlatform\GameEngineInput.h>
@@ -7,9 +8,11 @@
 #include <GameEnginePlatform\GameEngineSound.h>
 #include <GameEnginePlatform\GameEngineInput.h>
 #include <GameEngineBase\GameEngineTime.h>
+
 #include "GameEngineDevice.h"
 #include "GameEngineVideo.h"
 #include "GameEngineGUI.h"
+#include "GameEnginePhysics.h"
 
 GameEngineThreadJobQueue GameEngineCore::JobQueue;
 
@@ -59,6 +62,7 @@ void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 	GameEngineDevice::Initialize();        // DirectX 11 설정
 	CoreResourcesInit();                   // Direct 리소스 설정
 	GameEngineGUI::Initialize();           // IMGUI 설정
+	//GameEnginePhysics::Initialize();      
 
 	if (nullptr == _ContentsStart)
 	{
