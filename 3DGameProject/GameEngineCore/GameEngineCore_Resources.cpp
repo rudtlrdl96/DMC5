@@ -21,8 +21,7 @@
 #include "GameEngineConstantBuffer.h"
 #include "GameEngineRenderingPipeLine.h"
 
-
-
+// DirectX 환경에서 활용할 리소스들을 생성한다.
 void GameEngineCore::CoreResourcesInit()
 {
 	{
@@ -39,40 +38,17 @@ void GameEngineCore::CoreResourcesInit()
 		}
 	}
 
-
 	// 버텍스 버퍼의 내용과 인풋 레이아웃의 내용이 더 중요하다.
 	GameEngineVertex::LayOut.AddInputLayOut("POSITION", DXGI_FORMAT_R32G32B32A32_FLOAT);
 	GameEngineVertex::LayOut.AddInputLayOut("TEXCOORD", DXGI_FORMAT_R32G32B32A32_FLOAT);
 	GameEngineVertex::LayOut.AddInputLayOut("NORMAL", DXGI_FORMAT_R32G32B32A32_FLOAT);
 
-	//typedef struct D3D11_INPUT_ELEMENT_DESC
-	//{
-	//	LPCSTR SemanticName; = "POSITION"
-	//	UINT SemanticIndex; = 0
-	//	DXGI_FORMAT Format; 
-	//	UINT InputSlot;
-	//	UINT AlignedByteOffset;
-	//	D3D11_INPUT_CLASSIFICATION InputSlotClass;
-	//	UINT InstanceDataStepRate; 
-	//} 	
-
-
-	//const D3D11_INPUT_ELEMENT_DESC* pInputElementDescs,
-	//UINT NumElements, // 
-	//const void* pShaderBytecodeWithInputSignature,  // 쉐이더의 바이너리 코드를 내놔
-	//SIZE_T BytecodeLength,
-	//ID3D11InputLayout** ppInputLayout // 만들어져 나오는 포인터
-
 	{
 		D3D11_SAMPLER_DESC SamperData = {};
-
-		// 
 		SamperData.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
 		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
 		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-		// 텍스처가 멀리있을때 뭉갤꺼냐
-		// 안뭉갠다.
 		SamperData.MipLODBias = 0.0f;
 		SamperData.MaxAnisotropy = 1;
 		SamperData.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
@@ -88,8 +64,6 @@ void GameEngineCore::CoreResourcesInit()
 		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
 		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
 		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-		// 텍스처가 멀리있을때 뭉갤꺼냐
-		// 안뭉갠다.
 		SamperData.MipLODBias = 0.0f;
 		SamperData.MaxAnisotropy = 1;
 		SamperData.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
@@ -99,18 +73,12 @@ void GameEngineCore::CoreResourcesInit()
 		GameEngineSampler::Create("POINTSAMPLER", SamperData);
 	}
 
-
-
 	{
 		D3D11_SAMPLER_DESC SamperData = {};
-
-		// 
 		SamperData.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
 		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
 		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-		// 텍스처가 멀리있을때 뭉갤꺼냐
-		// 안뭉갠다.
 		SamperData.MipLODBias = 0.0f;
 		SamperData.MaxAnisotropy = 1;
 		SamperData.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
@@ -127,8 +95,6 @@ void GameEngineCore::CoreResourcesInit()
 		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-		// 텍스처가 멀리있을때 뭉갤꺼냐
-		// 안뭉갠다.
 		SamperData.MipLODBias = 0.0f;
 		SamperData.MaxAnisotropy = 1;
 		SamperData.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
@@ -140,11 +106,11 @@ void GameEngineCore::CoreResourcesInit()
 
 	{
 		std::vector<GameEngineVertex> ArrVertex;
-		ArrVertex.resize(4);
-
+		
 		// 0   1
 		// 3   2
 		// 앞면
+		ArrVertex.resize(4);
 		ArrVertex[0] = { { -0.5f, 0.5f, 0.0f }, {0.0f, 0.0f} };
 		ArrVertex[1] = { { 0.5f, 0.5f, 0.0f }, {1.0f, 0.0f} };
 		ArrVertex[2] = { { 0.5f, -0.5f, 0.0f }, {1.0f, 1.0f} };
@@ -159,11 +125,8 @@ void GameEngineCore::CoreResourcesInit()
 
 	{
 		std::vector<GameEngineVertex> ArrVertex;
-		ArrVertex.resize(4);
 
-		// 0   1
-		// 3   2
-		// 앞면
+		ArrVertex.resize(4);
 		ArrVertex[0] = { { -1.0f, 1.0f, 0.0f }, {0.0f, 0.0f} };
 		ArrVertex[1] = { { 1.0f, 1.0f, 0.0f }, {1.0f, 0.0f} };
 		ArrVertex[2] = { { 1.0f, -1.0f, 0.0f }, {1.0f, 1.0f} };
@@ -180,43 +143,36 @@ void GameEngineCore::CoreResourcesInit()
 	{
 		std::vector<GameEngineVertex> Vertex;
 		Vertex.resize(24);
-		// 앞면
+
 		Vertex[0] = { float4(-0.5f, 0.5f, 0.5f) , float4(0.0f, 0.0f)};
 		Vertex[1] = { float4(0.5f, 0.5f, 0.5f)  , float4(1.0f, 0.0f)};
 		Vertex[2] = { float4(0.5f, -0.5f, 0.5f) , float4(1.0f, 1.0f)};
 		Vertex[3] = { float4(-0.5f, -0.5f, 0.5f), float4(0.0f, 1.0f)};
 
-		// 뒷면
 		Vertex[4] = { float4(-0.5f, 0.5f, 0.5f).RotaitonXDegReturn(180) , float4(0.0f, 0.0f)};
 		Vertex[5] = { float4(0.5f, 0.5f, 0.5f).RotaitonXDegReturn(180)  , float4(1.0f, 0.0f) };
 		Vertex[6] = { float4(0.5f, -0.5f, 0.5f).RotaitonXDegReturn(180) , float4(1.0f, 1.0f) };
 		Vertex[7] = { float4(-0.5f, -0.5f, 0.5f).RotaitonXDegReturn(180), float4(0.0f, 1.0f) };
 
-		// 왼쪽
 		Vertex[8] = { float4(-0.5f, 0.5f, 0.5f).RotaitonYDegReturn(90) , float4(0.0f, 0.0f) };
 		Vertex[9] = { float4(0.5f, 0.5f, 0.5f).RotaitonYDegReturn(90)  , float4(1.0f, 0.0f) };
 		Vertex[10] = { float4(0.5f, -0.5f, 0.5f).RotaitonYDegReturn(90) , float4(1.0f, 1.0f) };
 		Vertex[11] = { float4(-0.5f, -0.5f, 0.5f).RotaitonYDegReturn(90), float4(0.0f, 1.0f) };
 
-		// 오른쪽
 		Vertex[12] = { float4(-0.5f, 0.5f, 0.5f).RotaitonYDegReturn(-90) , float4(0.0f, 0.0f) };
 		Vertex[13] = { float4(0.5f, 0.5f, 0.5f).RotaitonYDegReturn(-90)  , float4(1.0f, 0.0f) };
 		Vertex[14] = { float4(0.5f, -0.5f, 0.5f).RotaitonYDegReturn(-90) , float4(1.0f, 1.0f) };
 		Vertex[15] = { float4(-0.5f, -0.5f, 0.5f).RotaitonYDegReturn(-90), float4(0.0f, 1.0f) };
 
-
-		// 위
 		Vertex[16] = { float4(-0.5f, 0.5f, 0.5f).RotaitonXDegReturn(90) , float4(0.0f, 0.0f) };
 		Vertex[17] = { float4(0.5f, 0.5f, 0.5f).RotaitonXDegReturn(90)  , float4(1.0f, 0.0f) };
 		Vertex[18] = { float4(0.5f, -0.5f, 0.5f).RotaitonXDegReturn(90) , float4(1.0f, 1.0f) };
 		Vertex[19] = { float4(-0.5f, -0.5f, 0.5f).RotaitonXDegReturn(90), float4(0.0f, 1.0f) };
 
-		// 아래
 		Vertex[20] = { float4(-0.5f, 0.5f, 0.5f).RotaitonXDegReturn(-90) , float4(0.0f, 0.0f) };
 		Vertex[21] = { float4(0.5f, 0.5f, 0.5f).RotaitonXDegReturn(-90)  , float4(1.0f, 0.0f) };
 		Vertex[22] = { float4(0.5f, -0.5f, 0.5f).RotaitonXDegReturn(-90) , float4(1.0f, 1.0f) };
 		Vertex[23] = { float4(-0.5f, -0.5f, 0.5f).RotaitonXDegReturn(-90), float4(0.0f, 1.0f) };
-
 
 		GameEngineVertexBuffer::Create("Box", Vertex);
 	}
@@ -267,7 +223,6 @@ void GameEngineCore::CoreResourcesInit()
 
 	
 	// Sphere
-		// 스피어
 	{
 		GameEngineVertex V;
 		std::vector<GameEngineVertex> VBVector;
@@ -370,7 +325,6 @@ void GameEngineCore::CoreResourcesInit()
 		
 		GameEngineMesh::Create("Sphere");
 
-
 		std::shared_ptr<GameEngineMesh> Mesh = GameEngineMesh::Create("DebugSphere", "Sphere", "Sphere");
 		Mesh->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 	}
@@ -380,11 +334,9 @@ void GameEngineCore::CoreResourcesInit()
 		// 블랜드
 		D3D11_BLEND_DESC Desc = { 0, };
 
-		// 자동으로 알파부분을 제거해서 출력해주는 건데
-		// 졸라느립니다.
+		// 자동으로 알파부분을 제거해서 출력해주는 건데 겁나느리다.
 		// Desc.AlphaToCoverageEnable = false;
 
-		// 
 		Desc.AlphaToCoverageEnable = false;
 		// 블랜드를 여러개 넣을거냐
 		// TRUE면 블랜드를 여러개 넣습니다.
@@ -408,15 +360,7 @@ void GameEngineCore::CoreResourcesInit()
 		// 블랜드
 		D3D11_BLEND_DESC Desc = { 0, };
 
-		// 자동으로 알파부분을 제거해서 출력해주는 건데
-		// 졸라느립니다.
-		// Desc.AlphaToCoverageEnable = false;
-
-		// 
 		Desc.AlphaToCoverageEnable = false;
-		// 블랜드를 여러개 넣을거냐
-		// TRUE면 블랜드를 여러개 넣습니다.
-		// false면 몇개의 랜더타겟이 있건 0번에 세팅된 걸로 전부다 블랜드.
 		Desc.IndependentBlendEnable = false;
 
 		Desc.RenderTarget[0].BlendEnable = true;
@@ -432,18 +376,8 @@ void GameEngineCore::CoreResourcesInit()
 		GameEngineBlend::Create("MergeBlend", Desc);
 	}
 
-
-
 	{
 		D3D11_DEPTH_STENCIL_DESC Desc = { 0, };
-		//BOOL DepthEnable;
-		//D3D11_DEPTH_WRITE_MASK DepthWriteMask;
-		//D3D11_COMPARISON_FUNC DepthFunc;
-		//BOOL StencilEnable;
-		//UINT8 StencilReadMask;
-		//UINT8 StencilWriteMask;
-		//D3D11_DEPTH_STENCILOP_DESC FrontFace;
-		//D3D11_DEPTH_STENCILOP_DESC BackFace;
 
 		Desc.DepthEnable = true;
 		Desc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS_EQUAL;
@@ -463,31 +397,26 @@ void GameEngineCore::CoreResourcesInit()
 		GameEngineDepthState::Create("AlwayDepth", Desc);
 	}
 
-
-
 	{
 		// 최초의 버텍스의 위치를 로컬공간이라고 부릅니다.
 		std::vector<float4> ArrVertex;
 		ArrVertex.resize(24);
-		// 앞면
+
 		ArrVertex[0] = { -0.5f, -0.5f, 0.5f };
 		ArrVertex[1] = { 0.5f, -0.5f,0.5f };
 		ArrVertex[2] = { 0.5f, 0.5f,0.5f };
 		ArrVertex[3] = { -0.5f, 0.5f,0.5f };
 
-		// 뒷면
 		ArrVertex[4] = ArrVertex[0].RotaitonXDegReturn(180.0f);
 		ArrVertex[5] = ArrVertex[1].RotaitonXDegReturn(180.0f);
 		ArrVertex[6] = ArrVertex[2].RotaitonXDegReturn(180.0f);
 		ArrVertex[7] = ArrVertex[3].RotaitonXDegReturn(180.0f);
 
-		// 왼쪽면
 		ArrVertex[8] = ArrVertex[0].RotaitonYDegReturn(90.0f);
 		ArrVertex[9] = ArrVertex[1].RotaitonYDegReturn(90.0f);
 		ArrVertex[10] = ArrVertex[2].RotaitonYDegReturn(90.0f);
 		ArrVertex[11] = ArrVertex[3].RotaitonYDegReturn(90.0f);
 
-		// 오른쪽
 		ArrVertex[12] = ArrVertex[0].RotaitonYDegReturn(-90.0f);
 		ArrVertex[13] = ArrVertex[1].RotaitonYDegReturn(-90.0f);
 		ArrVertex[14] = ArrVertex[2].RotaitonYDegReturn(-90.0f);
@@ -502,7 +431,6 @@ void GameEngineCore::CoreResourcesInit()
 		ArrVertex[21] = ArrVertex[1].RotaitonXDegReturn(-90.0f);
 		ArrVertex[22] = ArrVertex[2].RotaitonXDegReturn(-90.0f);
 		ArrVertex[23] = ArrVertex[3].RotaitonXDegReturn(-90.0f);
-
 	}
 
 	// 쉐이더 컴파일
@@ -514,18 +442,10 @@ void GameEngineCore::CoreResourcesInit()
 
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".hlsl", ".fx" });
 
-		// std::string FileString = Files[0].GetString();
-
 		for (size_t i = 0; i < Files.size(); i++)
 		{
 			GameEngineShader::AutoCompile(Files[i]);
 		}
-
-		//GameEngineVertexShader::Load(Files[0].GetFullPath(), "Merge_VS");
-		//GameEnginePixelShader::Load(Files[0].GetFullPath(), "Merge_PS");
-
-		//GameEngineVertexShader::Load(Files[1].GetFullPath(), "Texture_VS");
-		//GameEnginePixelShader::Load(Files[1].GetFullPath(), "Texture_PS");
 	}
 
 
@@ -572,7 +492,6 @@ void GameEngineCore::CoreResourcesInit()
 		std::shared_ptr<GameEngineRasterizer> Res = GameEngineRasterizer::Create("Engine2DBase", Desc);
 	}
 
-
 	{
 		// 2D가 워낙 매쉬가 중요하지가 않아요 Rect 안써.
 		{
@@ -599,7 +518,6 @@ void GameEngineCore::CoreResourcesInit()
 			Pipe->SetDepthState("EngineDepth");
 		}
 
-
 		{
 			std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("Merge");
 			//Pipe->SetVertexBuffer("FullRect");
@@ -623,7 +541,6 @@ void GameEngineCore::CoreResourcesInit()
 			Pipe->SetBlendState("AlphaBlend");
 			Pipe->SetDepthState("AlwayDepth");
 		}
-
 	}
 
 	{
@@ -652,5 +569,4 @@ void GameEngineCore::CoreResourcesEnd()
 	GameEngineRenderTarget::ResourcesClear();
 	GameEngineConstantBuffer::ResourcesClear();
 	GameEngineRenderingPipeLine::ResourcesClear();
-
 }

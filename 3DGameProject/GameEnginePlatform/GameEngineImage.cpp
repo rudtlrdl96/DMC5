@@ -139,7 +139,6 @@ void GameEngineImage::ImageScaleCheck()
 	GetObject(CurrentBitMap, sizeof(BITMAP), &Info);
 }
 
-
 // Copy
 void GameEngineImage::BitCopy(const GameEngineImage* _OtherImage, float4 _CenterPos, float4 _Scale)
 {

@@ -71,40 +71,30 @@ GameEngineWindow::~GameEngineWindow()
 
 void GameEngineWindow::WindowCreate(HINSTANCE _hInstance, const std::string_view& _TitleName, float4 _Size, float4 _Pos)
 {
-    // 윈도우를 찍어낼수 있는 class를 만들어내는 것이다.
-    // 나는 이러이러한 윈도우를 만들어줘...
+    // 생성할 윈도우에 대한 설정
+    {
+        wcex.cbSize = sizeof(WNDCLASSEX);
+        wcex.style = CS_HREDRAW | CS_VREDRAW;
+        wcex.lpfnWndProc = &GameEngineWindow::MessageFunction;
+        wcex.cbClsExtra = 0;
+        wcex.cbWndExtra = 0;
+        wcex.hInstance = _hInstance;
+        wcex.hIcon = nullptr;
+        wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
+        wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+        wcex.lpszMenuName = nullptr;
+        wcex.lpszClassName = "GameEngineWindowDefault";
+        wcex.hIconSm = nullptr;
+    }
 
-    wcex.cbSize = sizeof(WNDCLASSEX);
-
-    wcex.style = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc = &GameEngineWindow::MessageFunction;
-    wcex.cbClsExtra = 0;
-    wcex.cbWndExtra = 0;
-    wcex.hInstance = _hInstance;
-    // 넣어주지 않으면 윈도우 기본Icon이 됩니다.
-    wcex.hIcon = nullptr;//LoadIcon(_hInstance, MAKEINTRESOURCE(IDI_WINDOWSPROJECT1));
-    wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
-    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1); // 흰색 
-    wcex.lpszMenuName = nullptr;//MAKEINTRESOURCEW(IDC_WINDOWSPROJECT1);
-    wcex.lpszClassName = "GameEngineWindowDefault";
-    wcex.hIconSm = nullptr;//LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
-
-    // 윈도우에게 이런 내용을 window클래스를 GameEngineWindowDefault라는 이름으로 등록해줘.
-    // 나중에 윈도우 만들때 쓸꺼냐.
+    // 위의 내용으로 윈도우 클래스를 GameEngineWindowDefault로 등록
     if (0 == RegisterClassEx(&wcex))
     {
         MsgAssert("윈도우 클래스 등록에 실패했습니다.");
         return;
     }
 
-    // hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
-
-    // 1000번 프로그램이 윈도우를 띄워달라고 요청했다.
-    // 윈도우는 다시 특정 숫자이라는 윈도우가 만들어졌다고 우리에게 알려주는데.
-    // 특정 숫자로 인식되는 우리의 윈도우에게 크기변경 떠라
-
-    // (WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX)
-
+    // 핸들 생성
     HWnd = CreateWindow("GameEngineWindowDefault", _TitleName.data(), WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, _hInstance, nullptr);
 
@@ -114,20 +104,16 @@ void GameEngineWindow::WindowCreate(HINSTANCE _hInstance, const std::string_view
         return;
     }
 
-    // 윈도우가 만들어지면서부터 만들어진 색깔의 2차원배열의 수정권한을 얻어오는 것이다.
     WindowBackBufferHdc = GetDC(HWnd);
 
+    ShowWindow(HWnd, SW_SHOW); // 창 표시 방법 제어, SW_SHOW는 창을 활성화하고 현재 크기와 위치에 표시
+    UpdateWindow(HWnd);        // 창의 업데이트 영역이 비어 있지 않은 경우 창에 WM_PAINT 메시지를 보내 지정된 창의 클라이언트 영역을 업데이트
 
-    ShowWindow(HWnd, SW_SHOW);
-    UpdateWindow(HWnd);
+    SettingWindowSize(_Size);  // 생성할 윈도우 사이즈 설정
+    SettingWindowPos(_Pos);    // 윈도우 생성 포지션 설정
 
-    SettingWindowSize(_Size);
-    SettingWindowPos(_Pos);
-
-    // 크기 바꾸고 얻어온다.
     BackBufferImage = new GameEngineImage();
     BackBufferImage->ImageCreate(WindowBackBufferHdc);
-
 
     return;
 }
@@ -139,8 +125,6 @@ void GameEngineWindow::DoubleBufferClear()
 
 void GameEngineWindow::DoubleBufferRender()
 {
-    //static GameEngineImage* BackBufferImage;
-    //static GameEngineImage* DoubleBufferImage;
     BackBufferImage->BitCopy(DoubleBufferImage, WindowSize.half(), WindowSize);
 }
 
@@ -201,22 +185,17 @@ int GameEngineWindow::WindowLoop(
 
 void GameEngineWindow::SettingWindowSize(float4 _Size)
 {
-
-    // 그 타이틀바와 프레임까지 고려해서 크기를 설정해줘야 한다.
-
+    // 윈도우 창 설정은 타이틀바, 프레임의 크기를 고려하여 설정한다.
     //          위치      크기
     RECT Rc = { 0, 0, _Size.ix(), _Size.iy() };
 
     ScreenSize = _Size;
 
-    // 내가 원하는 크기를 넣으면 타이틀바까지 고려한 크기를 리턴주는 함수.
-    AdjustWindowRect(&Rc, WS_OVERLAPPEDWINDOW, FALSE);
+    AdjustWindowRect(&Rc, WS_OVERLAPPEDWINDOW, FALSE); // 내가 원하는 크기를 넣으면 타이틀바까지 고려한 크기를 리턴주는 함수.
 
     WindowSize = { static_cast<float>(Rc.right - Rc.left), static_cast<float>(Rc.bottom - Rc.top)};
     // 0을 넣어주면 기존의 크기를 유지한다.
     SetWindowPos(HWnd, nullptr, WindowPos.ix(), WindowPos.iy(), WindowSize.ix(), WindowSize.iy(), SWP_NOZORDER);
-
-    // 완전히 똑같은 크기의 이미지입니다.
 
     if (nullptr != DoubleBufferImage)
     {
@@ -226,9 +205,8 @@ void GameEngineWindow::SettingWindowSize(float4 _Size)
 
     DoubleBufferImage = new GameEngineImage();
     DoubleBufferImage->ImageCreate(ScreenSize);
-
-
 }
+
 void GameEngineWindow::SettingWindowPos(float4 _Pos)
 {
     WindowPos = _Pos;

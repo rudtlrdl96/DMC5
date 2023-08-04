@@ -60,20 +60,20 @@ void GameEngineThreadJobQueue::ThreadPoolFunction(GameEngineThreadJobQueue* _Thr
 	}
 }
 
-// 코어개수 * 2 - 1 
-// 
+// 보통 스레드 선언 시의 갯수는 (자신의 CPU 코어개수 * 2 - 1)로 설정
 void GameEngineThreadJobQueue::Initialize(const std::string& _ThreadName, int _ThreadCount)
 {
 	ThreadCount = _ThreadCount;
 
 	if (0 == ThreadCount)
 	{
+		// systeminfo에서 cpu의 코어 갯수 가져오기
 		SYSTEM_INFO Info;
-		GetSystemInfo(&Info);
-		// Cpu 개수
+		GetSystemInfo(&Info); 
 		ThreadCount = Info.dwNumberOfProcessors;
 	}
 
+	// IOCP 핸들 생성
 	IOCPHandle = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, NULL, ThreadCount);
 
 	if (nullptr == IOCPHandle)
@@ -86,8 +86,8 @@ void GameEngineThreadJobQueue::Initialize(const std::string& _ThreadName, int _T
 
 	for (size_t i = 0; i < ThreadCount; i++)
 	{
+		// 스레드 생성 함수
 		AllThread[i] = std::make_shared<GameEngineThread>();
-
 		AllThread[i]->Start(_ThreadName + " " + std::to_string(i), std::bind(ThreadPoolFunction, this, AllThread[i].get(), IOCPHandle));
 	}
 }

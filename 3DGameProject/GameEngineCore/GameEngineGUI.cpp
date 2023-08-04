@@ -5,9 +5,8 @@
 #include "GameEngineLevel.h"
 
 std::map<std::string, std::shared_ptr<GameEngineGUIWindow>> GameEngineGUI::AllWindow;
-
-
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+bool GameEngineGUI::IsInit = false;
 
 GameEngineGUI::GameEngineGUI()
 {
@@ -16,16 +15,8 @@ GameEngineGUI::GameEngineGUI()
 GameEngineGUI::~GameEngineGUI()
 {
 }
-//
-//IMGUI_IMPL_API LRESULT Test(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) 
-//{
-//    int a = 0;
-//
-//    return 0;
-//}
 
-bool GameEngineGUI::IsInit = false;
-
+// GUI ¼¼ÆÃ
 void GameEngineGUI::Initialize()
 {
     if (true == IsInit)

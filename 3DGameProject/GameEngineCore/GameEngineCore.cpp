@@ -27,29 +27,44 @@ GameEngineCore::~GameEngineCore()
 {
 }
 
+// App 시작 시 최초 진입 함수, functional을 통해 binding된 함수 호출
+void GameEngineCore::Start(HINSTANCE _instance, std::function<void()> _Start, std::function<void()> _End, float4 _Pos, float4 _Size)
+{
+	// GameEngineBase의 GameEngineDebug에서 LeakCheck 함수 호출
+	GameEngineDebug::LeakCheck();
+
+	// Window 생성
+	GameEngineWindow::WindowCreate(_instance, "DirectX3D", _Size, _Pos);
+	GameEngineWindow::WindowLoop(std::bind(GameEngineCore::EngineStart, _Start), GameEngineCore::EngineUpdate, std::bind(GameEngineCore::EngineEnd, _End));
+}
+
+// 윈도우 생성 후 Direct, GUI 최초 설정하는 위치
 void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 {
-	// 코어이니셜라이즈
-	// Rect Box
-
-	if (false == GameEngineInput::IsKey("GUISwitch"))
+	// 기본 키설정 선언
 	{
-		GameEngineInput::CreateKey("GUISwitch", VK_F8);
+		if (false == GameEngineInput::IsKey("EngineMouseLeft"))
+		{
+			GameEngineInput::CreateKey("EngineMouseLeft", VK_LBUTTON);
+			GameEngineInput::CreateKey("EngineMouseRight", VK_RBUTTON);
+		}
+
+		if (false == GameEngineInput::IsKey("GUISwitch"))
+		{
+			GameEngineInput::CreateKey("GUISwitch", VK_F8);
+		}
 	}
-	
 
-	JobQueue.Initialize("EngineJobQueue");
-
-	GameEngineDevice::Initialize();
-
-	CoreResourcesInit();
-
-	GameEngineGUI::Initialize();
+	JobQueue.Initialize("EngineJobQueue"); // CPU 갯수에 맞춰 스레드 생성
+	GameEngineDevice::Initialize();        // DirectX 11 설정
+	CoreResourcesInit();                   // Direct 리소스 설정
+	GameEngineGUI::Initialize();           // IMGUI 설정
 
 	if (nullptr == _ContentsStart)
 	{
 		MsgAssert("시작 컨텐츠가 존재하지 않습니다.");
 	}
+
 	_ContentsStart();
 }
 
@@ -145,20 +160,6 @@ void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)
 
 	GameEngineDevice::Release();
 	GameEngineWindow::Release();
-}
-
-void GameEngineCore::Start(HINSTANCE _instance,  std::function<void()> _Start, std::function<void()> _End, float4 _Pos, float4 _Size)
-{
-	GameEngineDebug::LeakCheck();
-
-	if (false == GameEngineInput::IsKey("EngineMouseLeft"))
-	{
-		GameEngineInput::CreateKey("EngineMouseLeft", VK_LBUTTON);
-		GameEngineInput::CreateKey("EngineMouseRight", VK_RBUTTON);
-	}
-
-	GameEngineWindow::WindowCreate(_instance, "MainWindow", _Size, _Pos);
-	GameEngineWindow::WindowLoop(std::bind(GameEngineCore::EngineStart, _Start), GameEngineCore::EngineUpdate, std::bind(GameEngineCore::EngineEnd, _End));
 }
 
 void GameEngineCore::ChangeLevel(const std::string_view& _Name) 
