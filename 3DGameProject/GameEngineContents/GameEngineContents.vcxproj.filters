@@ -18,6 +18,10 @@
       <Filter>Levels</Filter>
     </ClInclude>
     <ClInclude Include="ContentsCore.h" />
+    <ClInclude Include="MyContentSpriteRenderer.h" />
+    <ClInclude Include="Player.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -38,6 +42,10 @@
       <Filter>Levels</Filter>
     </ClCompile>
     <ClCompile Include="ContentsCore.cpp" />
+    <ClCompile Include="MyContentSpriteRenderer.cpp" />
+    <ClCompile Include="Player.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
@@ -45,6 +53,9 @@
     </Filter>
     <Filter Include="PostEffect">
       <UniqueIdentifier>{8b278d14-8721-4921-8f5e-5601845f39f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{bbc60d36-0bc6-4a6f-a01a-193df7cb6027}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

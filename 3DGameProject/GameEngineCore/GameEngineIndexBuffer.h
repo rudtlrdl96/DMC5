@@ -17,16 +17,28 @@ public:
 	GameEngineIndexBuffer& operator=(GameEngineIndexBuffer&& _Other) noexcept = delete;
 
 	template<typename IndexType>
-	static void Create(const std::string_view& _Name, const std::vector<IndexType>& _Vertexs)
+	static std::shared_ptr<GameEngineIndexBuffer> Create(const std::string_view& _Name, const std::vector<IndexType>& _Vertexs)
 	{
 		std::shared_ptr<GameEngineIndexBuffer> Res = GameEngineResource::Create(_Name);
 
 		Res->ResCreate(&_Vertexs[0], sizeof(IndexType), static_cast<UINT>(_Vertexs.size()));
+
+		return Res;
+	}
+
+	template<typename IndexType>
+	static std::shared_ptr<GameEngineIndexBuffer> Create(const std::vector<IndexType>& _Indexs)
+	{
+		std::shared_ptr<GameEngineIndexBuffer> Res = GameEngineResource::CreateUnNamed();
+
+		Res->ResCreate(&_Indexs[0], sizeof(IndexType), static_cast<UINT>(_Indexs.size()));
+
+		return Res;
 	}
 
 	void Setting() override;
 
-	inline UINT GetIndexCount() 
+	inline UINT GetIndexCount()
 	{
 		return IndexCount;
 	}

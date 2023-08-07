@@ -17,7 +17,12 @@ GameEngineRenderUnit::GameEngineRenderUnit()
 	InputLayOutPtr = std::make_shared<GameEngineInputLayOut>();
 }
 
-void GameEngineRenderUnit::SetMesh(const std::string_view& _Name) 
+void GameEngineRenderUnit::SetRenderer(GameEngineRenderer* _Renderer)
+{
+	ParentRenderer = _Renderer;
+}
+
+void GameEngineRenderUnit::SetMesh(const std::string_view& _Name)
 {
 	Mesh = GameEngineMesh::Find(_Name);
 
@@ -27,9 +32,25 @@ void GameEngineRenderUnit::SetMesh(const std::string_view& _Name)
 	}
 }
 
-void GameEngineRenderUnit::SetPipeLine(const std::string_view& _Name) 
+void GameEngineRenderUnit::SetMesh(std::shared_ptr<GameEngineMesh> _Mesh)
+{
+	Mesh = _Mesh;
+
+	if (false == InputLayOutPtr->IsCreate() && nullptr != Pipe)
+	{
+		InputLayOutPtr->ResCreate(Mesh->GetVertexBuffer(), Pipe->GetVertexShader());
+	}
+}
+
+void GameEngineRenderUnit::SetPipeLine(const std::string_view& _Name)
 {
 	Pipe = GameEngineRenderingPipeLine::Find(_Name);
+
+	if (nullptr == Pipe)
+	{
+		MsgAssert("존재하지 않는 머티리얼을 사용했습니다.");
+		return;
+	}
 
 	{
 		const GameEngineShaderResHelper& Res = Pipe->GetVertexShader()->GetShaderResHelper();
@@ -45,6 +66,19 @@ void GameEngineRenderUnit::SetPipeLine(const std::string_view& _Name)
 	{
 		InputLayOutPtr->ResCreate(Mesh->GetVertexBuffer(), Pipe->GetVertexShader());
 	}
+
+
+	if (true == ShaderResHelper.IsConstantBuffer("TransformData"))
+	{
+		const TransformData& Data = ParentRenderer->GetTransform()->GetTransDataRef();
+		ShaderResHelper.SetConstantBufferLink("TransformData", Data);
+	}
+
+	if (true == ShaderResHelper.IsConstantBuffer("RenderBaseValue"))
+	{
+		ShaderResHelper.SetConstantBufferLink("RenderBaseValue", ParentRenderer->BaseValue);
+	}
+
 
 }
 
@@ -71,12 +105,12 @@ void GameEngineRenderUnit::Render(float _DeltaTime)
 	GameEngineDevice::GetContext()->DrawIndexed(IndexCount, 0, 0);
 }
 
-GameEngineRenderer::GameEngineRenderer() 
+GameEngineRenderer::GameEngineRenderer()
 {
 	BaseValue.ScreenScale = GameEngineWindow::GetScreenSize();
 }
 
-GameEngineRenderer::~GameEngineRenderer() 
+GameEngineRenderer::~GameEngineRenderer()
 {
 }
 
@@ -98,11 +132,15 @@ void GameEngineRenderer::RenderTransformUpdate(GameEngineCamera* _Camera)
 	GetTransform()->SetCameraMatrix(_Camera->GetView(), _Camera->GetProjection());
 }
 
-void GameEngineRenderer::Render(float _Delta) 
+void GameEngineRenderer::RenderBaseValueUpdate(float _Delta)
 {
-	BaseValue.Time.x += _Delta;
-	BaseValue.Time.y = _Delta;
+	BaseValue.SumDeltaTime += _Delta;
+	BaseValue.DeltaTime = _Delta;
+}
 
+void GameEngineRenderer::Render(float _Delta)
+{
+	RenderBaseValueUpdate(_Delta);
 	// GameEngineDevice::GetContext()->VSSetConstantBuffers();
 	// GameEngineDevice::GetContext()->PSSetConstantBuffers();
 
@@ -110,7 +148,7 @@ void GameEngineRenderer::Render(float _Delta)
 	// 3D에가게되면 이게 안되요.
 	// 캐릭터가 매쉬가 1개가 아니야.
 	// 다리 팔 몸통
-	
+
 	// 텍스처 세팅 상수버퍼 세팅 이런것들이 전부다 처리 된다.
 	for (size_t i = 0; i < Units.size(); i++)
 	{
@@ -119,7 +157,7 @@ void GameEngineRenderer::Render(float _Delta)
 
 }
 
-std::shared_ptr<GameEngineRenderingPipeLine> GameEngineRenderer::GetPipeLine(int _index/* = 0*/) 
+std::shared_ptr<GameEngineRenderingPipeLine> GameEngineRenderer::GetPipeLine(int _index/* = 0*/)
 {
 	if (Units.size() <= _index)
 	{
@@ -129,88 +167,90 @@ std::shared_ptr<GameEngineRenderingPipeLine> GameEngineRenderer::GetPipeLine(int
 	return Units[_index]->Pipe;
 }
 
-// 이걸 사용하게되면 이 랜더러의 유니트는 자신만의 클론 파이프라인을 가지게 된다.
-std::shared_ptr<GameEngineRenderingPipeLine> GameEngineRenderer::GetPipeLineClone(int _index/* = 0*/)
-{
-	if (Units.size() <= _index)
-	{
-		MsgAssert("존재하지 않는 랜더 유니트를 사용하려고 했습니다.");
-	}
-
-	if (false == Units[_index]->Pipe->IsClone())
-	{
-		Units[_index]->Pipe = Units[_index]->Pipe->Clone();
-	}
-
-	return Units[_index]->Pipe;
-}
-
-
-void GameEngineRenderer::SetMesh(const std::string_view& _Name, int _index /*= 0*/)
-{
-	if (Units.size() + 1 <= _index)
-	{
-		MsgAssert("너무큰 랜더유니트 확장을 하려고 했습니다");
-	}
-
-	if (Units.size() <= _index)
-	{
-		Units.resize(_index + 1);
-		Units[_index] = std::make_shared<GameEngineRenderUnit>();
-	}
-
-	std::shared_ptr<GameEngineRenderUnit> Unit = Units[_index];
-
-	if (nullptr == Unit)
-	{
-		MsgAssert("존재하지 않는 랜더유니트를 사용하려고 했습니다.");
-	}
-
-
-	Unit->Mesh = GameEngineMesh::Find(_Name);
-}
-
-void GameEngineRenderer::SetPipeLine(const std::string_view& _Name, int _index)
-{
-	//if (0 >= Units.size())
-	//{
-	//	MsgAssert("랜더 유니트가 존재하지 않습니다.");
-	//}
-
-	if (Units.size() + 1 <= _index)
-	{
-		MsgAssert("너무큰 랜더유니트 확장을 하려고 했습니다");
-	}
-
-	if (Units.size() <= _index)
-	{
-		Units.resize(_index + 1);
-		Units[_index] = std::make_shared<GameEngineRenderUnit>();
-	}
-
-	std::shared_ptr<GameEngineRenderUnit> Unit = Units[_index];
-
-	if (nullptr == Unit)
-	{
-		MsgAssert("존재하지 않는 랜더유니트를 사용하려고 했습니다.");
-	}
-
-
-	Unit->SetPipeLine(_Name);
-
-	if (true == Unit->ShaderResHelper.IsConstantBuffer("TransformData"))
-	{
-		const TransformData& Data = GetTransform()->GetTransDataRef();
-		Unit->ShaderResHelper.SetConstantBufferLink("TransformData", Data);
-	}
-
-	if (true == Unit->ShaderResHelper.IsConstantBuffer("RenderBaseValue"))
-	{
-		Unit->ShaderResHelper.SetConstantBufferLink("RenderBaseValue", BaseValue);
-	}
-
-	GetTransform()->GetWorldMatrix();
-}
+//// 이걸 사용하게되면 이 랜더러의 유니트는 자신만의 클론 파이프라인을 가지게 된다.
+//std::shared_ptr<GameEngineRenderingPipeLine> GameEngineRenderer::GetPipeLineClone(int _index/* = 0*/)
+//{
+//	if (Units.size() <= _index)
+//	{
+//		MsgAssert("존재하지 않는 랜더 유니트를 사용하려고 했습니다.");
+//	}
+//
+//	if (false == Units[_index]->Pipe->IsClone())
+//	{
+//		Units[_index]->Pipe = Units[_index]->Pipe->Clone();
+//	}
+//
+//	return Units[_index]->Pipe;
+//}
+//
+//
+//void GameEngineRenderer::SetMesh(const std::string_view& _Name, int _index /*= 0*/)
+//{
+//	if (Units.size() + 1 <= _index)
+//	{
+//		MsgAssert("너무큰 랜더유니트 확장을 하려고 했습니다");
+//	}
+//
+//	if (Units.size() <= _index)
+//	{
+//		Units.resize(_index + 1);
+//		Units[_index] = std::make_shared<GameEngineRenderUnit>();
+//	}
+//
+//	std::shared_ptr<GameEngineRenderUnit> Unit = Units[_index];
+//
+//	if (nullptr == Unit)
+//	{
+//		MsgAssert("존재하지 않는 랜더유니트를 사용하려고 했습니다.");
+//	}
+//
+//
+//	std::shared_ptr<GameEngineMesh> Mesh = GameEngineMesh::Find(_Name);
+//
+//	Unit->SetMesh(Mesh);
+//}
+//
+//void GameEngineRenderer::SetPipeLine(const std::string_view& _Name, int _index)
+//{
+//	//if (0 >= Units.size())
+//	//{
+//	//	MsgAssert("랜더 유니트가 존재하지 않습니다.");
+//	//}
+//
+//	if (Units.size() + 1 <= _index)
+//	{
+//		MsgAssert("너무큰 랜더유니트 확장을 하려고 했습니다");
+//	}
+//
+//	if (Units.size() <= _index)
+//	{
+//		Units.resize(_index + 1);
+//		Units[_index] = std::make_shared<GameEngineRenderUnit>();
+//	}
+//
+//	std::shared_ptr<GameEngineRenderUnit> Unit = Units[_index];
+//
+//	if (nullptr == Unit)
+//	{
+//		MsgAssert("존재하지 않는 랜더유니트를 사용하려고 했습니다.");
+//	}
+//
+//
+//	Unit->SetPipeLine(_Name);
+//
+//	if (true == Unit->ShaderResHelper.IsConstantBuffer("TransformData"))
+//	{
+//		const TransformData& Data = GetTransform()->GetTransDataRef();
+//		Unit->ShaderResHelper.SetConstantBufferLink("TransformData", Data);
+//	}
+//
+//	if (true == Unit->ShaderResHelper.IsConstantBuffer("RenderBaseValue"))
+//	{
+//		Unit->ShaderResHelper.SetConstantBufferLink("RenderBaseValue", BaseValue);
+//	}
+//
+//	GetTransform()->GetWorldMatrix();
+//}
 
 void GameEngineRenderer::PushCameraRender(int _CameraOrder)
 {
@@ -243,3 +283,16 @@ void GameEngineRenderer::CalSortZ(GameEngineCamera* _Camera)
 	}
 
 }
+
+
+std::shared_ptr<GameEngineRenderUnit> GameEngineRenderer::CreateRenderUnit()
+{
+	std::shared_ptr<GameEngineRenderUnit> Unit = std::make_shared<GameEngineRenderUnit>();
+
+	Unit->SetRenderer(this);
+
+	Units.push_back(Unit);
+
+	return Unit;
+}
+

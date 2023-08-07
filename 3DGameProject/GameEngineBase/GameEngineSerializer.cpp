@@ -2,84 +2,138 @@
 #include "GameEngineSerializer.h"
 #include "GameEngineDebug.h"
 
-GameEngineSerializer::GameEngineSerializer() 
+
+GameEngineSerializer::GameEngineSerializer()
+	: WriteOffset(0)
+	, ReadOffset(0)
+{
+	Data.resize(1024);
+}
+
+GameEngineSerializer::GameEngineSerializer(const char* _Data, unsigned int _Size)
+	: WriteOffset(0)
+	, ReadOffset(0)
+{
+
+	Data.resize(_Size);
+	memcpy_s(&Data[0], _Size, _Data, _Size);
+}
+
+GameEngineSerializer::~GameEngineSerializer()
 {
 }
 
-GameEngineSerializer::~GameEngineSerializer() 
+void GameEngineSerializer::Read(void* _Data, unsigned int _Size)
 {
+	memcpy_s(_Data, _Size, &Data[ReadOffset], _Size);
+	ReadOffset += _Size;
 }
 
-void GameEngineSerializer::BufferResize(size_t _Size)
+void GameEngineSerializer::Write(const void* _Data, unsigned int _Size)
 {
-	Datas.resize(_Size);
+	if (WriteOffset + _Size >= Data.size())
+	{
+		Data.resize(Data.capacity() * 2);
+	}
+
+	memcpy_s(&Data[WriteOffset], _Size, _Data, _Size);
+	WriteOffset += _Size;
+
 }
 
-// 
-// [][][][][][][][][][]
-
-void GameEngineSerializer::Write(const int& _Value)
+void GameEngineSerializer::operator<<(const int _Value)
 {
 	Write(&_Value, sizeof(int));
 }
 
-void GameEngineSerializer::Write(const std::string_view& _Value)
+void GameEngineSerializer::operator<<(const float _Value)
 {
-	int Size = static_cast<int>(_Value.size());
-	Write(&Size, sizeof(int));
-	Write(_Value.data(), Size);
+	Write(&_Value, sizeof(float));
+}
+
+void GameEngineSerializer::operator<<(const bool _Value)
+{
+	Write(&_Value, sizeof(bool));
+}
+
+void GameEngineSerializer::operator<<(const std::string& _Value)
+{
+	operator<<(static_cast<unsigned int>(_Value.size()));
+	Write(reinterpret_cast<const void*>(&_Value[0]), static_cast<unsigned int>(_Value.size()));
+}
+
+void GameEngineSerializer::operator<<(const unsigned int _Value)
+{
+	Write(&_Value, sizeof(unsigned int));
+}
+
+void GameEngineSerializer::operator<<(const uint64_t& _Value)
+{
+	Write(&_Value, sizeof(uint64_t));
+}
+
+void GameEngineSerializer::operator<<(const float4& _Value)
+{
+	Write(&_Value, sizeof(float4));
+}
+
+void GameEngineSerializer::operator<<(const float4x4& _Value)
+{
+	Write(&_Value, sizeof(float4x4));
 }
 
 
-void GameEngineSerializer::Write(const void* _Ptr, size_t _Size)
+
+void GameEngineSerializer::operator>>(std::string& _Value)
 {
-	//  1024             1023   + 4
-	if (Datas.size() <= Offset + _Size)
+	int Size;
+	operator>>(Size);
+	if (0 >= Size)
 	{
-		Datas.resize(Datas.size() + 1024);
+		return;
 	}
-
-	//       여기에 복사해라   복사할 위치의 여유크기는
-	memcpy_s(&Datas[Offset], Datas.size() - Offset, _Ptr, _Size);
-
-	Offset += _Size;
+	_Value.resize(Size);
+	Read(&_Value[0], Size);
 }
 
-
-void GameEngineSerializer::Read(int& _Value)
+void GameEngineSerializer::operator>>(int& _Value)
 {
 	Read(&_Value, sizeof(int));
 }
 
-void GameEngineSerializer::Read(std::string& _Value)
+void GameEngineSerializer::operator>>(unsigned int& _Value)
 {
-	int Size = 0;
-	Read(&Size, sizeof(int));
-	_Value.clear();
-	_Value.resize(Size);
-	Read(_Value.data(), Size);
+	Read(&_Value, sizeof(unsigned int));
 }
 
-void GameEngineSerializer::Read(void* _Ptr, size_t _Size)
+void GameEngineSerializer::operator>>(float& _Value)
 {
-	//  1024             1023   + 4
-	if (Datas.size() < Offset + _Size)
-	{
-		MsgAssert("데이터의 한도이상으로 읽으려고 했습니다.");
-	}
-
-	memcpy_s(_Ptr, _Size, &Datas[Offset], _Size);
-
-	Offset += _Size;
+	Read(&_Value, sizeof(float));
 }
 
-std::string GameEngineSerializer::GetString()
+void GameEngineSerializer::operator>>(bool& _Value)
 {
-	std::string AllString;
+	Read(&_Value, sizeof(bool));
+}
 
-	AllString.resize(Datas.size());
+void GameEngineSerializer::operator>>(float4& _Value)
+{
+	Read(&_Value, sizeof(float4));
+}
 
-	memcpy_s(&AllString[0], Datas.size(), &Datas[0], Datas.size());
+void GameEngineSerializer::operator>>(float4x4& _Value)
+{
+	Read(&_Value, sizeof(float4x4));
+}
 
-	return AllString;
+void GameEngineSerializer::operator>>(uint64_t& _Value)
+{
+	Read(&_Value, sizeof(uint64_t));
+}
+
+void GameEngineSerializer::ClearReadData()
+{
+	memcpy_s(&Data[0], WriteOffset, &Data[ReadOffset], WriteOffset - ReadOffset);
+	WriteOffset -= ReadOffset;
+	ReadOffset = 0;
 }

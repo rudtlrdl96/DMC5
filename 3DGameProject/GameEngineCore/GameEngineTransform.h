@@ -84,14 +84,14 @@ struct TransformData
 public:
 	TransformData()
 	{
-		Scale = float4::One;
-		Rotation = float4::Null;
-		Quaternion = float4::Null;
-		Position = float4::Zero;
-		//WorldScale = float4::One;
-		//WorldRotation = float4::Null;
-		//WorldQuaternion = float4::Null;
-		//WorldPosition = float4::Zero;
+		Scale = float4::ONE;
+		Rotation = float4::ZERONULL;
+		Quaternion = float4::ZERONULL;
+		Position = float4::ZERO;
+		//WorldScale = float4::ONE;
+		//WorldRotation = float4::ZERONULL;
+		//WorldQuaternion = float4::ZERONULL;
+		//WorldPosition = float4::ZERO;
 	}
 };
 

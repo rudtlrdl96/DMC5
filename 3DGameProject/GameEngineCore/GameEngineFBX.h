@@ -36,11 +36,17 @@ public:
 	GameEngineFBX& operator=(const GameEngineFBX& _Other) = delete;
 	GameEngineFBX& operator=(GameEngineFBX&& _Other) noexcept = delete;
 
+	float4x4 FbxMatTofloat4x4(const fbxsdk::FbxAMatrix& _BaseTrans);
+	fbxsdk::FbxAMatrix float4x4ToFbxAMatrix(const float4x4& _MATRIX);
+	float4 FbxVecTofloat4(const fbxsdk::FbxVector4& _BaseVector);
+	float4 FbxVecToTransform(const fbxsdk::FbxVector4& _BaseVector);
+	float4 FbxQuaternionTofloat4(const fbxsdk::FbxQuaternion& _BaseVector);
+
 protected:
 	void FBXInit(std::string _Path);
+	void FBXConvertScene();
 	bool FBXSystemInitialize(std::string _Path);
 
-private:
 	fbxsdk::FbxManager* Manager = nullptr;
 
 	fbxsdk::FbxIOSettings* IOSetting = nullptr;
@@ -51,5 +57,7 @@ private:
 	fbxsdk::FbxAMatrix ConvertMatrix;
 	fbxsdk::FbxAMatrix JointMatrix;
 	fbxsdk::FbxVector4 AxisVector;
+
+private:
 };
 

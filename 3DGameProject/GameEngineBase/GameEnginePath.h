@@ -24,6 +24,9 @@ public:
 	GameEnginePath& operator=(const GameEnginePath& _Other) = delete;
 	GameEnginePath& operator=(GameEnginePath&& _Other) noexcept = delete;
 
+	static std::string GetFileName(const std::string_view& _Path);
+	static std::string GetFolderPath(const std::string_view& _Path);
+
 	std::string GetFileName() const;
 	std::string GetFullPath() const;
 	std::string GetExtension() const;

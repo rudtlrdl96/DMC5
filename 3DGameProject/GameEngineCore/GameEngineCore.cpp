@@ -1,6 +1,5 @@
 #include "PrecompileHeader.h"
 #include "GameEngineCore.h"
-
 #include <GameEngineBase\GameEngineDebug.h>
 #include <GameEngineBase\GameEngineThread.h>
 #include <GameEnginePlatform\GameEngineInput.h>
@@ -8,11 +7,9 @@
 #include <GameEnginePlatform\GameEngineSound.h>
 #include <GameEnginePlatform\GameEngineInput.h>
 #include <GameEngineBase\GameEngineTime.h>
-
 #include "GameEngineDevice.h"
 #include "GameEngineVideo.h"
 #include "GameEngineGUI.h"
-#include "GameEnginePhysics.h"
 
 GameEngineThreadJobQueue GameEngineCore::JobQueue;
 
@@ -22,57 +19,49 @@ std::shared_ptr<GameEngineLevel> GameEngineCore::NextLevel = nullptr;
 
 std::shared_ptr<class GameEngineLevel> GameEngineCore::CurLoadLevel;
 
-GameEngineCore::GameEngineCore() 
+GameEngineCore::GameEngineCore()
 {
 }
 
-GameEngineCore::~GameEngineCore() 
+GameEngineCore::~GameEngineCore()
 {
 }
 
-// App 시작 시 최초 진입 함수, functional을 통해 binding된 함수 호출
-void GameEngineCore::Start(HINSTANCE _instance, std::function<void()> _Start, std::function<void()> _End, float4 _Pos, float4 _Size)
+void GameEngineCore::Release()
 {
-	// GameEngineBase의 GameEngineDebug에서 LeakCheck 함수 호출
-	GameEngineDebug::LeakCheck();
-
-	// Window 생성
-	GameEngineWindow::WindowCreate(_instance, "DirectX3D", _Size, _Pos);
-	GameEngineWindow::WindowLoop(std::bind(GameEngineCore::EngineStart, _Start), GameEngineCore::EngineUpdate, std::bind(GameEngineCore::EngineEnd, _End));
+	NextLevel = nullptr;
+	MainLevel = nullptr;
+	CurLoadLevel = nullptr;
+	LevelMap.clear();
 }
 
-// 윈도우 생성 후 Direct, GUI 최초 설정하는 위치
 void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 {
-	// 기본 키설정 선언
-	{
-		if (false == GameEngineInput::IsKey("EngineMouseLeft"))
-		{
-			GameEngineInput::CreateKey("EngineMouseLeft", VK_LBUTTON);
-			GameEngineInput::CreateKey("EngineMouseRight", VK_RBUTTON);
-		}
+	// 코어이니셜라이즈
+	// Rect Box
 
-		if (false == GameEngineInput::IsKey("GUISwitch"))
-		{
-			GameEngineInput::CreateKey("GUISwitch", VK_F8);
-		}
+	if (false == GameEngineInput::IsKey("GUISwitch"))
+	{
+		GameEngineInput::CreateKey("GUISwitch", VK_F8);
 	}
 
-	JobQueue.Initialize("EngineJobQueue"); // CPU 갯수에 맞춰 스레드 생성
-	GameEngineDevice::Initialize();        // DirectX 11 설정
-	CoreResourcesInit();                   // Direct 리소스 설정
-	GameEngineGUI::Initialize();           // IMGUI 설정
-	//GameEnginePhysics::Initialize();      
+
+	JobQueue.Initialize("EngineJobQueue");
+
+	GameEngineDevice::Initialize();
+
+	CoreResourcesInit();
+
+	GameEngineGUI::Initialize();
 
 	if (nullptr == _ContentsStart)
 	{
 		MsgAssert("시작 컨텐츠가 존재하지 않습니다.");
 	}
-
 	_ContentsStart();
 }
 
-void GameEngineCore::EngineUpdate() 
+void GameEngineCore::EngineUpdate()
 {
 	if (nullptr != NextLevel)
 	{
@@ -161,12 +150,28 @@ void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)
 
 	LevelMap.clear();
 	CoreResourcesEnd();
+	Release();
 
 	GameEngineDevice::Release();
 	GameEngineWindow::Release();
+
 }
 
-void GameEngineCore::ChangeLevel(const std::string_view& _Name) 
+void GameEngineCore::Start(HINSTANCE _instance, std::function<void()> _Start, std::function<void()> _End, float4 _Pos, float4 _Size)
+{
+	GameEngineDebug::LeakCheck();
+
+	if (false == GameEngineInput::IsKey("EngineMouseLeft"))
+	{
+		GameEngineInput::CreateKey("EngineMouseLeft", VK_LBUTTON);
+		GameEngineInput::CreateKey("EngineMouseRight", VK_RBUTTON);
+	}
+
+	GameEngineWindow::WindowCreate(_instance, "MainWindow", _Size, _Pos);
+	GameEngineWindow::WindowLoop(std::bind(GameEngineCore::EngineStart, _Start), GameEngineCore::EngineUpdate, std::bind(GameEngineCore::EngineEnd, _End));
+}
+
+void GameEngineCore::ChangeLevel(const std::string_view& _Name)
 {
 	std::string UpperName = GameEngineString::ToUpper(_Name);
 
@@ -179,7 +184,7 @@ void GameEngineCore::ChangeLevel(const std::string_view& _Name)
 	NextLevel = LevelMap[UpperName];
 }
 
-void GameEngineCore::LevelInit(std::shared_ptr<GameEngineLevel> _Level) 
+void GameEngineCore::LevelInit(std::shared_ptr<GameEngineLevel> _Level)
 {
 	CurLoadLevel = _Level;
 	_Level->Level = _Level.get();

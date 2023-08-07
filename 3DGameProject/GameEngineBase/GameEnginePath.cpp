@@ -4,7 +4,7 @@
 #include <io.h>
 #include <GameEngineBase/GameEngineDebug.h>
 
-GameEnginePath::GameEnginePath() 
+GameEnginePath::GameEnginePath()
 	: Path(std::filesystem::current_path())
 {
 }
@@ -26,7 +26,7 @@ GameEnginePath::GameEnginePath(GameEnginePath&& _Other)
 
 }
 
-GameEnginePath::~GameEnginePath() 
+GameEnginePath::~GameEnginePath()
 {
 }
 
@@ -34,6 +34,23 @@ GameEnginePath::GameEnginePath(const GameEnginePath& _Other)
 	: Path(_Other.Path)
 {
 
+}
+
+std::string GameEnginePath::GetFileName(const std::string_view& _Path)
+{
+	std::filesystem::path NewPath = _Path;
+
+	return NewPath.filename().string();
+}
+
+
+std::string GameEnginePath::GetFolderPath(const std::string_view& _Path)
+{
+	std::string FileName = GetFileName(_Path);
+	std::string FullPath = _Path.data();
+
+	FullPath = FullPath.replace(FullPath.size() - FileName.size(), FileName.size(), "");
+	return FullPath;
 }
 
 std::string GameEnginePath::GetFileName() const
@@ -52,7 +69,7 @@ std::string GameEnginePath::GetFullPath() const
 	return Path.string();
 }
 
-void GameEnginePath::MoveParent() 
+void GameEnginePath::MoveParent()
 {
 	Path = Path.parent_path();
 }
@@ -65,7 +82,7 @@ void GameEnginePath::MoveParentToChildPath(const std::string_view& _String)
 		{
 			return;
 		}
-		
+
 		MoveParent();
 	}
 

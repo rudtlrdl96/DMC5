@@ -43,7 +43,7 @@ private:
 
 
 	float FontScale = 10.0f;
-	float4 FontColor = float4::Red;
+	float4 FontColor = float4::RED;
 	std::string Text;
 	std::shared_ptr<GameEngineFont> Font;
 

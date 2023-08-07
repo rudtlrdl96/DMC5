@@ -26,7 +26,7 @@ public:
 	GameEngineResource& operator=(const GameEngineResource& _Other) = delete;
 	GameEngineResource& operator=(GameEngineResource&& _Other) noexcept = delete;
 
-	std::string_view GetPath() 
+	std::string_view GetPath()
 	{
 		return Path.c_str();
 	}
@@ -36,7 +36,7 @@ public:
 		Path = _Value;
 	}
 
-	static std::shared_ptr<ResourcesType> Find(const std::string_view& _Name) 
+	static std::shared_ptr<ResourcesType> Find(const std::string_view& _Name)
 	{
 		std::string UpperName = GameEngineString::ToUpper(_Name);
 
@@ -60,7 +60,7 @@ public:
 
 
 protected:
-	static std::shared_ptr<ResourcesType> CreateUnNamed() 
+	static std::shared_ptr<ResourcesType> CreateUnNamed()
 	{
 		std::shared_ptr<ResourcesType> NewRes = std::make_shared<ResourcesType>();
 		std::lock_guard<std::mutex> Lock(UnNamedLock);
@@ -91,8 +91,9 @@ protected:
 	}
 
 
-private:
 	std::string Path;
+
+private:
 
 	static std::map<std::string, std::shared_ptr<ResourcesType>> NamedResources;
 	static std::mutex NameLock;

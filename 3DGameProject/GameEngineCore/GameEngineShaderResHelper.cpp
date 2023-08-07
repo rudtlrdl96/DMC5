@@ -4,7 +4,7 @@
 #include "GameEngineConstantBuffer.h"
 
 
-void GameEngineShaderResHelper::Copy(const GameEngineShaderResHelper& _ResHelper) 
+void GameEngineShaderResHelper::Copy(const GameEngineShaderResHelper& _ResHelper)
 {
 	for (const std::pair<std::string, GameEngineConstantBufferSetter>& Setter : _ResHelper.ConstantBufferSetters)
 	{
@@ -23,7 +23,7 @@ void GameEngineShaderResHelper::Copy(const GameEngineShaderResHelper& _ResHelper
 
 }
 
-void GameEngineConstantBufferSetter::Setting() 
+void GameEngineConstantBufferSetter::Setting()
 {
 	Res->ChangeData(CPUData, CPUDataSize);
 
@@ -134,7 +134,7 @@ void GameEngineSamplerSetter::Setting()
 }
 
 
-void GameEngineShaderResHelper::Setting() 
+void GameEngineShaderResHelper::Setting()
 {
 	{
 		std::multimap<std::string, GameEngineConstantBufferSetter>::iterator StartIter = ConstantBufferSetters.begin();
@@ -177,7 +177,7 @@ void GameEngineShaderResHelper::SetConstantBufferLink(const std::string_view& _N
 	std::string UpperName = GameEngineString::ToUpper(_Name);
 
 	std::multimap<std::string, GameEngineConstantBufferSetter>::iterator FindIter = ConstantBufferSetters.find(UpperName);
-	
+
 	if (ConstantBufferSetters.end() == FindIter)
 	{
 		MsgAssert("존재하지 않는 상수버퍼를 세팅하려고 했습니다." + UpperName);
@@ -196,7 +196,7 @@ void GameEngineShaderResHelper::SetConstantBufferLink(const std::string_view& _N
 			MsgAssert("상수버퍼와 세팅하려는 데이터의 크기가 다릅니다. 상수버퍼 : " + std::to_string(Setter.Res->GetBufferSize()) + "유저가 세팅한 데이터" + std::to_string(_Size) + UpperName);
 			return;
 		}
-		
+
 		Setter.CPUData = _Data;
 		Setter.CPUDataSize = _Size;
 	}
@@ -314,4 +314,30 @@ void GameEngineShaderResHelper::AllResourcesReset()
 			Setter.Reset();
 		}
 	}
+}
+
+bool GameEngineShaderResHelper::IsConstantBuffer(const std::string_view& _Name)
+{
+	std::string UpperName = GameEngineString::ToUpper(_Name);
+
+	std::multimap<std::string, GameEngineConstantBufferSetter>::iterator FindIter = ConstantBufferSetters.find(UpperName);
+
+	if (ConstantBufferSetters.end() == FindIter)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool GameEngineShaderResHelper::IsTexture(const std::string& _Name)
+{
+	std::string Key = GameEngineString::ToUpper(_Name);
+
+	if (TextureSetters.end() != TextureSetters.find(Key))
+	{
+		return true;
+	}
+
+	return false;
 }

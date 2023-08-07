@@ -63,26 +63,14 @@ public:
 		SamplerSetters.insert(std::make_pair(_Setter.Name, _Setter));
 	}
 
-
-
 	void CreateConstantBufferSetter(const GameEngineConstantBufferSetter& _Setter)
 	{
 		ConstantBufferSetters.insert(std::make_pair(_Setter.Name, _Setter));
 	}
 
-	bool IsConstantBuffer(const std::string_view& _Name)
-	{
-		std::string UpperName = GameEngineString::ToUpper(_Name);
+	bool IsConstantBuffer(const std::string_view& _Name);
 
-		std::multimap<std::string, GameEngineConstantBufferSetter>::iterator FindIter = ConstantBufferSetters.find(UpperName);
-
-		if (ConstantBufferSetters.end() == FindIter)
-		{
-			return false;
-		}
-
-		return true;
-	}
+	bool IsTexture(const std::string& _Name);
 
 	template<typename DataType>
 	void SetConstantBufferLink(const std::string_view& _Name, const DataType& _Data)

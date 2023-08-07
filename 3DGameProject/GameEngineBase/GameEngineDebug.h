@@ -8,6 +8,9 @@ namespace GameEngineDebug
 {
 	void LeakCheck();
 	void LeakPointBreak(int _Point);
+
+	void OutPutString(const std::string& _Text);
+
 };
 
 

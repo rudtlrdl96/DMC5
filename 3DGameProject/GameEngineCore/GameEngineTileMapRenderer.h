@@ -33,7 +33,7 @@ public:
 
 	ColorOption ColorOptionValue;
 
-	void CreateTileMap(int _X, int _Y, float _ZPos, const float4& _TileSize, const float4& _RenderSize = float4::Zero, TileMapMode Mode = TileMapMode::Rect);
+	void CreateTileMap(int _X, int _Y, float _ZPos, const float4& _TileSize, const float4& _RenderSize = float4::ZERO, TileMapMode Mode = TileMapMode::Rect);
 
 	void Clear();
 

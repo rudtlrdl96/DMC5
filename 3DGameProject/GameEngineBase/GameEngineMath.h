@@ -35,23 +35,55 @@ private:
 class float4
 {
 public:
-	static const float4 Left;
-	static const float4 Right;
-	static const float4 Up;
-	static const float4 Down;
-	static const float4 Forward;
-	static const float4 Back;
-	static const float4 One;
-	static const float4 Zero;
-	static const float4 Null;
+	static const float4 LEFT;
+	static const float4 RIGHT;
+	static const float4 UP;
+	static const float4 DOWN;
+	static const float4 FORWARD;
+	static const float4 BACK;
+	static const float4 ONE;
+	static const float4 ZERO;
+	static const float4 ZERONULL;
 
-	static const float4 Red;
-	static const float4 Blue;
-	static const float4 Green;
-	static const float4 White;
-	static const float4 Black;
+	static const float4 RED;
+	static const float4 BLUE;
+	static const float4 GREEN;
+	static const float4 WHITE;
+	static const float4 BLACK;
 
-	static float4 GetSafeScaleReciprocal(const float4& _InScale, float _Tolerance) 
+	static float4 MatrixToQuaternion(const class float4x4& M);
+
+
+	static float InvSqrt(float f)
+	{
+		const __m128 fOneHalf = _mm_set_ss(0.5f);
+		__m128 Y0, X0, X1, X2, FOver2;
+		float temp;
+
+		Y0 = _mm_set_ss(f);
+		X0 = _mm_rsqrt_ss(Y0);	// 1/sqrt estimate (12 bits)
+		FOver2 = _mm_mul_ss(Y0, fOneHalf);
+
+		// 1st Newton-Raphson iteration
+		X1 = _mm_mul_ss(X0, X0);
+		X1 = _mm_sub_ss(fOneHalf, _mm_mul_ss(FOver2, X1));
+		X1 = _mm_add_ss(X0, _mm_mul_ss(X0, X1));
+
+		// 2nd Newton-Raphson iteration
+		X2 = _mm_mul_ss(X1, X1);
+		X2 = _mm_sub_ss(fOneHalf, _mm_mul_ss(FOver2, X2));
+		X2 = _mm_add_ss(X1, _mm_mul_ss(X1, X2));
+
+		_mm_store_ss(&temp, X2);
+		return temp;
+	}
+
+	bool IsNearlyZero() const
+	{
+		return fabsf(x) <= 1.e-4f && fabsf(y) <= 1.e-4f && fabsf(z) <= 1.e-4f;
+	}
+
+	static float4 GetSafeScaleReciprocal(const float4& _InScale, float _Tolerance)
 	{
 		float4 SafeReciprocalScale;
 
@@ -96,7 +128,7 @@ public:
 		return float4(cosf(_Rad), sinf(_Rad), 0.0f, 1.0f);
 	}
 
-	static float GetAngleVectorToVectorDeg(const float4& _Left, const float4& _Right) 
+	static float GetAngleVectorToVectorDeg(const float4& _Left, const float4& _Right)
 	{
 		return GetAngleVectorToVectorRad(_Left, _Right) * GameEngineMath::RadToDeg;
 	}
@@ -194,7 +226,7 @@ public:
 		};
 
 		float Arr1D[4];
-		
+
 
 		// 윈도우 지원 수학연산 가속(SIMD연산)을 사용하기 위한 다이렉트가 제공해주는 벡터
 		// 32비트에서는 simd연산을 사용할수 없다.
@@ -260,17 +292,17 @@ public:
 		return static_cast<int>(x);
 	}
 
-	int iy() const 
+	int iy() const
 	{
 		return static_cast<int>(y);
 	}
 
-	int iz() const 
+	int iz() const
 	{
 		return static_cast<int>(z);
 	}
 
-	int iw() const 
+	int iw() const
 	{
 		return static_cast<int>(w);
 	}
@@ -357,7 +389,7 @@ public:
 		return static_cast<unsigned int>(w * 0.5f);
 	}
 
-	float GetAnagleDegZ() 
+	float GetAnagleDegZ()
 	{
 		return GetAnagleRadZ() * GameEngineMath::RadToDeg;
 	}
@@ -425,7 +457,7 @@ public:
 		AngleCheck.Normalize();
 		// functon(1) == 50; 1을 50으로 바꾸는 함수
 		// afuncton(50) == 1; 50이 1로 바꿔주는 함수라고도 할수 있지만 functon에 들어갔던 인자값을 알아내는 함수라고도 할수 있죠? <= 역함수
-		
+
 		// cosf(각도);
 
 		float Result = acosf(AngleCheck.x);
@@ -438,14 +470,14 @@ public:
 
 	}
 
-	POINT ToWindowPOINT() 
+	POINT ToWindowPOINT()
 	{
 		return POINT(ix(), iy());
 	}
 
 	float4 half() const
 	{
-		return {x * 0.5f,y * 0.5f,z * 0.5f,w};
+		return { x * 0.5f,y * 0.5f,z * 0.5f,w };
 	}
 
 	bool IsZero() const
@@ -456,12 +488,12 @@ public:
 	float Size() const
 	{
 		// 완벽
-		return sqrtf(x * x + y * y+ z * z);
+		return sqrtf(x * x + y * y + z * z);
 	}
 
 	// 2, 0
 	// 0, 2
-	void Normalize() 
+	void Normalize()
 	{
 		DirectVector = DirectX::XMVector3Normalize(*this);
 
@@ -509,7 +541,7 @@ public:
 
 	float4 operator *(const float _Value) const
 	{
-		return DirectX::XMVectorMultiply(*this, float4{ _Value , _Value , _Value , 1.0f});
+		return DirectX::XMVectorMultiply(*this, float4{ _Value , _Value , _Value , 1.0f });
 		//float4 Return;
 		//Return.x = x * _Value;
 		//Return.y = y * _Value;
@@ -577,10 +609,10 @@ public:
 
 	float4 operator -() const
 	{
-		return {-x, -y, -z, w};
+		return { -x, -y, -z, w };
 	}
 
-	float4& operator +=(const float4& _Other) 
+	float4& operator +=(const float4& _Other)
 	{
 		*this = *this + _Other;
 		return *this;
@@ -635,7 +667,7 @@ public:
 	float4 operator*(const class float4x4& _Other);
 	float4& operator*=(const class float4x4& _Other);
 
-	std::string ToString() 
+	std::string ToString()
 	{
 		char ArrReturn[256];
 
@@ -671,7 +703,7 @@ public:
 
 	float4 LeftTop() const
 	{
-		return float4{Left(), Top()};
+		return float4{ Left(), Top() };
 	}
 	float4 RightTop() const
 	{
@@ -726,10 +758,101 @@ public:
 		};
 	};
 
+	static float4x4 Transformation(float4 _Scale, float4 _RotQ, float4 _Pos)
+	{
+		return DirectX::XMMatrixTransformation(float4::ZERO.DirectVector, float4::ZERO.DirectVector, _Scale.DirectVector, float4::ZERO.DirectVector, _RotQ.DirectVector, _Pos.DirectVector);
+	}
+
+	float4 ExtractScaling()
+	{
+		float4 ret = float4::ZERO;
+
+		float Tolerance = 1.e-8f;
+
+		const float SquareSum0 = (Arr2D[0][0] * Arr2D[0][0]) + (Arr2D[0][1] * Arr2D[0][1]) + (Arr2D[0][2] * Arr2D[0][2]);
+		const float SquareSum1 = (Arr2D[1][0] * Arr2D[1][0]) + (Arr2D[1][1] * Arr2D[1][1]) + (Arr2D[1][2] * Arr2D[1][2]);
+		const float SquareSum2 = (Arr2D[2][0] * Arr2D[2][0]) + (Arr2D[2][1] * Arr2D[2][1]) + (Arr2D[2][2] * Arr2D[2][2]);
+
+		if (SquareSum0 > Tolerance)
+		{
+			float Scale0 = sqrtf(SquareSum0);
+			ret.x = Scale0;
+			float InvScale0 = 1.f / Scale0;
+			Arr2D[0][0] *= InvScale0;
+			Arr2D[0][1] *= InvScale0;
+			Arr2D[0][2] *= InvScale0;
+		}
+		else
+		{
+			ret.x = 0;
+		}
+
+		if (SquareSum1 > Tolerance)
+		{
+			float Scale1 = sqrtf(SquareSum1);
+			ret.y = Scale1;
+			float InvScale1 = 1.f / Scale1;
+			Arr2D[1][0] *= InvScale1;
+			Arr2D[1][1] *= InvScale1;
+			Arr2D[1][2] *= InvScale1;
+		}
+		else
+		{
+			ret.y = 0;
+		}
+
+		if (SquareSum2 > Tolerance)
+		{
+			float Scale2 = sqrtf(SquareSum2);
+			ret.z = Scale2;
+			float InvScale2 = 1.f / Scale2;
+			Arr2D[2][0] *= InvScale2;
+			Arr2D[2][1] *= InvScale2;
+			Arr2D[2][2] *= InvScale2;
+		}
+		else
+		{
+			ret.z = 0;
+		}
+
+		return ret;
+	}
+
+
+
+	inline float Determinant() const
+	{
+		return	Arr2D[0][0] * (
+			Arr2D[1][1] * (Arr2D[2][2] * Arr2D[3][3] - Arr2D[2][3] * Arr2D[3][2]) -
+			Arr2D[2][1] * (Arr2D[1][2] * Arr2D[3][3] - Arr2D[1][3] * Arr2D[3][2]) +
+			Arr2D[3][1] * (Arr2D[1][2] * Arr2D[2][3] - Arr2D[1][3] * Arr2D[2][2])
+			) -
+			Arr2D[1][0] * (
+				Arr2D[0][1] * (Arr2D[2][2] * Arr2D[3][3] - Arr2D[2][3] * Arr2D[3][2]) -
+				Arr2D[2][1] * (Arr2D[0][2] * Arr2D[3][3] - Arr2D[0][3] * Arr2D[3][2]) +
+				Arr2D[3][1] * (Arr2D[0][2] * Arr2D[2][3] - Arr2D[0][3] * Arr2D[2][2])
+				) +
+			Arr2D[2][0] * (
+				Arr2D[0][1] * (Arr2D[1][2] * Arr2D[3][3] - Arr2D[1][3] * Arr2D[3][2]) -
+				Arr2D[1][1] * (Arr2D[0][2] * Arr2D[3][3] - Arr2D[0][3] * Arr2D[3][2]) +
+				Arr2D[3][1] * (Arr2D[0][2] * Arr2D[1][3] - Arr2D[0][3] * Arr2D[1][2])
+				) -
+			Arr2D[3][0] * (
+				Arr2D[0][1] * (Arr2D[1][2] * Arr2D[2][3] - Arr2D[1][3] * Arr2D[2][2]) -
+				Arr2D[1][1] * (Arr2D[0][2] * Arr2D[2][3] - Arr2D[0][3] * Arr2D[2][2]) +
+				Arr2D[2][1] * (Arr2D[0][2] * Arr2D[1][3] - Arr2D[0][3] * Arr2D[1][2])
+				);
+	}
+
+	static float4x4 Affine(float4 _Scale, float4 _Rot, float4 _Pos)
+	{
+		// _Rot.DirectVector 쿼터니온 입니다.
+		return DirectX::XMMatrixAffineTransformation(_Scale.DirectVector, float4::ZERO.DirectVector, _Rot.DirectVector, _Pos.DirectVector);
+	}
 
 	void Identity()
 	{
-		
+
 		DirectMatrix = DirectX::XMMatrixIdentity();
 
 		/*memset(Arr1D, 0, sizeof(float) * 16);
@@ -869,7 +992,7 @@ public:
 	}
 
 	// 전치 행렬이라고 부르는행려
-	void Transpose() 
+	void Transpose()
 	{
 		// 0   , 0, -1
 		// 100 , 1,  0
@@ -940,7 +1063,7 @@ public:
 		//Arr2D[3][2] = _Value.z;
 	}
 
-	void RotationDegToXYZ(const float4& _Deg) 
+	void RotationDegToXYZ(const float4& _Deg)
 	{
 		float4 Rot = _Deg * GameEngineMath::DegToRad;
 
@@ -971,7 +1094,7 @@ public:
 
 		// *this = RotX * RotY * RotZ;
 
-		float4 Rot = _Deg* GameEngineMath::DegToRad;
+		float4 Rot = _Deg * GameEngineMath::DegToRad;
 
 		// DirectX::XMQuaternionRotationMatrix()
 
@@ -1031,7 +1154,7 @@ public:
 		//Arr2D[1][1] = cosf(_Rad);
 	}
 
-	
+
 	float4x4 operator*(const float4x4& _Other)
 	{
 		//  0   0   0   0			   		  0   0   0   0	    0   0   0   0
@@ -1059,7 +1182,7 @@ public:
 		return Return;
 	}
 
-	float4x4& operator*=(const float4x4& _Other) 
+	float4x4& operator*=(const float4x4& _Other)
 	{
 		// *this = *this * _Other;
 
@@ -1069,7 +1192,7 @@ public:
 	}
 
 	// w 가 0인 곱하기
-	float4 TransformNormal(const float4& _Value) 
+	float4 TransformNormal(const float4& _Value)
 	{
 		return DirectX::XMVector3TransformNormal(_Value, *this);
 	}
@@ -1094,7 +1217,7 @@ public:
 	float4x4(DirectX::FXMMATRIX _DirectMatrix)
 		: DirectMatrix(_DirectMatrix)
 	{
-		
+
 	}
 
 	float4x4(float4 _x, float4 _y, float4 _z, float4 _w)

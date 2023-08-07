@@ -178,6 +178,12 @@
     <ClInclude Include="GameEnginePhysics.h">
       <Filter>Physics</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineStructuredBuffer.h">
+      <Filter>Resources\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineFBXRenderer.h">
+      <Filter>Object\Rendering\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -346,6 +352,12 @@
     </ClCompile>
     <ClCompile Include="GameEnginePhysics.cpp">
       <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineStructuredBuffer.cpp">
+      <Filter>Resources\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineFBXRenderer.cpp">
+      <Filter>Object\Rendering\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

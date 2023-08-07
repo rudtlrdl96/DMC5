@@ -1,6 +1,8 @@
 #include "PrecompileHeader.h"
 #include "MainLevel.h"
 
+#include "Player.h"
+
 MainLevel::MainLevel() 
 {
 }
@@ -25,7 +27,9 @@ void MainLevel::Start()
 		GameEngineInput::CreateKey("ReturnToMainLevel", '0');
 	}
 
-	GetCamera(0)->SetProjectionType(CameraType::Orthogonal);
+	GetMainCamera()->SetProjectionType(CameraType::Perspective);
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -500.0f });
+	CreateActor<Player>();
 }
 
 void MainLevel::Update(float _DeltaTime)

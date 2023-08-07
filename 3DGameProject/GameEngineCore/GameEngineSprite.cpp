@@ -60,7 +60,7 @@ void GameEngineSprite::ResLoadSheet(const std::string_view& _Path, size_t _X, si
 
 	float4 UVScale = { 1.0f/ static_cast<float>(_X), 1.0f / static_cast<float>(_Y) };
 
-	float4 Start = float4::Zero;
+	float4 Start = float4::ZERO;
 
 	// 2 2
 

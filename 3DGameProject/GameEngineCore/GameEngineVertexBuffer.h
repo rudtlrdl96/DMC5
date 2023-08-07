@@ -20,12 +20,23 @@ public:
 	GameEngineVertexBuffer& operator=(GameEngineVertexBuffer&& _Other) noexcept = delete;
 
 	template<typename VertexType>
-	static void Create(const std::string_view& _Name, const std::vector<VertexType>& _Vertexs)
+	static std::shared_ptr<GameEngineVertexBuffer> Create(const std::string_view& _Name, const std::vector<VertexType>& _Vertexs)
 	{
 		std::shared_ptr<GameEngineVertexBuffer> Res = GameEngineResource::Create(_Name);
 		Res->LayOutInfo = &VertexType::LayOut;
 		Res->ResCreate(&_Vertexs[0], sizeof(VertexType), static_cast<UINT>(_Vertexs.size()));
+		return Res;
 	}
+
+	template<typename VertexType>
+	static std::shared_ptr<GameEngineVertexBuffer> Create(const std::vector<VertexType>& _Vertexs)
+	{
+		std::shared_ptr<GameEngineVertexBuffer> Res = GameEngineResource::CreateUnNamed();
+		Res->LayOutInfo = &VertexType::LayOut;
+		Res->ResCreate(&_Vertexs[0], sizeof(VertexType), static_cast<UINT>(_Vertexs.size()));
+		return Res;
+	}
+
 
 	void Setting() override;
 
@@ -36,7 +47,7 @@ private:
 
 	void ResCreate(const void* _Data, UINT _VertexSize, UINT _VertexCount);
 	UINT Offset = 0;
-	UINT VertexSize = 0; 
+	UINT VertexSize = 0;
 	UINT VertexCount = 0;
 };
 

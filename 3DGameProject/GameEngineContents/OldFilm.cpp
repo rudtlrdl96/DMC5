@@ -1,11 +1,11 @@
 #include "PrecompileHeader.h"
 #include "OldFilm.h"
 
-OldFilm::OldFilm() 
+OldFilm::OldFilm()
 {
 }
 
-OldFilm::~OldFilm() 
+OldFilm::~OldFilm()
 {
 }
 
@@ -31,7 +31,7 @@ void OldFilm::Start(GameEngineRenderTarget* _Target)
 	OldUnit->ShaderResHelper.SetConstantBufferLink("OldFilmData", OldData);
 
 
-	ResultTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::Null);
+	ResultTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 }
 
 void OldFilm::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)

@@ -2,31 +2,34 @@
 #include "GameEngineComponent.h"
 #include "GameEngineShader.h"
 
-class GameEngineRenderUnit 
+class GameEngineRenderUnit
 	: std::enable_shared_from_this<GameEngineRenderUnit>
 {
 public:
-	GameEngineRenderUnit();
-
-public:
-	std::shared_ptr<class GameEngineInputLayOut> InputLayOutPtr;
-	std::shared_ptr<class GameEngineMesh> Mesh;
-	std::shared_ptr<class GameEngineRenderingPipeLine> Pipe;
 	GameEngineShaderResHelper ShaderResHelper;
+	std::shared_ptr<class GameEngineRenderingPipeLine> Pipe;
 
-	// 
-
-public:
+	GameEngineRenderUnit();
 	void SetMesh(const std::string_view& _Name);
+	void SetMesh(std::shared_ptr<class GameEngineMesh> _Mesh);
 	void SetPipeLine(const std::string_view& _Name);
 	void Render(float _DeltaTime);
+	void SetRenderer(GameEngineRenderer* _Renderer);
+
+private:
+	GameEngineRenderer* ParentRenderer = nullptr;
+	std::shared_ptr<class GameEngineInputLayOut> InputLayOutPtr;
+	std::shared_ptr<class GameEngineMesh> Mesh;
 };
 
 
-class RenderBaseValue 
+class RenderBaseValue
 {
 public:
-	float4 Time;
+	float DeltaTime = 0.0f;
+	float SumDeltaTime = 0.0f;
+	int IsAnimation = 0;
+	int IsNormal = 0;
 	float4 ScreenScale;
 	float4 Mouse;
 };
@@ -35,6 +38,7 @@ public:
 class GameEngineRenderer : public GameEngineComponent
 {
 	friend class GameEngineCamera;
+	friend class GameEngineRenderUnit;
 
 public:
 	// constrcuter destructer
@@ -53,27 +57,30 @@ public:
 	// 어떤 샘플러 어떤 상수버퍼를 사용했는지를 알아야 한다.
 	void SetPipeLine(const std::string_view& _Name, int _index = 0);
 
-	void SetMesh(const std::string_view& _Name, int _index = 0);
+	// void SetMesh(const std::string_view& _Name, int _index = 0);
+
+	// 랜더유니트를 만든다.
+	std::shared_ptr<GameEngineRenderUnit> CreateRenderUnit();
 
 	// 여기서 리턴된 파이프라인을 수정하면 이 파이프라인을 사용하는 모든 애들이 바뀌게 된다.
 	std::shared_ptr<GameEngineRenderingPipeLine> GetPipeLine(int _index = 0);
 
 	// 이걸 사용하게되면 이 랜더러의 유니트는 자신만의 클론 파이프라인을 가지게 된다.
-	std::shared_ptr<GameEngineRenderingPipeLine> GetPipeLineClone(int _index = 0);
+	// std::shared_ptr<GameEngineRenderingPipeLine> GetPipeLineClone(int _index = 0);
 
-	inline GameEngineShaderResHelper& GetShaderResHelper(int _index = 0) 
+	inline GameEngineShaderResHelper& GetShaderResHelper(int _index = 0)
 	{
 		return Units[_index]->ShaderResHelper;
 	}
 
-	void CameraCullingOn() 
+	void CameraCullingOn()
 	{
 		IsCameraCulling = true;
 	}
 
 	void CalSortZ(class GameEngineCamera* _Camera);
 
-	GameEngineCamera* GetCamera() 
+	GameEngineCamera* GetCamera()
 	{
 		return RenderCamera;
 	}
@@ -86,7 +93,11 @@ protected:
 
 	void Render(float _Delta) override;
 
+	void RenderBaseValueUpdate(float _Delta);
+
 	void PushCameraRender(int _CameraOrder);
+
+	RenderBaseValue BaseValue;
 
 private:
 	bool IsCameraCulling = false;
@@ -102,7 +113,6 @@ private:
 	//std::shared_ptr<class GameEngineRenderingPipeLine> Pipe;
 	//GameEngineShaderResHelper ShaderResHelper;
 
-	RenderBaseValue BaseValue;
 
 	void RenderTransformUpdate(GameEngineCamera* _Camera);
 };
