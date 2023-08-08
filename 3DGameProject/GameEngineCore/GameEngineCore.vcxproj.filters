@@ -522,10 +522,10 @@
     <None Include="ThirdParty\FBX\lib\x64\Debug\libfbxsdk-mt.zip">
       <Filter>ThirdParty\FBX\bin\Debug</Filter>
     </None>
-    <None Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXGpu_64.7z">
+    <None Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXGpu_64.zip">
       <Filter>ThirdParty\PhysX_5\bin\Debug</Filter>
     </None>
-    <None Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXGpu_64.7z">
+    <None Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXGpu_64.zip">
       <Filter>ThirdParty\PhysX_5\bin\Release</Filter>
     </None>
   </ItemGroup>
