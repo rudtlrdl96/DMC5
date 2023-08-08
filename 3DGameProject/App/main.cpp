@@ -41,7 +41,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 //  
 // 카메라에 map으로 units 선언
 // 
-//  
+// 서버를 하기 위해서는 winso2 헤더가 필요하다.
+// 근데 우리는 프리컴파일 헤더 만들었으니까, 거기에 넣으면 됨
+// GetLastError는 윈도우가 에러를 내면 어떤 에러가 나는지(보통 s_ok 등 사용해서 자세히 모르지만, 이걸 사용하면) 알려주는 함수임.
 // 
 // 
 // 
