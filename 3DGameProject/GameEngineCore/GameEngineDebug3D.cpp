@@ -34,7 +34,7 @@ namespace GameEngineDebug
 		DebugDrawDatas[_Cam].push_back({ DebugDrawType::Box, _Trans, Color });
 	}
 
-	void DrawSphere(class GameEngineCamera* _Cam, class GameEngineTransform* _Trans, float4 Color) 
+	void DrawSphere(class GameEngineCamera* _Cam, class GameEngineTransform* _Trans, float4 Color)
 	{
 		if (DebugDrawDatas.end() == DebugDrawDatas.find(_Cam))
 		{
@@ -48,7 +48,7 @@ namespace GameEngineDebug
 	{
 		if (nullptr == DebugRenderUnit.Pipe)
 		{
-			DebugRenderUnit.SetPipeLine("DebugMeshRender");
+			DebugRenderUnit.SetMaterial("DebugMeshRender");
 		}
 
 		std::vector<DebugData>& Data = DebugDrawDatas[_Camera];

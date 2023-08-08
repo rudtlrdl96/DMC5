@@ -3,18 +3,18 @@
 
 GameEngineRenderUnit GameEngineRenderTarget::MergeUnit;
 
-void GameEngineRenderTarget::RenderTargetUnitInit() 
+void GameEngineRenderTarget::RenderTargetUnitInit()
 {
 	MergeUnit.SetMesh("FullRect");
-	MergeUnit.SetPipeLine("Merge");
+	MergeUnit.SetMaterial("Merge");
 }
 
 
-GameEngineRenderTarget::GameEngineRenderTarget() 
+GameEngineRenderTarget::GameEngineRenderTarget()
 {
 }
 
-GameEngineRenderTarget::~GameEngineRenderTarget() 
+GameEngineRenderTarget::~GameEngineRenderTarget()
 {
 	DepthTexture = nullptr;
 }
@@ -29,7 +29,7 @@ void GameEngineRenderTarget::ResCreate(std::shared_ptr<GameEngineTexture> _Textu
 
 void GameEngineRenderTarget::ResCreate(DXGI_FORMAT _Format, float4 _Scale, float4 _Color)
 {
-	D3D11_TEXTURE2D_DESC Desc = {0};
+	D3D11_TEXTURE2D_DESC Desc = { 0 };
 	Desc.ArraySize = 1;
 	Desc.Width = _Scale.uix();
 	Desc.Height = _Scale.uiy();
@@ -71,7 +71,7 @@ void GameEngineRenderTarget::Clear()
 	}
 }
 
-void GameEngineRenderTarget::Setting() 
+void GameEngineRenderTarget::Setting()
 {
 	ID3D11RenderTargetView** RTV = &RTVs[0];
 
@@ -80,7 +80,7 @@ void GameEngineRenderTarget::Setting()
 		MsgAssert("랜더타겟 뷰가 존재하지 않아서 클리어가 불가능합니다.");
 	}
 
-	ID3D11DepthStencilView* DSV 
+	ID3D11DepthStencilView* DSV
 		= DepthTexture != nullptr ? DepthTexture->GetDSV() : nullptr;
 
 	if (false == DepthSetting)
@@ -94,14 +94,14 @@ void GameEngineRenderTarget::Setting()
 
 void GameEngineRenderTarget::Reset()
 {
-	ID3D11RenderTargetView* RTV[8] = {nullptr};
+	ID3D11RenderTargetView* RTV[8] = { nullptr };
 
 	GameEngineDevice::GetContext()->OMSetRenderTargets(8, RTV, nullptr);
 }
 
 void GameEngineRenderTarget::CreateDepthTexture(int _Index)
 {
-	D3D11_TEXTURE2D_DESC Desc = {0,};
+	D3D11_TEXTURE2D_DESC Desc = { 0, };
 
 	Desc.ArraySize = 1;
 	Desc.Width = Textures[_Index]->GetWidth();

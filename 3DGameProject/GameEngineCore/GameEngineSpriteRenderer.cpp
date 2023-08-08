@@ -401,7 +401,7 @@ void GameEngineSpriteRenderer::SpriteRenderInit()
 	std::shared_ptr<GameEngineRenderUnit> Unit = CreateRenderUnit();
 
 	Unit->SetMesh("Rect");
-	Unit->SetPipeLine("2DTexture");
+	Unit->SetMaterial("2DTexture");
 
 	AtlasData.x = 0.0f;
 	AtlasData.y = 0.0f;

@@ -184,6 +184,9 @@
     <ClInclude Include="GameEngineFBXRenderer.h">
       <Filter>Object\Rendering\Component</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineMaterial.h">
+      <Filter>Object\Rendering\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -357,6 +360,9 @@
       <Filter>Resources\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineFBXRenderer.cpp">
+      <Filter>Object\Rendering\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineMaterial.cpp">
       <Filter>Object\Rendering\Component</Filter>
     </ClCompile>
   </ItemGroup>

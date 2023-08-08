@@ -16,8 +16,9 @@ class GameEngineRenderer;
 class GameEngineRenderTarget;
 class GameEngineCamera : public GameEngineActor
 {
-	friend GameEngineLevel;
-	friend GameEngineRenderer;
+	friend class GameEngineLevel;
+	friend class GameEngineRenderer;
+	friend class GameEngineRenderUnit;
 
 public:
 	// constrcuter destructer
@@ -52,7 +53,7 @@ public:
 		ProjectionType = _Type;
 	}
 
-	inline bool IsFreeCamera() 
+	inline bool IsFreeCamera()
 	{
 		return FreeCamera;
 	}
@@ -62,7 +63,7 @@ public:
 
 	void CameraTransformUpdate();
 
-	std::shared_ptr<GameEngineRenderTarget> GetCamTarget() 
+	std::shared_ptr<GameEngineRenderTarget> GetCamTarget()
 	{
 		return CamTarget;
 	}
@@ -70,7 +71,7 @@ public:
 	bool IsView(const TransformData& _TransData);
 
 	template<typename EnumType>
-	void SetSortType(EnumType _Index, SortType _Sort) 
+	void SetSortType(EnumType _Index, SortType _Sort)
 	{
 		SetSortType(static_cast<int>(_Index), _Sort);
 	}
@@ -85,7 +86,7 @@ public:
 		ZoomRatio = _Value;
 	}
 
-	inline void AddZoomRatio(float _Value) 
+	inline void AddZoomRatio(float _Value)
 	{
 		ZoomRatio -= _Value;
 	}
@@ -100,6 +101,8 @@ protected:
 	void Start() override;
 
 private:
+	std::map<int, std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>> Units;
+
 	std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>> Renderers;
 	std::map<int, SortType> SortValues;
 
@@ -127,6 +130,8 @@ private:
 	float Far = 10000.0f;
 
 	void PushRenderer(std::shared_ptr<GameEngineRenderer> _Render);
+	void PushRenderUnit(std::shared_ptr<GameEngineRenderUnit> _Unit);
+
 
 	void Release();
 

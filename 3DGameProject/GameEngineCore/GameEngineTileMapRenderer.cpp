@@ -19,7 +19,7 @@ void GameEngineTileMapRenderer::Start()
 	std::shared_ptr<GameEngineRenderUnit> Unit = CreateRenderUnit();
 
 	Unit->SetMesh("Rect");
-	Unit->SetPipeLine("TileMap");
+	Unit->SetMaterial("TileMap");
 
 	// SetPipeLine("2DTexture");
 

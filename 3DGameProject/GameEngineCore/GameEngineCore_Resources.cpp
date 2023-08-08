@@ -20,7 +20,7 @@
 #include "GameEngineVertexBuffer.h"
 #include "GameEngineRenderTarget.h"
 #include "GameEngineConstantBuffer.h"
-#include "GameEngineRenderingPipeLine.h"
+#include "GameEngineMaterial.h"
 
 
 
@@ -581,7 +581,7 @@ void GameEngineCore::CoreResourcesInit()
 	{
 		// 2D가 워낙 매쉬가 중요하지가 않아요 Rect 안써.
 		{
-			std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("2DTexture");
+			std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("2DTexture");
 
 			//Pipe->SetVertexBuffer("Rect");
 			//Pipe->SetIndexBuffer("Rect");
@@ -593,7 +593,7 @@ void GameEngineCore::CoreResourcesInit()
 		}
 
 		{
-			std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("TileMap");
+			std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("TileMap");
 
 			//Pipe->SetVertexBuffer("Rect");
 			//Pipe->SetIndexBuffer("Rect");
@@ -606,7 +606,7 @@ void GameEngineCore::CoreResourcesInit()
 
 
 		{
-			std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("Merge");
+			std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("Merge");
 			//Pipe->SetVertexBuffer("FullRect");
 			//Pipe->SetIndexBuffer("FullRect");
 			Pipe->SetVertexShader("MergeShader.hlsl");
@@ -619,7 +619,7 @@ void GameEngineCore::CoreResourcesInit()
 		}
 
 		{
-			std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("DebugMeshRender");
+			std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("DebugMeshRender");
 			//Pipe->SetVertexBuffer("FullRect");
 			//Pipe->SetIndexBuffer("FullRect");
 			Pipe->SetVertexShader("DebugMeshRender.hlsl");
@@ -630,7 +630,7 @@ void GameEngineCore::CoreResourcesInit()
 		}
 
 		{
-			std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("MeshTexture");
+			std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("MeshTexture");
 			//Pipe->SetVertexBuffer("FullRect");
 			//Pipe->SetIndexBuffer("FullRect");
 			Pipe->SetVertexShader("MeshTexture.hlsl");
@@ -642,7 +642,7 @@ void GameEngineCore::CoreResourcesInit()
 	}
 
 	{
-		std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("Blur");
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("Blur");
 
 		Pipe->SetVertexShader("BlurShader.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
@@ -667,6 +667,6 @@ void GameEngineCore::CoreResourcesEnd()
 	GameEngineRenderTarget::ResourcesClear();
 	GameEngineFBXMesh::ResourcesClear();
 	GameEngineConstantBuffer::ResourcesClear();
-	GameEngineRenderingPipeLine::ResourcesClear();
+	GameEngineMaterial::ResourcesClear();
 
 }

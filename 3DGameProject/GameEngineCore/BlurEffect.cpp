@@ -13,7 +13,7 @@ void BlurEffect::Start(GameEngineRenderTarget* _Target)
 {
 	BlurUnit = std::make_shared<GameEngineRenderUnit>();
 	BlurUnit->SetMesh("FullRect");
-	BlurUnit->SetPipeLine("Blur");
+	BlurUnit->SetMaterial("Blur");
 
 	ResultTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 

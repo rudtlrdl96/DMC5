@@ -13,7 +13,7 @@ void OldTVEffect::Start(GameEngineRenderTarget* _Target)
 {
 	BlurUnit = std::make_shared<GameEngineRenderUnit>();
 	BlurUnit->SetMesh("FullRect");
-	BlurUnit->SetPipeLine("OldTV");
+	BlurUnit->SetMaterial("OldTV");
 
 	BaseValue.ScreenScale = GameEngineWindow::GetScreenSize();
 

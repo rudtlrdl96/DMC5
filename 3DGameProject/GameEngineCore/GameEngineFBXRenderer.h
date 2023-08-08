@@ -26,7 +26,7 @@ public:
 	}
 
 protected:
-	void Render(float _DeltaTime) override;
+	// void Render(float _DeltaTime) override;
 
 private:
 	std::shared_ptr<GameEngineFBXMesh> FBXMesh;

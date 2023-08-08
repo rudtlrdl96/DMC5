@@ -24,7 +24,7 @@ void OldFilm::Start(GameEngineRenderTarget* _Target)
 
 	OldUnit = std::make_shared<GameEngineRenderUnit>();
 	OldUnit->SetMesh("FullRect");
-	OldUnit->SetPipeLine("OldFilm");
+	OldUnit->SetMaterial("OldFilm");
 
 	OldData.x = 10.0f;
 

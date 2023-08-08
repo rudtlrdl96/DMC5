@@ -16,7 +16,7 @@ void MyContentSpriteRenderer::Start()
 	std::shared_ptr<GameEngineRenderUnit> Unit = CreateRenderUnit();
 
 	Unit->SetMesh("Rect");
-	Unit->SetPipeLine("My2DTexture");
+	Unit->SetMaterial("My2DTexture");
 
 	AtlasData.x = 0.0f;
 	AtlasData.y = 0.0f;

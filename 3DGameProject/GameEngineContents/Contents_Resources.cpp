@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "ContentsCore.h"
 
+#include <GameEngineCore/GameEngineMaterial.h>
 #include <GameEngineBase/GameEngineDirectory.h>
 #include <GameEngineCore/GameEnginePixelShader.h>
 #include <GameEngineCore/GameEngineVertexShader.h>
@@ -137,7 +138,7 @@ void ContentsCore::ContentsResourcesCreate()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	{
-		std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("My2DTexture");
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("My2DTexture");
 
 		Pipe->SetVertexShader("MyShader.fx");
 		Pipe->SetRasterizer("Engine2DBase");
@@ -147,7 +148,7 @@ void ContentsCore::ContentsResourcesCreate()
 	}
 
 	{
-		std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("Fade");
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("Fade");
 
 		Pipe->SetVertexShader("FadeShader.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
@@ -157,7 +158,7 @@ void ContentsCore::ContentsResourcesCreate()
 	}
 
 	{
-		std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("OldFilm");
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("OldFilm");
 
 		Pipe->SetVertexShader("OldFilmShader.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
@@ -167,7 +168,7 @@ void ContentsCore::ContentsResourcesCreate()
 	}
 
 	{
-		std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("OldTV");
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("OldTV");
 
 		Pipe->SetVertexShader("OldTVShader.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
@@ -177,7 +178,7 @@ void ContentsCore::ContentsResourcesCreate()
 	}
 
 	{
-		std::shared_ptr<GameEngineRenderingPipeLine> Pipe = GameEngineRenderingPipeLine::Create("DebugRect");
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("DebugRect");
 
 		Pipe->SetVertexShader("DebugMeshRender.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
