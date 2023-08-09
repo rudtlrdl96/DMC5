@@ -20,7 +20,6 @@ public:
 	static std::shared_ptr<GameEngineIndexBuffer> Create(const std::string_view& _Name, const std::vector<IndexType>& _Vertexs)
 	{
 		std::shared_ptr<GameEngineIndexBuffer> Res = GameEngineResource::Create(_Name);
-
 		Res->ResCreate(&_Vertexs[0], sizeof(IndexType), static_cast<UINT>(_Vertexs.size()));
 
 		return Res;
@@ -30,7 +29,6 @@ public:
 	static std::shared_ptr<GameEngineIndexBuffer> Create(const std::vector<IndexType>& _Indexs)
 	{
 		std::shared_ptr<GameEngineIndexBuffer> Res = GameEngineResource::CreateUnNamed();
-
 		Res->ResCreate(&_Indexs[0], sizeof(IndexType), static_cast<UINT>(_Indexs.size()));
 
 		return Res;

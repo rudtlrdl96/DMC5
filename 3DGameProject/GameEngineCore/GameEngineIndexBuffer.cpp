@@ -46,7 +46,6 @@ void GameEngineIndexBuffer::ResCreate(const void* _Data, UINT _VertexSize, UINT 
 	{
 		MsgAssert("버텍스 버퍼 생성에 실패했습니다.");
 	}
-
 }
 
 void GameEngineIndexBuffer::Setting()
@@ -63,6 +62,5 @@ void GameEngineIndexBuffer::Setting()
 	// const UINT* pStrides, 버텍스 1개의 크기가 얼마야
 	// const UINT* pOffsets 버텍스 몇번째 부터 할까?
 
-	
 	GameEngineDevice::GetContext()->IASetIndexBuffer(Buffer, Format, Offset);
 }
