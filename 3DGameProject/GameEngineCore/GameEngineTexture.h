@@ -1,6 +1,6 @@
 #pragma once
-#include "GameEngineResource.h"
 #include <GameEngineCore/ThirdParty/DirectXTex/inc/DirectXTex.h>
+#include "GameEngineResource.h"
 
 class GameEnginePixelColor 
 {
@@ -43,7 +43,7 @@ public:
 	}
 };
 
-// 설명 :
+// 설명 : DirectTex 라이브러리 활용
 class GameEngineTexture : public GameEngineResource<GameEngineTexture>
 {
 	friend GameEngineDevice;
@@ -74,6 +74,7 @@ public:
 		PathCheck(_Path, _Name);
 		NewTexture->SetPath(_Path);
 		NewTexture->ResLoad(_Path);
+
 		return NewTexture;
 	}
 
@@ -81,6 +82,7 @@ public:
 	{
 		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::Create(_Name);
 		NewTexture->ResCreate(_Value);
+
 		return NewTexture;
 	}
 
@@ -88,6 +90,7 @@ public:
 	{
 		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::CreateUnNamed();
 		NewTexture->ResCreate(_Value);
+
 		return NewTexture;
 	}
 
@@ -101,15 +104,16 @@ public:
 		}
 
 		NewTexture->Release();
+
 		return NewTexture;
 	}
 
 	static std::shared_ptr<GameEngineTexture> ReLoad(const std::string_view& _Path)
 	{
 		GameEnginePath NewPath(_Path);
+
 		return ReLoad(_Path, NewPath.GetFileName());
 	}
-
 
 	static std::shared_ptr<GameEngineTexture> ReLoad(const std::string_view& _Path, const std::string_view& _Name)
 	{
@@ -121,9 +125,9 @@ public:
 		}
 
 		NewTexture->ReLoad();
+
 		return NewTexture;
 	}
-
 
 	ID3D11ShaderResourceView* GetSRV()
 	{
@@ -174,9 +178,7 @@ private:
 	DirectX::ScratchImage Image;
 
 	void ResLoad(const std::string_view& _Path);
-
 	void ResCreate(ID3D11Texture2D* _Value);
-
 	void ResCreate(const D3D11_TEXTURE2D_DESC& _Value);
 
 	void CreateRenderTargetView();

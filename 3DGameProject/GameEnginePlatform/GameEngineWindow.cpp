@@ -143,6 +143,7 @@ int GameEngineWindow::WindowLoop(
 
     while (IsWindowUpdate)
     {
+        // 비동기 함수
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         {
 
@@ -157,8 +158,7 @@ int GameEngineWindow::WindowLoop(
             continue;
         } 
 
-        // 데드타임
-        // 데드타임에 게임을 실행하는것. 
+        // 데드타임, 이때도 게임을 실행한다.
         if (nullptr != _Loop)
         {
             _Loop();

@@ -97,5 +97,4 @@ void GameEngineThreadJobQueue::Work(std::function<void(GameEngineThread*)> _Work
 	Job* NewJob = new Job();
 	NewJob->Function = _Work;
 	PostQueuedCompletionStatus(IOCPHandle, static_cast<DWORD>(ThreadWorkType::UserWork), reinterpret_cast<unsigned __int64>(NewJob), nullptr);
-
 }

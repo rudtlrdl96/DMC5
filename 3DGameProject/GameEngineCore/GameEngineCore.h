@@ -62,6 +62,7 @@ public:
 
 		return std::dynamic_pointer_cast<LevelType>(NewLevel);
 	}
+
 	static void ChangeLevel(const std::string_view& _Name);
 
 	static std::shared_ptr<GameEngineLevel> GetCurLevel()
@@ -76,14 +77,12 @@ protected:
 private:
 	static std::shared_ptr<class GameEngineLevel> CurLoadLevel;
 
-	static void CoreResourcesInit();
-	static void CoreResourcesEnd();
-
-	static void LevelInit(std::shared_ptr<GameEngineLevel> _Level);
-
 	static void EngineStart(std::function<void()> __ContentsStart);
 	static void EngineUpdate();
 	static void EngineEnd(std::function<void()> __ContentsEnd);
+	static void LevelInit(std::shared_ptr<GameEngineLevel> _Level);
+	static void CoreResourcesInit();
+	static void CoreResourcesEnd();
 
 	static std::map<std::string, std::shared_ptr<GameEngineLevel>> LevelMap;
 	static std::shared_ptr<GameEngineLevel> MainLevel;

@@ -1,13 +1,13 @@
 #include "PrecompileHeader.h"
 #include "GameEngineCore.h"
+
 #include <GameEngineBase\GameEngineDebug.h>
 #include <GameEnginePlatform\GameEngineWindow.h>
 #include <GameEnginePlatform\GameEngineSound.h>
+
 #include "GameEngineResource.h"
 #include "GameEngineShaderResHelper.h"
-
 #include "GameEngineVertex.h"
-
 #include "GameEngineMesh.h"
 #include "GameEngineBlend.h"
 #include "GameEngineFBXMesh.h"
@@ -21,8 +21,6 @@
 #include "GameEngineRenderTarget.h"
 #include "GameEngineConstantBuffer.h"
 #include "GameEngineMaterial.h"
-
-
 
 void GameEngineCore::CoreResourcesInit()
 {

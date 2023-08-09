@@ -35,31 +35,64 @@ void GameEngineCore::Release()
 	LevelMap.clear();
 }
 
+void GameEngineCore::Start(HINSTANCE _instance, std::function<void()> _Start, std::function<void()> _End, float4 _Pos, float4 _Size)
+{
+	GameEngineDebug::LeakCheck();
+
+	// 윈도우 창 생성 후 루프문 시작
+	GameEngineWindow::WindowCreate(_instance, "MainWindow", _Size, _Pos);
+	GameEngineWindow::WindowLoop(std::bind(GameEngineCore::EngineStart, _Start), GameEngineCore::EngineUpdate, std::bind(GameEngineCore::EngineEnd, _End));
+}
+
 void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 {
-	// 코어이니셜라이즈
-	// Rect Box
-
-	if (false == GameEngineInput::IsKey("GUISwitch"))
+	// 기본 키 설정
 	{
-		GameEngineInput::CreateKey("GUISwitch", VK_F8);
+		if (false == GameEngineInput::IsKey("GUISwitch"))
+		{
+			GameEngineInput::CreateKey("GUISwitch", VK_F8);
+		}
+		if (false == GameEngineInput::IsKey("EngineMouseLeft"))
+		{
+			GameEngineInput::CreateKey("EngineMouseLeft", VK_LBUTTON);
+			GameEngineInput::CreateKey("EngineMouseRight", VK_RBUTTON);
+		}
 	}
 
-
-	JobQueue.Initialize("EngineJobQueue");
-
-	GameEngineDevice::Initialize();
-
-	CoreResourcesInit();
-
-	GameEngineGUI::Initialize();
+	JobQueue.Initialize("EngineJobQueue"); // 스레드 생성
+	GameEngineDevice::Initialize();        // 다이렉트 디바이스 생성
+	CoreResourcesInit();                   // 다이렉트 리소스 생성
+	GameEngineGUI::Initialize();           // Imgui 생성
 
 	if (nullptr == _ContentsStart)
 	{
 		MsgAssert("시작 컨텐츠가 존재하지 않습니다.");
 	}
+
 	_ContentsStart();
 }
+
+void GameEngineCore::LevelInit(std::shared_ptr<GameEngineLevel> _Level)
+{
+	CurLoadLevel = _Level;
+	_Level->Level = _Level.get();
+	_Level->Start();
+	CurLoadLevel = nullptr;
+}
+
+void GameEngineCore::ChangeLevel(const std::string_view& _Name)
+{
+	std::string UpperName = GameEngineString::ToUpper(_Name);
+
+	if (LevelMap.end() == LevelMap.find(UpperName))
+	{
+		MsgAssert("존재하지 않는 레벨로 체인지 하려고 했습니다.");
+		return;
+	}
+
+	NextLevel = LevelMap[UpperName];
+}
+
 
 void GameEngineCore::EngineUpdate()
 {
@@ -155,40 +188,5 @@ void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)
 	GameEngineDevice::Release();
 	GameEngineWindow::Release();
 
-}
-
-void GameEngineCore::Start(HINSTANCE _instance, std::function<void()> _Start, std::function<void()> _End, float4 _Pos, float4 _Size)
-{
-	GameEngineDebug::LeakCheck();
-
-	if (false == GameEngineInput::IsKey("EngineMouseLeft"))
-	{
-		GameEngineInput::CreateKey("EngineMouseLeft", VK_LBUTTON);
-		GameEngineInput::CreateKey("EngineMouseRight", VK_RBUTTON);
-	}
-
-	GameEngineWindow::WindowCreate(_instance, "MainWindow", _Size, _Pos);
-	GameEngineWindow::WindowLoop(std::bind(GameEngineCore::EngineStart, _Start), GameEngineCore::EngineUpdate, std::bind(GameEngineCore::EngineEnd, _End));
-}
-
-void GameEngineCore::ChangeLevel(const std::string_view& _Name)
-{
-	std::string UpperName = GameEngineString::ToUpper(_Name);
-
-	if (LevelMap.end() == LevelMap.find(UpperName))
-	{
-		MsgAssert("존재하지 않는 레벨로 체인지 하려고 했습니다.");
-		return;
-	}
-
-	NextLevel = LevelMap[UpperName];
-}
-
-void GameEngineCore::LevelInit(std::shared_ptr<GameEngineLevel> _Level)
-{
-	CurLoadLevel = _Level;
-	_Level->Level = _Level.get();
-	_Level->Start();
-	CurLoadLevel = nullptr;
 }
 

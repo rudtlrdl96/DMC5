@@ -21,16 +21,92 @@ GameEngineTexture::~GameEngineTexture()
 	Release();
 }
 
+void GameEngineTexture::Release()
+{
+	Image.Release();
 
+	if (nullptr != DSV)
+	{
+		DSV->Release();
+		DSV = nullptr;
+	}
+
+	if (nullptr != SRV)
+	{
+		SRV->Release();
+		SRV = nullptr;
+	}
+
+	if (nullptr != RTV)
+	{
+		RTV->Release();
+		RTV = nullptr;
+	}
+
+	if (nullptr != Texture2D)
+	{
+		Texture2D->Release();
+		Texture2D = nullptr;
+	}
+}
+
+void GameEngineTexture::ReLoad()
+{
+	if (nullptr != Texture2D)
+	{
+		return;
+	}
+
+	if (nullptr != SRV)
+	{
+		return;
+	}
+
+	if ("" == GetPath())
+	{
+		return;
+	}
+
+	ResLoad(GetPath());
+}
+
+// 다이렉트 이니셜라이즈 단계에서, D3D11_TEXTURE2D_DESC에 값 복사한 뒤 RTV 생성
 void GameEngineTexture::ResCreate(ID3D11Texture2D* _Create)
 {
 	Texture2D = _Create;
-
-	Texture2D->GetDesc(&Desc);
-
-	CreateRenderTargetView();
+	Texture2D->GetDesc(&Desc); // Desc(D3D11_TEXTURE2D_DESC)에 값 복사
+	CreateRenderTargetView();  // RTV 생성
 }
 
+// Desc의 BindFlags에 따라 RTV, SRV, DSV 중 하나를 Create
+void GameEngineTexture::ResCreate(const D3D11_TEXTURE2D_DESC& _Value)
+{
+	Desc = _Value;
+
+	GameEngineDevice::GetDevice()->CreateTexture2D(&Desc, nullptr, &Texture2D);
+
+	if (D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET & Desc.BindFlags)
+	{
+		CreateRenderTargetView();
+	}
+
+	if (D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE & Desc.BindFlags)
+	{
+		CreateShaderResourcesView();
+	}
+
+	if (D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL & Desc.BindFlags)
+	{
+		CreateDepthStencilView();
+	}
+
+	if (nullptr == Texture2D)
+	{
+		MsgAssert("텍스처 생성에 실패했습니다.");
+	}
+}
+
+// 랜더타겟뷰(RTV) 생성, CreateRenderTargetView()
 void GameEngineTexture::CreateRenderTargetView()
 {
 	if (nullptr == Texture2D)
@@ -39,7 +115,6 @@ void GameEngineTexture::CreateRenderTargetView()
 		return;
 	}
 
-	// 랜더타겟은 여러개를 만들수 있다.
 	HRESULT Result = GameEngineDevice::GetDevice()->CreateRenderTargetView(Texture2D, nullptr, &RTV);
 
 	if (S_OK != Result)
@@ -49,6 +124,7 @@ void GameEngineTexture::CreateRenderTargetView()
 	}
 }
 
+// 쉐이더리소스뷰(SRV) 생성, CreateShaderResourceView()
 void GameEngineTexture::CreateShaderResourcesView()
 {
 	if (nullptr == Texture2D)
@@ -57,7 +133,6 @@ void GameEngineTexture::CreateShaderResourcesView()
 		return;
 	}
 
-	// 랜더타겟은 여러개를 만들수 있다.
 	HRESULT Result = GameEngineDevice::GetDevice()->CreateShaderResourceView(Texture2D, nullptr, &SRV);
 
 	if (S_OK != Result)
@@ -67,6 +142,7 @@ void GameEngineTexture::CreateShaderResourcesView()
 	}
 }
 
+// 뎁스스텐실뷰(DSV) 생성, CreateDepthStencilView()
 void GameEngineTexture::CreateDepthStencilView()
 {
 	if (nullptr == Texture2D)
@@ -75,7 +151,6 @@ void GameEngineTexture::CreateDepthStencilView()
 		return;
 	}
 
-	// 랜더타겟은 여러개를 만들수 있다.
 	HRESULT Result = GameEngineDevice::GetDevice()->CreateDepthStencilView(Texture2D, nullptr, &DSV);
 
 	if (S_OK != Result)
@@ -84,7 +159,6 @@ void GameEngineTexture::CreateDepthStencilView()
 		return;
 	}
 }
-
 
 void GameEngineTexture::ResLoad(const std::string_view& _Path) 
 {
@@ -166,33 +240,6 @@ void GameEngineTexture::PSReset(UINT _Slot)
 	static ID3D11ShaderResourceView* Nullptr = nullptr;
 
 	GameEngineDevice::GetContext()->PSSetShaderResources(_Slot, 1, &Nullptr);
-}
-
-void GameEngineTexture::ResCreate(const D3D11_TEXTURE2D_DESC& _Value) 
-{
-	Desc = _Value;
-
-	GameEngineDevice::GetDevice()->CreateTexture2D(&Desc, nullptr, &Texture2D);
-
-	if (D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET & Desc.BindFlags)
-	{
-		CreateRenderTargetView();
-	}
-
-	if (D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE & Desc.BindFlags)
-	{
-		CreateShaderResourcesView();
-	}
-
-	if (D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL & Desc.BindFlags)
-	{
-		CreateDepthStencilView();
-	}
-
-	if (nullptr == Texture2D)
-	{
-		MsgAssert("텍스처 생성에 실패했습니다.");
-	}
 }
 
 // 바깥에 나갔다면 무슨색깔 리턴할지에 대한 컬러도 넣어줘야 한다.
@@ -516,62 +563,3 @@ void GameEngineTexture::PathCheck(const std::string_view& _Path, const std::stri
 	}
 	GameEngineCore::CurLoadLevel->TexturePath[_Name.data()] = _Path.data();
 }
-
-void GameEngineTexture::Release()
-{
-	Image.Release();
-
-	if (nullptr != DSV)
-	{
-		DSV->Release();
-		DSV = nullptr;
-	}
-
-	if (nullptr != SRV)
-	{
-		SRV->Release();
-		SRV = nullptr;
-	}
-
-	if (nullptr != RTV)
-	{
-		RTV->Release();
-		RTV = nullptr;
-	}
-
-	if (nullptr != Texture2D)
-	{
-		Texture2D->Release();
-		Texture2D = nullptr;
-	}
-}
-
-void GameEngineTexture::ReLoad()
-{
-	if (nullptr != Texture2D)
-	{
-		return;
-	}
-
-	if (nullptr != SRV)
-	{
-		return;
-	}
-
-	if ("" == GetPath())
-	{
-		return;
-	}
-
-	ResLoad(GetPath());
-}
-
-//void GameEngineTexture::SetPixel(int _X, int _Y, GameEnginePixelColor DefaultColor)
-//{
-//	const DirectX::Image* Ptr = Image.GetImages();
-//
-//	//Ptr->pixels[0] = 0;
-//	//Ptr->pixels[1] = 0;
-//	//Ptr->pixels[2] = 0;
-//	//Ptr->pixels[3] = 0;
-//}

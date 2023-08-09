@@ -22,20 +22,9 @@ void ContentsCore::ContentsResourcesCreate()
 /////////////////////////////////////////////////////////////////////// File Load //////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	//{
-	//	GameEngineDirectory NewDir;
-	//	NewDir.MoveParentToDirectory("CupHead_Resource");
-	//	NewDir.Move("CupHead_Resource");
+	// FontUpload();
 
-	//	if (0 == AddFontResourceA(NewDir.GetPlusFileName("CupheadFelix-Regular-merged.ttf").GetFullPath().data()))
-	//	{
-	//		MsgAssert("폰트 로드에 실패했습니다.");
-	//		return;
-	//	}
-
-	//	SendMessage(GameEngineWindow::GetHWnd(), WM_FONTCHANGE, NULL, NULL);
-	//}
-
+	// 컨텐츠 쉐이더 파일 로드
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
@@ -50,6 +39,7 @@ void ContentsCore::ContentsResourcesCreate()
 		}
 	}
 
+	// 컨텐츠 FBX 파일 로드 (임시)
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");

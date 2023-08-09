@@ -4,9 +4,11 @@
 #include <map>
 #include <list>
 #include <memory>
+
 #include <GameEngineCore/GameEngineNameObject.h>
 #include <GameEngineBase/GameEngineString.h>
 #include <GameEngineBase/GameEngineDebug.h>
+
 #include "GameEngineDevice.h"
 
 // 설명 :
@@ -51,13 +53,11 @@ public:
 
 	virtual void Setting() {}
 
-
 	static void ResourcesClear()
 	{
 		NamedResources.clear();
 		UnNamedRes.clear();
 	}
-
 
 protected:
 	static std::shared_ptr<ResourcesType> CreateUnNamed()
@@ -65,6 +65,7 @@ protected:
 		std::shared_ptr<ResourcesType> NewRes = std::make_shared<ResourcesType>();
 		std::lock_guard<std::mutex> Lock(UnNamedLock);
 		UnNamedRes.push_back(NewRes);
+
 		return NewRes;
 	}
 
@@ -75,34 +76,30 @@ protected:
 		if (nullptr != Find(UpperName))
 		{
 			MsgAssert("이미 존재하는 이름의 리소스를 또 만들려고 했습니다.");
+
 			return nullptr;
 		}
 
 		std::shared_ptr<ResourcesType> NewRes = std::make_shared<ResourcesType>();
 		NewRes->SetName(UpperName);
 
-		// std::pair<key, value>
-		// NamedResources.insert(std::make_pair(UpperName, NewRes));
-		// 여기 사이에 좀 느려져도 이
-
 		std::lock_guard<std::mutex> Lock(NameLock);
 		NamedResources.insert(std::map<std::string, std::shared_ptr<ResourcesType>>::value_type(UpperName, NewRes));
+
 		return NewRes;
 	}
-
 
 	std::string Path;
 
 private:
-
 	static std::map<std::string, std::shared_ptr<ResourcesType>> NamedResources;
-	static std::mutex NameLock;
 	static std::list<std::shared_ptr<ResourcesType>> UnNamedRes;
+	static std::mutex NameLock;
 	static std::mutex UnNamedLock;
-
 
 };
 
+// 템플릿 클래스에서 데이터 영역의 초기화를 하는 방법들
 template<typename ResourcesType>
 std::map<std::string, std::shared_ptr<ResourcesType>> GameEngineResource<ResourcesType>::NamedResources;
 

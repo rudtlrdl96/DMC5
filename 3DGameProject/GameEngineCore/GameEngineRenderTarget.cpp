@@ -19,17 +19,18 @@ GameEngineRenderTarget::~GameEngineRenderTarget()
 	DepthTexture = nullptr;
 }
 
-
+// 랜더타겟 생성
 void GameEngineRenderTarget::ResCreate(std::shared_ptr<GameEngineTexture> _Texture, float4 _Color)
 {
-	Color = _Color;
-	Textures.push_back(_Texture);
-	RTVs.push_back(_Texture->GetRTV());
+	Color = _Color;                     // 백버퍼의 디폴트 색 지정(우리는 파란색)
+	Textures.push_back(_Texture);       // 생성된 텍스쳐 값을 벡터에 푸쉬백
+	RTVs.push_back(_Texture->GetRTV()); // 생성된 텍스쳐의 RTV 값을 벡터에 푸쉬백
 }
 
 void GameEngineRenderTarget::ResCreate(DXGI_FORMAT _Format, float4 _Scale, float4 _Color)
 {
 	D3D11_TEXTURE2D_DESC Desc = { 0 };
+
 	Desc.ArraySize = 1;
 	Desc.Width = _Scale.uix();
 	Desc.Height = _Scale.uiy();
@@ -39,12 +40,28 @@ void GameEngineRenderTarget::ResCreate(DXGI_FORMAT _Format, float4 _Scale, float
 	Desc.MipLevels = 1;
 	Desc.Usage = D3D11_USAGE_DEFAULT;
 	Desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE;
-	// Desc.CPUAccessFlags = D3D11_CPU_ACCESS_FLAG::D3D11_CPU_ACCESS_READ;
-	// Desc.MiscFlags = 0;
 
 	std::shared_ptr<GameEngineTexture> Tex = GameEngineTexture::Create(Desc);
 	Textures.push_back(Tex);
 	RTVs.push_back(Tex->GetRTV());
+}
+
+void GameEngineRenderTarget::CreateDepthTexture(int _Index)
+{
+	D3D11_TEXTURE2D_DESC Desc = { 0, };
+
+	Desc.ArraySize = 1;
+	Desc.Width = Textures[_Index]->GetWidth();
+	Desc.Height = Textures[_Index]->GetHeight();
+	Desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;    // 4바이트중 3바이트는 0 ~ 1.0f 표현하는데 사용하고, 나머지 1바이트는 스텐실 값으로 사용할 수 있게 해주는 포멧
+	Desc.SampleDesc.Count = 1;
+	Desc.SampleDesc.Quality = 0;
+	Desc.MipLevels = 1;
+	Desc.Usage = D3D11_USAGE_DEFAULT;
+	Desc.CPUAccessFlags = 0;
+	Desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL;
+
+	DepthTexture = GameEngineTexture::Create(Desc); // 뎁스스텐실뷰 생성
 }
 
 void GameEngineRenderTarget::Clear()
@@ -99,34 +116,6 @@ void GameEngineRenderTarget::Reset()
 	GameEngineDevice::GetContext()->OMSetRenderTargets(8, RTV, nullptr);
 }
 
-void GameEngineRenderTarget::CreateDepthTexture(int _Index)
-{
-	D3D11_TEXTURE2D_DESC Desc = { 0, };
-
-	Desc.ArraySize = 1;
-	Desc.Width = Textures[_Index]->GetWidth();
-	Desc.Height = Textures[_Index]->GetHeight();
-
-	//            4바이트중 3바이트는 0~1.0f 표현하는데 사용하고
-	//            나머지 뒤에있는 1바이트를 스텐실 값이라고 하는 걸로 사용할수 있게 하는 포맷.
-	Desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-
-	Desc.SampleDesc.Count = 1;
-	Desc.SampleDesc.Quality = 0;
-
-	Desc.MipLevels = 1;
-	Desc.Usage = D3D11_USAGE_DEFAULT;
-
-	Desc.CPUAccessFlags = 0;
-	Desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL;
-	DepthTexture = GameEngineTexture::Create(Desc);
-}
-
-
-// 랜더링 파이프라인을 따라야 한다.
-// 파이프라인
-
-
 void GameEngineRenderTarget::Merge(std::shared_ptr<GameEngineRenderTarget> _Other, size_t _Index)
 {
 	Setting();
@@ -159,7 +148,6 @@ void GameEngineRenderTarget::Effect(float _DeltaTime)
 		Effects[i]->Effect(this, _DeltaTime);
 	}
 }
-
 
 void GameEngineRenderTarget::EffectInit(std::shared_ptr<GameEnginePostProcess> _PostProcess)
 {

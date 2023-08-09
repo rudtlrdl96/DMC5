@@ -29,17 +29,37 @@ void ContentsCore::GameStart()
 
 void ContentsCore::GameEnd() 
 {
-	//{
-	//	GameEngineDirectory NewDir;
-	//	NewDir.MoveParentToDirectory("CupHead_Resource");
-	//	NewDir.Move("CupHead_Resource");
+	// FontUpRelease();
+}
 
-	//	if (0 == RemoveFontResourceA(NewDir.GetPlusFileName("CupheadFelix-Regular-merged.ttf").GetFullPath().data()))
-	//	{
-	//		MsgAssert("폰트 삭제에 실패했습니다.");
-	//		return;
-	//	}
+// 폰트 로드
+void ContentsCore::FontUpload()
+{
+	GameEngineDirectory NewDir;
+	NewDir.MoveParentToDirectory("CupHead_Resource");
+	NewDir.Move("CupHead_Resource");
 
-	//	SendMessage(GameEngineWindow::GetHWnd(), WM_FONTCHANGE, NULL, NULL);
-	//}
+	if (0 == AddFontResourceA(NewDir.GetPlusFileName("CupheadFelix-Regular-merged.ttf").GetFullPath().data()))
+	{
+		MsgAssert("폰트 로드에 실패했습니다.");
+		return;
+	}
+
+	SendMessage(GameEngineWindow::GetHWnd(), WM_FONTCHANGE, NULL, NULL);
+}
+
+// 업로드된 폰트 릴리즈
+void ContentsCore::FontUpRelease()
+{
+	GameEngineDirectory NewDir;
+	NewDir.MoveParentToDirectory("CupHead_Resource");
+	NewDir.Move("CupHead_Resource");
+
+	if (0 == RemoveFontResourceA(NewDir.GetPlusFileName("CupheadFelix-Regular-merged.ttf").GetFullPath().data()))
+	{
+		MsgAssert("폰트 삭제에 실패했습니다.");
+		return;
+	}
+
+	SendMessage(GameEngineWindow::GetHWnd(), WM_FONTCHANGE, NULL, NULL);
 }

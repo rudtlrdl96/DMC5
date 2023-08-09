@@ -14,7 +14,6 @@ GameEngineCamera::~GameEngineCamera()
 {
 }
 
-
 void GameEngineCamera::Start()
 {
 	if (false == GameEngineInput::IsKey("CamMoveLeft"))
@@ -142,7 +141,6 @@ void GameEngineCamera::Update(float _DeltaTime)
 	}
 
 }
-
 
 void GameEngineCamera::Setting()
 {
