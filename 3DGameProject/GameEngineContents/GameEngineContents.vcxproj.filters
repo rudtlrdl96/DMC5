@@ -22,6 +22,9 @@
     <ClInclude Include="Player.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="ServerWindow.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -46,6 +49,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="ServerWindow.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
@@ -56,6 +62,9 @@
     </Filter>
     <Filter Include="Object">
       <UniqueIdentifier>{bbc60d36-0bc6-4a6f-a01a-193df7cb6027}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{5d35490c-dfd0-487f-89e8-cb2e4fcec7cc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

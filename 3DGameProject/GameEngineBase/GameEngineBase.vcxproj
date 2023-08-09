@@ -178,6 +178,18 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameEngineNet.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameEngineNetClient.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameEngineNetServer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameEnginePath.cpp">
       <SubType>
       </SubType>
@@ -233,6 +245,18 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="GameEngineMath.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameEngineNet.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameEngineNetClient.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameEngineNetServer.h">
       <SubType>
       </SubType>
     </ClInclude>

@@ -67,7 +67,7 @@ void GameEngineGUI::Initialize()
     NewDir.MoveParentToDirectory("EngineResources");
     NewDir.Move("EngineResources");
     NewDir.Move("Font");
-    //io.Fonts->AddFontFromFileTTF(NewDir.GetPlusFileName("malgun.ttf").GetFullPath().c_str(), 18.0f, nullptr, io.Fonts->GetGlyphRangesKorean());
+    io.Fonts->AddFontFromFileTTF(NewDir.GetPlusFileName("malgun.ttf").GetFullPath().c_str(), 18.0f, nullptr, io.Fonts->GetGlyphRangesKorean());
 
     // Load Fonts
     // - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use ImGui::PushFont()/PopFont() to select them.

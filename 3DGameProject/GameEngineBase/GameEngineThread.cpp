@@ -8,7 +8,7 @@ GameEngineThread::GameEngineThread()
 {
 }
 
-GameEngineThread::GameEngineThread(std::string _ThreadName, std::function<void(GameEngineThread*)> _CallBack)
+GameEngineThread::GameEngineThread(std::string _ThreadName, std::function<void()> _CallBack)
 {
 	Start(_ThreadName, _CallBack);
 }
@@ -18,7 +18,7 @@ GameEngineThread::~GameEngineThread()
 	Join();
 }
 
-void GameEngineThread::Start(std::string _ThreadName, std::function<void(GameEngineThread*)> _CallBack)
+void GameEngineThread::Start(std::string _ThreadName, std::function<void()> _CallBack)
 {
 	CallBack = _CallBack;
 	Thread = std::thread(ThreadBaseFunction, this, _ThreadName);
@@ -28,7 +28,7 @@ void GameEngineThread::ThreadBaseFunction(GameEngineThread* Thread, std::string 
 {
 	std::wstring WName = GameEngineString::AnsiToUniCode(Name);
 	SetThreadDescription(GetCurrentThread(), WName.c_str()); // GetCurrentThreadId() : 우리가 쓰레드 요청하면 윈도우는 우리 쓰레드에 id를 부여
-	Thread->CallBack(Thread);
+	Thread->CallBack();
 }
 
 void GameEngineThread::Join()

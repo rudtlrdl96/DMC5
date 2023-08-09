@@ -10,7 +10,7 @@ class GameEngineThread
 public:
 	// constrcuter destructer
 	GameEngineThread();
-	GameEngineThread(std::string _ThreadName, std::function<void(GameEngineThread*)> _CallBack);
+	GameEngineThread(std::string _ThreadName, std::function<void()> _CallBack);
 	~GameEngineThread();
 
 	//// delete Function
@@ -19,7 +19,7 @@ public:
 	//GameEngineThread& operator=(const GameEngineThread& _Other) = delete;
 	//GameEngineThread& operator=(GameEngineThread&& _Other) noexcept = delete;
 
-	void Start(std::string _ThreadName, std::function<void(GameEngineThread*)> _CallBack);
+	void Start(std::string _ThreadName, std::function<void()> _CallBack);
 
 	void Join();
 
@@ -40,6 +40,6 @@ private:
 	static void ThreadBaseFunction(GameEngineThread* Thread, std::string Name);
 
 	std::thread Thread;
-	std::function<void(GameEngineThread*)> CallBack;
+	std::function<void()> CallBack;
 };
 

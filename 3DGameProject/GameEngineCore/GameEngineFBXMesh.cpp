@@ -798,10 +798,10 @@ void GameEngineFBXMesh::LoadUVInformation(fbxsdk::FbxMesh* pMesh, std::vector<Ga
 
 						lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
 
-						//int VertexIndex = pMesh->GetTextureUVIndex(lPolyIndex, lVertIndex);
+						int VertexIndex = pMesh->GetTextureUVIndex(lPolyIndex, lVertIndex);
 
-						//_ArrVtx[VertexIndex].TEXCOORD.x = static_cast<float>(lUVValue.mData[0]);
-						//_ArrVtx[VertexIndex].TEXCOORD.y = 1.0f - static_cast<float>(lUVValue.mData[1]);
+						_ArrVtx[VertexIndex].TEXCOORD.x = static_cast<float>(lUVValue.mData[0]);
+						_ArrVtx[VertexIndex].TEXCOORD.y = 1.0f - static_cast<float>(lUVValue.mData[1]);
 
 						//float4 Test;
 						//Test.x = static_cast<float>(lUVValue.mData[0]);

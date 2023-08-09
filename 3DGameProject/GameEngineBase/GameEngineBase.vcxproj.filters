@@ -44,6 +44,15 @@
     <ClCompile Include="JPSPath.cpp">
       <Filter>JPS</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineNetServer.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineNetClient.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineNet.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineDebug.h">
@@ -101,6 +110,15 @@
     <ClInclude Include="CoreTypeDef.h">
       <Filter>JPS</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineNetServer.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineNetClient.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineNet.h">
+      <Filter>Server</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Debug">
@@ -123,6 +141,9 @@
     </Filter>
     <Filter Include="JPS">
       <UniqueIdentifier>{f5e898f2-bbfa-4fd3-95d1-b97200ffa2f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server">
+      <UniqueIdentifier>{03e70c5f-fd39-494b-ada9-637f9585f8d7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
