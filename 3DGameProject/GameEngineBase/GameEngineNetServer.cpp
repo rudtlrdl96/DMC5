@@ -11,19 +11,21 @@ void GameEngineNetServer::AcceptThread(SOCKET _AcceptSocket, GameEngineNetServer
 
         memset(&ClientAdd, 0, sizeof(ClientAdd));
 
+        //서버에 입장한 클라 소켓이 저장되는 자료구조가
+        //비여있지 않다면 하나를 꺼내온다
         SOCKET CientSocket = accept(_AcceptSocket, (sockaddr*)&ClientAdd, &AddressLen);
-
         if (SOCKET_ERROR == CientSocket || INVALID_SOCKET == CientSocket)
         {
             return;
         }
 
+        //꺼내온 클라 소켓으로부터 데이터를 수신할 Recv스레드를 만들고 벡터에 저장
         std::shared_ptr<GameEngineThread> NewThread = std::make_shared<GameEngineThread>();
         _Net->RecvThreads.push_back(NewThread);
 
+        //Recv스레드 시작
         std::string ThreadName = std::to_string(CientSocket);
         ThreadName += "Server Recv Thread";
-
         NewThread->Start(ThreadName, std::bind(&GameEngineNet::RecvThreadFunction, CientSocket, _Net));
 
         int a = 0;
@@ -53,6 +55,7 @@ void GameEngineNetServer::ServerOpen(short _Port, int _BackLog)
 {
     WSAData WsaData;
 
+    //네트워크를 사용하겠다 OS에 알림
     int errorCode = WSAStartup(MAKEWORD(2, 2), &WsaData);
     if (SOCKET_ERROR == errorCode)
     {
@@ -62,19 +65,21 @@ void GameEngineNetServer::ServerOpen(short _Port, int _BackLog)
 
     SOCKADDR_IN Add;
     Add.sin_family = AF_INET; // ip4주소 체계를 쓰겠다.
-    Add.sin_port = htons(_Port); // 네트워크 통신에 유효한 에디안 방식으로 만들어준다.
+    Add.sin_port = htons(_Port); // htons : 네트워크 통신에 유효한 에디안 방식으로 만들어준다. (기본적으로 네트워크는 빅 에디안)
+    //"0.0.0.0"는 자기자신의 IP로 서버를 열겠다는 의미
     if (SOCKET_ERROR == inet_pton(AF_INET, "0.0.0.0", &Add.sin_addr))
     {
         return;
     }
 
+    //TCP로 소켓 생성
     AcceptSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-
     if (INVALID_SOCKET == AcceptSocket)
     {
         return;
     }
 
+    //만든 소켓을 Add의 설정(포트번호)으로 서버를 열 것이라고 설정
     if (SOCKET_ERROR == bind(AcceptSocket, (const sockaddr*)&Add, sizeof(SOCKADDR_IN)))
     {
         return;
@@ -82,10 +87,12 @@ void GameEngineNetServer::ServerOpen(short _Port, int _BackLog)
 
     BackLog = _BackLog;
 
+    //서버 오픈, 이때부터 클라가 서버에 연결될 수 있음
     if (SOCKET_ERROR == listen(AcceptSocket, _BackLog))
     {
         return;
     }
 
+    //클라 입장 스레드 생성
     AccpetThread.Start("AcceptFunction", std::bind(GameEngineNetServer::AcceptThread, AcceptSocket, this));
 }

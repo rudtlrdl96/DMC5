@@ -16,7 +16,7 @@ public:
 	GameEngineNetServer& operator=(const GameEngineNetServer& _Other) = delete;
 	GameEngineNetServer& operator=(GameEngineNetServer&& _Other) noexcept = delete;
 
-
+	//백로그는 최대 동접자수
 	void ServerOpen(short _Port, int _BackLog = 512);
 
 protected:

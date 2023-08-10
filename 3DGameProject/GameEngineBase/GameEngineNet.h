@@ -1,7 +1,7 @@
 #pragma once
 
 // 설명 :
-// 이녀석은 서버와 클라가 동시에 사용하는 클래스
+//서버와 클라가 공통으로 사용하는 클래스
 class GameEngineNet
 {
 public:
@@ -17,6 +17,7 @@ public:
 
 	virtual void Send(void* Data, unsigned int _Size) = 0;
 
+	//서버에 연결되었는지 여부
 	inline bool IsNet()
 	{
 		return IsNetValue;
