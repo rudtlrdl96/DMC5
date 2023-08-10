@@ -16,6 +16,7 @@ public:
 	GameEngineNetClient& operator=(const GameEngineNetClient& _Other) = delete;
 	GameEngineNetClient& operator=(GameEngineNetClient&& _Other) noexcept = delete;
 
+	//ip가 127.0.0.1인 경우 로컬서버를 의미
 	bool Connect(const std::string& _IP, unsigned short _Port);
 
 protected:
