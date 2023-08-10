@@ -14,9 +14,21 @@ GameEngineNetClient::~GameEngineNetClient()
     }
 }
 
-void GameEngineNetClient::Send(void* Data, unsigned int _Size)
+void GameEngineNetClient::Send(const char* Data, unsigned int _Size)
 {
+    if (nullptr == Data)
+    {
+        MsgAssert("아무런 데이터도 없는 데이터를 보내려고 했습니다.");
+        return;
+    }
 
+    if (0 >= _Size)
+    {
+        MsgAssert("크기가 없는 데이터를 보내려고 합니다.");
+    }
+
+    //서버에게 바이트 전송
+    ::send(ClientSocket, Data, _Size, 0);
 }
 
 bool GameEngineNetClient::Connect(const std::string& _IP, unsigned short _Port)

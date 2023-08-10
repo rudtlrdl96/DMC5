@@ -186,7 +186,15 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameEngineNetObject.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameEngineNetServer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameEnginePacket.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -256,7 +264,15 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GameEngineNetObject.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameEngineNetServer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameEnginePacket.h">
       <SubType>
       </SubType>
     </ClInclude>

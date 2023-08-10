@@ -29,7 +29,7 @@ void MainLevel::Start()
 
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -500.0f });
-	CreateActor<Player>();
+	std::shared_ptr<Player> NewPlayer = CreateActor<Player>();
 }
 
 void MainLevel::Update(float _DeltaTime)

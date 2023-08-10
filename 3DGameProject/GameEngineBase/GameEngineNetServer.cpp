@@ -23,12 +23,19 @@ void GameEngineNetServer::AcceptThread(SOCKET _AcceptSocket, GameEngineNetServer
         std::shared_ptr<GameEngineThread> NewThread = std::make_shared<GameEngineThread>();
         _Net->RecvThreads.push_back(NewThread);
 
-        //Recv스레드 시작
+        //Recv스레드 시작1
         std::string ThreadName = std::to_string(CientSocket);
         ThreadName += "Server Recv Thread";
-        NewThread->Start(ThreadName, std::bind(&GameEngineNet::RecvThreadFunction, CientSocket, _Net));
 
-        int a = 0;
+        //클라가 서버에 연결되었을 때 처리할 콜백이 존재한다면
+        if (nullptr != _Net->AcceptCallBack)
+        {
+            //해당 소켓과 서버의 포인터를 인자로 호출
+            _Net->AcceptCallBack(CientSocket, _Net);
+        }
+
+        ////Recv스레드 시작2
+        NewThread->Start(ThreadName, std::bind(&GameEngineNet::RecvThreadFunction, CientSocket, _Net));
     }
 
     int a = 0;
@@ -46,9 +53,13 @@ GameEngineNetServer::~GameEngineNetServer()
     }
 }
 
-void GameEngineNetServer::Send(void* Data, unsigned int _Size)
+void GameEngineNetServer::Send(const char* Data, unsigned int _Size)
 {
-
+    //이 서버와 연결된 모든 클라에게 바이트 전송
+    for (size_t i = 0; i < Users.size(); i++)
+    {
+        send(Users[i], Data, _Size, 0);
+    }
 }
 
 void GameEngineNetServer::ServerOpen(short _Port, int _BackLog)

@@ -25,6 +25,12 @@
     <ClInclude Include="ServerWindow.h">
       <Filter>GUI</Filter>
     </ClInclude>
+    <ClInclude Include="ConnectIDPacket.h">
+      <Filter>Server\01.Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectUpdatePacket.h">
+      <Filter>Server\01.Packet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -52,6 +58,12 @@
     <ClCompile Include="ServerWindow.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="ConnectIDPacket.cpp">
+      <Filter>Server\01.Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectUpdatePacket.cpp">
+      <Filter>Server\01.Packet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
@@ -65,6 +77,12 @@
     </Filter>
     <Filter Include="GUI">
       <UniqueIdentifier>{5d35490c-dfd0-487f-89e8-cb2e4fcec7cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server">
+      <UniqueIdentifier>{7844fe14-609b-45f2-9524-51a5a2ba916a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\01.Packet">
+      <UniqueIdentifier>{a060b50f-0d32-48f9-89d8-99a98033da39}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

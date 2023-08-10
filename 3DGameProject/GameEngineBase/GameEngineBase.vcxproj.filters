@@ -53,6 +53,12 @@
     <ClCompile Include="GameEngineNet.cpp">
       <Filter>Server</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineNetObject.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEnginePacket.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineDebug.h">
@@ -117,6 +123,12 @@
       <Filter>Server</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineNet.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineNetObject.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEnginePacket.h">
       <Filter>Server</Filter>
     </ClInclude>
   </ItemGroup>

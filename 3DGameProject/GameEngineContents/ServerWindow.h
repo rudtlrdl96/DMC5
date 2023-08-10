@@ -20,6 +20,9 @@ public:
 protected:
 	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;
 
+	//서버를 오픈했을때 처리할 일
+	void ServerInit(std::shared_ptr<GameEngineLevel> Level);
+
 private:
 	GameEngineNetServer Server;
 	GameEngineNetClient Client;
@@ -29,5 +32,7 @@ private:
 	std::string IP = "127.0.0.1";
 	int Port = 30000;
 	bool IsClient;
+
+	std::string TestSendBuffer = "fashdjklfhajklfhasdjfhaklfhafhasd";
 };
 

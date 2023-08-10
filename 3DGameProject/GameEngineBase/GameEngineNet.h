@@ -15,7 +15,7 @@ public:
 	GameEngineNet& operator=(const GameEngineNet& _Other) = delete;
 	GameEngineNet& operator=(GameEngineNet&& _Other) noexcept = delete;
 
-	virtual void Send(void* Data, unsigned int _Size) = 0;
+	virtual void Send(const char* Data, unsigned int _Size) = 0;
 
 	//서버에 연결되었는지 여부
 	inline bool IsNet()

@@ -167,6 +167,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ConnectIDPacket.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ContentsCore.h" />
     <ClInclude Include="FadeEffect.h">
       <SubType>
@@ -174,6 +178,10 @@
     </ClInclude>
     <ClInclude Include="MainLevel.h" />
     <ClInclude Include="MyContentSpriteRenderer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ObjectUpdatePacket.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -194,6 +202,10 @@
     <ClInclude Include="TestLevel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ConnectIDPacket.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ContentsCore.cpp" />
     <ClCompile Include="Contents_Resources.cpp" />
     <ClCompile Include="FadeEffect.cpp">
@@ -202,6 +214,10 @@
     </ClCompile>
     <ClCompile Include="MainLevel.cpp" />
     <ClCompile Include="MyContentSpriteRenderer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ObjectUpdatePacket.cpp">
       <SubType>
       </SubType>
     </ClCompile>
