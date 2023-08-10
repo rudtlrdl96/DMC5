@@ -26,9 +26,49 @@ public:
 		}
 	};
 
+	static void Release();
 	static HRESULT Initialize();
 	static void Render(std::shared_ptr<class GameEngineLevel> Level, float _DeltaTime);
-	static void Release();
+	void Simulate(const float _fDeltaTime);
+	void FetchResults(const bool _bBlock);
+	HRESULT CreateScene(const UINT _nSceneID);
+	HRESULT ChangeScene(const UINT _nSceneID);
+
+	physx::PxPhysics* GetPxPhysics()
+	{
+		return mPhysics;
+	}
+
+	physx::PxMaterial* GetDefaultMaterial()
+	{
+		return mDefaultMaterial;
+	}
+
+	//PxCooking* GetCooking()
+	//{
+	//	return m_pCooking;
+	//}
+
+	//void SetGravity(PxVec3 _vGravity)
+	//{
+	//	if (nullptr == mScene)
+	//	{
+	//		return;
+	//	}
+
+	//	m_pScene->setGravity(_vGravity);
+	//}
+
+	//float4 GetGravity()
+	//{
+	//	if (nullptr == mScene)
+	//	{
+	//		return float4(0.f, 0.f, 0.f);
+	//	}
+	//		
+	//	PxVec3 vGravity = mScene->getGravity();
+	//	return float4(vGravity.x, vGravity.y, vGravity.z);
+	//}
 
 protected:
 
@@ -41,7 +81,12 @@ private:
 	static physx::PxPhysics* mPhysics;
 	static physx::PxMaterial* mDefaultMaterial;
 	static physx::PxDefaultCpuDispatcher* mDispatcher;
+
+	physx::PxScene* mScene;
+	std::unordered_map<UINT, physx::PxScene*> mapScene;
+
 	//static physx::PxCookingParams* mCooking;
+	static physx::PxDefaultCpuDispatcher* InitializeCpuDispatcher(/*physx::PxPhysics* _Physics*/);
 
 };
 
