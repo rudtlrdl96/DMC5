@@ -19,6 +19,7 @@ public:
 	{
 		std::shared_ptr<GameEngineBlend> Res = GameEngineResource::Create(_Name);
 		Res->ResCreate(_Desc);
+
 		return Res;
 	}
 
@@ -29,9 +30,7 @@ protected:
 
 private:
 	D3D11_BLEND_DESC Desc = {};
-
 	ID3D11BlendState* State = nullptr;
-
 	// 최종블랜드 적용 옵션
 	//             R G B A
 	UINT Mask = 0xFFFFFFFF;

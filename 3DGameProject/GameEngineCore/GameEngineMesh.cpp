@@ -24,14 +24,13 @@ void GameEngineMesh::InputAssembler1()
 
 void GameEngineMesh::InputAssembler2()
 {
-	// 그리는 순서에 대한 데이터를 넣어준다.
+	// 그리는 순서에 대한 데이터를 넣어준다 // 012023
 	if (nullptr == IndexBufferPtr)
 	{
 		MsgAssert("인덱스 버퍼가 존재하지 않아서 인풋 어셈블러2 과정을 실행할 수 없습니다.");
 		return;
 	}
 
-	// 012023
 	IndexBufferPtr->Setting();
 }
 

@@ -14,7 +14,6 @@ GameEngineSampler::~GameEngineSampler()
 	}
 }
 
-
 void GameEngineSampler::ResCreate(const D3D11_SAMPLER_DESC& _Desc) 
 {
 	if (nullptr != State)
@@ -31,7 +30,6 @@ void GameEngineSampler::ResCreate(const D3D11_SAMPLER_DESC& _Desc)
 		return;
 	}
 }
-
 
 void GameEngineSampler::VSSetting(UINT _Slot)
 {

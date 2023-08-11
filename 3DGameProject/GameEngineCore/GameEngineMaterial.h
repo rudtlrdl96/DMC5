@@ -31,9 +31,6 @@ public:
 		return PixelShaderPtr;
 	}
 
-	//void SetVertexBuffer(const std::string_view& _Value);
-	//void SetIndexBuffer(const std::string_view& _Value);
-
 	void SetVertexShader(const std::string_view& _Value);
 	void SetRasterizer(const std::string_view& _Value);
 	void SetPixelShader(const std::string_view& _Value);
@@ -75,7 +72,6 @@ private:
 	void Rasterizer();
 	void PixelShader();
 	void OutputMerger();
-
 
 	D3D11_FILL_MODE FILL_MODE = D3D11_FILL_MODE::D3D11_FILL_SOLID;
 

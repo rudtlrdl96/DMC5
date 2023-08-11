@@ -21,13 +21,13 @@ public:
 	{
 		std::shared_ptr<GameEngineSampler> NewSampler = GameEngineResource::Create(_Name);
 		NewSampler->ResCreate(Desc);
+
 		return NewSampler;
 	}
 
 	static std::shared_ptr<GameEngineSampler> ReSetting(const std::string_view& _Name, const D3D11_SAMPLER_DESC& Desc)
 	{
 		 std::shared_ptr<GameEngineSampler> NewSampler = GameEngineResource::Find(_Name);
-		// NewTexture->ResCreate(Desc);
 
 		if (nullptr == NewSampler)
 		{
@@ -40,7 +40,6 @@ public:
 		return NewSampler;
 	}
 
-
 protected:
 
 private:
@@ -48,7 +47,6 @@ private:
 	D3D11_SAMPLER_DESC Desc;
 
 	void ResCreate(const D3D11_SAMPLER_DESC& _Desc);
-
 	void VSSetting(UINT _Slot);
 	void PSSetting(UINT _Slot);
 };

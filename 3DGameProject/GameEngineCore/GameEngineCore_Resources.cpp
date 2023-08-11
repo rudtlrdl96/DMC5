@@ -402,7 +402,7 @@ void GameEngineCore::CoreResourcesInit()
 		}
 	}
 
-	// 레스터라이저 세티
+	// 레스터라이저 세팅
 	{
 		D3D11_RASTERIZER_DESC Desc = {};
 
@@ -432,7 +432,6 @@ void GameEngineCore::CoreResourcesInit()
 		// Desc.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
 		Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
 		Desc.FrontCounterClockwise = FALSE;
-
 		std::shared_ptr<GameEngineRasterizer> Res = GameEngineRasterizer::Create("Engine2DBase", Desc);
 	}
 

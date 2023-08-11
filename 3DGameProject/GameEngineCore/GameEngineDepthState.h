@@ -19,6 +19,7 @@ public:
 	{
 		std::shared_ptr<GameEngineDepthState> Res = GameEngineResource::Create(_Name);
 		Res->ResCreate(_Desc);
+
 		return Res;
 	}
 
@@ -29,7 +30,6 @@ protected:
 
 private:
 	D3D11_DEPTH_STENCIL_DESC Desc = {};
-
 	ID3D11DepthStencilState* State = nullptr;
 };
 

@@ -44,8 +44,6 @@ public:
 		return Res;
 	}
 
-
-
 	std::shared_ptr<GameEngineVertexBuffer> GetVertexBuffer()
 	{
 		return VertexBufferPtr;
@@ -68,7 +66,6 @@ public:
 
 protected:
 	void Setting() override;
-
 	void InputAssembler1();
 	void InputAssembler2();
 

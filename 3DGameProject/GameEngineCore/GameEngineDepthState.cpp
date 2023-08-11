@@ -14,7 +14,6 @@ GameEngineDepthState::~GameEngineDepthState()
 	}
 }
 
-
 void GameEngineDepthState::Setting() 
 {
 	if (nullptr == State)
@@ -22,9 +21,7 @@ void GameEngineDepthState::Setting()
 		MsgAssert("깊이버퍼 스테이트가 만들어지지 않았습니다.");
 	}
 
-	// 내가 만든 팩터를 넣어줄수가 있는데.
 	GameEngineDevice::GetContext()->OMSetDepthStencilState(State, 0);
-
 }
 
 void GameEngineDepthState::ResCreate(const D3D11_DEPTH_STENCIL_DESC& _Value)
@@ -35,5 +32,4 @@ void GameEngineDepthState::ResCreate(const D3D11_DEPTH_STENCIL_DESC& _Value)
 	{
 		MsgAssert("깊이 버퍼 스테이트 생성에 실패했습니다.");
 	}
-
 }

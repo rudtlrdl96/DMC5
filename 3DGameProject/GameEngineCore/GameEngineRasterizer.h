@@ -19,6 +19,7 @@ public:
 	{
 		std::shared_ptr<GameEngineRasterizer> Res = GameEngineResource::Create(_Name);
 		Res->ResCreate(_Desc);
+
 		return Res;
 	}
 
@@ -50,7 +51,6 @@ protected:
 
 private:
 	D3D11_RASTERIZER_DESC Desc = {};
-
 	ID3D11RasterizerState* CurState = nullptr;
 	ID3D11RasterizerState* SolidState = nullptr;
 	ID3D11RasterizerState* WireframeState = nullptr;

@@ -25,11 +25,8 @@ void GameEngineBlend::Setting()
 	{
 		MsgAssert("아직 처리 하지 않는 블랜드 방식입니다 블랜드 필터 입력기능을 만들어 주세요.");
 	}
-	
 
-	// 내가 만든 팩터를 넣어줄수가 있는데.
 	GameEngineDevice::GetContext()->OMSetBlendState(State, nullptr, Mask);
-
 }
 
 void GameEngineBlend::ResCreate(const D3D11_BLEND_DESC& _Value)

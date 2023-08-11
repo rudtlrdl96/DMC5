@@ -25,6 +25,7 @@ public:
 		std::shared_ptr<GameEngineVertexBuffer> Res = GameEngineResource::Create(_Name);
 		Res->LayOutInfo = &VertexType::LayOut;
 		Res->ResCreate(&_Vertexs[0], sizeof(VertexType), static_cast<UINT>(_Vertexs.size()));
+
 		return Res;
 	}
 
@@ -34,6 +35,7 @@ public:
 		std::shared_ptr<GameEngineVertexBuffer> Res = GameEngineResource::CreateUnNamed();
 		Res->LayOutInfo = &VertexType::LayOut;
 		Res->ResCreate(&_Vertexs[0], sizeof(VertexType), static_cast<UINT>(_Vertexs.size()));
+
 		return Res;
 	}
 

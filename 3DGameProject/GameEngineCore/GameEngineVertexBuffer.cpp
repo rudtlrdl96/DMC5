@@ -45,11 +45,13 @@ void GameEngineVertexBuffer::ResCreate(const void* _Data, UINT _VertexSize, UINT
 	// CPU가 내용을 읽을 수 있도록 리소스를 매핑할 수 있습니다.이 플래그로 생성된 리소스는 파이프라인에 대한 입력 또는 출력으로 설정할 수 없으며 스테이징 용도로 생성해야 합니다(D3D11_USAGE 참조).
 
 	BufferInfo.CPUAccessFlags = 0;
+
 	if (0 == BufferInfo.CPUAccessFlags)
 	{
 		BufferInfo.Usage = D3D11_USAGE_DEFAULT;
 	}
-	else {
+	else 
+	{
 		BufferInfo.Usage = D3D11_USAGE_DYNAMIC;
 	}
 
@@ -57,7 +59,6 @@ void GameEngineVertexBuffer::ResCreate(const void* _Data, UINT _VertexSize, UINT
 	{
 		MsgAssert("버텍스 버퍼 생성에 실패했습니다.");
 	}
-
 }
 
 void GameEngineVertexBuffer::Setting()
