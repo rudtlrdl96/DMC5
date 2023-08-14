@@ -1,10 +1,30 @@
 #pragma once
 
+#include "GameEngineLevel.h"
 #include "ThirdParty/PhysX_5/inc/PxPhysicsAPI.h"
+#include "ThirdParty/PhysX_5/inc/PxConfig.h"
 #include "ThirdParty/PhysX_5/inc/foundation/PxErrorCallback.h"
 
+#pragma comment(lib, "PhysX_64.lib")
+#pragma comment(lib, "PhysXCommon_64.lib")
+#pragma comment(lib, "PhysXFoundation_64.lib")
+
+#pragma comment(lib, "PhysXFoundation_64.lib")
+#pragma comment(lib, "PhysXFoundation_64.lib")
+
+#pragma comment(lib, "PhysXExtensions_static_64.lib")
+#pragma comment(lib, "PhysXCooking_64.lib")
+#pragma comment(lib, "PhysXCharacterKinematic_static_64.lib")
+
+//#pragma comment (lib, "PhysX_static_64.lib")
+//#pragma comment (lib, "PhysXCommon_static_64.lib")
+//#pragma comment (lib, "PhysXFoundation_static_64.lib")
+//#pragma comment (lib, "PhysXPvdSDK_static_64.lib")
+//#pragma comment (lib, "PhysXCooking_static_64.lib")
+//#pragma comment (lib, "PhysXCharacterKinematic_static_64.lib")
+
 // Ό³Έν :
-class GameEnginePhysics
+class GameEnginePhysics : public GameEngineLevel
 {
 public:
 	// constrcuter destructer
@@ -26,8 +46,6 @@ public:
 		}
 	};
 
-	static void Release();
-	static HRESULT Initialize();
 	static void Render(std::shared_ptr<class GameEngineLevel> Level, float _DeltaTime);
 	void Simulate(const float _fDeltaTime);
 	void FetchResults(const bool _bBlock);
@@ -71,22 +89,33 @@ public:
 	//}
 
 protected:
+	void Start() override;
+	void Update(float _DeltaTime) override;
+	void Render(float _DeltaTime) override;
+
+	void LevelChangeStart() override;
+	void LevelChangeEnd() override;
 
 private:
-	static UserErrorCallback gDefaultErrorCallback;
-	static physx::PxDefaultAllocator gDefaultAllocatorCallback;
+	//physx::PxDefaultAllocator		DefaultAllocator_;
+	UserErrorCallback gDefaultErrorCallback;
+	physx::PxDefaultAllocator gDefaultAllocatorCallback;
+	physx::PxCookingParams* mCooking;
 
-	static physx::PxFoundation* mFoundation;
-	static physx::PxPvd* mPVD;
 	static physx::PxPhysics* mPhysics;
-	static physx::PxMaterial* mDefaultMaterial;
-	static physx::PxDefaultCpuDispatcher* mDispatcher;
+	static physx::PxScene* mScene;
+	physx::PxFoundation* mFoundation = NULL;
+	physx::PxControllerManager* CtrManager_ = NULL;
 
-	physx::PxScene* mScene;
-	std::unordered_map<UINT, physx::PxScene*> mapScene;
+	physx::PxPvd* mPVD = NULL;
+	physx::PxDefaultCpuDispatcher* mDispatcher = NULL;
 
-	//static physx::PxCookingParams* mCooking;
-	static physx::PxDefaultCpuDispatcher* InitializeCpuDispatcher(/*physx::PxPhysics* _Physics*/);
+	physx::PxMaterial* mDefaultMaterial;
 
+	//std::unordered_map<UINT, physx::PxScene*> mapScene;
+
+	physx::PxDefaultCpuDispatcher* InitializeCpuDispatcher(/*physx::PxPhysics* _Physics*/);
+	void Initialize();
+	void Release();
 };
 

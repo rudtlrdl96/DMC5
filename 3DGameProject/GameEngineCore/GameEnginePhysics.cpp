@@ -1,20 +1,17 @@
 #include "PrecompileHeader.h"
 #include "GameEnginePhysics.h"
 
+#include "ThirdParty/PhysX_5/inc/PxPhysicsAPI.h"
+#include "ThirdParty/PhysX_5/inc/PxConfig.h"
+#include "ThirdParty/PhysX_5/inc/foundation/PxErrorCallback.h"
 #include "ThirdParty/PhysX_5/inc/extensions/PxDefaultCpuDispatcher.h"
 
 #ifdef _DEBUG
 #define PVD_HOST "127.0.0.1"
 #endif // _DEBUG
 
-physx::PxDefaultAllocator GameEnginePhysics::gDefaultAllocatorCallback;
-GameEnginePhysics::UserErrorCallback GameEnginePhysics::gDefaultErrorCallback;
-
-physx::PxFoundation* GameEnginePhysics::mFoundation = nullptr;
-physx::PxPhysics* GameEnginePhysics::mPhysics = nullptr;
-physx::PxMaterial* GameEnginePhysics::mDefaultMaterial = nullptr;
-physx::PxPvd* GameEnginePhysics::mPVD = nullptr;
-physx::PxDefaultCpuDispatcher* GameEnginePhysics::mDispatcher = nullptr;
+physx::PxPhysics* GameEnginePhysics::mPhysics = NULL;
+physx::PxScene* GameEnginePhysics::mScene = NULL;
 
 GameEnginePhysics::GameEnginePhysics() 
 {
@@ -24,16 +21,45 @@ GameEnginePhysics::~GameEnginePhysics()
 {
 }
 
+void GameEnginePhysics::Start() {}
+void GameEnginePhysics::Update(float _DeltaTime) {}
+void GameEnginePhysics::Render(float _DeltaTime) {}
+
+void GameEnginePhysics::LevelChangeStart()
+{
+	Initialize();
+}
+
+void GameEnginePhysics::LevelChangeEnd()
+{
+	Release();
+}
+
 void GameEnginePhysics::Release()
 {
-	//scene->release();
+	//if (nullptr != mCooking)
+	//{
+	//	PX_RELEASE(mCooking);
+	//}
+	if (nullptr != mScene)
+	{
+		PX_RELEASE(mScene);
+		mScene = NULL;
+	}
+	if (nullptr != mDispatcher)
+	{
+		PX_RELEASE(mDispatcher);
+		mDispatcher = NULL;
+	}
 	if (nullptr != mPhysics)
 	{
 		PX_RELEASE(mPhysics);
+		mPhysics = NULL;
 	}
 	if (nullptr != mFoundation)
 	{
 		PX_RELEASE(mFoundation);
+		mFoundation = NULL;
 	}
 }
 
@@ -79,22 +105,22 @@ physx::PxDefaultCpuDispatcher* GameEnginePhysics::InitializeCpuDispatcher(/*phys
 	return cpuDispatcher;
 }
 
-HRESULT GameEnginePhysics::Initialize()
+void GameEnginePhysics::Initialize()
 {
 	mFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, gDefaultAllocatorCallback, gDefaultErrorCallback);
-	
 	if (nullptr == mFoundation)
 	{
 		MsgAssert("PxCreateFoundation 실패");
 	}
 
 #ifdef _DEBUG
-	//mPVD = physx::PxCreatePvd(*mFoundation);
+	//mPVD = PxCreatePvd(*mFoundation);
 	//if (nullptr == mPVD)
 	//{
 	//	MsgAssert("PxCreatePvd 실패");
-	//	return E_FAIL;
+	//	return;
 	//}
+
 	//physx::PxPvdTransport* pPVDTransport = physx::PxDefaultPvdSocketTransportCreate(PVD_HOST, 5425, 10);
 	//mPVD->connect(*pPVDTransport, physx::PxPvdInstrumentationFlag::eALL);
 #endif
@@ -113,8 +139,6 @@ HRESULT GameEnginePhysics::Initialize()
 
 	mDefaultMaterial = mPhysics->createMaterial(0.5f, 0.5f, 0.f);
 	//mDispatcher = InitializeCpuDispatcher();
-
-	return S_OK;
 }
 
 void GameEnginePhysics::Render(std::shared_ptr<class GameEngineLevel> Level, float _DeltaTime)
@@ -284,7 +308,7 @@ HRESULT GameEnginePhysics::CreateScene(const UINT _nSceneID)
 	//pScene->setSimulationEventCallback(new CollisionCallback);
 
 	//map container에 저장
-	mapScene.emplace(_nSceneID, pScene);
+	// mapScene.emplace(_nSceneID, pScene);
 
 	return S_OK;
 

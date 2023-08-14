@@ -64,7 +64,7 @@ void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 	GameEngineDevice::Initialize();        // 다이렉트 디바이스 생성
 	CoreResourcesInit();                   // 다이렉트 리소스 생성
 	GameEngineGUI::Initialize();           // Imgui 생성
-	GameEnginePhysics::Initialize();
+	// GameEnginePhysics::Initialize();
 
 	if (nullptr == _ContentsStart)
 	{
@@ -189,6 +189,6 @@ void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)
 
 	GameEngineDevice::Release();
 	GameEngineWindow::Release();
-	GameEnginePhysics::Release();
+	// GameEnginePhysics::Release();
 }
 

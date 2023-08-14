@@ -1,13 +1,9 @@
 #pragma once
 
-//#include <GameEngineCore/ThirdParty/PhysX 5/inc/extensions/PxDefaultAllocator.h>
-//#include <GameEngineCore/ThirdParty/PhysX 5/inc/extensions/PxDefaultErrorCallback.h>
-//#include <GameEngineCore/ThirdParty/PhysX 5/inc/foundation/PxFoundation.h>
-//#include <GameEngineCore/ThirdParty/PhysX 5/inc/PxPhysics.h>
-//#include <GameEngineCore/ThirdParty/PhysX 5/inc/PxMaterial.h>
+#include <GameEngineCore/GameEnginePhysics.h>
 
 // Ό³Έν :
-class TestLevel : public GameEngineLevel
+class TestLevel : public GameEnginePhysics
 {
 public:
 	// constrcuter destructer
@@ -31,12 +27,5 @@ protected:
 private:
 	bool IsMessage = false;
 
-	//physx::PxDefaultAllocator gAllocator;
-	//physx::PxDefaultErrorCallback gErrorCallback;
-	//physx::PxFoundation* foundation = nullptr;
-	//physx::PxPhysics* physics = nullptr;
-	//physx::PxMaterial* gMaterial = nullptr;
-
-	int PhysXFunction();
 };
 
