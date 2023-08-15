@@ -1,8 +1,6 @@
 #include "PrecompileHeader.h"
 #include "MainLevel.h"
 
-#include <GameEngineCore/GameEnginePhysics.h>
-
 #include "Player.h"
 
 MainLevel::MainLevel() 

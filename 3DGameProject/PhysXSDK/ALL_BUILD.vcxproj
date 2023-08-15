@@ -1,0 +1,242 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ResolveNugetPackages>false</ResolveNugetPackages>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="debug|x64">
+      <Configuration>debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="checked|x64">
+      <Configuration>checked</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="profile|x64">
+      <Configuration>profile</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="release|x64">
+      <Configuration>release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8201827E-D23C-33DB-B4F4-2AD464A3B288}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>ALL_BUILD</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='checked|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='profile|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='debug|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='checked|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='profile|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='release|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='checked|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='profile|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\CMakeLists.txt">
+      <StdOutEncoding>UTF-8</StdOutEncoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='debug|x64'">Building Custom Rule C:/Users/apple/Documents/tmp/PhysX/physx/source/compiler/cmake/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/apple/Documents/tmp/PhysX/physx/compiler/public -BC:/Users/apple/Documents/tmp/PhysX/physx/compiler/vc16win64 --check-stamp-file C:/Users/apple/Documents/tmp/PhysX/physx/compiler/vc16win64/sdk_source_bin/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='debug|x64'">C:\Users\apple\Documents\tmp\PhysX\externals\cmakemodules\GetCompilerAndPlatform.cmake;C:\Users\apple\Documents\tmp\PhysX\externals\cmakemodules\NvidiaBuildOptions.cmake;C:\Users\apple\Documents\tmp\PhysX\externals\cmakemodules\SetOutputPaths.cmake;C:\Users\apple\Documents\tmp\PhysX\externals\cmakemodules\template\PxIncludeTemplate.h;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\FastXml.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\LowLevel.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\LowLevelAABB.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\LowLevelDynamics.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysX.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXCharacterKinematic.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXCommon.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXCooking.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXExtensions.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXFoundation.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXPvdSDK.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXTask.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXVehicle.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\SceneQuery.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\SimulationController.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\CMakeLists.txt;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\FastXml.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\LowLevel.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\LowLevelAABB.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\LowLevelDynamics.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysX.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXCharacterKinematic.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXCommon.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXCooking.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXExtensions.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXFoundation.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXPvdSDK.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXTask.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXVehicle.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\SceneQuery.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\SimulationController.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='debug|x64'">C:\Users\apple\Documents\tmp\PhysX\physx\compiler\vc16win64\sdk_source_bin\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='checked|x64'">Building Custom Rule C:/Users/apple/Documents/tmp/PhysX/physx/source/compiler/cmake/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='checked|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/apple/Documents/tmp/PhysX/physx/compiler/public -BC:/Users/apple/Documents/tmp/PhysX/physx/compiler/vc16win64 --check-stamp-file C:/Users/apple/Documents/tmp/PhysX/physx/compiler/vc16win64/sdk_source_bin/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='checked|x64'">C:\Users\apple\Documents\tmp\PhysX\externals\cmakemodules\GetCompilerAndPlatform.cmake;C:\Users\apple\Documents\tmp\PhysX\externals\cmakemodules\NvidiaBuildOptions.cmake;C:\Users\apple\Documents\tmp\PhysX\externals\cmakemodules\SetOutputPaths.cmake;C:\Users\apple\Documents\tmp\PhysX\externals\cmakemodules\template\PxIncludeTemplate.h;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\FastXml.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\LowLevel.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\LowLevelAABB.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\LowLevelDynamics.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysX.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXCharacterKinematic.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXCommon.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXCooking.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXExtensions.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXFoundation.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXPvdSDK.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXTask.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXVehicle.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\SceneQuery.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\SimulationController.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\CMakeLists.txt;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\FastXml.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\LowLevel.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\LowLevelAABB.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\LowLevelDynamics.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysX.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXCharacterKinematic.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXCommon.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXCooking.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXExtensions.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXFoundation.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXPvdSDK.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXTask.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXVehicle.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\SceneQuery.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\SimulationController.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='checked|x64'">C:\Users\apple\Documents\tmp\PhysX\physx\compiler\vc16win64\sdk_source_bin\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='checked|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='profile|x64'">Building Custom Rule C:/Users/apple/Documents/tmp/PhysX/physx/source/compiler/cmake/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='profile|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/apple/Documents/tmp/PhysX/physx/compiler/public -BC:/Users/apple/Documents/tmp/PhysX/physx/compiler/vc16win64 --check-stamp-file C:/Users/apple/Documents/tmp/PhysX/physx/compiler/vc16win64/sdk_source_bin/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='profile|x64'">C:\Users\apple\Documents\tmp\PhysX\externals\cmakemodules\GetCompilerAndPlatform.cmake;C:\Users\apple\Documents\tmp\PhysX\externals\cmakemodules\NvidiaBuildOptions.cmake;C:\Users\apple\Documents\tmp\PhysX\externals\cmakemodules\SetOutputPaths.cmake;C:\Users\apple\Documents\tmp\PhysX\externals\cmakemodules\template\PxIncludeTemplate.h;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\FastXml.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\LowLevel.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\LowLevelAABB.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\LowLevelDynamics.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysX.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXCharacterKinematic.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXCommon.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXCooking.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXExtensions.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXFoundation.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXPvdSDK.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXTask.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXVehicle.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\SceneQuery.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\SimulationController.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\CMakeLists.txt;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\FastXml.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\LowLevel.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\LowLevelAABB.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\LowLevelDynamics.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysX.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXCharacterKinematic.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXCommon.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXCooking.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXExtensions.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXFoundation.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXPvdSDK.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXTask.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXVehicle.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\SceneQuery.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\SimulationController.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='profile|x64'">C:\Users\apple\Documents\tmp\PhysX\physx\compiler\vc16win64\sdk_source_bin\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='profile|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='release|x64'">Building Custom Rule C:/Users/apple/Documents/tmp/PhysX/physx/source/compiler/cmake/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/apple/Documents/tmp/PhysX/physx/compiler/public -BC:/Users/apple/Documents/tmp/PhysX/physx/compiler/vc16win64 --check-stamp-file C:/Users/apple/Documents/tmp/PhysX/physx/compiler/vc16win64/sdk_source_bin/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='release|x64'">C:\Users\apple\Documents\tmp\PhysX\externals\cmakemodules\GetCompilerAndPlatform.cmake;C:\Users\apple\Documents\tmp\PhysX\externals\cmakemodules\NvidiaBuildOptions.cmake;C:\Users\apple\Documents\tmp\PhysX\externals\cmakemodules\SetOutputPaths.cmake;C:\Users\apple\Documents\tmp\PhysX\externals\cmakemodules\template\PxIncludeTemplate.h;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\FastXml.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\LowLevel.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\LowLevelAABB.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\LowLevelDynamics.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysX.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXCharacterKinematic.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXCommon.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXCooking.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXExtensions.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXFoundation.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXPvdSDK.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXTask.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\PhysXVehicle.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\SceneQuery.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\SimulationController.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\CMakeLists.txt;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\FastXml.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\LowLevel.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\LowLevelAABB.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\LowLevelDynamics.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysX.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXCharacterKinematic.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXCommon.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXCooking.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXExtensions.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXFoundation.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXPvdSDK.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXTask.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\PhysXVehicle.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\SceneQuery.cmake;C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\windows\SimulationController.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='release|x64'">C:\Users\apple\Documents\tmp\PhysX\physx\compiler\vc16win64\sdk_source_bin\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='release|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\apple\Documents\tmp\PhysX\physx\compiler\vc16win64\ZERO_CHECK.vcxproj">
+      <Project>{13407D7A-12B9-3D6D-B7F2-85E0EDF1596C}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\apple\Documents\tmp\PhysX\physx\compiler\vc16win64\sdk_source_bin\FastXml.vcxproj">
+      <Project>{97E24DD6-9434-3D18-A5D7-0CBEC9BA62CC}</Project>
+      <Name>FastXml</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\apple\Documents\tmp\PhysX\physx\compiler\vc16win64\sdk_source_bin\LowLevel.vcxproj">
+      <Project>{361EC7F5-6BEF-32EB-AEDE-A693440090B6}</Project>
+      <Name>LowLevel</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\apple\Documents\tmp\PhysX\physx\compiler\vc16win64\sdk_source_bin\LowLevelAABB.vcxproj">
+      <Project>{E9AFD77F-7049-3686-8578-92770FE313D9}</Project>
+      <Name>LowLevelAABB</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\apple\Documents\tmp\PhysX\physx\compiler\vc16win64\sdk_source_bin\LowLevelDynamics.vcxproj">
+      <Project>{478DF678-210D-3C32-A704-0169B6F89667}</Project>
+      <Name>LowLevelDynamics</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\apple\Documents\tmp\PhysX\physx\compiler\vc16win64\sdk_source_bin\PhysX.vcxproj">
+      <Project>{9D82DCB7-14BE-3D2F-ADAC-5E521197D3B6}</Project>
+      <Name>PhysX</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\apple\Documents\tmp\PhysX\physx\compiler\vc16win64\sdk_source_bin\PhysXCharacterKinematic.vcxproj">
+      <Project>{149DF25F-1E80-3B4C-B655-397EFC644673}</Project>
+      <Name>PhysXCharacterKinematic</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\apple\Documents\tmp\PhysX\physx\compiler\vc16win64\sdk_source_bin\PhysXCommon.vcxproj">
+      <Project>{10E0E127-D4D2-390D-94C4-A6502FE67F55}</Project>
+      <Name>PhysXCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\apple\Documents\tmp\PhysX\physx\compiler\vc16win64\sdk_source_bin\PhysXCooking.vcxproj">
+      <Project>{8EAF4B0A-144B-3076-9131-26753841A8C9}</Project>
+      <Name>PhysXCooking</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\apple\Documents\tmp\PhysX\physx\compiler\vc16win64\sdk_source_bin\PhysXExtensions.vcxproj">
+      <Project>{2F06D804-2603-340C-9AE2-79CDF08E3F2F}</Project>
+      <Name>PhysXExtensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\apple\Documents\tmp\PhysX\physx\compiler\vc16win64\sdk_source_bin\PhysXFoundation.vcxproj">
+      <Project>{E079F69E-A1D4-3930-A8B4-0A3C62E1DBEF}</Project>
+      <Name>PhysXFoundation</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\apple\Documents\tmp\PhysX\physx\compiler\vc16win64\sdk_source_bin\PhysXPvdSDK.vcxproj">
+      <Project>{6F142B8C-4525-3EB4-AF00-117221B43F47}</Project>
+      <Name>PhysXPvdSDK</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\apple\Documents\tmp\PhysX\physx\compiler\vc16win64\sdk_source_bin\PhysXTask.vcxproj">
+      <Project>{367FBC5B-9428-3424-B9C8-0FD94119C978}</Project>
+      <Name>PhysXTask</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\apple\Documents\tmp\PhysX\physx\compiler\vc16win64\sdk_source_bin\PhysXVehicle.vcxproj">
+      <Project>{E1A500F0-4374-3714-A5DF-D83766438287}</Project>
+      <Name>PhysXVehicle</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\apple\Documents\tmp\PhysX\physx\compiler\vc16win64\sdk_source_bin\SceneQuery.vcxproj">
+      <Project>{D1CA3CA2-11FA-3B85-8257-2AB082A77D48}</Project>
+      <Name>SceneQuery</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\apple\Documents\tmp\PhysX\physx\compiler\vc16win64\sdk_source_bin\SimulationController.vcxproj">
+      <Project>{43FA86A3-905C-3EAC-A73B-D690881D45FD}</Project>
+      <Name>SimulationController</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

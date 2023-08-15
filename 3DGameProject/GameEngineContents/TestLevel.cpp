@@ -31,11 +31,12 @@ void TestLevel::Update(float _DeltaTime)
 void TestLevel::LevelChangeStart()
 {
 	GameEngineLevel::LevelChangeStart();
-	GameEnginePhysics::LevelChangeStart();
+	PhysicsLevel::LevelChangeStart();
 }
 
 void TestLevel::LevelChangeEnd()
 {
 	IsMessage = false;
 	GameEngineLevel::LevelChangeEnd();
+	PhysicsLevel::LevelChangeEnd();
 }

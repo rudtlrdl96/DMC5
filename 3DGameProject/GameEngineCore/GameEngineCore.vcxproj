@@ -73,25 +73,25 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\;..\GameEngineCore\ThirdParty\FBX\Inc\;..\GameEngineCore\ThirdParty\PhysX_5\Inc\;</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\;..\GameEngineCore\ThirdParty\FBX\Inc\;..\GameEngineCore\ThirdParty\PhysX_4_1\Inc\;..\..\</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDir)Bin\$(Platform)\$(Configuration)\;</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\;..\GameEngineCore\ThirdParty\FBX\Inc\;..\GameEngineCore\ThirdParty\PhysX_5\Inc\;</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\;..\GameEngineCore\ThirdParty\FBX\Inc\;..\GameEngineCore\ThirdParty\PhysX_4_1\Inc\;..\..\</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDir)Bin\$(Platform)\$(Configuration)\;</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\;..\GameEngineCore\ThirdParty\FBX\Inc\;..\GameEngineCore\ThirdParty\PhysX_5\Inc\;</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\;..\GameEngineCore\ThirdParty\FBX\Inc\;..\GameEngineCore\ThirdParty\PhysX_4_1\Inc\;..\..\</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(SolutionDir)Bin\$(Platform)\$(Configuration)\;</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\;..\GameEngineCore\ThirdParty\FBX\Inc\;..\GameEngineCore\ThirdParty\PhysX_5\Inc\;</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\;..\GameEngineCore\ThirdParty\FBX\Inc\;..\GameEngineCore\ThirdParty\PhysX_4_1\Inc\;..\..\</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(SolutionDir)Bin\$(Platform)\$(Configuration)\;</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -285,10 +285,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="GameEnginePhysics.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="GameEnginePixelShader.h" />
     <ClInclude Include="GameEngineRasterizer.h">
       <SubType>
@@ -368,10 +364,207 @@
     <ClInclude Include="imstb_rectpack.h" />
     <ClInclude Include="imstb_textedit.h" />
     <ClInclude Include="imstb_truetype.h" />
+    <ClInclude Include="PhysicsLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="PrecompileHeader.h" />
     <ClInclude Include="ThirdParty\DirectXTex\inc\DirectXTex.h" />
     <ClInclude Include="ThirdParty\FW1Font\Inc\FW1FontWrapper.h" />
-    <ClInclude Include="ThirdParty\PhysX_5\inc\PxPhysicsAPI.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\allocator.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\assertions.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\config.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\characterkinematic\PxBoxController.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\characterkinematic\PxCapsuleController.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\characterkinematic\PxController.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\characterkinematic\PxControllerBehavior.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\characterkinematic\PxControllerManager.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\characterkinematic\PxControllerObstacles.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\characterkinematic\PxExtended.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\collision\PxCollisionDefs.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\common\PxBase.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\common\PxCollection.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\common\PxCoreUtilityTypes.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\common\PxMetaData.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\common\PxMetaDataFlags.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\common\PxPhysicsInsertionCallback.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\common\PxPhysXCommonConfig.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\common\PxProfileZone.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\common\PxRenderBuffer.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\common\PxSerialFramework.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\common\PxSerializer.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\common\PxStringTable.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\common\PxTolerancesScale.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\common\PxTypeInfo.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\common\windows\PxWindowsDelayLoadHook.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\cooking\PxBVH33MidphaseDesc.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\cooking\PxBVH34MidphaseDesc.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\cooking\PxBVHStructureDesc.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\cooking\Pxc.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\cooking\PxConvexMeshDesc.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\cooking\PxCooking.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\cooking\PxMidphaseDesc.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\cooking\PxTriangleMeshDesc.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\cudamanager\PxCudaContextManager.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\cudamanager\PxCudaMemoryManager.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxBinaryConverter.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxBroadPhaseExt.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxCollectionExt.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxConstraintExt.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxContactJoint.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxConvexMeshExt.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxD6Joint.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxD6JointCreate.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxDefaultAllocator.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxDefaultCpuDispatcher.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxDefaultErrorCallback.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxDefaultSimulationFilterShader.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxDefaultStreams.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxDistanceJoint.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxExtensionsAPI.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxFixedJoint.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxJoint.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxJointLimit.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxMassProperties.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxPrismaticJoint.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxRaycastCCD.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxRepXSerializer.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxRepXSimpleType.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxRevoluteJoint.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxRigidActorExt.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxRigidBodyExt.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxSceneQueryExt.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxSerialization.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxShapeExt.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxSimpleFactory.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxSmoothNormals.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxSphericalJoint.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxStringTableExt.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\extensions\PxTriangleMeshExt.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\filebuf\PxFileBuf.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\Px.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxAllocatorCallback.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxAssert.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxBitAndData.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxBounds3.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxErrorCallback.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxErrors.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxFlags.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxFoundationConfig.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxIntrinsics.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxIO.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxMat33.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxMat44.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxMath.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxMathUtils.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxMemory.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxPlane.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxPreprocessor.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxProfiler.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxQuat.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxSharedAssert.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxSimpleTypes.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxStrideIterator.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxTransform.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxUnionCast.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxVec2.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxVec3.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\PxVec4.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\foundation\windows\PxWindowsIntrinsics.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geometry\PxBoxGeometry.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geometry\PxBVHStructure.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geometry\PxCapsuleGeometry.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geometry\PxConvexMesh.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geometry\PxConvexMeshGeometry.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geometry\PxGeometry.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geometry\PxGeometryHelpers.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geometry\PxGeometryQuery.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geometry\PxHeightField.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geometry\PxHeightFieldDesc.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geometry\PxHeightFieldFlag.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geometry\PxHeightFieldGeometry.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geometry\PxHeightFieldSample.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geometry\PxMeshQuery.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geometry\PxMeshScale.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geometry\PxPlaneGeometry.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geometry\PxSimpleTriangleMesh.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geometry\PxSphereGeometry.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geometry\PxTriangle.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geometry\PxTriangleMesh.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geometry\PxTriangleMeshGeometry.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geomutils\GuContactBuffer.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\geomutils\GuContactPoint.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\gpu\PxGpu.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\pvd\PxPvd.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\pvd\PxPvdSceneClient.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\pvd\PxPvdTransport.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxActor.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxAggregate.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxArticulation.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxArticulationBase.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxArticulationJoint.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxArticulationJointReducedCoordinate.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxArticulationLink.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxArticulationReducedCoordinate.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxBatchQuery.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxBatchQueryDesc.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxBroadPhase.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxClient.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxConfig.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxConstraint.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxConstraintDesc.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxContact.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxContactModifyCallback.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxDeletionListener.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxFiltering.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxForceMode.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxFoundation.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxImmediateMode.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxLockedData.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxMaterial.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxPhysics.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxPhysicsAPI.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxPhysicsSerialization.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxPhysicsVersion.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxPhysXConfig.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxPruningStructure.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxQueryFiltering.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxQueryReport.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxRigidActor.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxRigidBody.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxRigidDynamic.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxRigidStatic.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxScene.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxSceneDesc.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxSceneLock.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxShape.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxSimulationEventCallback.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxSimulationStatistics.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\PxVisualizationParameter.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\solver\PxSolverDefs.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\task\PxCpuDispatcher.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\task\PxTask.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\task\PxTaskDefine.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\task\PxTaskManager.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\vehicle\PxVehicleComponents.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\vehicle\PxVehicleDrive.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\vehicle\PxVehicleDrive4W.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\vehicle\PxVehicleDriveNW.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\vehicle\PxVehicleDriveTank.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\vehicle\PxVehicleNoDrive.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\vehicle\PxVehicleSDK.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\vehicle\PxVehicleShaders.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\vehicle\PxVehicleTireFriction.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\vehicle\PxVehicleUpdate.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\vehicle\PxVehicleUtil.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\vehicle\PxVehicleUtilControl.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\vehicle\PxVehicleUtilSetup.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\vehicle\PxVehicleUtilTelemetry.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\vehicle\PxVehicleWheels.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\reader.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\value.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\version.h" />
+    <ClInclude Include="ThirdParty\PhysX_4_1\inc\writer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BlurEffect.cpp">
@@ -492,10 +685,6 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="GameEnginePhysics.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="GameEnginePixelShader.cpp" />
     <ClCompile Include="GameEngineRasterizer.cpp">
       <SubType>
@@ -574,6 +763,10 @@
     <ClCompile Include="imgui_impl_win32.cpp" />
     <ClCompile Include="imgui_tables.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
+    <ClCompile Include="PhysicsLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="PrecompileHeader.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -765,398 +958,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
       <FileType>Document</FileType>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\freeglutd.dll">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\LowLevelAABB_static_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\LowLevelDynamics_static_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\LowLevel_static_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXCharacterKinematic_static_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXCommon_64.dll">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXCommon_64.exp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXCommon_64.map">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXCommon_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXCooking_64.dll">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXCooking_64.exp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXCooking_64.map">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXCooking_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXDevice64.dll">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXExtensions_static_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXFoundation_64.dll">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXFoundation_64.exp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXFoundation_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXGpu_64.dll">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXPvdSDK_static_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXTask_static_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXVehicle2_static_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXVehicle_static_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysX_64.dll">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysX_64.exp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysX_64.map">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysX_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PVDRuntime_64.dll">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PVDRuntime_64.exp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PVDRuntime_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\SceneQuery_static_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\SimulationController_static_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\freeglut.dll">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\LowLevelAABB_static_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\LowLevelDynamics_static_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\LowLevel_static_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXCharacterKinematic_static_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXCommon_64.dll">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXCommon_64.exp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXCommon_64.map">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXCommon_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXCooking_64.dll">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXCooking_64.exp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXCooking_64.map">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXCooking_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXDevice64.dll">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXExtensions_static_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXFoundation_64.dll">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXFoundation_64.exp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXFoundation_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <None Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXGpu_64.zip">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </None>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXGpu_64.dll">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXPvdSDK_static_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXTask_static_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXVehicle2_static_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXVehicle_static_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysX_64.dll">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysX_64.exp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysX_64.map">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysX_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PVDRuntime_64.dll">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PVDRuntime_64.exp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PVDRuntime_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\SceneQuery_static_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\SimulationController_static_64.pdb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <None Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXGpu_64.zip">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="ThirdParty\DirectXTex\lib\x64\Debug\DirectXTex.lib">
@@ -1289,199 +1090,85 @@
     </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\LowLevelAABB_static_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Debug\PhysXCharacterKinematic_static_64.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\LowLevelDynamics_static_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Debug\PhysXCommon_static_64.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\LowLevel_static_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Debug\PhysXCooking_static_64.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXCharacterKinematic_static_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Debug\PhysXExtensions_static_64.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXCommon_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Debug\PhysXFoundation_static_64.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXCooking_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Debug\PhysXPvdSDK_static_64.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXExtensions_static_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Debug\PhysXVehicle_static_64.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXFoundation_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Debug\PhysX_static_64.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXPvdSDK_static_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXTask_static_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXVehicle2_static_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysXVehicle_static_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PhysX_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\PVDRuntime_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\SceneQuery_static_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Debug\SimulationController_static_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CopyFileToFolders>
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\LowLevelAABB_static_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Release\PhysXCharacterKinematic_static_64.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\LowLevelDynamics_static_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\LowLevel_static_64.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXCharacterKinematic_static_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Release\PhysXCommon_static_64.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXCommon_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Release\PhysXCooking_static_64.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXCooking_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Release\PhysXExtensions_static_64.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXExtensions_static_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Release\PhysXFoundation_static_64.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXFoundation_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Release\PhysXPvdSDK_static_64.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXPvdSDK_static_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Release\PhysXVehicle_static_64.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXTask_static_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Release\PhysX_static_64.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXVehicle2_static_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysXVehicle_static_64.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PhysX_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\PVDRuntime_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\SceneQuery_static_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="ThirdParty\PhysX_5\lib\x64\Release\SimulationController_static_64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </CopyFileToFolders>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

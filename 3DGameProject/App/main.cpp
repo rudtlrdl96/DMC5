@@ -13,9 +13,6 @@
 #pragma comment(lib, "libxml2-md.lib")
 #pragma comment(lib, "libfbxsdk-md.lib")
 
-//#pragma comment(lib, "PhysXExtensions_static_64.lib")
-//#pragma comment(lib, "PhysXPvdSDK_static_64.lib")
-
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPWSTR    lpCmdLine,

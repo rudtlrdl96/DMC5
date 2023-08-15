@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\api\src\px_globals.cpp">
+      <Filter>API Source</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\src\pipeline\PxcContactCache.cpp">
+      <Filter>Common Source\pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\src\pipeline\PxcContactMethodImpl.cpp">
+      <Filter>Common Source\pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\src\pipeline\PxcMaterialHeightField.cpp">
+      <Filter>Common Source\pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\src\pipeline\PxcMaterialMesh.cpp">
+      <Filter>Common Source\pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\src\pipeline\PxcMaterialMethodImpl.cpp">
+      <Filter>Common Source\pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\src\pipeline\PxcMaterialShape.cpp">
+      <Filter>Common Source\pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\src\pipeline\PxcNpBatch.cpp">
+      <Filter>Common Source\pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\src\pipeline\PxcNpCacheStreamPair.cpp">
+      <Filter>Common Source\pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\src\pipeline\PxcNpContactPrepShared.cpp">
+      <Filter>Common Source\pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\src\pipeline\PxcNpMemBlockPool.cpp">
+      <Filter>Common Source\pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\src\pipeline\PxcNpThreadContext.cpp">
+      <Filter>Common Source\pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\src\PxsCCD.cpp">
+      <Filter>Software Source</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\src\PxsContactManager.cpp">
+      <Filter>Software Source</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\src\PxsContext.cpp">
+      <Filter>Software Source</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\src\PxsDefaultMemoryManager.cpp">
+      <Filter>Software Source</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\src\PxsIslandSim.cpp">
+      <Filter>Software Source</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\src\PxsMaterialCombiner.cpp">
+      <Filter>Software Source</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\src\PxsNphaseImplementationContext.cpp">
+      <Filter>Software Source</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\src\PxsSimpleIslandManager.cpp">
+      <Filter>Software Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\api\include\PxsMaterialCore.h">
+      <Filter>API Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\api\include\PxsMaterialManager.h">
+      <Filter>API Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\api\include\PxvConfig.h">
+      <Filter>API Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\api\include\PxvDynamics.h">
+      <Filter>API Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\api\include\PxvGeometry.h">
+      <Filter>API Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\api\include\PxvGlobals.h">
+      <Filter>API Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\api\include\PxvManager.h">
+      <Filter>API Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\api\include\PxvSimStats.h">
+      <Filter>API Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\include\collision\PxcContactMethodImpl.h">
+      <Filter>Common Includes\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\include\pipeline\PxcConstraintBlockStream.h">
+      <Filter>Common Includes\pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\include\pipeline\PxcContactCache.h">
+      <Filter>Common Includes\pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\include\pipeline\PxcMaterialMethodImpl.h">
+      <Filter>Common Includes\pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\include\pipeline\PxcNpBatch.h">
+      <Filter>Common Includes\pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\include\pipeline\PxcNpCache.h">
+      <Filter>Common Includes\pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\include\pipeline\PxcNpCacheStreamPair.h">
+      <Filter>Common Includes\pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\include\pipeline\PxcNpContactPrepShared.h">
+      <Filter>Common Includes\pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\include\pipeline\PxcNpMemBlockPool.h">
+      <Filter>Common Includes\pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\include\pipeline\PxcNpThreadContext.h">
+      <Filter>Common Includes\pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\include\pipeline\PxcNpWorkUnit.h">
+      <Filter>Common Includes\pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\include\utils\PxcScratchAllocator.h">
+      <Filter>Common Includes\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\common\include\utils\PxcThreadCoherentCache.h">
+      <Filter>Common Includes\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\include\PxsBodySim.h">
+      <Filter>Software Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\include\PxsCCD.h">
+      <Filter>Software Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\include\PxsContactManager.h">
+      <Filter>Software Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\include\PxsContactManagerState.h">
+      <Filter>Software Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\include\PxsContext.h">
+      <Filter>Software Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\include\PxsDefaultMemoryManager.h">
+      <Filter>Software Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\include\PxsHeapMemoryAllocator.h">
+      <Filter>Software Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\include\PxsIncrementalConstraintPartitioning.h">
+      <Filter>Software Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\include\PxsIslandManagerTypes.h">
+      <Filter>Software Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\include\PxsIslandSim.h">
+      <Filter>Software Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\include\PxsIslandNodeIndex.h">
+      <Filter>Software Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\include\PxsKernelWrangler.h">
+      <Filter>Software Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\include\PxsMaterialCombiner.h">
+      <Filter>Software Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\include\PxsMemoryManager.h">
+      <Filter>Software Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\include\PxsNphaseImplementationContext.h">
+      <Filter>Software Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\include\PxsRigidBody.h">
+      <Filter>Software Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\include\PxsShapeSim.h">
+      <Filter>Software Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\include\PxsSimpleIslandManager.h">
+      <Filter>Software Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\include\PxsSimulationController.h">
+      <Filter>Software Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\include\PxsTransformCache.h">
+      <Filter>Software Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\lowlevel\software\include\PxvNphaseImplementationContext.h">
+      <Filter>Software Includes</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="API Includes">
+      <UniqueIdentifier>{A98D2D64-5A14-32C3-B9AF-A7438E546E70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API Source">
+      <UniqueIdentifier>{8EB4F5CB-A016-37EF-AF04-3ED42F3CBE04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common Includes">
+      <UniqueIdentifier>{E2A0346D-8EB1-355C-8CF0-088506FFF3E6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common Includes\collision">
+      <UniqueIdentifier>{7F499213-096E-3438-9636-C3C624D9443B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common Includes\pipeline">
+      <UniqueIdentifier>{95E71CAF-F81D-3D92-A242-6272141A0191}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common Includes\utils">
+      <UniqueIdentifier>{100E6F16-9F2B-3C9A-BC09-033CF561D9B4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common Source">
+      <UniqueIdentifier>{8593C41E-A376-3CBD-8703-2802E2CCEAE4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common Source\pipeline">
+      <UniqueIdentifier>{FBC1F342-40BD-373B-9D1F-6B6D15970687}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Software Includes">
+      <UniqueIdentifier>{FBB17C47-EBEF-3C68-AE8D-D4FCD0A937E5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Software Source">
+      <UniqueIdentifier>{44F7EFCE-3018-3A5F-AAF4-EAF3A05945F0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

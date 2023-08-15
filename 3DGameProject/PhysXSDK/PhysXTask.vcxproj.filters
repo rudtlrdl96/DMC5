@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\task\src\TaskManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\include\task\PxCpuDispatcher.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\include\task\PxTask.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\include\task\PxTaskDefine.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\apple\Documents\tmp\PhysX\physx\include\task\PxTaskManager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\apple\Documents\tmp\PhysX\physx\source\compiler\cmake\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{8086BFCC-A230-3818-A5D7-802ECE55D565}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{E0C0A048-F7DE-3F2B-BD13-DC3B776598EA}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
