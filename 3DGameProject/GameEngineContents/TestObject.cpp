@@ -27,12 +27,15 @@ void TestObject::Start()
 		GameEngineInput::CreateKey("MoveBack", 'S');
 	}
 
-	std::shared_ptr<TestLevel> ddd = GetLevel()->DynamicThis<TestLevel>();
-	Component = CreateComponent<PhysXBoxGeometryComponent>();
-	Component->CreatePhysXActors(ddd->GetLevelScene(), ddd->GetLevelPhysics());
-
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
 	Renderer->SetFBXMesh("Knight.FBX", "MeshTexture");
+
+
+	std::shared_ptr<TestLevel> ddd = GetLevel()->DynamicThis<TestLevel>();
+
+	Component = CreateComponent<PhysXBoxGeometryComponent>();
+	Component->CreatePhysXActors(ddd->GetLevelScene(), ddd->GetLevelPhysics());
+	//Component->SetPositionSetFromParentFlag(true);
 }
 
 void TestObject::Update(float _DeltaTime)

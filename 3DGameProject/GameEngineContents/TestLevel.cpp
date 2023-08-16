@@ -16,6 +16,7 @@ TestLevel::~TestLevel()
 void TestLevel::Start()
 {
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -500.0f });
 }
 
 void TestLevel::Update(float _DeltaTime)

@@ -175,10 +175,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="ContentEnum.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="ContentsCore.h" />
     <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="FadeEffect.h">

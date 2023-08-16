@@ -46,9 +46,6 @@
     <ClInclude Include="NetLogState_EntryReady.h">
       <Filter>Server\03.LogViewer\03.State\02.EntryReady</Filter>
     </ClInclude>
-    <ClInclude Include="ContentEnum.h">
-      <Filter>Basic</Filter>
-    </ClInclude>
     <ClInclude Include="PrecompileHeader.h">
       <Filter>Basic</Filter>
     </ClInclude>
@@ -61,9 +58,11 @@
     <ClInclude Include="BaseEnemyActor.h">
       <Filter>Actor\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="TestObject.h">
       <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="ContentsEnum.h">
+      <Filter>Basic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
