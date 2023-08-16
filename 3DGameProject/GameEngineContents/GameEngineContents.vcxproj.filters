@@ -34,6 +34,9 @@
     <ClInclude Include="PacketEnum.h">
       <Filter>Server\01.Packet</Filter>
     </ClInclude>
+    <ClInclude Include="ContentEnum.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -80,6 +83,9 @@
     </Filter>
     <Filter Include="Server\01.Packet">
       <UniqueIdentifier>{a060b50f-0d32-48f9-89d8-99a98033da39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Basic">
+      <UniqueIdentifier>{aabc6096-725f-47aa-8201-d27b1ef4978d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
