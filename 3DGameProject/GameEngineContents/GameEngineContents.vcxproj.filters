@@ -58,6 +58,9 @@
     <ClInclude Include="ContentsCore.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="BaseEnemyActor.h">
+      <Filter>Actor\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -107,6 +110,9 @@
     </ClCompile>
     <ClCompile Include="ContentsCore.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseEnemyActor.cpp">
+      <Filter>Actor\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +166,15 @@
     </Filter>
     <Filter Include="Core">
       <UniqueIdentifier>{cca997d7-d9ac-4593-aacd-42f572fb258e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy">
+      <UniqueIdentifier>{ec2193ef-b7a7-4594-9b3c-3a16e74bb1c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy\NormalMonster">
+      <UniqueIdentifier>{cb99ca06-163e-4d2b-99b0-2b1df4abfd2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy\BossMonster">
+      <UniqueIdentifier>{2ee8e063-f548-41c2-9fbc-aa29201e1468}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

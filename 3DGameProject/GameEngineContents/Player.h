@@ -1,6 +1,4 @@
 #pragma once
-#include <GameEngineCore/GameEngineActor.h>
-#include <GameEngineBase/GameEngineNetObject.h>
 
 // Ό³Έν :
 class Player : public GameEngineActor, public GameEngineNetObject

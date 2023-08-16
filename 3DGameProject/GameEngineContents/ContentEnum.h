@@ -2,6 +2,7 @@
 
 enum class MonsterDamageType
 {
+	None,
 	AngleDamage,
 	Air,
 	Snatch,
