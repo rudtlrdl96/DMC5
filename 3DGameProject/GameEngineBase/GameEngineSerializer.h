@@ -79,6 +79,10 @@ public:
 		return &Data[0];
 	}
 
+	const char* GetConstCharPtr() {
+		return reinterpret_cast<const char*>(&Data[0]);
+	}
+
 	const char* GetDataConstPtr() {
 		return reinterpret_cast<const char*>(&Data[0]);
 	}

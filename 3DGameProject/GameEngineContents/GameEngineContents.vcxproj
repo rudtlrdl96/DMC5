@@ -185,10 +185,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="NetObjectBase.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="ObjectUpdatePacket.h">
       <SubType>
       </SubType>
@@ -198,6 +194,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="OldTVEffect.h" />
+    <ClInclude Include="PacketEnum.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Player.h">
       <SubType>
       </SubType>
@@ -210,10 +210,6 @@
     <ClInclude Include="TestLevel.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ConnectIDPacket.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="ContentsCore.cpp" />
     <ClCompile Include="Contents_Resources.cpp" />
     <ClCompile Include="FadeEffect.cpp">
@@ -222,14 +218,6 @@
     </ClCompile>
     <ClCompile Include="MainLevel.cpp" />
     <ClCompile Include="MyContentSpriteRenderer.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="NetObjectBase.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="ObjectUpdatePacket.cpp">
       <SubType>
       </SubType>
     </ClCompile>

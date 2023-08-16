@@ -2,17 +2,21 @@
 #include <GameEngineBase/GameEnginePacket.h>
 #include <GameEngineCore/GameEngineTransform.h>
 
+#include "PacketEnum.h"
+
 class ConnectIDPacket : public GameEnginePacket
 {
 public:
-	ConnectIDPacket();
-	~ConnectIDPacket();
+	ConnectIDPacket()
+	{
+		SetPacketID(PacketEnum::ConnectIDPacket);
+	}
 
-	ConnectIDPacket(const ConnectIDPacket& _Other) = delete;
-	ConnectIDPacket(ConnectIDPacket&& _Other) noexcept = delete;
-	ConnectIDPacket& operator=(const ConnectIDPacket& _Other) = delete;
-	ConnectIDPacket& operator=(const ConnectIDPacket&& _Other) noexcept = delete;
+	~ConnectIDPacket() override
+	{
 
+	}
+	
 protected:
 
 private:

@@ -19,6 +19,13 @@ public:
 	GameEngineNetObject& operator=(const GameEngineNetObject& _Other) = delete;
 	GameEngineNetObject& operator=(const GameEngineNetObject&& _Other) noexcept = delete;
 
+	//AtomicObjectID 를 직접 지정할 때 사용
+	static int CreateServerID()
+	{
+		return ++AtomicObjectID;
+	}
+
+
 	//서버가 동기화할 오브젝트를 생성할 때 호출시킬 초기화 함수
 	void InitServerObject();
 
@@ -33,6 +40,11 @@ public:
 	inline NetControllType  GetControllType() const
 	{
 		return ControllType;
+	}
+
+	inline int GetNetObjectID() const
+	{
+		return ObjectID;
 	}
 
 protected:

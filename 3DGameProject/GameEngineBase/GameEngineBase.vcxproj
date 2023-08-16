@@ -170,6 +170,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameEngineDispatcher.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameEngineFile.cpp">
       <SubType>
       </SubType>
@@ -245,6 +249,10 @@
     <ClInclude Include="CoreTypeDef.h" />
     <ClInclude Include="GameEngineDebug.h" />
     <ClInclude Include="GameEngineDirectory.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameEngineDispatcher.h">
       <SubType>
       </SubType>
     </ClInclude>
