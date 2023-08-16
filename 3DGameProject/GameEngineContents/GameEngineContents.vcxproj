@@ -185,6 +185,26 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="NetFsmBase.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="NetFsmStateBase.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="NetLogFSM.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="NetLogState_EntryReady.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="NetLogViewer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ObjectUpdatePacket.h">
       <SubType>
       </SubType>
@@ -218,6 +238,26 @@
     </ClCompile>
     <ClCompile Include="MainLevel.cpp" />
     <ClCompile Include="MyContentSpriteRenderer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="NetFsmBase.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="NetFsmStateBase.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="NetLogFSM.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="NetLogState_EntryReady.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="NetLogViewer.cpp">
       <SubType>
       </SubType>
     </ClCompile>
