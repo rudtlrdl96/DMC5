@@ -108,7 +108,6 @@ void GameEngineRenderUnit::Render(float _DeltaTime)
 	Mesh->Setting();
 	Pipe->RenderingPipeLineSetting();
 	ShaderResHelper.Setting();
-	// Pipe->Render();
 
 	UINT IndexCount = Mesh->IndexBufferPtr->GetIndexCount();
 	GameEngineDevice::GetContext()->DrawIndexed(IndexCount, 0, 0);

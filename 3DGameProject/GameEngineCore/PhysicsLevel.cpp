@@ -71,19 +71,38 @@ physx::PxFilterFlags contactReportFilterShader
 void PhysicsLevel::Initialize()
 {
 	m_pFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, m_Allocator, m_ErrorCallback);
+	if (!m_pFoundation)
+	{
+		MsgAssert("PxFoundation 생성 실패");
+	}
 
 	m_pPvd = PxCreatePvd(*m_pFoundation);
+	if (!m_pPvd)
+	{
+		MsgAssert("PxPvd 생성 실패");
+	}
+
 	physx::PxPvdTransport* pTransport = physx::PxDefaultPvdSocketTransportCreate(PVD_HOST, 5425, 10);
 	m_pPvd->connect(*pTransport, physx::PxPvdInstrumentationFlag::eALL);
 
 	m_pPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_pFoundation, physx::PxTolerancesScale(), true, m_pPvd);
+	if (!m_pPhysics)
+	{
+		MsgAssert("PxPhysics 생성 실패");
+	}
 
 	physx::PxSceneDesc SceneDesc(m_pPhysics->getTolerancesScale());
+
 	SceneDesc.gravity = physx::PxVec3(0.0f, -10.f, 0.0f);
 	m_pDispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 	SceneDesc.cpuDispatcher = m_pDispatcher;
 	SceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
+
 	m_pScene = m_pPhysics->createScene(SceneDesc);
+	if (!m_pScene)
+	{
+		MsgAssert("PxScene 생성 실패");
+	}
 
 	physx::PxPvdSceneClient* pPvdClient = m_pScene->getScenePvdClient();
 	if (pPvdClient)
@@ -93,13 +112,19 @@ void PhysicsLevel::Initialize()
 		pPvdClient->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
 	}
 
-	m_pMaterial = m_pPhysics->createMaterial(0.5f, 0.5f, 0.6f);
+	m_pCooking = PxCreateCooking(PX_PHYSICS_VERSION, *m_pFoundation, physx::PxCookingParams(m_pPhysics->getTolerancesScale()));
+	if (!m_pCooking)
+	{
+		MsgAssert("PxCooking 생성 실패");
+	}
 
-	physx::PxRigidStatic* pGroundPlane = PxCreatePlane(*m_pPhysics, physx::PxPlane(0, 1, 0, 0), *m_pMaterial);
-	m_pScene->addActor(*pGroundPlane);
+	//m_pMaterial = m_pPhysics->createMaterial(0.5f, 0.5f, 0.6f);
+	//physx::PxRigidStatic* pGroundPlane = PxCreatePlane(*m_pPhysics, physx::PxPlane(0, 1, 0, 0), *m_pMaterial);
+	//m_pScene->addActor(*pGroundPlane);
 
-	float4 tmpWorldPosition = { pGroundPlane->getGlobalPose().p.x , pGroundPlane->getGlobalPose().p.y  , pGroundPlane->getGlobalPose().p.z };
-
+	// Aggregate생성
+	//MapAggregate_ = Physics_->createAggregate(2000, false);
+	//Scene_->addAggregate(*MapAggregate_);
 }
 
 // 실제로 물리연산을 실행
@@ -112,9 +137,22 @@ void PhysicsLevel::Simulate(bool _Value)
 // 메모리제거
 void PhysicsLevel::Release()
 {
-	PX_RELEASE(m_pScene);
-	PX_RELEASE(m_pDispatcher);
-	PX_RELEASE(m_pPhysics);
+	if (nullptr != m_pCooking)
+	{
+		PX_RELEASE(m_pCooking);
+	}
+	if (nullptr != m_pScene)
+	{
+		PX_RELEASE(m_pScene);
+	}
+	if (nullptr != m_pDispatcher)
+	{
+		PX_RELEASE(m_pDispatcher);
+	}
+	if (nullptr != m_pPhysics)
+	{
+		PX_RELEASE(m_pPhysics);
+	}
 	if (m_pPvd)
 	{
 		physx::PxPvdTransport* pTransport = m_pPvd->getTransport();
@@ -122,26 +160,8 @@ void PhysicsLevel::Release()
 		m_pPvd = nullptr;
 		PX_RELEASE(pTransport);
 	}
-	PX_RELEASE(m_pFoundation);
-
-	//if (nullptr != mScene)
-	//{
-	//	PX_RELEASE(mScene);
-	//	mScene = NULL;
-	//}
-	//if (nullptr != mDispatcher)
-	//{
-	//	PX_RELEASE(mDispatcher);
-	//	mDispatcher = NULL;
-	//}
-	//if (nullptr != mPhysics)
-	//{
-	//	PX_RELEASE(mPhysics);
-	//	mPhysics = NULL;
-	//}
-	//if (nullptr != mFoundation)
-	//{
-	//	PX_RELEASE(mFoundation);
-	//	mFoundation = NULL;
-	//}
+	if (nullptr != m_pFoundation)
+	{
+		PX_RELEASE(m_pFoundation);
+	}
 }

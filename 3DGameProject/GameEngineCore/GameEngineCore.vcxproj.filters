@@ -763,7 +763,13 @@
     <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\vehicle\PxVehicleUtilTelemetry.h">
       <Filter>ThirdParty\PhysX_4_1\Header\PhysX_4_1\vehicle</Filter>
     </ClInclude>
+    <ClInclude Include="PhysXDefault.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
     <ClInclude Include="PhysicsLevel.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysXBoxGeometryComponent.h">
       <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>
@@ -942,6 +948,12 @@
       <Filter>Object\Rendering\Component</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsLevel.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysXBoxGeometryComponent.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysXDefault.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1292,28 +1304,26 @@
     <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Release\PhysX_static_64.lib">
       <Filter>ThirdParty\PhysX_4_1\bin\Release</Filter>
     </CopyFileToFolders>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="ThirdParty\PhysX_4_1\bin\Release\PhysXVehicle_static_64.lib">
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Release\PhysXCharacterKinematic_static_64.lib">
       <Filter>ThirdParty\PhysX_4_1\bin\Release</Filter>
-    </Library>
-    <Library Include="ThirdParty\PhysX_4_1\bin\Release\PhysXCharacterKinematic_static_64.lib">
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Release\PhysXCommon_static_64.lib">
       <Filter>ThirdParty\PhysX_4_1\bin\Release</Filter>
-    </Library>
-    <Library Include="ThirdParty\PhysX_4_1\bin\Release\PhysXCommon_static_64.lib">
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Release\PhysXCooking_static_64.lib">
       <Filter>ThirdParty\PhysX_4_1\bin\Release</Filter>
-    </Library>
-    <Library Include="ThirdParty\PhysX_4_1\bin\Release\PhysXCooking_static_64.lib">
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Release\PhysXExtensions_static_64.lib">
       <Filter>ThirdParty\PhysX_4_1\bin\Release</Filter>
-    </Library>
-    <Library Include="ThirdParty\PhysX_4_1\bin\Release\PhysXExtensions_static_64.lib">
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Release\PhysXFoundation_static_64.lib">
       <Filter>ThirdParty\PhysX_4_1\bin\Release</Filter>
-    </Library>
-    <Library Include="ThirdParty\PhysX_4_1\bin\Release\PhysXFoundation_static_64.lib">
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Release\PhysXPvdSDK_static_64.lib">
       <Filter>ThirdParty\PhysX_4_1\bin\Release</Filter>
-    </Library>
-    <Library Include="ThirdParty\PhysX_4_1\bin\Release\PhysXPvdSDK_static_64.lib">
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Release\PhysXVehicle_static_64.lib">
       <Filter>ThirdParty\PhysX_4_1\bin\Release</Filter>
-    </Library>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>

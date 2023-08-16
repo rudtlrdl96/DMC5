@@ -279,6 +279,7 @@ public:
 	void RotaitonYRad(float _Rad);
 	void RotaitonZRad(float _Rad);
 	float4 EulerDegToQuaternion();
+	float4 DegreeRotationToQuaternionReturn() const;
 	class float4x4 QuaternionToRotationMatrix();
 
 	float4 QuaternionToEulerDeg();

@@ -55,6 +55,14 @@ float4 float4::EulerDegToQuaternion()
 	return Return;
 }
 
+float4 float4::DegreeRotationToQuaternionReturn() const
+{
+	float4 Rot = *this;
+	Rot *= GameEngineMath::DegToRad;
+	Rot.DirectVector = DirectX::XMQuaternionRotationRollPitchYawFromVector(Rot.DirectVector);
+	return Rot;
+}
+
 float4 float4::QuaternionToEulerDeg()
 {
 	return QuaternionToEulerRad() * GameEngineMath::RadToDeg;
@@ -101,16 +109,12 @@ float float4::XYDistance(float4 _Value)
 {
 	float4 Len = DirectX::XMVector2Length(*this - _Value);
 	return Len.x;
-
-	// return sqrtf((x - _Value.x) * (x - _Value.x) + (y - _Value.y) * (y - _Value.y));
 }
 
 float float4::XYZDistance(float4 _Value)
 {
 	float4 Len = DirectX::XMVector3Length(*this - _Value);
 	return Len.x;
-
-	// return sqrtf((x - _Value.x) * (x - _Value.x) + (y - _Value.y) * (y - _Value.y) + (z - _Value.z) * (z - _Value.z));
 }
 
 
@@ -179,31 +183,8 @@ float4 float4::MatrixToQuaternion(const class float4x4& M)
 	return Return;
 }
 
-
-// 뭘하는 함수냐?
-// 123121 [1][2][3][1][2][1]
 std::vector<unsigned int> GameEngineMath::GetDigits(int _Value)
 {
-	// std::vector<unsigned int> ResultValue = std::vector<unsigned int>();
-
-	//if (0 == _Value)
-	//{
-	//	ResultValue.push_back(0);
-	//	return ResultValue;
-	//}
-
-	//int Lenth = GetLenth(_Value);
-	//ResultValue.resize(Lenth);
-
-	//int Value = _Value;
-	//int HighestDigitValue = 0;
-	//for (size_t i = 0; i < Lenth; i++)
-	//{
-	//	HighestDigitValue = Value / pow(10, Lenth - (1 + i));
-	//	ResultValue[i] = HighestDigitValue;
-	//	Value -= HighestDigitValue * pow(10, Lenth - (1 + i));
-	//}
-
 	std::vector<unsigned int> ResultValue = std::vector<unsigned int>();
 
 	std::string StringValue = GameEngineString::ToString(_Value);
@@ -243,52 +224,10 @@ unsigned int GameEngineMath::GetLenth(int _Value)
 
 float4 float4::operator*(const class float4x4& _Other)
 {
-	// this
-
-	// 크기
-	// 0.5f, 0.5f, 0.5f, 1; *  100   0   0   0
-	// 					         0 100   0   0
-	// 					         0   0 100   0
-	// 					         0   0   0   1
-	// 
-	//(100 * -0.5) + (0 * Arr1D[0]) + (0 * Arr1D[0]) + (0 * 1);
-	//(0 * -0.5) + (100 * Arr1D[0]) + (0 * Arr1D[0]) + (0 * 1);
-	//(0 * -0.5) + (0 * Arr1D[0]) + (100 * Arr1D[0]) + (0 * 1);
-	//(0 * -0.5) + (0 * Arr1D[0]) + (0 * Arr1D[0]) + (0 * 1);
-
-	// 위치
-	// 100.0f, 100.0f, 100.0f, 1; *    1   0   0   0
-	// 					               0   1   0   0
-	// 					               0   0   1   0
-	// 					             100  80  50   1
-
-	// 100 + 100, 100 + 80, 100 + 50
-
-	//(100 * 1) + (0 * 0) + (0 * 0) + (100 * 1);
-	//(0 * 0) + (100 * 1) + (0 * 0) + (80 * 1);
-	//(0 * 0) + (0 * 0) + (100 * 1) + (50 * 1);
-	//(0 * 0) + (0 * 0) + (0 * 0) +   (1 * 1);
-
-	// 크기
-	// 1.0f, 0.0f, 0.0f, 1; *    1   0   0   0
-	// 					         0   1   0   0
-	// 					         0   0   1   0
-	// 					         0   0   0   1
-
-	// 0.5f, 0.5f, 0.0f  1  x 0   0  -1   0
-	//						y 0   1   0   0
-	//						z 1   0   0   0
-	//						  0   0   0   1
-
 	float4 ReturnValue = DirectX::XMVector4Transform(*this, _Other);
-	//ReturnValue.x = (_Other.Arr2D[0][0] * Arr1D[0]) + (_Other.Arr2D[1][0] * Arr1D[1]) + (_Other.Arr2D[2][0] * Arr1D[2]) + (_Other.Arr2D[3][0] * Arr1D[3]);
-	//ReturnValue.y = (_Other.Arr2D[0][1] * Arr1D[0]) + (_Other.Arr2D[1][1] * Arr1D[1]) + (_Other.Arr2D[2][1] * Arr1D[2]) + (_Other.Arr2D[3][1] * Arr1D[3]);
-	//ReturnValue.z = (_Other.Arr2D[0][2] * Arr1D[0]) + (_Other.Arr2D[1][2] * Arr1D[1]) + (_Other.Arr2D[2][2] * Arr1D[2]) + (_Other.Arr2D[3][2] * Arr1D[3]);
-	//ReturnValue.w = (_Other.Arr2D[0][3] * Arr1D[0]) + (_Other.Arr2D[1][3] * Arr1D[1]) + (_Other.Arr2D[2][3] * Arr1D[2]) + (_Other.Arr2D[3][3] * Arr1D[3]);
 
 	return ReturnValue;
 }
-
 
 float4& float4::operator*=(const class float4x4& _Other)
 {

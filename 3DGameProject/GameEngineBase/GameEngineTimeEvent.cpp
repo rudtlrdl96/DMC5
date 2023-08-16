@@ -11,8 +11,6 @@ GameEngineTimeEvent::~GameEngineTimeEvent()
 
 void GameEngineTimeEvent::AddEvent(float _Time, std::function<void(TimeEvent&, GameEngineTimeEvent*)> _Event, bool _Loop /*= false*/)
 {
-	// 기본 생성자가 있으면
-	// 그냥 자기가 내부에서 기본생성자 가지고 만들어주는 것.
 	TimeEvent& NewEvent = Events.emplace_back();
 	NewEvent.CurTime = _Time;
 	NewEvent.Time = _Time;

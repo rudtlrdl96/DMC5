@@ -1,6 +1,10 @@
 #include "PrecompileHeader.h"
 #include "TestLevel.h"
 
+#include <GameEngineCore/PhysXBoxGeometryComponent.h>
+
+#include "TestObject.h"
+
 TestLevel::TestLevel() 
 {
 }
@@ -11,11 +15,13 @@ TestLevel::~TestLevel()
 
 void TestLevel::Start()
 {
-	GetCamera(0)->SetProjectionType(CameraType::Orthogonal);
+	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 }
 
 void TestLevel::Update(float _DeltaTime)
 {
+	PhysicsLevel::Update(_DeltaTime);
+
 	if (false == IsMessage)
 	{
 		IsMessage = true;
@@ -32,6 +38,8 @@ void TestLevel::LevelChangeStart()
 {
 	GameEngineLevel::LevelChangeStart();
 	PhysicsLevel::LevelChangeStart();
+
+	std::shared_ptr<TestObject> Component = CreateActor<TestObject>();
 }
 
 void TestLevel::LevelChangeEnd()

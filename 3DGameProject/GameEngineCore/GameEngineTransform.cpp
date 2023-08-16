@@ -471,7 +471,6 @@ void GameEngineTransform::AllAccTime(float _DeltaTime)
 
 void GameEngineTransform::AllUpdate(float _DeltaTime)
 {
-
 	if (nullptr == Master)
 	{
 		return;

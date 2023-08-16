@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ThirdParty/PhysX_4_1/inc/PhysX/foundation/PxErrorCallback.h"
 #include "GameEngineLevel.h"
 
 // 설명 :
@@ -16,7 +17,26 @@ public:
 	PhysicsLevel& operator=(const PhysicsLevel& _Other) = delete;
 	PhysicsLevel& operator=(PhysicsLevel&& _Other) noexcept = delete;
 
+	physx::PxPhysics* GetLevelPhysics()
+	{
+		return m_pPhysics;
+	}
+
+	physx::PxScene* GetLevelScene()
+	{
+		return m_pScene;
+	}
+
 protected:
+	class  UserErrorCallback : public  physx::PxErrorCallback
+	{
+	public:
+		void reportError(physx::PxErrorCode::Enum  code, const  char* message, const  char* file, int  line)
+		{
+			MsgAssert(message);
+		}
+	};
+
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime) {};
@@ -25,18 +45,18 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
+	//physx::PxDefaultErrorCallback	m_ErrorCallback;
 	physx::PxDefaultAllocator		m_Allocator;
-	physx::PxDefaultErrorCallback	m_ErrorCallback;
-
-	physx::PxFoundation* m_pFoundation = nullptr;
+	UserErrorCallback m_ErrorCallback;
 
 	physx::PxPhysics* m_pPhysics = nullptr;
-
-	physx::PxDefaultCpuDispatcher* m_pDispatcher = nullptr;
-	physx::PxScene* m_pScene = nullptr;
-	physx::PxMaterial* m_pMaterial = nullptr;
+	physx::PxFoundation* m_pFoundation = nullptr;
 
 	physx::PxPvd* m_pPvd = nullptr;
+	physx::PxScene* m_pScene = nullptr;
+	physx::PxDefaultCpuDispatcher* m_pDispatcher = nullptr;
+	physx::PxMaterial* m_pMaterial = nullptr;
+	physx::PxCooking* m_pCooking = nullptr;
 
 	// 클래스 초기화
 	void Initialize();

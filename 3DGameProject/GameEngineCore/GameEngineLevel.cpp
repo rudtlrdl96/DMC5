@@ -36,21 +36,6 @@ void GameEngineLevel::Start()
 
 void GameEngineLevel::ActorUpdate(float _DeltaTime)
 {
-	//bool Check = false;
-	//for (std::pair<const int, std::shared_ptr<GameEngineCamera>>& Cam : Cameras)
-	//{
-	//	if (true == Cam.second->IsFreeCamera())
-	//	{
-	//		Cam.second->Update(_DeltaTime);
-	//		Check = true;
-	//	}
-	//}
-
-	//if (true == Check)
-	//{
-	//	return;
-	//}
-
 	if (true == MainCamera->IsFreeCamera())
 	{
 		MainCamera->Update(_DeltaTime);
@@ -75,6 +60,9 @@ void GameEngineLevel::ActorUpdate(float _DeltaTime)
 			{
 				std::shared_ptr<GameEngineActor>& Actor = *ActorStart;
 
+				// 지정이 되있으면
+				// ScaleTime * (계수)
+
 				Actor->AllAccTime(ScaleTime);
 				Actor->AllUpdate(ScaleTime);
 			}
@@ -84,9 +72,7 @@ void GameEngineLevel::ActorUpdate(float _DeltaTime)
 
 void GameEngineLevel::ActorLevelChangeStart()
 {
-
 	{
-		// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.
 		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupStartIter = Actors.begin();
 		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupEndIter = Actors.end();
 

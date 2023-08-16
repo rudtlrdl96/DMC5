@@ -3,6 +3,7 @@
 #include <GameEnginePlatform/PrecompileHeader.h>
 
 #include "GameEngineDebug3D.h"
+#include "GameEngineEnum.h"
 
 #pragma warning(disable : 4996)
 #include <GameEngineCore/ThirdParty/PhysX_4_1/inc/PhysX/PxConfig.h>
