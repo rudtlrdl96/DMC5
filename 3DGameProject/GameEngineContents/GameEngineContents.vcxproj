@@ -181,10 +181,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="NetObjectBase.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="ObjectUpdatePacket.h">
       <SubType>
       </SubType>
@@ -218,10 +214,6 @@
     </ClCompile>
     <ClCompile Include="MainLevel.cpp" />
     <ClCompile Include="MyContentSpriteRenderer.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="NetObjectBase.cpp">
       <SubType>
       </SubType>
     </ClCompile>

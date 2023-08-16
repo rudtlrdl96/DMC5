@@ -31,9 +31,6 @@
     <ClInclude Include="ObjectUpdatePacket.h">
       <Filter>Server\01.Packet</Filter>
     </ClInclude>
-    <ClInclude Include="NetObjectBase.h">
-      <Filter>Server\02.NetObjectBase</Filter>
-    </ClInclude>
     <ClInclude Include="PacketEnum.h">
       <Filter>Server\01.Packet</Filter>
     </ClInclude>
@@ -64,9 +61,6 @@
     <ClCompile Include="ServerWindow.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="NetObjectBase.cpp">
-      <Filter>Server\02.NetObjectBase</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
@@ -86,9 +80,6 @@
     </Filter>
     <Filter Include="Server\01.Packet">
       <UniqueIdentifier>{a060b50f-0d32-48f9-89d8-99a98033da39}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Server\02.NetObjectBase">
-      <UniqueIdentifier>{9da00b98-9efc-427f-baf3-e34569d21491}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
