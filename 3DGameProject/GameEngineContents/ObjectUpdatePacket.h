@@ -6,13 +6,15 @@
 class ObjectUpdatePacket : public GameEnginePacket
 {
 public:
-	ObjectUpdatePacket();
-	~ObjectUpdatePacket();
+	ObjectUpdatePacket()
+	{
+		SetPacketID(PacketEnum::ObjectUpdatePacket);
+	}
 
-	ObjectUpdatePacket(const ObjectUpdatePacket& _Other) = delete;
-	ObjectUpdatePacket(ObjectUpdatePacket&& _Other) noexcept = delete;
-	ObjectUpdatePacket& operator=(const ObjectUpdatePacket& _Other) = delete;
-	ObjectUpdatePacket& operator=(const ObjectUpdatePacket&& _Other) noexcept = delete;
+	~ObjectUpdatePacket() override
+	{
+
+	}
 
 protected:
 

@@ -23,6 +23,12 @@ protected:
 	//서버를 오픈했을때 처리할 일
 	void ServerInit(std::shared_ptr<GameEngineLevel> Level);
 
+	//서버용 패킷을 어떻게 처리할 지 등록
+	void ServerPacketInit(GameEngineNetServer& _Net);
+
+	//클라용 패킷을 어떻게 처리할 지 등록
+	void ClientPacketInit(GameEngineNetClient& _Net);
+
 private:
 	GameEngineNetServer Server;
 	GameEngineNetClient Client;

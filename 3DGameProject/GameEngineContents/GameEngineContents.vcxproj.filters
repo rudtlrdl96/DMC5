@@ -34,6 +34,9 @@
     <ClInclude Include="NetObjectBase.h">
       <Filter>Server\02.NetObjectBase</Filter>
     </ClInclude>
+    <ClInclude Include="PacketEnum.h">
+      <Filter>Server\01.Packet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -60,12 +63,6 @@
     </ClCompile>
     <ClCompile Include="ServerWindow.cpp">
       <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="ConnectIDPacket.cpp">
-      <Filter>Server\01.Packet</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectUpdatePacket.cpp">
-      <Filter>Server\01.Packet</Filter>
     </ClCompile>
     <ClCompile Include="NetObjectBase.cpp">
       <Filter>Server\02.NetObjectBase</Filter>

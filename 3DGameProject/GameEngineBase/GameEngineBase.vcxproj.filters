@@ -59,6 +59,9 @@
     <ClCompile Include="GameEnginePacket.cpp">
       <Filter>Server</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineDispatcher.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineDebug.h">
@@ -129,6 +132,9 @@
       <Filter>Server</Filter>
     </ClInclude>
     <ClInclude Include="GameEnginePacket.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineDispatcher.h">
       <Filter>Server</Filter>
     </ClInclude>
   </ItemGroup>

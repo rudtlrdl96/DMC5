@@ -20,6 +20,7 @@
 #include <string_view>
 #include <chrono>
 #include <filesystem>
+#include <functional>
 
 #include <d3d11_4.h>
 #include <d3dcompiler.h>

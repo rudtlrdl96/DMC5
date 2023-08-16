@@ -3,6 +3,7 @@
 #include "ConnectIDPacket.h"
 #include "ObjectUpdatePacket.h"
 #include "Player.h"
+#include "ConnectIDPacket.h"
 
 GameEngineNet* ServerWindow::NetInst = nullptr;
 
@@ -73,11 +74,20 @@ void ServerWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 	Text = "호스트 하기";
 	if (ImGui::Button(GameEngineString::AnsiToUTF8(Text).c_str()))
 	{
+		//서버용 패킷 처리 콜백 등록
+		ServerPacketInit(Server);
+
 		Server.ServerOpen(static_cast<unsigned short>(Port));
 		ServerInit(Level);
-		IsServer = true;
-		Player::MainPlayer->InitServerObject();
+
+		//메인 플레이어가 있는 경우 서버와 연결
+		if (nullptr != Player::MainPlayer)
+		{
+			Player::MainPlayer->InitServerObject();
+		}
+
 		NetInst = &Server;
+		IsServer = true;
 	}
 
 	Text = "IP : ";
@@ -89,6 +99,9 @@ void ServerWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 	Text = "클라이언트로 접속하기";
 	if (ImGui::Button(GameEngineString::AnsiToUTF8(Text).c_str()))
 	{
+		//클라용 패킷 처리 콜백 등록
+		ClientPacketInit(Client);
+
 		IsClient = Client.Connect(IP, static_cast<unsigned short>(Port));
 		NetInst = &Client;
 	}
@@ -98,14 +111,41 @@ void ServerWindow::ServerInit(std::shared_ptr<GameEngineLevel> Level)
 {
 	//AcceptCallBack 설정
 	Server.SetAcceptCallBack(
-		[=](SOCKET, GameEngineNetServer* _Server)
+		[=](SOCKET _Socket, GameEngineNetServer* _Server)
 		{
-			//연결된 클라에게 ConnectIDPacket 보내기
+			// 접속한 사람에게만 보냄, ConnectIDPacket패킷
 			std::shared_ptr<ConnectIDPacket> Packet = std::make_shared<ConnectIDPacket>();
-			std::shared_ptr<Player> NewPlayer = Level->CreateActor<Player>();
+
+			int ID = GameEngineNetObject::CreateServerID();
+			Packet->SetObjectID(ID);
+
+			GameEngineSerializer Ser;
+			Packet->SerializePacket(Ser);
+
+			// 유일하게 한번 딱 직접 소켓을 써서 보내야할때.
+			GameEngineNet::Send(_Socket, Ser.GetConstCharPtr(), Ser.GetWriteOffSet());
 		}
 	);
 
 
 
+}
+
+
+
+void ServerWindow::ServerPacketInit(GameEngineNetServer& _Net)
+{
+
+}
+
+void ServerWindow::ClientPacketInit(GameEngineNetClient& _Net)
+{
+	_Net.Dispatcher.AddHandler<ConnectIDPacket>(PacketEnum::ConnectIDPacket,
+		[](std::shared_ptr<ConnectIDPacket> _Packet)
+		{
+			//GetLevel()->
+
+			int a = 0;
+		}
+	);
 }
