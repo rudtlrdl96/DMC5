@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="PrecompileHeader.h" />
     <ClInclude Include="FadeEffect.h">
       <Filter>PostEffect</Filter>
     </ClInclude>
@@ -17,10 +16,8 @@
     <ClInclude Include="TestLevel.h">
       <Filter>Levels</Filter>
     </ClInclude>
-    <ClInclude Include="ContentsCore.h" />
-    <ClInclude Include="MyContentSpriteRenderer.h" />
     <ClInclude Include="Player.h">
-      <Filter>Object</Filter>
+      <Filter>Actor</Filter>
     </ClInclude>
     <ClInclude Include="ServerWindow.h">
       <Filter>GUI</Filter>
@@ -52,13 +49,20 @@
     <ClInclude Include="ContentEnum.h">
       <Filter>Basic</Filter>
     </ClInclude>
+    <ClInclude Include="PrecompileHeader.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="MyContentSpriteRenderer.h">
+      <Filter>Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="ContentsCore.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PrecompileHeader.cpp" />
     <ClCompile Include="FadeEffect.cpp">
       <Filter>PostEffect</Filter>
     </ClCompile>
-    <ClCompile Include="Contents_Resources.cpp" />
     <ClCompile Include="OldFilm.cpp">
       <Filter>PostEffect</Filter>
     </ClCompile>
@@ -71,10 +75,8 @@
     <ClCompile Include="MainLevel.cpp">
       <Filter>Levels</Filter>
     </ClCompile>
-    <ClCompile Include="ContentsCore.cpp" />
-    <ClCompile Include="MyContentSpriteRenderer.cpp" />
     <ClCompile Include="Player.cpp">
-      <Filter>Object</Filter>
+      <Filter>Actor</Filter>
     </ClCompile>
     <ClCompile Include="ServerWindow.cpp">
       <Filter>GUI</Filter>
@@ -94,6 +96,18 @@
     <ClCompile Include="NetLogState_EntryReady.cpp">
       <Filter>Server\03.LogViewer\03.State\02.EntryReady</Filter>
     </ClCompile>
+    <ClCompile Include="PrecompileHeader.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="MyContentSpriteRenderer.cpp">
+      <Filter>Component\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Contents_Resources.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ContentsCore.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
@@ -101,9 +115,6 @@
     </Filter>
     <Filter Include="PostEffect">
       <UniqueIdentifier>{8b278d14-8721-4921-8f5e-5601845f39f3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object">
-      <UniqueIdentifier>{bbc60d36-0bc6-4a6f-a01a-193df7cb6027}</UniqueIdentifier>
     </Filter>
     <Filter Include="GUI">
       <UniqueIdentifier>{5d35490c-dfd0-487f-89e8-cb2e4fcec7cc}</UniqueIdentifier>
@@ -137,6 +148,18 @@
     </Filter>
     <Filter Include="Basic">
       <UniqueIdentifier>{aabc6096-725f-47aa-8201-d27b1ef4978d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{42fc8948-5edb-4db6-9324-f39b430b12ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor">
+      <UniqueIdentifier>{bbc60d36-0bc6-4a6f-a01a-193df7cb6027}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Renderer">
+      <UniqueIdentifier>{b5dc2074-11cc-4a26-a1ac-ead2e5b58776}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{cca997d7-d9ac-4593-aacd-42f572fb258e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
