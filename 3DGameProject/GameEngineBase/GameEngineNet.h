@@ -35,7 +35,7 @@ public:
 	GameEngineDispatcher Dispatcher;
 
 protected:
-	//상대방의 소켓, 자기 자신의 Net포인터
+	//상대방과 연결되어 있는 소켓, 자기 자신의 Net포인터(서버면 서버의 포인터, 클라면 클라의 포인터)
 	static void RecvThreadFunction(SOCKET _Socket, GameEngineNet* _Net);
 
 private:
