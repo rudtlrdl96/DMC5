@@ -34,6 +34,9 @@
     <ClInclude Include="NetObjectBase.h">
       <Filter>Server\02.NetObjectBase</Filter>
     </ClInclude>
+    <ClInclude Include="ContentEnum.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PrecompileHeader.cpp" />
@@ -92,6 +95,9 @@
     </Filter>
     <Filter Include="Server\02.NetObjectBase">
       <UniqueIdentifier>{9da00b98-9efc-427f-baf3-e34569d21491}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Basic">
+      <UniqueIdentifier>{300b726e-aaa6-44f1-8912-80d4411f7ca8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
