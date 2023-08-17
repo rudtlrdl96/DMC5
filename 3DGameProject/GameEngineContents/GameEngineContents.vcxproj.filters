@@ -88,6 +88,14 @@
     <ClInclude Include="TitleBG.h">
       <Filter>UI\Actor\TitleUI\BG</Filter>
     </ClInclude>
+    <ClInclude Include="Plane.h" />
+    <ClInclude Include="TestObject.h" />
+    <ClInclude Include="EnemyActor_Boss.h">
+      <Filter>Actor\Enemy\BossMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="CavaliereAngelo.h">
+      <Filter>Actor\Enemy\BossMonster\Stage11</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -162,14 +170,19 @@
     <ClCompile Include="TitleLevel.cpp">
       <Filter>UI\Level</Filter>
     </ClCompile>
-    <ClCompile Include="ContentButton.cpp">
-      <Filter>UI\Base</Filter>
-    </ClCompile>
     <ClCompile Include="UIFontRender.cpp">
       <Filter>UI\Base</Filter>
     </ClCompile>
     <ClCompile Include="TitleBG.cpp">
       <Filter>UI\Actor\TitleUI\BG</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cpp" />
+    <ClCompile Include="TestObject.cpp" />
+    <ClCompile Include="EnemyActor_Boss.cpp">
+      <Filter>Actor\Enemy\BossMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="CavaliereAngelo.cpp">
+      <Filter>Actor\Enemy\BossMonster\Stage11</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -259,6 +272,9 @@
     </Filter>
     <Filter Include="UI\Actor\TitleUI\ButtonScreen">
       <UniqueIdentifier>{55ee2600-f38a-4185-b9af-c259d61311cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy\BossMonster\Stage11">
+      <UniqueIdentifier>{96b677fc-4b72-444e-8673-c29daec20467}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
