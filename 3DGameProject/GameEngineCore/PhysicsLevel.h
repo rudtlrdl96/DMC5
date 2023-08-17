@@ -53,6 +53,7 @@ private:
 	physx::PxFoundation* m_pFoundation = nullptr;
 
 	physx::PxPvd* m_pPvd = nullptr;
+	physx::PxPvdTransport* m_pTransport = nullptr;
 	physx::PxScene* m_pScene = nullptr;
 	physx::PxDefaultCpuDispatcher* m_pDispatcher = nullptr;
 	physx::PxMaterial* m_pMaterial = nullptr;

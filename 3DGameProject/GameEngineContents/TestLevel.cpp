@@ -31,7 +31,7 @@ void TestLevel::Update(float _DeltaTime)
 	if (false == IsMessage)
 	{
 		IsMessage = true;
-		MsgTextBox("CurrentLevel is TestLevel");
+		//MsgTextBox("CurrentLevel is TestLevel");
 	}
 
 	if (true == GameEngineInput::IsDown("ReturnToMainLevel"))

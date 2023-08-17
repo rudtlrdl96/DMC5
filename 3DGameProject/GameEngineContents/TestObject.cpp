@@ -30,11 +30,17 @@ void TestObject::Start()
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
 	Renderer->SetFBXMesh("House1.FBX", "MeshTexture");
 
+	
+
 	float4 RenderMeshScale = Renderer->GetFBXMesh()->GetRenderUnit(0)->BoundScaleBox;
 	physx::PxVec3 GeoMetryScale = { RenderMeshScale.x, RenderMeshScale.y, RenderMeshScale.z };
 
+	Renderer->GetTransform()->AddLocalPosition(float4{ 0, -RenderMeshScale.y / 2, 0 });
+
 	Component = CreateComponent<PhysXBoxGeometryComponent>();
 	Component->SetIsGravity(true);
+
+	Component->SetRestitution(2.0f);
 	//Component->SetPositionSetFromParentFlag(true);
 	Component->CreatePhysXActors(TestLevel::TestLevelPtr->GetLevelScene(), TestLevel::TestLevelPtr->GetLevelPhysics(), GeoMetryScale);
 	//Component->SetPositionSetFromParentFlag(true);
