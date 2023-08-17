@@ -6,6 +6,8 @@
 class TestLevel : public PhysicsLevel
 {
 public:
+	static TestLevel* TestLevelPtr;
+
 	// constrcuter destructer
 	TestLevel();
 	~TestLevel();

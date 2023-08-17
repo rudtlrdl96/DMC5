@@ -64,9 +64,14 @@
     <ClInclude Include="BaseEnemyActor.h">
       <Filter>Actor\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="TestObject.h" />
     <ClInclude Include="EnemyActor_Normal.h">
       <Filter>Actor\Enemy\NormalMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="TestObject.h">
+      <Filter>Actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -127,9 +132,14 @@
     <ClCompile Include="BaseEnemyActor.cpp">
       <Filter>Actor\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="TestObject.cpp" />
     <ClCompile Include="EnemyActor_Normal.cpp">
       <Filter>Actor\Enemy\NormalMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="TestObject.cpp">
+      <Filter>Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

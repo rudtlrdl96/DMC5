@@ -60,7 +60,7 @@ private:
 
 	// 클래스 초기화
 	void Initialize();
-	void Simulate(bool _Value = true);
+	void Simulate(float _DeltaTime, bool _Value = true);
 	void Release();
 
 };

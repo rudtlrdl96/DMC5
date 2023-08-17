@@ -21,7 +21,7 @@ void PhysicsLevel::Start()
 
 void PhysicsLevel::Update(float _DeltaTime)
 {
-	Simulate(true);
+	Simulate(_DeltaTime, true);
 }
 
 void PhysicsLevel::LevelChangeStart()
@@ -128,9 +128,10 @@ void PhysicsLevel::Initialize()
 }
 
 // 실제로 물리연산을 실행
-void PhysicsLevel::Simulate(bool _Value)
+void PhysicsLevel::Simulate(float _DeltaTime, bool _Value)
 {
 	m_pScene->simulate(1.0f / 60.0f);
+	//m_pScene->simulate(_DeltaTime);
 	m_pScene->fetchResults(_Value);
 }
 

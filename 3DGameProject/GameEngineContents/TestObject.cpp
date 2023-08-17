@@ -28,13 +28,15 @@ void TestObject::Start()
 	}
 
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
-	Renderer->SetFBXMesh("Knight.FBX", "MeshTexture");
+	Renderer->SetFBXMesh("House1.FBX", "MeshTexture");
 
-
-	std::shared_ptr<TestLevel> ddd = GetLevel()->DynamicThis<TestLevel>();
+	float4 RenderMeshScale = Renderer->GetFBXMesh()->GetRenderUnit(0)->BoundScaleBox;
+	physx::PxVec3 GeoMetryScale = { RenderMeshScale.x, RenderMeshScale.y, RenderMeshScale.z };
 
 	Component = CreateComponent<PhysXBoxGeometryComponent>();
-	Component->CreatePhysXActors(ddd->GetLevelScene(), ddd->GetLevelPhysics());
+	Component->SetIsGravity(true);
+	//Component->SetPositionSetFromParentFlag(true);
+	Component->CreatePhysXActors(TestLevel::TestLevelPtr->GetLevelScene(), TestLevel::TestLevelPtr->GetLevelPhysics(), GeoMetryScale);
 	//Component->SetPositionSetFromParentFlag(true);
 }
 

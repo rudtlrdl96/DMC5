@@ -4,19 +4,24 @@
 #include <GameEngineCore/PhysXBoxGeometryComponent.h>
 
 #include "TestObject.h"
+#include "Plane.h"
+
+TestLevel* TestLevel::TestLevelPtr = nullptr;
 
 TestLevel::TestLevel() 
 {
+	TestLevelPtr = this;
 }
 
 TestLevel::~TestLevel() 
 {
+
 }
 
 void TestLevel::Start()
 {
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -500.0f });
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -100.0f });
 }
 
 void TestLevel::Update(float _DeltaTime)
@@ -41,6 +46,7 @@ void TestLevel::LevelChangeStart()
 	PhysicsLevel::LevelChangeStart();
 
 	std::shared_ptr<TestObject> Component = CreateActor<TestObject>();
+	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
 }
 
 void TestLevel::LevelChangeEnd()
