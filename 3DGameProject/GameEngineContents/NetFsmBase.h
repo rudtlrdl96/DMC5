@@ -57,6 +57,17 @@ protected:
 	}
 
 
+	template<typename StateType>
+	void EraseState()
+	{
+		std::string StateName;
+		GetClassTypeName<StateType>(StateName);
+		EraseState(StateName);
+	}
+
+	void EraseState(const std::string_view& _StateName);
+
+
 
 private:
 	std::map<std::string, std::shared_ptr<NetFsmStateBase>> AllState;

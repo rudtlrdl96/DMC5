@@ -36,6 +36,7 @@ void GameEngineNet::RecvThreadFunction(SOCKET _Socket, GameEngineNet* _Net)
 			return;
 		}
 
+
 		//여태까지 받은 바이트를 읽어보기
 		Serializer.Write(Data, Result);
 		//아직 패킷을 분석할 정도의 바이트 크기가 아니라면 다시 수신대기
@@ -76,7 +77,8 @@ void GameEngineNet::RecvThreadFunction(SOCKET _Socket, GameEngineNet* _Net)
 
 		// 8바이트 이상 받았지만
 		// 그걸 통해서 알아낸 패킷의 크기보다는 덜 온 경우
-		if (static_cast<unsigned int>(PacketSize) > Serializer.GetWriteOffSet())
+		//if (static_cast<unsigned int>(PacketSize) > Serializer.GetWriteOffSet())
+		if (PacketSize > Serializer.GetWriteOffSet())
 		{
 			//다음 수신을 대기
 			continue;

@@ -198,7 +198,15 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="NetLogStateBase.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="NetLogState_EntryReady.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="NetLogState_LogPrint.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -266,7 +274,15 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="NetLogStateBase.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="NetLogState_EntryReady.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="NetLogState_LogPrint.cpp">
       <SubType>
       </SubType>
     </ClCompile>

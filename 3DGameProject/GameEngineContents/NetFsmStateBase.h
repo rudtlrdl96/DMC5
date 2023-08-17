@@ -15,6 +15,11 @@ public:
 	NetFsmStateBase& operator=(const NetFsmStateBase& _Other) = delete;
 	NetFsmStateBase& operator=(const NetFsmStateBase&& _Other) noexcept = delete;
 
+	inline const std::string& GetName() const
+	{
+		return Name;
+	}
+
 protected:
 	inline NetFsmBase* GetFSM() const
 	{
@@ -36,6 +41,7 @@ protected:
 		Timer = 0.f;
 	}
 
+	
 
 private:
 	NetFsmBase* FsmPtr = nullptr;

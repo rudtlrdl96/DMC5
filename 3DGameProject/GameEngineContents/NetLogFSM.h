@@ -1,7 +1,6 @@
 #pragma once
 #include "NetFsmBase.h"
 
-class NetLogViewer;
 
 class NetLogFSM : public NetFsmBase
 {

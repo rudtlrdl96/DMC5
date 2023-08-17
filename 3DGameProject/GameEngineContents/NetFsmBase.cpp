@@ -89,3 +89,17 @@ std::shared_ptr<NetFsmStateBase> NetFsmBase::GetCurState()
 
 	return CurState;
 }
+
+
+void NetFsmBase::EraseState(const std::string_view& _StateName)
+{
+	std::string StateName = _StateName.data();
+
+	if (false == AllState.contains(StateName))
+	{
+		MsgAssert("존재하지 않는 State를 삭제하려고 했습니다");
+		return;
+	}
+
+	AllState.erase(StateName);
+}

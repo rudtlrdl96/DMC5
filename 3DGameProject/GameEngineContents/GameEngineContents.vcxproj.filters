@@ -49,6 +49,12 @@
     <ClInclude Include="PrecompileHeader.h">
       <Filter>Basic</Filter>
     </ClInclude>
+    <ClInclude Include="NetLogStateBase.h">
+      <Filter>Server\03.LogViewer\03.State\01.StateBase</Filter>
+    </ClInclude>
+    <ClInclude Include="NetLogState_LogPrint.h">
+      <Filter>Server\03.LogViewer\03.State\03.LogPrint</Filter>
+    </ClInclude>
     <ClInclude Include="MyContentSpriteRenderer.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
@@ -99,6 +105,12 @@
     </ClCompile>
     <ClCompile Include="NetLogState_EntryReady.cpp">
       <Filter>Server\03.LogViewer\03.State\02.EntryReady</Filter>
+    </ClCompile>
+    <ClCompile Include="NetLogStateBase.cpp">
+      <Filter>Server\03.LogViewer\03.State\01.StateBase</Filter>
+    </ClCompile>
+    <ClCompile Include="NetLogState_LogPrint.cpp">
+      <Filter>Server\03.LogViewer\03.State\03.LogPrint</Filter>
     </ClCompile>
     <ClCompile Include="PrecompileHeader.cpp">
       <Filter>Basic</Filter>
@@ -159,6 +171,9 @@
     </Filter>
     <Filter Include="Basic">
       <UniqueIdentifier>{aabc6096-725f-47aa-8201-d27b1ef4978d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\03.LogViewer\03.State\03.LogPrint">
+      <UniqueIdentifier>{b8d9b6cc-197e-4d54-934d-e7894310b1b9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Component">
       <UniqueIdentifier>{42fc8948-5edb-4db6-9324-f39b430b12ec}</UniqueIdentifier>
