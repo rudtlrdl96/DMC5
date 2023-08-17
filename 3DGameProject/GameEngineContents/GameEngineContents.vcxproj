@@ -176,6 +176,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="ContentsCore.h" />
+    <ClInclude Include="EnemyActor_Normal.h" />
     <ClInclude Include="FadeEffect.h">
       <SubType>
       </SubType>
