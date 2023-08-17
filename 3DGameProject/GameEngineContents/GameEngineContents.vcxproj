@@ -167,6 +167,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BackGround.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="BaseEnemyActor.h">
       <SubType>
       </SubType>
@@ -175,9 +179,21 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ContentButton.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ContentsCore.h" />
     <ClInclude Include="EnemyActor_Normal.h" />
     <ClInclude Include="FadeEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="IntroLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Logo.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -241,9 +257,29 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="TitleBG.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TitleLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="UIFontRender.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BackGround.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="BaseEnemyActor.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ContentButton.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -254,6 +290,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="FadeEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="IntroLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Logo.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -311,6 +355,18 @@
     </ClCompile>
     <ClCompile Include="TestLevel.cpp" />
     <ClCompile Include="TestObject.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TitleBG.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TitleLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="UIFontRender.cpp">
       <SubType>
       </SubType>
     </ClCompile>

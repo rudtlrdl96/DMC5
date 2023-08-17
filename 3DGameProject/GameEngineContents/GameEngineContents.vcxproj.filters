@@ -68,6 +68,27 @@
     <ClInclude Include="EnemyActor_Normal.h">
       <Filter>Actor\Enemy\NormalMonster</Filter>
     </ClInclude>
+    <ClInclude Include="IntroLevel.h">
+      <Filter>UI\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="BackGround.h">
+      <Filter>UI\Actor\IntroUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Logo.h">
+      <Filter>UI\Actor\IntroUI</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleLevel.h">
+      <Filter>UI\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="ContentButton.h">
+      <Filter>UI\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="UIFontRender.h">
+      <Filter>UI\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleBG.h">
+      <Filter>UI\Actor\TitleUI\BG</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -130,6 +151,27 @@
     <ClCompile Include="TestObject.cpp" />
     <ClCompile Include="EnemyActor_Normal.cpp">
       <Filter>Actor\Enemy\NormalMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="IntroLevel.cpp">
+      <Filter>UI\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="BackGround.cpp">
+      <Filter>UI\Actor\IntroUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Logo.cpp">
+      <Filter>UI\Actor\IntroUI</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleLevel.cpp">
+      <Filter>UI\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="ContentButton.cpp">
+      <Filter>UI\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="UIFontRender.cpp">
+      <Filter>UI\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleBG.cpp">
+      <Filter>UI\Actor\TitleUI\BG</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -195,6 +237,30 @@
     </Filter>
     <Filter Include="Actor\Enemy\BossMonster">
       <UniqueIdentifier>{2ee8e063-f548-41c2-9fbc-aa29201e1468}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{0040d815-701d-4a4b-880b-41d2d45bb226}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Level">
+      <UniqueIdentifier>{b3378528-f9a9-49d4-b7fb-822d878fa728}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Actor">
+      <UniqueIdentifier>{77054d83-a4d1-4fc6-8dfb-82d743721b38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Actor\IntroUI">
+      <UniqueIdentifier>{81a0b393-c3f3-42b4-b9f6-d9e8aae62f9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Actor\TitleUI">
+      <UniqueIdentifier>{6b842466-cfb3-431a-8392-fe392dbdf103}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Base">
+      <UniqueIdentifier>{cc61b815-9ebe-44d8-8edf-5af5c97aba73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Actor\TitleUI\BG">
+      <UniqueIdentifier>{cf281f4d-aca5-4ea7-886b-927b9a9b9abc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Actor\TitleUI\ButtonScreen">
+      <UniqueIdentifier>{55ee2600-f38a-4185-b9af-c259d61311cb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
