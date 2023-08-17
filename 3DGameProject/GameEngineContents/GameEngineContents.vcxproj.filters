@@ -58,12 +58,6 @@
     <ClInclude Include="BaseEnemyActor.h">
       <Filter>Actor\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="TestObject.h">
-      <Filter>Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="ContentsEnum.h">
-      <Filter>Basic</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -116,9 +110,6 @@
     </ClCompile>
     <ClCompile Include="BaseEnemyActor.cpp">
       <Filter>Actor\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="TestObject.cpp">
-      <Filter>Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

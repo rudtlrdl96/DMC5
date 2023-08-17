@@ -14,14 +14,13 @@ void BaseEnemyActor::MonsterHit(const EnemyHitData& _HitData)
 	GameEngineTransform* EnemyTransform = GetTransform();
 	float4 HitPos = float4::ZERO;
 
-
-	if (nullptr != _HitData.AttackActor)
+	if (float4::ZERO == _HitData.AttackerPos)
 	{
-		HitPos = _HitData.AttackActor->GetTransform()->GetWorldPosition();
+		HitPos = EnemyTransform->GetWorldPosition() + EnemyTransform->GetLocalForwardVector();
 	}
 	else
 	{
-		HitPos = EnemyTransform->GetWorldPosition() + EnemyTransform->GetLocalForwardVector();
+		HitPos = _HitData.AttackerPos;
 	}
 
 	switch (_HitData.Type)
@@ -156,6 +155,10 @@ void BaseEnemyActor::Update(float _DeltaTime)
 
 void BaseEnemyActor::UserUpdate(float _DeltaTime)
 {
+	if (true == EnemyFSM.IsValid())
+	{
+		EnemyFSM.Update(_DeltaTime);
+	}
 }
 
 void BaseEnemyActor::ServerUpdate(float _DeltaTime)

@@ -74,7 +74,7 @@ public:
 	}
 
 	/// <param name="_Position">사운드 위치 값</param>
-/// <param name="_TimeType">입력 값의 타입을 정합니다</param>
+	/// <param name="_TimeType">입력 값의 타입을 정합니다</param>
 	inline void setPosition(UINT _Position, FMOD_TIMEUNIT _TimeType = FMOD_TIMEUNIT_MS)
 	{
 		if (false == IsValid())

@@ -1,24 +1,32 @@
 #pragma once
 #include <GameEngineCore/GameEngineFSM.h>
 
+///	<param name="AttackerPos">공격 액터의 위치, 만약 ZERO일 경우 몬스터의 정면을 기준으로 애니메이션 실행 </param>
+///	<param name="Type">공격의 타입 설정 </param>
+///	<param name="Damage">플레이어 공격력 </param>
+///	<param name="ForceDir">공격 물리량의 방향 자동으로 Normalize를 실행함 </param>
+///	<param name="ForcePower">공격 물리량의 크기 </param>
 class EnemyHitData
 {
 public:
-	// 공격자의 액터 만약 nullptr일 경우 위치를 계산하지 않고 정면을 기준으로 실행함
-	GameEngineActor* AttackActor = nullptr;
-
-	// 공격의 타입 설정
+	float4 AttackerPos = float4::ZERO;	
 	MonsterDamageType Type = MonsterDamageType::None;
-
-	// 플레이어 공격력
 	float Damage = 0.0f;
-
-	// 공격 물리량의 방향 자동으로 Normalize를 실행함
 	float4 ForceDir = float4::ZERO;
-
-	// 공격 물리량의 크기
 	float ForcePower = 1.0f;
+};
 
+enum class EnemyType
+{
+	Normal,
+	Boss,
+};
+
+enum class EnemySize
+{
+	Small,
+	Middle,
+	Large
 };
 
 class BaseEnemyActor : public GameEngineActor, public GameEngineNetObject
@@ -32,12 +40,41 @@ public:
 	BaseEnemyActor& operator=(const BaseEnemyActor& _Other) = delete;
 	BaseEnemyActor& operator=(BaseEnemyActor&& _Other) noexcept = delete;
 
+	// 몬스터 피격 함수
 	void MonsterHit(const EnemyHitData& _HitData);
+
+	// 현재 몬스터가 슈퍼아머 상태인지 반환합니다. 만약 슈퍼아머 상태라면 그랩, 잡기등의 공격에 면역이됩니다.
+	inline bool IsSuperArmor() const
+	{
+		return IsSpuerArmorValue;
+	}
+
+	// 몬스터의 타입을 반환합니다. Normal, Boss 두 가지 타입이 있습니다.
+	inline EnemyType GetEnemyType() const
+	{
+		return EnemyTypeValue;
+	}
+
+	// 몬스터의 크기를 반환합니다.
+	inline EnemySize GetEnemySize() const
+	{
+		return EnemySizeValue;
+	}
 
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	
+	// Class
+	GameEngineFSM EnemyFSM;
+
+	// Enum
+	EnemyType EnemyTypeValue  = EnemyType::Normal;
+	EnemySize EnemySizeValue = EnemySize::Small;
+
+	// Basic
+	bool IsSpuerArmorValue = false;
+
 	virtual void MeshLoad() = 0;
 	virtual void TextureLoad() = 0;
 	virtual void AnimationLoad() = 0;
@@ -46,8 +83,4 @@ protected:
 private:
 	void UserUpdate(float _DeltaTime);
 	void ServerUpdate(float _DeltaTime);
-
-	GameEngineFSM MonsterFSM;
-
 };
-
