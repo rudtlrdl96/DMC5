@@ -164,3 +164,24 @@ void BaseEnemyActor::UserUpdate(float _DeltaTime)
 void BaseEnemyActor::ServerUpdate(float _DeltaTime)
 {
 }
+
+
+void BaseEnemyActor::SpuerArmorOn()
+{
+	IsSpuerArmorValue = true;
+
+	if (nullptr != SpuerArmorOn_Callback)
+	{
+		SpuerArmorOn_Callback();
+	}
+}
+
+void BaseEnemyActor::SuperArmorOff()
+{
+	IsSuperArmorValue = false;
+
+	if (nullptr != SpuerArmorOff_Callback)
+	{
+		SpuerArmorOff_Callback();
+	}
+}

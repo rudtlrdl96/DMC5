@@ -73,6 +73,12 @@
     <ClInclude Include="TestObject.h">
       <Filter>Actor</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyActor_Boss.h">
+      <Filter>Actor\Enemy\BossMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="CavaliereAngelo.h">
+      <Filter>Actor\Enemy\BossMonster\Stage11</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -141,6 +147,12 @@
     <ClCompile Include="TestObject.cpp">
       <Filter>Actor</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyActor_Boss.cpp">
+      <Filter>Actor\Enemy\BossMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="CavaliereAngelo.cpp">
+      <Filter>Actor\Enemy\BossMonster\Stage11</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
@@ -205,6 +217,9 @@
     </Filter>
     <Filter Include="Actor\Enemy\BossMonster">
       <UniqueIdentifier>{2ee8e063-f548-41c2-9fbc-aa29201e1468}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy\BossMonster\Stage11">
+      <UniqueIdentifier>{2fd662fb-7855-4903-9477-8ace4d9866b6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
