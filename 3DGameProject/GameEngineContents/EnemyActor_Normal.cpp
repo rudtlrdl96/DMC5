@@ -11,10 +11,51 @@ EnemyActor_Normal::~EnemyActor_Normal()
 
 void EnemyActor_Normal::Start()
 {
+	EnemyTypeValue = EnemyType::Normal;
+
 	BaseEnemyActor::Start();
 
-	//std::function<void()> Start = std::bind(&Idle_Enter, this);
-	//std::function<void(float)> Update = std::bind(&Idle_Update, this, std::placeholder::_1);
+	//EnemyFSM.CreateState({ .Name = "Idle",
+	//	.Start = std::bind(&Idle_Enter, this),
+	//	.Update = std::bind(&Idle_Update, this, std::placeholders::_1),
+	//	.End = std::bind(&Idle_Exit, this)});
+	//
+	//EnemyFSM.CreateState({ .Name = "Chase",
+	//	.Start = std::bind(&Chase_Enter, this),
+	//	.Update = std::bind(&Chase_Update, this, std::placeholders::_1),
+	//	.End = std::bind(&Chase_Exit, this) });
+	//
+	//EnemyFSM.CreateState({ .Name = "Attack",
+	//	.Start = std::bind(&Attack_Enter, this),
+	//	.Update = std::bind(&Attack_Update, this, std::placeholders::_1),
+	//	.End = std::bind(&Attack_Exit, this) });
+	//
+	//EnemyFSM.CreateState({ .Name = "Fall",
+	//	.Start = std::bind(&Fall_Enter, this),
+	//	.Update = std::bind(&Fall_Update, this, std::placeholders::_1),
+	//	.End = std::bind(&Fall_Exit, this) });
+	//
+	//EnemyFSM.CreateState({ .Name = "Snatch",
+	//	.Start = std::bind(&Snatch_Enter, this),
+	//	.Update = std::bind(&Snatch_Update, this, std::placeholders::_1),
+	//	.End = std::bind(&Snatch_Exit, this) });
+	//
+	//EnemyFSM.CreateState({ .Name = "Buster",
+	//	.Start = std::bind(&Buster_Enter, this),
+	//	.Update = std::bind(&Buster_Update, this, std::placeholders::_1),
+	//	.End = std::bind(&Buster_Exit, this) });
+	//
+	//EnemyFSM.CreateState({ .Name = "Hit",
+	//	.Start = std::bind(&Hit_Enter, this),
+	//	.Update = std::bind(&Hit_Update, this, std::placeholders::_1),
+	//	.End = std::bind(&Hit_Exit, this) });
+	//
+	//EnemyFSM.CreateState({ .Name = "Death",
+	//	.Start = std::bind(&Death_Enter, this),
+	//	.Update = std::bind(&Death_Update, this, std::placeholders::_1),
+	//	.End = std::bind(&Death_Exit, this) });
+	//
+	//EnemyFSM.ChangeState("Idle");
 }
 
 void EnemyActor_Normal::Idle_Enter()
@@ -62,6 +103,18 @@ void EnemyActor_Normal::Hit_Update(float _DeltaTime)
 }
 
 void EnemyActor_Normal::Hit_Exit()
+{
+}
+
+void EnemyActor_Normal::Death_Enter()
+{
+}
+
+void EnemyActor_Normal::Death_Update(float _DeltaTime)
+{
+}
+
+void EnemyActor_Normal::Death_Exit()
 {
 }
 

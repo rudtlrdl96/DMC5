@@ -74,6 +74,15 @@ protected:
 
 	// Basic
 	bool IsSpuerArmorValue = false;
+	bool IsSuperArmorValue = false;
+
+	// Callback
+	std::function<void()> SpuerArmorOn_Callback = nullptr;
+	std::function<void()> SpuerArmorOff_Callback = nullptr;
+
+	// Function
+	void SpuerArmorOn();
+	void SuperArmorOff();
 
 	virtual void MeshLoad() = 0;
 	virtual void TextureLoad() = 0;

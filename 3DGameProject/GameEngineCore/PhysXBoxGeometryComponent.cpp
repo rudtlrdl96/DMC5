@@ -48,8 +48,16 @@ void PhysXBoxGeometryComponent::CreatePhysXActors(physx::PxScene* _Scene, physx:
 
 	// 중력이 적용되지 않도록
 	// TODO::RigidStatic으로 변경해야
-	m_pRigidDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, false);
-	//m_pRigidDynamic->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, true);
+	if (IsGravity == true)
+	{
+		m_pRigidDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, false);
+		//m_pRigidDynamic->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, false);
+	}
+	else
+	{
+		m_pRigidDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, true);
+		m_pRigidDynamic->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, true);
+	}
 
 	// 충돌체의 형태
 	// 충돌체의 크기는 절반의 크기를 설정하므로 실제 Renderer의 스케일은 충돌체의 2배로 설정되어야 함
@@ -139,6 +147,7 @@ void PhysXBoxGeometryComponent::Update(float _DeltaTime)
 
 		// 부모의 Transform정보를 바탕으로 PhysX Actor의 트랜스폼을 갱신
 		m_pRigidDynamic->setKinematicTarget(tmpPxTransform);
+		//m_pRigidDynamic->setGlobalPose(tmpPxTransform);
 		// TODO::회전도 처리해야함. DegreeToQuat
 	}
 }

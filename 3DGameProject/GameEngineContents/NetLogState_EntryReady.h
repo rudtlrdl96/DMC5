@@ -19,12 +19,11 @@ public:
 	NetLogState_EntryReady& operator=(const NetLogState_EntryReady&& _Other) noexcept = delete;
 
 protected:
-	void Start() override;
 	void Update(float _DeltaTime) override;
 
 private:
-	std::string BtnText_ForHost;
-	std::string BtnText_ForClient;
+	const std::string_view BtnText_ForHost = "Play For Host";
+	const std::string_view BtnText_ForClient = "Play For Client";
 
 	int PortNum = 30000;
 	std::string IpNum = "127.0.0.1";

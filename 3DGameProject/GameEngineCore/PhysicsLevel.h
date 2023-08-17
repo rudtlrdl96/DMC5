@@ -53,6 +53,7 @@ private:
 	physx::PxFoundation* m_pFoundation = nullptr;
 
 	physx::PxPvd* m_pPvd = nullptr;
+	physx::PxPvdTransport* m_pTransport = nullptr;
 	physx::PxScene* m_pScene = nullptr;
 	physx::PxDefaultCpuDispatcher* m_pDispatcher = nullptr;
 	physx::PxMaterial* m_pMaterial = nullptr;
@@ -60,7 +61,7 @@ private:
 
 	// 클래스 초기화
 	void Initialize();
-	void Simulate(bool _Value = true);
+	void Simulate(float _DeltaTime, bool _Value = true);
 	void Release();
 
 };

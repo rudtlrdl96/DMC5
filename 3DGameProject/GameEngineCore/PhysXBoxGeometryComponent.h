@@ -33,11 +33,18 @@ public:
 		m_bPositionSetFromParentFlag = _Flag;
 	}
 
+	void SetIsGravity(bool _Is)
+	{
+		IsGravity = _Is;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
 private:
+	bool IsGravity = false;
+
 	// Phys액터 생성에 필요한 정보
 	//physx::PxPhysics* physics_;
 	//physx::PxScene* scene_;
