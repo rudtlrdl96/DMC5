@@ -21,15 +21,6 @@ NetLogState_EntryReady::~NetLogState_EntryReady()
 }
 
 
-void NetLogState_EntryReady::Start() 
-{
-	NetLogStateBase::Start();
-
-	BtnText_ForHost = GameEngineString::AnsiToUTF8("호스트로 플레이");
-	BtnText_ForClient = GameEngineString::AnsiToUTF8("클라이언트로 플레이");
-}
-
-
 void NetLogState_EntryReady::Update(float _DeltaTime) 
 {
 	NetLogStateBase::Update(_DeltaTime);
@@ -39,7 +30,7 @@ void NetLogState_EntryReady::Update(float _DeltaTime)
 	
 	//호스트 버튼을 누른 경우
 	ImGui::InputInt("Port ", &PortNum);
-	if (ImGui::Button(BtnText_ForHost.c_str()))
+	if (ImGui::Button(BtnText_ForHost.data()))
 	{
 		GameEngineNetServer& ServerNet = LogViewer->ServerNet;
 
@@ -66,7 +57,7 @@ void NetLogState_EntryReady::Update(float _DeltaTime)
 
 	//클라이언트 버튼을 누른 경우
 	ImGui::InputText("IP", &IpNum[0], IpNum.size());
-	if (ImGui::Button(BtnText_ForClient.c_str()))
+	if (ImGui::Button(BtnText_ForClient.data()))
 	{
 		GameEngineNetClient& ClientNet = LogViewer->ClientNet;
 
