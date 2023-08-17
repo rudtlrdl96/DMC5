@@ -171,11 +171,19 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="CavaliereAngelo.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ConnectIDPacket.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="ContentsCore.h" />
+    <ClInclude Include="EnemyActor_Boss.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="EnemyActor_Normal.h" />
     <ClInclude Include="FadeEffect.h">
       <SubType>
@@ -251,8 +259,16 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="CavaliereAngelo.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ContentsCore.cpp" />
     <ClCompile Include="Contents_Resources.cpp" />
+    <ClCompile Include="EnemyActor_Boss.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="EnemyActor_Normal.cpp">
       <SubType>
       </SubType>
