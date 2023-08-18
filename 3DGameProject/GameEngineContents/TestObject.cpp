@@ -26,6 +26,7 @@ void TestObject::Start()
 		GameEngineInput::CreateKey("MoveDown", 'E');
 		GameEngineInput::CreateKey("MoveForward", 'W');
 		GameEngineInput::CreateKey("MoveBack", 'S');
+		GameEngineInput::CreateKey("Jump", VK_SPACE);
 	}
 
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
@@ -74,37 +75,104 @@ void TestObject::Update(float _DeltaTime)
 
 void TestObject::UserUpdate(float _DeltaTime)
 {
-	float Speed = 200.0f;
+	float Speed = 30.0f;
 
 	if (true == GameEngineInput::IsPress("MoveLeft"))
 	{
-		GetTransform()->AddLocalPosition(GetTransform()->GetWorldLeftVector() * Speed * _DeltaTime);
+		float4 WorldPos = GetTransform()->GetWorldPosition();
+		physx::PxTransform PhyTF = Component->GetDynamic()->getGlobalPose();
+		physx::PxVec3 MovePos = Component->GetDynamic()->getGlobalPose().p;
+
+		float Dir = Speed * _DeltaTime;
+
+		PhyTF.p.x -= Dir;
+
+		Component->GetDynamic()->setGlobalPose(PhyTF);
+
+		//GetTransform()->AddLocalPosition(GetTransform()->GetWorldLeftVector() * Speed * _DeltaTime);
 	}
 	if (true == GameEngineInput::IsPress("MoveRight"))
 	{
-		GetTransform()->AddLocalPosition(GetTransform()->GetWorldRightVector() * Speed * _DeltaTime);
+		float4 WorldPos = GetTransform()->GetWorldPosition();
+		physx::PxTransform PhyTF = Component->GetDynamic()->getGlobalPose();
+		physx::PxVec3 MovePos = Component->GetDynamic()->getGlobalPose().p;
+
+		float Dir = Speed * _DeltaTime;
+
+		PhyTF.p.x += Dir;
+
+		Component->GetDynamic()->setGlobalPose(PhyTF);
+
+		//GetTransform()->AddLocalPosition(GetTransform()->GetWorldRightVector() * Speed * _DeltaTime);
 	}
 	if (true == GameEngineInput::IsPress("MoveUp"))
 	{
-		GetTransform()->AddLocalPosition(GetTransform()->GetWorldUpVector() * Speed * _DeltaTime);
+		float4 WorldPos = GetTransform()->GetWorldPosition();
+		physx::PxTransform PhyTF = Component->GetDynamic()->getGlobalPose();
+		physx::PxVec3 MovePos = Component->GetDynamic()->getGlobalPose().p;
+
+		float Dir = Speed * _DeltaTime;
+
+		PhyTF.p.y += Dir;
+
+		Component->GetDynamic()->setGlobalPose(PhyTF);
+
+		//GetTransform()->AddLocalPosition(GetTransform()->GetWorldUpVector() * Speed * _DeltaTime);
 	}
 	if (true == GameEngineInput::IsPress("MoveDown"))
 	{
-		GetTransform()->AddLocalPosition(GetTransform()->GetWorldDownVector() * Speed * _DeltaTime);
+		float4 WorldPos = GetTransform()->GetWorldPosition();
+		physx::PxTransform PhyTF = Component->GetDynamic()->getGlobalPose();
+		physx::PxVec3 MovePos = Component->GetDynamic()->getGlobalPose().p;
+
+		float Dir = Speed * _DeltaTime;
+
+		PhyTF.p.y -= Dir;
+
+		Component->GetDynamic()->setGlobalPose(PhyTF);
+
+		//GetTransform()->AddLocalPosition(GetTransform()->GetWorldDownVector() * Speed * _DeltaTime);
 	}
 	if (true == GameEngineInput::IsPress("MoveForward"))
 	{
-		float4 asdf = GetTransform()->GetWorldForwardVector();
-		float fdsa = GetTransform()->GetWorldPosition().z;
+		float4 WorldPos = GetTransform()->GetWorldPosition();
+		physx::PxTransform PhyTF = Component->GetDynamic()->getGlobalPose();
+		physx::PxVec3 MovePos = Component->GetDynamic()->getGlobalPose().p;
 
-		physx::PxTransform fds = { Component->GetTransform()->GetWorldPosition().x , Component->GetTransform()->GetWorldPosition().y , asdf.z + fdsa };
-		Component->GetDynamic()->setGlobalPose(fds);
+		float Dir = Speed * _DeltaTime;
+
+		PhyTF.p.z += Dir;
+
+		Component->GetDynamic()->setGlobalPose(PhyTF);
 
 		//GetTransform()->AddLocalPosition(GetTransform()->GetWorldForwardVector() * Speed * _DeltaTime);
 	}
 	if (true == GameEngineInput::IsPress("MoveBack"))
 	{
-		GetTransform()->AddLocalPosition(GetTransform()->GetWorldBackVector() * Speed * _DeltaTime);
+		float4 WorldPos = GetTransform()->GetWorldPosition();
+		physx::PxTransform PhyTF = Component->GetDynamic()->getGlobalPose();
+		physx::PxVec3 MovePos = Component->GetDynamic()->getGlobalPose().p;
+
+		float Dir = Speed * _DeltaTime;
+
+		PhyTF.p.z -= Dir;
+
+		Component->GetDynamic()->setGlobalPose(PhyTF);
+
+		//GetTransform()->AddLocalPosition(GetTransform()->GetWorldBackVector() * Speed * _DeltaTime);
+	}
+
+	if (true == GameEngineInput::IsDown("Jump"))
+	{
+		float4 WorldPos = GetTransform()->GetWorldPosition();
+		physx::PxTransform PhyTF = Component->GetDynamic()->getGlobalPose();
+		physx::PxVec3 MovePos = Component->GetDynamic()->getGlobalPose().p;
+
+		//float Dir = Speed * _DeltaTime;
+
+		PhyTF.p.y += 10.0f;
+
+		Component->GetDynamic()->setGlobalPose(PhyTF);
 	}
 
 	float4 ASDF = Component->GetTransform()->GetWorldPosition();

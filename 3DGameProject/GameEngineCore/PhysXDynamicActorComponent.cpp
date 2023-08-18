@@ -19,31 +19,18 @@ physx::PxRigidDynamic* PhysXDynamicActorComponent::CreatePhysXActors(physx::PxSc
 	float4 tmpQuat = _GeoMetryRot.DegreeRotationToQuaternionReturn();
 
 	// 부모 액터로부터 위치 생성
-	physx::PxTransform localTm(physx::PxVec3
-	(
-		ParentActor.lock()->GetTransform()->GetWorldPosition().x
-		, ParentActor.lock()->GetTransform()->GetWorldPosition().y
-		, ParentActor.lock()->GetTransform()->GetWorldPosition().z
-	),
-		physx::PxQuat(tmpQuat.x, tmpQuat.y, tmpQuat.z, tmpQuat.w));
+	physx::PxTransform localTm(physx::PxVec3(ParentActor.lock()->GetTransform()->GetWorldPosition().x, ParentActor.lock()->GetTransform()->GetWorldPosition().y, ParentActor.lock()->GetTransform()->GetWorldPosition().z), physx::PxQuat(tmpQuat.x, tmpQuat.y, tmpQuat.z, tmpQuat.w));
 
 	// 마찰, 탄성계수
 	m_pMaterial = _physics->createMaterial(Staticfriction, Dynamicfriction, Resitution);
 
 	// TODO::배율을 적용할 경우 이쪽 코드를 사용
 	//float4 tmpMagnification = { SIZE_MAGNIFICATION_RATIO };
-	//physx::PxVec3 tmpGeoMetryScale(_GeoMetryScale.x * tmpMagnification.x * 0.5f, 
-	//							   _GeoMetryScale.y * tmpMagnification.y * 0.5f, 
-	//							   _GeoMetryScale.z * tmpMagnification.z * 0.5f);
+	//physx::PxVec3 tmpGeoMetryScale(_GeoMetryScale.x * tmpMagnification.x * 0.5f, _GeoMetryScale.y * tmpMagnification.y * 0.5f, _GeoMetryScale.z * tmpMagnification.z * 0.5f);
 
 	GeoMetryScale = _GeoMetryScale;
 
-	physx::PxVec3 tmpGeoMetryScale
-	(
-		_GeoMetryScale.x * 0.5f,
-		_GeoMetryScale.y * 0.5f,
-		_GeoMetryScale.z * 0.5f
-	);
+	physx::PxVec3 tmpGeoMetryScale(_GeoMetryScale.x * 0.5f, _GeoMetryScale.y * 0.5f, _GeoMetryScale.z * 0.5f);
 
 	//// 충돌체의 종류
 	m_pDynamic = _physics->createRigidDynamic(localTm);
@@ -52,18 +39,14 @@ physx::PxRigidDynamic* PhysXDynamicActorComponent::CreatePhysXActors(physx::PxSc
 	// 플레이어 최대 속력
 	// dynamic_->setMaxLinearVelocity(PLAYER_MAX_SPEED);
 
-	m_pDynamic->setRigidDynamicLockFlags
-	(
-		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X |
-		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y |
-		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z
-	);
+	m_pDynamic->setRigidDynamicLockFlags(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X | physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y | physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z);
 
 	float ScaledRadius = _GeoMetryScale.z;
 	float ScaledHeight = _GeoMetryScale.y;
 
 	// 메인 캡슐 콜라이더
 	m_pShape = physx::PxRigidActorExt::createExclusiveShape(*m_pDynamic, physx::PxCapsuleGeometry(ScaledRadius * 1.3f, ScaledHeight * 0.9f), *m_pMaterial);
+	
 	float CapsuleHeight = (ScaledHeight * 0.9f);
 	physx::PxVec3 DynamicCenter(0.0f, CapsuleHeight, 0.0f);
 	//피벗설정
@@ -111,7 +94,6 @@ physx::PxRigidDynamic* PhysXDynamicActorComponent::CreatePhysXActors(physx::PxSc
 	m_pDynamic->setLinearDamping(physx::PxReal(0.5f));
 	m_pDynamic->setMaxAngularVelocity(physx::PxReal(20.0f));
 	m_pDynamic->setAngularDamping(physx::PxReal(2.0f));
-
 
 	// Scene에 액터 추가
 	_Scene->addActor(*m_pDynamic);
@@ -161,27 +143,17 @@ void PhysXDynamicActorComponent::Start()
 
 void PhysXDynamicActorComponent::Update(float _DeltaTime)
 {
-	if (!(physx::PxIsFinite(m_pDynamic->getGlobalPose().p.x)
-		|| physx::PxIsFinite(m_pDynamic->getGlobalPose().p.y)
-		|| physx::PxIsFinite(m_pDynamic->getGlobalPose().p.z))
+	if (!(physx::PxIsFinite(m_pDynamic->getGlobalPose().p.x) || physx::PxIsFinite(m_pDynamic->getGlobalPose().p.y) || physx::PxIsFinite(m_pDynamic->getGlobalPose().p.z))
 		&& true == IsMain)
 	{
 		m_pDynamic->setGlobalPose(RecentTransform);
 	}
 
 	// PhysX Actor의 상태에 맞춰서 부모의 Transform정보를 갱신
-	float4 tmpWorldPos = 
-	{ 
-		m_pDynamic->getGlobalPose().p.x,
-		m_pDynamic->getGlobalPose().p.y,
-		m_pDynamic->getGlobalPose().p.z 
-	};
-
-	//float4 QuatRot = float4{ dynamic_->getGlobalPose().q.x, dynamic_->getGlobalPose().q.y, dynamic_->getGlobalPose().q.z, dynamic_->getGlobalPose().q.w };
+	float4 tmpWorldPos = { m_pDynamic->getGlobalPose().p.x, m_pDynamic->getGlobalPose().p.y, m_pDynamic->getGlobalPose().p.z };
 	float4 EulerRot = PhysXDefault::GetQuaternionEulerAngles(m_pDynamic->getGlobalPose().q) * GameEngineMath::RadToDeg;
 
 	ParentActor.lock()->GetTransform()->SetWorldRotation(float4{ EulerRot.x, EulerRot.y, EulerRot.z });
-
 	ParentActor.lock()->GetTransform()->SetWorldPosition(tmpWorldPos);
 
 	if (IsSpeedLimit == true)
