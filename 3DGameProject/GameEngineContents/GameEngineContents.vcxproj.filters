@@ -23,22 +23,22 @@
       <Filter>Server\99.FSM</Filter>
     </ClInclude>
     <ClInclude Include="NetLogViewer.h">
-      <Filter>Server\03.LogViewer\01.GUI</Filter>
+      <Filter>Server\98.LogViewer\01.GUI</Filter>
     </ClInclude>
     <ClInclude Include="NetLogFSM.h">
-      <Filter>Server\03.LogViewer\02.FSM</Filter>
+      <Filter>Server\98.LogViewer\02.FSM</Filter>
     </ClInclude>
     <ClInclude Include="NetLogState_EntryReady.h">
-      <Filter>Server\03.LogViewer\03.State\02.EntryReady</Filter>
+      <Filter>Server\98.LogViewer\03.State\02.EntryReady</Filter>
     </ClInclude>
     <ClInclude Include="PrecompileHeader.h">
       <Filter>Basic</Filter>
     </ClInclude>
     <ClInclude Include="NetLogStateBase.h">
-      <Filter>Server\03.LogViewer\03.State\01.StateBase</Filter>
+      <Filter>Server\98.LogViewer\03.State\01.StateBase</Filter>
     </ClInclude>
     <ClInclude Include="NetLogState_LogPrint.h">
-      <Filter>Server\03.LogViewer\03.State\03.LogPrint</Filter>
+      <Filter>Server\98.LogViewer\03.State\03.LogPrint</Filter>
     </ClInclude>
     <ClInclude Include="MyContentSpriteRenderer.h">
       <Filter>Component\Renderer</Filter>
@@ -181,19 +181,19 @@
       <Filter>Server\99.FSM</Filter>
     </ClCompile>
     <ClCompile Include="NetLogViewer.cpp">
-      <Filter>Server\03.LogViewer\01.GUI</Filter>
+      <Filter>Server\98.LogViewer\01.GUI</Filter>
     </ClCompile>
     <ClCompile Include="NetLogFSM.cpp">
-      <Filter>Server\03.LogViewer\02.FSM</Filter>
+      <Filter>Server\98.LogViewer\02.FSM</Filter>
     </ClCompile>
     <ClCompile Include="NetLogState_EntryReady.cpp">
-      <Filter>Server\03.LogViewer\03.State\02.EntryReady</Filter>
+      <Filter>Server\98.LogViewer\03.State\02.EntryReady</Filter>
     </ClCompile>
     <ClCompile Include="NetLogStateBase.cpp">
-      <Filter>Server\03.LogViewer\03.State\01.StateBase</Filter>
+      <Filter>Server\98.LogViewer\03.State\01.StateBase</Filter>
     </ClCompile>
     <ClCompile Include="NetLogState_LogPrint.cpp">
-      <Filter>Server\03.LogViewer\03.State\03.LogPrint</Filter>
+      <Filter>Server\98.LogViewer\03.State\03.LogPrint</Filter>
     </ClCompile>
     <ClCompile Include="PrecompileHeader.cpp">
       <Filter>Basic</Filter>
@@ -329,29 +329,8 @@
     <Filter Include="Server\01.Packet">
       <UniqueIdentifier>{a060b50f-0d32-48f9-89d8-99a98033da39}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Server\03.LogViewer">
-      <UniqueIdentifier>{25357443-f41e-406b-ae38-f51e52023a71}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Server\03.LogViewer\01.GUI">
-      <UniqueIdentifier>{90704d12-06f6-4849-bef0-42ade14ad5c5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Server\03.LogViewer\02.FSM">
-      <UniqueIdentifier>{80457f58-fad0-4b1f-b20a-1b51d210f21a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Server\03.LogViewer\03.State">
-      <UniqueIdentifier>{6929f4e9-9592-45bf-9983-fc6ed8adf155}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Server\03.LogViewer\03.State\02.EntryReady">
-      <UniqueIdentifier>{dee5a1d9-3506-4be5-9ed5-08653f195555}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Server\03.LogViewer\03.State\01.StateBase">
-      <UniqueIdentifier>{6ca5770e-79b7-4b84-a02f-d35a6f5f7dca}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Basic">
       <UniqueIdentifier>{aabc6096-725f-47aa-8201-d27b1ef4978d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Server\03.LogViewer\03.State\03.LogPrint">
-      <UniqueIdentifier>{b8d9b6cc-197e-4d54-934d-e7894310b1b9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Component">
       <UniqueIdentifier>{42fc8948-5edb-4db6-9324-f39b430b12ec}</UniqueIdentifier>
@@ -460,6 +439,27 @@
     </Filter>
     <Filter Include="Server\02.NetworkManager">
       <UniqueIdentifier>{5c4b3dfb-fbf3-4036-88cc-651d97b9ccc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\98.LogViewer">
+      <UniqueIdentifier>{25357443-f41e-406b-ae38-f51e52023a71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\98.LogViewer\01.GUI">
+      <UniqueIdentifier>{90704d12-06f6-4849-bef0-42ade14ad5c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\98.LogViewer\02.FSM">
+      <UniqueIdentifier>{80457f58-fad0-4b1f-b20a-1b51d210f21a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\98.LogViewer\03.State">
+      <UniqueIdentifier>{6929f4e9-9592-45bf-9983-fc6ed8adf155}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\98.LogViewer\03.State\02.EntryReady">
+      <UniqueIdentifier>{dee5a1d9-3506-4be5-9ed5-08653f195555}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\98.LogViewer\03.State\01.StateBase">
+      <UniqueIdentifier>{6ca5770e-79b7-4b84-a02f-d35a6f5f7dca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\98.LogViewer\03.State\03.LogPrint">
+      <UniqueIdentifier>{b8d9b6cc-197e-4d54-934d-e7894310b1b9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
