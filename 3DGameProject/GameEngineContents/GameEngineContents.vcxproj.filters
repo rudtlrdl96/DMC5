@@ -151,6 +151,9 @@
     <ClInclude Include="SelectScreen.h">
       <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
     </ClInclude>
+    <ClInclude Include="TestEmpusa.h">
+      <Filter>Actor\Test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -293,6 +296,9 @@
     </ClCompile>
     <ClCompile Include="SelectScreen.cpp">
       <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
+    </ClCompile>
+    <ClCompile Include="TestEmpusa.cpp">
+      <Filter>Actor\Test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

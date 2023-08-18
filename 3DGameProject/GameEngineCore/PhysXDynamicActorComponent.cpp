@@ -28,8 +28,6 @@ physx::PxRigidDynamic* PhysXDynamicActorComponent::CreatePhysXActors(physx::PxSc
 		physx::PxQuat(tmpQuat.x, tmpQuat.y, tmpQuat.z, tmpQuat.w));
 
 	// 마찰, 탄성계수
-	//material_ = _physics->createMaterial(0.0f, 0.0f, 0.0f);
-
 	m_pMaterial = _physics->createMaterial(Staticfriction, Dynamicfriction, Resitution);
 
 	// TODO::배율을 적용할 경우 이쪽 코드를 사용
@@ -50,7 +48,6 @@ physx::PxRigidDynamic* PhysXDynamicActorComponent::CreatePhysXActors(physx::PxSc
 	//// 충돌체의 종류
 	m_pDynamic = _physics->createRigidDynamic(localTm);
 
-
 	// TODO::점프속력에 영향을 미침. 스테이지 작성후 자세한 수치는 나중에 조절
 	// 플레이어 최대 속력
 	// dynamic_->setMaxLinearVelocity(PLAYER_MAX_SPEED);
@@ -67,7 +64,6 @@ physx::PxRigidDynamic* PhysXDynamicActorComponent::CreatePhysXActors(physx::PxSc
 
 	// 메인 캡슐 콜라이더
 	m_pShape = physx::PxRigidActorExt::createExclusiveShape(*m_pDynamic, physx::PxCapsuleGeometry(ScaledRadius * 1.3f, ScaledHeight * 0.9f), *m_pMaterial);
-	//shape_ = physx::PxRigidActorExt::createExclusiveShape(*dynamic_, physx::PxBoxGeometry(ScaledHeight * 0.9f, ScaledRadius * 1.3f + ScaledHeight * 0.9f, ScaledHeight * 0.9f), *material_);
 	float CapsuleHeight = (ScaledHeight * 0.9f);
 	physx::PxVec3 DynamicCenter(0.0f, CapsuleHeight, 0.0f);
 	//피벗설정
@@ -94,22 +90,22 @@ physx::PxRigidDynamic* PhysXDynamicActorComponent::CreatePhysXActors(physx::PxSc
 	// 
 	physx::PxTransform LocalPose = m_pDynamic->getCMassLocalPose();
 
-	m_pFaceshape = physx::PxRigidActorExt::createExclusiveShape(*m_pDynamic, physx::PxBoxGeometry(ScaledRadius * 0.1f, ScaledHeight * 0.4f, ScaledHeight * 0.9f), *m_pMaterial);
-	m_pFaceshape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
-	m_pFaceshape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
-	physx::PxTransform facerelativePose(physx::PxVec3(0.0f, CapsuleHeight * 1.3f, ScaledRadius * 1.3f));
-	physx::PxTransform facerelativePose2(facerelativePose);
-	m_pFaceshape->setLocalPose(facerelativePose2);
-	//faceshape_->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::PlayerFace), 0, 0, 0));
+	//m_pFaceshape = physx::PxRigidActorExt::createExclusiveShape(*m_pDynamic, physx::PxBoxGeometry(ScaledRadius * 0.1f, ScaledHeight * 0.4f, ScaledHeight * 0.9f), *m_pMaterial);
+	//m_pFaceshape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
+	//m_pFaceshape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
+	//physx::PxTransform facerelativePose(physx::PxVec3(0.0f, CapsuleHeight * 1.3f, ScaledRadius * 1.3f));
+	//physx::PxTransform facerelativePose2(facerelativePose);
+	//m_pFaceshape->setLocalPose(facerelativePose2);
+	////faceshape_->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::PlayerFace), 0, 0, 0));
 
-	m_pHeadshape = physx::PxRigidActorExt::createExclusiveShape(*m_pDynamic, physx::PxSphereGeometry(ScaledHeight * 0.9f), *m_pMaterial);
-	m_pHeadshape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
-	m_pHeadshape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
-	physx::PxTransform headrelativePose(physx::PxVec3(0.0f, CapsuleHeight * 1.5f, 0.0f));
-	//physx::PxTransform facerelativePose2(headrelativePose);
-	m_pHeadshape->setLocalPose(headrelativePose);
-	//headshape_->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::PlayerHead), 0, 0, 0));
-	m_pHeadshape->setContactOffset(0.2f);
+	//m_pHeadshape = physx::PxRigidActorExt::createExclusiveShape(*m_pDynamic, physx::PxSphereGeometry(ScaledHeight * 0.9f), *m_pMaterial);
+	//m_pHeadshape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
+	//m_pHeadshape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
+	//physx::PxTransform headrelativePose(physx::PxVec3(0.0f, CapsuleHeight * 1.5f, 0.0f));
+	////physx::PxTransform facerelativePose2(headrelativePose);
+	//m_pHeadshape->setLocalPose(headrelativePose);
+	////headshape_->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::PlayerHead), 0, 0, 0));
+	//m_pHeadshape->setContactOffset(0.2f);
 
 	// 제동?
 	m_pDynamic->setLinearDamping(physx::PxReal(0.5f));

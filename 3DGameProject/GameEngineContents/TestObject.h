@@ -24,7 +24,8 @@ protected:
 	void ServerUpdate(float _DeltaTime);
 
 private:
-	std::shared_ptr<class PhysXBoxGeometryComponent> Component = nullptr;
-
+	//std::shared_ptr<class PhysXBoxGeometryComponent> Component = nullptr;
+	std::shared_ptr<class PhysXDynamicActorComponent> Component = nullptr;
+	float4 Velocity = float4::ZERO;
 };
 
