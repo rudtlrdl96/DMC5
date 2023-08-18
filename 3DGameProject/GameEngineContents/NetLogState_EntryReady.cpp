@@ -99,8 +99,8 @@ void NetLogState_EntryReady::ServerPacketInit(GameEngineNetServer& _Net)
 
 void NetLogState_EntryReady::ClientPacketInit(GameEngineNetClient& _Net)
 {
-	_Net.Dispatcher.AddHandler<ConnectIDPacket>(PacketEnum::ConnectIDPacket,
-		[](std::shared_ptr<ConnectIDPacket> _Packet)
+	_Net.Dispatcher.AddHandler<ConnectIDPacket>
+		([](std::shared_ptr<ConnectIDPacket> _Packet)
 		{
 			//TODO
 		}

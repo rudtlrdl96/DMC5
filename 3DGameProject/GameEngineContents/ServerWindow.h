@@ -17,6 +17,8 @@ public:
 	ServerWindow& operator=(const ServerWindow& _Other) = delete;
 	ServerWindow& operator=(ServerWindow&& _Other) noexcept = delete;
 
+	static GameEngineNet* NetInst;
+
 protected:
 	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;
 
@@ -24,15 +26,14 @@ protected:
 	void ServerInit(std::shared_ptr<GameEngineLevel> Level);
 
 	//서버용 패킷을 어떻게 처리할 지 등록
-	void ServerPacketInit(GameEngineNetServer& _Net);
+	void ServerPacketInit(GameEngineNetServer* _Net);
 
 	//클라용 패킷을 어떻게 처리할 지 등록
-	void ClientPacketInit(GameEngineNetClient& _Net);
+	void ClientPacketInit(GameEngineNetClient* _Net);
 
 private:
 	GameEngineNetServer Server;
 	GameEngineNetClient Client;
-	static GameEngineNet* NetInst;
 
 	bool IsServer;
 	std::string IP = "127.0.0.1";
@@ -40,5 +41,8 @@ private:
 	bool IsClient;
 
 	std::string TestSendBuffer = "fashdjklfhajklfhasdjfhaklfhafhasd";
+
+	//테스트 코드 나중에 지워야 함
+	class GameEngineLevel* NowLevel = nullptr;
 };
 

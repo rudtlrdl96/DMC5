@@ -7,9 +7,12 @@
 class ConnectIDPacket : public GameEnginePacket
 {
 public:
+	static const PacketEnum Type = PacketEnum::ConnectIDPacket;
+
+public:
 	ConnectIDPacket()
 	{
-		SetPacketID(PacketEnum::ConnectIDPacket);
+		SetPacketID(Type);
 	}
 
 	~ConnectIDPacket() override

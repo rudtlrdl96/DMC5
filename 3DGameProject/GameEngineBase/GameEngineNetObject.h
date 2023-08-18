@@ -8,9 +8,17 @@ enum class NetControllType
 	ServerControll,	//패킷을 받아 조종받는 오브젝트
 };
 
+class GameEngineNet;
+
 class GameEngineNetObject
 {
 public:
+	//이 ID의 오브젝트가 네트워크 동기화 오브젝트인지 여부
+	static bool IsNetObject(int _Id)
+	{
+		return AllNetObjects.contains(_Id);
+	}
+
 	GameEngineNetObject();
 	~GameEngineNetObject();
 
@@ -26,11 +34,9 @@ public:
 	}
 
 
-	//서버가 동기화할 오브젝트를 생성할 때 호출시킬 초기화 함수
-	void InitServerObject();
+	void InitNetObject(int _ObjectID, GameEngineNet* _Net);
 
-	//클라가 패킷을 받아 동기화할 오브젝트를 생성할 때 호출시킬 초기화 함수
-	void InitClientObject(int _ObjectID);
+
 
 	inline void SetControll(NetControllType _ControllType)
 	{
@@ -47,6 +53,19 @@ public:
 		return ObjectID;
 	}
 
+	inline bool IsNet() const
+	{
+		return nullptr != Net;
+	}
+
+	inline GameEngineNet* GetNet() const
+	{
+		return Net;
+	}
+
+	//
+	void PushPacket(std::shared_ptr<class GameEnginePacket> _Packet);
+
 protected:
 
 private:
@@ -59,5 +78,10 @@ private:
 
 	//서버가 지정한 ID
 	int ObjectID = -1;
+
+	GameEngineNet* Net = nullptr;
+
+	//
+	std::list<std::shared_ptr<GameEnginePacket>> Packets;
 };
 

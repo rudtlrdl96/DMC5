@@ -15,16 +15,25 @@ public:
 	GameEngineDispatcher& operator=(const GameEngineDispatcher& _Other) = delete;
 	GameEngineDispatcher& operator=(const GameEngineDispatcher&& _Other) noexcept = delete;
 
-	template<typename PacketType, typename EnumType>
-	void AddHandler(EnumType _Type, std::function<void(std::shared_ptr<PacketType>)> _CallBack)
+	/*template<typename PacketType>
+	void AddHandler(std::function<void(std::shared_ptr<PacketType>)> _CallBack)
 	{
-		AddHandler(static_cast<int>(_Type), _CallBack);
-	}
+		AddHandler(_CallBack);
+	}*/
 
 	//패킷을 어떻게 변환시키고 어떻게 처리할 건지에 대해 '등록'하는 부분
 	template<typename PacketType>
-	void AddHandler(int Type, std::function<void(std::shared_ptr<PacketType>)> _CallBack)
+	void AddHandler(std::function<void(std::shared_ptr<PacketType>)> _CallBack)
 	{
+		//해당 패킷의 정적 변수 Type을 패킷타입으로 생각
+		int Type = static_cast<int>(PacketType::Type);
+		if (true == PacketHandlers.contains(Type))
+		{
+			MsgAssert("이미 존재하는 핸드러를 또 등록하려고 했습니다.");
+			return;
+		}
+
+
 		//나중에 바이트 덩어리가 오면 그 바이트를 분석해서
 		//패킷으로 변환시키는 콜백 등록
 		ConvertPacketHandlers[Type] = [=](GameEngineSerializer& _Ser)

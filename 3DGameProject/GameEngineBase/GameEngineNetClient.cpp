@@ -14,7 +14,7 @@ GameEngineNetClient::~GameEngineNetClient()
     }
 }
 
-void GameEngineNetClient::Send(const char* Data, unsigned int _Size)
+void GameEngineNetClient::Send(const char* Data, unsigned int _Size, int _IgnoreID /*= -1*/)
 {
     if (nullptr == Data)
     {

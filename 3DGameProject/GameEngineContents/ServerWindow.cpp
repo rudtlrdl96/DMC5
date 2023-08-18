@@ -21,6 +21,9 @@ ServerWindow::~ServerWindow()
 
 void ServerWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
 {
+	//테스트 코드
+	NowLevel = Level.get();
+
 	// IP.resize(128);
 	// ImGui::PushID(1312321);
 	std::string Text = "서버로 동작중입니다.";
@@ -75,7 +78,7 @@ void ServerWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 	if (ImGui::Button(GameEngineString::AnsiToUTF8(Text).c_str()))
 	{
 		//서버용 패킷 처리 콜백 등록
-		ServerPacketInit(Server);
+		ServerPacketInit(&Server);
 
 		Server.ServerOpen(static_cast<unsigned short>(Port));
 		ServerInit(Level);
@@ -83,7 +86,7 @@ void ServerWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 		//메인 플레이어가 있는 경우 서버와 연결
 		if (nullptr != Player::MainPlayer)
 		{
-			Player::MainPlayer->InitServerObject();
+			Player::MainPlayer->InitNetObject(GameEngineNetObject::CreateServerID(), &Server);
 		}
 
 		NetInst = &Server;
@@ -100,7 +103,7 @@ void ServerWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 	if (ImGui::Button(GameEngineString::AnsiToUTF8(Text).c_str()))
 	{
 		//클라용 패킷 처리 콜백 등록
-		ClientPacketInit(Client);
+		ClientPacketInit(&Client);
 
 		IsClient = Client.Connect(IP, static_cast<unsigned short>(Port));
 		NetInst = &Client;
@@ -122,6 +125,9 @@ void ServerWindow::ServerInit(std::shared_ptr<GameEngineLevel> Level)
 			GameEngineSerializer Ser;
 			Packet->SerializePacket(Ser);
 
+			//상대방의 ID와 소켓을 연관지어 저장
+			_Server->AddUser(ID, _Socket);
+
 			// 유일하게 한번 딱 직접 소켓을 써서 보내야할때.
 			GameEngineNet::Send(_Socket, Ser.GetConstCharPtr(), Ser.GetWriteOffSet());
 		}
@@ -133,19 +139,40 @@ void ServerWindow::ServerInit(std::shared_ptr<GameEngineLevel> Level)
 
 
 
-void ServerWindow::ServerPacketInit(GameEngineNetServer& _Net)
+void ServerWindow::ServerPacketInit(GameEngineNetServer* _Net)
 {
+	//ObjectUpdatePacket 처리
+	_Net->Dispatcher.AddHandler<ObjectUpdatePacket>
+		([=](std::shared_ptr<ObjectUpdatePacket> _Packet)
+		{
+			//해당 NetObejctID의 객체가 존재하지 않다면 만든다
+			if (false == GameEngineNetObject::IsNetObject(_Packet->GetObjectID()))
+			{
+				std::shared_ptr<Player> NewPlayer = NowLevel->CreateActor<Player>();
+				NewPlayer->InitNetObject(_Packet->GetObjectID(), _Net);
+			}
 
+			//TODO
+		}
+	);
 }
 
-void ServerWindow::ClientPacketInit(GameEngineNetClient& _Net)
+void ServerWindow::ClientPacketInit(GameEngineNetClient* _Net)
 {
-	_Net.Dispatcher.AddHandler<ConnectIDPacket>(PacketEnum::ConnectIDPacket,
-		[](std::shared_ptr<ConnectIDPacket> _Packet)
+	//ConnectIDPacket 처리
+	_Net->Dispatcher.AddHandler<ConnectIDPacket>
+		([=](std::shared_ptr<ConnectIDPacket> _Packet)
 		{
-			//GetLevel()->
+			//처음 접속 했다면 Player를 서버와 연동 시작
+			Player::MainPlayer->InitNetObject(_Packet->GetObjectID(), ServerWindow::NetInst);
+		}
+	);
 
-			int a = 0;
+	//ObjectUpdatePacket 처리
+	_Net->Dispatcher.AddHandler<ObjectUpdatePacket>(
+		[](std::shared_ptr<ObjectUpdatePacket> _Packet)
+		{
+			
 		}
 	);
 }
