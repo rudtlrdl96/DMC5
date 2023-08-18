@@ -1,7 +1,7 @@
 #include "PrecompileHeader.h"
 #include "PlayerTestLevel.h"
 #include <GameEngineCore/GameEngineFBXMesh.h>
-#include "Player.h"
+#include "BasePlayerActor.h"
 PlayerTestLevel::PlayerTestLevel() 
 {
 }
@@ -43,11 +43,18 @@ void PlayerTestLevel::Update(float _DeltaTime)
 		IsMessage = true;
 		MsgTextBox("CurrentLevel is PlayerTestLevel");
 	}
-
+	if (true == GameEngineInput::IsDown("ReturnToMainLevel"))
+	{
+		GameEngineCore::ChangeLevel("MainLevel");
+	}
 }
 
 void PlayerTestLevel::LevelChangeStart()
 {
+	if (nullptr != BasePlayerActor::MainPlayer)
+	{
+		return;
+	}
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
@@ -63,7 +70,7 @@ void PlayerTestLevel::LevelChangeStart()
 		}
 	}
 
-	std::shared_ptr<Player> NewPlayer = CreateActor<Player>();
+	std::shared_ptr<BasePlayerActor> NewPlayer = CreateActor<BasePlayerActor>();
 
 }
 

@@ -1,7 +1,7 @@
 #pragma once
 
 // Ό³Έν :
-class PlayerController
+class PlayerController : public GameEngineComponent
 {
 public:
 	// constrcuter destructer
@@ -15,6 +15,8 @@ public:
 	PlayerController& operator=(PlayerController&& _Other) noexcept = delete;
 
 protected:
+	void Start() override;
+	void Update(float _DeltaTime) override;
 
 private:
 

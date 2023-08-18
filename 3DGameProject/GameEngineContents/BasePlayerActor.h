@@ -1,9 +1,11 @@
 #pragma once
-
 // Ό³Έν :
-class BasePlayerActor
+class BasePlayerActor : public GameEngineActor, public GameEngineNetObject
 {
 public:
+	static BasePlayerActor* MainPlayer;
+
+
 	// constrcuter destructer
 	BasePlayerActor();
 	~BasePlayerActor();
@@ -15,8 +17,12 @@ public:
 	BasePlayerActor& operator=(BasePlayerActor&& _Other) noexcept = delete;
 
 protected:
+	void Start() override;
+	void Update(float _DeltaTime) override;
+
+	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
+	std::shared_ptr<class PlayerController> Controller = nullptr;
 
 private:
-
 };
 
