@@ -1,7 +1,9 @@
 #include "PrecompileHeader.h"
 #include "TitleLevel.h"
 #include "TitleBG.h"
-
+#include "StartButton.h"
+#include "MouseCusor.h"
+#include "SelectScreen.h"
 #include "FadeEffect.h"
 #include <GameEngineCore/GameEngineFont.h>
 #include <GameEngineCore/GameEngineTexture.h>
@@ -32,19 +34,34 @@ void TitleLevel::Start()
 	{
 		GameEngineTexture::Load(File[i].GetFullPath());
 	}
+	if (false == GameEngineInput::IsKey("UIDEBUGMODE"))
+	{
+		GameEngineInput::CreateKey("UIDEBUGMODE", 'U');
+		GameEngineInput::CreateKey("ENTER", VK_RETURN);
+		GameEngineInput::CreateKey("CLICK", VK_LBUTTON);
 
+	}
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
-	GetMainCamera()->SetSortType(1, SortType::ZSort);
+	GetMainCamera()->GetCamTarget()->DepthSettingOff();
 
 	FEffect = GetLastTarget()->CreateEffect<FadeEffect>();
 	//ø¢≈Õ
 	std::shared_ptr<TitleBG> TitleBGPtr = CreateActor<TitleBG>();
+	TitleBGPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
+	std::shared_ptr<StartButton> StartButtonPtr = CreateActor<StartButton>();
+	StartButtonPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
+	std::shared_ptr<MouseCusor> MouseCusorPtr = CreateActor<MouseCusor>();
+	MouseCusorPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
 
 }
 
 void TitleLevel::Update(float _DeltaTime)
 {
+	if (GameEngineInput::IsDown("UIDEBUGMODE"))
+	{
+		IsDebugSwitch();
+	}
 
 }
 

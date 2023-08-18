@@ -1,24 +1,21 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
 #include <GameEngineCore/GameEngineCollision.h>
-class StatStringParameter
+#include <GameEngineCore/GameEngineUIRenderer.h>
+class StringParameter
 {
 public:
-	std::string Name = "";
-	std::string ExplaneName = "";
-	std::string TwoExplaneName = "";
-	std::string Value = "";
+	std::string _Text = "";
+	std::string _SeletText = "";
+	std::string _ExplaneText = "";
 	int Index = 0;
 
 };
 // 설명 :
-class GameEngineUIRenderer;
 class GameEngineCollision;
 class ContentButton : public GameEngineActor
 {
 public:
-	static ContentButton* SelectButton;
-
 	// constrcuter destructer
 	ContentButton();
 	~ContentButton();
@@ -36,34 +33,25 @@ public:
 	{
 		return Render;
 	}
-
-	std::shared_ptr<GameEngineUIRenderer> GetExplaneRender()
-	{
-		return ExplaneRender;
-	}
 	std::shared_ptr<GameEngineUIRenderer> GetRender_Select()
 	{
 		return Render_Select;
 	}
-	void SetUIText(const StatStringParameter& _Paramter);
+	void SetUIText(const StringParameter& _Paramter);
 protected:
 	void Start() override;
 	void Update(float _Delta) override;
 
 private:
 	void FontCreate();
-	std::shared_ptr<GameEngineUIRenderer> Render;
-	std::shared_ptr<GameEngineUIRenderer> Render_Select;
-	std::shared_ptr<GameEngineUIRenderer> ExplaneRender;
-	std::shared_ptr<class UIFontRender> StatName;
-	std::shared_ptr<class UIFontRender> StatExplane;
-	std::shared_ptr<class UIFontRender> TwoExplane;
-	std::shared_ptr<class UIFontRender> StatValue;
+	std::shared_ptr<GameEngineUIRenderer> Render = nullptr;//폰트 안떠서 임시
+	std::shared_ptr<GameEngineUIRenderer> Render_Select = nullptr;
+	std::shared_ptr<class UIFontRender> Text = nullptr;
+	std::shared_ptr<class UIFontRender> SeletText = nullptr;
+	std::shared_ptr<class UIFontRender> ExplaneText = nullptr;
 	std::function<void()> Click;
 
 	std::string Font = "DMC5Font";
-
-	float4 YellowColor = { 1.0f,0.93f,0.721f };
 
 };
 

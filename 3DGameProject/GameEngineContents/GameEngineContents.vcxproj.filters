@@ -96,6 +96,18 @@
     <ClInclude Include="CavaliereAngelo.h">
       <Filter>Actor\Enemy\BossMonster\Stage11</Filter>
     </ClInclude>
+    <ClInclude Include="StartButton.h">
+      <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseCusor.h">
+      <Filter>UI\Base\Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="UIEnums.h">
+      <Filter>UI\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectScreen.h">
+      <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -183,6 +195,18 @@
     </ClCompile>
     <ClCompile Include="CavaliereAngelo.cpp">
       <Filter>Actor\Enemy\BossMonster\Stage11</Filter>
+    </ClCompile>
+    <ClCompile Include="ContentButton.cpp">
+      <Filter>UI\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="StartButton.cpp">
+      <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
+    </ClCompile>
+    <ClCompile Include="MouseCusor.cpp">
+      <Filter>UI\Base\Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectScreen.cpp">
+      <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -275,6 +299,9 @@
     </Filter>
     <Filter Include="Actor\Enemy\BossMonster\Stage11">
       <UniqueIdentifier>{96b677fc-4b72-444e-8673-c29daec20467}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Base\Mouse">
+      <UniqueIdentifier>{d6300527-8acf-4349-b8b1-a423df732e0e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

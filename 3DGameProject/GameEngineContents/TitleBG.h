@@ -21,8 +21,8 @@ protected:
 	void Update(float _DeltaTime) override;
 private:
 	std::shared_ptr<GameEngineUIRenderer> TitleBGRender = nullptr;
-	float4 Scale = { 1280.0f,720.0f,0.0f };
-	std::shared_ptr<class UIFontRender> TestFont;
+	float4 Scale = { 1600.0f,900.0f,0.0f };
+	std::shared_ptr<class GameEngineFontRenderer> TestFont;
 
 
 };
