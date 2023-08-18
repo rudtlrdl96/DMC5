@@ -18,8 +18,6 @@ Plane::~Plane()
 
 void Plane::Start()
 {
-	GetTransform()->AddWorldPosition(float4{0, -50.0f, 0});
-
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
 	Renderer->SetFBXMesh("Ground_Mesh.FBX", "MeshTexture");
 
@@ -28,6 +26,12 @@ void Plane::Start()
 
 	Component = CreateComponent<PhysXBoxGeometryComponent>();
 	Component->CreatePhysXActors(TestLevel::TestLevelPtr->GetLevelScene(), TestLevel::TestLevelPtr->GetLevelPhysics(), GeoMetryScale);
+	Component->SetPositionSetFromParentFlag(true);
+
+	physx::PxTransform PhyTF = Component->GetDynamic()->getGlobalPose();
+	PhyTF.q.z += 90.0f;
+
+	//Component->GetDynamic()->setGlobalPose(PhyTF);
 }
 
 void Plane::Update(float _DeltaTime)

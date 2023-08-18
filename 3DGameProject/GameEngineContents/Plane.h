@@ -14,6 +14,11 @@ public:
 	Plane& operator=(const Plane& _Other) = delete;
 	Plane& operator=(Plane&& _Other) noexcept = delete;
 
+	void GetDynamic()
+	{
+
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

@@ -28,7 +28,7 @@ TestLevel::~TestLevel()
 void TestLevel::Start()
 {
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -100.0f });
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 50.0f, -100.0f });
 }
 
 void TestLevel::Update(float _DeltaTime)
@@ -54,6 +54,11 @@ void TestLevel::LevelChangeStart()
 
 	std::shared_ptr<TestObject> Component = CreateActor<TestObject>();
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
+
+	std::shared_ptr<Plane> Flat2 = CreateActor<Plane>();
+	Flat2->GetTransform()->AddWorldPosition(float4{ 200, 0, 200 });
+	Flat2->GetTransform()->AddWorldRotation(float4{ 0, 0, 90 });
+	Flat2->GetTransform()->AddWorldRotation(float4{ 0, -45, 0});
 	//std::shared_ptr<TestEmpusa> Em = CreateActor<TestEmpusa>();
 	
 	//std::shared_ptr<Enemy_Empusa> Empusa = CreateActor<Enemy_Empusa>();

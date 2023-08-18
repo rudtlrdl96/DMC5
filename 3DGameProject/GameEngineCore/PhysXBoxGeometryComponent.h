@@ -19,6 +19,11 @@ public:
 
 	void CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale = physx::PxVec3(2.0f), float4 _GeoMetryRot = float4::ZERO);
 
+	physx::PxRigidDynamic* GetDynamic()
+	{
+		return m_pRigidDynamic;
+	}
+
 	inline void ReleasePhysX()
 	{
 		if (true == m_pRigidDynamic->isReleasable())
