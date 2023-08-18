@@ -19,6 +19,16 @@ public:
 
 	static GameEngineNet* NetInst;
 
+	static bool IsClientMainThread()
+	{
+		return IsClient;
+	}
+
+	static bool IsServerMainThread()
+	{
+		return IsServer;
+	}
+
 protected:
 	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;
 
@@ -35,10 +45,10 @@ private:
 	GameEngineNetServer Server;
 	GameEngineNetClient Client;
 
-	bool IsServer;
+	static bool IsServer;
+	static bool IsClient;
 	std::string IP = "127.0.0.1";
 	int Port = 30000;
-	bool IsClient;
 
 	std::string TestSendBuffer = "fashdjklfhajklfhasdjfhaklfhafhasd";
 

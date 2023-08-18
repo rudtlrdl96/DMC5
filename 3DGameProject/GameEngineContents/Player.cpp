@@ -5,8 +5,10 @@
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 
 #include "ObjectUpdatePacket.h"
+#include "ServerWindow.h"
 
 Player* Player::MainPlayer = nullptr;
+
 
 Player::Player()
 {

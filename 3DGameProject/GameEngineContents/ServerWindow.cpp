@@ -7,6 +7,8 @@
 #include "Player.h"
 
 GameEngineNet* ServerWindow::NetInst = nullptr;
+bool ServerWindow::IsServer = false;
+bool ServerWindow::IsClient = false;
 
 ServerWindow::ServerWindow()
 {
@@ -95,10 +97,10 @@ void ServerWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 		Player = NowLevel->CreateActor<BasePlayerActor>();
 		Player->InitNetObject(GameEngineNetObject::CreateServerID(), &Server);*/
 
-		/*if (nullptr != Player::MainPlayer)
+		if (nullptr != Player::MainPlayer)
 		{
 			Player::MainPlayer->InitNetObject(GameEngineNetObject::CreateServerID(), &Server);
-		}*/
+		}
 
 		NetInst = &Server;
 		IsServer = true;

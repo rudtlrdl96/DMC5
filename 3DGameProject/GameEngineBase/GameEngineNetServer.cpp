@@ -56,7 +56,7 @@ GameEngineNetServer::~GameEngineNetServer()
 void GameEngineNetServer::Send(const char* Data, unsigned int _Size, int _IgnoreID /*= -1*/)
 {
     //이 서버와 연결된 모든 클라에게 바이트 전송
-    for(std::pair<const int, SOCKET> UserPair : Users)
+    for(std::pair<int, SOCKET> UserPair : Users)
     {
         //IgnoreID는 Continue
         if (_IgnoreID == UserPair.first)
