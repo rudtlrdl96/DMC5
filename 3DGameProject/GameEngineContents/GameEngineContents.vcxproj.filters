@@ -16,9 +16,6 @@
     <ClInclude Include="TestLevel.h">
       <Filter>Levels</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Actor</Filter>
-    </ClInclude>
     <ClInclude Include="ServerWindow.h">
       <Filter>GUI</Filter>
     </ClInclude>
@@ -120,6 +117,24 @@
     <ClInclude Include="PlayerTestLevel.h">
       <Filter>Levels</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerActor_Nero.h">
+      <Filter>Actor\Player\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerActor_Vergil.h">
+      <Filter>Actor\Player\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="BasePlayerActor.h">
+      <Filter>Actor\Player\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Actor\Player\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerController.h">
+      <Filter>Actor\Player\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerCamera.h">
+      <Filter>Actor\Player\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -136,9 +151,6 @@
     </ClCompile>
     <ClCompile Include="MainLevel.cpp">
       <Filter>Levels</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Actor</Filter>
     </ClCompile>
     <ClCompile Include="ServerWindow.cpp">
       <Filter>GUI</Filter>
@@ -231,6 +243,24 @@
     </ClCompile>
     <ClCompile Include="PlayerTestLevel.cpp">
       <Filter>Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerActor_Nero.cpp">
+      <Filter>Actor\Player\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerActor_Vergil.cpp">
+      <Filter>Actor\Player\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="BasePlayerActor.cpp">
+      <Filter>Actor\Player\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Actor\Player\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerController.cpp">
+      <Filter>Actor\Player\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerCamera.cpp">
+      <Filter>Actor\Player\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -347,6 +377,15 @@
     </Filter>
     <Filter Include="Actor\Enemy\EnemySpawn">
       <UniqueIdentifier>{4aeb497a-468f-4b41-8ab2-3ddcb2d4576b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Player">
+      <UniqueIdentifier>{c973e3f3-8c9d-4b9d-8693-81925f490cb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Player\Base">
+      <UniqueIdentifier>{294df9c9-b6c4-4f7c-82b0-f109225ae62c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Player\Character">
+      <UniqueIdentifier>{b31d1a84-2550-4109-b55e-e45fed476b1f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

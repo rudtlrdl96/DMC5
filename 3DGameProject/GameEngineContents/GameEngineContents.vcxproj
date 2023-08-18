@@ -175,6 +175,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="BasePlayerActor.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="CavaliereAngelo.h">
       <SubType>
       </SubType>
@@ -287,6 +291,22 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="PlayerActor_Nero.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PlayerActor_Vergil.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PlayerCamera.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PlayerController.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="PlayerTestLevel.h">
       <SubType>
       </SubType>
@@ -320,6 +340,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="BaseEnemyActor.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="BasePlayerActor.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -420,6 +444,22 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Player.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PlayerActor_Nero.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PlayerActor_Vergil.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PlayerCamera.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PlayerController.cpp">
       <SubType>
       </SubType>
     </ClCompile>
