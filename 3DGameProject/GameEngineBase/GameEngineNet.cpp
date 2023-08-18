@@ -12,6 +12,7 @@ GameEngineNet::~GameEngineNet()
 	IsNetValue = false;
 }
 
+
 void GameEngineNet::RecvThreadFunction(SOCKET _Socket, GameEngineNet* _Net)
 {
 	char Data[1024] = { 0 };
@@ -78,7 +79,7 @@ void GameEngineNet::RecvThreadFunction(SOCKET _Socket, GameEngineNet* _Net)
 		// 8바이트 이상 받았지만
 		// 그걸 통해서 알아낸 패킷의 크기보다는 덜 온 경우
 		//if (static_cast<unsigned int>(PacketSize) > Serializer.GetWriteOffSet())
-		if (PacketSize > Serializer.GetWriteOffSet())
+		if (PacketSize > static_cast<int>(Serializer.GetWriteOffSet()))
 		{
 			//다음 수신을 대기
 			continue;
@@ -90,24 +91,102 @@ void GameEngineNet::RecvThreadFunction(SOCKET _Socket, GameEngineNet* _Net)
 		{
 			std::shared_ptr<GameEnginePacket> Packet = _Net->Dispatcher.ConvertPacket(PacketType, Serializer);
 
-			//이거 일단 임시
-			_Net->Dispatcher.ProcessPacket(Packet);
+			//바이트를 정상적으로 패킷으로 바꾸었다면
+			//메인스레드에서 패킷처리를 하기위해 자료구조에 저장
+			if (nullptr != Packet)
+			{
+				_Net->RecvPacketLock.lock();
+				_Net->RecvPacket.push_back(Packet);
+				_Net->RecvPacketLock.unlock();
+			}
 
-			//TODO
+			//수신받은 모든 바이트를 패킷크기에 딱 맞게 처리한 경우
+			if (Serializer.GetWriteOffSet() == Serializer.GetReadOffSet())
+			{
+				Serializer.Reset();
+				PacketType = -1;
+				PacketSize = -1;
+				break;
+			}
+
+			//아직 처리해야 하는 바이트가 남은 경우
+			else
+			{
+				unsigned int RemainSize = Serializer.GetWriteOffSet() - Serializer.GetReadOffSet();
+
+				//남은 바이트가 8바이트 미만인 경우 다시 데이터 수신을 대기한다(23번째 줄로 이동)
+				if (8 > RemainSize)
+				{
+					break;
+				}
+
+
+				//패킷 타입 분석
+				{
+					unsigned char* TypePivotPtr = &Serializer.GetDataPtr()[0];
+					int* ConvertPtr = reinterpret_cast<int*>(TypePivotPtr);
+					PacketType = *ConvertPtr;
+				}
+
+				//패킷 사이즈 분석
+				{
+					unsigned char* SizePivotPtr = &Serializer.GetDataPtr()[4];
+					int* ConvertPtr = reinterpret_cast<int*>(SizePivotPtr);
+					PacketSize = *ConvertPtr;
+				}
+
+				//남은 데이터가 8바이트 보다는 적은 경우엔
+				if (static_cast<int>(RemainSize) < PacketSize)
+				{
+					//직렬화 버퍼를 정리하고(앞쪽으로 땡기고) 다시 데이터 수신
+					Serializer.ClearReadData();
+					break;
+				}
+
+				//지금 당장 붙어있던 패킷을 처리할 수 있던 경우엔
+				//지금 While문으로 이동해서 바이트를 패킷으로 변환
+			}
 		}
+
 	}
 }
 
-void GameEngineNet::SendPacket(std::shared_ptr<class GameEnginePacket> _Packet)
+void GameEngineNet::SendPacket(std::shared_ptr<GameEnginePacket> _Packet, int _IgnoreID)
 {
 	GameEngineSerializer Ser;
 	_Packet->SerializePacket(Ser);
-	Send(reinterpret_cast<const char*>(Ser.GetDataPtr()), Ser.GetWriteOffSet());
+	Send(reinterpret_cast<const char*>(Ser.GetDataPtr()), Ser.GetWriteOffSet(), _IgnoreID);
 }
 
 
+//얘는 소켓을 직접 지정해서 한명에게만 보내는 static Send
 void GameEngineNet::Send(SOCKET _Socket, const char* Data, unsigned int _Size)
 {
 	send(_Socket, Data, _Size, 0);
 }
 
+
+
+void GameEngineNet::UpdatePacket()
+{
+	RecvPacketLock.lock();
+
+	//수신 받은 데이터가 없을때는 그냥 return
+	if (0 >= RecvPacket.size())
+	{
+		RecvPacketLock.unlock();
+		return;
+	}
+
+	//수신받은 패킷 옮기기
+	ProcessPackets = RecvPacket;
+	RecvPacket.clear();
+	RecvPacketLock.unlock();
+
+	//패킷 처리하기
+	for (std::shared_ptr<GameEnginePacket> Packet : ProcessPackets)
+	{
+		Dispatcher.ProcessPacket(Packet);
+	}
+	ProcessPackets.clear();
+}

@@ -772,6 +772,9 @@
     <ClInclude Include="PhysXBoxGeometryComponent.h">
       <Filter>Physics</Filter>
     </ClInclude>
+    <ClInclude Include="PhysXDynamicActorComponent.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -954,6 +957,9 @@
       <Filter>Physics</Filter>
     </ClCompile>
     <ClCompile Include="PhysXDefault.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysXDynamicActorComponent.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
   </ItemGroup>

@@ -83,7 +83,7 @@ void PhysicsLevel::Initialize()
 		MsgAssert("PxPvd 생성 실패");
 	}
 
-	m_pTransport = physx::PxDefaultPvdSocketTransportCreate(PVD_HOST, 5435, 10);
+	m_pTransport = physx::PxDefaultPvdSocketTransportCreate(PVD_HOST, 5425, 10);
 	if (!m_pTransport)
 	{
 		MsgAssert("Transport 생성 실패");
@@ -136,8 +136,8 @@ void PhysicsLevel::Initialize()
 // 실제로 물리연산을 실행
 void PhysicsLevel::Simulate(float _DeltaTime, bool _Value)
 {
-	m_pScene->simulate(1.0f / 60.0f);
-	//m_pScene->simulate(_DeltaTime);
+	//m_pScene->simulate(1.0f / 60.0f);
+	m_pScene->simulate(_DeltaTime);
 	m_pScene->fetchResults(_Value);
 }
 

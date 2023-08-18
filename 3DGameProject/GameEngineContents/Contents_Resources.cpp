@@ -20,8 +20,8 @@ void ContentsCore::ContentsResourcesCreate()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// GameEngineGUI::GUIWindowCreate<GameEngineCoreWindow>("CoreWindow");
-	//GameEngineGUI::GUIWindowCreate<ServerWindow>("ServerWindow");
-	GameEngineGUI::GUIWindowCreate<NetLogViewer>("ServerWindow");
+	GameEngineGUI::GUIWindowCreate<ServerWindow>("ServerWindow");
+	//GameEngineGUI::GUIWindowCreate<NetLogViewer>("ServerWindow");
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////// File Load //////////////////////////////////////////////////////////////////////////////////////
@@ -50,8 +50,8 @@ void ContentsCore::ContentsResourcesCreate()
 		NewDir.MoveParentToDirectory("ContentResources");
 		NewDir.Move("ContentResources");
 		NewDir.Move("Mesh");
-		NewDir.Move("Characters");
-
+		NewDir.Move("TestMesh");
+		// 테스트 메쉬 폴더는 자동으로 로드합니다
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".FBX" });
 
 		for (size_t i = 0; i < Files.size(); i++)
@@ -163,6 +163,16 @@ void ContentsCore::ContentsResourcesCreate()
 		Pipe->SetVertexShader("DebugMeshRender.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
 		Pipe->SetPixelShader("DebugMeshRender.hlsl");
+		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetDepthState("EngineDepth");
+	}
+
+	{
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("NoneAlphaMesh");
+
+		Pipe->SetVertexShader("NoneAlphaMesh.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("NoneAlphaMesh.hlsl");
 		Pipe->SetBlendState("AlphaBlend");
 		Pipe->SetDepthState("EngineDepth");
 	}

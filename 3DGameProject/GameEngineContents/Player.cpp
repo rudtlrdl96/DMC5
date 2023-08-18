@@ -1,6 +1,10 @@
 #include "PrecompileHeader.h"
 #include "Player.h"
+
+#include <GameEngineBase/GameEngineNet.h>
 #include <GameEngineCore/GameEngineFBXRenderer.h>
+
+#include "ObjectUpdatePacket.h"
 
 Player* Player::MainPlayer = nullptr;
 
@@ -58,6 +62,23 @@ void Player::Update(float _DeltaTime)
 		break;
 	default:
 		break;
+	}
+
+	static float Delta = 0.0f;
+	Delta += _DeltaTime;
+	if (Delta <= 1.0f / 60.0f)
+	{
+		return;
+	}
+
+	Delta -= 1.0f / 60.0f;
+	if (true == IsNet())
+	{
+		std::shared_ptr<ObjectUpdatePacket> NewPacket = std::make_shared<ObjectUpdatePacket>();
+		NewPacket->SetObjectID(GetNetObjectID());
+		NewPacket->Position = GetTransform()->GetWorldPosition();
+		NewPacket->Rotation = GetTransform()->GetWorldPosition();
+		GetNet()->SendPacket(NewPacket);
 	}
 }
 

@@ -20,15 +20,15 @@ void PhysXBoxGeometryComponent::CreatePhysXActors(physx::PxScene* _Scene, physx:
 	(
 		physx::PxVec3
 		(
-			m_pParentActor.lock()->GetTransform()->GetWorldPosition().x
-		, m_pParentActor.lock()->GetTransform()->GetWorldPosition().y
-		, m_pParentActor.lock()->GetTransform()->GetWorldPosition().z
+			ParentActor.lock()->GetTransform()->GetWorldPosition().x
+		, ParentActor.lock()->GetTransform()->GetWorldPosition().y
+		, ParentActor.lock()->GetTransform()->GetWorldPosition().z
 		),
 		physx::PxQuat(tmpQuat.x, tmpQuat.y, tmpQuat.z, tmpQuat.w)
 	);
 
 	// 마찰, 탄성계수
-	m_pMaterial = _physics->createMaterial(m_fStaticFriction, m_fDynamicFriction, m_fResitution);
+	m_pMaterial = _physics->createMaterial(Staticfriction, Dynamicfriction, Resitution);
 
 	// TODO::배율을 적용할 경우 이쪽 코드를 사용
 	//float4 tmpMagnification = { SIZE_MAGNIFICATION_RATIO };
@@ -68,11 +68,11 @@ void PhysXBoxGeometryComponent::CreatePhysXActors(physx::PxScene* _Scene, physx:
 	physx::PxRigidBodyExt::updateMassAndInertia(*m_pRigidDynamic, 0.1f);
 
 	//피벗 설정
-	physx::PxVec3 Pivot(m_f4DynamicPivot.x, m_f4DynamicPivot.y, m_f4DynamicPivot.z);
+	physx::PxVec3 Pivot(DynamicPivot.x, DynamicPivot.y, DynamicPivot.z);
 	m_pShape->setLocalPose(physx::PxTransform(Pivot));
 
 	//충돌할때 필요한 필터 데이터
-	if (m_bObstacle == true)
+	if (IsObstacle == true)
 	{
 		m_pShape->setSimulationFilterData
 		(
@@ -80,7 +80,7 @@ void PhysXBoxGeometryComponent::CreatePhysXActors(physx::PxScene* _Scene, physx:
 			, static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), 0, 0)
 		);
 	}
-	else if (m_bGround == true)
+	else if (IsGround == true)
 	{
 		m_pShape->setSimulationFilterData
 		(
@@ -93,7 +93,7 @@ void PhysXBoxGeometryComponent::CreatePhysXActors(physx::PxScene* _Scene, physx:
 	m_pShape->setLocalPose(physx::PxTransform(Pivot));
 
 	// Scene에 액터 추가
-	if (true == m_bAggregateObj)
+	if (true == IsAggregateObject)
 	{
 		AddActorAggregate(m_pRigidDynamic);
 	}
@@ -113,12 +113,12 @@ void PhysXBoxGeometryComponent::CreatePhysXActors(physx::PxScene* _Scene, physx:
 void PhysXBoxGeometryComponent::Start()
 {
 	// 부모의 정보의 저장
-	m_pParentActor = GetActor()->DynamicThis<GameEngineActor>();
+	ParentActor = GetActor()->DynamicThis<GameEngineActor>();
 }
 
 void PhysXBoxGeometryComponent::Update(float _DeltaTime)
 {
-	if (false == m_bPositionSetFromParentFlag)
+	if (false == PositionSetFromParentFlag)
 	{
 		// PhysX Actor의 상태에 맞춰서 부모의 Transform정보를 갱신
 		float4 tmpWorldPos = 
@@ -130,18 +130,18 @@ void PhysXBoxGeometryComponent::Update(float _DeltaTime)
 
 		float4 EulerRot = PhysXDefault::GetQuaternionEulerAngles(m_pRigidDynamic->getGlobalPose().q) * GameEngineMath::RadToDeg;
 
-		m_pParentActor.lock()->GetTransform()->SetWorldRotation(float4{ EulerRot.x, EulerRot.y, EulerRot.z });
-		m_pParentActor.lock()->GetTransform()->SetWorldPosition(tmpWorldPos);
+		ParentActor.lock()->GetTransform()->SetWorldRotation(float4{ EulerRot.x, EulerRot.y, EulerRot.z });
+		ParentActor.lock()->GetTransform()->SetWorldPosition(tmpWorldPos);
 	}
 	else
 	{
-		float4 tmpQuat = m_pParentActor.lock()->GetTransform()->GetWorldRotation().EulerDegToQuaternion();
+		float4 tmpQuat = ParentActor.lock()->GetTransform()->GetWorldRotation().EulerDegToQuaternion();
 
 		physx::PxTransform tmpPxTransform
 		(
-			m_pParentActor.lock()->GetTransform()->GetWorldPosition().x,
-			m_pParentActor.lock()->GetTransform()->GetWorldPosition().y,
-			m_pParentActor.lock()->GetTransform()->GetWorldPosition().z, 
+			ParentActor.lock()->GetTransform()->GetWorldPosition().x,
+			ParentActor.lock()->GetTransform()->GetWorldPosition().y,
+			ParentActor.lock()->GetTransform()->GetWorldPosition().z,
 			physx::PxQuat(tmpQuat.x, tmpQuat.y, tmpQuat.z, tmpQuat.w)
 		);
 

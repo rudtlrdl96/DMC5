@@ -13,12 +13,6 @@
     <ClInclude Include="MainLevel.h">
       <Filter>Levels</Filter>
     </ClInclude>
-    <ClInclude Include="TestLevel.h">
-      <Filter>Levels</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Actor</Filter>
-    </ClInclude>
     <ClInclude Include="ServerWindow.h">
       <Filter>GUI</Filter>
     </ClInclude>
@@ -65,7 +59,7 @@
       <Filter>Actor\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="EnemyActor_Normal.h">
-      <Filter>Actor\Enemy\NormalMonster</Filter>
+      <Filter>Actor\Enemy\NormalEnemy</Filter>
     </ClInclude>
     <ClInclude Include="IntroLevel.h">
       <Filter>UI\Level</Filter>
@@ -88,13 +82,62 @@
     <ClInclude Include="TitleBG.h">
       <Filter>UI\Actor\TitleUI\BG</Filter>
     </ClInclude>
-    <ClInclude Include="Plane.h" />
-    <ClInclude Include="TestObject.h" />
     <ClInclude Include="EnemyActor_Boss.h">
-      <Filter>Actor\Enemy\BossMonster</Filter>
+      <Filter>Actor\Enemy\BossEnemy</Filter>
     </ClInclude>
     <ClInclude Include="CavaliereAngelo.h">
-      <Filter>Actor\Enemy\BossMonster\Stage11</Filter>
+      <Filter>Actor\Enemy\BossEnemy\Stage11</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyActor_Fly.h">
+      <Filter>Actor\Enemy\NormalEnemy\FlyEnemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_GreenEmpusa.h">
+      <Filter>Actor\Enemy\NormalEnemy\FlyEnemy\GreenEmpusa</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_Empusa.h">
+      <Filter>Actor\Enemy\NormalEnemy\BasicEnemy\Empusa</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_HellCaina.h">
+      <Filter>Actor\Enemy\NormalEnemy\BasicEnemy\HellCaina</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_HellAntenora.h">
+      <Filter>Actor\Enemy\NormalEnemy\BasicEnemy\HellAntenora</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_RedEmpusa.h">
+      <Filter>Actor\Enemy\NormalEnemy\BasicEnemy\RedEmpusa</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemySpawnArea.h">
+      <Filter>Actor\Enemy\EnemySpawn</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerTestLevel.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerActor_Nero.h">
+      <Filter>Actor\Player\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerActor_Vergil.h">
+      <Filter>Actor\Player\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="BasePlayerActor.h">
+      <Filter>Actor\Player\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Actor\Player\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerController.h">
+      <Filter>Actor\Player\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerCamera.h">
+      <Filter>Actor\Player\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>Actor\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="TestObject.h">
+      <Filter>Actor\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="TestLevel.h">
+      <Filter>Levels\Test</Filter>
     </ClInclude>
     <ClInclude Include="StartButton.h">
       <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
@@ -119,14 +162,8 @@
     <ClCompile Include="OldTVEffect.cpp">
       <Filter>PostEffect</Filter>
     </ClCompile>
-    <ClCompile Include="TestLevel.cpp">
-      <Filter>Levels</Filter>
-    </ClCompile>
     <ClCompile Include="MainLevel.cpp">
       <Filter>Levels</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Actor</Filter>
     </ClCompile>
     <ClCompile Include="ServerWindow.cpp">
       <Filter>GUI</Filter>
@@ -168,7 +205,7 @@
       <Filter>Actor\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="EnemyActor_Normal.cpp">
-      <Filter>Actor\Enemy\NormalMonster</Filter>
+      <Filter>Actor\Enemy\NormalEnemy</Filter>
     </ClCompile>
     <ClCompile Include="IntroLevel.cpp">
       <Filter>UI\Level</Filter>
@@ -188,13 +225,62 @@
     <ClCompile Include="TitleBG.cpp">
       <Filter>UI\Actor\TitleUI\BG</Filter>
     </ClCompile>
-    <ClCompile Include="Plane.cpp" />
-    <ClCompile Include="TestObject.cpp" />
     <ClCompile Include="EnemyActor_Boss.cpp">
-      <Filter>Actor\Enemy\BossMonster</Filter>
+      <Filter>Actor\Enemy\BossEnemy</Filter>
     </ClCompile>
     <ClCompile Include="CavaliereAngelo.cpp">
-      <Filter>Actor\Enemy\BossMonster\Stage11</Filter>
+      <Filter>Actor\Enemy\BossEnemy\Stage11</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyActor_Fly.cpp">
+      <Filter>Actor\Enemy\NormalEnemy\FlyEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_GreenEmpusa.cpp">
+      <Filter>Actor\Enemy\NormalEnemy\FlyEnemy\GreenEmpusa</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_Empusa.cpp">
+      <Filter>Actor\Enemy\NormalEnemy\BasicEnemy\Empusa</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_HellCaina.cpp">
+      <Filter>Actor\Enemy\NormalEnemy\BasicEnemy\HellCaina</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_HellAntenora.cpp">
+      <Filter>Actor\Enemy\NormalEnemy\BasicEnemy\HellAntenora</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_RedEmpusa.cpp">
+      <Filter>Actor\Enemy\NormalEnemy\BasicEnemy\RedEmpusa</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemySpawnArea.cpp">
+      <Filter>Actor\Enemy\EnemySpawn</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerTestLevel.cpp">
+      <Filter>Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerActor_Nero.cpp">
+      <Filter>Actor\Player\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerActor_Vergil.cpp">
+      <Filter>Actor\Player\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="BasePlayerActor.cpp">
+      <Filter>Actor\Player\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Actor\Player\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerController.cpp">
+      <Filter>Actor\Player\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerCamera.cpp">
+      <Filter>Actor\Player\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cpp">
+      <Filter>Actor\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="TestObject.cpp">
+      <Filter>Actor\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="TestLevel.cpp">
+      <Filter>Levels\Test</Filter>
     </ClCompile>
     <ClCompile Include="ContentButton.cpp">
       <Filter>UI\Base</Filter>
@@ -267,12 +353,6 @@
     <Filter Include="Actor\Enemy">
       <UniqueIdentifier>{ec2193ef-b7a7-4594-9b3c-3a16e74bb1c2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Actor\Enemy\NormalMonster">
-      <UniqueIdentifier>{cb99ca06-163e-4d2b-99b0-2b1df4abfd2b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Actor\Enemy\BossMonster">
-      <UniqueIdentifier>{2ee8e063-f548-41c2-9fbc-aa29201e1468}</UniqueIdentifier>
-    </Filter>
     <Filter Include="UI">
       <UniqueIdentifier>{0040d815-701d-4a4b-880b-41d2d45bb226}</UniqueIdentifier>
     </Filter>
@@ -297,8 +377,53 @@
     <Filter Include="UI\Actor\TitleUI\ButtonScreen">
       <UniqueIdentifier>{55ee2600-f38a-4185-b9af-c259d61311cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Actor\Enemy\BossMonster\Stage11">
+    <Filter Include="Actor\Enemy\BossEnemy">
+      <UniqueIdentifier>{2ee8e063-f548-41c2-9fbc-aa29201e1468}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy\BossEnemy\Stage11">
       <UniqueIdentifier>{96b677fc-4b72-444e-8673-c29daec20467}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy\NormalEnemy">
+      <UniqueIdentifier>{cb99ca06-163e-4d2b-99b0-2b1df4abfd2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy\NormalEnemy\FlyEnemy">
+      <UniqueIdentifier>{09ec54df-fc76-42d2-9d94-905bf04caab1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy\NormalEnemy\FlyEnemy\GreenEmpusa">
+      <UniqueIdentifier>{fa8c3f5e-5d7e-4b3a-8157-cf802a0eab5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy\NormalEnemy\BasicEnemy">
+      <UniqueIdentifier>{a039970f-a1d5-4a45-b659-380726b4ff25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy\NormalEnemy\BasicEnemy\Empusa">
+      <UniqueIdentifier>{8d4d9cde-6490-49d7-8474-70a62809557a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy\NormalEnemy\BasicEnemy\RedEmpusa">
+      <UniqueIdentifier>{408e38d7-2c65-4828-a606-0ec13208f7de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy\NormalEnemy\BasicEnemy\HellCaina">
+      <UniqueIdentifier>{e335c326-9be0-4e07-b397-4e2c3328512a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy\NormalEnemy\BasicEnemy\HellAntenora">
+      <UniqueIdentifier>{819e33f9-1097-4bef-9215-58e4a30a65fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy\EnemySpawn">
+      <UniqueIdentifier>{4aeb497a-468f-4b41-8ab2-3ddcb2d4576b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Player">
+      <UniqueIdentifier>{c973e3f3-8c9d-4b9d-8693-81925f490cb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Player\Base">
+      <UniqueIdentifier>{294df9c9-b6c4-4f7c-82b0-f109225ae62c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Player\Character">
+      <UniqueIdentifier>{b31d1a84-2550-4109-b55e-e45fed476b1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Test">
+      <UniqueIdentifier>{839ddcf0-fa0f-4e30-a291-488d8933e823}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\Test">
+      <UniqueIdentifier>{9f56ec72-d7ee-460e-99c6-d54e9fa65b57}</UniqueIdentifier>
     </Filter>
     <Filter Include="UI\Base\Mouse">
       <UniqueIdentifier>{d6300527-8acf-4349-b8b1-a423df732e0e}</UniqueIdentifier>

@@ -31,47 +31,47 @@ public:
 	//정지마찰계수설정
 	inline void SetStaticFriction(float _staticfriction)
 	{
-		m_fStaticFriction = _staticfriction;
+		Staticfriction = _staticfriction;
 	}
 	//운동마찰계수설정
 	inline void SetDynamicFriction(float _dynamicfriction)
 	{
-		m_fDynamicFriction = _dynamicfriction;
+		Dynamicfriction = _dynamicfriction;
 	}
 	//반발계수설정
 	inline void SetRestitution(float _resitution)
 	{
-		m_fResitution = _resitution;
+		Resitution = _resitution;
 	}
 	//순서대로 정지마찰계수설정, 운동마찰계수설정, 반발계수설정을 넣기
 	inline void SetPhysxMaterial(float _staticfriction, float _dynamicfriction, float _resitution)
 	{
-		m_fStaticFriction = _staticfriction;
-		m_fDynamicFriction = _dynamicfriction;
-		m_fResitution = _resitution;
+		Staticfriction = _staticfriction;
+		Dynamicfriction = _dynamicfriction;
+		Resitution = _resitution;
 	}
 
 	//피벗설정
 	inline void SetDynamicPivot(float4 _Pivot)
 	{
-		m_f4DynamicPivot = _Pivot;
+		DynamicPivot = _Pivot;
 	}
 
 	//오브젝트의 필터데이터를 넣기위한 bool값을 설정하는 함수
 	inline void SetObjectObstacle()
 	{
-		m_bObstacle = true;
+		IsObstacle = true;
 	}
 	
 	//오브젝트의 필터데이터를 넣기위한 bool값을 설정하는 함수
 	inline void SetObjectGround()
 	{
-		m_bGround = true;
+		IsGround = true;
 	}
 
 	inline void SetAggregateObj(bool _Flag)
 	{
-		m_bAggregateObj = _Flag;
+		IsAggregateObject = _Flag;
 	}
 
 	inline void AddActorAggregate(physx::PxActor* _Actor)
@@ -91,15 +91,15 @@ public:
 	vector matrixMultiply(matrix m, vector v);
 
 protected:
-	float m_fStaticFriction = 0.0f;
-	float m_fDynamicFriction = 0.0f;
-	float m_fResitution = 0.0f;
+	float Staticfriction = 0.0f;
+	float Dynamicfriction = 0.0f;
+	float Resitution = 0.0f;
 
-	float4 m_f4DynamicPivot = {0.0f, 0.0f, 0.0f};
+	float4 DynamicPivot = {0.0f, 0.0f, 0.0f};
 	
-	bool m_bObstacle = false;
-	bool m_bGround = false;
-	bool m_bAggregateObj = false;
+	bool IsObstacle = false;
+	bool IsGround = false;
+	bool IsAggregateObject = false;
 
 	static physx::PxAggregate* MapAggregate;
 

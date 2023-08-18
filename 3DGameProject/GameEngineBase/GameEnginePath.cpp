@@ -1,8 +1,26 @@
 #include "PrecompileHeader.h"
 #include "GameEnginePath.h"
+
 #include <Windows.h>
 #include <io.h>
 #include <GameEngineBase/GameEngineDebug.h>
+
+#include "GameEngineDirectory.h"
+
+std::string GameEnginePath::GetFileFullPath(const std::string_view& _RootDirectory, const std::vector<std::string>& _Moves, const std::string_view& _FileName)
+{
+	GameEngineDirectory DirPath;
+
+	DirPath.MoveParentToDirectory(_RootDirectory);
+	DirPath.Move(_RootDirectory);
+
+	for (size_t i = 0; i < _Moves.size(); i++)
+	{
+		DirPath.Move(_Moves[i]);
+	}
+
+	return DirPath.GetPlusFileName(_FileName).GetFullPath();
+}
 
 GameEnginePath::GameEnginePath()
 	: Path(std::filesystem::current_path())

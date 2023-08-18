@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 #include "CavaliereAngelo.h"
+#include <GameEngineCore/GameEngineFBXRenderer.h>
 
 CavaliereAngelo::CavaliereAngelo() 
 {
@@ -78,5 +79,21 @@ void CavaliereAngelo::ComboSwordAttack_Update(float _DeltaTime)
 }
 
 void CavaliereAngelo::ComboSwordAttack_Exit()
+{
+}
+
+void CavaliereAngelo::EnemyMeshLoad()
+{
+}
+
+void CavaliereAngelo::EnemyTextureLoad()
+{
+}
+
+void CavaliereAngelo::EnemyAnimationLoad()
+{
+}
+
+void CavaliereAngelo::EnemyCreateFSM()
 {
 }

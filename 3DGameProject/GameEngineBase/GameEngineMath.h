@@ -28,6 +28,22 @@ public:
 	static const float DegToRad;
 	static const float RadToDeg;
 
+	static float Lerp(float p1, float p2, float Time)
+	{
+		return (1.0f - Time) * p1 + Time * p2;
+	}
+
+	// 보통 누적된 시간을 Time
+	static float LerpLimit(float p1, float p2, float Time)
+	{
+		if (1.0f <= Time)
+		{
+			Time = 1.0f;
+		}
+
+		return Lerp(p1, p2, Time);
+	}
+
 private:
 	virtual ~GameEngineMath() = 0;
 };
@@ -53,6 +69,8 @@ public:
 
 	static float4 MatrixToQuaternion(const class float4x4& M);
 
+	static float4 DegreeToDirection2D(float _Degree);
+	static float4 RadianToDirection2D(float _Radian);
 
 	static float InvSqrt(float f)
 	{

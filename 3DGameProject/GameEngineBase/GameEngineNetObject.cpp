@@ -15,19 +15,7 @@ GameEngineNetObject::~GameEngineNetObject()
 
 }
 
-void GameEngineNetObject::InitServerObject()
-{
-	ObjectID = ++AtomicObjectID;
-
-	ObjectLock.lock();
-	AllNetObjects.insert(std::pair<int, GameEngineNetObject*>(ObjectID, this));
-	ObjectLock.unlock();
-
-	//아직 이 부분은 이해 안됨, 오브젝트 아이디를 새로 만드는 애들은 다 UserControll이 될 텐데??
-	ControllType = NetControllType::UserControll;
-}
-
-void GameEngineNetObject::InitClientObject(int _ObjectID)
+void GameEngineNetObject::InitNetObject(int _ObjectID, GameEngineNet* _Net)
 {
 	ObjectID = _ObjectID;
 
@@ -35,5 +23,10 @@ void GameEngineNetObject::InitClientObject(int _ObjectID)
 	AllNetObjects.insert(std::pair<int, GameEngineNetObject*>(ObjectID, this));
 	ObjectLock.unlock();
 
-	ControllType = NetControllType::ServerControll;
+	Net = _Net;
+}
+
+void GameEngineNetObject::PushPacket(std::shared_ptr<GameEnginePacket> _Packet)
+{
+	Packets.push_back(_Packet);
 }

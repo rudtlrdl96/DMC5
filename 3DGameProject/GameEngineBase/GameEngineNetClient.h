@@ -20,7 +20,7 @@ public:
 	bool Connect(const std::string& _IP, unsigned short _Port);
 
 protected:
-	void Send(const char* Data, unsigned int _Size) override;
+	void Send(const char* Data, unsigned int _Size, int _IgnoreID = -1) override;
 
 private:
 	GameEngineThread RecvThread;

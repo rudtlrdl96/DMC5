@@ -53,12 +53,14 @@ GameEngineNetServer::~GameEngineNetServer()
     }
 }
 
-void GameEngineNetServer::Send(const char* Data, unsigned int _Size)
+void GameEngineNetServer::Send(const char* Data, unsigned int _Size, int _IgnoreID /*= -1*/)
 {
     //이 서버와 연결된 모든 클라에게 바이트 전송
     for (size_t i = 0; i < Users.size(); i++)
     {
-        send(Users[i], Data, _Size, 0);
+        //TODO : IgnoreID는 Continue
+
+        send(Users[static_cast<int>(i)], Data, _Size, 0);
     }
 }
 

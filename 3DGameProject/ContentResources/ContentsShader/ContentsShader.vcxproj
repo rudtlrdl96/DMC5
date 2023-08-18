@@ -129,6 +129,7 @@
   <ItemGroup>
     <FxCompile Include="FadeShader.hlsl" />
     <FxCompile Include="MyShader.fx" />
+    <FxCompile Include="NoneAlphaMesh.hlsl" />
     <FxCompile Include="OldFilmShader.hlsl" />
     <FxCompile Include="OldTVShader.hlsl" />
   </ItemGroup>
