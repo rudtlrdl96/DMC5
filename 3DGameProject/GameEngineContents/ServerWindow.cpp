@@ -4,8 +4,7 @@
 #include "ObjectUpdatePacket.h"
 
 #include "ConnectIDPacket.h"
-#include "BasePlayerActor.h"
-#include <GameEngineCore/GameEngineFBXMesh.h>
+#include "Player.h"
 
 GameEngineNet* ServerWindow::NetInst = nullptr;
 
@@ -79,6 +78,9 @@ void ServerWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 	Text = "호스트 하기";
 	if (ImGui::Button(GameEngineString::AnsiToUTF8(Text).c_str()))
 	{
+		//Thread 이름 설정
+		SetThreadDescription(GetCurrentThread(), L"Server Main Thread");
+
 		//서버용 패킷 처리 콜백 등록
 		ServerPacketInit(&Server);
 
@@ -86,12 +88,12 @@ void ServerWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 		ServerInit(Level);
 
 		
-		TestNeroMeshLoad();
 
 		//메인 플레이어가 있는 경우 서버와 연결
+		/*TestNeroMeshLoad();
 		std::shared_ptr<BasePlayerActor> Player = nullptr;
 		Player = NowLevel->CreateActor<BasePlayerActor>();
-		Player->InitNetObject(GameEngineNetObject::CreateServerID(), &Server);
+		Player->InitNetObject(GameEngineNetObject::CreateServerID(), &Server);*/
 
 		/*if (nullptr != Player::MainPlayer)
 		{
@@ -111,6 +113,9 @@ void ServerWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 	Text = "클라이언트로 접속하기";
 	if (ImGui::Button(GameEngineString::AnsiToUTF8(Text).c_str()))
 	{
+		//Thead이름 설정
+		SetThreadDescription(GetCurrentThread(), L"Client Main Thread");
+
 		//클라용 패킷 처리 콜백 등록
 		ClientPacketInit(&Client);
 
@@ -157,13 +162,15 @@ void ServerWindow::ServerPacketInit(GameEngineNetServer* _Net)
 			//해당 NetObejctID의 객체가 존재하지 않다면 만든다
 			if (false == GameEngineNetObject::IsNetObject(_Packet->GetObjectID()))
 			{
-
-
-				/*std::shared_ptr<Player> NewPlayer = NowLevel->CreateActor<Player>();
-				NewPlayer->InitNetObject(_Packet->GetObjectID(), _Net);*/
+				std::shared_ptr<Player> NewPlayer = NowLevel->CreateActor<Player>();
+				NewPlayer->InitNetObject(_Packet->GetObjectID(), _Net);
 			}
 
-			//TODO
+			//Player가 스스로 처리할 수 있게 자료구조에 저장
+			GameEngineNetObject::PushNetObjectPacket(_Packet);
+
+			//서버의 경우엔 수신받은 특정 오브젝트의 패킷을 다른 클라에 다 뿌려야 한다
+			_Net->SendPacket(_Packet, _Packet->GetObjectID());
 		}
 	);
 }
@@ -174,42 +181,25 @@ void ServerWindow::ClientPacketInit(GameEngineNetClient* _Net)
 	_Net->Dispatcher.AddHandler<ConnectIDPacket>
 		([=](std::shared_ptr<ConnectIDPacket> _Packet)
 		{
-			TestNeroMeshLoad();
-
-			std::shared_ptr<BasePlayerActor> Player = nullptr;
-			Player = NowLevel->CreateActor<BasePlayerActor>();
-			Player->InitNetObject(_Packet->GetObjectID(), ServerWindow::NetInst);
-
 			//처음 접속 했다면 Player를 서버와 연동 시작
-			//Player::MainPlayer->InitNetObject(_Packet->GetObjectID(), ServerWindow::NetInst);
+			Player::MainPlayer->InitNetObject(_Packet->GetObjectID(), ServerWindow::NetInst);
 		}
 	);
 
 	//ObjectUpdatePacket 처리
 	_Net->Dispatcher.AddHandler<ObjectUpdatePacket>(
-		[](std::shared_ptr<ObjectUpdatePacket> _Packet)
+		[=](std::shared_ptr<ObjectUpdatePacket> _Packet)
 		{
-			
+			//해당 NetObejctID의 객체가 존재하지 않다면 만든다
+			if (false == GameEngineNetObject::IsNetObject(_Packet->GetObjectID()))
+			{
+				std::shared_ptr<Player> NewPlayer = NowLevel->CreateActor<Player>();
+				NewPlayer->InitNetObject(_Packet->GetObjectID(), _Net);
+			}
+
+			//Player가 스스로 처리할 수 있게 자료구조에 저장
+			GameEngineNetObject::PushNetObjectPacket(_Packet);
 		}
 	);
 }
 
-
-void ServerWindow::TestNeroMeshLoad()
-{
-	if (nullptr != GameEngineFBXMesh::Find("Nero.fbx"))
-		return;
-
-	GameEngineDirectory NewDir;
-	NewDir.MoveParentToDirectory("ContentResources");
-	NewDir.Move("ContentResources");
-	NewDir.Move("Mesh");
-	NewDir.Move("Characters");
-	// 테스트 메쉬 폴더는 자동으로 로드합니다
-	std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".FBX" });
-
-	for (size_t i = 0; i < Files.size(); i++)
-	{
-		GameEngineFBXMesh::Load(Files[i].GetFullPath());
-	}
-}

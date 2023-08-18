@@ -142,13 +142,10 @@ void BaseEnemyActor::Update(float _DeltaTime)
 
 	switch (Type)
 	{
-	case NetControllType::None:
-		UserUpdate(_DeltaTime);
-		break;
 	case NetControllType::UserControll:
 		UserUpdate(_DeltaTime);
 		break;
-	case NetControllType::ServerControll:
+	case NetControllType::NetControll:
 		ServerUpdate(_DeltaTime);
 		break;
 	default:
