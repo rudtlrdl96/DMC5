@@ -59,20 +59,21 @@ void TestLevel::LevelChangeStart()
 	//std::shared_ptr<Enemy_Empusa> Empusa = CreateActor<Enemy_Empusa>();
 	//Empusa->GetTransform()->SetLocalPosition({ 0, 0, 10 });
 
-	std::shared_ptr<Enemy_GreenEmpusa> GreenEmpusa = CreateActor<Enemy_GreenEmpusa>();
-	GreenEmpusa->GetTransform()->SetLocalPosition({ 20, 0, 10 });	
-	
-	std::shared_ptr<Enemy_RedEmpusa> RedEmpusa = CreateActor<Enemy_RedEmpusa>();
-	RedEmpusa->GetTransform()->SetLocalPosition({ -20, 0, 10 });	
-	
-	std::shared_ptr<Enemy_HellCaina> HellCaina = CreateActor<Enemy_HellCaina>();
-	HellCaina->GetTransform()->SetLocalPosition({ -40, 0, 10 });	
-	
-	std::shared_ptr<Enemy_HellAntenora> HellAntenora = CreateActor<Enemy_HellAntenora>();
-	HellAntenora->GetTransform()->SetLocalPosition({ -60, 0, 10 });	
-	
-	std::shared_ptr<CavaliereAngelo> NewCavaliereAngelo = CreateActor<CavaliereAngelo>();
-	NewCavaliereAngelo->GetTransform()->SetLocalPosition({ -90, 0, 10 });
+	//std::shared_ptr<Enemy_GreenEmpusa> GreenEmpusa = CreateActor<Enemy_GreenEmpusa>();
+	//GreenEmpusa->GetTransform()->SetLocalPosition({ 20, 0, 10 });	
+	//
+	//std::shared_ptr<Enemy_RedEmpusa> RedEmpusa = CreateActor<Enemy_RedEmpusa>();
+	//RedEmpusa->GetTransform()->SetLocalPosition({ -20, 0, 10 });	
+	//
+	//std::shared_ptr<Enemy_HellCaina> HellCaina = CreateActor<Enemy_HellCaina>();
+	//HellCaina->GetTransform()->SetLocalPosition({ -40, 0, 10 });	
+	//
+	//std::shared_ptr<Enemy_HellAntenora> HellAntenora = CreateActor<Enemy_HellAntenora>();
+	//HellAntenora->GetTransform()->SetLocalPosition({ -60, 0, 10 });	
+	//
+	//std::shared_ptr<CavaliereAngelo> NewCavaliereAngelo = CreateActor<CavaliereAngelo>();
+	//NewCavaliereAngelo->GetTransform()->SetLocalPosition({ -90, 0, 10 });
+
 	//std::shared_ptr<Enemy_GreenEmpusa> GreenEmpusa = CreateActor<Enemy_GreenEmpusa>();
 	//GreenEmpusa->GetTransform()->SetLocalPosition({ 20, 0, 10 });
 }
