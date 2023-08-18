@@ -85,7 +85,10 @@ public:
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
-	
+
+	// Enemy 모델링 메인 랜더러
+	std::shared_ptr<class GameEngineFBXRenderer> EnemyRenderer = nullptr;
+
 	GameEngineFSM EnemyFSM;
 
 	EnemyCode EnemyCodeValue = EnemyCode::Empusa;
@@ -101,10 +104,10 @@ protected:
 	void SpuerArmorOn();
 	void SuperArmorOff();
 
-	virtual void MeshLoad() = 0;
-	virtual void TextureLoad() = 0;
-	virtual void AnimationLoad() = 0;
-	virtual void CreateFSM() = 0;
+	virtual void EnemyMeshLoad() = 0;
+	virtual void EnemyTextureLoad() = 0;
+	virtual void EnemyAnimationLoad() = 0;
+	virtual void EnemyCreateFSM() = 0;
 
 private:
 	void UserUpdate(float _DeltaTime);

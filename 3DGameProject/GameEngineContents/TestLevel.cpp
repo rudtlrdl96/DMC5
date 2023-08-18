@@ -5,6 +5,7 @@
 
 #include "TestObject.h"
 #include "Plane.h"
+#include "Enemy_Empusa.h"
 
 TestLevel* TestLevel::TestLevelPtr = nullptr;
 
@@ -47,6 +48,7 @@ void TestLevel::LevelChangeStart()
 
 	std::shared_ptr<TestObject> Component = CreateActor<TestObject>();
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
+	std::shared_ptr<Enemy_Empusa> NewEmemy = CreateActor<Enemy_Empusa>();
 }
 
 void TestLevel::LevelChangeEnd()

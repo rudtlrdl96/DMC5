@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 #include "BaseEnemyActor.h"
+#include <GameEngineCore/GameEngineFBXRenderer.h>
 
 BaseEnemyActor::BaseEnemyActor()
 {
@@ -127,10 +128,12 @@ void BaseEnemyActor::MonsterHit(const EnemyHitData& _HitData)
 
 void BaseEnemyActor::Start()
 {
-	MeshLoad();
-	TextureLoad();
-	AnimationLoad();
-	CreateFSM();
+	EnemyRenderer = CreateComponent<GameEngineFBXRenderer>();
+
+	EnemyMeshLoad();
+	EnemyTextureLoad();
+	EnemyAnimationLoad();
+	EnemyCreateFSM();
 }
 
 void BaseEnemyActor::Update(float _DeltaTime)

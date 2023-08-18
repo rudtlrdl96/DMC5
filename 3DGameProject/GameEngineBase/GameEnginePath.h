@@ -12,6 +12,9 @@ class GameEnginePath
 	friend class GameEngineDirectory;
 
 public:
+	static std::string GetFileFullPath(const std::string_view& _RootDirectory, const std::vector<std::string>& _Moves, const std::string_view& _FileName);
+
+public:
 	// constrcuter destructer
 	GameEnginePath();
 	GameEnginePath(std::filesystem::path _Path);

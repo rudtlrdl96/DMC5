@@ -29,7 +29,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<TitleLevel>();
 	GameEngineCore::CreateLevel<PlayerTestLevel>();
 
-	GameEngineCore::ChangeLevel("MainLevel");
+	GameEngineCore::ChangeLevel("TestLevel");
 }
 
 void ContentsCore::GameEnd() 

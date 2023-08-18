@@ -1,7 +1,8 @@
 #pragma once
+#include "EnemyActor_Normal.h"
 
 // Ό³Έν :
-class EnemyActor_Fly
+class EnemyActor_Fly : public EnemyActor_Normal
 {
 public:
 	// constrcuter destructer
@@ -17,6 +18,5 @@ public:
 protected:
 
 private:
-
 };
 
