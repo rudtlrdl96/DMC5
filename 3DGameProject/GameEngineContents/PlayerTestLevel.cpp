@@ -34,13 +34,11 @@ void PlayerTestLevel::Update(float _DeltaTime)
 
 void PlayerTestLevel::LevelChangeStart()
 {
-	return;
-	std::shared_ptr<BasePlayerActor> NewPlayer = CreateActor<BasePlayerActor>();
 	if (nullptr != BasePlayerActor::MainPlayer)
 	{
 		return;
 	}
-	{
+	if (nullptr == GameEngineFBXMesh::Find("Nero.fbx")) {
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
 		NewDir.Move("ContentResources");
@@ -51,11 +49,11 @@ void PlayerTestLevel::LevelChangeStart()
 
 		for (size_t i = 0; i < Files.size(); i++)
 		{
-			GameEngineFBXMesh::Load(Files[i].GetFullPath());
+			//GameEngineFBXMesh::Load(Files[i].GetFullPath());
 		}
 	}
-
-
+	std::shared_ptr<BasePlayerActor> NewPlayer = CreateActor<BasePlayerActor>();
+	CreateActor<BasePlayerActor>();
 }
 
 void PlayerTestLevel::LevelChangeEnd()

@@ -33,6 +33,8 @@ void PlayerController::Start()
 
 void PlayerController::Update(float _DeltaTime)
 {
+	//MoveAxis = float4::ZERO;
+
 	if (GameEngineInput::IsPress("Left"))
 	{
 		MoveAxis.x = -1;
@@ -47,15 +49,15 @@ void PlayerController::Update(float _DeltaTime)
 	}
 	if (GameEngineInput::IsPress("Up"))
 	{
-		MoveAxis.y = 1;
+		MoveAxis.z = 1;
 	}
 	else if (GameEngineInput::IsPress("Down"))
 	{
-		MoveAxis.y = -1;
+		MoveAxis.z = -1;
 	}
 	else
 	{
-		MoveAxis.y = 0;
+		MoveAxis.z = 0;
 	}
 	MoveAxis.Normalize();
 }

@@ -18,12 +18,13 @@ public:
 	{
 		return MoveAxis;
 	}
-
+	//void SetCameraTrans
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
 private:
 	float4 MoveAxis;
+	
 };
 
