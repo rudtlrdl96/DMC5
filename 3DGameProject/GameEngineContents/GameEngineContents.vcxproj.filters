@@ -13,9 +13,6 @@
     <ClInclude Include="MainLevel.h">
       <Filter>Levels</Filter>
     </ClInclude>
-    <ClInclude Include="TestLevel.h">
-      <Filter>Levels</Filter>
-    </ClInclude>
     <ClInclude Include="ServerWindow.h">
       <Filter>GUI</Filter>
     </ClInclude>
@@ -139,6 +136,9 @@
     <ClInclude Include="TestObject.h">
       <Filter>Actor\Test</Filter>
     </ClInclude>
+    <ClInclude Include="TestLevel.h">
+      <Filter>Levels\Test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -149,9 +149,6 @@
     </ClCompile>
     <ClCompile Include="OldTVEffect.cpp">
       <Filter>PostEffect</Filter>
-    </ClCompile>
-    <ClCompile Include="TestLevel.cpp">
-      <Filter>Levels</Filter>
     </ClCompile>
     <ClCompile Include="MainLevel.cpp">
       <Filter>Levels</Filter>
@@ -269,6 +266,9 @@
     </ClCompile>
     <ClCompile Include="TestObject.cpp">
       <Filter>Actor\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="TestLevel.cpp">
+      <Filter>Levels\Test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -397,6 +397,9 @@
     </Filter>
     <Filter Include="Actor\Test">
       <UniqueIdentifier>{839ddcf0-fa0f-4e30-a291-488d8933e823}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\Test">
+      <UniqueIdentifier>{9f56ec72-d7ee-460e-99c6-d54e9fa65b57}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
