@@ -7,6 +7,9 @@
 #include "Plane.h"
 #include "Enemy_Empusa.h"
 #include "Enemy_GreenEmpusa.h"
+#include "Enemy_RedEmpusa.h"
+#include "Enemy_HellCaina.h"
+#include "Enemy_HellAntenora.h"
 
 TestLevel* TestLevel::TestLevelPtr = nullptr;
 
@@ -54,7 +57,16 @@ void TestLevel::LevelChangeStart()
 	Empusa->GetTransform()->SetLocalPosition({ 0, 0, 10 });
 
 	std::shared_ptr<Enemy_GreenEmpusa> GreenEmpusa = CreateActor<Enemy_GreenEmpusa>();
-	GreenEmpusa->GetTransform()->SetLocalPosition({ 20, 0, 10 });
+	GreenEmpusa->GetTransform()->SetLocalPosition({ 20, 0, 10 });	
+	
+	std::shared_ptr<Enemy_RedEmpusa> RedEmpusa = CreateActor<Enemy_RedEmpusa>();
+	RedEmpusa->GetTransform()->SetLocalPosition({ -20, 0, 10 });	
+	
+	std::shared_ptr<Enemy_HellCaina> HellCaina = CreateActor<Enemy_HellCaina>();
+	HellCaina->GetTransform()->SetLocalPosition({ -40, 0, 10 });	
+	
+	std::shared_ptr<Enemy_HellAntenora> HellAntenora = CreateActor<Enemy_HellAntenora>();
+	HellAntenora->GetTransform()->SetLocalPosition({ -60, 0, 10 });
 }
 
 void TestLevel::LevelChangeEnd()
