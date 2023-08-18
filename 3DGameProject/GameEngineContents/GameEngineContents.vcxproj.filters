@@ -16,20 +16,11 @@
     <ClInclude Include="ServerWindow.h">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="ConnectIDPacket.h">
-      <Filter>Server\01.Packet</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectUpdatePacket.h">
-      <Filter>Server\01.Packet</Filter>
-    </ClInclude>
-    <ClInclude Include="PacketEnum.h">
-      <Filter>Server\01.Packet</Filter>
-    </ClInclude>
     <ClInclude Include="NetFsmBase.h">
-      <Filter>Server\02.FSM</Filter>
+      <Filter>Server\99.FSM</Filter>
     </ClInclude>
     <ClInclude Include="NetFsmStateBase.h">
-      <Filter>Server\02.FSM</Filter>
+      <Filter>Server\99.FSM</Filter>
     </ClInclude>
     <ClInclude Include="NetLogViewer.h">
       <Filter>Server\03.LogViewer\01.GUI</Filter>
@@ -154,6 +145,15 @@
     <ClInclude Include="TestEmpusa.h">
       <Filter>Actor\Test</Filter>
     </ClInclude>
+    <ClInclude Include="ConnectIDPacket.h">
+      <Filter>Server\01.Packet\03.ServerToClient</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectUpdatePacket.h">
+      <Filter>Server\01.Packet\02.Global</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketEnum.h">
+      <Filter>Server\01.Packet\01.Enums</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -172,10 +172,10 @@
       <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="NetFsmBase.cpp">
-      <Filter>Server\02.FSM</Filter>
+      <Filter>Server\99.FSM</Filter>
     </ClCompile>
     <ClCompile Include="NetFsmStateBase.cpp">
-      <Filter>Server\02.FSM</Filter>
+      <Filter>Server\99.FSM</Filter>
     </ClCompile>
     <ClCompile Include="NetLogViewer.cpp">
       <Filter>Server\03.LogViewer\01.GUI</Filter>
@@ -317,9 +317,6 @@
     <Filter Include="Server\01.Packet">
       <UniqueIdentifier>{a060b50f-0d32-48f9-89d8-99a98033da39}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Server\02.FSM">
-      <UniqueIdentifier>{91da4ce2-188f-4020-962b-77a1b9cffb34}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Server\03.LogViewer">
       <UniqueIdentifier>{25357443-f41e-406b-ae38-f51e52023a71}</UniqueIdentifier>
     </Filter>
@@ -433,6 +430,24 @@
     </Filter>
     <Filter Include="UI\Base\Mouse">
       <UniqueIdentifier>{d6300527-8acf-4349-b8b1-a423df732e0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\01.Packet\02.Global">
+      <UniqueIdentifier>{234ddb00-f25c-49a7-91ff-a9c25878617e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\01.Packet\03.ServerToClient">
+      <UniqueIdentifier>{9cb43871-c0be-4750-85b0-987aa7b26bc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\01.Packet\04.ClientToServer">
+      <UniqueIdentifier>{568086ba-525f-44e3-a14e-0ab1d42a6102}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\01.Packet\01.Enums">
+      <UniqueIdentifier>{d807d7a2-fb7f-4d64-bb11-9f0a65a64db1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\99.FSM">
+      <UniqueIdentifier>{91da4ce2-188f-4020-962b-77a1b9cffb34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\02.NetworkManager">
+      <UniqueIdentifier>{5c4b3dfb-fbf3-4036-88cc-651d97b9ccc4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
