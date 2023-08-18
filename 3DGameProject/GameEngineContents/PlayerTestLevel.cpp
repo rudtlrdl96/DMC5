@@ -15,24 +15,7 @@ void PlayerTestLevel::Start()
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 50, -500 });
 
-	if (false == GameEngineInput::IsKey("Up"))
-	{
-		GameEngineInput::CreateKey("Up", 'W');
-		GameEngineInput::CreateKey("Left", 'A');
-		GameEngineInput::CreateKey("Down", 'S');
-		GameEngineInput::CreateKey("Right", 'D');
-		GameEngineInput::CreateKey("Sword", 'I');
-		GameEngineInput::CreateKey("Gun", 'J');
-		GameEngineInput::CreateKey("Jump", 'K');
-		GameEngineInput::CreateKey("Skill", 'L');
-		GameEngineInput::CreateKey("Exceed", 'Q');
-		GameEngineInput::CreateKey("LockOn", VK_SPACE);
-		GameEngineInput::CreateKey("DT", VK_LSHIFT);
-		GameEngineInput::CreateKey("CameraLeft", 'U');
-		GameEngineInput::CreateKey("CameraRight", 'O');
-		GameEngineInput::CreateKey("CameraUp", 'Y');
-		GameEngineInput::CreateKey("CameraDown", 'P');
-	}
+	
 
 }
 
@@ -51,6 +34,8 @@ void PlayerTestLevel::Update(float _DeltaTime)
 
 void PlayerTestLevel::LevelChangeStart()
 {
+	return;
+	std::shared_ptr<BasePlayerActor> NewPlayer = CreateActor<BasePlayerActor>();
 	if (nullptr != BasePlayerActor::MainPlayer)
 	{
 		return;
@@ -70,7 +55,6 @@ void PlayerTestLevel::LevelChangeStart()
 		}
 	}
 
-	std::shared_ptr<BasePlayerActor> NewPlayer = CreateActor<BasePlayerActor>();
 
 }
 

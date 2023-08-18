@@ -1,7 +1,7 @@
 #pragma once
 
 // Ό³Έν :
-class PlayerCamera
+class PlayerCamera : public GameEngineComponent
 {
 public:
 	// constrcuter destructer
@@ -15,8 +15,10 @@ public:
 	PlayerCamera& operator=(PlayerCamera&& _Other) noexcept = delete;
 
 protected:
+	void Start() override;
+	void Update(float _DeltaTime) override;
 
 private:
-
+	GameEngineTransform* CameraTransform = nullptr;
 };
 
