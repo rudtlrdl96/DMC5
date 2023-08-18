@@ -34,6 +34,11 @@ public:
 		NetInst->UpdatePacket();
 	}
 
+	static unsigned int GetNetID()
+	{
+		return NetID;
+	}
+
 protected:
 
 
@@ -50,6 +55,7 @@ private:
 	//현재 스레드가 클라스레드인지 여부
 	static bool IsClientValue;
 
+	static unsigned int NetID;
 
 
 	//클라이언트가 Accept될 때 처리해야 할 작업

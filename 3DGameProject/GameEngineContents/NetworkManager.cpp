@@ -8,6 +8,8 @@ GameEngineNetClient NetworkManager::ClientInst;
 bool NetworkManager::IsServerValue = false;
 bool NetworkManager::IsClientValue = false;
 
+unsigned int NetworkManager::NetID = 0;
+
 
 
 void NetworkManager::ServerOpen(int _Port)
@@ -25,6 +27,7 @@ void NetworkManager::ServerOpen(int _Port)
 
 	//¼­¹ö ¿ÀÇÂ
 	ServerInst.ServerOpen(static_cast<unsigned short>(_Port));
+	NetID = GameEngineNetObject::CreateServerID();
 	IsServerValue = true;
 }
 

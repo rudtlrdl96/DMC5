@@ -18,6 +18,10 @@ void NetworkManager::ClientPacketInit()
 	NetInst->Dispatcher.AddHandler<ConnectIDPacket>
 		([](std::shared_ptr<ConnectIDPacket> _Packet)
 	{
+		unsigned int ID = _Packet->GetObjectID();
+		NetID = ID;
+		NetworkGUI::GetInst()->SetClientTitle(ID);
+
 		//처음 접속 했다면 Player를 서버와 연동 시작
 		//Player::MainPlayer->InitNetObject(_Packet->GetObjectID(), ServerWindow::NetInst);
 	});

@@ -21,6 +21,9 @@ public:
 
 	void PrintLog(const std::string_view& _LogText);
 
+	//GUI 최 상단 텍스트 설정
+	void SetClientTitle(int _ClientID);
+
 protected:
 	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;
 
@@ -42,6 +45,8 @@ private:
 	int PortNum = 30000;
 	std::string IpNum = "127.0.0.1";
 	std::list<std::string> AllLog;
+	std::string Title;
+	
 
 
 	void Update_Wait();

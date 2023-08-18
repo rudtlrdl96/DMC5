@@ -54,6 +54,7 @@ void NetworkGUI::Update_Wait()
 		NetworkManager::ServerOpen(PortNum);
 		CurState = State::Multi;
 		PrintLog("Server Open Success");
+		Title = "This is Host";
 		return;
 	}
 
@@ -73,11 +74,19 @@ void NetworkGUI::Update_Wait()
 
 }
 
+void NetworkGUI::SetClientTitle(int _ClientID)
+{
+	Title = "Client Number : " + GameEngineString::ToString(_ClientID);
+}
 
 void NetworkGUI::Update_Multi() 
 {
+	ImGui::Text(Title.c_str());
+
 	for (const std::string& Log : AllLog)
 	{
 		ImGui::Text(Log.c_str());
 	}
 }
+
+
