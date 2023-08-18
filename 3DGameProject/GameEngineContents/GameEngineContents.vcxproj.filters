@@ -154,6 +154,9 @@
     <ClInclude Include="PacketEnum.h">
       <Filter>Server\01.Packet\01.Enums</Filter>
     </ClInclude>
+    <ClInclude Include="NetworkManager.h">
+      <Filter>Server\02.NetworkManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -299,6 +302,15 @@
     </ClCompile>
     <ClCompile Include="TestEmpusa.cpp">
       <Filter>Actor\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkManager.cpp">
+      <Filter>Server\02.NetworkManager</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkManager_ServerPacketInit.cpp">
+      <Filter>Server\02.NetworkManager</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkManager_ClientPacketInit.cpp">
+      <Filter>Server\02.NetworkManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
