@@ -20,6 +20,7 @@ void Enemy_Empusa::EnemyMeshLoad()
 	GameEngineFBXMesh::Load(Path);
 
 	EnemyRenderer->SetFBXMesh("em0100.fbx", "NoneAlphaMesh");
+	EnemyRenderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
 }
 
 void Enemy_Empusa::EnemyTextureLoad()

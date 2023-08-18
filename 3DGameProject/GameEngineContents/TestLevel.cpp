@@ -6,6 +6,7 @@
 #include "TestObject.h"
 #include "Plane.h"
 #include "Enemy_Empusa.h"
+#include "Enemy_GreenEmpusa.h"
 
 TestLevel* TestLevel::TestLevelPtr = nullptr;
 
@@ -48,7 +49,12 @@ void TestLevel::LevelChangeStart()
 
 	std::shared_ptr<TestObject> Component = CreateActor<TestObject>();
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
-	std::shared_ptr<Enemy_Empusa> NewEmemy = CreateActor<Enemy_Empusa>();
+	
+	std::shared_ptr<Enemy_Empusa> Empusa = CreateActor<Enemy_Empusa>();
+	Empusa->GetTransform()->SetLocalPosition({ 0, 0, 10 });
+
+	std::shared_ptr<Enemy_GreenEmpusa> GreenEmpusa = CreateActor<Enemy_GreenEmpusa>();
+	GreenEmpusa->GetTransform()->SetLocalPosition({ 20, 0, 10 });
 }
 
 void TestLevel::LevelChangeEnd()
