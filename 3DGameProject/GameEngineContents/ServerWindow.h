@@ -44,5 +44,8 @@ private:
 
 	//테스트 코드 나중에 지워야 함
 	class GameEngineLevel* NowLevel = nullptr;
+
+
+	static void TestNeroMeshLoad();
 };
 

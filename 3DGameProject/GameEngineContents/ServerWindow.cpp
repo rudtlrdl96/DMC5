@@ -2,8 +2,10 @@
 #include "ServerWindow.h"
 #include "ConnectIDPacket.h"
 #include "ObjectUpdatePacket.h"
-#include "Player.h"
+
 #include "ConnectIDPacket.h"
+#include "BasePlayerActor.h"
+#include <GameEngineCore/GameEngineFBXMesh.h>
 
 GameEngineNet* ServerWindow::NetInst = nullptr;
 
@@ -83,11 +85,18 @@ void ServerWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 		Server.ServerOpen(static_cast<unsigned short>(Port));
 		ServerInit(Level);
 
+		
+		TestNeroMeshLoad();
+
 		//메인 플레이어가 있는 경우 서버와 연결
-		if (nullptr != Player::MainPlayer)
+		std::shared_ptr<BasePlayerActor> Player = nullptr;
+		Player = NowLevel->CreateActor<BasePlayerActor>();
+		Player->InitNetObject(GameEngineNetObject::CreateServerID(), &Server);
+
+		/*if (nullptr != Player::MainPlayer)
 		{
 			Player::MainPlayer->InitNetObject(GameEngineNetObject::CreateServerID(), &Server);
-		}
+		}*/
 
 		NetInst = &Server;
 		IsServer = true;
@@ -148,8 +157,10 @@ void ServerWindow::ServerPacketInit(GameEngineNetServer* _Net)
 			//해당 NetObejctID의 객체가 존재하지 않다면 만든다
 			if (false == GameEngineNetObject::IsNetObject(_Packet->GetObjectID()))
 			{
-				std::shared_ptr<Player> NewPlayer = NowLevel->CreateActor<Player>();
-				NewPlayer->InitNetObject(_Packet->GetObjectID(), _Net);
+
+
+				/*std::shared_ptr<Player> NewPlayer = NowLevel->CreateActor<Player>();
+				NewPlayer->InitNetObject(_Packet->GetObjectID(), _Net);*/
 			}
 
 			//TODO
@@ -163,8 +174,14 @@ void ServerWindow::ClientPacketInit(GameEngineNetClient* _Net)
 	_Net->Dispatcher.AddHandler<ConnectIDPacket>
 		([=](std::shared_ptr<ConnectIDPacket> _Packet)
 		{
+			TestNeroMeshLoad();
+
+			std::shared_ptr<BasePlayerActor> Player = nullptr;
+			Player = NowLevel->CreateActor<BasePlayerActor>();
+			Player->InitNetObject(_Packet->GetObjectID(), ServerWindow::NetInst);
+
 			//처음 접속 했다면 Player를 서버와 연동 시작
-			Player::MainPlayer->InitNetObject(_Packet->GetObjectID(), ServerWindow::NetInst);
+			//Player::MainPlayer->InitNetObject(_Packet->GetObjectID(), ServerWindow::NetInst);
 		}
 	);
 
@@ -175,4 +192,24 @@ void ServerWindow::ClientPacketInit(GameEngineNetClient* _Net)
 			
 		}
 	);
+}
+
+
+void ServerWindow::TestNeroMeshLoad()
+{
+	if (nullptr != GameEngineFBXMesh::Find("Nero.fbx"))
+		return;
+
+	GameEngineDirectory NewDir;
+	NewDir.MoveParentToDirectory("ContentResources");
+	NewDir.Move("ContentResources");
+	NewDir.Move("Mesh");
+	NewDir.Move("Characters");
+	// 테스트 메쉬 폴더는 자동으로 로드합니다
+	std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".FBX" });
+
+	for (size_t i = 0; i < Files.size(); i++)
+	{
+		GameEngineFBXMesh::Load(Files[i].GetFullPath());
+	}
 }
