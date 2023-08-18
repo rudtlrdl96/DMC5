@@ -21,7 +21,7 @@ public:
 
 protected:
 	static void ServerOpen(int _Port);
-	static void ConnectServer(const std::string_view& _IP);
+	static void ConnectServer(const std::string_view& _IP, int _Port);
 
 
 

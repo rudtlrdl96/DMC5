@@ -13,32 +13,29 @@
     <ClInclude Include="MainLevel.h">
       <Filter>Levels</Filter>
     </ClInclude>
-    <ClInclude Include="ServerWindow.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
     <ClInclude Include="NetFsmBase.h">
-      <Filter>Server\99.FSM</Filter>
+      <Filter>Server\99.Garbage\99.FSM</Filter>
     </ClInclude>
     <ClInclude Include="NetFsmStateBase.h">
-      <Filter>Server\99.FSM</Filter>
+      <Filter>Server\99.Garbage\99.FSM</Filter>
     </ClInclude>
     <ClInclude Include="NetLogViewer.h">
-      <Filter>Server\98.LogViewer\01.GUI</Filter>
+      <Filter>Server\99.Garbage\98.LogViewer\01.GUI</Filter>
     </ClInclude>
     <ClInclude Include="NetLogFSM.h">
-      <Filter>Server\98.LogViewer\02.FSM</Filter>
+      <Filter>Server\99.Garbage\98.LogViewer\02.FSM</Filter>
     </ClInclude>
     <ClInclude Include="NetLogState_EntryReady.h">
-      <Filter>Server\98.LogViewer\03.State\02.EntryReady</Filter>
+      <Filter>Server\99.Garbage\98.LogViewer\03.State\02.EntryReady</Filter>
     </ClInclude>
     <ClInclude Include="PrecompileHeader.h">
       <Filter>Basic</Filter>
     </ClInclude>
     <ClInclude Include="NetLogStateBase.h">
-      <Filter>Server\98.LogViewer\03.State\01.StateBase</Filter>
+      <Filter>Server\99.Garbage\98.LogViewer\03.State\01.StateBase</Filter>
     </ClInclude>
     <ClInclude Include="NetLogState_LogPrint.h">
-      <Filter>Server\98.LogViewer\03.State\03.LogPrint</Filter>
+      <Filter>Server\99.Garbage\98.LogViewer\03.State\03.LogPrint</Filter>
     </ClInclude>
     <ClInclude Include="MyContentSpriteRenderer.h">
       <Filter>Component\Renderer</Filter>
@@ -157,6 +154,12 @@
     <ClInclude Include="NetworkManager.h">
       <Filter>Server\02.NetworkManager</Filter>
     </ClInclude>
+    <ClInclude Include="ServerWindow.h">
+      <Filter>Server\99.Garbage</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkGUI.h">
+      <Filter>Server\03.NetworkGUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -171,29 +174,26 @@
     <ClCompile Include="MainLevel.cpp">
       <Filter>Levels</Filter>
     </ClCompile>
-    <ClCompile Include="ServerWindow.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
     <ClCompile Include="NetFsmBase.cpp">
-      <Filter>Server\99.FSM</Filter>
+      <Filter>Server\99.Garbage\99.FSM</Filter>
     </ClCompile>
     <ClCompile Include="NetFsmStateBase.cpp">
-      <Filter>Server\99.FSM</Filter>
+      <Filter>Server\99.Garbage\99.FSM</Filter>
     </ClCompile>
     <ClCompile Include="NetLogViewer.cpp">
-      <Filter>Server\98.LogViewer\01.GUI</Filter>
+      <Filter>Server\99.Garbage\98.LogViewer\01.GUI</Filter>
     </ClCompile>
     <ClCompile Include="NetLogFSM.cpp">
-      <Filter>Server\98.LogViewer\02.FSM</Filter>
+      <Filter>Server\99.Garbage\98.LogViewer\02.FSM</Filter>
     </ClCompile>
     <ClCompile Include="NetLogState_EntryReady.cpp">
-      <Filter>Server\98.LogViewer\03.State\02.EntryReady</Filter>
+      <Filter>Server\99.Garbage\98.LogViewer\03.State\02.EntryReady</Filter>
     </ClCompile>
     <ClCompile Include="NetLogStateBase.cpp">
-      <Filter>Server\98.LogViewer\03.State\01.StateBase</Filter>
+      <Filter>Server\99.Garbage\98.LogViewer\03.State\01.StateBase</Filter>
     </ClCompile>
     <ClCompile Include="NetLogState_LogPrint.cpp">
-      <Filter>Server\98.LogViewer\03.State\03.LogPrint</Filter>
+      <Filter>Server\99.Garbage\98.LogViewer\03.State\03.LogPrint</Filter>
     </ClCompile>
     <ClCompile Include="PrecompileHeader.cpp">
       <Filter>Basic</Filter>
@@ -311,6 +311,12 @@
     </ClCompile>
     <ClCompile Include="NetworkManager_ClientPacketInit.cpp">
       <Filter>Server\02.NetworkManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerWindow.cpp">
+      <Filter>Server\99.Garbage</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkGUI.cpp">
+      <Filter>Server\03.NetworkGUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -434,32 +440,38 @@
     <Filter Include="Server\01.Packet\01.Enums">
       <UniqueIdentifier>{d807d7a2-fb7f-4d64-bb11-9f0a65a64db1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Server\99.FSM">
-      <UniqueIdentifier>{91da4ce2-188f-4020-962b-77a1b9cffb34}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Server\02.NetworkManager">
       <UniqueIdentifier>{5c4b3dfb-fbf3-4036-88cc-651d97b9ccc4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Server\98.LogViewer">
+    <Filter Include="Server\03.NetworkGUI">
+      <UniqueIdentifier>{516ccfc8-4af3-48df-a343-8336f437a076}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\99.Garbage">
+      <UniqueIdentifier>{a98ac5bb-2b50-48c6-969d-f21027494a51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\99.Garbage\98.LogViewer">
       <UniqueIdentifier>{25357443-f41e-406b-ae38-f51e52023a71}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Server\98.LogViewer\01.GUI">
+    <Filter Include="Server\99.Garbage\98.LogViewer\01.GUI">
       <UniqueIdentifier>{90704d12-06f6-4849-bef0-42ade14ad5c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Server\98.LogViewer\02.FSM">
+    <Filter Include="Server\99.Garbage\98.LogViewer\02.FSM">
       <UniqueIdentifier>{80457f58-fad0-4b1f-b20a-1b51d210f21a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Server\98.LogViewer\03.State">
+    <Filter Include="Server\99.Garbage\98.LogViewer\03.State">
       <UniqueIdentifier>{6929f4e9-9592-45bf-9983-fc6ed8adf155}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Server\98.LogViewer\03.State\02.EntryReady">
+    <Filter Include="Server\99.Garbage\98.LogViewer\03.State\02.EntryReady">
       <UniqueIdentifier>{dee5a1d9-3506-4be5-9ed5-08653f195555}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Server\98.LogViewer\03.State\01.StateBase">
+    <Filter Include="Server\99.Garbage\98.LogViewer\03.State\01.StateBase">
       <UniqueIdentifier>{6ca5770e-79b7-4b84-a02f-d35a6f5f7dca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Server\98.LogViewer\03.State\03.LogPrint">
+    <Filter Include="Server\99.Garbage\98.LogViewer\03.State\03.LogPrint">
       <UniqueIdentifier>{b8d9b6cc-197e-4d54-934d-e7894310b1b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\99.Garbage\99.FSM">
+      <UniqueIdentifier>{91da4ce2-188f-4020-962b-77a1b9cffb34}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

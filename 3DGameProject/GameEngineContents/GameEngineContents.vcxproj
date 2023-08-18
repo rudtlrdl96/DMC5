@@ -274,6 +274,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="NetworkGUI.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="NetworkManager.h">
       <SubType>
       </SubType>
@@ -460,6 +464,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="NetLogViewer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="NetworkGUI.cpp">
       <SubType>
       </SubType>
     </ClCompile>
