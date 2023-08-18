@@ -17,11 +17,24 @@ public:
 		return IsClientValue;
 	}
 
+	//서버를 오픈하거나 연결되었는지 여부
+	static inline bool IsNet()
+	{
+		NetInst->IsNet();
+	}
 
+	static void ServerOpen(int _Port);
+	static bool ConnectServer(const std::string_view& _IP, int _Port);
+
+	static void Update_PacketProcess()
+	{
+		if (nullptr == NetInst)
+			return;
+
+		NetInst->UpdatePacket();
+	}
 
 protected:
-	static void ServerOpen(int _Port);
-	static void ConnectServer(const std::string_view& _IP, int _Port);
 
 
 

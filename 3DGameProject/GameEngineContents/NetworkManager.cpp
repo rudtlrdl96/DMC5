@@ -2,6 +2,8 @@
 #include "NetworkManager.h"
 
 GameEngineNet* NetworkManager::NetInst = nullptr;
+GameEngineNetServer NetworkManager::ServerInst;
+GameEngineNetClient NetworkManager::ClientInst;
 
 bool NetworkManager::IsServerValue = false;
 bool NetworkManager::IsClientValue = false;
@@ -27,7 +29,7 @@ void NetworkManager::ServerOpen(int _Port)
 }
 
 
-void NetworkManager::ConnectServer(const std::string_view& _IP, int _Port)
+bool NetworkManager::ConnectServer(const std::string_view& _IP, int _Port)
 {
 	//Thread 이름 설정
 	SetThreadDescription(GetCurrentThread(), L"Client Main Thread");
@@ -39,4 +41,5 @@ void NetworkManager::ConnectServer(const std::string_view& _IP, int _Port)
 
 	//서버 접속
 	IsClientValue = ClientInst.Connect(_IP.data(), static_cast<unsigned short>(_Port));
+	return IsClientValue;
 }

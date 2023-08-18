@@ -2,6 +2,7 @@
 #include "MainLevel.h"
 
 #include "Player.h"
+#include "NetworkManager.h"
 
 MainLevel::MainLevel() 
 {
@@ -34,15 +35,11 @@ void MainLevel::Start()
 	NewPlayer->SetUserControllType();
 }
 
-#include <GameEngineBase/GameEngineNet.h>
-#include "ServerWindow.h"
+
 
 void MainLevel::Update(float _DeltaTime)
 {
-	if (nullptr != ServerWindow::NetInst)
-	{
-		ServerWindow::NetInst->UpdatePacket();
-	}
+	NetworkManager::Update_PacketProcess();
 
 	if (false == IsMessage)
 	{

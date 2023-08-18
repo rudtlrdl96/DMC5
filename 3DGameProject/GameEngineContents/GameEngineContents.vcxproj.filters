@@ -160,6 +160,9 @@
     <ClInclude Include="NetworkGUI.h">
       <Filter>Server\03.NetworkGUI</Filter>
     </ClInclude>
+    <ClInclude Include="MessageChatPacket.h">
+      <Filter>Server\01.Packet\02.Global</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">

@@ -238,6 +238,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="MainLevel.h" />
+    <ClInclude Include="MessageChatPacket.h" />
     <ClInclude Include="MouseCusor.h">
       <SubType>
       </SubType>
