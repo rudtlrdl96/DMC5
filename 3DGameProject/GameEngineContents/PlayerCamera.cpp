@@ -1,3 +1,4 @@
+#include "PrecompileHeader.h"
 #include "PlayerCamera.h"
 
 PlayerCamera::PlayerCamera() 
