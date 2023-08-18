@@ -8,6 +8,7 @@
 #include "TestLevel.h"
 #include "IntroLevel.h"
 #include "TitleLevel.h"
+#include "PlayerTestLevel.h"
 ContentsCore::ContentsCore() 
 {
 }
@@ -26,8 +27,9 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<TestLevel>();
 	GameEngineCore::CreateLevel<IntroLevel>();
 	GameEngineCore::CreateLevel<TitleLevel>();
+	GameEngineCore::CreateLevel<PlayerTestLevel>();
 
-	GameEngineCore::ChangeLevel("TestLevel");
+	GameEngineCore::ChangeLevel("MainLevel");
 }
 
 void ContentsCore::GameEnd() 

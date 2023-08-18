@@ -96,6 +96,9 @@
     <ClInclude Include="CavaliereAngelo.h">
       <Filter>Actor\Enemy\BossMonster\Stage11</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerTestLevel.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -183,6 +186,9 @@
     </ClCompile>
     <ClCompile Include="CavaliereAngelo.cpp">
       <Filter>Actor\Enemy\BossMonster\Stage11</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerTestLevel.cpp">
+      <Filter>Levels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
