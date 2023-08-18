@@ -10,6 +10,7 @@
 #include "Enemy_RedEmpusa.h"
 #include "Enemy_HellCaina.h"
 #include "Enemy_HellAntenora.h"
+#include "CavaliereAngelo.h"
 
 TestLevel* TestLevel::TestLevelPtr = nullptr;
 
@@ -66,7 +67,10 @@ void TestLevel::LevelChangeStart()
 	HellCaina->GetTransform()->SetLocalPosition({ -40, 0, 10 });	
 	
 	std::shared_ptr<Enemy_HellAntenora> HellAntenora = CreateActor<Enemy_HellAntenora>();
-	HellAntenora->GetTransform()->SetLocalPosition({ -60, 0, 10 });
+	HellAntenora->GetTransform()->SetLocalPosition({ -60, 0, 10 });	
+	
+	std::shared_ptr<CavaliereAngelo> NewCavaliereAngelo = CreateActor<CavaliereAngelo>();
+	NewCavaliereAngelo->GetTransform()->SetLocalPosition({ -90, 0, 10 });
 }
 
 void TestLevel::LevelChangeEnd()

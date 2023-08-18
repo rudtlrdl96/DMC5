@@ -84,6 +84,15 @@ void CavaliereAngelo::ComboSwordAttack_Exit()
 
 void CavaliereAngelo::EnemyMeshLoad()
 {
+	std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+		{
+			"Character", "Enemy", "em5501", "mesh"
+		}, "em5501.FBX");
+
+	GameEngineFBXMesh::Load(Path);
+
+	EnemyRenderer->SetFBXMesh("em5501.fbx", "NoneAlphaMesh");
+	EnemyRenderer->GetTransform()->SetLocalScale({ 0.1f, 0.1f, 0.1f });
 }
 
 void CavaliereAngelo::EnemyTextureLoad()
