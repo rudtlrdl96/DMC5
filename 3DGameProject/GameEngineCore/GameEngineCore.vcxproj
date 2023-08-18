@@ -367,6 +367,10 @@
     <ClInclude Include="PhysicsLevel.h" />
     <ClInclude Include="PhysXBoxGeometryComponent.h" />
     <ClInclude Include="PhysXDefault.h" />
+    <ClInclude Include="PhysXDynamicActorComponent.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="PrecompileHeader.h" />
     <ClInclude Include="ThirdParty\DirectXTex\inc\DirectXTex.h" />
     <ClInclude Include="ThirdParty\FW1Font\Inc\FW1FontWrapper.h" />
@@ -765,6 +769,10 @@
     <ClCompile Include="PhysicsLevel.cpp" />
     <ClCompile Include="PhysXBoxGeometryComponent.cpp" />
     <ClCompile Include="PhysXDefault.cpp" />
+    <ClCompile Include="PhysXDynamicActorComponent.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="PrecompileHeader.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

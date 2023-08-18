@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GameEngineCore/GameEngineComponent.h>
+#include "GameEngineComponent.h"
 #include "PhysXDefault.h"
 
 // 설명 :
@@ -24,13 +24,13 @@ public:
 		if (true == m_pRigidDynamic->isReleasable())
 		{
 			m_pRigidDynamic->release();
-			m_pParentActor.lock()->Death();
+			ParentActor.lock()->Death();
 		}
 	}
 
 	inline void SetPositionSetFromParentFlag(bool _Flag)
 	{
-		m_bPositionSetFromParentFlag = _Flag;
+		PositionSetFromParentFlag = _Flag;
 	}
 
 	void SetIsGravity(bool _Is)
@@ -54,8 +54,8 @@ private:
 	physx::PxRigidDynamic* m_pRigidDynamic;
 
 	// 이 컴포넌트를 가지고 있는 Parent에 대한 정보
-	std::weak_ptr<GameEngineActor> m_pParentActor;
+	std::weak_ptr<GameEngineActor> ParentActor;
 
-	bool m_bPositionSetFromParentFlag = false;
+	bool PositionSetFromParentFlag = false;
 };
 

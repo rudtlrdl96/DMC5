@@ -85,8 +85,6 @@
     <ClInclude Include="TitleBG.h">
       <Filter>UI\Actor\TitleUI\BG</Filter>
     </ClInclude>
-    <ClInclude Include="Plane.h" />
-    <ClInclude Include="TestObject.h" />
     <ClInclude Include="EnemyActor_Boss.h">
       <Filter>Actor\Enemy\BossEnemy</Filter>
     </ClInclude>
@@ -134,6 +132,12 @@
     </ClInclude>
     <ClInclude Include="PlayerCamera.h">
       <Filter>Actor\Player\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>Actor\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="TestObject.h">
+      <Filter>Actor\Test</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -212,8 +216,6 @@
     <ClCompile Include="TitleBG.cpp">
       <Filter>UI\Actor\TitleUI\BG</Filter>
     </ClCompile>
-    <ClCompile Include="Plane.cpp" />
-    <ClCompile Include="TestObject.cpp" />
     <ClCompile Include="EnemyActor_Boss.cpp">
       <Filter>Actor\Enemy\BossEnemy</Filter>
     </ClCompile>
@@ -261,6 +263,12 @@
     </ClCompile>
     <ClCompile Include="PlayerCamera.cpp">
       <Filter>Actor\Player\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cpp">
+      <Filter>Actor\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="TestObject.cpp">
+      <Filter>Actor\Test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -386,6 +394,9 @@
     </Filter>
     <Filter Include="Actor\Player\Character">
       <UniqueIdentifier>{b31d1a84-2550-4109-b55e-e45fed476b1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Test">
+      <UniqueIdentifier>{839ddcf0-fa0f-4e30-a291-488d8933e823}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -117,6 +117,15 @@ float float4::XYZDistance(float4 _Value)
 	return Len.x;
 }
 
+float4 float4::DegreeToDirection2D(float _Degree)
+{
+	return RadianToDirection2D(_Degree * GameEngineMath::DegToRad);
+}
+
+float4 float4::RadianToDirection2D(float _Radian)
+{
+	return { cosf(_Radian) , sinf(_Radian) };
+}
 
 float4 float4::MatrixToQuaternion(const class float4x4& M)
 {
