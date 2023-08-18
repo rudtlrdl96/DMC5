@@ -192,7 +192,35 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="EnemyActor_Fly.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="EnemyActor_Normal.h" />
+    <ClInclude Include="EnemySpawnArea.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Enemy_Empusa.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Enemy_GreenEmpusa.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Enemy_HellAntenora.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Enemy_HellCaina.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Enemy_RedEmpusa.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="FadeEffect.h">
       <SubType>
       </SubType>
@@ -305,7 +333,35 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="EnemyActor_Fly.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="EnemyActor_Normal.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="EnemySpawnArea.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Enemy_Empusa.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Enemy_GreenEmpusa.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Enemy_HellAntenora.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Enemy_HellCaina.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Enemy_RedEmpusa.cpp">
       <SubType>
       </SubType>
     </ClCompile>
