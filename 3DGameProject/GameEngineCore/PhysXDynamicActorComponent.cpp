@@ -11,89 +11,95 @@ PhysXDynamicActorComponent::~PhysXDynamicActorComponent()
 {
 }
 
-physx::PxRigidDynamic* PhysXDynamicActorComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale, float4 _GeoMetryRot)
+physx::PxRigidDynamic* PhysXDynamicActorComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale, float4 _GeoMetryRotation)
 {
 	m_pScene = _Scene;
 	m_pPhysics = _physics;
 
-	float4 tmpQuat = _GeoMetryRot.DegreeRotationToQuaternionReturn();
+	float4 tmpQuat = _GeoMetryRotation.DegreeRotationToQuaternionReturn();
 
 	// 부모 액터로부터 위치 생성
-	physx::PxTransform localTm(physx::PxVec3(ParentActor.lock()->GetTransform()->GetWorldPosition().x, ParentActor.lock()->GetTransform()->GetWorldPosition().y, ParentActor.lock()->GetTransform()->GetWorldPosition().z), physx::PxQuat(tmpQuat.x, tmpQuat.y, tmpQuat.z, tmpQuat.w));
+	physx::PxTransform localTm
+	(
+		physx::PxVec3
+		(
+			ParentActor.lock()->GetTransform()->GetWorldPosition().x
+			, ParentActor.lock()->GetTransform()->GetWorldPosition().y
+			, ParentActor.lock()->GetTransform()->GetWorldPosition().z
+		),
+		physx::PxQuat(tmpQuat.x, tmpQuat.y, tmpQuat.z, tmpQuat.w)
+	);
 
-	// 마찰, 탄성계수
+	// Staticfriction : 정적마찰 // Dynamicfriction : 동적마찰 // Resitution : 탄성계수
 	m_pMaterial = _physics->createMaterial(Staticfriction, Dynamicfriction, Resitution);
 
 	// TODO::배율을 적용할 경우 이쪽 코드를 사용
 	//float4 tmpMagnification = { SIZE_MAGNIFICATION_RATIO };
-	//physx::PxVec3 tmpGeoMetryScale(_GeoMetryScale.x * tmpMagnification.x * 0.5f, _GeoMetryScale.y * tmpMagnification.y * 0.5f, _GeoMetryScale.z * tmpMagnification.z * 0.5f);
+	//physx::PxVec3 tmpGeoMetryScale(_GeoMetryScale.x * tmpMagnification.x * 0.5f, 
+	//							   _GeoMetryScale.y * tmpMagnification.y * 0.5f, 
+	//							   _GeoMetryScale.z * tmpMagnification.z * 0.5f);
 
-	GeoMetryScale = _GeoMetryScale;
+	//GeoMetryScale = _GeoMetryScale;
 
-	physx::PxVec3 tmpGeoMetryScale(_GeoMetryScale.x * 0.5f, _GeoMetryScale.y * 0.5f, _GeoMetryScale.z * 0.5f);
+	physx::PxVec3 tmpGeoMetryScale
+	(
+		_GeoMetryScale.x * 0.5f,
+		_GeoMetryScale.y * 0.5f,
+		_GeoMetryScale.z * 0.5f
+	);
 
-	//// 충돌체의 종류
+	// 충돌체의 종류
 	m_pDynamic = _physics->createRigidDynamic(localTm);
+
+	// 특정 축을 따라/주위로 동작을 잠그는 메커니즘을 제공하는 플래그 모음
+	m_pDynamic->setRigidDynamicLockFlags
+	(
+		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X |
+		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y |
+		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z
+	);
 
 	// TODO::점프속력에 영향을 미침. 스테이지 작성후 자세한 수치는 나중에 조절
 	// 플레이어 최대 속력
 	// dynamic_->setMaxLinearVelocity(PLAYER_MAX_SPEED);
 
-	m_pDynamic->setRigidDynamicLockFlags(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X | physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y | physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z);
+	float ScaledRadius = tmpGeoMetryScale.z;
+	float ScaledHeight = tmpGeoMetryScale.y;
 
-	float ScaledRadius = _GeoMetryScale.z;
-	float ScaledHeight = _GeoMetryScale.y;
+	// 충돌체의 형태
+	// 충돌체의 크기는 절반의 크기를 설정하므로 실제 Renderer의 스케일은 충돌체의 2배로 설정되어야 함
+	// TODO::부모 액터의 RenderUnit으로부터 Mesh의 Scale 과 WorldScale의 연산의 결과를 지오메트리의 Scale로 세팅해야함.
+	m_pShape = physx::PxRigidActorExt::createExclusiveShape(*m_pDynamic, physx::PxCapsuleGeometry(ScaledRadius * 1.f, ScaledHeight * 1.f), *m_pMaterial);
 
-	// 메인 캡슐 콜라이더
-	m_pShape = physx::PxRigidActorExt::createExclusiveShape(*m_pDynamic, physx::PxCapsuleGeometry(ScaledRadius * 1.3f, ScaledHeight * 0.9f), *m_pMaterial);
-	
-	float CapsuleHeight = (ScaledHeight * 0.9f);
-	physx::PxVec3 DynamicCenter(0.0f, CapsuleHeight, 0.0f);
-	//피벗설정
-	physx::PxTransform relativePose(physx::PxQuat(physx::PxHalfPi, physx::PxVec3(0, 0, 1)));
-	relativePose.p = DynamicCenter;
-	physx::PxTransform relativePose2(DynamicCenter);
-	m_pShape->setLocalPose(relativePose);
-	//shape_->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), 
-	//	static_cast<physx::PxU32>(PhysXFilterGroup::Ground), 
-	//	static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle), 0));
-	//physx::PxTransform relativePose(physx::PxQuat(physx::PxHalfPi, physx::PxVec3(0, 0, 1)));
-	m_pShape->setContactOffset(0.2f);
+	// RigidDynamic의 밀도를 설정
 	physx::PxRigidBodyExt::updateMassAndInertia(*m_pDynamic, 0.01f);
 
-	m_pInstshape = physx::PxRigidActorExt::createExclusiveShape(*m_pDynamic, physx::PxCapsuleGeometry(ScaledRadius * 1.3f, ScaledHeight * 0.9f), *m_pMaterial);
-	// 충돌시점 콜백을 위한 세팅
-	//Instshape_->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::Player), 0, 0, 0));
-	m_pInstshape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
-	m_pInstshape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
+	//피벗 설정
+	float CapsuleHeight = ScaledHeight * 1.f;
+	physx::PxVec3 DynamicCenter = physx::PxVec3{ 0.0f, CapsuleHeight, 0.0f };
+	physx::PxTransform relativePose(physx::PxQuat(physx::PxHalfPi, physx::PxVec3(0, 0, 1)));
+	relativePose.p = DynamicCenter;
+	m_pShape->setLocalPose(relativePose);
 
-	//콜백피벗설정 
-	m_pInstshape->setLocalPose(relativePose);
-	m_pInstshape->setContactOffset(0.2f);
-	// 
-	physx::PxTransform LocalPose = m_pDynamic->getCMassLocalPose();
+	//충돌할때 필요한 필터 데이터
+	//m_pShape->setSimulationFilterData
+	//(
+	//	physx::PxFilterData
+	//	(
+	//		static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle),
+	//		static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), 
+	//		0,
+	//		0
+	//	)
+	//);
+	//m_pShape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), static_cast<physx::PxU32>(PhysXFilterGroup::Ground), static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle), 0));
 
-	//m_pFaceshape = physx::PxRigidActorExt::createExclusiveShape(*m_pDynamic, physx::PxBoxGeometry(ScaledRadius * 0.1f, ScaledHeight * 0.4f, ScaledHeight * 0.9f), *m_pMaterial);
-	//m_pFaceshape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
-	//m_pFaceshape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
-	//physx::PxTransform facerelativePose(physx::PxVec3(0.0f, CapsuleHeight * 1.3f, ScaledRadius * 1.3f));
-	//physx::PxTransform facerelativePose2(facerelativePose);
-	//m_pFaceshape->setLocalPose(facerelativePose2);
-	////faceshape_->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::PlayerFace), 0, 0, 0));
-
-	//m_pHeadshape = physx::PxRigidActorExt::createExclusiveShape(*m_pDynamic, physx::PxSphereGeometry(ScaledHeight * 0.9f), *m_pMaterial);
-	//m_pHeadshape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
-	//m_pHeadshape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
-	//physx::PxTransform headrelativePose(physx::PxVec3(0.0f, CapsuleHeight * 1.5f, 0.0f));
-	////physx::PxTransform facerelativePose2(headrelativePose);
-	//m_pHeadshape->setLocalPose(headrelativePose);
-	////headshape_->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::PlayerHead), 0, 0, 0));
-	//m_pHeadshape->setContactOffset(0.2f);
+	m_pShape->setContactOffset(0.2f);
 
 	// 제동?
-	m_pDynamic->setLinearDamping(physx::PxReal(0.5f));
-	m_pDynamic->setMaxAngularVelocity(physx::PxReal(20.0f));
-	m_pDynamic->setAngularDamping(physx::PxReal(2.0f));
+	//m_pDynamic->setLinearDamping(physx::PxReal(0.01f));
+	//m_pDynamic->setMaxAngularVelocity(physx::PxReal(20.0f));
+	//m_pDynamic->setAngularDamping(physx::PxReal(2.0f));
 
 	// Scene에 액터 추가
 	_Scene->addActor(*m_pDynamic);
