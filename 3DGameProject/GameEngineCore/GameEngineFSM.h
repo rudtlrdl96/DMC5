@@ -5,7 +5,7 @@
 class StateParameter 
 {
 public:
-	std::string_view Name;
+	int StateValue;
 	std::function<void()> Start;
 	std::function<void(float _Delta)> Update;
 	std::function<void()> End;
@@ -18,7 +18,7 @@ public:
 	class State 
 	{
 	public:
-		std::string Name;
+		int StateValue;
 		float CurStateTime;
 		std::function<void()> Start;
 		std::function<void(float _Delta)> Update;
@@ -38,12 +38,12 @@ public:
 
 	void CreateState(const StateParameter& _StateFunction);
 
-	void ChangeFunction(const std::string_view& _Name, std::function<void()> Start,
+	void ChangeFunction(int _StateValue, std::function<void()> Start,
 	std::function<void(float _Delta)> Update,
 	std::function<void()> End
 	);
 
-	void ChangeState(const std::string_view& _Name);
+	void ChangeState(int _StateValue);
 
 	void Update(float _DeltaTime);
 
@@ -53,10 +53,10 @@ public:
 	}
 
 protected:
-	GameEngineFSM::State* FindState(const std::string_view& _Name);
+	GameEngineFSM::State* FindState(int _State);
 
 private:
-	std::map<std::string, State> AllState;
+	std::map<int, State> AllState;
 	State* CurState = nullptr;
 
 };
