@@ -3,6 +3,7 @@
 
 FreeCameraActor::FreeCameraActor()
 {
+	SetName("FreeCamera Actor");
 }
 
 FreeCameraActor::~FreeCameraActor()

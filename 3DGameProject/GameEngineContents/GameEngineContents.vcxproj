@@ -358,10 +358,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="TestEmpusa.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="StartButton.h">
       <SubType>
       </SubType>
@@ -571,10 +567,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="ServerWindow.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="TestEmpusa.cpp">
       <SubType>
       </SubType>
     </ClCompile>

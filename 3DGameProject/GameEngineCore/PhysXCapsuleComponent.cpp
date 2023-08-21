@@ -1,17 +1,17 @@
 #include "PrecompileHeader.h"
-#include "PhysXDynamicActorComponent.h"
+#include "PhysXCapsuleComponent.h"
 
 #include <GameEngineBase/GameEngineMath.h>
 
-PhysXDynamicActorComponent::PhysXDynamicActorComponent()
+PhysXCapsuleComponent::PhysXCapsuleComponent()
 {
 }
 
-PhysXDynamicActorComponent::~PhysXDynamicActorComponent()
+PhysXCapsuleComponent::~PhysXCapsuleComponent()
 {
 }
 
-physx::PxRigidDynamic* PhysXDynamicActorComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale, float4 _GeoMetryRotation)
+physx::PxRigidDynamic* PhysXCapsuleComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale, float4 _GeoMetryRotation)
 {
 	m_pScene = _Scene;
 	m_pPhysics = _physics;
@@ -108,7 +108,7 @@ physx::PxRigidDynamic* PhysXDynamicActorComponent::CreatePhysXActors(physx::PxSc
 	return m_pDynamic;
 }
 
-void PhysXDynamicActorComponent::SetMoveSpeed(float4 _MoveSpeed)
+void PhysXCapsuleComponent::SetMoveSpeed(float4 _MoveSpeed)
 {
 	// RigidDynamic의 축을 고정하는 Flag -> 캐릭터가 쓰러지지 않고 서있을 수 있도록
 	// 무언가와 충돌해서 쓰러져야 할경우에는 setRigidDynamicLockFlag({flag}, false)로 flag를 해제해야함.
@@ -118,19 +118,19 @@ void PhysXDynamicActorComponent::SetMoveSpeed(float4 _MoveSpeed)
 	m_pDynamic->addForce(physx::PxVec3(_MoveSpeed.x, _MoveSpeed.y, _MoveSpeed.z), physx::PxForceMode::eFORCE);
 }
 
-void PhysXDynamicActorComponent::SetMoveJump()
+void PhysXCapsuleComponent::SetMoveJump()
 {
 	m_pDynamic->addForce(physx::PxVec3(0.0f, PLAYER_JUMP_FORCE, 0.0f), physx::PxForceMode::eIMPULSE);
 }
 
-void PhysXDynamicActorComponent::SetMoveDive(float _Rot)
+void PhysXCapsuleComponent::SetMoveDive(float _Rot)
 {
 	float4 DirVec = float4::DegreeToDirection2D(_Rot);
 	DirVec *= 1.0f;
 	m_pDynamic->addForce(physx::PxVec3(DirVec.y, PLAYER_JUMP_FORCE * 0.5f, DirVec.x), physx::PxForceMode::eIMPULSE);
 }
 
-void PhysXDynamicActorComponent::SetDynamicIdle()
+void PhysXCapsuleComponent::SetDynamicIdle()
 {
 	// 고정된 축을 해제
 	m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, false);
@@ -141,13 +141,13 @@ void PhysXDynamicActorComponent::SetDynamicIdle()
 	//dynamic_->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, false);
 }
 
-void PhysXDynamicActorComponent::Start()
+void PhysXCapsuleComponent::Start()
 {
 	// 부모의 정보의 저장
 	ParentActor = GetActor()->DynamicThis<GameEngineActor>();
 }
 
-void PhysXDynamicActorComponent::Update(float _DeltaTime)
+void PhysXCapsuleComponent::Update(float _DeltaTime)
 {
 	if (!(physx::PxIsFinite(m_pDynamic->getGlobalPose().p.x) || physx::PxIsFinite(m_pDynamic->getGlobalPose().p.y) || physx::PxIsFinite(m_pDynamic->getGlobalPose().p.z))
 		&& true == IsMain)
@@ -168,7 +168,7 @@ void PhysXDynamicActorComponent::Update(float _DeltaTime)
 	}
 }
 
-void PhysXDynamicActorComponent::PushImpulse(float4 _ImpulsePower)
+void PhysXCapsuleComponent::PushImpulse(float4 _ImpulsePower)
 {
 	// 고정된 축을 해제
 	m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, false);
@@ -178,7 +178,7 @@ void PhysXDynamicActorComponent::PushImpulse(float4 _ImpulsePower)
 	m_pDynamic->addForce(physx::PxVec3(_ImpulsePower.x, _ImpulsePower.y, _ImpulsePower.z), physx::PxForceMode::eIMPULSE);
 }
 
-void PhysXDynamicActorComponent::PushImpulseAtLocalPos(float4 _ImpulsePower, float4 _Pos)
+void PhysXCapsuleComponent::PushImpulseAtLocalPos(float4 _ImpulsePower, float4 _Pos)
 {
 	// 고정된 축을 해제
 	m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, false);
@@ -188,7 +188,7 @@ void PhysXDynamicActorComponent::PushImpulseAtLocalPos(float4 _ImpulsePower, flo
 		physx::PxVec3(_ImpulsePower.x, _ImpulsePower.y, _ImpulsePower.z), physx::PxForceMode::eIMPULSE, true);
 }
 
-void PhysXDynamicActorComponent::SetPlayerStartPos(float4 _Pos)
+void PhysXCapsuleComponent::SetPlayerStartPos(float4 _Pos)
 {
 	physx::PxTransform tmpPxTransform(_Pos.x, _Pos.y, _Pos.z);
 
@@ -197,7 +197,7 @@ void PhysXDynamicActorComponent::SetPlayerStartPos(float4 _Pos)
 	RecentTransform = tmpPxTransform;
 }
 
-bool PhysXDynamicActorComponent::PlayerStandUp(float _DeltaTime, bool _IsXAixisRotReady)
+bool PhysXCapsuleComponent::PlayerStandUp(float _DeltaTime, bool _IsXAixisRotReady)
 {
 	bool Result = false;
 
@@ -240,7 +240,7 @@ bool PhysXDynamicActorComponent::PlayerStandUp(float _DeltaTime, bool _IsXAixisR
 	return Result;
 }
 
-bool PhysXDynamicActorComponent::StandUp2(float _DeltaTime, bool _IsXAixisRotReady)
+bool PhysXCapsuleComponent::StandUp2(float _DeltaTime, bool _IsXAixisRotReady)
 {
 	bool Result = false;
 	if (_IsXAixisRotReady == false)
@@ -341,7 +341,7 @@ bool PhysXDynamicActorComponent::StandUp2(float _DeltaTime, bool _IsXAixisRotRea
 
 }
 
-void PhysXDynamicActorComponent::SpeedLimit()
+void PhysXCapsuleComponent::SpeedLimit()
 {
 	physx::PxVec3 Velo = m_pDynamic->getLinearVelocity();
 	physx::PxVec2 Velo2D(Velo.x, Velo.z);
@@ -357,7 +357,7 @@ void PhysXDynamicActorComponent::SpeedLimit()
 	}
 }
 
-void PhysXDynamicActorComponent::SetChangedRot(float4 _Rot)
+void PhysXCapsuleComponent::SetChangedRot(float4 _Rot)
 {
 	//dynamic_->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, false);
 
@@ -369,17 +369,17 @@ void PhysXDynamicActorComponent::SetChangedRot(float4 _Rot)
 }
 
 //플레이어 멈추는 함수
-void PhysXDynamicActorComponent::FreezeDynamic()
+void PhysXCapsuleComponent::FreezeDynamic()
 {
 	m_pDynamic->putToSleep();
 }
 
-void PhysXDynamicActorComponent::WakeUpDynamic()
+void PhysXCapsuleComponent::WakeUpDynamic()
 {
 	m_pDynamic->wakeUp();
 }
 
-void PhysXDynamicActorComponent::ResetDynamic()
+void PhysXCapsuleComponent::ResetDynamic()
 {
 	float4 tmpQuat = float4{ 0.0f,0.0f,0.0f }.DegreeRotationToQuaternionReturn();
 	const physx::PxQuat tmpPxQuat(tmpQuat.x, tmpQuat.y, tmpQuat.z, tmpQuat.w);
@@ -392,7 +392,7 @@ void PhysXDynamicActorComponent::ResetDynamic()
 		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z);
 }
 
-void PhysXDynamicActorComponent::InitializeStandUp2()
+void PhysXCapsuleComponent::InitializeStandUp2()
 {
 	physx::PxVec3 ASDASFFASGG = m_pDynamic->getGlobalPose().q.getBasisVector1();
 	float4 XZAngle = float4{ ASDASFFASGG.x, 0.0f, ASDASFFASGG.z };

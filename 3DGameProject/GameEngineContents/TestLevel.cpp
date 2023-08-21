@@ -1,8 +1,6 @@
 #include "PrecompileHeader.h"
 #include "TestLevel.h"
 
-#include <GameEngineCore/PhysXBoxGeometryComponent.h>
-
 #include "TestObject.h"
 #include "Plane.h"
 #include "Enemy_Empusa.h"
@@ -11,7 +9,6 @@
 #include "Enemy_HellCaina.h"
 #include "Enemy_HellAntenora.h"
 #include "CavaliereAngelo.h"
-#include "TestEmpusa.h"
 
 TestLevel* TestLevel::TestLevelPtr = nullptr;
 

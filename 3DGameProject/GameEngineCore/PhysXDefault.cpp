@@ -29,12 +29,12 @@ float4 PhysXDefault::ToEulerAngles(const physx::PxQuat& q) {
 	const float w = q.w;
 
 	// roll (y-axis rotation)
-	double sinr_cosp = 2 * (w * x + y * z);
-	double cosr_cosp = 1 - 2 * (x * x + y * y);
+	float sinr_cosp = 2 * (w * x + y * z);
+    float cosr_cosp = 1 - 2 * (x * x + y * y);
 	angles.x = std::atan2(sinr_cosp, cosr_cosp);
 
 	// pitch (x-axis rotation)
-	double sinp = 2 * (w * y - z * x);
+    float sinp = 2 * (w * y - z * x);
 	if (std::abs(sinp) >= 1)
 	{
 		angles.y = std::copysign(GameEngineMath::PIE / 2, sinp); // use 90 degrees if out of range
@@ -46,8 +46,8 @@ float4 PhysXDefault::ToEulerAngles(const physx::PxQuat& q) {
 	}
 
 	// yaw (z-axis rotation)
-	double siny_cosp = 2 * (w * z + x * y);
-	double cosy_cosp = 1 - 2 * (y * y + z * z);
+    float siny_cosp = 2 * (w * z + x * y);
+    float cosy_cosp = 1 - 2 * (y * y + z * z);
 	angles.z = std::atan2(siny_cosp, cosy_cosp);
 	return angles;
 }
@@ -137,9 +137,9 @@ float PhysXDefault::NormalizeAngle(float angle)
 
 float4 PhysXDefault::RodriguesRotate(vector p, vector v, float a) 
 {
-    double ca = cos(a), sa = sin(a);
-    double t = 1.0 - ca;
-    double x = v.x, y = v.y, z = v.z;
+    float ca = cos(a), sa = sin(a);
+    float t = 1.0f - ca;
+    float x = v.x, y = v.y, z = v.z;
     matrix r = {
         {ca + x * x * t, x * y * t - z * sa, x * z * t + y * sa},
         {x * y * t + z * sa, ca + y * y * t, y * z * t - x * sa},
@@ -149,7 +149,7 @@ float4 PhysXDefault::RodriguesRotate(vector p, vector v, float a)
     return float4{ Result.x, Result.y, Result.z };
 }
 
-double PhysXDefault::dotProduct(vector v1, vector v2)
+float PhysXDefault::dotProduct(vector v1, vector v2)
 {
     return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }

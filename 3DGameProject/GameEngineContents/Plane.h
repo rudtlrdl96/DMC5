@@ -27,7 +27,7 @@ protected:
 	void ServerUpdate(float _DeltaTime);
 
 private:
-	std::shared_ptr<class PhysXBoxGeometryComponent> Component = nullptr;
+	std::shared_ptr<class PhysXBoxComponent> Component = nullptr;
 
 };
 

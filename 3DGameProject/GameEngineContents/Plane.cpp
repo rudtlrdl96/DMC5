@@ -3,7 +3,7 @@
 
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include "MyContentSpriteRenderer.h"
-#include <GameEngineCore/PhysXBoxGeometryComponent.h>
+#include <GameEngineCore/PhysXBoxComponent.h>
 #include <GameEngineCore/GameEngineRenderer.h>
 
 #include "TestLevel.h"
@@ -24,7 +24,7 @@ void Plane::Start()
 	float4 RenderMeshScale = Renderer->GetFBXMesh()->GetRenderUnit(0)->BoundScaleBox;
 	physx::PxVec3 GeoMetryScale = { RenderMeshScale.x, RenderMeshScale.y, RenderMeshScale.z};
 
-	Component = CreateComponent<PhysXBoxGeometryComponent>();
+	Component = CreateComponent<PhysXBoxComponent>();
 	Component->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
 	Component->CreatePhysXActors(TestLevel::TestLevelPtr->GetLevelScene(), TestLevel::TestLevelPtr->GetLevelPhysics(), GeoMetryScale);
 	Component->SetPositionSetFromParentFlag(true);

@@ -4,18 +4,18 @@
 #include "PhysXDefault.h"
 
 // Ό³Έν :
-class PhysXDynamicActorComponent : public GameEngineComponent, public PhysXDefault
+class PhysXCapsuleComponent : public GameEngineComponent, public PhysXDefault
 {
 public:
 	// constrcuter destructer
-	PhysXDynamicActorComponent();
-	~PhysXDynamicActorComponent();
+	PhysXCapsuleComponent();
+	~PhysXCapsuleComponent();
 
 	// delete Function
-	PhysXDynamicActorComponent(const PhysXDynamicActorComponent& _Other) = delete;
-	PhysXDynamicActorComponent(PhysXDynamicActorComponent&& _Other) noexcept = delete;
-	PhysXDynamicActorComponent& operator=(const PhysXDynamicActorComponent& _Other) = delete;
-	PhysXDynamicActorComponent& operator=(PhysXDynamicActorComponent&& _Other) noexcept = delete;
+	PhysXCapsuleComponent(const PhysXCapsuleComponent& _Other) = delete;
+	PhysXCapsuleComponent(PhysXCapsuleComponent&& _Other) noexcept = delete;
+	PhysXCapsuleComponent& operator=(const PhysXCapsuleComponent& _Other) = delete;
+	PhysXCapsuleComponent& operator=(PhysXCapsuleComponent&& _Other) noexcept = delete;
 
 	physx::PxRigidDynamic* CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale = physx::PxVec3(2.0f), float4 _GeoMetryRotation = { 0.0f , 0.0f });
 

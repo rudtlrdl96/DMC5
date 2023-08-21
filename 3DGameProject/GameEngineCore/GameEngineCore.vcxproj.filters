@@ -769,10 +769,10 @@
     <ClInclude Include="PhysicsLevel.h">
       <Filter>Physics</Filter>
     </ClInclude>
-    <ClInclude Include="PhysXBoxGeometryComponent.h">
+    <ClInclude Include="PhysXBoxComponent.h">
       <Filter>Physics</Filter>
     </ClInclude>
-    <ClInclude Include="PhysXDynamicActorComponent.h">
+    <ClInclude Include="PhysXCapsuleComponent.h">
       <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>
@@ -953,13 +953,13 @@
     <ClCompile Include="PhysicsLevel.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
-    <ClCompile Include="PhysXBoxGeometryComponent.cpp">
+    <ClCompile Include="PhysXBoxComponent.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
     <ClCompile Include="PhysXDefault.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
-    <ClCompile Include="PhysXDynamicActorComponent.cpp">
+    <ClCompile Include="PhysXCapsuleComponent.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
   </ItemGroup>

@@ -87,7 +87,7 @@ public:
 	
 	//로드리게스 회전 관련 함수
 	float4 RodriguesRotate(vector p, vector v, float a);
-	double dotProduct(vector v1, vector v2);
+	float dotProduct(vector v1, vector v2);
 	vector matrixMultiply(matrix m, vector v);
 
 protected:

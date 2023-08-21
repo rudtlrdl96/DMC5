@@ -67,16 +67,19 @@ void PlayerTestLevel::LevelChangeStart()
 	std::shared_ptr<GameEngineActor> CollisionActor = CreateActor<GameEngineActor>();
 	std::shared_ptr<GameEngineCollision> Collision = CollisionActor->CreateComponent<GameEngineCollision>();
 	CollisionActor->GetTransform()->SetLocalScale({ 100, 100, 100 });
+	CollisionActor->GetTransform()->SetLocalPosition({ 100, 0, 100 });
 	Collision->SetColType(ColType::AABBBOX3D);
 
+	NewPlayer->LockOnEnemyTransform = CollisionActor->GetTransform();
 	IsDebugSwitch();
 
-	AnimWindow = std::dynamic_pointer_cast<AnimationToolWindow>(GameEngineGUI::GUIWindowCreate<AnimationToolWindow>("AnimationToolWindow"));
-	ObjWindow =  std::dynamic_pointer_cast<ObjectWindow>(GameEngineGUI::GUIWindowCreate<ObjectWindow>("ObjectWindow"));
-	ObjWindow->AddObject(NewPlayer);
-	ObjWindow->AddObject(CollisionActor);
-	ObjWindow->AddObject(Collision);
-	std::shared_ptr<FreeCameraActor> Free = CreateActor<FreeCameraActor>();
+	//AnimWindow = std::dynamic_pointer_cast<AnimationToolWindow>(GameEngineGUI::GUIWindowCreate<AnimationToolWindow>("AnimationToolWindow"));
+	//ObjWindow =  std::dynamic_pointer_cast<ObjectWindow>(GameEngineGUI::GUIWindowCreate<ObjectWindow>("ObjectWindow"));
+	//ObjWindow->AddObject(NewPlayer);
+	//ObjWindow->AddObject(CollisionActor);
+	//ObjWindow->AddObject(Collision);
+	//std::shared_ptr<FreeCameraActor> Free = CreateActor<FreeCameraActor>();
+	//ObjWindow->AddObject(Free);
 }
 
 void PlayerTestLevel::LevelChangeEnd()

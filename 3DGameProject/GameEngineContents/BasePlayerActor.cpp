@@ -17,6 +17,26 @@ BasePlayerActor::~BasePlayerActor()
 {
 }
 
+void BasePlayerActor::LookDir(const float4& _LookDir)
+{
+	float4 LocalForward = GetTransform()->GetLocalForwardVector();
+	//float4 LocalForward = Controller->GetMoveVector();
+
+	float4 Cross = float4::Cross3DReturnNormal(LocalForward, _LookDir);
+	float Dot = float4::DotProduct3D(LocalForward, _LookDir);
+
+	if (0 < Cross.y)
+	{
+		GetTransform()->AddLocalRotation({ 0, -GameEngineMath::RadToDeg * Dot, 0 });
+	}
+	else
+	{
+		GetTransform()->AddLocalRotation({ 0, GameEngineMath::RadToDeg * Dot, 0 });
+	}
+	return;
+
+}
+
 void BasePlayerActor::Start()
 {
 	Renderer = CreateComponent<GameEngineFBXRenderer>();
@@ -36,23 +56,12 @@ void BasePlayerActor::Update(float _DeltaTime)
 	GetTransform()->AddLocalPosition(Controller->GetMoveVector() * _DeltaTime * 100);
 	if (Controller->GetMoveVector() != float4::ZERO)
 	{
-		float4 LocalForward = Controller->GetMoveVector();
-		float4 PlayerForward = GetTransform()->GetWorldForwardVector();
-
-		float4 Cross = float4::Cross3DReturnNormal(LocalForward, PlayerForward);
-		float Dot = float4::DotProduct3D(LocalForward, PlayerForward);
-
-		if (Cross.y < -0.99f)
-		{
-			GetTransform()->AddLocalRotation({ 0, 180, 0 });
-		}
-		else
-		{
-			GetTransform()->AddLocalRotation({ 0, GameEngineMath::RadToDeg * Dot, 0 });
-		}
-
+		LookDir(Controller->GetMoveVector());
 	}
-
+	if (LockOnEnemyTransform != nullptr)
+	{
+		//LookDir((LockOnEnemyTransform->GetWorldPosition() - GetTransform()->GetWorldPosition()).NormalizeReturn());
+	}
 
 	static float Delta = 0.0f;
 	Delta += _DeltaTime;

@@ -365,9 +365,9 @@
     <ClInclude Include="imstb_textedit.h" />
     <ClInclude Include="imstb_truetype.h" />
     <ClInclude Include="PhysicsLevel.h" />
-    <ClInclude Include="PhysXBoxGeometryComponent.h" />
+    <ClInclude Include="PhysXBoxComponent.h" />
     <ClInclude Include="PhysXDefault.h" />
-    <ClInclude Include="PhysXDynamicActorComponent.h">
+    <ClInclude Include="PhysXCapsuleComponent.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -767,9 +767,9 @@
     <ClCompile Include="imgui_tables.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="PhysicsLevel.cpp" />
-    <ClCompile Include="PhysXBoxGeometryComponent.cpp" />
+    <ClCompile Include="PhysXBoxComponent.cpp" />
     <ClCompile Include="PhysXDefault.cpp" />
-    <ClCompile Include="PhysXDynamicActorComponent.cpp">
+    <ClCompile Include="PhysXCapsuleComponent.cpp">
       <SubType>
       </SubType>
     </ClCompile>

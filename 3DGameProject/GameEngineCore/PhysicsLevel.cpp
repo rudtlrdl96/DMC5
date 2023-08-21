@@ -103,7 +103,7 @@ void PhysicsLevel::Initialize()
 
 	physx::PxSceneDesc SceneDesc(m_pPhysics->getTolerancesScale());
 
-	SceneDesc.gravity = physx::PxVec3(0.0f, -9.81f, 0.0f);
+	SceneDesc.gravity = physx::PxVec3(0.0f, PHYSX_GRAVITY, 0.0f);
 	m_pDispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 	SceneDesc.cpuDispatcher = m_pDispatcher;
 	SceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
@@ -127,10 +127,6 @@ void PhysicsLevel::Initialize()
 	{
 		MsgAssert("PxCooking 积己 角菩");
 	}
-
-	//m_pMaterial = m_pPhysics->createMaterial(0.5f, 0.5f, 0.6f);
-	//physx::PxRigidStatic* pGroundPlane = PxCreatePlane(*m_pPhysics, physx::PxPlane(0, 1, 0, 0), *m_pMaterial);
-	//m_pScene->addActor(*pGroundPlane);
 
 	// Aggregate积己
 	//MapAggregate_ = Physics_->createAggregate(2000, false);
