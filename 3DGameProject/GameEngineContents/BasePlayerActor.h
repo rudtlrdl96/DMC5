@@ -15,6 +15,9 @@ public:
 	BasePlayerActor(BasePlayerActor&& _Other) noexcept = delete;
 	BasePlayerActor& operator=(const BasePlayerActor& _Other) = delete;
 	BasePlayerActor& operator=(BasePlayerActor&& _Other) noexcept = delete;
+	
+	void LookDir(const float4& _LookDir);
+	GameEngineTransform* LockOnEnemyTransform = nullptr;
 
 protected:
 	void Start() override;
@@ -25,5 +28,6 @@ protected:
 	std::shared_ptr<class PlayerCamera> Camera = nullptr;
 
 private:
+
 };
 
