@@ -24,7 +24,7 @@ public:
 	//static void PushLog(int _Order, const std::vector<std::string>& _Log);
 
 	template<typename Enum>
-	static void GetLog(Enum _Enum)
+	static const std::vector<std::string>& GetLog(Enum _Enum)
 	{
 		GetLog(static_cast<int>(_Enum));
 	}
