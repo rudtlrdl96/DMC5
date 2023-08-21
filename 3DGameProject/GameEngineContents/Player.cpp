@@ -41,7 +41,7 @@ void Player::Start()
 	}
 
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
-	Renderer->SetFBXMesh("House1.FBX", "MeshTexture");
+	Renderer->SetFBXMesh("Map11_Collapse.FBX", "NoneAlphaMesh");
 
 	// Renderer->SetFBXMesh("AnimMan.FBX", "MeshTexture", 0, 0);
 	// Renderer->SetFBXMesh("AnimMan.FBX", "MeshTexture", 0, 2);
