@@ -1,17 +1,17 @@
 #include "PreCompileHeader.h"
-#include "PhysXBoxGeometryComponent.h"
+#include "PhysXBoxComponent.h"
 
 #include <GameEngineCore/GameEngineActor.h>
 
-PhysXBoxGeometryComponent::PhysXBoxGeometryComponent() 
+PhysXBoxComponent::PhysXBoxComponent()
 {
 }
 
-PhysXBoxGeometryComponent::~PhysXBoxGeometryComponent() 
+PhysXBoxComponent::~PhysXBoxComponent()
 {
 }
 
-void PhysXBoxGeometryComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale, float4 _GeoMetryRot)
+void PhysXBoxComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale, float4 _GeoMetryRot)
 {
 	float4 tmpQuat = _GeoMetryRot.EulerDegToQuaternion();
 
@@ -93,22 +93,15 @@ void PhysXBoxGeometryComponent::CreatePhysXActors(physx::PxScene* _Scene, physx:
 	{
 		_Scene->addActor(*m_pRigidDynamic);
 	}
-
-	//// 충돌체의 종류
-	//rigidStatic_ = _physics->createRigidStatic(localTm);
-	//rigidStatic_->attachShape(*shape_);
-
-	//// Scene에 액터 추가
-	//_Scene->addActor(*rigidStatic_);
 }
 
-void PhysXBoxGeometryComponent::Start()
+void PhysXBoxComponent::Start()
 {
 	// 부모의 정보의 저장
 	ParentActor = GetActor()->DynamicThis<GameEngineActor>();
 }
 
-void PhysXBoxGeometryComponent::Update(float _DeltaTime)
+void PhysXBoxComponent::Update(float _DeltaTime)
 {
 	if (false == PositionSetFromParentFlag)
 	{

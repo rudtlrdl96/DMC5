@@ -139,9 +139,6 @@
     <ClInclude Include="SelectScreen.h">
       <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
     </ClInclude>
-    <ClInclude Include="TestEmpusa.h">
-      <Filter>Actor\Test</Filter>
-    </ClInclude>
     <ClInclude Include="ConnectIDPacket.h">
       <Filter>Server\01.Packet\03.ServerToClient</Filter>
     </ClInclude>
@@ -323,9 +320,6 @@
     </ClCompile>
     <ClCompile Include="SelectScreen.cpp">
       <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
-    </ClCompile>
-    <ClCompile Include="TestEmpusa.cpp">
-      <Filter>Actor\Test</Filter>
     </ClCompile>
     <ClCompile Include="NetworkManager.cpp">
       <Filter>Server\02.NetworkManager</Filter>

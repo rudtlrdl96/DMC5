@@ -2,8 +2,8 @@
 #include "TestObject.h"
 
 #include <GameEngineCore/GameEngineFBXRenderer.h>
-//#include <GameEngineCore/PhysXBoxGeometryComponent.h>
-#include <GameEngineCore/PhysXDynamicActorComponent.h>
+//#include <GameEngineCore/PhysXBoxComponent.h>
+#include <GameEngineCore/PhysXCapsuleComponent.h>
 
 #include "TestLevel.h"
 
@@ -35,7 +35,7 @@ void TestObject::Start()
 
 	GetTransform()->AddWorldPosition(float4{ 0, 100.0f, 0 });
 
-	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
+	Renderer = CreateComponent<GameEngineFBXRenderer>();
 	std::string Path = GameEnginePath::GetFileFullPath
 	(
 		"ContentResources",
@@ -56,7 +56,7 @@ void TestObject::Start()
 	float4 world = GetTransform()->GetWorldScale();
 	float4 local = GetTransform()->GetLocalScale();
 
-	Component = CreateComponent<PhysXDynamicActorComponent>();
+	Component = CreateComponent<PhysXCapsuleComponent>();
 	Component->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
 	Component->CreatePhysXActors(TestLevel::TestLevelPtr->GetLevelScene(), TestLevel::TestLevelPtr->GetLevelPhysics(), VecSclae);
 }
@@ -148,6 +148,13 @@ void TestObject::UserUpdate(float _DeltaTime)
 	float4 FDSA = Component->GetTransform()->GetLocalPosition();
 	float4 REWQ = Component->GetTransform()->GetWorldScale();
 	float4 QWER = Component->GetTransform()->GetLocalScale();
+
+	float4 sf = Renderer->GetTransform()->GetWorldPosition();
+	float4 sd = Renderer->GetTransform()->GetLocalPosition();
+	float4 sff = Renderer->GetTransform()->GetWorldScale();
+	float4 sfg = Renderer->GetTransform()->GetLocalScale();
+
+	int a = 0;
 }
 
 void TestObject::ServerUpdate(float _DeltaTime)
