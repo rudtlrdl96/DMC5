@@ -91,9 +91,9 @@ public:
 	vector matrixMultiply(matrix m, vector v);
 
 protected:
-	float Staticfriction = 0.0f;
-	float Dynamicfriction = 0.0f;
-	float Resitution = 0.0f;
+	float Staticfriction = 0.0f;              // Á¤Àû¸¶Âû
+	float Dynamicfriction = 0.0f;             // µ¿Àû¸¶Âû
+	float Resitution = 0.0f;                  // Åº¼º°è¼ö
 
 	float4 DynamicPivot = {0.0f, 0.0f, 0.0f};
 	

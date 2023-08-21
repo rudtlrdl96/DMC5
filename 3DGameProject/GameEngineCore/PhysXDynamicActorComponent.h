@@ -17,7 +17,7 @@ public:
 	PhysXDynamicActorComponent& operator=(const PhysXDynamicActorComponent& _Other) = delete;
 	PhysXDynamicActorComponent& operator=(PhysXDynamicActorComponent&& _Other) noexcept = delete;
 
-	physx::PxRigidDynamic* CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale = physx::PxVec3(2.0f), float4 _GeoMetryRot = { 0.0f , 0.0f });
+	physx::PxRigidDynamic* CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale = physx::PxVec3(2.0f), float4 _GeoMetryRotation = { 0.0f , 0.0f });
 
 	physx::PxRigidDynamic* GetDynamic()
 	{
@@ -124,9 +124,9 @@ public:
 		m_pShape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic),
 			static_cast<physx::PxU32>(PhysXFilterGroup::Ground),
 			static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle), 0));
-		m_pInstshape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::Player), 0, 0, 0));
-		m_pFaceshape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::PlayerFace), 0, 0, 0));
-		m_pHeadshape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::PlayerHead), 0, 0, 0));
+		//m_pInstshape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::Player), 0, 0, 0));
+		//m_pFaceshape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::PlayerFace), 0, 0, 0));
+		//m_pHeadshape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::PlayerHead), 0, 0, 0));
 	}
 protected:
 	void Start() override;
@@ -141,10 +141,6 @@ private:
 
 	physx::PxMaterial* m_pMaterial = nullptr;
 	physx::PxShape* m_pShape = nullptr;
-	physx::PxShape* m_pInstshape= nullptr;
-	physx::PxShape* m_pFaceshape= nullptr;
-	physx::PxShape* m_pHeadshape= nullptr;
-	physx::PxShape* m_pFlagshape= nullptr;
 	physx::PxRigidDynamic* m_pDynamic = nullptr;
 
 	bool IsSpeedLimit = false;

@@ -91,7 +91,11 @@ void PhysicsLevel::Initialize()
 
 	m_pPvd->connect(*m_pTransport, physx::PxPvdInstrumentationFlag::eALL);
 
-	m_pPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_pFoundation, physx::PxTolerancesScale(), true, m_pPvd);
+	physx::PxTolerancesScale scale;
+	//scale.length = 1;   // typical length of an object
+	//scale.speed = 981;  // typical speed of an object, gravity*1s is a reasonable choice
+
+	m_pPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_pFoundation, scale, true, m_pPvd);
 	if (!m_pPhysics)
 	{
 		MsgAssert("PxPhysics 생성 실패");
@@ -99,7 +103,7 @@ void PhysicsLevel::Initialize()
 
 	physx::PxSceneDesc SceneDesc(m_pPhysics->getTolerancesScale());
 
-	SceneDesc.gravity = physx::PxVec3(0.0f, -10.f, 0.0f);
+	SceneDesc.gravity = physx::PxVec3(0.0f, -9.81f, 0.0f);
 	m_pDispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 	SceneDesc.cpuDispatcher = m_pDispatcher;
 	SceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;

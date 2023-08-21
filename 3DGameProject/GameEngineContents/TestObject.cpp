@@ -36,35 +36,29 @@ void TestObject::Start()
 	GetTransform()->AddWorldPosition(float4{ 0, 100.0f, 0 });
 
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
-	//Renderer->SetFBXMesh("House1.FBX", "MeshTexture");
-
-	//Component = CreateComponent<PhysXDynamicActorComponent>();
-
-	//float4 RenderMeshScale = Renderer->GetFBXMesh()->GetRenderUnit(0)->BoundScaleBox;
-	//physx::PxVec3 GeoMetryScale = { RenderMeshScale.x, RenderMeshScale.y, RenderMeshScale.z };
-
-	//Component->SetPhysxMaterial(0.0f, 0.0f, 1.0f);
-	//Component->CreatePhysXActors(TestLevel::TestLevelPtr->GetLevelScene(), TestLevel::TestLevelPtr->GetLevelPhysics(), GeoMetryScale * 0.1f);
-	//Component->TurnOffGravity();
-
-	std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+	std::string Path = GameEnginePath::GetFileFullPath
+	(
+		"ContentResources",
 		{
 			"Character", "Enemy", "em0100", "mesh"
-		}, "em0100.FBX");
+		}, 
+		"em0100.FBX"
+	);
 
 	GameEngineFBXMesh::Load(Path);
 
 	Renderer->SetFBXMesh("em0100.fbx", "NoneAlphaMesh");
-
 	Renderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
 
 	float4 RenderScale = Renderer->GetFBXMesh()->GetRenderUnit(0)->BoundScaleBox;
 	physx::PxVec3 VecSclae = { RenderScale.x, RenderScale.y, RenderScale.z };
 
+	float4 world = GetTransform()->GetWorldScale();
+	float4 local = GetTransform()->GetLocalScale();
+
 	Component = CreateComponent<PhysXDynamicActorComponent>();
 	Component->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
 	Component->CreatePhysXActors(TestLevel::TestLevelPtr->GetLevelScene(), TestLevel::TestLevelPtr->GetLevelPhysics(), VecSclae);
-	//Component->TurnOffGravity();
 }
 
 void TestObject::Update(float _DeltaTime)
@@ -99,7 +93,6 @@ void TestObject::UserUpdate(float _DeltaTime)
 		MoveDir.x -= Dir;
 
 		Component->GetDynamic()->setGlobalPose(PhyTF);
-		GetLevel()->GetCamera(0)->GetTransform()->AddWorldPosition(MoveDir);
 	}
 	if (true == GameEngineInput::IsPress("MoveRight"))
 	{
@@ -107,7 +100,6 @@ void TestObject::UserUpdate(float _DeltaTime)
 		MoveDir.x += Dir;
 
 		Component->GetDynamic()->setGlobalPose(PhyTF);
-		GetLevel()->GetCamera(0)->GetTransform()->AddWorldPosition(MoveDir);
 	}
 	if (true == GameEngineInput::IsPress("MoveUp"))
 	{
@@ -115,7 +107,6 @@ void TestObject::UserUpdate(float _DeltaTime)
 		MoveDir.y += Dir;
 
 		Component->GetDynamic()->setGlobalPose(PhyTF);
-		GetLevel()->GetCamera(0)->GetTransform()->AddWorldPosition(MoveDir);
 	}
 	if (true == GameEngineInput::IsPress("MoveDown"))
 	{
@@ -123,7 +114,6 @@ void TestObject::UserUpdate(float _DeltaTime)
 		MoveDir.y -= Dir;
 
 		Component->GetDynamic()->setGlobalPose(PhyTF);
-		GetLevel()->GetCamera(0)->GetTransform()->AddWorldPosition(MoveDir);
 	}
 	if (true == GameEngineInput::IsPress("MoveForward"))
 	{
@@ -131,7 +121,6 @@ void TestObject::UserUpdate(float _DeltaTime)
 		MoveDir.z += Dir;
 
 		Component->GetDynamic()->setGlobalPose(PhyTF);
-		GetLevel()->GetCamera(0)->GetTransform()->AddWorldPosition(MoveDir);
 	}
 	if (true == GameEngineInput::IsPress("MoveBack"))
 	{
@@ -139,7 +128,6 @@ void TestObject::UserUpdate(float _DeltaTime)
 		MoveDir.z -= Dir;
 
 		Component->GetDynamic()->setGlobalPose(PhyTF);
-		GetLevel()->GetCamera(0)->GetTransform()->AddWorldPosition(MoveDir);
 	}
 
 	if (true == GameEngineInput::IsDown("Jump"))
@@ -148,8 +136,13 @@ void TestObject::UserUpdate(float _DeltaTime)
 		MoveDir.y += 10.0f;
 
 		Component->GetDynamic()->setGlobalPose(PhyTF);
-		GetLevel()->GetCamera(0)->GetTransform()->AddWorldPosition(MoveDir);
 	}
+
+	float4 ActorPos = GetTransform()->GetWorldPosition();
+	float CameraPosyf = ActorPos.y + 40.0f;
+	float CameraPoszf = ActorPos.z - 100.0f;
+
+	GetLevel()->GetCamera(0)->GetTransform()->SetWorldPosition(float4{ ActorPos.x, CameraPosyf, CameraPoszf });
 
 	float4 ASDF = Component->GetTransform()->GetWorldPosition();
 	float4 FDSA = Component->GetTransform()->GetLocalPosition();

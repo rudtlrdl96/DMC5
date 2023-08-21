@@ -56,7 +56,7 @@ void TestLevel::LevelChangeStart()
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
 
 	std::shared_ptr<Plane> Flat2 = CreateActor<Plane>();
-	Flat2->GetTransform()->AddWorldPosition(float4{ 200, 0, 200 });
+	Flat2->GetTransform()->AddWorldPosition(float4{ 100, 0, 100 });
 	Flat2->GetTransform()->AddWorldRotation(float4{ 0, 0, 90 });
 	Flat2->GetTransform()->AddWorldRotation(float4{ 0, -45, 0});
 	//std::shared_ptr<TestEmpusa> Em = CreateActor<TestEmpusa>();
