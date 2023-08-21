@@ -157,9 +157,6 @@
     <ClInclude Include="ServerWindow.h">
       <Filter>Server\99.Garbage</Filter>
     </ClInclude>
-    <ClInclude Include="NetworkGUI.h">
-      <Filter>Server\03.NetworkGUI</Filter>
-    </ClInclude>
     <ClInclude Include="MessageChatPacket.h">
       <Filter>Server\01.Packet\02.Global</Filter>
     </ClInclude>
@@ -183,6 +180,9 @@
     </ClInclude>
     <ClInclude Include="ContentsEnum.h">
       <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkGUI.h">
+      <Filter>GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -339,9 +339,6 @@
     <ClCompile Include="ServerWindow.cpp">
       <Filter>Server\99.Garbage</Filter>
     </ClCompile>
-    <ClCompile Include="NetworkGUI.cpp">
-      <Filter>Server\03.NetworkGUI</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerWindow.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
@@ -359,6 +356,9 @@
     </ClCompile>
     <ClCompile Include="BaseLog.cpp">
       <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkGUI.cpp">
+      <Filter>GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -484,9 +484,6 @@
     </Filter>
     <Filter Include="Server\02.NetworkManager">
       <UniqueIdentifier>{5c4b3dfb-fbf3-4036-88cc-651d97b9ccc4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Server\03.NetworkGUI">
-      <UniqueIdentifier>{516ccfc8-4af3-48df-a343-8336f437a076}</UniqueIdentifier>
     </Filter>
     <Filter Include="Server\99.Garbage">
       <UniqueIdentifier>{a98ac5bb-2b50-48c6-969d-f21027494a51}</UniqueIdentifier>
