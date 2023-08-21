@@ -4,6 +4,7 @@
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include "BasePlayerActor.h"
 #include "AnimationToolWindow.h"
+#include "PlayerWindow.h"
 #include "ObjectWindow.h"
 #include "FreeCameraActor.h"
 #include <GameEngineCore/GameEngineCollision.h>
@@ -38,7 +39,7 @@ void PlayerTestLevel::Update(float _DeltaTime)
 
 void PlayerTestLevel::LevelChangeStart()
 {
-	if (nullptr != BasePlayerActor::MainPlayer)
+	if (nullptr != BasePlayerActor::GetInstance())
 	{
 		return;
 	}
@@ -73,7 +74,7 @@ void PlayerTestLevel::LevelChangeStart()
 	NewPlayer->LockOnEnemyTransform = CollisionActor->GetTransform();
 	IsDebugSwitch();
 
-	//AnimWindow = std::dynamic_pointer_cast<AnimationToolWindow>(GameEngineGUI::GUIWindowCreate<AnimationToolWindow>("AnimationToolWindow"));
+	GameEngineGUI::GUIWindowCreate<PlayerWindow>("PlayerWindow");
 	//ObjWindow =  std::dynamic_pointer_cast<ObjectWindow>(GameEngineGUI::GUIWindowCreate<ObjectWindow>("ObjectWindow"));
 	//ObjWindow->AddObject(NewPlayer);
 	//ObjWindow->AddObject(CollisionActor);

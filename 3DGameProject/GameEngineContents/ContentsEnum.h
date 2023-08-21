@@ -22,7 +22,7 @@ enum class LogOrder
 	Count
 };
 
-enum class ContentsActorType
+enum class Net_ActorType
 {
 	//플레이어
 	Nero,
@@ -35,11 +35,18 @@ enum class ContentsActorType
 
 };
 
-enum class ContentsLevelType
+enum class Net_LevelType
 {
 	Intro,
 	Title,
 	SelectCharacter,
 
 	//TODO
+};
+
+enum class ActorOrder
+{
+	Player,
+	Enemy,
+	Map
 };

@@ -3,8 +3,10 @@
 class BasePlayerActor : public GameEngineActor, public GameEngineNetObject
 {
 public:
-	static BasePlayerActor* MainPlayer;
-
+	static BasePlayerActor* GetInstance()
+	{
+		return Instance;
+	}
 
 	// constrcuter destructer
 	BasePlayerActor();
@@ -28,6 +30,7 @@ protected:
 	std::shared_ptr<class PlayerCamera> Camera = nullptr;
 
 private:
+	static BasePlayerActor* Instance;
 
 };
 

@@ -6,11 +6,10 @@
 #include "ServerWindow.h"
 #include <GameEngineBase/GameEngineNet.h>
 #include "ObjectUpdatePacket.h"
-BasePlayerActor* BasePlayerActor::MainPlayer = nullptr;
+BasePlayerActor* BasePlayerActor::Instance = nullptr;
 
 BasePlayerActor::BasePlayerActor()
 {
-	MainPlayer = this;
 }
 
 BasePlayerActor::~BasePlayerActor()
@@ -19,15 +18,15 @@ BasePlayerActor::~BasePlayerActor()
 
 void BasePlayerActor::LookDir(const float4& _LookDir)
 {
-	float4 LocalForward = GetTransform()->GetLocalForwardVector();
+	float4 LocalForward = GetTransform()->GetWorldForwardVector();
 	//float4 LocalForward = Controller->GetMoveVector();
 
-	float4 Cross = float4::Cross3DReturnNormal(LocalForward, _LookDir);
-	float Dot = float4::DotProduct3D(LocalForward, _LookDir);
-
-	if (0 < Cross.y)
+	float4 Cross = float4::Cross3DReturnNormal(_LookDir, LocalForward);
+	float Dot = float4::DotProduct3D(_LookDir, LocalForward);
+	if (Cross.y == -1.0f)
 	{
-		GetTransform()->AddLocalRotation({ 0, -GameEngineMath::RadToDeg * Dot, 0 });
+		GetTransform()->AddLocalRotation({ 0, 180, 0 });
+
 	}
 	else
 	{
@@ -39,6 +38,7 @@ void BasePlayerActor::LookDir(const float4& _LookDir)
 
 void BasePlayerActor::Start()
 {
+
 	Renderer = CreateComponent<GameEngineFBXRenderer>();
 	Renderer->SetFBXMesh("House1.FBX", "MeshTexture");
 	Renderer->GetTransform()->SetLocalRotation({ 0, 90, 0 });
@@ -54,13 +54,13 @@ void BasePlayerActor::Update(float _DeltaTime)
 {
 	NetControllType Type = GetControllType();
 	GetTransform()->AddLocalPosition(Controller->GetMoveVector() * _DeltaTime * 100);
-	if (Controller->GetMoveVector() != float4::ZERO)
+	if (Controller->GetMoveVector() != float4::ZERO && LockOnEnemyTransform == nullptr)
 	{
 		LookDir(Controller->GetMoveVector());
 	}
-	if (LockOnEnemyTransform != nullptr)
+	else if (LockOnEnemyTransform != nullptr)
 	{
-		//LookDir((LockOnEnemyTransform->GetWorldPosition() - GetTransform()->GetWorldPosition()).NormalizeReturn());
+		LookDir((LockOnEnemyTransform->GetWorldPosition() - GetTransform()->GetWorldPosition()).NormalizeReturn());
 	}
 
 	static float Delta = 0.0f;

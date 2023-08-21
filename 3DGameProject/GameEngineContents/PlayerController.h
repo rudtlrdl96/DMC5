@@ -18,6 +18,10 @@ public:
 	{
 		return 1.0f < _LiveTime - Time;
 	}
+	void FrontClear()
+	{
+		Front = nullptr;
+	}
 	CommandRecord* GetFront()
 	{
 		return Front;
@@ -72,11 +76,7 @@ private:
 	//std::list<CommandRecord> QCommand;
 	//std::linked_qu
 	bool InputCheck_BackForward();
-	bool InputCheck_Forward();
-	bool InputCheck_Back();
-
-	bool InputCheck_Left();
-	bool InputCheck_Right();
+	bool InputCheck_Dir(char _Dir);
 
 };
 
