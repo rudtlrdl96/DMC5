@@ -67,7 +67,7 @@ public:
 	// 몬스터의 종류를 반환합니다.
 	inline EnemyCode GetEnemyCode() const
 	{
-		return EnemyCodeValue;: 
+		return EnemyCodeValue;
 	}
 
 	// 몬스터의 타입을 반환합니다. Normal, Boss 두 가지 타입이 있습니다.
