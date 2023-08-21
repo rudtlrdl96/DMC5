@@ -22,6 +22,9 @@ public:
 		return AllNetObjects.contains(_Id);
 	}
 
+	//수신받은 패킷을 처리하는 부분
+	static void NetworkObjectPacketUpdate(float _DeltaTime);
+
 	GameEngineNetObject();
 	~GameEngineNetObject();
 
@@ -100,11 +103,14 @@ public:
 	}
 
 protected:
+	//서버로 패킷 전송 처리하는 부분입니다.
+	virtual void Update_Packet(float _DeltaTime) {}
 
 private:
 	static std::atomic<int> AtomicObjectID;
 	static std::mutex ObjectLock;
 	static std::map<int, GameEngineNetObject*> AllNetObjects;
+	static std::map<int, GameEngineNetObject*> MainThreadNetObjects;
 
 	//유저가 이 오브젝트를 조종하는지 여부
 	NetControllType ControllType = NetControllType::NetControll;

@@ -138,3 +138,9 @@ void Player::ServerUpdate(float _DeltaTime)
 		}
 	}
 }
+
+
+void Player::Update_Packet(float _DeltaTime)
+{
+	int a = 0;
+}

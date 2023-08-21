@@ -1,6 +1,8 @@
 #include "PrecompileHeader.h"
 #include "NetworkManager.h"
 
+#include "Player.h"
+
 GameEngineNet* NetworkManager::NetInst = nullptr;
 GameEngineNetServer NetworkManager::ServerInst;
 GameEngineNetClient NetworkManager::ClientInst;
@@ -29,6 +31,9 @@ void NetworkManager::ServerOpen(int _Port)
 	ServerInst.ServerOpen(static_cast<unsigned short>(_Port));
 	NetID = GameEngineNetObject::CreateServerID();
 	IsServerValue = true;
+
+	//테스트 코드(나중에 지울때 헤더도 지울것)
+	Player::MainPlayer->InitNetObject(NetID, NetInst);
 }
 
 

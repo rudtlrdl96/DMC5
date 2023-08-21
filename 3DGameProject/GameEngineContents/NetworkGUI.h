@@ -24,6 +24,12 @@ public:
 	//GUI 최 상단 텍스트 설정
 	void SetClientTitle(int _ClientID);
 
+	//타이틀 화면에서 GUI버튼을 눌렀을때 처리할 함수포인터를 입력받습니다.
+	inline void SetEntryCallBack(std::function<void()> _EntryCallBack)
+	{
+		EntryCallBack = _EntryCallBack;
+	}
+
 protected:
 	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;
 
@@ -47,6 +53,7 @@ private:
 	std::list<std::string> AllLog;
 	std::string Title;
 	
+	std::function<void()> EntryCallBack = nullptr;
 
 
 	void Update_Wait();
