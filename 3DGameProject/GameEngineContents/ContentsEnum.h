@@ -19,3 +19,25 @@ enum class LogOrder
 {
 	Network
 };
+
+enum class ContentsActorType
+{
+	//플레이어
+	Nero,
+	Vergil,
+
+	//몬스터
+
+
+	//이펙트?
+
+};
+
+enum class ContentsLevelType
+{
+	Intro,
+	Title,
+	SelectCharacter,
+
+	//TODO
+};
