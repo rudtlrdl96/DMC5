@@ -23,7 +23,7 @@ void GameEngineNetObject::PushNetObjectPacket(std::shared_ptr<GameEnginePacket> 
 }
 
 
-void GameEngineNetObject::NetworkObjectPacketUpdate(float _DeltaTime)
+void GameEngineNetObject::Update_SendPackets(float _DeltaTime)
 {
 	ObjectLock.lock();
 	MainThreadNetObjects = AllNetObjects;
@@ -35,8 +35,10 @@ void GameEngineNetObject::NetworkObjectPacketUpdate(float _DeltaTime)
 		if (false == Pair.second->IsNet())
 			continue;
 
-		Pair.second->Update_Packet(_DeltaTime);
+		Pair.second->Update_SendPacket(_DeltaTime);
 	}
+
+	MainThreadNetObjects.clear();
 }
 
 

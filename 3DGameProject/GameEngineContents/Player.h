@@ -20,7 +20,7 @@ public:
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
-	void Update_Packet(float _DeltaTime) override;
+	void Update_SendPacket(float _DeltaTime) override;
 
 	void UserUpdate(float _DeltaTime);
 	void ServerUpdate(float _DeltaTime);

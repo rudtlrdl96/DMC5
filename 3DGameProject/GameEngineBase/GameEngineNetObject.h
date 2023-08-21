@@ -23,7 +23,7 @@ public:
 	}
 
 	//수신받은 패킷을 처리하는 부분
-	static void NetworkObjectPacketUpdate(float _DeltaTime);
+	static void Update_SendPackets(float _DeltaTime);
 
 	GameEngineNetObject();
 	~GameEngineNetObject();
@@ -104,7 +104,7 @@ public:
 
 protected:
 	//서버로 패킷 전송 처리하는 부분입니다.
-	virtual void Update_Packet(float _DeltaTime) {}
+	virtual void Update_SendPacket(float _DeltaTime) {}
 
 private:
 	static std::atomic<int> AtomicObjectID;
