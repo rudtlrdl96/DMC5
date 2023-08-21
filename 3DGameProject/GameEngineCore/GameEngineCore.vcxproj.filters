@@ -763,17 +763,23 @@
     <ClInclude Include="ThirdParty\PhysX_4_1\inc\PhysX\vehicle\PxVehicleUtilTelemetry.h">
       <Filter>ThirdParty\PhysX_4_1\Header\PhysX_4_1\vehicle</Filter>
     </ClInclude>
-    <ClInclude Include="PhysXDefault.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
     <ClInclude Include="PhysicsLevel.h">
-      <Filter>Physics</Filter>
+      <Filter>Physics\common</Filter>
     </ClInclude>
-    <ClInclude Include="PhysXBoxComponent.h">
-      <Filter>Physics</Filter>
+    <ClInclude Include="PhysXDefault.h">
+      <Filter>Physics\common</Filter>
     </ClInclude>
     <ClInclude Include="PhysXCapsuleComponent.h">
-      <Filter>Physics</Filter>
+      <Filter>Physics\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysXBoxComponent.h">
+      <Filter>Physics\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysXTriangleComponent.h">
+      <Filter>Physics\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysXConvexComponent.h">
+      <Filter>Physics\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -951,16 +957,22 @@
       <Filter>Object\Rendering\Component</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsLevel.cpp">
-      <Filter>Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysXBoxComponent.cpp">
-      <Filter>Physics</Filter>
+      <Filter>Physics\common</Filter>
     </ClCompile>
     <ClCompile Include="PhysXDefault.cpp">
-      <Filter>Physics</Filter>
+      <Filter>Physics\common</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysXBoxComponent.cpp">
+      <Filter>Physics\Component</Filter>
     </ClCompile>
     <ClCompile Include="PhysXCapsuleComponent.cpp">
-      <Filter>Physics</Filter>
+      <Filter>Physics\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysXTriangleComponent.cpp">
+      <Filter>Physics\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysXConvexComponent.cpp">
+      <Filter>Physics\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1143,6 +1155,12 @@
     </Filter>
     <Filter Include="ThirdParty\PhysX_4_1\Header\PhysX_4_1\vehicle">
       <UniqueIdentifier>{95f34746-15ff-4036-b608-0bdeb0376ab1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\Component">
+      <UniqueIdentifier>{c2fb545c-d743-4f7d-9500-e029223ff1e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\common">
+      <UniqueIdentifier>{8377face-2e32-43b1-a154-7762e7373e31}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

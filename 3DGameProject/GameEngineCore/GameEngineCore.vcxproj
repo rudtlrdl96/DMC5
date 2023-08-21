@@ -366,8 +366,16 @@
     <ClInclude Include="imstb_truetype.h" />
     <ClInclude Include="PhysicsLevel.h" />
     <ClInclude Include="PhysXBoxComponent.h" />
+    <ClInclude Include="PhysXConvexComponent.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="PhysXDefault.h" />
     <ClInclude Include="PhysXCapsuleComponent.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PhysXTriangleComponent.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -768,8 +776,16 @@
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="PhysicsLevel.cpp" />
     <ClCompile Include="PhysXBoxComponent.cpp" />
+    <ClCompile Include="PhysXConvexComponent.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="PhysXDefault.cpp" />
     <ClCompile Include="PhysXCapsuleComponent.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PhysXTriangleComponent.cpp">
       <SubType>
       </SubType>
     </ClCompile>
