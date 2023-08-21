@@ -26,7 +26,7 @@ public:
 	template<typename Enum>
 	static const std::vector<std::string>& GetLog(Enum _Enum)
 	{
-		GetLog(static_cast<int>(_Enum));
+		return GetLog(static_cast<int>(_Enum));
 	}
 
 	static const std::vector<std::string>& GetLog(int _Order);
