@@ -8,6 +8,7 @@
 
 GameEngineCamera::GameEngineCamera()
 {
+	SetName("GameEngineCamera");
 }
 
 GameEngineCamera::~GameEngineCamera()

@@ -3,6 +3,7 @@
 
 GameEngineComponent::GameEngineComponent() 
 {
+	SetName("GameEngineComponent");
 }
 
 GameEngineComponent::~GameEngineComponent() 

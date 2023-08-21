@@ -5,6 +5,7 @@
 class GameEngineActor : public GameEngineObject
 {
 	friend class GameEngineLevel;
+	friend class HierarchyGUI;
 
 public:
 	// constrcuter destructer
@@ -35,6 +36,7 @@ public:
 
 	void SetOrder(int _Order) override;
 
+
 protected:
 	virtual void Start() {}
 	virtual void Update(float _DeltaTime) {}
@@ -42,7 +44,4 @@ protected:
 
 private:
 	void ComponentInit(std::shared_ptr<class GameEngineComponent> _Component, int _Order = 0);
-
-	
 };
-

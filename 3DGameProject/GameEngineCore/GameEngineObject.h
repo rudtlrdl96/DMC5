@@ -17,6 +17,17 @@ class GameEngineObject :
 	friend class GameEngineTransform;
 	friend class GameEngineLevel;
 
+	friend class HierarchyGUI;
+
+	static int NextActorID;
+
+	/////////////////////  Gui 변수 /////////////////////
+
+	static int GUI_SelectActorIndex;
+
+	static GameEngineTransform* NewChild;
+
+
 public:
 	// constrcuter destructer
 	GameEngineObject();
@@ -68,6 +79,13 @@ public:
 	bool IsDeath() override;
 	bool IsUpdate() override;
 
+	// 겹치지 않는 고유의 액터 ID를 반환합니다.
+	inline int GetID() const
+	{
+		return ActorID;
+	}
+
+
 protected:
 	virtual void Start() {}
 	virtual void Update(float _DeltaTime) {}
@@ -86,9 +104,24 @@ private:
 	float LiveTime = 0.0f;
 	GameEngineTransform Transform;
 
-	class GameEngineLevel* Level;
+	class GameEngineLevel* Level = nullptr;
 
 	std::list<std::shared_ptr<GameEngineObject>> Childs;
+
+
+	// 겹치지 않는 고유의 액터 ID
+	const int ActorID;
+
+	/////////////////////  Gui 변수 /////////////////////
+
+	bool GUI_isRightClickOnItem = false;
+
+	/////////////////////  Gui 함수 /////////////////////
+
+	GameEngineObject* DrawGUI();
+
+
+	////////////////////////////////////////////////////
 
 	void AllAccTime(float _DeltaTime);
 	void AllUpdate(float _DeltaTime);
@@ -97,4 +130,6 @@ private:
 	void AllRelease();
 	void AllLevelChangeStart();
 	void AllLevelChangeEnd();
+
+
 };

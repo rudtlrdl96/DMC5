@@ -10,6 +10,8 @@
 #include <GameEngineCore/GameEngineFBXMesh.h>
 #include <GameEngineCore/GameEngineGUI.h>
 
+#include <GameEngineCore/HierarchyGUI.h>
+
 #include "NetworkGUI.h"
 #include "ConsoleGUI.h"
 
@@ -22,6 +24,7 @@ void ContentsCore::ContentsResourcesCreate()
 	// GameEngineGUI::GUIWindowCreate<GameEngineCoreWindow>("CoreWindow");
 	GameEngineGUI::GUIWindowCreate<NetworkGUI>("NetworkGUI");
 	GameEngineGUI::GUIWindowCreate<ConsoleGUI>("ConsoleGUI");
+	GameEngineGUI::GUIWindowCreate<HierarchyGUI>("HierarchyGUI");
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////// File Load //////////////////////////////////////////////////////////////////////////////////////

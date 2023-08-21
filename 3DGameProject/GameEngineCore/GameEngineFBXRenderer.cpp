@@ -4,6 +4,7 @@
 
 GameEngineFBXRenderer::GameEngineFBXRenderer()
 {
+	SetName("GameEngineFBXRenderer");
 }
 
 GameEngineFBXRenderer::~GameEngineFBXRenderer()

@@ -3,8 +3,9 @@
 #include "GameEngineComponent.h"
 #include "GameEngineLevel.h"
 
-GameEngineActor::GameEngineActor() 
+GameEngineActor::GameEngineActor()
 {
+	SetName("GameEngineActor");
 }
 
 GameEngineActor::~GameEngineActor() 

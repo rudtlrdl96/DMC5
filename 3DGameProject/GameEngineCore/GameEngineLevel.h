@@ -18,6 +18,7 @@ class GameEngineLevel : public GameEngineObject
 	friend class GameEngineCore;
 	friend class GameEngineActor;
 	friend class GameEngineTexture;
+	friend class HierarchyGUI;
 
 public:
 	static void IsDebugSwitch() 
@@ -98,6 +99,11 @@ public:
 	std::list<std::shared_ptr<GameEngineActor>> GetActorGroup(int _Index) 
 	{
 		return Actors[_Index];
+	}
+
+	std::map<int, std::list<std::shared_ptr<GameEngineActor>>>& GetAllActor()
+	{
+		return Actors;
 	}
 
 

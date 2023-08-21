@@ -781,6 +781,9 @@
     <ClInclude Include="PhysXConvexComponent.h">
       <Filter>Physics\Component</Filter>
     </ClInclude>
+    <ClInclude Include="HierarchyGUI.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -974,6 +977,9 @@
     <ClCompile Include="PhysXConvexComponent.cpp">
       <Filter>Physics\Component</Filter>
     </ClCompile>
+    <ClCompile Include="HierarchyGUI.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -1161,6 +1167,9 @@
     </Filter>
     <Filter Include="Physics\common">
       <UniqueIdentifier>{8377face-2e32-43b1-a154-7762e7373e31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{be801ff7-8494-4800-931b-8e4a8b7e3fcb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

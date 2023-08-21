@@ -6,6 +6,7 @@ GameEngineRenderUnit GameEngineCollision::DebugUnit;
 
 GameEngineCollision::GameEngineCollision() 
 {
+	SetName("GameEngineCollision");
 }
 
 GameEngineCollision::~GameEngineCollision() 
