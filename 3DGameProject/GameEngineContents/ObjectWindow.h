@@ -27,10 +27,10 @@ protected:
 	void ShowTransformInfo();
 
 private:
-	std::shared_ptr<GameEngineObject> ObjectArray[100];
+	GameEngineObject* ObjectArray[100];
 	const char* ObjectNames[100];
 	int ObjectIndex = -1;
 	int ObjectSize = 0;
-	std::shared_ptr <GameEngineObject> SelectObject;
+	GameEngineObject* SelectObject = nullptr;
 };
 

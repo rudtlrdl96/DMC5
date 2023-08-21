@@ -71,11 +71,11 @@ void PlayerTestLevel::LevelChangeStart()
 
 	IsDebugSwitch();
 
-	GameEngineGUI::GUIWindowCreate<AnimationToolWindow>("AnimationToolWindow");
-	std::shared_ptr<ObjectWindow> Window =  std::dynamic_pointer_cast<ObjectWindow>(GameEngineGUI::GUIWindowCreate<ObjectWindow>("ObjectWindow"));
-	Window->AddObject(NewPlayer);
-	Window->AddObject(CollisionActor);
-	Window->AddObject(Collision);
+	AnimWindow = std::dynamic_pointer_cast<AnimationToolWindow>(GameEngineGUI::GUIWindowCreate<AnimationToolWindow>("AnimationToolWindow"));
+	ObjWindow =  std::dynamic_pointer_cast<ObjectWindow>(GameEngineGUI::GUIWindowCreate<ObjectWindow>("ObjectWindow"));
+	ObjWindow->AddObject(NewPlayer);
+	ObjWindow->AddObject(CollisionActor);
+	ObjWindow->AddObject(Collision);
 	std::shared_ptr<FreeCameraActor> Free = CreateActor<FreeCameraActor>();
 }
 

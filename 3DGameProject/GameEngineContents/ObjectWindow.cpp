@@ -11,7 +11,7 @@ ObjectWindow::~ObjectWindow()
 
 void ObjectWindow::AddObject(std::shared_ptr<GameEngineObject> _Object)
 {
-	ObjectArray[ObjectSize] = _Object;
+	ObjectArray[ObjectSize] = _Object.get();
 	ObjectNames[ObjectSize] = _Object->GetName().data();
 	ObjectSize++;
 }
@@ -38,7 +38,7 @@ void ObjectWindow::ObjectSelect()
 
 void ObjectWindow::ShowObjectInfo()
 {
-	// 엑터의 정보 표시 (IsUpdate)
+	//엑터의 정보 표시 (IsUpdate)
 	if (SelectObject->IsUpdate() == true)
 	{
 		if (ImGui::Button("IsUpdate : true"))
