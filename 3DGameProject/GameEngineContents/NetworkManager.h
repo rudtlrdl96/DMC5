@@ -26,6 +26,7 @@ public:
 	static void ServerOpen(int _Port);
 	static bool ConnectServer(const std::string_view& _IP, int _Port);
 
+	//전송받은 패킷을 처리하는 부분
 	static void Update_PacketProcess()
 	{
 		if (nullptr == NetInst)

@@ -2,6 +2,8 @@
 #include "NetworkGUI.h"
 
 #include "NetworkManager.h"
+#include "BaseLog.h"
+#include "ContentsEnum.h"
 
 NetworkGUI* NetworkGUI::Inst = nullptr;
 
@@ -20,13 +22,7 @@ void NetworkGUI::PrintLog(const std::string_view& _LogText)
 	if (State::Multi != CurState)
 		return;
 
-	if (true == AllLog.empty())
-	{
-		AllLog.resize(15, "");
-	}
-
-	AllLog.pop_front();
-	AllLog.push_back(_LogText.data());
+	BaseLog::PushLog(LogOrder::Network, _LogText.data());
 }
 
 void NetworkGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
@@ -55,6 +51,12 @@ void NetworkGUI::Update_Wait()
 		CurState = State::Multi;
 		PrintLog("Server Open Success");
 		Title = "This is Host";
+
+		if (nullptr != EntryCallBack)
+		{
+			EntryCallBack();
+			EntryCallBack = nullptr;
+		}
 		return;
 	}
 
@@ -68,6 +70,12 @@ void NetworkGUI::Update_Wait()
 		{
 			CurState = State::Multi;
 			PrintLog("Server Connect Success");
+
+			if (nullptr != EntryCallBack)
+			{
+				EntryCallBack();
+				EntryCallBack = nullptr;
+			}
 			return;
 		}
 	}
@@ -83,7 +91,9 @@ void NetworkGUI::Update_Multi()
 {
 	ImGui::Text(Title.c_str());
 
-	for (const std::string& Log : AllLog)
+	const std::vector<std::string>& LogDatas = BaseLog::GetLog(LogOrder::Network);
+
+	for (const std::string& Log : LogDatas)
 	{
 		ImGui::Text(Log.c_str());
 	}

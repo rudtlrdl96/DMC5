@@ -6,6 +6,7 @@
 std::atomic<int> GameEngineNetObject::AtomicObjectID;
 std::mutex GameEngineNetObject::ObjectLock;
 std::map<int, GameEngineNetObject*> GameEngineNetObject::AllNetObjects;
+std::map<int, GameEngineNetObject*> GameEngineNetObject::MainThreadNetObjects;
 
 void GameEngineNetObject::PushNetObjectPacket(std::shared_ptr<GameEnginePacket> _Packet)
 {
@@ -20,6 +21,26 @@ void GameEngineNetObject::PushNetObjectPacket(std::shared_ptr<GameEnginePacket> 
 	//해당 오브젝트의 자료구조에 패킷을 집어넣는다
 	AllNetObjects[Id]->PushPacket(_Packet);
 }
+
+
+void GameEngineNetObject::NetworkObjectPacketUpdate(float _DeltaTime)
+{
+	ObjectLock.lock();
+	MainThreadNetObjects = AllNetObjects;
+	ObjectLock.unlock();
+
+	
+	for (const std::pair<int, GameEngineNetObject*>& Pair : MainThreadNetObjects)
+	{
+		if (false == Pair.second->IsNet())
+			continue;
+
+		Pair.second->Update_Packet(_DeltaTime);
+	}
+}
+
+
+
 
 GameEngineNetObject::GameEngineNetObject()
 {

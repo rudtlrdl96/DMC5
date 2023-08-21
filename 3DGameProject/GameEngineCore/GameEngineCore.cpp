@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "GameEngineCore.h"
 
+#include <GameEngineBase/GameEngineNetObject.h>
 #include <GameEngineBase\GameEngineDebug.h>
 #include <GameEngineBase\GameEngineThread.h>
 #include <GameEnginePlatform\GameEngineInput.h>
@@ -144,6 +145,7 @@ void GameEngineCore::EngineUpdate()
 	MainLevel->AccLiveTime(TimeDeltaTime);
 	MainLevel->Update(TimeDeltaTime);
 	MainLevel->ActorUpdate(TimeDeltaTime);
+	GameEngineNetObject::NetworkObjectPacketUpdate(TimeDeltaTime);
 	// CurLoadLevel = nullptr;
 
 	GameEngineVideo::VideoState State = GameEngineVideo::GetCurState();
