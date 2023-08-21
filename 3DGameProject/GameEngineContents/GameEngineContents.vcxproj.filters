@@ -178,6 +178,12 @@
     <ClInclude Include="AnimationEvent.h">
       <Filter>Actor\Animation</Filter>
     </ClInclude>
+    <ClInclude Include="BaseLog.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ContentsEnum.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -350,6 +356,9 @@
     </ClCompile>
     <ClCompile Include="AnimationEvent.cpp">
       <Filter>Actor\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseLog.cpp">
+      <Filter>Basic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

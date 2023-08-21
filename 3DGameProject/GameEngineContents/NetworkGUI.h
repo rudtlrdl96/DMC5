@@ -50,7 +50,6 @@ private:
 
 	int PortNum = 30000;
 	std::string IpNum = "127.0.0.1";
-	std::list<std::string> AllLog;
 	std::string Title;
 	
 	std::function<void()> EntryCallBack = nullptr;

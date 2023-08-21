@@ -14,3 +14,8 @@ enum class MonsterDamageType
 	Stun,
 	Hold
 };
+
+enum class LogOrder
+{
+	Network
+};

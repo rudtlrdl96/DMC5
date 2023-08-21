@@ -171,6 +171,11 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="BaseLog.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="FreeCameraActor.h">
       <SubType>
       </SubType>
@@ -385,6 +390,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimationEvent.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="BaseLog.cpp">
       <SubType>
       </SubType>
     </ClCompile>

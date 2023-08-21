@@ -2,6 +2,7 @@
 #include "NetworkGUI.h"
 
 #include "NetworkManager.h"
+#include "BaseLog.h"
 
 NetworkGUI* NetworkGUI::Inst = nullptr;
 
@@ -20,13 +21,7 @@ void NetworkGUI::PrintLog(const std::string_view& _LogText)
 	if (State::Multi != CurState)
 		return;
 
-	if (true == AllLog.empty())
-	{
-		AllLog.resize(15, "");
-	}
-
-	AllLog.pop_front();
-	AllLog.push_back(_LogText.data());
+	BaseLog::PushLog(LogOrder::Network, _LogText.data());
 }
 
 void NetworkGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
@@ -83,7 +78,9 @@ void NetworkGUI::Update_Multi()
 {
 	ImGui::Text(Title.c_str());
 
-	for (const std::string& Log : AllLog)
+	const std::vector<std::string>& LogDatas = BaseLog::GetLog(0);
+
+	for (const std::string& Log : LogDatas)
 	{
 		ImGui::Text(Log.c_str());
 	}
