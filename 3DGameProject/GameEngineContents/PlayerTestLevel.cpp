@@ -1,7 +1,12 @@
 #include "PrecompileHeader.h"
 #include "PlayerTestLevel.h"
 #include <GameEngineCore/GameEngineFBXMesh.h>
+#include <GameEngineCore/GameEngineSpriteRenderer.h>
 #include "BasePlayerActor.h"
+#include "AnimationToolWindow.h"
+#include "ObjectWindow.h"
+#include "FreeCameraActor.h"
+#include <GameEngineCore/GameEngineCollision.h>
 PlayerTestLevel::PlayerTestLevel() 
 {
 }
@@ -16,7 +21,6 @@ void PlayerTestLevel::Start()
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 50, -500 });
 
 	
-
 }
 
 void PlayerTestLevel::Update(float _DeltaTime)
@@ -53,7 +57,26 @@ void PlayerTestLevel::LevelChangeStart()
 		}
 	}
 	std::shared_ptr<BasePlayerActor> NewPlayer = CreateActor<BasePlayerActor>();
-	CreateActor<BasePlayerActor>();
+	NewPlayer->SetName("Nero");
+	//CreateActor<BasePlayerActor>();
+	std::shared_ptr<GameEngineActor> Actor = CreateActor<GameEngineActor>();
+	Actor->GetTransform()->SetWorldScale({ 1000, 1000, 1 });
+	Actor->GetTransform()->SetWorldPosition({ 0, 0, 500 });
+	Actor->CreateComponent<GameEngineSpriteRenderer>();
+
+	std::shared_ptr<GameEngineActor> CollisionActor = CreateActor<GameEngineActor>();
+	std::shared_ptr<GameEngineCollision> Collision = CollisionActor->CreateComponent<GameEngineCollision>();
+	CollisionActor->GetTransform()->SetLocalScale({ 100, 100, 100 });
+	Collision->SetColType(ColType::AABBBOX3D);
+
+	IsDebugSwitch();
+
+	GameEngineGUI::GUIWindowCreate<AnimationToolWindow>("AnimationToolWindow");
+	std::shared_ptr<ObjectWindow> Window =  std::dynamic_pointer_cast<ObjectWindow>(GameEngineGUI::GUIWindowCreate<ObjectWindow>("ObjectWindow"));
+	Window->AddObject(NewPlayer);
+	Window->AddObject(CollisionActor);
+	Window->AddObject(Collision);
+	std::shared_ptr<FreeCameraActor> Free = CreateActor<FreeCameraActor>();
 }
 
 void PlayerTestLevel::LevelChangeEnd()

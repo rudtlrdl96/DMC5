@@ -1,7 +1,7 @@
 #pragma once
 
 // Ό³Έν :
-class PlayerCamera : public GameEngineComponent
+class PlayerCamera : public GameEngineActor
 {
 public:
 	// constrcuter destructer
@@ -14,13 +14,19 @@ public:
 	PlayerCamera& operator=(const PlayerCamera& _Other) = delete;
 	PlayerCamera& operator=(PlayerCamera&& _Other) noexcept = delete;
 
+	void SetPlayerTranform(GameEngineTransform* _Transform)
+	{
+		PlayerTransform = _Transform;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
 private:
-	std::shared_ptr<GameEngineComponent> CameraTarget = nullptr;
-	GameEngineTransform* TargetTransform;
+	GameEngineTransform* PlayerTransform;
+	GameEngineTransform* CameraArm;
+	GameEngineTransform* CameraTarget;
 	GameEngineTransform* CameraTransform = nullptr;
 };
 

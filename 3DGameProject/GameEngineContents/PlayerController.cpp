@@ -33,32 +33,25 @@ void PlayerController::Start()
 
 void PlayerController::Update(float _DeltaTime)
 {
-	//MoveAxis = float4::ZERO;
+	MoveAxis = float4::ZERO;
 
 	if (GameEngineInput::IsPress("Left"))
 	{
-		MoveAxis.x = -1;
+		MoveAxis += CameraTransform->GetWorldLeftVector();
 	}
-	else if (GameEngineInput::IsPress("Right"))
+	if (GameEngineInput::IsPress("Right"))
 	{
-		MoveAxis.x = 1;
-	}
-	else
-	{
-		MoveAxis.x = 0;
+		MoveAxis += CameraTransform->GetWorldRightVector();
 	}
 	if (GameEngineInput::IsPress("Up"))
 	{
-		MoveAxis.z = 1;
+		MoveAxis += CameraTransform->GetWorldForwardVector();
 	}
-	else if (GameEngineInput::IsPress("Down"))
+	if (GameEngineInput::IsPress("Down"))
 	{
-		MoveAxis.z = -1;
-	}
-	else
-	{
-		MoveAxis.z = 0;
+		MoveAxis += CameraTransform->GetWorldBackVector();
 	}
 	MoveAxis.Normalize();
+
 }
 

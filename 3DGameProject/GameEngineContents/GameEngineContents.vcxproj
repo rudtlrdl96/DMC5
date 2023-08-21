@@ -167,6 +167,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AnimationEvent.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="FreeCameraActor.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ObjectWindow.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="AnimationToolWindow.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="BackGround.h">
       <SubType>
       </SubType>
@@ -324,6 +340,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="PlayerWindow.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="PrecompileHeader.h" />
     <ClInclude Include="SelectScreen.h">
       <SubType>
@@ -364,6 +384,22 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnimationEvent.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="FreeCameraActor.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ObjectWindow.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="AnimationToolWindow.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="BackGround.cpp">
       <SubType>
       </SubType>
@@ -508,6 +544,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="PlayerTestLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PlayerWindow.cpp">
       <SubType>
       </SubType>
     </ClCompile>

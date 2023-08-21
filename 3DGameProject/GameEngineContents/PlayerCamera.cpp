@@ -13,19 +13,40 @@ void PlayerCamera::Start()
 {
 	GetTransform()->SetWorldRotation(float4::ZERO);
 
-	CameraTarget = GetActor()->CreateComponent<GameEngineComponent>();
-	TargetTransform = CameraTarget->GetTransform();
-	TargetTransform->SetParent(GetTransform());
-	TargetTransform->SetLocalPosition({ 0, 200, -1000 });
+	CameraArm = GetLevel()->CreateActor<GameEngineActor>()->GetTransform();
+	CameraArm->SetParent(GetTransform());
+
+	CameraTarget = GetLevel()->CreateActor<GameEngineActor>()->GetTransform();
+	CameraTarget->SetParent(CameraArm);
+	CameraTarget->SetLocalPosition({ 0, 100, -500 });
 
 	CameraTransform = GetLevel()->GetMainCamera()->GetTransform();
 }
 
 void PlayerCamera::Update(float _DeltaTime)
 {
-	GetTransform()->AddWorldRotation(float4(0, GameEngineInput::GetMouseDirection().x, 0));
+	if (GameEngineInput::IsFree("CLICK"))
+	{
+		GetTransform()->SetWorldPosition(float4::LerpClamp(GetTransform()->GetWorldPosition(), PlayerTransform->GetWorldPosition(), _DeltaTime * 5));
+		CameraTransform->SetWorldPosition(CameraTarget->GetWorldPosition());
+		return;
+	}
 
-	//CameraTransform->SetWorldPosition(TargetTransform->GetWorldPosition());
-	//CameraTransform->SetWorldRotation(TargetTransform->GetWorldRotation());
+	GetTransform()->AddWorldRotation({ 0, GameEngineInput::GetMouseDirection().x, 0 });
+
+	float x = CameraArm->GetWorldRotation().x + GameEngineInput::GetMouseDirection().y;
+	if (x < 180.0f)
+	{
+		x = std::clamp(x, -1.0f, 40.0f);
+	}
+	else
+	{
+		x = std::clamp(x, 10.0f, 21.0f);
+	}
+	CameraArm->SetLocalRotation({x, 0, 0});
+
+	GetTransform()->SetWorldPosition(float4::LerpClamp(GetTransform()->GetWorldPosition(), PlayerTransform->GetWorldPosition(), _DeltaTime * 5));
+	CameraTransform->SetWorldPosition(CameraTarget->GetWorldPosition());
+	CameraTransform->SetWorldRotation(CameraTarget->GetWorldRotation());
 }
 

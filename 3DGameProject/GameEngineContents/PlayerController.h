@@ -18,13 +18,17 @@ public:
 	{
 		return MoveAxis;
 	}
-	//void SetCameraTrans
+	void SetCameraTransform(GameEngineTransform* _Transform)
+	{
+		CameraTransform = _Transform;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
 private:
 	float4 MoveAxis;
-	
+	GameEngineTransform* CameraTransform;
 };
 

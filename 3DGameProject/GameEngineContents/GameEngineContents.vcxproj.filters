@@ -163,6 +163,21 @@
     <ClInclude Include="MessageChatPacket.h">
       <Filter>Server\01.Packet\02.Global</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerWindow.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationToolWindow.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectWindow.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="FreeCameraActor.h">
+      <Filter>Actor\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationEvent.h">
+      <Filter>Actor\Animation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -321,6 +336,21 @@
     <ClCompile Include="NetworkGUI.cpp">
       <Filter>Server\03.NetworkGUI</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerWindow.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationToolWindow.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectWindow.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeCameraActor.cpp">
+      <Filter>Actor\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationEvent.cpp">
+      <Filter>Actor\Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
@@ -475,6 +505,9 @@
     </Filter>
     <Filter Include="Server\99.Garbage\99.FSM">
       <UniqueIdentifier>{91da4ce2-188f-4020-962b-77a1b9cffb34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Animation">
+      <UniqueIdentifier>{1007973a-51d2-458b-a319-f0c7f00bca42}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
