@@ -86,7 +86,7 @@ void TestObject::UserUpdate(float _DeltaTime)
 	physx::PxTransform PhyTF = Component->GetDynamic()->getGlobalPose();
 	float4 MoveDir = float4::ZERO;
 	float Dir = Speed * _DeltaTime;
-
+	
 	if (true == GameEngineInput::IsPress("MoveLeft"))
 	{
 		PhyTF.p.x -= Dir;
@@ -132,10 +132,12 @@ void TestObject::UserUpdate(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("Jump"))
 	{
-		PhyTF.p.y += 10.0f;
-		MoveDir.y += 10.0f;
+		//PhyTF.p.y += 10.0f;
+		//MoveDir.y += 10.0f;
 
-		Component->GetDynamic()->setGlobalPose(PhyTF);
+		//Component->GetDynamic()->setGlobalPose(PhyTF);
+		Component->GetDynamic()->clearForce();
+		Component->PushImpulse(float4::UP * 100000);
 	}
 
 	float4 ActorPos = GetTransform()->GetWorldPosition();

@@ -141,7 +141,7 @@ void PlayerController::MoveInput()
 
 void PlayerController::InputRecord()
 {
-	
+	// 이동 입력 내역을 기록한다
 	char MoveChar = MoveVectorToChar(MoveVector);
 	if (QCommand.size() > 0)
 	{
@@ -161,6 +161,9 @@ void PlayerController::InputRecord()
 			return;
 		}
 	}
+
+	if (false == IsLockOn) { return; }
+
 	if (QCommand.size() == 0)
 	{
 		QCommand.push(new CommandRecord(MoveVectorToChar(MoveVector), GetLiveTime(), nullptr));
@@ -171,44 +174,80 @@ void PlayerController::InputRecord()
 
 void PlayerController::ActionInput()
 {
-	if (GameEngineInput::IsPress("Player_Sword"))
+	// Sword
+	if (GameEngineInput::IsDown("Player_Sword"))
 	{
-		if (true == InputCheck_BackForward())
+		if (true == InputCheck_BackFront())
 		{
-			int a = 0;
+			if (nullptr != CallBack_BackFrontSword)
+			{
+				CallBack_BackFrontSword();
+			}
 		}
 		else if (true == InputCheck_Dir('8'))
 		{
-			int a = 0;
+			if (nullptr != CallBack_FrontSword)
+			{
+				CallBack_FrontSword();
+			}
 		}
 		else if (true == InputCheck_Dir('2'))
 		{
-			int a = 0;
+			if (nullptr != CallBack_BackSword)
+			{
+				CallBack_BackSword();
+			}
+		}
+
+		if (nullptr != CallBack_Sword)
+		{
+			CallBack_Sword();
+		}
+	}
+	// Jump
+	if (GameEngineInput::IsDown("Player_Jump"))
+	{
+		if (true == InputCheck_Dir('4'))
+		{
+			if (nullptr != CallBack_LeftJump)
+			{
+				CallBack_LeftJump();
+			}
+		}
+		else if (true == InputCheck_Dir('6'))
+		{
+			if (nullptr != CallBack_RightJump)
+			{
+				CallBack_RightJump();
+			}
 		}
 		else
 		{
 			int a = 0;
 		}
 	}
-	else if (GameEngineInput::IsPress("Player_Jump"))
+	// LockOn
+	if (GameEngineInput::IsDown("Player_LockOn"))
 	{
-		if (true == InputCheck_Dir('4'))
+		IsLockOn = true;
+		if (nullptr != CallBack_LockOnDown)
 		{
-			int a = 0;
+			CallBack_LockOnDown();
 		}
-		else if (true == InputCheck_Dir('6'))
+	}
+	else if (GameEngineInput::IsUp("Player_LockOn"))
+	{
+		IsLockOn = false;
+		if (nullptr != CallBack_LockOnUp)
 		{
-			int a = 0;
-		}
-		else
-		{
-			int a = 0;
+			CallBack_LockOnUp();
 		}
 	}
 }
 
-bool PlayerController::InputCheck_BackForward()
+bool PlayerController::InputCheck_BackFront()
 {
+	if (QCommand.size() == 0) { return false; }
 	CommandRecord* BackCommand = QCommand.back();		// 커맨드큐에서 가장마지막 커맨드를 받아온다
 	if (BackCommand == nullptr) { return false; }				// 커맨드가 nullptr시 false
 	if (BackCommand->GetKey() != '8') { return false; }		// 커맨드가 8이 아닐 시 false
@@ -234,6 +273,7 @@ bool PlayerController::InputCheck_BackForward()
 
 bool PlayerController::InputCheck_Dir(char _Dir)
 {
+	if (QCommand.size() == 0) { return false; }
 	CommandRecord* BackCommand = QCommand.back();		// 커맨드큐에서 가장마지막 커맨드를 받아온다
 	if (BackCommand == nullptr) { return false; }				// 커맨드가 nullptr시 false
 	return BackCommand->GetKey() == _Dir;	// 커맨드가 _Dir이면 true

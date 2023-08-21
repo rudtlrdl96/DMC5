@@ -16,7 +16,7 @@ public:
 	}
 	bool TimeCheck(float _LiveTime)
 	{
-		return 1.0f < _LiveTime - Time;
+		return 0.5f < _LiveTime - Time;
 	}
 	void FrontClear()
 	{
@@ -66,17 +66,41 @@ protected:
 	void InputRecord();
 	void ActionInput();
 
-	
-
 private:
 	float4 MoveVector;
-	GameEngineTransform* PlayerTransform;
-	GameEngineTransform* CameraTransform;
+	GameEngineTransform* PlayerTransform = nullptr;
+	GameEngineTransform* CameraTransform = nullptr;
 	std::queue<CommandRecord*> QCommand;
-	//std::list<CommandRecord> QCommand;
-	//std::linked_qu
-	bool InputCheck_BackForward();
+
+
+	bool InputCheck_BackFront();
 	bool InputCheck_Dir(char _Dir);
 
+public:
+	// CALLBACK Sword
+	std::function<void()> CallBack_BackFrontSword = nullptr;
+	std::function<void()> CallBack_FrontSword = nullptr;
+	std::function<void()> CallBack_BackSword = nullptr;
+	std::function<void()> CallBack_Sword = nullptr;
+	// CALLBACK Jump
+	std::function<void()> CallBack_LeftJump = nullptr;
+	std::function<void()> CallBack_RightJump = nullptr;
+	std::function<void()> CallBack_Jump = nullptr;
+	// CALLBACK Gun
+	std::function<void()> CallBack_BackFrontGun = nullptr;
+	std::function<void()> CallBack_FrontGun = nullptr;
+	std::function<void()> CallBack_BackGun = nullptr;
+	std::function<void()> CallBack_GunDown = nullptr;
+	std::function<void()> CallBack_GunUp = nullptr;
+	// CALLBACK Skill
+	std::function<void()> CallBack_BackFrontSkill = nullptr;
+	std::function<void()> CallBack_FrontSkill = nullptr;
+	std::function<void()> CallBack_SkillDown = nullptr;
+	std::function<void()> CallBack_SkillUp = nullptr;
+	// CALLBACK Lock
+	std::function<void()> CallBack_LockOnDown = nullptr;
+	std::function<void()> CallBack_LockOnUp = nullptr;
+
+	bool IsLockOn = false;
 };
 

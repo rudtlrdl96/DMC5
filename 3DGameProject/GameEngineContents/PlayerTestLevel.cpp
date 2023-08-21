@@ -7,6 +7,7 @@
 #include "PlayerWindow.h"
 #include "ObjectWindow.h"
 #include "FreeCameraActor.h"
+#include "ContentsEnum.h"
 #include <GameEngineCore/GameEngineCollision.h>
 PlayerTestLevel::PlayerTestLevel() 
 {
@@ -59,6 +60,8 @@ void PlayerTestLevel::LevelChangeStart()
 	}
 	std::shared_ptr<BasePlayerActor> NewPlayer = CreateActor<BasePlayerActor>();
 	NewPlayer->SetName("Nero");
+	NewPlayer->SetUserControllType();
+
 	//CreateActor<BasePlayerActor>();
 	std::shared_ptr<GameEngineActor> Actor = CreateActor<GameEngineActor>();
 	Actor->GetTransform()->SetWorldScale({ 1000, 1000, 1 });
@@ -66,12 +69,12 @@ void PlayerTestLevel::LevelChangeStart()
 	Actor->CreateComponent<GameEngineSpriteRenderer>();
 
 	std::shared_ptr<GameEngineActor> CollisionActor = CreateActor<GameEngineActor>();
-	std::shared_ptr<GameEngineCollision> Collision = CollisionActor->CreateComponent<GameEngineCollision>();
+	std::shared_ptr<GameEngineCollision> Collision = CollisionActor->CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
 	CollisionActor->GetTransform()->SetLocalScale({ 100, 100, 100 });
 	CollisionActor->GetTransform()->SetLocalPosition({ 100, 0, 100 });
-	Collision->SetColType(ColType::AABBBOX3D);
+	Collision->SetColType(ColType::OBBBOX3D);
 
-	NewPlayer->LockOnEnemyTransform = CollisionActor->GetTransform();
+	//NewPlayer->LockOnEnemyTransform = CollisionActor->GetTransform();
 	IsDebugSwitch();
 
 	GameEngineGUI::GUIWindowCreate<PlayerWindow>("PlayerWindow");

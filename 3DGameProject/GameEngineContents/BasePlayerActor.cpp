@@ -1,15 +1,22 @@
 #include "PrecompileHeader.h"
 #include "BasePlayerActor.h"
+#include <GameEngineBase/GameEngineNet.h>
 #include <GameEngineCore/GameEngineFBXRenderer.h>
+#include <GameEngineCore/GameEngineCollision.h>
 #include "PlayerController.h"
 #include "PlayerCamera.h"
 #include "ServerWindow.h"
-#include <GameEngineBase/GameEngineNet.h>
 #include "ObjectUpdatePacket.h"
+#include "ContentsEnum.h"
+#include "BaseLog.h"
 BasePlayerActor* BasePlayerActor::Instance = nullptr;
 
 BasePlayerActor::BasePlayerActor()
 {
+	if (GameEngineNetObject::GetControllType() == NetControllType::UserControll)
+	{
+		Instance = this;
+	}
 }
 
 BasePlayerActor::~BasePlayerActor()
@@ -21,8 +28,10 @@ void BasePlayerActor::LookDir(const float4& _LookDir)
 	float4 LocalForward = GetTransform()->GetWorldForwardVector();
 	//float4 LocalForward = Controller->GetMoveVector();
 
-	float4 Cross = float4::Cross3DReturnNormal(_LookDir, LocalForward);
-	float Dot = float4::DotProduct3D(_LookDir, LocalForward);
+	float4 Cross = float4::Cross3DReturnNormal(LocalForward,  _LookDir);
+	//float4 Cross = float4::Cross3DReturnNormal(_LookDir, LocalForward);
+	float Dot = float4::DotProduct3D(LocalForward, _LookDir);
+	//float Dot = float4::DotProduct3D(_LookDir, LocalForward);
 	if (Cross.y == -1.0f)
 	{
 		GetTransform()->AddLocalRotation({ 0, 180, 0 });
@@ -30,7 +39,7 @@ void BasePlayerActor::LookDir(const float4& _LookDir)
 	}
 	else
 	{
-		GetTransform()->AddLocalRotation({ 0, GameEngineMath::RadToDeg * Dot, 0 });
+		GetTransform()->AddLocalRotation({ 0, -GameEngineMath::RadToDeg * Dot, 0 });
 	}
 	return;
 
@@ -41,13 +50,25 @@ void BasePlayerActor::Start()
 
 	Renderer = CreateComponent<GameEngineFBXRenderer>();
 	Renderer->SetFBXMesh("House1.FBX", "MeshTexture");
-	Renderer->GetTransform()->SetLocalRotation({ 0, 90, 0 });
+	Renderer->GetTransform()->SetLocalRotation({ 0, -90, 0 });
 	//Renderer->SetFBXMesh("Nero.FBX", "MeshTexture");
 
 	Camera = GetLevel()->CreateActor<PlayerCamera>();
 	Camera->SetPlayerTranform(GetTransform());
 	Controller = CreateComponent<PlayerController>();
 	Controller->SetCameraTransform(Camera->GetTransform());
+
+	Controller->CallBack_LockOnDown = std::bind(&BasePlayerActor::LockOn, this);
+	Controller->CallBack_LockOnUp = std::bind(&BasePlayerActor::LockOff, this);
+
+	PlayerCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
+	PlayerCollision->GetTransform()->SetLocalScale({ 100, 100, 100 });
+	PlayerCollision->SetColType(ColType::OBBBOX3D);
+
+	LockOnCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
+	LockOnCollision->GetTransform()->SetLocalScale({ 3000, 500, 1000 });
+	LockOnCollision->GetTransform()->SetLocalPosition({ 1500, 0, 0 });
+	LockOnCollision->SetColType(ColType::OBBBOX3D);
 }
 
 void BasePlayerActor::Update(float _DeltaTime)
@@ -79,5 +100,35 @@ void BasePlayerActor::Update(float _DeltaTime)
 		NewPacket->Rotation = GetTransform()->GetWorldPosition();
 		GetNet()->SendPacket(NewPacket);
 	}
+}
+
+void BasePlayerActor::LockOn()
+{
+	std::vector<std::shared_ptr<GameEngineCollision>> Cols;
+	std::shared_ptr<GameEngineCollision> MinCol = nullptr;
+	if (true == LockOnCollision->CollisionAll(CollisionOrder::Enemy, Cols))
+	{
+		float Min = 9999;
+		for (std::shared_ptr<GameEngineCollision> Col : Cols)
+		{
+			float Length = (GetTransform()->GetWorldPosition() - Col->GetTransform()->GetWorldPosition()).Size();
+			if (Length < Min)
+			{
+				Min = Length;
+				MinCol = Col;
+			}
+		}
+		if (MinCol == nullptr)
+		{
+			int a = 0;
+			return;
+		}
+		LockOnEnemyTransform = MinCol->GetActor()->GetTransform();
+	}
+}
+
+void BasePlayerActor::LockOff()
+{
+	LockOnEnemyTransform = nullptr;
 }
 

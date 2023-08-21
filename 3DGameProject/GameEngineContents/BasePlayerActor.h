@@ -25,12 +25,18 @@ protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
+	void LockOn();
+	void LockOff();
+
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
 	std::shared_ptr<class PlayerController> Controller = nullptr;
 	std::shared_ptr<class PlayerCamera> Camera = nullptr;
+	std::shared_ptr<class GameEngineCollision> PlayerCollision = nullptr;
+	std::shared_ptr<class GameEngineCollision> LockOnCollision = nullptr;
+	//std::shared_ptr<class PhysXCapsuleComponent> PhysXComPonent = nullptr;
 
 private:
 	static BasePlayerActor* Instance;
-
+	bool IsLockOn = false;
 };
 

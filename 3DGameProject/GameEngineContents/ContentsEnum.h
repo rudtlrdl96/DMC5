@@ -50,3 +50,10 @@ enum class ActorOrder
 	Enemy,
 	Map
 };
+
+enum class CollisionOrder
+{
+	Player,
+	Enemy,
+
+};
