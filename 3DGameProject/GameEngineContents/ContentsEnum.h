@@ -17,7 +17,9 @@ enum class MonsterDamageType
 
 enum class LogOrder
 {
-	Network
+	Network,
+	Enemy,
+	Count
 };
 
 enum class ContentsActorType

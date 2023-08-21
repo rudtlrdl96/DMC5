@@ -181,6 +181,9 @@
     <ClInclude Include="NetworkGUI.h">
       <Filter>GUI</Filter>
     </ClInclude>
+    <ClInclude Include="ConsoleGUI.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -350,6 +353,9 @@
     </ClCompile>
     <ClCompile Include="BaseLog.cpp">
       <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleGUI.cpp">
+      <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="NetworkGUI.cpp">
       <Filter>GUI</Filter>

@@ -96,6 +96,13 @@ void GameEngineCore::ChangeLevel(const std::string_view& _Name)
 	NextLevel = LevelMap[UpperName];
 }
 
+bool GameEngineCore::IsLevel(const std::string_view& _Name)
+{
+	std::string UpperName = GameEngineString::ToUpper(_Name);
+
+	return LevelMap.contains(UpperName);
+}
+
 
 void GameEngineCore::EngineUpdate()
 {

@@ -31,6 +31,11 @@ public:
 
 	static const std::vector<std::string>& GetLog(int _Order);
 
+	static const std::map<int, std::vector<std::string>>& GetAllLog()
+	{
+		return LogBuffers;
+	}
+
 protected:
 
 private:
