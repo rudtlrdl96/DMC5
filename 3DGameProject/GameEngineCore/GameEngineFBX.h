@@ -21,8 +21,14 @@
 // 그 최상위에 있는 존재가 scene이다.
 // RootNode가 있습니다.
 
-// 애니메이션과 매쉬 양쪽에서 사용할 코드들을 넣을것이다.
-// 설명 :
+struct FBXNodeInfo
+{
+public:
+	std::string_view Name;
+	fbxsdk::FbxNode* Node;
+};
+
+// 설명 : 애니메이션과 매쉬 양쪽에서 사용할 코드들을 넣을것이다.
 class GameEngineFBX
 {
 public:
@@ -41,6 +47,9 @@ public:
 	float4 FbxVecTofloat4(const fbxsdk::FbxVector4& _BaseVector);
 	float4 FbxVecToTransform(const fbxsdk::FbxVector4& _BaseVector);
 	float4 FbxQuaternionTofloat4(const fbxsdk::FbxQuaternion& _BaseVector);
+
+	std::vector<FBXNodeInfo> CheckAllNode();
+	void RecursiveAllNode(fbxsdk::FbxNode* _Node, std::function<void(fbxsdk::FbxNode*)> _Function /*= nullptr*/);
 
 protected:
 	void FBXInit(std::string _Path);

@@ -26,6 +26,11 @@ public:
 	static std::string UniCodeToUTF8(const std::wstring_view& _Text);
 	static std::string AnsiToUTF8(const std::string_view& _Text);
 
+	static std::wstring UTF8ToUniCode(const std::string& _UTF8);
+	static std::string UTF8ToAnsi(const std::string& _UTF8);
+
+	static std::string Replace(const std::string& _Text, const std::string_view& _OldText, const std::string_view& _ChangeText);
+
 protected:
 
 private:

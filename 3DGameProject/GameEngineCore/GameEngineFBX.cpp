@@ -30,6 +30,45 @@ GameEngineFBX::~GameEngineFBX()
 	}
 }
 
+std::vector<FBXNodeInfo> GameEngineFBX::CheckAllNode()
+{
+	std::vector<FBXNodeInfo> AllNode;
+
+	RecursiveAllNode(RootNode, [&](fbxsdk::FbxNode* _Node)
+		{
+			FBXNodeInfo& _NodeInfo = AllNode.emplace_back();
+
+			_NodeInfo.Name = _Node->GetName();
+			_NodeInfo.Node = _Node;
+		});
+
+	return AllNode;
+}
+
+void GameEngineFBX::RecursiveAllNode(fbxsdk::FbxNode* _Node, std::function<void(fbxsdk::FbxNode*)> _Function /*= nullptr*/)
+{
+	if (nullptr != _Function)
+	{
+		_Function(_Node);
+	}
+
+	fbxsdk::FbxNodeAttribute* Info = _Node->GetNodeAttribute();
+
+	if (nullptr != Info)
+	{
+		fbxsdk::FbxNodeAttribute::EType Type = Info->GetAttributeType();
+	}
+
+
+	int Count = _Node->GetChildCount();
+
+	for (int i = 0; i < Count; i++)
+	{
+		fbxsdk::FbxNode* Node = _Node->GetChild(i);
+		RecursiveAllNode(Node, _Function);
+	}
+}
+
 void GameEngineFBX::FBXInit(std::string _Path)
 {
 	if (false == FBXSystemInitialize(_Path))

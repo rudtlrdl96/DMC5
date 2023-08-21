@@ -13,7 +13,7 @@ void GameEngineSprite::ResLoadFolder(const std::string_view& _Path)
 {
 	GameEngineDirectory Dir = _Path;
 
-	if (false == Dir.GetPath().IsDirectory())
+	if (false == Dir.IsDirectory())
 	{
 		MsgAssert("디렉토리가 아닌 경로입니다." + std::string(_Path));
 	}
@@ -25,7 +25,7 @@ void GameEngineSprite::ResLoadFolder(const std::string_view& _Path)
 		MsgAssert("이미지가 존재하지 않는 경로입니다." + std::string(_Path));
 	}
 
-	std::string FileName = Dir.GetPath().GetFileName();
+	std::string FileName = Dir.GetFileName();
 
 	Sprites.resize(AllFile.size());
 

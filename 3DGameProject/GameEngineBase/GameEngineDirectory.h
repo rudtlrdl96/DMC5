@@ -6,24 +6,15 @@
 
 // Ό³Έν :
 class GameEngineFile;
-class GameEngineDirectory
+class GameEngineDirectory : public GameEnginePath
 {
 public:
 	// constrcuter destructer
 	GameEngineDirectory();
 	~GameEngineDirectory();
 
-	GameEngineDirectory(const std::string_view& _Path)
-		: Path(_Path)
-	{
-
-	}
-
-	GameEngineDirectory(std::filesystem::path _Path)
-		: Path(_Path)
-	{
-
-	}
+	GameEngineDirectory(std::string_view Path);
+	GameEngineDirectory(std::filesystem::path Path);
 
 	// delete Function
 	GameEngineDirectory(const GameEngineDirectory& _Other) = delete;
@@ -44,15 +35,9 @@ public:
 
 	std::vector<GameEngineFile> GetAllFile(std::vector<std::string_view> _Ext);
 
-	const GameEnginePath& GetPath() 
-	{
-		return Path;
-	}
-
 protected:
 
 private:
-	// "D:\Project\AR45\WINAPI\APIApp\ContentsResources\Iamge\";
-	GameEnginePath Path;
+
 };
 

@@ -99,6 +99,18 @@ public:
 
 	void ClearReadData();
 
+	template<typename Type>
+	void operator<<(const Type& _Data)
+	{
+		Write(reinterpret_cast<const void*>(&_Data), sizeof(Type));
+	}
+
+	template<typename Type>
+	void Write(const Type& _Data)
+	{
+		Write(reinterpret_cast<const void*>(&_Data), sizeof(Type));
+	}
+
 	void operator<<(const std::string& _Value);
 	void operator<<(const int _Value);
 	void operator<<(const unsigned int _Value);
@@ -107,6 +119,19 @@ public:
 	void operator<<(const bool _Value);
 	void operator<<(const float4& _Value);
 	void operator<<(const float4x4& _Value);
+
+	template<typename Type>
+	void operator>>(Type& _Data)
+	{
+		Read(reinterpret_cast<void*>(&_Data), sizeof(Type));
+	}
+
+	template<typename Type>
+	void Read(Type& _Data)
+	{
+		Read(reinterpret_cast<void*>(&_Data), sizeof(Type));
+	}
+
 
 	template<typename T>
 	void WriteEnum(const T _Value)

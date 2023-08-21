@@ -38,7 +38,6 @@ void GameEngineSerializer::Write(const void* _Data, unsigned int _Size)
 
 	memcpy_s(&Data[WriteOffset], _Size, _Data, _Size);
 	WriteOffset += _Size;
-
 }
 
 void GameEngineSerializer::operator<<(const int _Value)
