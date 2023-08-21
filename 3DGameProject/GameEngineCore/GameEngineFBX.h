@@ -67,6 +67,8 @@ protected:
 	fbxsdk::FbxAMatrix JointMatrix;
 	fbxsdk::FbxVector4 AxisVector;
 
+	bool IsAnimation = false;
+
 private:
 };
 

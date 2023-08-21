@@ -46,7 +46,7 @@ namespace GameEngineDebug
 
 	void DebugRender(GameEngineCamera* _Camera, float _Delta)
 	{
-		if (nullptr == DebugRenderUnit.Pipe)
+		if (nullptr == DebugRenderUnit.Material)
 		{
 			DebugRenderUnit.SetMaterial("DebugMeshRender");
 		}

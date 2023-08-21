@@ -72,6 +72,16 @@ public:
 	static float4 DegreeToDirection2D(float _Degree);
 	static float4 RadianToDirection2D(float _Radian);
 
+	static float4 SLerpQuaternion(const float4& _Left, const float4& _Right, float _Ratio)
+	{
+		if (1.0f <= _Ratio)
+		{
+			_Ratio = 1.0f;
+		}
+
+		return DirectX::XMQuaternionSlerp(_Left.DirectVector, _Right.DirectVector, _Ratio);
+	}
+
 	static float InvSqrt(float f)
 	{
 		const __m128 fOneHalf = _mm_set_ss(0.5f);

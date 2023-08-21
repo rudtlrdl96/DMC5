@@ -41,14 +41,51 @@ public:
 	void Setting() override;
 };
 
+class GameEngineStructuredBufferSetter : public GameEngineShaderResources
+{
+public:
+	// 상수버퍼와 완전히 동일하게 동일하게 생각하면 됩니다.
+	std::shared_ptr <class GameEngineStructuredBuffer> Res;
+	const void* SetData;
+	size_t Size;
+	size_t Count;
+	std::vector<char> OriginalData;
+
+	void Setting() override;
+
+	// void Resize(size_t _Count);
+
+	int GetDataSize();
+
+	// void PushData(const void* Data, int _Count);
+
+	template<typename DataType>
+	void Push(DataType& _Data, int _Count)
+	{
+		int LeftSize = sizeof(DataType);
+		int RightSize = GetDataSize();
+
+		if (LeftSize != RightSize)
+		{
+			MsgAssert("구조화버퍼에 넣으려는 데이터 사이즈가 다릅니다.");
+		}
+
+		PushData(&_Data, _Count);
+	}
+
+};
+
 class GameEngineShaderResHelper
 {
 private:
 	std::multimap<std::string, GameEngineConstantBufferSetter> ConstantBufferSetters;
 	std::multimap<std::string, GameEngineTextureSetter> TextureSetters;
 	std::multimap<std::string, GameEngineSamplerSetter> SamplerSetters;
+	std::multimap<std::string, GameEngineStructuredBufferSetter> StructuredBufferSetters;
 
 public:
+	GameEngineStructuredBufferSetter* GetStructuredBufferSetter(const std::string_view& _View);
+
 	GameEngineTextureSetter* GetTextureSetter(const std::string_view& _View);
 
 	std::vector<GameEngineTextureSetter*> GetTextureSetters(const std::string_view& _View);
@@ -63,10 +100,17 @@ public:
 		SamplerSetters.insert(std::make_pair(_Setter.Name, _Setter));
 	}
 
+	void CreateStructuredBufferSetter(const GameEngineStructuredBufferSetter& _Setter)
+	{
+		StructuredBufferSetters.insert(std::make_pair(_Setter.Name, _Setter));
+	}
+
 	void CreateConstantBufferSetter(const GameEngineConstantBufferSetter& _Setter)
 	{
 		ConstantBufferSetters.insert(std::make_pair(_Setter.Name, _Setter));
 	}
+
+	bool IsStructuredBuffer(const std::string_view& _Name);
 
 	bool IsConstantBuffer(const std::string_view& _Name);
 

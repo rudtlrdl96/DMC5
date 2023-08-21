@@ -26,9 +26,9 @@ void GameEngineRenderUnit::SetMesh(const std::string_view& _Name)
 {
 	Mesh = GameEngineMesh::Find(_Name);
 
-	if (false == InputLayOutPtr->IsCreate() && nullptr != Pipe)
+	if (false == InputLayOutPtr->IsCreate() && nullptr != Material)
 	{
-		InputLayOutPtr->ResCreate(Mesh->GetVertexBuffer(), Pipe->GetVertexShader());
+		InputLayOutPtr->ResCreate(Mesh->GetVertexBuffer(), Material->GetVertexShader());
 	}
 }
 
@@ -36,9 +36,9 @@ void GameEngineRenderUnit::SetMesh(std::shared_ptr<GameEngineMesh> _Mesh)
 {
 	Mesh = _Mesh;
 
-	if (false == InputLayOutPtr->IsCreate() && nullptr != Pipe)
+	if (false == InputLayOutPtr->IsCreate() && nullptr != Material)
 	{
-		InputLayOutPtr->ResCreate(Mesh->GetVertexBuffer(), Pipe->GetVertexShader());
+		InputLayOutPtr->ResCreate(Mesh->GetVertexBuffer(), Material->GetVertexShader());
 	}
 }
 
@@ -46,27 +46,27 @@ void GameEngineRenderUnit::SetMaterial(const std::string_view& _Name)
 {
 	// GetCamera()->Units[0];
 
-	Pipe = GameEngineMaterial::Find(_Name);
+	Material = GameEngineMaterial::Find(_Name);
 
-	if (nullptr == Pipe)
+	if (nullptr == Material)
 	{
 		MsgAssert("존재하지 않는 머티리얼을 사용했습니다.");
 		return;
 	}
 
 	{
-		const GameEngineShaderResHelper& Res = Pipe->GetVertexShader()->GetShaderResHelper();
+		const GameEngineShaderResHelper& Res = Material->GetVertexShader()->GetShaderResHelper();
 		ShaderResHelper.Copy(Res);
 	}
 
 	{
-		const GameEngineShaderResHelper& Res = Pipe->GetPixelShader()->GetShaderResHelper();
+		const GameEngineShaderResHelper& Res = Material->GetPixelShader()->GetShaderResHelper();
 		ShaderResHelper.Copy(Res);
 	}
 
 	if (false == InputLayOutPtr->IsCreate() && nullptr != Mesh)
 	{
-		InputLayOutPtr->ResCreate(Mesh->GetVertexBuffer(), Pipe->GetVertexShader());
+		InputLayOutPtr->ResCreate(Mesh->GetVertexBuffer(), Material->GetVertexShader());
 	}
 
 	if (nullptr != ParentRenderer)
@@ -98,7 +98,7 @@ void GameEngineRenderUnit::Render(float _DeltaTime)
 		MsgAssert("매쉬가 존재하지 않는 유니트 입니다");
 	}
 
-	if (nullptr == Pipe)
+	if (nullptr == Material)
 	{
 		MsgAssert("파이프라인이 존재하지 않는 유니트 입니다");
 	}
@@ -106,8 +106,9 @@ void GameEngineRenderUnit::Render(float _DeltaTime)
 	InputLayOutPtr->Setting();
 
 	Mesh->Setting();
-	Pipe->RenderingPipeLineSetting();
+	Material->RenderingPipeLineSetting();
 	ShaderResHelper.Setting();
+	// Pipe->Render();
 
 	UINT IndexCount = Mesh->IndexBufferPtr->GetIndexCount();
 	GameEngineDevice::GetContext()->DrawIndexed(IndexCount, 0, 0);
@@ -172,7 +173,7 @@ std::shared_ptr<GameEngineMaterial> GameEngineRenderer::GetMaterial(int _index/*
 		MsgAssert("존재하지 않는 랜더 유니트를 사용하려고 했습니다.");
 	}
 
-	return Units[_index]->Pipe;
+	return Units[_index]->Material;
 }
 
 //// 이걸 사용하게되면 이 랜더러의 유니트는 자신만의 클론 파이프라인을 가지게 된다.

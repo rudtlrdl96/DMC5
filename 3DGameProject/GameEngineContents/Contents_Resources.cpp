@@ -8,8 +8,8 @@
 #include <GameEngineCore/GameEngineRenderingPipeLine.h>
 #include <GameEngineCore/GameEngineBlend.h>
 #include <GameEngineCore/GameEngineFBXMesh.h>
+#include <GameEngineCore/GameEngineFBXAnimation.h>
 #include <GameEngineCore/GameEngineGUI.h>
-
 #include <GameEngineCore/HierarchyGUI.h>
 
 #include "NetworkGUI.h"
@@ -60,6 +60,39 @@ void ContentsCore::ContentsResourcesCreate()
 		for (size_t i = 0; i < Files.size(); i++)
 		{
 			GameEngineFBXMesh::Load(Files[i].GetFullPath());
+		}
+	}
+	//{
+	//	GameEngineDirectory NewDir;
+	//	NewDir.MoveParentToDirectory("ContentResources");
+	//	NewDir.Move("ContentResources");
+	//	NewDir.Move("Mesh");
+	//	NewDir.Move("AnimationTest");
+	//	NewDir.Move("Mesh");
+
+	//	std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".FBX" });
+
+	//	for (size_t i = 0; i < Files.size(); i++)
+	//	{
+	//		std::string View = Files[i].GetFullPath().c_str();
+	//		GameEngineFBXMesh::Load(Files[i].GetFullPath());
+	//	}
+	//}
+
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Mesh");
+		NewDir.Move("AnimationTest");
+		NewDir.Move("Animation");
+
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".FBX" });
+
+		for (size_t i = 0; i < Files.size(); i++)
+		{
+			std::string View = Files[i].GetFullPath().c_str();
+			GameEngineFBXAnimation::Load(Files[i].GetFullPath());
 		}
 	}
 

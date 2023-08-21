@@ -20,6 +20,7 @@
 #include "GameEngineVertexBuffer.h"
 #include "GameEngineRenderTarget.h"
 #include "GameEngineConstantBuffer.h"
+#include "GameEngineFBXAnimation.h"
 #include "GameEngineMaterial.h"
 
 void GameEngineCore::CoreResourcesInit()
@@ -41,6 +42,7 @@ void GameEngineCore::CoreResourcesInit()
 	// GameEngineInputLayOutInfo¿¡ SemanticName, Format °áÁ¤
 	GameEngineVertex::LayOut.AddInputLayOut("POSITION", DXGI_FORMAT_R32G32B32A32_FLOAT);
 	GameEngineVertex::LayOut.AddInputLayOut("TEXCOORD", DXGI_FORMAT_R32G32B32A32_FLOAT);
+	GameEngineVertex::LayOut.AddInputLayOut("COLOR", DXGI_FORMAT_R32G32B32A32_FLOAT);
 	GameEngineVertex::LayOut.AddInputLayOut("NORMAL", DXGI_FORMAT_R32G32B32A32_FLOAT);
 	GameEngineVertex::LayOut.AddInputLayOut("BINORMAL", DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT);
 	GameEngineVertex::LayOut.AddInputLayOut("TANGENT", DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT);
@@ -492,6 +494,15 @@ void GameEngineCore::CoreResourcesInit()
 		Pipe->SetBlendState("AlphaBlend");
 		Pipe->SetDepthState("EngineDepth");
 	}
+	{
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("MeshAniTexture");
+		
+		Pipe->SetVertexShader("MeshAniTexture.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("MeshAniTexture.hlsl");
+		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetDepthState("EngineDepth");
+	}
 }
 
 void GameEngineCore::CoreResourcesEnd()
@@ -508,6 +519,7 @@ void GameEngineCore::CoreResourcesEnd()
 	GameEngineVertexBuffer::ResourcesClear();
 	GameEngineRenderTarget::ResourcesClear();
 	GameEngineFBXMesh::ResourcesClear();
+	GameEngineFBXAnimation::ResourcesClear();
 	GameEngineConstantBuffer::ResourcesClear();
 	GameEngineMaterial::ResourcesClear();
 }

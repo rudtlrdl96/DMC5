@@ -7,5 +7,6 @@
     <FxCompile Include="TileMapShader.hlsl" />
     <FxCompile Include="BlurShader.hlsl" />
     <FxCompile Include="MeshTexture.hlsl" />
+    <FxCompile Include="MeshAniTexture.hlsl" />
   </ItemGroup>
 </Project>
