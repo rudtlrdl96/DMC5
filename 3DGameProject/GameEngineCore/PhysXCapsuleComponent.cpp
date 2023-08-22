@@ -35,9 +35,12 @@ physx::PxRigidDynamic* PhysXCapsuleComponent::CreatePhysXActors(physx::PxScene* 
 
 	// TODO::배율을 적용할 경우 이쪽 코드를 사용
 	//float4 tmpMagnification = { SIZE_MAGNIFICATION_RATIO };
-	//physx::PxVec3 tmpGeoMetryScale(_GeoMetryScale.x * tmpMagnification.x * 0.5f, 
-	//							   _GeoMetryScale.y * tmpMagnification.y * 0.5f, 
-	//							   _GeoMetryScale.z * tmpMagnification.z * 0.5f);
+	//physx::PxVec3 tmpGeoMetryScale
+	// (
+	//		_GeoMetryScale.x * tmpMagnification.x * 0.5f, 
+	//		_GeoMetryScale.y * tmpMagnification.y * 0.5f, 
+	//		_GeoMetryScale.z * tmpMagnification.z * 0.5f
+	// );
 
 	//GeoMetryScale = _GeoMetryScale;
 
@@ -112,7 +115,12 @@ void PhysXCapsuleComponent::SetMoveSpeed(float4 _MoveSpeed)
 {
 	// RigidDynamic의 축을 고정하는 Flag -> 캐릭터가 쓰러지지 않고 서있을 수 있도록
 	// 무언가와 충돌해서 쓰러져야 할경우에는 setRigidDynamicLockFlag({flag}, false)로 flag를 해제해야함.
-	m_pDynamic->setRigidDynamicLockFlags(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X | physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y | physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z);
+	m_pDynamic->setRigidDynamicLockFlags
+	(
+		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X | 
+		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y |
+		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z
+	);
 
 	// 캐릭터의 방향을 힘으로 조절
 	m_pDynamic->addForce(physx::PxVec3(_MoveSpeed.x, _MoveSpeed.y, _MoveSpeed.z), physx::PxForceMode::eFORCE);

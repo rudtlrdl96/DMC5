@@ -3,6 +3,9 @@
 
 class HierarchyGUI : public GameEngineGUIWindow
 {
+private:
+	static bool CurFrameSetParent;
+
 public:
 	HierarchyGUI();
 	~HierarchyGUI();
