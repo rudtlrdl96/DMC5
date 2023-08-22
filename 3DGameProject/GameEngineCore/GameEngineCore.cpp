@@ -152,7 +152,7 @@ void GameEngineCore::EngineUpdate()
 	MainLevel->AccLiveTime(TimeDeltaTime);
 	MainLevel->Update(TimeDeltaTime);
 	MainLevel->ActorUpdate(TimeDeltaTime);
-	GameEngineNetObject::Update_SendPackets(TimeDeltaTime);
+	MainLevel->NetworkUpdate(TimeDeltaTime);
 	// CurLoadLevel = nullptr;
 
 	GameEngineVideo::VideoState State = GameEngineVideo::GetCurState();

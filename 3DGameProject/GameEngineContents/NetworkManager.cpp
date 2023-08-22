@@ -7,7 +7,7 @@
 #include "PacketEnum.h"
 
 #include "ObjectUpdatePacket.h"
-#include "MessageChatPacket.h"
+#include "CreateObjectPacket.h"
 
 GameEngineNet* NetworkManager::NetInst = nullptr;
 GameEngineNetServer NetworkManager::ServerInst;
@@ -18,6 +18,10 @@ bool NetworkManager::IsClientValue = false;
 
 unsigned int NetworkManager::NetID = 0;
 GameEngineLevel* NetworkManager::CurLevel = nullptr;
+
+std::map<unsigned int, std::shared_ptr<ObjectUpdatePacket>> NetworkManager::AllUpdatePacket;
+
+
 
 
 
@@ -56,34 +60,84 @@ bool NetworkManager::ConnectServer(const std::string_view& _IP, int _Port)
 	return IsClientValue;
 }
 
-//#include <GameEngineBase/GameEngineNetObject.h>
-#include "Player.h"
 
-std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(std::shared_ptr<ObjectUpdatePacket> _Packet)
+
+
+void NetworkManager::SendUpdatePacket(GameEngineNetObject* _NetObj, GameEngineTransform* TransPtr, float _TimeScale)
 {
-	bool Filter = false;
-	PacketEnum PacketType = static_cast<PacketEnum>(_Packet->Type);
-	Filter |= (IsServerValue && (PacketEnum::CreateObjectPacket == PacketType));
-	Filter |= (IsClientValue && (PacketEnum::ObjectUpdatePacket== PacketType));
-	if (false == Filter)
+	unsigned int ObjectID = _NetObj->GetNetObjectID();
+	if (false == GameEngineNetObject::IsNetObject(ObjectID))
 	{
-		std::shared_ptr<MessageChatPacket> MsgPacket = std::make_shared<MessageChatPacket>();
-		MsgPacket->SetObjectID(NetID);
-		MsgPacket->Message = "Server Receive error packet";
-		NetInst->SendPacket(MsgPacket);
+		MsgAssert(GameEngineString::ToString(ObjectID) + " ID를 가진 오브젝트가 존재하지 않는데, UpdatePacket을 사용하려고 했습니다");
+		return;
+	}
+	
+	std::shared_ptr<ObjectUpdatePacket> UpdatePacket = std::make_shared<ObjectUpdatePacket>();
+
+	//패킷 아이디
+	//사이즈
+
+	//오브젝트 아이디
+	UpdatePacket->SetObjectID(ObjectID);
+	//오브젝트 타입
+	UpdatePacket->ActorType = _NetObj->GetNetObjectType();
+
+	//위치
+	UpdatePacket->Rotation = TransPtr->GetWorldRotation();
+	//위치
+	UpdatePacket->Position = TransPtr->GetWorldPosition();
+	//타임 크기
+	UpdatePacket->TimeScale = _TimeScale;
+
+	//자료구조에 저장
+	AllUpdatePacket[ObjectID] = UpdatePacket;
+}
+
+
+void NetworkManager::FlushUpdatePacket()
+{
+	for (const std::pair<unsigned int, std::shared_ptr<ObjectUpdatePacket>>& Pair : AllUpdatePacket)
+	{
+		std::shared_ptr<ObjectUpdatePacket> UpdatePacket = Pair.second;
+		NetInst->SendPacket(UpdatePacket);
 	}
 
+	AllUpdatePacket.clear();
+}
 
 
-	Net_ActorType ActorType = static_cast<Net_ActorType>(_Packet->ActorType);
+void NetworkManager::SendCreatePacket(Net_ActorType _Type, const float4& _Position /*= float4::ZERO*/, const float4& _Rotation /*= float4::ZERO*/)
+{
+	std::shared_ptr<GameEngineNetObject> NewObject = nullptr;
+	if (true == IsServerValue)
+	{
+		NewObject = CreateNetActor(_Type);
+		return;
+	}
+
+	std::shared_ptr<CreateObjectPacket> CreatePacket = std::make_shared<CreateObjectPacket>();
+	CreatePacket->ActorType = static_cast<unsigned int>(_Type);
+	CreatePacket->Position = _Position;
+	CreatePacket->Rotation = _Rotation;
+
+	NetInst->SendPacket(CreatePacket);
+}
+
+
+
+#include "Player.h"
+#include "Enemy_Empusa.h"
+
+std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorType _ActorType, int _ObjectID /*= -1*/)
+{
 	std::shared_ptr<GameEngineNetObject> NetObject = nullptr;
-	switch (ActorType)
+	switch (_ActorType)
 	{
 	case Net_ActorType::Nero:
-		NetObject = GetLevel()->CreateActor<Player>();	//이거 나중에 꼭 바꿀것
+		NetObject = GetLevel()->CreateActor<Enemy_Empusa>();	//이거 나중에 꼭 바꿀것
 		break;
 	case Net_ActorType::Vergil:
-		NetObject = GetLevel()->CreateActor<Player>();	//이거 나중에 꼭 바꿀것
+		NetObject = GetLevel()->CreateActor<Enemy_Empusa>();	//이거 나중에 꼭 바꿀것
 		break;
 	default:
 	{
@@ -91,29 +145,20 @@ std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(std::shared_
 		return nullptr;
 	}
 	}
-	
-	//민아ㅠㅣㅏㅇㄴㄹ
-	/*
-	
-		클라는 서버가 허락하기 전까지 Actor를 만들수 없다고 했던거 같은데,
-		Spawn 패킷을 만들어야 하나?
-	
-	
-	*/
 
-	//서버가 클라의 패킷을 받아 새로운 엑터를 생성하는 경우
-	if (true == IsServerValue)
+
+	//서버쪽에서 오브젝트아이디를 직접 만드는 경우
+	if ((true == IsServerValue) && (-1 == _ObjectID))
 	{
 		int ID = GameEngineNetObject::CreateServerID();
 		NetObject->InitNetObject(ID, NetInst);
-		_Packet->SetObjectID(ID);
-	}
-	//클라가 서버의 패킷을 받아 새로운 엑터를 생성하는 경우
-	else if (true == IsClientValue)
-	{
-		NetObject->InitNetObject(_Packet->GetObjectID(), NetInst);
 	}
 
-	NetObject->SetControll(NetControllType::NetControll);
+	//클라쪽에서 오브젝트 아이디를 직접 만드는 경우
+	else if ((true == IsClientValue) && (-1 != _ObjectID))
+	{
+		NetObject->InitNetObject(_ObjectID, NetInst);
+	}
+
 	return NetObject;
 }

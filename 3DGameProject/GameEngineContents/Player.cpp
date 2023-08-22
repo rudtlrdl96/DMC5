@@ -4,8 +4,11 @@
 #include <GameEngineBase/GameEngineNet.h>
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 
+#include "NetworkManager.h"
+
 #include "ObjectUpdatePacket.h"
 #include "ServerWindow.h"
+#include "ContentsEnum.h"
 
 Player* Player::MainPlayer = nullptr;
 
@@ -18,11 +21,14 @@ Player::Player()
 
 Player::~Player()
 {
+
 }
 
 
 void Player::Start()
 {
+	SetNetObjectType(Net_ActorType::Nero);
+
 	if (false == GameEngineInput::IsKey("MoveLeft"))
 	{
 		GameEngineInput::CreateKey("MoveLeft", 'A');
@@ -42,7 +48,8 @@ void Player::Start()
 
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
 	Renderer->SetFBXMesh("Map11_Collapse.FBX", "NoneAlphaMesh");
-
+	Renderer->GetTransform()->SetWorldScale({100.f, 100.f, 100.f});
+	Renderer->SetName("this");
 	// Renderer->SetFBXMesh("AnimMan.FBX", "MeshTexture", 0, 0);
 	// Renderer->SetFBXMesh("AnimMan.FBX", "MeshTexture", 0, 2);
 
@@ -142,5 +149,5 @@ void Player::ServerUpdate(float _DeltaTime)
 
 void Player::Update_SendPacket(float _DeltaTime)
 {
-	int a = 0;
+	NetworkManager::SendUpdatePacket(this, GetTransform(), 1.f);
 }

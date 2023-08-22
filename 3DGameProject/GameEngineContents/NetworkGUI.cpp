@@ -97,6 +97,12 @@ void NetworkGUI::Update_Multi()
 	{
 		ImGui::Text(Log.c_str());
 	}
+
+
+	if(ImGui::Button("Create TestPlayer"))
+	{
+		NetworkManager::SendCreatePacket(Net_ActorType::Nero);
+	}
 }
 
 

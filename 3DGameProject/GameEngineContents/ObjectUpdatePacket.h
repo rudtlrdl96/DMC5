@@ -3,9 +3,6 @@
 #include <GameEngineCore/GameEngineTransform.h>
 
 #include "PacketEnum.h"
-#include "ContentsEnum.h"
-
-#include "NetworkManager.h"
 
 class ObjectUpdatePacket : public GameEnginePacket
 {
@@ -24,7 +21,7 @@ public:
 	}
 
 	unsigned int ActorType = -1;
-	unsigned int LevelType = -1;
+	//unsigned int LevelType = -1;
 
 	float4 Rotation;
 	float4 Position;
@@ -36,7 +33,7 @@ protected:
 		GameEnginePacket::Serialize(_Ser);
 		
 		_Ser << ActorType;
-		_Ser << LevelType;
+		//_Ser << LevelType;
 
 		_Ser << Rotation;
 		_Ser << Position;
@@ -49,7 +46,7 @@ protected:
 		GameEnginePacket::DeSeralize(_Ser);
 
 		_Ser >> ActorType;
-		_Ser >> LevelType;
+		//_Ser >> LevelType;
 
 		_Ser >> Rotation;
 		_Ser >> Position;

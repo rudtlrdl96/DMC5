@@ -1,9 +1,11 @@
 #pragma once
 #include <GameEngineBase/GameEngineNetServer.h>
 #include <GameEngineBase/GameEngineNetClient.h>
+#include "ContentsEnum.h"
 
 class GameEngineLevel;
 class GameEngineNetObject;
+class GameEngineTransform;
 
 class NetworkManager
 {
@@ -46,7 +48,13 @@ public:
 		return NetID;
 	}
 
-	
+	//Update패킷을 보낼때 이 인터페이스를 이용해서 보내주시면 됩니다.
+	static void SendUpdatePacket(GameEngineNetObject* _NetObj, GameEngineTransform* TransPtr, float _TimeScale);
+
+	//실제 업데이트 패킷을 처리하는 부분
+	static void FlushUpdatePacket();
+
+	static void SendCreatePacket(Net_ActorType _Type, const float4& _Position = float4::ZERO, const float4& _Rotation = float4::ZERO);
 
 protected:
 
@@ -77,6 +85,9 @@ private:
 	
 
 private:
+	//업데이트 패킷을 보낼때 중복을 피하기 위한 맵 <오브젝트 아이디, 오브젝트 업데이트 패킷 포인터>
+	static std::map<unsigned int, std::shared_ptr<class ObjectUpdatePacket>> AllUpdatePacket;
+
 	static GameEngineLevel* CurLevel;
 
 	inline static GameEngineLevel* GetLevel()
@@ -89,8 +100,16 @@ private:
 		return CurLevel;
 	}
 
-	//ObjectUpdatePacket에서 해당 아이디의 엑터가 없다면 만드는 함수
-	static std::shared_ptr<GameEngineNetObject> CreateNetActor(std::shared_ptr<class ObjectUpdatePacket> _Packet);
+	//엑터 생성
+	static std::shared_ptr<GameEngineNetObject> CreateNetActor(unsigned int _ActorType, int _ObjectID = -1)
+	{
+		Net_ActorType ActorType = static_cast<Net_ActorType>(_ActorType);
+		return CreateNetActor(ActorType, _ObjectID);
+	}
+
+	static std::shared_ptr<GameEngineNetObject> CreateNetActor(Net_ActorType _ActorType, int _ObjectID = -1);
+
+
 
 	NetworkManager(){}
 	virtual ~NetworkManager() = 0{}

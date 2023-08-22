@@ -8,6 +8,8 @@ std::mutex GameEngineNetObject::ObjectLock;
 std::map<int, GameEngineNetObject*> GameEngineNetObject::AllNetObjects;
 std::map<int, GameEngineNetObject*> GameEngineNetObject::MainThreadNetObjects;
 
+
+
 void GameEngineNetObject::PushNetObjectPacket(std::shared_ptr<GameEnginePacket> _Packet)
 {
 	//패킷으로부터 오브젝트 아이디를 얻어온 후
@@ -20,6 +22,27 @@ void GameEngineNetObject::PushNetObjectPacket(std::shared_ptr<GameEnginePacket> 
 
 	//해당 오브젝트의 자료구조에 패킷을 집어넣는다
 	AllNetObjects[Id]->PushPacket(_Packet);
+}
+
+void GameEngineNetObject::Update_ProcessPackets()
+{
+	ObjectLock.lock();
+	MainThreadNetObjects = AllNetObjects;
+	ObjectLock.unlock();
+
+
+	for (const std::pair<int, GameEngineNetObject*>& Pair : MainThreadNetObjects)
+	{
+		if (false == Pair.second->IsNet())
+			continue;
+
+		if (true == Pair.second->Packets.empty())
+			continue;
+
+		Pair.second->Update_ProcessPacket();
+	}
+
+	MainThreadNetObjects.clear();
 }
 
 
@@ -37,7 +60,6 @@ void GameEngineNetObject::Update_SendPackets(float _DeltaTime)
 
 		Pair.second->Update_SendPacket(_DeltaTime);
 	}
-
 	MainThreadNetObjects.clear();
 }
 

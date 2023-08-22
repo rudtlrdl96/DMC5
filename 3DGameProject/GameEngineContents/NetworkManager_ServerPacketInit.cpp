@@ -6,6 +6,7 @@
 #include "ConnectIDPacket.h"
 #include "ObjectUpdatePacket.h"
 #include "MessageChatPacket.h"
+#include "CreateObjectPacket.h"
 
 ////////
 //		서버 패킷 초기화
@@ -48,7 +49,12 @@ void NetworkManager::ServerPacketInit()
 		//해당 NetObejctID의 객체가 존재하지 않는 경우
 		if (false == GameEngineNetObject::IsNetObject(_Packet->GetObjectID()))
 		{
-			MsgAssert("서버의 허락없이 만들어진 NetObject가 검출되었습니다");
+			//GUI에 로그 띄우고 나머지 클라에도 오류 메세지 보내기
+			std::shared_ptr<MessageChatPacket> MsgPacket = std::make_shared<MessageChatPacket>();
+			MsgPacket->Message = "An object created without permission from the server has been detected";
+			NetworkGUI::GetInst()->PrintLog(MsgPacket->Message);
+			NetInst->SendPacket(MsgPacket);
+			return;
 		}
 
 		//Player가 스스로 처리할 수 있게 자료구조에 저장
@@ -67,6 +73,17 @@ void NetworkManager::ServerPacketInit()
 
 		//서버의 경우엔 수신받은 특정 오브젝트의 패킷을 다른 클라에 다 뿌려야 한다
 		NetInst->SendPacket(_Packet, _Packet->GetObjectID());
+	});
+
+
+
+	//CreateObjectPacket 처리
+	NetInst->Dispatcher.AddHandler<CreateObjectPacket>(
+		[](std::shared_ptr<CreateObjectPacket> _Packet)
+	{
+		std::shared_ptr<GameEngineNetObject> NewNetObj = nullptr;
+		NewNetObj = NetworkManager::CreateNetActor(_Packet->ActorType);
+		//NewNetObj->SetControll(NetControllType::NetControll);
 	});
 }
 

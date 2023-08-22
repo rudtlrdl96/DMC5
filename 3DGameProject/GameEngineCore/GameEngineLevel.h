@@ -113,8 +113,9 @@ protected:
 	virtual void LevelChangeEnd();
 
 	virtual void Start() = 0;
-	void Update(float _DeltaTime);
-	void Render(float _DeltaTime);
+	void Update(float _DeltaTime) override;
+	virtual void NetworkUpdate(float _DeltaTime) {};
+	void Render(float _DeltaTime) override;
 
 	void AllActorDestroy();
 private:

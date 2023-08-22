@@ -22,7 +22,9 @@ public:
 		return AllNetObjects.contains(_Id);
 	}
 
-	//수신받은 패킷을 처리하는 부분
+	static void Update_ProcessPackets();
+
+	//모든 Actor들의 Update가 끝난 이후 패킷을 전송하는 부분
 	static void Update_SendPackets(float _DeltaTime);
 
 	GameEngineNetObject();
@@ -102,9 +104,23 @@ public:
 		return static_cast<EnumType>(Packets.front()->GetPacketID());
 	}
 
+	unsigned int GetNetObjectType() const
+	{
+		return ObjectType;
+	}
+
 protected:
-	//서버로 패킷 전송 처리하는 부분입니다.
+	//수신받은 패킷을 처리하는 부분입니다.(레벨 업데이트 맨 처음에 호출됩니다)
+	virtual void Update_ProcessPacket(){}
+
+	//서버로 패킷 전송 처리하는 부분입니다.(모든 업데이트 맨 마지막에 호출됩니다)
 	virtual void Update_SendPacket(float _DeltaTime) {}
+
+	template <typename EnumType>
+	inline void SetNetObjectType(EnumType _ActorType)
+	{
+		ObjectType = static_cast<unsigned int>(_ActorType);
+	}
 
 private:
 	static std::atomic<int> AtomicObjectID;
@@ -117,6 +133,9 @@ private:
 
 	//서버가 지정한 ID
 	int ObjectID = -1;
+
+	//어떤 클래스의 오브젝트인지 표현
+	unsigned int ObjectType = -1;
 
 	GameEngineNet* Net = nullptr;
 

@@ -187,6 +187,9 @@
     <ClInclude Include="CreateObjectPacket.h">
       <Filter>Server\01.Packet\04.ClientToServer</Filter>
     </ClInclude>
+    <ClInclude Include="BaseLevel.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
     <ClInclude Include="StageBase.h">
       <Filter>Levels\Stage\0.StageBase</Filter>
     </ClInclude>
@@ -371,6 +374,9 @@
     </ClCompile>
     <ClCompile Include="NetworkGUI.cpp">
       <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseLevel.cpp">
+      <Filter>Levels</Filter>
     </ClCompile>
     <ClCompile Include="StageBase.cpp">
       <Filter>Levels\Stage\0.StageBase</Filter>
