@@ -30,8 +30,6 @@ void TestLevel::Start()
 
 void TestLevel::Update(float _DeltaTime)
 {
-	PhysicsLevel::Update(_DeltaTime);
-
 	if (false == IsMessage)
 	{
 		IsMessage = true;
@@ -46,9 +44,6 @@ void TestLevel::Update(float _DeltaTime)
 
 void TestLevel::LevelChangeStart()
 {
-	GameEngineLevel::LevelChangeStart();
-	PhysicsLevel::LevelChangeStart();
-
 	std::shared_ptr<TestObject> Component = CreateActor<TestObject>();
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
 
@@ -56,7 +51,6 @@ void TestLevel::LevelChangeStart()
 	Flat2->GetTransform()->AddWorldPosition(float4{ 100, 0, 100 });
 	Flat2->GetTransform()->AddWorldRotation(float4{ 0, 0, 90 });
 	Flat2->GetTransform()->AddWorldRotation(float4{ 0, -45, 0});
-
 
 	//std::shared_ptr<TestEmpusa> Em = CreateActor<TestEmpusa>();
 	
@@ -85,6 +79,4 @@ void TestLevel::LevelChangeStart()
 void TestLevel::LevelChangeEnd()
 {
 	IsMessage = false;
-	GameEngineLevel::LevelChangeEnd();
-	PhysicsLevel::LevelChangeEnd();
 }

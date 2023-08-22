@@ -113,6 +113,7 @@ void GameEngineCore::EngineUpdate()
 		if (nullptr != MainLevel)
 		{
 			MainLevel->LevelChangeEnd();
+			MainLevel->ReleasePhysicsX();
 			MainLevel->ActorLevelChangeEnd();
 		}
 
@@ -121,6 +122,7 @@ void GameEngineCore::EngineUpdate()
 		if (nullptr != MainLevel)
 		{
 			CurLoadLevel = MainLevel;
+			MainLevel->CreatePhysicsX();
 			MainLevel->LevelChangeStart();
 			MainLevel->ActorLevelChangeStart();
 		}
@@ -151,6 +153,7 @@ void GameEngineCore::EngineUpdate()
 	MainLevel->TimeEvent.Update(TimeDeltaTime);
 	MainLevel->AccLiveTime(TimeDeltaTime);
 	MainLevel->Update(TimeDeltaTime);
+	MainLevel->Simulate(TimeDeltaTime, true);
 	MainLevel->ActorUpdate(TimeDeltaTime);
 	MainLevel->NetworkUpdate(TimeDeltaTime);
 	// CurLoadLevel = nullptr;
@@ -178,6 +181,7 @@ void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)
 
 	GameEngineGUI::Release();
 
+	MainLevel->ReleasePhysicsX();
 	LevelMap.clear();
 	CoreResourcesEnd();
 	Release();

@@ -3,14 +3,16 @@
 #include <GameEngineBase\GameEngineTimeEvent.h>
 #include <string_view>
 #include <map>
-#include <GameEngineCore/GameEngineRenderTarget.h>
+
+#include "GameEngineRenderTarget.h"
+#include "PhysicsLevel.h"
 
 // Ό³Έν :
 class GameEngineActor;
 class GameEngineCamera;
 class GameEngineRenderer;
 class GameEngineCollision;
-class GameEngineLevel : public GameEngineObject
+class GameEngineLevel : public GameEngineObject, public PhysicsLevel
 {
 	friend class GameEngineRenderer;
 	friend class GameEngineCollision;
@@ -65,7 +67,6 @@ public:
 		}
 
 		ActorInit(NewActor, _Order, this);
-
 
 		return std::dynamic_pointer_cast<ActorType>(NewActor);
 	}

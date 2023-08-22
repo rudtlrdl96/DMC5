@@ -1,10 +1,9 @@
 #pragma once
 
 #include "ThirdParty/PhysX_4_1/inc/PhysX/foundation/PxErrorCallback.h"
-#include "GameEngineLevel.h"
 
 // 설명 :
-class PhysicsLevel : public GameEngineLevel
+class PhysicsLevel
 {
 public:
 	// constrcuter destructer
@@ -37,12 +36,16 @@ protected:
 		}
 	};
 
-	void Start() override;
-	void Update(float _DeltaTime) override;
-	void Render(float _DeltaTime) {};
+	void CreatePhysicsX();
+	void Simulate(float _DeltaTime, bool _Value = true);
+	void ReleasePhysicsX();
 
-	void LevelChangeStart() override;
-	void LevelChangeEnd() override;
+	//void Start() override;
+	//void Update(float _DeltaTime) override;
+	//void Render(float _DeltaTime) {};
+
+	//void LevelChangeStart() override;
+	//void LevelChangeEnd() override;
 
 private:
 	//physx::PxDefaultErrorCallback	m_ErrorCallback;
@@ -58,11 +61,6 @@ private:
 	physx::PxDefaultCpuDispatcher* m_pDispatcher = nullptr;
 	physx::PxMaterial* m_pMaterial = nullptr;
 	physx::PxCooking* m_pCooking = nullptr;
-
-	// 클래스 초기화
-	void Initialize();
-	void Simulate(float _DeltaTime, bool _Value = true);
-	void Release();
 
 };
 

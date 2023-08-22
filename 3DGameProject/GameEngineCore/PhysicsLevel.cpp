@@ -11,29 +11,29 @@ PhysicsLevel::PhysicsLevel()
 
 PhysicsLevel::~PhysicsLevel() 
 {
-	Release();
+	//Release();
 }
 
-void PhysicsLevel::Start()
-{
-	// Initialize();
-}
-
-void PhysicsLevel::Update(float _DeltaTime)
-{
-	bool Is = m_pPvd->isConnected();
-	Simulate(_DeltaTime, true);
-}
-
-void PhysicsLevel::LevelChangeStart()
-{
-	Initialize();
-}
-
-void PhysicsLevel::LevelChangeEnd()
-{
-	Release();
-}
+//void PhysicsLevel::Start()
+//{
+//	// Initialize();
+//}
+//
+//void PhysicsLevel::Update(float _DeltaTime)
+//{
+//	bool Is = m_pPvd->isConnected();
+//	Simulate(_DeltaTime, true);
+//}
+//
+//void PhysicsLevel::LevelChangeStart()
+//{
+//	Initialize();
+//}
+//
+//void PhysicsLevel::LevelChangeEnd()
+//{
+//	Release();
+//}
 
 physx::PxFilterFlags contactReportFilterShader
 (
@@ -69,7 +69,7 @@ physx::PxFilterFlags contactReportFilterShader
 	return physx::PxFilterFlag::eDEFAULT;
 }
 
-void PhysicsLevel::Initialize()
+void PhysicsLevel::CreatePhysicsX()
 {
 	m_pFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, m_Allocator, m_ErrorCallback);
 	if (!m_pFoundation)
@@ -136,13 +136,12 @@ void PhysicsLevel::Initialize()
 // 실제로 물리연산을 실행
 void PhysicsLevel::Simulate(float _DeltaTime, bool _Value)
 {
-	//m_pScene->simulate(1.0f / 60.0f);
 	m_pScene->simulate(_DeltaTime);
 	m_pScene->fetchResults(_Value);
 }
 
 // 메모리제거
-void PhysicsLevel::Release()
+void PhysicsLevel::ReleasePhysicsX()
 {
 	if (nullptr != m_pCooking)
 	{

@@ -19,14 +19,14 @@ Plane::~Plane()
 void Plane::Start()
 {
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
-	Renderer->SetFBXMesh("Ground_Mesh.FBX", "NoneAlphaMesh");
+	Renderer->SetFBXMesh("Ground_Mesh.FBX", "MeshTexture");
 
 	float4 RenderMeshScale = Renderer->GetFBXMesh()->GetRenderUnit(0)->BoundScaleBox;
 	physx::PxVec3 GeoMetryScale = { RenderMeshScale.x, RenderMeshScale.y, RenderMeshScale.z};
 
 	Component = CreateComponent<PhysXBoxComponent>();
 	Component->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
-	Component->CreatePhysXActors(TestLevel::TestLevelPtr->GetLevelScene(), TestLevel::TestLevelPtr->GetLevelPhysics(), GeoMetryScale);
+	Component->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), GeoMetryScale);
 	Component->SetPositionSetFromParentFlag(true);
 
 	physx::PxTransform PhyTF = Component->GetDynamic()->getGlobalPose();

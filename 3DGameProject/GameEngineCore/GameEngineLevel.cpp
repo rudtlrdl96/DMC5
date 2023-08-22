@@ -275,7 +275,6 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 	{
 		GameEngineGUI::Render(GetSharedThis(), _DeltaTime);
 	}
-
 }
 
 void GameEngineLevel::ActorRelease()
@@ -313,7 +312,6 @@ void GameEngineLevel::ActorRelease()
 		}
 	}
 
-
 	{
 		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupStartIter = Actors.begin();
 		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupEndIter = Actors.end();
@@ -343,12 +341,11 @@ void GameEngineLevel::ActorRelease()
 			}
 		}
 	}
-
 }
 
 void GameEngineLevel::Update(float _DeltaTime)
 {
-
+	
 }
 
 void GameEngineLevel::Render(float _DeltaTime)

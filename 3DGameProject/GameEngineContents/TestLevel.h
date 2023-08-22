@@ -3,7 +3,7 @@
 #include <GameEngineCore/PhysicsLevel.h>
 
 // Ό³Έν :
-class TestLevel : public PhysicsLevel
+class TestLevel : public GameEngineLevel
 {
 public:
 	static TestLevel* TestLevelPtr;
