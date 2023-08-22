@@ -1,0 +1,99 @@
+#include "PrecompileHeader.h"
+#include "NetTestPlayer.h"
+
+#include <GameEngineBase/GameEngineNet.h>
+#include <GameEngineCore/GameEngineFBXRenderer.h>
+
+#include "NetworkManager.h"
+
+#include "ObjectUpdatePacket.h"
+#include "ServerWindow.h"
+#include "ContentsEnum.h"
+
+NetTestPlayer::NetTestPlayer()
+{
+
+}
+
+NetTestPlayer::~NetTestPlayer()
+{
+
+}
+
+/*
+	플레이어의 유의점
+	플레이어를 LevelChangeStart에서 생성할때,
+	Player->SetUserControll을 호출시켜주세요
+	(그래야 UserControll모드가 되어서 직접적으로 조종할 수 있습니다)
+*/
+
+void NetTestPlayer::Start() 
+{
+	//서버와 통신할 때 이 엑터가 어떤 종류인지 정의하는 부분입니다.
+	//ObjectUpdatePacket을 사용하기 위해서는 반드시 이 부분을 호출해주셔야 합니다
+	SetNetObjectType(Net_ActorType::Nero);
+
+	//이건 그냥 예시 렌더링
+	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
+	Renderer->SetFBXMesh("House1.FBX", "NoneAlphaMesh");
+}
+
+void NetTestPlayer::Update_ProcessPacket() 
+{
+	//플레이어의 경우 네트워크 컨트롤 일때만 패킷을 처리합니다
+	if (NetControllType::NetControll != GameEngineNetObject::GetControllType())
+		return;
+
+	//패킷을 다 처리할 때 까지
+	while (GameEngineNetObject::IsPacket())
+	{
+		//지금 처리할 패킷의 타입을 알아옵니다
+		PacketEnum Type = GameEngineNetObject::GetFirstPacketType<PacketEnum>();
+
+		switch (Type)
+		{
+			//업데이트 패킷의 경우엔
+		case PacketEnum::ObjectUpdatePacket:
+		{
+			//패킷을 템플릿 포인터로 꺼내옵니다(Enum값과 포인터값을 맞게 해주셔야 하는 부분 유의부탁드려요)
+			std::shared_ptr<ObjectUpdatePacket> ObjectUpdate = PopFirstPacket<ObjectUpdatePacket>();
+
+			//패킷의 정보에 따라 자신의 값 수정
+			GetTransform()->SetLocalPosition(ObjectUpdate->Position);
+			GetTransform()->SetLocalRotation(ObjectUpdate->Rotation);
+			ObjectUpdate->TimeScale;
+			break;
+		}
+		default:
+		{
+			MsgAssert("처리하지 못하는 패킷이 플레이어로 날아왔습니다.");
+			return;
+		}
+		}
+	}
+}
+
+void NetTestPlayer::Update(float _DeltaTime) 
+{
+	//플레이어의 경우 UserControll일때만 FSM이 동작되어야 합니다.
+	if (NetControllType::UserControll != GameEngineNetObject::GetControllType())
+		return;
+
+
+	//일반적인 Update부분입니다.
+}
+
+void NetTestPlayer::Update_SendPacket(float _DeltaTime) 
+{
+	//플레이어의 경우 UserControll일때만 패킷을 전송합니다
+	if (NetControllType::UserControll != GameEngineNetObject::GetControllType())
+		return;
+
+	//NetworkManager를 통해서 업데이트 패킷을 보내면 됩니다.
+	//그 외 패킷은 다른곳에서 보내도 상관없습니다.(아마도)
+	NetworkManager::SendUpdatePacket(this, GetTransform(), 1.f);
+
+	//패킷을 보낼땐 모두 NetworkManager를 통해서 보낼 예정입니다.
+	//추후 다양한 패킷 생성 예정
+}
+

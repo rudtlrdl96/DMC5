@@ -199,6 +199,12 @@
     <ClInclude Include="StartStage.h">
       <Filter>Levels\Stage\1.StartStage</Filter>
     </ClInclude>
+    <ClInclude Include="NetTestPlayer.h">
+      <Filter>Actor\NetworkExample</Filter>
+    </ClInclude>
+    <ClInclude Include="NetTestEnemy.h">
+      <Filter>Actor\NetworkExample</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -387,6 +393,12 @@
     <ClCompile Include="StartStage.cpp">
       <Filter>Levels\Stage\1.StartStage</Filter>
     </ClCompile>
+    <ClCompile Include="NetTestPlayer.cpp">
+      <Filter>Actor\NetworkExample</Filter>
+    </ClCompile>
+    <ClCompile Include="NetTestEnemy.cpp">
+      <Filter>Actor\NetworkExample</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
@@ -553,6 +565,9 @@
     </Filter>
     <Filter Include="Levels\Stage\1.StartStage">
       <UniqueIdentifier>{90b7419c-d3c5-4f35-9ed3-3e2ea44b7e0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\NetworkExample">
+      <UniqueIdentifier>{23f668d8-f44f-4600-9465-fe7fa180925c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
