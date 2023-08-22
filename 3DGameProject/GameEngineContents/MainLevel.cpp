@@ -30,8 +30,6 @@ void MainLevel::Start()
 
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -500.0f });
-
-	std::shared_ptr<Player> NewPlayer = CreateActor<Player>();
 }
 
 

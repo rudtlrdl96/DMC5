@@ -126,7 +126,6 @@ void NetworkManager::SendCreatePacket(Net_ActorType _Type, const float4& _Positi
 
 
 #include "Player.h"
-#include "Enemy_Empusa.h"
 
 std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorType _ActorType, int _ObjectID /*= -1*/)
 {
@@ -134,10 +133,10 @@ std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorTyp
 	switch (_ActorType)
 	{
 	case Net_ActorType::Nero:
-		NetObject = GetLevel()->CreateActor<Enemy_Empusa>();	//이거 나중에 꼭 바꿀것
+		NetObject = GetLevel()->CreateActor<Player>();	//이거 나중에 꼭 바꿀것
 		break;
 	case Net_ActorType::Vergil:
-		NetObject = GetLevel()->CreateActor<Enemy_Empusa>();	//이거 나중에 꼭 바꿀것
+		NetObject = GetLevel()->CreateActor<Player>();	//이거 나중에 꼭 바꿀것
 		break;
 	default:
 	{

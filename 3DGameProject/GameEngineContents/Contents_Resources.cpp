@@ -97,18 +97,18 @@ void ContentsCore::ContentsResourcesCreate()
 	}
 
 	// Map
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("ContentResources");
-		NewDir.Move("ContentResources");
-		NewDir.Move("Map");
-		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".FBX" });
+	//{
+	//	GameEngineDirectory NewDir;
+	//	NewDir.MoveParentToDirectory("ContentResources");
+	//	NewDir.Move("ContentResources");
+	//	NewDir.Move("Map");
+	//	std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".FBX" });
 
-		for (size_t i = 0; i < Files.size(); i++)
-		{
-			GameEngineFBXMesh::Load(Files[i].GetFullPath());
-		}
-	}
+	//	for (size_t i = 0; i < Files.size(); i++)
+	//	{
+	//		GameEngineFBXMesh::Load(Files[i].GetFullPath());
+	//	}
+	//}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////// Create Sempler & Blend ////////////////////////////////////////////////////////////////////////////////
