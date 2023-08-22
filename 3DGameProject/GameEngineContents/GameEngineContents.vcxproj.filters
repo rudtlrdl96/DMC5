@@ -97,9 +97,6 @@
     <ClInclude Include="EnemySpawnArea.h">
       <Filter>Actor\Enemy\EnemySpawn</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerTestLevel.h">
-      <Filter>Levels</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerActor_Nero.h">
       <Filter>Actor\Player\Character</Filter>
     </ClInclude>
@@ -205,6 +202,12 @@
     <ClInclude Include="NetTestEnemy.h">
       <Filter>Actor\NetworkExample</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerTestLevel.h">
+      <Filter>Levels\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationToolLevel.h">
+      <Filter>Levels\Test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -303,9 +306,6 @@
     <ClCompile Include="EnemySpawnArea.cpp">
       <Filter>Actor\Enemy\EnemySpawn</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerTestLevel.cpp">
-      <Filter>Levels</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerActor_Nero.cpp">
       <Filter>Actor\Player\Character</Filter>
     </ClCompile>
@@ -398,6 +398,12 @@
     </ClCompile>
     <ClCompile Include="NetTestEnemy.cpp">
       <Filter>Actor\NetworkExample</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerTestLevel.cpp">
+      <Filter>Levels\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationToolLevel.cpp">
+      <Filter>Levels\Test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

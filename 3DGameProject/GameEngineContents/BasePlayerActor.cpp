@@ -48,9 +48,9 @@ void BasePlayerActor::LookDir(const float4& _LookDir)
 void BasePlayerActor::Start()
 {
 
-	Renderer = CreateComponent<GameEngineFBXRenderer>();
-	Renderer->GetTransform()->SetLocalRotation({ 0, 90, 0 });
-	Renderer->SetFBXMesh("Nero.FBX", "MeshTexture");
+	//Renderer = CreateComponent<GameEngineFBXRenderer>();
+	//Renderer->GetTransform()->SetLocalRotation({ 0, 90, 0 });
+	//Renderer->SetFBXMesh("Nero.FBX", "MeshTexture");
 	//Renderer->SetFBXMesh("Nero.FBX", "MeshTexture");
 	//Renderer->CreateFBXAnimation("Dash", "pl0000_Dash_Loop.FBX");
 	//Renderer->ChangeAnimation("Dash");

@@ -9,6 +9,8 @@ class GameEngineFBXAnimation;
 class GameEngineFBXRenderer;
 class GameEngineFBXAnimationInfo : public std::enable_shared_from_this<GameEngineFBXAnimationInfo>
 {
+	friend class AnimationToolWindow;
+
 public:
 	GameEngineFBXRenderer* ParentRenderer;
 	// SetFBX 본을 가지고 있는 매쉬
@@ -20,6 +22,7 @@ public:
 	float PlayTime = 0.0f;
 	float CurFrameTime = 0.0f;
 	float Inter = 0.1f;
+	float TimeScale = 1.0f;
 
 	std::vector<unsigned int> Frames;
 	UINT CurFrame = 0;
@@ -64,6 +67,7 @@ public:
 // 설명 :
 class GameEngineFBXRenderer : public GameEngineRenderer
 {
+	friend class AnimationToolWindow;
 	friend class GameEngineFBXAnimationInfo;
 
 public:
@@ -173,5 +177,8 @@ private:
 	// 앞쪽에 키는 매쉬 개수 x 본개수의 뜻을 가지게 된다.
 	std::map<size_t, std::vector<float4x4>> AnimationBoneMatrixs;
 	std::map<size_t, std::vector<AnimationBoneData>> AnimationBoneDatas;
+
+
+
 };
 

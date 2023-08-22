@@ -98,18 +98,6 @@ void PlayerController::Update(float _DeltaTime)
 	MoveInput();
 	InputRecord();
 	ActionInput();
-
-	std::shared_ptr<PlayerWindow> Window = GameEngineGUI::FindGUIWindowConvert<PlayerWindow>("PlayerWindow");
-	Window->Text = " ";
-	if (Command.Size == 0)
-	{
-		return;
-	}
-	for (int i = 0; i < Command.Size; i++)
-	{
-		Window->Text += Command.Keys[i];
-		Window->Text += "\n";
-	}
 }
 
 void PlayerController::MoveInput()

@@ -13,6 +13,7 @@
 #include "BossStage.h"
 #include "StartStage.h"
 
+#include "AnimationToolLevel.h"
 ContentsCore::ContentsCore() 
 {
 }
@@ -32,6 +33,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<IntroLevel>();
 	GameEngineCore::CreateLevel<TitleLevel>();
 	GameEngineCore::CreateLevel<PlayerTestLevel>();
+	GameEngineCore::CreateLevel<AnimationToolLevel>();
 	//
 	GameEngineCore::CreateLevel<BossStage>();
 	GameEngineCore::CreateLevel<StartStage>();

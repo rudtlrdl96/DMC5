@@ -17,15 +17,25 @@ public:
 
 protected:
 	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;
-	void FileLoad();
+	void FileLoad(std::shared_ptr<GameEngineLevel> Level);
 	void AnimationTimeLine();
 	void FileSave();
 
+	void MeshCreate(std::shared_ptr<GameEngineLevel> Level);
+	void AnimationCreate(std::shared_ptr<GameEngineLevel> Level);
 private:
-	//std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
-	GameEnginePath FBXFilePath;
+	std::shared_ptr<GameEngineActor> Actor = nullptr;
+	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
+	class AnimationEvent* AnimEvent = nullptr;
+	GameEnginePath MeshFilePath;
+	GameEnginePath AnimFBXFilePath;
+	GameEnginePath AnimFilePath;
+	std::string MeshName = "";
+	std::string AnimationFBXName = "";
 	std::string AnimationName = "";
 	int CurrentFrame = 0;
-	int FrameSize = 20;
+	int FrameSize = 0;
+	float AnimSpeed = 3.0f;
+	bool IsStop = false;
 };
 

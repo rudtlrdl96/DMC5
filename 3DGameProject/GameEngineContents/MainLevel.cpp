@@ -52,6 +52,11 @@ void MainLevel::Update(float _DeltaTime)
 		GameEngineCore::ChangeLevel("PlayerTestLevel");
 		return;
 	}
+	if (true == GameEngineInput::IsDown("SelectLevel_03"))
+	{
+		GameEngineCore::ChangeLevel("AnimationToolLevel");
+		return;
+	}
 }
 
 void MainLevel::LevelChangeStart()

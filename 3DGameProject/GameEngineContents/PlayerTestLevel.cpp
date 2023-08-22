@@ -57,7 +57,7 @@ void PlayerTestLevel::LevelChangeStart()
 
 		for (size_t i = 0; i < Files.size(); i++)
 		{
-			GameEngineFBXMesh::Load(Files[i].GetFullPath());
+			//GameEngineFBXMesh::Load(Files[i].GetFullPath());
 		}
 
 		NewDir.MoveParentToDirectory("ContentResources");
@@ -92,7 +92,7 @@ void PlayerTestLevel::LevelChangeStart()
 	//NewPlayer->LockOnEnemyTransform = CollisionActor->GetTransform();
 	IsDebugSwitch();
 
-	GameEngineGUI::GUIWindowCreate<PlayerWindow>("PlayerWindow");
+	
 	//ObjWindow =  std::dynamic_pointer_cast<ObjectWindow>(GameEngineGUI::GUIWindowCreate<ObjectWindow>("ObjectWindow"));
 	//ObjWindow->AddObject(NewPlayer);
 	//ObjWindow->AddObject(CollisionActor);
