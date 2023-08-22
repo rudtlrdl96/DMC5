@@ -180,6 +180,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="ContentsEnum.h" />
+    <ClInclude Include="CreateObjectPacket.h" />
     <ClInclude Include="FreeCameraActor.h">
       <SubType>
       </SubType>

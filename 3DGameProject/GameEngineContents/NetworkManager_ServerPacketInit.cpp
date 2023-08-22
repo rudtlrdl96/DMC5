@@ -45,12 +45,11 @@ void NetworkManager::ServerPacketInit()
 	NetInst->Dispatcher.AddHandler<ObjectUpdatePacket>(
 		[=](std::shared_ptr<ObjectUpdatePacket> _Packet)
 	{
-		//해당 NetObejctID의 객체가 존재하지 않다면 만든다
-		/*if (false == GameEngineNetObject::IsNetObject(_Packet->GetObjectID()))
+		//해당 NetObejctID의 객체가 존재하지 않는 경우
+		if (false == GameEngineNetObject::IsNetObject(_Packet->GetObjectID()))
 		{
-			std::shared_ptr<Player> NewPlayer = NowLevel->CreateActor<Player>();
-			NewPlayer->InitNetObject(_Packet->GetObjectID(), _Net);
-		}*/
+			MsgAssert("서버의 허락없이 만들어진 NetObject가 검출되었습니다");
+		}
 
 		//Player가 스스로 처리할 수 있게 자료구조에 저장
 		GameEngineNetObject::PushNetObjectPacket(_Packet);

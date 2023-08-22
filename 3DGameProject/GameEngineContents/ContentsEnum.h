@@ -33,6 +33,7 @@ enum class Net_ActorType
 
 	//¿Ã∆Â∆Æ?
 
+	COUNT
 };
 
 enum class Net_LevelType

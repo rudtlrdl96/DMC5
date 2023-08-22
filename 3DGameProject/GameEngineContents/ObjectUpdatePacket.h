@@ -5,6 +5,8 @@
 #include "PacketEnum.h"
 #include "ContentsEnum.h"
 
+#include "NetworkManager.h"
+
 class ObjectUpdatePacket : public GameEnginePacket
 {
 public:

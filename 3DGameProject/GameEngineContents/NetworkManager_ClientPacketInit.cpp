@@ -2,10 +2,13 @@
 #include "NetworkManager.h"
 
 #include "NetworkGUI.h"
+#include "ContentsEnum.h"
 
 #include "ConnectIDPacket.h"
 #include "ObjectUpdatePacket.h"
 #include "MessageChatPacket.h"
+
+//#include "Player.h"
 
 ////////
 //		클라 패킷 초기화
@@ -34,8 +37,7 @@ void NetworkManager::ClientPacketInit()
 		//해당 NetObejctID의 객체가 존재하지 않다면 만든다
 		if (false == GameEngineNetObject::IsNetObject(_Packet->GetObjectID()))
 		{
-			//std::shared_ptr<Player> NewPlayer = NowLevel->CreateActor<Player>();
-			//NewPlayer->InitNetObject(_Packet->GetObjectID(), _Net);
+			//NetworkManager::CreateNetActor(_Packet);
 		}
 
 		//Player가 스스로 처리할 수 있게 자료구조에 저장

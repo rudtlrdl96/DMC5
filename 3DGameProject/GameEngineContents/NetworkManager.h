@@ -2,6 +2,9 @@
 #include <GameEngineBase/GameEngineNetServer.h>
 #include <GameEngineBase/GameEngineNetClient.h>
 
+class GameEngineLevel;
+class GameEngineNetObject;
+
 class NetworkManager
 {
 public:
@@ -27,8 +30,11 @@ public:
 	static bool ConnectServer(const std::string_view& _IP, int _Port);
 
 	//전송받은 패킷을 처리하는 부분
-	static void Update_PacketProcess()
+	static void Update_PacketProcess(GameEngineLevel* _CurrentLevel)
 	{
+		//레벨 저장(패킷 처리할때 사용됨)
+		CurLevel = _CurrentLevel;
+
 		if (nullptr == NetInst)
 			return;
 
@@ -39,6 +45,8 @@ public:
 	{
 		return NetID;
 	}
+
+	
 
 protected:
 
@@ -69,6 +77,21 @@ private:
 	
 
 private:
+	static GameEngineLevel* CurLevel;
+
+	inline static GameEngineLevel* GetLevel()
+	{
+		if (nullptr == CurLevel)
+		{
+			MsgAssert("NetwortManager의 CurLevel 포인터가 nullptr입니다");
+		}
+
+		return CurLevel;
+	}
+
+	//ObjectUpdatePacket에서 해당 아이디의 엑터가 없다면 만드는 함수
+	static std::shared_ptr<GameEngineNetObject> CreateNetActor(std::shared_ptr<class ObjectUpdatePacket> _Packet);
+
 	NetworkManager(){}
 	virtual ~NetworkManager() = 0{}
 

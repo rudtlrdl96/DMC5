@@ -184,6 +184,9 @@
     <ClInclude Include="ConsoleGUI.h">
       <Filter>GUI</Filter>
     </ClInclude>
+    <ClInclude Include="CreateObjectPacket.h">
+      <Filter>Server\01.Packet\04.ClientToServer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">

@@ -38,7 +38,7 @@ void MainLevel::Start()
 
 void MainLevel::Update(float _DeltaTime)
 {
-	NetworkManager::Update_PacketProcess();
+	NetworkManager::Update_PacketProcess(this);
 
 	if (false == IsMessage)
 	{
