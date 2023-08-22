@@ -5,8 +5,10 @@
 
 int GameEngineObject::NextActorID = 0;
 int GameEngineObject::GUI_SelectActorIndex = -1;
+bool GameEngineObject::GUI_CurFrameSetParent = false;
 
 GameEngineTransform* GameEngineObject::NewChild = nullptr;
+GameEngineObject* GameEngineObject::ClickedObject = nullptr;
 
 GameEngineObject::GameEngineObject() :
 	ActorID(NextActorID++)
@@ -183,19 +185,19 @@ GameEngineObject* GameEngineObject::DrawGUI()
 
 	const bool treeOpen = ImGui::TreeNodeEx((GetName().data() + std::string(" : ") + std::to_string(GetID())).c_str(), flags);
 
-	// Select entity if clicked
+	// 선택되었는지 체크
 	if (ImGui::IsItemClicked(0))
 	{
 		Result = this;
+		NewChild = GetTransform();
 		GUI_SelectActorIndex = GetID();
 	}
 
+	// 드래그 시작
 	if (ImGui::BeginDragDropSource())
 	{
-		NewChild = GetTransform();
-
 		ImGui::SetDragDropPayload("ENTITY", GetTransform(), sizeof(GameEngineTransform*), ImGuiCond_Always);
-		ImGui::Text("Drag %s", GetName());
+		ImGui::Text("Drag %d", GetID());
 		ImGui::EndDragDropSource();
 	}
 
@@ -207,28 +209,55 @@ GameEngineObject* GameEngineObject::DrawGUI()
 
 		if (data != nullptr && NewChild != nullptr)
 		{
-			NewChild->SetParent(GetTransform());
-			NewChild = nullptr;
+			// 만약 같은 부모로 바꾸려고 했을 경우 예외처리
+			bool EqaulChildCheck = false;
 
-			justDropTarget = isLeaf;
+			for (std::shared_ptr<GameEngineObject>& Ref : Childs)
+			{
+				if (Ref->GetID() == NewChild->GetMaster()->GetID())
+				{
+					EqaulChildCheck = true;
+					break;
+				}
+			}
+
+			if (false == EqaulChildCheck)
+			{
+				// 부모 변환
+				NewChild->SetParent(GetTransform());
+				NewChild = nullptr;
+
+				GUI_CurFrameSetParent = true;
+
+				justDropTarget = isLeaf;
+			}
 		}
 		ImGui::EndDragDropTarget();
 	}
 
+	// 우클릭 여부 반환
 	if (ImGui::IsItemClicked(1))
 	{
-		GUI_isRightClickOnItem = true;
+		ClickedObject = this;
 		ImGui::OpenPopup("Hierarchy Popup");
 	}
 	
-	if (!GUI_isRightClickOnItem && ImGui::GetIO().MouseClicked[1] && ImGui::IsWindowHovered())
+	// 만약 우클릭 했을 경우 Popup Open
+	if (this == ClickedObject && ImGui::GetIO().MouseClicked[1] && ImGui::IsWindowHovered())
 	{
 		ImGui::OpenPopup("Hierarchy Popup");
 	}
 
-	if (ImGui::BeginPopup("Hierarchy Popup"))
+	if (this == ClickedObject && ImGui::BeginPopup("Hierarchy Popup"))
 	{
-		if (ImGui::Selectable("Remove Entity"))
+		// 선택한 액터의 자식으로 액터 생성
+		if (ImGui::Selectable("Create Entity"))
+		{
+			std::shared_ptr<GameEngineActor> NewActor = GetLevel()->CreateActor<GameEngineActor>();
+			NewActor->GetTransform()->SetParent(GetTransform());
+		}
+		// 선택한 액터 삭제
+		else if (ImGui::Selectable("Remove Entity"))
 		{
 			Death();
 		}
@@ -240,7 +269,7 @@ GameEngineObject* GameEngineObject::DrawGUI()
 	{		
 		std::list<std::shared_ptr<GameEngineObject>>::iterator LoopIter = Childs.begin();
 
-		while (LoopIter != Childs.end())
+		while (LoopIter != Childs.end() && false == GUI_CurFrameSetParent)
 		{
 			GameEngineObject* ChildResult = (*LoopIter)->DrawGUI();
 			++LoopIter;

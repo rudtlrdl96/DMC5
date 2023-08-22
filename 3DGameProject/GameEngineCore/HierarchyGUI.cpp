@@ -30,7 +30,14 @@ void HierarchyGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 		return;
 	}
 
+	ImGui::Spacing();
+	ImGui::Spacing();
+
 	ShowObjectInfo();
+
+	ImGui::Spacing();
+	ImGui::Spacing();
+
 	ShowTransformInfo();
 }
 
@@ -40,6 +47,8 @@ void HierarchyGUI::ObjectSelect(std::shared_ptr<GameEngineLevel> Level)
 
 	int OrderCount = 0;
 
+	GameEngineObject::GUI_CurFrameSetParent = false;
+
 	for (std::pair<const int, std::list<std::shared_ptr<GameEngineActor>>>& RefData : AllActors)
 	{
 		ImGui::Text("Order : %d", OrderCount);
@@ -47,7 +56,7 @@ void HierarchyGUI::ObjectSelect(std::shared_ptr<GameEngineLevel> Level)
 		std::list<std::shared_ptr<GameEngineActor>>& OrderActors = RefData.second;
 		std::list<std::shared_ptr<GameEngineActor>>::iterator LoopIter = OrderActors.begin();;
 
-		while (LoopIter != OrderActors.end())
+		while (LoopIter != OrderActors.end() && false == GUI_CurFrameSetParent)
 		{
 			GameEngineObject* Result = (*LoopIter)->DrawGUI();
 

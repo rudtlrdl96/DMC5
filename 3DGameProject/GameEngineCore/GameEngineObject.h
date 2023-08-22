@@ -24,8 +24,11 @@ class GameEngineObject :
 	/////////////////////  Gui 변수 /////////////////////
 
 	static int GUI_SelectActorIndex;
+	static bool GUI_CurFrameSetParent;
 
 	static GameEngineTransform* NewChild;
+
+	static GameEngineObject* ClickedObject;
 
 
 public:
@@ -112,9 +115,6 @@ private:
 	// 겹치지 않는 고유의 액터 ID
 	const int ActorID;
 
-	/////////////////////  Gui 변수 /////////////////////
-
-	bool GUI_isRightClickOnItem = false;
 
 	/////////////////////  Gui 함수 /////////////////////
 
