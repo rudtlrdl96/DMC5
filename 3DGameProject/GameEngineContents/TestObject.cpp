@@ -61,9 +61,14 @@ void TestObject::Start()
 
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
 
-	Renderer->SetFBXMesh("AnimMan.FBX", "MeshAniTexture");
-	Renderer->CreateFBXAnimation("Run", "ALS_N_Run_F.FBX");
-	Renderer->ChangeAnimation("Run");
+
+	Renderer->SetFBXMesh("Nero.FBX", "MeshTexture");
+	Renderer->CreateFBXAnimation("Dash", "pl0000_Dash_Loop.FBX");
+	Renderer->ChangeAnimation("Dash");
+
+	//Renderer->SetFBXMesh("AnimMan.FBX", "MeshAniTexture");
+	//Renderer->CreateFBXAnimation("Run", "ALS_N_Run_F.FBX");
+	//Renderer->ChangeAnimation("Run");
 }
 
 void TestObject::Update(float _DeltaTime)

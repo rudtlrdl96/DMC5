@@ -2,13 +2,15 @@
 #include "PlayerTestLevel.h"
 #include <GameEngineCore/GameEngineFBXMesh.h>
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
+#include <GameEngineCore/GameEngineFBXAnimation.h>
+#include <GameEngineCore/GameEngineCollision.h>
 #include "BasePlayerActor.h"
 #include "AnimationToolWindow.h"
 #include "PlayerWindow.h"
 #include "ObjectWindow.h"
 #include "FreeCameraActor.h"
 #include "ContentsEnum.h"
-#include <GameEngineCore/GameEngineCollision.h>
+
 PlayerTestLevel::PlayerTestLevel() 
 {
 }
@@ -55,7 +57,20 @@ void PlayerTestLevel::LevelChangeStart()
 
 		for (size_t i = 0; i < Files.size(); i++)
 		{
-			//GameEngineFBXMesh::Load(Files[i].GetFullPath());
+			GameEngineFBXMesh::Load(Files[i].GetFullPath());
+		}
+
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Mesh");
+		NewDir.Move("Animations");
+		NewDir.Move("Nero");
+		// 테스트 메쉬 폴더는 자동으로 로드합니다
+		Files = NewDir.GetAllFile({ ".FBX" });
+
+		for (size_t i = 0; i < Files.size(); i++)
+		{
+			GameEngineFBXAnimation::Load(Files[i].GetFullPath());
 		}
 	}
 	std::shared_ptr<BasePlayerActor> NewPlayer = CreateActor<BasePlayerActor>();

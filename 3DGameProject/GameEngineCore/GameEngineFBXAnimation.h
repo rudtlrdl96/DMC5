@@ -1,6 +1,8 @@
 #pragma once
 #include "GameEngineFBXMesh.h"
 
+
+
 class FbxExBoneFrameData : public GameEngineSerializObject
 {
 public:
@@ -63,7 +65,7 @@ public:
 
 	void Read(GameEngineSerializer& _File) override
 	{
-		_File >> BoneIndex;
+		_File >> BoneIndex ;
 		_File >> BoneParentIndex;
 		_File >> BoneMatData;
 	}
