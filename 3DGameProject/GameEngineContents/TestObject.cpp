@@ -34,30 +34,32 @@ void TestObject::Start()
 
 	//GetTransform()->AddWorldPosition(float4{ 0, 100.0f, 0 });
 
-	//Renderer = CreateComponent<GameEngineFBXRenderer>();
-	//std::string Path = GameEnginePath::GetFileFullPath
-	//(
-	//	"ContentResources",
-	//	{
-	//		"Character", "Enemy", "em0100", "mesh"
-	//	}, 
-	//	"em0100.FBX"
-	//);
+	Renderer = CreateComponent<GameEngineFBXRenderer>();
+	std::string Path = GameEnginePath::GetFileFullPath
+	(
+		"ContentResources",
+		{
+			"Character", "Enemy", "em0100", "mesh"
+		}, 
+		"em0100.FBX"
+	);
 
-	//GameEngineFBXMesh::Load(Path);
+	GameEngineFBXMesh::Load(Path);
 
-	//Renderer->SetFBXMesh("em0100.fbx", "NoneAlphaMesh");
-	//Renderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
+	Renderer->SetFBXMesh("em0100.fbx", "NoneAlphaMesh");
+	Renderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
 
-	//float4 RenderScale = Renderer->GetFBXMesh()->GetRenderUnit(0)->BoundScaleBox;
-	//physx::PxVec3 VecSclae = { RenderScale.x, RenderScale.y, RenderScale.z };
+	float4 RenderScale = Renderer->GetFBXMesh()->GetRenderUnit(0)->BoundScaleBox;
+	float4 MeshScale = Renderer->GetMeshScale();
 
-	//float4 world = GetTransform()->GetWorldScale();
-	//float4 local = GetTransform()->GetLocalScale();
+	physx::PxVec3 VecSclae = { RenderScale.x, RenderScale.y, RenderScale.z };
 
-	//Component = CreateComponent<PhysXCapsuleComponent>();
-	//Component->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
-	//Component->CreatePhysXActors(TestLevel::TestLevelPtr->GetLevelScene(), TestLevel::TestLevelPtr->GetLevelPhysics(), VecSclae);
+	float4 world = GetTransform()->GetWorldScale();
+	float4 local = GetTransform()->GetLocalScale();
+
+	Component = CreateComponent<PhysXCapsuleComponent>();
+	Component->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
+	Component->CreatePhysXActors(TestLevel::TestLevelPtr->GetLevelScene(), TestLevel::TestLevelPtr->GetLevelPhysics(), VecSclae);
 
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
 
@@ -65,9 +67,13 @@ void TestObject::Start()
 	//Renderer->CreateFBXAnimation("Dash", "pl0000_Dash_Loop.FBX");
 	//Renderer->ChangeAnimation("Dash");
 
-	Renderer->SetFBXMesh("AnimMan.FBX", "MeshAniTexture");
-	Renderer->CreateFBXAnimation("Run", "ALS_N_Run_F.FBX");
-	Renderer->ChangeAnimation("Run");
+	//Renderer->SetFBXMesh("Nero.FBX", "MeshTexture");
+	//Renderer->CreateFBXAnimation("Dash", "pl0000_Dash_Loop.FBX");
+	//Renderer->ChangeAnimation("Dash");
+
+	//Renderer->SetFBXMesh("AnimMan.FBX", "MeshAniTexture");
+	//Renderer->CreateFBXAnimation("Run", "ALS_N_Run_F.FBX");
+	//Renderer->ChangeAnimation("Run");
 }
 
 void TestObject::Update(float _DeltaTime)
@@ -91,81 +97,81 @@ void TestObject::Update(float _DeltaTime)
 
 void TestObject::UserUpdate(float _DeltaTime)
 {
-	//float Speed = 30.0f;
-	//physx::PxTransform PhyTF = Component->GetDynamic()->getGlobalPose();
-	//float4 MoveDir = float4::ZERO;
-	//float Dir = Speed * _DeltaTime;
-	//
-	//if (true == GameEngineInput::IsPress("MoveLeft"))
-	//{
-	//	PhyTF.p.x -= Dir;
-	//	MoveDir.x -= Dir;
+	float Speed = 200.0f;
+	physx::PxTransform PhyTF = Component->GetDynamic()->getGlobalPose();
+	float4 MoveDir = float4::ZERO;
+	float Dir = Speed * _DeltaTime;
+	
+	if (true == GameEngineInput::IsPress("MoveLeft"))
+	{
+		PhyTF.p.x -= Dir;
+		MoveDir.x -= Dir;
 
-	//	Component->GetDynamic()->setGlobalPose(PhyTF);
-	//}
-	//if (true == GameEngineInput::IsPress("MoveRight"))
-	//{
-	//	PhyTF.p.x += Dir;
-	//	MoveDir.x += Dir;
+		Component->GetDynamic()->setGlobalPose(PhyTF);
+	}
+	if (true == GameEngineInput::IsPress("MoveRight"))
+	{
+		PhyTF.p.x += Dir;
+		MoveDir.x += Dir;
 
-	//	Component->GetDynamic()->setGlobalPose(PhyTF);
-	//}
-	//if (true == GameEngineInput::IsPress("MoveUp"))
-	//{
-	//	PhyTF.p.y += Dir;
-	//	MoveDir.y += Dir;
+		Component->GetDynamic()->setGlobalPose(PhyTF);
+	}
+	if (true == GameEngineInput::IsPress("MoveUp"))
+	{
+		PhyTF.p.y += Dir;
+		MoveDir.y += Dir;
 
-	//	Component->GetDynamic()->setGlobalPose(PhyTF);
-	//}
-	//if (true == GameEngineInput::IsPress("MoveDown"))
-	//{
-	//	PhyTF.p.y -= Dir;
-	//	MoveDir.y -= Dir;
+		Component->GetDynamic()->setGlobalPose(PhyTF);
+	}
+	if (true == GameEngineInput::IsPress("MoveDown"))
+	{
+		PhyTF.p.y -= Dir;
+		MoveDir.y -= Dir;
 
-	//	Component->GetDynamic()->setGlobalPose(PhyTF);
-	//}
-	//if (true == GameEngineInput::IsPress("MoveForward"))
-	//{
-	//	PhyTF.p.z += Dir;
-	//	MoveDir.z += Dir;
+		Component->GetDynamic()->setGlobalPose(PhyTF);
+	}
+	if (true == GameEngineInput::IsPress("MoveForward"))
+	{
+		PhyTF.p.z += Dir;
+		MoveDir.z += Dir;
 
-	//	Component->GetDynamic()->setGlobalPose(PhyTF);
-	//}
-	//if (true == GameEngineInput::IsPress("MoveBack"))
-	//{
-	//	PhyTF.p.z -= Dir;
-	//	MoveDir.z -= Dir;
+		Component->GetDynamic()->setGlobalPose(PhyTF);
+	}
+	if (true == GameEngineInput::IsPress("MoveBack"))
+	{
+		PhyTF.p.z -= Dir;
+		MoveDir.z -= Dir;
 
-	//	Component->GetDynamic()->setGlobalPose(PhyTF);
-	//}
+		Component->GetDynamic()->setGlobalPose(PhyTF);
+	}
 
-	//if (true == GameEngineInput::IsDown("Jump"))
-	//{
-	//	//PhyTF.p.y += 10.0f;
-	//	//MoveDir.y += 10.0f;
+	if (true == GameEngineInput::IsDown("Jump"))
+	{
+		//PhyTF.p.y += 10.0f;
+		//MoveDir.y += 10.0f;
 
-	//	//Component->GetDynamic()->setGlobalPose(PhyTF);
-	//	Component->GetDynamic()->clearForce();
-	//	Component->PushImpulse(float4::UP * 100000);
-	//}
+		//Component->GetDynamic()->setGlobalPose(PhyTF);
+		Component->GetDynamic()->clearForce();
+		Component->PushImpulse(float4::UP * 100000);
+	}
 
-	//float4 ActorPos = GetTransform()->GetWorldPosition();
-	//float CameraPosyf = ActorPos.y + 40.0f;
-	//float CameraPoszf = ActorPos.z - 100.0f;
+	float4 ActorPos = GetTransform()->GetWorldPosition();
+	float CameraPosyf = ActorPos.y + 40.0f;
+	float CameraPoszf = ActorPos.z - 100.0f;
 
-	//GetLevel()->GetCamera(0)->GetTransform()->SetWorldPosition(float4{ ActorPos.x, CameraPosyf, CameraPoszf });
+	GetLevel()->GetCamera(0)->GetTransform()->SetWorldPosition(float4{ ActorPos.x, CameraPosyf, CameraPoszf });
 
-	//float4 ASDF = Component->GetTransform()->GetWorldPosition();
-	//float4 FDSA = Component->GetTransform()->GetLocalPosition();
-	//float4 REWQ = Component->GetTransform()->GetWorldScale();
-	//float4 QWER = Component->GetTransform()->GetLocalScale();
+	float4 ASDF = Component->GetTransform()->GetWorldPosition();
+	float4 FDSA = Component->GetTransform()->GetLocalPosition();
+	float4 REWQ = Component->GetTransform()->GetWorldScale();
+	float4 QWER = Component->GetTransform()->GetLocalScale();
 
-	//float4 sf = Renderer->GetTransform()->GetWorldPosition();
-	//float4 sd = Renderer->GetTransform()->GetLocalPosition();
-	//float4 sff = Renderer->GetTransform()->GetWorldScale();
-	//float4 sfg = Renderer->GetTransform()->GetLocalScale();
+	float4 sf = Renderer->GetTransform()->GetWorldPosition();
+	float4 sd = Renderer->GetTransform()->GetLocalPosition();
+	float4 sff = Renderer->GetTransform()->GetWorldScale();
+	float4 sfg = Renderer->GetTransform()->GetLocalScale();
 
-	//int a = 0;
+	int a = 0;
 }
 
 void TestObject::ServerUpdate(float _DeltaTime)

@@ -81,11 +81,6 @@ public:
 	virtual void SetFBXMesh(const std::string& _Name, std::string _Material, size_t MeshIndex);
 	virtual std::shared_ptr<GameEngineRenderUnit> SetFBXMesh(const std::string& _Name, std::string _Material, size_t MeshIndex, size_t _SubSetIndex);
 
-	inline std::shared_ptr<GameEngineFBXMesh> GetFBXMesh()
-	{
-		return FBXMesh;
-	}
-
 	void CreateFBXAnimation(const std::string& _AnimationFBXName, int _Index = 0)
 	{
 		CreateFBXAnimation(_AnimationFBXName, _AnimationFBXName, _Index);
@@ -93,16 +88,66 @@ public:
 
 	void CreateFBXAnimation(const std::string& _AnimationName, const std::string& _AnimationFBXName, int _Index = 0);
 
-	std::vector<std::vector<std::shared_ptr<GameEngineRenderUnit>>>& GetAllRenderUnit()
-	{
-		return Unit;
-	}
 
 	void Update(float _DeltaTime) override;
 
 	void PauseSwtich();
 
 	void ChangeAnimation(const std::string& _AnimationName);
+
+	inline std::shared_ptr<GameEngineFBXMesh> GetFBXMesh()
+	{
+		return FBXMesh;
+	}
+
+	std::vector<std::vector<std::shared_ptr<GameEngineRenderUnit>>>& GetAllRenderUnit()
+	{
+		return Unit;
+	}
+
+	float4 GetMeshScale()
+	{
+		float4 f4MinBox = float4::ZERO;
+		float4 f4MaxBox = float4::ZERO;
+		float4 ResultBox = float4::ZERO;
+		for (size_t i = 0; i < FBXMesh->GetRenderUnitCount(); i++)
+		{
+			float4 f4TempMinBox = float4::ZERO;
+			float4 f4TempMaxBox = float4::ZERO;
+			f4TempMinBox = FBXMesh->GetRenderUnit(i)->MinBoundBox;
+			f4TempMaxBox = FBXMesh->GetRenderUnit(i)->MaxBoundBox;
+			if (f4MinBox.x > f4TempMinBox.x)
+			{
+				f4MinBox.x = f4TempMinBox.x;
+			}
+			if (f4MinBox.y > f4TempMinBox.y)
+			{
+				f4MinBox.y = f4TempMinBox.y;
+			}
+			if (f4MinBox.z > f4TempMinBox.z)
+			{
+				f4MinBox.z = f4TempMinBox.z;
+			}
+
+			if (f4MaxBox.x < f4TempMaxBox.x)
+			{
+				f4MaxBox.x = f4TempMaxBox.x;
+			}
+			if (f4MaxBox.y < f4TempMaxBox.y)
+			{
+				f4MaxBox.y = f4TempMaxBox.y;
+			}
+			if (f4MaxBox.z < f4TempMaxBox.z)
+			{
+				f4MaxBox.z = f4TempMaxBox.z;
+			}
+		}
+		ResultBox.x = f4MaxBox.x - f4MinBox.x;
+		ResultBox.y = f4MaxBox.y - f4MinBox.y;
+		ResultBox.z = f4MaxBox.z - f4MinBox.z;
+
+		return ResultBox;
+	}
 
 protected:
 	// void Render(float _DeltaTime) override;

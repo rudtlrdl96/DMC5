@@ -49,17 +49,19 @@ void TestLevel::LevelChangeStart()
 	GameEngineLevel::LevelChangeStart();
 	PhysicsLevel::LevelChangeStart();
 
-	//std::shared_ptr<TestObject> Component = CreateActor<TestObject>();
+	std::shared_ptr<TestObject> Component = CreateActor<TestObject>();
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
 
-	//std::shared_ptr<Plane> Flat2 = CreateActor<Plane>();
-	//Flat2->GetTransform()->AddWorldPosition(float4{ 100, 0, 100 });
-	//Flat2->GetTransform()->AddWorldRotation(float4{ 0, 0, 90 });
-	//Flat2->GetTransform()->AddWorldRotation(float4{ 0, -45, 0});
+	std::shared_ptr<Plane> Flat2 = CreateActor<Plane>();
+	Flat2->GetTransform()->AddWorldPosition(float4{ 100, 0, 100 });
+	Flat2->GetTransform()->AddWorldRotation(float4{ 0, 0, 90 });
+	Flat2->GetTransform()->AddWorldRotation(float4{ 0, -45, 0});
+
+
 	//std::shared_ptr<TestEmpusa> Em = CreateActor<TestEmpusa>();
 	
-	std::shared_ptr<Enemy_Empusa> Empusa = CreateActor<Enemy_Empusa>();
-	Empusa->GetTransform()->SetLocalPosition({ 0, 0, 10 });
+	//std::shared_ptr<Enemy_Empusa> Empusa = CreateActor<Enemy_Empusa>();
+	//Empusa->GetTransform()->SetLocalPosition({ 0, 0, 10 });
 
 	//std::shared_ptr<Enemy_GreenEmpusa> GreenEmpusa = CreateActor<Enemy_GreenEmpusa>();
 	//GreenEmpusa->GetTransform()->SetLocalPosition({ 20, 0, 10 });	
