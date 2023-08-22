@@ -2,6 +2,7 @@
 #include "AnimationToolWindow.h"
 #include <fstream>
 #include <GameEnginePlatform/GameEngineWindow.h>
+#include <GameEngineCore/GameEngineFBXAnimation.h>
 AnimationToolWindow::AnimationToolWindow() 
 {
 }
@@ -54,7 +55,7 @@ void AnimationToolWindow::FileLoad()
                 MsgAssert("FBX파일의 확장자 오류. 대소문자를 확인해주세요.");
             }
             AnimationName += ".animation";
-            //GameEngineFBXMesh::Load(Path.GetFullPath());
+            GameEngineFBXAnimation::Load(FBXFilePath.GetFullPath());
             int a = 0;
         }
     }

@@ -22,6 +22,7 @@ protected:
 	void FileSave();
 
 private:
+	//std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
 	GameEnginePath FBXFilePath;
 	std::string AnimationName = "";
 	int CurrentFrame = 0;

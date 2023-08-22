@@ -52,7 +52,7 @@ void BasePlayerActor::Start()
 	//Renderer->SetFBXMesh("House1.FBX", "MeshTexture");
 	Renderer->GetTransform()->SetLocalRotation({ 0, 90, 0 });
 	Renderer->SetFBXMesh("Nero.FBX", "MeshTexture");
-	Renderer->CreateFBXAnimation("Dash", "pl0000_Dash_Loop.FBX");
+	Renderer->CreateFBXAnimation("Dash", "pl0000_Jump_Vertical.FBX");
 	Renderer->ChangeAnimation("Dash");
 
 	Camera = GetLevel()->CreateActor<PlayerCamera>();
