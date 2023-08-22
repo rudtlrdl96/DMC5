@@ -196,6 +196,7 @@
     <ClInclude Include="StartStage.h">
       <Filter>Levels\Stage\1.StartStage</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
     <ClInclude Include="NetTestPlayer.h">
       <Filter>Actor\NetworkExample</Filter>
     </ClInclude>
@@ -210,6 +211,13 @@
     </ClInclude>
     <ClInclude Include="StageDatas.h">
       <Filter>Levels\Stage\0.StageBase</Filter>
+=======
+    <ClInclude Include="StageEditLevel.h">
+      <Filter>Levels\Stage\StageEditLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="StageEditGUI.h">
+      <Filter>Levels\Stage\StageEditLevel</Filter>
+>>>>>>> Stashed changes
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -396,6 +404,7 @@
     <ClCompile Include="StartStage.cpp">
       <Filter>Levels\Stage\1.StartStage</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
     <ClCompile Include="NetTestPlayer.cpp">
       <Filter>Actor\NetworkExample</Filter>
     </ClCompile>
@@ -410,6 +419,13 @@
     </ClCompile>
     <ClCompile Include="StageDatas.cpp">
       <Filter>Levels\Stage\0.StageBase</Filter>
+=======
+    <ClCompile Include="StageEditLevel.cpp">
+      <Filter>Levels\Stage\StageEditLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="StageEditGUI.cpp">
+      <Filter>Levels\Stage\StageEditLevel</Filter>
+>>>>>>> Stashed changes
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -578,8 +594,13 @@
     <Filter Include="Levels\Stage\1.StartStage">
       <UniqueIdentifier>{90b7419c-d3c5-4f35-9ed3-3e2ea44b7e0e}</UniqueIdentifier>
     </Filter>
+<<<<<<< Updated upstream
     <Filter Include="Actor\NetworkExample">
       <UniqueIdentifier>{23f668d8-f44f-4600-9465-fe7fa180925c}</UniqueIdentifier>
+=======
+    <Filter Include="Levels\Stage\StageEditLevel">
+      <UniqueIdentifier>{85a18d16-8527-4e81-98f1-d7031fd431d3}</UniqueIdentifier>
+>>>>>>> Stashed changes
     </Filter>
   </ItemGroup>
 </Project>

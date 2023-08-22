@@ -381,7 +381,12 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="StageBase.h" />
+<<<<<<< Updated upstream
     <ClInclude Include="StageDatas.h" />
+=======
+    <ClInclude Include="StageEditGUI.h" />
+    <ClInclude Include="StageEditLevel.h" />
+>>>>>>> Stashed changes
     <ClInclude Include="StartButton.h">
       <SubType>
       </SubType>
@@ -617,7 +622,12 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="StageBase.cpp" />
+<<<<<<< Updated upstream
     <ClCompile Include="StageDatas.cpp" />
+=======
+    <ClCompile Include="StageEditGUI.cpp" />
+    <ClCompile Include="StageEditLevel.cpp" />
+>>>>>>> Stashed changes
     <ClCompile Include="StartButton.cpp">
       <SubType>
       </SubType>

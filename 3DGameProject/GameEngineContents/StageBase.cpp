@@ -24,7 +24,6 @@ void StageBase::Update(float _DeltaTime)
 void StageBase::StartProcess(GameEngineLevel* Level)
 {
 	NetworkManager::Update_PacketProcess(Level);
-	/*string_view asd=Level->GetName();*/
 }
 
 void StageBase::SetCamera(float4 _Position)

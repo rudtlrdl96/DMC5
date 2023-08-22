@@ -1,6 +1,5 @@
 #pragma once
 
-class GameEngineLevel;
 class StageBase : public GameEngineLevel
 {
 public:
@@ -19,6 +18,5 @@ protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 private:
-	bool IsMessage = false;
 };
 

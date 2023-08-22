@@ -42,6 +42,8 @@ enum class Net_LevelType
 	Title,
 	SelectCharacter,
 
+	StartStage,
+	BossStage,
 	//TODO
 };
 
