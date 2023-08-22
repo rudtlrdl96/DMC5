@@ -208,6 +208,9 @@
     <ClInclude Include="AnimationToolLevel.h">
       <Filter>Levels\Test</Filter>
     </ClInclude>
+    <ClInclude Include="StageDatas.h">
+      <Filter>Levels\Stage\0.StageBase</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -404,6 +407,9 @@
     </ClCompile>
     <ClCompile Include="AnimationToolLevel.cpp">
       <Filter>Levels\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="StageDatas.cpp">
+      <Filter>Levels\Stage\0.StageBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

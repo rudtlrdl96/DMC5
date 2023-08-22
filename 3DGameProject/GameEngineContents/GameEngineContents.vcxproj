@@ -381,6 +381,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="StageBase.h" />
+    <ClInclude Include="StageDatas.h" />
     <ClInclude Include="StartButton.h">
       <SubType>
       </SubType>
@@ -616,6 +617,7 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="StageBase.cpp" />
+    <ClCompile Include="StageDatas.cpp" />
     <ClCompile Include="StartButton.cpp">
       <SubType>
       </SubType>
