@@ -187,6 +187,15 @@
     <ClInclude Include="CreateObjectPacket.h">
       <Filter>Server\01.Packet\04.ClientToServer</Filter>
     </ClInclude>
+    <ClInclude Include="StageBase.h">
+      <Filter>Levels\Stage\0.StageBase</Filter>
+    </ClInclude>
+    <ClInclude Include="BossStage.h">
+      <Filter>Levels\Stage\2.BossStage</Filter>
+    </ClInclude>
+    <ClInclude Include="StartStage.h">
+      <Filter>Levels\Stage\1.StartStage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -363,6 +372,15 @@
     <ClCompile Include="NetworkGUI.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="StageBase.cpp">
+      <Filter>Levels\Stage\0.StageBase</Filter>
+    </ClCompile>
+    <ClCompile Include="BossStage.cpp">
+      <Filter>Levels\Stage\2.BossStage</Filter>
+    </ClCompile>
+    <ClCompile Include="StartStage.cpp">
+      <Filter>Levels\Stage\1.StartStage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
@@ -517,6 +535,18 @@
     </Filter>
     <Filter Include="Actor\Animation">
       <UniqueIdentifier>{1007973a-51d2-458b-a319-f0c7f00bca42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\Stage">
+      <UniqueIdentifier>{894fedc0-516c-4462-9417-bad3a83c8d80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\Stage\0.StageBase">
+      <UniqueIdentifier>{e8d24add-216e-4779-a611-44420f6e67a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\Stage\2.BossStage">
+      <UniqueIdentifier>{75ef1a2d-f0b3-4e78-b433-0101a05f933d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\Stage\1.StartStage">
+      <UniqueIdentifier>{90b7419c-d3c5-4f35-9ed3-3e2ea44b7e0e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -175,6 +175,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="BossStage.h" />
     <ClInclude Include="ConsoleGUI.h">
       <SubType>
       </SubType>
@@ -363,10 +364,12 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="StageBase.h" />
     <ClInclude Include="StartButton.h">
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="StartStage.h" />
     <ClInclude Include="TestLevel.h" />
     <ClInclude Include="TestObject.h">
       <SubType>
@@ -398,6 +401,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="BossStage.cpp" />
     <ClCompile Include="ConsoleGUI.cpp">
       <SubType>
       </SubType>
@@ -579,10 +583,12 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="StageBase.cpp" />
     <ClCompile Include="StartButton.cpp">
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="StartStage.cpp" />
     <ClCompile Include="TestLevel.cpp" />
     <ClCompile Include="TestObject.cpp">
       <SubType>
