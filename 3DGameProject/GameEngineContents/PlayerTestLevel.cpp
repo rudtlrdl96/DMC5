@@ -70,7 +70,7 @@ void PlayerTestLevel::LevelChangeStart()
 
 		for (size_t i = 0; i < Files.size(); i++)
 		{
-			GameEngineFBXAnimation::Load(Files[i].GetFullPath());
+			//GameEngineFBXAnimation::Load(Files[i].GetFullPath());
 		}
 	}
 	std::shared_ptr<BasePlayerActor> NewPlayer = CreateActor<BasePlayerActor>();

@@ -24,34 +24,11 @@ char PlayerController::MoveVectorToChar(const float4& _Value)
 	{
 		if (Dot < -0.75f)
 		{
-			return '4';
-		}
-		else if (Dot < -0.25f)
-		{
-			return '1';
-		}
-		else if (Dot < 0.25f)
-		{
-			return '2';
-		}
-		else if (Dot < 0.75f)
-		{
-			return '3';
-		}
-		else
-		{
 			return '6';
 		}
-	}
-	else
-	{
-		if (Dot < -0.75f)
-		{
-			return '4';
-		}
 		else if (Dot < -0.25f)
 		{
-			return '7';
+			return '9';
 		}
 		else if (Dot < 0.25f)
 		{
@@ -59,11 +36,34 @@ char PlayerController::MoveVectorToChar(const float4& _Value)
 		}
 		else if (Dot < 0.75f)
 		{
-			return '9';
+			return '7';
 		}
 		else
 		{
+			return '4';
+		}
+	}
+	else
+	{
+		if (Dot < -0.75f)
+		{
 			return '6';
+		}
+		else if (Dot < -0.25f)
+		{
+			return '3';
+		}
+		else if (Dot < 0.25f)
+		{
+			return '2';
+		}
+		else if (Dot < 0.75f)
+		{
+			return '1';
+		}
+		else
+		{
+			return '4';
 		}
 	}
 
@@ -101,17 +101,14 @@ void PlayerController::Update(float _DeltaTime)
 
 	std::shared_ptr<PlayerWindow> Window = GameEngineGUI::FindGUIWindowConvert<PlayerWindow>("PlayerWindow");
 	Window->Text = " ";
-	if (QCommand.size() == 0)
+	if (Command.Size == 0)
 	{
 		return;
 	}
-	CommandRecord* Back = QCommand.back();
-	while (Back != nullptr)
+	for (int i = 0; i < Command.Size; i++)
 	{
-		if (Back == nullptr) { return; }
-		Window->Text += Back->GetKey();
+		Window->Text += Command.Keys[i];
 		Window->Text += "\n";
-		Back = Back->GetFront();
 	}
 }
 
@@ -143,33 +140,11 @@ void PlayerController::InputRecord()
 {
 	// 이동 입력 내역을 기록한다
 	char MoveChar = MoveVectorToChar(MoveVector);
-	if (QCommand.size() > 0)
-	{
-		if (true == QCommand.front()->TimeCheck(GetLiveTime()))
-		{
-			delete QCommand.front();
-			QCommand.front() = nullptr;
-			QCommand.pop();
-			if (QCommand.size() == 0)
-			{
-				return;
-			}
-			QCommand.front()->FrontClear();
-		}
-		if (MoveChar == QCommand.back()->GetKey())
-		{
-			return;
-		}
-	}
+	Command.TimeCheck(GetLiveTime());
 
 	if (false == IsLockOn) { return; }
 
-	if (QCommand.size() == 0)
-	{
-		QCommand.push(new CommandRecord(MoveVectorToChar(MoveVector), GetLiveTime(), nullptr));
-		return;
-	}
-	QCommand.push(new CommandRecord(MoveVectorToChar(MoveVector), GetLiveTime(), QCommand.back()));
+	Command.AddKey(MoveVectorToChar(MoveVector), GetLiveTime());
 }
 
 void PlayerController::ActionInput()
@@ -247,25 +222,17 @@ void PlayerController::ActionInput()
 
 bool PlayerController::InputCheck_BackFront()
 {
-	if (QCommand.size() == 0) { return false; }
-	CommandRecord* BackCommand = QCommand.back();		// 커맨드큐에서 가장마지막 커맨드를 받아온다
-	if (BackCommand == nullptr) { return false; }				// 커맨드가 nullptr시 false
-	if (BackCommand->GetKey() != '8') { return false; }		// 커맨드가 8이 아닐 시 false
+	if (Command.Keys[0] != '8') { return false; }		// 커맨드가 8이 아닐 시 false
 
-	CommandRecord* SecondCommand = BackCommand->GetFront();	// 8이전의 입력한 커맨드를 받아옴
-	if (SecondCommand == nullptr) { return false; }				// 커맨드가 nullptr시 false
-
-	if (SecondCommand->GetKey() == '2')
+	if (Command.Keys[1] == '2')	// 8이전 커맨드가 2일시
 	{
 		// 2를 입력했던 경우
 		return true;
 	}
-	else if (SecondCommand->GetKey() == 'n')
+	else if (Command.Keys[1] == 'n')
 	{
 		// 중립이었던 경우
-		CommandRecord* ThirdCommand = SecondCommand->GetFront();	// 중립 이전의 입력한 커맨드를 받아옴
-		if (ThirdCommand == nullptr) { return false; }				// 커맨드가 nullptr시 false
-		return ThirdCommand->GetKey() == '2';	// 2였다면 true 아니면 false
+		return Command.Keys[2] == '2';	// 2였다면 true 아니면 false
 	}
 	return false;
 }
@@ -273,8 +240,5 @@ bool PlayerController::InputCheck_BackFront()
 
 bool PlayerController::InputCheck_Dir(char _Dir)
 {
-	if (QCommand.size() == 0) { return false; }
-	CommandRecord* BackCommand = QCommand.back();		// 커맨드큐에서 가장마지막 커맨드를 받아온다
-	if (BackCommand == nullptr) { return false; }				// 커맨드가 nullptr시 false
-	return BackCommand->GetKey() == _Dir;	// 커맨드가 _Dir이면 true
+	return Command.Keys[0] == _Dir;	// 커맨드가 _Dir이면 true
 }

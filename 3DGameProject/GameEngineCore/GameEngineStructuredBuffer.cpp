@@ -127,7 +127,6 @@ void GameEngineStructuredBuffer::ChangeData(const void* _Data, size_t _Size)
 #endif 
 
 	const float4x4* Ptr = reinterpret_cast<const float4x4*>(_Data);
-
 	float4x4 Test = *Ptr;
 
 	memcpy_s(SettingResources.pData, BufferInfo.ByteWidth, _Data, _Size);

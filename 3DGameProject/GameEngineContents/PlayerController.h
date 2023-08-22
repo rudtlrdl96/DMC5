@@ -3,34 +3,62 @@
 class CommandRecord
 {
 public:
-	CommandRecord(char _Key, float _Time, CommandRecord* _Front)
+
+	void AddKey(char _Key, float _Time)
 	{
-		Key = _Key;
-		Time = _Time;
-		Front = _Front;
+		if (0 < Size)
+		{
+			if (Keys[0] == _Key)
+			{
+				return;
+			}
+			if (Size == MaxSize)
+			{
+				DeleteKey();
+			}
+			MoveKey();
+		}
+		
+ 		Keys[0] = _Key;
+		Times[0] = _Time;
+		Size++;
 	}
 
-	char GetKey()
+	char GetKey(int _Index)
 	{
-		return Key;
+		return Keys[_Index];
 	}
-	bool TimeCheck(float _LiveTime)
+
+	void TimeCheck(float _LiveTime)
 	{
-		return 0.5f < _LiveTime - Time;
+		if (Size == 0) { return; }
+		if (1.0f < _LiveTime - Times[Size - 1])
+		{
+			DeleteKey();
+		}
 	}
-	void FrontClear()
+
+	void DeleteKey()
 	{
-		Front = nullptr;
+		Keys[Size - 1] = 'n';
+		Size--;
 	}
-	CommandRecord* GetFront()
+
+	void MoveKey()
 	{
-		return Front;
+		for (int i = Size; 0 < i; i--)
+		{
+			Keys[i] = Keys[i - 1];
+			//Keys[i] = 'n';
+			Times[i] = Times[i - 1];
+		}
 	}
+
+	char Keys[5] = { 'n', 'n', 'n' };
+	float Times[5] = { 0 };
+	int Size = 0;
+	const int MaxSize = 5;
 private:
-	char Key = -1;
-	float Time = -1.0f;
-
-	CommandRecord* Front = nullptr;
 };
 
 // Ό³Έν :
@@ -70,7 +98,7 @@ private:
 	float4 MoveVector;
 	GameEngineTransform* PlayerTransform = nullptr;
 	GameEngineTransform* CameraTransform = nullptr;
-	std::queue<CommandRecord*> QCommand;
+	CommandRecord Command;
 
 
 	bool InputCheck_BackFront();
