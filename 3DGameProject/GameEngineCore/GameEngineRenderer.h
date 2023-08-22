@@ -2,11 +2,13 @@
 #include "GameEngineComponent.h"
 #include "GameEngineShader.h"
 
-class GameEngineRenderUnit : public std::enable_shared_from_this<GameEngineRenderUnit>
+class GameEngineRenderUnit : public GameEngineObjectBase, public std::enable_shared_from_this<GameEngineRenderUnit>
 {
 public:
 	GameEngineShaderResHelper ShaderResHelper;
 	std::shared_ptr<class GameEngineMaterial> Material;
+
+	std::function<void(float)> RenderFunction;
 
 	GameEngineRenderUnit();
 	void SetMesh(const std::string_view& _Name);

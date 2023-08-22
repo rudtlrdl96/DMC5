@@ -85,6 +85,11 @@ public:
 	virtual void SetFBXMesh(const std::string& _Name, std::string _Material, size_t MeshIndex);
 	virtual std::shared_ptr<GameEngineRenderUnit> SetFBXMesh(const std::string& _Name, std::string _Material, size_t MeshIndex, size_t _SubSetIndex);
 
+	inline std::shared_ptr<GameEngineFBXMesh> GetFBXMesh()
+	{
+		return FBXMesh;
+	}
+
 	void CreateFBXAnimation(const std::string& _AnimationFBXName, int _Index = 0)
 	{
 		CreateFBXAnimation(_AnimationFBXName, _AnimationFBXName, _Index);
@@ -92,22 +97,16 @@ public:
 
 	void CreateFBXAnimation(const std::string& _AnimationName, const std::string& _AnimationFBXName, int _Index = 0);
 
+	std::vector<std::vector<std::shared_ptr<GameEngineRenderUnit>>>& GetAllRenderUnit()
+	{
+		return Unit;
+	}
 
 	void Update(float _DeltaTime) override;
 
 	void PauseSwtich();
 
 	void ChangeAnimation(const std::string& _AnimationName);
-
-	inline std::shared_ptr<GameEngineFBXMesh> GetFBXMesh()
-	{
-		return FBXMesh;
-	}
-
-	std::vector<std::vector<std::shared_ptr<GameEngineRenderUnit>>>& GetAllRenderUnit()
-	{
-		return Unit;
-	}
 
 	float4 GetMeshScale()
 	{
@@ -175,10 +174,11 @@ private:
 	// 확장되어야 한다.
 	// 본개수 만큼
 	// 앞쪽에 키는 매쉬 개수 x 본개수의 뜻을 가지게 된다.
+
+	// 스트럭처드 버퍼랑 링크가 되는 녀석.
 	std::map<size_t, std::vector<float4x4>> AnimationBoneMatrixs;
+
+
 	std::map<size_t, std::vector<AnimationBoneData>> AnimationBoneDatas;
-
-
-
 };
 

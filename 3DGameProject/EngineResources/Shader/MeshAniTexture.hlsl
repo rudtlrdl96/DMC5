@@ -118,11 +118,11 @@ Output MeshAniTexture_VS(Input _Input)
     float4 InputPos = _Input.POSITION;
     InputPos.w = 1.0f;
     
-    //if (IsAnimation != 0)
-    //{
+    if (IsAnimation != 0)
+    {
         Skinning(InputPos, _Input.BLENDWEIGHT, _Input.BLENDINDICES, ArrAniMationMatrix);
         InputPos.w = 1.0f;
-    //}
+    }
     // 자신의 로컬공간에서 애니메이션을 시키고
     // NewOutPut.POSITION = mul(_Input.POSITION, ArrAniMationMatrix[_Input.BLENDINDICES[0]].Mat);
     NewOutPut.POSITION = mul(InputPos, WorldViewProjectionMatrix);

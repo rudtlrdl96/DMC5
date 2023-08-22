@@ -65,7 +65,7 @@ public:
 
 	void Read(GameEngineSerializer& _File) override
 	{
-		_File >> BoneIndex ;
+		_File >> BoneIndex;
 		_File >> BoneParentIndex;
 		_File >> BoneMatData;
 	}

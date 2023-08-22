@@ -28,10 +28,13 @@ public:
 	fbxsdk::FbxNode* Node;
 };
 
-// 설명 : 애니메이션과 매쉬 양쪽에서 사용할 코드들을 넣을것이다.
+// 애니메이션과 매쉬 양쪽에서 사용할 코드들을 넣을것이다.
+// 설명 :
 class GameEngineFBX
 {
 public:
+	static bool IsCheckAnimationFBX(std::string_view _Path);
+
 	// constrcuter destructer
 	GameEngineFBX();
 	~GameEngineFBX();
@@ -70,5 +73,6 @@ protected:
 	bool IsAnimation = false;
 
 private:
+	bool CheckAnimationFBX(std::string_view _Path);
 };
 

@@ -4,6 +4,7 @@
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 //#include <GameEngineCore/PhysXBoxComponent.h>
 #include <GameEngineCore/PhysXCapsuleComponent.h>
+#include <GameEngineCore/GameEngineFontRenderer.h>
 
 #include "TestLevel.h"
 
@@ -74,6 +75,13 @@ void TestObject::Start()
 	//Renderer->SetFBXMesh("AnimMan.FBX", "MeshAniTexture");
 	//Renderer->CreateFBXAnimation("Run", "ALS_N_Run_F.FBX");
 	//Renderer->ChangeAnimation("Run");
+
+	{
+		std::shared_ptr<GameEngineFontRenderer> Renderer = CreateComponent<GameEngineFontRenderer>();
+		Renderer->SetScale(100.0f);
+		Renderer->SetFont("±Ã¼­");
+		Renderer->SetText("aaaaaaaaaa");
+	}
 }
 
 void TestObject::Update(float _DeltaTime)

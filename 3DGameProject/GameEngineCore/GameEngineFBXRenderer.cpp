@@ -19,7 +19,6 @@ void GameEngineFBXAnimationInfo::Init(const std::string_view& _Name, int _Index)
 // 이걸 통해서 애니메이션을 진행시키고.
 void GameEngineFBXAnimationInfo::Update(float _DeltaTime)
 {
-	_DeltaTime *= TimeScale;
 	// 0~24진행이죠?
 	if (false == ParentRenderer->Pause)
 	{
@@ -161,6 +160,12 @@ GameEngineFBXRenderer::~GameEngineFBXRenderer()
 void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Name, std::string _Material)
 {
 	std::shared_ptr<GameEngineFBXMesh> FindFBXMesh = GameEngineFBXMesh::Find(_Name);
+
+	if (nullptr == FindFBXMesh)
+	{
+		MsgAssert("로드하지 않은 FBX 매쉬를 사용하려고 했습니다.");
+	}
+
 	// 너 몇개 가지고 있어.
 	for (size_t UnitCount = 0; UnitCount < FindFBXMesh->GetRenderUnitCount(); UnitCount++)
 	{
@@ -227,6 +232,9 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh(const st
 	RenderUnit->SetMesh(GetFBXMesh);
 	RenderUnit->SetMaterial(_Material);
 
+
+
+
 	if (RenderUnit->ShaderResHelper.IsStructuredBuffer("ArrAniMationMatrix"))
 	{
 		if (AnimationBoneMatrixs.end() == AnimationBoneMatrixs.find(_MeshIndex))
@@ -257,6 +265,7 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh(const st
 		AnimationBuffer->Count = AnimationBoneMatrixs[_MeshIndex].size();
 	}
 
+
 	if (RenderUnit->ShaderResHelper.IsTexture("DiffuseTexture"))
 	{
 		const FbxExMaterialSettingData& MatData = FBXMesh->GetMaterialSettingData(_MeshIndex, _SubSetIndex);
@@ -266,6 +275,7 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh(const st
 			RenderUnit->ShaderResHelper.SetTexture("DiffuseTexture", MatData.DifTextureName);
 		}
 	}
+
 
 	if (RenderUnit->ShaderResHelper.IsTexture("NormalTexture"))
 	{
@@ -278,6 +288,7 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh(const st
 
 		BaseValue.IsNormal = 1;
 	}
+
 
 	return RenderUnit;
 }

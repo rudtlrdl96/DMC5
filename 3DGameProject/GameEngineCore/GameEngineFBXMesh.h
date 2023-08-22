@@ -548,6 +548,8 @@ public:
 	}
 };
 
+
+
 struct Bone : public GameEngineSerializObject
 {
 	std::string Name;
@@ -672,8 +674,10 @@ protected:
 	std::string FBXMeshName;
 
 	std::vector<FbxExMeshInfo> MeshInfos;
-	std::vector<FbxRenderUnitInfo> RenderUnitInfos;
 	std::vector<std::vector<Bone>> AllBones;
+
+
+	std::vector<FbxRenderUnitInfo> RenderUnitInfos;
 
 	std::vector<std::shared_ptr<GameEngineStructuredBuffer>> AllBoneStructuredBuffers; // 본정보체
 

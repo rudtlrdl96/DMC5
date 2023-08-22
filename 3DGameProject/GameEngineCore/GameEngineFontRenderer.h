@@ -41,6 +41,7 @@ protected:
 private:
 	void Start() override;
 
+	std::shared_ptr<GameEngineRenderUnit> Unit;
 
 	float FontScale = 10.0f;
 	float4 FontColor = float4::RED;

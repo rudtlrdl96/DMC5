@@ -122,6 +122,10 @@ void GameEngineFBXMesh::LoadMesh(const std::string& _Path, const std::string& _N
 	// FBXInit(FBXFile.GetFullPath());
 	FBXInit(_Path);
 	MeshLoad();
+
+	// 이쪽에서 본이 있는지 확인하고
+	// 본이 있다면 애니메이션을 할 가능성이 있다고 생각하기 때문에
+	// 여기서 본에 맞는 스트럭처드 버퍼를 만들어 낸다.
 	CreateGameEngineStructuredBuffer();
 	// Bone을 조사한다.
 
@@ -345,7 +349,7 @@ void GameEngineFBXMesh::FbxRenderUnitInfoMaterialSetting(fbxsdk::FbxNode* _Node,
 
 	}
 	else {
-		MsgAssert("매쉬는 존재하지만 재질은 존재하지 않습니다.");
+		// MsgAssert("매쉬는 존재하지만 재질은 존재하지 않습니다.");
 	}
 
 }

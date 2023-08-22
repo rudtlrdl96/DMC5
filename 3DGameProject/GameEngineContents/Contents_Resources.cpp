@@ -11,6 +11,7 @@
 #include <GameEngineCore/GameEngineFBXAnimation.h>
 #include <GameEngineCore/GameEngineGUI.h>
 #include <GameEngineCore/HierarchyGUI.h>
+#include <GameEngineCore/GameEngineFont.h>
 
 #include "NetworkGUI.h"
 #include "ConsoleGUI.h"
@@ -31,6 +32,7 @@ void ContentsCore::ContentsResourcesCreate()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// FontUpload();
+	GameEngineFont::Load("±√º≠");
 
 	// ƒ¡≈Ÿ√˜ Ω¶¿Ã¥ı ∆ƒ¿œ ∑ŒµÂ
 	{

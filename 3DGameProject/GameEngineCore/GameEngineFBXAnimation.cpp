@@ -21,7 +21,13 @@ void GameEngineFBXAnimation::LoadMesh(const std::string& _Path, const std::strin
 {
 	FBXInit(_Path);
 
+	// 매쉬는 정말 매쉬만 있고
+	// 애니메이션 안에 
+
 	CheckAnimation();
+
+	// importbone
+
 	// 애니메이션이 존재한다 => 그걸로 아직 뭔가를 하지 않는다.
 
 	AnimationDatas;
