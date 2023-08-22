@@ -1,0 +1,24 @@
+newmtl l09_01_rock1
+Kd 1.000000 1.000000 1.000000
+Ks 0.250000 0.250000 0.250000
+Ns 1.000000
+map_Kd l09_01_rock12_ALBM.tga
+map_Ks l09_01_rock12_ALBM.tga
+map_bump l09_01_rock12_NRMR.tga
+
+newmtl sm0712_builpartsC_A_Mat
+Kd 1.000000 1.000000 1.000000
+Ks 0.250000 0.250000 0.250000
+Ns 1.000000
+map_Kd sm0712_builpartsC_A_ALBM.tga
+map_Ks sm0712_builpartsC_A_ALBM.tga
+map_bump sm0712_builpartsC_A_NRMR.tga
+
+newmtl sm0712_builpartsC_B_Mat
+Kd 1.000000 1.000000 1.000000
+Ks 0.250000 0.250000 0.250000
+Ns 1.000000
+map_Kd sm0712_builpartsC_B_ALBM.tga
+map_Ks sm0712_builpartsC_B_ALBM.tga
+map_bump sm0712_builpartsC_B_NRMR.tga
+
