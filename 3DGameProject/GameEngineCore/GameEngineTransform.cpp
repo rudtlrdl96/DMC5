@@ -270,6 +270,29 @@ void GameEngineTransform::LocalDecompose()
 	TransData.LocalWorldMatrix.Decompose(TransData.LocalScale, TransData.LocalQuaternion, TransData.LocalPosition);
 	TransData.LocalRotation = TransData.LocalQuaternion.QuaternionToEulerDeg();
 }
+
+float GameEngineTransform::GetRotation_Forward(const float4& _WolrdPosition)
+{
+	float4 Dir = (_WolrdPosition - TransData.WorldPosition).NormalizeReturn();
+	float4 ForwardDir = GetWorldForwardVector();
+
+	float4 Cross = float4::Cross3DReturnNormal(Dir, ForwardDir);
+
+	if (Cross.y > 0)
+	{
+		Dir = -Dir;
+	}
+
+	float DotCos = acos(float4::DotProduct3D(Dir, ForwardDir));
+
+	if (Cross.y > 0)
+	{
+		DotCos += GameEngineMath::PIE;
+	}
+
+	return DotCos * GameEngineMath::RadToDeg;
+}
+
 void GameEngineTransform::WorldDecompose()
 {
 	TransData.WorldMatrix.Decompose(TransData.WorldScale, TransData.WorldQuaternion, TransData.WorldPosition);

@@ -250,7 +250,6 @@ public:
 	float4 GetWorldRotation();
 	float4 GetWorldQuaternion();
 
-
 	float4 GetLocalForwardVector()
 	{
 		return TransData.LocalWorldMatrix.ArrVector[2].NormalizeReturn();
@@ -324,8 +323,6 @@ public:
 		return  AbsolutePosition;
 	}
 
-
-
 	GameEngineTransform* GetParent()
 	{
 		return Parent;
@@ -345,6 +342,9 @@ public:
 	{
 		return ColData;
 	}
+
+	// 나의 Forward 벡터 기준으로 해당 위치의 회전 값을 구합니다
+	float GetRotation_Forward(const float4& _WolrdPosition);
 
 protected:
 

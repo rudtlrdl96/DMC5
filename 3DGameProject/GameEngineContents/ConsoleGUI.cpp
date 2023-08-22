@@ -34,6 +34,11 @@ void ConsoleGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
 
 	ImGui::Combo("Log Type", &PrintLogOrder, LogTypeNames, (int)LogOrder::Count);
 
+	if (ImGui::Button("Log Reset"))
+	{
+		BaseLog::LogReset(PrintLogOrder);
+	}
+
 	const std::vector<std::string>& LogDatas = BaseLog::GetLog(PrintLogOrder); 
 
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Log");

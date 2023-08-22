@@ -15,3 +15,4 @@
 #include <GameEngineCore/GameEngineLevel.h>
 
 #include "ContentsEnum.h"
+#include "BaseLog.h"

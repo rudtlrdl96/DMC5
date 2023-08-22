@@ -36,7 +36,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<BossStage>();
 	GameEngineCore::CreateLevel<StartStage>();
 
-	GameEngineCore::ChangeLevel("StartStage");
+	GameEngineCore::ChangeLevel("TestLevel");
 }
 
 void ContentsCore::GameEnd() 

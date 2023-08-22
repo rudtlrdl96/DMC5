@@ -43,6 +43,15 @@ enum class EnemySize
 	Large
 };
 
+enum class EnemyHitDir
+{
+	None,
+	Forward,
+	Back,
+	Left,
+	Right
+};
+
 class BaseEnemyActor : public GameEngineActor, public GameEngineNetObject
 {
 	friend class EnemySpawnArea;
@@ -81,6 +90,8 @@ public:
 	{
 		return EnemySizeValue;
 	}
+
+	EnemyHitDir GetHitDir(const float4& _WolrdPos);
 
 protected:
 	void Start() override;

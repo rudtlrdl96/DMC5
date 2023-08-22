@@ -126,9 +126,75 @@ void BaseEnemyActor::MonsterHit(const EnemyHitData& _HitData)
 	}
 }
 
+EnemyHitDir BaseEnemyActor::GetHitDir(const float4& _WolrdPos)
+{
+	EnemyHitDir ResultDir = EnemyHitDir::None;
+
+	GameEngineTransform* EnemyTrans = GetTransform();
+
+	float DotCos = EnemyTrans->GetRotation_Forward(_WolrdPos);
+
+	if (315.0f >  DotCos && 225.0f < DotCos)
+	{
+		ResultDir = EnemyHitDir::Left;			
+	}
+	else if(225.0f >= DotCos && 135.0f < DotCos)
+	{
+		ResultDir = EnemyHitDir::Back;
+	}
+	else if (135.0f >= DotCos && 45.0f < DotCos)
+	{
+		ResultDir = EnemyHitDir::Right;
+	}
+	else
+	{
+		ResultDir = EnemyHitDir::Forward;
+	}
+
+#ifdef _DEBUG
+
+	switch (ResultDir)
+	{
+	case EnemyHitDir::Forward:
+		BaseLog::PushLog(LogOrder::Enemy, "Hit Forward [" + std::to_string(GetID()) + "]");
+		break;
+	case EnemyHitDir::Back:
+		BaseLog::PushLog(LogOrder::Enemy, "Hit Back [" + std::to_string(GetID()) + "]");
+		break;
+	case EnemyHitDir::Left:
+		BaseLog::PushLog(LogOrder::Enemy, "Hit Left [" + std::to_string(GetID()) + "]");
+		break;
+	case EnemyHitDir::Right:
+		BaseLog::PushLog(LogOrder::Enemy, "Hit Right [" + std::to_string(GetID()) + "]");
+		break;
+	default:
+		break;
+	}
+#endif // _DEBUG
+
+	return ResultDir;
+}
+
 void BaseEnemyActor::Start()
 {
 	EnemyRenderer = CreateComponent<GameEngineFBXRenderer>();
+
+	// Debug Key
+	if (false == GameEngineInput::IsKey("EnemyDebug_Ctrl"))
+	{
+		GameEngineInput::CreateKey("EnemyDebug_Ctrl", VK_LCONTROL);
+		GameEngineInput::CreateKey("EnemyDebug_0", '0');
+		GameEngineInput::CreateKey("EnemyDebug_1", '1');
+		GameEngineInput::CreateKey("EnemyDebug_2", '2');
+		GameEngineInput::CreateKey("EnemyDebug_3", '3');
+		GameEngineInput::CreateKey("EnemyDebug_4", '4');
+		GameEngineInput::CreateKey("EnemyDebug_5", '5');
+		GameEngineInput::CreateKey("EnemyDebug_6", '6');
+		GameEngineInput::CreateKey("EnemyDebug_7", '7');
+		GameEngineInput::CreateKey("EnemyDebug_8", '8');
+		GameEngineInput::CreateKey("EnemyDebug_9", '9');
+	}
+
 
 	EnemyMeshLoad();
 	EnemyTextureLoad();
@@ -138,6 +204,32 @@ void BaseEnemyActor::Start()
 
 void BaseEnemyActor::Update(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsPress("EnemyDebug_Ctrl"))
+	{
+		//float4 AttackerPos = float4::ZERO;
+		//MonsterDamageType Type = MonsterDamageType::None;
+		//float Damage = 0.0f;
+		//float4 ForceDir = float4::ZERO;
+		//float ForcePower = 1.0f;
+
+		if (true == GameEngineInput::IsDown("EnemyDebug_1"))
+		{
+			EnemyHitDir Result = GetHitDir(GetTransform()->GetWorldPosition() + float4::FORWARD);
+		}
+		if (true == GameEngineInput::IsDown("EnemyDebug_2"))
+		{
+			EnemyHitDir Result = GetHitDir(GetTransform()->GetWorldPosition() + float4::BACK);
+		}
+		if (true == GameEngineInput::IsDown("EnemyDebug_3"))
+		{
+			EnemyHitDir Result = GetHitDir(GetTransform()->GetWorldPosition() + float4::LEFT);
+		}
+		if (true == GameEngineInput::IsDown("EnemyDebug_4"))
+		{
+			EnemyHitDir Result = GetHitDir(GetTransform()->GetWorldPosition() + float4::RIGHT);
+		}
+	}
+
 	NetControllType Type = GetControllType();
 
 	switch (Type)

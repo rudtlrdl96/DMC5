@@ -36,6 +36,14 @@ public:
 		return LogBuffers;
 	}
 
+	template<typename Enum>
+	static void LogReset(Enum _Enum)
+	{
+		LogReset(static_cast<int>(_Enum));
+	}
+
+	static void LogReset(int _Order);
+
 protected:
 
 private:

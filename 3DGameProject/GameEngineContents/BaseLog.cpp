@@ -42,6 +42,11 @@ const std::vector<std::string>& BaseLog::GetLog(int _Order)
 	return FindIter->second;
 }
 
+void BaseLog::LogReset(int _Order)
+{
+	LogBuffers[_Order].clear();
+}
+
 BaseLog::BaseLog()
 {
 }
