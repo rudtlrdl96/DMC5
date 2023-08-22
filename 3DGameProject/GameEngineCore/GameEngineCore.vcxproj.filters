@@ -781,6 +781,9 @@
     <ClInclude Include="PhysXConvexComponent.h">
       <Filter>Physics\Component</Filter>
     </ClInclude>
+    <ClInclude Include="PhysXSphereComponent.h">
+      <Filter>Physics\Component</Filter>
+    </ClInclude>
     <ClInclude Include="HierarchyGUI.h">
       <Filter>GUI</Filter>
     </ClInclude>
@@ -975,6 +978,9 @@
       <Filter>Physics\Component</Filter>
     </ClCompile>
     <ClCompile Include="PhysXConvexComponent.cpp">
+      <Filter>Physics\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysXSphereComponent.cpp">
       <Filter>Physics\Component</Filter>
     </ClCompile>
     <ClCompile Include="HierarchyGUI.cpp">
