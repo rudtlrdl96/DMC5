@@ -1,7 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Char_ChoiceLevel.h"
 #include "C_ChoiceBG.h"
-#include "Nero_ChoiceUI.h"
+#include "Char_ChoiceUI.h"
 
 #include "FadeEffect.h"
 #include <GameEngineCore/GameEngineFont.h>
@@ -38,7 +38,7 @@ void Char_ChoiceLevel::Start()
 	FEffect = GetLastTarget()->CreateEffect<FadeEffect>();
 
 	std::shared_ptr<C_ChoiceBG> C_ChoiceBGPtr = CreateActor<C_ChoiceBG>();
-	std::shared_ptr<Nero_ChoiceUI> Nero_ChoiceUIPtr = CreateActor<Nero_ChoiceUI>();
+	std::shared_ptr<Char_ChoiceUI> Char_ChoiceUIPtr = CreateActor<Char_ChoiceUI>();
 
 
 }

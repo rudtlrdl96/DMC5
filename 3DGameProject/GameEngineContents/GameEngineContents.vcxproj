@@ -196,7 +196,9 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Char_ChoiceButton.h" />
     <ClInclude Include="Char_ChoiceLevel.h" />
+    <ClInclude Include="Char_ChoiceUI.h" />
     <ClInclude Include="ConsoleGUI.h">
       <SubType>
       </SubType>
@@ -210,7 +212,6 @@
     </ClInclude>
     <ClInclude Include="Intro_BackGround.h" />
     <ClInclude Include="Intro_Logo.h" />
-    <ClInclude Include="Nero_ChoiceUI.h" />
     <ClInclude Include="NetTestEnemy.h">
       <SubType>
       </SubType>
@@ -435,7 +436,9 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Char_ChoiceButton.cpp" />
     <ClCompile Include="Char_ChoiceLevel.cpp" />
+    <ClCompile Include="Char_ChoiceUI.cpp" />
     <ClCompile Include="ConsoleGUI.cpp">
       <SubType>
       </SubType>
@@ -447,7 +450,6 @@
     </ClCompile>
     <ClCompile Include="Intro_BackGround.cpp" />
     <ClCompile Include="Intro_Logo.cpp" />
-    <ClCompile Include="Nero_ChoiceUI.cpp" />
     <ClCompile Include="NetTestEnemy.cpp">
       <SubType>
       </SubType>

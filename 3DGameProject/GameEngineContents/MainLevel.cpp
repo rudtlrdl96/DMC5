@@ -62,6 +62,11 @@ void MainLevel::Update(float _DeltaTime)
 		GameEngineCore::ChangeLevel("StageEditLevel");
 		return;
 	}
+	if (true == GameEngineInput::IsDown("SelectLevel_05"))
+	{
+		GameEngineCore::ChangeLevel("TitleLevel");
+		return;
+	}
 }
 
 void MainLevel::LevelChangeStart()

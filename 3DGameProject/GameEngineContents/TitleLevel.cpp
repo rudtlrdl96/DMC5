@@ -41,6 +41,8 @@ void TitleLevel::Start()
 		GameEngineInput::CreateKey("UI_UP", VK_UP);
 		GameEngineInput::CreateKey("UI_Down", VK_DOWN);
 		GameEngineInput::CreateKey("UI_Enter", VK_RETURN);
+		GameEngineInput::CreateKey("UI_Left", VK_LEFT);
+		GameEngineInput::CreateKey("UI_Right", VK_RIGHT);
 
 	}
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
