@@ -217,6 +217,12 @@
     <ClInclude Include="C_ChoiceBG.h">
       <Filter>UI\Actor\C_ChoiceUI</Filter>
     </ClInclude>
+    <ClInclude Include="StageEditGUI.h">
+      <Filter>Levels\Stage\0.StageBase</Filter>
+    </ClInclude>
+    <ClInclude Include="StageEditLevel.h">
+      <Filter>Levels\Stage\0.StageBase</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -422,6 +428,12 @@
     </ClCompile>
     <ClCompile Include="C_ChoiceBG.cpp">
       <Filter>UI\Actor\C_ChoiceUI</Filter>
+    </ClCompile>
+    <ClCompile Include="StageEditGUI.cpp">
+      <Filter>Levels\Stage\0.StageBase</Filter>
+    </ClCompile>
+    <ClCompile Include="StageEditLevel.cpp">
+      <Filter>Levels\Stage\0.StageBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

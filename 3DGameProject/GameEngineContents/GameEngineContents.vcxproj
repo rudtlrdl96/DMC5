@@ -371,6 +371,8 @@
     </ClInclude>
     <ClInclude Include="StageBase.h" />
     <ClInclude Include="StageDatas.h" />
+    <ClInclude Include="StageEditGUI.h" />
+    <ClInclude Include="StageEditLevel.h" />
     <ClInclude Include="StartStage.h" />
     <ClInclude Include="TestLevel.h" />
     <ClInclude Include="TestObject.h">
@@ -591,6 +593,8 @@
     </ClCompile>
     <ClCompile Include="StageBase.cpp" />
     <ClCompile Include="StageDatas.cpp" />
+    <ClCompile Include="StageEditGUI.cpp" />
+    <ClCompile Include="StageEditLevel.cpp" />
     <ClCompile Include="StartStage.cpp" />
     <ClCompile Include="TestLevel.cpp" />
     <ClCompile Include="TestObject.cpp">
