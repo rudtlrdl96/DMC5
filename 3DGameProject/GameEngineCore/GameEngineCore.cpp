@@ -103,7 +103,6 @@ bool GameEngineCore::IsLevel(const std::string_view& _Name)
 	return LevelMap.contains(UpperName);
 }
 
-
 void GameEngineCore::EngineUpdate()
 {
 	if (nullptr != NextLevel)
@@ -139,7 +138,6 @@ void GameEngineCore::EngineUpdate()
 
 	float TimeDeltaTime = GameEngineTime::GlobalTime.TimeCheck();
 
-	// 별로 좋은건 아닙니다.
 	if (TimeDeltaTime > 1 / 30.0f)
 	{
 		TimeDeltaTime = 1 / 30.0f;
@@ -148,17 +146,15 @@ void GameEngineCore::EngineUpdate()
 	GameEngineInput::Update(TimeDeltaTime);
 	GameEngineSound::SoundUpdate();
 
-	// 업데이트가 일어나는 동안 로드가 된애들
-
 	MainLevel->TimeEvent.Update(TimeDeltaTime);
 	MainLevel->AccLiveTime(TimeDeltaTime);
 	MainLevel->Update(TimeDeltaTime);
-	MainLevel->Simulate(TimeDeltaTime, true);
+	MainLevel->Simulate(TimeDeltaTime);
 	MainLevel->ActorUpdate(TimeDeltaTime);
 	MainLevel->NetworkUpdate(TimeDeltaTime);
-	// CurLoadLevel = nullptr;
 
 	GameEngineVideo::VideoState State = GameEngineVideo::GetCurState();
+
 	if (State != GameEngineVideo::VideoState::Running)
 	{
 		GameEngineDevice::RenderStart();
@@ -187,6 +183,5 @@ void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)
 
 	GameEngineDevice::Release();
 	GameEngineWindow::Release();
-	// GameEnginePhysics::Release();
 }
 

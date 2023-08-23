@@ -79,8 +79,7 @@ void GameEngineRenderTarget::Clear()
 		GameEngineDevice::GetContext()->ClearRenderTargetView(RTV, Color.Arr1D);
 	}
 
-	ID3D11DepthStencilView* DSV
-		= DepthTexture != nullptr ? DepthTexture->GetDSV() : nullptr;
+	ID3D11DepthStencilView* DSV = DepthTexture != nullptr ? DepthTexture->GetDSV() : nullptr;
 
 	if (nullptr != DSV)
 	{
@@ -97,15 +96,13 @@ void GameEngineRenderTarget::Setting()
 		MsgAssert("랜더타겟 뷰가 존재하지 않아서 클리어가 불가능합니다.");
 	}
 
-	ID3D11DepthStencilView* DSV
-		= DepthTexture != nullptr ? DepthTexture->GetDSV() : nullptr;
+	ID3D11DepthStencilView* DSV = DepthTexture != nullptr ? DepthTexture->GetDSV() : nullptr;
 
 	if (false == DepthSetting)
 	{
 		DSV = nullptr;
 	}
 
-	// 지금 당장은 z값을 쓰지 않겠습니다.
 	GameEngineDevice::GetContext()->OMSetRenderTargets(1, RTV, DSV);
 }
 

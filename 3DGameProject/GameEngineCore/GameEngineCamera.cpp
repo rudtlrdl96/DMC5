@@ -14,7 +14,6 @@ GameEngineCamera::~GameEngineCamera()
 {
 }
 
-
 void GameEngineCamera::Start()
 {
 	if (false == GameEngineInput::IsKey("CamMoveLeft"))
@@ -38,8 +37,6 @@ void GameEngineCamera::Start()
 		GameEngineInput::CreateKey("FreeCameraSwitch", 'P');
 		GameEngineInput::CreateKey("ProjectionModeChange", 'O');
 	}
-
-	// float _Width, float _Height, float _Left, float _Right, float _ZMin = 0.0f, float _ZMax = 1.0f
 
 	ViewPortData.TopLeftX = 0;
 	ViewPortData.TopLeftY = 0;
@@ -87,7 +84,8 @@ void GameEngineCamera::Update(float _DeltaTime)
 		{
 			OldData = GetTransform()->GetTransDataRef();
 		}
-		else {
+		else 
+		{
 			GetTransform()->SetTransformData(OldData);
 		}
 	}
@@ -138,15 +136,11 @@ void GameEngineCamera::Update(float _DeltaTime)
 
 			GetTransform()->AddWorldRotation(RotMouseDir);
 		}
-
 	}
-
 }
-
 
 void GameEngineCamera::Setting()
 {
-	// 랜더타겟 1개1개마다 뷰포트를 세팅해줄수 있다.
 	GameEngineDevice::GetContext()->RSSetViewports(1, &ViewPortData);
 	CamTarget->Clear();
 	CamTarget->Setting();
@@ -174,14 +168,11 @@ void GameEngineCamera::Render(float _DeltaTime)
 						Render->CalSortZ(this);
 					}
 
-					// 퀵소트 내일
 					RenderGroup.sort([](std::shared_ptr<GameEngineRenderer>& _Left, std::shared_ptr<GameEngineRenderer>& _Right)
 						{
 							return _Left->CalZ > _Right->CalZ;
 						});
 				}
-
-				// 정렬을 하겠다는 뜻으로 본다.
 			}
 
 			std::list<std::shared_ptr<GameEngineRenderer>>::iterator StartRenderer = RenderGroup.begin();
@@ -205,7 +196,6 @@ void GameEngineCamera::Render(float _DeltaTime)
 
 				Render->RenderTransformUpdate(this);
 				Render->RenderBaseValueUpdate(ScaleTime);
-				// Render->Render(ScaleTime);
 			}
 		}
 	}
@@ -248,12 +238,10 @@ void GameEngineCamera::Render(float _DeltaTime)
 		}
 
 	}
-
 }
 
 void GameEngineCamera::CameraTransformUpdate()
 {
-	// 뷰행렬을 만들기 위해서는 이 2개의 행렬이 필요하다.
 	float4 EyeDir = GetTransform()->GetLocalForwardVector();
 	float4 EyeUp = GetTransform()->GetLocalUpVector();
 	float4 EyePos = GetTransform()->GetLocalPosition();
@@ -279,7 +267,6 @@ void GameEngineCamera::CameraTransformUpdate()
 
 	ViewPort.ViewPort(GameEngineWindow::GetScreenSize().x, GameEngineWindow::GetScreenSize().y, 0.0f, 0.0f);
 
-
 	float4 WorldPos = GetTransform()->GetWorldPosition();
 	float4 Dir = GetTransform()->GetLocalForwardVector();
 	Box.Center = (WorldPos + (Dir * Far * 0.5f)).DirectFloat3;
@@ -287,9 +274,7 @@ void GameEngineCamera::CameraTransformUpdate()
 	Box.Extents.x = Width * 0.6f;
 	Box.Extents.y = Height * 0.6f;
 	Box.Orientation = GetTransform()->GetWorldQuaternion().DirectFloat4;
-
 }
-
 
 void GameEngineCamera::PushRenderer(std::shared_ptr<GameEngineRenderer> _Render)
 {
@@ -324,8 +309,6 @@ bool GameEngineCamera::IsView(const TransformData& _TransData)
 		return true;
 	}
 
-	// Width, Height, Near, Far;
-
 	switch (ProjectionType)
 	{
 	case CameraType::None:
@@ -334,9 +317,6 @@ bool GameEngineCamera::IsView(const TransformData& _TransData)
 		break;
 	}
 	case CameraType::Perspective:
-
-		// DirectX::BoundingFrustum Box;
-
 		break;
 	case CameraType::Orthogonal:
 	{
@@ -358,7 +338,6 @@ bool GameEngineCamera::IsView(const TransformData& _TransData)
 
 void GameEngineCamera::Release()
 {
-
 	{
 		std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>& UnitPath = Units[0];
 
@@ -411,7 +390,6 @@ void GameEngineCamera::Release()
 			}
 
 			StartRenderer = RenderGroup.erase(StartRenderer);
-
 		}
 	}
 }

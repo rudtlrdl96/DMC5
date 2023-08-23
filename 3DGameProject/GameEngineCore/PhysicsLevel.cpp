@@ -11,29 +11,7 @@ PhysicsLevel::PhysicsLevel()
 
 PhysicsLevel::~PhysicsLevel() 
 {
-	//Release();
 }
-
-//void PhysicsLevel::Start()
-//{
-//	// Initialize();
-//}
-//
-//void PhysicsLevel::Update(float _DeltaTime)
-//{
-//	bool Is = m_pPvd->isConnected();
-//	Simulate(_DeltaTime, true);
-//}
-//
-//void PhysicsLevel::LevelChangeStart()
-//{
-//	Initialize();
-//}
-//
-//void PhysicsLevel::LevelChangeEnd()
-//{
-//	Release();
-//}
 
 physx::PxFilterFlags contactReportFilterShader
 (
@@ -71,6 +49,11 @@ physx::PxFilterFlags contactReportFilterShader
 
 void PhysicsLevel::CreatePhysicsX()
 {
+	if (nullptr != m_pPhysics)
+	{
+		return;
+	}
+
 	m_pFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, m_Allocator, m_ErrorCallback);
 	if (!m_pFoundation)
 	{
@@ -90,12 +73,7 @@ void PhysicsLevel::CreatePhysicsX()
 	}
 
 	m_pPvd->connect(*m_pTransport, physx::PxPvdInstrumentationFlag::eALL);
-
-	physx::PxTolerancesScale scale;
-	//scale.length = 1;   // typical length of an object
-	//scale.speed = 981;  // typical speed of an object, gravity*1s is a reasonable choice
-
-	m_pPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_pFoundation, scale, true, m_pPvd);
+	m_pPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_pFoundation, physx::PxTolerancesScale(), true, m_pPvd);
 	if (!m_pPhysics)
 	{
 		MsgAssert("PxPhysics 생성 실패");
@@ -134,10 +112,15 @@ void PhysicsLevel::CreatePhysicsX()
 }
 
 // 실제로 물리연산을 실행
-void PhysicsLevel::Simulate(float _DeltaTime, bool _Value)
+void PhysicsLevel::Simulate(float _DeltaTime)
 {
+	if (true == IsPhysicsStop)
+	{
+		return;
+	}
+
 	m_pScene->simulate(_DeltaTime);
-	m_pScene->fetchResults(_Value);
+	m_pScene->fetchResults(true);
 }
 
 // 메모리제거
@@ -161,9 +144,6 @@ void PhysicsLevel::ReleasePhysicsX()
 	}
 	if (nullptr != m_pPvd)
 	{
-		//physx::PxPvdTransport* pTransport = m_pPvd->getTransport();
-		//m_pPvd->release();
-		//m_pPvd = nullptr;
 		PX_RELEASE(m_pPvd);
 	}
 	if (nullptr != m_pTransport)

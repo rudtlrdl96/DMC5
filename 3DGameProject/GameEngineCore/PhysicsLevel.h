@@ -26,6 +26,11 @@ public:
 		return m_pScene;
 	}
 
+	bool GetIsPhysicsStop()
+	{
+		return IsPhysicsStop;
+	}
+
 protected:
 	class  UserErrorCallback : public  physx::PxErrorCallback
 	{
@@ -37,18 +42,12 @@ protected:
 	};
 
 	void CreatePhysicsX();
-	void Simulate(float _DeltaTime, bool _Value = true);
+	void Simulate(float _DeltaTime);
 	void ReleasePhysicsX();
 
-	//void Start() override;
-	//void Update(float _DeltaTime) override;
-	//void Render(float _DeltaTime) {};
-
-	//void LevelChangeStart() override;
-	//void LevelChangeEnd() override;
+	bool IsPhysicsStop = false;
 
 private:
-	//physx::PxDefaultErrorCallback	m_ErrorCallback;
 	physx::PxDefaultAllocator		m_Allocator;
 	UserErrorCallback m_ErrorCallback;
 
