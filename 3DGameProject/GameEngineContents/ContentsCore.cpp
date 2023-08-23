@@ -6,11 +6,8 @@
 
 #include "MainLevel.h"
 #include "TestLevel.h"
-//UI
 #include "IntroLevel.h"
 #include "TitleLevel.h"
-#include "Char_ChoiceLevel.h"
-
 #include "PlayerTestLevel.h"
 //Map
 #include "BossStage.h"
@@ -35,14 +32,13 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<TestLevel>();
 	GameEngineCore::CreateLevel<IntroLevel>();
 	GameEngineCore::CreateLevel<TitleLevel>();
-	GameEngineCore::CreateLevel<Char_ChoiceLevel>();
 	GameEngineCore::CreateLevel<PlayerTestLevel>();
 	GameEngineCore::CreateLevel<AnimationToolLevel>();
 	//
 	GameEngineCore::CreateLevel<BossStage>();
 	GameEngineCore::CreateLevel<StartStage>();
 
-	GameEngineCore::ChangeLevel("IntroLevel");
+	GameEngineCore::ChangeLevel("MainLevel");
 }
 
 void ContentsCore::GameEnd() 

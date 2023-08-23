@@ -1,5 +1,5 @@
 #pragma once
-#include <GameEngineCore/GameEngineLevel.h>
+#include <GameEngineCore/PhysicsLevel.h>
 
 // Ό³Έν :
 class IntroLevel : public GameEngineLevel

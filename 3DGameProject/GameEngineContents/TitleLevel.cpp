@@ -1,17 +1,18 @@
 #include "PrecompileHeader.h"
 #include "TitleLevel.h"
-#include "Title_StartScreen.h"
-#include "MouseCusor.h"
 #include "TitleBG.h"
+#include "StartButton.h"
+#include "MouseCusor.h"
+#include "SelectScreen.h"
 #include "FadeEffect.h"
 #include <GameEngineCore/GameEngineFont.h>
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEnginePlatform/GameEngineInput.h>
-TitleLevel::TitleLevel()
+TitleLevel::TitleLevel() 
 {
 }
 
-TitleLevel::~TitleLevel()
+TitleLevel::~TitleLevel() 
 {
 
 }
@@ -38,9 +39,6 @@ void TitleLevel::Start()
 		GameEngineInput::CreateKey("UIDEBUGMODE", 'U');
 		GameEngineInput::CreateKey("ENTER", VK_RETURN);
 		GameEngineInput::CreateKey("CLICK", VK_LBUTTON);
-		GameEngineInput::CreateKey("UI_UP", VK_UP);
-		GameEngineInput::CreateKey("UI_Down", VK_DOWN);
-		GameEngineInput::CreateKey("UI_Enter", VK_RETURN);
 
 	}
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
@@ -51,9 +49,10 @@ void TitleLevel::Start()
 	//ø¢≈Õ
 	std::shared_ptr<TitleBG> TitleBGPtr = CreateActor<TitleBG>();
 	TitleBGPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
-	std::shared_ptr<Title_StartScreen> Title_StartScreenPtr = CreateActor<Title_StartScreen>();
-	Title_StartScreenPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
+	std::shared_ptr<StartButton> StartButtonPtr = CreateActor<StartButton>();
+	StartButtonPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
 	std::shared_ptr<MouseCusor> MouseCusorPtr = CreateActor<MouseCusor>();
+	MouseCusorPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
 
 }
 

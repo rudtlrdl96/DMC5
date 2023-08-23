@@ -14,10 +14,6 @@ public:
 	UIFontRender& operator=(const UIFontRender& _Other) = delete;
 	UIFontRender& operator=(UIFontRender&& _Other) noexcept = delete;
 
-	std::string const GetDMCFont()
-	{
-		return "DMC5Font";
-	}
 protected:
 	void Start() override;
 
