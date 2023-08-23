@@ -45,5 +45,6 @@ void StageEditLevel::LevelChangeStart()
 void StageEditLevel::LevelChangeEnd()
 {
 	Edit->Off();
+	//.
 }
 
