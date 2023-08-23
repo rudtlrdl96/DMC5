@@ -7,6 +7,7 @@
 #include "ConnectIDPacket.h"
 #include "ObjectUpdatePacket.h"
 #include "MessageChatPacket.h"
+#include "LinkObjectPacket.h"
 
 ////////
 //		클라 패킷 초기화
@@ -34,7 +35,7 @@ void NetworkManager::ClientPacketInit()
 		{
 			std::shared_ptr<GameEngineNetObject> NewNetObj = nullptr;
 			NewNetObj = NetworkManager::CreateNetActor(_Packet->ActorType, _Packet->GetObjectID());
-			//NewNetObj->SetControll(NetControllType::NetControll);
+			NewNetObj->SetControll(NetControllType::NetControll);
 		}
 
 		//Player가 스스로 처리할 수 있게 자료구조에 저장
@@ -48,5 +49,16 @@ void NetworkManager::ClientPacketInit()
 		[](std::shared_ptr<MessageChatPacket> _Packet)
 	{
 		NetworkGUI::GetInst()->PrintLog(_Packet->Message);
+	});
+
+
+
+	//LinkObjectPacket 처리
+	NetInst->Dispatcher.AddHandler<LinkObjectPacket>(
+		[](std::shared_ptr<LinkObjectPacket> _Packet)
+	{
+		GameEngineNetObject* ObjPtr = reinterpret_cast<GameEngineNetObject*>(_Packet->Ptr);
+		ObjPtr->InitNetObject(_Packet->GetObjectID(), NetInst);
+		ObjPtr->SetUserControllType();
 	});
 }

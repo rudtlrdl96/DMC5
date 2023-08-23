@@ -25,7 +25,7 @@ public:
 	//서버를 오픈하거나 연결되었는지 여부
 	static inline bool IsNet()
 	{
-		NetInst->IsNet();
+		return NetInst->IsNet();
 	}
 
 	static void ServerOpen(int _Port);
@@ -54,11 +54,19 @@ public:
 	//실제 업데이트 패킷을 처리하는 부분
 	static void FlushUpdatePacket();
 
+	//Net_ActorType 타입의 엑터를 생성하는 부분입니다.
 	static void SendCreatePacket(Net_ActorType _Type, const float4& _Position = float4::ZERO, const float4& _Rotation = float4::ZERO);
 
+	//이미 생성되어 있는 오브젝트를 서버와 연동시킵니다.
+	static void LinkNetwork(GameEngineNetObject* _NetObjPtr);
+
 protected:
+	friend class NetTestPlayer;
 
-
+	static GameEngineNet* GetNetInst()
+	{
+		return NetInst;
+	}
 
 private:
 	static GameEngineNet* NetInst;

@@ -76,7 +76,7 @@ void Player::Update(float _DeltaTime)
 
 	//추가로 여기에 NetObejct자료구조에서 빼야함
 	//Death();
-	TestNetDisConnect();
+	//TestNetDisConnect();
 }
 
 void Player::Update_SendPacket(float _DeltaTime)

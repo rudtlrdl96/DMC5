@@ -33,15 +33,23 @@ void GameEngineNetObject::Update_ProcessPackets()
 
 	for (const std::pair<int, GameEngineNetObject*>& Pair : MainThreadNetObjects)
 	{
+		//연결된 적이 없는 경우
 		if (false == Pair.second->IsNet())
 			continue;
 
-		if (true == Pair.second->IsDeath)
+		//내가 조종하는 컨트롤 타입일 경우엔 패킷을 수신받지 않음
+		if (NetControllType::UserControll == Pair.second->ControllType)
 			continue;
 
+		//연결이 끊긴 경우
+		if (true == Pair.second->IsDisconnect)
+			continue;
+
+		//처리할 패킷이 없는 경우
 		if (true == Pair.second->Packets.empty())
 			continue;
 
+		//패킷 처리
 		Pair.second->Update_ProcessPacket();
 	}
 
@@ -58,12 +66,19 @@ void GameEngineNetObject::Update_SendPackets(float _DeltaTime)
 	
 	for (const std::pair<int, GameEngineNetObject*>& Pair : MainThreadNetObjects)
 	{
+		//연결도 안된 경우
 		if (false == Pair.second->IsNet())
 			continue;
 
-		if (true == Pair.second->IsDeath)
+		//패킷을 수신받아 조종당하는 패킷의 경우엔 패킷을 전송하지 않음
+		if (NetControllType::NetControll == Pair.second->ControllType)
 			continue;
 
+		//연결이 끊긴 경우
+		if (true == Pair.second->IsDisconnect)
+			continue;
+
+		//패킷을 보내기
 		Pair.second->Update_SendPacket(_DeltaTime);
 	}
 	MainThreadNetObjects.clear();
@@ -81,7 +96,7 @@ void GameEngineNetObject::ReleaseNetObject()
 	while (ReleaseStartIter != ReleaseEndIter)
 	{
 		GameEngineNetObject* NetObjPtr = ReleaseStartIter->second;
-		if (true == NetObjPtr->IsDeath || false == NetObjPtr->IsNet())
+		if (true == NetObjPtr->IsDisconnect || false == NetObjPtr->IsNet())
 		{
 			ReleaseStartIter = AllNetObjects.erase(ReleaseStartIter);
 			continue;

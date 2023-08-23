@@ -112,6 +112,13 @@ public:
 		return ObjectType;
 	}
 
+	inline void NetDisconnect()
+	{
+		IsDisconnect = true;
+	}
+
+	
+
 protected:
 	//수신받은 패킷을 처리하는 부분입니다.(레벨 업데이트 맨 처음에 호출됩니다)
 	virtual void Update_ProcessPacket(){}
@@ -123,11 +130,6 @@ protected:
 	inline void SetNetObjectType(EnumType _ActorType)
 	{
 		ObjectType = static_cast<unsigned int>(_ActorType);
-	}
-
-	inline void TestNetDisConnect()
-	{
-		IsDeath = true;
 	}
 
 private:
@@ -148,7 +150,7 @@ private:
 	GameEngineNet* Net = nullptr;
 
 	//Release구조를 순환할때 AllNetObjects에서 이 오브젝트를 빼내기 위한 bool
-	bool IsDeath = false;
+	bool IsDisconnect = false;
 
 	//수신받은 패킷들을 각각의 객체가 처리하기 위해 리스트에 보관(마치 큐 처럼 사용)
 	std::list<std::shared_ptr<GameEnginePacket>> Packets;

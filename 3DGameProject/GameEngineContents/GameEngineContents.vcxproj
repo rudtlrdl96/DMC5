@@ -212,6 +212,7 @@
     </ClInclude>
     <ClInclude Include="Intro_BackGround.h" />
     <ClInclude Include="Intro_Logo.h" />
+    <ClInclude Include="LinkObjectPacket.h" />
     <ClInclude Include="NetTestEnemy.h">
       <SubType>
       </SubType>
