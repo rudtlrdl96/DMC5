@@ -1,8 +1,11 @@
 #pragma once
+#include "StageDatas.h"
 
 class StageBase : public GameEngineLevel
 {
 public:
+	static std::vector<StageData> AllStageDatas;
+	
 	StageBase();
 	~StageBase();
 	StageBase(const StageBase& _Other) = delete;
