@@ -161,7 +161,6 @@ public:
 
 	ColorOption ColorOptionValue;
 
-
 	void SetAnimationUpdateEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
 
 	void SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
@@ -173,6 +172,7 @@ public:
 		RenderEndCallBack = _CallBack;
 	}
 
+	void BSCControl(float _saturation, float _brightness, float _contrast)
 
 protected:
 	void SpriteRenderInit();

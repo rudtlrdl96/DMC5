@@ -32,16 +32,12 @@ void AnimationInfo::Update(float _DeltaTime)
 		IsEndValue = false;
 	}
 
-	// 1;
-	// 
-
 	if (true == IsPauseValue)
 	{
 		return;
 	}
 
 	size_t CurFrameIndex = FrameIndex[CurFrame];
-
 
 	if (StartEventFunction.end() != StartEventFunction.find(CurFrameIndex))
 	{
@@ -53,7 +49,6 @@ void AnimationInfo::Update(float _DeltaTime)
 		}
 
 	}
-
 
 	if (UpdateEventFunction.end() != UpdateEventFunction.find(CurFrameIndex))
 	{
@@ -90,8 +85,6 @@ void AnimationInfo::Update(float _DeltaTime)
 	}
 }
 
-// SpriteRenderer
-
 GameEngineSpriteRenderer::GameEngineSpriteRenderer()
 {
 }
@@ -100,20 +93,17 @@ GameEngineSpriteRenderer::~GameEngineSpriteRenderer()
 {
 }
 
-
 void GameEngineSpriteRenderer::Start()
 {
 	GameEngineRenderer::Start();
 
 	SpriteRenderInit();
-	// AtlasData
 }
 
 void GameEngineSpriteRenderer::SetTexture(const std::string_view& _Name)
 {
 	GetShaderResHelper().SetTexture("DiffuseTex", _Name);
 
-	//Animation이 동작하는 SpriteRenderer에 다시 텍스처를 세팅할 때 사용됩니다.
 	CurAnimation = nullptr;
 	AtlasData = float4{ 0.0f, 0.0f, 1.0f, 1.0f };
 
@@ -130,18 +120,11 @@ void GameEngineSpriteRenderer::SetTexture(const std::string_view& _Name)
 void GameEngineSpriteRenderer::SetFlipX()
 {
 	Flip.x = Flip.x != 0.0f ? 0.0f : 1.0f;
-	//float4 LocalScale = GetTransform()->GetLocalScale();
-	//LocalScale.x = -LocalScale.x;
-	//GetTransform()->SetLocalScale(LocalScale);
 }
 
 void GameEngineSpriteRenderer::SetFlipY()
 {
 	Flip.y = Flip.y != 0.0f ? 0.0f : 1.0f;
-
-	//float4 LocalScale = GetTransform()->GetLocalScale();
-	//LocalScale.y = -LocalScale.y;
-	//GetTransform()->SetLocalScale(LocalScale);
 }
 
 void GameEngineSpriteRenderer::SetScaleToTexture(const std::string_view& _Name)
@@ -158,8 +141,6 @@ void GameEngineSpriteRenderer::SetScaleToTexture(const std::string_view& _Name)
 	float4 Scale = float4(static_cast<float>(FindTex->GetWidth()), static_cast<float>(FindTex->GetHeight()), 1);
 	GetTransform()->SetLocalScale(Scale);
 	CurTexture = FindTex;
-
-
 }
 
 void GameEngineSpriteRenderer::SetSprite(const std::string_view& _SpriteName, size_t _Frame/* = 0*/)
@@ -216,15 +197,10 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 
 	if (0 != _Paramter.FrameIndex.size())
 	{
-		// 프레임 인덱스 입력시
 		NewAnimation->FrameIndex = _Paramter.FrameIndex;
-
 	}
 	else
 	{
-		// 프레임 인덱스 미 입력시
-
-		// 시작 프레임 지정
 		if (-1 != _Paramter.Start)
 		{
 			if (_Paramter.Start < 0)
@@ -237,10 +213,9 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 		}
 		else
 		{
-			// -1 입력시 시작프레임 0
 			NewAnimation->StartFrame = 0;
 		}
-		// 끝 프레임 지정
+
 		if (-1 != _Paramter.End)
 		{
 			if (_Paramter.End >= Sprite->GetSpriteCount())
@@ -253,7 +228,6 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 		}
 		else
 		{
-			// -1 입력시 끝프레임은 마지막
 			NewAnimation->EndFrame = Sprite->GetSpriteCount() - 1;
 		}
 
@@ -262,16 +236,15 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 			MsgAssert("애니메이션을 생성할때 End가 Start보다 클 수 없습니다");
 			return nullptr;
 		}
+
 		NewAnimation->FrameIndex.reserve(NewAnimation->EndFrame - NewAnimation->StartFrame + 1);
 
-		// StartFrame 부터 EndFrame까지 순서대로 FrameIndex에 푸시
 		for (size_t i = NewAnimation->StartFrame; i <= NewAnimation->EndFrame; ++i)
 		{
 			NewAnimation->FrameIndex.push_back(i);
 		}
 	}
 
-	// 타임 데이터가 있다면
 	if (0 != _Paramter.FrameTime.size())
 	{
 		NewAnimation->FrameTime = _Paramter.FrameTime;
@@ -285,8 +258,6 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 		}
 	}
 
-
-
 	NewAnimation->Sprite = Sprite;
 	NewAnimation->Parent = this;
 	NewAnimation->Loop = _Paramter.Loop;
@@ -294,7 +265,6 @@ std::shared_ptr<AnimationInfo> GameEngineSpriteRenderer::CreateAnimation(const A
 
 	return NewAnimation;
 }
-
 
 void GameEngineSpriteRenderer::ChangeAnimation(const std::string_view& _Name, size_t _Frame, bool _Force)
 {
@@ -351,15 +321,12 @@ void GameEngineSpriteRenderer::Update(float _Delta)
 
 void GameEngineSpriteRenderer::Render(float _Delta)
 {
-
 	GameEngineRenderer::Render(_Delta);
-	//AtlasData = float4(0, 0, 1, 1);
 
 	if (nullptr != RenderEndCallBack)
 	{
 		RenderEndCallBack(this);
 	}
-
 }
 
 void GameEngineSpriteRenderer::SetAnimationUpdateEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event)
@@ -373,7 +340,6 @@ void GameEngineSpriteRenderer::SetAnimationUpdateEvent(const std::string_view& _
 
 	Info->UpdateEventFunction[_Frame] = _Event;
 }
-
 
 void GameEngineSpriteRenderer::SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event)
 {
@@ -397,7 +363,6 @@ std::string GameEngineSpriteRenderer::GetTexName()
 
 void GameEngineSpriteRenderer::SpriteRenderInit()
 {
-
 	std::shared_ptr<GameEngineRenderUnit> Unit = CreateRenderUnit();
 
 	Unit->SetMesh("Rect");
@@ -408,8 +373,11 @@ void GameEngineSpriteRenderer::SpriteRenderInit()
 	AtlasData.z = 1.0f;
 	AtlasData.w = 1.0f;
 
+	float4 HBSCMin = { 0.0f, 0.5f, 0.5f, 0.5f };
+
 	ColorOptionValue.MulColor = float4::ONE;
 	ColorOptionValue.PlusColor = float4::ZERONULL;
+	ColorOptionValue.BSCColor = HBSCMin;
 
 	GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
 	GetShaderResHelper().SetConstantBufferLink("ColorOption", ColorOptionValue);
@@ -417,8 +385,6 @@ void GameEngineSpriteRenderer::SpriteRenderInit()
 	GetShaderResHelper().SetConstantBufferLink("FlipData", Flip);
 }
 
-
-// 내 눈에 보이는 이미지에서 0.1;
 void GameEngineSpriteRenderer::ImageClippingX(float _Ratio, ClipXDir _Dir)
 {
 	Clip.x = _Ratio;
@@ -437,7 +403,6 @@ void GameEngineSpriteRenderer::ImageClippingX(float _Ratio, ClipXDir _Dir)
 	}
 }
 
-
 void GameEngineSpriteRenderer::ImageClippingY(float _Ratio, ClipYDir _Dir)
 {
 	Clip.y = _Ratio;
@@ -455,4 +420,17 @@ void GameEngineSpriteRenderer::ImageClippingY(float _Ratio, ClipYDir _Dir)
 	{
 		Clip.y = 0.0f;
 	}
+}
+
+void GameEngineSpriteRenderer::BSCControl(float _saturation, float _brightness, float _contrast)
+{
+	float4 OriginColor = this->ColorOptionValue.MulColor;
+	float4 ControlColor = float4::ZERO;
+
+	ControlColor.r = OriginColor.r;
+	ControlColor.g = _saturation;
+	ControlColor.b = _brightness;
+	ControlColor.a = _contrast;
+
+	this->ColorOptionValue.BSCColor = ControlColor;
 }
