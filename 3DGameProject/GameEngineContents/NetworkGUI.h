@@ -49,7 +49,8 @@ private:
 	const std::string_view BtnText_ForClient = "Play For Client";
 
 	int PortNum = 30000;
-	std::string IpNum = "127.0.0.1";
+	//std::string IpNum = "127.0.0.1";
+	char IpNum[64] = "127.0.0.1";
 	std::string Title;
 	
 	std::function<void()> EntryCallBack = nullptr;

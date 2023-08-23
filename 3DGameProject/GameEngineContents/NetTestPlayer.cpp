@@ -36,14 +36,19 @@ void NetTestPlayer::Start()
 	//이건 그냥 예시 렌더링
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
 	Renderer->SetFBXMesh("House1.FBX", "NoneAlphaMesh");
+
+	if (false == GameEngineInput::IsKey("NetTestLeft"))
+	{
+		GameEngineInput::CreateKey("NetTestLeft", 'A');
+		GameEngineInput::CreateKey("NetTestRight", 'D');
+		GameEngineInput::CreateKey("NetTestForward", 'W');
+		GameEngineInput::CreateKey("NetTestBack", 'S');
+		GameEngineInput::CreateKey("NetTestConnect", 'H');
+	}
 }
 
 void NetTestPlayer::Update_ProcessPacket() 
 {
-	//플레이어의 경우 네트워크 컨트롤 일때만 패킷을 처리합니다
-	if (NetControllType::NetControll != GameEngineNetObject::GetControllType())
-		return;
-
 	//패킷을 다 처리할 때 까지
 	while (GameEngineNetObject::IsPacket())
 	{
@@ -81,14 +86,40 @@ void NetTestPlayer::Update(float _DeltaTime)
 
 
 	//일반적인 Update부분입니다.
+	float4 MoveDir = float4::ZERO;
+	if (GameEngineInput::IsPress("NetTestLeft"))
+	{
+		MoveDir += float4::LEFT;
+	}
+	if (GameEngineInput::IsPress("NetTestRight"))
+	{
+		MoveDir += float4::RIGHT;
+	}
+	if (GameEngineInput::IsPress("NetTestForward"))
+	{
+		MoveDir += float4::FORWARD;
+	}
+	if (GameEngineInput::IsPress("NetTestBack"))
+	{
+		MoveDir += float4::BACK;
+	}
+	
+	GetTransform()->AddLocalPosition(MoveDir * 300.f * _DeltaTime);
+
+	if (GameEngineInput::IsDown("NetTestConnect"))
+	{
+		if (false == NetworkManager::IsNet())
+			return;
+
+		if (-1 != GetNetObjectID())
+			return;
+
+		NetworkManager::LinkNetwork(this);
+	}
 }
 
 void NetTestPlayer::Update_SendPacket(float _DeltaTime) 
 {
-	//플레이어의 경우 UserControll일때만 패킷을 전송합니다
-	if (NetControllType::UserControll != GameEngineNetObject::GetControllType())
-		return;
-
 	//NetworkManager를 통해서 업데이트 패킷을 보내면 됩니다.
 	//그 외 패킷은 다른곳에서 보내도 상관없습니다.(아마도)
 	NetworkManager::SendUpdatePacket(this, GetTransform(), 1.f);

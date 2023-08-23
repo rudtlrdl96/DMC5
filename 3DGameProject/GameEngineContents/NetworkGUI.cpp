@@ -61,7 +61,7 @@ void NetworkGUI::Update_Wait()
 	}
 
 	//클라이언트 버튼을 누른 경우
-	ImGui::InputText("IP", &IpNum[0], IpNum.size());
+	ImGui::InputText("IP", IpNum, 64);
 	if (ImGui::Button(BtnText_ForClient.data()))
 	{
 		bool IsResult = false;

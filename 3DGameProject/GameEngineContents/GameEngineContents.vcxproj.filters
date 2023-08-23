@@ -238,6 +238,9 @@
     <ClInclude Include="Char_ChoiceButton.h">
       <Filter>UI\Actor\C_ChoiceUI</Filter>
     </ClInclude>
+    <ClInclude Include="LinkObjectPacket.h">
+      <Filter>Server\01.Packet\02.Global</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">

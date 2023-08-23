@@ -1,8 +1,9 @@
 #include "PrecompileHeader.h"
 #include "MainLevel.h"
 
-#include "Player.h"
 #include "NetworkManager.h"
+
+#include "NetTestPlayer.h"
 
 MainLevel::MainLevel() 
 {
@@ -30,6 +31,8 @@ void MainLevel::Start()
 
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -500.0f });
+
+	CreateActor<NetTestPlayer>()->SetUserControllType();
 }
 
 void MainLevel::Update(float _DeltaTime)

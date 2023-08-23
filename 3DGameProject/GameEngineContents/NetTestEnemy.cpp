@@ -34,10 +34,6 @@ void NetTestEnemy::Start()
 
 void NetTestEnemy::Update_ProcessPacket()
 {
-	//몬스터의 경우 클라이언트일때만 패킷을 처리한다는 의미
-	if (false == NetworkManager::IsClient())
-		return;
-
 	//패킷을 다 처리할 때 까지
 	while (GameEngineNetObject::IsPacket())
 	{
@@ -69,8 +65,8 @@ void NetTestEnemy::Update_ProcessPacket()
 
 void NetTestEnemy::Update(float _DeltaTime)
 {
-	//몬스터의 경우 서버만 FSM이 동작되어야 합니다.
-	if (false == NetworkManager::IsServer())
+	//몬스터의 경우 UserControll 일때만 FSM이 동작되어야 합니다.
+	if (NetControllType::NetControll == GetControllType())
 		return;
 
 
@@ -79,10 +75,6 @@ void NetTestEnemy::Update(float _DeltaTime)
 
 void NetTestEnemy::Update_SendPacket(float _DeltaTime)
 {
-	//몬스터의 경우 서버일때만 패킷을 보냅니다.
-	if (false == NetworkManager::IsServer())
-		return;
-
 	//NetworkManager를 통해서 업데이트 패킷을 보내면 됩니다.
 	//그 외 패킷은 다른곳에서 보내도 상관없습니다.(아마도)
 	NetworkManager::SendUpdatePacket(this, GetTransform(), 1.f);

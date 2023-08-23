@@ -4,46 +4,44 @@
 
 #include "PacketEnum.h"
 
-class CreateObjectPacket : public GameEnginePacket
+class LinkObjectPacket : public GameEnginePacket
 {
 public:
-	static const PacketEnum Type = PacketEnum::CreateObjectPacket;
+	static const PacketEnum Type = PacketEnum::LinkObjectPacket;
 
 public:
-	CreateObjectPacket()
+	LinkObjectPacket()
 	{
 		SetPacketID(Type);
 	}
 
-	~CreateObjectPacket() override
+	~LinkObjectPacket() override
 	{
 
 	}
 
+	unsigned __int64 Ptr = 0;
 	unsigned int ActorType = -1;
-	float4 Rotation;
-	float4 Position;
+	
 
 protected:
 	void Serialize(GameEngineSerializer& _Ser) override
 	{
 		GameEnginePacket::Serialize(_Ser);
 
+		_Ser << Ptr;
 		_Ser << ActorType;
-		_Ser << Rotation;
-		_Ser << Position;
 	}
 
 	void DeSeralize(GameEngineSerializer& _Ser) override
 	{
 		GameEnginePacket::DeSeralize(_Ser);
 
+		_Ser >> Ptr;
 		_Ser >> ActorType;
-		_Ser >> Rotation;
-		_Ser >> Position;
 	}
-
 
 private:
 
 };
+

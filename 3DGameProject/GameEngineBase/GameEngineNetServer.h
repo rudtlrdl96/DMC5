@@ -37,6 +37,17 @@ public:
 		Users[_ID] = _UserSocket;
 	}
 
+	inline SOCKET GetUser(int _ID)
+	{
+		std::map<int, SOCKET>::iterator FindIter = Users.find(_ID);
+		if (Users.end() == FindIter)
+		{
+			MsgAssert(std::to_string(_ID) + " 번 유저는 존재하지 않습니다");
+		}
+
+		return FindIter->second;
+	}
+
 protected:
 	void Send(const char* Data, unsigned int _Size, int _IgnoreID = -1) override;
 

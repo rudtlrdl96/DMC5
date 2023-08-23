@@ -8,6 +8,7 @@
 
 #include "ObjectUpdatePacket.h"
 #include "CreateObjectPacket.h"
+#include "LinkObjectPacket.h"
 
 GameEngineNet* NetworkManager::NetInst = nullptr;
 GameEngineNetServer NetworkManager::ServerInst;
@@ -109,23 +110,50 @@ void NetworkManager::FlushUpdatePacket()
 void NetworkManager::SendCreatePacket(Net_ActorType _Type, const float4& _Position /*= float4::ZERO*/, const float4& _Rotation /*= float4::ZERO*/)
 {
 	std::shared_ptr<GameEngineNetObject> NewObject = nullptr;
+
+	//서버일땐 바로 UserControll모드로 오브젝트 생성
 	if (true == IsServerValue)
 	{
 		NewObject = CreateNetActor(_Type);
+		NewObject->SetUserControllType();
 		return;
 	}
 
+	//그런데 생각해보니까 클라가 서버한테 뭔가 만들어달라고 요청할 일이 생길까?
+	//보통 처리를 다 서버가 할텐데?
+
+	//클라일땐 생성을 부탁하는 패킷을 만들어 서버로 전송
 	std::shared_ptr<CreateObjectPacket> CreatePacket = std::make_shared<CreateObjectPacket>();
 	CreatePacket->ActorType = static_cast<unsigned int>(_Type);
 	CreatePacket->Position = _Position;
 	CreatePacket->Rotation = _Rotation;
-
 	NetInst->SendPacket(CreatePacket);
 }
 
 
+void NetworkManager::LinkNetwork(GameEngineNetObject* _NetObjPtr)
+{
+	if (nullptr == NetInst)
+		return;
 
-#include "Player.h"
+	if (true == IsServerValue)
+	{
+		_NetObjPtr->InitNetObject(GameEngineNetObject::CreateServerID(), NetInst);
+		_NetObjPtr->SetUserControllType();
+		return;
+	}
+
+	std::shared_ptr<LinkObjectPacket> LinkPacket = std::make_shared<LinkObjectPacket>();
+	LinkPacket->SetObjectID(NetID);
+	LinkPacket->ActorType = _NetObjPtr->GetNetObjectType();
+	LinkPacket->Ptr = reinterpret_cast<unsigned __int64>(_NetObjPtr);
+
+	NetInst->SendPacket(LinkPacket);
+}
+
+
+
+#include "NetTestEnemy.h"
 
 std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorType _ActorType, int _ObjectID /*= -1*/)
 {
@@ -133,10 +161,10 @@ std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorTyp
 	switch (_ActorType)
 	{
 	case Net_ActorType::Nero:
-		NetObject = GetLevel()->CreateActor<Player>();	//이거 나중에 꼭 바꿀것
+		NetObject = GetLevel()->CreateActor<NetTestEnemy>();	//이거 나중에 꼭 바꿀것
 		break;
 	case Net_ActorType::Vergil:
-		NetObject = GetLevel()->CreateActor<Player>();	//이거 나중에 꼭 바꿀것
+		NetObject = GetLevel()->CreateActor<NetTestEnemy>();	//이거 나중에 꼭 바꿀것
 		break;
 	default:
 	{
@@ -147,9 +175,14 @@ std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorTyp
 
 
 	//서버쪽에서 오브젝트아이디를 직접 만드는 경우
-	if ((true == IsServerValue) && (-1 == _ObjectID))
+	if (true == IsServerValue)
 	{
-		int ID = GameEngineNetObject::CreateServerID();
+		int ID = _ObjectID;
+		if (-1 == ID)
+		{
+			ID = GameEngineNetObject::CreateServerID();
+		}
+
 		NetObject->InitNetObject(ID, NetInst);
 	}
 
