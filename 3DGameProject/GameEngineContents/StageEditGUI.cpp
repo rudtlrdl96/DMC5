@@ -2,6 +2,8 @@
 #include "StageEditGUI.h"
 #include <GameEngineCore/GameEngineLevel.h>
 
+using namespace std;
+
 StageEditGUI::StageEditGUI()
 {
 }
@@ -16,14 +18,42 @@ void StageEditGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 		return;
     if (ImGui::Button("StageEdit"))
     {
-        TestBool = !TestBool;
+        BoxSwitch = !BoxSwitch;
     }
-    if (true == TestBool)
+    if (true == BoxSwitch)
     {
-        const char* items[] = { "Apple", "Banana", "Cherry", "Kiwi", "Mango", "Orange", "Pineapple", "Strawberry", "Watermelon" };
-        static int item_current = 1;
-        ImGui::ListBox("listbox", &item_current, items, IM_ARRAYSIZE(items), 4);
+        if (ImGui::Button("AddStageData"))
+        {
+           NumberIndex++;
+           PreChar = StageNameSet(NumberIndex);
+           StageNumber.push_back(PreChar);
+        }
+        ImGui::ListBox("StageDataBox", &current, StageNumber.data(), static_cast<int>(StageNumber.size()), EditBoxSize);
+        current = 1;
         ImGui::SameLine();
+    }
+}
+
+const char* StageEditGUI::StageNameSet(int _NumberIndex)
+{
+    switch (_NumberIndex)
+    {
+    case 1:
+        return "Stage1";  break;
+    case 2:
+        return "Stage2"; break;
+    case 3:
+        return "Stage3"; break;
+    case 4:
+        return "Stage4"; break;
+    case 5:
+        return "Stage5"; break;
+    case 6:
+        return "Stage6"; break;
+    case 7:
+        return "Stage7"; break;
+    default:
+        break;
     }
 }
 

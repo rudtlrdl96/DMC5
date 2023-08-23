@@ -16,10 +16,17 @@ public:
 	StageData StageDatas;
 	FieldMapData FieldMapDatas;
 	FieldMapColData FieldMapColDatas;
+
+	const char* StageNameSet(int _NumverIndex);
 protected:
 	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;
 private:
-	char MoveLevelName[255] = { 0 };
-	bool TestBool=false;
+	bool BoxSwitch=false;
+	int EditBoxSize = 12;
+	int current = 1;
+
+	std::vector<const char*> StageNumber;
+	int NumberIndex = 0;
+	const char* PreChar;
 };
 
