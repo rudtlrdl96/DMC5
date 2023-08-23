@@ -1,8 +1,8 @@
 #include "PrecompileHeader.h"
 #include "TestObject.h"
 
-#include <GameEngineCore/GameEngineFBXRenderer.h>
 //#include <GameEngineCore/PhysXBoxComponent.h>
+#include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/PhysXCapsuleComponent.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
 
@@ -36,16 +36,19 @@ void TestObject::Start()
 	//GetTransform()->AddWorldPosition(float4{ 0, 100.0f, 0 });
 
 	Renderer = CreateComponent<GameEngineFBXRenderer>();
-	std::string Path = GameEnginePath::GetFileFullPath
-	(
-		"ContentResources",
-		{
-			"Character", "Enemy", "em0100", "mesh"
-		}, 
-		"em0100.FBX"
-	);
 
-	GameEngineFBXMesh::Load(Path);
+	if (nullptr == GameEngineFBXMesh::Find("em0100.FBX"))
+	{
+		std::string Path = GameEnginePath::GetFileFullPath
+		(
+			"ContentResources",
+			{
+				"Character", "Enemy", "em0100", "mesh"
+			},
+			"em0100.FBX"
+		);
+		GameEngineFBXMesh::Load(Path);
+	}
 
 	Renderer->SetFBXMesh("em0100.fbx", "NoneAlphaMesh");
 	Renderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
@@ -60,7 +63,7 @@ void TestObject::Start()
 
 	Component = CreateComponent<PhysXCapsuleComponent>();
 	Component->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
-	Component->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), VecSclae);
+	Component->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), VecSclae * 0.1f);
 
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
 
@@ -82,6 +85,11 @@ void TestObject::Start()
 		Renderer->SetFont("±Ã¼­");
 		Renderer->SetText("aaaaaaaaaa");
 	}
+
+	Component->GetDynamic()->setMass(1.0f);
+	//Component->GetDynamic()->setLinearDamping(physx::PxReal(1.f));
+	Component->GetDynamic()->setMaxAngularVelocity(physx::PxReal(10.0f));
+	//Component->GetDynamic()->setAngularDamping(physx::PxReal(0.01f));
 }
 
 void TestObject::Update(float _DeltaTime)
@@ -160,7 +168,7 @@ void TestObject::UserUpdate(float _DeltaTime)
 
 		//Component->GetDynamic()->setGlobalPose(PhyTF);
 		Component->GetDynamic()->clearForce();
-		Component->PushImpulse(float4::UP * 100000);
+		Component->GetDynamic()->addForce(physx::PxVec3(0.0f, 100.0f, 0.0f), physx::PxForceMode::eIMPULSE);
 	}
 
 	float4 ActorPos = GetTransform()->GetWorldPosition();

@@ -71,7 +71,7 @@ physx::PxRigidDynamic* PhysXSphereComponent::CreatePhysXActors(physx::PxScene* _
 	m_pShape = physx::PxRigidActorExt::createExclusiveShape(*m_pRigidDynamic, physx::PxSphereGeometry(physx::PxReal(_GeoMetryScale.y * 0.5f)), *m_pMaterial);
 
 	// RigidDynamic의 밀도를 설정
-	physx::PxRigidBodyExt::updateMassAndInertia(*m_pRigidDynamic, 0.01f);
+	//physx::PxRigidBodyExt::updateMassAndInertia(*m_pRigidDynamic, 0.01f);
 
 	//피벗 설정
 	float CapsuleHeight = ScaledHeight * 1.f;
@@ -81,20 +81,20 @@ physx::PxRigidDynamic* PhysXSphereComponent::CreatePhysXActors(physx::PxScene* _
 	m_pShape->setLocalPose(relativePose);
 
 	//충돌할때 필요한 필터 데이터
-	//m_pShape->setSimulationFilterData
-	//(
-	//	physx::PxFilterData
-	//	(
-	//		static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle),
-	//		static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), 
-	//		0,
-	//		0
-	//	)
-	//);
+	m_pShape->setSimulationFilterData
+	(
+		physx::PxFilterData
+		(
+			static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle),
+			static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), 
+			0,
+			0
+		)
+	);
 	//m_pShape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), static_cast<physx::PxU32>(PhysXFilterGroup::Ground), static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle), 0));
 
 	m_pShape->setContactOffset(0.2f);
-
+	
 	// 제동?
 	//m_pRigidDynamic->setLinearDamping(physx::PxReal(0.01f));
 	//m_pRigidDynamic->setMaxAngularVelocity(physx::PxReal(20.0f));

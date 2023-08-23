@@ -190,6 +190,15 @@
     <ClInclude Include="StageDatas.h">
       <Filter>Levels\Stage\0.StageBase</Filter>
     </ClInclude>
+    <ClInclude Include="Box200.h">
+      <Filter>Actor\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Box300.h">
+      <Filter>Actor\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Ball.h">
+      <Filter>Actor\Test</Filter>
+    </ClInclude>
     <ClInclude Include="Intro_BackGround.h">
       <Filter>UI\Actor\IntroUI</Filter>
     </ClInclude>
@@ -216,6 +225,9 @@
     </ClInclude>
     <ClInclude Include="C_ChoiceBG.h">
       <Filter>UI\Actor\C_ChoiceUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Ramp.h">
+      <Filter>Actor\Test</Filter>
     </ClInclude>
     <ClInclude Include="StageEditGUI.h">
       <Filter>Levels\Stage\0.StageBase</Filter>
@@ -402,6 +414,15 @@
     <ClCompile Include="StageDatas.cpp">
       <Filter>Levels\Stage\0.StageBase</Filter>
     </ClCompile>
+    <ClCompile Include="Box200.cpp">
+      <Filter>Actor\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Box300.cpp">
+      <Filter>Actor\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Ball.cpp">
+      <Filter>Actor\Test</Filter>
+    </ClCompile>
     <ClCompile Include="Intro_BackGround.cpp">
       <Filter>UI\Actor\IntroUI</Filter>
     </ClCompile>
@@ -428,6 +449,9 @@
     </ClCompile>
     <ClCompile Include="C_ChoiceBG.cpp">
       <Filter>UI\Actor\C_ChoiceUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Ramp.cpp">
+      <Filter>Actor\Test</Filter>
     </ClCompile>
     <ClCompile Include="StageEditGUI.cpp">
       <Filter>Levels\Stage\0.StageBase</Filter>
