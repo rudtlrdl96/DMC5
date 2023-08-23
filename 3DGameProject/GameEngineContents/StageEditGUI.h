@@ -27,6 +27,8 @@ private:
 
 	std::vector<const char*> StageNumber;
 	int NumberIndex = 0;
-	const char* PreChar;
+
+	std::vector<std::string> PreChar;
+	int StartPrecharSize = 20;
 };
 
