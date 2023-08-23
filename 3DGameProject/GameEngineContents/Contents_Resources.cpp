@@ -15,6 +15,7 @@
 
 #include "NetworkGUI.h"
 #include "ConsoleGUI.h"
+#include "StageEditGUI.h"
 
 void ContentsCore::ContentsResourcesCreate()
 {

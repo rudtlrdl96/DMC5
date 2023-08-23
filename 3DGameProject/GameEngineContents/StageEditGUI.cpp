@@ -14,12 +14,17 @@ void StageEditGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 {
 	if (nullptr == Level)
 		return;
-	if (true == ImGui::Button("Button"))
-	{
-		ImGui::TreeNode("Stage List");
-		const char* items[] = { "Stage1", "Stage2", "Stage3", "Stage4" };
-		static int item_current_idx = 0;
-	}
+    if (ImGui::Button("StageEdit"))
+    {
+        TestBool = !TestBool;
+    }
+    if (true == TestBool)
+    {
+        const char* items[] = { "Apple", "Banana", "Cherry", "Kiwi", "Mango", "Orange", "Pineapple", "Strawberry", "Watermelon" };
+        static int item_current = 1;
+        ImGui::ListBox("listbox", &item_current, items, IM_ARRAYSIZE(items), 4);
+        ImGui::SameLine();
+    }
 }
 
 

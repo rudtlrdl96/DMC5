@@ -13,6 +13,7 @@
 //Map
 #include "BossStage.h"
 #include "StartStage.h"
+#include "StageEditLevel.h"
 
 #include "AnimationToolLevel.h"
 ContentsCore::ContentsCore() 
@@ -39,6 +40,8 @@ void ContentsCore::GameStart()
 	//
 	GameEngineCore::CreateLevel<BossStage>();
 	GameEngineCore::CreateLevel<StartStage>();
+	//
+	GameEngineCore::CreateLevel<StageEditLevel>();
 
 	GameEngineCore::ChangeLevel("MainLevel");
 }
