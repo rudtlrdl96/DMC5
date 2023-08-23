@@ -62,7 +62,7 @@ void TestObject::Start()
 	float4 local = GetTransform()->GetLocalScale();
 
 	Component = CreateComponent<PhysXCapsuleComponent>();
-	Component->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
+	Component->SetPhysxMaterial(0.0f, 1.0f, 0.0f);
 	Component->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), VecSclae * 0.1f);
 
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();

@@ -53,12 +53,12 @@ void TestLevel::LevelChangeStart()
 	Flat2->GetTransform()->AddWorldRotation(float4{ 0, 0, 90 });
 	Flat2->GetTransform()->AddWorldRotation(float4{ 0, -40, 0});
 
-	//std::shared_ptr<Plane> Flat3 = CreateActor<Plane>();
-	//Flat3->GetTransform()->AddWorldPosition(float4{ -100, 0, 0 });
-	//Flat3->GetTransform()->AddWorldRotation(float4{ 0, 0, -40 });
+	std::shared_ptr<Plane> Flat3 = CreateActor<Plane>();
+	Flat3->GetTransform()->AddWorldPosition(float4{ -100, 0, 0 });
+	Flat3->GetTransform()->AddWorldRotation(float4{ 0, 0, -40 });
 	//Flat3->GetTransform()->AddWorldRotation(float4{ 0, -45, 0 });
 
-	std::shared_ptr<Ball> ball = CreateActor<Ball>();
+	//std::shared_ptr<Ball> ball = CreateActor<Ball>();
 
 	//std::shared_ptr<TestEmpusa> Em = CreateActor<TestEmpusa>();
 }
