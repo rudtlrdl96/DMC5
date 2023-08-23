@@ -18,6 +18,7 @@ void AnimationToolWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _D
     FileLoad(Level);
     //RendererCreate(Level);
     AnimationTimeLine();
+    FrameEvent();
     FileSave();
 }
 
@@ -171,6 +172,81 @@ void AnimationToolWindow::AnimationTimeLine()
     {
         IsStop = true;
         Renderer->CurAnimation->TimeScale = 0;
+    }
+}
+
+void AnimationToolWindow::FrameEvent()
+{
+ 
+    if (ImGui::Button("Add Object Event"))
+    {
+        AnimEvent.Events.push_back(new ObjectUpdateEvent(CurrentFrame));
+    }
+    if (ImGui::Button("Add CallBack Event"))
+    {
+        AnimEvent.Events.push_back(new CallBackEvent(CurrentFrame));
+    }
+
+    CurFrameEvents.clear();
+    for (int i = 0; i < AnimEvent.Events.size(); i++)
+    {
+        EventData* CurData = AnimEvent.Events[i];
+        if (CurData->Frame == CurrentFrame)
+        {
+            CurFrameEvents.push_back(CurData);
+        }
+    }
+
+    std::list<EventData*>::iterator Iter = CurFrameEvents.begin();
+    std::list<EventData*>::iterator End = CurFrameEvents.end();
+    for (; Iter != End; Iter++)
+    {
+        EventData* CurData = (*Iter);
+        std::string EventName;
+
+        switch (CurData->Type)
+        {
+        case EventType::None:
+            EventName = "None";
+            break;
+        case EventType::ObjectUpdate:
+            EventName = "ObjectUpdate";
+            break;
+        case EventType::CallBackVoid:
+            EventName = "CallBackVoid";
+            break;
+        case EventType::CallBackInt:
+            EventName = "CallBackInt";
+            break;
+        case EventType::CallBackFloat:
+            EventName = "CallBackFloat";
+            break;
+        default:
+            break;
+        }
+
+        if (ImGui::TreeNode(EventName.c_str()))
+        {
+            if (ImGui::Button("Delete Event"))
+            {
+                std::find(AnimEvent.Events.begin(), AnimEvent.Events.end(), CurData);
+                
+            }
+            ImGui::Text("Event");
+
+            ImGui::TreePop();
+        }
+    }
+
+    if (ImGui::TreeNode("Basic"))
+    {
+        if (ImGui::Button("Delete Event"))
+        {
+
+        }
+        ImGui::Text("Event");
+
+        ImGui::TreePop();
     }
 }
 

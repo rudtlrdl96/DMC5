@@ -9,7 +9,7 @@ AnimationEvent::~AnimationEvent()
 {
 }
 
-void AnimationEvent::LoadAll(const GameEngineDirectory& _Dir, std::shared_ptr<class GameEngineFBXRenderer> _Renderer, const std::vector<std::shared_ptr<GameEngineObject>>& Objects, std::vector<std::function<void()>> CallBacks)
+void AnimationEvent::LoadAll(const AnimLoadParameter& _Parameter)
 {
 
 }
@@ -31,14 +31,3 @@ GameEngineDirectory NewDir;
 
 */
 
-void AnimationEvent::AAA()
-{
-	GameEngineDirectory NewDir;
-	NewDir.MoveParentToDirectory("ContentResources");
-	NewDir.Move("ContentResources");
-	LoadAll(NewDir, nullptr, { nullptr, nullptr, nullptr }, { [] {
-
-		}, [] {
-
-		} });
-}

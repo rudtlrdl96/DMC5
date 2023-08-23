@@ -18,6 +18,10 @@ void AnimationToolLevel::Start()
 
 void AnimationToolLevel::Update(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("ReturnToMainLevel"))
+	{
+		GameEngineCore::ChangeLevel("MainLevel");
+	}
 }
 
 void AnimationToolLevel::LevelChangeStart()
@@ -25,7 +29,7 @@ void AnimationToolLevel::LevelChangeStart()
 	if (false == IsMessage)
 	{
 		IsMessage = true;
-		MsgTextBox("CurrentLevel is PlayerTestLevel");
+		MsgTextBox("CurrentLevel is AnimationToolLevel");
 	}
 	if (AnimWindow == nullptr)
 	{
@@ -36,5 +40,6 @@ void AnimationToolLevel::LevelChangeStart()
 
 void AnimationToolLevel::LevelChangeEnd()
 {
+	IsMessage = false;
 }
 
