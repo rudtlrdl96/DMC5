@@ -22,10 +22,13 @@ public:
 		return AllNetObjects.contains(_Id);
 	}
 
+	//Death처리된 NetObeject들을 AllNetObjects에서 제거합니다
 	static void Update_ProcessPackets();
 
 	//모든 Actor들의 Update가 끝난 이후 패킷을 전송하는 부분
 	static void Update_SendPackets(float _DeltaTime);
+
+	static void ReleaseNetObject();
 
 	GameEngineNetObject();
 	~GameEngineNetObject();
@@ -122,6 +125,11 @@ protected:
 		ObjectType = static_cast<unsigned int>(_ActorType);
 	}
 
+	inline void TestNetDisConnect()
+	{
+		IsDeath = true;
+	}
+
 private:
 	static std::atomic<int> AtomicObjectID;
 	static std::mutex ObjectLock;
@@ -138,6 +146,9 @@ private:
 	unsigned int ObjectType = -1;
 
 	GameEngineNet* Net = nullptr;
+
+	//Release구조를 순환할때 AllNetObjects에서 이 오브젝트를 빼내기 위한 bool
+	bool IsDeath = false;
 
 	//수신받은 패킷들을 각각의 객체가 처리하기 위해 리스트에 보관(마치 큐 처럼 사용)
 	std::list<std::shared_ptr<GameEnginePacket>> Packets;
