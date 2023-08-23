@@ -8,5 +8,19 @@
     <FxCompile Include="BlurShader.hlsl" />
     <FxCompile Include="MeshTexture.hlsl" />
     <FxCompile Include="MeshAniTexture.hlsl" />
+    <FxCompile Include="Animation.fx">
+      <Filter>Header</Filter>
+    </FxCompile>
+    <FxCompile Include="Light.fx">
+      <Filter>Header</Filter>
+    </FxCompile>
+    <FxCompile Include="Transform.fx">
+      <Filter>Header</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header">
+      <UniqueIdentifier>{f3c4c468-ddcb-47be-9c45-7abf044cb781}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

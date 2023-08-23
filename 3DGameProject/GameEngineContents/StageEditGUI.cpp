@@ -36,25 +36,36 @@ void StageEditGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 
 const char* StageEditGUI::StageNameSet(int _NumberIndex)
 {
+    const char* StageName = "";
+
     switch (_NumberIndex)
     {
     case 1:
-        return "Stage1";  break;
+        StageName = "Stage1";
+        return StageName;  break;
     case 2:
-        return "Stage2"; break;
+        StageName = "Stage2";
+        return StageName; break;
     case 3:
-        return "Stage3"; break;
+        StageName = "Stage3";
+        return StageName; break;
     case 4:
-        return "Stage4"; break;
+        StageName = "Stage4";
+        return StageName; break;
     case 5:
-        return "Stage5"; break;
+        StageName = "Stage5";
+        return StageName; break;
     case 6:
-        return "Stage6"; break;
+        StageName = "Stage6";
+        return StageName; break;
     case 7:
-        return "Stage7"; break;
+        StageName = "Stage7";
+        return StageName; break;
     default:
         break;
     }
+
+    return StageName;
 }
 
 

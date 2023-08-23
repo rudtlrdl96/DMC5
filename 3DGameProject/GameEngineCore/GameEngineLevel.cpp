@@ -5,6 +5,8 @@
 #include "GameEngineGUI.h"
 #include "GameEngineCollision.h"
 #include "GameEngineDebug3D.h"
+#include "GameEngineLight.h"
+#include <GameEngineCore/GameEngineLight.h>
 #include <GameEnginePlatform/GameEngineInput.h>
 
 bool GameEngineLevel::IsDebugRender = false;
@@ -36,6 +38,21 @@ void GameEngineLevel::Start()
 
 void GameEngineLevel::ActorUpdate(float _DeltaTime)
 {
+	//bool Check = false;
+	//for (std::pair<const int, std::shared_ptr<GameEngineCamera>>& Cam : Cameras)
+	//{
+	//	if (true == Cam.second->IsFreeCamera())
+	//	{
+	//		Cam.second->Update(_DeltaTime);
+	//		Check = true;
+	//	}
+	//}
+
+	//if (true == Check)
+	//{
+	//	return;
+	//}
+
 	if (true == MainCamera->IsFreeCamera())
 	{
 		MainCamera->Update(_DeltaTime);
@@ -60,9 +77,6 @@ void GameEngineLevel::ActorUpdate(float _DeltaTime)
 			{
 				std::shared_ptr<GameEngineActor>& Actor = *ActorStart;
 
-				// 지정이 되있으면
-				// ScaleTime * (계수)
-
 				Actor->AllAccTime(ScaleTime);
 				Actor->AllUpdate(ScaleTime);
 			}
@@ -72,7 +86,9 @@ void GameEngineLevel::ActorUpdate(float _DeltaTime)
 
 void GameEngineLevel::ActorLevelChangeStart()
 {
+
 	{
+		// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.
 		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupStartIter = Actors.begin();
 		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupEndIter = Actors.end();
 
@@ -156,12 +172,81 @@ void GameEngineLevel::ActorLevelChangeEnd()
 //	//}
 //}
 
-void GameEngineLevel::ActorRender(float _DeltaTime)
+void GameEngineLevel::ActorRelease()
 {
-	// GetMainCamera()->Setting();
-	// GetMainCamera()->CameraTransformUpdate();
-	// GetMainCamera()->Render(_DeltaTime);
+	//// 랜더러를 릴리즈 한다.
+	for (std::pair<int, std::shared_ptr<GameEngineCamera>> Pair : Cameras)
+	{
+		std::shared_ptr<GameEngineCamera> Cam = Pair.second;
+		Cam->Release();
+	}
 
+	{
+		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupStartIter = Collisions.begin();
+		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupEndIter = Collisions.end();
+
+		for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
+		{
+			std::list<std::shared_ptr<GameEngineCollision>>& ObjectList = GroupStartIter->second;
+
+			std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectStart = ObjectList.begin();
+			std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectEnd = ObjectList.end();
+
+			for (; ObjectStart != ObjectEnd; )
+			{
+				std::shared_ptr<GameEngineCollision> RelaseObject = (*ObjectStart);
+
+				if (nullptr != RelaseObject && false == RelaseObject->IsDeath())
+				{
+					++ObjectStart;
+					continue;
+				}
+
+				ObjectStart = ObjectList.erase(ObjectStart);
+			}
+		}
+	}
+
+
+	{
+		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupStartIter = Actors.begin();
+		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupEndIter = Actors.end();
+
+		for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
+		{
+			std::list<std::shared_ptr<GameEngineActor>>& ActorList = GroupStartIter->second;
+
+			std::list<std::shared_ptr<GameEngineActor>>::iterator ActorStart = ActorList.begin();
+			std::list<std::shared_ptr<GameEngineActor>>::iterator ActorEnd = ActorList.end();
+
+			for (; ActorStart != ActorEnd; )
+			{
+				std::shared_ptr<GameEngineActor> RelaseActor = (*ActorStart);
+
+				RelaseActor->AllDestroy();
+
+				if (nullptr != RelaseActor && false == RelaseActor->IsDeath())
+				{
+					RelaseActor->AllRelease();
+					++ActorStart;
+					continue;
+				}
+
+				RelaseActor->Release();
+				ActorStart = ActorList.erase(ActorStart);
+			}
+		}
+	}
+
+}
+
+void GameEngineLevel::Update(float _DeltaTime)
+{
+
+}
+
+void GameEngineLevel::Render(float _DeltaTime)
+{
 	if (true == IsDebugRender)
 	{
 		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupStartIter = Collisions.begin();
@@ -191,6 +276,13 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 				CollisionObject->DebugRender(_DeltaTime);
 			}
 		}
+	}
+
+	LightDataObject.LightCount = 0;
+	for (std::shared_ptr<GameEngineLight> Light : AllLight)
+	{
+		LightDataObject.AllLight[LightDataObject.LightCount] = Light->GetLightData();
+		++LightDataObject.LightCount;
 	}
 
 	for (std::pair<int, std::shared_ptr<GameEngineCamera>> Pair : Cameras)
@@ -227,35 +319,6 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 
 	GameEngineDevice::GetBackBufferTarget()->Merge(LastTarget);
 
-
-	//// 이건 나중에 만들어질 랜더러의 랜더가 다 끝나고 되는 랜더가 될겁니다.
-	//std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupStartIter = Actors.begin();
-	//std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupEndIter = Actors.end();
-
-	//for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
-	//{
-	//	std::list<std::shared_ptr<GameEngineActor>>& ActorList = GroupStartIter->second;
-
-	//	std::list<std::shared_ptr<GameEngineActor>>::iterator ActorStart = ActorList.begin();
-	//	std::list<std::shared_ptr<GameEngineActor>>::iterator ActorEnd = ActorList.end();
-
-	//	for (; ActorStart != ActorEnd; ++ActorStart)
-	//	{
-	//		std::shared_ptr<GameEngineActor>& Actor = *ActorStart;
-
-	//		Actor->AllRender(_DeltaTime);
-
-
-	//		/*if (false == Actor->IsUpdate())
-	//		{
-	//			continue;
-	//		}
-
-	//		GameEngineTransform* Transform = Actor->GetTransform();
-	//		Transform->AllRender(_DeltaTime);*/
-	//	}
-	//}
-
 	static bool GUIRender = true;
 
 	if (true == GameEngineInput::IsDown("GUISwitch"))
@@ -275,81 +338,7 @@ void GameEngineLevel::ActorRender(float _DeltaTime)
 	{
 		GameEngineGUI::Render(GetSharedThis(), _DeltaTime);
 	}
-}
 
-void GameEngineLevel::ActorRelease()
-{
-	//// 랜더러를 릴리즈 한다.
-	for (std::pair<int, std::shared_ptr<GameEngineCamera>> Pair : Cameras)
-	{
-		std::shared_ptr<GameEngineCamera> Cam = Pair.second;
-		Cam->Release();
-	}
-
-	{
-		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupStartIter = Collisions.begin();
-		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupEndIter = Collisions.end();
-
-		for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
-		{
-			std::list<std::shared_ptr<GameEngineCollision>>& ObjectList = GroupStartIter->second;
-
-			std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectStart = ObjectList.begin();
-			std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectEnd = ObjectList.end();
-
-			for (; ObjectStart != ObjectEnd; )
-			{
-				std::shared_ptr<GameEngineCollision> RelaseObject = (*ObjectStart);
-
-				if (nullptr != RelaseObject && false == RelaseObject->IsDeath())
-				{
-					++ObjectStart;
-					continue;
-				}
-
-				ObjectStart = ObjectList.erase(ObjectStart);
-			}
-		}
-	}
-
-	{
-		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupStartIter = Actors.begin();
-		std::map<int, std::list<std::shared_ptr<GameEngineActor>>>::iterator GroupEndIter = Actors.end();
-
-		for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
-		{
-			std::list<std::shared_ptr<GameEngineActor>>& ActorList = GroupStartIter->second;
-
-			std::list<std::shared_ptr<GameEngineActor>>::iterator ActorStart = ActorList.begin();
-			std::list<std::shared_ptr<GameEngineActor>>::iterator ActorEnd = ActorList.end();
-
-			for (; ActorStart != ActorEnd; )
-			{
-				std::shared_ptr<GameEngineActor> RelaseActor = (*ActorStart);
-
-				RelaseActor->AllDestroy();
-
-				if (nullptr != RelaseActor && false == RelaseActor->IsDeath())
-				{
-					RelaseActor->AllRelease();
-					++ActorStart;
-					continue;
-				}
-
-				RelaseActor->Release();
-				ActorStart = ActorList.erase(ActorStart);
-			}
-		}
-	}
-}
-
-void GameEngineLevel::Update(float _DeltaTime)
-{
-	
-}
-
-void GameEngineLevel::Render(float _DeltaTime)
-{
 }
 
 void GameEngineLevel::ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Level)
@@ -374,7 +363,6 @@ void GameEngineLevel::LevelChangeEnd()
 {
 
 }
-
 
 void GameEngineLevel::PushCameraRenderer(std::shared_ptr<GameEngineRenderer> _Renderer, int _CameraOrder)
 {
@@ -486,3 +474,13 @@ void GameEngineLevel::DestroyCamera()
 	Cameras.clear();
 }
 
+void GameEngineLevel::PushLight(std::shared_ptr<GameEngineLight> _Light)
+{
+	// 라이트가 지워질때 어떻게 하지?
+	//LightData& LightInst = LightDataObject.AllLight[LightDataObject.LightCount];
+
+	//_Light->LightDataPtr = &LightInst;
+	//++LightDataObject.LightCount;
+
+	AllLight.push_back(_Light);
+}

@@ -1071,7 +1071,7 @@ std::shared_ptr<GameEngineMesh> GameEngineFBXMesh::GetGameEngineMesh(size_t _Mes
 
 			if (false == Path.IsExists())
 			{
-				MsgTextBox("FBX매쉬도중 텍스처가 존재하지 않습니다." + std::string(FilePath));
+				// MsgTextBox("FBX매쉬도중 텍스처가 존재하지 않습니다." + std::string(FilePath));
 			}
 			else
 			{
@@ -1099,7 +1099,7 @@ std::shared_ptr<GameEngineMesh> GameEngineFBXMesh::GetGameEngineMesh(size_t _Mes
 
 			if (false == Path.IsExists())
 			{
-				MsgTextBox("FBX매쉬도중 텍스처가 존재하지 않습니다." + std::string(FilePath));
+				// MsgTextBox("FBX매쉬도중 텍스처가 존재하지 않습니다." + std::string(FilePath));
 			}
 			else
 			{

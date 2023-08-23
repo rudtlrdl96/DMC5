@@ -163,7 +163,6 @@ void GameEngineCore::EngineUpdate()
 	{
 		GameEngineDevice::RenderStart();
 		MainLevel->Render(TimeDeltaTime);
-		MainLevel->ActorRender(TimeDeltaTime);
 		GameEngineDevice::RenderEnd();
 	}
 

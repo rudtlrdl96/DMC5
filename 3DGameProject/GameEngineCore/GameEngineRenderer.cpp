@@ -2,7 +2,6 @@
 #include "GameEngineRenderer.h"
 #include <GameEnginePlatform/GameEngineWindow.h>
 
-
 #include "GameEngineLevel.h"
 #include "GameEngineCamera.h"
 #include "GameEngineMaterial.h"
@@ -44,8 +43,6 @@ void GameEngineRenderUnit::SetMesh(std::shared_ptr<GameEngineMesh> _Mesh)
 
 void GameEngineRenderUnit::SetMaterial(const std::string_view& _Name)
 {
-	// GetCamera()->Units[0];
-
 	Material = GameEngineMaterial::Find(_Name);
 
 	if (nullptr == Material)
@@ -69,10 +66,6 @@ void GameEngineRenderUnit::SetMaterial(const std::string_view& _Name)
 		InputLayOutPtr->ResCreate(Mesh->GetVertexBuffer(), Material->GetVertexShader());
 	}
 
-
-	// 카메라에 들어가야 하는순간.
-
-
 	if (true == ShaderResHelper.IsConstantBuffer("TransformData"))
 	{
 		const TransformData& Data = ParentRenderer->GetTransform()->GetTransDataRef();
@@ -84,6 +77,11 @@ void GameEngineRenderUnit::SetMaterial(const std::string_view& _Name)
 		ShaderResHelper.SetConstantBufferLink("RenderBaseValue", ParentRenderer->BaseValue);
 	}
 
+	if (true == ShaderResHelper.IsConstantBuffer("LightDatas"))
+	{
+		LightDatas& Data = ParentRenderer->GetActor()->GetLevel()->LightDataObject;
+		ShaderResHelper.SetConstantBufferLink("LightDatas", Data);
+	}
 }
 
 void GameEngineRenderUnit::Render(float _DeltaTime)
@@ -137,8 +135,6 @@ void GameEngineRenderer::RenderTransformUpdate(GameEngineCamera* _Camera)
 		return;
 	}
 
-	// RenderCamera = _Camera;
-
 	GetTransform()->SetCameraMatrix(_Camera->GetView(), _Camera->GetProjection());
 }
 
@@ -151,20 +147,6 @@ void GameEngineRenderer::RenderBaseValueUpdate(float _Delta)
 void GameEngineRenderer::Render(float _Delta)
 {
 	RenderBaseValueUpdate(_Delta);
-	// GameEngineDevice::GetContext()->VSSetConstantBuffers();
-	// GameEngineDevice::GetContext()->PSSetConstantBuffers();
-
-	// 랜더 유니트는 1개의 매쉬 1개의 머티리얼을 랜더링 하는 용도입니다.
-	// 3D에가게되면 이게 안되요.
-	// 캐릭터가 매쉬가 1개가 아니야.
-	// 다리 팔 몸통
-
-	// 텍스처 세팅 상수버퍼 세팅 이런것들이 전부다 처리 된다.
-	//for (size_t i = 0; i < Units.size(); i++)
-	//{
-	//	Units[i]->Render(_Delta);
-	//}
-
 }
 
 std::shared_ptr<GameEngineMaterial> GameEngineRenderer::GetMaterial(int _index/* = 0*/)
@@ -208,7 +190,6 @@ void GameEngineRenderer::CalSortZ(GameEngineCamera* _Camera)
 	}
 
 }
-
 
 std::shared_ptr<GameEngineRenderUnit> GameEngineRenderer::CreateRenderUnit()
 {

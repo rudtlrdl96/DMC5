@@ -1,9 +1,11 @@
 #pragma once
 #include "GameEngineObject.h"
-#include <GameEngineBase\GameEngineTimeEvent.h>
 #include <string_view>
 #include <map>
 
+#include <GameEngineBase\GameEngineTimeEvent.h>
+
+#include "GameEngineLight.h"
 #include "GameEngineRenderTarget.h"
 #include "PhysicsLevel.h"
 
@@ -14,7 +16,9 @@ class GameEngineRenderer;
 class GameEngineCollision;
 class GameEngineLevel : public GameEngineObject, public PhysicsLevel
 {
+	friend class GameEngineLight;
 	friend class GameEngineRenderer;
+	friend class GameEngineRenderUnit;
 	friend class GameEngineCollision;
 	friend class GameEngineTransform;
 	friend class GameEngineCore;
@@ -107,7 +111,6 @@ public:
 		return Actors;
 	}
 
-
 protected:
 	// 레벨이 바뀌어서 시작할때
 	virtual void LevelChangeStart();
@@ -135,6 +138,12 @@ private:
 	std::map<int, std::shared_ptr<GameEngineCamera>> Cameras;
 	std::shared_ptr<GameEngineCamera> MainCamera;
 
+	std::list<std::shared_ptr<GameEngineLight>> AllLight;
+
+	LightDatas LightDataObject;
+
+	void PushLight(std::shared_ptr<GameEngineLight> _Light);
+
 	void PushCameraRenderer(std::shared_ptr<GameEngineRenderer> _Renderer, int _CameraOrder);
 
 	std::map<int, std::list<std::shared_ptr<GameEngineActor>>> Actors;
@@ -146,18 +155,14 @@ private:
 	void ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Level);
 
 	void ActorUpdate(float _DeltaTime);
-	void ActorRender(float _DeltaTime);
 	void ActorRelease();
 	void ActorLevelChangeStart();
 	void ActorLevelChangeEnd();
 
-	void LevelCameraInit();
-
 	void DestroyCamera();
 
-
+	void LevelCameraInit();
 	void TextureUnLoad(GameEngineLevel* _NextLevel);
-
 	void TextureReLoad(GameEngineLevel* _PrevLevel);
 
 };

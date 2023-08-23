@@ -143,13 +143,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <FxCompile Include="Animation.fx" />
     <FxCompile Include="BlurShader.hlsl" />
     <FxCompile Include="DebugMeshRender.hlsl" />
+    <FxCompile Include="Light.fx" />
     <FxCompile Include="MergeShader.hlsl" />
     <FxCompile Include="MeshAniTexture.hlsl" />
     <FxCompile Include="MeshTexture.hlsl" />
     <FxCompile Include="TextureShader.hlsl" />
     <FxCompile Include="TileMapShader.hlsl" />
+    <FxCompile Include="Transform.fx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

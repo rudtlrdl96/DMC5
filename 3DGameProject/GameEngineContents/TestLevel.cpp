@@ -58,6 +58,8 @@ void TestLevel::LevelChangeStart()
 	Flat3->GetTransform()->AddWorldRotation(float4{ 0, 0, -40 });
 	//Flat3->GetTransform()->AddWorldRotation(float4{ 0, -45, 0 });
 
+	std::shared_ptr<GameEngineLight> Light = CreateActor<GameEngineLight>();
+
 	//std::shared_ptr<Ball> ball = CreateActor<Ball>();
 
 	//std::shared_ptr<TestEmpusa> Em = CreateActor<TestEmpusa>();
