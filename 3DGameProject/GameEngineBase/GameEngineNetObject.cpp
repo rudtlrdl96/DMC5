@@ -36,6 +36,9 @@ void GameEngineNetObject::Update_ProcessPackets()
 		if (false == Pair.second->IsNet())
 			continue;
 
+		if (true == Pair.second->IsDeath)
+			continue;
+
 		if (true == Pair.second->Packets.empty())
 			continue;
 
@@ -58,12 +61,37 @@ void GameEngineNetObject::Update_SendPackets(float _DeltaTime)
 		if (false == Pair.second->IsNet())
 			continue;
 
+		if (true == Pair.second->IsDeath)
+			continue;
+
 		Pair.second->Update_SendPacket(_DeltaTime);
 	}
 	MainThreadNetObjects.clear();
 }
 
+void GameEngineNetObject::ReleaseNetObject()
+{
+	//근데 이렇게 크게 Lock을 잡으면서 까지 릴리즈를 할 필요가 있을까?
 
+	ObjectLock.lock();
+
+	std::map<int, GameEngineNetObject*>::iterator ReleaseStartIter = AllNetObjects.begin();
+	std::map<int, GameEngineNetObject*>::iterator ReleaseEndIter = AllNetObjects.end();
+
+	while (ReleaseStartIter != ReleaseEndIter)
+	{
+		GameEngineNetObject* NetObjPtr = ReleaseStartIter->second;
+		if (true == NetObjPtr->IsDeath || false == NetObjPtr->IsNet())
+		{
+			ReleaseStartIter = AllNetObjects.erase(ReleaseStartIter);
+			continue;
+		}
+
+		++ReleaseStartIter;
+	}
+
+	ObjectLock.unlock();
+}
 
 
 GameEngineNetObject::GameEngineNetObject()

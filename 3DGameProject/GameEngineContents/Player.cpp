@@ -35,6 +35,8 @@ void Player::Start()
 
 	// Renderer->SetFBXMesh("AnimMan.FBX", "MeshTexture", 0, 0);
 	// Renderer->SetFBXMesh("AnimMan.FBX", "MeshTexture", 0, 2);
+
+	GameEngineInput::CreateKey("TestDestroy", 'N');
 }
 
 void Player::Update_ProcessPacket()
@@ -66,7 +68,15 @@ void Player::Update_ProcessPacket()
 
 void Player::Update(float _DeltaTime)
 {
-	
+	if (false == NetworkManager::IsServer())
+		return;
+
+	if (false == GameEngineInput::IsDown("TestDestroy"))
+		return;
+
+	//추가로 여기에 NetObejct자료구조에서 빼야함
+	//Death();
+	TestNetDisConnect();
 }
 
 void Player::Update_SendPacket(float _DeltaTime)
