@@ -105,8 +105,11 @@ void GameEngineGUI::Render(std::shared_ptr<class GameEngineLevel> Level, float _
             continue;
         }
 
-        WindowPtr->Begin();
-        WindowPtr->OnGUI(Level, _DeltaTime);
+        if (true == WindowPtr->Begin())
+        {
+            WindowPtr->OnGUI(Level, _DeltaTime);
+        }
+
         WindowPtr->End();
     }
 

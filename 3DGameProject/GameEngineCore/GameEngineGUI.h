@@ -12,11 +12,10 @@ class GameEngineGUIWindow : public GameEngineObject, public std::enable_shared_f
 	friend class GameEngineGUI;
 
 private:
-	void Begin()
+	bool Begin()
 	{
 		std::string_view View = GetName();
-
-		ImGui::Begin(View.data());
+		return ImGui::Begin(View.data());
 	}
 	void End()
 	{

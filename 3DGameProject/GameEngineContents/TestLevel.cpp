@@ -54,8 +54,8 @@ void TestLevel::LevelChangeStart()
 
 	//std::shared_ptr<TestEmpusa> Em = CreateActor<TestEmpusa>();
 	
-	//std::shared_ptr<Enemy_Empusa> Empusa = CreateActor<Enemy_Empusa>();
-	//Empusa->GetTransform()->SetLocalPosition({ 0, 0, 10 });
+	std::shared_ptr<Enemy_Empusa> Empusa = CreateActor<Enemy_Empusa>();
+	Empusa->GetTransform()->SetLocalPosition({ 0, 0, 10 });
 
 	//std::shared_ptr<Enemy_GreenEmpusa> GreenEmpusa = CreateActor<Enemy_GreenEmpusa>();
 	//GreenEmpusa->GetTransform()->SetLocalPosition({ 20, 0, 10 });	
