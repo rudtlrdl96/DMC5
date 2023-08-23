@@ -9,7 +9,6 @@ class GameEngineObject :
 	public GameEngineObjectBase, 
 	public GameEngineNameObject,
 	public std::enable_shared_from_this<GameEngineObject>
-	// 침습형이 된겁니다.
 {
 	friend class GameEngineComponent;
 	friend class GameEngineActor;
@@ -20,16 +19,10 @@ class GameEngineObject :
 	friend class HierarchyGUI;
 
 	static int NextActorID;
-
-	/////////////////////  Gui 변수 /////////////////////
-
 	static int GUI_SelectActorIndex;
 	static bool GUI_CurFrameSetParent;
-
 	static GameEngineTransform* NewChild;
-
 	static GameEngineObject* ClickedObject;
-
 
 public:
 	// constrcuter destructer
@@ -57,7 +50,6 @@ public:
 		return std::dynamic_pointer_cast<PtrType>(std::enable_shared_from_this<GameEngineObject>::shared_from_this());
 	}
 
-
 	virtual void AccLiveTime(float _LiveTime)
 	{
 		LiveTime += _LiveTime;
@@ -73,7 +65,6 @@ public:
 		return LiveTime;
 	}
 
-
 	inline class GameEngineLevel* GetLevel() const
 	{
 		return Level;
@@ -87,7 +78,6 @@ public:
 	{
 		return ActorID;
 	}
-
 
 protected:
 	virtual void Start() {}
@@ -105,21 +95,18 @@ protected:
 
 private:
 	float LiveTime = 0.0f;
+
 	GameEngineTransform Transform;
 
 	class GameEngineLevel* Level = nullptr;
 
 	std::list<std::shared_ptr<GameEngineObject>> Childs;
 
-
-	// 겹치지 않는 고유의 액터 ID
 	const int ActorID;
-
 
 	/////////////////////  Gui 함수 /////////////////////
 
 	GameEngineObject* DrawGUI();
-
 
 	////////////////////////////////////////////////////
 
@@ -130,6 +117,5 @@ private:
 	void AllRelease();
 	void AllLevelChangeStart();
 	void AllLevelChangeEnd();
-
 
 };

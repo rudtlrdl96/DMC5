@@ -12,8 +12,6 @@ cbuffer RenderBaseValue : register(b10)
     float4 Mouse;
 };
 
-
-
 struct Input
 {
     float4 POSITION : POSITION;

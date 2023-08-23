@@ -22,9 +22,6 @@ void GameEngineFontRenderer::SetText(const std::string_view& _Text)
 
 void GameEngineFontRenderer::Render(float _Delta)
 {
-	// 온리 스크린 모드
-	// 
-
 	if (nullptr == Font)
 	{
 		return;
@@ -45,17 +42,12 @@ void GameEngineFontRenderer::Render(float _Delta)
 	Font->FontDraw(Text, Pos, FontScale, FontColor, FwTextFlag);
 
 	GameEngineDevice::GetContext()->GSSetShader(nullptr, nullptr, 0);
-
 }
 
 void GameEngineFontRenderer::Start()
 {
-	// GameEngineRenderer::Start();
-
-	// UI카메라라
 	PushCameraRender(100);
 	Unit = CreateRenderUnit();
 
 	Unit->RenderFunction = std::bind(&GameEngineFontRenderer::Render, this, std::placeholders::_1);
-
 }

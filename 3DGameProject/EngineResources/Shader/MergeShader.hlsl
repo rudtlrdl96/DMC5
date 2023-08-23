@@ -6,8 +6,6 @@ struct Input
 
 struct OutPut
 {
-    // 레스터라이저야 이 포지션이
-    // w나눈 다음  뷰포트 곱하고 픽셀 건져낼때 쓸포지션 정보를 내가 보낸거야.
     float4 Pos : SV_Position;
     float4 UV : TEXCOORD;
 };
@@ -18,7 +16,6 @@ OutPut Merge_VS(Input _Value)
     OutPutValue.Pos = _Value.Pos;
     OutPutValue.UV = _Value.UV;
     
-    // 화면 전체 범위
     return OutPutValue;
 }
 
@@ -31,6 +28,5 @@ float4 Merge_PS(OutPut _Value) : SV_Target0
     
     Color.a = saturate(Color.a);
     
-  
     return Color;
 }

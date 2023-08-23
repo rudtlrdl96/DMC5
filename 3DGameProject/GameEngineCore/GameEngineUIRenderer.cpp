@@ -10,7 +10,6 @@ GameEngineUIRenderer::~GameEngineUIRenderer()
 {
 }
 
-
 void GameEngineUIRenderer::Start() 
 {
 	PushCameraRender(100);

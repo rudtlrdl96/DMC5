@@ -37,7 +37,6 @@ GameEngineFont::~GameEngineFont()
 		Font->Release();
 		Font = nullptr;
 	}
-
 }
 
 void GameEngineFont::LoadFont(const std::string_view& _Path) 
@@ -64,9 +63,7 @@ void GameEngineFont::LoadFont(const std::string_view& _Path)
 		blendDesc.RenderTarget[i].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 		blendDesc.RenderTarget[i].SrcBlendAlpha = D3D11_BLEND_ONE;
 		blendDesc.RenderTarget[i].DestBlendAlpha = D3D11_BLEND_ONE;
-
 	}
-
 
 	if (S_OK != GameEngineFont::Factory->CreateFontWrapper(GameEngineDevice::GetDevice(), WPath.c_str(), blendDesc, &Font))
 	{

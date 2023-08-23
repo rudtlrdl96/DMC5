@@ -1,4 +1,5 @@
 #include "Transform.fx"
+#include "Light.fx"
 
 struct Input
 {
@@ -80,9 +81,9 @@ struct OutColor
 float4 Texture_PS(OutPut _Value) : SV_Target0
 {
     float4 Color = DiffuseTex.Sample(SAMPLER, _Value.UV.xy);
-    float saturation = HBSCColor.g * 2;
-    float brightness = HBSCColor.b * 2 - 1;
-    float contrast = HBSCColor.a * 2;
+    float saturation = BSLCColor.g * 2;
+    float brightness = BSLCColor.b * 2 - 1;
+    float contrast = BSLCColor.a * 2;
     
     if (Clip.z == 0)
     {

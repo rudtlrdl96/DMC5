@@ -1,8 +1,9 @@
 #pragma once
+#include <map>
+
+#include "EngineContentRenderingStruct.h"
 #include "GameEngineRenderer.h"
 #include "GameEngineSprite.h"
-#include "EngineContentRenderingStruct.h"
-#include <map>
 
 class AnimationStartEvent
 {
@@ -56,7 +57,6 @@ public:
 	bool IsEnd();
 };
 
-
 class AnimationParameter
 {
 public:
@@ -82,7 +82,6 @@ enum class ClipYDir
 	Top,
 	Bot,
 };
-
 
 // 설명 :
 class GameEngineSpriteRenderer : public GameEngineRenderer
@@ -136,7 +135,6 @@ public:
 		return AtlasData;
 	}
 
-	// 내 눈에 보이는 이미지에서 0.1;
 	void ImageClippingX(float _Ratio, ClipXDir _Dir);
 	void ImageClippingY(float _Ratio, ClipYDir _Dir);
 
@@ -146,7 +144,6 @@ public:
 	}
 
 	void SetSprite(const std::string_view& _SpriteName, size_t _Frame = 0);
-
 	void SetFrame(size_t _Frame);
 
 	void SetAnimPauseOn()
@@ -162,7 +159,6 @@ public:
 	ColorOption ColorOptionValue;
 
 	void SetAnimationUpdateEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
-
 	void SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
 
 	std::string GetTexName();
@@ -172,7 +168,7 @@ public:
 		RenderEndCallBack = _CallBack;
 	}
 
-	void BSCControl(float _saturation, float _brightness, float _contrast)
+	void BSCControl(float _saturation, float _brightness, float _contrast);
 
 protected:
 	void SpriteRenderInit();
@@ -184,18 +180,14 @@ protected:
 
 private:
 	void Update(float _Delta) override;
-
 	void Render(float _Delta) override;
 
 	std::map<std::string, std::shared_ptr<AnimationInfo>> Animations;
-
 	std::shared_ptr<AnimationInfo> CurAnimation;
-
 	std::shared_ptr<GameEngineSprite> Sprite = nullptr;
-	size_t Frame = -1;
-
 	std::shared_ptr<GameEngineTexture> CurTexture;
-
+	
+	size_t Frame = -1;
 	float ScaleRatio = 1.0f;
 
 	void Start() override;

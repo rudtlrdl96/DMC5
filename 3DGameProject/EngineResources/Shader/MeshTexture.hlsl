@@ -1,6 +1,5 @@
 #include "Transform.fx"
 
-
 struct Input
 {
     float4 POSITION : POSITION;
@@ -21,15 +20,12 @@ struct AniMat
     float4x4 Mat;
 };
 
-// 그래픽카드에서 이뤄지는것.
 Output MeshTexture_VS(Input _Input)
 {
     Output NewOutPut = (Output)0;
     
     NewOutPut.POSITION = _Input.POSITION;
     NewOutPut.POSITION.w = 1.0f;
-    // 자신의 로컬공간에서 애니메이션을 시키고
-    // NewOutPut.POSITION = mul(_Input.POSITION, ArrAniMationMatrix[_Input.BLENDINDICES[0]].Mat);
     NewOutPut.POSITION = mul(NewOutPut.POSITION, WorldViewProjectionMatrix);
     NewOutPut.TEXCOORD = _Input.TEXCOORD;
     

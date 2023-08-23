@@ -195,7 +195,6 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineRenderer::CreateRenderUnit()
 {
 	std::shared_ptr<GameEngineRenderUnit> Unit = std::make_shared<GameEngineRenderUnit>();
 
-	// Unit->shared_from_this();
 	Unit->SetRenderer(this);
 	Units.push_back(Unit);
 
