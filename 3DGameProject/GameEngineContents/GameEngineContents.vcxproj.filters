@@ -52,23 +52,8 @@
     <ClInclude Include="IntroLevel.h">
       <Filter>UI\Level</Filter>
     </ClInclude>
-    <ClInclude Include="BackGround.h">
-      <Filter>UI\Actor\IntroUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Logo.h">
-      <Filter>UI\Actor\IntroUI</Filter>
-    </ClInclude>
     <ClInclude Include="TitleLevel.h">
       <Filter>UI\Level</Filter>
-    </ClInclude>
-    <ClInclude Include="ContentButton.h">
-      <Filter>UI\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="UIFontRender.h">
-      <Filter>UI\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="TitleBG.h">
-      <Filter>UI\Actor\TitleUI\BG</Filter>
     </ClInclude>
     <ClInclude Include="EnemyActor_Boss.h">
       <Filter>Actor\Enemy\BossEnemy</Filter>
@@ -124,17 +109,11 @@
     <ClInclude Include="TestLevel.h">
       <Filter>Levels\Test</Filter>
     </ClInclude>
-    <ClInclude Include="StartButton.h">
-      <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
-    </ClInclude>
     <ClInclude Include="MouseCusor.h">
       <Filter>UI\Base\Mouse</Filter>
     </ClInclude>
     <ClInclude Include="UIEnums.h">
       <Filter>UI\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="SelectScreen.h">
-      <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
     </ClInclude>
     <ClInclude Include="ConnectIDPacket.h">
       <Filter>Server\01.Packet\03.ServerToClient</Filter>
@@ -211,6 +190,33 @@
     <ClInclude Include="StageDatas.h">
       <Filter>Levels\Stage\0.StageBase</Filter>
     </ClInclude>
+    <ClInclude Include="Intro_BackGround.h">
+      <Filter>UI\Actor\IntroUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Intro_Logo.h">
+      <Filter>UI\Actor\IntroUI</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleBG.h">
+      <Filter>UI\Actor\TitleUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Title_SelectScreen.h">
+      <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="Title_StartScreen.h">
+      <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleButton.h">
+      <Filter>UI\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Char_ChoiceLevel.h">
+      <Filter>UI\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Nero_ChoiceUI.h">
+      <Filter>UI\Actor\C_ChoiceUI</Filter>
+    </ClInclude>
+    <ClInclude Include="C_ChoiceBG.h">
+      <Filter>UI\Actor\C_ChoiceUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -267,20 +273,8 @@
     <ClCompile Include="IntroLevel.cpp">
       <Filter>UI\Level</Filter>
     </ClCompile>
-    <ClCompile Include="BackGround.cpp">
-      <Filter>UI\Actor\IntroUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Logo.cpp">
-      <Filter>UI\Actor\IntroUI</Filter>
-    </ClCompile>
     <ClCompile Include="TitleLevel.cpp">
       <Filter>UI\Level</Filter>
-    </ClCompile>
-    <ClCompile Include="UIFontRender.cpp">
-      <Filter>UI\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="TitleBG.cpp">
-      <Filter>UI\Actor\TitleUI\BG</Filter>
     </ClCompile>
     <ClCompile Include="EnemyActor_Boss.cpp">
       <Filter>Actor\Enemy\BossEnemy</Filter>
@@ -336,17 +330,8 @@
     <ClCompile Include="TestLevel.cpp">
       <Filter>Levels\Test</Filter>
     </ClCompile>
-    <ClCompile Include="ContentButton.cpp">
-      <Filter>UI\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="StartButton.cpp">
-      <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
-    </ClCompile>
     <ClCompile Include="MouseCusor.cpp">
       <Filter>UI\Base\Mouse</Filter>
-    </ClCompile>
-    <ClCompile Include="SelectScreen.cpp">
-      <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
     </ClCompile>
     <ClCompile Include="NetworkManager.cpp">
       <Filter>Server\02.NetworkManager</Filter>
@@ -411,6 +396,33 @@
     <ClCompile Include="StageDatas.cpp">
       <Filter>Levels\Stage\0.StageBase</Filter>
     </ClCompile>
+    <ClCompile Include="Intro_BackGround.cpp">
+      <Filter>UI\Actor\IntroUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Intro_Logo.cpp">
+      <Filter>UI\Actor\IntroUI</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleBG.cpp">
+      <Filter>UI\Actor\TitleUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Title_SelectScreen.cpp">
+      <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
+    </ClCompile>
+    <ClCompile Include="Title_StartScreen.cpp">
+      <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleButton.cpp">
+      <Filter>UI\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Char_ChoiceLevel.cpp">
+      <Filter>UI\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="Nero_ChoiceUI.cpp">
+      <Filter>UI\Actor\C_ChoiceUI</Filter>
+    </ClCompile>
+    <ClCompile Include="C_ChoiceBG.cpp">
+      <Filter>UI\Actor\C_ChoiceUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
@@ -463,9 +475,6 @@
     </Filter>
     <Filter Include="UI\Base">
       <UniqueIdentifier>{cc61b815-9ebe-44d8-8edf-5af5c97aba73}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\Actor\TitleUI\BG">
-      <UniqueIdentifier>{cf281f4d-aca5-4ea7-886b-927b9a9b9abc}</UniqueIdentifier>
     </Filter>
     <Filter Include="UI\Actor\TitleUI\ButtonScreen">
       <UniqueIdentifier>{55ee2600-f38a-4185-b9af-c259d61311cb}</UniqueIdentifier>
@@ -580,6 +589,9 @@
     </Filter>
     <Filter Include="Actor\NetworkExample">
       <UniqueIdentifier>{23f668d8-f44f-4600-9465-fe7fa180925c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Actor\C_ChoiceUI">
+      <UniqueIdentifier>{0ce3c064-c04d-4698-b513-4610ca1d869e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

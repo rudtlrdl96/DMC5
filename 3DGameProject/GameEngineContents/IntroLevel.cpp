@@ -1,14 +1,14 @@
 #include "PrecompileHeader.h"
 #include "IntroLevel.h"
 
-#include "BackGround.h"
-#include "Logo.h"
+#include "Intro_BackGround.h"
+#include "Intro_Logo.h"
 #include <GameEngineCore/GameEngineFont.h>
-IntroLevel::IntroLevel() 
+IntroLevel::IntroLevel()
 {
 }
 
-IntroLevel::~IntroLevel() 
+IntroLevel::~IntroLevel()
 {
 }
 
@@ -33,8 +33,8 @@ void IntroLevel::Start()
 	{
 		GameEngineTexture::Load(File[i].GetFullPath());
 	}
-	std::shared_ptr<BackGround> BGPtr = CreateActor<BackGround>();
-	std::shared_ptr<Logo> LogoPtr = CreateActor<Logo>();
+	std::shared_ptr<Intro_BackGround> BGPtr = CreateActor<Intro_BackGround>();
+	std::shared_ptr<Intro_Logo> IntroLogoPtr = CreateActor<Intro_Logo>();
 
 }
 

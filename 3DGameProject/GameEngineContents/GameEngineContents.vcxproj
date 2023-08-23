@@ -184,16 +184,21 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="BossStage.h" />
+    <ClInclude Include="Char_ChoiceLevel.h" />
     <ClInclude Include="ConsoleGUI.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="CreateObjectPacket.h" />
+    <ClInclude Include="C_ChoiceBG.h" />
     <ClInclude Include="FreeCameraActor.h">
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Intro_BackGround.h" />
+    <ClInclude Include="Intro_Logo.h" />
+    <ClInclude Include="Nero_ChoiceUI.h" />
     <ClInclude Include="NetTestEnemy.h">
       <SubType>
       </SubType>
@@ -210,10 +215,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="BackGround.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="BaseEnemyActor.h">
       <SubType>
       </SubType>
@@ -227,10 +228,6 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="ConnectIDPacket.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="ContentButton.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -273,10 +270,6 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="IntroLevel.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="Logo.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -372,39 +365,27 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="PrecompileHeader.h" />
-    <ClInclude Include="SelectScreen.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="ServerWindow.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="StageBase.h" />
     <ClInclude Include="StageDatas.h" />
-    <ClInclude Include="StartButton.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="StartStage.h" />
     <ClInclude Include="TestLevel.h" />
     <ClInclude Include="TestObject.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="TitleBG.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
+    <ClInclude Include="TitleBG.h" />
+    <ClInclude Include="TitleButton.h" />
     <ClInclude Include="TitleLevel.h">
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Title_SelectScreen.h" />
+    <ClInclude Include="Title_StartScreen.h" />
     <ClInclude Include="UIEnums.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="UIFontRender.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -427,14 +408,19 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="BossStage.cpp" />
+    <ClCompile Include="Char_ChoiceLevel.cpp" />
     <ClCompile Include="ConsoleGUI.cpp">
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="C_ChoiceBG.cpp" />
     <ClCompile Include="FreeCameraActor.cpp">
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Intro_BackGround.cpp" />
+    <ClCompile Include="Intro_Logo.cpp" />
+    <ClCompile Include="Nero_ChoiceUI.cpp" />
     <ClCompile Include="NetTestEnemy.cpp">
       <SubType>
       </SubType>
@@ -451,10 +437,6 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="BackGround.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="BaseEnemyActor.cpp">
       <SubType>
       </SubType>
@@ -467,7 +449,6 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="ContentButton.cpp" />
     <ClCompile Include="ContentsCore.cpp" />
     <ClCompile Include="Contents_Resources.cpp" />
     <ClCompile Include="EnemyActor_Boss.cpp">
@@ -511,10 +492,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="IntroLevel.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="Logo.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -608,38 +585,26 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="SelectScreen.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="ServerWindow.cpp">
       <SubType>
       </SubType>
     </ClCompile>
     <ClCompile Include="StageBase.cpp" />
     <ClCompile Include="StageDatas.cpp" />
-    <ClCompile Include="StartButton.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="StartStage.cpp" />
     <ClCompile Include="TestLevel.cpp" />
     <ClCompile Include="TestObject.cpp">
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="TitleBG.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
+    <ClCompile Include="TitleBG.cpp" />
+    <ClCompile Include="TitleButton.cpp" />
     <ClCompile Include="TitleLevel.cpp">
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="UIFontRender.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
+    <ClCompile Include="Title_SelectScreen.cpp" />
+    <ClCompile Include="Title_StartScreen.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
