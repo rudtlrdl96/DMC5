@@ -22,16 +22,22 @@ protected:
 	void AnimationTimeLine();
 
 	void FrameEvent();
+	void ObjUpdateEvent(EventData& _Data);
+	void CallEvent(EventData& _Data);
 
 	void FileSave();
 
 	void MeshCreate(std::shared_ptr<GameEngineLevel> Level);
 	void AnimationCreate(std::shared_ptr<GameEngineLevel> Level);
+	void AnimationFrameUpdate();
+
+	void PreviewObject();
 private:
 	std::shared_ptr<GameEngineActor> Actor = nullptr;
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
+	std::vector<std::shared_ptr<class GameEngineRenderer>> PreviewRenderer;
 	AnimationEvent AnimEvent;
-	std::list<EventData*> CurFrameEvents;
+	std::vector<EventData>* CurFrameEvents = nullptr;
 
 	GameEnginePath MeshFilePath;
 	GameEnginePath AnimFBXFilePath;
@@ -41,7 +47,6 @@ private:
 	std::string AnimationName = "";
 	int CurrentFrame = 0;
 	int FrameSize = 0;
-	float AnimSpeed = 3.0f;
 	bool IsStop = false;
 };
 

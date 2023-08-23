@@ -19,6 +19,7 @@ void GameEngineFBXAnimationInfo::Init(const std::string_view& _Name, int _Index)
 // 이걸 통해서 애니메이션을 진행시키고.
 void GameEngineFBXAnimationInfo::Update(float _DeltaTime)
 {
+	_DeltaTime *= TimeScale;
 	// 0~24진행이죠?
 	if (false == ParentRenderer->Pause)
 	{

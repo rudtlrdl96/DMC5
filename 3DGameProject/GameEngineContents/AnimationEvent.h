@@ -25,68 +25,96 @@ class EventData
 {
 public:
 	EventData() {}
-	EventData(EventType _Type, int _Frame)
-	{
+	EventData(EventType _Type) {
 		Type = _Type;
-		Frame = _Frame;
 	}
 	EventType Type = EventType::None;
-	int Frame = -1;
-	int Index = -1;
+	int Index = 0;
+	bool IsUpdate = true;
+	float4 Position = float4::ZERO;
+	float4 Rotation = float4::ZERO;
+	float4 Scale = float4::ONE;
+
+	void Write(GameEngineSerializer& _File)
+	{
+		_File << Type;
+		_File << Index;
+		_File << IsUpdate;
+		_File << Position.x;
+		_File << Position.y;
+		_File << Position.z;
+		_File << Rotation.x;
+		_File << Rotation.y;
+		_File << Rotation.z;
+		_File << Scale.x;
+		_File << Scale.y;
+		_File << Scale.z;
+	}
+
+	void Read(GameEngineSerializer& _File)
+	{
+		_File >> Type;
+		_File >> Index;
+		_File >> IsUpdate;
+		_File >> Position.x;
+		_File >> Position.y;
+		_File >> Position.z;
+		_File >> Rotation.x;
+		_File >> Rotation.y;
+		_File >> Rotation.z;
+		_File >> Scale.x;
+		_File >> Scale.y;
+		_File >> Scale.z;
+	}
 };
 
-class ObjectUpdateEvent : public EventData
-{
-public:
-	ObjectUpdateEvent(int _Frame)
-	{
-		Type = EventType::ObjectUpdate;
-		Frame = _Frame;
-	}
-	float4 Pos = float4::ZERO;
-	float4 Rot = float4::ZERO;
-	float4 Size = float4::ONE;
-	bool OnOff = false;
-};
-
-class CallBackEvent : public EventData
-{
-public:
-	CallBackEvent(int _Frame)
-	{
-		Type = EventType::CallBackVoid;
-		Frame = _Frame;
-	}
-	int Value = -1;
-};
 // Ό³Έν :
-class AnimationEvent
+class AnimationEvent : public GameEngineSerializObject
 {
 	friend class AnimationToolWindow;
 public:
-	// constrcuter destructer
-	AnimationEvent();
 	~AnimationEvent();
 
-	// delete Function
 	AnimationEvent(const AnimationEvent& _Other) = delete;
 	AnimationEvent(AnimationEvent&& _Other) noexcept = delete;
 	AnimationEvent& operator=(const AnimationEvent& _Other) = delete;
 	AnimationEvent& operator=(AnimationEvent&& _Other) noexcept = delete;
 
-	static void LoadAll(const AnimLoadParameter& _Parameter);
+	AnimationEvent()
+	{
+		AnimationName = "";
+		Speed = 10.0f;
+		Events = std::map<size_t, std::vector<EventData>>();
+	}
 
+	void Write(GameEngineSerializer& _File) override
+	{
+		//_File << AnimationName;
+		//_File << Speed;
+		EventsWrite(_File);
+		//_File << Events;
+	}
+
+	void Read(GameEngineSerializer& _File) override
+	{
+		//_File >> AnimationName;
+		//_File >> Speed;
+		EventsRead(_File);
+		//_File >> Events;
+	}
+
+	void EventsWrite(GameEngineSerializer& _File);
+	void EventsRead(GameEngineSerializer& _File);
+
+
+	static void LoadAll(const AnimLoadParameter& _Parameter);
 
 
 protected:
 
 private:
 	std::string AnimationName;
-	float _Speed = 10.0f;
-	std::vector<EventData*> Events;
-	//std::map<size_t, ObjectUpdateEvent> Events_ObjUpdate;
-	//std::map<size_t, std::function<void()>> Events_CallBack_void;
-	//std::map<size_t, std::function<void(int)>> Events_CallBack_int;
-	//std::map<size_t, std::function<void(float)>> Events_CallBack_float;
+	float Speed = 10.0f;
+	std::map<size_t, std::vector<EventData>> Events;
 };
 
