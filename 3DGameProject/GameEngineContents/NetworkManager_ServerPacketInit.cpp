@@ -84,9 +84,12 @@ void NetworkManager::ServerPacketInit()
 	NetInst->Dispatcher.AddHandler<CreateObjectPacket>(
 		[](std::shared_ptr<CreateObjectPacket> _Packet)
 	{
+		int ID = GameEngineNetObject::CreateServerID();
+
 		std::shared_ptr<GameEngineNetObject> NewNetObj = nullptr;
-		NewNetObj = NetworkManager::CreateNetActor(_Packet->ActorType);
+		NewNetObj = NetworkManager::CreateNetActor(_Packet->ActorType, ID);
 		NewNetObj->SetControll(NetControllType::UserControll);
+		_Packet->SetObjectID(ID);
 
 		//Player가 스스로 처리할 수 있게 자료구조에 저장
 		GameEngineNetObject::PushNetObjectPacket(_Packet);

@@ -178,7 +178,7 @@ std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorTyp
 	if (true == IsServerValue)
 	{
 		int ID = _ObjectID;
-		if (-1 == _ObjectID)
+		if (-1 == ID)
 		{
 			ID = GameEngineNetObject::CreateServerID();
 		}
