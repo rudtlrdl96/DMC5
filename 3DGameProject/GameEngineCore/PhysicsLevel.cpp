@@ -114,12 +114,17 @@ void PhysicsLevel::CreatePhysicsX()
 // 실제로 물리연산을 실행
 void PhysicsLevel::Simulate(float _DeltaTime)
 {
+	if (nullptr == m_pPhysics)
+	{
+		return;
+	}
+
 	if (true == IsPhysicsStop)
 	{
 		return;
 	}
 
-	m_pScene->simulate(_DeltaTime);
+	m_pScene->simulate(1.0f / 60.0f);
 	m_pScene->fetchResults(true);
 }
 

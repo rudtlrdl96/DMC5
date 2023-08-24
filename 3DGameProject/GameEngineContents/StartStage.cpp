@@ -17,6 +17,16 @@ StartStage::~StartStage()
 void StartStage::Start()
 {
 	StageBase::Start();
+}
+
+void StartStage::Update(float _DeltaTime)
+{
+	StageBase::Update(_DeltaTime);
+	StartProcess(this);
+}
+
+void StartStage::LevelChangeStart()
+{
 	std::string Path = GameEnginePath::GetFileFullPath
 	(
 		"ContentResources",
@@ -29,16 +39,7 @@ void StartStage::Start()
 	GameEngineFBXMesh::Load(Path);
 	SetCamera({ 0,0,-500 });
 	CreateActor<FreeCameraActor>();
-}
 
-void StartStage::Update(float _DeltaTime)
-{
-	StageBase::Update(_DeltaTime);
-	StartProcess(this);
-}
-
-void StartStage::LevelChangeStart()
-{
 	AcFieldMap = FieldMap::CreateFieldMap(this, "Location2ColGuide.fbx");
 }
 
