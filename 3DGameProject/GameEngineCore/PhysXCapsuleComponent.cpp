@@ -101,7 +101,7 @@ physx::PxRigidDynamic* PhysXCapsuleComponent::CreatePhysXActors(physx::PxScene* 
 
 	// 제동?
 	//m_pDynamic->setLinearDamping(physx::PxReal(0.01f));
-	//m_pDynamic->setMaxAngularVelocity(physx::PxReal(20.0f));
+	m_pDynamic->setMaxAngularVelocity(physx::PxReal(20.0f));
 	//m_pDynamic->setAngularDamping(physx::PxReal(2.0f));
 
 	// Scene에 액터 추가

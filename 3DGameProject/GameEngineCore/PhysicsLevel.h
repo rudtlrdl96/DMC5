@@ -28,16 +28,25 @@ public:
 
 	bool GetIsPhysicsStop()
 	{
-		return IsPhysicsStop;
+		return IsPhysics;
+	}
+
+	bool GetIsSimulation()
+	{
+		return IsSimulation;
 	}
 
 protected:
-	class  UserErrorCallback : public  physx::PxErrorCallback
+	class UserErrorCallback : public physx::PxErrorCallback
 	{
-	public:
-		void reportError(physx::PxErrorCode::Enum  code, const  char* message, const  char* file, int  line)
+	private:
+		void reportError(physx::PxErrorCode::Enum code, const char* message, const char* file, int line) override
 		{
-			MsgAssert(message);
+			std::string Code = "Code : " + std::to_string(code)
+				+ "\nMsg : " + message
+				+ "\nFile : " + file
+				+ "\nLine : " + std::to_string(line);
+			MsgAssert(Code);
 		}
 	};
 
@@ -45,7 +54,8 @@ protected:
 	void Simulate(float _DeltaTime);
 	void ReleasePhysicsX();
 
-	bool IsPhysicsStop = false;
+	bool IsPhysics = false;
+	bool IsSimulation = false;
 
 private:
 	physx::PxDefaultAllocator		m_Allocator;
@@ -64,7 +74,7 @@ private:
 	float WaitTime = 0.0f;
 	float StepSize = 0.0f;
 
-	bool advance(physx::PxReal _DeltaTime);
+	void advance(physx::PxReal _DeltaTime);
 
 };
 

@@ -26,7 +26,8 @@ void TestObject::Start()
 		GameEngineInput::CreateKey("MoveDown", 'E');
 		GameEngineInput::CreateKey("MoveForward", 'W');
 		GameEngineInput::CreateKey("MoveBack", 'S');
-		
+		GameEngineInput::CreateKey("RotateRight", 'T');
+		GameEngineInput::CreateKey("RotateLeft", 'R');
 	}
 	if (false == GameEngineInput::IsKey("Jump"))
 	{
@@ -53,8 +54,12 @@ void TestObject::Start()
 	Renderer->SetFBXMesh("em0100.fbx", "NoneAlphaMesh");
 	Renderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
 
+	Renderer->GetAllRenderUnit()[0][0];
+
 	float4 RenderScale = Renderer->GetFBXMesh()->GetRenderUnit(0)->BoundScaleBox;
 	float4 MeshScale = Renderer->GetMeshScale();
+
+	
 
 	physx::PxVec3 VecSclae = { RenderScale.x, RenderScale.y, RenderScale.z };
 
@@ -62,7 +67,7 @@ void TestObject::Start()
 	float4 local = GetTransform()->GetLocalScale();
 
 	Component = CreateComponent<PhysXCapsuleComponent>();
-	Component->SetPhysxMaterial(0.0f, 1.0f, 0.0f);
+	Component->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
 	Component->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), VecSclae * 0.1f);
 
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
@@ -88,7 +93,7 @@ void TestObject::Start()
 
 	Component->GetDynamic()->setMass(1.0f);
 	//Component->GetDynamic()->setLinearDamping(physx::PxReal(1.f));
-	Component->GetDynamic()->setMaxAngularVelocity(physx::PxReal(10.0f));
+	//Component->GetDynamic()->setMaxAngularVelocity(physx::PxReal(10.0f));
 	//Component->GetDynamic()->setAngularDamping(physx::PxReal(0.01f));
 }
 
@@ -159,6 +164,37 @@ void TestObject::UserUpdate(float _DeltaTime)
 		MoveDir.z -= Dir;
 
 		Component->GetDynamic()->setGlobalPose(PhyTF);
+	}
+	if (true == GameEngineInput::IsPress("RotateRight"))
+	{
+		//Component->GetDynamic()->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, false);
+		//Component->GetDynamic()->addTorque({0.0f, 100.0f, 0.0f});
+
+		Rot.y += Dir;
+
+		Component->SetChangedRot(Rot);
+
+		//float4 Qurt = float4{ 0.0f, 1.f, 0.0f }.DegreeRotationToQuaternionReturn();
+
+		//PhyTF.q.y += Qurt.y;
+
+		//Component->GetDynamic()->setGlobalPose(PhyTF);
+	}
+	if (true == GameEngineInput::IsPress("RotateLeft"))
+	{
+		Rot.y -= Dir;
+
+		Component->SetChangedRot(Rot);
+
+		//Component->GetDynamic()->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, false);
+		//Component->GetDynamic()->addTorque({ 0.0f, -100.0f, 0.0f });
+		//Component->GetDynamic()->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, false);
+
+		//float4 Qurt = float4{ 0.0f, 1.f, 0.0f }.DegreeRotationToQuaternionReturn();
+
+		//PhyTF.q.y -= Qurt.y;
+
+		//Component->GetDynamic()->setGlobalPose(PhyTF);
 	}
 
 	if (true == GameEngineInput::IsDown("Jump"))

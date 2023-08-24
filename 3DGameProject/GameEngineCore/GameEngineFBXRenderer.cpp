@@ -241,9 +241,6 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh(const st
 	RenderUnit->SetMesh(GetFBXMesh);
 	RenderUnit->SetMaterial(_Material);
 
-
-
-
 	if (RenderUnit->ShaderResHelper.IsStructuredBuffer("ArrAniMationMatrix"))
 	{
 		if (AnimationBoneMatrixs.end() == AnimationBoneMatrixs.find(_MeshIndex))

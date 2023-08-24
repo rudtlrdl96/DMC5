@@ -148,8 +148,8 @@ void GameEngineCore::EngineUpdate()
 
 	MainLevel->TimeEvent.Update(TimeDeltaTime);
 	MainLevel->AccLiveTime(TimeDeltaTime);
-	MainLevel->Update(TimeDeltaTime);
 	MainLevel->Simulate(TimeDeltaTime);
+	MainLevel->Update(TimeDeltaTime);
 	MainLevel->ActorUpdate(TimeDeltaTime);
 	MainLevel->NetworkUpdate(TimeDeltaTime);
 

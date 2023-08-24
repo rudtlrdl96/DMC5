@@ -143,13 +143,13 @@ void GameEngineLevel::ActorUpdate(float _DeltaTime)
 {
 	if (true == MainCamera->IsFreeCamera())
 	{
-		IsPhysicsStop = true;
+		IsPhysics = true;
 		MainCamera->Update(_DeltaTime);
 		return;
 	}
 	else
 	{
-		IsPhysicsStop = false;
+		IsPhysics = false;
 	}
 
 	{
