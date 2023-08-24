@@ -61,5 +61,7 @@ private:
 	physx::PxMaterial* m_pMaterial = nullptr;
 	physx::PxCooking* m_pCooking = nullptr;
 
+	float WaitTime = 0.0f;
+
 };
 
