@@ -19,14 +19,14 @@ std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, cons
 {
 	std::shared_ptr<FieldMap> Result;
 	Result = _Level->CreateActor<FieldMap>();
-	Result->GetTransform()->SetLocalPosition(_MapPosition);
+	Result->GetTransform()->SetLocalPosition(_MapPosition); //맵의 중심 위치를 정합니다
 	Result->FieldMapRenderer = Result->CreateComponent<GameEngineFBXRenderer>();
-	Result->FieldMapRenderer->SetFBXMesh(_FBXName.data(), "NoneAlphaMesh");
+	Result->FieldMapRenderer->SetFBXMesh(_FBXName.data(), "NoneAlphaMesh"); //메쉬를 깝니다
 
-	if (Result->MapCols.size() != 0)
+	if (Result->MapCols.size() != 0) //충돌체 수가 0이 아니면
 	{
 		Result->MapCols.resize(_ColVector.size());
-		for (size_t i = 0; i < Result->MapCols.size(); i++)
+		for (size_t i = 0; i < Result->MapCols.size(); i++) //충돌체를 깝니다
 		{
 			Result->MapCols[i] = Result->CreateComponent<GameEngineCollision>(_ColVector[i].ColOrder);
 			Result->MapCols[i]->SetColType(_ColVector[i].Type);
