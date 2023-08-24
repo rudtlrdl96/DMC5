@@ -138,12 +138,15 @@ void NetTestPlayer::Update(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("NetTestDestroy"))
 	{
+		int ID = GetNetObjectID();
 		Death();
 	}
 }
 
 void NetTestPlayer::Update_SendPacket(float _DeltaTime) 
 {
+	int ID = GetNetObjectID();
+
 	//NetworkManager를 통해서 업데이트 패킷을 보내면 됩니다.
 	//그 외 패킷은 다른곳에서 보내도 상관없습니다.(아마도)
 	NetworkManager::SendUpdatePacket(this, this, 1.f);

@@ -121,7 +121,6 @@ public:
 		IsDisconnect = true;
 	}
 
-	
 
 protected:
 	//수신받은 패킷을 처리하는 부분입니다.(레벨 업데이트 맨 처음에 호출됩니다)
@@ -135,6 +134,9 @@ protected:
 	{
 		ObjectType = static_cast<unsigned int>(_ActorType);
 	}
+
+	
+
 
 private:
 	static std::atomic<int> AtomicObjectID;

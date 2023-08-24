@@ -67,6 +67,10 @@ bool NetworkManager::ConnectServer(const std::string_view& _IP, int _Port)
 
 void NetworkManager::SendUpdatePacket(GameEngineNetObject* _NetObj, GameEngineActor* _ActorPtr, float _TimeScale /*= 1.f*/)
 {
+	//현재 진행중인 레벨의 엑터들만 실행
+	if (_ActorPtr->GetLevel() != CurLevel)
+		return;
+
 	unsigned int ObjectID = _NetObj->GetNetObjectID();
 	if (false == GameEngineNetObject::IsNetObject(ObjectID))
 	{

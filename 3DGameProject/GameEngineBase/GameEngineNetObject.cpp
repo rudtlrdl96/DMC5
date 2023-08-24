@@ -43,7 +43,11 @@ void GameEngineNetObject::Update_ProcessPackets()
 
 		//연결이 끊긴 경우
 		if (true == Pair.second->IsDisconnect)
-			continue;
+		{
+			int a = 0;
+			//continue;
+		}
+			
 
 		//처리할 패킷이 없는 경우
 		if (true == Pair.second->Packets.empty())
