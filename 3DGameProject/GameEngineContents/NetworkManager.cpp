@@ -2,6 +2,7 @@
 #include "NetworkManager.h"
 
 #include <GameEngineCore/GameEngineLevel.h>
+#include <GameEngineCore/GameEngineActor.h>
 
 #include "ContentsEnum.h"
 #include "PacketEnum.h"
@@ -64,7 +65,7 @@ bool NetworkManager::ConnectServer(const std::string_view& _IP, int _Port)
 
 
 
-void NetworkManager::SendUpdatePacket(GameEngineNetObject* _NetObj, GameEngineTransform* TransPtr, float _TimeScale)
+void NetworkManager::SendUpdatePacket(GameEngineNetObject* _NetObj, GameEngineActor* _ActorPtr, float _TimeScale /*= 1.f*/)
 {
 	unsigned int ObjectID = _NetObj->GetNetObjectID();
 	if (false == GameEngineNetObject::IsNetObject(ObjectID))
@@ -83,12 +84,23 @@ void NetworkManager::SendUpdatePacket(GameEngineNetObject* _NetObj, GameEngineTr
 	//오브젝트 타입
 	UpdatePacket->ActorType = _NetObj->GetNetObjectType();
 
+
+	GameEngineTransform* TransPtr = _ActorPtr->GetTransform();
+
 	//위치
 	UpdatePacket->Rotation = TransPtr->GetWorldRotation();
 	//위치
 	UpdatePacket->Position = TransPtr->GetWorldPosition();
 	//타임 크기
 	UpdatePacket->TimeScale = _TimeScale;
+
+	//파괴 여부
+	UpdatePacket->IsDeath = _ActorPtr->IsDeath();
+	if (true == UpdatePacket->IsDeath)
+	{
+		//이 NetObject는 이제부터 전송/수신을 받지 않음
+		_NetObj->NetDisconnect();
+	}
 
 	//자료구조에 저장
 	AllUpdatePacket[ObjectID] = UpdatePacket;

@@ -41,9 +41,15 @@ void NetTestPlayer::Start()
 	{
 		GameEngineInput::CreateKey("NetTestLeft", 'A');
 		GameEngineInput::CreateKey("NetTestRight", 'D');
-		GameEngineInput::CreateKey("NetTestForward", 'W');
-		GameEngineInput::CreateKey("NetTestBack", 'S');
+		
+		GameEngineInput::CreateKey("NetTestUp", 'W');
+		GameEngineInput::CreateKey("NetTestDown", 'S');
+
+		GameEngineInput::CreateKey("NetTestForward", 'E');
+		GameEngineInput::CreateKey("NetTestBack", 'Q');
+
 		GameEngineInput::CreateKey("NetTestConnect", 'H');
+		GameEngineInput::CreateKey("NetTestDestroy", 'J');
 	}
 }
 
@@ -62,6 +68,11 @@ void NetTestPlayer::Update_ProcessPacket()
 		{
 			//패킷을 템플릿 포인터로 꺼내옵니다(Enum값과 포인터값을 맞게 해주셔야 하는 부분 유의부탁드려요)
 			std::shared_ptr<ObjectUpdatePacket> ObjectUpdate = PopFirstPacket<ObjectUpdatePacket>();
+			if (true == ObjectUpdate->IsDeath)
+			{
+				Death();
+				break;
+			}
 
 			//패킷의 정보에 따라 자신의 값 수정
 			GetTransform()->SetLocalPosition(ObjectUpdate->Position);
@@ -95,6 +106,14 @@ void NetTestPlayer::Update(float _DeltaTime)
 	{
 		MoveDir += float4::RIGHT;
 	}
+	if (GameEngineInput::IsPress("NetTestUp"))
+	{
+		MoveDir += float4::UP;
+	}
+	if (GameEngineInput::IsPress("NetTestDown"))
+	{
+		MoveDir += float4::DOWN;
+	}
 	if (GameEngineInput::IsPress("NetTestForward"))
 	{
 		MoveDir += float4::FORWARD;
@@ -116,13 +135,18 @@ void NetTestPlayer::Update(float _DeltaTime)
 
 		NetworkManager::LinkNetwork(this);
 	}
+
+	if (GameEngineInput::IsDown("NetTestDestroy"))
+	{
+		Death();
+	}
 }
 
 void NetTestPlayer::Update_SendPacket(float _DeltaTime) 
 {
 	//NetworkManager를 통해서 업데이트 패킷을 보내면 됩니다.
 	//그 외 패킷은 다른곳에서 보내도 상관없습니다.(아마도)
-	NetworkManager::SendUpdatePacket(this, GetTransform(), 1.f);
+	NetworkManager::SendUpdatePacket(this, this, 1.f);
 
 	//패킷을 보낼땐 모두 NetworkManager를 통해서 보낼 예정입니다.
 	//추후 다양한 패킷 생성 예정

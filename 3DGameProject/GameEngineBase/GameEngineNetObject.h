@@ -28,6 +28,9 @@ public:
 	//모든 Actor들의 Update가 끝난 이후 패킷을 전송하는 부분
 	static void Update_SendPackets(float _DeltaTime);
 
+	//ID로 GameEngineNetObject*를 받아옴
+	static GameEngineNetObject* GetNetObject(int _ID);
+
 	static void ReleaseNetObject();
 
 	GameEngineNetObject();
@@ -112,6 +115,7 @@ public:
 		return ObjectType;
 	}
 
+	//이 오브젝트를 서버로 부터 끊습니다.(호출한 뒤로는 Update패킷 수신/전송이 안됩니다)
 	inline void NetDisconnect()
 	{
 		IsDisconnect = true;

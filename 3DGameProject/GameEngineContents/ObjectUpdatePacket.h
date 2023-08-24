@@ -6,6 +6,8 @@
 
 class ObjectUpdatePacket : public GameEnginePacket
 {
+	friend class NetworkManager;
+
 public:
 	static const PacketEnum Type = PacketEnum::ObjectUpdatePacket;
 
@@ -20,12 +22,10 @@ public:
 
 	}
 
-	unsigned int ActorType = -1;
-	//unsigned int LevelType = -1;
-
 	float4 Rotation;
 	float4 Position;
 	float TimeScale = 1.f;
+	bool IsDeath = false;
 
 protected:
 	void Serialize(GameEngineSerializer& _Ser) override
@@ -33,12 +33,12 @@ protected:
 		GameEnginePacket::Serialize(_Ser);
 		
 		_Ser << ActorType;
-		//_Ser << LevelType;
 
 		_Ser << Rotation;
 		_Ser << Position;
 
 		_Ser << TimeScale;
+		_Ser << IsDeath;
 	}
 
 	void DeSeralize(GameEngineSerializer& _Ser) override
@@ -46,15 +46,16 @@ protected:
 		GameEnginePacket::DeSeralize(_Ser);
 
 		_Ser >> ActorType;
-		//_Ser >> LevelType;
 
 		_Ser >> Rotation;
 		_Ser >> Position;
 
 		_Ser >> TimeScale;
+		_Ser >> IsDeath;
 	}
 
 private:
+	unsigned int ActorType = -1;
 	
 };
 

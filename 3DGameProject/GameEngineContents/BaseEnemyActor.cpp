@@ -179,6 +179,11 @@ void BaseEnemyActor::Start()
 {
 	EnemyRenderer = CreateComponent<GameEngineFBXRenderer>();
 
+	CapsulCol = CreateComponent<PhysXCapsuleComponent>();
+
+	CapsulCol->SetPhysxMaterial(0, 0, 0);
+	CapsulCol->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), {4, 10, 4});
+
 	// Debug Key
 	if (false == GameEngineInput::IsKey("EnemyDebug_Ctrl"))
 	{
@@ -214,19 +219,25 @@ void BaseEnemyActor::Update(float _DeltaTime)
 
 		if (true == GameEngineInput::IsDown("EnemyDebug_1"))
 		{
-			EnemyHitDir Result = GetHitDir(GetTransform()->GetWorldPosition() + float4::FORWARD);
+			AddForceEnemy(float4::UP, 10000);
+
+			//EnemyHitDir Result = GetHitDir(GetTransform()->GetWorldPosition() + float4::FORWARD);
 		}
 		if (true == GameEngineInput::IsDown("EnemyDebug_2"))
 		{
-			EnemyHitDir Result = GetHitDir(GetTransform()->GetWorldPosition() + float4::BACK);
+			AddForceEnemy(float4::UP, 50000);
+			//EnemyHitDir Result = GetHitDir(GetTransform()->GetWorldPosition() + float4::BACK);
 		}
 		if (true == GameEngineInput::IsDown("EnemyDebug_3"))
 		{
-			EnemyHitDir Result = GetHitDir(GetTransform()->GetWorldPosition() + float4::LEFT);
+
+			AddForceEnemy(float4::UP, 100000);
+			//EnemyHitDir Result = GetHitDir(GetTransform()->GetWorldPosition() + float4::LEFT);
 		}
 		if (true == GameEngineInput::IsDown("EnemyDebug_4"))
 		{
-			EnemyHitDir Result = GetHitDir(GetTransform()->GetWorldPosition() + float4::RIGHT);
+			AddForceEnemy(float4::UP, 500000);
+			//EnemyHitDir Result = GetHitDir(GetTransform()->GetWorldPosition() + float4::RIGHT);
 		}
 	}
 
@@ -255,6 +266,15 @@ void BaseEnemyActor::UserUpdate(float _DeltaTime)
 
 void BaseEnemyActor::ServerUpdate(float _DeltaTime)
 {
+}
+
+void BaseEnemyActor::AddForceEnemy(const float4& _Dir, float _Power)
+{
+	float4 PushDir = _Dir.NormalizeReturn();
+	float4 TotalDir = PushDir * _Power;
+
+	CapsulCol->GetDynamic()->setLinearVelocity({ 0, 0, 0 });
+	CapsulCol->GetDynamic()->addForce({ TotalDir.x, TotalDir.y, TotalDir.z });
 }
 
 

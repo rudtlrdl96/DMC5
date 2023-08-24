@@ -36,6 +36,7 @@ void BaseLevel::NetworkUpdate(float _DeltaTime)
 
 	//GameEngineNetObject의 Update_PushPacket를 호출
 	GameEngineNetObject::Update_SendPackets(_DeltaTime);
+	GameEngineNetObject::ReleaseNetObject();
 
 	Timer += _DeltaTime;
 	if (Timer < WaitTime)

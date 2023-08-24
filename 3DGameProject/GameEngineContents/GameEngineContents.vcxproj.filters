@@ -232,6 +232,9 @@
     <ClInclude Include="StageEditLevel.h">
       <Filter>Levels\Stage\0.StageBase</Filter>
     </ClInclude>
+    <ClInclude Include="ContentDefine.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
     <ClInclude Include="Char_ChoiceUI.h">
       <Filter>UI\Actor\C_ChoiceUI</Filter>
     </ClInclude>
@@ -464,6 +467,9 @@
     </ClCompile>
     <ClCompile Include="StageEditLevel.cpp">
       <Filter>Levels\Stage\0.StageBase</Filter>
+    </ClCompile>
+    <ClCompile Include="ContentDefine.cpp">
+      <Filter>Basic</Filter>
     </ClCompile>
     <ClCompile Include="Char_ChoiceUI.cpp">
       <Filter>UI\Actor\C_ChoiceUI</Filter>

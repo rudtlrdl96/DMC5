@@ -6,6 +6,8 @@
 
 class MessageChatPacket : public GameEnginePacket
 {
+	friend class NetworkManager;
+
 public:
 	static const PacketEnum Type = PacketEnum::MessageChatPacket;
 
@@ -19,8 +21,6 @@ public:
 	{
 
 	}
-
-	std::string Message;
 
 protected:
 	void Serialize(GameEngineSerializer& _Ser) override
@@ -36,5 +36,7 @@ protected:
 	}
 
 private:
+	std::string Message;
 
+	
 };
