@@ -256,6 +256,12 @@
     <ClInclude Include="Menu_SelectScreen.h">
       <Filter>UI\Actor\MenuUI\MenuScreen</Filter>
     </ClInclude>
+    <ClInclude Include="Picker.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="PickableActor.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -497,6 +503,12 @@
     </ClCompile>
     <ClCompile Include="Menu_SelectScreen.cpp">
       <Filter>UI\Actor\MenuUI\MenuScreen</Filter>
+    </ClCompile>
+    <ClCompile Include="Picker.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="PickableActor.cpp">
+      <Filter>Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
