@@ -29,18 +29,18 @@ void Enemy_Empusa::EnemyMeshLoad()
 
 void Enemy_Empusa::EnemyTextureLoad()
 {
-	std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
-		{
-			"Character", "Enemy", "em0100", "animation", "attack"
-		}, "em0100_attack_A.FBX");
-
-	GameEngineFBXAnimation::Load(Path);
-	EnemyRenderer->CreateFBXAnimation("AttackA", "em0100_attack_A.FBX");
-	EnemyRenderer->ChangeAnimation("AttackA");
 }
 
 void Enemy_Empusa::EnemyAnimationLoad()
 {
+	//std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+	//	{
+	//		"Character", "Enemy", "em0100", "animation", "attack"
+	//	}, "em0100_attack_A.FBX");
+	//
+	//GameEngineFBXAnimation::Load(Path);
+	//EnemyRenderer->CreateFBXAnimation("AttackA", "em0100_attack_A.FBX");
+	//EnemyRenderer->ChangeAnimation("AttackA");
 }
 
 void Enemy_Empusa::EnemyCreateFSM()

@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineFSM.h>
+#include <GameEngineCore/PhysXCapsuleComponent.h>
 
 ///	<param name="[AttackerPos] : ">공격 액터의 위치, 만약 ZERO일 경우 몬스터의 정면을 기준으로 애니메이션 실행 </param>
 ///	<param name="[Type] : ">공격의 타입 설정 </param>
@@ -100,6 +101,9 @@ protected:
 	// Enemy 모델링 메인 랜더러
 	std::shared_ptr<class GameEngineFBXRenderer> EnemyRenderer = nullptr;
 
+	// 물리 컴포넌트
+	std::shared_ptr<PhysXCapsuleComponent> CapsulCol = nullptr;
+
 	GameEngineFSM EnemyFSM;
 
 	EnemyCode EnemyCodeValue = EnemyCode::Empusa;
@@ -123,4 +127,6 @@ protected:
 private:
 	void UserUpdate(float _DeltaTime);
 	void ServerUpdate(float _DeltaTime);
+
+	void AddForceEnemy(const float4& _Dir, float _Power);
 };
