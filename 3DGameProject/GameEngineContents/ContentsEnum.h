@@ -58,5 +58,6 @@ enum class CollisionOrder
 {
 	Player,
 	Enemy,
-
+	Wall,
+	JumpWall,
 };

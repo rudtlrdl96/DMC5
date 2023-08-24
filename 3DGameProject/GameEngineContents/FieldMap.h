@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
+#include "StageDatas.h"
 
 class FieldMap : public GameEngineActor
 {
@@ -14,7 +15,7 @@ public:
 	FieldMap& operator=(const FieldMap& _Other) = delete;
 	FieldMap& operator=(FieldMap&& _Other) noexcept = delete;
 
-	static std::shared_ptr<FieldMap> CreateFieldMap(GameEngineLevel* _Level, std::string_view _FBXName);
+	static std::shared_ptr<FieldMap> CreateFieldMap(GameEngineLevel* _Level, const std::string_view& _FBXName, const std::vector<FieldMapColData>& _ColVector, const float4& _MapPosition = float4::ZERO);
 
 protected:
 	void Start();

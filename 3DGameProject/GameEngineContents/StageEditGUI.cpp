@@ -15,17 +15,20 @@ StageEditGUI::~StageEditGUI()
 
 void StageEditGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
 {
+    /////////////////Vector Resize/////////////////////
 	if (nullptr == Level)
 		return;
     PreChar.resize(StartPrecharSize);
     EditData.resize(StartPrecharSize);
     Editbool.resize(StartPrecharSize);
+    /////////////////StageEditButton/////////////////////
     if (ImGui::Button("StageEdit"))
     {
         BoxSwitch = !BoxSwitch;
     }
     if (true == BoxSwitch)
     {
+        /////////////////Add Stage/////////////////////
         if (ImGui::Button("AddStageData") && NumberIndex < StartPrecharSize - 1)
         {
            NumberIndex++;
@@ -37,6 +40,7 @@ void StageEditGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
         ImGui::SameLine();
         for (int i = 0; i < StageNumber.size(); ++i)
         {
+            /////////////////Edit,Delete Button/////////////////////
             if (current == i && ImGui::Button("Delete"))
             {
                 //delete
@@ -52,8 +56,10 @@ void StageEditGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
                 ImGui::SeparatorText("StageDataEdit");
                 static char Text[64] = ""; ImGui::InputText("FBX Name", Text, 64);
                 ImGui::SameLine();
-                ImGui::Button("Load");
-
+                if (ImGui::Button("Load"))
+                {
+                    char* Test = Text;
+                }
             }
             if (current != EditData[i])
             {

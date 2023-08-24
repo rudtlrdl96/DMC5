@@ -16,16 +16,17 @@ public:
 	StageBaseLevel& operator=(StageBaseLevel&& _Other) noexcept = delete;
 
 
-	void StartProcess(GameEngineLevel* Level);
 	void SetCamera(float4 _Position);
 	
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
-	std::shared_ptr<class FieldMap> AcFieldMap = nullptr;
+	void CreateStage(const StageData& _Data); // 데이터 넣어주면 스테이지 생성
+
+	std::vector<std::shared_ptr<class FieldMap>> AcFieldMaps;
 
 private:
-
+	void CreateStageFieldMap(const std::vector<FieldMapData>& _MapDatas);
 };
 

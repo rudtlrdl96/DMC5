@@ -109,9 +109,6 @@
     <ClInclude Include="TestLevel.h">
       <Filter>Levels\Test</Filter>
     </ClInclude>
-    <ClInclude Include="MouseCusor.h">
-      <Filter>UI\Base\Mouse</Filter>
-    </ClInclude>
     <ClInclude Include="UIEnums.h">
       <Filter>UI\Base</Filter>
     </ClInclude>
@@ -214,7 +211,7 @@
     <ClInclude Include="Title_StartScreen.h">
       <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
     </ClInclude>
-    <ClInclude Include="TitleButton.h">
+    <ClInclude Include="UIButton.h">
       <Filter>UI\Base</Filter>
     </ClInclude>
     <ClInclude Include="Char_ChoiceLevel.h">
@@ -244,8 +241,20 @@
     <ClInclude Include="LinkObjectPacket.h">
       <Filter>Server\01.Packet\02.Global</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyTestLevel.h">
+      <Filter>Levels\Test</Filter>
+    </ClInclude>
     <ClInclude Include="FieldMap.h">
       <Filter>Actor\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuBG.h">
+      <Filter>UI\Actor\MenuUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuLevel.h">
+      <Filter>UI\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu_SelectScreen.h">
+      <Filter>UI\Actor\MenuUI\MenuScreen</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -360,9 +369,6 @@
     <ClCompile Include="TestLevel.cpp">
       <Filter>Levels\Test</Filter>
     </ClCompile>
-    <ClCompile Include="MouseCusor.cpp">
-      <Filter>UI\Base\Mouse</Filter>
-    </ClCompile>
     <ClCompile Include="NetworkManager.cpp">
       <Filter>Server\02.NetworkManager</Filter>
     </ClCompile>
@@ -450,7 +456,7 @@
     <ClCompile Include="Title_StartScreen.cpp">
       <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
     </ClCompile>
-    <ClCompile Include="TitleButton.cpp">
+    <ClCompile Include="UIButton.cpp">
       <Filter>UI\Base</Filter>
     </ClCompile>
     <ClCompile Include="Char_ChoiceLevel.cpp">
@@ -477,8 +483,20 @@
     <ClCompile Include="Char_ChoiceButton.cpp">
       <Filter>UI\Actor\C_ChoiceUI</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyTestLevel.cpp">
+      <Filter>Levels\Test</Filter>
+    </ClCompile>
     <ClCompile Include="FieldMap.cpp">
       <Filter>Actor\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuBG.cpp">
+      <Filter>UI\Actor\MenuUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuLevel.cpp">
+      <Filter>UI\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu_SelectScreen.cpp">
+      <Filter>UI\Actor\MenuUI\MenuScreen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -652,6 +670,12 @@
     </Filter>
     <Filter Include="Actor\Stage">
       <UniqueIdentifier>{9bfd9f41-48de-4462-82ec-e3573d7d9b0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Actor\MenuUI">
+      <UniqueIdentifier>{8f71627c-5fda-4bc6-9c5e-f2b8dc1cc3ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Actor\MenuUI\MenuScreen">
+      <UniqueIdentifier>{4e87bf65-3b70-4d0f-9346-7fbf1154d1c8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

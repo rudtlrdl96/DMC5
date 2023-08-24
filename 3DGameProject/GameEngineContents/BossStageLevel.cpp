@@ -12,11 +12,12 @@ BossStageLevel::~BossStageLevel()
 
 void BossStageLevel::Start()
 {
+	StageBaseLevel::Start();
 	SetCamera({ 0,0,-500 });
 }
 
 void BossStageLevel::Update(float _DeltaTime)
 {
-	StartProcess(this);
+	StageBaseLevel::Update(_DeltaTime);
 }
 

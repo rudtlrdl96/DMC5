@@ -13,6 +13,7 @@ public:
 	GameEngineDirectory();
 	~GameEngineDirectory();
 
+	GameEngineDirectory(std::string Path);
 	GameEngineDirectory(std::string_view Path);
 	GameEngineDirectory(std::filesystem::path Path);
 

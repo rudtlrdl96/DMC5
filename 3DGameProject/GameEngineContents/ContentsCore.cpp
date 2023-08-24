@@ -12,6 +12,8 @@
 #include "TitleLevel.h"
 #include "Char_ChoiceLevel.h"
 #include "MainMenuLevel.h"
+#include "PlayerTestLevel.h"
+#include "EnemyTestLevel.h"
 //Map
 #include "BossStageLevel.h"
 #include "StartStageLevel.h"
@@ -39,6 +41,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<Char_ChoiceLevel>();
 	GameEngineCore::CreateLevel<MainMenuLevel>();
 	GameEngineCore::CreateLevel<PlayerTestLevel>();
+	GameEngineCore::CreateLevel<EnemyTestLevel>();
 	GameEngineCore::CreateLevel<AnimationToolLevel>();
 	GameEngineCore::CreateLevel<BossStageLevel>();
 	GameEngineCore::CreateLevel<StartStageLevel>();

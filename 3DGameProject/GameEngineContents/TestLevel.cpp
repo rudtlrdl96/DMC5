@@ -10,7 +10,7 @@
 #include "Enemy_HellAntenora.h"
 #include "CavaliereAngelo.h"
 #include "Ball.h"
-
+#include "PlayerActor_Nero.h"
 TestLevel* TestLevel::TestLevelPtr = nullptr;
 
 TestLevel::TestLevel() 
@@ -45,6 +45,7 @@ void TestLevel::Update(float _DeltaTime)
 
 void TestLevel::LevelChangeStart()
 {
+	//CreateActor<PlayerActor_Nero>();
 	std::shared_ptr<TestObject> Component = CreateActor<TestObject>();
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
 
