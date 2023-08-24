@@ -5,7 +5,7 @@
 
 class GameEngineLevel;
 class GameEngineNetObject;
-class GameEngineTransform;
+class GameEngineActor;
 
 class NetworkManager
 {
@@ -49,7 +49,7 @@ public:
 	}
 
 	//Update패킷을 보낼때 이 인터페이스를 이용해서 보내주시면 됩니다.
-	static void SendUpdatePacket(GameEngineNetObject* _NetObj, GameEngineTransform* TransPtr, float _TimeScale);
+	static void SendUpdatePacket(GameEngineNetObject* _NetObj, GameEngineActor* _ActorPtr, float _TimeScale = 1.f);
 
 	//실제 업데이트 패킷을 처리하는 부분
 	static void FlushUpdatePacket();

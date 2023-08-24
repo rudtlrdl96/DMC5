@@ -6,6 +6,8 @@
 
 class ConnectIDPacket : public GameEnginePacket
 {
+	friend class NetworkManager;
+
 public:
 	static const PacketEnum Type = PacketEnum::ConnectIDPacket;
 
@@ -19,10 +21,10 @@ public:
 	{
 
 	}
-	
+
 protected:
 
 private:
-
+	
 };
 
