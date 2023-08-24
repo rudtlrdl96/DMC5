@@ -1,7 +1,6 @@
 #include "PrecompileHeader.h"
 #include "TitleLevel.h"
 #include "Title_StartScreen.h"
-#include "MouseCusor.h"
 #include "TitleBG.h"
 #include "FadeEffect.h"
 #include <GameEngineCore/GameEngineFont.h>
@@ -55,8 +54,6 @@ void TitleLevel::Start()
 	TitleBGPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
 	std::shared_ptr<Title_StartScreen> Title_StartScreenPtr = CreateActor<Title_StartScreen>();
 	Title_StartScreenPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
-	std::shared_ptr<MouseCusor> MouseCusorPtr = CreateActor<MouseCusor>();
-
 }
 
 void TitleLevel::Update(float _DeltaTime)
@@ -65,7 +62,7 @@ void TitleLevel::Update(float _DeltaTime)
 	{
 		IsDebugSwitch();
 	}
-
+	BaseLevel::Update(_DeltaTime);
 }
 
 void TitleLevel::LevelChangeStart()

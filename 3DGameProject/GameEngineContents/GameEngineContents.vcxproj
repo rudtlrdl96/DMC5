@@ -187,7 +187,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="BossStage.h" />
+    <ClInclude Include="BossStageLevel.h" />
     <ClInclude Include="Box200.h">
       <SubType>
       </SubType>
@@ -203,9 +203,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ContentDefine.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="CreateObjectPacket.h" />
     <ClInclude Include="C_ChoiceBG.h" />
+    <ClInclude Include="FieldMap.h" />
     <ClInclude Include="FreeCameraActor.h">
       <SubType>
       </SubType>
@@ -213,6 +218,10 @@
     <ClInclude Include="Intro_BackGround.h" />
     <ClInclude Include="Intro_Logo.h" />
     <ClInclude Include="LinkObjectPacket.h" />
+    <ClInclude Include="MainMenuLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="NetTestEnemy.h">
       <SubType>
       </SubType>
@@ -289,10 +298,6 @@
     </ClInclude>
     <ClInclude Include="MainLevel.h" />
     <ClInclude Include="MessageChatPacket.h" />
-    <ClInclude Include="MouseCusor.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="MyContentSpriteRenderer.h">
       <SubType>
       </SubType>
@@ -384,11 +389,11 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="StageBase.h" />
+    <ClInclude Include="StageBaseLevel.h" />
     <ClInclude Include="StageDatas.h" />
     <ClInclude Include="StageEditGUI.h" />
     <ClInclude Include="StageEditLevel.h" />
-    <ClInclude Include="StartStage.h" />
+    <ClInclude Include="StartStageLevel.h" />
     <ClInclude Include="TestLevel.h" />
     <ClInclude Include="TestObject.h">
       <SubType>
@@ -428,7 +433,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="BossStage.cpp" />
+    <ClCompile Include="BossStageLevel.cpp" />
     <ClCompile Include="Box200.cpp">
       <SubType>
       </SubType>
@@ -444,13 +449,22 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ContentDefine.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="C_ChoiceBG.cpp" />
+    <ClCompile Include="FieldMap.cpp" />
     <ClCompile Include="FreeCameraActor.cpp">
       <SubType>
       </SubType>
     </ClCompile>
     <ClCompile Include="Intro_BackGround.cpp" />
     <ClCompile Include="Intro_Logo.cpp" />
+    <ClCompile Include="MainMenuLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="NetTestEnemy.cpp">
       <SubType>
       </SubType>
@@ -526,10 +540,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="MainLevel.cpp" />
-    <ClCompile Include="MouseCusor.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="MyContentSpriteRenderer.cpp">
       <SubType>
       </SubType>
@@ -620,11 +630,11 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="StageBase.cpp" />
+    <ClCompile Include="StageBaseLevel.cpp" />
     <ClCompile Include="StageDatas.cpp" />
     <ClCompile Include="StageEditGUI.cpp" />
     <ClCompile Include="StageEditLevel.cpp" />
-    <ClCompile Include="StartStage.cpp" />
+    <ClCompile Include="StartStageLevel.cpp" />
     <ClCompile Include="TestLevel.cpp" />
     <ClCompile Include="TestObject.cpp">
       <SubType>

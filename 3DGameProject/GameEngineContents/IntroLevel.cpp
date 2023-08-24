@@ -45,6 +45,7 @@ void IntroLevel::Update(float _DeltaTime)
 	{
 		GameEngineCore::ChangeLevel("TitleLevel");
 	}
+	BaseLevel::Update(_DeltaTime);
 
 }
 

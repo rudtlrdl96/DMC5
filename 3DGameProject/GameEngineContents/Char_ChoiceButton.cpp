@@ -22,15 +22,17 @@ void Char_ChoiceButton::Start()
 	SelectRender = CreateComponent<GameEngineUIRenderer>(2);
 	SelectRender->SetTexture("Char_Select.png");
 	CharRender = CreateComponent<GameEngineUIRenderer>(3);
-	TextNoneRender = CreateComponent<GameEngineUIRenderer>(4);
+	TextNoneRender = CreateComponent<GameEngineUIRenderer>(5);
 	TextNoneRender->SetScaleToTexture("Char_NoneText.png");
-	TextBarRender = CreateComponent<GameEngineUIRenderer>(6);
+	TextNoneRender->ColorOptionValue.MulColor.a = 0.8f;
+	TextBarRender = CreateComponent<GameEngineUIRenderer>(7);
 	TextBarRender->SetScaleToTexture("Char_Bar.png");
-	TextBarRender->GetTransform()->SetLocalPosition({0.0f,-130.0f,0.0f});
+	TextBarRender->GetTransform()->SetLocalPosition({0.0f,-135.0f,0.0f});
 	TextBarRender->ColorOptionValue.MulColor.a = 0.9f;
 	TextSelectRender = CreateComponent<GameEngineUIRenderer>(6);
 	TextSelectRender->SetScaleToTexture("Char_SelectText.png");
 	TextSelectRender->ImageClippingX(0, ClipXDir::Left);
+	TextSelectRender->ColorOptionValue.MulColor.a = 0.9f;
 	FontCreate();
 }
 
@@ -80,12 +82,11 @@ void Char_ChoiceButton::Update(float _Delta)
 		TextSelectRender->ImageClippingX(ScaleUpTime*10.0f, ClipXDir::Left);
 		NameText->SetScale(GameEngineMath::LerpLimit(50.0f,55.0f, ScaleUpTime * 7.0f));
 		ExplaneText->SetScale(GameEngineMath::LerpLimit(20.0f, 22.0f, ScaleUpTime * 7.0f));
-
+		SetSaturation();
 		if (true == GameEngineInput::IsUp("UI_Enter"))
 		{
 			if (nullptr != Click)
 			{
-				EnterValue = true;
 				Click();
 			}
 		}
@@ -104,11 +105,7 @@ void Char_ChoiceButton::Update(float _Delta)
 		TextSelectRender->ImageClippingX(1- ScaleDownTime*10.0f, ClipXDir::Left);
 		NameText->SetScale(GameEngineMath::LerpLimit(55.0f, 50.0f, ScaleDownTime * 7.0f));
 		ExplaneText->SetScale(GameEngineMath::LerpLimit(22.0f, 20.0f, ScaleDownTime * 7.0f));
-
-	}
-	if (EnterValue == true)
-	{
-		EnterKeyRender(_Delta);
+		SetSaturation();
 	}
 }
 
@@ -143,10 +140,30 @@ void Char_ChoiceButton::FontCreate()
 	ExplaneText->GetTransform()->SetLocalPosition({ 0.0f,-105.0f,0.0f });
 }
 
-void Char_ChoiceButton::EnterKeyRender(float _Delta)
+void Char_ChoiceButton::SetSaturation()
 {
+	if (IsSelect == false)
+	{
+		CharRender->BSCControl(0.1f, 0.5f, 0.5f);
+		NoneSelectRender->BSCControl(0.1f, 0.5f, 0.5f);
+		TextNoneRender->BSCControl(0.1f, 0.5f, 0.5f);
+		TextBarRender->BSCControl(0.1f, 0.5f, 0.5f);
+		NameText->SetColor(float4(0.513f, 0.55f, 0.55f));
+		ExplaneText->SetColor(float4(0.388f, 0.388f, 0.388f));
+	}
+	else
+	{
+		CharRender->BSCControl(0.5f, 0.5f, 0.5f);
+		NoneSelectRender->BSCControl(0.5f, 0.5f, 0.5f);
+		TextNoneRender->BSCControl(0.5f, 0.5f, 0.5f);
+		TextBarRender->BSCControl(0.5f, 0.5f, 0.5f);
+		NameText->SetColor(float4(0.407f, 0.682f, 0.698f));
+		ExplaneText->SetColor(float4(0.455f, 0.541f, 0.572f));
 
+	}
+	
 }
+
 
 void Char_ChoiceButton::SetUIText(const Char_ChoiceParameter& _Paramter)
 {

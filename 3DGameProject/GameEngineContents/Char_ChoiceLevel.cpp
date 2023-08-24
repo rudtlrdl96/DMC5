@@ -45,7 +45,7 @@ void Char_ChoiceLevel::Start()
 
 void Char_ChoiceLevel::Update(float _DeltaTime)
 {
-
+	BaseLevel::Update(_DeltaTime);
 }
 
 void Char_ChoiceLevel::LevelChangeStart()

@@ -23,7 +23,6 @@ protected:
 	void Update(float _DeltaTime) override;
 private:
 	void Blink(float _DeltaTime);
-	void NewScreen();
 	std::shared_ptr<class GameEngineFontRenderer> SelectText = nullptr;
 	std::shared_ptr< GameEngineCollision> ButtonCol = nullptr;
 	float4 Pos = { -100.0f,-250.0f,0.0f };

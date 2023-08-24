@@ -1,7 +1,7 @@
 #pragma once
-#include <GameEngineCore/GameEngineLevel.h>
+#include "BaseLevel.h"
 // Ό³Έν :
-class TitleLevel : public GameEngineLevel
+class TitleLevel : public BaseLevel
 {
 public:
 	// constrcuter destructer

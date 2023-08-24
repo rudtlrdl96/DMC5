@@ -2,13 +2,15 @@
 #include "Char_ChoiceUI.h"
 #include "UIEnums.h"
 #include <GameEngineCore/GameEngineUIRenderer.h>
-
+Char_ChoiceUI* Char_ChoiceUI::CharChoicePtr = nullptr;
 Char_ChoiceUI::Char_ChoiceUI()
 {
+	CharChoicePtr = this;
 }
 
 Char_ChoiceUI::~Char_ChoiceUI()
 {
+
 }
 
 void Char_ChoiceUI::Start()
@@ -18,6 +20,15 @@ void Char_ChoiceUI::Start()
 	Nero_ChoiceUIRender->GetCharRender()->SetTexture("Character_Nero.png");
 	Nero_ChoiceUIRender->GetTextNoneRender()->GetTransform()->SetLocalPosition({20.0f,-150.0f,0.0f});
 	Nero_ChoiceUIRender->GetTextSelectRender()->GetTransform()->SetLocalPosition({ 20.0f,-150.0f,0.0f });
+	Nero_ChoiceUIRender->SetEvent([this]()
+		{
+			GameEngineCore::ChangeLevel("MainMenuLevel");
+			if (nullptr != CharTypeCallBack)
+			{
+				CharTypeCallBack();
+				CharTypeCallBack = nullptr;
+			}
+		});
 	Nero_ChoiceUIRender->SetUIText({ ._Text = "NERO",._SeletText = "",
 	._ExplaneText = "The Devil Hunter" });
 	Vergil_ChoiceUIRender = GetLevel()->CreateActor<Char_ChoiceButton>();
@@ -27,7 +38,15 @@ void Char_ChoiceUI::Start()
 	Vergil_ChoiceUIRender->GetTextSelectRender()->GetTransform()->SetLocalPosition({ 20.0f,-150.0f,0.0f });
 	Vergil_ChoiceUIRender->SetUIText({ ._Text = "VERGIL",._SeletText = "",
 	._ExplaneText = "The Alpha and the Omega" });
-
+	Vergil_ChoiceUIRender->SetEvent([this]()
+		{
+			GameEngineCore::ChangeLevel("MainMenuLevel");
+			if (nullptr != CharTypeCallBack)
+			{
+				CharTypeCallBack();
+				CharTypeCallBack = nullptr;
+			}
+		});
 }
 
 

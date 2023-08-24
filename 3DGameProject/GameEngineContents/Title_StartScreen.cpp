@@ -4,6 +4,7 @@
 #include "Title_SelectScreen.h"
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include <GameEngineCore/GameEngineLevel.h>
+#include "NetworkGUI.h"
 Title_StartScreen::Title_StartScreen()
 {
 }
@@ -21,26 +22,18 @@ void Title_StartScreen::Start()
 	SelectText->SetFontFlag(FW1_LEFT);
 	SelectText->SetScale(32);
 	SelectText->SetText("Select Host OR Client");
-
-	ButtonCol = CreateComponent<GameEngineCollision>(UICollisonOrder::UI);
-	ButtonCol->GetTransform()->SetLocalPosition(Pos);
-	ButtonCol->GetTransform()->SetLocalScale(Scale);
-	ButtonCol->SetColType(ColType::AABBBOX2D);
-
 }
 
 void Title_StartScreen::Update(float _DeltaTime)
 {
 	Blink(_DeltaTime);
-	if (ButtonCol->Collision(UICollisonOrder::Mouse, ColType::AABBBOX2D, ColType::AABBBOX2D))
-	{
-		//새로운 엑터 생성. 이때 GUI를 통해 함수 넣어주자.
-		if (GameEngineInput::IsUp("CLICK"))
+	NetworkGUI::GetInst()->SetEntryCallBack([this]()
 		{
-			NewScreen();
-		}
-
-	}
+			Death();
+			std::shared_ptr<Title_SelectScreen> Title_SelectScreenPtr = GetLevel()->CreateActor<Title_SelectScreen>();
+			Title_SelectScreenPtr->GetTransform()->SetLocalScale({ 1.0f, 1.0f, 1.0f });
+			Title_SelectScreenPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
+		});
 }
 
 void Title_StartScreen::Blink(float _DeltaTime)
@@ -63,13 +56,5 @@ void Title_StartScreen::Blink(float _DeltaTime)
 		}
 	}
 	SelectText->SetColor({ SkyColor.r,SkyColor.g,SkyColor.b,SkyColor_Alpha });
-}
-
-void Title_StartScreen::NewScreen()
-{
-	Death();
-	std::shared_ptr<Title_SelectScreen> Title_SelectScreenPtr = GetLevel()->CreateActor<Title_SelectScreen>();
-	Title_SelectScreenPtr->GetTransform()->SetLocalScale({ 1.0f, 1.0f, 1.0f });
-	Title_SelectScreenPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
 }
 

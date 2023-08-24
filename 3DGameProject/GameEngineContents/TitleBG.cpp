@@ -16,7 +16,6 @@ void TitleBG::Start()
 	TitleBGRender = CreateComponent<GameEngineUIRenderer>(0);
 	TitleBGRender->GetTransform()->SetLocalScale(Scale);
 	TitleBGRender->SetTexture("TitleBG.png");
-
 }
 
 

@@ -13,17 +13,17 @@ public:
 	StageEditGUI& operator=(const StageEditGUI& _Other) = delete;
 	StageEditGUI& operator=(StageEditGUI&& _Other) noexcept = delete;
 
-	StageData StageDatas;
-	FieldMapData FieldMapDatas;
-	FieldMapColData FieldMapColDatas;
+	StageData P_StageData;
+	FieldMapData P_FieldMapData;
+	FieldMapColData P_FieldMapColData;
 
 	const char* StageNameSet(int _NumverIndex);
 protected:
 	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;
 private:
-	bool BoxSwitch=false;
+	bool BoxSwitch = false;
+	bool EditSwitch = false;
 	int EditBoxSize = 12;
-	int current = 1;
 
 	std::vector<const char*> StageNumber;
 	int NumberIndex = 0;

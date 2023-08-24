@@ -70,6 +70,11 @@ void MainLevel::Update(float _DeltaTime)
 		GameEngineCore::ChangeLevel("TitleLevel");
 		return;
 	}
+	if (true == GameEngineInput::IsDown("SelectLevel_06"))
+	{
+		GameEngineCore::ChangeLevel("StartStageLevel");
+		return;
+	}
 }
 
 void MainLevel::LevelChangeStart()
