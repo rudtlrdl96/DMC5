@@ -241,6 +241,9 @@
     <ClInclude Include="LinkObjectPacket.h">
       <Filter>Server\01.Packet\02.Global</Filter>
     </ClInclude>
+    <ClInclude Include="FieldMap.h">
+      <Filter>Actor\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -468,6 +471,9 @@
     <ClCompile Include="Char_ChoiceButton.cpp">
       <Filter>UI\Actor\C_ChoiceUI</Filter>
     </ClCompile>
+    <ClCompile Include="FieldMap.cpp">
+      <Filter>Actor\Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Levels">
@@ -637,6 +643,9 @@
     </Filter>
     <Filter Include="UI\Actor\C_ChoiceUI">
       <UniqueIdentifier>{0ce3c064-c04d-4698-b513-4610ca1d869e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Stage">
+      <UniqueIdentifier>{9bfd9f41-48de-4462-82ec-e3573d7d9b0e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

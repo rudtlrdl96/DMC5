@@ -206,6 +206,7 @@
     <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="CreateObjectPacket.h" />
     <ClInclude Include="C_ChoiceBG.h" />
+    <ClInclude Include="FieldMap.h" />
     <ClInclude Include="FreeCameraActor.h">
       <SubType>
       </SubType>
@@ -445,6 +446,7 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="C_ChoiceBG.cpp" />
+    <ClCompile Include="FieldMap.cpp" />
     <ClCompile Include="FreeCameraActor.cpp">
       <SubType>
       </SubType>

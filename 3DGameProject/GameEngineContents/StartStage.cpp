@@ -1,6 +1,8 @@
 #include "PrecompileHeader.h"
 #include "StartStage.h"
 #include "NetworkManager.h"
+#include <GameEngineCore/GameEngineFBXMesh.h>
+#include "FreeCameraActor.h"
 
 #include "StageBase.h"
 
@@ -14,11 +16,29 @@ StartStage::~StartStage()
 
 void StartStage::Start()
 {
+	StageBase::Start();
+	std::string Path = GameEnginePath::GetFileFullPath
+	(
+		"ContentResources",
+		{
+			"Map", "TestMap"
+		},
+		"Location2ColGuide.FBX"
+	);
+
+	GameEngineFBXMesh::Load(Path);
 	SetCamera({ 0,0,-500 });
+	CreateActor<FreeCameraActor>();
 }
 
 void StartStage::Update(float _DeltaTime)
 {
+	StageBase::Update(_DeltaTime);
 	StartProcess(this);
+}
+
+void StartStage::LevelChangeStart()
+{
+	AcFieldMap = FieldMap::CreateFieldMap(this, "Location2ColGuide.fbx");
 }
 

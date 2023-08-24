@@ -43,7 +43,7 @@ void ContentsCore::GameStart()
 	//
 	GameEngineCore::CreateLevel<StageEditLevel>();
 
-	GameEngineCore::ChangeLevel("MainLevel");
+	GameEngineCore::ChangeLevel("StartStage");
 }
 
 void ContentsCore::GameEnd() 

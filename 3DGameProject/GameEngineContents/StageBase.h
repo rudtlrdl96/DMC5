@@ -1,7 +1,9 @@
 #pragma once
 #include "StageDatas.h"
+#include "BaseLevel.h"
+#include "FieldMap.h"
 
-class StageBase : public GameEngineLevel
+class StageBase : public BaseLevel
 {
 public:
 	static std::vector<StageData> AllStageDatas;
@@ -20,6 +22,10 @@ public:
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
+
+	std::shared_ptr<class FieldMap> AcFieldMap = nullptr;
+
 private:
+
 };
 

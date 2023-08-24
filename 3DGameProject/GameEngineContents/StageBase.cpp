@@ -18,7 +18,7 @@ void StageBase::Start()
 
 void StageBase::Update(float _DeltaTime)
 {
-	
+	BaseLevel::Update(_DeltaTime);
 }
 
 void StageBase::StartProcess(GameEngineLevel* Level)
