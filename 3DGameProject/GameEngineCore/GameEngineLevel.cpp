@@ -72,16 +72,20 @@ void GameEngineLevel::Render(float _DeltaTime)
 		}
 	}
 
-	LightDataObject.LightCount = 0;
-	for (std::shared_ptr<GameEngineLight> Light : AllLight)
-	{
-		LightDataObject.AllLight[LightDataObject.LightCount] = Light->GetLightData();
-		++LightDataObject.LightCount;
-	}
-
 	for (std::pair<int, std::shared_ptr<GameEngineCamera>> Pair : Cameras)
 	{
+
 		std::shared_ptr<GameEngineCamera> Cam = Pair.second;
+
+		LightDataObject.LightCount = 0;
+		for (std::shared_ptr<GameEngineLight> Light : AllLight)
+		{
+			Light->LightUpdate(Cam.get(), _DeltaTime);
+			LightDataObject.AllLight[LightDataObject.LightCount] = Light->GetLightData();
+			++LightDataObject.LightCount;
+		}
+
+
 		Cam->Setting();
 		Cam->CameraTransformUpdate();
 		Cam->Render(_DeltaTime);

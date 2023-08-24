@@ -35,3 +35,19 @@ cbuffer LightDatas : register(b12)
     int LightCount;
     LightData AllLight[64];
 };
+
+float4 CalDiffuseLight(float4 _Pos,  float4 _Normal, LightData _Data)
+{
+    float4 ResultRatio = (float4) 0.0f;
+
+    _Normal = normalize(_Normal); // N
+    float4 LightRevDir = normalize(_Data.ViewLightRevDir); // L
+    
+    ResultRatio = max(0.0f, dot(_Normal.xyz, LightRevDir.xyz));
+    return ResultRatio;
+}
+
+float4 CalAmbientLight(LightData _LightData)
+{
+    return _LightData.AmbientLight;
+}

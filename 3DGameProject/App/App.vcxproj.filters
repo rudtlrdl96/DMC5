@@ -7,4 +7,14 @@
   <ItemGroup>
     <ClInclude Include="PrecompileHeader.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Documentation">
+      <UniqueIdentifier>{8c3147e9-dd4c-40dc-9c91-929bde32999f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="빛.txt">
+      <Filter>Documentation</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

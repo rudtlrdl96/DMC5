@@ -20,16 +20,7 @@ std::shared_ptr<GameEngineFBXAnimation> GameEngineFBXAnimation::Load(const std::
 void GameEngineFBXAnimation::LoadMesh(const std::string& _Path, const std::string& _Name)
 {
 	FBXInit(_Path);
-
-	// 매쉬는 정말 매쉬만 있고
-	// 애니메이션 안에 
-
 	CheckAnimation();
-
-	// importbone
-
-	// 애니메이션이 존재한다 => 그걸로 아직 뭔가를 하지 않는다.
-
 	AnimationDatas;
 }
 
@@ -77,7 +68,6 @@ bool GameEngineFBXAnimation::CheckAnimation()
 	return true;
 }
 
-
 // 원 본 매쉬의 로컬 공간 행렬을 가져오는것.
 fbxsdk::FbxAMatrix GameEngineFBXAnimation::GetGeometryTransformation(fbxsdk::FbxNode* pNode)
 {
@@ -88,7 +78,6 @@ fbxsdk::FbxAMatrix GameEngineFBXAnimation::GetGeometryTransformation(fbxsdk::Fbx
 	return fbxsdk::FbxAMatrix(translation, rotation, scale);
 }
 
-
 bool GameEngineFBXAnimation::AnimationLoad(std::shared_ptr <GameEngineFBXMesh> _Mesh, fbxsdk::FbxNode* _Node, int AnimationIndex)
 {
 	FbxAnimStack* stack = Scene->GetSrcObject<FbxAnimStack>(AnimationIndex);
@@ -98,8 +87,6 @@ bool GameEngineFBXAnimation::AnimationLoad(std::shared_ptr <GameEngineFBXMesh> _
 	fbxsdk::FbxMesh* pCurrMesh = _Node->GetMesh();
 	int deformerCount = pCurrMesh->GetDeformerCount();
 	fbxsdk::FbxAMatrix geometryTransform = GetGeometryTransformation(_Node);
-
-
 
 	fbxsdk::FbxTakeInfo* takeInfo = Scene->GetTakeInfo(AnimationDatas[AnimationIndex].AniName.c_str());
 	fbxsdk::FbxTime start = takeInfo->mLocalTimeSpan.GetStart();
@@ -126,7 +113,6 @@ bool GameEngineFBXAnimation::AnimationLoad(std::shared_ptr <GameEngineFBXMesh> _
 	fbxsdk::FbxLongLong startTime;
 
 	fbxsdk::FbxTime currTime;
-
 
 	for (int deformerIndex = 0; deformerIndex < deformerCount; ++deformerIndex)
 	{
@@ -198,15 +184,12 @@ bool GameEngineFBXAnimation::AnimationLoad(std::shared_ptr <GameEngineFBXMesh> _
 				}
 			}
 		}
-
 	}
 
 	if (0 != deformerCount)
 	{
 		return true;
 	}
-
-	// return;
 
 	{
 		endTime = end.GetFrameCount(timeMode);
@@ -217,34 +200,14 @@ bool GameEngineFBXAnimation::AnimationLoad(std::shared_ptr <GameEngineFBXMesh> _
 		CurAniData.StartTime = startTime;
 		CurAniData.TimeMode = timeMode;
 
-
 		std::vector<FBXNodeInfo> ALLNODE = CheckAllNode();
 
 		_Mesh->AllBones;
 
-
 		fbxsdk::FbxNode* pLinkNode = Scene->FindNodeByName(linkName.c_str());
-
-		// ALLNODE[0].Node->GetAnimationEvaluator();
 
 		for (size_t i = 0; i < ALLNODE.size(); i++)
 		{
-
-			//FbxAnimEvaluator* AnimEvaluator = ALLNODE[i].Node->GetAnimationEvaluator();
-
-			//ALLNODE[i].Node->GetAnimationInterval()
-
-			//if (nullptr == AnimEvaluator)
-			//{
-			//	continue;
-			//}
-
-
-			//// AnimEvaluator->()
-
-			//continue;
-
-
 			for (size_t MeshIndex = 0; MeshIndex < CurAniData.AniFrameData.size(); ++MeshIndex)
 			{
 				for (size_t boneIndex = 0; boneIndex < CurAniData.AniFrameData[MeshIndex].size(); boneIndex++)
@@ -254,9 +217,9 @@ bool GameEngineFBXAnimation::AnimationLoad(std::shared_ptr <GameEngineFBXMesh> _
 					Frame.BoneIndex = static_cast<int>(boneIndex);
 					Frame.BoneParentIndex = static_cast<int>(boneIndex);
 
-					for (fbxsdk::FbxLongLong i = startTime; i <= endTime; ++i)
+					for (fbxsdk::FbxLongLong j = startTime; j <= endTime; ++j)
 					{
-						fixIndex = i - startTime;
+						fixIndex = j - startTime;
 
 						FbxExBoneFrameData& FrameData = Frame.BoneMatData[fixIndex];
 
@@ -286,14 +249,7 @@ bool GameEngineFBXAnimation::AnimationLoad(std::shared_ptr <GameEngineFBXMesh> _
 
 			}
 		}
-
-
-		int a = 0;
-
 	}
-
-
-
 
 	return false;
 }
@@ -301,7 +257,6 @@ bool GameEngineFBXAnimation::AnimationLoad(std::shared_ptr <GameEngineFBXMesh> _
 
 void GameEngineFBXAnimation::ProcessAnimationCheckState(std::shared_ptr <GameEngineFBXMesh> _Fbx, int userAniDataIndex)
 {
-	// 뛴다
 	FbxExAniData& userAniData = AnimationDatas.at(userAniDataIndex);
 	fbxsdk::FbxLongLong fbxTime = userAniData.EndTime.Get() - userAniData.StartTime.Get() + 1;
 

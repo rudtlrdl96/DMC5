@@ -51,10 +51,10 @@ void TestObject::Start()
 		GameEngineFBXMesh::Load(Path);
 	}
 
-	Renderer->SetFBXMesh("em0100.fbx", "NoneAlphaMesh");
+	Renderer->SetFBXMesh("em0100.fbx", "MeshAniTexture");
 	Renderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
 
-	Renderer->GetAllRenderUnit()[0][0];
+	//Renderer->GetAllRenderUnit()[0][0];
 
 	float4 RenderScale = Renderer->GetFBXMesh()->GetRenderUnit(0)->BoundScaleBox;
 	float4 MeshScale = Renderer->GetMeshScale();

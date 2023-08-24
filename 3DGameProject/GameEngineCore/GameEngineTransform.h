@@ -6,11 +6,9 @@
 
 enum class ColType
 {
-	// 캡슐
-	// 2D에서의 충돌은 모두가 한축이 같아야 한다.
-	SPHERE2D, // z를 0으로 만들고 충돌
-	AABBBOX2D, // z를 0으로 만들고 충돌
-	OBBBOX2D, // z를 0으로 만들고 충돌
+	SPHERE2D,
+	AABBBOX2D,
+	OBBBOX2D,
 	SPHERE3D,
 	AABBBOX3D,
 	OBBBOX3D,
@@ -74,11 +72,11 @@ struct TransformData
 	float4x4 View;
 	float4x4 Projection;
 	float4x4 ViewPort;
+	float4x4 WorldView;
 	float4x4 WorldViewProjectionMatrix;
 
 	void WorldCalculation(const TransformData& _Parent, bool AbsoluteScale, bool AbsoluteRotation, bool AbsolutePosition);
 	void LocalCalculation();
-
 	void SetViewAndProjection(const float4x4& _View, const float4x4& _Projection);
 
 public:
@@ -88,10 +86,6 @@ public:
 		Rotation = float4::ZERONULL;
 		Quaternion = float4::ZERONULL;
 		Position = float4::ZERO;
-		//WorldScale = float4::ONE;
-		//WorldRotation = float4::ZERONULL;
-		//WorldQuaternion = float4::ZERONULL;
-		//WorldPosition = float4::ZERO;
 	}
 };
 
@@ -387,7 +381,6 @@ private:
 	}
 
 	GameEngineObject* Master = nullptr;
-
 
 public:
 	bool Collision(const CollisionParameter& Data);

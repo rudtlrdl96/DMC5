@@ -42,16 +42,9 @@ InitColFunction InitFunction;
 
 void TransformData::LocalCalculation()
 {
-	// ScaleMatrix.Scale(Scale);
-
-	// Rotation.w = 0.0f;
 	Quaternion = Rotation.EulerDegToQuaternion();
-	//RotationMatrix = Quaternion.QuaternionToRotationMatrix();
-	//PositionMatrix.Pos(Position);
 
 	LocalWorldMatrix.Compose(Scale, Quaternion, Position);
-
-	// LocalWorldMatrix = ScaleMatrix * RotationMatrix * PositionMatrix;
 }
 
 void TransformData::WorldCalculation(const TransformData& _Parent, bool AbsoluteScale, bool AbsoluteRotation, bool AbsolutePosition)
@@ -101,7 +94,6 @@ void TransformData::WorldCalculation(const TransformData& _Parent, bool Absolute
 		PositionMatrix.Pos(LPosition);
 
 		LocalWorldMatrix.Compose(LScale, Quaternion, LPosition);
-
 	}
 }
 
@@ -109,6 +101,7 @@ void TransformData::SetViewAndProjection(const float4x4& _View, const float4x4& 
 {
 	View = _View;
 	Projection = _Projection;
+	WorldView = WorldMatrix * View;
 	WorldViewProjectionMatrix = WorldMatrix * View * Projection;
 }
 
@@ -156,8 +149,6 @@ bool GameEngineTransform::OBBToOBB(const CollisionData& _Left, const CollisionDa
 {
 	return _Left.OBB.Intersects(_Right.OBB);
 }
-
-
 
 bool GameEngineTransform::Sphere2DToSpehre2D(const CollisionData& _Left, const CollisionData& _Right)
 {
@@ -257,7 +248,6 @@ GameEngineTransform::GameEngineTransform()
 GameEngineTransform::~GameEngineTransform()
 {
 }
-
 
 void GameEngineTransform::WorldCalculation()
 {
@@ -371,10 +361,6 @@ void GameEngineTransform::SetParent(GameEngineTransform* _Parent, bool _IsParent
 			Level->Actors[MasterPtr->GetOrder()].remove(std::dynamic_pointer_cast<GameEngineActor>(MasterPtr));
 		}
 
-		// 나의 로컬포지션 나의 로컬 이런것들이 있었는데.
-		// 나는 새로운 부모가 생겼고
-		// 내가 이미 다른 부모가 있다면
-
 		Parent->Child.push_back(this);
 		Parent->Master->Childs.push_back(Master->shared_from_this());
 	}
@@ -387,8 +373,6 @@ void GameEngineTransform::SetParent(GameEngineTransform* _Parent, bool _IsParent
 		TransData.Scale = TransData.WorldScale;
 		TransformUpdate();
 		AbsoluteReset();
-
-		// 레벨에 집어넣어야 한다.
 
 		GameEngineLevel* Level = Master->GetLevel();
 
@@ -406,9 +390,6 @@ void GameEngineTransform::SetParent(GameEngineTransform* _Parent, bool _IsParent
 	}
 }
 
-
-
-
 void GameEngineTransform::CalChild()
 {
 	for (GameEngineTransform* ChildTrans : Child)
@@ -417,8 +398,6 @@ void GameEngineTransform::CalChild()
 		ChildTrans->CalChild();
 	}
 }
-
-
 
 float4 GameEngineTransform::GetLocalPosition()
 {
@@ -512,7 +491,6 @@ void GameEngineTransform::AllUpdate(float _DeltaTime)
 	}
 }
 
-
 void GameEngineTransform::AllRender(float _DeltaTime)
 {
 	if (nullptr == Master)
@@ -577,7 +555,6 @@ void GameEngineTransform::ChildRelease()
 	}
 }
 
-
 bool GameEngineTransform::Collision(const CollisionParameter& Data)
 {
 	if (nullptr == Data._OtherTrans)
@@ -587,7 +564,6 @@ bool GameEngineTransform::Collision(const CollisionParameter& Data)
 
 	return ArrColFunction[static_cast<int>(Data.ThisType)][static_cast<int>(Data.OtherType)](this->GetCollisionData(), Data._OtherTrans->GetCollisionData());
 }
-
 
 void GameEngineTransform::TransformUpdate()
 {
@@ -601,6 +577,4 @@ void GameEngineTransform::TransformUpdate()
 
 	WorldDecompose();
 	LocalDecompose();
-	// ParentWorldMatrix.Decompose(PScale, PRoatation, PPosition);
-
 }
