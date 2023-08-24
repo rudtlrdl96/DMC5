@@ -6,6 +6,7 @@
 
 GameEngineLight::GameEngineLight()
 {
+	SetName("GameEngineLight");
 }
 
 GameEngineLight::~GameEngineLight()

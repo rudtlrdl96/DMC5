@@ -159,6 +159,7 @@ void GameEngineFBXAnimationInfo::Reset()
 
 GameEngineFBXRenderer::GameEngineFBXRenderer()
 {
+	SetName("GameEngineFBXRenderer");
 }
 
 GameEngineFBXRenderer::~GameEngineFBXRenderer()

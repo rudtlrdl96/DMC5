@@ -3,6 +3,7 @@
 
 MyContentSpriteRenderer::MyContentSpriteRenderer()
 {
+	SetName("MyContentSpriteRenderer");
 }
 
 MyContentSpriteRenderer::~MyContentSpriteRenderer()

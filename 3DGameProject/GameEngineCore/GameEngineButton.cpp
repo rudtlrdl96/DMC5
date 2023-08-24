@@ -9,6 +9,7 @@ GameEngineButton* GameEngineButton::SelectButton = nullptr;
 
 GameEngineButton::GameEngineButton() 
 {
+	SetName("GameEngineButton");
 }
 
 GameEngineButton::~GameEngineButton() 

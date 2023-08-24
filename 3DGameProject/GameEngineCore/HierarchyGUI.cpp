@@ -47,27 +47,33 @@ void HierarchyGUI::ObjectSelect(std::shared_ptr<GameEngineLevel> Level)
 
 	int OrderCount = 0;
 
-	GameEngineObject::GUI_CurFrameSetParent = false;
-
 	for (std::pair<const int, std::list<std::shared_ptr<GameEngineActor>>>& RefData : AllActors)
 	{
-		ImGui::Text("Order : %d", OrderCount);
+		std::string OrderName = "Order : " + std::to_string(OrderCount);
+		ImGui::SeparatorText(OrderName.c_str());
 
-		std::list<std::shared_ptr<GameEngineActor>>& OrderActors = RefData.second;
-		std::list<std::shared_ptr<GameEngineActor>>::iterator LoopIter = OrderActors.begin();;
-
-		while (LoopIter != OrderActors.end() && false == GUI_CurFrameSetParent)
+		if (ImGui::TreeNode(OrderName.c_str()))
 		{
-			GameEngineObject* Result = (*LoopIter)->DrawGUI();
+			std::list<std::shared_ptr<GameEngineActor>>& OrderActors = RefData.second;
+			std::list<std::shared_ptr<GameEngineActor>>::iterator LoopIter = OrderActors.begin();;
 
-			if (nullptr != Result)
+			while (LoopIter != OrderActors.end())
 			{
-				SelectObject = Result;
+				GameEngineObject* Result = (*LoopIter)->DrawGUI();
+
+				if (nullptr != Result)
+				{
+					SelectObject = Result;
+				}
+
+				++LoopIter;
 			}
 
-			++LoopIter;
+			ImGui::TreePop();
 		}
 	}
+
+	ImGui::SeparatorText("");
 }
 
 void HierarchyGUI::ShowObjectInfo()

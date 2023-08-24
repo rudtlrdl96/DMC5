@@ -4,6 +4,7 @@
 
 GameEngineUIRenderer::GameEngineUIRenderer() 
 {
+	SetName("GameEngineUIRenderer");
 }
 
 GameEngineUIRenderer::~GameEngineUIRenderer() 

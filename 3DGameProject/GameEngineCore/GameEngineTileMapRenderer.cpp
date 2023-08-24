@@ -6,6 +6,7 @@
 
 GameEngineTileMapRenderer::GameEngineTileMapRenderer()
 {
+	SetName("GameEngineTileMapRenderer");
 }
 
 GameEngineTileMapRenderer::~GameEngineTileMapRenderer()

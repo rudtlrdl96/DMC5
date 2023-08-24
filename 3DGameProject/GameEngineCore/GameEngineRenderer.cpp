@@ -116,6 +116,7 @@ void GameEngineRenderUnit::Render(float _DeltaTime)
 GameEngineRenderer::GameEngineRenderer()
 {
 	BaseValue.ScreenScale = GameEngineWindow::GetScreenSize();
+	SetName("GameEngineRenderer");
 }
 
 GameEngineRenderer::~GameEngineRenderer()

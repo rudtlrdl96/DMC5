@@ -5,9 +5,7 @@
 
 int GameEngineObject::NextActorID = 0;
 int GameEngineObject::GUI_SelectActorIndex = -1;
-bool GameEngineObject::GUI_CurFrameSetParent = false;
 
-GameEngineTransform* GameEngineObject::NewChild = nullptr;
 GameEngineObject* GameEngineObject::ClickedObject = nullptr;
 
 GameEngineObject::GameEngineObject() :
@@ -189,51 +187,49 @@ GameEngineObject* GameEngineObject::DrawGUI()
 	if (ImGui::IsItemClicked(0))
 	{
 		Result = this;
-		NewChild = GetTransform();
 		GUI_SelectActorIndex = GetID();
 	}
 
 	// 드래그 시작
-	if (ImGui::BeginDragDropSource())
-	{
-		ImGui::SetDragDropPayload("ENTITY", GetTransform(), sizeof(GameEngineTransform*), ImGuiCond_Always);
-		ImGui::Text("Drag %d", GetID());
-		ImGui::EndDragDropSource();
-	}
-
-	bool justDropTarget = false;
-
-	if (ImGui::BeginDragDropTarget())
-	{
-		const auto* data = ImGui::AcceptDragDropPayload("ENTITY");
-
-		if (data != nullptr && NewChild != nullptr)
-		{
-			// 만약 같은 부모로 바꾸려고 했을 경우 예외처리
-			bool EqaulChildCheck = false;
-
-			for (std::shared_ptr<GameEngineObject>& Ref : Childs)
-			{
-				if (Ref->GetID() == NewChild->GetMaster()->GetID())
-				{
-					EqaulChildCheck = true;
-					break;
-				}
-			}
-
-			if (false == EqaulChildCheck)
-			{
-				// 부모 변환
-				NewChild->SetParent(GetTransform());
-				NewChild = nullptr;
-
-				GUI_CurFrameSetParent = true;
-
-				justDropTarget = isLeaf;
-			}
-		}
-		ImGui::EndDragDropTarget();
-	}
+	//if (ImGui::BeginDragDropSource())
+	//{
+	//	ImGui::SetDragDropPayload("ENTITY", this, sizeof(GameEngineObject*), ImGuiCond_Always);
+	//	ImGui::Text("Drag %d", GetID());
+	//	ImGui::EndDragDropSource();
+	//}
+	//
+	//bool justDropTarget = false;
+	//
+	//if (ImGui::BeginDragDropTarget())
+	//{
+	//	const auto* data = ImGui::AcceptDragDropPayload("ENTITY");
+	//
+	//	if (data != nullptr)
+	//	{
+	//		GameEngineObject* Data = (GameEngineObject*)(data->Data);
+	//
+	//		// 만약 같은 부모로 바꾸려고 했을 경우 예외처리
+	//		bool EqaulChildCheck = false;
+	//
+	//		for (std::shared_ptr<GameEngineObject>& Ref : Childs)
+	//		{
+	//			if (Ref->GetID() == Data->GetID())
+	//			{
+	//				EqaulChildCheck = true;
+	//				break;
+	//			}
+	//		}
+	//
+	//		if (false == EqaulChildCheck)
+	//		{
+	//			// 부모 변환
+	//			Data->GetTransform()->SetParent(GetTransform());
+	//			justDropTarget = isLeaf;
+	//		}
+	//	}
+	//
+	//	ImGui::EndDragDropTarget();
+	//}
 
 	// 우클릭 여부 반환
 	if (ImGui::IsItemClicked(1))
@@ -269,7 +265,7 @@ GameEngineObject* GameEngineObject::DrawGUI()
 	{		
 		std::list<std::shared_ptr<GameEngineObject>>::iterator LoopIter = Childs.begin();
 
-		while (LoopIter != Childs.end() && false == GUI_CurFrameSetParent)
+		while (LoopIter != Childs.end())
 		{
 			GameEngineObject* ChildResult = (*LoopIter)->DrawGUI();
 			++LoopIter;

@@ -87,6 +87,7 @@ void AnimationInfo::Update(float _DeltaTime)
 
 GameEngineSpriteRenderer::GameEngineSpriteRenderer()
 {
+	SetName("GameEngineSpriteRenderer");
 }
 
 GameEngineSpriteRenderer::~GameEngineSpriteRenderer()

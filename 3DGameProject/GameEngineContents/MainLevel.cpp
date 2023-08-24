@@ -32,7 +32,8 @@ void MainLevel::Start()
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -500.0f });
 
-	CreateActor<NetTestPlayer>()->SetUserControllType();
+	std::shared_ptr<NetTestPlayer> NewActor = CreateActor<NetTestPlayer>();
+	NewActor->SetUserControllType();
 }
 
 void MainLevel::Update(float _DeltaTime)

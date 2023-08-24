@@ -12,7 +12,6 @@
 
 GameEngineMaterial::GameEngineMaterial()
 {
-	
 }
 
 GameEngineMaterial::~GameEngineMaterial()

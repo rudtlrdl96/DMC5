@@ -20,9 +20,11 @@ GameEngineLevel::GameEngineLevel()
 void GameEngineLevel::LevelCameraInit()
 {
 	MainCamera = CreateNewCamera(0);
+	MainCamera->SetName("Main Camera");
 
 	std::shared_ptr<GameEngineCamera> UICamera = CreateNewCamera(100);
 	UICamera->SetProjectionType(CameraType::Orthogonal);
+	UICamera->SetName("UI Camera");
 
 	LastTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 }
@@ -30,6 +32,7 @@ void GameEngineLevel::LevelCameraInit()
 void GameEngineLevel::LevelLightInit()
 {
 	DirectionalLight = CreateActor<GameEngineLight>();
+	DirectionalLight->SetName("Directional Light");
 }
 
 GameEngineLevel::~GameEngineLevel()

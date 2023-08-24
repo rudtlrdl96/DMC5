@@ -4,6 +4,7 @@
 
 GameEngineFontRenderer::GameEngineFontRenderer()
 {
+	SetName("GameEngineFontRenderer");
 }
 
 GameEngineFontRenderer::~GameEngineFontRenderer()

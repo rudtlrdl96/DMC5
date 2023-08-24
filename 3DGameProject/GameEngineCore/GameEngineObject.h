@@ -20,8 +20,6 @@ class GameEngineObject :
 
 	static int NextActorID;
 	static int GUI_SelectActorIndex;
-	static bool GUI_CurFrameSetParent;
-	static GameEngineTransform* NewChild;
 	static GameEngineObject* ClickedObject;
 
 public:
