@@ -169,7 +169,7 @@ void NetworkManager::LinkNetwork(GameEngineNetObject* _NetObjPtr)
 
 
 
-#include "NetTestEnemy.h"
+#include "NetTestPlayer.h"
 
 std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorType _ActorType, int _ObjectID /*= -1*/)
 {
@@ -177,10 +177,10 @@ std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorTyp
 	switch (_ActorType)
 	{
 	case Net_ActorType::Nero:
-		NetObject = GetLevel()->CreateActor<NetTestEnemy>();	//이거 나중에 꼭 바꿀것
+		NetObject = GetLevel()->CreateActor<NetTestPlayer>();	//이거 나중에 꼭 바꿀것
 		break;
 	case Net_ActorType::Vergil:
-		NetObject = GetLevel()->CreateActor<NetTestEnemy>();	//이거 나중에 꼭 바꿀것
+		NetObject = GetLevel()->CreateActor<NetTestPlayer>();	//이거 나중에 꼭 바꿀것
 		break;
 	default:
 	{
