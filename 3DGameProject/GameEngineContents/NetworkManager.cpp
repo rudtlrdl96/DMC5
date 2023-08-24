@@ -113,13 +113,38 @@ void NetworkManager::SendUpdatePacket(GameEngineNetObject* _NetObj, GameEngineAc
 
 void NetworkManager::FlushUpdatePacket()
 {
+	if (true == AllUpdatePacket.empty())
+		return;
+
+	static GameEngineSerializer Ser;
+
+	int PacketSize = 0;
+	int Count = 0;
+
+
+	//패킷 모아 보내기
 	for (const std::pair<unsigned int, std::shared_ptr<ObjectUpdatePacket>>& Pair : AllUpdatePacket)
 	{
 		std::shared_ptr<ObjectUpdatePacket> UpdatePacket = Pair.second;
-		NetInst->SendPacket(UpdatePacket);
+		//NetInst->SendPacket(UpdatePacket);
+		UpdatePacket->SerializePacket(Ser); //이 코드의 문제점 Size를 표현하는 부분을 바꾸지 못함
+		
+		if (0 == PacketSize)
+		{
+			unsigned char* Ptr = Ser.GetDataPtr();
+			memcpy_s(&PacketSize, sizeof(int), &Ptr[4], sizeof(int));
+			continue;
+		}
+		
+		unsigned char* SizePtr = Ser.GetDataPtr();
+		int SizePos = (PacketSize * Count++) + 4;
+		memcpy_s(&SizePtr[SizePos], sizeof(int), &PacketSize, sizeof(int));
 	}
 
+	//NetInst->Send(Ser.GetConstCharPtr(), Ser.GetWriteOffSet());
+	NetInst->Send(reinterpret_cast<const char*>(Ser.GetDataPtr()), Ser.GetWriteOffSet());
 	AllUpdatePacket.clear();
+	Ser.Reset();
 }
 
 
