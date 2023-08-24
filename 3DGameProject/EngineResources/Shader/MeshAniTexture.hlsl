@@ -81,7 +81,7 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
     
     
     float A = Color.w;
-    float4 ResultColor = Color * DiffuseRatio;
+    float4 ResultColor = (Color * DiffuseRatio) + (Color * AmbientRatio);
     ResultColor.a = A;
     
     return ResultColor;

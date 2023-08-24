@@ -56,9 +56,9 @@ protected:
 
 	// 맵 에딧용 콜리전, 캐릭용 콜리전은 별도로 생각해야함
 	std::shared_ptr<GameEngineCollision> Collision_Picking_;
-	std::shared_ptr<GameEngineFBXStaticRenderer> FBXRenderer_;
+	std::shared_ptr<class GameEngineFBXStaticRenderer> FBXRenderer_;
 
-	std::shared_ptr<GameEngineTextureRenderer> CollisionRenderer_;
+	std::shared_ptr<class GameEngineTextureRenderer> CollisionRenderer_;
 	float4 ResultColor_;
 
 	void Start() override;

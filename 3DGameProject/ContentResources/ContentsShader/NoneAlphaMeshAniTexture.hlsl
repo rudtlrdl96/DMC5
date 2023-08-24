@@ -26,13 +26,14 @@ struct Input
 struct Output
 {
     float4 POSITION : SV_POSITION;
+    float4 VIEWPOSITION : POSITION;
     float4 TEXCOORD : TEXCOORD;
+    float4 NORMAL : NORMAL;
 };
 
-// 그래픽카드에서 이뤄지는것.
 Output MeshAniTexture_VS(Input _Input)
 {
-    Output NewOutPut = (Output)0;
+    Output NewOutPut = (Output) 0;
     
     float4 InputPos = _Input.POSITION;
     InputPos.w = 1.0f;
@@ -43,12 +44,13 @@ Output MeshAniTexture_VS(Input _Input)
         InputPos.w = 1.0f;
     }
     
-    
-    // 자신의 로컬공간에서 애니메이션을 시키고
-    // NewOutPut.POSITION = mul(_Input.POSITION, ArrAniMationMatrix[_Input.BLENDINDICES[0]].Mat);
     NewOutPut.POSITION = mul(InputPos, WorldViewProjectionMatrix);
     NewOutPut.TEXCOORD = _Input.TEXCOORD;
     
+    NewOutPut.VIEWPOSITION = mul(InputPos, WorldView);
+    _Input.NORMAL.w = 0.0f;
+    NewOutPut.NORMAL = mul(_Input.NORMAL, WorldView);
+
     return NewOutPut;
 }
 
@@ -61,12 +63,19 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
     
     Color.a = 1.0f;
     
-    //if (Color.a <= 0.0f)
-    //{
-    //    clip(-1);
-    //}
-    //
-    //Color += AllLight[0].LightColor;
+    if (Color.a <= 0.0f)
+    {
+        clip(-1);
+    }
     
-    return Color;
+    float4 DiffuseRatio = CalDiffuseLight(_Input.VIEWPOSITION, _Input.NORMAL, AllLight[0]);
+    float4 SpacularRatio;
+    float4 AmbientRatio = CalAmbientLight(AllLight[0]);
+    
+    
+    float A = Color.w;
+    float4 ResultColor = (Color * DiffuseRatio) + (Color * AmbientRatio);
+    ResultColor.a = A;
+    
+    return ResultColor;
 }

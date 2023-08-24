@@ -16,6 +16,8 @@ public:
 	EnemyTestLevel& operator=(EnemyTestLevel&& _Other) noexcept = delete;
 
 protected:
+	void Start() override;
+
 	void LevelChangeStart() override;
 
 private:

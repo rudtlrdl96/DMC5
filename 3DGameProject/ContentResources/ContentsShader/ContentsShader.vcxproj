@@ -127,11 +127,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <FxCompile Include="Animation.fx" />
     <FxCompile Include="FadeShader.hlsl" />
+    <FxCompile Include="Light.fx" />
     <FxCompile Include="MyShader.fx" />
     <FxCompile Include="NoneAlphaMesh.hlsl" />
+    <FxCompile Include="NoneAlphaMeshAniTexture.hlsl" />
     <FxCompile Include="OldFilmShader.hlsl" />
     <FxCompile Include="OldTVShader.hlsl" />
+    <FxCompile Include="Transform.fx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

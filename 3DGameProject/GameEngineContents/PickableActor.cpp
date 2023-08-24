@@ -44,10 +44,10 @@ void PickableActor::CheckPickingRay()
 	//	});
 
 	// 충돌안했으면 PickedActors세트 에서 제거
-	if (false == Pickable)
-	{
-		Picker::PickedActors.erase(std::dynamic_pointer_cast<PickableActor>(shared_from_this()));
-	}
+	//if (false == Pickable)
+	//{
+	//	Picker::PickedActors.erase(std::dynamic_pointer_cast<PickableActor>(shared_from_this()));
+	//}
 }
 
 void PickableActor::CheckSelected()

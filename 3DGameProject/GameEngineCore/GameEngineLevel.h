@@ -111,6 +111,12 @@ public:
 		return Actors;
 	}
 
+	// DirectionalLight를 반환합니다.
+	std::shared_ptr<GameEngineLight> GetDirectionalLight()
+	{
+		return DirectionalLight;
+	}
+
 protected:
 	// 레벨이 바뀌어서 시작할때
 	virtual void LevelChangeStart();
@@ -131,6 +137,9 @@ private:
 	//      이름           경로
 	std::map<std::string, std::string> TexturePath;
 	std::map<std::string, std::string> LoadEndPath;
+
+	// DirectionalLight
+	std::shared_ptr<GameEngineLight> DirectionalLight = nullptr;
 
 	// 이미 뭔가가 다그려진 커다란 텍스처에 뭔가 변화를 주는것.
 

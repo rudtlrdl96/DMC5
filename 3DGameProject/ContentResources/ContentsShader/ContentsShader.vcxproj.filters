@@ -6,5 +6,20 @@
     <FxCompile Include="OldFilmShader.hlsl" />
     <FxCompile Include="OldTVShader.hlsl" />
     <FxCompile Include="NoneAlphaMesh.hlsl" />
+    <FxCompile Include="Animation.fx">
+      <Filter>Header</Filter>
+    </FxCompile>
+    <FxCompile Include="Light.fx">
+      <Filter>Header</Filter>
+    </FxCompile>
+    <FxCompile Include="Transform.fx">
+      <Filter>Header</Filter>
+    </FxCompile>
+    <FxCompile Include="NoneAlphaMeshAniTexture.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header">
+      <UniqueIdentifier>{4b45cf48-a59e-41c5-88bb-28c459a34ea1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

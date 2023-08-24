@@ -29,7 +29,7 @@ void Picker::Start()
 	//Collision_Ray_->ChangeOrder(CollisionGroup::Ray);
 	//Collision_Ray_->SetDebugSetting(CollisionType::CT_OBB, float4(1.0f, 0, 0, 0.2f));
 
-	Axis_ = GetLevel()->CreateActor<ActorAxis>();
+	//Axis_ = GetLevel()->CreateActor<ActorAxis>();
 }
 
 void Picker::Update(float _DeltaTime)
