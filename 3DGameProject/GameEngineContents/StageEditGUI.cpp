@@ -1,9 +1,11 @@
 #include "PrecompileHeader.h"
 #include "StageEditGUI.h"
 #include <GameEngineCore/GameEngineLevel.h>
-
+#include <GameEngineCore/GameEngineActor.h>
 using namespace std;
 
+#include "FieldMap.h"
+#include "GUIActor.h"
 StageEditGUI::StageEditGUI()
 {
 }
@@ -21,7 +23,13 @@ void StageEditGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
     PreChar.resize(StartPrecharSize);
     EditData.resize(StartPrecharSize);
     Editbool.resize(StartPrecharSize);
-    /////////////////StageEditButton/////////////////////
+    P_StageData.resize(StartPrecharSize);
+    //for (auto i = 0; i < P_StageData.size(); ++i)
+    //{
+    //    StageData Datas;
+    //    P_StageData.push_back(Datas);
+    //}
+    ///////////////////StageEditButton/////////////////////
     if (ImGui::Button("StageEdit"))
     {
         BoxSwitch = !BoxSwitch;
@@ -51,14 +59,17 @@ void StageEditGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
                 Editbool[i] = !Editbool[i];
                 EditData[i] = i;
             }
-            if (Editbool[i] == true && current== EditData[i])
+            if (Editbool[i] == true && current== EditData[i]) //여기를 구분지을것이 필요함
             {
                 ImGui::SeparatorText("StageDataEdit");
-                static char Text[64] = ""; ImGui::InputText("FBX Name", Text, 64);
+                static char Text[64] = ""; ImGui::InputText("Mesh1 FBX Name", Text, 64);
                 ImGui::SameLine();
                 if (ImGui::Button("Load"))
                 {
-                    char* Test = Text;
+                    char* FBXName = Text;
+                    P_StageData[current].MapDatas[current].MeshFileName = FBXName;
+                    /*P_Field.CreateFieldMap(Level.get(), FBXName);*/
+                    /*std::vector<StageData> AllDatas;*/
                 }
             }
             if (current != EditData[i])

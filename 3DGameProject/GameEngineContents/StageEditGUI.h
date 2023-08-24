@@ -13,10 +13,7 @@ public:
 	StageEditGUI& operator=(const StageEditGUI& _Other) = delete;
 	StageEditGUI& operator=(StageEditGUI&& _Other) noexcept = delete;
 
-	StageData P_StageData;
-	FieldMapData P_FieldMapData;
-	FieldMapColData P_FieldMapColData;
-
+	
 protected:
 	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;
 private:
@@ -30,5 +27,7 @@ private:
 
 	std::vector<std::string> PreChar;
 	int StartPrecharSize = 20;
+
+	std::vector<StageData> P_StageData;
 };
 
