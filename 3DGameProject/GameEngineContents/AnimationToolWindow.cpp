@@ -87,6 +87,7 @@ void AnimationToolWindow::FileLoad(std::shared_ptr<GameEngineLevel> _Level)
 		OFN.lpstrInitialDir = L".";
 
 		if (GetOpenFileName(&OFN) != 0) {
+			AnimEvent.Clear();
 			AnimFBXFilePath.SetPath(GameEngineString::UniCodeToAnsi(OFN.lpstrFile));
 			AnimationFBXName = AnimFBXFilePath.GetFileName();
 			std::string AnimFile = AnimFBXFilePath.GetFullPath();
@@ -117,7 +118,6 @@ void AnimationToolWindow::FileLoad(std::shared_ptr<GameEngineLevel> _Level)
 			AnimationCreate(_Level);
 			AnimFile += ".animation";
 			AnimFilePath.SetPath(AnimFile);
-			int a = 0;
 		}
 	}
 	ImGui::SameLine();
@@ -145,6 +145,42 @@ void AnimationToolWindow::FileLoad(std::shared_ptr<GameEngineLevel> _Level)
 			File.SetPath(AnimFilePath.GetFullPath());
 			File.LoadBin(Ser);
 			AnimEvent.Read(Ser);
+
+			if (Renderer == nullptr)
+			{
+				return;
+			}
+			if (false == Renderer->Animations.contains(GameEngineString::ToUpper(AnimEvent.AnimationName + ".FBX")))
+			{
+				std::string pathstr = GameEnginePath::GetFolderPath(AnimFilePath.GetFullPath()) + AnimEvent.AnimationName + ".fbx";
+				AnimFBXFilePath.SetPath(pathstr);
+				AnimationFBXName = AnimFBXFilePath.GetFileName();
+				size_t Upper = AnimationFBXName.find(".FBX");
+				size_t Lower = AnimationFBXName.find(".fbx");
+
+				if (Upper != -1)
+				{
+					AnimationName = AnimationFBXName.substr(0, Upper);
+				}
+				else if (Lower != -1)
+				{
+					AnimationName = AnimationFBXName.substr(0, Lower);
+				}
+				else
+				{
+					MsgAssert("FBX파일의 확장자 오류. 대소문자를 확인해주세요.");
+				}
+				if (nullptr == GameEngineFBXAnimation::Find(AnimationFBXName))
+				{
+					GameEngineFBXAnimation::Load(AnimFBXFilePath.GetFullPath());
+				}
+				// FBX 애니메이션을 로드시 자동으로 해당 FBX로 렌더러에 애니메이션 적용
+				AnimationCreate(_Level);
+			}
+			else
+			{
+				Renderer->ChangeAnimation(AnimEvent.AnimationName);
+			}
 		}
 	}
 }
@@ -331,11 +367,11 @@ void AnimationToolWindow::CallEvent(EventData& _Data)
 	}
 	if (_Data.Type == EventType::CallBackInt)
 	{
-		ImGui::InputInt("Value", (int*)&_Data.Position.x);
+		ImGui::InputInt("Value", &_Data.IntValue);
 	}
 	else if (_Data.Type == EventType::CallBackFloat)
 	{
-		ImGui::InputFloat("Value", &_Data.Position.x);
+		ImGui::InputFloat("Value", &_Data.FloatValue);
 	}
 }
 

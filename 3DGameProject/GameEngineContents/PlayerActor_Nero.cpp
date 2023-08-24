@@ -36,14 +36,33 @@ void PlayerActor_Nero::Start()
 		Renderer->GetTransform()->SetLocalRotation({ 0, 90, 0 });
 		Renderer->GetTransform()->SetLocalPosition({ 0, -75, 0 });
 		Renderer->SetFBXMesh("Nero.FBX", "MeshAniTexture");
-		//AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath(), .Renderer = Renderer });
+		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer,
+			.Objects = { (GameEngineObject*)AttackCollision.get() },
+			.CallBacks_void = { std::bind(&PlayerActor_Nero::InputCheckOn, this)},
+			.CallBacks_int = { std::bind(&PlayerActor_Nero::ChangeFSM, this, std::placeholders::_1)}
+
+			});
+
+		/*
+		* Object = 0 : 공격 충돌체
+		* 콜백void = 0 : 입력체크시작
+		* 콜백 int = 0 : FSM변경
+		* 
+		*/
 	}
 
 	FSM.CreateState({ .StateValue = FSM_State_Nero::Idle,
 		.Start = [=] {
-			//Renderer->ChangeAnimation("pl0000_Idle_One");
+			Renderer->ChangeAnimation("pl0000_Idle_One");
 		},
 		.Update = [=](float _DeltaTime) {
+
+			if (Controller->GetSwordDown())
+			{
+				FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
+				return;
+			}
+
 			if (Controller->GetMoveVector() != float4::ZERO)
 			{
 				FSM.ChangeState(FSM_State_Nero::Walk);
@@ -57,9 +76,16 @@ void PlayerActor_Nero::Start()
 
 	FSM.CreateState({ .StateValue = FSM_State_Nero::Walk,
 		.Start = [=] {
-			//Renderer->ChangeAnimation("pl0000_Run_Loop2");
+			Renderer->ChangeAnimation("pl0000_Run_Loop2");
 		},
 		.Update = [=](float _DeltaTime) {
+
+			if (Controller->GetSwordDown())
+			{
+				FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
+				return;
+			}
+
 			if (Controller->GetMoveVector() == float4::ZERO)
 			{
 				FSM.ChangeState(FSM_State_Nero::Idle);
@@ -77,6 +103,39 @@ void PlayerActor_Nero::Start()
 
 		}
 	});
+
+	// RedQueen Combo
+	FSM.CreateState({ .StateValue = FSM_State_Nero::RQ_ComboA_1,
+		.Start = [=] {
+			Renderer->ChangeAnimation("pl0000_RQ_ComboA_1");
+			InputCheck = false;
+		},
+		.Update = [=](float _DeltaTime) {
+			if (InputCheck == false) { return; }
+			if (Controller->GetSwordDown())
+			{
+				FSM.ChangeState(FSM_State_Nero::RQ_ComboA_2);
+				return;
+			}
+		},
+		.End = [=] {
+
+		}
+		});
+
+	// RedQueen Combo
+	FSM.CreateState({ .StateValue = FSM_State_Nero::RQ_ComboA_2,
+		.Start = [=] {
+			Renderer->ChangeAnimation("pl0000_RQ_ComboA_2");
+			InputCheck = false;
+		},
+		.Update = [=](float _DeltaTime) {
+			if (InputCheck == false) { return; }
+		},
+		.End = [=] {
+
+		}
+		});
 
 	FSM.ChangeState(FSM_State_Nero::Idle);
 }

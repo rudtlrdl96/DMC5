@@ -7,7 +7,12 @@ enum FSM_State_Nero
 	None,
 	Idle,
 	Walk,
-	Run
+	Run,
+
+
+	RQ_ComboA_1,
+	RQ_ComboA_2,
+
 };
 
 class PlayerActor_Nero : public BasePlayerActor
@@ -23,6 +28,16 @@ public:
 	PlayerActor_Nero& operator=(const PlayerActor_Nero& _Other) = delete;
 	PlayerActor_Nero& operator=(PlayerActor_Nero&& _Other) noexcept = delete;
 
+	void ChangeFSM(int _State)
+	{
+		FSM.ChangeState(_State);
+	}
+
+	void InputCheckOn()
+	{
+		InputCheck = true;
+	}
+
 protected:
 	void Start() override;
 	void Update_Character(float _DeltaTime) override;
@@ -30,5 +45,7 @@ protected:
 private:
 	GameEngineFSM FSM;
 	float MoveSpeed = 500.0f;
+
+	bool InputCheck = false;
 };
 

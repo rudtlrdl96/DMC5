@@ -129,6 +129,9 @@ public:
 	std::function<void()> CallBack_LockOnDown = nullptr;
 	std::function<void()> CallBack_LockOnUp = nullptr;
 
+	
+	bool GetSwordDown() { return GameEngineInput::IsDown("Player_Sword"); }
+
 	bool IsLockOn = false;
 };
 

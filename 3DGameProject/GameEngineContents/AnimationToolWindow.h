@@ -34,6 +34,7 @@ protected:
 	void PreviewObject();
 
 	void Release();
+
 private:
 	std::shared_ptr<GameEngineActor> Actor = nullptr;
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;

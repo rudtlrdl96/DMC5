@@ -77,108 +77,94 @@ void AnimationEvent::LoadAll(const AnimLoadParameter& _Parameter)
 	// Dir 경로에 모든 .animation 파일을 읽어 애니메이션 이벤트를 구현합니다
 	std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".FBX" });
 	std::vector<GameEngineFile> AnimFiles = Dir.GetAllFile({ ".ANIMATION" });
-	// Dir 경로에 모든 FBX파일을 로드 (애니메이션 .fbx)
-	//{
-	//	for (size_t i = 0; i < FBXFiles.size(); i++)
-	//	{
-	//		if (nullptr != GameEngineFBXAnimation::Find(FBXFiles[i].GetFileName()))
-	//		{
-	//			continue;
-	//		}
-	//		GameEngineFBXAnimation::Load(FBXFiles[i].GetFullPath());
-	//	}
-	//}
 
+	AnimationEvent Event;
+	for (size_t EventIndex = 0; EventIndex < AnimFiles.size(); EventIndex++)
 	{
-		AnimationEvent Event;
-		for (size_t i = 0; i < AnimFiles.size(); i++)
+		// 파일 로드
+		GameEngineSerializer Ser;
+		AnimFiles[EventIndex].LoadBin(Ser);
+		Event.Read(Ser);
+
+		// 애니메이션 로드
+		for (size_t j = 0; j < FBXFiles.size(); j++)
 		{
-			// 파일 로드
-			GameEngineSerializer Ser;
-			AnimFiles[i].LoadBin(Ser);
-			Event.Read(Ser);
-
-			// 애니메이션 로드
-			for (size_t i = 0; i < FBXFiles.size(); i++)
+			std::string FileName = GameEngineString::ToUpper(FBXFiles[j].GetFileName());
+			if (FileName != GameEngineString::ToUpper(Event.AnimationName + ".FBX"))
 			{
-				if (GameEngineString::ToUpper(FBXFiles[i].GetFileName()) != GameEngineString::ToUpper(Event.AnimationName + ".FBX"))
-				{
-					continue;
-				}
-				if (nullptr != GameEngineFBXAnimation::Find(FBXFiles[i].GetFileName()))
-				{
-					continue;
-				}
-				GameEngineFBXAnimation::Load(FBXFiles[i].GetFullPath());
+				continue;
 			}
-			// 애니메이션 생성
-			_Parameter.Renderer->CreateFBXAnimation(Event.AnimationName, Event.AnimationName + ".FBX");
-			// .animation 내용 적용
-			std::shared_ptr<GameEngineFBXAnimationInfo> AnimInfo = _Parameter.Renderer->GetAnimation(Event.AnimationName);
-			AnimInfo->TimeScale = Event.Speed; // 속도 적용
-
-			// 애니메이션 이벤트 구현
-			for (int i = 0; i < Event.Events.size(); i++)
+			if (nullptr != GameEngineFBXAnimation::Find(FileName))
 			{
-				for (int j = 0; j < Event.Events[i].size(); j++)
-				{
-					EventData& Data = Event.Events[i][j];
+				continue;
+			}
+			GameEngineFBXAnimation::Load(FBXFiles[j].GetFullPath());
+		}
+		// 애니메이션 생성
+		_Parameter.Renderer->CreateFBXAnimation(Event.AnimationName, Event.AnimationName + ".FBX");
+		// .animation 내용 적용
+		std::shared_ptr<GameEngineFBXAnimationInfo> AnimInfo = _Parameter.Renderer->GetAnimation(Event.AnimationName);
+		AnimInfo->TimeScale = Event.Speed; // 속도 적용
 
-					if (Data.Type == EventType::ObjectUpdate)
+		// 애니메이션 이벤트 구현
+		for (int i = 0; i < Event.Events.size(); i++)
+		{
+			for (int j = 0; j < Event.Events[i].size(); j++)
+			{
+				EventData& Data = Event.Events[i][j];
+
+				if (Data.Type == EventType::ObjectUpdate)
+				{
+					// 오브젝트 업데이트 유형 적용
+					if (_Parameter.Objects.size() < Data.Index || _Parameter.Objects[Data.Index] == nullptr)
 					{
-						// 오브젝트 업데이트 유형 적용
-						if (_Parameter.Objects.size() < Data.Index || _Parameter.Objects[Data.Index] == nullptr)
-						{
-							// Index값이 파라미터에 넣은 오브젝트 벡터의 사이즈 보다 클 시
-							// Index값의 오브젝트가 nullptr일 시 continue
-							continue;
-						}
-						// OnOff 적용
-						if (Data.IsUpdate == true)
-						{
-							AnimInfo->AnimationEvent[i].push_back(std::bind(&GameEngineObject::On, _Parameter.Objects[Data.Index]));
-						}
-						else
-						{
-							AnimInfo->AnimationEvent[i].push_back(std::bind(&GameEngineObject::Off, _Parameter.Objects[Data.Index]));
-						}
-						// Transform 적용
-						AnimInfo->AnimationEvent[i].push_back(std::bind(&GameEngineTransform::SetLocalPosition, _Parameter.Objects[Data.Index]->GetTransform(), Data.Position));
-						AnimInfo->AnimationEvent[i].push_back(std::bind(&GameEngineTransform::SetLocalRotation, _Parameter.Objects[Data.Index]->GetTransform(), Data.Rotation));
-						AnimInfo->AnimationEvent[i].push_back(std::bind(&GameEngineTransform::SetLocalScale, _Parameter.Objects[Data.Index]->GetTransform(), Data.Scale));
+						// Index값이 파라미터에 넣은 오브젝트 벡터의 사이즈 보다 클 시
+						// Index값의 오브젝트가 nullptr일 시 continue
+						continue;
 					}
-					else if (Data.Type == EventType::CallBackVoid)
+					// OnOff 적용
+					if (Data.IsUpdate == true)
 					{
-						// void 콜백함수
-						if (_Parameter.CallBacks_void[Data.Index] == nullptr)
-						{
-							continue;
-						}
-						AnimInfo->AnimationEvent[i].push_back(_Parameter.CallBacks_void[Data.Index]);
-					}	
-					else if (Data.Type == EventType::CallBackInt)
-					{
-						// int 콜백함수
-						if (_Parameter.CallBacks_void[Data.Index] == nullptr)
-						{
-							continue;
-						}
-						AnimInfo->AnimationEvent[i].push_back(std::bind(_Parameter.CallBacks_int[Data.Index], static_cast<int>(Data.Position.x)));
+						AnimInfo->AnimationEvent[i].push_back(std::bind(&GameEngineObject::On, _Parameter.Objects[Data.Index]));
 					}
-					else if (Data.Type == EventType::CallBackFloat)
+					else
 					{
-						// float 콜백함수
-						if (_Parameter.CallBacks_void[Data.Index] == nullptr)
-						{
-							continue;
-						}
-						AnimInfo->AnimationEvent[i].push_back(std::bind(_Parameter.CallBacks_float[Data.Index], Data.Position.x));
+						AnimInfo->AnimationEvent[i].push_back(std::bind(&GameEngineObject::Off, _Parameter.Objects[Data.Index]));
 					}
+					// Transform 적용
+					AnimInfo->AnimationEvent[i].push_back(std::bind(&GameEngineTransform::SetLocalPosition, _Parameter.Objects[Data.Index]->GetTransform(), Data.Position));
+					AnimInfo->AnimationEvent[i].push_back(std::bind(&GameEngineTransform::SetLocalRotation, _Parameter.Objects[Data.Index]->GetTransform(), Data.Rotation));
+					AnimInfo->AnimationEvent[i].push_back(std::bind(&GameEngineTransform::SetLocalScale, _Parameter.Objects[Data.Index]->GetTransform(), Data.Scale));
+				}
+				else if (Data.Type == EventType::CallBackVoid)
+				{
+					// void 콜백함수
+					if (_Parameter.CallBacks_void[Data.Index] == nullptr)
+					{
+						continue;
+					}
+					AnimInfo->AnimationEvent[i].push_back(_Parameter.CallBacks_void[Data.Index]);
+				}
+				else if (Data.Type == EventType::CallBackInt)
+				{
+					// int 콜백함수
+					if (_Parameter.CallBacks_void[Data.Index] == nullptr)
+					{
+						continue;
+					}
+					AnimInfo->AnimationEvent[i].push_back(std::bind(_Parameter.CallBacks_int[Data.Index], Data.IntValue));
+				}
+				else if (Data.Type == EventType::CallBackFloat)
+				{
+					// float 콜백함수
+					if (_Parameter.CallBacks_void[Data.Index] == nullptr)
+					{
+						continue;
+					}
+					AnimInfo->AnimationEvent[i].push_back(std::bind(_Parameter.CallBacks_float[Data.Index], Data.FloatValue));
 				}
 			}
 		}
-
-
 	}
 
 }

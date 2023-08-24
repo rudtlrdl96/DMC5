@@ -60,4 +60,5 @@ enum class CollisionOrder
 	Enemy,
 	Wall,
 	JumpWall,
+	PlayerAttack,
 };

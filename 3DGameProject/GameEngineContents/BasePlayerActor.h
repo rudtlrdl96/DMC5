@@ -40,6 +40,7 @@ protected:
 	std::shared_ptr<class PlayerController> Controller = nullptr;
 	std::shared_ptr<class PlayerCamera> Camera = nullptr;
 	std::shared_ptr<class GameEngineCollision> PlayerCollision = nullptr;
+	std::shared_ptr<class GameEngineCollision> AttackCollision = nullptr;
 	std::shared_ptr<class GameEngineCollision> LockOnCollision = nullptr;
 	std::shared_ptr<class PhysXCapsuleComponent> PhysXCapsule = nullptr;
 

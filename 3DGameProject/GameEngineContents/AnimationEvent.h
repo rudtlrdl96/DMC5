@@ -6,7 +6,7 @@ class AnimLoadParameter
 public:
 	const std::string_view& Dir;
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer;
-	std::vector<std::shared_ptr<GameEngineObject>> Objects = std::vector<std::shared_ptr<GameEngineObject>>();
+	std::vector<GameEngineObject*> Objects = std::vector<GameEngineObject*>();
 	std::vector<std::function<void()>> CallBacks_void = std::vector<std::function<void()>>();
 	std::vector<std::function<void(int)>> CallBacks_int = std::vector<std::function<void(int)>>();
 	std::vector<std::function<void(float)>> CallBacks_float = std::vector<std::function<void(float)>>();
@@ -31,9 +31,18 @@ public:
 	EventType Type = EventType::None;	// 애니메이션 이벤트의 종류
 	int Index = 0;
 	bool IsUpdate = true;
-	float4 Position = float4::ZERO;		// CallBack 함수의 인자값은 Position의 x값으로 적용
-	float4 Rotation = float4::ZERO;
-	float4 Scale = float4::ONE;
+
+	union
+	{
+		struct
+		{
+			float4 Position;
+			float4 Rotation;
+			float4 Scale;
+		};
+		int IntValue;
+		float FloatValue;
+	};
 };
 
 // 설명 :
@@ -71,7 +80,12 @@ public:
 	*/
 	static void LoadAll(const AnimLoadParameter& _Parameter);
 
-
+	void Clear()
+	{
+		AnimationName = " ";
+		Speed = 10.0f;
+		Events.clear();
+	}
 protected:
 
 private:

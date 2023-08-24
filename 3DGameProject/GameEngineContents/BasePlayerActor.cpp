@@ -74,6 +74,8 @@ void BasePlayerActor::Start()
 	PlayerCollision->GetTransform()->SetLocalScale({ 100, 100, 100 });
 	PlayerCollision->SetColType(ColType::OBBBOX3D);
 
+	AttackCollision = CreateComponent<GameEngineCollision>(CollisionOrder::PlayerAttack);;
+
 	physx::PxVec3 VecSclae = { 150, 100, 150 };
 
 	PhysXCapsule = CreateComponent<PhysXCapsuleComponent>();
