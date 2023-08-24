@@ -58,7 +58,8 @@ bool GameEngineDirectory::MoveParent()
 		return false;
 	}
 
-	MoveParent();
+
+	GameEnginePath::MoveParent();
 
 	return true;
 }

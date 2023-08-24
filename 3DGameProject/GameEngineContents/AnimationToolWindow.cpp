@@ -19,7 +19,6 @@ AnimationToolWindow::~AnimationToolWindow()
 void AnimationToolWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
 {
 	FileLoad(Level);
-	//RendererCreate(Level);
 	AnimationTimeLine();
 	FrameEvent();
 	PreviewObject();
@@ -67,6 +66,7 @@ void AnimationToolWindow::FileLoad(std::shared_ptr<GameEngineLevel> _Level)
 			{
 				GameEngineFBXMesh::Load(MeshFilePath.GetFullPath());
 			}
+			// FBX 메쉬를 로드시 자동으로 해당 FBX로 렌더러 생성
 			MeshCreate(_Level);
 			int a = 0;
 		}
@@ -113,6 +113,7 @@ void AnimationToolWindow::FileLoad(std::shared_ptr<GameEngineLevel> _Level)
 			{
 				GameEngineFBXAnimation::Load(AnimFBXFilePath.GetFullPath());
 			}
+			// FBX 애니메이션을 로드시 자동으로 해당 FBX로 렌더러에 애니메이션 적용
 			AnimationCreate(_Level);
 			AnimFile += ".animation";
 			AnimFilePath.SetPath(AnimFile);
@@ -123,6 +124,7 @@ void AnimationToolWindow::FileLoad(std::shared_ptr<GameEngineLevel> _Level)
 	// 파일 열기
 	if (ImGui::Button("Open Animation"))
 	{
+		// 기존에 만든 .animation 파일을 불러오는 기능
 		OPENFILENAME OFN;
 		TCHAR lpstrFile[200] = L"";
 		static TCHAR filter[] = L".animation 애니메이션 파일\0*.animation";
@@ -153,6 +155,8 @@ void AnimationToolWindow::AnimationTimeLine()
 	if (Renderer == nullptr) { return; }
 	if (Renderer->CurAnimation == nullptr) { return; }
 
+	// 프레임 이동기능
+
 	int BeforeFrame = CurrentFrame;
 	ImGui::DragInt("Frame", &CurrentFrame, 1, 0, FrameSize);
 	if (ImGui::Button("<") && 0 < CurrentFrame)
@@ -167,6 +171,7 @@ void AnimationToolWindow::AnimationTimeLine()
 	ImGui::SameLine();
 	ImGui::Text((" (" + std::to_string(CurrentFrame) + " / " + std::to_string(FrameSize) + ")").c_str());
 
+	// 애니메이션 속도 조절
 	ImGui::DragFloat("Speed", &AnimEvent.Speed, 0.1f, 0.0f, 20.0f);
 	if (IsStop)
 	{
@@ -182,6 +187,7 @@ void AnimationToolWindow::AnimationTimeLine()
 		AnimationFrameUpdate();
 	}
 
+	// 재생, 정지 버튼
 	if (ImGui::Button("Play"))
 	{
 		IsStop = false;
@@ -200,6 +206,7 @@ void AnimationToolWindow::FrameEvent()
 	if (Renderer == nullptr) { return; }
 	if (Renderer->CurAnimation == nullptr) { return; }
 
+	// 현재 프레임에 새로운 이벤트를 생성하는 버튼
 	if (ImGui::Button("Add Object Event"))
 	{
 		AnimEvent.Events[CurrentFrame].push_back(EventData(EventType::ObjectUpdate));
@@ -209,6 +216,7 @@ void AnimationToolWindow::FrameEvent()
 		AnimEvent.Events[CurrentFrame].push_back(EventData(EventType::CallBackVoid));
 	}
 
+	// 현재 프레임에 존재하는 이벤트를 표시하고, 인자값을 수정한다
 	std::vector<EventData>::iterator Iter = AnimEvent.Events[CurrentFrame].begin();
 	std::vector<EventData>::iterator End = AnimEvent.Events[CurrentFrame].end();
 	int i = 0;
@@ -394,7 +402,7 @@ void AnimationToolWindow::AnimationCreate(std::shared_ptr<GameEngineLevel> Level
 
 void AnimationToolWindow::AnimationFrameUpdate()
 {
-
+	// 프리뷰 화면에서 애니메이션 이벤트의 내용을 표시하는 함수(프레임이 변경시 실행해줍니다)
 	std::vector<EventData>::iterator Iter = AnimEvent.Events[CurrentFrame].begin();
 	std::vector<EventData>::iterator End = AnimEvent.Events[CurrentFrame].end();
 	for (; Iter != End; Iter++)
@@ -421,6 +429,7 @@ void AnimationToolWindow::AnimationFrameUpdate()
 
 void AnimationToolWindow::PreviewObject()
 {
+	// 새로운 프리뷰 오브젝트를 생성하는 기능
 	if (nullptr == Actor) { return; }
 	if (ImGui::Button("Add Preview"))
 	{
@@ -435,6 +444,7 @@ void AnimationToolWindow::PreviewObject()
 
 void AnimationToolWindow::Release()
 {
+	// 생성한 엑터, 렌더러 등을 제거하는 기능
 	if (ImGui::Button("Release"))
 	{
 		Actor->Death();
