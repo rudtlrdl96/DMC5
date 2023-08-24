@@ -6,6 +6,8 @@
 
 class CreateObjectPacket : public GameEnginePacket
 {
+	friend class NetworkManager;
+
 public:
 	static const PacketEnum Type = PacketEnum::CreateObjectPacket;
 
@@ -20,7 +22,6 @@ public:
 
 	}
 
-	unsigned int ActorType = -1;
 	float4 Rotation;
 	float4 Position;
 
@@ -45,5 +46,5 @@ protected:
 
 
 private:
-
+	unsigned int ActorType = -1;
 };

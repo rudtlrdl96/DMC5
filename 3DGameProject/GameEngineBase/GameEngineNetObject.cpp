@@ -84,6 +84,24 @@ void GameEngineNetObject::Update_SendPackets(float _DeltaTime)
 	MainThreadNetObjects.clear();
 }
 
+GameEngineNetObject* GameEngineNetObject::GetNetObject(int _ID)
+{
+	std::map<int, GameEngineNetObject*>::iterator FindIter;
+
+	ObjectLock.lock();
+	FindIter = AllNetObjects.find(_ID);
+	ObjectLock.unlock();
+
+	if (AllNetObjects.end() == FindIter)
+	{
+		MsgAssert(std::to_string(_ID) + " ID를 가진 오브젝트는 존재하지 않습니다");
+		return nullptr;
+	}
+
+	return FindIter->second;
+}
+
+
 void GameEngineNetObject::ReleaseNetObject()
 {
 	//근데 이렇게 크게 Lock을 잡으면서 까지 릴리즈를 할 필요가 있을까?

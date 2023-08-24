@@ -38,6 +38,13 @@ void NetworkManager::ClientPacketInit()
 			NewNetObj->SetControll(NetControllType::NetControll);
 		}
 
+		if (true == _Packet->IsDeath)
+		{
+			GameEngineNetObject* NetObject = nullptr;
+			NetObject = GameEngineNetObject::GetNetObject(_Packet->GetObjectID());
+			NetObject->NetDisconnect();
+		}
+
 		//Player가 스스로 처리할 수 있게 자료구조에 저장
 		GameEngineNetObject::PushNetObjectPacket(_Packet);
 	});
