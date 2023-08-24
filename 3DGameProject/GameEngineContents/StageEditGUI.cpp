@@ -18,6 +18,8 @@ void StageEditGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 	if (nullptr == Level)
 		return;
     PreChar.resize(StartPrecharSize);
+    EditData.resize(StartPrecharSize);
+    Editbool.resize(StartPrecharSize);
     if (ImGui::Button("StageEdit"))
     {
         BoxSwitch = !BoxSwitch;
@@ -42,16 +44,22 @@ void StageEditGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
             ImGui::SameLine();
             if (current == i && ImGui::Button("Edit"))
             {
-                EditSwitch = !EditSwitch;
-                /*ImGui::DragScalar("drag s8", ImGuiDataType_S8, &s8_v, drag_speed, drag_clamp ? &s8_zero : NULL, drag_clamp ? &s8_fifty : NULL);*/
-                /*P_StageData.MapDatas[i].MeshFileName*/
+                Editbool[i] = !Editbool[i];
+                EditData[i] = i;
             }
-            if (EditSwitch == true)
+            if (Editbool[i] == true && current== EditData[i])
             {
                 ImGui::SeparatorText("StageDataEdit");
+                static char Text[64] = ""; ImGui::InputText("FBX Name", Text, 64);
+                ImGui::SameLine();
+                ImGui::Button("Load");
+
+            }
+            if (current != EditData[i])
+            {
+                Editbool[i] = false;
             }
         }
-       
     }
 }
     
