@@ -22,8 +22,6 @@ protected:
 private:
 	std::shared_ptr<GameEngineUIRenderer> TitleBGRender = nullptr;
 	float4 Scale = { 1600.0f,900.0f,0.0f };
-	std::shared_ptr<class GameEngineFontRenderer> TestFont;
-
 
 };
 

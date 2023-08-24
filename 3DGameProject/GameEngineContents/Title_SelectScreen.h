@@ -1,6 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
-#include "TitleButton.h"
+#include "UIButton.h"
 // 설명 :
 class Title_SelectScreen : public GameEngineActor
 {
@@ -21,11 +21,15 @@ protected:
 private:
 	void SetFontText();
 	void SetButtonIndex();
-	//컨텐츠 버튼을 3개만들자..
-	std::shared_ptr<TitleButton> ContinueButton = nullptr;
-	std::shared_ptr<TitleButton> OptionButton = nullptr;
-	std::shared_ptr<TitleButton> ExitButton = nullptr;
 
+	//컨텐츠 버튼을 3개만들자..
+	std::shared_ptr<UIButton> ContinueButton = nullptr;
+	std::shared_ptr<UIButton> OptionButton = nullptr;
+	std::shared_ptr<UIButton> ExitButton = nullptr;
+
+	bool ContinueValue = false;
 	int SelectValue = 0;
+	float EnterTime = 0.0f;
+
 };
 

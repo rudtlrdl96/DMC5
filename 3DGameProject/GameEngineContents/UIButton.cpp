@@ -1,5 +1,5 @@
 #include "PrecompileHeader.h"
-#include "TitleButton.h"
+#include "UIButton.h"
 #include "UIEnums.h"
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
@@ -7,15 +7,15 @@
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCamera.h>
 
-TitleButton::TitleButton()
+UIButton::UIButton()
 {
 }
 
-TitleButton::~TitleButton()
+UIButton::~UIButton()
 {
 }
 
-void TitleButton::Start()
+void UIButton::Start()
 {
 	Render = CreateComponent<GameEngineUIRenderer>(1);
 	Render_Select = CreateComponent<GameEngineUIRenderer>(2);
@@ -35,7 +35,7 @@ void TitleButton::Start()
 	FontCreate();
 }
 
-void TitleButton::Update(float _Delta)
+void UIButton::Update(float _Delta)
 {
 	GameEngineCamera* Camera = Render->GetCamera();
 
@@ -71,8 +71,8 @@ void TitleButton::Update(float _Delta)
 	{
 		fillTime += _Delta;
 		fallTime = 0.0f;
-		Render_Select2->ImageClippingX(fillTime *4.0f, ClipXDir::Left);
-		Render_Select->ImageClippingX(fillTime * 4.0f, ClipXDir::Right);
+		Render_Select2->ImageClippingX(fillTime *7.0f, ClipXDir::Left);
+		Render_Select->ImageClippingX(fillTime * 7.0f, ClipXDir::Right);
 		Render->Off();
 		ExplaneText->On();
 		SeletText->On();
@@ -81,7 +81,6 @@ void TitleButton::Update(float _Delta)
 		{
 			if (nullptr != Click)
 			{
-				EnterValue = true;
 				Click();
 			}
 		}
@@ -90,20 +89,16 @@ void TitleButton::Update(float _Delta)
 	{
 		fillTime = 0.0f;
 		fallTime += _Delta;
-		Render_Select2->ImageClippingX(1- fallTime * 4.0f, ClipXDir::Left);
-		Render_Select->ImageClippingX(1- fallTime * 4.0f, ClipXDir::Right);
+		Render_Select2->ImageClippingX(1- fallTime * 7.0f, ClipXDir::Left);
+		Render_Select->ImageClippingX(1- fallTime * 7.0f, ClipXDir::Right);
 		Text->On();
 		SeletText->Off();
 		Render->On();
 		ExplaneText->Off();
 	}
-	if (EnterValue == true)
-	{
-		EnterKeyRender(_Delta);
-	}
 }
 
-void TitleButton::FontCreate()
+void UIButton::FontCreate()
 {
 	Text = CreateComponent<GameEngineFontRenderer>(4);
 	Text->SetFont(Font);
@@ -127,18 +122,8 @@ void TitleButton::FontCreate()
 	ExplaneText->GetTransform()->SetWorldPosition({0.0f,-300.0f,0.0f});
 }
 
-void TitleButton::EnterKeyRender(float _Delta)
-{
-	EnterTime += _Delta;
-	Render_Enter2->ImageClippingX(EnterTime * 4.0f, ClipXDir::Left);
-	Render_Enter->ImageClippingX(EnterTime * 4.0f, ClipXDir::Right);
-	if (EnterTime * 4.0f > 1.0f)
-	{
-		GameEngineCore::ChangeLevel("Char_ChoiceLevel");
-	}
-}
 
-void TitleButton::SetUIText(const StringParameter& _Paramter)
+void UIButton::SetUIText(const StringParameter& _Paramter)
 {
 	Text->SetText(_Paramter._Text);
 	SeletText->SetText(_Paramter._SeletText);

@@ -222,7 +222,15 @@
     <ClInclude Include="Intro_BackGround.h" />
     <ClInclude Include="Intro_Logo.h" />
     <ClInclude Include="LinkObjectPacket.h" />
+    <ClInclude Include="MainMenuBG.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="MainMenuLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Menu_SelectScreen.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -404,7 +412,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="TitleBG.h" />
-    <ClInclude Include="TitleButton.h" />
+    <ClInclude Include="UIButton.h" />
     <ClInclude Include="TitleLevel.h">
       <SubType>
       </SubType>
@@ -469,7 +477,15 @@
     </ClCompile>
     <ClCompile Include="Intro_BackGround.cpp" />
     <ClCompile Include="Intro_Logo.cpp" />
+    <ClCompile Include="MainMenuBG.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="MainMenuLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Menu_SelectScreen.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -649,7 +665,7 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="TitleBG.cpp" />
-    <ClCompile Include="TitleButton.cpp" />
+    <ClCompile Include="UIButton.cpp" />
     <ClCompile Include="TitleLevel.cpp">
       <SubType>
       </SubType>

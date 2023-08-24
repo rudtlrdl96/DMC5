@@ -10,7 +10,7 @@ Title_SelectScreen::~Title_SelectScreen()
 }
 void Title_SelectScreen::Start()
 {
-	ContinueButton = GetLevel()->CreateActor<TitleButton>();
+	ContinueButton = GetLevel()->CreateActor<UIButton>();
 	ContinueButton->GetTransform()->SetLocalPosition({ 0.0f,-150.0f,0.0f });
 	ContinueButton->GetRender()->SetTexture("NullTexture.png");
 	ContinueButton->GetRender()->GetTransform()->SetLocalScale({ 200.0f,40.0f,0.0f });
@@ -28,9 +28,9 @@ void Title_SelectScreen::Start()
 	ContinueButton->GetRender_Enter2()->GetTransform()->SetLocalPosition({ 400.0f,0.0f,0.0f });
 	ContinueButton->SetEvent([this]()
 		{
-			int a = 0;
+			ContinueValue = true;
 		});
-	OptionButton = GetLevel()->CreateActor<TitleButton>();
+	OptionButton = GetLevel()->CreateActor<UIButton>();
 	OptionButton->GetTransform()->SetLocalPosition({ 0.0f,-200.0f,0.0f });
 	OptionButton->GetRender()->SetTexture("NullTexture.png");
 	OptionButton->GetRender()->GetTransform()->SetLocalScale({ 200.0f,40.0f,0.0f });
@@ -41,7 +41,7 @@ void Title_SelectScreen::Start()
 	OptionButton->GetRender_Select2()->GetTransform()->SetLocalScale({ 800.0f,50.0f,0.0f });
 	OptionButton->GetRender_Select2()->GetTransform()->SetLocalPosition({ 400.0f,0.0f,0.0f });
 
-	ExitButton = GetLevel()->CreateActor<TitleButton>();
+	ExitButton = GetLevel()->CreateActor<UIButton>();
 	ExitButton->GetTransform()->SetLocalPosition({ 0.0f,-250.0f,0.0f });
 	ExitButton->GetRender()->GetTransform()->SetLocalScale({ 200.0f,40.0f,0.0f });
 	ExitButton->GetRender()->SetTexture("NullTexture.png");
@@ -80,6 +80,20 @@ void Title_SelectScreen::Update(float _DeltaTime)
 			SelectValue++;
 		}
 	}
+
+	if (ContinueValue == true)
+	{
+		EnterTime += _DeltaTime;
+		ContinueButton->GetRender_Enter2()->ImageClippingX(EnterTime * 4.0f, ClipXDir::Left);
+		ContinueButton->GetRender_Enter()->ImageClippingX(EnterTime * 4.0f, ClipXDir::Right);
+		if (EnterTime * 4.0f > 1.0f)
+		{
+			GameEngineCore::ChangeLevel("Char_ChoiceLevel");
+			ContinueValue = false;
+			EnterTime = 0.0f;
+		}
+	}
+
 }
 
 void Title_SelectScreen::SetFontText()

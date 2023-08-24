@@ -13,18 +13,18 @@ public:
 };
 // Ό³Έν :
 class GameEngineCollision;
-class TitleButton : public GameEngineActor
+class UIButton : public GameEngineActor
 {
 public:
 	// constrcuter destructer
-	TitleButton();
-	~TitleButton();
+	UIButton();
+	~UIButton();
 
 	// delete Function
-	TitleButton(const TitleButton& _Other) = delete;
-	TitleButton(TitleButton&& _Other) noexcept = delete;
-	TitleButton& operator=(const TitleButton& _Other) = delete;
-	TitleButton& operator=(TitleButton&& _Other) noexcept = delete;
+	UIButton(const UIButton& _Other) = delete;
+	UIButton(UIButton&& _Other) noexcept = delete;
+	UIButton& operator=(const UIButton& _Other) = delete;
+	UIButton& operator=(UIButton&& _Other) noexcept = delete;
 	void SetEvent(std::function<void()> _Click)
 	{
 		Click = _Click;
@@ -48,6 +48,21 @@ public:
 	std::shared_ptr<GameEngineUIRenderer> GetRender_Enter2()
 	{
 		return Render_Enter2;
+	}
+
+
+	//
+	std::shared_ptr<class GameEngineFontRenderer> GetText()
+	{
+		return Text;
+	}
+	std::shared_ptr<class GameEngineFontRenderer> GetSeletText()
+	{
+		return SeletText;
+	}
+	std::shared_ptr<class GameEngineFontRenderer> GetExplaneText()
+	{
+		return ExplaneText;
 	}
 	void SetUIText(const StringParameter& _Paramter);
 	void SetSelectValue(bool _Value)
@@ -85,10 +100,8 @@ private:
 	bool IsSelect = false;
 	bool IsValue = false;
 	bool SwichValue = false;
-	bool EnterValue = false;
 	float fillTime = 0.0f;
 	float fallTime = 0.0f;
-	float EnterTime = 0.0f;
 	float Ratio = 0.1f;
 };
 
