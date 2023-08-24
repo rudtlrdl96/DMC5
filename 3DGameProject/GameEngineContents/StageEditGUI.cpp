@@ -5,7 +5,7 @@
 using namespace std;
 
 #include "FieldMap.h"
-#include "GUIActor.h"
+
 StageEditGUI::StageEditGUI()
 {
 }
