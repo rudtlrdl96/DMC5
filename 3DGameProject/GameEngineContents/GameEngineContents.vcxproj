@@ -218,6 +218,10 @@
     <ClInclude Include="Intro_BackGround.h" />
     <ClInclude Include="Intro_Logo.h" />
     <ClInclude Include="LinkObjectPacket.h" />
+    <ClInclude Include="MainMenuLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="NetTestEnemy.h">
       <SubType>
       </SubType>
@@ -294,10 +298,6 @@
     </ClInclude>
     <ClInclude Include="MainLevel.h" />
     <ClInclude Include="MessageChatPacket.h" />
-    <ClInclude Include="MouseCusor.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="MyContentSpriteRenderer.h">
       <SubType>
       </SubType>
@@ -461,6 +461,10 @@
     </ClCompile>
     <ClCompile Include="Intro_BackGround.cpp" />
     <ClCompile Include="Intro_Logo.cpp" />
+    <ClCompile Include="MainMenuLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="NetTestEnemy.cpp">
       <SubType>
       </SubType>
@@ -536,10 +540,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="MainLevel.cpp" />
-    <ClCompile Include="MouseCusor.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="MyContentSpriteRenderer.cpp">
       <SubType>
       </SubType>

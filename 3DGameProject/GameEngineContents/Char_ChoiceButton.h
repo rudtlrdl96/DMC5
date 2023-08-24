@@ -68,10 +68,9 @@ protected:
 
 private:
 	float4 SizeUpCalCulation(float4 _size , float4 _size2 , float Ratio);
-	float FontUpCalCulation(float _size, float _size2, float Ratio);
-
 	void FontCreate();
-	void EnterKeyRender(float _Delta);
+	void SetSaturation();
+
 	std::shared_ptr<GameEngineUIRenderer> NoneSelectRender = nullptr;//폰트 안떠서 임시
 	std::shared_ptr<GameEngineUIRenderer> SelectRender = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> CharRender = nullptr;
@@ -89,7 +88,6 @@ private:
 	bool IsSelect = false;
 	bool IsValue = false;
 	bool SwichValue = false;
-	bool EnterValue = false;
 	float ScaleUpTime = 0.0f;
 	float ScaleDownTime = 0.0f;
 	float4 Scale = { 342.0f,627.0f,0.0f };

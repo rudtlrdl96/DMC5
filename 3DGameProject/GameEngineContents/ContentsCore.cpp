@@ -4,12 +4,14 @@
 #include <GameEngineCore/GameEngineCore.h>
 #include <GameEngineCore/GameEngineCoreWindow.h>
 
+#include "PlayerTestLevel.h"
+//UI
 #include "MainLevel.h"
 #include "TestLevel.h"
 #include "IntroLevel.h"
 #include "TitleLevel.h"
 #include "Char_ChoiceLevel.h"
-#include "PlayerTestLevel.h"
+#include "MainMenuLevel.h"
 //Map
 #include "BossStageLevel.h"
 #include "StartStageLevel.h"
@@ -35,6 +37,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<IntroLevel>();
 	GameEngineCore::CreateLevel<TitleLevel>();
 	GameEngineCore::CreateLevel<Char_ChoiceLevel>();
+	GameEngineCore::CreateLevel<MainMenuLevel>();
 	GameEngineCore::CreateLevel<PlayerTestLevel>();
 	GameEngineCore::CreateLevel<AnimationToolLevel>();
 	//

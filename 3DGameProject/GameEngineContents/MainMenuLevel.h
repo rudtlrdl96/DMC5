@@ -1,18 +1,18 @@
 #pragma once
 #include "BaseLevel.h"
 // Ό³Έν :
-class TitleLevel : public BaseLevel
+class MainMenuLevel : public BaseLevel
 {
 public:
 	// constrcuter destructer
-	TitleLevel();
-	~TitleLevel();
+	MainMenuLevel();
+	~MainMenuLevel();
 
 	// delete Function
-	TitleLevel(const TitleLevel& _Other) = delete;
-	TitleLevel(TitleLevel&& _Other) noexcept = delete;
-	TitleLevel& operator=(const TitleLevel& _Other) = delete;
-	TitleLevel& operator=(TitleLevel&& _Other) noexcept = delete;
+	MainMenuLevel(const MainMenuLevel& _Other) = delete;
+	MainMenuLevel(MainMenuLevel&& _Other) noexcept = delete;
+	MainMenuLevel& operator=(const MainMenuLevel& _Other) = delete;
+	MainMenuLevel& operator=(MainMenuLevel&& _Other) noexcept = delete;
 
 protected:
 	void Start() override;
