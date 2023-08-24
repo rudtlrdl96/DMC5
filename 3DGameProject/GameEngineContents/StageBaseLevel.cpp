@@ -21,9 +21,9 @@ void StageBaseLevel::Update(float _DeltaTime)
 	BaseLevel::Update(_DeltaTime);
 }
 
-void StageBaseLevel::StartProcess(GameEngineLevel* Level)
+void StageBaseLevel::CreateStage(const StageData& _Data)
 {
-	NetworkManager::Update_PacketProcess(Level);
+	CreateStageFieldMap(_Data.MapDatas);
 }
 
 void StageBaseLevel::SetCamera(float4 _Position)
@@ -33,4 +33,13 @@ void StageBaseLevel::SetCamera(float4 _Position)
 		GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	}
 	GetMainCamera()->GetTransform()->SetLocalPosition(_Position);
+}
+
+void StageBaseLevel::CreateStageFieldMap(const std::vector<FieldMapData>& _MapDatas)
+{
+	AcFieldMaps.resize(_MapDatas.size());
+	for (size_t i = 0; i < AcFieldMaps.size(); i++)
+	{
+		AcFieldMaps[i] = FieldMap::CreateFieldMap(this, _MapDatas[i].MeshFileName, _MapDatas[i].ColDatas, _MapDatas[i].FieldMapPosition);
+	}
 }
