@@ -392,6 +392,8 @@ void GameEngineFBXRenderer::ChangeAnimation(const std::string& _AnimationName)
 	}
 
 	CurAnimation = FindIter->second;
+
+	CurAnimation->CurFrame = 0;
 }
 
 

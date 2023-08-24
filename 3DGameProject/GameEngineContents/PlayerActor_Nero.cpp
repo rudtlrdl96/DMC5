@@ -131,6 +131,42 @@ void PlayerActor_Nero::Start()
 		},
 		.Update = [=](float _DeltaTime) {
 			if (InputCheck == false) { return; }
+			if (Controller->GetSwordDown())
+			{
+				FSM.ChangeState(FSM_State_Nero::RQ_ComboA_3);
+				return;
+			}
+		},
+		.End = [=] {
+
+		}
+		});
+
+	FSM.CreateState({ .StateValue = FSM_State_Nero::RQ_ComboA_3,
+		.Start = [=] {
+			Renderer->ChangeAnimation("pl0000_RQ_ComboA_3");
+			InputCheck = false;
+		},
+		.Update = [=](float _DeltaTime) {
+			if (InputCheck == false) { return; }
+			if (Controller->GetSwordDown())
+			{
+				FSM.ChangeState(FSM_State_Nero::RQ_ComboA_4);
+				return;
+			}
+		},
+		.End = [=] {
+
+		}
+		});
+
+	FSM.CreateState({ .StateValue = FSM_State_Nero::RQ_ComboA_4,
+		.Start = [=] {
+			Renderer->ChangeAnimation("pl0000_RQ_ComboA_4");
+			InputCheck = false;
+		},
+		.Update = [=](float _DeltaTime) {
+			if (InputCheck == false) { return; }
 		},
 		.End = [=] {
 

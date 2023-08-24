@@ -12,6 +12,8 @@ enum FSM_State_Nero
 
 	RQ_ComboA_1,
 	RQ_ComboA_2,
+	RQ_ComboA_3,
+	RQ_ComboA_4,
 
 };
 
