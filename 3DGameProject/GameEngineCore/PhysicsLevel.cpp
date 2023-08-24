@@ -60,6 +60,7 @@ void PhysicsLevel::CreatePhysicsX()
 		MsgAssert("PxFoundation 생성 실패");
 	}
 
+#ifdef _DEBUG
 	m_pPvd = PxCreatePvd(*m_pFoundation);
 	if (!m_pPvd)
 	{
@@ -73,6 +74,8 @@ void PhysicsLevel::CreatePhysicsX()
 	}
 
 	m_pPvd->connect(*m_pTransport, physx::PxPvdInstrumentationFlag::eALL);
+
+#endif
 	m_pPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_pFoundation, physx::PxTolerancesScale(), true, m_pPvd);
 	if (!m_pPhysics)
 	{
@@ -124,8 +127,15 @@ void PhysicsLevel::Simulate(float _DeltaTime)
 		return;
 	}
 
-	m_pScene->simulate(1.0f / 60.0f);
-	m_pScene->fetchResults(true);
+	WaitTime += _DeltaTime;
+
+	if (WaitTime > 1.0f / 60.0f)
+	{
+		WaitTime -= 1.0f / 60.0f;
+
+		m_pScene->simulate(1.0f / 60.0f);
+		m_pScene->fetchResults(true);
+	}
 }
 
 // 메모리제거
