@@ -9,6 +9,12 @@ GameEngineDirectory::GameEngineDirectory()
 {
 }
 
+GameEngineDirectory::GameEngineDirectory(std::string Path)
+	: GameEnginePath(Path)
+{
+
+}
+
 GameEngineDirectory::GameEngineDirectory(std::string_view Path)
 	: GameEnginePath(Path)
 {

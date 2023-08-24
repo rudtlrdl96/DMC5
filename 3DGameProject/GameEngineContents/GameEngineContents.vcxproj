@@ -210,6 +210,10 @@
     <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="CreateObjectPacket.h" />
     <ClInclude Include="C_ChoiceBG.h" />
+    <ClInclude Include="EnemyTestLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="FieldMap.h" />
     <ClInclude Include="FreeCameraActor.h">
       <SubType>
@@ -454,6 +458,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="C_ChoiceBG.cpp" />
+    <ClCompile Include="EnemyTestLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="FieldMap.cpp" />
     <ClCompile Include="FreeCameraActor.cpp">
       <SubType>

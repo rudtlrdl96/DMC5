@@ -244,6 +244,9 @@
     <ClInclude Include="LinkObjectPacket.h">
       <Filter>Server\01.Packet\02.Global</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyTestLevel.h">
+      <Filter>Levels\Test</Filter>
+    </ClInclude>
     <ClInclude Include="FieldMap.h">
       <Filter>Actor\Stage</Filter>
     </ClInclude>
@@ -476,6 +479,9 @@
     </ClCompile>
     <ClCompile Include="Char_ChoiceButton.cpp">
       <Filter>UI\Actor\C_ChoiceUI</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyTestLevel.cpp">
+      <Filter>Levels\Test</Filter>
     </ClCompile>
     <ClCompile Include="FieldMap.cpp">
       <Filter>Actor\Stage</Filter>
