@@ -1,32 +1,32 @@
 #include "PrecompileHeader.h"
-#include "StageBase.h"
+#include "StageBaseLevel.h"
 #include "NetworkManager.h"
 
 using namespace std;
 
-StageBase::StageBase()
+StageBaseLevel::StageBaseLevel()
 {
 }
 
-StageBase::~StageBase()
+StageBaseLevel::~StageBaseLevel()
 {
 }
 
-void StageBase::Start()
+void StageBaseLevel::Start()
 {
 }
 
-void StageBase::Update(float _DeltaTime)
+void StageBaseLevel::Update(float _DeltaTime)
 {
 	BaseLevel::Update(_DeltaTime);
 }
 
-void StageBase::StartProcess(GameEngineLevel* Level)
+void StageBaseLevel::StartProcess(GameEngineLevel* Level)
 {
 	NetworkManager::Update_PacketProcess(Level);
 }
 
-void StageBase::SetCamera(float4 _Position)
+void StageBaseLevel::SetCamera(float4 _Position)
 {
 	if (GetMainCamera() != nullptr)
 	{

@@ -187,7 +187,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="BossStage.h" />
+    <ClInclude Include="BossStageLevel.h" />
     <ClInclude Include="Box200.h">
       <SubType>
       </SubType>
@@ -389,11 +389,11 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="StageBase.h" />
+    <ClInclude Include="StageBaseLevel.h" />
     <ClInclude Include="StageDatas.h" />
     <ClInclude Include="StageEditGUI.h" />
     <ClInclude Include="StageEditLevel.h" />
-    <ClInclude Include="StartStage.h" />
+    <ClInclude Include="StartStageLevel.h" />
     <ClInclude Include="TestLevel.h" />
     <ClInclude Include="TestObject.h">
       <SubType>
@@ -433,7 +433,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="BossStage.cpp" />
+    <ClCompile Include="BossStageLevel.cpp" />
     <ClCompile Include="Box200.cpp">
       <SubType>
       </SubType>
@@ -630,11 +630,11 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="StageBase.cpp" />
+    <ClCompile Include="StageBaseLevel.cpp" />
     <ClCompile Include="StageDatas.cpp" />
     <ClCompile Include="StageEditGUI.cpp" />
     <ClCompile Include="StageEditLevel.cpp" />
-    <ClCompile Include="StartStage.cpp" />
+    <ClCompile Include="StartStageLevel.cpp" />
     <ClCompile Include="TestLevel.cpp" />
     <ClCompile Include="TestObject.cpp">
       <SubType>

@@ -166,13 +166,13 @@
     <ClInclude Include="BaseLevel.h">
       <Filter>Levels</Filter>
     </ClInclude>
-    <ClInclude Include="StageBase.h">
+    <ClInclude Include="StageBaseLevel.h">
       <Filter>Levels\Stage\0.StageBase</Filter>
     </ClInclude>
-    <ClInclude Include="BossStage.h">
+    <ClInclude Include="BossStageLevel.h">
       <Filter>Levels\Stage\2.BossStage</Filter>
     </ClInclude>
-    <ClInclude Include="StartStage.h">
+    <ClInclude Include="StartStageLevel.h">
       <Filter>Levels\Stage\1.StartStage</Filter>
     </ClInclude>
     <ClInclude Include="NetTestPlayer.h">
@@ -402,13 +402,13 @@
     <ClCompile Include="BaseLevel.cpp">
       <Filter>Levels</Filter>
     </ClCompile>
-    <ClCompile Include="StageBase.cpp">
+    <ClCompile Include="StageBaseLevel.cpp">
       <Filter>Levels\Stage\0.StageBase</Filter>
     </ClCompile>
-    <ClCompile Include="BossStage.cpp">
+    <ClCompile Include="BossStageLevel.cpp">
       <Filter>Levels\Stage\2.BossStage</Filter>
     </ClCompile>
-    <ClCompile Include="StartStage.cpp">
+    <ClCompile Include="StartStageLevel.cpp">
       <Filter>Levels\Stage\1.StartStage</Filter>
     </ClCompile>
     <ClCompile Include="NetTestPlayer.cpp">

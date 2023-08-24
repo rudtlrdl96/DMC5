@@ -1,31 +1,31 @@
 #include "PrecompileHeader.h"
-#include "StartStage.h"
+#include "StartStageLevel.h"
 #include "NetworkManager.h"
 #include <GameEngineCore/GameEngineFBXMesh.h>
 #include "FreeCameraActor.h"
 
-#include "StageBase.h"
+#include "StageBaseLevel.h"
 
-StartStage::StartStage()
+StartStageLevel::StartStageLevel()
 {
 }
 
-StartStage::~StartStage()
+StartStageLevel::~StartStageLevel()
 {
 }
 
-void StartStage::Start()
+void StartStageLevel::Start()
 {
-	StageBase::Start();
+	StageBaseLevel::Start();
 }
 
-void StartStage::Update(float _DeltaTime)
+void StartStageLevel::Update(float _DeltaTime)
 {
-	StageBase::Update(_DeltaTime);
+	StageBaseLevel::Update(_DeltaTime);
 	StartProcess(this);
 }
 
-void StartStage::LevelChangeStart()
+void StartStageLevel::LevelChangeStart()
 {
 	std::string Path = GameEnginePath::GetFileFullPath
 	(

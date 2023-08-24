@@ -3,17 +3,17 @@
 #include "BaseLevel.h"
 #include "FieldMap.h"
 
-class StageBase : public BaseLevel
+class StageBaseLevel : public BaseLevel
 {
 public:
 	static std::vector<StageData> AllStageDatas;
-	
-	StageBase();
-	~StageBase();
-	StageBase(const StageBase& _Other) = delete;
-	StageBase(StageBase&& _Other) noexcept = delete;
-	StageBase& operator=(const StageBase& _Other) = delete;
-	StageBase& operator=(StageBase&& _Other) noexcept = delete;
+
+	StageBaseLevel();
+	~StageBaseLevel();
+	StageBaseLevel(const StageBaseLevel& _Other) = delete;
+	StageBaseLevel(StageBaseLevel&& _Other) noexcept = delete;
+	StageBaseLevel& operator=(const StageBaseLevel& _Other) = delete;
+	StageBaseLevel& operator=(StageBaseLevel&& _Other) noexcept = delete;
 
 
 	void StartProcess(GameEngineLevel* Level);
