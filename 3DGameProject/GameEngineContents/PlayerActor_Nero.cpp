@@ -92,7 +92,7 @@ void PlayerActor_Nero::Start()
 				return;
 			}
 			
-			//LookDir(Controller->GetMoveVector());
+			LookDir(Controller->GetMoveVector());
 			physx::PxTransform PhyTF = PhysXCapsule->GetDynamic()->getGlobalPose();
 			float4 MoveDir = Controller->GetMoveVector() * MoveSpeed * _DeltaTime;
 			PhyTF.p.x += MoveDir.x;

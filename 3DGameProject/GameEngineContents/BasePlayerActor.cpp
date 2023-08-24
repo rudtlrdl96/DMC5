@@ -38,23 +38,13 @@ void BasePlayerActor::LookDir(const float4& _LookDir)
 
 	if (Cross.y == -1.0f)
 	{
-		//GetTransform()->AddLocalRotation({ 0, 180, 0 });
-		physx::PxTransform PhyTF = PhysXCapsule->GetDynamic()->getGlobalPose();
-		float4 Q = float4(0, 180, 0).EulerDegToQuaternion();
-		PhyTF.q.x += Q.x;
-		PhyTF.q.y += Q.y;
-		PhyTF.q.z += Q.z;
-		PhysXCapsule->GetDynamic()->setGlobalPose(PhyTF);
+		Rot.y += 180;
+		PhysXCapsule->SetChangedRot(Rot);
 	}
 	else
 	{
-		//GetTransform()->AddLocalRotation({ 0, -GameEngineMath::RadToDeg * Dot, 0 });
-		physx::PxTransform PhyTF = PhysXCapsule->GetDynamic()->getGlobalPose();
-		float4 Q = float4(0, -GameEngineMath::RadToDeg * Dot, 0).EulerDegToQuaternion();
-		PhyTF.q.x += Q.x;
-		PhyTF.q.y += Q.y;
-		PhyTF.q.z += Q.z;
-		PhysXCapsule->GetDynamic()->setGlobalPose(PhyTF);
+		Rot.y += -GameEngineMath::RadToDeg * Dot;
+		PhysXCapsule->SetChangedRot(Rot);
 	}
 	return;
 
