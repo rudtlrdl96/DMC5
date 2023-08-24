@@ -40,7 +40,6 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<MainMenuLevel>();
 	GameEngineCore::CreateLevel<PlayerTestLevel>();
 	GameEngineCore::CreateLevel<AnimationToolLevel>();
-	//
 	GameEngineCore::CreateLevel<BossStageLevel>();
 	GameEngineCore::CreateLevel<StartStageLevel>();
 	//
