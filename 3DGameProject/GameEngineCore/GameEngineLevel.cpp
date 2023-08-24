@@ -14,6 +14,7 @@ bool GameEngineLevel::IsDebugRender = false;
 GameEngineLevel::GameEngineLevel()
 {
 	LevelCameraInit();
+	LevelLightInit();
 }
 
 void GameEngineLevel::LevelCameraInit()
@@ -24,6 +25,10 @@ void GameEngineLevel::LevelCameraInit()
 	UICamera->SetProjectionType(CameraType::Orthogonal);
 
 	LastTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+}
+
+void GameEngineLevel::LevelLightInit()
+{
 	DirectionalLight = CreateActor<GameEngineLight>();
 }
 

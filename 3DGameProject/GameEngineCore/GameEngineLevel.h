@@ -171,6 +171,8 @@ private:
 	void DestroyCamera();
 
 	void LevelCameraInit();
+	void LevelLightInit();
+
 	void TextureUnLoad(GameEngineLevel* _NextLevel);
 	void TextureReLoad(GameEngineLevel* _PrevLevel);
 
