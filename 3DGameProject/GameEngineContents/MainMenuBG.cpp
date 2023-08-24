@@ -14,8 +14,8 @@ void MainMenuBG::Start()
 
 
 	MainMenuBGRender = CreateComponent<GameEngineUIRenderer>(0);
-	MainMenuBGRender->SetScaleToTexture("ui4005_im.texout.png");
-	MainMenuBGRender->BSCControl(1.0f, 0.55f, 0.5f);
+	MainMenuBGRender->SetScaleToTexture("MainMenuBG2.png");
+	MainMenuBGRender->BSCControl(0.5f, 0.5f, 0.5f);
 }
 
 

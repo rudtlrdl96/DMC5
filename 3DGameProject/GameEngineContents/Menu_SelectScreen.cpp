@@ -89,7 +89,7 @@ void Menu_SelectScreen::Update(float _DeltaTime)
 void Menu_SelectScreen::SetFontText()
 {
 	MissionButton->GetText()->SetFontFlag(FW1_LEFT);
-	MissionButton->GetText()->GetTransform()->SetLocalPosition({ -20.0f,22.f,0.0f });
+	MissionButton->GetText()->GetTransform()->SetLocalPosition({ -15.0f,22.f,0.0f });
 	MissionButton->GetSeletText()->GetTransform()->SetLocalPosition({ 0.0f,24.f,0.0f });
 	MissionButton->GetExplaneText()->GetTransform()->SetWorldPosition({ -750.0f,-350.f,0.0f });
 	MissionButton->GetExplaneText()->SetFontFlag(FW1_LEFT);
@@ -100,7 +100,7 @@ void Menu_SelectScreen::SetFontText()
 	._ExplaneText = "미션을 시작합니다." });
 
 	CustomizeButton->GetText()->SetFontFlag(FW1_LEFT);
-	CustomizeButton->GetText()->GetTransform()->SetLocalPosition({ -20.0f,22.f,0.0f });
+	CustomizeButton->GetText()->GetTransform()->SetLocalPosition({ -15.0f,22.f,0.0f });
 	CustomizeButton->GetSeletText()->GetTransform()->SetLocalPosition({ 0.0f,24.f,0.0f });
 	CustomizeButton->GetExplaneText()->GetTransform()->SetWorldPosition({ -750.0f,-350.f,0.0f });
 	CustomizeButton->GetExplaneText()->SetFontFlag(FW1_LEFT);
@@ -110,7 +110,7 @@ void Menu_SelectScreen::SetFontText()
 	CustomizeButton->SetUIText({ ._Text = "CUSTOMIZE",._SeletText = "CUSTOMIZE",._ExplaneText = "캐릭터를 커스터마이징합니다." });
 	
 	PrevButton->GetText()->SetFontFlag(FW1_LEFT);
-	PrevButton->GetText()->GetTransform()->SetLocalPosition({ -20.0f,22.f,0.0f });
+	PrevButton->GetText()->GetTransform()->SetLocalPosition({ -15.0f,22.f,0.0f });
 	PrevButton->GetSeletText()->GetTransform()->SetLocalPosition({ 0.0f,24.f,0.0f });
 	PrevButton->GetExplaneText()->GetTransform()->SetWorldPosition({ -750.0f,-350.f,0.0f });
 	PrevButton->GetExplaneText()->SetFontFlag(FW1_LEFT);

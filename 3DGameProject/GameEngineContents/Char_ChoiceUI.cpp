@@ -26,7 +26,6 @@ void Char_ChoiceUI::Start()
 			if (nullptr != CharTypeCallBack)
 			{
 				CharTypeCallBack();
-				CharTypeCallBack = nullptr;
 			}
 		});
 	Nero_ChoiceUIRender->SetUIText({ ._Text = "NERO",._SeletText = "",
@@ -44,7 +43,6 @@ void Char_ChoiceUI::Start()
 			if (nullptr != CharTypeCallBack)
 			{
 				CharTypeCallBack();
-				CharTypeCallBack = nullptr;
 			}
 		});
 }
