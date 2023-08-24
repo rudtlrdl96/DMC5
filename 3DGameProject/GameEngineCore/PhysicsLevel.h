@@ -62,6 +62,9 @@ private:
 	physx::PxCooking* m_pCooking = nullptr;
 
 	float WaitTime = 0.0f;
+	float StepSize = 0.0f;
+
+	bool advance(physx::PxReal _DeltaTime);
 
 };
 

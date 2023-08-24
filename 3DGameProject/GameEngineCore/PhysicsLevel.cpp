@@ -114,6 +114,24 @@ void PhysicsLevel::CreatePhysicsX()
 	//Scene_->addAggregate(*MapAggregate_);
 }
 
+
+bool PhysicsLevel::advance(physx::PxReal _DeltaTime)
+{
+	WaitTime += _DeltaTime;
+	StepSize = 1.0f / 60.0f;
+
+	if (WaitTime < StepSize)
+	{
+		return false;
+	}
+
+	WaitTime -= StepSize;
+
+	m_pScene->simulate(StepSize);
+
+	return true;
+}
+
 // 실제로 물리연산을 실행
 void PhysicsLevel::Simulate(float _DeltaTime)
 {
@@ -127,13 +145,8 @@ void PhysicsLevel::Simulate(float _DeltaTime)
 		return;
 	}
 
-	WaitTime += _DeltaTime;
-
-	if (WaitTime > 1.0f / 60.0f)
+	if (true == advance(_DeltaTime))
 	{
-		WaitTime -= 1.0f / 60.0f;
-
-		m_pScene->simulate(1.0f / 60.0f);
 		m_pScene->fetchResults(true);
 	}
 }
