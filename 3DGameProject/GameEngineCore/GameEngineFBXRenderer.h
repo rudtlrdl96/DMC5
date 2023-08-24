@@ -39,6 +39,8 @@ public:
 	void Reset();
 	void Update(float _DeltaTime);
 
+	std::map<UINT, std::vector<std::function<void()>>> AnimationEvent;
+
 public:
 	GameEngineFBXAnimationInfo()
 		: Start(0)
@@ -51,6 +53,7 @@ public:
 	~GameEngineFBXAnimationInfo()
 	{
 	}
+
 };
 
 
@@ -88,6 +91,12 @@ public:
 	inline std::shared_ptr<GameEngineFBXMesh> GetFBXMesh()
 	{
 		return FBXMesh;
+	}
+
+	std::shared_ptr<GameEngineFBXAnimationInfo> GetAnimation(std::string _Name)
+	{
+		std::string UpperName = GameEngineString::ToUpper(_Name);
+		return Animations[UpperName];
 	}
 
 	void CreateFBXAnimation(const std::string& _AnimationFBXName, int _Index = 0)

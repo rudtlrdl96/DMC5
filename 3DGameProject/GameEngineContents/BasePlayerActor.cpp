@@ -9,6 +9,7 @@
 #include "ObjectUpdatePacket.h"
 #include "ContentsEnum.h"
 #include "BaseLog.h"
+#include "AnimationEvent.h"
 BasePlayerActor* BasePlayerActor::Instance = nullptr;
 
 BasePlayerActor::BasePlayerActor()
@@ -47,10 +48,31 @@ void BasePlayerActor::LookDir(const float4& _LookDir)
 
 void BasePlayerActor::Start()
 {
+	PlayerCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
+	PlayerCollision->GetTransform()->SetLocalScale({ 100, 100, 100 });
+	PlayerCollision->SetColType(ColType::OBBBOX3D);
 
-	//Renderer = CreateComponent<GameEngineFBXRenderer>();
-	//Renderer->GetTransform()->SetLocalRotation({ 0, 90, 0 });
-	//Renderer->SetFBXMesh("Nero.FBX", "MeshTexture");
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Mesh");
+		NewDir.Move("AnimationTest");
+		NewDir.Move("Animation");
+
+		Renderer = CreateComponent<GameEngineFBXRenderer>();
+		Renderer->GetTransform()->SetLocalRotation({ 0, 90, 0 });
+		Renderer->SetFBXMesh("AnimMan.FBX", "MeshAniTexture");
+		AnimationEvent::LoadAll({ .Dir = (std::string_view)NewDir.GetFullPath(), .Renderer = Renderer, .Objects = {std::dynamic_pointer_cast<GameEngineObject>(PlayerCollision)},
+
+			.CallBacks_void = {
+				[] {
+				int a = 0;
+}
+}
+			});
+
+	}
 	//Renderer->SetFBXMesh("Nero.FBX", "MeshTexture");
 	//Renderer->CreateFBXAnimation("Dash", "pl0000_Dash_Loop.FBX");
 	//Renderer->ChangeAnimation("Dash");
@@ -63,9 +85,6 @@ void BasePlayerActor::Start()
 	Controller->CallBack_LockOnDown = std::bind(&BasePlayerActor::LockOn, this);
 	Controller->CallBack_LockOnUp = std::bind(&BasePlayerActor::LockOff, this);
 
-	PlayerCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
-	PlayerCollision->GetTransform()->SetLocalScale({ 100, 100, 100 });
-	PlayerCollision->SetColType(ColType::OBBBOX3D);
 
 	LockOnCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
 	LockOnCollision->GetTransform()->SetLocalScale({ 3000, 500, 1000 });

@@ -13,6 +13,7 @@ AnimationToolWindow::AnimationToolWindow()
 
 AnimationToolWindow::~AnimationToolWindow()
 {
+
 }
 
 void AnimationToolWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
@@ -23,6 +24,7 @@ void AnimationToolWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _D
 	FrameEvent();
 	PreviewObject();
 	FileSave();
+	Release();
 }
 
 void AnimationToolWindow::FileLoad(std::shared_ptr<GameEngineLevel> _Level)
@@ -195,7 +197,9 @@ void AnimationToolWindow::AnimationTimeLine()
 
 void AnimationToolWindow::FrameEvent()
 {
-	if (nullptr == CurFrameEvents) { return; }
+	if (Renderer == nullptr) { return; }
+	if (Renderer->CurAnimation == nullptr) { return; }
+
 	if (ImGui::Button("Add Object Event"))
 	{
 		AnimEvent.Events[CurrentFrame].push_back(EventData(EventType::ObjectUpdate));
@@ -205,8 +209,8 @@ void AnimationToolWindow::FrameEvent()
 		AnimEvent.Events[CurrentFrame].push_back(EventData(EventType::CallBackVoid));
 	}
 
-	std::vector<EventData>::iterator Iter = CurFrameEvents->begin();
-	std::vector<EventData>::iterator End = CurFrameEvents->end();
+	std::vector<EventData>::iterator Iter = AnimEvent.Events[CurrentFrame].begin();
+	std::vector<EventData>::iterator End = AnimEvent.Events[CurrentFrame].end();
 	int i = 0;
 	for (; Iter != End; Iter++)
 	{
@@ -390,10 +394,9 @@ void AnimationToolWindow::AnimationCreate(std::shared_ptr<GameEngineLevel> Level
 
 void AnimationToolWindow::AnimationFrameUpdate()
 {
-	CurFrameEvents = &AnimEvent.Events[CurrentFrame];
 
-	std::vector<EventData>::iterator Iter = CurFrameEvents->begin();
-	std::vector<EventData>::iterator End = CurFrameEvents->end();
+	std::vector<EventData>::iterator Iter = AnimEvent.Events[CurrentFrame].begin();
+	std::vector<EventData>::iterator End = AnimEvent.Events[CurrentFrame].end();
 	for (; Iter != End; Iter++)
 	{
 		EventData& CurData = (*Iter);
@@ -427,6 +430,22 @@ void AnimationToolWindow::PreviewObject()
 		std::shared_ptr <GameEngineRenderUnit> Unit = NewPreviewRenderer->CreateRenderUnit();
 		Unit->SetMesh("DebugBox");
 		Unit->SetMaterial("NoneAlphaMesh");
+	}
+}
+
+void AnimationToolWindow::Release()
+{
+	if (ImGui::Button("Release"))
+	{
+		Actor->Death();
+		Actor = nullptr;
+		Renderer->Death();
+		Renderer = nullptr;
+		for (std::shared_ptr<GameEngineRenderer> _Render : PreviewRenderer)
+		{
+			_Render->Death();
+		}
+		PreviewRenderer.clear();
 	}
 }
 

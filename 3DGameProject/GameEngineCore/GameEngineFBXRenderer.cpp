@@ -34,6 +34,14 @@ void GameEngineFBXAnimationInfo::Update(float _DeltaTime)
 			CurFrameTime -= Inter;
 			++CurFrame;
 
+			if (AnimationEvent.contains(CurFrame))
+			{
+				for (int i = 0; i < AnimationEvent[CurFrame].size(); i++)
+				{
+					AnimationEvent[CurFrame][i]();
+				}
+			}
+
 			if (false == bOnceStart && CurFrame == 0)
 			{
 				bOnceStart = true;

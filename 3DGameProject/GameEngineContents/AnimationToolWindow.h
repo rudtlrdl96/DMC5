@@ -32,12 +32,13 @@ protected:
 	void AnimationFrameUpdate();
 
 	void PreviewObject();
+
+	void Release();
 private:
 	std::shared_ptr<GameEngineActor> Actor = nullptr;
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
 	std::vector<std::shared_ptr<class GameEngineRenderer>> PreviewRenderer;
 	AnimationEvent AnimEvent;
-	std::vector<EventData>* CurFrameEvents = nullptr;
 
 	GameEnginePath MeshFilePath;
 	GameEnginePath AnimFBXFilePath;

@@ -46,33 +46,33 @@ void PlayerTestLevel::LevelChangeStart()
 	{
 		return;
 	}
-	if (nullptr == GameEngineFBXMesh::Find("Nero.fbx")) {
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("ContentResources");
-		NewDir.Move("ContentResources");
-		NewDir.Move("Mesh");
-		NewDir.Move("Characters");
-		// 테스트 메쉬 폴더는 자동으로 로드합니다
-		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".FBX" });
+	//if (nullptr == GameEngineFBXMesh::Find("Nero.fbx")) {
+	//	GameEngineDirectory NewDir;
+	//	NewDir.MoveParentToDirectory("ContentResources");
+	//	NewDir.Move("ContentResources");
+	//	NewDir.Move("Mesh");
+	//	NewDir.Move("Characters");
+	//	// 테스트 메쉬 폴더는 자동으로 로드합니다
+	//	std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".FBX" });
 
-		for (size_t i = 0; i < Files.size(); i++)
-		{
-			//GameEngineFBXMesh::Load(Files[i].GetFullPath());
-		}
+	//	for (size_t i = 0; i < Files.size(); i++)
+	//	{
+	//		//GameEngineFBXMesh::Load(Files[i].GetFullPath());
+	//	}
 
-		NewDir.MoveParentToDirectory("ContentResources");
-		NewDir.Move("ContentResources");
-		NewDir.Move("Mesh");
-		NewDir.Move("Animations");
-		NewDir.Move("Nero");
-		// 테스트 메쉬 폴더는 자동으로 로드합니다
-		Files = NewDir.GetAllFile({ ".FBX" });
+	//	NewDir.MoveParentToDirectory("ContentResources");
+	//	NewDir.Move("ContentResources");
+	//	NewDir.Move("Mesh");
+	//	NewDir.Move("Animations");
+	//	NewDir.Move("Nero");
+	//	// 테스트 메쉬 폴더는 자동으로 로드합니다
+	//	Files = NewDir.GetAllFile({ ".FBX" });
 
-		for (size_t i = 0; i < Files.size(); i++)
-		{
-			//GameEngineFBXAnimation::Load(Files[i].GetFullPath());
-		}
-	}
+	//	for (size_t i = 0; i < Files.size(); i++)
+	//	{
+	//		//GameEngineFBXAnimation::Load(Files[i].GetFullPath());
+	//	}
+	//}
 	std::shared_ptr<BasePlayerActor> NewPlayer = CreateActor<BasePlayerActor>();
 	NewPlayer->SetName("Nero");
 	NewPlayer->SetUserControllType();
