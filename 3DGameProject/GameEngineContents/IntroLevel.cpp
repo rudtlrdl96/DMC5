@@ -15,6 +15,7 @@ IntroLevel::~IntroLevel()
 void IntroLevel::Start()
 {
 	GameEngineFont::Load("DMC5Font");
+	GameEngineFont::Load("¸¼Àº °íµñ");
 
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });

@@ -19,9 +19,9 @@ void UIButton::Start()
 {
 	Render = CreateComponent<GameEngineUIRenderer>(1);
 	Render_Select = CreateComponent<GameEngineUIRenderer>(2);
-	Render_Select->ColorOptionValue.MulColor.a = 0.9f;
+	Render_Select->ColorOptionValue.MulColor.a = 0.8f;
 	Render_Select2 = CreateComponent<GameEngineUIRenderer>(2);
-	Render_Select2->ColorOptionValue.MulColor.a = 0.9f;
+	Render_Select2->ColorOptionValue.MulColor.a = 0.8f;
 	Render_Select->ImageClippingX(0.0f, ClipXDir::Left);
 	Render_Select2->ImageClippingX(0.0f, ClipXDir::Left);
 
@@ -115,7 +115,7 @@ void UIButton::FontCreate()
 	SeletText->GetTransform()->SetLocalPosition({ 0.0f,22.f,0.0f });
 	SeletText->Off();
 	ExplaneText = CreateComponent<GameEngineFontRenderer>(5);
-	ExplaneText->SetFont(Font);
+	ExplaneText->SetFont("¸¼Àº °íµñ");
 	ExplaneText->SetFontFlag(FW1_CENTER);
 	ExplaneText->SetScale(24);
 	ExplaneText->SetColor(float4::WHITE);

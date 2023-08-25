@@ -2,6 +2,8 @@
 #include "MainMenuLevel.h"
 #include "MainMenuBG.h"
 #include "Menu_SelectScreen.h"
+#include "Menu_MissionFont.h"
+
 #include "FadeEffect.h"
 #include <GameEngineCore/GameEngineFont.h>
 #include <GameEngineCore/GameEngineTexture.h>
@@ -35,10 +37,12 @@ void MainMenuLevel::Start()
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
 	GetMainCamera()->GetCamTarget()->DepthSettingOff();
+
 	std::shared_ptr<MainMenuBG> MainMenuBGPtr = CreateActor<MainMenuBG>();
 	FEffect = GetLastTarget()->CreateEffect<FadeEffect>();
 	std::shared_ptr<Menu_SelectScreen> Menu_SelectScreenPtr = CreateActor<Menu_SelectScreen>();
-
+	std::shared_ptr<Menu_MissionFont> Menu_MissionFontPtr = CreateActor<Menu_MissionFont>();
+	Menu_MissionFontPtr->GetTransform()->SetLocalPosition({ -680.0f,330.0f,0.0f });
 }
 
 void MainMenuLevel::Update(float _DeltaTime)

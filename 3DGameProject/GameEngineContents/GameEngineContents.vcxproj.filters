@@ -262,6 +262,9 @@
     <ClInclude Include="PickableActor.h">
       <Filter>Actor</Filter>
     </ClInclude>
+    <ClInclude Include="Menu_MissionFont.h">
+      <Filter>UI\Actor\MenuUI\MenuScreen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -509,6 +512,9 @@
     </ClCompile>
     <ClCompile Include="PickableActor.cpp">
       <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu_MissionFont.cpp">
+      <Filter>UI\Actor\MenuUI\MenuScreen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
