@@ -35,6 +35,7 @@ public:
 	float DeltaTime = 0.0f;
 	float SumDeltaTime = 0.0f;
 	int IsAnimation = 0;
+	int IsLight = 1;
 	int IsNormal = 0;
 	float4 ScreenScale;
 	float4 Mouse;
@@ -93,6 +94,17 @@ public:
 
 	// 업데이트에서 할것이기 때문에 그냥 하겠습니다. 
 	// 랜더 도중에 카메라를 바꾸거나 한다면 이상한 일이 발생할수 있다.
+
+	inline void LightOn()
+	{
+		BaseValue.IsLight = true;
+	}
+
+	inline void LightOff()
+	{
+		BaseValue.IsLight = false;
+	}
+
 
 protected:
 	void Start();
