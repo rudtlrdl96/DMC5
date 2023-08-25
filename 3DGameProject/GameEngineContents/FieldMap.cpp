@@ -12,7 +12,7 @@ FieldMap::FieldMap()
 
 FieldMap::~FieldMap()
 {
-
+	
 }
 
 std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, const std::string_view& _FBXName, const std::vector<FieldMapColData>& _ColVector, const float4& _MapPosition)
@@ -23,7 +23,7 @@ std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, cons
 	Result->FieldMapRenderer = Result->CreateComponent<GameEngineFBXRenderer>();
 	Result->FieldMapRenderer->SetFBXMesh(_FBXName.data(), "NoneAlphaMesh"); //메쉬를 깝니다
 
-	if (Result->MapCols.size() != 0) //충돌체 수가 0이 아니면
+	if (_ColVector.begin() != _ColVector.end())
 	{
 		Result->MapCols.resize(_ColVector.size());
 		for (size_t i = 0; i < Result->MapCols.size(); i++) //충돌체를 깝니다
