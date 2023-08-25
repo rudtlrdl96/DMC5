@@ -24,4 +24,5 @@ class StageData
 public:
 	int StageID = -1;
 	std::vector<FieldMapData> MapDatas;
+	std::string SkyboxFileName = "\0";
 };

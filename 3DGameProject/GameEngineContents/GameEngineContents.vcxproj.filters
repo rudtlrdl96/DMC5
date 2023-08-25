@@ -265,6 +265,12 @@
     <ClInclude Include="Menu_MissionFont.h">
       <Filter>UI\Actor\MenuUI\MenuScreen</Filter>
     </ClInclude>
+    <ClInclude Include="SkyBox.h">
+      <Filter>Actor\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseStageActor.h">
+      <Filter>Actor\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -515,6 +521,12 @@
     </ClCompile>
     <ClCompile Include="Menu_MissionFont.cpp">
       <Filter>UI\Actor\MenuUI\MenuScreen</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseStageActor.cpp">
+      <Filter>Actor\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyBox.cpp">
+      <Filter>Actor\Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

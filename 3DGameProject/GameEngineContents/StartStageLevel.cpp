@@ -20,7 +20,8 @@ void StartStageLevel::Start()
 
 	TempData.MapDatas.resize(1);
 	TempData.StageID = 0;
-	TempData.MapDatas[0].MeshFileName = "Location2ColGuide.fbx";
+	TempData.SkyboxFileName = "SkyBox.fbx";
+	TempData.MapDatas[0].MeshFileName = "Location2.fbx";
 	TempData.MapDatas[0].FieldMapPosition = float4::ZERO;
 
 	for (size_t i = 0; i < TempData.MapDatas.size(); i++)
@@ -44,20 +45,39 @@ void StartStageLevel::Start()
 void StartStageLevel::Update(float _DeltaTime)
 {
 	StageBaseLevel::Update(_DeltaTime);
+
+	
 }
 
 void StartStageLevel::LevelChangeStart()
 {
-	std::string Path = GameEnginePath::GetFileFullPath
-	(
-		"ContentResources",
-		{
-			"Map", "TestMap"
-		},
-		"Location2ColGuide.FBX"
-	);
+	{
+		std::string Path = GameEnginePath::GetFileFullPath
+		(
+			"ContentResources",
+			{
+				"Map", "TestMap"
+			},
+			"Location2.FBX"
+		);
 
-	GameEngineFBXMesh::Load(Path);
+		GameEngineFBXMesh::Load(Path);
+	}
+
+	{
+		std::string Path = GameEnginePath::GetFileFullPath
+		(
+			"ContentResources",
+			{
+				"Map", "TestMap"
+			},
+			"SkyBox.fbx"
+		);
+
+		GameEngineFBXMesh::Load(Path);
+	}
+
+
 	SetCamera({ 0,0,-500 });
 	CreateActor<FreeCameraActor>();
 

@@ -1,8 +1,8 @@
 #pragma once
-#include <GameEngineCore/GameEngineActor.h>
+#include "BaseStageActor.h"
 #include "StageDatas.h"
 
-class FieldMap : public GameEngineActor
+class FieldMap : public BaseStageActor
 {
 public:
 	// construtor destructor
