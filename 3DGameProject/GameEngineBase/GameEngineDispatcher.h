@@ -64,7 +64,7 @@ public:
 	{
 		if (false == ConvertPacketHandlers.contains(Type))
 		{
-			MsgAssert("AddHandler를 등록하지 않은 패킷입니다");
+			MsgAssert(std::to_string(Type) + "타입의 패킷은 AddHandler를 등록하지 않은 패킷입니다");
 			return nullptr;
 		}
 
@@ -77,7 +77,7 @@ public:
 	{
 		if (false == PacketHandlers.contains(_Packet->GetPacketID()))
 		{
-			MsgAssert("AddHandler를 등록하지 않은 패킷입니다");
+			MsgAssert(std::to_string(_Packet->GetPacketID()) + "타입의 패킷은 AddHandler를 등록하지 않은 패킷입니다");
 			return;
 		}
 

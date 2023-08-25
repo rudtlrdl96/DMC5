@@ -58,14 +58,14 @@ void GameEngineNet::RecvThreadFunction(SOCKET _Socket, GameEngineNet* _Net)
 			// 패킷타입 알아낸다.(앞쪽 4바이트 분석)
 			{
 				unsigned char* TypePivotPtr = &Serializer.GetDataPtr()[0];
-				int* ConvertPtr = reinterpret_cast<int*>(TypePivotPtr);
+				unsigned int* ConvertPtr = reinterpret_cast<unsigned int*>(TypePivotPtr);
 				PacketType = *ConvertPtr;
 			}
 
 			// 사이즈 알아내고(4~8의 바이트 분석)
 			{
 				unsigned char* SizePivotPtr = &Serializer.GetDataPtr()[4];
-				int* ConvertPtr = reinterpret_cast<int*>(SizePivotPtr);
+				unsigned int* ConvertPtr = reinterpret_cast<unsigned int*>(SizePivotPtr);
 				PacketSize = *ConvertPtr;
 			}
 		}
@@ -124,14 +124,14 @@ void GameEngineNet::RecvThreadFunction(SOCKET _Socket, GameEngineNet* _Net)
 				//패킷 타입 분석
 				{
 					unsigned char* TypePivotPtr = &Serializer.GetDataPtr()[0];
-					int* ConvertPtr = reinterpret_cast<int*>(TypePivotPtr);
+					unsigned int* ConvertPtr = reinterpret_cast<unsigned int*>(TypePivotPtr);
 					PacketType = *ConvertPtr;
 				}
 
 				//패킷 사이즈 분석
 				{
 					unsigned char* SizePivotPtr = &Serializer.GetDataPtr()[4];
-					int* ConvertPtr = reinterpret_cast<int*>(SizePivotPtr);
+					unsigned int* ConvertPtr = reinterpret_cast<unsigned int*>(SizePivotPtr);
 					PacketSize = *ConvertPtr;
 				}
 
