@@ -78,8 +78,8 @@ void GameEngineNet::RecvThreadFunction(SOCKET _Socket, GameEngineNet* _Net)
 
 		// 8바이트 이상 받았지만
 		// 그걸 통해서 알아낸 패킷의 크기보다는 덜 온 경우
-		//if (static_cast<unsigned int>(PacketSize) > Serializer.GetWriteOffSet())
-		if (PacketSize > static_cast<int>(Serializer.GetWriteOffSet()))
+		//if (PacketSize > static_cast<int>(Serializer.GetWriteOffSet()))
+		if (static_cast<unsigned int>(PacketSize) > Serializer.GetWriteOffSet())
 		{
 			//다음 수신을 대기
 			continue;

@@ -120,6 +120,7 @@ void NetworkManager::ServerPacketInit()
 
 		//답장용 새 패킷
 		std::shared_ptr<LinkObjectPacket> ReplyLinkPacket = std::make_shared<LinkObjectPacket>();
+
 		//생성했을때 사용한 새 오브젝트 ID 넣음
 		ReplyLinkPacket->SetObjectID(NewID);
 		ReplyLinkPacket->Ptr = _Packet->Ptr;
