@@ -120,19 +120,33 @@ void GameEngineFBXMesh::LoadMesh(const std::string& _Path, const std::string& _N
 	// 이유 => 우리는 스켈레탈을 따로 빼지 않았다.
 	// 버텍스 정보를 가진 노드를 조사한다.
 	// FBXInit(FBXFile.GetFullPath());
-	FBXInit(_Path);
-	MeshLoad();
+	// FBXInit(_Path);
+	// MeshLoad();
 
 	// 이쪽에서 본이 있는지 확인하고
 	// 본이 있다면 애니메이션을 할 가능성이 있다고 생각하기 때문에
 	// 여기서 본에 맞는 스트럭처드 버퍼를 만들어 낸다.
-	CreateGameEngineStructuredBuffer();
+	// CreateGameEngineStructuredBuffer();
 	// Bone을 조사한다.
 
 	//if (false == SaveFile.IsExits())
 	//{
 	//	UserSave(SaveFile.GetFullPath());
 	//}
+}
+
+void GameEngineFBXMesh::Initialize()
+{
+	if (true == IsInit)
+	{
+		return;
+	}
+
+	FBXInit(GetPathToString());
+	MeshLoad();
+	CreateGameEngineStructuredBuffer();
+
+	IsInit = true;
 }
 
 void GameEngineFBXMesh::MeshLoad()

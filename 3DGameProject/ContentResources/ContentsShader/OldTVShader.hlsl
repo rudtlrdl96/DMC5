@@ -1,3 +1,5 @@
+#include "..\..\EngineResources\Shader\RenderBaseValue.fx"
+
 struct Input
 {
     float4 Pos : POSITION;

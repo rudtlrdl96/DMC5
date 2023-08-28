@@ -33,6 +33,11 @@ public:
 		return Path.c_str();
 	}
 
+	std::string GetPathToString()
+	{
+		return Path.c_str();
+	}
+
 	void SetPath(const std::string_view& _Value)
 	{
 		Path = _Value;

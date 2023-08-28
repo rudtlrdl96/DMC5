@@ -185,6 +185,8 @@ public:
 		return &AnimationDatas[_Index];
 	}
 
+	void Initialize();
+
 protected:
 	void LoadMesh(const std::string& _Path, const std::string& _Name);
 
@@ -201,5 +203,7 @@ protected:
 
 private:
 	bool CheckAnimation();
+
+	bool IsInit = false;
 };
 

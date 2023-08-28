@@ -149,7 +149,9 @@
     <FxCompile Include="Light.fx" />
     <FxCompile Include="MergeShader.hlsl" />
     <FxCompile Include="MeshAniTexture.hlsl" />
+    <FxCompile Include="MeshColor.hlsl" />
     <FxCompile Include="MeshTexture.hlsl" />
+    <FxCompile Include="RenderBaseValue.fx" />
     <FxCompile Include="TextureShader.hlsl" />
     <FxCompile Include="TileMapShader.hlsl" />
     <FxCompile Include="Transform.fx" />

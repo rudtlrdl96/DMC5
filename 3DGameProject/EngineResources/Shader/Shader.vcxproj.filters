@@ -17,6 +17,10 @@
     <FxCompile Include="Transform.fx">
       <Filter>Header</Filter>
     </FxCompile>
+    <FxCompile Include="MeshColor.hlsl" />
+    <FxCompile Include="RenderBaseValue.fx">
+      <Filter>Header</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">

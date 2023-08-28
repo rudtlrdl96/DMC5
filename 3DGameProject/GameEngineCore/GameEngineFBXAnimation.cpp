@@ -17,10 +17,17 @@ std::shared_ptr<GameEngineFBXAnimation> GameEngineFBXAnimation::Load(const std::
 	return NewRes;
 }
 
+void GameEngineFBXAnimation::Initialize()
+{
+	FBXInit(GetPathToString());
+	CheckAnimation();
+}
+
 void GameEngineFBXAnimation::LoadMesh(const std::string& _Path, const std::string& _Name)
 {
-	FBXInit(_Path);
-	CheckAnimation();
+	SetPath(_Path);
+	// FBXInit(_Path);
+	// CheckAnimation();
 	AnimationDatas;
 }
 
@@ -132,7 +139,7 @@ bool GameEngineFBXAnimation::AnimationLoad(std::shared_ptr <GameEngineFBXMesh> _
 		CurAniData.StartTime = startTime;
 		CurAniData.TimeMode = timeMode;
 
-		for (size_t MeshIndex = 0; MeshIndex < CurAniData.AniFrameData.size(); ++MeshIndex)
+		for (size_t MeshIndex = 0; MeshIndex < 1; ++MeshIndex)
 		{
 			if (0 == CurAniData.AniFrameData[MeshIndex].size())
 			{
@@ -263,7 +270,7 @@ void GameEngineFBXAnimation::ProcessAnimationCheckState(std::shared_ptr <GameEng
 	// 애니메이션 정보가 비어있는 녀석등은 보통 offset이라고 하는 T
 	// 
 	// 몸통
-	for (size_t MeshIndex = 0; MeshIndex < userAniData.AniFrameData.size(); MeshIndex++)
+	for (size_t MeshIndex = 0; MeshIndex < 1; MeshIndex++)
 	{
 		// 30프레임의 정보가
 		size_t aniFrameDataSize = userAniData.AniFrameData[MeshIndex].size();

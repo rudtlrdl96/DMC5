@@ -189,7 +189,15 @@ void GameEngineRenderer::CalSortZ(GameEngineCamera* _Camera)
 	default:
 		break;
 	}
+}
 
+std::shared_ptr<GameEngineRenderUnit> GameEngineRenderer::CreateRenderUnit(std::string_view _Mesh, std::string_view _Material)
+{
+	std::shared_ptr<GameEngineRenderUnit> Unit = CreateRenderUnit();
+
+	Unit->SetMesh(_Mesh);
+	Unit->SetMaterial(_Material);
+	return Unit;
 }
 
 std::shared_ptr<GameEngineRenderUnit> GameEngineRenderer::CreateRenderUnit()
