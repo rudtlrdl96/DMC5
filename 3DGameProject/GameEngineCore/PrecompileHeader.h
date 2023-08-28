@@ -25,7 +25,7 @@
 // 애니메이션 프레임시간
 #define ANIMATION_FRAME_TIME 0.016666666666666666666666666666666666666666667f
 
-#define PHYSX_GRAVITY -160.0f              // 중력 -98.1f * 0.8 * 0.8f
+#define PHYSX_GRAVITY -200.0f              // 중력 -98.1f * 0.8 * 0.8f
 #define PLAYER_MAX_SPEED 40.0f             // 플레이어 최대속력
 #define PLAYER_JUMP_FORCE 20.0f            // 플레이어 점프
 #define PLAYER_COL_SCALE 3.0f, 5.0f, 3.0f  // 플레이어 eventCol 사이즈 

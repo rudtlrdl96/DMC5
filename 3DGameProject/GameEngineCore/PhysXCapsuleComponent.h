@@ -44,19 +44,34 @@ public:
 		return float4(m_pDynamic->getGlobalPose().q.x, m_pDynamic->getGlobalPose().q.y, m_pDynamic->getGlobalPose().q.z);
 	}
 
-	void SetMove(float4 _MoveSpeed);
-
 	void SetJump(float _JumpPower);
+	void SetMove(float4 _MoveSpeed);
+	void SetPush(float4 _Push);
 
-	void SetMoveDive(float _Rot);
-
-	// RigidDynamic을 CCT에서 해제하는 함수
-	void SetDynamicIdle();
+	void SetSpeedLimitValue(float _Value)
+	{
+		SpeedLimitValue = _Value;
+	}
 
 	inline physx::PxVec3 GetLinearVelocity()
 	{
 		return m_pDynamic->getLinearVelocity();
 	}
+
+	float4 GetDynamicVelocity()
+	{
+		physx::PxVec3 Vec3 = m_pDynamic->getLinearVelocity();
+		return float4{ Vec3.x, Vec3.y, Vec3.z };
+	}
+
+	//플레이어 멈추는 함수
+	void FreezeDynamic();
+
+	//플레이어 멈추는거 푸는 함수
+	void WakeUpDynamic();
+
+	//Reset 함수
+	void ResetDynamic();
 
 	inline void SetlockAxis()
 	{
@@ -72,36 +87,9 @@ public:
 		m_pDynamic->addForce(physx::PxVec3(0.0f, 0.01f, 0.0f), physx::PxForceMode::eIMPULSE);
 	}
 
-
-
 	void SetPlayerStartPos(float4 _Pos);
-
-	void PushImpulse(float4 _ImpulsePower);
+	
 	void PushImpulseAtLocalPos(float4 _ImpulsePower, float4 _Pos);
-
-	bool PlayerStandUp(float _DeltaTime, bool _IsXAixisRotReady);
-	bool StandUp2(float _DeltaTime, bool _IsXAixisRotReady);
-
-	void TurnOffSpeedLimit()
-	{
-		IsSpeedLimit = false;
-	}
-
-	void TurnOnSpeedLimit()
-	{
-		IsSpeedLimit = true;
-	}
-
-	void SwitchSpeedLimit()
-	{
-		IsSpeedLimit = !IsSpeedLimit;
-	}
-
-	float4 GetDynamicVelocity()
-	{
-		physx::PxVec3 Vec3 = m_pDynamic->getLinearVelocity();
-		return float4{ Vec3.x, Vec3.y, Vec3.z };
-	}
 
 	//중력끄기
 	void TurnOffGravity()
@@ -114,25 +102,6 @@ public:
 	{
 		m_pDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, false);
 	}
-
-	void LockAxis();
-
-	inline void SetIsMain(bool _Flag)
-	{
-		IsMain = _Flag;
-	}
-
-	//플레이어 멈추는 함수
-	void FreezeDynamic();
-
-	//플레이어 멈추는거 푸는 함수
-	void WakeUpDynamic();
-
-	//Reset 함수
-	void ResetDynamic();
-
-	//일어설때 목표 각도구하는 함수
-	void InitializeStandUp2();
 
 	void SetMainPlayerFlags()
 	{
@@ -159,14 +128,14 @@ private:
 	physx::PxShape* m_pShape = nullptr;
 	physx::PxRigidDynamic* m_pDynamic = nullptr;
 
-	bool IsSpeedLimit = false;
-
 	// 이 컴포넌트를 가지고 있는 Parent에 대한 정보
 	std::weak_ptr<class GameEngineActor> ParentActor;
 	physx::PxVec3 GeoMetryScale;
 
 	//속도제한 함수
 	void SpeedLimit();
+
+	float SpeedLimitValue = 150.0f;
 
 	float StandUpTargetYAxisAngle = 0.0f;
 	float StandUpStartYAxisAngle = 0.0f;
@@ -176,7 +145,5 @@ private:
 	physx::PxVec3 TargetVec3;
 	physx::PxTransform RecentTransform;
 
-	// 메인플레이어 플래그
-	bool IsMain = false;
 };
 

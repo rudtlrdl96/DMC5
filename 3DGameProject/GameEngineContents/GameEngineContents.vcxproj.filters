@@ -281,6 +281,15 @@
       <Filter>UI\Base</Filter>
     </ClInclude>
     <ClInclude Include="ShaderTestLevel.h" />
+    <ClInclude Include="StageEditGUI.h" />
+    <ClInclude Include="StageEditLevel.h" />
+    <ClInclude Include="Wall.h">
+      <Filter>Actor\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Slope.h">
+      <Filter>Actor\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderTestLevel.h" />
     <ClInclude Include="StageEditLevel.h">
       <Filter>Levels\Stage\StageEditor</Filter>
     </ClInclude>
@@ -557,6 +566,15 @@
       <Filter>UI\Base</Filter>
     </ClCompile>
     <ClCompile Include="ShaderTestLevel.cpp" />
+    <ClCompile Include="StageEditGUI.cpp" />
+    <ClCompile Include="StageEditLevel.cpp" />
+    <ClCompile Include="Wall.cpp">
+      <Filter>Actor\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Slope.cpp">
+      <Filter>Actor\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderTestLevel.cpp" />
     <ClCompile Include="StageEditGUI.cpp">
       <Filter>Levels\Stage\StageEditor</Filter>
     </ClCompile>
@@ -744,6 +762,15 @@
     </Filter>
     <Filter Include="Levels\Stage\1.StartStage">
       <UniqueIdentifier>{90b7419c-d3c5-4f35-9ed3-3e2ea44b7e0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Player">
+      <UniqueIdentifier>{c973e3f3-8c9d-4b9d-8693-81925f490cb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Player\Base">
+      <UniqueIdentifier>{294df9c9-b6c4-4f7c-82b0-f109225ae62c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Player\Character">
+      <UniqueIdentifier>{b31d1a84-2550-4109-b55e-e45fed476b1f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Levels\Stage\StageEditor">
       <UniqueIdentifier>{e15b0962-4074-4325-88f2-8fe4391fd4fe}</UniqueIdentifier>

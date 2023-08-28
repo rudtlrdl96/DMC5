@@ -1,18 +1,18 @@
 #pragma once
 
 // Ό³Έν :
-class Plane : public GameEngineActor, public GameEngineNetObject
+class Wall : public GameEngineActor, public GameEngineNetObject
 {
 public:
 	// constrcuter destructer
-	Plane();
-	~Plane();
+	Wall();
+	~Wall();
 
 	// delete Function
-	Plane(const Plane& _Other) = delete;
-	Plane(Plane&& _Other) noexcept = delete;
-	Plane& operator=(const Plane& _Other) = delete;
-	Plane& operator=(Plane&& _Other) noexcept = delete;
+	Wall(const Wall& _Other) = delete;
+	Wall(Wall&& _Other) noexcept = delete;
+	Wall& operator=(const Wall& _Other) = delete;
+	Wall& operator=(Wall&& _Other) noexcept = delete;
 
 protected:
 	void Start() override;

@@ -19,8 +19,9 @@ void PhysXCapsuleComponent::Start()
 
 void PhysXCapsuleComponent::Update(float _DeltaTime)
 {
-	if (!(physx::PxIsFinite(m_pDynamic->getGlobalPose().p.x) || physx::PxIsFinite(m_pDynamic->getGlobalPose().p.y) || physx::PxIsFinite(m_pDynamic->getGlobalPose().p.z))
-		&& true == IsMain)
+	SpeedLimit();
+
+	if (!(physx::PxIsFinite(m_pDynamic->getGlobalPose().p.x) || physx::PxIsFinite(m_pDynamic->getGlobalPose().p.y) || physx::PxIsFinite(m_pDynamic->getGlobalPose().p.z)))
 	{
 		m_pDynamic->setGlobalPose(RecentTransform);
 	}
@@ -31,11 +32,6 @@ void PhysXCapsuleComponent::Update(float _DeltaTime)
 
 	ParentActor.lock()->GetTransform()->SetWorldRotation(float4{ EulerRot.x, EulerRot.y, EulerRot.z });
 	ParentActor.lock()->GetTransform()->SetWorldPosition(tmpWorldPos);
-
-	if (IsSpeedLimit == true)
-	{
-		SpeedLimit();
-	}
 }
 
 void PhysXCapsuleComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale, float4 _GeoMetryRotation)
@@ -164,10 +160,10 @@ void PhysXCapsuleComponent::SpeedLimit()
 	physx::PxVec3 Velo = m_pDynamic->getLinearVelocity();
 	physx::PxVec2 Velo2D(Velo.x, Velo.z);
 
-	if (Velo2D.magnitude() > 100.0f)
+	if (Velo2D.magnitude() > SpeedLimitValue)
 	{
 		Velo2D.normalize();
-		Velo2D *= 100.0f;
+		Velo2D *= SpeedLimitValue;
 		Velo.x = Velo2D.x;
 		Velo.z = Velo2D.y;
 
@@ -182,53 +178,34 @@ void PhysXCapsuleComponent::SetJump(float _JumpPower)
 
 void PhysXCapsuleComponent::SetMove(float4 _MoveSpeed)
 {
-	m_pDynamic->setRigidDynamicLockFlags
-	(
-		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X | 
-		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y |
-		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z
-	);
-
-	// 캐릭터의 방향을 힘으로 조절
 	m_pDynamic->addForce(physx::PxVec3(_MoveSpeed.x, _MoveSpeed.y, _MoveSpeed.z), physx::PxForceMode::eFORCE);
 }
 
-void PhysXCapsuleComponent::SetMoveDive(float _Rot)
+void PhysXCapsuleComponent::SetPush(float4 _Push)
 {
-	float4 DirVec = float4::DegreeToDirection2D(_Rot);
-	DirVec *= 1.0f;
-	m_pDynamic->addForce(physx::PxVec3(DirVec.y, PLAYER_JUMP_FORCE * 0.5f, DirVec.x), physx::PxForceMode::eIMPULSE);
-}
-
-void PhysXCapsuleComponent::SetDynamicIdle()
-{
-	// 고정된 축을 해제
-	m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, false);
-	m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, false);
-	m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, false);
-
-	// Kinematic을 사용했을 경우, RigidDynamic으로 돌아갈 수 있도록 Flag해제
-	//dynamic_->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, false);
-}
-
-void PhysXCapsuleComponent::PushImpulse(float4 _ImpulsePower)
-{
-	// 고정된 축을 해제
-	m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, false);
-	m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, false);
-	m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, false);
-
-	m_pDynamic->addForce(physx::PxVec3(_ImpulsePower.x, _ImpulsePower.y, _ImpulsePower.z), physx::PxForceMode::eIMPULSE);
+	m_pDynamic->addForce(physx::PxVec3(_Push.x, _Push.y, _Push.z), physx::PxForceMode::eIMPULSE);
 }
 
 void PhysXCapsuleComponent::PushImpulseAtLocalPos(float4 _ImpulsePower, float4 _Pos)
 {
-	// 고정된 축을 해제
-	m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, false);
-	m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, false);
-
-	physx::PxRigidBodyExt::addForceAtPos(*m_pDynamic, physx::PxVec3(_Pos.x, _Pos.y * 0.9f, _Pos.z),
-		physx::PxVec3(_ImpulsePower.x, _ImpulsePower.y, _ImpulsePower.z), physx::PxForceMode::eIMPULSE, true);
+	physx::PxRigidBodyExt::addForceAtPos
+	(
+		*m_pDynamic, 
+		physx::PxVec3
+		(
+			_Pos.x, 
+			_Pos.y * 0.9f,
+			_Pos.z
+		),
+		physx::PxVec3
+		(
+			_ImpulsePower.x, 
+			_ImpulsePower.y, 
+			_ImpulsePower.z
+		), 
+		physx::PxForceMode::eIMPULSE, 
+		true
+	);
 }
 
 void PhysXCapsuleComponent::SetPlayerStartPos(float4 _Pos)
@@ -240,151 +217,6 @@ void PhysXCapsuleComponent::SetPlayerStartPos(float4 _Pos)
 	RecentTransform = tmpPxTransform;
 }
 
-bool PhysXCapsuleComponent::PlayerStandUp(float _DeltaTime, bool _IsXAixisRotReady)
-{
-	bool Result = false;
-
-	physx::PxVec3 GlobalPose(m_pDynamic->getGlobalPose().p);
-	physx::PxVec3 YAxis(0.0f, 1.0f, 0.0f);
-	//float YAixsGlobalAngle = std::acosf();
-	physx::PxQuat GlobalRot = m_pDynamic->getGlobalPose().q;
-	float4 GlobalRotEuler = PhysXDefault::GetQuaternionEulerAngles(GlobalRot);
-	float4 AddedRotX = float4{ -1.0f, 0.0f, 0.0f }.DegreeRotationToQuaternionReturn();
-	float4 AddedRotY = float4{ 0.0f, 10.0f, 0.0f }.DegreeRotationToQuaternionReturn();
-	float4 AddedRotmY = float4{ 0.0f, -5.0f, 0.0f }.DegreeRotationToQuaternionReturn();
-	float4 AddedRot = float4{ 0.0f, 0.0f, 0.0f }.DegreeRotationToQuaternionReturn();
-	physx::PxQuat FinalRot;
-	physx::PxQuat AddedRotQuat(AddedRotY.x, AddedRotY.y, AddedRotY.z, AddedRotY.w);
-	FinalRot = GlobalRot * AddedRotQuat;
-
-	//if (GlobalRotEuler.y * GameEngineMath::RadianToDegree >= 90.0f)
-	//{
-	//	physx::PxQuat AddedRotQuat(AddedRotY.x, AddedRotY.y, AddedRotY.z, AddedRotY.w);
-	//	FinalRot = GlobalRot * AddedRotQuat;
-	//}
-	//else
-	//{
-	//	physx::PxQuat AddedRotQuat(AddedRotmY.x, AddedRotmY.y, AddedRotmY.z, AddedRotmY.w);
-	//	FinalRot = GlobalRot * AddedRotQuat;
-	//}
-
-	physx::PxTransform FinalTransform(m_pDynamic->getGlobalPose().p, FinalRot);
-	float4 EulerFinalRot = PhysXDefault::GetQuaternionEulerAngles(FinalRot);
-	std::string Asdf = std::to_string(EulerFinalRot.x * GameEngineMath::RadToDeg) + ", " +
-		std::to_string(EulerFinalRot.y * GameEngineMath::RadToDeg) + ", "
-		+ std::to_string(EulerFinalRot.z * GameEngineMath::RadToDeg) + "\n";
-	//OutputDebugString(Asdf.c_str());
-
-	m_pDynamic->setGlobalPose(FinalTransform);
-	physx::PxQuat QautPose = m_pDynamic->getGlobalPose().q;
-	float4 EulerPose = PhysXDefault::GetQuaternionEulerAngles(QautPose);
-	float4 EulerPoseDegree = EulerPose * GameEngineMath::RadToDeg;
-	//physx::PxQuat newLocalRotation = dynamic_->getGlobalPose().q * Quaternion.Inverse(transform.parent.rotation)
-	return Result;
-}
-
-bool PhysXCapsuleComponent::StandUp2(float _DeltaTime, bool _IsXAixisRotReady)
-{
-	bool Result = false;
-	if (_IsXAixisRotReady == false)
-	{
-		return PlayerStandUp(_DeltaTime, _IsXAixisRotReady);
-	}
-
-	physx::PxQuat QautPose = m_pDynamic->getGlobalPose().q;
-
-	float4 EulerPose = PhysXDefault::GetQuaternionEulerAngles(QautPose);
-	float4 EulerPoseDegree = EulerPose * GameEngineMath::RadToDeg;
-	// dynamic의 Angle, Axis를 구한다
-	float Angle;
-	physx::PxVec3 Vec3;
-	m_pDynamic->getGlobalPose().q.toRadiansAndUnitAxis(Angle, Vec3);
-	//기준이 되는 Y-Axis  선언
-	float4 XAxis(1.0f, 0.0f, 0.0f);
-	float4 YAxis(0.0f, 1.0f, 0.0f);
-	float4 ZAxis(0.0f, 0.0f, 1.0f);
-	physx::PxVec3 YAxisVec3(0.0f, 1.0f, 0.0f);
-	physx::PxVec3 mYAxisVec3(0.0f, -1.0f, 0.0f);
-	float AngleDegree = Angle * GameEngineMath::RadToDeg;
-
-	physx::PxVec3 ASDASFFASGG = m_pDynamic->getGlobalPose().q.getBasisVector1();
-	float4 XZAngle = float4{ ASDASFFASGG.x, 0.0f, ASDASFFASGG.z };
-	XZAngle.Normalize();
-	float AngDiffXZ = atanf(XZAngle.x / XZAngle.z);
-
-	if (ASDASFFASGG.x < 0.0f && ASDASFFASGG.z < 0.0f)
-	{
-		AngDiffXZ += GameEngineMath::PIE;
-	}
-
-
-	if (ASDASFFASGG.x > 0.0f && ASDASFFASGG.z < 0.0f)
-	{
-		AngDiffXZ -= GameEngineMath::PIE;
-	}
-
-	if (AngDiffXZ < 0.0f)
-	{
-		AngDiffXZ += GameEngineMath::PIE * 2.0f;
-	}
-
-	//dynamic의 Axis와 Y-Axis 사이의 각도
-
-	float AngDiff = acosf(float4::DotProduct3D({ Vec3.x, Vec3.y, Vec3.z }, YAxis));
-	float AngDiffEuler = AngDiff * GameEngineMath::RadToDeg;
-	//if (AngDiffEuler);
-	//dynamic의 Axis와 Y-Axis 사이의 NoramlVector
-	physx::PxVec3 Normal = Vec3.cross(YAxisVec3);
-	physx::PxVec3 mNormal = Vec3.cross(mYAxisVec3);
-	Normal.normalize();
-	StandUpProgressYAxisAngle += _DeltaTime;
-	float ChangedAngle = GameEngineMath::LerpLimit(StandUpStartYAxisAngle, StandUpTargetYAxisAngle, StandUpProgressYAxisAngle * 3.0f);
-
-	//노말백터를 기준으로 YAxis로 AngDiff만큼 회전
-	float4 FinalRot;
-	GameEngineDebug::OutPutString(std::to_string(Vec3.x) + ", " + std::to_string(Vec3.y) + ", " + std::to_string(Vec3.z));
-	//if (Vec3.y > 0)
-	//{
-	FinalRot = RodriguesRotate({ Vec3.x, Vec3.y, Vec3.z }, { Normal.x, Normal.y, Normal.z }, 0.08f);
-	//}
-	//else
-	//{
-	//	FinalRot = RodriguesRotate({ Vec3.x, Vec3.y, Vec3.z }, { Normal.x, Normal.y, Normal.z }, -0.08f);
-	//}
-
-
-	if (abs(FinalRot.y) > 0.97f)
-	{
-		FinalRot.x = 0.0f;
-		FinalRot.z = 0.0f;
-		FinalRot.y = 1.0f;
-		Result = true;
-		GameEngineDebug::OutPutString("WakeUp");
-	}
-
-	//if (abs(FinalRot.x) > 0.97f && ChangedAngle == 0.0f)
-	//{
-	//	//float AngDiffXAxis = acosf(float4::DotProduct3D({ Vec3.x, Vec3.y, Vec3.z }, XAxis));
-	//	FinalRot.x = 0.0f;
-	//	FinalRot.z = 0.0f;
-	//	FinalRot.y = 1.0f;
-	//	Result = true;
-	//	GameEngineDebug::OutPutString("WakeUp");
-
-	//}
-
-	physx::PxVec3 FinalRotVec3(FinalRot.x, FinalRot.y, FinalRot.z);
-	FinalRotVec3.normalize();
-	physx::PxQuat tmpQuat(ChangedAngle, FinalRotVec3);
-	//const physx::PxQuat tmpPxQuat(tmpQuat.x, tmpQuat.y, tmpQuat.z, tmpQuat.w);
-	const physx::PxTransform tmpTransform(m_pDynamic->getGlobalPose().p, tmpQuat);
-	m_pDynamic->setGlobalPose(tmpTransform);
-
-	return Result;
-
-}
-
-//플레이어 멈추는 함수
 void PhysXCapsuleComponent::FreezeDynamic()
 {
 	m_pDynamic->putToSleep();
@@ -402,42 +234,10 @@ void PhysXCapsuleComponent::ResetDynamic()
 	const physx::PxTransform tmpTansform(m_pDynamic->getGlobalPose().p, tmpPxQuat);
 
 	m_pDynamic->setGlobalPose(tmpTansform);
-	m_pDynamic->setRigidDynamicLockFlags(
+	m_pDynamic->setRigidDynamicLockFlags
+	(
 		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X |
 		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y |
-		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z);
+		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z
+	);
 }
-
-void PhysXCapsuleComponent::InitializeStandUp2()
-{
-	physx::PxVec3 ASDASFFASGG = m_pDynamic->getGlobalPose().q.getBasisVector1();
-	float4 XZAngle = float4{ ASDASFFASGG.x, 0.0f, ASDASFFASGG.z };
-	XZAngle.Normalize();
-	float AngDiffXZ = atanf(XZAngle.x / XZAngle.z);
-
-	if (ASDASFFASGG.x < 0.0f && ASDASFFASGG.z < 0.0f)
-	{
-		AngDiffXZ += GameEngineMath::PIE;
-	}
-
-	if (ASDASFFASGG.x > 0.0f && ASDASFFASGG.z < 0.0f)
-	{
-		AngDiffXZ -= GameEngineMath::PIE;
-	}
-
-	if (AngDiffXZ < 0.0f)
-	{
-		AngDiffXZ += GameEngineMath::PIE * 2.0f;
-	}
-
-	StandUpTargetYAxisAngle = AngDiffXZ;
-
-	float Angle;
-	physx::PxVec3 Vec3;
-	m_pDynamic->getGlobalPose().q.toRadiansAndUnitAxis(Angle, Vec3);
-
-	StandUpStartYAxisAngle = Angle;
-
-	StandUpProgressYAxisAngle = 0.0f;
-}
-

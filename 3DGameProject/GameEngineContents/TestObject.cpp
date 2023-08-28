@@ -92,6 +92,7 @@ void TestObject::Start()
 	}
 
 	Component->GetDynamic()->setMass(1.0f);
+	Component->SetSpeedLimitValue(180.0f);
 	//Component->GetDynamic()->setLinearDamping(physx::PxReal(1.f));
 	//Component->GetDynamic()->setMaxAngularVelocity(physx::PxReal(10.0f));
 	//Component->GetDynamic()->setAngularDamping(physx::PxReal(0.01f));
@@ -127,7 +128,7 @@ void TestObject::UserUpdate(float _DeltaTime)
 	physx::PxTransform PhyTF = Component->GetDynamic()->getGlobalPose();
 	float4 MoveDir = float4::ZERO;
 	
-	float Set = 1.f;
+	float Set = 100.f;
 
 	if (true == GameEngineInput::IsPress("MoveLeft"))
 	{
@@ -165,14 +166,20 @@ void TestObject::UserUpdate(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("Jump"))
 	{
+		Component->SetclearForce();
 		Component->SetJump(100.0f);
 	}
 
 	float Speed = 200.0f;
 	float Dir = Speed * _DeltaTime;
 
-	Component->SetWorldPosition(MoveDir.NormalizeReturn() * 300.0f * _DeltaTime);
+	Component->SetMove(MoveDir.NormalizeReturn() * 50000.0f * _DeltaTime);
+	//Component->GetDynamic()->setLinearVelocity({ MoveDir.x, 0.0f, MoveDir.z });
+	//Component->GetDynamic()->setAngularVelocity({0.0f, Rot.y, 0.0f });
 	Component->SetWorldRotation(Rot);
+
+	float4 asef = Component->GetDynamicVelocity();
+	int a = 0;
 }
 
 void TestObject::ServerUpdate(float _DeltaTime)
