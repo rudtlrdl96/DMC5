@@ -77,8 +77,21 @@ void NetworkManager::SendUpdatePacket(GameEngineNetObject* _NetObj, GameEngineAc
 		MsgAssert(GameEngineString::ToString(ObjectID) + " ID를 가진 오브젝트가 존재하지 않는데, UpdatePacket을 사용하려고 했습니다");
 		return;
 	}
+
+
+	std::shared_ptr<ObjectUpdatePacket> UpdatePacket = nullptr;
+	//이미 해당 ID의 UpdatePacket이 존재했다면
+	if (true == AllUpdatePacket.contains(ObjectID))
+	{
+		UpdatePacket = AllUpdatePacket[ObjectID];
+	}
+	//ObjectID 이번에 처음 만드는 ObjectUpdatePacket인 경우
+	else
+	{
+		UpdatePacket = std::make_shared<ObjectUpdatePacket>();
+		AllUpdatePacket[ObjectID] = UpdatePacket;
+	}
 	
-	std::shared_ptr<ObjectUpdatePacket> UpdatePacket = std::make_shared<ObjectUpdatePacket>();
 
 	//패킷 아이디
 	//사이즈
@@ -105,9 +118,6 @@ void NetworkManager::SendUpdatePacket(GameEngineNetObject* _NetObj, GameEngineAc
 		//이 NetObject는 이제부터 전송/수신을 받지 않음
 		_NetObj->NetDisconnect();
 	}
-
-	//자료구조에 저장
-	AllUpdatePacket[ObjectID] = UpdatePacket;
 }
 
 
@@ -116,20 +126,20 @@ void NetworkManager::FlushUpdatePacket()
 	if (true == AllUpdatePacket.empty())
 		return;
 
-	static GameEngineSerializer Ser;
+	//static GameEngineSerializer Ser;
 
-	int PacketSize = 0;
-	int Count = 0;
+	//int PacketSize = 0;
+	//int Count = 0;
 
 
 	//패킷 모아 보내기
 	for (const std::pair<unsigned int, std::shared_ptr<ObjectUpdatePacket>>& Pair : AllUpdatePacket)
 	{
 		std::shared_ptr<ObjectUpdatePacket> UpdatePacket = Pair.second;
-		//NetInst->SendPacket(UpdatePacket);
-		UpdatePacket->SerializePacket(Ser); //이 코드의 문제점 Size를 표현하는 부분을 바꾸지 못함
+		NetInst->SendPacket(UpdatePacket);
+		//UpdatePacket->SerializePacket(Ser); //이 코드의 문제점 Size를 표현하는 부분을 바꾸지 못함
 		
-		if (0 == PacketSize)
+		/*if (0 == PacketSize)
 		{
 			unsigned char* Ptr = Ser.GetDataPtr();
 			memcpy_s(&PacketSize, sizeof(int), &Ptr[4], sizeof(int));
@@ -138,13 +148,13 @@ void NetworkManager::FlushUpdatePacket()
 		
 		unsigned char* SizePtr = Ser.GetDataPtr();
 		int SizePos = (PacketSize * Count++) + 4;
-		memcpy_s(&SizePtr[SizePos], sizeof(int), &PacketSize, sizeof(int));
+		memcpy_s(&SizePtr[SizePos], sizeof(int), &PacketSize, sizeof(int));*/
 	}
 
 	//NetInst->Send(Ser.GetConstCharPtr(), Ser.GetWriteOffSet());
-	NetInst->Send(reinterpret_cast<const char*>(Ser.GetDataPtr()), Ser.GetWriteOffSet());
+	//NetInst->Send(reinterpret_cast<const char*>(Ser.GetDataPtr()), Ser.GetWriteOffSet());
 	AllUpdatePacket.clear();
-	Ser.Reset();
+	//Ser.Reset();
 }
 
 
