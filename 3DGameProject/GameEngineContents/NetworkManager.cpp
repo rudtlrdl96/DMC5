@@ -23,6 +23,8 @@ GameEngineLevel* NetworkManager::CurLevel = nullptr;
 
 std::map<unsigned int, std::shared_ptr<ObjectUpdatePacket>> NetworkManager::AllUpdatePacket;
 
+unsigned int NetworkManager::LinkID = 0;
+std::map<unsigned int, class GameEngineNetObject*> NetworkManager::AllLinkObject;
 
 
 
@@ -187,6 +189,7 @@ void NetworkManager::LinkNetwork(GameEngineNetObject* _NetObjPtr)
 	if (nullptr == NetInst)
 		return;
 
+	//서버의 경우 그냥 만들고 끝
 	if (true == IsServerValue)
 	{
 		_NetObjPtr->InitNetObject(GameEngineNetObject::CreateServerID(), NetInst);
@@ -194,10 +197,17 @@ void NetworkManager::LinkNetwork(GameEngineNetObject* _NetObjPtr)
 		return;
 	}
 
+	//클라의 경우
 	std::shared_ptr<LinkObjectPacket> LinkPacket = std::make_shared<LinkObjectPacket>();
+	//이 클라의 네트워크 아이디
 	LinkPacket->SetObjectID(NetID);
+	//연결을 요청한 객체의 타입(서버에서도 그 객체들 만들어야 하기 때문)
 	LinkPacket->ActorType = _NetObjPtr->GetNetObjectType();
-	LinkPacket->Ptr = reinterpret_cast<unsigned __int64>(_NetObjPtr);
+
+	//자료구조에 넣을 링크 아이디(서버에게 다시 수신받을때 어떤 객체를 InitNetObject해야하는지 알기위함)
+	LinkPacket->LinkID = LinkID;
+	//자료구조에 저장
+	AllLinkObject[LinkID++] = _NetObjPtr;
 
 	NetInst->SendPacket(LinkPacket);
 }

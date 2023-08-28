@@ -28,7 +28,7 @@ protected:
 	{
 		GameEnginePacket::Serialize(_Ser);
 
-		_Ser << Ptr;
+		_Ser << LinkID;
 		_Ser << ActorType;
 	}
 
@@ -36,12 +36,12 @@ protected:
 	{
 		GameEnginePacket::DeSeralize(_Ser);
 
-		_Ser >> Ptr;
+		_Ser >> LinkID;
 		_Ser >> ActorType;
 	}
 
 private:
-	unsigned __int64 Ptr = 0;
+	unsigned int LinkID = 0;
 	unsigned int ActorType = -1;
 };
 

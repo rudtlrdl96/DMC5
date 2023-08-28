@@ -125,15 +125,14 @@ void NetTestPlayer::Update(float _DeltaTime)
 	
 	GetTransform()->AddLocalPosition(MoveDir * 300.f * _DeltaTime);
 
-	if (GameEngineInput::IsDown("NetTestConnect"))
+	
+	if (GameEngineInput::IsDown("NetTestConnect") && false == IsConnect)
 	{
 		if (false == NetworkManager::IsNet())
 			return;
 
-		if (-1 != GetNetObjectID())
-			return;
-
 		NetworkManager::LinkNetwork(this);
+		IsConnect = true;
 	}
 
 	if (GameEngineInput::IsDown("NetTestDestroy"))

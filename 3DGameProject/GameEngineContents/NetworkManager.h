@@ -96,6 +96,12 @@ private:
 	//업데이트 패킷을 보낼때 중복을 피하기 위한 맵 <오브젝트 아이디, 오브젝트 업데이트 패킷 포인터>
 	static std::map<unsigned int, std::shared_ptr<class ObjectUpdatePacket>> AllUpdatePacket;
 
+	//클라가 LinkObjectPacket을 전송할때 자료구조에 넣기위한 ID값
+	static unsigned int LinkID;
+
+	//클라가 링크 패킷을 보내고 다시 수신받을때, InitServerObject를 해주기 위한 맵 <LinkID, GameEngineNetObject*>
+	static std::map<unsigned int, class GameEngineNetObject*> AllLinkObject;
+
 	static GameEngineLevel* CurLevel;
 
 	inline static GameEngineLevel* GetLevel()

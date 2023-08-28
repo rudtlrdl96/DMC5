@@ -123,7 +123,8 @@ void NetworkManager::ServerPacketInit()
 
 		//생성했을때 사용한 새 오브젝트 ID 넣음
 		ReplyLinkPacket->SetObjectID(NewID);
-		ReplyLinkPacket->Ptr = _Packet->Ptr;
+		ReplyLinkPacket->LinkID = _Packet->LinkID;
+		ReplyLinkPacket->ActorType = -1;
 
 		//패킷직렬화
 		GameEngineSerializer Ser;

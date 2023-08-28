@@ -64,8 +64,16 @@ void NetworkManager::ClientPacketInit()
 	NetInst->Dispatcher.AddHandler<LinkObjectPacket>(
 		[](std::shared_ptr<LinkObjectPacket> _Packet)
 	{
-		GameEngineNetObject* ObjPtr = reinterpret_cast<GameEngineNetObject*>(_Packet->Ptr);
+		std::map<unsigned int, class GameEngineNetObject*>::iterator FindIter = AllLinkObject.find(_Packet->LinkID);
+		if (AllLinkObject.end() == FindIter)
+		{
+			MsgAssert(std::to_string(_Packet->LinkID) + "의 링크 아이디를 가진 객체는 존재하지 않습니다");
+		}
+
+		GameEngineNetObject* ObjPtr = FindIter->second;
 		ObjPtr->InitNetObject(_Packet->GetObjectID(), NetInst);
 		ObjPtr->SetUserControllType();
+
+		AllLinkObject.erase(_Packet->LinkID);
 	});
 }
