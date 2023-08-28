@@ -73,10 +73,7 @@ void UIButton::Update(float _Delta)
 		fallTime = 0.0f;
 		Render_Select2->ImageClippingX(fillTime *7.0f, ClipXDir::Left);
 		Render_Select->ImageClippingX(fillTime * 7.0f, ClipXDir::Right);
-		Render->Off();
-		ExplaneText->On();
-		SeletText->On();
-		Text->Off();
+		RenderOnOff();
 		if (true == GameEngineInput::IsUp("UI_Enter"))
 		{
 			if (nullptr != Click)
@@ -91,11 +88,9 @@ void UIButton::Update(float _Delta)
 		fallTime += _Delta;
 		Render_Select2->ImageClippingX(1- fallTime * 7.0f, ClipXDir::Left);
 		Render_Select->ImageClippingX(1- fallTime * 7.0f, ClipXDir::Right);
-		Text->On();
-		SeletText->Off();
-		Render->On();
-		ExplaneText->Off();
+		RenderOnOff();
 	}
+	SetFontPos();
 }
 
 void UIButton::FontCreate()
@@ -114,12 +109,67 @@ void UIButton::FontCreate()
 	SeletText->SetColor(float4(0.305f,0.96f,0.94f,1.0f));
 	SeletText->GetTransform()->SetLocalPosition({ 0.0f,22.f,0.0f });
 	SeletText->Off();
+
 	ExplaneText = CreateComponent<GameEngineFontRenderer>(5);
 	ExplaneText->SetFont("¸¼Àº °íµñ");
-	ExplaneText->SetFontFlag(FW1_CENTER);
+	ExplaneText->SetFontFlag(Flag);
 	ExplaneText->SetScale(24);
 	ExplaneText->SetColor(float4::WHITE);
-	ExplaneText->GetTransform()->SetWorldPosition({0.0f,-300.0f,0.0f});
+
+	ExplaneText_1 = CreateComponent<GameEngineFontRenderer>(4);
+	ExplaneText_1->SetFont("¸¼Àº °íµñ");
+	ExplaneText_1->SetFontFlag(Flag);
+	ExplaneText_1->SetScale(24);
+	ExplaneText_1->SetColor(float4(0.0f, 0.0f, 0.0f, 0.8f));
+
+	ExplaneText_2 = CreateComponent<GameEngineFontRenderer>(4);
+	ExplaneText_2->SetFont("¸¼Àº °íµñ");
+	ExplaneText_2->SetFontFlag(Flag);
+	ExplaneText_2->SetScale(24);
+	ExplaneText_2->SetColor(float4(0.0f, 0.0f, 0.0f, 0.8f));
+
+	ExplaneText_3 = CreateComponent<GameEngineFontRenderer>(4);
+	ExplaneText_3->SetFont("¸¼Àº °íµñ");
+	ExplaneText_3->SetFontFlag(Flag);
+	ExplaneText_3->SetScale(24);
+	ExplaneText_3->SetColor(float4(0.0f,0.0f,0.0f,0.8f));
+}
+
+void UIButton::RenderOnOff()
+{
+	if (IsSelect == true)
+	{
+		Render->Off();
+		ExplaneText->On();
+		SeletText->On();
+		Text->Off();
+		ExplaneText_1->On();
+		ExplaneText_2->On();
+		ExplaneText_3->On();
+	}
+	else
+	{
+		Text->On();
+		SeletText->Off();
+		Render->On();
+		ExplaneText->Off();
+		ExplaneText_1->Off();
+		ExplaneText_2->Off();
+		ExplaneText_3->Off();
+	}
+}
+
+void UIButton::SetFontPos()
+{
+	ExplaneText_3->GetTransform()->SetWorldPosition({ ExPlanePos.x + 2.0f,ExPlanePos.y + 2.0f,ExPlanePos.z });
+	ExplaneText_2->GetTransform()->SetWorldPosition({ ExPlanePos.x,ExPlanePos.y + 2,ExPlanePos.z });
+	ExplaneText_1->GetTransform()->SetWorldPosition({ ExPlanePos.x + 2.0f,ExPlanePos.y,ExPlanePos.z });
+	ExplaneText->GetTransform()->SetWorldPosition(ExPlanePos);
+	ExplaneText->SetFontFlag(Flag);
+	ExplaneText_1->SetFontFlag(Flag);
+	ExplaneText_2->SetFontFlag(Flag);
+	ExplaneText_3->SetFontFlag(Flag);
+
 }
 
 
@@ -128,6 +178,10 @@ void UIButton::SetUIText(const StringParameter& _Paramter)
 	Text->SetText(_Paramter._Text);
 	SeletText->SetText(_Paramter._SeletText);
 	ExplaneText->SetText(_Paramter._ExplaneText);
+	ExplaneText_1->SetText(_Paramter._ExplaneText);
+	ExplaneText_2->SetText(_Paramter._ExplaneText);
+	ExplaneText_3->SetText(_Paramter._ExplaneText);
+
 }
 
 

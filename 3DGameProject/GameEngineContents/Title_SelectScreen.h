@@ -21,7 +21,6 @@ protected:
 private:
 	void SetFontText();
 	void SetButtonIndex();
-
 	//컨텐츠 버튼을 3개만들자..
 	std::shared_ptr<UIButton> ContinueButton = nullptr;
 	std::shared_ptr<UIButton> OptionButton = nullptr;

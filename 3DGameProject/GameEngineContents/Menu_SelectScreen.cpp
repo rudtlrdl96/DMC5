@@ -91,8 +91,8 @@ void Menu_SelectScreen::SetFontText()
 	MissionButton->GetText()->SetFontFlag(FW1_LEFT);
 	MissionButton->GetText()->GetTransform()->SetLocalPosition({ -15.0f,22.f,0.0f });
 	MissionButton->GetSeletText()->GetTransform()->SetLocalPosition({ 0.0f,24.f,0.0f });
-	MissionButton->GetExplaneText()->GetTransform()->SetWorldPosition({ -750.0f,-350.f,0.0f });
-	MissionButton->GetExplaneText()->SetFontFlag(FW1_LEFT);
+	MissionButton->SetExplanePos({ -750.0f, -350.f, 0.0f });
+	MissionButton->SetExFontFlag(FW1_LEFT);
 	MissionButton->GetSeletText()->SetFontFlag(FW1_LEFT);
 	MissionButton->GetText()->SetScale(36);
 	MissionButton->GetSeletText()->SetScale(40);
@@ -102,9 +102,9 @@ void Menu_SelectScreen::SetFontText()
 	CustomizeButton->GetText()->SetFontFlag(FW1_LEFT);
 	CustomizeButton->GetText()->GetTransform()->SetLocalPosition({ -15.0f,22.f,0.0f });
 	CustomizeButton->GetSeletText()->GetTransform()->SetLocalPosition({ 0.0f,24.f,0.0f });
-	CustomizeButton->GetExplaneText()->GetTransform()->SetWorldPosition({ -750.0f,-350.f,0.0f });
-	CustomizeButton->GetExplaneText()->SetFontFlag(FW1_LEFT);
+	CustomizeButton->SetExplanePos({ -750.0f, -350.f, 0.0f });
 	CustomizeButton->GetSeletText()->SetFontFlag(FW1_LEFT);
+	CustomizeButton->SetExFontFlag(FW1_LEFT);
 	CustomizeButton->GetText()->SetScale(36);
 	CustomizeButton->GetSeletText()->SetScale(40);
 	CustomizeButton->SetUIText({ ._Text = "CUSTOMIZE",._SeletText = "CUSTOMIZE",._ExplaneText = "캐릭터를 커스터마이징합니다." });
@@ -112,9 +112,9 @@ void Menu_SelectScreen::SetFontText()
 	PrevButton->GetText()->SetFontFlag(FW1_LEFT);
 	PrevButton->GetText()->GetTransform()->SetLocalPosition({ -15.0f,22.f,0.0f });
 	PrevButton->GetSeletText()->GetTransform()->SetLocalPosition({ 0.0f,24.f,0.0f });
-	PrevButton->GetExplaneText()->GetTransform()->SetWorldPosition({ -750.0f,-350.f,0.0f });
-	PrevButton->GetExplaneText()->SetFontFlag(FW1_LEFT);
+	PrevButton->SetExplanePos({ -750.0f, -350.f, 0.0f });
 	PrevButton->GetSeletText()->SetFontFlag(FW1_LEFT);
+	PrevButton->SetExFontFlag(FW1_LEFT);
 	PrevButton->GetText()->SetScale(36);
 	PrevButton->GetSeletText()->SetScale(40);
 	PrevButton->SetUIText({ ._Text = "PREV MENU",._SeletText = "PREV MENU",._ExplaneText = "이전 메뉴로 돌아갑니다." });

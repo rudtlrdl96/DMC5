@@ -43,6 +43,10 @@ void MainMenuLevel::Start()
 	std::shared_ptr<Menu_SelectScreen> Menu_SelectScreenPtr = CreateActor<Menu_SelectScreen>();
 	std::shared_ptr<Menu_MissionFont> Menu_MissionFontPtr = CreateActor<Menu_MissionFont>();
 	Menu_MissionFontPtr->GetTransform()->SetLocalPosition({ -680.0f,330.0f,0.0f });
+
+	//만약 플레이어가 네로라면
+
+	//만약 플레이어가 버질이라면,
 }
 
 void MainMenuLevel::Update(float _DeltaTime)

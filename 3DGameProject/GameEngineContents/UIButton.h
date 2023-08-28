@@ -2,6 +2,7 @@
 #include <GameEngineCore/GameEngineActor.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
+#include <GameEngineCore/GameEngineFont.h>
 class StringParameter
 {
 public:
@@ -77,6 +78,15 @@ public:
 	{
 		IsValue = _Value;
 	}
+	void SetExplanePos(float4 _Pos)
+	{
+		ExPlanePos = _Pos;
+	}
+	void SetExFontFlag(FW1_TEXT_FLAG _Flag)
+	{
+		Flag = _Flag;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _Delta) override;
@@ -84,6 +94,9 @@ protected:
 private:
 	void FontCreate();
 	void EnterKeyRender(float _Delta);
+	void RenderOnOff();
+	void SetFontPos();
+
 	std::shared_ptr<GameEngineUIRenderer> Render = nullptr;//폰트 안떠서 임시
 	std::shared_ptr<GameEngineUIRenderer> Render_Select = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> Render_Select2 = nullptr;
@@ -93,10 +106,14 @@ private:
 	std::shared_ptr<class GameEngineFontRenderer> Text = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> SeletText = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> ExplaneText = nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> ExplaneText_1 = nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> ExplaneText_2 = nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> ExplaneText_3 = nullptr;
+
 	std::function<void()> Click;
-
 	std::string Font = "DMC5Font";
-
+	float4 ExPlanePos = float4::ZERONULL;
+	FW1_TEXT_FLAG Flag = FW1_CENTER;
 	bool IsSelect = false;
 	bool IsValue = false;
 	bool SwichValue = false;

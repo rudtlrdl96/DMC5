@@ -26,6 +26,7 @@ void Title_SelectScreen::Start()
 	ContinueButton->GetRender_Enter2()->SetTexture("T_EnterBase.png");
 	ContinueButton->GetRender_Enter2()->GetTransform()->SetLocalScale({ 800.0f,50.0f,0.0f });
 	ContinueButton->GetRender_Enter2()->GetTransform()->SetLocalPosition({ 400.0f,0.0f,0.0f });
+	ContinueButton->SetExplanePos({ 0.0f, -300.f, 0.0f });
 	ContinueButton->SetEvent([this]()
 		{
 			ContinueValue = true;
@@ -40,6 +41,7 @@ void Title_SelectScreen::Start()
 	OptionButton->GetRender_Select2()->SetTexture("SeletBaseHalf1.png");
 	OptionButton->GetRender_Select2()->GetTransform()->SetLocalScale({ 800.0f,50.0f,0.0f });
 	OptionButton->GetRender_Select2()->GetTransform()->SetLocalPosition({ 400.0f,0.0f,0.0f });
+	OptionButton->SetExplanePos({ 0.0f, -300.f, 0.0f });
 
 	ExitButton = GetLevel()->CreateActor<UIButton>();
 	ExitButton->GetTransform()->SetLocalPosition({ 0.0f,-250.0f,0.0f });
@@ -51,6 +53,8 @@ void Title_SelectScreen::Start()
 	ExitButton->GetRender_Select2()->SetTexture("SeletBaseHalf1.png");
 	ExitButton->GetRender_Select2()->GetTransform()->SetLocalScale({ 800.0f,50.0f,0.0f });
 	ExitButton->GetRender_Select2()->GetTransform()->SetLocalPosition({ 400.0f,0.0f,0.0f });
+	ExitButton->SetExplanePos({ 0.0f, -300.f, 0.0f });
+
 	SetFontText();
 
 }
