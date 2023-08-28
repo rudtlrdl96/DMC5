@@ -23,8 +23,11 @@ void Enemy_HellAntenora::EnemyMeshLoad()
 	EnemyRenderer->GetTransform()->SetLocalScale({ 0.1f, 0.1f, 0.1f });
 }
 
-void Enemy_HellAntenora::EnemyTextureLoad()
+void Enemy_HellAntenora::EnemyTypeLoad()
 {
+	EnemyCodeValue = EnemyCode::HellAntenora;
+	EnemyTypeValue = EnemyType::Normal;
+	EnemySizeValue = EnemySize::Middle;
 }
 
 void Enemy_HellAntenora::EnemyAnimationLoad()

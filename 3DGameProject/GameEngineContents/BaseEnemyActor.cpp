@@ -184,6 +184,11 @@ void BaseEnemyActor::Start()
 	CapsulCol->SetPhysxMaterial(0, 0, 0);
 	CapsulCol->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), {4, 10, 4});
 
+	//√ ±‚»≠
+	EnemyCodeValue = EnemyCode::None;
+	EnemyTypeValue = EnemyType::None;
+	EnemySizeValue = EnemySize::None;
+
 	// Debug Key
 	if (false == GameEngineInput::IsKey("EnemyDebug_Ctrl"))
 	{
@@ -199,10 +204,8 @@ void BaseEnemyActor::Start()
 		GameEngineInput::CreateKey("EnemyDebug_8", '8');
 		GameEngineInput::CreateKey("EnemyDebug_9", '9');
 	}
-
-
 	EnemyMeshLoad();
-	EnemyTextureLoad();
+	EnemyTypeLoad();
 	EnemyAnimationLoad();
 	EnemyCreateFSM();
 }
@@ -278,13 +281,13 @@ void BaseEnemyActor::AddForceEnemy(const float4& _Dir, float _Power)
 }
 
 
-void BaseEnemyActor::SpuerArmorOn()
+void BaseEnemyActor::SuperArmorOn()
 {
-	IsSpuerArmorValue = true;
+	IsSuperArmorValue = true;
 
-	if (nullptr != SpuerArmorOn_Callback)
+	if (nullptr != SuperArmorOn_Callback) 
 	{
-		SpuerArmorOn_Callback();
+		SuperArmorOn_Callback();
 	}
 }
 
@@ -292,8 +295,8 @@ void BaseEnemyActor::SuperArmorOff()
 {
 	IsSuperArmorValue = false;
 
-	if (nullptr != SpuerArmorOff_Callback)
+	if (nullptr != SuperArmorOff_Callback)
 	{
-		SpuerArmorOff_Callback();
+		SuperArmorOff_Callback();
 	}
 }

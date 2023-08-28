@@ -23,7 +23,7 @@ void Enemy_GreenEmpusa::EnemyMeshLoad()
 	EnemyRenderer->GetTransform()->SetLocalScale({ 0.1f, 0.1f, 0.1f });
 }
 
-void Enemy_GreenEmpusa::EnemyTextureLoad()
+void Enemy_GreenEmpusa::EnemyTypeLoad()
 {
 }
 

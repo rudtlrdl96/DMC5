@@ -19,7 +19,7 @@ protected:
 
 private:
 	void EnemyMeshLoad() override;
-	void EnemyTextureLoad() override;
+	void EnemyTypeLoad() override;
 	void EnemyAnimationLoad() override;
 	void EnemyCreateFSM() override;
 

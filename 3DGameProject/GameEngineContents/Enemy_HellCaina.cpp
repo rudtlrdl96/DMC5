@@ -24,8 +24,11 @@ void Enemy_HellCaina::EnemyMeshLoad()
 	EnemyRenderer->GetTransform()->SetLocalScale({ 0.1f, 0.1f, 0.1f });
 }
 
-void Enemy_HellCaina::EnemyTextureLoad()
+void Enemy_HellCaina::EnemyTypeLoad()
 {
+	EnemyCodeValue = EnemyCode::HellCaina;
+	EnemyTypeValue = EnemyType::Normal;
+	EnemySizeValue = EnemySize::Middle;
 }
 
 void Enemy_HellCaina::EnemyAnimationLoad()

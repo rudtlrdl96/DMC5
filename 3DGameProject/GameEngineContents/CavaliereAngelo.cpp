@@ -95,8 +95,9 @@ void CavaliereAngelo::EnemyMeshLoad()
 	EnemyRenderer->GetTransform()->SetLocalScale({ 0.1f, 0.1f, 0.1f });
 }
 
-void CavaliereAngelo::EnemyTextureLoad()
+void CavaliereAngelo::EnemyTypeLoad()
 {
+	
 }
 
 void CavaliereAngelo::EnemyAnimationLoad()

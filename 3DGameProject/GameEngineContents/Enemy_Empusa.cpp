@@ -27,8 +27,11 @@ void Enemy_Empusa::EnemyMeshLoad()
 	EnemyRenderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
 }
 
-void Enemy_Empusa::EnemyTextureLoad()
+void Enemy_Empusa::EnemyTypeLoad()
 {
+	EnemyCodeValue = EnemyCode::Empusa;
+	EnemyTypeValue = EnemyType::Normal;
+	EnemySizeValue = EnemySize::Middle;
 }
 
 void Enemy_Empusa::EnemyAnimationLoad()

@@ -20,6 +20,8 @@ public:
 
 enum class EnemyCode
 {
+	//초기화용
+	None=100000,
 	// 일반 몬스터
 	Empusa = 0,
 	GreenEmpusa = 1,
@@ -33,12 +35,15 @@ enum class EnemyCode
 
 enum class EnemyType
 {
+	None,
 	Normal,
+	Fly,
 	Boss,
 };
 
 enum class EnemySize
 {
+	None,
 	Small,
 	Middle,
 	Large
@@ -65,13 +70,13 @@ public:
 	BaseEnemyActor& operator=(const BaseEnemyActor& _Other) = delete;
 	BaseEnemyActor& operator=(BaseEnemyActor&& _Other) noexcept = delete;
 
-	// 몬스터 피격 함수
+	// 몬스터 피격 함수(때렸을 때 호출해주시면 됩니다)
 	void MonsterHit(const EnemyHitData& _HitData);
 
 	// 현재 몬스터가 슈퍼아머 상태인지 반환합니다. 만약 슈퍼아머 상태라면 그랩, 잡기등의 공격에 면역이됩니다.
 	inline bool IsSuperArmor() const
 	{
-		return IsSpuerArmorValue;
+		return IsSuperArmorValue;
 	}
 
 	// 몬스터의 종류를 반환합니다.
@@ -80,7 +85,7 @@ public:
 		return EnemyCodeValue;
 	}
 
-	// 몬스터의 타입을 반환합니다. Normal, Boss 두 가지 타입이 있습니다.
+	// 몬스터의 타입을 반환합니다. Normal,Fly, Boss 세 가지 타입이 있습니다.
 	inline EnemyType GetEnemyType() const
 	{
 		return EnemyTypeValue;
@@ -106,21 +111,20 @@ protected:
 
 	GameEngineFSM EnemyFSM;
 
-	EnemyCode EnemyCodeValue = EnemyCode::Empusa;
-	EnemyType EnemyTypeValue  = EnemyType::Normal;
-	EnemySize EnemySizeValue = EnemySize::Small;
+	EnemyCode EnemyCodeValue = EnemyCode::None;
+	EnemyType EnemyTypeValue  = EnemyType::None;
+	EnemySize EnemySizeValue = EnemySize::None;
 
-	bool IsSpuerArmorValue = false;
 	bool IsSuperArmorValue = false;
 
-	std::function<void()> SpuerArmorOn_Callback = nullptr;
-	std::function<void()> SpuerArmorOff_Callback = nullptr;
+	std::function<void()> SuperArmorOn_Callback = nullptr;
+	std::function<void()> SuperArmorOff_Callback = nullptr;
 
-	void SpuerArmorOn();
+	void SuperArmorOn();
 	void SuperArmorOff();
 
 	virtual void EnemyMeshLoad() = 0;
-	virtual void EnemyTextureLoad() = 0;
+	virtual void EnemyTypeLoad() = 0;
 	virtual void EnemyAnimationLoad() = 0;
 	virtual void EnemyCreateFSM() = 0;
 

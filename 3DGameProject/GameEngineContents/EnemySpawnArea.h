@@ -9,7 +9,7 @@
 class EnemySpawnData
 {
 public:
-	EnemyCode Code = EnemyCode::Empusa;
+	EnemyCode Code = EnemyCode::None;
 
 	float4 SpawnLocalPos = float4::ZERO;
 	float4 SpawnLocalRotation = float4::ZERO;
@@ -56,8 +56,5 @@ private:
 
 	int CurWave = 0;
 	int SpawnIndex = 0;
-
-
-
 };
 
