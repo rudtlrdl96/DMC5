@@ -25,8 +25,8 @@ void Menu_NeroInfo::Start()
 	NeroInvenPtr->GetRender()->SetTexture("NullTexture.png");
 	NeroInvenPtr->GetRender_Bar()->SetTexture("Menu_InfoBar.png");
 	NeroInvenPtr->GetRender_Base()->SetTexture("Menu_TabBase.png");
-	NeroInvenPtr->GetRender_Base()->GetTransform()->SetLocalPosition({ 700.f, 60.f, 0.0f });
-	NeroInvenPtr->GetRender_Base()->GetTransform()->SetLocalScale({ 546.f, 35.f, 1.0f});
+	NeroInvenPtr->GetRender_Base()->GetTransform()->SetLocalPosition({ 600.f, 60.f, 0.0f });
+	NeroInvenPtr->GetRender_Base()->GetTransform()->SetLocalScale({ 337.f, 35.f, 1.0f});
 	NeroInvenPtr->SetUIText({ ._Text = "EQUIPMENT",._SeletText = "",._ExplaneText = "",._ExplaneText2 = "" });
 
 }
