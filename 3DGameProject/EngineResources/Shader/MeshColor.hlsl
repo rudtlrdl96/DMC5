@@ -8,16 +8,22 @@ struct Input
     float4 POSITION : POSITION;
     float4 TEXCOORD : TEXCOORD;
     float4 NORMAL : NORMAL;
+    float4 TANGENT : TANGENT;
+    float4 BINORMAL : BINORMAL;
+    float4 BLENDWEIGHT : BLENDWEIGHT;
+    int4 BLENDINDICES : BLENDINDICES;
 };
 
 struct Output
 {
-    // w나누기 해주고
-    // viewport 행렬까지 레스터라이저에서 곱해준다.
     float4 POSITION : SV_POSITION;
     float4 VIEWPOSITION : POSITION;
+    float4 TEXCOORD : TEXCOORD;
     float4 NORMAL : NORMAL;
+    float4 TANGENT : TANGENT;
+    float4 BINORMAL : BINORMAL;
 };
+
 
 // 빛계산을 통해서 빛의 반사를 구현하고 나면
 // 그 빛을 계산하는 시점에 따라서 예전에는 구분을 했다.
@@ -43,7 +49,13 @@ Output MeshAniTexture_VS(Input _Input)
     NewOutPut.POSITION = mul(InputPos, WorldViewProjectionMatrix);
     NewOutPut.VIEWPOSITION = mul(InputPos, WorldView);
     _Input.NORMAL.w = 0.0f;
-    NewOutPut.NORMAL = mul(InputNormal, WorldView);
+    NewOutPut.NORMAL = mul(_Input.NORMAL, WorldView);
+    
+    _Input.TANGENT.w = 0.0f;
+    NewOutPut.TANGENT = mul(_Input.TANGENT, WorldView);
+    
+    _Input.BINORMAL.w = 0.0f;
+    NewOutPut.BINORMAL = mul(_Input.BINORMAL, WorldView);
     
     return NewOutPut;
 }

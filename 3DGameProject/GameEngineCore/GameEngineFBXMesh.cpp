@@ -375,8 +375,8 @@ void GameEngineFBXMesh::LoadBinormal(fbxsdk::FbxMesh* _Mesh, fbxsdk::FbxAMatrix 
 
 	if (0 == iCount)
 	{
+		_ArrVtx[_Index].BINORMAL = float4::Cross3DReturnNormal(_ArrVtx[_Index].NORMAL, _ArrVtx[_Index].TANGENT);
 		return;
-
 	}
 
 	FbxGeometryElementBinormal* pElement = _Mesh->GetElementBinormal();
@@ -428,8 +428,14 @@ void GameEngineFBXMesh::LoadTangent(fbxsdk::FbxMesh* _Mesh, fbxsdk::FbxAMatrix _
 
 	if (0 == iCount)
 	{
-		return;
+		bool result = _Mesh->GenerateTangentsData(VtxId);
+
+		if (false == result)
+		{
+			return;
+		}
 	}
+
 	FbxGeometryElementTangent* pElement = _Mesh->GetElementTangent();
 	int iDataIndex = VtxId;
 
