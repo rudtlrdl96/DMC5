@@ -3,6 +3,7 @@
 #include "NetworkManager.h"
 #include <GameEngineCore/GameEngineFBXMesh.h>
 #include "FreeCameraActor.h"
+#include "JudgementCut.h"
 
 #include "StageBaseLevel.h"
 
@@ -16,6 +17,8 @@ StartStageLevel::~StartStageLevel()
 
 void StartStageLevel::Start()
 {
+	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
+
 	StageBaseLevel::Start();
 
 	TempData.MapDatas.resize(1);

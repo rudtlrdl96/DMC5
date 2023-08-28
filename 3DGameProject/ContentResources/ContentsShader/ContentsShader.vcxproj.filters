@@ -16,6 +16,7 @@
       <Filter>Header</Filter>
     </FxCompile>
     <FxCompile Include="NoneAlphaMeshAniTexture.hlsl" />
+    <FxCompile Include="JudgementCutShader.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">

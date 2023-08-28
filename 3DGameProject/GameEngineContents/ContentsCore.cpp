@@ -5,6 +5,8 @@
 #include <GameEngineCore/GameEngineCoreWindow.h>
 
 #include "PlayerTestLevel.h"
+#include "ShaderTestLevel.h"
+
 //UI
 #include "MainLevel.h"
 #include "TestLevel.h"
@@ -45,10 +47,11 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<AnimationToolLevel>();
 	GameEngineCore::CreateLevel<BossStageLevel>();
 	GameEngineCore::CreateLevel<StartStageLevel>();
+	GameEngineCore::CreateLevel<ShaderTestLevel>();
 	//
 	GameEngineCore::CreateLevel<StageEditLevel>();
 
-	GameEngineCore::ChangeLevel("MainLevel");
+	GameEngineCore::ChangeLevel("ShaderTestLevel");
 }
 
 void ContentsCore::GameEnd() 

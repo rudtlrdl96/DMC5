@@ -153,6 +153,7 @@
   <ItemGroup>
     <FxCompile Include="Animation.fx" />
     <FxCompile Include="FadeShader.hlsl" />
+    <FxCompile Include="JudgementCutShader.hlsl" />
     <FxCompile Include="Light.fx" />
     <FxCompile Include="MyShader.fx" />
     <FxCompile Include="NoneAlphaMesh.hlsl" />

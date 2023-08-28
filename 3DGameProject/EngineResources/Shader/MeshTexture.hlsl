@@ -48,15 +48,6 @@ Output MeshAniTexture_VS(Input _Input)
     _Input.NORMAL.w = 0.0f;
     NewOutPut.NORMAL = mul(_Input.NORMAL, WorldView);
     
-    if (1 == IsNormal)
-    {    
-        _Input.TANGENT.w = 0.0f;
-        NewOutPut.TANGENT = mul(_Input.TANGENT, WorldView);
-    
-        _Input.BINORMAL.w = 0.0f;
-        NewOutPut.BINORMAL = mul(_Input.BINORMAL, WorldView);
-    }
-    
     return NewOutPut;
 }
 
@@ -77,20 +68,9 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
     float4 ResultColor = Color;
     
     if (0 != IsLight)
-    {
-        
+    {        
         float4 NormalDir = _Input.NORMAL;
         
-        if (1 == IsNormal)
-        {
-            float4 NormalBump = NormalTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);            
-            NormalBump = (NormalBump * 2.0f) - 1.0f;                        
-            NormalDir = normalize((NormalBump.x * _Input.TANGENT) + (NormalBump.y * _Input.BINORMAL) + (NormalBump.z * _Input.NORMAL));  
-                        
-            //NormalDir = normalize(_Input.NORMAL + (NormalBump.x * _Input.TANGENT) + (NormalBump.y * _Input.BINORMAL));
-            NormalDir.w = 0.0f;
-        }        
-                
         float4 DiffuseRatio = CalDiffuseLight(_Input.VIEWPOSITION, NormalDir, AllLight[0]);
         float4 SpecularRatio;
         float4 AmbientRatio = CalAmbientLight(AllLight[0]);

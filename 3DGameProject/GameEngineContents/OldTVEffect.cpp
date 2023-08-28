@@ -20,7 +20,6 @@ void OldTVEffect::Start(GameEngineRenderTarget* _Target)
 	BlurUnit->ShaderResHelper.SetConstantBufferLink("RenderBaseValue", BaseValue);
 
 	ResultTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-
 }
 
 void OldTVEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)

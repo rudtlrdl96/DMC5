@@ -208,6 +208,16 @@ void ContentsCore::ContentsResourcesCreate()
 		Pipe->SetPixelShader("OldTVShader.hlsl");
 		Pipe->SetBlendState("OldFilm");
 		Pipe->SetDepthState("EngineDepth");
+	}	
+
+	{
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("JudgementCut");
+
+		Pipe->SetVertexShader("JudgementCutShader.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("JudgementCutShader.hlsl");
+		Pipe->SetBlendState("OldFilm");
+		Pipe->SetDepthState("EngineDepth");
 	}
 
 	{

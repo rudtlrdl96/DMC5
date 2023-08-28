@@ -271,6 +271,12 @@
     <ClInclude Include="BaseStageActor.h">
       <Filter>Actor\Stage</Filter>
     </ClInclude>
+    <ClInclude Include="JudgementCut.h">
+      <Filter>PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderTestLevel.h">
+      <Filter>Levels\Test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -527,6 +533,12 @@
     </ClCompile>
     <ClCompile Include="SkyBox.cpp">
       <Filter>Actor\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="JudgementCut.cpp">
+      <Filter>PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderTestLevel.cpp">
+      <Filter>Levels\Test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
