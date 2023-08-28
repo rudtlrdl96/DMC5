@@ -162,6 +162,7 @@
     <FxCompile Include="OldFilmShader.hlsl" />
     <FxCompile Include="OldTVShader.hlsl" />
     <FxCompile Include="RenderBaseValue.fx" />
+    <FxCompile Include="TAA.hlsl" />
     <FxCompile Include="Transform.fx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -280,7 +280,6 @@
     <ClInclude Include="InfoUIRender.h">
       <Filter>UI\Base</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderTestLevel.h" />
     <ClInclude Include="StageEditGUI.h" />
     <ClInclude Include="StageEditLevel.h" />
     <ClInclude Include="Wall.h">
@@ -298,6 +297,12 @@
     </ClInclude>
     <ClInclude Include="EditorUI.h">
       <Filter>Actor\Stage\StageEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="TAA_Effect.h">
+      <Filter>PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderTestLevel.h">
+      <Filter>Levels\Test</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -565,7 +570,6 @@
     <ClCompile Include="InfoUIRender.cpp">
       <Filter>UI\Base</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderTestLevel.cpp" />
     <ClCompile Include="StageEditGUI.cpp" />
     <ClCompile Include="StageEditLevel.cpp" />
     <ClCompile Include="Wall.cpp">
@@ -583,6 +587,12 @@
     </ClCompile>
     <ClCompile Include="EditorUI.cpp">
       <Filter>Actor\Stage\StageEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="TAA_Effect.cpp">
+      <Filter>PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderTestLevel.cpp">
+      <Filter>Levels\Test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

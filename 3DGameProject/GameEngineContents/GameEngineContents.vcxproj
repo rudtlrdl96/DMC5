@@ -454,6 +454,10 @@
     <ClInclude Include="StageEditGUI.h" />
     <ClInclude Include="StageEditLevel.h" />
     <ClInclude Include="StartStageLevel.h" />
+    <ClInclude Include="TAA_Effect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="TestLevel.h" />
     <ClInclude Include="TestObject.h">
       <SubType>
@@ -763,6 +767,10 @@
     <ClCompile Include="StageEditGUI.cpp" />
     <ClCompile Include="StageEditLevel.cpp" />
     <ClCompile Include="StartStageLevel.cpp" />
+    <ClCompile Include="TAA_Effect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="TestLevel.cpp" />
     <ClCompile Include="TestObject.cpp">
       <SubType>
