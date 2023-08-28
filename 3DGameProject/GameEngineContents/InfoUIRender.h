@@ -16,18 +16,18 @@ public:
 };
 // Ό³Έν :
 class GameEngineCollision;
-class UIInfoBase : public GameEngineActor
+class InfoUIRender : public GameEngineActor
 {
 public:
 	// constrcuter destructer
-	UIInfoBase();
-	~UIInfoBase();
+	InfoUIRender();
+	~InfoUIRender();
 
 	// delete Function
-	UIInfoBase(const UIInfoBase& _Other) = delete;
-	UIInfoBase(UIInfoBase&& _Other) noexcept = delete;
-	UIInfoBase& operator=(const UIInfoBase& _Other) = delete;
-	UIInfoBase& operator=(UIInfoBase&& _Other) noexcept = delete;
+	InfoUIRender(const InfoUIRender& _Other) = delete;
+	InfoUIRender(InfoUIRender&& _Other) noexcept = delete;
+	InfoUIRender& operator=(const InfoUIRender& _Other) = delete;
+	InfoUIRender& operator=(InfoUIRender&& _Other) noexcept = delete;
 	void SetEvent(std::function<void()> _Click)
 	{
 		Click = _Click;

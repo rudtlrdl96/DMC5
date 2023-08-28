@@ -13,14 +13,14 @@ Menu_NeroInfo::~Menu_NeroInfo()
 
 void Menu_NeroInfo::Start()
 {
-	NeroInfoPtr = GetLevel()->CreateActor<UIInfoBase>();
+	NeroInfoPtr = GetLevel()->CreateActor<InfoUIRender>();
 	NeroInfoPtr->GetRender()->SetTexture("NeroLogo.png");
 	NeroInfoPtr->GetRender_Bar()->SetTexture("Menu_InfoBar.png");
 	NeroInfoPtr->GetRender_Base()->SetTexture("Menu_difficultyBase.png");
 	NeroInfoPtr->GetRender_Base()->ColorOptionValue.MulColor.a = 0.7f;
 	NeroInfoPtr->SetUIText({ ._Text = "PLAYER",._SeletText = "NERO",._ExplaneText = "GAME MODE",._ExplaneText2 = "DEVIL HUNTER" });
 	
-	NeroInvenPtr = GetLevel()->CreateActor<UIInfoBase>();
+	NeroInvenPtr = GetLevel()->CreateActor<InfoUIRender>();
 	NeroInvenPtr->GetTransform()->SetLocalPosition({ 0.0f,-200.f,0.0f });
 	NeroInvenPtr->GetRender()->SetTexture("NullTexture.png");
 	NeroInvenPtr->GetRender_Bar()->SetTexture("Menu_InfoBar.png");

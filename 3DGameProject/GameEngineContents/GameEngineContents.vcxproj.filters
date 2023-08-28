@@ -277,7 +277,7 @@
     <ClInclude Include="Menu_NeroInfo.h">
       <Filter>UI\Actor\MenuUI</Filter>
     </ClInclude>
-    <ClInclude Include="UIInfoBase.h">
+    <ClInclude Include="InfoUIRender.h">
       <Filter>UI\Base</Filter>
     </ClInclude>
     <ClInclude Include="ShaderTestLevel.h" />
@@ -553,7 +553,7 @@
     <ClCompile Include="Menu_VirgilInfo.cpp">
       <Filter>UI\Actor\MenuUI</Filter>
     </ClCompile>
-    <ClCompile Include="UIInfoBase.cpp">
+    <ClCompile Include="InfoUIRender.cpp">
       <Filter>UI\Base</Filter>
     </ClCompile>
     <ClCompile Include="ShaderTestLevel.cpp" />

@@ -1,6 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
-#include "UIInfoBase.h"
+#include "InfoUIRender.h"
 // Ό³Έν :
 class Menu_NeroInfo : public GameEngineActor
 {
@@ -21,8 +21,8 @@ protected:
 
 private:
 
-	std::shared_ptr<UIInfoBase> NeroInfoPtr = nullptr;
-	std::shared_ptr<UIInfoBase> NeroInvenPtr = nullptr;
+	std::shared_ptr<InfoUIRender> NeroInfoPtr = nullptr;
+	std::shared_ptr<InfoUIRender> NeroInvenPtr = nullptr;
 
 };
 

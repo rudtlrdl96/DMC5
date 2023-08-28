@@ -1,5 +1,5 @@
 #include "PrecompileHeader.h"
-#include "UIInfoBase.h"
+#include "InfoUIRender.h"
 #include "UIEnums.h"
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
@@ -7,15 +7,15 @@
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCamera.h>
 
-UIInfoBase::UIInfoBase()
+InfoUIRender::InfoUIRender()
 {
 }
 
-UIInfoBase::~UIInfoBase()
+InfoUIRender::~InfoUIRender()
 {
 }
 
-void UIInfoBase::Start()
+void InfoUIRender::Start()
 {
 	Render = CreateComponent<GameEngineUIRenderer>(2);
 	Render->GetTransform()->SetLocalScale(float4(170.f, 200.f, 1.0f));
@@ -32,7 +32,7 @@ void UIInfoBase::Start()
 	FontCreate();
 }
 
-void UIInfoBase::Update(float _Delta)
+void InfoUIRender::Update(float _Delta)
 {
 	GameEngineCamera* Camera = Render->GetCamera();
 
@@ -67,7 +67,7 @@ void UIInfoBase::Update(float _Delta)
 	}
 }
 
-void UIInfoBase::FontCreate()
+void InfoUIRender::FontCreate()
 {
 	Text = CreateComponent<GameEngineFontRenderer>(4);
 	Text->SetFont(Font);
@@ -84,24 +84,24 @@ void UIInfoBase::FontCreate()
 	SeletText->GetTransform()->SetLocalPosition({ 515.0f,90.f,0.0f });
 
 	ExplaneText = CreateComponent<GameEngineFontRenderer>(5);
-	ExplaneText->SetFont("Arial Narrow Bold");
+	ExplaneText->SetFont("Tahoma Bold");
 	ExplaneText->SetFontFlag(FW1_CENTER);
 	ExplaneText->SetScale(16);
-	ExplaneText->SetColor(float4(0.701f,0.772f,0.788f));
-	ExplaneText->GetTransform()->SetLocalPosition({ 515.0f,40.f,0.0f });
+	ExplaneText->SetColor(float4(0.701f,0.772f,0.788f, 1.0f));
+	ExplaneText->GetTransform()->SetLocalPosition({ 515.0f,40.f,0.0f, });
 
 
-	ExplaneText_2 = CreateComponent<GameEngineFontRenderer>(5);
-	ExplaneText_2->SetFont("Arial Narrow Bold");
+	ExplaneText_2 = CreateComponent<GameEngineFontRenderer>(8);
+	ExplaneText_2->SetFont("Tahoma Bold");
 	ExplaneText_2->SetFontFlag(FW1_CENTER);
 	ExplaneText_2->SetScale(16);
-	ExplaneText_2->SetColor(float4(0.356f, 0.368f, 0.365f));
+	ExplaneText_2->SetColor(float4(0.656f, 0.668f, 0.665f,1.0f));
 	ExplaneText_2->GetTransform()->SetLocalPosition({ 705.0f,40.f,0.0f });
 
 }
 
 
-void UIInfoBase::SetUIText(const UIInfoParameter& _Paramter)
+void InfoUIRender::SetUIText(const UIInfoParameter& _Paramter)
 {
 	Text->SetText(_Paramter._Text);
 	SeletText->SetText(_Paramter._SeletText);

@@ -467,7 +467,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="UIInfoBase.h">
+    <ClInclude Include="InfoUIRender.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -764,7 +764,7 @@
     </ClCompile>
     <ClCompile Include="Title_SelectScreen.cpp" />
     <ClCompile Include="Title_StartScreen.cpp" />
-    <ClCompile Include="UIInfoBase.cpp">
+    <ClCompile Include="InfoUIRender.cpp">
       <SubType>
       </SubType>
     </ClCompile>
