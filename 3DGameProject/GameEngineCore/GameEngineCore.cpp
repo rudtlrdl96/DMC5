@@ -146,14 +146,17 @@ void GameEngineCore::EngineUpdate()
 	GameEngineInput::Update(TimeDeltaTime);
 	GameEngineSound::SoundUpdate();
 
+	MainLevel->FetchResults();
+
 	MainLevel->TimeEvent.Update(TimeDeltaTime);
 	MainLevel->AccLiveTime(TimeDeltaTime);
-	MainLevel->Simulate(TimeDeltaTime);
 	MainLevel->Update(TimeDeltaTime);
 	MainLevel->ActorUpdate(TimeDeltaTime);
 	MainLevel->NetworkUpdate(TimeDeltaTime);
 
 	GameEngineVideo::VideoState State = GameEngineVideo::GetCurState();
+
+	MainLevel->Simulate(TimeDeltaTime);
 
 	if (State != GameEngineVideo::VideoState::Running)
 	{

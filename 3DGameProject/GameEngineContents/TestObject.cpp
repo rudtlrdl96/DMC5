@@ -84,14 +84,14 @@ void TestObject::Start()
 	//Renderer->CreateFBXAnimation("Run", "ALS_N_Run_F.FBX");
 	//Renderer->ChangeAnimation("Run");
 
-	{
-		std::shared_ptr<GameEngineFontRenderer> Renderer = CreateComponent<GameEngineFontRenderer>();
-		Renderer->SetScale(100.0f);
-		Renderer->SetFont("±Ã¼­");
-		Renderer->SetText("aaaaaaaaaa");
-	}
+	//{
+	//	std::shared_ptr<GameEngineFontRenderer> Renderer = CreateComponent<GameEngineFontRenderer>();
+	//	Renderer->SetScale(100.0f);
+	//	Renderer->SetFont("±Ã¼­");
+	//	Renderer->SetText("aaaaaaaaaa");
+	//}
 
-	Component->GetDynamic()->setMass(1.0f);
+	Component->GetDynamic()->setMass(5.0f);
 	Component->SetSpeedLimitValue(180.0f);
 	//Component->GetDynamic()->setLinearDamping(physx::PxReal(1.f));
 	//Component->GetDynamic()->setMaxAngularVelocity(physx::PxReal(10.0f));

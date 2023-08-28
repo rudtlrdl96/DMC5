@@ -105,18 +105,21 @@ public:
 
 	void SetMainPlayerFlags()
 	{
-		m_pShape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic),
-			static_cast<physx::PxU32>(PhysXFilterGroup::Ground),
-			static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle), 0));
-		//m_pInstshape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::Player), 0, 0, 0));
-		//m_pFaceshape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::PlayerFace), 0, 0, 0));
-		//m_pHeadshape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::PlayerHead), 0, 0, 0));
+		m_pShape->setSimulationFilterData
+		(
+			physx::PxFilterData
+			(
+				static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic),
+				static_cast<physx::PxU32>(PhysXFilterGroup::Ground),
+				static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle), 
+				0
+			)
+		);
 	}
 
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
-	//void Render() override {}
 
 private:
 	// Phys액터 생성에 필요한 정보

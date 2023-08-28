@@ -76,7 +76,12 @@ void PhysicsLevel::CreatePhysicsX()
 	m_pPvd->connect(*m_pTransport, physx::PxPvdInstrumentationFlag::eALL);
 
 #endif
-	m_pPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_pFoundation, physx::PxTolerancesScale(), true, m_pPvd);
+	physx::PxTolerancesScale TolerancesScale;
+
+	TolerancesScale.length = 1.f;
+	TolerancesScale.speed = 10.f;
+
+	m_pPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_pFoundation, TolerancesScale, true, m_pPvd);
 	if (!m_pPhysics)
 	{
 		MsgAssert("PxPhysics 생성 실패");
@@ -84,7 +89,7 @@ void PhysicsLevel::CreatePhysicsX()
 
 	physx::PxSceneDesc SceneDesc(m_pPhysics->getTolerancesScale());
 
-	SceneDesc.gravity = physx::PxVec3(0.0f, PHYSX_GRAVITY, 0.0f);
+	SceneDesc.gravity = physx::PxVec3(0.0f, -4.45f, 0.0f);
 	m_pDispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 	SceneDesc.cpuDispatcher = m_pDispatcher;
 	SceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
@@ -109,49 +114,51 @@ void PhysicsLevel::CreatePhysicsX()
 		MsgAssert("PxCooking 생성 실패");
 	}
 
+	StepSize = 1.0f / 60.0f;
+
 	// Aggregate생성
 	//MapAggregate_ = Physics_->createAggregate(2000, false);
 	//Scene_->addAggregate(*MapAggregate_);
 }
 
-void PhysicsLevel::advance(physx::PxReal _DeltaTime)
-{
-	WaitTime += _DeltaTime;
-	StepSize = 1.0f / 60.0f;
-
-	if (WaitTime < StepSize)
-	{
-		IsSimulation = false;
-	}
-	else
-	{
-		WaitTime -= StepSize;
-
-		m_pScene->simulate(StepSize);
-
-		IsSimulation = true;
-	}
-}
-
 // 실제로 물리연산을 실행
 void PhysicsLevel::Simulate(float _DeltaTime)
 {
-	if (nullptr == m_pPhysics)
+	if (nullptr == m_pPhysics || true == IsPhysics)
 	{
 		return;
 	}
 
-	if (true == IsPhysics)
+	//WaitTime += _DeltaTime;
+
+	//if (WaitTime < StepSize)
+	//{
+	//	IsSimulation = false;
+	//	return;
+	//}
+	//else
+	//{
+	//	WaitTime -= StepSize;
+	//	
+	//	IsSimulation = true;
+	//	return;
+	//}
+
+	m_pScene->simulate(StepSize);
+
+	IsSimulation = true;
+}
+
+void PhysicsLevel::FetchResults()
+{
+	if (false == IsSimulation || nullptr == m_pScene)
 	{
 		return;
 	}
 
-	advance(_DeltaTime);
+	m_pScene->fetchResults(true);
 
-	if (true == IsSimulation)
-	{
-		m_pScene->fetchResults(true);
-	}
+	IsSimulation = false;
 }
 
 // 메모리제거
@@ -161,7 +168,7 @@ void PhysicsLevel::ReleasePhysicsX()
 	{
 		PX_RELEASE(m_pCooking);
 	}
-	if (nullptr != m_pScene)
+	if (nullptr != m_pScene && false == m_pScene->fetchResults(false))
 	{
 		PX_RELEASE(m_pScene);
 	}

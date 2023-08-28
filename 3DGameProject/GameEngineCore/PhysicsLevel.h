@@ -52,6 +52,7 @@ protected:
 
 	void CreatePhysicsX();
 	void Simulate(float _DeltaTime);
+	void FetchResults();
 	void ReleasePhysicsX();
 
 	bool IsPhysics = false;
@@ -72,9 +73,7 @@ private:
 	physx::PxCooking* m_pCooking = nullptr;
 
 	float WaitTime = 0.0f;
-	float StepSize = 0.0f;
-
-	void advance(physx::PxReal _DeltaTime);
+	float StepSize = 0;
 
 };
 
