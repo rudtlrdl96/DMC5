@@ -203,6 +203,10 @@
     <ClInclude Include="Char_ChoiceButton.h" />
     <ClInclude Include="Char_ChoiceLevel.h" />
     <ClInclude Include="Char_ChoiceUI.h" />
+    <ClInclude Include="ColorEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ConsoleGUI.h">
       <SubType>
       </SubType>
@@ -501,6 +505,10 @@
     <ClCompile Include="Char_ChoiceButton.cpp" />
     <ClCompile Include="Char_ChoiceLevel.cpp" />
     <ClCompile Include="Char_ChoiceUI.cpp" />
+    <ClCompile Include="ColorEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ConsoleGUI.cpp">
       <SubType>
       </SubType>

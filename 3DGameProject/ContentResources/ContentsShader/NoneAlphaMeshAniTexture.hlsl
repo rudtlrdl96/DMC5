@@ -11,6 +11,7 @@ cbuffer RenderBaseValue : register(b10)
     int IsNormal = 0;
     float4 ScreenScale;
     float4 Mouse;
+    float4 ClipColor;
 };
 
 struct Input
@@ -64,7 +65,7 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
     
     Color.a = 1.0f;
     
-    if (Color.a <= 0.0f)
+    if (Color.x == ClipColor.x && Color.y == ClipColor.y && Color.z == ClipColor.z)
     {
         clip(-1);
     }

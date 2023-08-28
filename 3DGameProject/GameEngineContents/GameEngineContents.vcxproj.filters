@@ -277,6 +277,18 @@
     <ClInclude Include="StageEditGUI.h">
       <Filter>Levels\Stage\StageEditor</Filter>
     </ClInclude>
+    <ClInclude Include="ColorEffect.h">
+      <Filter>PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu_VirgilInfo.h">
+      <Filter>UI\Actor\MenuUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu_NeroInfo.h">
+      <Filter>UI\Actor\MenuUI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIInfoBase.h">
+      <Filter>UI\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -539,6 +551,18 @@
     </ClCompile>
     <ClCompile Include="StageEditLevel.cpp">
       <Filter>Levels\Stage\StageEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorEffect.cpp">
+      <Filter>PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu_NeroInfo.cpp">
+      <Filter>UI\Actor\MenuUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu_VirgilInfo.cpp">
+      <Filter>UI\Actor\MenuUI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIInfoBase.cpp">
+      <Filter>UI\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

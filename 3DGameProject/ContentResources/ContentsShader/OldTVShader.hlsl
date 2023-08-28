@@ -85,16 +85,17 @@ OutPut OldTV_VS(Input _Value)
 //    fragColor = float4(video, 1.0);
 //}
 
-cbuffer RenderBaseValue : register(b11)
+cbuffer RenderBaseValue : register(b10)
 {
     float DeltaTime = 0.0f;
     float SumDeltaTime = 0.0f;
     int IsAnimation = 0;
-    int IsLight = 1;
+    int IsLight = 0;
     int IsNormal = 0;
     float4 ScreenScale;
     float4 Mouse;
-}
+    float4 ClipColor;
+};
 
 
 Texture2D DiffuseTex : register(t0);

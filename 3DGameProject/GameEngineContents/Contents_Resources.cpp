@@ -216,7 +216,17 @@ void ContentsCore::ContentsResourcesCreate()
 		Pipe->SetVertexShader("JudgementCutShader.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
 		Pipe->SetPixelShader("JudgementCutShader.hlsl");
-		Pipe->SetBlendState("OldFilm");
+		Pipe->SetBlendState("MergeBlend");
+		Pipe->SetDepthState("EngineDepth");
+	}
+
+	{
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("ColorEffect");
+
+		Pipe->SetVertexShader("ColorEffectShader.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("ColorEffectShader.hlsl");
+		Pipe->SetBlendState("MergeBlend");
 		Pipe->SetDepthState("EngineDepth");
 	}
 

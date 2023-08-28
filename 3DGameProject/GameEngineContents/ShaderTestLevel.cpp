@@ -4,6 +4,7 @@
 #include "Plane.h"
 
 #include "JudgementCut.h"
+#include "ColorEffect.h"
 
 ShaderTestLevel::ShaderTestLevel() 
 {

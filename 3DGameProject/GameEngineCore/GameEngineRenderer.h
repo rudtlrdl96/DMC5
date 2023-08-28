@@ -39,6 +39,7 @@ public:
 	int IsNormal = 0;
 	float4 ScreenScale;
 	float4 Mouse;
+	float4 ClipColor = float4(-1.0f, -1.0f, -1.0f, 0.0f);
 };
 
 // Ό³Έν :
@@ -103,6 +104,11 @@ public:
 	inline void LightOff()
 	{
 		BaseValue.IsLight = false;
+	}
+
+	inline void SetClipColor(const float4& _ClipColor)
+	{
+		BaseValue.ClipColor = _ClipColor;
 	}
 
 

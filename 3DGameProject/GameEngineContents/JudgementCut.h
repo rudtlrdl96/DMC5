@@ -53,7 +53,7 @@ protected:
 	void Effect(GameEngineRenderTarget* _Target, float _DeltaTime) override;
 
 private:
-	std::shared_ptr<GameEngineRenderUnit> JudgementUnit;
+	std::shared_ptr<GameEngineRenderUnit> JudgementUnit = nullptr;
 
 	RenderBaseValue BaseValue = RenderBaseValue();
 	JudgementBuffer ShaderBuffer = JudgementBuffer();

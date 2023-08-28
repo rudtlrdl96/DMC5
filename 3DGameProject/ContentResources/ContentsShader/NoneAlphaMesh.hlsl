@@ -10,6 +10,7 @@ cbuffer RenderBaseValue : register(b10)
     int IsNormal = 0;
     float4 ScreenScale;
     float4 Mouse;
+    float4 ClipColor;
 };
 
 struct Input
@@ -55,13 +56,13 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
 {
     float4 Color = DiffuseTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
     
-    Color.a = 1.0f;
-    
-    if (Color.a <= 0.0f)
+    if (Color.x == ClipColor.x && Color.y == ClipColor.y && Color.z == ClipColor.z)
     {
         clip(-1);
     }
     
+    Color.a = 1.0f;
+        
     float4 ResultColor = Color;
     
     if (0 != IsLight)

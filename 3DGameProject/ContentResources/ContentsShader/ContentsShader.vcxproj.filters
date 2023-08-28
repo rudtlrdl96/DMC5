@@ -17,6 +17,7 @@
     </FxCompile>
     <FxCompile Include="NoneAlphaMeshAniTexture.hlsl" />
     <FxCompile Include="JudgementCutShader.hlsl" />
+    <FxCompile Include="ColorEffectShader.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">

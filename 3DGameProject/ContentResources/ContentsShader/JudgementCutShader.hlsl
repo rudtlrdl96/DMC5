@@ -19,16 +19,17 @@ OutPut JudgementCut_VS(Input _Value)
     return OutPutValue;
 }
 
-cbuffer RenderBaseValue : register(b11)
+cbuffer RenderBaseValue : register(b10)
 {
     float DeltaTime = 0.0f;
     float SumDeltaTime = 0.0f;
     int IsAnimation = 0;
-    int IsLight = 1;
+    int IsLight = 0;
     int IsNormal = 0;
     float4 ScreenScale;
     float4 Mouse;
-}
+    float4 ClipColor;
+};
 
 cbuffer JudgementCutValue : register(b0)
 {
@@ -40,8 +41,6 @@ cbuffer JudgementCutValue : register(b0)
 
 Texture2D DiffuseTex : register(t0);
 SamplerState WRAPSAMPLER : register(s0);
-StructuredBuffer<float4> Cutlines : register(t1);
-
 
 float GetXp(float4 Pos, float2 uv)
 {
@@ -118,7 +117,7 @@ float4 JudgementCut_PS(OutPut _Value) : SV_Target0
     }
     
     float4 TexColor = DiffuseTex.Sample(WRAPSAMPLER, resUv);
-        
+            
     for (int j = 0; j < LineCount; ++j)
     {
         float LineInterTime = j * LineInter;
@@ -131,7 +130,7 @@ float4 JudgementCut_PS(OutPut _Value) : SV_Target0
         TexColor = GetColor(resUv, ScreenScale.y * XP[j], LineThickness, TexColor);
     }
     
-    TexColor.a = 1.0f;
+    //TexColor.a = 1.0f;
     
     return TexColor;
 }
