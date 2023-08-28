@@ -123,12 +123,14 @@ void PhysicsLevel::advance(physx::PxReal _DeltaTime)
 	{
 		IsSimulation = false;
 	}
+	else
+	{
+		WaitTime -= StepSize;
 
-	WaitTime -= StepSize;
+		m_pScene->simulate(StepSize);
 
-	m_pScene->simulate(StepSize);
-
-	IsSimulation = true;
+		IsSimulation = true;
+	}
 }
 
 // 실제로 물리연산을 실행

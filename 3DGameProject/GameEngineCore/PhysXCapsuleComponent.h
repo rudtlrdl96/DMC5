@@ -17,16 +17,37 @@ public:
 	PhysXCapsuleComponent& operator=(const PhysXCapsuleComponent& _Other) = delete;
 	PhysXCapsuleComponent& operator=(PhysXCapsuleComponent&& _Other) noexcept = delete;
 
-	physx::PxRigidDynamic* CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale = physx::PxVec3(2.0f), float4 _GeoMetryRotation = { 0.0f , 0.0f });
+	// Component 생성
+	void CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale = physx::PxVec3(2.0f), float4 _GeoMetryRotation = { 0.0f , 0.0f });
 
 	physx::PxRigidDynamic* GetDynamic()
 	{
 		return m_pDynamic;
 	}
 
-	void SetMoveSpeed(float4 _MoveSpeed);
+	void SetclearForce()
+	{
+		m_pDynamic->clearForce();
+	}
 
-	void SetMoveJump();
+	void SetWorldPosition(float4 _Value);
+
+	void SetWorldRotation(float4 _Value);
+
+	inline float4 GetWorldPosition()
+	{
+		return float4(m_pDynamic->getGlobalPose().p.x, m_pDynamic->getGlobalPose().p.y, m_pDynamic->getGlobalPose().p.z);
+	}
+
+	inline float4 GetWorldRotation()
+	{
+		return float4(m_pDynamic->getGlobalPose().q.x, m_pDynamic->getGlobalPose().q.y, m_pDynamic->getGlobalPose().q.z);
+	}
+
+	void SetMove(float4 _MoveSpeed);
+
+	void SetJump(float _JumpPower);
+
 	void SetMoveDive(float _Rot);
 
 	// RigidDynamic을 CCT에서 해제하는 함수
@@ -51,10 +72,7 @@ public:
 		m_pDynamic->addForce(physx::PxVec3(0.0f, 0.01f, 0.0f), physx::PxForceMode::eIMPULSE);
 	}
 
-	inline float4 GetWorldPosition()
-	{
-		return float4(m_pDynamic->getGlobalPose().p.x, m_pDynamic->getGlobalPose().p.y, m_pDynamic->getGlobalPose().p.z);
-	}
+
 
 	void SetPlayerStartPos(float4 _Pos);
 
@@ -84,9 +102,6 @@ public:
 		physx::PxVec3 Vec3 = m_pDynamic->getLinearVelocity();
 		return float4{ Vec3.x, Vec3.y, Vec3.z };
 	}
-
-	//회전 움직임 함수
-	void SetChangedRot(float4 _Rot);
 
 	//중력끄기
 	void TurnOffGravity()
@@ -128,6 +143,7 @@ public:
 		//m_pFaceshape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::PlayerFace), 0, 0, 0));
 		//m_pHeadshape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::PlayerHead), 0, 0, 0));
 	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

@@ -59,14 +59,14 @@ void TestObject::Start()
 	float4 RenderScale = Renderer->GetFBXMesh()->GetRenderUnit(0)->BoundScaleBox;
 	float4 MeshScale = Renderer->GetMeshScale();
 
-	
-
 	physx::PxVec3 VecSclae = { RenderScale.x, RenderScale.y, RenderScale.z };
 
 	float4 world = GetTransform()->GetWorldScale();
 	float4 local = GetTransform()->GetLocalScale();
 
 	Component = CreateComponent<PhysXCapsuleComponent>();
+
+	//                          정지  운동  반발
 	Component->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
 	Component->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), VecSclae * 0.1f);
 
@@ -118,112 +118,61 @@ void TestObject::Update(float _DeltaTime)
 
 void TestObject::UserUpdate(float _DeltaTime)
 {
-	float Speed = 200.0f;
-	physx::PxTransform PhyTF = Component->GetDynamic()->getGlobalPose();
-	float4 MoveDir = float4::ZERO;
-	float Dir = Speed * _DeltaTime;
-	
-	if (true == GameEngineInput::IsPress("MoveLeft"))
-	{
-		PhyTF.p.x -= Dir;
-		MoveDir.x -= Dir;
-
-		Component->GetDynamic()->setGlobalPose(PhyTF);
-	}
-	if (true == GameEngineInput::IsPress("MoveRight"))
-	{
-		PhyTF.p.x += Dir;
-		MoveDir.x += Dir;
-
-		Component->GetDynamic()->setGlobalPose(PhyTF);
-	}
-	if (true == GameEngineInput::IsPress("MoveUp"))
-	{
-		PhyTF.p.y += Dir;
-		MoveDir.y += Dir;
-
-		Component->GetDynamic()->setGlobalPose(PhyTF);
-	}
-	if (true == GameEngineInput::IsPress("MoveDown"))
-	{
-		PhyTF.p.y -= Dir;
-		MoveDir.y -= Dir;
-
-		Component->GetDynamic()->setGlobalPose(PhyTF);
-	}
-	if (true == GameEngineInput::IsPress("MoveForward"))
-	{
-		PhyTF.p.z += Dir;
-		MoveDir.z += Dir;
-
-		Component->GetDynamic()->setGlobalPose(PhyTF);
-	}
-	if (true == GameEngineInput::IsPress("MoveBack"))
-	{
-		PhyTF.p.z -= Dir;
-		MoveDir.z -= Dir;
-
-		Component->GetDynamic()->setGlobalPose(PhyTF);
-	}
-	if (true == GameEngineInput::IsPress("RotateRight"))
-	{
-		//Component->GetDynamic()->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, false);
-		//Component->GetDynamic()->addTorque({0.0f, 100.0f, 0.0f});
-
-		Rot.y += Dir;
-
-		Component->SetChangedRot(Rot);
-
-		//float4 Qurt = float4{ 0.0f, 1.f, 0.0f }.DegreeRotationToQuaternionReturn();
-
-		//PhyTF.q.y += Qurt.y;
-
-		//Component->GetDynamic()->setGlobalPose(PhyTF);
-	}
-	if (true == GameEngineInput::IsPress("RotateLeft"))
-	{
-		Rot.y -= Dir;
-
-		Component->SetChangedRot(Rot);
-
-		//Component->GetDynamic()->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, false);
-		//Component->GetDynamic()->addTorque({ 0.0f, -100.0f, 0.0f });
-		//Component->GetDynamic()->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, false);
-
-		//float4 Qurt = float4{ 0.0f, 1.f, 0.0f }.DegreeRotationToQuaternionReturn();
-
-		//PhyTF.q.y -= Qurt.y;
-
-		//Component->GetDynamic()->setGlobalPose(PhyTF);
-	}
-
-	if (true == GameEngineInput::IsDown("Jump"))
-	{
-		//PhyTF.p.y += 10.0f;
-		//MoveDir.y += 10.0f;
-
-		//Component->GetDynamic()->setGlobalPose(PhyTF);
-		Component->GetDynamic()->clearForce();
-		Component->GetDynamic()->addForce(physx::PxVec3(0.0f, 100.0f, 0.0f), physx::PxForceMode::eIMPULSE);
-	}
-
 	float4 ActorPos = GetTransform()->GetWorldPosition();
 	float CameraPosyf = ActorPos.y + 40.0f;
 	float CameraPoszf = ActorPos.z - 100.0f;
 
 	GetLevel()->GetCamera(0)->GetTransform()->SetWorldPosition(float4{ ActorPos.x, CameraPosyf, CameraPoszf });
 
-	float4 ASDF = Component->GetTransform()->GetWorldPosition();
-	float4 FDSA = Component->GetTransform()->GetLocalPosition();
-	float4 REWQ = Component->GetTransform()->GetWorldScale();
-	float4 QWER = Component->GetTransform()->GetLocalScale();
+	physx::PxTransform PhyTF = Component->GetDynamic()->getGlobalPose();
+	float4 MoveDir = float4::ZERO;
+	
+	float Set = 1.f;
 
-	float4 sf = Renderer->GetTransform()->GetWorldPosition();
-	float4 sd = Renderer->GetTransform()->GetLocalPosition();
-	float4 sff = Renderer->GetTransform()->GetWorldScale();
-	float4 sfg = Renderer->GetTransform()->GetLocalScale();
+	if (true == GameEngineInput::IsPress("MoveLeft"))
+	{
+		MoveDir.x -= Set;
+	}
+	if (true == GameEngineInput::IsPress("MoveRight"))
+	{
+		MoveDir.x += Set;
+	}
+	if (true == GameEngineInput::IsPress("MoveUp"))
+	{
+		MoveDir.y += Set;
+	}
+	if (true == GameEngineInput::IsPress("MoveDown"))
+	{
+		MoveDir.y -= Set;
+	}
+	if (true == GameEngineInput::IsPress("MoveForward"))
+	{
+		MoveDir.z += Set;
+	}
+	if (true == GameEngineInput::IsPress("MoveBack"))
+	{
+		MoveDir.z -= Set;
+		
+	}
+	if (true == GameEngineInput::IsPress("RotateRight"))
+	{
+		Rot.y += Set;
+	}
+	if (true == GameEngineInput::IsPress("RotateLeft"))
+	{
+		Rot.y -= Set;
+	}
 
-	int a = 0;
+	if (true == GameEngineInput::IsDown("Jump"))
+	{
+		Component->SetJump(100.0f);
+	}
+
+	float Speed = 200.0f;
+	float Dir = Speed * _DeltaTime;
+
+	Component->SetWorldPosition(MoveDir.NormalizeReturn() * 300.0f * _DeltaTime);
+	Component->SetWorldRotation(Rot);
 }
 
 void TestObject::ServerUpdate(float _DeltaTime)

@@ -12,6 +12,7 @@
 #include "AnimationEvent.h"
 #include "NetworkManager.h"
 #include <GameEngineCore/PhysXCapsuleComponent.h>
+
 BasePlayerActor* BasePlayerActor::Instance = nullptr;
 
 BasePlayerActor::BasePlayerActor()
@@ -39,12 +40,12 @@ void BasePlayerActor::LookDir(const float4& _LookDir)
 	if (Cross.y == -1.0f)
 	{
 		Rot.y += 180;
-		PhysXCapsule->SetChangedRot(Rot);
+		PhysXCapsule->SetWorldRotation(Rot);
 	}
 	else
 	{
 		Rot.y += -GameEngineMath::RadToDeg * Dot;
-		PhysXCapsule->SetChangedRot(Rot);
+		PhysXCapsule->SetWorldRotation(Rot);
 	}
 	return;
 
