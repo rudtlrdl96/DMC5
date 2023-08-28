@@ -22,7 +22,6 @@ void StartStageLevel::Start()
 	StageBaseLevel::Start();
 
 	TempData.MapDatas.resize(1);
-	TempData.StageID = 0;
 	TempData.SkyboxFileName = "SkyBox.fbx";
 	TempData.MapDatas[0].MeshFileName = "Location2.fbx";
 	TempData.MapDatas[0].FieldMapPosition = float4::ZERO;
@@ -40,7 +39,7 @@ void StartStageLevel::Start()
 			TempData.MapDatas[i].ColDatas[j].Scale = { 100, 100, 100, 1 };
 			TempData.MapDatas[i].ColDatas[j].Rot = { 20, 20, 20, 1 };
 			TempData.MapDatas[i].ColDatas[j].Type = ColType::OBBBOX2D;
-			TempData.MapDatas[i].ColDatas[j].ColOrder = 0;
+			TempData.MapDatas[i].ColDatas[j].ColOrder = CollisionOrder::Wall;
 		}
 	}
 }
@@ -49,7 +48,10 @@ void StartStageLevel::Update(float _DeltaTime)
 {
 	StageBaseLevel::Update(_DeltaTime);
 
-	
+	if (GameEngineInput::IsDown("StageTestKey"))
+	{
+		TestLoad();
+	}
 }
 
 void StartStageLevel::LevelChangeStart()
@@ -85,6 +87,30 @@ void StartStageLevel::LevelChangeStart()
 	CreateActor<FreeCameraActor>();
 
 	CreateStage(TempData);
+	//AllStageDatas.push_back(TempData);
+}
+
+void StartStageLevel::TestSave()
+{
+	GameEngineSerializer SaveSerializer = GameEngineSerializer();
+	StageData::WriteAllStageData(SaveSerializer, AllStageDatas);
+
+	GameEnginePath filepath;
+	filepath.SetPath("..//ContentData//StageData//TestData.txt");
+
+	GameEngineFile file = GameEngineFile(std::string_view(filepath.GetFullPath()));
+	file.SaveBin(SaveSerializer);
+}
+
+void StartStageLevel::TestLoad()
+{
+	GameEngineSerializer LoadSerializer = GameEngineSerializer();
+	
+	std::string_view Temp = "..//ContentData//StageData//TestData.txt";
+	GameEngineFile File(Temp);
+	File.LoadBin(LoadSerializer);
+
+	StageData::ReadAllStageData(LoadSerializer, AllStageDatas);
 }
 
 

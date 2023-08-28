@@ -1,5 +1,5 @@
 #pragma once
-#include <GameEngineCore/GameEngineTransform.h>
+#include "ContentsEnum.h"
 
 class FieldMapColData
 {
@@ -8,21 +8,31 @@ public:
 	float4 Scale = float4::ZERONULL;
 	float4 Rot = float4::ZERONULL;
 	ColType Type = ColType::MAX;
-	int ColOrder = -1;
+	CollisionOrder ColOrder = CollisionOrder::Null;
+
+	void WriteFieldMapColData(GameEngineSerializer& _Serializer);
+	void ReadFieldMapColData(GameEngineSerializer& _Serializer);
 };
 
 class FieldMapData
 {
 public:
-	std::string MeshFileName;
+	std::string MeshFileName = "\0";
 	std::vector<FieldMapColData> ColDatas;
 	float4 FieldMapPosition = float4::ZERONULL;
+
+	void WriteFieldMapData(GameEngineSerializer& _Serializer);
+	void ReadFieldMapData(GameEngineSerializer& _Serializer);
 };
 
 class StageData
 {
 public:
-	int StageID = -1;
 	std::vector<FieldMapData> MapDatas;
 	std::string SkyboxFileName = "\0";
+
+	void WriteStageData(GameEngineSerializer& _Serializer);
+	void ReadStageData(GameEngineSerializer& _Serializer);
+	static void WriteAllStageData(GameEngineSerializer& _Serializer, std::vector<StageData>& _AllData);
+	static void ReadAllStageData(GameEngineSerializer& _Serializer, std::vector<StageData>& _AllData);
 };

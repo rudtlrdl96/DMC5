@@ -20,5 +20,7 @@ protected:
 	void LevelChangeStart() override;
 
 private:
+	void TestSave();
+	void TestLoad();
 };
 

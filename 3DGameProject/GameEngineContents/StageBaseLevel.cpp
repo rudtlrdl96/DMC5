@@ -4,6 +4,7 @@
 #include "SkyBox.h"
 
 using namespace std;
+std::vector<StageData> StageBaseLevel::AllStageDatas;
 
 StageBaseLevel::StageBaseLevel()
 {
@@ -15,6 +16,10 @@ StageBaseLevel::~StageBaseLevel()
 
 void StageBaseLevel::Start()
 {
+	if (!GameEngineInput::IsKey("StageTestKey"))
+	{
+		GameEngineInput::CreateKey("StageTestKey", 'M');
+	}
 }
 
 void StageBaseLevel::Update(float _DeltaTime)

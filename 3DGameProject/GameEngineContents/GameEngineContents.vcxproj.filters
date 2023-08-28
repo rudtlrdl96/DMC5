@@ -629,15 +629,6 @@
     <Filter Include="Actor\Enemy\EnemySpawn">
       <UniqueIdentifier>{4aeb497a-468f-4b41-8ab2-3ddcb2d4576b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Actor\Player">
-      <UniqueIdentifier>{c973e3f3-8c9d-4b9d-8693-81925f490cb5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Actor\Player\Base">
-      <UniqueIdentifier>{294df9c9-b6c4-4f7c-82b0-f109225ae62c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Actor\Player\Character">
-      <UniqueIdentifier>{b31d1a84-2550-4109-b55e-e45fed476b1f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Actor\Test">
       <UniqueIdentifier>{839ddcf0-fa0f-4e30-a291-488d8933e823}</UniqueIdentifier>
     </Filter>
@@ -718,6 +709,15 @@
     </Filter>
     <Filter Include="UI\Actor\MenuUI\MenuScreen">
       <UniqueIdentifier>{4e87bf65-3b70-4d0f-9346-7fbf1154d1c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Player">
+      <UniqueIdentifier>{c973e3f3-8c9d-4b9d-8693-81925f490cb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Player\Base">
+      <UniqueIdentifier>{294df9c9-b6c4-4f7c-82b0-f109225ae62c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Player\Character">
+      <UniqueIdentifier>{b31d1a84-2550-4109-b55e-e45fed476b1f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

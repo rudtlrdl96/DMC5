@@ -51,7 +51,7 @@ void ContentsCore::GameStart()
 	//
 	GameEngineCore::CreateLevel<StageEditLevel>();
 
-	GameEngineCore::ChangeLevel("ShaderTestLevel");
+	GameEngineCore::ChangeLevel("MainLevel");
 }
 
 void ContentsCore::GameEnd() 

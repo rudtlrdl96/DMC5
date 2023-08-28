@@ -56,6 +56,7 @@ enum class ActorOrder
 
 enum class CollisionOrder
 {
+	Null = -1,
 	Player,
 	Enemy,
 	Wall,
