@@ -91,7 +91,7 @@ void TestObject::Start()
 	//	Renderer->SetText("aaaaaaaaaa");
 	//}
 
-	Component->GetDynamic()->setMass(5.0f);
+	Component->GetDynamic()->setMass(1.0f);
 	Component->SetSpeedLimitValue(180.0f);
 	//Component->GetDynamic()->setLinearDamping(physx::PxReal(1.f));
 	//Component->GetDynamic()->setMaxAngularVelocity(physx::PxReal(10.0f));
@@ -117,8 +117,17 @@ void TestObject::Update(float _DeltaTime)
 	}
 }
 
+float Delta = 0.0f;
+
 void TestObject::UserUpdate(float _DeltaTime)
 {
+	Delta += _DeltaTime;
+
+	if (2.0f <= Delta)
+	{
+		Component->TurnOffGravity();
+	}
+
 	float4 ActorPos = GetTransform()->GetWorldPosition();
 	float CameraPosyf = ActorPos.y + 40.0f;
 	float CameraPoszf = ActorPos.z - 100.0f;
@@ -167,15 +176,13 @@ void TestObject::UserUpdate(float _DeltaTime)
 	if (true == GameEngineInput::IsDown("Jump"))
 	{
 		Component->SetclearForce();
-		Component->SetJump(100.0f);
+		Component->SetJump(300.0f);
 	}
 
 	float Speed = 200.0f;
 	float Dir = Speed * _DeltaTime;
 
 	Component->SetMove(MoveDir.NormalizeReturn() * 50000.0f * _DeltaTime);
-	//Component->GetDynamic()->setLinearVelocity({ MoveDir.x, 0.0f, MoveDir.z });
-	//Component->GetDynamic()->setAngularVelocity({0.0f, Rot.y, 0.0f });
 	Component->SetWorldRotation(Rot);
 
 	float4 asef = Component->GetDynamicVelocity();

@@ -64,22 +64,28 @@ void PhysXBoxComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysi
 	m_pShape->setLocalPose(physx::PxTransform(Pivot));
 
 	//충돌할때 필요한 필터 데이터
-	if (IsObstacle == true)
-	{
-		m_pShape->setSimulationFilterData
-		(
-			physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle)
+	//if (IsObstacle == true)
+	//{
+	//	m_pShape->setSimulationFilterData
+	//	(
+	//		physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle)
+	//		, static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), 0, 0)
+	//	);
+	//}
+	//else if (IsGround == true)
+	//{
+	//	m_pShape->setSimulationFilterData
+	//	(
+	//		physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::Ground)
+	//		, static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), 0, 0)
+	//	);
+	//}
+
+	m_pShape->setSimulationFilterData
+	(
+		physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::Ground)
 			, static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), 0, 0)
-		);
-	}
-	else if (IsGround == true)
-	{
-		m_pShape->setSimulationFilterData
-		(
-			physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::Ground)
-			, static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), 0, 0)
-		);
-	}
+	);
 
 	//콜백피벗 설정
 	m_pShape->setLocalPose(physx::PxTransform(Pivot));

@@ -790,6 +790,9 @@
     <ClInclude Include="GameEngineLight.h">
       <Filter>Object\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="CustomCallback.h">
+      <Filter>Physics\common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -991,6 +994,9 @@
     </ClCompile>
     <ClCompile Include="GameEngineLight.cpp">
       <Filter>Object\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomCallback.cpp">
+      <Filter>Physics\common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -171,6 +171,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="CustomCallback.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameEngineBlend.h">
       <SubType>
       </SubType>
@@ -591,6 +595,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BlurEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="CustomCallback.cpp">
       <SubType>
       </SubType>
     </ClCompile>

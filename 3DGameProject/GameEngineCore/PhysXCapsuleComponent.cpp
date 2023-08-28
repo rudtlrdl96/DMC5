@@ -109,17 +109,17 @@ void PhysXCapsuleComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxP
 	m_pShape->setLocalPose(relativePose);
 
 	//충돌할때 필요한 필터 데이터
-	//m_pShape->setSimulationFilterData
-	//(
-	//	physx::PxFilterData
-	//	(
-	//		static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle),
-	//		static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), 
-	//		0,
-	//		0
-	//	)
-	//);
-	//m_pShape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), static_cast<physx::PxU32>(PhysXFilterGroup::Ground), static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle), 0));
+	m_pShape->setSimulationFilterData
+	(
+		physx::PxFilterData
+		(
+			static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle),
+			static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), 
+			0,
+			0
+		)
+	);
+	m_pShape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), static_cast<physx::PxU32>(PhysXFilterGroup::Ground), static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle), 0));
 
 	m_pShape->setContactOffset(0.2f);
 

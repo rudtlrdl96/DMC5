@@ -1,6 +1,8 @@
 #pragma once
 
+#include "PhysXDefault.h"
 #include "ThirdParty/PhysX_4_1/inc/PhysX/foundation/PxErrorCallback.h"
+#include "CustomCallback.h"
 
 // Ό³Έν :
 class PhysicsLevel
@@ -52,7 +54,6 @@ protected:
 
 	void CreatePhysicsX();
 	void Simulate(float _DeltaTime);
-	void FetchResults();
 	void ReleasePhysicsX();
 
 	bool IsPhysics = false;
@@ -72,8 +73,12 @@ private:
 	physx::PxMaterial* m_pMaterial = nullptr;
 	physx::PxCooking* m_pCooking = nullptr;
 
+	CustomCallback* CustomCallbackEvent;
+
 	float WaitTime = 0.0f;
 	float StepSize = 0;
+
+	void advance(physx::PxReal _DeltaTime);
 
 };
 

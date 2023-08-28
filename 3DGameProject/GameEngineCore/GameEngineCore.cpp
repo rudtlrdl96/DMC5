@@ -137,6 +137,7 @@ void GameEngineCore::EngineUpdate()
 	}
 
 	float TimeDeltaTime = GameEngineTime::GlobalTime.TimeCheck();
+	MainLevel->Simulate(TimeDeltaTime);
 
 	if (TimeDeltaTime > 1 / 30.0f)
 	{
@@ -146,8 +147,6 @@ void GameEngineCore::EngineUpdate()
 	GameEngineInput::Update(TimeDeltaTime);
 	GameEngineSound::SoundUpdate();
 
-	MainLevel->FetchResults();
-
 	MainLevel->TimeEvent.Update(TimeDeltaTime);
 	MainLevel->AccLiveTime(TimeDeltaTime);
 	MainLevel->Update(TimeDeltaTime);
@@ -155,8 +154,6 @@ void GameEngineCore::EngineUpdate()
 	MainLevel->NetworkUpdate(TimeDeltaTime);
 
 	GameEngineVideo::VideoState State = GameEngineVideo::GetCurState();
-
-	MainLevel->Simulate(TimeDeltaTime);
 
 	if (State != GameEngineVideo::VideoState::Running)
 	{

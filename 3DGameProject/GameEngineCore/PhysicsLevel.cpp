@@ -13,39 +13,70 @@ PhysicsLevel::~PhysicsLevel()
 {
 }
 
-physx::PxFilterFlags contactReportFilterShader
-(
-	physx::PxFilterObjectAttributes attributes0,
-	physx::PxFilterData filterData0,
-	physx::PxFilterObjectAttributes attributes1,
-	physx::PxFilterData filterData1,
-	physx::PxPairFlags& pairFlags,
-	const void* constantBlock, physx::PxU32 constantBlockSize
-)
-{
-	PX_UNUSED(attributes0);
-	PX_UNUSED(attributes1);
-	PX_UNUSED(filterData0);
-	PX_UNUSED(filterData1);
-	PX_UNUSED(constantBlockSize);
-	PX_UNUSED(constantBlock);
+//physx::PxFilterFlags contactReportFilterShader
+//(
+//	physx::PxFilterObjectAttributes attributes0,
+//	physx::PxFilterData filterData0,
+//	physx::PxFilterObjectAttributes attributes1,
+//	physx::PxFilterData filterData1,
+//	physx::PxPairFlags& pairFlags,
+//	const void* constantBlock, physx::PxU32 constantBlockSize
+//)
+//{
+//	PX_UNUSED(attributes0);
+//	PX_UNUSED(attributes1);
+//	PX_UNUSED(filterData0);
+//	PX_UNUSED(filterData1);
+//	PX_UNUSED(constantBlockSize);
+//	PX_UNUSED(constantBlock);
+//
+//	if (physx::PxFilterObjectIsTrigger(attributes0) || physx::PxFilterObjectIsTrigger(attributes1))
+//	{
+//		pairFlags = physx::PxPairFlag::eNOTIFY_TOUCH_FOUND | physx::PxPairFlag::eNOTIFY_TOUCH_LOST | physx::PxPairFlag::eSOLVE_CONTACT | physx::PxPairFlag::eDETECT_DISCRETE_CONTACT;
+//		return physx::PxFilterFlag::eDEFAULT;
+//	}
+//
+//	// all initial and persisting reports for everything, with per-point data
+//	pairFlags = physx::PxPairFlag::eSOLVE_CONTACT
+//		| physx::PxPairFlag::eDETECT_DISCRETE_CONTACT
+//		| physx::PxPairFlag::eNOTIFY_TOUCH_FOUND
+//		| physx::PxPairFlag::eNOTIFY_TOUCH_PERSISTS
+//		| physx::PxPairFlag::eNOTIFY_TOUCH_LOST
+//		| physx::PxPairFlag::eNOTIFY_CONTACT_POINTS;
+//
+//	return physx::PxFilterFlag::eDEFAULT;
+//}
 
+physx::PxFilterFlags CustomFilterShader(physx::PxFilterObjectAttributes attributes0, physx::PxFilterData filterData0, physx::PxFilterObjectAttributes attributes1, physx::PxFilterData filterData1, physx::PxPairFlags& pairFlags, const void* constantBlock, physx::PxU32 constantBlockSize)
+{
+	// SampleSubmarineFilterShader로부터 가져옴
+	// 
+	// let triggers through
 	if (physx::PxFilterObjectIsTrigger(attributes0) || physx::PxFilterObjectIsTrigger(attributes1))
 	{
-		pairFlags = physx::PxPairFlag::eNOTIFY_TOUCH_FOUND | physx::PxPairFlag::eNOTIFY_TOUCH_LOST | physx::PxPairFlag::eSOLVE_CONTACT | physx::PxPairFlag::eDETECT_DISCRETE_CONTACT;
+		pairFlags = physx::PxPairFlag::eTRIGGER_DEFAULT | physx::PxPairFlag::eNOTIFY_TOUCH_PERSISTS;
 		return physx::PxFilterFlag::eDEFAULT;
 	}
-
-	// all initial and persisting reports for everything, with per-point data
-	pairFlags = physx::PxPairFlag::eSOLVE_CONTACT
-		| physx::PxPairFlag::eDETECT_DISCRETE_CONTACT
-		| physx::PxPairFlag::eNOTIFY_TOUCH_FOUND
-		| physx::PxPairFlag::eNOTIFY_TOUCH_PERSISTS
-		| physx::PxPairFlag::eNOTIFY_TOUCH_LOST
-		| physx::PxPairFlag::eNOTIFY_CONTACT_POINTS;
+	//generate contacts for all that were not filtered above
+	pairFlags = physx::PxPairFlag::eNOTIFY_TOUCH_FOUND | physx::PxPairFlag::eNOTIFY_TOUCH_PERSISTS | physx::PxPairFlag::eNOTIFY_TOUCH_LOST |
+		physx::PxPairFlag::eDETECT_DISCRETE_CONTACT | physx::PxPairFlag::eSOLVE_CONTACT;
 
 	return physx::PxFilterFlag::eDEFAULT;
+
+	//if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+	//{
+	//	pairFlags |= physx::PxPairFlag::eNOTIFY_CONTACT_POINTS;
+	//	pairFlags |= physx::PxPairFlag::eNOTIFY_TOUCH_FOUND;
+
+	//}
+
+	//if ((filterData0.word0 & filterData1.word2) && (filterData1.word0 & filterData0.word2))
+	//{
+	//	pairFlags |= physx::PxPairFlag::eNOTIFY_CONTACT_POINTS;
+	//	pairFlags |= physx::PxPairFlag::eMODIFY_CONTACTS;
+	//}
 }
+
 
 void PhysicsLevel::CreatePhysicsX()
 {
@@ -89,16 +120,22 @@ void PhysicsLevel::CreatePhysicsX()
 
 	physx::PxSceneDesc SceneDesc(m_pPhysics->getTolerancesScale());
 
-	SceneDesc.gravity = physx::PxVec3(0.0f, -4.45f, 0.0f);
+	SceneDesc.gravity = physx::PxVec3(0.0f, -400.0f, 0.0f);
 	m_pDispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 	SceneDesc.cpuDispatcher = m_pDispatcher;
-	SceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
+	// EventCallback 세팅
+	CustomCallbackEvent = new CustomCallback();
+	SceneDesc.simulationEventCallback = CustomCallbackEvent;
+	// callback을 호출 처리할 filtershader 세팅
+	SceneDesc.filterShader = CustomFilterShader;
 
 	m_pScene = m_pPhysics->createScene(SceneDesc);
 	if (!m_pScene)
 	{
 		MsgAssert("PxScene 생성 실패");
 	}
+
+	SceneDesc.filterShader = CustomFilterShader;
 
 	physx::PxPvdSceneClient* pPvdClient = m_pScene->getScenePvdClient();
 	if (pPvdClient)
@@ -121,54 +158,59 @@ void PhysicsLevel::CreatePhysicsX()
 	//Scene_->addAggregate(*MapAggregate_);
 }
 
+void PhysicsLevel::advance(physx::PxReal _DeltaTime)
+{
+	WaitTime += _DeltaTime;
+	StepSize = 1.0f / 60.0f;
+
+	if (WaitTime < StepSize)
+	{
+		IsSimulation = false;
+	}
+	else
+	{
+		WaitTime -= StepSize;
+
+		m_pScene->simulate(StepSize);
+
+		IsSimulation = true;
+	}
+}
+
 // 실제로 물리연산을 실행
 void PhysicsLevel::Simulate(float _DeltaTime)
 {
-	if (nullptr == m_pPhysics || true == IsPhysics)
+	if (nullptr == m_pPhysics)
 	{
 		return;
 	}
 
-	//WaitTime += _DeltaTime;
-
-	//if (WaitTime < StepSize)
-	//{
-	//	IsSimulation = false;
-	//	return;
-	//}
-	//else
-	//{
-	//	WaitTime -= StepSize;
-	//	
-	//	IsSimulation = true;
-	//	return;
-	//}
-
-	m_pScene->simulate(StepSize);
-
-	IsSimulation = true;
-}
-
-void PhysicsLevel::FetchResults()
-{
-	if (false == IsSimulation || nullptr == m_pScene)
+	if (true == IsPhysics)
 	{
 		return;
 	}
 
-	m_pScene->fetchResults(true);
+	advance(_DeltaTime);
 
-	IsSimulation = false;
+	if (true == IsSimulation)
+	{
+		m_pScene->fetchResults(true);
+	}
 }
 
 // 메모리제거
 void PhysicsLevel::ReleasePhysicsX()
 {
+	if (nullptr != CustomCallbackEvent)
+	{
+		delete CustomCallbackEvent;
+		CustomCallbackEvent = nullptr;
+	}
 	if (nullptr != m_pCooking)
 	{
 		PX_RELEASE(m_pCooking);
 	}
-	if (nullptr != m_pScene && false == m_pScene->fetchResults(false))
+	if (nullptr != m_pScene)
 	{
 		PX_RELEASE(m_pScene);
 	}

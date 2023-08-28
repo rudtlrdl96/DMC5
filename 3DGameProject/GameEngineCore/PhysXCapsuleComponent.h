@@ -117,6 +117,16 @@ public:
 		);
 	}
 
+	inline void IsGround_false()
+	{
+		IsGround = false;
+	}
+
+	inline void IsGround_true()
+	{
+		IsGround = true;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -148,5 +158,6 @@ private:
 	physx::PxVec3 TargetVec3;
 	physx::PxTransform RecentTransform;
 
+	bool IsGround = false;
 };
 
