@@ -19,6 +19,7 @@ public:
 	BasePlayerActor& operator=(BasePlayerActor&& _Other) noexcept = delete;
 	
 	void LookDir(const float4& _LookDir);
+	void LookTarget(const float4& _Target);
 	GameEngineTransform* LockOnEnemyTransform = nullptr;
 
 protected:

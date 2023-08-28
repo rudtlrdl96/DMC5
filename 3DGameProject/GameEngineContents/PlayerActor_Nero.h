@@ -18,9 +18,10 @@ enum FSM_State_Nero
 
 
 
-	BR_Switch_Idle_to_Lockon,
-	BR_Switch_Lockon_to_Idle,
-	BR_Lockon_Front,
+	BR_Switch_Idle_to_Lockon,	// 기본자세에서 락온으로
+	BR_Switch_Lockon_to_Idle,	// 락온에서 기본자세로
+	BR_Lockon_Front,			// 정면 락온
+	BR_Strafe,		// 락온하며 움직임
 };
 
 class PlayerActor_Nero : public BasePlayerActor
@@ -55,6 +56,7 @@ private:
 	float MoveSpeed = 500.0f;
 
 	bool InputCheck = false;
+	char CurDir = 'n';
 
 	void RedQueenOn();
 	void RedQueenOff();

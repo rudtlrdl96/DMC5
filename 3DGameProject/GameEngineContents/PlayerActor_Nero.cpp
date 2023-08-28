@@ -4,11 +4,11 @@
 #include <GameEngineCore/PhysXCapsuleComponent.h>
 #include "AnimationEvent.h"
 #include "PlayerController.h"
-PlayerActor_Nero::PlayerActor_Nero() 
+PlayerActor_Nero::PlayerActor_Nero()
 {
 }
 
-PlayerActor_Nero::~PlayerActor_Nero() 
+PlayerActor_Nero::~PlayerActor_Nero()
 {
 }
 
@@ -45,7 +45,7 @@ void PlayerActor_Nero::Start()
 				std::bind(&PlayerActor_Nero::BlueRoseOn, this),
 				std::bind(&PlayerActor_Nero::WeaponIdle, this)
 			},
-			.CallBacks_int = { 
+			.CallBacks_int = {
 				std::bind(&GameEngineFSM::ChangeState, &FSM, std::placeholders::_1)
 			}
 
@@ -59,7 +59,7 @@ void PlayerActor_Nero::Start()
 		* 콜백void = 3 : 손에 블루로즈
 		* 콜백void = 4 : WeaponIdle
 		* 콜백 int = 0 : FSM변경
-		* 
+		*
 		*/
 
 		Renderer->GetAllRenderUnit()[0][12]->Off();	// 버스터 암
@@ -221,6 +221,7 @@ void PlayerActor_Nero::Start()
 		FSM.CreateState({ .StateValue = FSM_State_Nero::BR_Switch_Idle_to_Lockon,
 			.Start = [=] {
 				WeaponIdle();
+				LookTarget(LockOnEnemyTransform->GetWorldPosition());
 				Renderer->ChangeAnimation("pl0000_BR_Switch_Idle_to_Lockon");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -228,7 +229,7 @@ void PlayerActor_Nero::Start()
 
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
-					//FSM.ChangeState(FSM_State_Nero::Walk);
+					FSM.ChangeState(FSM_State_Nero::BR_Strafe);
 					return;
 				}
 
@@ -248,15 +249,85 @@ void PlayerActor_Nero::Start()
 				Renderer->ChangeAnimation("pl0000_BR_Lockon_Front");
 			},
 			.Update = [=](float _DeltaTime) {
-				if (false == IsLockOn)
+				if (true == Controller->GetLockOnFree())
 				{
 					FSM.ChangeState(FSM_State_Nero::BR_Switch_Lockon_to_Idle);
+					return;
 				}
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					FSM.ChangeState(FSM_State_Nero::BR_Strafe);
+					return;
+				}
+				LookTarget(LockOnEnemyTransform->GetWorldPosition());
 			},
 			.End = [=] {
 
 			}
 			});
+
+		FSM.CreateState({ .StateValue = FSM_State_Nero::BR_Strafe,
+			.Start = [=] {
+				BlueRoseOn();
+				CurDir = 'n';
+			},
+			.Update = [=](float _DeltaTime) {
+				if (true == Controller->GetLockOnFree())
+				{
+					FSM.ChangeState(FSM_State_Nero::BR_Switch_Lockon_to_Idle);
+					return;
+				}
+				if (Controller->GetMoveVector() == float4::ZERO)
+				{
+					FSM.ChangeState(FSM_State_Nero::BR_Lockon_Front);
+					return;
+				}
+
+				LookTarget(LockOnEnemyTransform->GetWorldPosition());
+
+				physx::PxTransform PhyTF = PhysXCapsule->GetDynamic()->getGlobalPose();
+				float4 MoveDir = Controller->GetMoveVector() * MoveSpeed * _DeltaTime;
+				PhyTF.p.x += MoveDir.x;
+				PhyTF.p.z += MoveDir.z;
+				PhysXCapsule->GetDynamic()->setGlobalPose(PhyTF);
+
+				char NewDir = Controller->MoveVectorToChar(Controller->GetMoveVector());
+				if (CurDir == NewDir) { return; }
+				CurDir = NewDir;
+				switch (CurDir)
+				{
+				case '8':
+					Renderer->ChangeAnimation("pl0000_Strafe_F_Loop");
+					break;
+				case '7':
+					Renderer->ChangeAnimation("pl0000_Strafe_FL_Loop");
+					break;
+				case '4':
+					Renderer->ChangeAnimation("pl0000_Strafe_L_Loop");
+					break;
+				case '1':
+					Renderer->ChangeAnimation("pl0000_Strafe_BL_Loop");
+					break;
+				case '2':
+					Renderer->ChangeAnimation("pl0000_Strafe_B_Loop");
+					break;
+				case '3':
+					Renderer->ChangeAnimation("pl0000_Strafe_BR_Loop");
+					break;
+				case '6':
+					Renderer->ChangeAnimation("pl0000_Strafe_R_Loop");
+					break;
+				case '9':
+					Renderer->ChangeAnimation("pl0000_Strafe_R_Loop");
+					break;
+				}
+
+			},
+			.End = [=] {
+
+
+
+			}});
 
 		FSM.CreateState({ .StateValue = FSM_State_Nero::BR_Switch_Lockon_to_Idle,
 			.Start = [=] {
@@ -266,6 +337,11 @@ void PlayerActor_Nero::Start()
 				if (true == Renderer->IsAnimationEnd())
 				{
 					FSM.ChangeState(FSM_State_Nero::Idle);
+					return;
+				}
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					FSM.ChangeState(FSM_State_Nero::Walk);
 					return;
 				}
 			},
@@ -317,4 +393,4 @@ void PlayerActor_Nero::WeaponIdle()
 	Renderer->GetAllRenderUnit()[0][19]->Off();	// 블루로즈
 }
 
-		//LookDir((LockOnEnemyTransform->GetWorldPosition() - GetTransform()->GetWorldPosition()).NormalizeReturn());
+//LookDir((LockOnEnemyTransform->GetWorldPosition() - GetTransform()->GetWorldPosition()).NormalizeReturn());

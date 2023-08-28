@@ -51,6 +51,11 @@ void BasePlayerActor::LookDir(const float4& _LookDir)
 
 }
 
+void BasePlayerActor::LookTarget(const float4& _Target)
+{
+	LookDir((_Target - GetTransform()->GetWorldPosition()).NormalizeReturn());
+}
+
 void BasePlayerActor::Start()
 {
 	Camera = GetLevel()->CreateActor<PlayerCamera>();
@@ -139,7 +144,6 @@ void BasePlayerActor::Update_SendPacket(float _DeltaTime)
 
 void BasePlayerActor::LockOn()
 {
-	IsLockOn = true;
 	std::vector<std::shared_ptr<GameEngineCollision>> Cols;
 	std::shared_ptr<GameEngineCollision> MinCol = nullptr;
 	if (true == LockOnCollision->CollisionAll(CollisionOrder::Enemy, Cols))
@@ -156,14 +160,10 @@ void BasePlayerActor::LockOn()
 		}
 		if (MinCol == nullptr)
 		{
-			LockOnEnemyTransform = LockOnCollision->GetTransform();
 			return;
 		}
 		LockOnEnemyTransform = MinCol->GetActor()->GetTransform();
-	}
-	else
-	{
-		LockOnEnemyTransform = LockOnCollision->GetTransform();
+		IsLockOn = true;
 	}
 }
 

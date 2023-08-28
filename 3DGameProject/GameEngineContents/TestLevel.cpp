@@ -11,6 +11,9 @@
 #include "CavaliereAngelo.h"
 #include "Ball.h"
 #include "PlayerActor_Nero.h"
+
+//#include <GameEngineCore/GameEngineCollision.h>
+
 TestLevel* TestLevel::TestLevelPtr = nullptr;
 
 TestLevel::TestLevel() 
@@ -47,6 +50,13 @@ void TestLevel::Update(float _DeltaTime)
 void TestLevel::LevelChangeStart()
 {
 	//CreateActor<PlayerActor_Nero>();
+	//std::shared_ptr<GameEngineActor> CollisionActor = CreateActor<GameEngineActor>();
+	//std::shared_ptr<GameEngineCollision> Collision = CollisionActor->CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
+	//CollisionActor->GetTransform()->SetLocalScale({ 100, 100, 100 });
+	//CollisionActor->GetTransform()->SetLocalPosition({ 100, 0, 100 });
+	//Collision->SetColType(ColType::OBBBOX3D);
+	//IsDebugSwitch();
+
 	std::shared_ptr<TestObject> Component = CreateActor<TestObject>();
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
 
