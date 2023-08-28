@@ -79,7 +79,7 @@ void GameEngineNet::RecvThreadFunction(SOCKET _Socket, GameEngineNet* _Net)
 		// 8바이트 이상 받았지만
 		// 그걸 통해서 알아낸 패킷의 크기보다는 덜 온 경우
 		//if (PacketSize > static_cast<int>(Serializer.GetWriteOffSet()))
-		if (static_cast<unsigned int>(PacketSize) > Serializer.GetWriteOffSet())
+		if (PacketSize > Serializer.GetWriteOffSet())
 		{
 			//다음 수신을 대기
 			continue;
@@ -99,6 +99,11 @@ void GameEngineNet::RecvThreadFunction(SOCKET _Socket, GameEngineNet* _Net)
 				_Net->RecvPacket.push_back(Packet);
 				_Net->RecvPacketLock.unlock();
 			}
+			else
+			{
+				MsgAssert("알 수 없는 패킷 타입 : " + std::to_string(PacketType));
+				return;
+			}
 
 			//수신받은 모든 바이트를 패킷크기에 딱 맞게 처리한 경우
 			if (Serializer.GetWriteOffSet() == Serializer.GetReadOffSet())
@@ -117,6 +122,8 @@ void GameEngineNet::RecvThreadFunction(SOCKET _Socket, GameEngineNet* _Net)
 				//남은 바이트가 8바이트 미만인 경우 다시 데이터 수신을 대기한다(23번째 줄로 이동)
 				if (8 > RemainSize)
 				{
+					//직렬화 버퍼를 정리하고(앞쪽으로 땡기고) 다시 데이터 수신
+					Serializer.ClearReadData();
 					break;
 				}
 
@@ -136,7 +143,7 @@ void GameEngineNet::RecvThreadFunction(SOCKET _Socket, GameEngineNet* _Net)
 				}
 
 				//남은 데이터가 8바이트 보다는 적은 경우엔
-				if (static_cast<int>(RemainSize) < PacketSize)
+				if (RemainSize < PacketSize)
 				{
 					//직렬화 버퍼를 정리하고(앞쪽으로 땡기고) 다시 데이터 수신
 					Serializer.ClearReadData();
