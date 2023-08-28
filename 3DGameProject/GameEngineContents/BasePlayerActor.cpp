@@ -138,6 +138,7 @@ void BasePlayerActor::Update_SendPacket(float _DeltaTime)
 
 void BasePlayerActor::LockOn()
 {
+	IsLockOn = true;
 	std::vector<std::shared_ptr<GameEngineCollision>> Cols;
 	std::shared_ptr<GameEngineCollision> MinCol = nullptr;
 	if (true == LockOnCollision->CollisionAll(CollisionOrder::Enemy, Cols))
@@ -154,15 +155,20 @@ void BasePlayerActor::LockOn()
 		}
 		if (MinCol == nullptr)
 		{
-			int a = 0;
+			LockOnEnemyTransform = LockOnCollision->GetTransform();
 			return;
 		}
 		LockOnEnemyTransform = MinCol->GetActor()->GetTransform();
+	}
+	else
+	{
+		LockOnEnemyTransform = LockOnCollision->GetTransform();
 	}
 }
 
 void BasePlayerActor::LockOff()
 {
+	IsLockOn = false;
 	LockOnEnemyTransform = nullptr;
 }
 

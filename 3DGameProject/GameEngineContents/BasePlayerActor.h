@@ -44,9 +44,9 @@ protected:
 	std::shared_ptr<class GameEngineCollision> LockOnCollision = nullptr;
 	std::shared_ptr<class PhysXCapsuleComponent> PhysXCapsule = nullptr;
 	float4 Rot = float4::ZERO;
+	bool IsLockOn = false;
 
 private:
 	static BasePlayerActor* Instance;
-	bool IsLockOn = false;
 };
 

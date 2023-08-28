@@ -4,16 +4,29 @@
 #include "PlayerWindow.h"
 #include <GameEngineCore/GameEngineFBXAnimation.h>
 #include <GameEngineCore/GameEngineFBXMesh.h>
-PlayerWindow::PlayerWindow() 
+#include <GameEngineCore/GameEngineRenderer.h>
+PlayerWindow::PlayerWindow()
 {
 }
 
-PlayerWindow::~PlayerWindow() 
+PlayerWindow::~PlayerWindow()
 {
 }
 
 void PlayerWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
 {
-	ImGui::Text(GameEngineString::AnsiToUTF8(Text).c_str());
+	if (0 == RenderUnits->size()) { return; }
+
+	static int index;
+	ImGui::InputInt("Index", &index);
+
+	if (ImGui::Button("On"))
+	{
+		RenderUnits->operator[](0).operator[](index)->On();
+	}
+	if (ImGui::Button("Off"))
+	{
+		RenderUnits->operator[](0).operator[](index)->Off();
+	}
 }
 

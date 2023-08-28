@@ -18,7 +18,7 @@ void PlayerCamera::Start()
 
 	CameraTarget = GetLevel()->CreateActor<GameEngineActor>()->GetTransform();
 	CameraTarget->SetParent(CameraArm);
-	CameraTarget->SetLocalPosition({ 0, 100, -500 });
+	CameraTarget->SetLocalPosition({ 0, 100, -350 });
 
 	CameraTransform = GetLevel()->GetMainCamera()->GetTransform();
 }

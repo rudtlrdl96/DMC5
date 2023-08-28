@@ -54,7 +54,7 @@ public:
 	AnimationEvent()
 	{
 		AnimationName = "";
-		Speed = 10.0f;
+		Speed = 6.0f;
 		Events = std::map<size_t, std::vector<EventData>>();
 	}
 
@@ -83,14 +83,14 @@ public:
 	void Clear()
 	{
 		AnimationName = " ";
-		Speed = 10.0f;
+		Speed = 6.0f;
 		Events.clear();
 	}
 protected:
 
 private:
 	std::string AnimationName;
-	float Speed = 10.0f;
+	float Speed = 6.0;
 	std::map<size_t, std::vector<EventData>> Events;
 };
 

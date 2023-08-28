@@ -136,8 +136,8 @@ void AnimationToolWindow::FileLoad(std::shared_ptr<GameEngineLevel> _Level)
 		OFN.lpstrFile = lpstrFile;
 		OFN.nMaxFile = 200;
 		OFN.lpstrInitialDir = L".";
-
 		if (GetOpenFileName(&OFN) != 0) {
+			AnimEvent.Clear();
 			AnimFilePath.SetPath(GameEngineString::UniCodeToAnsi(OFN.lpstrFile));
 
 			GameEngineSerializer Ser;

@@ -32,6 +32,7 @@ public:
 	bool bOnceStart = true;
 	bool bOnceEnd = true;
 	bool Loop = true;
+	bool IsEnd = true;
 
 	// Event
 
@@ -116,6 +117,8 @@ public:
 	void PauseSwtich();
 
 	void ChangeAnimation(const std::string& _AnimationName);
+
+	bool IsAnimationEnd();
 
 	float4 GetMeshScale()
 	{

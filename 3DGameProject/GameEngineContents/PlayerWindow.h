@@ -15,7 +15,8 @@ public:
 	PlayerWindow& operator=(const PlayerWindow& _Other) = delete;
 	PlayerWindow& operator=(PlayerWindow&& _Other) noexcept = delete;
 
-	std::string Text = " ";
+	std::vector<std::vector<std::shared_ptr<GameEngineRenderUnit>>>* RenderUnits = nullptr;
+
 protected:
 	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;
 private:

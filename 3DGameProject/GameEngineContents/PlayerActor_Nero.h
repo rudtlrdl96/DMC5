@@ -15,6 +15,12 @@ enum FSM_State_Nero
 	RQ_ComboA_3,
 	RQ_ComboA_4,
 
+
+
+
+	BR_Switch_Idle_to_Lockon,
+	BR_Switch_Lockon_to_Idle,
+	BR_Lockon_Front,
 };
 
 class PlayerActor_Nero : public BasePlayerActor
@@ -30,15 +36,15 @@ public:
 	PlayerActor_Nero& operator=(const PlayerActor_Nero& _Other) = delete;
 	PlayerActor_Nero& operator=(PlayerActor_Nero&& _Other) noexcept = delete;
 
-	void ChangeFSM(int _State)
+	/*void ChangeFSM(int _State)
 	{
 		FSM.ChangeState(_State);
-	}
+	}*/
 
-	void InputCheckOn()
-	{
-		InputCheck = true;
-	}
+	//void InputCheckOn()
+	//{
+	//	InputCheck = true;
+	//}
 
 protected:
 	void Start() override;
@@ -49,5 +55,10 @@ private:
 	float MoveSpeed = 500.0f;
 
 	bool InputCheck = false;
+
+	void RedQueenOn();
+	void RedQueenOff();
+	void BlueRoseOn();
+	void WeaponIdle();
 };
 

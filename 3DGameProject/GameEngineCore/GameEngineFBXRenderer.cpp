@@ -58,6 +58,7 @@ void GameEngineFBXAnimationInfo::Update(float _DeltaTime)
 
 			if (CurFrame >= Frames.size() - 1)
 			{
+				IsEnd = true;
 				if (true == Loop)
 				{
 					CurFrame = Start;
@@ -76,11 +77,13 @@ void GameEngineFBXAnimationInfo::Update(float _DeltaTime)
 
 	if (NextFrame >= End)
 	{
+		IsEnd = true;
 		NextFrame = 0;
 	}
 
 	if (CurFrame >= End)
 	{
+		IsEnd = true;
 		CurFrame = 0;
 	}
 
@@ -390,8 +393,13 @@ void GameEngineFBXRenderer::ChangeAnimation(const std::string& _AnimationName)
 	}
 
 	CurAnimation = FindIter->second;
-
 	CurAnimation->CurFrame = 0;
+	CurAnimation->IsEnd = false;
+}
+
+bool GameEngineFBXRenderer::IsAnimationEnd()
+{
+	return CurAnimation->IsEnd;
 }
 
 

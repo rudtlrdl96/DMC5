@@ -14,6 +14,8 @@ void AnimationToolLevel::Start()
 {
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -500 });
+
+	CreateActor<GameEngineLight>();
 }
 
 void AnimationToolLevel::Update(float _DeltaTime)

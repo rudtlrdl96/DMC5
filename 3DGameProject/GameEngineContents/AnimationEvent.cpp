@@ -78,18 +78,17 @@ void AnimationEvent::LoadAll(const AnimLoadParameter& _Parameter)
 	std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".FBX" });
 	std::vector<GameEngineFile> AnimFiles = Dir.GetAllFile({ ".ANIMATION" });
 
-	AnimationEvent Event;
 	for (size_t EventIndex = 0; EventIndex < AnimFiles.size(); EventIndex++)
 	{
 		// 파일 로드
 		GameEngineSerializer Ser;
 		AnimFiles[EventIndex].LoadBin(Ser);
+		AnimationEvent Event;
 		Event.Read(Ser);
 
-		// 애니메이션 로드
-		for (size_t j = 0; j < FBXFiles.size(); j++)
+		for (GameEngineFile _File : FBXFiles)
 		{
-			std::string FileName = GameEngineString::ToUpper(FBXFiles[j].GetFileName());
+			std::string FileName = GameEngineString::ToUpper(_File.GetFileName());
 			if (FileName != GameEngineString::ToUpper(Event.AnimationName + ".FBX"))
 			{
 				continue;
@@ -98,7 +97,8 @@ void AnimationEvent::LoadAll(const AnimLoadParameter& _Parameter)
 			{
 				continue;
 			}
-			GameEngineFBXAnimation::Load(FBXFiles[j].GetFullPath());
+			GameEngineFBXAnimation::Load(_File.GetFullPath());
+			break;
 		}
 		// 애니메이션 생성
 		_Parameter.Renderer->CreateFBXAnimation(Event.AnimationName, Event.AnimationName + ".FBX");
