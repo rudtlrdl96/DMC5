@@ -11,7 +11,7 @@
       <Filter>PostEffect</Filter>
     </ClInclude>
     <ClInclude Include="MainLevel.h">
-      <Filter>Actor\Test\Levels</Filter>
+      <Filter>Levels</Filter>
     </ClInclude>
     <ClInclude Include="NetFsmBase.h">
       <Filter>Server\99.Garbage\99.FSM</Filter>
@@ -107,7 +107,7 @@
       <Filter>Actor\Test</Filter>
     </ClInclude>
     <ClInclude Include="TestLevel.h">
-      <Filter>Actor\Test\Levels\Test</Filter>
+      <Filter>Levels\Test</Filter>
     </ClInclude>
     <ClInclude Include="UIEnums.h">
       <Filter>UI\Base</Filter>
@@ -161,16 +161,16 @@
       <Filter>Server\01.Packet\04.ClientToServer</Filter>
     </ClInclude>
     <ClInclude Include="BaseLevel.h">
-      <Filter>Actor\Test\Levels</Filter>
+      <Filter>Levels</Filter>
     </ClInclude>
     <ClInclude Include="StageBaseLevel.h">
-      <Filter>Actor\Test\Levels\Stage\0.StageBase</Filter>
+      <Filter>Levels\Stage\0.StageBase</Filter>
     </ClInclude>
     <ClInclude Include="BossStageLevel.h">
-      <Filter>Actor\Test\Levels\Stage\2.BossStage</Filter>
+      <Filter>Levels\Stage\2.BossStage</Filter>
     </ClInclude>
     <ClInclude Include="StartStageLevel.h">
-      <Filter>Actor\Test\Levels\Stage\1.StartStage</Filter>
+      <Filter>Levels\Stage\1.StartStage</Filter>
     </ClInclude>
     <ClInclude Include="NetTestPlayer.h">
       <Filter>Actor\NetworkExample</Filter>
@@ -179,13 +179,13 @@
       <Filter>Actor\NetworkExample</Filter>
     </ClInclude>
     <ClInclude Include="PlayerTestLevel.h">
-      <Filter>Actor\Test\Levels\Test</Filter>
+      <Filter>Levels\Test</Filter>
     </ClInclude>
     <ClInclude Include="AnimationToolLevel.h">
-      <Filter>Actor\Test\Levels\Test</Filter>
+      <Filter>Levels\Test</Filter>
     </ClInclude>
     <ClInclude Include="StageDatas.h">
-      <Filter>Actor\Test\Levels\Stage\0.StageBase</Filter>
+      <Filter>Levels\Stage\0.StageBase</Filter>
     </ClInclude>
     <ClInclude Include="Box200.h">
       <Filter>Actor\Test</Filter>
@@ -236,7 +236,7 @@
       <Filter>Server\01.Packet\02.Global</Filter>
     </ClInclude>
     <ClInclude Include="EnemyTestLevel.h">
-      <Filter>Actor\Test\Levels\Test</Filter>
+      <Filter>Levels\Test</Filter>
     </ClInclude>
     <ClInclude Include="FieldMap.h">
       <Filter>Actor\Stage</Filter>
@@ -268,15 +268,6 @@
     <ClInclude Include="JudgementCut.h">
       <Filter>PostEffect</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderTestLevel.h">
-      <Filter>Levels\Test</Filter>
-    </ClInclude>
-    <ClInclude Include="StageEditLevel.h">
-      <Filter>Levels\Stage\StageEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="StageEditGUI.h">
-      <Filter>Levels\Stage\StageEditor</Filter>
-    </ClInclude>
     <ClInclude Include="ColorEffect.h">
       <Filter>PostEffect</Filter>
     </ClInclude>
@@ -288,6 +279,16 @@
     </ClInclude>
     <ClInclude Include="UIInfoBase.h">
       <Filter>UI\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderTestLevel.h" />
+    <ClInclude Include="StageEditLevel.h">
+      <Filter>Levels\Stage\StageEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="StageEditGUI.h">
+      <Filter>Levels\Stage\StageEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorUI.h">
+      <Filter>Actor\Stage\StageEditor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -301,7 +302,7 @@
       <Filter>PostEffect</Filter>
     </ClCompile>
     <ClCompile Include="MainLevel.cpp">
-      <Filter>Actor\Test\Levels</Filter>
+      <Filter>Levels</Filter>
     </ClCompile>
     <ClCompile Include="NetFsmBase.cpp">
       <Filter>Server\99.Garbage\99.FSM</Filter>
@@ -400,7 +401,7 @@
       <Filter>Actor\Test</Filter>
     </ClCompile>
     <ClCompile Include="TestLevel.cpp">
-      <Filter>Actor\Test\Levels\Test</Filter>
+      <Filter>Levels\Test</Filter>
     </ClCompile>
     <ClCompile Include="NetworkManager.cpp">
       <Filter>Server\02.NetworkManager</Filter>
@@ -439,16 +440,16 @@
       <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="BaseLevel.cpp">
-      <Filter>Actor\Test\Levels</Filter>
+      <Filter>Levels</Filter>
     </ClCompile>
     <ClCompile Include="StageBaseLevel.cpp">
-      <Filter>Actor\Test\Levels\Stage\0.StageBase</Filter>
+      <Filter>Levels\Stage\0.StageBase</Filter>
     </ClCompile>
     <ClCompile Include="BossStageLevel.cpp">
-      <Filter>Actor\Test\Levels\Stage\2.BossStage</Filter>
+      <Filter>Levels\Stage\2.BossStage</Filter>
     </ClCompile>
     <ClCompile Include="StartStageLevel.cpp">
-      <Filter>Actor\Test\Levels\Stage\1.StartStage</Filter>
+      <Filter>Levels\Stage\1.StartStage</Filter>
     </ClCompile>
     <ClCompile Include="NetTestPlayer.cpp">
       <Filter>Actor\NetworkExample</Filter>
@@ -457,13 +458,13 @@
       <Filter>Actor\NetworkExample</Filter>
     </ClCompile>
     <ClCompile Include="PlayerTestLevel.cpp">
-      <Filter>Actor\Test\Levels\Test</Filter>
+      <Filter>Levels\Test</Filter>
     </ClCompile>
     <ClCompile Include="AnimationToolLevel.cpp">
-      <Filter>Actor\Test\Levels\Test</Filter>
+      <Filter>Levels\Test</Filter>
     </ClCompile>
     <ClCompile Include="StageDatas.cpp">
-      <Filter>Actor\Test\Levels\Stage\0.StageBase</Filter>
+      <Filter>Levels\Stage\0.StageBase</Filter>
     </ClCompile>
     <ClCompile Include="Box200.cpp">
       <Filter>Actor\Test</Filter>
@@ -511,7 +512,7 @@
       <Filter>UI\Actor\C_ChoiceUI</Filter>
     </ClCompile>
     <ClCompile Include="EnemyTestLevel.cpp">
-      <Filter>Actor\Test\Levels\Test</Filter>
+      <Filter>Levels\Test</Filter>
     </ClCompile>
     <ClCompile Include="FieldMap.cpp">
       <Filter>Actor\Stage</Filter>
@@ -543,15 +544,6 @@
     <ClCompile Include="JudgementCut.cpp">
       <Filter>PostEffect</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderTestLevel.cpp">
-      <Filter>Levels\Test</Filter>
-    </ClCompile>
-    <ClCompile Include="StageEditGUI.cpp">
-      <Filter>Levels\Stage\StageEditor</Filter>
-    </ClCompile>
-    <ClCompile Include="StageEditLevel.cpp">
-      <Filter>Levels\Stage\StageEditor</Filter>
-    </ClCompile>
     <ClCompile Include="ColorEffect.cpp">
       <Filter>PostEffect</Filter>
     </ClCompile>
@@ -563,6 +555,16 @@
     </ClCompile>
     <ClCompile Include="UIInfoBase.cpp">
       <Filter>UI\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderTestLevel.cpp" />
+    <ClCompile Include="StageEditGUI.cpp">
+      <Filter>Levels\Stage\StageEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="StageEditLevel.cpp">
+      <Filter>Levels\Stage\StageEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorUI.cpp">
+      <Filter>Actor\Stage\StageEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -716,24 +718,6 @@
     <Filter Include="UI\Actor\MenuUI\MenuScreen">
       <UniqueIdentifier>{4e87bf65-3b70-4d0f-9346-7fbf1154d1c8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Actor\Test\Levels">
-      <UniqueIdentifier>{3d17108a-64cc-412c-add8-c9f82f90c9e4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Actor\Test\Levels\Test">
-      <UniqueIdentifier>{9f56ec72-d7ee-460e-99c6-d54e9fa65b57}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Actor\Test\Levels\Stage">
-      <UniqueIdentifier>{894fedc0-516c-4462-9417-bad3a83c8d80}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Actor\Test\Levels\Stage\0.StageBase">
-      <UniqueIdentifier>{e8d24add-216e-4779-a611-44420f6e67a4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Actor\Test\Levels\Stage\2.BossStage">
-      <UniqueIdentifier>{75ef1a2d-f0b3-4e78-b433-0101a05f933d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Actor\Test\Levels\Stage\1.StartStage">
-      <UniqueIdentifier>{90b7419c-d3c5-4f35-9ed3-3e2ea44b7e0e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Actor\Player">
       <UniqueIdentifier>{c973e3f3-8c9d-4b9d-8693-81925f490cb5}</UniqueIdentifier>
     </Filter>
@@ -743,8 +727,29 @@
     <Filter Include="Actor\Player\Character">
       <UniqueIdentifier>{b31d1a84-2550-4109-b55e-e45fed476b1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Levels">
+      <UniqueIdentifier>{3d17108a-64cc-412c-add8-c9f82f90c9e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\Test">
+      <UniqueIdentifier>{9f56ec72-d7ee-460e-99c6-d54e9fa65b57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\Stage">
+      <UniqueIdentifier>{894fedc0-516c-4462-9417-bad3a83c8d80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\Stage\0.StageBase">
+      <UniqueIdentifier>{e8d24add-216e-4779-a611-44420f6e67a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\Stage\2.BossStage">
+      <UniqueIdentifier>{75ef1a2d-f0b3-4e78-b433-0101a05f933d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\Stage\1.StartStage">
+      <UniqueIdentifier>{90b7419c-d3c5-4f35-9ed3-3e2ea44b7e0e}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Levels\Stage\StageEditor">
-      <UniqueIdentifier>{1db83546-a1d7-48ed-a896-348a64242ee7}</UniqueIdentifier>
+      <UniqueIdentifier>{e15b0962-4074-4325-88f2-8fe4391fd4fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Stage\StageEditor">
+      <UniqueIdentifier>{8a458298-fa6e-48c6-9286-eb1d7d7ec353}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -5,6 +5,8 @@
 
 #include "NetworkManager.h"
 #include "StageEditGUI.h"
+#include "EditorUI.h"
+#include "FreeCameraActor.h"
 
 StageEditLevel::StageEditLevel()
 {
@@ -21,6 +23,22 @@ void StageEditLevel::Start()
 		GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	}
 	GetMainCamera()->GetTransform()->SetLocalPosition({0,0,-500});
+
+	GameEngineDirectory NewDir;
+	NewDir.MoveParentToDirectory("ContentResources");
+	NewDir.Move("ContentResources");
+	NewDir.Move("Texture");
+	NewDir.Move("StageEditorUI");
+
+	std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+
+	for (size_t i = 0; i < File.size(); i++)
+	{
+		GameEngineTexture::Load(File[i].GetFullPath());
+	}
+
+	AcEditorUI = CreateActor<EditorUI>();
+	FreeCam = CreateActor<FreeCameraActor>();
 }
 
 void StageEditLevel::Update(float _DeltaTime)
@@ -35,15 +53,16 @@ void StageEditLevel::Update(float _DeltaTime)
 
 void StageEditLevel::LevelChangeStart()
 {
-	if (Edit == nullptr)
+	if (Editor == nullptr)
 	{
 		std::shared_ptr<GameEngineGUIWindow> EditGUI = GameEngineGUI::GUIWindowCreate<StageEditGUI>("StageEditGUI");
-		Edit = EditGUI;
+		Editor = EditGUI;
 	}
-	Edit->On();
+	Editor->On();
 }
+
 void StageEditLevel::LevelChangeEnd()
 {
-	Edit->Off();
+	Editor->Off();
 }
 

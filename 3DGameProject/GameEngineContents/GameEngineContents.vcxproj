@@ -218,6 +218,10 @@
     <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="CreateObjectPacket.h" />
     <ClInclude Include="C_ChoiceBG.h" />
+    <ClInclude Include="EditorUI.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="EnemyTestLevel.h">
       <SubType>
       </SubType>
@@ -518,6 +522,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="C_ChoiceBG.cpp" />
+    <ClCompile Include="EditorUI.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="EnemyTestLevel.cpp">
       <SubType>
       </SubType>
