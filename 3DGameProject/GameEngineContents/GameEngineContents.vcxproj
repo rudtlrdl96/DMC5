@@ -242,7 +242,15 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Menu_NeroInfo.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Menu_SelectScreen.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Menu_VirgilInfo.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -451,6 +459,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="UIInfoBase.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimationEvent.cpp">
@@ -525,7 +537,15 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Menu_NeroInfo.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Menu_SelectScreen.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Menu_VirgilInfo.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -728,6 +748,10 @@
     </ClCompile>
     <ClCompile Include="Title_SelectScreen.cpp" />
     <ClCompile Include="Title_StartScreen.cpp" />
+    <ClCompile Include="UIInfoBase.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
