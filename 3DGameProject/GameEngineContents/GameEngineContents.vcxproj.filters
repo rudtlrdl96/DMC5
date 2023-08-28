@@ -223,12 +223,6 @@
     <ClInclude Include="Ramp.h">
       <Filter>Actor\Test</Filter>
     </ClInclude>
-    <ClInclude Include="StageEditGUI.h">
-      <Filter>Levels\Stage\0.StageBase</Filter>
-    </ClInclude>
-    <ClInclude Include="StageEditLevel.h">
-      <Filter>Levels\Stage\0.StageBase</Filter>
-    </ClInclude>
     <ClInclude Include="ContentDefine.h">
       <Filter>Basic</Filter>
     </ClInclude>
@@ -276,6 +270,12 @@
     </ClInclude>
     <ClInclude Include="ShaderTestLevel.h">
       <Filter>Levels\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="StageEditLevel.h">
+      <Filter>Levels\Stage\StageEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="StageEditGUI.h">
+      <Filter>Levels\Stage\StageEditor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -489,12 +489,6 @@
     <ClCompile Include="Ramp.cpp">
       <Filter>Actor\Test</Filter>
     </ClCompile>
-    <ClCompile Include="StageEditGUI.cpp">
-      <Filter>Levels\Stage\0.StageBase</Filter>
-    </ClCompile>
-    <ClCompile Include="StageEditLevel.cpp">
-      <Filter>Levels\Stage\0.StageBase</Filter>
-    </ClCompile>
     <ClCompile Include="ContentDefine.cpp">
       <Filter>Basic</Filter>
     </ClCompile>
@@ -539,6 +533,12 @@
     </ClCompile>
     <ClCompile Include="ShaderTestLevel.cpp">
       <Filter>Levels\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="StageEditGUI.cpp">
+      <Filter>Levels\Stage\StageEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="StageEditLevel.cpp">
+      <Filter>Levels\Stage\StageEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -718,6 +718,9 @@
     </Filter>
     <Filter Include="Actor\Player\Character">
       <UniqueIdentifier>{b31d1a84-2550-4109-b55e-e45fed476b1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\Stage\StageEditor">
+      <UniqueIdentifier>{1db83546-a1d7-48ed-a896-348a64242ee7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

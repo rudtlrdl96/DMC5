@@ -48,10 +48,10 @@ void StartStageLevel::Update(float _DeltaTime)
 {
 	StageBaseLevel::Update(_DeltaTime);
 
-	if (GameEngineInput::IsDown("StageTestKey"))
+	/*if (GameEngineInput::IsDown("StageTestKey"))
 	{
 		TestLoad();
-	}
+	}*/
 }
 
 void StartStageLevel::LevelChangeStart()
@@ -96,7 +96,12 @@ void StartStageLevel::TestSave()
 	StageData::WriteAllStageData(SaveSerializer, AllStageDatas);
 
 	GameEnginePath filepath;
-	filepath.SetPath("..//ContentData//StageData//TestData.txt");
+	filepath.SetPath(GetSaveFilePath());
+
+	if (filepath.GetFileName() == "")
+	{
+		return;
+	}
 
 	GameEngineFile file = GameEngineFile(std::string_view(filepath.GetFullPath()));
 	file.SaveBin(SaveSerializer);
@@ -106,11 +111,86 @@ void StartStageLevel::TestLoad()
 {
 	GameEngineSerializer LoadSerializer = GameEngineSerializer();
 	
-	std::string_view Temp = "..//ContentData//StageData//TestData.txt";
-	GameEngineFile File(Temp);
+	std::string Temp = GetOpenFilePath();
+	std::string_view Temp_view = Temp;
+	if (Temp == "")
+	{
+		return;
+	}
+	GameEngineFile File(Temp_view);
 	File.LoadBin(LoadSerializer);
 
 	StageData::ReadAllStageData(LoadSerializer, AllStageDatas);
+}
+
+std::string StartStageLevel::GetOpenFilePath()
+{
+	OPENFILENAME ofn;       // common dialog box structure
+	wchar_t szFile[260];       // buffer for file name
+	wchar_t PrevPath[260];
+	GetCurrentDirectory(260, PrevPath);
+
+	// Initialize OPENFILENAME
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = GameEngineWindow::GetHWnd();
+	ofn.lpstrFile = szFile;
+	// Set lpstrFile[0] to '\0' so that GetOpenFileName does not 
+	// use the contents of szFile to initialize itself.
+	ofn.lpstrFile[0] = L'\0';
+	ofn.nMaxFile = sizeof(szFile);
+	ofn.lpstrFilter = L"All\0*.*\0Text\0*.TXT\0";
+	ofn.nFilterIndex = 1;
+	ofn.lpstrFileTitle = NULL;
+	ofn.nMaxFileTitle = 0;
+	ofn.lpstrInitialDir = NULL;
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+	// Display the Open dialog box. 
+
+	if (GetOpenFileName(&ofn) == TRUE)
+	{
+		SetCurrentDirectory(PrevPath);
+		return GameEngineString::UniCodeToAnsi(ofn.lpstrFile);
+	}
+
+	SetCurrentDirectory(PrevPath);
+	return "";
+}
+
+std::string StartStageLevel::GetSaveFilePath()
+{
+	OPENFILENAME ofn;       // common dialog box structure
+	wchar_t szFile[260];       // buffer for file name
+	wchar_t PrevPath[260];
+	GetCurrentDirectory(260, PrevPath);
+
+	// Initialize OPENFILENAME
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = GameEngineWindow::GetHWnd();
+	ofn.lpstrFile = szFile;
+	// Set lpstrFile[0] to '\0' so that GetOpenFileName does not 
+	// use the contents of szFile to initialize itself.
+	ofn.lpstrFile[0] = L'\0';
+	ofn.nMaxFile = sizeof(szFile);
+	ofn.lpstrFilter = L"All\0*.*\0Text\0*.TXT\0";
+	ofn.nFilterIndex = 1;
+	ofn.lpstrFileTitle = NULL;
+	ofn.nMaxFileTitle = 0;
+	ofn.lpstrInitialDir = NULL;
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+	// Display the Open dialog box. 
+
+	if (GetSaveFileName(&ofn) == TRUE)
+	{
+		SetCurrentDirectory(PrevPath);
+		return GameEngineString::UniCodeToAnsi(ofn.lpstrFile);
+	}
+
+	SetCurrentDirectory(PrevPath);
+	return "";
 }
 
 

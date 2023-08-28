@@ -22,5 +22,8 @@ protected:
 private:
 	void TestSave();
 	void TestLoad();
+
+	static std::string GetOpenFilePath();
+	static std::string GetSaveFilePath();
 };
 
