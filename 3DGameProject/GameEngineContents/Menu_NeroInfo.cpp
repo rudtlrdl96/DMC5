@@ -15,18 +15,20 @@ void Menu_NeroInfo::Start()
 {
 	NeroInfoPtr = GetLevel()->CreateActor<UIInfoBase>();
 	NeroInfoPtr->GetRender()->SetTexture("NeroLogo.png");
-	NeroInfoPtr->GetRender()->GetTransform()->SetLocalScale(float4(170.f, 200.f, 1.0f));
-	NeroInfoPtr->GetRender()->GetTransform()->SetWorldPosition(float4(700.f, 50.f, 0.0f));
-	NeroInfoPtr->GetRender()->BSCControl(0.3f, 0.4f, 0.5f);
 	NeroInfoPtr->GetRender_Bar()->SetTexture("Menu_InfoBar.png");
-	NeroInfoPtr->GetRender_Bar()->GetTransform()->SetLocalScale(float4(546.f, 5.f, 1.0f));
-	NeroInfoPtr->GetRender_Bar()->GetTransform()->SetWorldPosition(float4(700.f, 90.f, 0.0f));
-	NeroInfoPtr->GetRender_Base()->BSCControl(0.3f, 0.4f, 0.5f);
 	NeroInfoPtr->GetRender_Base()->SetTexture("Menu_difficultyBase.png");
-	NeroInfoPtr->GetRender_Base()->GetTransform()->SetLocalScale(float4(546.f, 40.f, 1.0f));
-	NeroInfoPtr->GetRender_Base()->GetTransform()->SetWorldPosition(float4(700.f, 30.f, 0.0f));
 	NeroInfoPtr->GetRender_Base()->ColorOptionValue.MulColor.a = 0.7f;
-	NeroInfoPtr->GetRender_Base()->BSCControl(0.3f, 0.4f, 0.5f);
+	NeroInfoPtr->SetUIText({ ._Text = "PLAYER",._SeletText = "NERO",._ExplaneText = "GAME MODE",._ExplaneText2 = "DEVIL HUNTER" });
+	
+	NeroInvenPtr = GetLevel()->CreateActor<UIInfoBase>();
+	NeroInvenPtr->GetTransform()->SetLocalPosition({ 0.0f,-200.f,0.0f });
+	NeroInvenPtr->GetRender()->SetTexture("NullTexture.png");
+	NeroInvenPtr->GetRender_Bar()->SetTexture("Menu_InfoBar.png");
+	NeroInvenPtr->GetRender_Base()->SetTexture("Menu_TabBase.png");
+	NeroInvenPtr->GetRender_Base()->GetTransform()->SetLocalPosition({ 700.f, 60.f, 0.0f });
+	NeroInvenPtr->GetRender_Base()->GetTransform()->SetLocalScale({ 546.f, 35.f, 1.0f});
+	NeroInvenPtr->SetUIText({ ._Text = "EQUIPMENT",._SeletText = "",._ExplaneText = "",._ExplaneText2 = "" });
+
 }
 
 void Menu_NeroInfo::Update(float _Delta)

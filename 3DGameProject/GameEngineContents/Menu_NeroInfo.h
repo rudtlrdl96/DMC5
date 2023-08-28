@@ -22,5 +22,7 @@ protected:
 private:
 
 	std::shared_ptr<UIInfoBase> NeroInfoPtr = nullptr;
+	std::shared_ptr<UIInfoBase> NeroInvenPtr = nullptr;
+
 };
 

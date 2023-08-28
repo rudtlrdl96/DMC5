@@ -9,6 +9,8 @@ public:
 	std::string _Text = "";
 	std::string _SeletText = "";
 	std::string _ExplaneText = "";
+	std::string _ExplaneText2 = "";
+
 	int Index = 0;
 
 };
@@ -55,11 +57,6 @@ public:
 		return ExplaneText;
 	}
 	void SetUIText(const UIInfoParameter& _Paramter);
-	void SetExplanePos(float4 _Pos)
-	{
-		ExPlanePos = _Pos;
-	}
-
 
 protected:
 	void Start() override;
@@ -80,6 +77,6 @@ private:
 
 	std::function<void()> Click;
 	std::string Font = "DMC5Font";
-	float4 ExPlanePos = float4::ZERONULL;
+	float4 FontColor = { 0.67f,0.721f,0.720f };
 };
 
