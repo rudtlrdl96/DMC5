@@ -1,17 +1,6 @@
 #include "Transform.fx"
 #include "Light.fx"
-
-cbuffer RenderBaseValue : register(b10)
-{
-    float DeltaTime = 0.0f;
-    float SumDeltaTime = 0.0f;
-    int IsAnimation = 0;
-    int IsLight = 0;
-    int IsNormal = 0;
-    float4 ScreenScale;
-    float4 Mouse;
-    float4 ClipColor;
-};
+#include "RenderBaseValue.fx"
 
 struct Input
 {
@@ -68,11 +57,11 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
     if (0 != IsLight)
     {
         float4 DiffuseRatio = CalDiffuseLight(_Input.VIEWPOSITION, _Input.NORMAL, AllLight[0]);
-        float4 SpacularRatio;
+        float4 SpacularRatio = CalSpacularLight(_Input.VIEWPOSITION, _Input.NORMAL, AllLight[0]);
         float4 AmbientRatio = CalAmbientLight(AllLight[0]);
         
         float A = Color.w;
-        ResultColor = (Color * DiffuseRatio) + (Color * AmbientRatio);
+        ResultColor = Color * (DiffuseRatio + SpacularRatio + AmbientRatio);
         ResultColor.a = A;
     }
     

@@ -47,6 +47,32 @@ float4 CalDiffuseLight(float4 _Pos,  float4 _Normal, LightData _Data)
     return ResultRatio;
 }
 
+float4 CalSpacularLight(float4 _Pos, float4 _Normal, LightData _Data)
+{
+    float4 SpacularLight = (float4) 0.0f;
+    
+    _Normal.xyz = normalize(_Normal.xyz); // N
+    _Data.ViewLightRevDir.xyz = normalize(_Data.ViewLightRevDir.xyz); // L
+    
+    float4 LightDir = _Data.ViewLightRevDir;
+    
+    // 반사벡터
+    // 
+    float3 Reflection = normalize(2.0f * _Normal.xyz * dot(LightDir.xyz, _Normal.xyz) - LightDir.xyz); //  N
+    
+    // 눈이 어디있냐
+    float3 Eye = normalize(_Data.CameraPosition.xyz - _Pos.xyz); // L
+    
+    // 0 ~ 1
+    float Result = max(0.0f, dot(Reflection.xyz, Eye.xyz));
+    
+    // SpacularLight.xyzw = Result;
+    SpacularLight.xyzw = pow(Result, 10);
+    
+    return SpacularLight;
+
+}
+
 float4 CalAmbientLight(LightData _LightData)
 {
     return _LightData.AmbientLight;

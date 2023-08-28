@@ -75,14 +75,12 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
     
     if (0 != IsLight)
     {        
-        float4 NormalDir = _Input.NORMAL;
-        
-        float4 DiffuseRatio = CalDiffuseLight(_Input.VIEWPOSITION, NormalDir, AllLight[0]);
-        float4 SpecularRatio;
+        float4 DiffuseRatio = CalDiffuseLight(_Input.VIEWPOSITION, _Input.NORMAL, AllLight[0]);
+        float4 SpacularRatio = CalSpacularLight(_Input.VIEWPOSITION, _Input.NORMAL, AllLight[0]);
         float4 AmbientRatio = CalAmbientLight(AllLight[0]);
         
         float A = Color.w;
-        ResultColor = (Color * DiffuseRatio) + (Color * AmbientRatio);
+        ResultColor = Color * (DiffuseRatio + SpacularRatio + AmbientRatio);
         ResultColor.a = A;
     }
     

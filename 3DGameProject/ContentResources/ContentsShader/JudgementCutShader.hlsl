@@ -1,3 +1,5 @@
+#include "RenderBaseValue.fx"
+
 struct Input
 {
     float4 Pos : POSITION;
@@ -18,18 +20,6 @@ OutPut JudgementCut_VS(Input _Value)
     
     return OutPutValue;
 }
-
-cbuffer RenderBaseValue : register(b10)
-{
-    float DeltaTime = 0.0f;
-    float SumDeltaTime = 0.0f;
-    int IsAnimation = 0;
-    int IsLight = 0;
-    int IsNormal = 0;
-    float4 ScreenScale;
-    float4 Mouse;
-    float4 ClipColor;
-};
 
 cbuffer JudgementCutValue : register(b0)
 {
