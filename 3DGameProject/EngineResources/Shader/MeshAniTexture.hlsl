@@ -1,18 +1,7 @@
 #include "Transform.fx"
 #include "Animation.fx"
 #include "Light.fx"
-
-cbuffer RenderBaseValue : register(b10)
-{
-    float DeltaTime;
-    float SumDeltaTime;
-    int IsAnimation;
-    int IsLight;
-    int IsNormal;
-    float4 ScreenScale;
-    float4 Mouse;
-    float4 ClipColor;
-};
+#include "RenderBaseValue.fx"
 
 struct Input
 {
