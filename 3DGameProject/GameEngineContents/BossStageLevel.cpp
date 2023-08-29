@@ -2,12 +2,16 @@
 #include "BossStageLevel.h"
 #include "NetworkManager.h"
 
+BossStageLevel* BossStageLevel::Inst = nullptr;
+
 BossStageLevel::BossStageLevel()
 {
+	Inst = this;
 }
 
 BossStageLevel::~BossStageLevel()
 {
+	Inst = nullptr;
 }
 
 void BossStageLevel::Start()

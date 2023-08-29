@@ -10,12 +10,16 @@
 
 #include "StageBaseLevel.h"
 
+StartStageLevel* StartStageLevel::Inst = nullptr;
+
 StartStageLevel::StartStageLevel()
 {
+	Inst = this;
 }
 
 StartStageLevel::~StartStageLevel()
 {
+	Inst = nullptr;
 }
 
 void StartStageLevel::Start()

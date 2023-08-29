@@ -4,6 +4,11 @@
 class BossStageLevel : public StageBaseLevel
 {
 public:
+	static BossStageLevel* GetInst()
+	{
+		return Inst;
+	}
+
 	BossStageLevel();
 	~BossStageLevel();
 	BossStageLevel(const BossStageLevel& _Other) = delete;
@@ -17,5 +22,7 @@ protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 private:
+	static BossStageLevel* Inst;
+
 };
 

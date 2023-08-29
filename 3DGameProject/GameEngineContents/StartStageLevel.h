@@ -4,6 +4,11 @@
 class StartStageLevel : public StageBaseLevel
 {
 public:
+	static StartStageLevel* GetInst()
+	{
+		return Inst;
+	}
+
 	StageData TempData = StageData();
 
 	StartStageLevel();
@@ -20,6 +25,8 @@ protected:
 	void LevelChangeStart() override;
 
 private:
+	static StartStageLevel* Inst;
+
 	void TestSave();
 	void TestLoad();
 
