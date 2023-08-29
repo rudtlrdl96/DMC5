@@ -2056,6 +2056,8 @@ SamplerState WRAPSAMPLER : register(s0);
 
 float4 FXAA_PS(OutPut _Value) : SV_Target0
 {
+    float4 CurColor = DiffuseTex.Sample(WRAPSAMPLER, _Value.UV.xy);
+    
     FxaaTex Tex; 
     Tex.smpl = WRAPSAMPLER;
     Tex.tex = DiffuseTex;
@@ -2078,7 +2080,7 @@ float4 FXAA_PS(OutPut _Value) : SV_Target0
     0.05f,
     float4(1.0f, -1.0f, 0.25f, -0.25f));
     
-    ResultColor.a = 1.0f;
+    ResultColor.a = CurColor.a;
     
     return ResultColor;
 }

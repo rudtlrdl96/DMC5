@@ -5,6 +5,10 @@
 
 #include "NetTestPlayer.h"
 
+#include "JudgementCut.h"
+#include "ZoomEffect.h"
+#include "FXAA_Effect.h"
+
 MainLevel::MainLevel() 
 {
 }
@@ -15,6 +19,10 @@ MainLevel::~MainLevel()
 
 void MainLevel::Start()
 {
+	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
+	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
+	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
+
 	if (false == GameEngineInput::IsKey("SelectLevel_01"))
 	{
 		GameEngineInput::CreateKey("SelectLevel_01", '1');
