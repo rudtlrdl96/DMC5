@@ -20,6 +20,6 @@ private:
 	std::shared_ptr<GameEngineRenderUnit> TAAUnit = nullptr;
 	RenderBaseValue BaseValue = RenderBaseValue();
 
-
+	bool IsTAAEffectOn = true;
 };
 
