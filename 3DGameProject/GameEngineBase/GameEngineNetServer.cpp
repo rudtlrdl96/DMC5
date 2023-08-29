@@ -55,8 +55,6 @@ GameEngineNetServer::~GameEngineNetServer()
 
 void GameEngineNetServer::Send(const char* Data, unsigned int _Size, int _IgnoreID /*= -1*/)
 {
-    SendTextLock.lock();
-
     //이 서버와 연결된 모든 클라에게 바이트 전송
     for(std::pair<int, SOCKET> UserPair : Users)
     {
@@ -66,8 +64,6 @@ void GameEngineNetServer::Send(const char* Data, unsigned int _Size, int _Ignore
 
         send(UserPair.second, Data, _Size, 0);
     }
-
-    SendTextLock.unlock();
 }
 
 void GameEngineNetServer::ServerOpen(short _Port, int _BackLog)

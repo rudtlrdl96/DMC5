@@ -27,12 +27,8 @@ void GameEngineNetClient::Send(const char* Data, unsigned int _Size, int _Ignore
         MsgAssert("크기가 없는 데이터를 보내려고 합니다.");
     }
 
-    SendTextLock.lock();
-
     //서버에게 바이트 전송
     ::send(ClientSocket, Data, _Size, 0);
-
-    SendTextLock.unlock();
 }
 
 bool GameEngineNetClient::Connect(const std::string& _IP, unsigned short _Port)

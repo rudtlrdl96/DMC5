@@ -66,7 +66,5 @@ private:
 	std::function<void(SOCKET _AcceptSocket, GameEngineNetServer* _Net)> AcceptCallBack = nullptr;
 
 	static void AcceptThread(SOCKET _AcceptSocket, GameEngineNetServer* _Net);
-
-	std::mutex SendTextLock;
 };
 
