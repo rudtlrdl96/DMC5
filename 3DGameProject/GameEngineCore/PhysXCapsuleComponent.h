@@ -46,6 +46,7 @@ public:
 
 	void SetJump(float _JumpPower);
 	void SetMove(float4 _MoveSpeed);
+	void SetForce(float4 _MoveSpeed);
 	void SetPush(float4 _Push);
 
 	void SetSpeedLimitValue(float _Value)

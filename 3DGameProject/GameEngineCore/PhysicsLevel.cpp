@@ -113,8 +113,8 @@ void PhysicsLevel::CreatePhysicsX()
 #endif
 	physx::PxTolerancesScale TolerancesScale;
 
-	TolerancesScale.length = 1.f;
-	TolerancesScale.speed = 10.f;
+	//TolerancesScale.length = 1.f;
+	//TolerancesScale.speed = 10.f;
 
 	m_pPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_pFoundation, TolerancesScale, true, m_pPvd);
 	if (!m_pPhysics)
@@ -124,7 +124,7 @@ void PhysicsLevel::CreatePhysicsX()
 
 	physx::PxSceneDesc SceneDesc(m_pPhysics->getTolerancesScale());
 
-	SceneDesc.gravity = physx::PxVec3(0.0f, -400.0f, 0.0f);
+	SceneDesc.gravity = physx::PxVec3(0.0f, -160.0f, 0.0f);
 	m_pDispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 	SceneDesc.cpuDispatcher = m_pDispatcher;
 	// EventCallback 세팅
@@ -164,42 +164,35 @@ void PhysicsLevel::CreatePhysicsX()
 
 void PhysicsLevel::advance(physx::PxReal _DeltaTime)
 {
-	WaitTime += _DeltaTime;
-	StepSize = 1.0f / 60.0f;
+	//WaitTime += _DeltaTime;
+	//StepSize = 1.0f / 60.0f;
 
-	if (WaitTime < StepSize)
-	{
-		IsSimulation = false;
-	}
-	else
-	{
-		WaitTime -= StepSize;
+	//if (WaitTime < StepSize)
+	//{
+	//	IsSimulation = false;
+	//}
+	//else
+	//{
+	//	WaitTime -= StepSize;
 
-		m_pScene->simulate(StepSize);
+	//	m_pScene->simulate(StepSize);
 
-		IsSimulation = true;
-	}
+	//	IsSimulation = true;
+	//}
 }
 
 // 실제로 물리연산을 실행
 void PhysicsLevel::Simulate(float _DeltaTime)
 {
-	if (nullptr == m_pPhysics)
+	if (nullptr == m_pPhysics || 
+		true == IsPhysics ||
+		0.0f >= _DeltaTime)
 	{
 		return;
 	}
 
-	if (true == IsPhysics)
-	{
-		return;
-	}
-
-	advance(_DeltaTime);
-
-	if (true == IsSimulation)
-	{
-		m_pScene->fetchResults(true);
-	}
+	m_pScene->simulate(_DeltaTime);
+	m_pScene->fetchResults(true);
 }
 
 bool PhysicsLevel::RayCast(const float4& _vOrigin, const float4& _vDir, OUT float4& _vPoint, float _fDistance)

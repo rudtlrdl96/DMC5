@@ -137,7 +137,6 @@ void GameEngineCore::EngineUpdate()
 	}
 
 	float TimeDeltaTime = GameEngineTime::GlobalTime.TimeCheck();
-	MainLevel->Simulate(TimeDeltaTime);
 
 	if (TimeDeltaTime > 1 / 30.0f)
 	{
@@ -149,6 +148,7 @@ void GameEngineCore::EngineUpdate()
 
 	MainLevel->TimeEvent.Update(TimeDeltaTime);
 	MainLevel->AccLiveTime(TimeDeltaTime);
+	MainLevel->Simulate(TimeDeltaTime);
 	MainLevel->Update(TimeDeltaTime);
 	MainLevel->ActorUpdate(TimeDeltaTime);
 	MainLevel->NetworkUpdate(TimeDeltaTime);

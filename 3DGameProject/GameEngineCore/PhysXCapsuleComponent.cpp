@@ -193,6 +193,12 @@ void PhysXCapsuleComponent::SetJump(float _JumpPower)
 
 void PhysXCapsuleComponent::SetMove(float4 _MoveSpeed)
 {
+	//m_pDynamic->setLinearVelocity({ 0,-GetLinearVelocity().y,0 });
+	m_pDynamic->addForce(physx::PxVec3(_MoveSpeed.x, _MoveSpeed.y, _MoveSpeed.z), physx::PxForceMode::eVELOCITY_CHANGE);
+}
+
+void PhysXCapsuleComponent::SetForce(float4 _MoveSpeed)
+{
 	m_pDynamic->addForce(physx::PxVec3(_MoveSpeed.x, _MoveSpeed.y, _MoveSpeed.z), physx::PxForceMode::eFORCE);
 }
 
