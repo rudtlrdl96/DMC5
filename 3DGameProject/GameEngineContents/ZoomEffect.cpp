@@ -23,6 +23,8 @@ void ZoomEffect::Start(GameEngineRenderTarget* _Target)
 	{
 		GameEngineInput::CreateKey("Debug_JudgementCutSwitch", VK_F3);
 	}
+
+	SetSpeed(10.0f);
 }
 
 void ZoomEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
@@ -35,7 +37,7 @@ void ZoomEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 		}
 		else
 		{
-			EffectOn(1.5f);
+			EffectOn(1.2f);
 		}
 	}
 
@@ -44,7 +46,7 @@ void ZoomEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 		return;
 	}
 
-	ProgressTime += _DeltaTime;
+	ProgressTime += _DeltaTime * Speed;
 
 	if (true == IsEffectOn)
 	{
