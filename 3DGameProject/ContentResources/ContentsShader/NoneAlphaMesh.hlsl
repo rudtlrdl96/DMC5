@@ -62,7 +62,7 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
     Color.a = 1.0f;
         
     float4 ResultColor = Color;
-    
+        
     if (0 != IsLight)
     {
         float4 BumpNormal = NormalTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);        
@@ -77,6 +77,9 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
         ResultColor = Color * (DiffuseRatio + SpacularRatio + AmbientRatio);
         ResultColor.a = A;
     }
+        
+    //int Step = (_Input.POSITION.x + (_Input.POSITION.y * 2)) % 6;    
+    //ResultColor.a = 1.0f / (Step + 1);
     
     return ResultColor;
 }
