@@ -19,8 +19,6 @@ void PhysXCapsuleComponent::Start()
 
 void PhysXCapsuleComponent::Update(float _DeltaTime)
 {
-	SpeedLimit();
-
 	if (!(physx::PxIsFinite(m_pDynamic->getGlobalPose().p.x) || physx::PxIsFinite(m_pDynamic->getGlobalPose().p.y) || physx::PxIsFinite(m_pDynamic->getGlobalPose().p.z)))
 	{
 		m_pDynamic->setGlobalPose(RecentTransform);
@@ -32,6 +30,11 @@ void PhysXCapsuleComponent::Update(float _DeltaTime)
 
 	ParentActor.lock()->GetTransform()->SetWorldRotation(float4{ EulerRot.x, EulerRot.y, EulerRot.z });
 	ParentActor.lock()->GetTransform()->SetWorldPosition(tmpWorldPos);
+
+	//if (IsSpeedLimit == true)
+	//{
+	//	SpeedLimit();
+	//}
 }
 
 void PhysXCapsuleComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale, float4 _GeoMetryRotation)
@@ -172,18 +175,18 @@ void PhysXCapsuleComponent::SetWorldRotation(float4 _Value)
 
 void PhysXCapsuleComponent::SpeedLimit()
 {
-	physx::PxVec3 Velo = m_pDynamic->getLinearVelocity();
-	physx::PxVec2 Velo2D(Velo.x, Velo.z);
+	//physx::PxVec3 Velo = m_pDynamic->getLinearVelocity();
+	//physx::PxVec2 Velo2D(Velo.x, Velo.z);
 
-	if (Velo2D.magnitude() > SpeedLimitValue)
-	{
-		Velo2D.normalize();
-		Velo2D *= SpeedLimitValue;
-		Velo.x = Velo2D.x;
-		Velo.z = Velo2D.y;
+	//if (Velo2D.magnitude() > SpeedLimitValue)
+	//{
+	//	Velo2D.normalize();
+	//	Velo2D *= SpeedLimitValue;
+	//	Velo.x = Velo2D.x;
+	//	Velo.z = Velo2D.y;
 
-		m_pDynamic->setLinearVelocity(Velo);
-	}
+	//	m_pDynamic->setLinearVelocity(Velo);
+	//}
 }
 
 void PhysXCapsuleComponent::SetJump(float _JumpPower)
@@ -193,7 +196,10 @@ void PhysXCapsuleComponent::SetJump(float _JumpPower)
 
 void PhysXCapsuleComponent::SetMove(float4 _MoveSpeed)
 {
-	//m_pDynamic->setLinearVelocity({ 0,-GetLinearVelocity().y,0 });
+	//Y축은 중력에 의해 가속도를 받지만 X,Z는 가속도를 없애서 정속 이동을 하게끔 함
+	m_pDynamic->setLinearVelocity({ 0,GetLinearVelocity().y,0 });
+
+	// 캐릭터의 방향을 힘으로 조절
 	m_pDynamic->addForce(physx::PxVec3(_MoveSpeed.x, _MoveSpeed.y, _MoveSpeed.z), physx::PxForceMode::eVELOCITY_CHANGE);
 }
 

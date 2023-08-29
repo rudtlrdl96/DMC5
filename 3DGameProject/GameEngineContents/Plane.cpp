@@ -26,7 +26,8 @@ void Plane::Start()
 	physx::PxVec3 GeoMetryScale = { RenderMeshScale.x, RenderMeshScale.y, RenderMeshScale.z};
 
 	Component = CreateComponent<PhysXBoxComponent>();
-	Component->SetPhysxMaterial(0.5f, 5.0f, 0.1f);
+	//Component->SetPhysxMaterial(0.5f, 5.0f, 0.1f);
+	Component->SetPhysxMaterial(1.0f, 1.0f, 0.0f);
 	Component->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), GeoMetryScale);
 	Component->SetPositionSetFromParentFlag(true);
 

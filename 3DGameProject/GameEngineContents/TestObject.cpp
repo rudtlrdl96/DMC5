@@ -94,8 +94,7 @@ void TestObject::Start()
 	//	Renderer->SetText("aaaaaaaaaa");
 	//}
 
-	Component->GetDynamic()->setMass(1.0f);
-	Component->SetSpeedLimitValue(150.0f);
+	Component->GetDynamic()->setMass(10.f);
 	//Component->GetDynamic()->setLinearDamping(physx::PxReal(1.f));
 	//Component->GetDynamic()->setMaxAngularVelocity(physx::PxReal(10.0f));
 	//Component->GetDynamic()->setAngularDamping(physx::PxReal(0.01f));
@@ -177,32 +176,11 @@ void TestObject::UserUpdate(float _DeltaTime)
 	if (true == GameEngineInput::IsDown("Jump"))
 	{
 		//Component->SetclearForce();
-		//Component->SetJump(300.0f);
-
-		MoveDir.z += Set;
-		float4 Movedis = MoveDir.NormalizeReturn() * 150.f;
-		Component->SetMove(Movedis);
-
+		Component->SetJump(3000.f);
 	}
 
-	float Speed = 200.0f;
-	float Dir = Speed * _DeltaTime;
+	Component->SetMove(MoveDir.NormalizeReturn() * 100.0f);
 
-	//Component->SetMove(MoveDir.NormalizeReturn() * 50000.0f * _DeltaTime);
-
-	//if (float4::ZERO != MoveDir)
-	//{
- //		
-	//}
-
-	//float4 Movedis = MoveDir.NormalizeReturn() * 1000.0f * _DeltaTime;
-
-	//Component->SetMoveSpeed(Movedis);
-
-	//Component->SetWorldRotation(Rot);
-
-	float4 asef = Component->GetDynamicVelocity();
-	int a = 0;
 
 	{
 		//float4 playerpos = GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition();

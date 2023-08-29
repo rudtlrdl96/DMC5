@@ -49,10 +49,10 @@ public:
 	void SetForce(float4 _MoveSpeed);
 	void SetPush(float4 _Push);
 
-	void SetSpeedLimitValue(float _Value)
-	{
-		SpeedLimitValue = _Value;
-	}
+	//void SetSpeedLimitValue(float _Value)
+	//{
+	//	SpeedLimitValue = _Value;
+	//}
 
 	inline physx::PxVec3 GetLinearVelocity()
 	{
@@ -149,7 +149,7 @@ private:
 	//속도제한 함수
 	void SpeedLimit();
 
-	float SpeedLimitValue = 150.0f;
+	//float SpeedLimitValue = 150.0f;
 
 	float StandUpTargetYAxisAngle = 0.0f;
 	float StandUpStartYAxisAngle = 0.0f;

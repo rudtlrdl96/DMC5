@@ -28,6 +28,11 @@ public:
 		return m_pScene;
 	}
 
+	void SetLevelSceneGravity(float _gravity)
+	{
+		m_pScene->setGravity({0.0f, -_gravity, 0.0f});
+	}
+
 	bool GetIsPhysicsStop()
 	{
 		return IsPhysics;
