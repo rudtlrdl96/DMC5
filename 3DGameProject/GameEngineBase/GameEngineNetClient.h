@@ -25,5 +25,6 @@ protected:
 private:
 	GameEngineThread RecvThread;
 	SOCKET ClientSocket;
+	std::mutex SendTextLock;
 };
 
