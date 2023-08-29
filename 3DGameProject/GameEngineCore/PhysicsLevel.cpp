@@ -186,7 +186,7 @@ void PhysicsLevel::Simulate(float _DeltaTime)
 		return;
 	}
 
-	m_pScene->simulate(_DeltaTime);
+	m_pScene->simulate(1.0f/60.0f);
 	m_pScene->fetchResults(true);
 }
 

@@ -91,5 +91,8 @@ private:
 	static std::shared_ptr<GameEngineLevel> NextLevel;
 
 	static void Release();
+
+	static float FrameTime;
+	static float CurFrame;
 };
 
