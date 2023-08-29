@@ -7,6 +7,7 @@
 #include "StageEditGUI.h"
 #include "EditorUI.h"
 #include "FreeCameraActor.h"
+#include <GameEngineCore/GameEngineFBXMesh.h>
 
 StageEditLevel::StageEditLevel()
 {
@@ -18,6 +19,7 @@ StageEditLevel::~StageEditLevel()
 
 void StageEditLevel::Start()
 {
+	StageBaseLevel::Start();
 	if (GetMainCamera() != nullptr)
 	{
 		GetMainCamera()->SetProjectionType(CameraType::Perspective);
@@ -43,6 +45,7 @@ void StageEditLevel::Start()
 
 void StageEditLevel::Update(float _DeltaTime)
 {
+	StageBaseLevel::Update(_DeltaTime);
 	//Test
 	if (true == GameEngineInput::IsDown("SelectLevel_01"))
 	{
@@ -59,6 +62,45 @@ void StageEditLevel::LevelChangeStart()
 		Editor = EditGUI;
 	}
 	Editor->On();
+
+	{
+		std::string Path = GameEnginePath::GetFileFullPath
+		(
+			"ContentResources",
+			{
+				"Map", "TestMap"
+			},
+			"Location2.FBX"
+		);
+
+		GameEngineFBXMesh::Load(Path);
+	}
+
+	{
+		std::string Path = GameEnginePath::GetFileFullPath
+		(
+			"ContentResources",
+			{
+				"Map", "TestMap"
+			},
+			"SkyBox.fbx"
+		);
+
+		GameEngineFBXMesh::Load(Path);
+	}
+
+	{
+		std::string Path = GameEnginePath::GetFileFullPath
+		(
+			"ContentResources",
+			{
+				"Map", "TestMap"
+			},
+			"Location2ColGuide.fbx"
+		);
+
+		GameEngineFBXMesh::Load(Path);
+	}
 }
 
 void StageEditLevel::LevelChangeEnd()

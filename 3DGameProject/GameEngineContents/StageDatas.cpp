@@ -45,6 +45,7 @@ void FieldMapData::ReadFieldMapData(GameEngineSerializer& _Serializer)
 
 void StageData::WriteStageData(GameEngineSerializer& _Serializer)
 {
+	_Serializer << StageName;
 	_Serializer << static_cast<int>(MapDatas.size());
 	for (size_t i = 0; i < MapDatas.size(); i++)
 	{
@@ -55,6 +56,7 @@ void StageData::WriteStageData(GameEngineSerializer& _Serializer)
 
 void StageData::ReadStageData(GameEngineSerializer& _Serializer)
 {
+	_Serializer >> StageName;
 	int tempsize = 0;
 	_Serializer >> tempsize;
 	MapDatas.resize(tempsize);

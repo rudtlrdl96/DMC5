@@ -1,6 +1,7 @@
 #pragma once
+#include "StageBaseLevel.h"
 
-class StageEditLevel : public GameEngineLevel
+class StageEditLevel : public StageBaseLevel
 {
 public:
 	StageEditLevel();

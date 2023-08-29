@@ -16,18 +16,42 @@ public:
 	
 protected:
 	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;
+
 private:
-	bool BoxSwitch = false;
-	int EditBoxSize = 12;
+	//상용 함수
+	static std::string GetOpenFilePath(); //파일 불러오기
+	static std::string GetSaveFilePath(); //파일 저장하기
 
-	std::vector<const char*> StageNumber;
-	std::vector<int> EditData;
-	std::vector<bool> Editbool;
-	int NumberIndex = 0;
+	//Data 관련
+	std::vector<StageData> AllData;
+	template <typename T>
+	void pushback_Data(std::vector<T>& _Vector)
+	{
+		_Vector.emplace_back();
+	}
 
-	std::vector<std::string> PreChar;
-	int StartPrecharSize = 20;
+	template <typename T>
+	void erase_Data(std::vector<T>& _Vector, size_t _current)
+	{
+		if (_Vector.size() <= _current)
+		{
+			return;
+		}
+		_Vector.erase(_Vector.begin() + _current);
+	}
 
-	std::vector<StageData> P_StageData;
+	void SaveStageData();
+	void LoadStageData();
+
+	//Stage 관련
+	size_t Stage_current = 0;
+	char StageNameInputSpace[128] = "";
+	void StageListBox();
+	void InputStageInfo(std::shared_ptr<GameEngineLevel> _Level);
+
+	//FieldMap 관련
+	size_t FieldMap_current = 0;
+	void FieldMapCombo();
+
 };
 

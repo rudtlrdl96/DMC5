@@ -16,12 +16,12 @@ public:
 	StageBaseLevel& operator=(StageBaseLevel&& _Other) noexcept = delete;
 
 	void SetCamera(float4 _Position);
+	void CreateStage(const StageData& _Data); // 데이터 넣어주면 스테이지 생성
 	
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
-	void CreateStage(const StageData& _Data); // 데이터 넣어주면 스테이지 생성
 
 	std::vector<std::shared_ptr<class FieldMap>> AcFieldMaps;
 	std::shared_ptr<class GameEngineFBXRenderer> AcSkyBox = nullptr;

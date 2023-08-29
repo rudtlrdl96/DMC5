@@ -17,7 +17,7 @@ public:
 class FieldMapData
 {
 public:
-	std::string MeshFileName = "\0";
+	std::string MeshFileName = "";
 	std::vector<FieldMapColData> ColDatas;
 	float4 FieldMapPosition = float4::ZERONULL;
 
@@ -28,8 +28,9 @@ public:
 class StageData
 {
 public:
+	std::string StageName = "";
 	std::vector<FieldMapData> MapDatas;
-	std::string SkyboxFileName = "\0";
+	std::string SkyboxFileName = "";
 
 	void WriteStageData(GameEngineSerializer& _Serializer);
 	void ReadStageData(GameEngineSerializer& _Serializer);
