@@ -47,6 +47,7 @@ public:
 
 	float4x4 FbxMatTofloat4x4(const fbxsdk::FbxAMatrix& _BaseTrans);
 	fbxsdk::FbxAMatrix float4x4ToFbxAMatrix(const float4x4& _MATRIX);
+	fbxsdk::FbxVector4 float4ToFbxVec(const float4& _Float4);
 	float4 FbxVecTofloat4(const fbxsdk::FbxVector4& _BaseVector);
 	float4 FbxVecToTransform(const fbxsdk::FbxVector4& _BaseVector);
 	float4 FbxQuaternionTofloat4(const fbxsdk::FbxQuaternion& _BaseVector);

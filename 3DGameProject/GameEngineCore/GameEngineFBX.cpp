@@ -209,6 +209,16 @@ fbxsdk::FbxAMatrix GameEngineFBX::float4x4ToFbxAMatrix(const float4x4& _MATRIX)
 	return mat;
 }
 
+fbxsdk::FbxVector4 GameEngineFBX::float4ToFbxVec(const float4& _Float4)
+{
+	fbxsdk::FbxVector4 Vec;
+	Vec.mData[0] = (float)_Float4.Arr1D[0];
+	Vec.mData[1] = (float)_Float4.Arr1D[1];
+	Vec.mData[2] = (float)_Float4.Arr1D[2];
+	Vec.mData[3] = (float)_Float4.Arr1D[3];
+	return Vec;
+}
+
 float4 GameEngineFBX::FbxVecTofloat4(const fbxsdk::FbxVector4& _BaseVector)
 {
 	float4 Vec;
