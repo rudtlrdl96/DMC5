@@ -1,30 +1,33 @@
 #include "PrecompileHeader.h"
 #include "PlayerTestLevel.h"
-#include <GameEngineCore/GameEngineFBXMesh.h>
-#include <GameEngineCore/GameEngineSpriteRenderer.h>
-#include <GameEngineCore/GameEngineFBXAnimation.h>
-#include <GameEngineCore/GameEngineCollision.h>
-#include "BasePlayerActor.h"
-#include "AnimationToolWindow.h"
-#include "PlayerWindow.h"
-#include "ObjectWindow.h"
-#include "FreeCameraActor.h"
-#include "ContentsEnum.h"
 
-PlayerTestLevel::PlayerTestLevel() 
+#include "TestObject.h"
+#include "Plane.h"
+#include "Enemy_Empusa.h"
+#include "Enemy_GreenEmpusa.h"
+#include "Enemy_RedEmpusa.h"
+#include "Enemy_HellCaina.h"
+#include "Enemy_HellAntenora.h"
+#include "CavaliereAngelo.h"
+#include "Ball.h"
+#include "Wall.h"
+#include "Slope.h"
+#include "PlayerActor_Nero.h"
+#include <GameEngineCore/GameEngineCollision.h>
+
+PlayerTestLevel::PlayerTestLevel()
 {
 }
 
-PlayerTestLevel::~PlayerTestLevel() 
+PlayerTestLevel::~PlayerTestLevel()
 {
+
 }
 
 void PlayerTestLevel::Start()
 {
-	GetMainCamera()->SetProjectionType(CameraType::Perspective);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 50, -500 });
-
-	
+	GetCamera(0)->SetProjectionType(CameraType::Perspective);
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 50.0f, -100.0f });
 }
 
 void PlayerTestLevel::Update(float _DeltaTime)
@@ -34,6 +37,7 @@ void PlayerTestLevel::Update(float _DeltaTime)
 		IsMessage = true;
 		MsgTextBox("CurrentLevel is PlayerTestLevel");
 	}
+
 	if (true == GameEngineInput::IsDown("ReturnToMainLevel"))
 	{
 		GameEngineCore::ChangeLevel("MainLevel");
@@ -42,65 +46,35 @@ void PlayerTestLevel::Update(float _DeltaTime)
 
 void PlayerTestLevel::LevelChangeStart()
 {
-	if (nullptr != BasePlayerActor::GetInstance())
-	{
-		return;
-	}
-	//if (nullptr == GameEngineFBXMesh::Find("Nero.fbx")) {
-	//	GameEngineDirectory NewDir;
-	//	NewDir.MoveParentToDirectory("ContentResources");
-	//	NewDir.Move("ContentResources");
-	//	NewDir.Move("Mesh");
-	//	NewDir.Move("Characters");
-	//	// 테스트 메쉬 폴더는 자동으로 로드합니다
-	//	std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".FBX" });
-
-	//	for (size_t i = 0; i < Files.size(); i++)
-	//	{
-	//		//GameEngineFBXMesh::Load(Files[i].GetFullPath());
-	//	}
-
-	//	NewDir.MoveParentToDirectory("ContentResources");
-	//	NewDir.Move("ContentResources");
-	//	NewDir.Move("Mesh");
-	//	NewDir.Move("Animations");
-	//	NewDir.Move("Nero");
-	//	// 테스트 메쉬 폴더는 자동으로 로드합니다
-	//	Files = NewDir.GetAllFile({ ".FBX" });
-
-	//	for (size_t i = 0; i < Files.size(); i++)
-	//	{
-	//		//GameEngineFBXAnimation::Load(Files[i].GetFullPath());
-	//	}
-	//}
-	std::shared_ptr<BasePlayerActor> NewPlayer = CreateActor<BasePlayerActor>();
-	NewPlayer->SetName("Nero");
-	NewPlayer->SetUserControllType();
-
-	//CreateActor<BasePlayerActor>();
-	std::shared_ptr<GameEngineActor> Actor = CreateActor<GameEngineActor>();
-	Actor->GetTransform()->SetWorldScale({ 1000, 1000, 1 });
-	Actor->GetTransform()->SetWorldPosition({ 0, 0, 500 });
-	Actor->CreateComponent<GameEngineSpriteRenderer>();
-
+	CreateActor<PlayerActor_Nero>();
 	std::shared_ptr<GameEngineActor> CollisionActor = CreateActor<GameEngineActor>();
 	std::shared_ptr<GameEngineCollision> Collision = CollisionActor->CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
 	CollisionActor->GetTransform()->SetLocalScale({ 100, 100, 100 });
 	CollisionActor->GetTransform()->SetLocalPosition({ 100, 0, 100 });
 	Collision->SetColType(ColType::OBBBOX3D);
-
-	//NewPlayer->LockOnEnemyTransform = CollisionActor->GetTransform();
 	IsDebugSwitch();
 
-	
-	//ObjWindow =  std::dynamic_pointer_cast<ObjectWindow>(GameEngineGUI::GUIWindowCreate<ObjectWindow>("ObjectWindow"));
-	//ObjWindow->AddObject(NewPlayer);
-	//ObjWindow->AddObject(CollisionActor);
-	//ObjWindow->AddObject(Collision);
-	//std::shared_ptr<FreeCameraActor> Free = CreateActor<FreeCameraActor>();
-	//ObjWindow->AddObject(Free);
+	//std::shared_ptr<TestObject> Component = CreateActor<TestObject>();
+	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
+
+	std::shared_ptr<Wall> Flat2 = CreateActor<Wall>();
+	Flat2->GetTransform()->AddWorldPosition(float4{ 100, 0, 100 });
+	Flat2->GetTransform()->AddWorldRotation(float4{ 0, 0, 90 });
+	Flat2->GetTransform()->AddWorldRotation(float4{ 0, -40, 0 });
+
+	std::shared_ptr<Slope> Flat3 = CreateActor<Slope>();
+	Flat3->GetTransform()->AddWorldPosition(float4{ -200, 0, 100 });
+	Flat3->GetTransform()->AddWorldRotation(float4{ 0, 0, -30 });
+	//Flat3->GetTransform()->AddWorldRotation(float4{ 0, -45, 0 });
+
+	std::shared_ptr<GameEngineLight> Light = CreateActor<GameEngineLight>();
+
+	//std::shared_ptr<Ball> ball = CreateActor<Ball>();
+
+	//std::shared_ptr<TestEmpusa> Em = CreateActor<TestEmpusa>();
 }
 
 void PlayerTestLevel::LevelChangeEnd()
 {
+	IsMessage = false;
 }

@@ -177,7 +177,8 @@ bool GameEngineFBXAnimation::AnimationLoad(std::shared_ptr <GameEngineFBXMesh> _
 					// 시간을 넣어주면 그때의 본의 행렬을 가져와 준다.
 					// 커브 
 					globalTransform = currentTransformOffset.Inverse() * pLinkNode->EvaluateGlobalTransform(currTime);
-					globalTransform.SetT(globalTransform.GetT() + float4ToFbxVec(RootFrameData.T));
+					float4 ResetRoot = float4(-RootFrameData.T.x, -RootFrameData.T.y, RootFrameData.T.z);
+					globalTransform.SetT(globalTransform.GetT() + float4ToFbxVec(ResetRoot));
 
 					localTransform.SetS(pLinkNode->EvaluateLocalScaling(currTime));
 					localTransform.SetR(pLinkNode->EvaluateLocalRotation(currTime));
