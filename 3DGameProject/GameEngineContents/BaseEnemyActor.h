@@ -46,7 +46,7 @@ enum class EnemySize
 	None,
 	Small,
 	Middle,
-	Large
+	Large,
 };
 
 enum class EnemyHitDir
@@ -55,7 +55,7 @@ enum class EnemyHitDir
 	Forward,
 	Back,
 	Left,
-	Right
+	Right,
 };
 
 class BaseEnemyActor : public GameEngineActor, public GameEngineNetObject
@@ -108,6 +108,9 @@ protected:
 
 	// 물리 컴포넌트
 	std::shared_ptr<PhysXCapsuleComponent> CapsulCol = nullptr;
+
+	// Monster의 Collision
+	std::shared_ptr<class GameEngineCollision> MonsterCollision = nullptr;
 
 	GameEngineFSM EnemyFSM;
 

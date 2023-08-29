@@ -3,6 +3,7 @@
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/GameEngineFBXAnimation.h>
 
+#include "AnimationEvent.h"
 Enemy_HellCaina::Enemy_HellCaina() 
 {
 }
@@ -33,35 +34,27 @@ void Enemy_HellCaina::EnemyTypeLoad()
 
 void Enemy_HellCaina::EnemyAnimationLoad()
 {
-	//std::string RootPath = GameEnginePath::GetFileFullPath("ContentResources",
-	//	{
-	//		"Character", "Enemy", "em0000", "animation",
-	//	});
-	//
-	//GameEngineDirectory Path = GameEngineDirectory(RootPath);
-	//
-	//{
-	//	Path.Move("attack");
-	//
-	//	std::vector<GameEngineFile> Files = Path.GetAllFile({ ".fbx" });
-	//	
-	//	for (size_t i = 0; i < Files.size(); i++)
-	//	{
-	//		GameEngineFBXMesh::Load(Files[i].GetFullPath());
-	//	}
-	//
-	//	Path.MoveParent();
-	//}
-
-	std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+	//Animation정보 경로를 찾아서 모든animation파일 로드
+	GameEngineDirectory NewDir;
+	NewDir.MoveParentToDirectory("ContentResources");
+	NewDir.Move("ContentResources");
+	NewDir.Move("Character");
+	NewDir.Move("Enemy");
+	NewDir.Move("em0000");
+	NewDir.Move("Animation");
+	AnimationEvent::LoadAll(
 		{
-			"Character", "Enemy", "em0000", "animation", "attack"
-		}, "em0000_attack_01.FBX");
-
-	GameEngineFBXAnimation::Load(Path);
-
-	EnemyRenderer->CreateFBXAnimation("Attack01", "em0000_attack_01.fbx");
-	EnemyRenderer->ChangeAnimation("Attack01");
+			.Dir = NewDir.GetFullPath().c_str(), .Renderer = EnemyRenderer,
+			.Objects = {(GameEngineObject*)MonsterCollision.get()},
+			.CallBacks_void =
+			{
+				std::bind([=] {CheckBool = true; }),
+				//Functional사용할 함수들 적는곳
+			},
+			.CallBacks_int = {
+				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)} //ChangeState,인자있음
+		}
+	);
 }
 
 void Enemy_HellCaina::EnemyCreateFSM()

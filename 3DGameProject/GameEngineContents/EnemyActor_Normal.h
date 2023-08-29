@@ -1,5 +1,13 @@
 #pragma once
 #include "BaseEnemyActor.h"
+enum EnemyState
+{
+	Basic,
+	Damage,
+	move,
+	special,
+	todome,
+};
 
 class EnemyActor_Normal : public BaseEnemyActor
 {

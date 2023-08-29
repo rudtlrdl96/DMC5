@@ -16,11 +16,11 @@ public:
 	Enemy_HellAntenora& operator=(Enemy_HellAntenora&& _Other) noexcept = delete;
 
 protected:
-
-private:
 	void EnemyMeshLoad() override;
 	void EnemyTypeLoad() override;
 	void EnemyAnimationLoad() override;
 	void EnemyCreateFSM() override;
+private:
+	bool CheckBool = false;
 };
 

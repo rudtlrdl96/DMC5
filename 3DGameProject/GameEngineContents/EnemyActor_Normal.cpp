@@ -15,11 +15,11 @@ void EnemyActor_Normal::Start()
 
 	BaseEnemyActor::Start();
 
-	//EnemyFSM.CreateState({ .Name = "Idle",
+	//EnemyFSM.CreateState({ .StateValue = EnemyState::Basic,
 	//	.Start = std::bind(&Idle_Enter, this),
 	//	.Update = std::bind(&Idle_Update, this, std::placeholders::_1),
 	//	.End = std::bind(&Idle_Exit, this)});
-	//
+	
 	//EnemyFSM.CreateState({ .Name = "Chase",
 	//	.Start = std::bind(&Chase_Enter, this),
 	//	.Update = std::bind(&Chase_Update, this, std::placeholders::_1),
@@ -55,15 +55,17 @@ void EnemyActor_Normal::Start()
 	//	.Update = std::bind(&Death_Update, this, std::placeholders::_1),
 	//	.End = std::bind(&Death_Exit, this) });
 	//
-	//EnemyFSM.ChangeState("Idle");
+	//EnemyFSM.ChangeState(EnemyState::Basic);
 }
 
 void EnemyActor_Normal::Idle_Enter()
 {
+
 }
 
 void EnemyActor_Normal::Idle_Update(float _DeltaTime)
 {
+
 }
 
 void EnemyActor_Normal::Idle_Exit()
