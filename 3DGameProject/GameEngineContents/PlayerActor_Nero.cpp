@@ -21,7 +21,101 @@ void PlayerActor_Nero::Start()
 {
 	BasePlayerActor::Start();
 	
+#ifdef _DEBUG
+	TestLoad();
+#else
+	NeroLoad();
+#endif
 
+}
+
+void PlayerActor_Nero::TestLoad()
+{
+	if (nullptr == GameEngineFBXMesh::Find("em0100.FBX"))
+	{
+		std::string Path = GameEnginePath::GetFileFullPath
+		(
+			"ContentResources",
+			{
+				"Character", "Enemy", "em0100", "mesh"
+			},
+			"em0100.FBX"
+		);
+		GameEngineFBXMesh::Load(Path);
+	}
+
+	Renderer = CreateComponent<GameEngineFBXRenderer>();
+	Renderer->SetFBXMesh("em0100.fbx", "NoneAlphaMesh");
+	Renderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
+
+	{
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Idle,
+			.Start = [=] {
+			},
+			.Update = [=](float _DeltaTime) {
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					FSM.ChangeState(FSM_State_Nero::Walk);
+					return;
+				}
+				if (true == IsLockOn)
+				{
+					FSM.ChangeState(BR_Switch_Idle_to_Lockon);
+					return;
+				}
+			},
+			.End = [=] {
+
+			}
+			});
+
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Walk,
+			.Start = [=] {
+			},
+			.Update = [=](float _DeltaTime) {
+				if (Controller->GetMoveVector() == float4::ZERO)
+				{
+					FSM.ChangeState(FSM_State_Nero::Idle);
+					return;
+				}
+
+				if (true == IsLockOn)
+				{
+					FSM.ChangeState(BR_Switch_Idle_to_Lockon);
+					return;
+				}
+
+				LookDir(Controller->GetMoveVector());
+				float4 MoveDir = Controller->GetMoveVector() * WalkSpeed * _DeltaTime;
+				PhysXCapsule->SetMove(MoveDir);
+			},
+			.End = [=] {
+
+			}
+			});
+
+		FSM.CreateState({ .StateValue = FSM_State_Nero::BR_Switch_Idle_to_Lockon,
+			.Start = [=] {
+			},
+			.Update = [=](float _DeltaTime) {
+				if (false == IsLockOn)
+				{
+					FSM.ChangeState(Idle);
+					return;
+				}
+				LookTarget(LockOnEnemyTransform->GetWorldPosition());
+				float4 MoveDir = Controller->GetMoveVector() * WalkSpeed * _DeltaTime;
+				PhysXCapsule->SetMove(MoveDir);
+			},
+			.End = [=] {
+
+			}
+			});
+	}
+}
+
+void PlayerActor_Nero::NeroLoad()
+{
 	// Renderer 생성
 	{
 		GameEngineDirectory NewDir;
@@ -57,18 +151,18 @@ void PlayerActor_Nero::Start()
 
 			});
 
-		
-		 //Object = 0 : 공격 충돌체
-		 //
-		 //콜백void = 0 : 입력체크시작
-		 //콜백void = 1 : 손에 레드퀸 들려줌
-		 //콜백void = 2 : 손에 레드퀸 뺌
-		 //콜백void = 3 : 손에 블루로즈
-		 //콜백void = 4 : WeaponIdle (빈손, 칼 등에)
-		 //
-		 //콜백 int = 0 : FSM변경
-		
-		
+
+		//Object = 0 : 공격 충돌체
+		//
+		//콜백void = 0 : 입력체크시작
+		//콜백void = 1 : 손에 레드퀸 들려줌
+		//콜백void = 2 : 손에 레드퀸 뺌
+		//콜백void = 3 : 손에 블루로즈
+		//콜백void = 4 : WeaponIdle (빈손, 칼 등에)
+		//
+		//콜백 int = 0 : FSM변경
+
+
 
 		Renderer->GetAllRenderUnit()[0][12]->Off();	// 버스터 암
 		Renderer->GetAllRenderUnit()[0][13]->Off();	// 버스터 암
@@ -329,7 +423,7 @@ void PlayerActor_Nero::Start()
 
 
 
-			}});
+			} });
 
 		FSM.CreateState({ .StateValue = FSM_State_Nero::BR_Switch_Lockon_to_Idle,
 			.Start = [=] {

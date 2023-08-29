@@ -1,5 +1,8 @@
 #pragma once
 // Ό³Έν :
+
+
+
 class BasePlayerActor : public GameEngineActor, public GameEngineNetObject
 {
 public:
@@ -21,6 +24,11 @@ public:
 	void LookDir(const float4& _LookDir);
 	void LookTarget(const float4& _Target);
 	GameEngineTransform* LockOnEnemyTransform = nullptr;
+
+	std::shared_ptr<class PhysXCapsuleComponent> GetPhysXComponent()
+	{
+		return PhysXCapsule;
+	}
 
 protected:
 	void Start() override;

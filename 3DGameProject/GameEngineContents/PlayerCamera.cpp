@@ -1,12 +1,12 @@
 #include "PrecompileHeader.h"
 #include "PlayerCamera.h"
 
-PlayerCamera::PlayerCamera() 
+PlayerCamera::PlayerCamera()
 {
 	SetName("PlayerCamera");
 }
 
-PlayerCamera::~PlayerCamera() 
+PlayerCamera::~PlayerCamera()
 {
 }
 
@@ -62,8 +62,9 @@ void PlayerCamera::Update(float _DeltaTime)
 	{
 		x = std::clamp(x, 10.0f, 21.0f);
 	}
-	CameraArm->SetLocalRotation({x, 0, 0});
+	CameraArm->SetLocalRotation({ x, 0, 0 });
 
+	// 락온 여부에 따라 카메라 추적 속도 조절
 	if (TargetTransform == nullptr)
 	{
 		GetTransform()->SetWorldPosition(float4::LerpClamp(GetTransform()->GetWorldPosition(), PlayerTransform->GetWorldPosition(), _DeltaTime * TrackingSpeed));
@@ -72,19 +73,22 @@ void PlayerCamera::Update(float _DeltaTime)
 	{
 		GetTransform()->SetWorldPosition(float4::LerpClamp(GetTransform()->GetWorldPosition(), PlayerTransform->GetWorldPosition(), _DeltaTime * LockOnTrackingSpeed));
 	}
-	CameraTransform->SetWorldPosition(CameraTarget->GetWorldPosition());
-	CameraTransform->SetWorldRotation(CameraTarget->GetWorldRotation());
+
+	// 레이캐스트로 벽 감지
+	WallCheck();
+
+	// 카메라 이동
+	CameraTransform->SetWorldPosition(CameraTargetPos);
+	CameraTransform->SetWorldRotation(CameraTargetPos);
 }
 
 void PlayerCamera::TargetCheck(float _DeltaTime)
 {
-	if (TargetTransform == nullptr) { 
+	if (TargetTransform == nullptr) {
 		// 락온 대상이 없을 시
 		// 기존의 카메라 위치로 Lerp 이용하여 이동
-		//CameraArm->SetLocalPosition(float4::ZERO);
 		CameraArm->SetLocalPosition(float4::LerpClamp(CameraArm->GetLocalPosition(), float4::ZERO, _DeltaTime * LockOnTrackingSpeed));
 
-		//CameraTarget->SetLocalPosition({ 0, 100, -300 });
 		CameraTarget->SetLocalPosition(float4::LerpClamp(CameraTarget->GetLocalPosition(), { 0, 100, -300 }, _DeltaTime * LockOnTrackingSpeed));
 		return;
 	}
@@ -93,10 +97,24 @@ void PlayerCamera::TargetCheck(float _DeltaTime)
 	float Distance = (GetTransform()->GetWorldPosition() - TargetTransform->GetWorldPosition()).Size();
 	Distance = std::max<float>(std::abs(Distance), MinDistance);
 
-	//CameraTarget->SetLocalPosition({ 0, 100, -Distance });
 	CameraTarget->SetLocalPosition(float4::LerpClamp(CameraTarget->GetLocalPosition(), { 0, 100, -Distance }, _DeltaTime * LockOnTrackingSpeed));
 
-	//CameraArm->SetWorldPosition((GetTransform()->GetWorldPosition() + TargetTransform->GetWorldPosition()) * 0.5f);
 	CameraArm->SetWorldPosition(float4::LerpClamp(CameraArm->GetWorldPosition(), (GetTransform()->GetWorldPosition() + TargetTransform->GetWorldPosition()) * 0.5f, _DeltaTime * LockOnTrackingSpeed));
+}
+
+void PlayerCamera::WallCheck()
+{
+	float4 playerpos = GetTransform()->GetWorldPosition();
+	float4 playerposeye = CameraTarget->GetWorldPosition() - playerpos;
+
+	float4 Colleye = float4::ZERO;
+
+	playerpos.w = 0.0f;
+	playerposeye.w = 0.0f;
+	Colleye.w = 0.0f;
+
+	GetLevel()->RayCast(playerpos, playerposeye, Colleye);
+
+	CameraTargetPos = Colleye;
 }
 

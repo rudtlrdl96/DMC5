@@ -27,14 +27,15 @@ protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	void TargetCheck(float _DeltaTime);
-
-
+	void WallCheck();
+	
 private:
 	GameEngineTransform* PlayerTransform = nullptr;
 	GameEngineTransform* TargetTransform = nullptr;
 	GameEngineTransform* CameraArm = nullptr;
 	GameEngineTransform* CameraTarget = nullptr;
 	GameEngineTransform* CameraTransform = nullptr;
+	float4 CameraTargetPos;
 
 	float CameraRotYSpeed = 150.0f;
 	float CameraRotXSpeed = 80.0f;

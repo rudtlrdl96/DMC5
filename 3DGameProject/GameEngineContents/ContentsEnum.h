@@ -36,6 +36,13 @@ enum class Net_ActorType
 	COUNT
 };
 
+enum class PlayerType
+{
+	None,
+	Nero,
+	Vergil,
+};
+
 enum class Net_LevelType
 {
 	Intro,

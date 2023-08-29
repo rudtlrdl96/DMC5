@@ -46,7 +46,6 @@ public:
 	//{
 	//	InputCheck = true;
 	//}
-
 	void SetPush(const float4& _Value);
 	void SetSpeed(float _Speed)
 	{
@@ -56,6 +55,8 @@ public:
 
 protected:
 	void Start() override;
+	void TestLoad();
+	void NeroLoad();
 	void Update_Character(float _DeltaTime) override;
 
 private:
