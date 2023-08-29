@@ -6,9 +6,14 @@ enum FSM_State_Nero
 {
 	None,
 	Idle,
-	Walk,
+	RunStart,
 	Run,
-
+	RunStop,
+	Dash,
+	DashStop,
+	Jump_Vertical,
+	Jump_Fly,
+	Landing,
 
 	RQ_ComboA_1,
 	RQ_ComboA_2,
@@ -49,9 +54,11 @@ public:
 	void SetPush(const float4& _Value);
 	void SetSpeed(float _Speed)
 	{
-		WalkSpeed = _Speed;
+		DashSpeed = _Speed;
 	}
 
+	float JumpForce = 1000.0f;
+	void SetMass(float _Value);
 
 protected:
 	void Start() override;
@@ -61,9 +68,10 @@ protected:
 
 private:
 	GameEngineFSM FSM;
-	float WalkSpeed = 1500000.0f;
-	float DashSpeed = 1500000.0f;
-
+	float WalkSpeed = 4000;
+	float RunSpeed = 12000;
+	float DashSpeed = 20000;
+	float DashTimer = 0;
 	bool InputCheck = false;
 	char CurDir = 'n';
 

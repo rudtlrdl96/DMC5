@@ -17,10 +17,15 @@ void PlayerActor_Nero::SetPush(const float4& _Value)
 	PhysXCapsule->SetPush(_Value);
 }
 
+void PlayerActor_Nero::SetMass(float _Value)
+{
+	PhysXCapsule->GetDynamic()->setMass(_Value);
+}
 void PlayerActor_Nero::Start()
 {
 	BasePlayerActor::Start();
-	
+	PhysXCapsule->GetDynamic()->setMass(1.0f);
+	PhysXCapsule->SetSpeedLimitValue(300.0f);
 #ifdef _DEBUG
 	TestLoad();
 #else
@@ -41,7 +46,7 @@ void PlayerActor_Nero::TestLoad()
 			.Update = [=](float _DeltaTime) {
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
-					FSM.ChangeState(FSM_State_Nero::Walk);
+					FSM.ChangeState(FSM_State_Nero::Run);
 					return;
 				}
 				if (true == IsLockOn)
@@ -55,7 +60,7 @@ void PlayerActor_Nero::TestLoad()
 			}
 			});
 
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Walk,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Run,
 			.Start = [=] {
 			},
 			.Update = [=](float _DeltaTime) {
@@ -72,7 +77,7 @@ void PlayerActor_Nero::TestLoad()
 				}
 
 				LookDir(Controller->GetMoveVector());
-				float4 MoveDir = Controller->GetMoveVector() * WalkSpeed * _DeltaTime;
+				float4 MoveDir = Controller->GetMoveVector() * RunSpeed * _DeltaTime;
 				PhysXCapsule->SetMove(MoveDir);
 			},
 			.End = [=] {
@@ -90,7 +95,7 @@ void PlayerActor_Nero::TestLoad()
 					return;
 				}
 				LookTarget(LockOnEnemyTransform->GetWorldPosition());
-				float4 MoveDir = Controller->GetMoveVector() * WalkSpeed * _DeltaTime;
+				float4 MoveDir = Controller->GetMoveVector() * RunSpeed * _DeltaTime;
 				PhysXCapsule->SetMove(MoveDir);
 			},
 			.End = [=] {
@@ -164,6 +169,7 @@ void PlayerActor_Nero::NeroLoad()
 
 	/* 기본 움직임 */
 	{
+		// Idle
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Idle,
 			.Start = [=] {
 				WeaponIdle();
@@ -176,10 +182,14 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
 					return;
 				}
-
+				if (Controller->GetJumpDown())
+				{
+					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					return;
+				}
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
-					FSM.ChangeState(FSM_State_Nero::Walk);
+					FSM.ChangeState(FSM_State_Nero::RunStart);
 					return;
 				}
 
@@ -194,43 +204,287 @@ void PlayerActor_Nero::NeroLoad()
 			}
 			});
 
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Walk,
+		// Run Start
+		FSM.CreateState({ .StateValue = FSM_State_Nero::RunStart,
 			.Start = [=] {
 				WeaponIdle();
-				Renderer->ChangeAnimation("pl0000_Dash_Loop");
+				Renderer->ChangeAnimation("pl0000_Run_Start");
 			},
 			.Update = [=](float _DeltaTime) {
-
 				if (Controller->GetSwordDown())
 				{
 					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
 					return;
 				}
-
-				if (Controller->GetMoveVector() == float4::ZERO)
+				if (Controller->GetJumpDown())
 				{
-					FSM.ChangeState(FSM_State_Nero::Idle);
+					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
 					return;
 				}
-
+				if (Controller->GetMoveVector() == float4::ZERO)
+				{
+					FSM.ChangeState(FSM_State_Nero::RunStop);
+					return;
+				}
 				if (true == IsLockOn)
 				{
 					FSM.ChangeState(BR_Switch_Idle_to_Lockon);
 					return;
 				}
-
+				if (true == Renderer->IsAnimationEnd())
+				{
+					FSM.ChangeState(FSM_State_Nero::Run);
+					return;
+				}
 				LookDir(Controller->GetMoveVector());
-				float4 MoveDir = Controller->GetMoveVector() * WalkSpeed * _DeltaTime;
+				float4 MoveDir = Controller->GetMoveVector() * RunSpeed * _DeltaTime;
 				PhysXCapsule->SetMove(MoveDir);
 			},
 			.End = [=] {
 
 			}
 			});
+
+		// Run
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Run,
+			.Start = [=] {
+				DashTimer = 0;
+				WeaponIdle();
+				Renderer->ChangeAnimation("pl0000_Run_Loop");
+			},
+			.Update = [=](float _DeltaTime) {
+				DashTimer += _DeltaTime;
+				if (Controller->GetSwordDown())
+				{
+					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
+					return;
+				}
+				if (Controller->GetJumpDown())
+				{
+					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					return;
+				}
+				if (Controller->GetMoveVector() == float4::ZERO)
+				{
+					FSM.ChangeState(FSM_State_Nero::RunStop);
+					return;
+				}
+
+				if (true == IsLockOn)
+				{
+					FSM.ChangeState(FSM_State_Nero::BR_Switch_Idle_to_Lockon);
+					return;
+				}
+
+				if (1 < DashTimer)
+				{
+					FSM.ChangeState(FSM_State_Nero::Dash);
+					return;
+				}
+
+				LookDir(Controller->GetMoveVector());
+				float4 MoveDir = Controller->GetMoveVector() * RunSpeed * _DeltaTime;
+				PhysXCapsule->SetMove(MoveDir);
+			},
+			.End = [=] {
+
+			}
+			});
+
+		// RunStop
+		FSM.CreateState({ .StateValue = FSM_State_Nero::RunStop,
+			.Start = [=] {
+				InputCheck = false;
+				WeaponIdle();
+				Renderer->ChangeAnimation("pl0000_Run_Stop");
+			},
+			.Update = [=](float _DeltaTime) {
+				if (Controller->GetSwordDown())
+				{
+					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
+					return;
+				}
+				if (Controller->GetJumpDown())
+				{
+					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					return;
+				}
+
+				if (false == InputCheck) { return; }
+
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					FSM.ChangeState(FSM_State_Nero::RunStart);
+					return;
+				}
+				if (true == IsLockOn)
+				{
+					FSM.ChangeState(FSM_State_Nero::BR_Switch_Idle_to_Lockon);
+					return;
+				}
+			},
+			.End = [=] {
+
+			}
+			});
+
+		// Dash
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Dash,
+			.Start = [=] {
+				DashTimer = 0;
+				WeaponIdle();
+				Renderer->ChangeAnimation("pl0000_Dash_Loop");
+			},
+			.Update = [=](float _DeltaTime) {
+				DashTimer += _DeltaTime;
+				if (Controller->GetSwordDown())
+				{
+					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
+					return;
+				}
+				if (Controller->GetJumpDown())
+				{
+					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					return;
+				}
+				if (Controller->GetMoveVector() == float4::ZERO)
+				{
+					FSM.ChangeState(FSM_State_Nero::DashStop);
+					return;
+				}
+				if (true == IsLockOn)
+				{
+					FSM.ChangeState(FSM_State_Nero::BR_Switch_Idle_to_Lockon);
+					return;
+				}
+
+				LookDir(Controller->GetMoveVector());
+				float4 MoveDir = Controller->GetMoveVector() * DashSpeed * _DeltaTime;
+				PhysXCapsule->SetMove(MoveDir);
+			},
+			.End = [=] {
+
+			}
+			});
+
+		// DashStop
+		FSM.CreateState({ .StateValue = FSM_State_Nero::DashStop,
+			.Start = [=] {
+				InputCheck = false;
+				WeaponIdle();
+				Renderer->ChangeAnimation("pl0000_Dash_Stop");
+			},
+			.Update = [=](float _DeltaTime) {
+				if (Controller->GetSwordDown())
+				{
+					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
+					return;
+				}
+				if (Controller->GetJumpDown())
+				{
+					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					return;
+				}
+
+				if (false == InputCheck) { return; }
+
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					FSM.ChangeState(FSM_State_Nero::RunStart);
+					return;
+				}
+				if (true == IsLockOn)
+				{
+					FSM.ChangeState(FSM_State_Nero::BR_Switch_Idle_to_Lockon);
+					return;
+				}
+			},
+			.End = [=] {
+
+			}
+			});
+
+		// Jump_Vertical
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Jump_Vertical,
+			.Start = [=] {
+				PhysXCapsule->SetJump(JumpForce);
+				WeaponIdle();
+				Renderer->ChangeAnimation("pl0000_Jump_Vertical");
+			},
+			.Update = [=](float _DeltaTime) {
+				if (Renderer->IsAnimationEnd())
+				{
+					FSM.ChangeState(FSM_State_Nero::Jump_Fly);
+				}
+				float4 MoveDir = Controller->GetMoveVector() * RunSpeed * _DeltaTime;
+				PhysXCapsule->SetMove(MoveDir);
+			},
+			.End = [=] {
+
+			}
+			});
+
+		static float Timer = 0;
+		// Jump Fly
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Jump_Fly,
+			.Start = [=] {
+				Timer = 0;
+				WeaponIdle();
+				Renderer->ChangeAnimation("pl0000_Jump_Fly_loop");
+			},
+			.Update = [=](float _DeltaTime) {
+				Timer += _DeltaTime;
+				if (0.5f < Timer)
+				{
+					FSM.ChangeState(FSM_State_Nero::Landing);
+				}
+				float4 MoveDir = Controller->GetMoveVector() * RunSpeed * _DeltaTime;
+				PhysXCapsule->SetMove(MoveDir);
+			},
+			.End = [=] {
+
+			}
+			});
+
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Landing,
+			.Start = [=] {
+				InputCheck = false;
+				WeaponIdle();
+				Renderer->ChangeAnimation("pl0000_Jump_Landing");
+			},
+			.Update = [=](float _DeltaTime) {
+				if (true == InputCheck)
+				{
+					if (Controller->GetSwordDown())
+					{
+						FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
+						return;
+					}
+					if (Controller->GetJumpDown())
+					{
+						FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+						return;
+					}
+					if (Controller->GetMoveVector() != float4::ZERO)
+					{
+						FSM.ChangeState(FSM_State_Nero::RunStart);
+						return;
+					}
+				}
+				if (Renderer->IsAnimationEnd())
+				{
+					FSM.ChangeState(FSM_State_Nero::Idle);
+				}
+			},
+			.End = [=] {
+
+			}
+			});
 	}
+
 	/* 레드 퀸 */
 	{
-		// RedQueen Combo
+		// RedQueen ComboA1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::RQ_ComboA_1,
 			.Start = [=] {
 				Renderer->ChangeAnimation("pl0000_RQ_ComboA_1");
@@ -243,13 +497,18 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_2);
 					return;
 				}
+				if (Controller->GetJumpDown())
+				{
+					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					return;
+				}
 			},
 			.End = [=] {
 
 			}
 			});
 
-		// RedQueen Combo
+		// RedQueen ComboA2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::RQ_ComboA_2,
 			.Start = [=] {
 				RedQueenOn();
@@ -263,12 +522,18 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_3);
 					return;
 				}
+				if (Controller->GetJumpDown())
+				{
+					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					return;
+				}
 			},
 			.End = [=] {
 
 			}
 			});
 
+		// RedQueen ComboA3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::RQ_ComboA_3,
 			.Start = [=] {
 				RedQueenOn();
@@ -282,12 +547,18 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_4);
 					return;
 				}
+				if (Controller->GetJumpDown())
+				{
+					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					return;
+				}
 			},
 			.End = [=] {
 
 			}
 			});
 
+		// RedQueen ComboA4
 		FSM.CreateState({ .StateValue = FSM_State_Nero::RQ_ComboA_4,
 			.Start = [=] {
 				RedQueenOn();
@@ -296,6 +567,11 @@ void PlayerActor_Nero::NeroLoad()
 			},
 			.Update = [=](float _DeltaTime) {
 				if (InputCheck == false) { return; }
+				if (Controller->GetJumpDown())
+				{
+					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					return;
+				}
 			},
 			.End = [=] {
 
@@ -319,12 +595,22 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::BR_Strafe);
 					return;
 				}
-
+				if (Controller->GetJumpDown())
+				{
+					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					return;
+				}
+				if (Controller->GetSwordDown())
+				{
+					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
+					return;
+				}
 				if (true == Renderer->IsAnimationEnd())
 				{
 					FSM.ChangeState(FSM_State_Nero::BR_Lockon_Front);
 					return;
 				}
+				LookTarget(LockOnEnemyTransform->GetWorldPosition());
 			},
 			.End = [=] {
 
@@ -344,6 +630,16 @@ void PlayerActor_Nero::NeroLoad()
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
 					FSM.ChangeState(FSM_State_Nero::BR_Strafe);
+					return;
+				}
+				if (Controller->GetJumpDown())
+				{
+					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					return;
+				}
+				if (Controller->GetSwordDown())
+				{
+					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
 					return;
 				}
 				LookTarget(LockOnEnemyTransform->GetWorldPosition());
@@ -367,6 +663,16 @@ void PlayerActor_Nero::NeroLoad()
 				if (Controller->GetMoveVector() == float4::ZERO)
 				{
 					FSM.ChangeState(FSM_State_Nero::BR_Lockon_Front);
+					return;
+				}
+				if (Controller->GetJumpDown())
+				{
+					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					return;
+				}
+				if (Controller->GetSwordDown())
+				{
+					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
 					return;
 				}
 
@@ -425,7 +731,17 @@ void PlayerActor_Nero::NeroLoad()
 				}
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
-					FSM.ChangeState(FSM_State_Nero::Walk);
+					FSM.ChangeState(FSM_State_Nero::RunStart);
+					return;
+				}
+				if (Controller->GetJumpDown())
+				{
+					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					return;
+				}
+				if (Controller->GetSwordDown())
+				{
+					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
 					return;
 				}
 			},

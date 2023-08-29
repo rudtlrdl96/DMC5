@@ -20,10 +20,16 @@ void PlayerWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 {
 	if (_Nero == nullptr) { return; }
 
-	static float4 PushForce = float4::ZERO;
-	static float MoveSpeed = 1500000.0f;
+	static float Mass = 50.0f;
+	static float Jump = 50.0f;
 
-	ImGui::InputFloat4("PushForce", PushForce.Arr1D);
+	ImGui::InputFloat("Mass", &Mass);
+	ImGui::InputFloat("Jump", &Jump);
 
+	if (ImGui::Button("Set"))
+	{
+		_Nero->SetMass(Mass);
+		_Nero->JumpForce = Jump;
+	}
 }
 

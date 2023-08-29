@@ -133,6 +133,7 @@ public:
 	bool GetSwordDown() { return GameEngineInput::IsDown("Player_Sword"); }
 	bool GetGunUp() { return GameEngineInput::IsUp("Player_Gun"); }
 	bool GetLockOnFree() { return GameEngineInput::IsFree("Player_LockOn"); }
+	bool GetJumpDown() { return GameEngineInput::IsDown("Player_Jump"); }
 
 	bool IsLockOn = false;
 };
