@@ -28,5 +28,7 @@ private:
 	GameEngineTransform* CameraArm;
 	GameEngineTransform* CameraTarget;
 	GameEngineTransform* CameraTransform = nullptr;
+
+	float CameraRotSpeed = 200.0f;
 };
 

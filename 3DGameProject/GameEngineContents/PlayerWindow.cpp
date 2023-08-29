@@ -5,6 +5,9 @@
 #include <GameEngineCore/GameEngineFBXAnimation.h>
 #include <GameEngineCore/GameEngineFBXMesh.h>
 #include <GameEngineCore/GameEngineRenderer.h>
+
+PlayerActor_Nero* PlayerWindow::_Nero = nullptr;
+
 PlayerWindow::PlayerWindow()
 {
 }
@@ -15,18 +18,19 @@ PlayerWindow::~PlayerWindow()
 
 void PlayerWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
 {
-	if (0 == RenderUnits->size()) { return; }
+	if (_Nero == nullptr) { return; }
 
-	static int index;
-	ImGui::InputInt("Index", &index);
+	static float4 PushForce = float4::ZERO;
+	static float MoveSpeed = 1500000.0f;
 
-	if (ImGui::Button("On"))
+	ImGui::InputFloat4("PushForce", PushForce.Arr1D);
+	ImGui::InputFloat("MoveSpeed", &MoveSpeed);
+
+	_Nero->SetSpeed(MoveSpeed);
+	if (ImGui::Button("Push"))
 	{
-		RenderUnits->operator[](0).operator[](index)->On();
+		_Nero->SetPush(PushForce);
 	}
-	if (ImGui::Button("Off"))
-	{
-		RenderUnits->operator[](0).operator[](index)->Off();
-	}
+
 }
 

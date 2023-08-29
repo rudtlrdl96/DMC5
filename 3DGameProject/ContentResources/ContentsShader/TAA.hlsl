@@ -40,12 +40,15 @@ float3 YCbCr2RGB(float3 ycc)
 }
 
 Texture2D DiffuseTex : register(t0);
-SamplerState WRAPSAMPLER : register(s0);
+SamplerState CLAMPSAMPLER : register(s0);
 
 float4 TAA_PS(OutPut _Value) : SV_Target0
 {        
-    float4 ResultColor = (float4)0;
-    
+    float4 ResultColor = (float4)0;    
+    float4 center_color = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy);
+
+    float4 neighbor_sum = center_color;
+
     float2 neighbor_offset[8] =
     {
         { -1, -1 },
@@ -55,16 +58,12 @@ float4 TAA_PS(OutPut _Value) : SV_Target0
         { 1, 0 },
         { 0, -1 },
         { 0, 1 },
-        { -1, 0},
+        { -1, 0 },
     };
     
-    float4 center_color = DiffuseTex.Sample(WRAPSAMPLER, _Value.UV.xy);
-
-    float4 neighbor_sum = center_color;
-
     for (int i = 0; i < 8; i++)
     {
-        float4 neighbor = DiffuseTex.Sample(WRAPSAMPLER, _Value.UV.xy + neighbor_offset[i] * ScreenScale.xy * 0.001f);
+        float4 neighbor = DiffuseTex.Sample(CLAMPSAMPLER, _Value.UV.xy + neighbor_offset[i] / ScreenScale.xy);
         
         float3 color_diff = abs(neighbor.xyz - center_color.xyz);
         float3 ycc = RGB2YCbCr(color_diff.xyz);
@@ -76,10 +75,12 @@ float4 TAA_PS(OutPut _Value) : SV_Target0
             ycc = (cbcr_threshhold / cbcr_len) * ycc;
             neighbor.rgb = center_color.rgb + YCbCr2RGB(ycc);
         }
+        
         neighbor_sum += neighbor;
     }
-    
-    ResultColor = neighbor_sum / 5.0f;
+        
+    ResultColor = neighbor_sum / 9.0f;
+    //ResultColor.a = center_color.a;
     
     return ResultColor;
 }

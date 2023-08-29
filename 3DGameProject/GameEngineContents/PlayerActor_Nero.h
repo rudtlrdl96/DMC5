@@ -47,13 +47,21 @@ public:
 	//	InputCheck = true;
 	//}
 
+	void SetPush(const float4& _Value);
+	void SetSpeed(float _Speed)
+	{
+		WalkSpeed = _Speed;
+	}
+
+
 protected:
 	void Start() override;
 	void Update_Character(float _DeltaTime) override;
 
 private:
 	GameEngineFSM FSM;
-	float MoveSpeed = 500.0f;
+	float WalkSpeed = 1500000.0f;
+	float DashSpeed = 1500000.0f;
 
 	bool InputCheck = false;
 	char CurDir = 'n';

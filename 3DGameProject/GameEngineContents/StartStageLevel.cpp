@@ -20,8 +20,8 @@ StartStageLevel::~StartStageLevel()
 
 void StartStageLevel::Start()
 {
-	//GetCamera(0)->GetCamTarget()->CreateEffect<TAA_Effect>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
+	GetCamera(0)->GetCamTarget()->CreateEffect<TAA_Effect>();
 
 	StageBaseLevel::Start();
 

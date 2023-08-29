@@ -12,6 +12,11 @@ PlayerActor_Nero::~PlayerActor_Nero()
 {
 }
 
+void PlayerActor_Nero::SetPush(const float4& _Value)
+{
+	PhysXCapsule->SetPush(_Value);
+}
+
 void PlayerActor_Nero::Start()
 {
 	BasePlayerActor::Start();
@@ -53,11 +58,13 @@ void PlayerActor_Nero::Start()
 
 		/*
 		* Object = 0 : 공격 충돌체
+		* 
 		* 콜백void = 0 : 입력체크시작
 		* 콜백void = 1 : 손에 레드퀸 들려줌
 		* 콜백void = 2 : 손에 레드퀸 뺌
 		* 콜백void = 3 : 손에 블루로즈
-		* 콜백void = 4 : WeaponIdle
+		* 콜백void = 4 : WeaponIdle (빈손, 칼 등에)
+		* 
 		* 콜백 int = 0 : FSM변경
 		*
 		*/
@@ -130,11 +137,8 @@ void PlayerActor_Nero::Start()
 				}
 
 				LookDir(Controller->GetMoveVector());
-				physx::PxTransform PhyTF = PhysXCapsule->GetDynamic()->getGlobalPose();
-				float4 MoveDir = Controller->GetMoveVector() * MoveSpeed * _DeltaTime;
-				PhyTF.p.x += MoveDir.x;
-				PhyTF.p.z += MoveDir.z;
-				PhysXCapsule->GetDynamic()->setGlobalPose(PhyTF);
+				float4 MoveDir = Controller->GetMoveVector() * WalkSpeed * _DeltaTime;
+				PhysXCapsule->SetMove(MoveDir);
 			},
 			.End = [=] {
 
@@ -285,11 +289,8 @@ void PlayerActor_Nero::Start()
 
 				LookTarget(LockOnEnemyTransform->GetWorldPosition());
 
-				physx::PxTransform PhyTF = PhysXCapsule->GetDynamic()->getGlobalPose();
-				float4 MoveDir = Controller->GetMoveVector() * MoveSpeed * _DeltaTime;
-				PhyTF.p.x += MoveDir.x;
-				PhyTF.p.z += MoveDir.z;
-				PhysXCapsule->GetDynamic()->setGlobalPose(PhyTF);
+				float4 MoveDir = Controller->GetMoveVector() * WalkSpeed * _DeltaTime;
+				PhysXCapsule->SetMove(MoveDir);
 
 				char NewDir = Controller->MoveVectorToChar(Controller->GetMoveVector());
 				if (CurDir == NewDir) { return; }

@@ -35,8 +35,8 @@ void GameEngineCamera::Start()
 
 		GameEngineInput::CreateKey("CamRot", VK_RBUTTON);
 		GameEngineInput::CreateKey("SpeedBoost", VK_LSHIFT);
-		GameEngineInput::CreateKey("FreeCameraSwitch", 'P');
-		GameEngineInput::CreateKey("ProjectionModeChange", 'O');
+		GameEngineInput::CreateKey("FreeCameraSwitch", VK_F1);
+		GameEngineInput::CreateKey("ProjectionModeChange", VK_F2);
 	}
 
 	ViewPortData.TopLeftX = 0;
