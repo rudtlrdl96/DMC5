@@ -54,6 +54,10 @@ void TestObject::Start()
 	Renderer->SetFBXMesh("em0100.fbx", "NoneAlphaMesh");
 	Renderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
 
+	Renderer2 = CreateComponent<GameEngineFBXRenderer>();
+	Renderer2->SetFBXMesh("em0100.fbx", "NoneAlphaMesh");
+	Renderer2->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
+
 	//Renderer->GetAllRenderUnit()[0][0];
 
 	float4 RenderScale = Renderer->GetFBXMesh()->GetRenderUnit(0)->BoundScaleBox;
@@ -71,7 +75,6 @@ void TestObject::Start()
 	Component->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), VecSclae * 0.1f);
 
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
-
 	//Renderer->SetFBXMesh("Nero.FBX", "MeshTexture");
 	//Renderer->CreateFBXAnimation("Dash", "pl0000_Dash_Loop.FBX");
 	//Renderer->ChangeAnimation("Dash");
@@ -187,6 +190,26 @@ void TestObject::UserUpdate(float _DeltaTime)
 
 	float4 asef = Component->GetDynamicVelocity();
 	int a = 0;
+
+	{
+		//float4 playerpos = GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition();
+		//float4 playerposeye = GetLevel()->GetMainCamera()->GetTransform()->GetWorldForwardVector();
+
+		float4 playerpos = GetTransform()->GetWorldPosition();
+		float4 playerposeye = GetTransform()->GetWorldForwardVector();
+
+		float4 Colleye = float4::ZERO;
+
+		playerpos.w = 0.0f;
+		playerposeye.w = 0.0f;
+		Colleye.w = 0.0f;
+
+		GetLevel()->RayCast(playerpos, playerposeye, Colleye);
+
+		float4 result = Colleye;
+		Renderer2->GetTransform()->SetWorldPosition(result);
+		int a = 0;
+	}
 }
 
 void TestObject::ServerUpdate(float _DeltaTime)

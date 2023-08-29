@@ -13,39 +13,44 @@ PhysicsLevel::~PhysicsLevel()
 {
 }
 
-//physx::PxFilterFlags contactReportFilterShader
-//(
-//	physx::PxFilterObjectAttributes attributes0,
-//	physx::PxFilterData filterData0,
-//	physx::PxFilterObjectAttributes attributes1,
-//	physx::PxFilterData filterData1,
-//	physx::PxPairFlags& pairFlags,
-//	const void* constantBlock, physx::PxU32 constantBlockSize
-//)
-//{
-//	PX_UNUSED(attributes0);
-//	PX_UNUSED(attributes1);
-//	PX_UNUSED(filterData0);
-//	PX_UNUSED(filterData1);
-//	PX_UNUSED(constantBlockSize);
-//	PX_UNUSED(constantBlock);
-//
-//	if (physx::PxFilterObjectIsTrigger(attributes0) || physx::PxFilterObjectIsTrigger(attributes1))
-//	{
-//		pairFlags = physx::PxPairFlag::eNOTIFY_TOUCH_FOUND | physx::PxPairFlag::eNOTIFY_TOUCH_LOST | physx::PxPairFlag::eSOLVE_CONTACT | physx::PxPairFlag::eDETECT_DISCRETE_CONTACT;
-//		return physx::PxFilterFlag::eDEFAULT;
-//	}
-//
-//	// all initial and persisting reports for everything, with per-point data
-//	pairFlags = physx::PxPairFlag::eSOLVE_CONTACT
-//		| physx::PxPairFlag::eDETECT_DISCRETE_CONTACT
-//		| physx::PxPairFlag::eNOTIFY_TOUCH_FOUND
-//		| physx::PxPairFlag::eNOTIFY_TOUCH_PERSISTS
-//		| physx::PxPairFlag::eNOTIFY_TOUCH_LOST
-//		| physx::PxPairFlag::eNOTIFY_CONTACT_POINTS;
-//
-//	return physx::PxFilterFlag::eDEFAULT;
-//}
+
+// 메모리제거
+void PhysicsLevel::ReleasePhysicsX()
+{
+	if (nullptr != CustomCallbackEvent)
+	{
+		delete CustomCallbackEvent;
+		CustomCallbackEvent = nullptr;
+	}
+	if (nullptr != m_pCooking)
+	{
+		PX_RELEASE(m_pCooking);
+	}
+	if (nullptr != m_pScene)
+	{
+		PX_RELEASE(m_pScene);
+	}
+	if (nullptr != m_pDispatcher)
+	{
+		PX_RELEASE(m_pDispatcher);
+	}
+	if (nullptr != m_pPhysics)
+	{
+		PX_RELEASE(m_pPhysics);
+	}
+	if (nullptr != m_pPvd)
+	{
+		PX_RELEASE(m_pPvd);
+	}
+	if (nullptr != m_pTransport)
+	{
+		PX_RELEASE(m_pTransport);
+	}
+	if (nullptr != m_pFoundation)
+	{
+		PX_RELEASE(m_pFoundation);
+	}
+}
 
 physx::PxFilterFlags CustomFilterShader(physx::PxFilterObjectAttributes attributes0, physx::PxFilterData filterData0, physx::PxFilterObjectAttributes attributes1, physx::PxFilterData filterData1, physx::PxPairFlags& pairFlags, const void* constantBlock, physx::PxU32 constantBlockSize)
 {
@@ -76,7 +81,6 @@ physx::PxFilterFlags CustomFilterShader(physx::PxFilterObjectAttributes attribut
 	//	pairFlags |= physx::PxPairFlag::eMODIFY_CONTACTS;
 	//}
 }
-
 
 void PhysicsLevel::CreatePhysicsX()
 {
@@ -198,40 +202,85 @@ void PhysicsLevel::Simulate(float _DeltaTime)
 	}
 }
 
-// 메모리제거
-void PhysicsLevel::ReleasePhysicsX()
+bool PhysicsLevel::RayCast(const float4& _vOrigin, const float4& _vDir, OUT float4& _vPoint, float _fDistance)
 {
-	if (nullptr != CustomCallbackEvent)
+	physx::PxVec3 vOrigin(0.f, 0.f, 0.f);
+
+	memcpy_s(&vOrigin, sizeof(physx::PxVec3), &_vOrigin, sizeof(physx::PxVec3));
+
+	physx::PxVec3 vDir(0.f, 0.f, 0.f);
+
+	float4 vDir_ = _vDir;
+	float4 vNormalizedDir = vDir_.NormalizeReturn();
+
+	memcpy_s(&vDir, sizeof(physx::PxVec3), &vNormalizedDir, sizeof(physx::PxVec3));
+
+	physx::PxRaycastBuffer tRayCastBuff;
+
+	if (true == m_pScene->raycast(vOrigin, vDir, (physx::PxReal)_fDistance, tRayCastBuff))
 	{
-		delete CustomCallbackEvent;
-		CustomCallbackEvent = nullptr;
+		if (true == tRayCastBuff.hasBlock)
+		{
+			physx::PxRaycastHit tRayCastHit = tRayCastBuff.block;
+			memcpy_s(&_vPoint, sizeof(float4), &tRayCastHit.position, sizeof(float4));
+
+			return true;
+		}
+
+		return false;
 	}
-	if (nullptr != m_pCooking)
-	{
-		PX_RELEASE(m_pCooking);
-	}
-	if (nullptr != m_pScene)
-	{
-		PX_RELEASE(m_pScene);
-	}
-	if (nullptr != m_pDispatcher)
-	{
-		PX_RELEASE(m_pDispatcher);
-	}
-	if (nullptr != m_pPhysics)
-	{
-		PX_RELEASE(m_pPhysics);
-	}
-	if (nullptr != m_pPvd)
-	{
-		PX_RELEASE(m_pPvd);
-	}
-	if (nullptr != m_pTransport)
-	{
-		PX_RELEASE(m_pTransport);
-	}
-	if (nullptr != m_pFoundation)
-	{
-		PX_RELEASE(m_pFoundation);
-	}
+
+	return false;
 }
+
+//void Collider::ReadySimulate()
+//{
+//	std::weak_ptr<Transform> pTransform = m_pGameObject.lock()->GetComponent<Transform>();
+
+//	if (true == pTransform.expired())
+//		return;
+//	if (false == pTransform.lock()->IsUpdated())
+//		return;
+//	if (nullptr == m_pRigidActor)
+//		return;
+//
+//
+//	D3DXVECTOR3		vPosition = pTransform.lock()->GetPosition();
+//	D3DXQUATERNION	tQuaternion = pTransform.lock()->GetQuaternion();
+//
+//	PxVec3 pxPos;
+//	PxQuat pxQuat;
+//
+//	memcpy_s(&pxPos, sizeof(D3DXVECTOR3), &vPosition, sizeof(D3DXVECTOR3));
+//	memcpy_s(&pxQuat, sizeof(D3DXQUATERNION), &tQuaternion, sizeof(D3DXQUATERNION));
+//
+//	if (pTransform.lock()->IsSetPosition() || !m_bRigid || m_bTrigger)
+//	{
+//		m_pRigidActor->setGlobalPose(physx::PxTransform(pxPos, pxQuat));
+//		return;
+//	}
+//
+//	PxVec3 vCurrPos = m_pRigidActor->getGlobalPose().p;
+//
+//	PxVec3 vRayDir = pxPos - vCurrPos;
+//
+//	float fDistance = vRayDir.magnitude();
+//
+//	vRayDir = vRayDir.getNormalized();
+//
+//	PxVec3 vOrigin = vCurrPos + m_pShape->getLocalPose().p;
+//
+//	PxRaycastBuffer rayCastBuffer;
+//
+//	PxScene* pScene = m_pRigidActor->getScene();
+//
+//	if (PxVec3(0) != vRayDir && pScene->raycast(vOrigin, vRayDir, 100.f, rayCastBuffer))
+//	{
+//		if (rayCastBuffer.block.distance < fDistance)
+//		{
+//			pxPos = m_pRigidActor->getGlobalPose().p + vRayDir * (rayCastBuffer.block.distance - m_fOffsetRadius);
+//		}
+//	}
+//
+//	m_pRigidActor->setGlobalPose(physx::PxTransform(pxPos, pxQuat));
+//}

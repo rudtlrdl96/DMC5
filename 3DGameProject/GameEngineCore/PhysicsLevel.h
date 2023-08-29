@@ -38,6 +38,8 @@ public:
 		return IsSimulation;
 	}
 
+	bool RayCast(const float4& _vOrigin, const float4& _vDir, OUT float4& _vPoint, float _fDistance = 1000.f);
+
 protected:
 	class UserErrorCallback : public physx::PxErrorCallback
 	{
