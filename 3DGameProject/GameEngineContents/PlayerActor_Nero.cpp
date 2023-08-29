@@ -20,6 +20,7 @@ void PlayerActor_Nero::SetPush(const float4& _Value)
 void PlayerActor_Nero::Start()
 {
 	BasePlayerActor::Start();
+	
 
 	// Renderer 생성
 	{
@@ -56,18 +57,18 @@ void PlayerActor_Nero::Start()
 
 			});
 
-		/*
-		* Object = 0 : 공격 충돌체
-		* 
-		* 콜백void = 0 : 입력체크시작
-		* 콜백void = 1 : 손에 레드퀸 들려줌
-		* 콜백void = 2 : 손에 레드퀸 뺌
-		* 콜백void = 3 : 손에 블루로즈
-		* 콜백void = 4 : WeaponIdle (빈손, 칼 등에)
-		* 
-		* 콜백 int = 0 : FSM변경
-		*
-		*/
+		
+		 //Object = 0 : 공격 충돌체
+		 //
+		 //콜백void = 0 : 입력체크시작
+		 //콜백void = 1 : 손에 레드퀸 들려줌
+		 //콜백void = 2 : 손에 레드퀸 뺌
+		 //콜백void = 3 : 손에 블루로즈
+		 //콜백void = 4 : WeaponIdle (빈손, 칼 등에)
+		 //
+		 //콜백 int = 0 : FSM변경
+		
+		
 
 		Renderer->GetAllRenderUnit()[0][12]->Off();	// 버스터 암
 		Renderer->GetAllRenderUnit()[0][13]->Off();	// 버스터 암

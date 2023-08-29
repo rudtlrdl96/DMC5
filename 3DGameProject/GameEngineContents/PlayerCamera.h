@@ -18,17 +18,29 @@ public:
 	{
 		PlayerTransform = _Transform;
 	}
+	void SetTargetTranform(GameEngineTransform* _Transform)
+	{
+		TargetTransform = _Transform;
+	}
 
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
+	void TargetCheck(float _DeltaTime);
+
 
 private:
-	GameEngineTransform* PlayerTransform;
-	GameEngineTransform* CameraArm;
-	GameEngineTransform* CameraTarget;
+	GameEngineTransform* PlayerTransform = nullptr;
+	GameEngineTransform* TargetTransform = nullptr;
+	GameEngineTransform* CameraArm = nullptr;
+	GameEngineTransform* CameraTarget = nullptr;
 	GameEngineTransform* CameraTransform = nullptr;
 
-	float CameraRotSpeed = 200.0f;
+	float CameraRotYSpeed = 150.0f;
+	float CameraRotXSpeed = 80.0f;
+
+	float MinDistance = 350.0f;
+	float TrackingSpeed = 5.0f;
+	float LockOnTrackingSpeed = 10.0f;
 };
 

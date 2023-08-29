@@ -24,13 +24,6 @@ void PlayerWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 	static float MoveSpeed = 1500000.0f;
 
 	ImGui::InputFloat4("PushForce", PushForce.Arr1D);
-	ImGui::InputFloat("MoveSpeed", &MoveSpeed);
-
-	_Nero->SetSpeed(MoveSpeed);
-	if (ImGui::Button("Push"))
-	{
-		_Nero->SetPush(PushForce);
-	}
 
 }
 
