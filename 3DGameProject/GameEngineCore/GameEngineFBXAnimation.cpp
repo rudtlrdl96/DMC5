@@ -19,8 +19,15 @@ std::shared_ptr<GameEngineFBXAnimation> GameEngineFBXAnimation::Load(const std::
 
 void GameEngineFBXAnimation::Initialize()
 {
+	if (true == IsInit)
+	{
+		return;
+	}
+
 	FBXInit(GetPathToString());
 	CheckAnimation();
+
+	IsInit = true;
 }
 
 void GameEngineFBXAnimation::LoadMesh(const std::string& _Path, const std::string& _Name)

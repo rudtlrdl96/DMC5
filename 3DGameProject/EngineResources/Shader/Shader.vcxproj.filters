@@ -21,6 +21,7 @@
     <FxCompile Include="RenderBaseValue.fx">
       <Filter>Header</Filter>
     </FxCompile>
+    <FxCompile Include="GridShader.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">

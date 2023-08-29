@@ -793,6 +793,9 @@
     <ClInclude Include="CustomCallback.h">
       <Filter>Physics\common</Filter>
     </ClInclude>
+    <ClInclude Include="EngineGrid.h">
+      <Filter>Content\Grid</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -998,6 +1001,9 @@
     <ClCompile Include="CustomCallback.cpp">
       <Filter>Physics\common</Filter>
     </ClCompile>
+    <ClCompile Include="EngineGrid.cpp">
+      <Filter>Content\Grid</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -1188,6 +1194,9 @@
     </Filter>
     <Filter Include="GUI">
       <UniqueIdentifier>{be801ff7-8494-4800-931b-8e4a8b7e3fcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Grid">
+      <UniqueIdentifier>{fc709344-c3f6-40cf-b512-597b25dbe103}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -146,6 +146,7 @@
     <FxCompile Include="Animation.fx" />
     <FxCompile Include="BlurShader.hlsl" />
     <FxCompile Include="DebugMeshRender.hlsl" />
+    <FxCompile Include="GridShader.hlsl" />
     <FxCompile Include="Light.fx" />
     <FxCompile Include="MergeShader.hlsl" />
     <FxCompile Include="MeshAniTexture.hlsl" />

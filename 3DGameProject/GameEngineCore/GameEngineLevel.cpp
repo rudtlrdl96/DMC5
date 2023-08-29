@@ -158,7 +158,7 @@ void GameEngineLevel::ActorUpdate(float _DeltaTime)
 	{
 		IsPhysics = true;
 		MainCamera->Update(_DeltaTime);
-		return;
+		GameEngineInput::AllReset();
 	}
 	else
 	{

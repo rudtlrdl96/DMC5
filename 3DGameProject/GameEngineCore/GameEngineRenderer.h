@@ -65,6 +65,7 @@ public:
 	// 그 쉐이더에서 어떤 텍스처를 사용했고
 	// 어떤 샘플러 어떤 상수버퍼를 사용했는지를 알아야 한다.
 	void SetMaterial(const std::string_view& _Name, int _index = 0);
+	void SetMesh(const std::string_view& _Name, int _index = 0);
 
 	std::shared_ptr<GameEngineRenderUnit> CreateRenderUnit(std::string_view _Mesh, std::string_view _Material);
 
@@ -72,6 +73,8 @@ public:
 
 	// 랜더유니트를 만든다.
 	std::shared_ptr<GameEngineRenderUnit> CreateRenderUnit();
+
+	std::shared_ptr<GameEngineRenderUnit> CreateRenderUnitToIndex(unsigned int _Index);
 
 	// 여기서 리턴된 파이프라인을 수정하면 이 파이프라인을 사용하는 모든 애들이 바뀌게 된다.
 	std::shared_ptr<GameEngineMaterial> GetMaterial(int _index = 0);
@@ -114,6 +117,15 @@ public:
 		BaseValue.ClipColor = _ClipColor;
 	}
 
+	std::shared_ptr<GameEngineRenderUnit> GetUnit(unsigned int _Index = 0)
+	{
+		if (_Index >= Units.size())
+		{
+			return nullptr;
+		}
+
+		return Units[_Index];
+	}
 
 protected:
 	void Start();

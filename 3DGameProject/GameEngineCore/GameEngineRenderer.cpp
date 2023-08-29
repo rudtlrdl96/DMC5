@@ -212,3 +212,41 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineRenderer::CreateRenderUnit()
 	return Unit;
 }
 
+std::shared_ptr<GameEngineRenderUnit> GameEngineRenderer::CreateRenderUnitToIndex(unsigned int _Index)
+{
+	if (_Index >= Units.size())
+	{
+		Units.resize(_Index + 1);
+	}
+
+	std::shared_ptr<GameEngineRenderUnit> Unit = std::make_shared<GameEngineRenderUnit>();
+	Unit->SetRenderer(this);
+	Units[_Index] = Unit;
+
+	GetCamera()->PushRenderUnit(Unit);
+	return Unit;
+}
+
+void GameEngineRenderer::SetMaterial(const std::string_view& _Name, int _index /*= 0*/)
+{
+	std::shared_ptr<GameEngineRenderUnit> Unit = GetUnit(_index);
+
+	if (nullptr == Unit)
+	{
+		Unit = CreateRenderUnitToIndex(_index);
+	}
+
+	Unit->SetMaterial(_Name);
+}
+
+void GameEngineRenderer::SetMesh(const std::string_view& _Name, int _index /*= 0*/)
+{
+	std::shared_ptr<GameEngineRenderUnit> Unit = GetUnit(_index);
+
+	if (nullptr == Unit)
+	{
+		Unit = CreateRenderUnitToIndex(_index);
+	}
+
+	Unit->SetMesh(_Name);
+}
