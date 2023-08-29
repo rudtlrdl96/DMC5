@@ -14,7 +14,7 @@
 #include "Slope.h"
 #include "PlayerActor_Nero.h"
 #include <GameEngineCore/GameEngineCollision.h>
-
+#include "PlayerWindow.h"
 PlayerTestLevel::PlayerTestLevel()
 {
 }
@@ -35,7 +35,7 @@ void PlayerTestLevel::Update(float _DeltaTime)
 	if (false == IsMessage)
 	{
 		IsMessage = true;
-		MsgTextBox("CurrentLevel is PlayerTestLevel");
+		//MsgTextBox("CurrentLevel is PlayerTestLevel");
 	}
 
 	if (true == GameEngineInput::IsDown("ReturnToMainLevel"))
@@ -46,13 +46,13 @@ void PlayerTestLevel::Update(float _DeltaTime)
 
 void PlayerTestLevel::LevelChangeStart()
 {
-	CreateActor<PlayerActor_Nero>();
+	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
 	std::shared_ptr<GameEngineActor> CollisionActor = CreateActor<GameEngineActor>();
 	std::shared_ptr<GameEngineCollision> Collision = CollisionActor->CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
 	CollisionActor->GetTransform()->SetLocalScale({ 100, 100, 100 });
 	CollisionActor->GetTransform()->SetLocalPosition({ 100, 0, 100 });
 	Collision->SetColType(ColType::OBBBOX3D);
-	IsDebugSwitch();
+	//IsDebugSwitch();
 
 	//std::shared_ptr<TestObject> Component = CreateActor<TestObject>();
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
@@ -72,6 +72,9 @@ void PlayerTestLevel::LevelChangeStart()
 	//std::shared_ptr<Ball> ball = CreateActor<Ball>();
 
 	//std::shared_ptr<TestEmpusa> Em = CreateActor<TestEmpusa>();
+
+	GameEngineGUI::GUIWindowCreate<PlayerWindow>("PlayerWindow");
+	PlayerWindow::_Nero = Nero.get();
 }
 
 void PlayerTestLevel::LevelChangeEnd()

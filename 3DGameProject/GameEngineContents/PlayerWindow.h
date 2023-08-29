@@ -1,6 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineGUI.h>
-
+#include "PlayerActor_Nero.h"
 // Ό³Έν :
 class PlayerWindow : public GameEngineGUIWindow
 {
@@ -15,7 +15,7 @@ public:
 	PlayerWindow& operator=(const PlayerWindow& _Other) = delete;
 	PlayerWindow& operator=(PlayerWindow&& _Other) noexcept = delete;
 
-	std::vector<std::vector<std::shared_ptr<GameEngineRenderUnit>>>* RenderUnits = nullptr;
+	static PlayerActor_Nero* _Nero;
 
 protected:
 	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;
