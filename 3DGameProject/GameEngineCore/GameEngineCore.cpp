@@ -22,7 +22,7 @@ std::shared_ptr<GameEngineLevel> GameEngineCore::NextLevel = nullptr;
 
 std::shared_ptr<class GameEngineLevel> GameEngineCore::CurLoadLevel;
 float GameEngineCore::FrameTime = 0.0f;
-float GameEngineCore::CurFrame = 0.0f;
+float GameEngineCore::FrameRate = 0.0f;
 
 GameEngineCore::GameEngineCore()
 {
@@ -146,18 +146,18 @@ void GameEngineCore::EngineUpdate()
 	}
 	
 	FrameTime += TimeDeltaTime;
-	float FrameRate = 1.0f / 60.0f;
+	float FrameLimit = 1.0f / 60.0f;
 
-	if (FrameRate > FrameTime)
+	if (FrameLimit > FrameTime)
 	{
 		return;
 	}
 	else
 	{
-		float remain = FrameTime - FrameRate;
+		float RemainTime = FrameTime - FrameLimit;
 		TimeDeltaTime = FrameTime;
-		FrameTime = remain;
-		CurFrame = 1.0f / TimeDeltaTime;
+		FrameTime = RemainTime;
+		FrameRate = 1.0f / TimeDeltaTime;
 	}
 
 	GameEngineInput::Update(TimeDeltaTime);

@@ -93,6 +93,6 @@ private:
 	static void Release();
 
 	static float FrameTime;
-	static float CurFrame;
+	static float FrameRate;
 };
 
