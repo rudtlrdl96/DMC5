@@ -184,11 +184,6 @@ void GameEngineInput::AllReset()
 
 	for (; StartKeyIter != EndKeyIter; ++StartKeyIter)
 	{
-		if (StartKeyIter->first == "FreeCameraSwitch")
-		{
-			continue;
-		}
-
 		StartKeyIter->second.Reset();
 	}
 }
