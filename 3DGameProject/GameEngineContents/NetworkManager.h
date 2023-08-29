@@ -6,6 +6,7 @@
 class GameEngineLevel;
 class GameEngineNetObject;
 class GameEngineActor;
+enum class PacketType;
 
 class NetworkManager
 {
@@ -102,6 +103,10 @@ private:
 	//클라가 링크 패킷을 보내고 다시 수신받을때, InitServerObject를 해주기 위한 맵 <LinkID, GameEngineNetObject*>
 	static std::map<unsigned int, class GameEngineNetObject*> AllLinkObject;
 
+	static std::vector<std::pair<unsigned int, std::shared_ptr<class LinkObjectPacket>>> AllLinkPacket_TEST;
+
+
+
 	static GameEngineLevel* CurLevel;
 
 	inline static GameEngineLevel* GetLevel()
@@ -113,6 +118,9 @@ private:
 
 		return CurLevel;
 	}
+
+
+
 
 	//엑터 생성
 	static std::shared_ptr<GameEngineNetObject> CreateNetActor(unsigned int _ActorType, int _ObjectID = -1)

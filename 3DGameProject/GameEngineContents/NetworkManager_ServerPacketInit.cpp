@@ -126,13 +126,15 @@ void NetworkManager::ServerPacketInit()
 		ReplyLinkPacket->LinkID = _Packet->LinkID;
 		ReplyLinkPacket->ActorType = -1;
 
-		//패킷직렬화
-		GameEngineSerializer Ser;
-		ReplyLinkPacket->SerializePacket(Ser);
+		AllLinkPacket_TEST.push_back(std::make_pair(CliendID, ReplyLinkPacket));
 
-		//나에게 전송한 유저한테만 패킷을 보낸다
-		SOCKET ClientSocket = ServerInst.GetUser(CliendID);
-		GameEngineNet::Send(ClientSocket, Ser.GetConstCharPtr(), Ser.GetWriteOffSet());
+		////패킷직렬화
+		//GameEngineSerializer Ser;
+		//ReplyLinkPacket->SerializePacket(Ser);
+
+		////나에게 전송한 유저한테만 패킷을 보낸다
+		//SOCKET ClientSocket = ServerInst.GetUser(CliendID);
+		//GameEngineNet::Send(ClientSocket, Ser.GetConstCharPtr(), Ser.GetWriteOffSet());
 	});
 }
 

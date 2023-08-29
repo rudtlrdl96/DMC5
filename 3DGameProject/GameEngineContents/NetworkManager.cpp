@@ -28,6 +28,9 @@ std::map<unsigned int, class GameEngineNetObject*> NetworkManager::AllLinkObject
 
 
 
+std::vector<std::pair<unsigned int, std::shared_ptr<class LinkObjectPacket>>> NetworkManager::AllLinkPacket_TEST;
+
+
 
 void NetworkManager::ServerOpen(int _Port)
 {
@@ -125,8 +128,8 @@ void NetworkManager::SendUpdatePacket(GameEngineNetObject* _NetObj, GameEngineAc
 
 void NetworkManager::FlushUpdatePacket()
 {
-	if (true == AllUpdatePacket.empty())
-		return;
+	/*if (true == AllUpdatePacket.empty())
+		return;*/
 
 	//static GameEngineSerializer Ser;
 
@@ -157,6 +160,31 @@ void NetworkManager::FlushUpdatePacket()
 	//NetInst->Send(reinterpret_cast<const char*>(Ser.GetDataPtr()), Ser.GetWriteOffSet());
 	AllUpdatePacket.clear();
 	//Ser.Reset();
+
+
+	for (size_t i = 0; i < AllLinkPacket_TEST.size(); i++)
+	{
+		//클라인 경우
+		if (0 == AllLinkPacket_TEST[i].first)
+		{
+			NetInst->SendPacket(AllLinkPacket_TEST[i].second);
+		}
+		//서버인 경우
+		else
+		{
+			std::shared_ptr<LinkObjectPacket> ReplyLinkPacket = AllLinkPacket_TEST[i].second;
+
+			//패킷직렬화
+			GameEngineSerializer Ser;
+			ReplyLinkPacket->SerializePacket(Ser);
+
+			//나에게 전송한 유저한테만 패킷을 보낸다
+			SOCKET ClientSocket = ServerInst.GetUser(AllLinkPacket_TEST[i].first);
+			GameEngineNet::Send(ClientSocket, Ser.GetConstCharPtr(), Ser.GetWriteOffSet());
+		}
+	}
+
+	AllLinkPacket_TEST.clear();
 }
 
 
@@ -209,7 +237,9 @@ void NetworkManager::LinkNetwork(GameEngineNetObject* _NetObjPtr)
 	//자료구조에 저장
 	AllLinkObject[LinkID++] = _NetObjPtr;
 
-	NetInst->SendPacket(LinkPacket);
+	
+	// NetInst->SendPacket(LinkPacket);
+	AllLinkPacket_TEST.push_back(std::make_pair(0, LinkPacket));
 }
 
 
