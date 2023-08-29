@@ -79,7 +79,7 @@ void PlayerCamera::Update(float _DeltaTime)
 
 	// 카메라 이동
 	CameraTransform->SetWorldPosition(CameraTargetPos);
-	CameraTransform->SetWorldRotation(CameraTargetPos);
+	CameraTransform->SetWorldRotation(CameraTarget->GetWorldRotation());
 }
 
 void PlayerCamera::TargetCheck(float _DeltaTime)
@@ -106,15 +106,17 @@ void PlayerCamera::WallCheck()
 {
 	float4 playerpos = GetTransform()->GetWorldPosition();
 	float4 playerposeye = CameraTarget->GetWorldPosition() - playerpos;
-
+	float Distance = playerposeye.Size();
 	float4 Colleye = float4::ZERO;
 
-	playerpos.w = 0.0f;
-	playerposeye.w = 0.0f;
-	Colleye.w = 0.0f;
-
-	GetLevel()->RayCast(playerpos, playerposeye, Colleye);
-
-	CameraTargetPos = Colleye;
+	if (true == GetLevel()->RayCast(playerpos, playerposeye, Colleye, Distance))
+	{
+		CameraTargetPos = Colleye;
+		CameraTargetPos += CameraTarget->GetWorldForwardVector() * 50;
+	}
+	else
+	{
+		CameraTargetPos = CameraTarget->GetWorldPosition();
+	}
 }
 

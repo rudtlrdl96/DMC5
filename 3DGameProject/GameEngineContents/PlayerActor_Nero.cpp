@@ -31,22 +31,8 @@ void PlayerActor_Nero::Start()
 
 void PlayerActor_Nero::TestLoad()
 {
-	if (nullptr == GameEngineFBXMesh::Find("em0100.FBX"))
-	{
-		std::string Path = GameEnginePath::GetFileFullPath
-		(
-			"ContentResources",
-			{
-				"Character", "Enemy", "em0100", "mesh"
-			},
-			"em0100.FBX"
-		);
-		GameEngineFBXMesh::Load(Path);
-	}
-
 	Renderer = CreateComponent<GameEngineFBXRenderer>();
-	Renderer->SetFBXMesh("em0100.fbx", "NoneAlphaMesh");
-	Renderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
+	Renderer->SetFBXMesh("House1.fbx", "NoneAlphaMesh");
 
 	{
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Idle,
@@ -112,6 +98,8 @@ void PlayerActor_Nero::TestLoad()
 			}
 			});
 	}
+
+	FSM.ChangeState(FSM_State_Nero::Idle);
 }
 
 void PlayerActor_Nero::NeroLoad()
