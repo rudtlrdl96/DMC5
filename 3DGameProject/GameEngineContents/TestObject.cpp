@@ -181,7 +181,7 @@ void TestObject::UserUpdate(float _DeltaTime)
 
 		MoveDir.z += Set;
 		float4 Movedis = MoveDir.NormalizeReturn() * 150.f;
-		Component->SetMoveSpeed(Movedis);
+		Component->SetMove(Movedis);
 
 	}
 
