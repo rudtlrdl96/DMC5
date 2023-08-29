@@ -1,19 +1,19 @@
 #include "PrecompileHeader.h"
-#include "TAA_Effect.h"
+#include "FXAA_Effect.h"
 
-TAA_Effect::TAA_Effect()
+FXAA_Effect::FXAA_Effect()
 {
 }
 
-TAA_Effect::~TAA_Effect()
+FXAA_Effect::~FXAA_Effect()
 {
 }
 
-void TAA_Effect::Start(GameEngineRenderTarget* _Target)
+void FXAA_Effect::Start(GameEngineRenderTarget* _Target)
 {
 	TAAUnit = std::make_shared<GameEngineRenderUnit>();
 	TAAUnit->SetMesh("FullRect");
-	TAAUnit->SetMaterial("TAA");
+	TAAUnit->SetMaterial("FXAA");
 
 	TAAUnit->ShaderResHelper.SetConstantBufferLink("RenderBaseValue", BaseValue);
 
@@ -23,11 +23,11 @@ void TAA_Effect::Start(GameEngineRenderTarget* _Target)
 
 	if (false == GameEngineInput::IsKey("Debug_TAASwitch"))
 	{
-		GameEngineInput::CreateKey("Debug_TAASwitch", VK_F2);
+		GameEngineInput::CreateKey("Debug_TAASwitch", VK_F4);
 	}
 }
 
-void TAA_Effect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
+void FXAA_Effect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 {
 	if (true == GameEngineInput::IsDown("Debug_TAASwitch"))
 	{

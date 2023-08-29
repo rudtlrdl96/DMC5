@@ -298,12 +298,13 @@
     <ClInclude Include="EditorUI.h">
       <Filter>Actor\Stage\StageEditor</Filter>
     </ClInclude>
-    <ClInclude Include="TAA_Effect.h">
-      <Filter>PostEffect</Filter>
-    </ClInclude>
     <ClInclude Include="ShaderTestLevel.h">
       <Filter>Levels\Test</Filter>
     </ClInclude>
+    <ClInclude Include="ZoomEffect.h">
+      <Filter>PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="FXAA_Effect.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -588,12 +589,13 @@
     <ClCompile Include="EditorUI.cpp">
       <Filter>Actor\Stage\StageEditor</Filter>
     </ClCompile>
-    <ClCompile Include="TAA_Effect.cpp">
-      <Filter>PostEffect</Filter>
-    </ClCompile>
     <ClCompile Include="ShaderTestLevel.cpp">
       <Filter>Levels\Test</Filter>
     </ClCompile>
+    <ClCompile Include="ZoomEffect.cpp">
+      <Filter>PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="FXAA_Effect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">

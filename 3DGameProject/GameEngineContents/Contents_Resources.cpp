@@ -231,11 +231,21 @@ void ContentsCore::ContentsResourcesCreate()
 	}	
 	
 	{
-		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("TAA");
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("FXAA");
 
-		Pipe->SetVertexShader("TAA.hlsl");
+		Pipe->SetVertexShader("FXAA.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
-		Pipe->SetPixelShader("TAA.hlsl");
+		Pipe->SetPixelShader("FXAA.hlsl");
+		Pipe->SetBlendState("MergeBlend");
+		Pipe->SetDepthState("EngineDepth");
+	}	
+
+	{
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("ZoomEffect");
+
+		Pipe->SetVertexShader("ZoomEffectShader.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("ZoomEffectShader.hlsl");
 		Pipe->SetBlendState("MergeBlend");
 		Pipe->SetDepthState("EngineDepth");
 	}

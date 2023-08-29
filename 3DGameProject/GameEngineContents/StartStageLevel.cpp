@@ -6,7 +6,8 @@
 
 #include "JudgementCut.h"
 #include "ColorEffect.h"
-#include "TAA_Effect.h"
+#include "FXAA_Effect.h"
+#include "ZoomEffect.h"
 
 #include "StageBaseLevel.h"
 
@@ -25,7 +26,8 @@ StartStageLevel::~StartStageLevel()
 void StartStageLevel::Start()
 {
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
-	GetCamera(0)->GetCamTarget()->CreateEffect<TAA_Effect>();
+	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
+	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
 
 	StageBaseLevel::Start();
 

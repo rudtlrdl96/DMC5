@@ -454,7 +454,7 @@
     <ClInclude Include="StageEditGUI.h" />
     <ClInclude Include="StageEditLevel.h" />
     <ClInclude Include="StartStageLevel.h" />
-    <ClInclude Include="TAA_Effect.h">
+    <ClInclude Include="FXAA_Effect.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -480,6 +480,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Wall.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ZoomEffect.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -767,7 +771,7 @@
     <ClCompile Include="StageEditGUI.cpp" />
     <ClCompile Include="StageEditLevel.cpp" />
     <ClCompile Include="StartStageLevel.cpp" />
-    <ClCompile Include="TAA_Effect.cpp">
+    <ClCompile Include="FXAA_Effect.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -789,6 +793,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Wall.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ZoomEffect.cpp">
       <SubType>
       </SubType>
     </ClCompile>

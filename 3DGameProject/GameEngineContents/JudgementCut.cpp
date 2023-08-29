@@ -55,7 +55,7 @@ void JudgementCut::Start(GameEngineRenderTarget* _Target)
 
 	if (false == GameEngineInput::IsKey("Debug_JudgementCutSwitch"))
 	{
-		GameEngineInput::CreateKey("Debug_JudgementCutSwitch", VK_F1);
+		GameEngineInput::CreateKey("Debug_JudgementCutSwitch", VK_F3);
 	}
 }
 

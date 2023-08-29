@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <FxCompile Include="FXAA.hlsl" />
     <FxCompile Include="Animation.fx" />
     <FxCompile Include="ColorEffectShader.hlsl" />
     <FxCompile Include="FadeShader.hlsl" />
@@ -162,8 +163,8 @@
     <FxCompile Include="OldFilmShader.hlsl" />
     <FxCompile Include="OldTVShader.hlsl" />
     <FxCompile Include="RenderBaseValue.fx" />
-    <FxCompile Include="TAA.hlsl" />
     <FxCompile Include="Transform.fx" />
+    <FxCompile Include="ZoomEffectShader.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

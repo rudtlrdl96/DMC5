@@ -13,6 +13,8 @@
 #include "Wall.h"
 #include "Slope.h"
 #include "PlayerActor_Nero.h"
+#include "FXAA_Effect.h"
+
 #include <GameEngineCore/GameEngineCollision.h>
 #include "PlayerWindow.h"
 PlayerTestLevel::PlayerTestLevel()
@@ -26,6 +28,8 @@ PlayerTestLevel::~PlayerTestLevel()
 
 void PlayerTestLevel::Start()
 {
+	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
+
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 50.0f, -100.0f });
 }

@@ -1,11 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <FxCompile Include="MyShader.fx" />
-    <FxCompile Include="FadeShader.hlsl" />
-    <FxCompile Include="OldFilmShader.hlsl" />
-    <FxCompile Include="OldTVShader.hlsl" />
-    <FxCompile Include="NoneAlphaMesh.hlsl" />
     <FxCompile Include="Animation.fx">
       <Filter>Header</Filter>
     </FxCompile>
@@ -15,17 +10,49 @@
     <FxCompile Include="Transform.fx">
       <Filter>Header</Filter>
     </FxCompile>
-    <FxCompile Include="NoneAlphaMeshAniTexture.hlsl" />
-    <FxCompile Include="JudgementCutShader.hlsl" />
-    <FxCompile Include="ColorEffectShader.hlsl" />
     <FxCompile Include="RenderBaseValue.fx">
       <Filter>Header</Filter>
     </FxCompile>
-    <FxCompile Include="TAA.hlsl" />
+    <FxCompile Include="ColorEffectShader.hlsl">
+      <Filter>PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="OldTVShader.hlsl">
+      <Filter>PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="OldFilmShader.hlsl">
+      <Filter>PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="JudgementCutShader.hlsl">
+      <Filter>PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="NoneAlphaMeshAniTexture.hlsl">
+      <Filter>MeshShader</Filter>
+    </FxCompile>
+    <FxCompile Include="NoneAlphaMesh.hlsl">
+      <Filter>MeshShader</Filter>
+    </FxCompile>
+    <FxCompile Include="MyShader.fx">
+      <Filter>MeshShader</Filter>
+    </FxCompile>
+    <FxCompile Include="FadeShader.hlsl">
+      <Filter>PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="ZoomEffectShader.hlsl">
+      <Filter>PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="FXAA.hlsl">
+      <Filter>PostEffect</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
       <UniqueIdentifier>{4b45cf48-a59e-41c5-88bb-28c459a34ea1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PostEffect">
+      <UniqueIdentifier>{0a75b108-3895-466a-b261-1164f0a15e62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MeshShader">
+      <UniqueIdentifier>{520cd694-8525-4f25-a57a-f9f5585ae8bf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
