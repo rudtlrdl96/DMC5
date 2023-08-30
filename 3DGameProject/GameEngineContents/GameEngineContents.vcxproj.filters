@@ -50,10 +50,10 @@
       <Filter>Actor\Enemy\NormalEnemy</Filter>
     </ClInclude>
     <ClInclude Include="IntroLevel.h">
-      <Filter>UI\Level</Filter>
+      <Filter>UI\UI_Level</Filter>
     </ClInclude>
     <ClInclude Include="TitleLevel.h">
-      <Filter>UI\Level</Filter>
+      <Filter>UI\UI_Level</Filter>
     </ClInclude>
     <ClInclude Include="EnemyActor_Boss.h">
       <Filter>Actor\Enemy\BossEnemy</Filter>
@@ -110,7 +110,7 @@
       <Filter>Levels\Test</Filter>
     </ClInclude>
     <ClInclude Include="UIEnums.h">
-      <Filter>UI\Base</Filter>
+      <Filter>UI\UI_Base</Filter>
     </ClInclude>
     <ClInclude Include="ConnectIDPacket.h">
       <Filter>Server\01.Packet\03.ServerToClient</Filter>
@@ -194,28 +194,28 @@
       <Filter>Actor\Test</Filter>
     </ClInclude>
     <ClInclude Include="Intro_BackGround.h">
-      <Filter>UI\Actor\IntroUI</Filter>
+      <Filter>UI\UI_Actor\IntroUI</Filter>
     </ClInclude>
     <ClInclude Include="Intro_Logo.h">
-      <Filter>UI\Actor\IntroUI</Filter>
+      <Filter>UI\UI_Actor\IntroUI</Filter>
     </ClInclude>
     <ClInclude Include="TitleBG.h">
-      <Filter>UI\Actor\TitleUI</Filter>
+      <Filter>UI\UI_Actor\TitleUI</Filter>
     </ClInclude>
     <ClInclude Include="Title_SelectScreen.h">
-      <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
+      <Filter>UI\UI_Actor\TitleUI\ButtonScreen</Filter>
     </ClInclude>
     <ClInclude Include="Title_StartScreen.h">
-      <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
+      <Filter>UI\UI_Actor\TitleUI\ButtonScreen</Filter>
     </ClInclude>
     <ClInclude Include="UIButton.h">
-      <Filter>UI\Base</Filter>
+      <Filter>UI\UI_Base</Filter>
     </ClInclude>
     <ClInclude Include="Char_ChoiceLevel.h">
-      <Filter>UI\Level</Filter>
+      <Filter>UI\UI_Level</Filter>
     </ClInclude>
     <ClInclude Include="C_ChoiceBG.h">
-      <Filter>UI\Actor\C_ChoiceUI</Filter>
+      <Filter>UI\UI_Actor\C_ChoiceUI</Filter>
     </ClInclude>
     <ClInclude Include="Ramp.h">
       <Filter>Actor\Test</Filter>
@@ -224,10 +224,10 @@
       <Filter>Basic</Filter>
     </ClInclude>
     <ClInclude Include="Char_ChoiceUI.h">
-      <Filter>UI\Actor\C_ChoiceUI</Filter>
+      <Filter>UI\UI_Actor\C_ChoiceUI</Filter>
     </ClInclude>
     <ClInclude Include="Char_ChoiceButton.h">
-      <Filter>UI\Actor\C_ChoiceUI</Filter>
+      <Filter>UI\UI_Actor\C_ChoiceUI</Filter>
     </ClInclude>
     <ClInclude Include="EnemyTestLevel.h">
       <Filter>Levels\Test</Filter>
@@ -236,13 +236,13 @@
       <Filter>Actor\Stage</Filter>
     </ClInclude>
     <ClInclude Include="MainMenuBG.h">
-      <Filter>UI\Actor\MenuUI</Filter>
+      <Filter>UI\UI_Actor\MenuUI</Filter>
     </ClInclude>
     <ClInclude Include="MainMenuLevel.h">
-      <Filter>UI\Level</Filter>
+      <Filter>UI\UI_Level</Filter>
     </ClInclude>
     <ClInclude Include="Menu_SelectScreen.h">
-      <Filter>UI\Actor\MenuUI\MenuScreen</Filter>
+      <Filter>UI\UI_Actor\MenuUI\MenuScreen</Filter>
     </ClInclude>
     <ClInclude Include="Picker.h">
       <Filter>Actor</Filter>
@@ -251,7 +251,7 @@
       <Filter>Actor</Filter>
     </ClInclude>
     <ClInclude Include="Menu_MissionFont.h">
-      <Filter>UI\Actor\MenuUI\MenuScreen</Filter>
+      <Filter>UI\UI_Actor\MenuUI\MenuScreen</Filter>
     </ClInclude>
     <ClInclude Include="SkyBox.h">
       <Filter>Actor\Stage</Filter>
@@ -265,14 +265,8 @@
     <ClInclude Include="ColorEffect.h">
       <Filter>PostEffect</Filter>
     </ClInclude>
-    <ClInclude Include="Menu_VirgilInfo.h">
-      <Filter>UI\Actor\MenuUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Menu_NeroInfo.h">
-      <Filter>UI\Actor\MenuUI</Filter>
-    </ClInclude>
     <ClInclude Include="InfoUIRender.h">
-      <Filter>UI\Base</Filter>
+      <Filter>UI\UI_Base</Filter>
     </ClInclude>
     <ClInclude Include="StageEditGUI.h" />
     <ClInclude Include="StageEditLevel.h" />
@@ -301,17 +295,23 @@
     <ClInclude Include="FXAA_Effect.h">
       <Filter>PostEffect</Filter>
     </ClInclude>
+    <ClInclude Include="PlayUITestLevel.h">
+      <Filter>UI\UI_Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu_NeroInfo.h">
+      <Filter>UI\UI_Actor\MenuUI\NeroInfo</Filter>
+    </ClInclude>
     <ClInclude Include="InvenUIButton.h">
-      <Filter>UI\Actor\MenuUI</Filter>
+      <Filter>UI\UI_Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu_VirgilInfo.h">
+      <Filter>UI\UI_Actor\MenuUI\VergilInfo</Filter>
     </ClInclude>
     <ClInclude Include="Nero_InvenToryUI.h">
-      <Filter>UI\Actor\MenuUI</Filter>
+      <Filter>UI\UI_Actor\MenuUI\NeroInfo</Filter>
     </ClInclude>
     <ClInclude Include="NeroHPUI.h">
-      <Filter>UI\Actor\MenuUI</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayUITestLevel.h">
-      <Filter>UI\Level</Filter>
+      <Filter>UI\UI_Actor\PlayUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -367,10 +367,10 @@
       <Filter>Actor\Enemy\NormalEnemy</Filter>
     </ClCompile>
     <ClCompile Include="IntroLevel.cpp">
-      <Filter>UI\Level</Filter>
+      <Filter>UI\UI_Level</Filter>
     </ClCompile>
     <ClCompile Include="TitleLevel.cpp">
-      <Filter>UI\Level</Filter>
+      <Filter>UI\UI_Level</Filter>
     </ClCompile>
     <ClCompile Include="EnemyActor_Boss.cpp">
       <Filter>Actor\Enemy\BossEnemy</Filter>
@@ -499,28 +499,28 @@
       <Filter>Actor\Test</Filter>
     </ClCompile>
     <ClCompile Include="Intro_BackGround.cpp">
-      <Filter>UI\Actor\IntroUI</Filter>
+      <Filter>UI\UI_Actor\IntroUI</Filter>
     </ClCompile>
     <ClCompile Include="Intro_Logo.cpp">
-      <Filter>UI\Actor\IntroUI</Filter>
+      <Filter>UI\UI_Actor\IntroUI</Filter>
     </ClCompile>
     <ClCompile Include="TitleBG.cpp">
-      <Filter>UI\Actor\TitleUI</Filter>
+      <Filter>UI\UI_Actor\TitleUI</Filter>
     </ClCompile>
     <ClCompile Include="Title_SelectScreen.cpp">
-      <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
+      <Filter>UI\UI_Actor\TitleUI\ButtonScreen</Filter>
     </ClCompile>
     <ClCompile Include="Title_StartScreen.cpp">
-      <Filter>UI\Actor\TitleUI\ButtonScreen</Filter>
+      <Filter>UI\UI_Actor\TitleUI\ButtonScreen</Filter>
     </ClCompile>
     <ClCompile Include="UIButton.cpp">
-      <Filter>UI\Base</Filter>
+      <Filter>UI\UI_Base</Filter>
     </ClCompile>
     <ClCompile Include="Char_ChoiceLevel.cpp">
-      <Filter>UI\Level</Filter>
+      <Filter>UI\UI_Level</Filter>
     </ClCompile>
     <ClCompile Include="C_ChoiceBG.cpp">
-      <Filter>UI\Actor\C_ChoiceUI</Filter>
+      <Filter>UI\UI_Actor\C_ChoiceUI</Filter>
     </ClCompile>
     <ClCompile Include="Ramp.cpp">
       <Filter>Actor\Test</Filter>
@@ -529,10 +529,10 @@
       <Filter>Basic</Filter>
     </ClCompile>
     <ClCompile Include="Char_ChoiceUI.cpp">
-      <Filter>UI\Actor\C_ChoiceUI</Filter>
+      <Filter>UI\UI_Actor\C_ChoiceUI</Filter>
     </ClCompile>
     <ClCompile Include="Char_ChoiceButton.cpp">
-      <Filter>UI\Actor\C_ChoiceUI</Filter>
+      <Filter>UI\UI_Actor\C_ChoiceUI</Filter>
     </ClCompile>
     <ClCompile Include="EnemyTestLevel.cpp">
       <Filter>Levels\Test</Filter>
@@ -541,13 +541,13 @@
       <Filter>Actor\Stage</Filter>
     </ClCompile>
     <ClCompile Include="MainMenuBG.cpp">
-      <Filter>UI\Actor\MenuUI</Filter>
+      <Filter>UI\UI_Actor\MenuUI</Filter>
     </ClCompile>
     <ClCompile Include="MainMenuLevel.cpp">
-      <Filter>UI\Level</Filter>
+      <Filter>UI\UI_Level</Filter>
     </ClCompile>
     <ClCompile Include="Menu_SelectScreen.cpp">
-      <Filter>UI\Actor\MenuUI\MenuScreen</Filter>
+      <Filter>UI\UI_Actor\MenuUI\MenuScreen</Filter>
     </ClCompile>
     <ClCompile Include="Picker.cpp">
       <Filter>Actor</Filter>
@@ -556,7 +556,7 @@
       <Filter>Actor</Filter>
     </ClCompile>
     <ClCompile Include="Menu_MissionFont.cpp">
-      <Filter>UI\Actor\MenuUI\MenuScreen</Filter>
+      <Filter>UI\UI_Actor\MenuUI\MenuScreen</Filter>
     </ClCompile>
     <ClCompile Include="BaseStageActor.cpp">
       <Filter>Actor\Stage</Filter>
@@ -570,14 +570,8 @@
     <ClCompile Include="ColorEffect.cpp">
       <Filter>PostEffect</Filter>
     </ClCompile>
-    <ClCompile Include="Menu_NeroInfo.cpp">
-      <Filter>UI\Actor\MenuUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Menu_VirgilInfo.cpp">
-      <Filter>UI\Actor\MenuUI</Filter>
-    </ClCompile>
     <ClCompile Include="InfoUIRender.cpp">
-      <Filter>UI\Base</Filter>
+      <Filter>UI\UI_Base</Filter>
     </ClCompile>
     <ClCompile Include="StageEditGUI.cpp" />
     <ClCompile Include="StageEditLevel.cpp" />
@@ -606,17 +600,23 @@
     <ClCompile Include="FXAA_Effect.cpp">
       <Filter>PostEffect</Filter>
     </ClCompile>
+    <ClCompile Include="PlayUITestLevel.cpp">
+      <Filter>UI\UI_Level</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu_NeroInfo.cpp">
+      <Filter>UI\UI_Actor\MenuUI\NeroInfo</Filter>
+    </ClCompile>
     <ClCompile Include="InvenUIButton.cpp">
-      <Filter>UI\Actor\MenuUI</Filter>
+      <Filter>UI\UI_Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu_VirgilInfo.cpp">
+      <Filter>UI\UI_Actor\MenuUI\VergilInfo</Filter>
     </ClCompile>
     <ClCompile Include="Nero_InvenToryUI.cpp">
-      <Filter>UI\Actor\MenuUI</Filter>
+      <Filter>UI\UI_Actor\MenuUI\NeroInfo</Filter>
     </ClCompile>
     <ClCompile Include="NeroHPUI.cpp">
-      <Filter>UI\Actor\MenuUI</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayUITestLevel.cpp">
-      <Filter>UI\Level</Filter>
+      <Filter>UI\UI_Actor\PlayUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -653,24 +653,6 @@
     <Filter Include="UI">
       <UniqueIdentifier>{0040d815-701d-4a4b-880b-41d2d45bb226}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UI\Level">
-      <UniqueIdentifier>{b3378528-f9a9-49d4-b7fb-822d878fa728}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\Actor">
-      <UniqueIdentifier>{77054d83-a4d1-4fc6-8dfb-82d743721b38}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\Actor\IntroUI">
-      <UniqueIdentifier>{81a0b393-c3f3-42b4-b9f6-d9e8aae62f9e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\Actor\TitleUI">
-      <UniqueIdentifier>{6b842466-cfb3-431a-8392-fe392dbdf103}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\Base">
-      <UniqueIdentifier>{cc61b815-9ebe-44d8-8edf-5af5c97aba73}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\Actor\TitleUI\ButtonScreen">
-      <UniqueIdentifier>{55ee2600-f38a-4185-b9af-c259d61311cb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Actor\Enemy\BossEnemy">
       <UniqueIdentifier>{2ee8e063-f548-41c2-9fbc-aa29201e1468}</UniqueIdentifier>
     </Filter>
@@ -706,9 +688,6 @@
     </Filter>
     <Filter Include="Actor\Test">
       <UniqueIdentifier>{839ddcf0-fa0f-4e30-a291-488d8933e823}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\Base\Mouse">
-      <UniqueIdentifier>{d6300527-8acf-4349-b8b1-a423df732e0e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Server\01.Packet\02.Global">
       <UniqueIdentifier>{234ddb00-f25c-49a7-91ff-a9c25878617e}</UniqueIdentifier>
@@ -758,17 +737,8 @@
     <Filter Include="Actor\NetworkExample">
       <UniqueIdentifier>{23f668d8-f44f-4600-9465-fe7fa180925c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UI\Actor\C_ChoiceUI">
-      <UniqueIdentifier>{0ce3c064-c04d-4698-b513-4610ca1d869e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Actor\Stage">
       <UniqueIdentifier>{9bfd9f41-48de-4462-82ec-e3573d7d9b0e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\Actor\MenuUI">
-      <UniqueIdentifier>{8f71627c-5fda-4bc6-9c5e-f2b8dc1cc3ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\Actor\MenuUI\MenuScreen">
-      <UniqueIdentifier>{4e87bf65-3b70-4d0f-9346-7fbf1154d1c8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Actor\Player">
       <UniqueIdentifier>{c973e3f3-8c9d-4b9d-8693-81925f490cb5}</UniqueIdentifier>
@@ -811,6 +781,42 @@
     </Filter>
     <Filter Include="Actor\Stage\StageEditor">
       <UniqueIdentifier>{8a458298-fa6e-48c6-9286-eb1d7d7ec353}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor">
+      <UniqueIdentifier>{77054d83-a4d1-4fc6-8dfb-82d743721b38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\IntroUI">
+      <UniqueIdentifier>{81a0b393-c3f3-42b4-b9f6-d9e8aae62f9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\TitleUI">
+      <UniqueIdentifier>{6b842466-cfb3-431a-8392-fe392dbdf103}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\TitleUI\ButtonScreen">
+      <UniqueIdentifier>{55ee2600-f38a-4185-b9af-c259d61311cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\C_ChoiceUI">
+      <UniqueIdentifier>{0ce3c064-c04d-4698-b513-4610ca1d869e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\MenuUI">
+      <UniqueIdentifier>{8f71627c-5fda-4bc6-9c5e-f2b8dc1cc3ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\MenuUI\MenuScreen">
+      <UniqueIdentifier>{4e87bf65-3b70-4d0f-9346-7fbf1154d1c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Base">
+      <UniqueIdentifier>{cc61b815-9ebe-44d8-8edf-5af5c97aba73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Level">
+      <UniqueIdentifier>{b3378528-f9a9-49d4-b7fb-822d878fa728}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\MenuUI\NeroInfo">
+      <UniqueIdentifier>{f0bc3ac9-333b-4dd0-91a9-9f3950798902}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\MenuUI\VergilInfo">
+      <UniqueIdentifier>{36a1e7d4-64de-4998-9d21-564401e4c1aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\PlayUI">
+      <UniqueIdentifier>{01de2a75-fe35-4d04-b19c-2361fd3bfb7b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
