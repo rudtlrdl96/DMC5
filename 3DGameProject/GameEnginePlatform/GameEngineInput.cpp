@@ -4,6 +4,8 @@
 #include <GameEngineBase/GameEngineDebug.h>
 #include "GameEngineWindow.h"
 
+std::set<std::string> GameEngineInput::IgnoreKeys;
+
 std::map<std::string, GameEngineInput::GameEngineKey> GameEngineInput::Keys;
 bool GameEngineInput::IsAnyKeyValue = false;
 bool GameEngineInput::IsFocus = true;
@@ -184,6 +186,11 @@ void GameEngineInput::AllReset()
 
 	for (; StartKeyIter != EndKeyIter; ++StartKeyIter)
 	{
+		if (true == IgnoreKeys.contains(StartKeyIter->first))
+		{
+			continue;
+		}
+
 		StartKeyIter->second.Reset();
 	}
 }

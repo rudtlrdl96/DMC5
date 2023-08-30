@@ -253,6 +253,8 @@ void GameEngineCore::CoreResourcesInit()
 		V.NORMAL = float4(0.0f, Radius, 0.0f, 1.0f); // 노말 백터 혹은 법선백터(면에 수직인 벡터)라고 불리며 빛 반사에서 필수로 사용됨
 		V.NORMAL.Normalize();
 		V.NORMAL.w = 0.0f;
+		V.TANGENT = float4(1.0f, 0.0f, 0.0f, 0.0f);
+		V.BINORMAL = float4(0.0f, 0.0f, 1.0f, 0.0f);
 
 		VBVector.push_back(V);
 
@@ -285,6 +287,16 @@ void GameEngineCore::CoreResourcesInit()
 				V.NORMAL = V.POSITION.NormalizeReturn();
 				V.NORMAL.w = 0.0f;
 
+				V.TANGENT.x = -Radius * sinf(phi) * sinf(theta);
+				V.TANGENT.y = 0.0f;
+				V.TANGENT.z = Radius * sinf(phi) * cosf(theta);
+				V.TANGENT = V.TANGENT.NormalizeReturn();
+				V.TANGENT.w = 0.0f;
+
+				V.BINORMAL = float4::Cross3DReturn(V.TANGENT, V.NORMAL);
+				V.BINORMAL = V.BINORMAL.NormalizeReturn();
+				V.BINORMAL.w = 0.0f;
+
 				VBVector.push_back(V);
 			}
 		}
@@ -295,6 +307,9 @@ void GameEngineCore::CoreResourcesInit()
 		V.NORMAL = float4(0.0f, -Radius, 0.0f, 1.0f);
 		V.NORMAL.Normalize();
 		V.NORMAL.w = 0.0f;
+		V.TANGENT = float4(-1.0f, 0.0f, 0.0f, 0.0f);
+		V.BINORMAL = float4(0.0f, 0.0f, -1.0f, 0.0f);
+
 		VBVector.push_back(V);
 
 		// 인덱스 버퍼를 만듭니다.

@@ -82,12 +82,20 @@ public:
 		return MouseDirection.NormalizeReturn();
 	}
 
+	static void AddIgnoreKeys(std::string_view _name)
+	{
+		std::string Name = GameEngineString::ToUpper(_name.data());
+		IgnoreKeys.insert(Name);
+	}
+
 protected:
 
 private:
 	// constrcuter destructer
 	GameEngineInput();
 	~GameEngineInput();
+
+	static std::set<std::string> IgnoreKeys;
 
 	//      PlayerJump       A
 	static std::map<std::string, GameEngineKey> Keys;

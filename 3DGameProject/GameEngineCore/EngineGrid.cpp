@@ -29,7 +29,7 @@ void EngineGrid::Update(float _Delta)
 	float Y = abs(CameraPos.y);
 	float ScalePlus = Y * 10.0f;
 	int RatioCount = 0;
-	int RatioCalStart = 100.0f;
+	int RatioCalStart = 100;
 	GridDataInst.GridScale.x = 500.0f;
 	GridDataInst.GridScale.z = 500.0f;
 
