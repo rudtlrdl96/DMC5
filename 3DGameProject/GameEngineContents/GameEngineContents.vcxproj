@@ -272,6 +272,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Nero_ShopLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Nero_ShopTitleBar.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="NetTestEnemy.h">
       <SubType>
       </SubType>
@@ -455,6 +463,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ShopBG.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Shop_TitleButton.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="SkyBox.h">
       <SubType>
       </SubType>
@@ -604,6 +620,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Nero_InvenToryUI.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Nero_ShopLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Nero_ShopTitleBar.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -785,6 +809,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="ShaderTestLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ShopBG.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Shop_TitleButton.cpp">
       <SubType>
       </SubType>
     </ClCompile>

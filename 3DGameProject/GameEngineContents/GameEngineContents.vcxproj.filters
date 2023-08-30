@@ -313,6 +313,18 @@
     <ClInclude Include="NeroHPUI.h">
       <Filter>UI\UI_Actor\PlayUI</Filter>
     </ClInclude>
+    <ClInclude Include="Nero_ShopLevel.h">
+      <Filter>UI\UI_Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Nero_ShopTitleBar.h">
+      <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Shop_TitleButton.h">
+      <Filter>UI\UI_Base\ShopTitleButton</Filter>
+    </ClInclude>
+    <ClInclude Include="ShopBG.h">
+      <Filter>UI\UI_Actor\ShopUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -618,6 +630,18 @@
     <ClCompile Include="NeroHPUI.cpp">
       <Filter>UI\UI_Actor\PlayUI</Filter>
     </ClCompile>
+    <ClCompile Include="Nero_ShopLevel.cpp">
+      <Filter>UI\UI_Level</Filter>
+    </ClCompile>
+    <ClCompile Include="Nero_ShopTitleBar.cpp">
+      <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Shop_TitleButton.cpp">
+      <Filter>UI\UI_Base\ShopTitleButton</Filter>
+    </ClCompile>
+    <ClCompile Include="ShopBG.cpp">
+      <Filter>UI\UI_Actor\ShopUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
@@ -817,6 +841,15 @@
     </Filter>
     <Filter Include="UI\UI_Actor\PlayUI">
       <UniqueIdentifier>{01de2a75-fe35-4d04-b19c-2361fd3bfb7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\ShopUI">
+      <UniqueIdentifier>{968321d7-bf95-417c-a9b6-a46b044cebc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\ShopUI\NeroShopUI">
+      <UniqueIdentifier>{711e0297-d179-4b53-b97c-47c0c667a37b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Base\ShopTitleButton">
+      <UniqueIdentifier>{4b4d624e-f4f6-473c-b4a2-fdbcf8cc9b34}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

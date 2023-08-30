@@ -46,7 +46,10 @@ void Menu_SelectScreen::Start()
 	CustomizeButton->GetRender_Select2()->SetTexture("Menu_SelectBase.png");
 	CustomizeButton->GetRender_Select2()->GetTransform()->SetLocalScale({ 579.0f,50.0f,0.0f });
 	CustomizeButton->GetRender_Select2()->GetTransform()->SetLocalPosition({ 250.0f,0.0f,0.0f });
-
+	CustomizeButton->SetEvent([this]()
+		{
+			GameEngineCore::ChangeLevel("Nero_ShopLevel");
+		});
 	PrevButton = GetLevel()->CreateActor<UIButton>();
 	PrevButton->GetTransform()->SetLocalPosition({ -670.0f,30.0f,0.0f });
 	PrevButton->GetRender()->GetTransform()->SetLocalScale({ 200.0f,40.0f,0.0f });
