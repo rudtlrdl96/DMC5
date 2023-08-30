@@ -29,28 +29,6 @@ void Enemy_Empusa::EnemyMeshLoad()
 	
 	//EnemyBase에서 Start에서 생성된 Component에 Mesh Set
 	EnemyRenderer->SetFBXMesh("em0100.fbx", "MeshAniTexture");
-
-	std::vector<std::vector<std::string>> MaterialNames = { {"FBX", "FBX", "FBX", "FBX", "FBX_Mix"}};
-
-	EnemyRenderer->SetFBXMesh("em0100.fbx", MaterialNames);
-
-	std::shared_ptr<GameEngineRenderUnit> MeshUnits = EnemyRenderer->GetRenderUnit(0, 4);
-
-	if (nullptr != MeshUnits)
-	{
-		if (nullptr == GameEngineTexture::Find("em0100_appear_albm.tga"))
-		{
-			std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
-				{
-					"Character", "Enemy", "em0100", "mesh"
-				}, "em0100_appear_albm.tga");
-
-			GameEngineTexture::Load(Path);
-		}
-
-		MeshUnits->ShaderResHelper.SetTexture("MixTexture", "em0100_appear_albm.tga");
-	}
-
 	EnemyRenderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
 }
 
