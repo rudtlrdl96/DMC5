@@ -24,6 +24,8 @@ protected:
 	//업데이트 패킷을 전송하는 부분입니다. 모든 Update가 끝난 뒤에 실행됩니다
 	void Update_SendPacket(float _DeltaTime) override;
 
+	void DrawEditor() override;
+
 private:
 	bool IsConnect = false;
 };

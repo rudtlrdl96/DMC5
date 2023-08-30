@@ -298,7 +298,9 @@
     <ClInclude Include="ZoomEffect.h">
       <Filter>PostEffect</Filter>
     </ClInclude>
-    <ClInclude Include="FXAA_Effect.h" />
+    <ClInclude Include="FXAA_Effect.h">
+      <Filter>PostEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -589,7 +591,9 @@
     <ClCompile Include="ZoomEffect.cpp">
       <Filter>PostEffect</Filter>
     </ClCompile>
-    <ClCompile Include="FXAA_Effect.cpp" />
+    <ClCompile Include="FXAA_Effect.cpp">
+      <Filter>PostEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">

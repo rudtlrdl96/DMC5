@@ -111,4 +111,6 @@ void HierarchyGUI::ShowTransformInfo()
 	Transform->SetLocalPosition(Position);
 	Transform->SetLocalRotation(Rotation);
 	Transform->SetLocalScale(Scale);
+
+	SelectObject->DrawEditor();
 }

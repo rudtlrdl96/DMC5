@@ -106,6 +106,8 @@ private:
 
 	GameEngineObject* DrawGUI();
 
+	virtual void DrawEditor() {};
+
 	////////////////////////////////////////////////////
 
 	void AllAccTime(float _DeltaTime);

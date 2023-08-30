@@ -138,3 +138,9 @@ void NetTestPlayer::Update_SendPacket(float _DeltaTime)
 	//추후 다양한 패킷 생성 예정
 }
 
+#include <GameEngineCore/imgui.h>
+
+void NetTestPlayer::DrawEditor()
+{
+	ImGui::Text(GameEngineString::UniCodeToAnsi(L"Test Code").data());
+}

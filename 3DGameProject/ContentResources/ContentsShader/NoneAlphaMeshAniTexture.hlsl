@@ -42,6 +42,7 @@ Output MeshAniTexture_VS(Input _Input)
     NewOutPut.TEXCOORD = _Input.TEXCOORD;
     
     NewOutPut.VIEWPOSITION = mul(InputPos, WorldView);
+    
     _Input.NORMAL.w = 0.0f;
     NewOutPut.NORMAL = mul(_Input.NORMAL, WorldView);
     
@@ -70,21 +71,29 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
     }
     
     float4 ResultColor = Color;
-    
+        
     if (0 != IsLight)
     {
-        float4 BumpNormal = NormalTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
-        BumpNormal = (BumpNormal * 2.0f) - 1.0f;
-        BumpNormal = (BumpNormal.z * _Input.NORMAL) + (BumpNormal.x * _Input.BINORMAL) + (BumpNormal.y * _Input.TANGENT);
-              
-        float4 DiffuseRatio = CalDiffuseLight(_Input.VIEWPOSITION, BumpNormal, AllLight[0]);
-        float4 SpacularRatio = CalSpacularLight(_Input.VIEWPOSITION, BumpNormal, AllLight[0]);
+        float4 NormalDir = _Input.NORMAL;
+        
+        if (0 != IsNormal)
+        {
+            float4 BumpNormal = NormalTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
+            BumpNormal = (BumpNormal * 2.0f) - 1.0f;
+            BumpNormal = (BumpNormal.z * _Input.NORMAL) + (BumpNormal.x * _Input.BINORMAL) + (BumpNormal.y * _Input.TANGENT);
+        
+            NormalDir = BumpNormal;
+        }
+        
+        float4 DiffuseRatio = CalDiffuseLight(_Input.VIEWPOSITION, NormalDir, AllLight[0]);
+        float4 SpacularRatio = CalSpacularLight(_Input.VIEWPOSITION, NormalDir, AllLight[0]);
         float4 AmbientRatio = CalAmbientLight(AllLight[0]);
         
         float A = Color.w;
         ResultColor = Color * (DiffuseRatio + SpacularRatio + AmbientRatio);
         ResultColor.a = A;
     }
+    
     
     return ResultColor;
 }
