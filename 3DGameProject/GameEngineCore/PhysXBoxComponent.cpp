@@ -13,6 +13,9 @@ PhysXBoxComponent::~PhysXBoxComponent()
 
 void PhysXBoxComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale, float4 _GeoMetryRot)
 {
+	m_pPhysics = _physics;
+    m_pScene = _Scene;
+
 	float4 tmpQuat = _GeoMetryRot.EulerDegToQuaternion();
 
 	// 부모 액터로부터 위치 생성
@@ -28,7 +31,7 @@ void PhysXBoxComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysi
 	);
 
 	// Staticfriction : 정적마찰 // Dynamicfriction : 동적마찰 // Resitution : 탄성계수
-	m_pMaterial = _physics->createMaterial(Staticfriction, Dynamicfriction, Resitution);
+	m_pMaterial = m_pPhysics->createMaterial(Staticfriction, Dynamicfriction, Resitution);
 
 	// TODO::배율을 적용할 경우 이쪽 코드를 사용
 	//float4 tmpMagnification = { SIZE_MAGNIFICATION_RATIO };
@@ -97,7 +100,7 @@ void PhysXBoxComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysi
 	}
 	else
 	{
-		_Scene->addActor(*m_pRigidDynamic);
+		m_pScene->addActor(*m_pRigidDynamic);
 	}
 }
 

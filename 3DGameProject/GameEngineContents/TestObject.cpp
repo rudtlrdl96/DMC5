@@ -179,7 +179,7 @@ void TestObject::UserUpdate(float _DeltaTime)
 		Component->SetJump(3000.f);
 	}
 
-	Component->SetMove(MoveDir.NormalizeReturn() * 100.0f);
+	Component->SetMove(MoveDir.NormalizeReturn() * 1000.0f);
 
 
 	{
