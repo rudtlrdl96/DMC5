@@ -12,8 +12,6 @@ MainLevel* MainLevel::Inst = nullptr;
 #include "ZoomEffect.h"
 #include "FXAA_Effect.h"
 
-#include "Plane.h"
-
 MainLevel::MainLevel() 
 {
 	Inst = this;
@@ -109,7 +107,6 @@ void MainLevel::Update(float _DeltaTime)
 void MainLevel::LevelChangeStart()
 {
 	GameEngineLevel::LevelChangeStart();
-	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
 }
 
 void MainLevel::LevelChangeEnd()
