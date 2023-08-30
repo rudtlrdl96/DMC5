@@ -31,6 +31,7 @@ public:
 	}
 
 	void SetWorldPosition(float4 _Value);
+	void AddWorldPosition(float4 _Value);
 
 	void SetWorldRotation(float4 _Value);
 

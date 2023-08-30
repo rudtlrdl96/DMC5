@@ -158,7 +158,20 @@ void PhysXCapsuleComponent::SetWorldPosition(float4 _Value)
 	float ValueY = _Value.y;
 	float ValueZ = _Value.z;
 
-	CurTansform.p += {_Value.x, _Value.y, _Value.z};
+	CurTansform.p = {_Value.x, _Value.y, _Value.z};
+
+	m_pDynamic->setGlobalPose(CurTansform);
+}
+
+void PhysXCapsuleComponent::AddWorldPosition(float4 _Value)
+{
+	physx::PxTransform CurTansform = m_pDynamic->getGlobalPose();
+
+	float ValueX = _Value.x;
+	float ValueY = _Value.y;
+	float ValueZ = _Value.z;
+
+	CurTansform.p += { _Value.x, _Value.y, _Value.z };
 
 	m_pDynamic->setGlobalPose(CurTansform);
 }
