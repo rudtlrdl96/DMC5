@@ -21,6 +21,7 @@ void NetworkManager::ClientPacketInit()
 	{
 		//이 클라이언트의 네트워크 아이디 지정
 		NetID = _Packet->GetObjectID();
+		NetworkGUI::GetInst()->InitName(NetID);
 
 		//패킷에 담겨온 오브젝트아이디로 플레이어 캐릭터 생성
 		const std::vector<unsigned int>& AllObjectID = _Packet->AllObjectID;
@@ -36,8 +37,6 @@ void NetworkManager::ClientPacketInit()
 			int ID = static_cast<int>(AllObjectID[i]);
 			CreateLocalPlayer(Level, ID);
 		}
-
-		//NetworkGUI::GetInst()->SetClientTitle(ID);
 	});
 
 

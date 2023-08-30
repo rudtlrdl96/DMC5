@@ -23,15 +23,17 @@ void NetworkGUI::Start()
 	AllStateFunc[static_cast<size_t>(State::SelectWait)] = std::bind(&NetworkGUI::Update_SelectWait, this);
 	AllStateFunc[static_cast<size_t>(State::ServerWait)] = [=]() 
 	{
-		ImGui::Text(Title.c_str()); 
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), Title.c_str());
 		ImGui::Text("Server Open Success");
 	};
 	AllStateFunc[static_cast<size_t>(State::ClientWait)] = [=]() 
 	{
-		ImGui::Text(Title.c_str()); 
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), Title.c_str());
 		ImGui::Text("Waiting Server Connect..");
 	};
 	AllStateFunc[static_cast<size_t>(State::OnFieldStage)] = std::bind(&NetworkGUI::Update_OnFieldStage, this);
+
+	NickName.resize(64, 0);
 }
 
 
@@ -58,35 +60,55 @@ void NetworkGUI::Update_SelectWait()
 
 	ImGui::InputText("IP", IpNum, 64);
 	ImGui::InputInt("Port ", &PortNum);
+	ImGui::InputText("NickName", &NickName[0], NickName.size());
 
 	//호스트 버튼을 누른 경우
 	if (ImGui::Button(BtnText_ForHost.data()))
 	{
-		NetworkManager::ServerOpen(PortNum);
+		CurState = State::ServerWait;
+
+		//GUI 제목 초기화
 		Title = "This is Host";
+
+		//닉네임 초기화
+		if (0 == NickName.front())
+		{
+			NickName = "Unknown";
+		}
+		unsigned int NetID = NetworkManager::ServerOpen(PortNum);
+		InitName(NetID);
+
+		//UI쪽에서 넣은 콜백 호출
 		if (nullptr != EntryCallBack)
 		{
 			EntryCallBack();
 			EntryCallBack = nullptr;
 		}
-
-		CurState = State::ServerWait;
 		return;
 	}
 
 	//클라이언트 버튼을 누른 경우
 	if (ImGui::Button(BtnText_ForClient.data()))
 	{
+		CurState = State::ClientWait;
+
+		//GUI 제목 초기화
 		Title = "This is Client";
+
+		//닉네임 초기화
+		if (0 == NickName.front())
+		{
+			NickName = "Unknown";
+		}
+
+		//서버 연결은 캐릭터를 선택하고 난 뒤에
+
+		//UI쪽에서 넣은 콜백 호출
 		if (nullptr != EntryCallBack)
 		{
 			EntryCallBack();
 			EntryCallBack = nullptr;
 		}
-
-		//서버 연결은 캐릭터를 선택하고 난 뒤에
-		
-		CurState = State::ClientWait;
 		return;
 	}
 }
@@ -105,7 +127,8 @@ bool NetworkGUI::ChangeFieldState()
 
 void NetworkGUI::Update_OnFieldStage() 
 {
-	ImGui::Text(Title.c_str());
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), Title.c_str());
+	ImGui::Text(NickName.c_str());
 
 	//여기서 어쩌면 채팅기능?
 }

@@ -35,7 +35,7 @@ PlayerType NetworkManager::CharacterType = PlayerType::None;
 
 
 
-void NetworkManager::ServerOpen(int _Port)
+unsigned int NetworkManager::ServerOpen(int _Port)
 {
 	//Thread 이름 설정
 	SetThreadDescription(GetCurrentThread(), L"Server Main Thread");
@@ -54,6 +54,8 @@ void NetworkManager::ServerOpen(int _Port)
 	//서버 오픈
 	ServerInst.ServerOpen(static_cast<unsigned short>(_Port));
 	NowState = NetworkState::Server;
+
+	return NetID;
 }
 
 

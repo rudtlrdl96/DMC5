@@ -6,6 +6,8 @@ enum class PlayerType;
 
 class NetworkGUI : public GameEngineGUIWindow
 {
+	friend class NetworkManager;
+
 public:
 	static NetworkGUI* GetInst()
 	{
@@ -64,6 +66,7 @@ private:
 
 	int PortNum = 30000;
 	char IpNum[64] = "127.0.0.1";
+	std::string NickName;
 	std::string Title = "Select Host or Clinet";
 	
 	std::function<void()> EntryCallBack = nullptr;
@@ -72,5 +75,11 @@ private:
 
 	void Update_SelectWait();
 	void Update_OnFieldStage();
+
+	inline void InitName(unsigned int _NetID)
+	{
+		const std::string AddStr = "(" + std::to_string(_NetID) + ")";
+		NickName = "MyName : " + NickName + AddStr;
+	}
 };
 

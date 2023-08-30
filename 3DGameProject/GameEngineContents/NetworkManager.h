@@ -36,7 +36,7 @@ public:
 		return NetInst->IsNet();
 	}
 
-	static void ServerOpen(int _Port);
+	static unsigned int ServerOpen(int _Port);
 
 	static void ConnectServer(PlayerType _CharacterType);
 
