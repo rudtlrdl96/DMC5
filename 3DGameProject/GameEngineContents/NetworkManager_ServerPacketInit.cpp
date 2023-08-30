@@ -71,10 +71,22 @@ void NetworkManager::ServerPacketInit()
 			GameEngineNetObject* NetObject = nullptr;
 			NetObject = GameEngineNetObject::GetNetObject(ObjID);
 			NetObject->NetDisconnect();
+
+			GameEngineActor* ActorPtr = dynamic_cast<GameEngineActor*>(NetObject);
+			if (nullptr == ActorPtr)
+			{
+				MsgAssert("해당 NetObejct가 GameEngineActor타입으로 캐스팅하지 못해서 Death처리를 할 수 없습니다.");
+				return;
+			}
+			ActorPtr->Death();
 		}
-		
-		//Player가 스스로 처리할 수 있게 자료구조에 저장
-		GameEngineNetObject::PushNetObjectPacket(_Packet);
+
+		//패킷이 Death처리 되지 않은 경우에만 엑터쪽에 패킷 전달
+		else
+		{
+			//Player가 스스로 처리할 수 있게 자료구조에 저장
+			GameEngineNetObject::PushNetObjectPacket(_Packet);
+		}
 
 		//서버의 경우엔 수신받은 특정 오브젝트의 패킷을 다른 클라에 다 뿌려야 한다
 		NetInst->SendPacket(_Packet, _Packet->NetID);

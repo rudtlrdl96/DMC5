@@ -52,6 +52,21 @@ public:
 		NetInst->UpdatePacket();
 	}
 
+	//네트워크용 엑터를 생성합니다. 클라이언트의 경우엔 nullptr을 반환하니 꼭 nullptr를 해주세요
+	template <typename ActorPtr>
+	static std::shared_ptr<ActorPtr> CreateNetworkActor(Net_ActorType _NetActorType)
+	{
+		if (false == IsServer())
+			return nullptr;
+
+		std::shared_ptr<GameEngineNetObject> NetObjPtr = nullptr;
+		NetObjPtr = CreateNetActor(_NetActorType);
+		NetObjPtr->SetUserControllType();
+
+		return std::dynamic_pointer_cast<ActorPtr>(NetObjPtr);
+	}
+
+
 
 	//Update패킷을 보낼때 이 인터페이스를 이용해서 보내주시면 됩니다.
 	static void PushUpdatePacket(GameEngineNetObject* _NetObj, GameEngineActor* _ActorPtr, float _TimeScale = 1.f);

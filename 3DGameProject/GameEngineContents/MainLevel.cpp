@@ -101,9 +101,8 @@ void MainLevel::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("CreateTestNetEnemy") && NetworkManager::IsServer())
 	{
-		//std::shared_ptr<NetTestEnemy> Enemy = nullptr;
-		//Enemy = CreateActor<NetTestEnemy>();
-		////Enemy->InitNetObject(GameEngineNetObject::CreateServerID(), )
+		std::shared_ptr<NetTestPlayer> OtherPlayer = nullptr;
+		OtherPlayer = NetworkManager::CreateNetworkActor<NetTestPlayer>(Net_ActorType::Nero);
 		return;
 	}
 }

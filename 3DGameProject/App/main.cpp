@@ -13,6 +13,7 @@
 #pragma comment(lib, "libxml2-md.lib")
 #pragma comment(lib, "libfbxsdk-md.lib")
 
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPWSTR    lpCmdLine,
@@ -58,13 +59,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 // 
 // 4개의 배열로 되어있는데, 종종 영향받는 본이 4개가 넘는 본이 있다. 그런것도 일단 만들어놓긴 했음
 // 
+// ////////////////////////////////////////
 // 
+// 0830
 // 
+// 오늘도 후후돈을 갔다.
+// 역시 후후돈의 냉까스는 언제먹어도 맛있다
+// 냉까스 그만 팔 때 까지 질리도록 먹어야지
 // 
-// 
-// 
-// 
-// 
+// ////////////////////////////////////////
 // 
 //
 //
