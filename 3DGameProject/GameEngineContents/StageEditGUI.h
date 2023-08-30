@@ -15,12 +15,17 @@ public:
 
 	
 protected:
-	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;
+	void OnGUI(std::shared_ptr<GameEngineLevel> _Level, float _DeltaTime) override;
 
 private:
+	//부모 레벨
+	class StageBaseLevel* Parent = nullptr;
+
 	//상용 함수
 	static std::string GetOpenFilePath(); //파일 불러오기
 	static std::string GetSaveFilePath(); //파일 저장하기
+
+	void ShowTransformInfo(std::shared_ptr<GameEngineObject> _Obj = nullptr); // 오브젝트 트랜스폼 툴
 
 	//Data 관련
 	std::vector<StageData> AllData;
@@ -41,17 +46,21 @@ private:
 	}
 
 	void SaveStageData();
-	void LoadStageData();
+	void LoadStageData(std::shared_ptr<GameEngineLevel> _Level);
+	void CreateStage(StageData _Data);
+	bool IsCreateStage = false;
 
 	//Stage 관련
 	size_t Stage_current = 0;
 	char StageNameInputSpace[128] = "";
-	void StageListBox();
+	void StageListBox(std::shared_ptr<GameEngineLevel> _Level);
 	void InputStageInfo(std::shared_ptr<GameEngineLevel> _Level);
 
 	//FieldMap 관련
 	size_t FieldMap_current = 0;
 	void FieldMapCombo();
+	void FieldMapTransformEditUI(std::shared_ptr<GameEngineObject> _Obj = nullptr);
+
 
 };
 

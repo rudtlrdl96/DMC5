@@ -2,12 +2,12 @@
 #include "StageEditLevel.h"
 
 #include <GameEngineCore/GameEngineGUI.h>
+#include <GameEngineCore/GameEngineFBXMesh.h>
+#include <GameEngineCore/EngineGrid.h>
 
 #include "NetworkManager.h"
 #include "StageEditGUI.h"
-#include "EditorUI.h"
 #include "FreeCameraActor.h"
-#include <GameEngineCore/GameEngineFBXMesh.h>
 
 StageEditLevel::StageEditLevel()
 {
@@ -39,7 +39,7 @@ void StageEditLevel::Start()
 		GameEngineTexture::Load(File[i].GetFullPath());
 	}
 
-	AcEditorUI = CreateActor<EditorUI>();
+	Grid = CreateActor<EngineGrid>();
 	FreeCam = CreateActor<FreeCameraActor>();
 }
 

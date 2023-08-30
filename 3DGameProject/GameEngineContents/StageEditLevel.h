@@ -18,7 +18,7 @@ protected:
 	void LevelChangeEnd() override;
 private:
 	std::shared_ptr<GameEngineGUIWindow> Editor = nullptr;
-	std::shared_ptr<class EditorUI> AcEditorUI = nullptr;
+	std::shared_ptr<class EngineGrid> Grid = nullptr;
 	std::shared_ptr<class FreeCameraActor> FreeCam = nullptr;
 };
 

@@ -1,9 +1,10 @@
 #include "PrecompileHeader.h"
 #include "StageBaseLevel.h"
+#include <GameEngineCore/GameEngineFBXRenderer.h>
+
 #include "NetworkManager.h"
 #include "SkyBox.h"
 
-using namespace std;
 std::vector<StageData> StageBaseLevel::AllStageDatas;
 
 StageBaseLevel::StageBaseLevel()
@@ -29,6 +30,7 @@ void StageBaseLevel::Update(float _DeltaTime)
 
 void StageBaseLevel::CreateStage(const StageData& _Data)
 {
+	StageName = _Data.StageName;
 	CreateStageFieldMap(_Data.MapDatas);
 	CreateSkyBox(_Data.SkyboxFileName);
 }
@@ -42,12 +44,23 @@ void StageBaseLevel::SetCamera(float4 _Position)
 	GetMainCamera()->GetTransform()->SetLocalPosition(_Position);
 }
 
+void StageBaseLevel::EraseStageFieldMap(int _index)
+{
+	if (AcFieldMaps.size() <= _index)
+	{
+		return;
+	}
+	AcFieldMaps[_index]->Death();
+	AcFieldMaps[_index] = nullptr;
+	AcFieldMaps.erase(AcFieldMaps.begin() + _index);
+}
+
 void StageBaseLevel::CreateStageFieldMap(const std::vector<FieldMapData>& _MapDatas)
 {
 	AcFieldMaps.resize(_MapDatas.size());
 	for (size_t i = 0; i < AcFieldMaps.size(); i++)
 	{
-		AcFieldMaps[i] = FieldMap::CreateFieldMap(this, _MapDatas[i].MeshFileName, _MapDatas[i].ColDatas, _MapDatas[i].FieldMapPosition);
+		AcFieldMaps[i] = FieldMap::CreateFieldMap(this, _MapDatas[i].MeshFileName, _MapDatas[i].ColDatas, _MapDatas[i].FieldMapPosition, _MapDatas[i].FieldMapScale, _MapDatas[i].FieldMapRotation);
 	}
 }
 
@@ -58,5 +71,30 @@ void StageBaseLevel::CreateSkyBox(const std::string_view& _MeshFileName)
 		return;
 	}
 
-	SkyBox::CreateSkyBox(this, _MeshFileName);
+	AcSkyBox = SkyBox::CreateSkyBox(this, _MeshFileName);
 }
+
+void StageBaseLevel::EraseSkyBox()
+{
+	if (AcSkyBox == nullptr)
+	{
+		return;
+	}
+	AcSkyBox->Death();
+	AcSkyBox = nullptr;
+}
+
+void StageBaseLevel::ClearStage()
+{
+	StageName = "";
+	for (size_t i = 0; i < AcFieldMaps.size(); i++)
+	{
+		AcFieldMaps[i]->Death();
+		AcFieldMaps[i] = nullptr;
+	}
+	AcFieldMaps.clear();
+	AcSkyBox->Death();
+	//AcSkyBox = nullptr;
+}
+
+

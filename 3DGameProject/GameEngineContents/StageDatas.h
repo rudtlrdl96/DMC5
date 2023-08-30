@@ -4,9 +4,9 @@
 class FieldMapColData
 {
 public:
-	float4 Pos = float4::ZERONULL;
-	float4 Scale = float4::ZERONULL;
-	float4 Rot = float4::ZERONULL;
+	float4 Pos = float4::ZERO;
+	float4 Scale = float4::ONE;
+	float4 Rot = float4::ZERO;
 	ColType Type = ColType::MAX;
 	CollisionOrder ColOrder = CollisionOrder::Null;
 
@@ -19,7 +19,9 @@ class FieldMapData
 public:
 	std::string MeshFileName = "";
 	std::vector<FieldMapColData> ColDatas;
-	float4 FieldMapPosition = float4::ZERONULL;
+	float4 FieldMapPosition = float4::ZERO;
+	float4 FieldMapScale = float4::ONE;
+	float4 FieldMapRotation = float4::ZERO;
 
 	void WriteFieldMapData(GameEngineSerializer& _Serializer);
 	void ReadFieldMapData(GameEngineSerializer& _Serializer);
