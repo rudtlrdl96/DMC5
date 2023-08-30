@@ -154,9 +154,8 @@ void GameEngineCore::EngineUpdate()
 	}
 	else
 	{
-		float RemainTime = FrameTime - FrameLimit;
 		TimeDeltaTime = FrameTime;
-		FrameTime = RemainTime;
+		FrameTime = 0.0f;
 		FrameRate = 1.0f / TimeDeltaTime;
 	}
 

@@ -159,25 +159,6 @@ void PhysicsLevel::CreatePhysicsX()
 	//Scene_->addAggregate(*MapAggregate_);
 }
 
-void PhysicsLevel::advance(physx::PxReal _DeltaTime)
-{
-	//WaitTime += _DeltaTime;
-	//StepSize = 1.0f / 60.0f;
-
-	//if (WaitTime < StepSize)
-	//{
-	//	IsSimulation = false;
-	//}
-	//else
-	//{
-	//	WaitTime -= StepSize;
-
-	//	m_pScene->simulate(StepSize);
-
-	//	IsSimulation = true;
-	//}
-}
-
 // 실제로 물리연산을 실행
 void PhysicsLevel::Simulate(float _DeltaTime)
 {
@@ -188,7 +169,7 @@ void PhysicsLevel::Simulate(float _DeltaTime)
 		return;
 	}
 
-	m_pScene->simulate(1.0f/60.0f);
+	m_pScene->simulate(_DeltaTime);
 	m_pScene->fetchResults(true);
 }
 
@@ -222,55 +203,3 @@ bool PhysicsLevel::RayCast(const float4& _vOrigin, const float4& _vDir, OUT floa
 
 	return false;
 }
-
-//void Collider::ReadySimulate()
-//{
-//	std::weak_ptr<Transform> pTransform = m_pGameObject.lock()->GetComponent<Transform>();
-
-//	if (true == pTransform.expired())
-//		return;
-//	if (false == pTransform.lock()->IsUpdated())
-//		return;
-//	if (nullptr == m_pRigidActor)
-//		return;
-//
-//
-//	D3DXVECTOR3		vPosition = pTransform.lock()->GetPosition();
-//	D3DXQUATERNION	tQuaternion = pTransform.lock()->GetQuaternion();
-//
-//	PxVec3 pxPos;
-//	PxQuat pxQuat;
-//
-//	memcpy_s(&pxPos, sizeof(D3DXVECTOR3), &vPosition, sizeof(D3DXVECTOR3));
-//	memcpy_s(&pxQuat, sizeof(D3DXQUATERNION), &tQuaternion, sizeof(D3DXQUATERNION));
-//
-//	if (pTransform.lock()->IsSetPosition() || !m_bRigid || m_bTrigger)
-//	{
-//		m_pRigidActor->setGlobalPose(physx::PxTransform(pxPos, pxQuat));
-//		return;
-//	}
-//
-//	PxVec3 vCurrPos = m_pRigidActor->getGlobalPose().p;
-//
-//	PxVec3 vRayDir = pxPos - vCurrPos;
-//
-//	float fDistance = vRayDir.magnitude();
-//
-//	vRayDir = vRayDir.getNormalized();
-//
-//	PxVec3 vOrigin = vCurrPos + m_pShape->getLocalPose().p;
-//
-//	PxRaycastBuffer rayCastBuffer;
-//
-//	PxScene* pScene = m_pRigidActor->getScene();
-//
-//	if (PxVec3(0) != vRayDir && pScene->raycast(vOrigin, vRayDir, 100.f, rayCastBuffer))
-//	{
-//		if (rayCastBuffer.block.distance < fDistance)
-//		{
-//			pxPos = m_pRigidActor->getGlobalPose().p + vRayDir * (rayCastBuffer.block.distance - m_fOffsetRadius);
-//		}
-//	}
-//
-//	m_pRigidActor->setGlobalPose(physx::PxTransform(pxPos, pxQuat));
-//}
