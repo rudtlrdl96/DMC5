@@ -37,6 +37,7 @@ protected:
 
 private:
 	std::shared_ptr<GameEngineActor> Actor = nullptr;
+	std::shared_ptr<class PhysXCapsuleComponent> PhysXCapsule = nullptr;
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
 	std::vector<std::shared_ptr<class GameEngineRenderer>> PreviewRenderer;
 	AnimationEvent AnimEvent;

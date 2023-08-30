@@ -32,7 +32,7 @@ void BasePlayerActor::LookDir(const float4& _LookDir)
 	float4 LocalForward = GetTransform()->GetWorldLeftVector();
 	//float4 LocalForward = Controller->GetMoveVector();
 
-	float4 Cross = float4::Cross3DReturnNormal(LocalForward,  _LookDir);
+	float4 Cross = float4::Cross3DReturnNormal(LocalForward, _LookDir);
 	//float4 Cross = float4::Cross3DReturnNormal(_LookDir, LocalForward);
 	float Dot = float4::DotProduct3D(LocalForward, _LookDir);
 	//float Dot = float4::DotProduct3D(_LookDir, LocalForward);
@@ -133,7 +133,7 @@ void BasePlayerActor::Update(float _DeltaTime)
 	Update_SendPacket(_DeltaTime);
 
 
-	
+
 }
 
 void BasePlayerActor::Update_SendPacket(float _DeltaTime)
@@ -172,5 +172,21 @@ void BasePlayerActor::LockOff()
 	IsLockOn = false;
 	LockOnEnemyTransform = nullptr;
 	Camera->SetTargetTranform(nullptr);
+}
+
+void BasePlayerActor::SetForce(float4 _Value)
+{
+	float4 re = _Value.RotaitonYDegReturn(Rot.y);
+	PhysXCapsule->SetForce(re);
+}
+
+void BasePlayerActor::SetPush(float4 _Value)
+{
+	PhysXCapsule->SetPush(_Value.RotaitonYDegReturn(Rot.y));
+}
+
+void BasePlayerActor::SetMove(float4 _Value)
+{
+	PhysXCapsule->SetMove(_Value.RotaitonYDegReturn(Rot.y));
 }
 

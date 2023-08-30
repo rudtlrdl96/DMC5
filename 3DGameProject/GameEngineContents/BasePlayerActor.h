@@ -20,7 +20,7 @@ public:
 	BasePlayerActor(BasePlayerActor&& _Other) noexcept = delete;
 	BasePlayerActor& operator=(const BasePlayerActor& _Other) = delete;
 	BasePlayerActor& operator=(BasePlayerActor&& _Other) noexcept = delete;
-	
+
 	void LookDir(const float4& _LookDir);
 	void LookTarget(const float4& _Target);
 	GameEngineTransform* LockOnEnemyTransform = nullptr;
@@ -29,6 +29,10 @@ public:
 	{
 		return PhysXCapsule;
 	}
+
+	void SetForce(float4 _Value);
+	void SetPush(float4 _Value);
+	void SetMove(float4 _Value);
 
 protected:
 	void Start() override;
@@ -44,6 +48,8 @@ protected:
 
 	void LockOn();
 	void LockOff();
+
+
 
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
 	std::shared_ptr<class PlayerController> Controller = nullptr;

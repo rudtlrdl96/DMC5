@@ -12,15 +12,6 @@ PlayerActor_Nero::~PlayerActor_Nero()
 {
 }
 
-void PlayerActor_Nero::SetPush(const float4& _Value)
-{
-	PhysXCapsule->SetPush(_Value);
-}
-
-void PlayerActor_Nero::SetMass(float _Value)
-{
-	PhysXCapsule->GetDynamic()->setMass(_Value);
-}
 void PlayerActor_Nero::Start()
 {
 	BasePlayerActor::Start();
@@ -137,12 +128,17 @@ void PlayerActor_Nero::NeroLoad()
 				std::bind(&PlayerActor_Nero::RedQueenOn, this),
 				std::bind(&PlayerActor_Nero::RedQueenOff, this),
 				std::bind(&PlayerActor_Nero::BlueRoseOn, this),
-				std::bind(&PlayerActor_Nero::WeaponIdle, this)
+				std::bind(&PlayerActor_Nero::WeaponIdle, this),
+				std::bind(&PhysXCapsuleComponent::SetLinearVelocityZero, PhysXCapsule)
 			},
 			.CallBacks_int = {
 				std::bind(&GameEngineFSM::ChangeState, &FSM, std::placeholders::_1)
+			},
+			.CallBacks_float4 = {
+				std::bind(&BasePlayerActor::SetForce, this, std::placeholders::_1),
+				std::bind(&BasePlayerActor::SetPush, this, std::placeholders::_1),
+				std::bind(&BasePlayerActor::SetMove, this, std::placeholders::_1)
 			}
-
 			});
 
 
@@ -153,8 +149,13 @@ void PlayerActor_Nero::NeroLoad()
 		//콜백void = 2 : 손에 레드퀸 뺌
 		//콜백void = 3 : 손에 블루로즈
 		//콜백void = 4 : WeaponIdle (빈손, 칼 등에)
+		//콜백void = 5 : SetLinearVelocityZero
 		//
 		//콜백 int = 0 : FSM변경
+		// 
+		//콜백 float4 = 0 : SetForce
+		//콜백 float4 = 0 : SetPush
+		//콜백 float4 = 0 : SetMove
 
 
 
@@ -173,6 +174,7 @@ void PlayerActor_Nero::NeroLoad()
 		// Idle
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Idle,
 			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Idle_Normal");
 			},
@@ -288,7 +290,7 @@ void PlayerActor_Nero::NeroLoad()
 				PhysXCapsule->SetMove(MoveDir);
 			},
 			.End = [=] {
-
+				PhysXCapsule->SetLinearVelocityZero();
 			}
 			});
 
@@ -449,6 +451,7 @@ void PlayerActor_Nero::NeroLoad()
 
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Landing,
 			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Jump_Landing");
@@ -489,6 +492,7 @@ void PlayerActor_Nero::NeroLoad()
 		// RedQueen ComboA1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::RQ_ComboA_1,
 			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0000_RQ_ComboA_1");
 				InputCheck = false;
 			},
@@ -513,6 +517,7 @@ void PlayerActor_Nero::NeroLoad()
 		// RedQueen ComboA2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::RQ_ComboA_2,
 			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_ComboA_2");
 				InputCheck = false;
@@ -538,6 +543,7 @@ void PlayerActor_Nero::NeroLoad()
 		// RedQueen ComboA3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::RQ_ComboA_3,
 			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_ComboA_3");
 				InputCheck = false;
@@ -563,6 +569,7 @@ void PlayerActor_Nero::NeroLoad()
 		// RedQueen ComboA4
 		FSM.CreateState({ .StateValue = FSM_State_Nero::RQ_ComboA_4,
 			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_ComboA_4");
 				InputCheck = false;
@@ -586,6 +593,7 @@ void PlayerActor_Nero::NeroLoad()
 	{
 		FSM.CreateState({ .StateValue = FSM_State_Nero::BR_Switch_Idle_to_Lockon,
 			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
 				WeaponIdle();
 				if (nullptr != LockOnEnemyTransform)
 				{
@@ -641,6 +649,7 @@ void PlayerActor_Nero::NeroLoad()
 
 		FSM.CreateState({ .StateValue = FSM_State_Nero::BR_Lockon_Front,
 			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0000_BR_Lockon_Front");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -769,6 +778,7 @@ void PlayerActor_Nero::NeroLoad()
 
 		FSM.CreateState({ .StateValue = FSM_State_Nero::BR_Switch_Lockon_to_Idle,
 			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0000_BR_Switch_Lockon_to_Idle");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -806,10 +816,6 @@ void PlayerActor_Nero::NeroLoad()
 				Renderer->ChangeAnimation("pl0000_Evade_Left");
 			},
 			.Update = [=](float _DeltaTime) {
-
-				float4 MoveDir = GetTransform()->GetWorldLeftVector() * RunSpeed;
-				PhysXCapsule->SetMove(MoveDir);
-
 				if (true == Renderer->IsAnimationEnd())
 				{
 					FSM.ChangeState(FSM_State_Nero::BR_Lockon_Front);
@@ -849,10 +855,6 @@ void PlayerActor_Nero::NeroLoad()
 				Renderer->ChangeAnimation("pl0000_Evade_Right");
 			},
 			.Update = [=](float _DeltaTime) {
-
-				float4 MoveDir = GetTransform()->GetWorldRightVector() * RunSpeed;
-				PhysXCapsule->SetMove(MoveDir);
-
 				if (true == Renderer->IsAnimationEnd())
 				{
 					FSM.ChangeState(FSM_State_Nero::BR_Lockon_Front);

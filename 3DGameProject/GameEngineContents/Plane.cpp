@@ -5,6 +5,7 @@
 #include "MyContentSpriteRenderer.h"
 #include <GameEngineCore/PhysXBoxComponent.h>
 #include <GameEngineCore/GameEngineRenderer.h>
+#include <GameEngineCore/PhysXBoxComponent.h>
 
 #include "TestLevel.h"
 
