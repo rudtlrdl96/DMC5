@@ -19,6 +19,7 @@ enum class EventType
 	CallBackVoid,
 	CallBackInt,
 	CallBackFloat,
+	CallBackFloat4,
 };
 
 class EventData

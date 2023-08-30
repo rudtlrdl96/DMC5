@@ -14,6 +14,8 @@ enum FSM_State_Nero
 	Jump_Vertical,
 	Jump_Fly,
 	Landing,
+	Evade_Left,
+	Evade_Right,
 
 	RQ_ComboA_1,
 	RQ_ComboA_2,
@@ -57,7 +59,7 @@ public:
 		DashSpeed = _Speed;
 	}
 
-	float JumpForce = 1000.0f;
+	float JumpForce = 500.0f;
 	void SetMass(float _Value);
 
 protected:
@@ -68,9 +70,9 @@ protected:
 
 private:
 	GameEngineFSM FSM;
-	float WalkSpeed = 4000;
-	float RunSpeed = 12000;
-	float DashSpeed = 20000;
+	float WalkSpeed = 300;
+	float RunSpeed = 450;
+	float DashSpeed = 800;
 	float DashTimer = 0;
 	bool InputCheck = false;
 	char CurDir = 'n';

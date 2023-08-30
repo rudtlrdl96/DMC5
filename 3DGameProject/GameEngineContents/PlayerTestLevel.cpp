@@ -17,6 +17,8 @@
 
 #include <GameEngineCore/GameEngineCollision.h>
 #include "PlayerWindow.h"
+#include <GameEngineCore/PhysXBoxComponent.h>
+#include <GameEngineCore/PhysXDefault.h>
 PlayerTestLevel::PlayerTestLevel()
 {
 }
@@ -63,6 +65,7 @@ void PlayerTestLevel::LevelChangeStart()
 	//std::shared_ptr<TestObject> Component = CreateActor<TestObject>();
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
 
+	PlayerWindow::Function1 = std::bind(&PhysXDefault::SetDynamicFriction, Flat->Component, std::placeholders::_1);
 	std::shared_ptr<Wall> Flat2 = CreateActor<Wall>();
 	Flat2->GetTransform()->AddWorldPosition(float4{ 700, 0, 700 });
 	Flat2->GetTransform()->AddWorldRotation(float4{ 0, 0, 90 });

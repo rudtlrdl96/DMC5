@@ -94,7 +94,7 @@ void PlayerCamera::TargetCheck(float _DeltaTime)
 	}
 	// 락온 대상이 있을 시
 	// 대상과 플레이어의 사이를 바라보며. 대상과 플레이어의 거리만큼 z값을 뒤로 이동시킨다 (z 이동은 최소값이 정해져 있다)
-	float Distance = (GetTransform()->GetWorldPosition() - TargetTransform->GetWorldPosition()).Size();
+	float Distance = (GetTransform()->GetWorldPosition() - TargetTransform->GetWorldPosition()).Size() * 1.1f;
 	Distance = std::max<float>(std::abs(Distance), MinDistance);
 
 	CameraTarget->SetLocalPosition(float4::LerpClamp(CameraTarget->GetLocalPosition(), { 0, 100, -Distance }, _DeltaTime * LockOnTrackingSpeed));

@@ -90,6 +90,7 @@ public:
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
+	void InputReset();
 	void MoveInput();
 	void InputRecord();
 	void ActionInput();
@@ -100,31 +101,26 @@ private:
 	GameEngineTransform* CameraTransform = nullptr;
 	CommandRecord Command;
 
+	// 검
+	bool IsBackFrontSword = false;
+	bool IsFrontSword = false;
+	bool IsBackSword = false;
+	// 점프
+	bool IsLeftJump = false;
+	bool IsRightJump = false;
+	bool IsJump = false;
+	// 총
+	bool IsBackFrontGun = false;
+	bool IsFrontGun = false;
+	bool IsBackGun = false;
+	// 스킬
+	bool IsBackFrontSkill = false;
+	bool IsFrontSkill = false;
 
 	bool InputCheck_BackFront();
 	bool InputCheck_Dir(char _Dir);
 
 public:
-	// CALLBACK Sword
-	std::function<void()> CallBack_BackFrontSword = nullptr;
-	std::function<void()> CallBack_FrontSword = nullptr;
-	std::function<void()> CallBack_BackSword = nullptr;
-	std::function<void()> CallBack_Sword = nullptr;
-	// CALLBACK Jump
-	std::function<void()> CallBack_LeftJump = nullptr;
-	std::function<void()> CallBack_RightJump = nullptr;
-	std::function<void()> CallBack_Jump = nullptr;
-	// CALLBACK Gun
-	std::function<void()> CallBack_BackFrontGun = nullptr;
-	std::function<void()> CallBack_FrontGun = nullptr;
-	std::function<void()> CallBack_BackGun = nullptr;
-	std::function<void()> CallBack_GunDown = nullptr;
-	std::function<void()> CallBack_GunUp = nullptr;
-	// CALLBACK Skill
-	std::function<void()> CallBack_BackFrontSkill = nullptr;
-	std::function<void()> CallBack_FrontSkill = nullptr;
-	std::function<void()> CallBack_SkillDown = nullptr;
-	std::function<void()> CallBack_SkillUp = nullptr;
 	// CALLBACK Lock
 	std::function<void()> CallBack_LockOnDown = nullptr;
 	std::function<void()> CallBack_LockOnUp = nullptr;
@@ -133,8 +129,10 @@ public:
 	bool GetSwordDown() { return GameEngineInput::IsDown("Player_Sword"); }
 	bool GetGunUp() { return GameEngineInput::IsUp("Player_Gun"); }
 	bool GetLockOnFree() { return GameEngineInput::IsFree("Player_LockOn"); }
-	bool GetJumpDown() { return GameEngineInput::IsDown("Player_Jump"); }
-
+	//bool GetJumpDown() { return GameEngineInput::IsDown("Player_Jump"); }
+	bool GetIsJump() { return IsJump; }
+	bool GetIsLeftJump() { return IsLeftJump; }
+	bool GetIsRightJump() { return IsRightJump; }
 	bool IsLockOn = false;
 };
 

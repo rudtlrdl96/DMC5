@@ -16,6 +16,7 @@ public:
 	PlayerWindow& operator=(PlayerWindow&& _Other) noexcept = delete;
 
 	static PlayerActor_Nero* _Nero;
+	static std::function<void(float)> Function1;
 
 protected:
 	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;
