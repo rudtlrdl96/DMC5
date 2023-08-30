@@ -119,6 +119,9 @@ void NetworkManager::ConnectServer(PlayerType _CharacterType)
 
 void NetworkManager::PushUpdatePacket(GameEngineNetObject* _NetObj, GameEngineActor* _ActorPtr, float _TimeScale /*= 1.f*/)
 {
+	if (NetworkState::None == NowState)
+		return;
+
 	//현재 진행중인 레벨의 엑터들만 실행
 	if (_ActorPtr->GetLevel() != CurLevel)
 		return;

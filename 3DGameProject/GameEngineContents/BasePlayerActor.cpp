@@ -139,7 +139,7 @@ void BasePlayerActor::Update(float _DeltaTime)
 
 void BasePlayerActor::Update_SendPacket(float _DeltaTime)
 {
-	//NetworkManager::SendUpdatePacket(this, this, 1.f);
+	NetworkManager::PushUpdatePacket(this, this, 1.f);
 }
 
 void BasePlayerActor::LockOn()

@@ -12,6 +12,8 @@ MainLevel* MainLevel::Inst = nullptr;
 #include "ZoomEffect.h"
 #include "FXAA_Effect.h"
 
+#include "Plane.h"
+
 MainLevel::MainLevel() 
 {
 	Inst = this;
@@ -50,6 +52,8 @@ void MainLevel::Start()
 
 	/*std::shared_ptr<NetTestPlayer> NewActor = CreateActor<NetTestPlayer>();
 	NewActor->SetUserControllType();*/
+
+	//std::shared_ptr<Plane> Flat = CreateActor<Plane>();
 }
 
 void MainLevel::Update(float _DeltaTime)
