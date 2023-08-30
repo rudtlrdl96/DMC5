@@ -99,7 +99,7 @@ void StageEditGUI::FieldMapCombo()
 
 void StageEditGUI::FieldMapTransformEditUI(std::shared_ptr<GameEngineObject> _Obj)
 {
-	ImGui::Text("FieldMapTransform");
+	ImGui::SeparatorText("FieldMapTransform");
 	ShowTransformInfo(_Obj);
 	if (ImGui::Button("InputTransform"))
 	{

@@ -28,11 +28,15 @@ void EngineGrid::Update(float _Delta)
 	float4 CameraPos = GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition();
 	float Y = abs(CameraPos.y);
 	float ScalePlus = Y * 10.0f;
+	int RatioCount = 0;
+	int RatioCalStart = 100.0f;
+	GridDataInst.GridScale.x = 500.0f;
+	GridDataInst.GridScale.z = 500.0f;
 
 	GetTransform()->SetLocalScale({ 10000.0f + ScalePlus, 1.0f, 10000.0f + ScalePlus });
 	CameraPos.y = 0.0f;
 
-	GridDataInst.GridScale.w = 1 - (Y / 1000.0f);
+	GridDataInst.GridScale.w = Y / RatioCalStart;
 
 	GetTransform()->SetLocalPosition(CameraPos);
 }
