@@ -5,6 +5,7 @@
 #include "GameEngineDevice.h"
 #include "GameEngineRenderer.h"
 #include "GameEngineRenderTarget.h"
+#include "GameEngineTexture.h"
 
 GameEngineCamera::GameEngineCamera()
 {
@@ -51,7 +52,18 @@ void GameEngineCamera::Start()
 	Height = ViewPortData.Height;
 
 	CamTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	CamTarget->CreateDepthTexture();
+	CamTarget->CreateDepthTexture();	
+}
+
+void GameEngineCamera::ReflectionOn()
+{
+	if (nullptr != ReflectionTarget)
+	{
+		return;
+	}
+
+	ReflectionTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	ReflectionTarget->CreateDepthTexture();
 }
 
 void GameEngineCamera::FreeCameraSwitch()
@@ -147,6 +159,18 @@ void GameEngineCamera::Setting()
 	CamTarget->Setting();
 }
 
+void GameEngineCamera::ReflectionSetting()
+{
+	if (nullptr == ReflectionTarget)
+	{
+		return;
+	}
+
+	GameEngineDevice::GetContext()->RSSetViewports(1, &ViewPortData);
+	ReflectionTarget->Clear();
+	ReflectionTarget->Setting();
+}
+
 void GameEngineCamera::Render(float _DeltaTime)
 {
 	{
@@ -237,7 +261,6 @@ void GameEngineCamera::Render(float _DeltaTime)
 				}
 			}
 		}
-
 	}
 }
 
@@ -275,6 +298,58 @@ void GameEngineCamera::CameraTransformUpdate()
 	Box.Extents.x = Width * 0.6f;
 	Box.Extents.y = Height * 0.6f;
 	Box.Orientation = GetTransform()->GetWorldQuaternion().DirectFloat4;
+}
+
+void GameEngineCamera::ReflectionRender(float _DeltaTime)
+{
+	if (nullptr == ReflectionTarget)
+	{
+		return;
+	}
+
+	// R = P + 2 * n * (-P dot n)
+	// -P
+	float4 EyeDir = GetTransform()->GetLocalForwardVector();
+	float4 EyeUp = GetTransform()->GetLocalUpVector();
+
+	// N : 법선
+	float4 UpVector = float4::UP; 
+
+	EyeDir = (-EyeDir + UpVector * 2.0f * float4::DotProduct3D(EyeDir, UpVector));
+	EyeUp = (-EyeUp + UpVector * 2.0f * float4::DotProduct3D(EyeUp, UpVector));
+
+	float4 EyePos = GetTransform()->GetLocalPosition();
+
+	View.LookToLH(EyePos, EyeDir, EyeUp);
+
+	switch (ProjectionType)
+	{
+	case CameraType::None:
+	{
+		MsgAssert("카메라 투영이 설정되지 않았습니다.");
+		break;
+	}
+	case CameraType::Perspective:
+		Projection.PerspectiveFovLH(FOV, Width / Height, Near, Far);
+		break;
+	case CameraType::Orthogonal:
+		Projection.OrthographicLH(Width * ZoomRatio, Height * ZoomRatio, Near, Far);
+		break;
+	default:
+		break;
+	}
+
+	ViewPort.ViewPort(GameEngineWindow::GetScreenSize().x, GameEngineWindow::GetScreenSize().y, 0.0f, 0.0f);
+
+	float4 WorldPos = GetTransform()->GetWorldPosition();
+
+	Box.Center = (WorldPos + (EyeDir * Far * 0.5f)).DirectFloat3;
+	Box.Extents.z = Far * 0.6f;
+	Box.Extents.x = Width * 0.6f;
+	Box.Extents.y = Height * 0.6f;
+	Box.Orientation = GetTransform()->GetWorldQuaternion().DirectFloat4;
+
+	Render(_DeltaTime);
 }
 
 void GameEngineCamera::PushRenderer(std::shared_ptr<GameEngineRenderer> _Render)

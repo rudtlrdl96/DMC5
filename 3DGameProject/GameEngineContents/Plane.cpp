@@ -26,14 +26,14 @@ void Plane::Start()
 	float4 RenderMeshScale = Renderer->GetFBXMesh()->GetRenderUnit(0)->BoundScaleBox;
 	physx::PxVec3 GeoMetryScale = { RenderMeshScale.x, RenderMeshScale.y, RenderMeshScale.z};
 
-	Component = CreateComponent<PhysXBoxComponent>();
-	//Component->SetPhysxMaterial(0.5f, 5.0f, 0.1f);
-	Component->SetPhysxMaterial(1.0f, 1.0f, 0.0f);
-	Component->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), GeoMetryScale);
-	Component->SetPositionSetFromParentFlag(true);
-
-	physx::PxTransform PhyTF = Component->GetDynamic()->getGlobalPose();
-	PhyTF.q.z += 90.0f;
+	//Component = CreateComponent<PhysXBoxComponent>();
+	////Component->SetPhysxMaterial(0.5f, 5.0f, 0.1f);
+	//Component->SetPhysxMaterial(1.0f, 1.0f, 0.0f);
+	//Component->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), GeoMetryScale);
+	////Component->SetPositionSetFromParentFlag(true);
+	//
+	//physx::PxTransform PhyTF = Component->GetDynamic()->getGlobalPose();
+	//PhyTF.q.z += 90.0f;
 
 	//Component->GetDynamic()->setGlobalPose(PhyTF);
 }

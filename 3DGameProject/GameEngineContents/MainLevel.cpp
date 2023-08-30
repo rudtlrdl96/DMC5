@@ -13,6 +13,7 @@ MainLevel* MainLevel::Inst = nullptr;
 #include "FXAA_Effect.h"
 
 #include "ShaderTestActor.h"
+#include "Plane.h"
 
 MainLevel::MainLevel() 
 {
@@ -26,6 +27,7 @@ MainLevel::~MainLevel()
 
 void MainLevel::Start()
 {
+	GetCamera(0)->ReflectionOn();
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
@@ -50,7 +52,8 @@ void MainLevel::Start()
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -500.0f });
 
-	CreateActor<ShaderTestActor>();
+	CreateActor<ShaderTestActor>()->GetTransform()->SetLocalPosition({0, 10, 0});
+	CreateActor<Plane>();
 }
 
 void MainLevel::Update(float _DeltaTime)

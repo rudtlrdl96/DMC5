@@ -51,10 +51,9 @@ Output MeshAniTexture_VS(Input _Input)
 Texture2D DiffuseTexture : register(t0); // ALBM
 Texture2D NormalTexture : register(t1);  // NRMR
 Texture2D SpecularTexture : register(t2); // ATOS
+Texture2D ReflectionTexture : register(t3);
 
 SamplerState ENGINEBASE : register(s0);
-
-static const float3 Fdielectric = 0.04;
 
 float4 MeshAniTexture_PS(Output _Input) : SV_Target0
 {
@@ -69,7 +68,7 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
     
     float4 RGBA = { AlbmData.r, AlbmData.g, AlbmData.b, AtosData.r};
     float4 ResultColor = RGBA;
-                    
+    
     if (0 != IsLight)
     {
         float4 NormalDir = _Input.NORMAL;
@@ -98,6 +97,8 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
         float Step = ((_Input.POSITION.x + (_Input.POSITION.y * 2)) % 5) + 1;
         ResultColor.a = 1.0f - ((Step / 5.0f) * (1.0f - BaseColor.a));
     }
+    
+    ResultColor += ReflectionTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy) * 0.2f;
     
     return ResultColor;
 }

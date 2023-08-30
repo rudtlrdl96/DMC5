@@ -26,5 +26,15 @@ void ShaderTestActor::Start()
 
 	TestRenderer->SetFBXMesh("em0100.fbx", "FBX_DMC");
 
+	//std::vector<std::vector<std::shared_ptr<GameEngineRenderUnit>>>&  AllUnit = TestRenderer->GetAllRenderUnit();
+	//
+	//for (size_t i = 0; i < AllUnit.size(); i++)
+	//{
+	//	for (size_t j = 0; j < AllUnit[i].size(); j++)
+	//	{
+	//		AllUnit[i][j]->ShaderResHelper.SetTexture("ReflectionTexture", GetLevel()->GetMainCamera()->GetReflectionTarget()->GetTexture(0));
+	//	}
+	//}
+
 }
 

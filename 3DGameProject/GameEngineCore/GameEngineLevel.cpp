@@ -94,6 +94,8 @@ void GameEngineLevel::Render(float _DeltaTime)
 			++LightDataObject.LightCount;
 		}
 
+		Cam->ReflectionSetting();
+		Cam->ReflectionRender(_DeltaTime);
 
 		Cam->Setting();
 		Cam->CameraTransformUpdate();
@@ -154,6 +156,12 @@ void GameEngineLevel::LevelChangeEnd()
 
 void GameEngineLevel::ActorUpdate(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("FreeCameraSwitch"))
+	{
+		MainCamera->FreeCameraSwitch();
+		// GameEngineInput::CreateKey("FreeCameraSwitch", VK_F1);
+	}
+
 	if (true == MainCamera->IsFreeCamera())
 	{
 		IsPhysics = true;

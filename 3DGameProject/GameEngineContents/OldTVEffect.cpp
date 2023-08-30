@@ -24,10 +24,6 @@ void OldTVEffect::Start(GameEngineRenderTarget* _Target)
 
 void OldTVEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 {
-
-
-
-
 	ResultTarget->Clear();
 	BlurUnit->ShaderResHelper.SetTexture("DiffuseTex", _Target->GetTexture(0));
 	ResultTarget->Setting();
@@ -36,6 +32,4 @@ void OldTVEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 
 	_Target->Clear();
 	_Target->Merge(ResultTarget);
-
 }
-
