@@ -65,10 +65,11 @@ void ContentsCore::GameEnd()
 void ContentsCore::FontUpload()
 {
 	GameEngineDirectory NewDir;
-	NewDir.MoveParentToDirectory("CupHead_Resource");
-	NewDir.Move("CupHead_Resource");
+	NewDir.MoveParentToDirectory("ContentResources");
+	NewDir.Move("ContentResources");
+	NewDir.Move("Font");
 
-	if (0 == AddFontResourceA(NewDir.GetPlusFileName("CupheadFelix-Regular-merged.ttf").GetFullPath().data()))
+	if (0 == AddFontResourceA(NewDir.GetPlusFileName("DMC5Font.ttf").GetFullPath().data()))
 	{
 		MsgAssert("폰트 로드에 실패했습니다.");
 		return;
