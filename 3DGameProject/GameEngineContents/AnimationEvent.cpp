@@ -79,7 +79,7 @@ void AnimationEvent::LoadAll(const AnimLoadParameter& _Parameter)
 	std::vector<GameEngineFile> AnimFiles = Dir.GetAllFile({ ".ANIMATION" });
 
 	for (size_t EventIndex = 0; EventIndex < AnimFiles.size(); EventIndex++)
-	{
+	{   
 		// 파일 로드
 		GameEngineSerializer Ser;
 		AnimFiles[EventIndex].LoadBin(Ser);
@@ -148,7 +148,7 @@ void AnimationEvent::LoadAll(const AnimLoadParameter& _Parameter)
 				else if (Data.Type == EventType::CallBackInt)
 				{
 					// int 콜백함수
-					if (_Parameter.CallBacks_void[Data.Index] == nullptr)
+					if (_Parameter.CallBacks_int[Data.Index] == nullptr)
 					{
 						continue;
 					}
@@ -157,11 +157,20 @@ void AnimationEvent::LoadAll(const AnimLoadParameter& _Parameter)
 				else if (Data.Type == EventType::CallBackFloat)
 				{
 					// float 콜백함수
-					if (_Parameter.CallBacks_void[Data.Index] == nullptr)
+					if (_Parameter.CallBacks_float[Data.Index] == nullptr)
 					{
 						continue;
 					}
 					AnimInfo->AnimationEvent[i].push_back(std::bind(_Parameter.CallBacks_float[Data.Index], Data.FloatValue));
+				}
+				else if (Data.Type == EventType::CallBackFloat4)
+				{
+					// float4 콜백함수
+					if (_Parameter.CallBacks_float4[Data.Index] == nullptr)
+					{
+						continue;
+					}
+					AnimInfo->AnimationEvent[i].push_back(std::bind(_Parameter.CallBacks_float4[Data.Index], Data.Position));
 				}
 			}
 		}

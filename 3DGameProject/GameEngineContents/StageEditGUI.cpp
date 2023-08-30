@@ -14,13 +14,27 @@ StageEditGUI::~StageEditGUI()
 {
 }
 
-void StageEditGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
+void StageEditGUI::OnGUI(std::shared_ptr<GameEngineLevel> _Level, float _DeltaTime)
 {
-    StageListBox();
-	if (!AllData.empty())
+	if (Parent == nullptr)
 	{
-		InputStageInfo(Level);
+		Parent = _Level->DynamicThis<StageBaseLevel>().get();
 	}
+
+    StageListBox(_Level);
+
+	if (IsCreateStage == true)
+	{
+		IsCreateStage = false;
+		return;
+	}
+
+	if (AllData.empty())
+	{
+		return;
+	}
+
+	InputStageInfo(_Level);
 }
 
 void StageEditGUI::SaveStageData()
@@ -40,7 +54,7 @@ void StageEditGUI::SaveStageData()
 	file.SaveBin(SaveSerializer);
 }
 
-void StageEditGUI::LoadStageData()
+void StageEditGUI::LoadStageData(std::shared_ptr<GameEngineLevel> _Level)
 {
 	GameEngineSerializer LoadSerializer = GameEngineSerializer();
 
@@ -54,6 +68,8 @@ void StageEditGUI::LoadStageData()
 	File.LoadBin(LoadSerializer);
 
 	StageData::ReadAllStageData(LoadSerializer, AllData);
+
+	CreateStage(AllData[0]);
 }
 
 void StageEditGUI::FieldMapCombo()
@@ -81,7 +97,46 @@ void StageEditGUI::FieldMapCombo()
 	}
 }
 
-void StageEditGUI::StageListBox()
+void StageEditGUI::FieldMapTransformEditUI(std::shared_ptr<GameEngineObject> _Obj)
+{
+	ImGui::Text("FieldMapTransform");
+	ShowTransformInfo(_Obj);
+	if (ImGui::Button("InputTransform"))
+	{
+		GameEngineTransform* Transform = _Obj->GetTransform();
+		AllData[Stage_current].MapDatas[FieldMap_current].FieldMapPosition = Transform->GetLocalPosition();
+		AllData[Stage_current].MapDatas[FieldMap_current].FieldMapScale = Transform->GetLocalScale();
+		AllData[Stage_current].MapDatas[FieldMap_current].FieldMapRotation = Transform->GetLocalRotation();
+
+		ImGui::SameLine();
+		ImGui::Text("Input Success");
+	}
+}
+
+void StageEditGUI::ShowTransformInfo(std::shared_ptr<GameEngineObject> _Obj)
+{
+	if (_Obj == nullptr)
+	{
+		return;
+	}
+
+	GameEngineTransform* Transform = _Obj->GetTransform();
+	float4 Position = Transform->GetLocalPosition();
+	float4 Rotation = Transform->GetLocalRotation();
+	float4 Scale = Transform->GetLocalScale();
+
+	// TransData 표시 및 TransformUpdate를 위한 0위치이동 실행
+
+	ImGui::DragFloat4("Position", Position.Arr1D);
+	ImGui::DragFloat4("Rotation", Rotation.Arr1D);
+	ImGui::DragFloat4("Scale", Scale.Arr1D);
+
+	Transform->SetLocalPosition(Position);
+	Transform->SetLocalRotation(Rotation);
+	Transform->SetLocalScale(Scale);
+}
+
+void StageEditGUI::StageListBox(std::shared_ptr<GameEngineLevel> _Level)
 {
     ImGui::InputText("input StageName", StageNameInputSpace, IM_ARRAYSIZE(StageNameInputSpace));
 
@@ -94,21 +149,26 @@ void StageEditGUI::StageListBox()
             TempIter--;
             TempIter->StageName = StageNameInputSpace;
         }
-    }
+		return;
+	}
     ImGui::SameLine();
     if (ImGui::Button("DelStg"))
     {
         erase_Data(AllData, Stage_current);
-    }
+		return;
+	}
 	ImGui::SameLine();
 	if (ImGui::Button("LoadStg"))
 	{
-		LoadStageData();
+		LoadStageData(_Level);
+		IsCreateStage = true;
+		return;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("SaveStg"))
 	{
 		SaveStageData();
+		return;
 	}
 
     ImGui::BeginChild("StageList", ImVec2(150, 0), true);
@@ -118,6 +178,12 @@ void StageEditGUI::StageListBox()
 		if (ImGui::Selectable(StageLabel.c_str(), Stage_current == i))
 		{
 			Stage_current = i;
+			Parent->ClearStage();
+			Parent->StageName = AllData[Stage_current].StageName;
+			if (!AllData[Stage_current].MapDatas.empty())
+			{
+				CreateStage(AllData[Stage_current]);
+			}
 		}
     }
     ImGui::EndChild();
@@ -131,10 +197,11 @@ void StageEditGUI::InputStageInfo(std::shared_ptr<GameEngineLevel> _Level)
 	if (ImGui::Button("SetSkyBox"))
 	{
 		std::filesystem::path filepath = GetOpenFilePath();
-		filepath.filename();
 		if (!filepath.empty())
 		{
+			Parent->EraseSkyBox();
 			AllData[Stage_current].SkyboxFileName = filepath.filename().string();
+			Parent->CreateSkyBox(AllData[Stage_current].SkyboxFileName);
 		}
 	}
 
@@ -143,18 +210,15 @@ void StageEditGUI::InputStageInfo(std::shared_ptr<GameEngineLevel> _Level)
 
 	if (ImGui::Button("AddMap"))
 	{
-		pushback_Data(AllData[Stage_current].MapDatas);
-		
-		auto TempIter = AllData[Stage_current].MapDatas.end();
-		TempIter--;
-
 		std::filesystem::path filepath = GetOpenFilePath();
 
 		if (!filepath.empty())
 		{
-			filepath.filename();
+			pushback_Data(AllData[Stage_current].MapDatas);
+			auto TempIter = AllData[Stage_current].MapDatas.end();
+			TempIter--;
 			TempIter->MeshFileName = filepath.filename().string();
-			_Level->DynamicThis<StageBaseLevel>()->CreateStage(AllData[Stage_current]);
+			Parent->CreateStageFieldMap(AllData[Stage_current].MapDatas);
 		}
 	}
 
@@ -162,11 +226,23 @@ void StageEditGUI::InputStageInfo(std::shared_ptr<GameEngineLevel> _Level)
 	if (ImGui::Button("DelMap"))
 	{
 		erase_Data(AllData[Stage_current].MapDatas, FieldMap_current);
+		Parent->EraseStageFieldMap(static_cast<int>(FieldMap_current));
 	}
 
 	FieldMapCombo();
 
+	if (!AllData[Stage_current].MapDatas.empty())
+	{
+		FieldMapTransformEditUI(Parent->AcFieldMaps[FieldMap_current]);
+	}
+
 	ImGui::EndChild();
+}
+
+void StageEditGUI::CreateStage(StageData _Data)
+{
+	Parent->CreateStage(_Data);
+	IsCreateStage = true;
 }
 
 std::string StageEditGUI::GetOpenFilePath()

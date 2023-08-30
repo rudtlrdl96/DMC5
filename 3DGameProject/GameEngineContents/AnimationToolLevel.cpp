@@ -2,7 +2,10 @@
 #include "AnimationToolLevel.h"
 #include "AnimationToolWindow.h"
 #include "FreeCameraActor.h"
-AnimationToolLevel::AnimationToolLevel() 
+#include <GameEngineCore/EngineGrid.h>
+#include <GameEngineCore/PhysXBoxComponent.h>
+#include "Plane.h"
+AnimationToolLevel::AnimationToolLevel()
 {
 }
 
@@ -29,6 +32,9 @@ void AnimationToolLevel::Update(float _DeltaTime)
 
 void AnimationToolLevel::LevelChangeStart()
 {
+	SetLevelSceneGravity(2000);
+	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
+	Flat->Component->GetDynamic()->setGlobalPose({ 0, -1, 0 });
 	if (false == IsMessage)
 	{
 		IsMessage = true;

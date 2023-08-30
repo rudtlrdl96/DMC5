@@ -217,10 +217,6 @@
     </ClInclude>
     <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="C_ChoiceBG.h" />
-    <ClInclude Include="EditorUI.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="EnemyTestLevel.h">
       <SubType>
       </SubType>
@@ -261,6 +257,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Menu_VirgilInfo.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="MonsterTestLevel.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -552,10 +552,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="C_ChoiceBG.cpp" />
-    <ClCompile Include="EditorUI.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="EnemyTestLevel.cpp">
       <SubType>
       </SubType>
@@ -596,6 +592,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Menu_VirgilInfo.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MonsterTestLevel.cpp">
       <SubType>
       </SubType>
     </ClCompile>

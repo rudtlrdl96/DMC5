@@ -4,8 +4,9 @@
 #include <GameEnginePlatform/GameEngineWindow.h>
 #include <GameEngineCore/GameEngineFBXAnimation.h>
 #include <GameEngineCore/GameEngineFBXRenderer.h>
+#include <GameEngineCore/PhysXCapsuleComponent.h>
 #include "AnimationEvent.h"
-
+#include "BaseLog.h"
 AnimationToolWindow::AnimationToolWindow()
 {
 	PreviewRenderer.reserve(10);
@@ -278,6 +279,9 @@ void AnimationToolWindow::FrameEvent()
 		case EventType::CallBackFloat:
 			EventName += "CallBackFloat";
 			break;
+		case EventType::CallBackFloat4:
+			EventName += "CallBackFloat4";
+			break;
 		default:
 			break;
 		}
@@ -363,6 +367,10 @@ void AnimationToolWindow::CallEvent(EventData& _Data)
 		{
 			_Data.Type = EventType::CallBackFloat;
 		}
+		if (ImGui::Selectable("float4"))
+		{
+			_Data.Type = EventType::CallBackFloat4;
+		}
 		ImGui::EndCombo();
 	}
 	if (_Data.Type == EventType::CallBackInt)
@@ -372,6 +380,10 @@ void AnimationToolWindow::CallEvent(EventData& _Data)
 	else if (_Data.Type == EventType::CallBackFloat)
 	{
 		ImGui::InputFloat("Value", &_Data.FloatValue);
+	}
+	else if (_Data.Type == EventType::CallBackFloat4)
+	{
+		ImGui::InputFloat4("Value", _Data.Position.Arr1D);
 	}
 }
 
@@ -407,6 +419,10 @@ void AnimationToolWindow::MeshCreate(std::shared_ptr<GameEngineLevel> _Level)
 	if (Actor == nullptr)
 	{
 		Actor = _Level->CreateActor<GameEngineActor>();
+		PhysXCapsule  = Actor->CreateComponent<PhysXCapsuleComponent>();
+		PhysXCapsule->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
+		PhysXCapsule->CreatePhysXActors(_Level->GetLevelScene(), _Level->GetLevelPhysics(), { 150, 100, 150 });
+		PhysXCapsule->GetDynamic()->setMass(5.0f);
 	}
 
 	Renderer = Actor->CreateComponent<GameEngineFBXRenderer>();
@@ -438,27 +454,57 @@ void AnimationToolWindow::AnimationCreate(std::shared_ptr<GameEngineLevel> Level
 
 void AnimationToolWindow::AnimationFrameUpdate()
 {
+	if (CurrentFrame == 0)
+	{
+		PhysXCapsule->SetLinearVelocityZero();
+		PhysXCapsule->SetWorldPosition(float4::ZERO);
+		
+	}
+	BaseLog::PushLog(0, Actor->GetTransform()->GetWorldPosition().ToString());
 	// 프리뷰 화면에서 애니메이션 이벤트의 내용을 표시하는 함수(프레임이 변경시 실행해줍니다)
 	std::vector<EventData>::iterator Iter = AnimEvent.Events[CurrentFrame].begin();
 	std::vector<EventData>::iterator End = AnimEvent.Events[CurrentFrame].end();
 	for (; Iter != End; Iter++)
 	{
 		EventData& CurData = (*Iter);
-		if (CurData.Type != EventType::ObjectUpdate) { continue; }
-		if (CurData.Index == -1) { continue; }
-		if (PreviewRenderer.size() < CurData.Index + 1) { continue; }
-		std::shared_ptr<GameEngineRenderer> Renderer = PreviewRenderer[CurData.Index];
-		GameEngineTransform* Transform = Renderer->GetTransform();
-		Transform->SetLocalPosition(CurData.Position);
-		Transform->SetLocalRotation(CurData.Rotation);
-		Transform->SetLocalScale(CurData.Scale);
-		if (true == CurData.IsUpdate)
-		{
-			Renderer->On();
+		if (CurData.Type == EventType::ObjectUpdate) {
+			if (CurData.Index == -1) { continue; }
+			if (PreviewRenderer.size() < CurData.Index + 1) { continue; }
+			std::shared_ptr<GameEngineRenderer> Renderer = PreviewRenderer[CurData.Index];
+			GameEngineTransform* Transform = Renderer->GetTransform();
+			Transform->SetLocalPosition(CurData.Position);
+			Transform->SetLocalRotation(CurData.Rotation);
+			Transform->SetLocalScale(CurData.Scale);
+			if (true == CurData.IsUpdate)
+			{
+				Renderer->On();
+			}
+			else
+			{
+				Renderer->Off();
+			}
 		}
-		else
+		else if (CurData.Type == EventType::CallBackFloat4)
 		{
-			Renderer->Off();
+			if (CurData.Index == 0)
+			{
+				PhysXCapsule->SetForce(CurData.Position);
+			}
+			else if (CurData.Index == 1)
+			{
+				PhysXCapsule->SetPush(CurData.Position);
+			}
+			else if (CurData.Index == 2)
+			{
+				PhysXCapsule->SetMove(CurData.Position);
+			}
+		}
+		else if (CurData.Type == EventType::CallBackVoid)
+		{
+			if (CurData.Index == 5)
+			{
+				PhysXCapsule->SetLinearVelocityZero();
+			}
 		}
 	}
 }

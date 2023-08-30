@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "BaseEnemyActor.h"
 #include <GameEngineCore/GameEngineFBXRenderer.h>
+#include "EnemyActor_Normal.h"
 
 BaseEnemyActor::BaseEnemyActor()
 {
@@ -27,7 +28,7 @@ void BaseEnemyActor::MonsterHit(const EnemyHitData& _HitData)
 	switch (_HitData.Type)
 	{
 	case MonsterDamageType::None:
-		MsgAssert("BaseEnemyActor MonsterHit(const EnemyHitData& _HitData) : 피격 타입을 설정하지 않았습니다.");
+		MsgAssert("BaseEnemyActor MonsterHit(const EnemyHitData& _HitData) : 설정되지 않은 피격 타입 입니다");
 		break;
 
 	case MonsterDamageType::AngleDamage:
@@ -41,11 +42,7 @@ void BaseEnemyActor::MonsterHit(const EnemyHitData& _HitData)
 	}
 	case MonsterDamageType::Air:
 	{
-		static bool MsgCheck = false;
-		if (false == MsgCheck)
-		{
-			MsgTextBox("BaseEnemyActor MonsterHit(const EnemyHitData& _HitData) : [Air] 아직 구현하지 않은 타입의 데미지입니다.");
-		}
+		EnemyFSM.ChangeState(EnemyState::M_Hit);		
 		break;
 	}
 	case MonsterDamageType::Snatch:
@@ -126,13 +123,13 @@ void BaseEnemyActor::MonsterHit(const EnemyHitData& _HitData)
 	}
 }
 
-EnemyHitDir BaseEnemyActor::GetHitDir(const float4& _WolrdPos)
+EnemyHitDir BaseEnemyActor::GetHitDir(const float4& _WorldPos)
 {
 	EnemyHitDir ResultDir = EnemyHitDir::None;
 
 	GameEngineTransform* EnemyTrans = GetTransform();
 
-	float DotCos = EnemyTrans->GetRotation_Forward(_WolrdPos);
+	float DotCos = EnemyTrans->GetRotation_Forward(_WorldPos);
 
 	if (315.0f >  DotCos && 225.0f < DotCos)
 	{
@@ -179,10 +176,11 @@ void BaseEnemyActor::Start()
 {
 	EnemyRenderer = CreateComponent<GameEngineFBXRenderer>();
 
-	CapsulCol = CreateComponent<PhysXCapsuleComponent>();
+	//CapsulCol = CreateComponent<PhysXCapsuleComponent>();
 
-	CapsulCol->SetPhysxMaterial(0, 0, 0);
-	CapsulCol->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), {4, 10, 4});
+	//CapsulCol->SetPhysxMaterial(0, 0, 0);
+	//CapsulCol->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), {4, 10, 4});
+	//CapsulCol->SetWorldPosition({ 0, 100, 0 });
 
 	//초기화
 	EnemyCodeValue = EnemyCode::None;
@@ -212,6 +210,7 @@ void BaseEnemyActor::Start()
 
 void BaseEnemyActor::Update(float _DeltaTime)
 {
+	BindFSM();
 	if (true == GameEngineInput::IsPress("EnemyDebug_Ctrl"))
 	{
 		//float4 AttackerPos = float4::ZERO;
@@ -299,4 +298,9 @@ void BaseEnemyActor::SuperArmorOff()
 	{
 		SuperArmorOff_Callback();
 	}
+}
+
+void BaseEnemyActor::BindFSM()
+{
+	/*if()*/
 }

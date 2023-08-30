@@ -15,11 +15,13 @@ FieldMap::~FieldMap()
 	
 }
 
-std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, const std::string_view& _FBXName, const std::vector<FieldMapColData>& _ColVector, const float4& _MapPosition)
+std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, const std::string_view& _FBXName, const std::vector<FieldMapColData>& _ColVector, const float4& _MapPosition, const float4& _MapScale, const float4& _MapRotation)
 {
 	std::shared_ptr<FieldMap> Result;
 	Result = _Level->CreateActor<FieldMap>();
 	Result->GetTransform()->SetLocalPosition(_MapPosition); //맵의 중심 위치를 정합니다
+	Result->GetTransform()->SetLocalScale(_MapScale);
+	Result->GetTransform()->SetLocalRotation(_MapRotation);
 	Result->FieldMapRenderer = Result->CreateComponent<GameEngineFBXRenderer>();
 	Result->FieldMapRenderer->SetFBXMesh(_FBXName.data(), "FBX"); //메쉬를 깝니다
 

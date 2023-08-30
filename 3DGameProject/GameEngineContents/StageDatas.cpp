@@ -28,6 +28,8 @@ void FieldMapData::WriteFieldMapData(GameEngineSerializer& _Serializer)
 		ColDatas[i].WriteFieldMapColData(_Serializer);
 	}
 	_Serializer << FieldMapPosition;
+	_Serializer << FieldMapScale;
+	_Serializer << FieldMapRotation;
 }
 
 void FieldMapData::ReadFieldMapData(GameEngineSerializer& _Serializer)
@@ -41,6 +43,8 @@ void FieldMapData::ReadFieldMapData(GameEngineSerializer& _Serializer)
 		ColDatas[i].ReadFieldMapColData(_Serializer);
 	}
 	_Serializer >> FieldMapPosition;
+	_Serializer >> FieldMapScale;
+	_Serializer >> FieldMapRotation;
 }
 
 void StageData::WriteStageData(GameEngineSerializer& _Serializer)

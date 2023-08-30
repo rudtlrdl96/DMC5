@@ -445,6 +445,14 @@ void GameEngineFBXRenderer::ChangeAnimation(const std::string& _AnimationName)
 	CurAnimation = FindIter->second;
 	CurAnimation->CurFrame = 0;
 	CurAnimation->IsEnd = false;
+
+	if (CurAnimation->AnimationEvent.contains(0))
+	{
+		for (int i = 0; i < CurAnimation->AnimationEvent[0].size(); i++)
+		{
+			CurAnimation->AnimationEvent[0][i]();
+		}
+	}
 }
 
 bool GameEngineFBXRenderer::IsAnimationEnd()

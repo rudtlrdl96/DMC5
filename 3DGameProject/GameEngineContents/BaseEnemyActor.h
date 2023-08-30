@@ -99,6 +99,7 @@ public:
 
 	EnemyHitDir GetHitDir(const float4& _WolrdPos);
 
+	void BindFSM();
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

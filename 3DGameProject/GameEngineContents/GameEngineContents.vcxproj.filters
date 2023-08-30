@@ -283,9 +283,6 @@
     <ClInclude Include="StageEditGUI.h">
       <Filter>Levels\Stage\StageEditor</Filter>
     </ClInclude>
-    <ClInclude Include="EditorUI.h">
-      <Filter>Actor\Stage\StageEditor</Filter>
-    </ClInclude>
     <ClInclude Include="ShaderTestLevel.h">
       <Filter>Levels\Test</Filter>
     </ClInclude>
@@ -294,6 +291,9 @@
     </ClInclude>
     <ClInclude Include="FXAA_Effect.h">
       <Filter>PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterTestLevel.h">
+      <Filter>Levels\Test</Filter>
     </ClInclude>
     <ClInclude Include="PlayUITestLevel.h">
       <Filter>UI\UI_Level</Filter>
@@ -588,9 +588,6 @@
     <ClCompile Include="StageEditLevel.cpp">
       <Filter>Levels\Stage\StageEditor</Filter>
     </ClCompile>
-    <ClCompile Include="EditorUI.cpp">
-      <Filter>Actor\Stage\StageEditor</Filter>
-    </ClCompile>
     <ClCompile Include="ShaderTestLevel.cpp">
       <Filter>Levels\Test</Filter>
     </ClCompile>
@@ -599,6 +596,9 @@
     </ClCompile>
     <ClCompile Include="FXAA_Effect.cpp">
       <Filter>PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterTestLevel.cpp">
+      <Filter>Levels\Test</Filter>
     </ClCompile>
     <ClCompile Include="PlayUITestLevel.cpp">
       <Filter>UI\UI_Level</Filter>

@@ -15,57 +15,86 @@ void EnemyActor_Normal::Start()
 
 	BaseEnemyActor::Start();
 
-	//EnemyFSM.CreateState({ .StateValue = EnemyState::Basic,
-	//	.Start = std::bind(&Idle_Enter, this),
-	//	.Update = std::bind(&Idle_Update, this, std::placeholders::_1),
-	//	.End = std::bind(&Idle_Exit, this)});
-	
-	//EnemyFSM.CreateState({ .Name = "Chase",
-	//	.Start = std::bind(&Chase_Enter, this),
-	//	.Update = std::bind(&Chase_Update, this, std::placeholders::_1),
-	//	.End = std::bind(&Chase_Exit, this) });
-	//
-	//EnemyFSM.CreateState({ .Name = "Attack",
-	//	.Start = std::bind(&Attack_Enter, this),
-	//	.Update = std::bind(&Attack_Update, this, std::placeholders::_1),
-	//	.End = std::bind(&Attack_Exit, this) });
-	//
-	//EnemyFSM.CreateState({ .Name = "Fall",
-	//	.Start = std::bind(&Fall_Enter, this),
-	//	.Update = std::bind(&Fall_Update, this, std::placeholders::_1),
-	//	.End = std::bind(&Fall_Exit, this) });
-	//
-	//EnemyFSM.CreateState({ .Name = "Snatch",
-	//	.Start = std::bind(&Snatch_Enter, this),
-	//	.Update = std::bind(&Snatch_Update, this, std::placeholders::_1),
-	//	.End = std::bind(&Snatch_Exit, this) });
-	//
-	//EnemyFSM.CreateState({ .Name = "Buster",
-	//	.Start = std::bind(&Buster_Enter, this),
-	//	.Update = std::bind(&Buster_Update, this, std::placeholders::_1),
-	//	.End = std::bind(&Buster_Exit, this) });
-	//
-	//EnemyFSM.CreateState({ .Name = "Hit",
-	//	.Start = std::bind(&Hit_Enter, this),
-	//	.Update = std::bind(&Hit_Update, this, std::placeholders::_1),
-	//	.End = std::bind(&Hit_Exit, this) });
-	//
-	//EnemyFSM.CreateState({ .Name = "Death",
-	//	.Start = std::bind(&Death_Enter, this),
-	//	.Update = std::bind(&Death_Update, this, std::placeholders::_1),
-	//	.End = std::bind(&Death_Exit, this) });
-	//
-	//EnemyFSM.ChangeState(EnemyState::Basic);
+	EnemyFSM.CreateState
+	(
+		{ 
+			.StateValue = EnemyState::M_Idle,
+			.Start = std::bind(&EnemyActor_Normal::Idle_Enter, this),
+			.Update = std::bind(&EnemyActor_Normal::Idle_Update, this, std::placeholders::_1),
+			.End = std::bind(&EnemyActor_Normal::Idle_Exit, this)
+		}
+	);
+	EnemyFSM.CreateState
+	(
+		{ 
+			.StateValue = EnemyState::M_Chase,
+			.Start = std::bind(&EnemyActor_Normal::Chase_Enter, this),
+			.Update = std::bind(&EnemyActor_Normal::Chase_Update, this, std::placeholders::_1),
+			.End = std::bind(&EnemyActor_Normal::Chase_Exit, this)
+		}
+	);
+	EnemyFSM.CreateState
+	(
+		{ 
+			.StateValue = EnemyState::M_Attack,
+			.Start = std::bind(&EnemyActor_Normal::Attack_Enter, this),
+			.Update = std::bind(&EnemyActor_Normal::Attack_Update, this, std::placeholders::_1),
+			.End = std::bind(&EnemyActor_Normal::Attack_Exit, this)
+		}
+	);
+	EnemyFSM.CreateState
+	(
+		{ 
+			.StateValue = EnemyState::M_Fall,
+			.Start = std::bind(&EnemyActor_Normal::Fall_Enter, this),
+			.Update = std::bind(&EnemyActor_Normal::Fall_Update, this, std::placeholders::_1),
+			.End = std::bind(&EnemyActor_Normal::Fall_Exit, this)
+		}
+	);
+	EnemyFSM.CreateState
+	(
+		{
+			.StateValue = EnemyState::M_Snatch,
+			.Start = std::bind(&EnemyActor_Normal::Snatch_Enter, this),
+			.Update = std::bind(&EnemyActor_Normal::Snatch_Update, this, std::placeholders::_1),
+			.End = std::bind(&EnemyActor_Normal::Snatch_Exit, this)
+		}
+	);
+	EnemyFSM.CreateState(
+		{
+			.StateValue = EnemyState::M_Buster,
+			.Start = std::bind(&EnemyActor_Normal::Buster_Enter, this),
+			.Update = std::bind(&EnemyActor_Normal::Buster_Update, this, std::placeholders::_1),
+			.End = std::bind(&EnemyActor_Normal::Buster_Exit, this)
+		}
+	);
+	EnemyFSM.CreateState
+	(
+		{
+			.StateValue = EnemyState::M_Hit,
+			.Start = std::bind(&EnemyActor_Normal::Hit_Enter, this),
+			.Update = std::bind(&EnemyActor_Normal::Hit_Update, this, std::placeholders::_1),
+			.End = std::bind(&EnemyActor_Normal::Hit_Exit, this)
+		}
+	);
+	EnemyFSM.CreateState
+	(
+		{ 
+			.StateValue = EnemyState::M_Death,
+			.Start = std::bind(&EnemyActor_Normal::Death_Enter, this),
+			.Update = std::bind(&EnemyActor_Normal::Death_Update, this, std::placeholders::_1),
+			.End = std::bind(&EnemyActor_Normal::Death_Exit, this)
+		}
+	);
+	EnemyFSM.ChangeState(EnemyState::M_Idle);
 }
 
 void EnemyActor_Normal::Idle_Enter()
 {
-
 }
 
 void EnemyActor_Normal::Idle_Update(float _DeltaTime)
 {
-
 }
 
 void EnemyActor_Normal::Idle_Exit()
