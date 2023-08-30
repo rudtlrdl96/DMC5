@@ -37,6 +37,4 @@ protected:
 
 private:
 	std::string Message;
-
-	
 };

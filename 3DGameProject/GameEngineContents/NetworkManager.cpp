@@ -9,6 +9,7 @@
 #include "PacketEnum.h"
 #include "ContentsEnum.h"
 #include "ObjectUpdatePacket.h"
+#include "MessageChatPacket.h"
 
 #include "MainLevel.h"
 #include "StartStageLevel.h"
@@ -119,6 +120,15 @@ void NetworkManager::ConnectServer(PlayerType _CharacterType)
 	MsgAssert("이 클라이언트가 서버 접속에 실패하였습니다.\n접속을 시도한 IP : " + ErrorIP);
 }
 
+
+void NetworkManager::SendChat(const std::string_view& _Msg)
+{
+	std::shared_ptr<MessageChatPacket> ChatPacket = std::make_shared<MessageChatPacket>();
+	ChatPacket->SetPacketID(PacketEnum::MessageChatPacket);
+	ChatPacket->SetObjectID(NetID);
+	ChatPacket->Message = _Msg;
+	NetInst->SendPacket(ChatPacket);
+}
 
 
 

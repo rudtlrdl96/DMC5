@@ -36,15 +36,6 @@ void NetworkManager::AcceptCallback(SOCKET _Socket, GameEngineNetServer* _Server
 	GameEngineSerializer Ser;
 	Packet->SerializePacket(Ser);
 	GameEngineNet::Send(_Socket, Ser.GetConstCharPtr(), Ser.GetWriteOffSet());
-
-
-	////GUI에 로그 띄우기
-	//std::shared_ptr<MessageChatPacket> MsgPacket = std::make_shared<MessageChatPacket>();
-	//MsgPacket->Message = GameEngineString::ToString(ID) + " Client Connect";
-	////NetworkGUI::GetInst()->PrintLog(MsgPacket->Message);
-
-	////다른 클라들에게 메세지 전달
-	//_Server->SendPacket(MsgPacket, ID);
 }
 
 
@@ -97,10 +88,10 @@ void NetworkManager::ServerPacketInit()
 	NetInst->Dispatcher.AddHandler<MessageChatPacket>(
 		[=](std::shared_ptr<MessageChatPacket> _Packet)
 	{
-		//NetworkGUI::GetInst()->PrintLog(_Packet->Message);
+		NetworkGUI::GetInst()->PrintLog(_Packet->Message);
 
 		//서버의 경우엔 수신받은 특정 오브젝트의 패킷을 다른 클라에 다 뿌려야 한다
-		//NetInst->SendPacket(_Packet, _Packet->GetNetID());
+		NetInst->SendPacket(_Packet, _Packet->GetObjectID());
 	});
 }
 

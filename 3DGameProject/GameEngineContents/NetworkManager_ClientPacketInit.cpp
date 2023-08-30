@@ -3,6 +3,7 @@
 
 #include "NetworkGUI.h"
 #include "ContentsEnum.h"
+#include "PacketEnum.h"
 
 #include "ConnectIDPacket.h"
 #include "ObjectUpdatePacket.h"
@@ -37,6 +38,12 @@ void NetworkManager::ClientPacketInit()
 			int ID = static_cast<int>(AllObjectID[i]);
 			CreateLocalPlayer(Level, ID);
 		}
+
+
+		//연결 성공 메세지 보내기
+		const std::string& ClientName = NetworkGUI::GetInst()->GetNickName();
+		std::string ChatMsg = ClientName + " Success Server Connect";
+		SendChat(ChatMsg);
 	});
 
 
@@ -85,7 +92,7 @@ void NetworkManager::ClientPacketInit()
 	NetInst->Dispatcher.AddHandler<MessageChatPacket>(
 		[](std::shared_ptr<MessageChatPacket> _Packet)
 	{
-		//NetworkGUI::GetInst()->PrintLog(_Packet->Message);
+		NetworkGUI::GetInst()->PrintLog(_Packet->Message);
 	});
 	
 }

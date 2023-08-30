@@ -33,7 +33,13 @@ void NetworkGUI::Start()
 	};
 	AllStateFunc[static_cast<size_t>(State::OnFieldStage)] = std::bind(&NetworkGUI::Update_OnFieldStage, this);
 
-	NickName.resize(64, 0);
+	NickName.resize(16, 0);
+	Message.resize(32, 0);
+
+	for (size_t i = 0; i < 20; ++i)
+	{
+		BaseLog::PushLog(LogOrder::Network, " ");
+	}
 }
 
 
@@ -71,10 +77,10 @@ void NetworkGUI::Update_SelectWait()
 		Title = "This is Host";
 
 		//닉네임 초기화
-		if (0 == NickName.front())
+		/*if (0 == NickName.front())
 		{
 			NickName = "Unknown";
-		}
+		}*/
 		unsigned int NetID = NetworkManager::ServerOpen(PortNum);
 		InitName(NetID);
 
@@ -96,10 +102,10 @@ void NetworkGUI::Update_SelectWait()
 		Title = "This is Client";
 
 		//닉네임 초기화
-		if (0 == NickName.front())
+		/*if (0 == NickName.front())
 		{
 			NickName = "Unknown";
-		}
+		}*/
 
 		//서버 연결은 캐릭터를 선택하고 난 뒤에
 
@@ -124,17 +130,51 @@ bool NetworkGUI::ChangeFieldState()
 	return true;
 }
 
+void NetworkGUI::InitName(unsigned int _NetID)
+{
+	if (0 == NickName.front())
+	{
+		NickName = "Unknown";
+	}
+	else
+	{
+		size_t EndIndex = NickName.find('\0');
+		NickName = NickName.substr(0, EndIndex);
+	}
+
+	const std::string AddStr = "(" + std::to_string(_NetID) + ")";
+	NickName = NickName + AddStr;
+	LocalPrintNickName = "MyName : " + NickName;
+}
+
 
 void NetworkGUI::Update_OnFieldStage() 
 {
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), Title.c_str());
-	ImGui::Text(NickName.c_str());
+	ImGui::Text(LocalPrintNickName.c_str());
 
-	//여기서 어쩌면 채팅기능?
+	const std::vector<std::string>& AllLog = BaseLog::GetLog(LogOrder::Network);
+	for (const std::string& Log : AllLog)
+	{
+		ImGui::Text(Log.c_str());
+	}
+
+	ImGui::InputText("Message", &Message[0], Message.size());
+	if (ImGui::Button("SendMessage"))
+	{
+		if (0 == Message.front())
+			return;
+
+		std::string Msg = NickName + " : " + Message;
+		PrintLog(Msg);
+		NetworkManager::SendChat(Msg);
+		for (char& C : Message)
+			C = 0;
+	}
 }
 
-//
-//void NetworkGUI::PrintLog(const std::string_view& _LogText)
-//{
-//	BaseLog::PushLog(LogOrder::Network, _LogText.data());
-//}
+
+void NetworkGUI::PrintLog(const std::string_view& _LogText)
+{
+	BaseLog::PushLog(LogOrder::Network, _LogText.data());
+}

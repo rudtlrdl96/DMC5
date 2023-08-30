@@ -6,7 +6,7 @@
 class GameEngineLevel;
 class GameEngineNetObject;
 class GameEngineActor;
-enum class PacketType;
+enum class PacketEnum;
 
 class NetworkManager
 {
@@ -66,6 +66,8 @@ public:
 		return std::dynamic_pointer_cast<ActorPtr>(NetObjPtr);
 	}
 
+
+	static void SendChat(const std::string_view& _Msg);
 
 
 	//Update패킷을 보낼때 이 인터페이스를 이용해서 보내주시면 됩니다.

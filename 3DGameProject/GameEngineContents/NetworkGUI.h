@@ -22,7 +22,7 @@ public:
 	NetworkGUI& operator=(const NetworkGUI& _Other) = delete;
 	NetworkGUI& operator=(const NetworkGUI&& _Other) noexcept = delete;
 
-	//void PrintLog(const std::string_view& _LogText);
+	void PrintLog(const std::string_view& _LogText);
 
 	//타이틀 화면에서 GUI버튼을 눌렀을때 처리할 함수포인터를 입력받습니다.
 	inline void SetEntryCallBack(std::function<void()> _EntryCallBack)
@@ -36,6 +36,11 @@ public:
 	}
 
 	bool ChangeFieldState();
+
+	inline const std::string& GetNickName() const
+	{
+		return NickName;
+	}
 
 protected:
 	void Start() override;
@@ -65,21 +70,19 @@ private:
 	const std::string_view BtnText_ForClient = "Play For Client";
 
 	int PortNum = 30000;
-	char IpNum[64] = "127.0.0.1";
-	std::string NickName;
-	std::string Title = "Select Host or Clinet";
-	
+	char IpNum[16] = "127.0.0.1";
 	std::function<void()> EntryCallBack = nullptr;
+
+	std::string Title = "Select Host or Clinet";
+	std::string NickName;
+	std::string LocalPrintNickName;
 	
+	std::string Message;
 
 
 	void Update_SelectWait();
 	void Update_OnFieldStage();
 
-	inline void InitName(unsigned int _NetID)
-	{
-		const std::string AddStr = "(" + std::to_string(_NetID) + ")";
-		NickName = "MyName : " + NickName + AddStr;
-	}
+	void InitName(unsigned int _NetID);
 };
 
