@@ -30,7 +30,7 @@ void Player::Start()
 	SetNetObjectType(Net_ActorType::Nero);
 
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
-	Renderer->SetFBXMesh("House1.FBX", "NoneAlphaMesh");
+	Renderer->SetFBXMesh("House1.FBX", "FBX");
 	//Renderer->GetTransform()->SetWorldScale({100.f, 100.f, 100.f});
 
 	// Renderer->SetFBXMesh("AnimMan.FBX", "MeshTexture", 0, 0);

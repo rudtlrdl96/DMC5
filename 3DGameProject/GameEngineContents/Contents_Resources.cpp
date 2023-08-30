@@ -261,22 +261,22 @@ void ContentsCore::ContentsResourcesCreate()
 	}
 
 	{
-		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("NoneAlphaMesh");
+		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("FBX");
 
-		Pipe->SetVertexShader("NoneAlphaMesh.hlsl");
-		Pipe->SetRasterizer("Engine2DBase");
-		Pipe->SetPixelShader("NoneAlphaMesh.hlsl");
-		Pipe->SetBlendState("AlphaBlend");
-		Pipe->SetDepthState("EngineDepth");
+		Material->SetVertexShader("ContentsMesh.hlsl");
+		Material->SetRasterizer("Engine2DBase");
+		Material->SetPixelShader("ContentsMesh.hlsl");
+		Material->SetBlendState("AlphaBlend");
+		Material->SetDepthState("EngineDepth");
 	}
 
 	{
-		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("NoneAlphaAniMesh");
+		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("AniFBX");
 
-		Pipe->SetVertexShader("NoneAlphaMeshAniTexture.hlsl");
-		Pipe->SetRasterizer("Engine2DBase");
-		Pipe->SetPixelShader("NoneAlphaMeshAniTexture.hlsl");
-		Pipe->SetBlendState("AlphaBlend");
-		Pipe->SetDepthState("EngineDepth");
+		Material->SetVertexShader("ContentsAniMesh.hlsl");
+		Material->SetRasterizer("Engine2DBase");
+		Material->SetPixelShader("ContentsAniMesh.hlsl");
+		Material->SetBlendState("AlphaBlend");
+		Material->SetDepthState("EngineDepth");
 	}
 }

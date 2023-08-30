@@ -51,11 +51,11 @@ void TestObject::Start()
 		GameEngineFBXMesh::Load(Path);
 	}
 
-	Renderer->SetFBXMesh("em0100.fbx", "NoneAlphaMesh");
+	Renderer->SetFBXMesh("em0100.fbx", "FBX");
 	Renderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
 
 	Renderer2 = CreateComponent<GameEngineFBXRenderer>();
-	Renderer2->SetFBXMesh("em0100.fbx", "NoneAlphaMesh");
+	Renderer2->SetFBXMesh("em0100.fbx", "FBX");
 	Renderer2->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
 
 	//Renderer->GetAllRenderUnit()[0][0];

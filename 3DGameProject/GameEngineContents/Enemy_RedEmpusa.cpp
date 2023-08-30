@@ -22,7 +22,7 @@ void Enemy_RedEmpusa::EnemyMeshLoad()
 
 	GameEngineFBXMesh::Load(Path);
 
-	EnemyRenderer->SetFBXMesh("em0102.fbx", "NoneAlphaMesh");
+	EnemyRenderer->SetFBXMesh("em0102.fbx", "FBX");
 	EnemyRenderer->GetTransform()->SetLocalScale({ 0.1f, 0.1f, 0.1f });
 }
 

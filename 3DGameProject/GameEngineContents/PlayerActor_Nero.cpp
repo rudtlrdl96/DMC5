@@ -35,7 +35,7 @@ void PlayerActor_Nero::Start()
 void PlayerActor_Nero::TestLoad()
 {
 	Renderer = CreateComponent<GameEngineFBXRenderer>();
-	Renderer->SetFBXMesh("House1.fbx", "NoneAlphaMesh");
+	Renderer->SetFBXMesh("House1.fbx", "FBX");
 
 	{
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Idle,

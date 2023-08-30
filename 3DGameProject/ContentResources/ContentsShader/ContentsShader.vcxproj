@@ -157,9 +157,12 @@
     <FxCompile Include="FadeShader.hlsl" />
     <FxCompile Include="JudgementCutShader.hlsl" />
     <FxCompile Include="Light.fx" />
+    <FxCompile Include="MultiTexture.fx" />
     <FxCompile Include="MyShader.fx" />
-    <FxCompile Include="NoneAlphaMesh.hlsl" />
-    <FxCompile Include="NoneAlphaMeshAniTexture.hlsl" />
+    <FxCompile Include="NoneAlphaMesh_MultiTexture.hlsl" />
+    <FxCompile Include="ContentsMesh.hlsl" />
+    <FxCompile Include="NoneAlphaMeshAniTexture_MultiTexture.hlsl" />
+    <FxCompile Include="ContentsAniMesh.hlsl" />
     <FxCompile Include="OldFilmShader.hlsl" />
     <FxCompile Include="OldTVShader.hlsl" />
     <FxCompile Include="RenderBaseValue.fx" />

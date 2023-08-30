@@ -25,10 +25,10 @@
     <FxCompile Include="JudgementCutShader.hlsl">
       <Filter>PostEffect</Filter>
     </FxCompile>
-    <FxCompile Include="NoneAlphaMeshAniTexture.hlsl">
+    <FxCompile Include="ContentsAniMesh.hlsl">
       <Filter>MeshShader</Filter>
     </FxCompile>
-    <FxCompile Include="NoneAlphaMesh.hlsl">
+    <FxCompile Include="ContentsMesh.hlsl">
       <Filter>MeshShader</Filter>
     </FxCompile>
     <FxCompile Include="MyShader.fx">
@@ -42,6 +42,15 @@
     </FxCompile>
     <FxCompile Include="FXAA.hlsl">
       <Filter>PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="NoneAlphaMesh_MultiTexture.hlsl">
+      <Filter>MeshShader</Filter>
+    </FxCompile>
+    <FxCompile Include="NoneAlphaMeshAniTexture_MultiTexture.hlsl">
+      <Filter>MeshShader</Filter>
+    </FxCompile>
+    <FxCompile Include="MultiTexture.fx">
+      <Filter>Header</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

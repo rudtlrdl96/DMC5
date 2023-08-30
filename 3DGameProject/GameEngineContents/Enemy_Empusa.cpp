@@ -28,7 +28,7 @@ void Enemy_Empusa::EnemyMeshLoad()
 	}
 	
 	//EnemyBase에서 Start에서 생성된 Component에 Mesh Set
-	EnemyRenderer->SetFBXMesh("em0100.fbx", "NoneAlphaMesh");
+	EnemyRenderer->SetFBXMesh("em0100.fbx", "FBX");
 	EnemyRenderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
 }
 
