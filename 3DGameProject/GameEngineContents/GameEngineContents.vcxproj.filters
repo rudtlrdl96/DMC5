@@ -301,6 +301,18 @@
     <ClInclude Include="FXAA_Effect.h">
       <Filter>PostEffect</Filter>
     </ClInclude>
+    <ClInclude Include="InvenUIButton.h">
+      <Filter>UI\Actor\MenuUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Nero_InvenToryUI.h">
+      <Filter>UI\Actor\MenuUI</Filter>
+    </ClInclude>
+    <ClInclude Include="NeroHPUI.h">
+      <Filter>UI\Actor\MenuUI</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayUITestLevel.h">
+      <Filter>UI\Level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -593,6 +605,18 @@
     </ClCompile>
     <ClCompile Include="FXAA_Effect.cpp">
       <Filter>PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="InvenUIButton.cpp">
+      <Filter>UI\Actor\MenuUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Nero_InvenToryUI.cpp">
+      <Filter>UI\Actor\MenuUI</Filter>
+    </ClCompile>
+    <ClCompile Include="NeroHPUI.cpp">
+      <Filter>UI\Actor\MenuUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayUITestLevel.cpp">
+      <Filter>UI\Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

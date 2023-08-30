@@ -1,6 +1,9 @@
 #include "PrecompileHeader.h"
 #include "Menu_SelectScreen.h"
+#include "NetworkManager.h"
+#include "ContentsEnum.h"
 #include <GameEngineCore/GameEngineUIRenderer.h>
+#include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include "UIButton.h"
 Menu_SelectScreen::Menu_SelectScreen()
@@ -30,7 +33,13 @@ void Menu_SelectScreen::Start()
 	MissionButton->GetRender_Enter2()->GetTransform()->SetLocalPosition({ 200.0f,0.0f,0.0f });
 	MissionButton->SetEvent([this]()
 		{
+			NetworkManager::ConnectServer(PlayerType::Nero);
+			NetworkManager::ConnectServer(PlayerType::Nero);
+			NetworkManager::ConnectServer(PlayerType::Nero);
+			NetworkManager::ConnectServer(PlayerType::Nero);
+			NetworkManager::ConnectServer(PlayerType::Nero);
 
+			GameEngineCore::ChangeLevel("MainLevel");
 		});
 	CustomizeButton = GetLevel()->CreateActor<UIButton>();
 	CustomizeButton->GetTransform()->SetLocalPosition({ -670.0f,90.0f,0.0f });
