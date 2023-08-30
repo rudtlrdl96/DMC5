@@ -86,9 +86,12 @@ public:
 	GameEngineFBXRenderer& operator=(GameEngineFBXRenderer&& _Other) noexcept = delete;
 
 	virtual void SetFBXMesh(const std::string& _Name, std::string _Material);
-	virtual void SetFBXMesh(const std::string& _Name, std::vector<std::string> _Materials);
+	virtual void SetFBXMesh(const std::string& _Name, const std::vector<std::vector<std::string>>& _Materials);
 
 	virtual void SetFBXMesh(const std::string& _Name, std::string _Material, size_t MeshIndex);
+	virtual void SetFBXMesh(const std::string& _Name, std::vector<std::string> _Material, size_t MeshIndex);
+
+
 	virtual std::shared_ptr<GameEngineRenderUnit> SetFBXMesh(const std::string& _Name, std::string _Material, size_t MeshIndex, size_t _SubSetIndex);
 
 	inline std::shared_ptr<GameEngineFBXMesh> GetFBXMesh()
@@ -108,6 +111,31 @@ public:
 	}
 
 	void CreateFBXAnimation(const std::string& _AnimationName, const std::string& _AnimationFBXName, int _Index = 0);
+
+	std::vector<std::shared_ptr<GameEngineRenderUnit>>* GetRenderUnit(size_t _MeshIndex)
+	{
+		if (_MeshIndex >= Unit.size())
+		{
+			return nullptr;
+		}
+
+		return &Unit[_MeshIndex];
+	}
+
+	std::shared_ptr<GameEngineRenderUnit> GetRenderUnit(size_t _MeshIndex, size_t _SubsetIndex)
+	{
+		if (_MeshIndex >= Unit.size())
+		{
+			return nullptr;
+		}
+
+		if (_SubsetIndex >= Unit[_MeshIndex].size())
+		{
+			return nullptr;
+		}
+
+		return Unit[_MeshIndex][_SubsetIndex];
+	}
 
 	std::vector<std::vector<std::shared_ptr<GameEngineRenderUnit>>>& GetAllRenderUnit()
 	{

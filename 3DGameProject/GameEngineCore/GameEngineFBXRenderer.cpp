@@ -185,7 +185,7 @@ void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Name, std::string _Ma
 	}
 }
 
-void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Name, std::vector<std::string> _Materials)
+void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Name, const std::vector<std::vector<std::string>>& _Materials)
 {
 	std::shared_ptr<GameEngineFBXMesh> FindFBXMesh = GameEngineFBXMesh::Find(_Name);
 
@@ -198,7 +198,7 @@ void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Name, std::vector<std
 
 	if (0 == _Materials.size())
 	{
-		MsgAssert("머티리얼 정보가 존재 하지 않습니다.");
+		MsgAssert("매쉬 머티리얼 정보가 존재 하지 않습니다.");
 	}
 
 	for (size_t UnitCount = 0; UnitCount < FindFBXMesh->GetRenderUnitCount(); UnitCount++)
@@ -223,6 +223,28 @@ void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Name, std::string _Ma
 		size_t SubSet = FindFBXMesh->GetSubSetCount(MeshIndex);
 
 		SetFBXMesh(_Name, _Material, MeshIndex, SubSetCount);
+	}
+}
+
+void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Name, std::vector<std::string> _Material, size_t MeshIndex)
+{
+	if (0 == _Material.size())
+	{
+		MsgAssert("서브셋 머티리얼 정보가 존재 하지 않습니다.");
+	}
+
+	std::shared_ptr<GameEngineFBXMesh> FindFBXMesh = GameEngineFBXMesh::Find(_Name);
+
+	for (size_t SubSetCount = 0; SubSetCount < FindFBXMesh->GetSubSetCount(MeshIndex); SubSetCount++)
+	{
+		if (SubSetCount >= _Material.size())
+		{
+			SetFBXMesh(_Name, _Material[0], MeshIndex, SubSetCount);
+		}
+		else
+		{
+			SetFBXMesh(_Name, _Material[SubSetCount], MeshIndex, SubSetCount);
+		}
 	}
 }
 
