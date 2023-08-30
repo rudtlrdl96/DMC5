@@ -24,8 +24,6 @@ void PlayerActor_Nero::SetMass(float _Value)
 void PlayerActor_Nero::Start()
 {
 	BasePlayerActor::Start();
-	PhysXCapsule->GetDynamic()->setMass(5.0f);
-	//PhysXCapsule->SetSpeedLimitValue(300.0f);
 #ifdef _DEBUG
 	TestLoad();
 #else

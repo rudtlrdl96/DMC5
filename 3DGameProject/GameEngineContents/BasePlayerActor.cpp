@@ -75,10 +75,9 @@ void BasePlayerActor::Start()
 	physx::PxVec3 VecSclae = { 150, 100, 150 };
 
 	PhysXCapsule = CreateComponent<PhysXCapsuleComponent>();
-	PhysXCapsule->SetPhysxMaterial(0.0f, 1.0f, 0.0f);
+	PhysXCapsule->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
 	PhysXCapsule->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), VecSclae);
-	PhysXCapsule->GetDynamic()->setMass(1.0f);
-	PhysXCapsule->GetDynamic()->setMaxAngularVelocity(physx::PxReal(10.0f));
+	PhysXCapsule->GetDynamic()->setMass(5.0f);
 
 	LockOnCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
 	LockOnCollision->GetTransform()->SetLocalScale({ 1000, 500, 3000 });
