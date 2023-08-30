@@ -89,6 +89,11 @@ void MainLevel::Update(float _DeltaTime)
 		GameEngineCore::ChangeLevel("StartStageLevel");
 		return;
 	}
+	if (true == GameEngineInput::IsDown("SelectLevel_07"))
+	{
+		GameEngineCore::ChangeLevel("MonsterTestLevel");
+		return;
+	}
 
 	if (true == GameEngineInput::IsDown("ConnectServer"))
 	{

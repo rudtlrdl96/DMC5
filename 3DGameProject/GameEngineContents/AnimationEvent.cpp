@@ -79,7 +79,7 @@ void AnimationEvent::LoadAll(const AnimLoadParameter& _Parameter)
 	std::vector<GameEngineFile> AnimFiles = Dir.GetAllFile({ ".ANIMATION" });
 
 	for (size_t EventIndex = 0; EventIndex < AnimFiles.size(); EventIndex++)
-	{
+	{   
 		// 파일 로드
 		GameEngineSerializer Ser;
 		AnimFiles[EventIndex].LoadBin(Ser);

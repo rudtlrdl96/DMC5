@@ -61,3 +61,107 @@ void Enemy_RedEmpusa::EnemyAnimationLoad()
 void Enemy_RedEmpusa::EnemyCreateFSM()
 {
 }
+
+void Enemy_RedEmpusa::Idle_Enter()
+{
+
+}
+
+void Enemy_RedEmpusa::Idle_Update(float _DeltaTime)
+{
+
+}
+
+void Enemy_RedEmpusa::Idle_Exit()
+{
+
+}
+
+void Enemy_RedEmpusa::Chase_Enter()
+{
+}
+
+void Enemy_RedEmpusa::Chase_Update(float _DeltaTime)
+{
+}
+
+void Enemy_RedEmpusa::Chase_Exit()
+{
+}
+
+void Enemy_RedEmpusa::Attack_Enter()
+{
+}
+
+void Enemy_RedEmpusa::Attack_Update(float _DeltaTime)
+{
+}
+
+void Enemy_RedEmpusa::Attack_Exit()
+{
+}
+
+void Enemy_RedEmpusa::Hit_Enter()
+{
+	EnemyRenderer->ChangeAnimation("em0100_angledamage_front");
+}
+
+void Enemy_RedEmpusa::Hit_Update(float _DeltaTime)
+{
+
+}
+
+void Enemy_RedEmpusa::Hit_Exit()
+{
+
+}
+
+void Enemy_RedEmpusa::Death_Enter()
+{
+}
+
+void Enemy_RedEmpusa::Death_Update(float _DeltaTime)
+{
+}
+
+void Enemy_RedEmpusa::Death_Exit()
+{
+}
+
+void Enemy_RedEmpusa::Fall_Enter()
+{
+}
+
+void Enemy_RedEmpusa::Fall_Update(float _DeltaTime)
+{
+}
+
+void Enemy_RedEmpusa::Fall_Exit()
+{
+}
+
+void Enemy_RedEmpusa::Snatch_Enter()
+{
+}
+
+void Enemy_RedEmpusa::Snatch_Update(float _DeltaTime)
+{
+}
+
+void Enemy_RedEmpusa::Snatch_Exit()
+{
+}
+
+void Enemy_RedEmpusa::Buster_Enter()
+{
+}
+
+void Enemy_RedEmpusa::Buster_Update(float _DeltaTime)
+{
+}
+
+void Enemy_RedEmpusa::Buster_Exit()
+{
+}
+
+

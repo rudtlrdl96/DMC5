@@ -59,3 +59,106 @@ void Enemy_HellAntenora::EnemyAnimationLoad()
 void Enemy_HellAntenora::EnemyCreateFSM()
 {
 }
+
+void Enemy_HellAntenora::Idle_Enter()
+{
+	
+}
+
+void Enemy_HellAntenora::Idle_Update(float _DeltaTime)
+{
+
+}
+
+void Enemy_HellAntenora::Idle_Exit()
+{
+
+}
+
+void Enemy_HellAntenora::Chase_Enter()
+{
+}
+
+void Enemy_HellAntenora::Chase_Update(float _DeltaTime)
+{
+}
+
+void Enemy_HellAntenora::Chase_Exit()
+{
+}
+
+void Enemy_HellAntenora::Attack_Enter()
+{
+}
+
+void Enemy_HellAntenora::Attack_Update(float _DeltaTime)
+{
+}
+
+void Enemy_HellAntenora::Attack_Exit()
+{
+}
+
+void Enemy_HellAntenora::Hit_Enter()
+{
+	
+}
+
+void Enemy_HellAntenora::Hit_Update(float _DeltaTime)
+{
+
+}
+
+void Enemy_HellAntenora::Hit_Exit()
+{
+
+}
+
+void Enemy_HellAntenora::Death_Enter()
+{
+}
+
+void Enemy_HellAntenora::Death_Update(float _DeltaTime)
+{
+}
+
+void Enemy_HellAntenora::Death_Exit()
+{
+}
+
+void Enemy_HellAntenora::Fall_Enter()
+{
+}
+
+void Enemy_HellAntenora::Fall_Update(float _DeltaTime)
+{
+}
+
+void Enemy_HellAntenora::Fall_Exit()
+{
+}
+
+void Enemy_HellAntenora::Snatch_Enter()
+{
+}
+
+void Enemy_HellAntenora::Snatch_Update(float _DeltaTime)
+{
+}
+
+void Enemy_HellAntenora::Snatch_Exit()
+{
+}
+
+void Enemy_HellAntenora::Buster_Enter()
+{
+}
+
+void Enemy_HellAntenora::Buster_Update(float _DeltaTime)
+{
+}
+
+void Enemy_HellAntenora::Buster_Exit()
+{
+}
+

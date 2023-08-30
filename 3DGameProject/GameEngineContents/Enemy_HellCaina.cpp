@@ -60,3 +60,107 @@ void Enemy_HellCaina::EnemyAnimationLoad()
 void Enemy_HellCaina::EnemyCreateFSM()
 {
 }
+
+void Enemy_HellCaina::Idle_Enter()
+{
+	
+}
+
+void Enemy_HellCaina::Idle_Update(float _DeltaTime)
+{
+
+}
+
+void Enemy_HellCaina::Idle_Exit()
+{
+
+}
+
+void Enemy_HellCaina::Chase_Enter()
+{
+}
+
+void Enemy_HellCaina::Chase_Update(float _DeltaTime)
+{
+}
+
+void Enemy_HellCaina::Chase_Exit()
+{
+}
+
+void Enemy_HellCaina::Attack_Enter()
+{
+}
+
+void Enemy_HellCaina::Attack_Update(float _DeltaTime)
+{
+}
+
+void Enemy_HellCaina::Attack_Exit()
+{
+}
+
+void Enemy_HellCaina::Hit_Enter()
+{
+	
+}
+
+void Enemy_HellCaina::Hit_Update(float _DeltaTime)
+{
+
+}
+
+void Enemy_HellCaina::Hit_Exit()
+{
+
+}
+
+void Enemy_HellCaina::Death_Enter()
+{
+}
+
+void Enemy_HellCaina::Death_Update(float _DeltaTime)
+{
+}
+
+void Enemy_HellCaina::Death_Exit()
+{
+}
+
+void Enemy_HellCaina::Fall_Enter()
+{
+}
+
+void Enemy_HellCaina::Fall_Update(float _DeltaTime)
+{
+}
+
+void Enemy_HellCaina::Fall_Exit()
+{
+}
+
+void Enemy_HellCaina::Snatch_Enter()
+{
+}
+
+void Enemy_HellCaina::Snatch_Update(float _DeltaTime)
+{
+}
+
+void Enemy_HellCaina::Snatch_Exit()
+{
+}
+
+void Enemy_HellCaina::Buster_Enter()
+{
+}
+
+void Enemy_HellCaina::Buster_Update(float _DeltaTime)
+{
+}
+
+void Enemy_HellCaina::Buster_Exit()
+{
+}
+
+

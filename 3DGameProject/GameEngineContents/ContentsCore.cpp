@@ -21,6 +21,7 @@
 #include "BossStageLevel.h"
 #include "StartStageLevel.h"
 #include "StageEditLevel.h"
+#include "MonsterTestLevel.h"
 
 #include "AnimationToolLevel.h"
 ContentsCore::ContentsCore() 
@@ -49,11 +50,12 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<BossStageLevel>();
 	GameEngineCore::CreateLevel<StartStageLevel>();
 	GameEngineCore::CreateLevel<ShaderTestLevel>();
+	GameEngineCore::CreateLevel<MonsterTestLevel>();
 	GameEngineCore::CreateLevel<PlayUITestLevel>();
 	//
 	GameEngineCore::CreateLevel<StageEditLevel>();
 
-	GameEngineCore::ChangeLevel("StageEditLevel");
+	GameEngineCore::ChangeLevel("MainLevel");
 }
 
 void ContentsCore::GameEnd() 

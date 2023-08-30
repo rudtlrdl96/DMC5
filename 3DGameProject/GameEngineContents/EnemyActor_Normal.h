@@ -2,11 +2,14 @@
 #include "BaseEnemyActor.h"
 enum EnemyState
 {
-	Basic,
-	Damage,
-	move,
-	special,
-	todome,
+	M_Idle,
+	M_Chase,
+	M_Attack,
+	M_Fall,
+	M_Snatch,
+	M_Buster,
+	M_Hit,
+	M_Death,
 };
 
 class EnemyActor_Normal : public BaseEnemyActor
