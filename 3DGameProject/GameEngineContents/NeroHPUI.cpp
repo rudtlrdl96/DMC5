@@ -14,7 +14,7 @@ NeroHPUI::~NeroHPUI()
 void NeroHPUI::Start()
 {
 	std::shared_ptr<GameEngineFBXRenderer> NeroUI_HP = CreateComponent<GameEngineFBXRenderer>();
-	NeroUI_HP->SetFBXMesh("NeroHPUI.FBX", "NoneAlphaMesh");
+	NeroUI_HP->SetFBXMesh("NeroHPUI.FBX", "FBX");
 }
 
 void NeroHPUI::Update(float _DeltaTime)

@@ -29,7 +29,7 @@ void NetTestPlayer::Start()
 
 	//이건 그냥 예시 렌더링
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
-	Renderer->SetFBXMesh("House1.FBX", "NoneAlphaMesh");
+	Renderer->SetFBXMesh("House1.FBX", "FBX");
 
 	if (false == GameEngineInput::IsKey("NetTestLeft"))
 	{

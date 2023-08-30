@@ -187,7 +187,7 @@ void PhysXCapsuleComponent::SpeedLimit()
 
 	//	m_pDynamic->setLinearVelocity(Velo);
 	//}
-}
+	}
 
 void PhysXCapsuleComponent::SetJump(float _JumpPower)
 {

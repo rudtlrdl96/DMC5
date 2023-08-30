@@ -40,7 +40,7 @@ private:
 	float CameraRotYSpeed = 150.0f;
 	float CameraRotXSpeed = 80.0f;
 
-	float MinDistance = 350.0f;
+	float MinDistance = 400.0f;
 	float TrackingSpeed = 5.0f;
 	float LockOnTrackingSpeed = 10.0f;
 };

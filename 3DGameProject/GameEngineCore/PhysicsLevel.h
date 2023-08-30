@@ -18,27 +18,33 @@ public:
 	PhysicsLevel& operator=(const PhysicsLevel& _Other) = delete;
 	PhysicsLevel& operator=(PhysicsLevel&& _Other) noexcept = delete;
 
-	physx::PxPhysics* GetLevelPhysics()
+	void SetLevelSceneGravity(float _gravity)
+	{
+		CurGravity = _gravity;
+		m_pScene->setGravity({0.0f, -CurGravity, 0.0f});
+	}
+
+	inline float GetLevelSceneGravity()
+	{
+		return CurGravity;
+	}
+
+	inline physx::PxPhysics* GetLevelPhysics()
 	{
 		return m_pPhysics;
 	}
 
-	physx::PxScene* GetLevelScene()
+	inline physx::PxScene* GetLevelScene()
 	{
 		return m_pScene;
 	}
 
-	void SetLevelSceneGravity(float _gravity)
-	{
-		m_pScene->setGravity({0.0f, -_gravity, 0.0f});
-	}
-
-	bool GetIsPhysicsStop()
+	inline bool GetIsPhysicsStop()
 	{
 		return IsPhysics;
 	}
 
-	bool GetIsSimulation()
+	inline bool GetIsSimulation()
 	{
 		return IsSimulation;
 	}
@@ -84,6 +90,7 @@ private:
 
 	float WaitTime = 0.0f;
 	float StepSize = 0;
+	float CurGravity = 0.0f;
 
 	void advance(physx::PxReal _DeltaTime);
 

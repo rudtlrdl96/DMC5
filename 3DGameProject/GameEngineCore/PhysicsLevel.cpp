@@ -119,7 +119,9 @@ void PhysicsLevel::CreatePhysicsX()
 
 	physx::PxSceneDesc SceneDesc(m_pPhysics->getTolerancesScale());
 
-	SceneDesc.gravity = physx::PxVec3(0.0f, -500.0f, 0.0f);
+	CurGravity = 500.0f;
+
+	SceneDesc.gravity = physx::PxVec3(0.0f, -CurGravity, 0.0f);
 	m_pDispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 	SceneDesc.cpuDispatcher = m_pDispatcher;
 	// EventCallback ¼¼ÆÃ

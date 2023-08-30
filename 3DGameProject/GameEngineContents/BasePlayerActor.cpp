@@ -29,7 +29,7 @@ BasePlayerActor::~BasePlayerActor()
 
 void BasePlayerActor::LookDir(const float4& _LookDir)
 {
-	float4 LocalForward = GetTransform()->GetWorldForwardVector();
+	float4 LocalForward = GetTransform()->GetWorldLeftVector();
 	//float4 LocalForward = Controller->GetMoveVector();
 
 	float4 Cross = float4::Cross3DReturnNormal(LocalForward,  _LookDir);
@@ -75,14 +75,13 @@ void BasePlayerActor::Start()
 	physx::PxVec3 VecSclae = { 150, 100, 150 };
 
 	PhysXCapsule = CreateComponent<PhysXCapsuleComponent>();
-	PhysXCapsule->SetPhysxMaterial(0.0f, 1.0f, 0.0f);
+	PhysXCapsule->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
 	PhysXCapsule->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), VecSclae);
-	PhysXCapsule->GetDynamic()->setMass(1.0f);
-	PhysXCapsule->GetDynamic()->setMaxAngularVelocity(physx::PxReal(10.0f));
+	PhysXCapsule->GetDynamic()->setMass(5.0f);
 
 	LockOnCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
-	LockOnCollision->GetTransform()->SetLocalScale({ 3000, 500, 1000 });
-	LockOnCollision->GetTransform()->SetLocalPosition({ 1500, 0, 0 });
+	LockOnCollision->GetTransform()->SetLocalScale({ 1000, 500, 3000 });
+	LockOnCollision->GetTransform()->SetLocalPosition({ 0, 0, 1500 });
 	LockOnCollision->SetColType(ColType::OBBBOX3D);
 }
 

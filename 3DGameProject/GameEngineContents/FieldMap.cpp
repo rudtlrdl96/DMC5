@@ -21,7 +21,7 @@ std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, cons
 	Result = _Level->CreateActor<FieldMap>();
 	Result->GetTransform()->SetLocalPosition(_MapPosition); //맵의 중심 위치를 정합니다
 	Result->FieldMapRenderer = Result->CreateComponent<GameEngineFBXRenderer>();
-	Result->FieldMapRenderer->SetFBXMesh(_FBXName.data(), "NoneAlphaMesh"); //메쉬를 깝니다
+	Result->FieldMapRenderer->SetFBXMesh(_FBXName.data(), "FBX"); //메쉬를 깝니다
 
 	if (_ColVector.begin() != _ColVector.end())
 	{

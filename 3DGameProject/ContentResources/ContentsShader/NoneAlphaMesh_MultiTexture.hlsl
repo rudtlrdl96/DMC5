@@ -1,7 +1,7 @@
 #include "Transform.fx"
-#include "Animation.fx"
 #include "Light.fx"
 #include "RenderBaseValue.fx"
+//#include "MultiTexture.fx"
 
 struct Input
 {
@@ -24,20 +24,13 @@ struct Output
     float4 BINORMAL : BINORMAL;
 };
 
-
 Output MeshAniTexture_VS(Input _Input)
 {
     Output NewOutPut = (Output) 0;
     
     float4 InputPos = _Input.POSITION;
     InputPos.w = 1.0f;
-    
-    if (IsAnimation != 0)
-    {
-        Skinning(InputPos, _Input.BLENDWEIGHT, _Input.BLENDINDICES, ArrAniMationMatrix);
-        InputPos.w = 1.0f;
-    }
-    
+        
     NewOutPut.POSITION = mul(InputPos, WorldViewProjectionMatrix);
     NewOutPut.TEXCOORD = _Input.TEXCOORD;
     
@@ -63,14 +56,15 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
 {
     float4 Color = DiffuseTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
     
-    Color.a = 1.0f;
-    
     if (Color.x == ClipColor.x && Color.y == ClipColor.y && Color.z == ClipColor.z)
     {
         clip(-1);
     }
     
+    Color.a = 1.0f;        
+    //float4 ResultColor = ColorMix(Color, _Input.TEXCOORD.xy, ENGINEBASE);
     float4 ResultColor = Color;
+    
         
     if (0 != IsLight)
     {
@@ -93,7 +87,18 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
         ResultColor = Color * (DiffuseRatio + SpacularRatio + AmbientRatio);
         ResultColor.a = A;
     }
+        
     
+    if (1.0f != BaseColor.a)
+    {
+        // 1 2 3 4 5 1 2 3 4 5        
+        // 3 4 5 1 2 3 4 5 1 2
+        // 5 1 2 3 4 5 1 2 3 4        
+        float Step = ((_Input.POSITION.x + (_Input.POSITION.y * 2)) % 5) + 1;
+                
+        // 0 ~ 1        
+        ResultColor.a = 1.0f - ((Step / 5.0f) * (1.0f - BaseColor.a));
+    }
     
     return ResultColor;
 }

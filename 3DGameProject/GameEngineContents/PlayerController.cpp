@@ -24,30 +24,7 @@ char PlayerController::MoveVectorToChar(const float4& _Value)
 	{
 		if (Dot < -0.75f)
 		{
-			return '6';
-		}
-		else if (Dot < -0.25f)
-		{
-			return '9';
-		}
-		else if (Dot < 0.25f)
-		{
-			return '8';
-		}
-		else if (Dot < 0.75f)
-		{
-			return '7';
-		}
-		else
-		{
-			return '4';
-		}
-	}
-	else
-	{
-		if (Dot < -0.75f)
-		{
-			return '6';
+			return '2';
 		}
 		else if (Dot < -0.25f)
 		{
@@ -55,15 +32,38 @@ char PlayerController::MoveVectorToChar(const float4& _Value)
 		}
 		else if (Dot < 0.25f)
 		{
-			return '2';
+			return '6';
 		}
 		else if (Dot < 0.75f)
 		{
-			return '1';
+			return '9';
 		}
 		else
 		{
+			return '8';
+		}
+	}
+	else
+	{
+		if (Dot < -0.75f)
+		{
+			return '2';
+		}
+		else if (Dot < -0.25f)
+		{
+			return '1';
+		}
+		else if (Dot < 0.25f)
+		{
 			return '4';
+		}
+		else if (Dot < 0.75f)
+		{
+			return '7';
+		}
+		else
+		{
+			return '8';
 		}
 	}
 
@@ -95,9 +95,29 @@ void PlayerController::Start()
 
 void PlayerController::Update(float _DeltaTime)
 {
+	InputReset();
 	MoveInput();
 	InputRecord();
 	ActionInput();
+}
+
+void PlayerController::InputReset()
+{
+	// 검
+	 IsBackFrontSword = false;
+	 IsFrontSword = false;
+	 IsBackSword = false;
+	// 점프
+	IsLeftJump = false;
+	IsRightJump = false;
+	IsJump = false;
+	// 총
+	IsBackFrontGun = false;
+	IsFrontGun = false;
+	IsBackGun = false;
+	// 스킬
+	IsBackFrontSkill = false;
+	IsFrontSkill = false;
 }
 
 void PlayerController::MoveInput()
@@ -142,29 +162,15 @@ void PlayerController::ActionInput()
 	{
 		if (true == InputCheck_BackFront())
 		{
-			if (nullptr != CallBack_BackFrontSword)
-			{
-				CallBack_BackFrontSword();
-			}
+			int a = 0;
 		}
 		else if (true == InputCheck_Dir('8'))
 		{
-			if (nullptr != CallBack_FrontSword)
-			{
-				CallBack_FrontSword();
-			}
+			int a = 0;
 		}
 		else if (true == InputCheck_Dir('2'))
 		{
-			if (nullptr != CallBack_BackSword)
-			{
-				CallBack_BackSword();
-			}
-		}
-
-		if (nullptr != CallBack_Sword)
-		{
-			CallBack_Sword();
+			int a = 0;
 		}
 	}
 	// Jump
@@ -172,21 +178,15 @@ void PlayerController::ActionInput()
 	{
 		if (true == InputCheck_Dir('4'))
 		{
-			if (nullptr != CallBack_LeftJump)
-			{
-				CallBack_LeftJump();
-			}
+			IsLeftJump = true;
 		}
 		else if (true == InputCheck_Dir('6'))
 		{
-			if (nullptr != CallBack_RightJump)
-			{
-				CallBack_RightJump();
-			}
+			IsRightJump = true;
 		}
 		else
 		{
-			int a = 0;
+			IsJump = true;
 		}
 	}
 	// LockOn

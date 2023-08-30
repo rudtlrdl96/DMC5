@@ -44,8 +44,8 @@ protected:
 
 private:
 	// Phys액터 생성에 필요한 정보
-	//physx::PxPhysics* physics_;
-	//physx::PxScene* scene_;
+	physx::PxPhysics* m_pPhysics;
+	physx::PxScene* m_pScene;
 
 	physx::PxMaterial* m_pMaterial;
 	physx::PxShape* m_pShape;

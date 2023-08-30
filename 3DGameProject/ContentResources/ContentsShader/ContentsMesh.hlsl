@@ -59,8 +59,7 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
     {
         clip(-1);
     }
-    
-    Color.a = 1.0f;        
+            
     float4 ResultColor = Color;
         
     if (0 != IsLight)
@@ -88,13 +87,12 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
     
     if (1.0f != BaseColor.a)
     {
-        // 1 2 3 4 5 1 2 3 4 5        
-        // 3 4 5 1 2 3 4 5 1 2
-        // 5 1 2 3 4 5 1 2 3 4        
-        float Step = ((_Input.POSITION.x + (_Input.POSITION.y * 2)) % 5) + 1;
-                
-        // 0 ~ 1        
+        float Step = ((_Input.POSITION.x + (_Input.POSITION.y * 2)) % 5) + 1;                
         ResultColor.a = 1.0f - ((Step / 5.0f) * (1.0f - BaseColor.a));
+    }
+    else
+    {
+        ResultColor.a = BaseColor.a;
     }
     
     return ResultColor;

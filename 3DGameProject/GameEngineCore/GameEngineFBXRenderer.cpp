@@ -185,6 +185,35 @@ void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Name, std::string _Ma
 	}
 }
 
+void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Name, std::vector<std::string> _Materials)
+{
+	std::shared_ptr<GameEngineFBXMesh> FindFBXMesh = GameEngineFBXMesh::Find(_Name);
+
+	if (nullptr == FindFBXMesh)
+	{
+		MsgAssert("로드하지 않은 FBX 매쉬를 사용하려고 했습니다.");
+	}
+
+	FindFBXMesh->Initialize();
+
+	if (0 == _Materials.size())
+	{
+		MsgAssert("머티리얼 정보가 존재 하지 않습니다.");
+	}
+
+	for (size_t UnitCount = 0; UnitCount < FindFBXMesh->GetRenderUnitCount(); UnitCount++)
+	{
+		if (_Materials.size() <= UnitCount)
+		{
+			SetFBXMesh(_Name, _Materials[0], UnitCount);
+		}
+		else
+		{
+			SetFBXMesh(_Name, _Materials[UnitCount], UnitCount);
+		}
+	}
+}
+
 void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Name, std::string _Material, size_t MeshIndex)
 {
 	std::shared_ptr<GameEngineFBXMesh> FindFBXMesh = GameEngineFBXMesh::Find(_Name);

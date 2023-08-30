@@ -91,7 +91,7 @@ void CavaliereAngelo::EnemyMeshLoad()
 
 	GameEngineFBXMesh::Load(Path);
 
-	EnemyRenderer->SetFBXMesh("em5501.fbx", "NoneAlphaMesh");
+	EnemyRenderer->SetFBXMesh("em5501.fbx", "FBX");
 	EnemyRenderer->GetTransform()->SetLocalScale({ 0.1f, 0.1f, 0.1f });
 }
 

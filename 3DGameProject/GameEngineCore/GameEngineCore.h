@@ -74,6 +74,12 @@ public:
 
 	static GameEngineThreadJobQueue JobQueue;
 
+	// 현재 프레임 가져오기
+	static float GetFrameRate()
+	{
+		return FrameRate;
+	}
+
 protected:
 
 private:

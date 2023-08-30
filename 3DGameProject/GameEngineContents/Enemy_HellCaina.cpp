@@ -21,7 +21,7 @@ void Enemy_HellCaina::EnemyMeshLoad()
 
 	GameEngineFBXMesh::Load(Path);
 
-	EnemyRenderer->SetFBXMesh("em0000.fbx", "NoneAlphaAniMesh");
+	EnemyRenderer->SetFBXMesh("em0000.fbx", "AniFBX");
 	EnemyRenderer->GetTransform()->SetLocalScale({ 0.1f, 0.1f, 0.1f });
 }
 

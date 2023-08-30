@@ -14,6 +14,7 @@ public:
 	Plane& operator=(const Plane& _Other) = delete;
 	Plane& operator=(Plane&& _Other) noexcept = delete;
 
+	std::shared_ptr<class PhysXBoxComponent> Component = nullptr;
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -22,7 +23,6 @@ protected:
 	void ServerUpdate(float _DeltaTime);
 
 private:
-	std::shared_ptr<class PhysXBoxComponent> Component = nullptr;
 
 };
 

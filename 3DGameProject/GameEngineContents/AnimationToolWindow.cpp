@@ -474,7 +474,7 @@ void AnimationToolWindow::PreviewObject()
 		NewPreviewRenderer->GetTransform()->SetLocalScale({ 100, 100, 100 });
 		std::shared_ptr <GameEngineRenderUnit> Unit = NewPreviewRenderer->CreateRenderUnit();
 		Unit->SetMesh("DebugBox");
-		Unit->SetMaterial("NoneAlphaMesh");
+		Unit->SetMaterial("FBX");
 	}
 }
 

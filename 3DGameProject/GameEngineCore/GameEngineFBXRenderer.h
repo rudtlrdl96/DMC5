@@ -86,6 +86,8 @@ public:
 	GameEngineFBXRenderer& operator=(GameEngineFBXRenderer&& _Other) noexcept = delete;
 
 	virtual void SetFBXMesh(const std::string& _Name, std::string _Material);
+	virtual void SetFBXMesh(const std::string& _Name, std::vector<std::string> _Materials);
+
 	virtual void SetFBXMesh(const std::string& _Name, std::string _Material, size_t MeshIndex);
 	virtual std::shared_ptr<GameEngineRenderUnit> SetFBXMesh(const std::string& _Name, std::string _Material, size_t MeshIndex, size_t _SubSetIndex);
 
