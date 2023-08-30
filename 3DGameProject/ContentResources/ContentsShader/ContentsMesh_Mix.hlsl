@@ -48,56 +48,55 @@ Output MeshAniTexture_VS(Input _Input)
     return NewOutPut;
 }
 
-Texture2D DiffuseTexture : register(t0);
-Texture2D NormalTexture : register(t1);
-Texture2D MixTexture : register(t2);
+Texture2D DiffuseTexture : register(t0); // ALBM
+Texture2D NormalTexture : register(t1);  // NRMR
+Texture2D SpecularTexture : register(t2); // ATOS
 
 SamplerState ENGINEBASE : register(s0);
 
+static const float3 Fdielectric = 0.04;
+
 float4 MeshAniTexture_PS(Output _Input) : SV_Target0
 {
-    float4 Color = DiffuseTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
+    float4 AlbmData = DiffuseTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
+    float4 NrmrData = NormalTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
+    float4 AtosData = SpecularTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
     
-    if (Color.x == ClipColor.x && Color.y == ClipColor.y && Color.z == ClipColor.z)
+    if (AlbmData.x == ClipColor.x && AlbmData.y == ClipColor.y && AlbmData.z == ClipColor.z)
     {
         clip(-1);
     }
     
-    Color = ColorMix(Color, MixTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy));
-        
-    float4 ResultColor = Color;
-        
+    float4 RGBA = { AlbmData.r, AlbmData.g, AlbmData.b, AtosData.r};
+    float4 ResultColor = RGBA;
+                    
     if (0 != IsLight)
     {
         float4 NormalDir = _Input.NORMAL;
         
         if (0 != IsNormal)
         {
-            float4 BumpNormal = NormalTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
+            float3 BumpNormal = NrmrData.xyz;
+            
             BumpNormal = (BumpNormal * 2.0f) - 1.0f;
             BumpNormal = (BumpNormal.z * _Input.NORMAL) + (BumpNormal.x * _Input.BINORMAL) + (BumpNormal.y * -_Input.TANGENT);
         
-            NormalDir = BumpNormal;
+            NormalDir.xyz = BumpNormal.xyz;
         }
         
         float4 DiffuseRatio = CalDiffuseLight(_Input.VIEWPOSITION, NormalDir, AllLight[0]);
         float4 SpacularRatio = CalSpacularLight(_Input.VIEWPOSITION, NormalDir, AllLight[0]);
         float4 AmbientRatio = CalAmbientLight(AllLight[0]);
         
-        float A = Color.w;
-        ResultColor = Color * (DiffuseRatio + SpacularRatio + AmbientRatio);
+        float A = RGBA.w;
+        ResultColor = RGBA * (DiffuseRatio + SpacularRatio + AmbientRatio);
         ResultColor.a = A;
     }
-        
-    
+            
     if (1.0f != BaseColor.a)
     {
         float Step = ((_Input.POSITION.x + (_Input.POSITION.y * 2)) % 5) + 1;
         ResultColor.a = 1.0f - ((Step / 5.0f) * (1.0f - BaseColor.a));
-    }
-    else
-    {
-        ResultColor.a = BaseColor.a;
     }
     
     return ResultColor;

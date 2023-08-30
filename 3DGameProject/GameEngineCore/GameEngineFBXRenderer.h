@@ -196,17 +196,16 @@ public:
 
 protected:
 	// void Render(float _DeltaTime) override;
-
+	
+	// vertexbuffer1       indexbuffer          
+	// 0번매쉬의            0번째 서브셋
+	std::vector<         std::vector<std::shared_ptr<GameEngineRenderUnit>>> Unit;
 private:
 	bool Pause = false;
 
 	// 그게 불가능하다.
 	// 맨처음 세팅해준 메인 매쉬와완전히 연관되어 있는 매쉬여야만 가능하다.
 	std::shared_ptr<GameEngineFBXMesh> FBXMesh;
-
-	// vertexbuffer1       indexbuffer          
-	// 0번매쉬의            0번째 서브셋
-	std::vector<         std::vector<std::shared_ptr<GameEngineRenderUnit>>> Unit;
 
 	std::map<std::string, std::shared_ptr<GameEngineFBXAnimationInfo>> Animations;
 	std::shared_ptr<GameEngineFBXAnimationInfo> CurAnimation;

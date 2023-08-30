@@ -12,6 +12,8 @@ MainLevel* MainLevel::Inst = nullptr;
 #include "ZoomEffect.h"
 #include "FXAA_Effect.h"
 
+#include "ShaderTestActor.h"
+
 MainLevel::MainLevel() 
 {
 	Inst = this;
@@ -47,6 +49,8 @@ void MainLevel::Start()
 
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -500.0f });
+
+	CreateActor<ShaderTestActor>();
 }
 
 void MainLevel::Update(float _DeltaTime)
@@ -112,6 +116,8 @@ void MainLevel::Update(float _DeltaTime)
 void MainLevel::LevelChangeStart()
 {
 	GameEngineLevel::LevelChangeStart();
+
+
 }
 
 void MainLevel::LevelChangeEnd()

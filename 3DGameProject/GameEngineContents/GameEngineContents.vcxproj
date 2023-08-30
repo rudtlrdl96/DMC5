@@ -459,6 +459,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ShaderTestActor.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ShaderTestLevel.h">
       <SubType>
       </SubType>
@@ -805,6 +809,10 @@
     </ClCompile>
     <ClCompile Include="Ramp.cpp" />
     <ClCompile Include="ServerWindow.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ShaderTestActor.cpp">
       <SubType>
       </SubType>
     </ClCompile>

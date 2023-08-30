@@ -325,6 +325,9 @@
     <ClInclude Include="ShopBG.h">
       <Filter>UI\UI_Actor\ShopUI</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderTestActor.h">
+      <Filter>Actor\Test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -641,6 +644,9 @@
     </ClCompile>
     <ClCompile Include="ShopBG.cpp">
       <Filter>UI\UI_Actor\ShopUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderTestActor.cpp">
+      <Filter>Actor\Test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
