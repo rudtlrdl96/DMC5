@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
 #include "InfoUIRender.h"
+#include "InvenUIButton.h"
 // Ό³Έν :
 class Menu_NeroInfo : public GameEngineActor
 {
@@ -23,6 +24,15 @@ private:
 
 	std::shared_ptr<InfoUIRender> NeroInfoPtr = nullptr;
 	std::shared_ptr<InfoUIRender> NeroInvenPtr = nullptr;
+	std::shared_ptr<InvenUIButton> Arrow1Ptr = nullptr;
+	std::shared_ptr<InvenUIButton> Arrow2Ptr = nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> FontRender = nullptr;
 
+
+	std::vector<int> Test;
+	int Index = 0;
+	int PrevIndex = 0;
+	bool InvenPlusValue = false;
+	bool InvenMinusValue = false;
 };
 
