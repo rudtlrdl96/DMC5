@@ -4,31 +4,31 @@
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineActor.h>
 
-#include "ContentsEnum.h"
-#include "PacketEnum.h"
+#include "NetworkGUI.h"
 
+#include "PacketEnum.h"
+#include "ContentsEnum.h"
 #include "ObjectUpdatePacket.h"
-#include "CreateObjectPacket.h"
-#include "LinkObjectPacket.h"
+
+#include "MainLevel.h"
+#include "StartStageLevel.h"
+#include "BossStageLevel.h"
+
+unsigned int NetworkManager::NetID = 0;
 
 GameEngineNet* NetworkManager::NetInst = nullptr;
 GameEngineNetServer NetworkManager::ServerInst;
 GameEngineNetClient NetworkManager::ClientInst;
 
-bool NetworkManager::IsServerValue = false;
-bool NetworkManager::IsClientValue = false;
+NetworkManager::NetworkState NetworkManager::NowState = NetworkManager::NetworkState::None;
 
-unsigned int NetworkManager::NetID = 0;
+std::vector<GameEngineLevel*> NetworkManager::AllBattleLevels;
 GameEngineLevel* NetworkManager::CurLevel = nullptr;
 
 std::map<unsigned int, std::shared_ptr<ObjectUpdatePacket>> NetworkManager::AllUpdatePacket;
+GameEngineSerializer NetworkManager::ChunkUpdatePackets;
 
-unsigned int NetworkManager::LinkID = 0;
-std::map<unsigned int, class GameEngineNetObject*> NetworkManager::AllLinkObject;
-
-
-
-std::vector<std::pair<unsigned int, std::shared_ptr<class LinkObjectPacket>>> NetworkManager::AllLinkPacket_TEST;
+PlayerType NetworkManager::CharacterType = PlayerType::None;
 
 
 
@@ -45,37 +45,85 @@ void NetworkManager::ServerOpen(int _Port)
 	//서버용 패킷 처리 콜백 등록
 	ServerPacketInit();
 
+	//서버의 경우 ID는 1번
+	NetID = GameEngineNetObject::CreateServerID();
+
 	//서버 오픈
 	ServerInst.ServerOpen(static_cast<unsigned short>(_Port));
-	NetID = GameEngineNetObject::CreateServerID();
-	IsServerValue = true;
+	NowState = NetworkState::Server;
 }
 
 
-bool NetworkManager::ConnectServer(const std::string_view& _IP, int _Port)
+
+
+void NetworkManager::ConnectServer(PlayerType _CharacterType)
 {
+	if (false == NetworkGUI::GetInst()->ChangeFieldState())
+	{
+		MsgAssert("NetworkGUI에서 서버 연동 작업을 실행하지 않았습니다");
+		return;
+	}
+
+	//전투가 실행되는 레벨을 벡터에 저장
+	if (true == AllBattleLevels.empty())
+	{
+		AllBattleLevels.push_back(MainLevel::GetInst());
+		AllBattleLevels.push_back(StartStageLevel::GetInst());
+		AllBattleLevels.push_back(BossStageLevel::GetInst());
+	}
+	else
+	{
+		MsgAssert("이미 네트워크 기능을 실행했는데, 다시 한번 네트워크 연동을 실행하였습니다");
+		return;
+	}
+
+	CharacterType = _CharacterType;
+
+	//서버인 경우 각 전투 레벨에 플레이어 생성
+	if (NetworkState::Server == NowState)
+	{
+		for (GameEngineLevel* Level : AllBattleLevels)
+		{
+			CreateLocalPlayer(Level, GameEngineNetObject::CreateServerID());
+		}
+		return;
+	}
+
+	//클라이언트인 경우, 서버에 연결 시도
+	const std::pair<std::string_view, int> NetworkData = NetworkGUI::GetInst()->GetNetworkData();
+	const std::string_view IP = NetworkData.first;
+	const int PortNum = NetworkData.second;
+
 	//Thread 이름 설정
 	SetThreadDescription(GetCurrentThread(), L"Client Main Thread");
-
 	NetInst = &ClientInst;
 
 	//클라용 패킷 처리 콜백 등록
 	ClientPacketInit();
 
 	//서버 접속
-	IsClientValue = ClientInst.Connect(_IP.data(), static_cast<unsigned short>(_Port));
-	return IsClientValue;
+	bool IsResult = ClientInst.Connect(IP.data(), static_cast<unsigned short>(PortNum));
+	if (true == IsResult)
+	{
+		NowState = NetworkState::Client;
+		return;
+	}
+
+	//서버 접속 실패한 경우
+	std::string ErrorIP = IP.data();
+	MsgAssert("이 클라이언트가 서버 접속에 실패하였습니다.\n접속을 시도한 IP : " + ErrorIP);
 }
 
 
 
 
-void NetworkManager::SendUpdatePacket(GameEngineNetObject* _NetObj, GameEngineActor* _ActorPtr, float _TimeScale /*= 1.f*/)
+void NetworkManager::PushUpdatePacket(GameEngineNetObject* _NetObj, GameEngineActor* _ActorPtr, float _TimeScale /*= 1.f*/)
 {
 	//현재 진행중인 레벨의 엑터들만 실행
 	if (_ActorPtr->GetLevel() != CurLevel)
 		return;
 
+	//인자로 받은 오브젝트의 네트워크용 오브젝트 아이디
 	unsigned int ObjectID = _NetObj->GetNetObjectID();
 	if (false == GameEngineNetObject::IsNetObject(ObjectID))
 	{
@@ -83,14 +131,16 @@ void NetworkManager::SendUpdatePacket(GameEngineNetObject* _NetObj, GameEngineAc
 		return;
 	}
 
-
+	//업데이트 패킷 만들기
 	std::shared_ptr<ObjectUpdatePacket> UpdatePacket = nullptr;
-	//이미 해당 ID의 UpdatePacket이 존재했다면
+
+	//이미 해당 ID의 UpdatePacket이 존재했다면 재활용
 	if (true == AllUpdatePacket.contains(ObjectID))
 	{
 		UpdatePacket = AllUpdatePacket[ObjectID];
 	}
-	//ObjectID 이번에 처음 만드는 ObjectUpdatePacket인 경우
+
+	//ObjectID 이번에 처음 만드는 ObjectUpdatePacket인 경우 새로 동적할당
 	else
 	{
 		UpdatePacket = std::make_shared<ObjectUpdatePacket>();
@@ -103,6 +153,9 @@ void NetworkManager::SendUpdatePacket(GameEngineNetObject* _NetObj, GameEngineAc
 
 	//오브젝트 아이디
 	UpdatePacket->SetObjectID(ObjectID);
+	//네트워크 아이디
+	UpdatePacket->NetID = NetID;
+
 	//오브젝트 타입
 	UpdatePacket->ActorType = _NetObj->GetNetObjectType();
 
@@ -128,134 +181,56 @@ void NetworkManager::SendUpdatePacket(GameEngineNetObject* _NetObj, GameEngineAc
 
 void NetworkManager::FlushUpdatePacket()
 {
-	/*if (true == AllUpdatePacket.empty())
-		return;*/
+	if (true == AllUpdatePacket.empty())
+		return;
 
-	//static GameEngineSerializer Ser;
-
-	//int PacketSize = 0;
-	//int Count = 0;
-
+	int PacketSize = 0;
+	int Count = 0;
 
 	//패킷 모아 보내기
 	for (const std::pair<unsigned int, std::shared_ptr<ObjectUpdatePacket>>& Pair : AllUpdatePacket)
 	{
 		std::shared_ptr<ObjectUpdatePacket> UpdatePacket = Pair.second;
-		NetInst->SendPacket(UpdatePacket);
-		//UpdatePacket->SerializePacket(Ser); //이 코드의 문제점 Size를 표현하는 부분을 바꾸지 못함
+		UpdatePacket->SerializePacket(ChunkUpdatePackets);
 		
-		/*if (0 == PacketSize)
+		if (0 == PacketSize)
 		{
-			unsigned char* Ptr = Ser.GetDataPtr();
+			unsigned char* Ptr = ChunkUpdatePackets.GetDataPtr();
 			memcpy_s(&PacketSize, sizeof(int), &Ptr[4], sizeof(int));
 			continue;
 		}
 		
-		unsigned char* SizePtr = Ser.GetDataPtr();
+		unsigned char* SizePtr = ChunkUpdatePackets.GetDataPtr();
 		int SizePos = (PacketSize * Count++) + 4;
-		memcpy_s(&SizePtr[SizePos], sizeof(int), &PacketSize, sizeof(int));*/
+		memcpy_s(&SizePtr[SizePos], sizeof(int), &PacketSize, sizeof(int));
 	}
 
-	//NetInst->Send(Ser.GetConstCharPtr(), Ser.GetWriteOffSet());
-	//NetInst->Send(reinterpret_cast<const char*>(Ser.GetDataPtr()), Ser.GetWriteOffSet());
+	//한 바이트로 모은 패킷 보내기
+	NetInst->Send(ChunkUpdatePackets.GetConstCharPtr(), ChunkUpdatePackets.GetWriteOffSet());
+
+	//자료구조, 직렬화 버퍼 클리어
 	AllUpdatePacket.clear();
-	//Ser.Reset();
-
-
-	for (size_t i = 0; i < AllLinkPacket_TEST.size(); i++)
-	{
-		//클라인 경우
-		if (0 == AllLinkPacket_TEST[i].first)
-		{
-			NetInst->SendPacket(AllLinkPacket_TEST[i].second);
-		}
-		//서버인 경우
-		else
-		{
-			std::shared_ptr<LinkObjectPacket> ReplyLinkPacket = AllLinkPacket_TEST[i].second;
-
-			//패킷직렬화
-			GameEngineSerializer Ser;
-			ReplyLinkPacket->SerializePacket(Ser);
-
-			//나에게 전송한 유저한테만 패킷을 보낸다
-			SOCKET ClientSocket = ServerInst.GetUser(AllLinkPacket_TEST[i].first);
-			GameEngineNet::Send(ClientSocket, Ser.GetConstCharPtr(), Ser.GetWriteOffSet());
-		}
-	}
-
-	AllLinkPacket_TEST.clear();
+	ChunkUpdatePackets.Reset();
 }
-
-
-void NetworkManager::SendCreatePacket(Net_ActorType _Type, const float4& _Position /*= float4::ZERO*/, const float4& _Rotation /*= float4::ZERO*/)
-{
-	std::shared_ptr<GameEngineNetObject> NewObject = nullptr;
-
-	//서버일땐 바로 UserControll모드로 오브젝트 생성
-	if (true == IsServerValue)
-	{
-		NewObject = CreateNetActor(_Type);
-		NewObject->SetUserControllType();
-		return;
-	}
-
-	//그런데 생각해보니까 클라가 서버한테 뭔가 만들어달라고 요청할 일이 생길까?
-	//보통 처리를 다 서버가 할텐데?
-
-	//클라일땐 생성을 부탁하는 패킷을 만들어 서버로 전송
-	std::shared_ptr<CreateObjectPacket> CreatePacket = std::make_shared<CreateObjectPacket>();
-	CreatePacket->ActorType = static_cast<unsigned int>(_Type);
-	CreatePacket->Position = _Position;
-	CreatePacket->Rotation = _Rotation;
-	NetInst->SendPacket(CreatePacket);
-}
-
-
-void NetworkManager::LinkNetwork(GameEngineNetObject* _NetObjPtr)
-{
-	if (nullptr == NetInst)
-		return;
-
-	//서버의 경우 그냥 만들고 끝
-	if (true == IsServerValue)
-	{
-		_NetObjPtr->InitNetObject(GameEngineNetObject::CreateServerID(), NetInst);
-		_NetObjPtr->SetUserControllType();
-		return;
-	}
-
-	//클라의 경우
-	std::shared_ptr<LinkObjectPacket> LinkPacket = std::make_shared<LinkObjectPacket>();
-	//이 클라의 네트워크 아이디
-	LinkPacket->SetObjectID(NetID);
-	//연결을 요청한 객체의 타입(서버에서도 그 객체들 만들어야 하기 때문)
-	LinkPacket->ActorType = _NetObjPtr->GetNetObjectType();
-
-	//자료구조에 넣을 링크 아이디(서버에게 다시 수신받을때 어떤 객체를 InitNetObject해야하는지 알기위함)
-	LinkPacket->LinkID = LinkID;
-	//자료구조에 저장
-	AllLinkObject[LinkID++] = _NetObjPtr;
-
-	
-	// NetInst->SendPacket(LinkPacket);
-	AllLinkPacket_TEST.push_back(std::make_pair(0, LinkPacket));
-}
-
 
 
 #include "NetTestPlayer.h"
 
 std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorType _ActorType, int _ObjectID /*= -1*/)
 {
+	if (nullptr == CurLevel)
+	{
+		MsgAssert("NetwortManager의 CurLevel 포인터가 nullptr입니다");
+	}
+
 	std::shared_ptr<GameEngineNetObject> NetObject = nullptr;
 	switch (_ActorType)
 	{
 	case Net_ActorType::Nero:
-		NetObject = GetLevel()->CreateActor<NetTestPlayer>();	//이거 나중에 꼭 바꿀것
+		NetObject = CurLevel->CreateActor<NetTestPlayer>();	//이거 나중에 꼭 바꿀것
 		break;
 	case Net_ActorType::Vergil:
-		NetObject = GetLevel()->CreateActor<NetTestPlayer>();	//이거 나중에 꼭 바꿀것
+		NetObject = CurLevel->CreateActor<NetTestPlayer>();	//이거 나중에 꼭 바꿀것
 		break;
 	default:
 	{
@@ -265,23 +240,43 @@ std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorTyp
 	}
 
 
-	//서버쪽에서 오브젝트아이디를 직접 만드는 경우
-	if (true == IsServerValue)
+	if (-1 == _ObjectID)
 	{
-		int ID = _ObjectID;
-		if (-1 == ID)
-		{
-			ID = GameEngineNetObject::CreateServerID();
-		}
-
-		NetObject->InitNetObject(ID, NetInst);
+		NetObject->InitNetObject(GameEngineNetObject::CreateServerID(), NetInst);
 	}
-
-	//클라쪽에서 오브젝트 아이디를 직접 만드는 경우
-	else if ((true == IsClientValue) && (-1 != _ObjectID))
+	else
 	{
 		NetObject->InitNetObject(_ObjectID, NetInst);
 	}
 
 	return NetObject;
+}
+
+
+
+
+//#include "BasePlayerActor"	//얘가 네로랑 버질의 부모면서 NetObject 상속받음, 나중에 _Type 으로 분리처리 해주자
+
+void NetworkManager::CreateLocalPlayer(class GameEngineLevel* _Level, int _ObjectID)
+{
+	//std::shared_ptr<BasePlayerActor> Player = nullptr;
+
+	if (PlayerType::None == CharacterType)
+	{
+		MsgAssert("선택한 플레이어가 PlayerType::None입니다");
+	}
+	else if (PlayerType::Nero == CharacterType)
+	{
+
+	}
+	else if (PlayerType::Vergil == CharacterType)
+	{
+
+	}
+
+	std::shared_ptr<NetTestPlayer> Player = nullptr;
+	Player = _Level->CreateActor<NetTestPlayer>();
+	Player->InitNetObject(_ObjectID, NetInst);
+	
+	Player->SetUserControllType();
 }

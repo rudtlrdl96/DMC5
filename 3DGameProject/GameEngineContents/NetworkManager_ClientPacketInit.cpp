@@ -7,7 +7,6 @@
 #include "ConnectIDPacket.h"
 #include "ObjectUpdatePacket.h"
 #include "MessageChatPacket.h"
-#include "LinkObjectPacket.h"
 
 ////////
 //		클라 패킷 초기화
@@ -18,11 +17,29 @@ void NetworkManager::ClientPacketInit()
 {
 	//ConnectIDPacket 처리
 	NetInst->Dispatcher.AddHandler<ConnectIDPacket>
-		([](std::shared_ptr<ConnectIDPacket> _Packet)
+		([=](std::shared_ptr<ConnectIDPacket> _Packet)
 	{
-		unsigned int ID = _Packet->GetObjectID();
-		NetID = ID;
-		NetworkGUI::GetInst()->SetClientTitle(ID);
+		//이 클라이언트의 네트워크 아이디 지정
+		NetID = _Packet->GetObjectID();
+
+		//패킷에 담겨온 오브젝트아이디로 플레이어 캐릭터 생성
+		const std::vector<unsigned int>& AllObjectID = _Packet->AllObjectID;
+		if (AllObjectID.size() != AllBattleLevels.size())
+		{
+			MsgAssert("패킷으로 받은 오브젝트ID의 갯수와 전투가 진행되는 레벨의 갯수가 다릅니다");
+			return;
+		}
+
+		for (size_t i = 0; i < AllObjectID.size(); ++i)
+		{
+			GameEngineLevel* Level = AllBattleLevels[i];
+			int ID = static_cast<int>(AllObjectID[i]);
+			CreateLocalPlayer(Level, ID);
+		}
+
+
+		//NetID = ID;
+		//NetworkGUI::GetInst()->SetClientTitle(ID);
 	});
 
 
@@ -30,18 +47,22 @@ void NetworkManager::ClientPacketInit()
 	NetInst->Dispatcher.AddHandler<ObjectUpdatePacket>(
 		[=](std::shared_ptr<ObjectUpdatePacket> _Packet)
 	{
-		//해당 NetObejctID의 객체가 존재하지 않다면 만든다
-		if (false == GameEngineNetObject::IsNetObject(_Packet->GetObjectID()))
+		unsigned int ObjID = _Packet->GetObjectID();
+
+		//해당 NetObejctID의 객체가 존재하지 않다면 만든다면 여기서 만들어버리기
+		if (false == GameEngineNetObject::IsNetObject(ObjID))
 		{
 			std::shared_ptr<GameEngineNetObject> NewNetObj = nullptr;
-			NewNetObj = NetworkManager::CreateNetActor(_Packet->ActorType, _Packet->GetObjectID());
+			NewNetObj = NetworkManager::CreateNetActor(_Packet->ActorType, ObjID);
 			NewNetObj->SetControll(NetControllType::NetControll);
 		}
 
+		//패킷이 Death처리 된 경우
 		if (true == _Packet->IsDeath)
 		{
+			//네트워크와 연결 끊기
 			GameEngineNetObject* NetObject = nullptr;
-			NetObject = GameEngineNetObject::GetNetObject(_Packet->GetObjectID());
+			NetObject = GameEngineNetObject::GetNetObject(ObjID);
 			NetObject->NetDisconnect();
 		}
 
@@ -55,25 +76,7 @@ void NetworkManager::ClientPacketInit()
 	NetInst->Dispatcher.AddHandler<MessageChatPacket>(
 		[](std::shared_ptr<MessageChatPacket> _Packet)
 	{
-		NetworkGUI::GetInst()->PrintLog(_Packet->Message);
+		//NetworkGUI::GetInst()->PrintLog(_Packet->Message);
 	});
-
-
-
-	//LinkObjectPacket 처리
-	NetInst->Dispatcher.AddHandler<LinkObjectPacket>(
-		[](std::shared_ptr<LinkObjectPacket> _Packet)
-	{
-		std::map<unsigned int, class GameEngineNetObject*>::iterator FindIter = AllLinkObject.find(_Packet->LinkID);
-		if (AllLinkObject.end() == FindIter)
-		{
-			MsgAssert(std::to_string(_Packet->LinkID) + "의 링크 아이디를 가진 객체는 존재하지 않습니다");
-		}
-
-		GameEngineNetObject* ObjPtr = FindIter->second;
-		ObjPtr->InitNetObject(_Packet->GetObjectID(), NetInst);
-		ObjPtr->SetUserControllType();
-
-		AllLinkObject.erase(_Packet->LinkID);
-	});
+	
 }

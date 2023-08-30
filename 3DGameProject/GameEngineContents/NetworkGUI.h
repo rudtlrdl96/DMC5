@@ -2,6 +2,7 @@
 #include <GameEngineCore/GameEngineGUI.h>
 
 class GameEngineLevel;
+enum class PlayerType;
 
 class NetworkGUI : public GameEngineGUIWindow
 {
@@ -19,10 +20,7 @@ public:
 	NetworkGUI& operator=(const NetworkGUI& _Other) = delete;
 	NetworkGUI& operator=(const NetworkGUI&& _Other) noexcept = delete;
 
-	void PrintLog(const std::string_view& _LogText);
-
-	//GUI 최 상단 텍스트 설정
-	void SetClientTitle(int _ClientID);
+	//void PrintLog(const std::string_view& _LogText);
 
 	//타이틀 화면에서 GUI버튼을 눌렀을때 처리할 함수포인터를 입력받습니다.
 	inline void SetEntryCallBack(std::function<void()> _EntryCallBack)
@@ -30,7 +28,15 @@ public:
 		EntryCallBack = _EntryCallBack;
 	}
 
+	inline std::pair<std::string_view, int> GetNetworkData() const
+	{
+		return std::make_pair(IpNum, PortNum);
+	}
+
+	bool ChangeFieldState();
+
 protected:
+	void Start() override;
 	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;
 
 private:
@@ -38,25 +44,33 @@ private:
 
 	enum class State
 	{
-		Wait,
-		Single,
-		Multi,
+		SelectWait,
+		ServerWait,
+		ClientWait,
+		OnFieldStage,
+
+		COUNT
 	};
 	
-	State CurState = State::Wait;
+	State CurState = State::SelectWait;
+	std::vector<std::function<void()>> AllStateFunc;
+
+
+
+
 
 	const std::string_view BtnText_ForHost = "Play For Host";
 	const std::string_view BtnText_ForClient = "Play For Client";
 
 	int PortNum = 30000;
-	//std::string IpNum = "127.0.0.1";
 	char IpNum[64] = "127.0.0.1";
-	std::string Title;
+	std::string Title = "Select Host or Clinet";
 	
 	std::function<void()> EntryCallBack = nullptr;
+	
 
 
-	void Update_Wait();
-	void Update_Multi();
+	void Update_SelectWait();
+	void Update_OnFieldStage();
 };
 

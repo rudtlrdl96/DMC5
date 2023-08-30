@@ -5,6 +5,11 @@
 class MainLevel : public BaseLevel
 {
 public:
+	static MainLevel* GetInst()
+	{
+		return Inst;
+	}
+
 	// constrcuter destructer
 	MainLevel();
 	~MainLevel();
@@ -24,6 +29,8 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
+	static MainLevel* Inst;
+
 	bool IsMessage = false;
 
 };

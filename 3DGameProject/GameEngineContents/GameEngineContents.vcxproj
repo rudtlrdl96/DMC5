@@ -216,7 +216,6 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="ContentsEnum.h" />
-    <ClInclude Include="CreateObjectPacket.h" />
     <ClInclude Include="C_ChoiceBG.h" />
     <ClInclude Include="EditorUI.h">
       <SubType>
@@ -237,7 +236,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="LinkObjectPacket.h" />
     <ClInclude Include="MainMenuBG.h">
       <SubType>
       </SubType>

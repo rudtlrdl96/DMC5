@@ -11,16 +11,23 @@ enum class PacketType;
 class NetworkManager
 {
 public:
+	enum class NetworkState
+	{
+		None,
+		Server,
+		Client,
+	};
+
 	//현재 스레드가 서버스레드인지 여부
 	static inline bool IsServer()
 	{
-		return IsServerValue;
+		return (NetworkState::Server == NowState);
 	}
 
 	//현재 스레드가 클라스레드인지 여부
 	static inline bool IsClient()
 	{
-		return IsClientValue;
+		return (NetworkState::Client == NowState);
 	}
 
 	//서버를 오픈하거나 연결되었는지 여부
@@ -30,7 +37,8 @@ public:
 	}
 
 	static void ServerOpen(int _Port);
-	static bool ConnectServer(const std::string_view& _IP, int _Port);
+
+	static void ConnectServer(PlayerType _CharacterType);
 
 	//전송받은 패킷을 처리하는 부분
 	static void Update_PacketProcess(GameEngineLevel* _CurrentLevel)
@@ -44,26 +52,14 @@ public:
 		NetInst->UpdatePacket();
 	}
 
-	static unsigned int GetNetID()
-	{
-		return NetID;
-	}
 
 	//Update패킷을 보낼때 이 인터페이스를 이용해서 보내주시면 됩니다.
-	static void SendUpdatePacket(GameEngineNetObject* _NetObj, GameEngineActor* _ActorPtr, float _TimeScale = 1.f);
+	static void PushUpdatePacket(GameEngineNetObject* _NetObj, GameEngineActor* _ActorPtr, float _TimeScale = 1.f);
 
 	//실제 업데이트 패킷을 처리하는 부분
 	static void FlushUpdatePacket();
 
-	//Net_ActorType 타입의 엑터를 생성하는 부분입니다.
-	static void SendCreatePacket(Net_ActorType _Type, const float4& _Position = float4::ZERO, const float4& _Rotation = float4::ZERO);
-
-	//이미 생성되어 있는 오브젝트를 서버와 연동시킵니다.
-	static void LinkNetwork(GameEngineNetObject* _NetObjPtr);
-
 protected:
-	friend class NetTestPlayer;
-
 	static GameEngineNet* GetNetInst()
 	{
 		return NetInst;
@@ -74,15 +70,8 @@ private:
 	static GameEngineNetServer ServerInst;
 	static GameEngineNetClient ClientInst;
 
-
-
-	//현재 스레드가 서버스레드인지 여부
-	static bool IsServerValue;
-	//현재 스레드가 클라스레드인지 여부
-	static bool IsClientValue;
-
-	static unsigned int NetID;
-
+	//이 프로세스가 호스트(서버)인지 클라이언트인지, 아니면 아예 네트워크에 접속되지 않았는지 여부
+	static NetworkState NowState;
 
 	//클라이언트가 Accept될 때 처리해야 할 작업
 	static void AcceptCallback(SOCKET _Socket, GameEngineNetServer* _Server);
@@ -94,31 +83,20 @@ private:
 	
 
 private:
+	//네트워크에서 이 프로세스 고유의 번호
+	static unsigned int NetID;
+
 	//업데이트 패킷을 보낼때 중복을 피하기 위한 맵 <오브젝트 아이디, 오브젝트 업데이트 패킷 포인터>
 	static std::map<unsigned int, std::shared_ptr<class ObjectUpdatePacket>> AllUpdatePacket;
+	static GameEngineSerializer ChunkUpdatePackets;
 
-	//클라가 LinkObjectPacket을 전송할때 자료구조에 넣기위한 ID값
-	static unsigned int LinkID;
-
-	//클라가 링크 패킷을 보내고 다시 수신받을때, InitServerObject를 해주기 위한 맵 <LinkID, GameEngineNetObject*>
-	static std::map<unsigned int, class GameEngineNetObject*> AllLinkObject;
-
-	static std::vector<std::pair<unsigned int, std::shared_ptr<class LinkObjectPacket>>> AllLinkPacket_TEST;
-
-
+	static std::vector<class GameEngineLevel*> AllBattleLevels;
 
 	static GameEngineLevel* CurLevel;
 
-	inline static GameEngineLevel* GetLevel()
-	{
-		if (nullptr == CurLevel)
-		{
-			MsgAssert("NetwortManager의 CurLevel 포인터가 nullptr입니다");
-		}
+	static PlayerType CharacterType;
 
-		return CurLevel;
-	}
-
+	
 
 
 
@@ -131,6 +109,8 @@ private:
 
 	static std::shared_ptr<GameEngineNetObject> CreateNetActor(Net_ActorType _ActorType, int _ObjectID = -1);
 
+
+	static void CreateLocalPlayer(class GameEngineLevel* _Level, int _ObjectID);
 
 
 	NetworkManager(){}

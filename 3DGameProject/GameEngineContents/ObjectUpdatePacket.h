@@ -32,6 +32,7 @@ protected:
 	{
 		GameEnginePacket::Serialize(_Ser);
 		
+		_Ser << NetID;
 		_Ser << ActorType;
 
 		_Ser << Rotation;
@@ -45,6 +46,7 @@ protected:
 	{
 		GameEnginePacket::DeSeralize(_Ser);
 
+		_Ser >> NetID;
 		_Ser >> ActorType;
 
 		_Ser >> Rotation;
@@ -55,7 +57,7 @@ protected:
 	}
 
 private:
+	unsigned int NetID = -1;
 	unsigned int ActorType = -1;
-	
 };
 

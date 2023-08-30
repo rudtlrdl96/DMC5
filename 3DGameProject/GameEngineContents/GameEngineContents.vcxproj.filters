@@ -157,9 +157,6 @@
     <ClInclude Include="ConsoleGUI.h">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="CreateObjectPacket.h">
-      <Filter>Server\01.Packet\04.ClientToServer</Filter>
-    </ClInclude>
     <ClInclude Include="BaseLevel.h">
       <Filter>Levels</Filter>
     </ClInclude>
@@ -231,9 +228,6 @@
     </ClInclude>
     <ClInclude Include="Char_ChoiceButton.h">
       <Filter>UI\Actor\C_ChoiceUI</Filter>
-    </ClInclude>
-    <ClInclude Include="LinkObjectPacket.h">
-      <Filter>Server\01.Packet\02.Global</Filter>
     </ClInclude>
     <ClInclude Include="EnemyTestLevel.h">
       <Filter>Levels\Test</Filter>

@@ -20,12 +20,6 @@ NetTestPlayer::~NetTestPlayer()
 
 }
 
-/*
-	플레이어의 유의점
-	플레이어를 LevelChangeStart에서 생성할때,
-	Player->SetUserControll을 호출시켜주세요
-	(그래야 UserControll모드가 되어서 직접적으로 조종할 수 있습니다)
-*/
 
 void NetTestPlayer::Start() 
 {
@@ -48,7 +42,6 @@ void NetTestPlayer::Start()
 		GameEngineInput::CreateKey("NetTestForward", 'E');
 		GameEngineInput::CreateKey("NetTestBack", 'Q');
 
-		GameEngineInput::CreateKey("NetTestConnect", 'H');
 		GameEngineInput::CreateKey("NetTestDestroy", 'J');
 	}
 }
@@ -126,15 +119,6 @@ void NetTestPlayer::Update(float _DeltaTime)
 	GetTransform()->AddLocalPosition(MoveDir * 300.f * _DeltaTime);
 
 	
-	if (GameEngineInput::IsDown("NetTestConnect") && false == IsConnect)
-	{
-		if (false == NetworkManager::IsNet())
-			return;
-
-		NetworkManager::LinkNetwork(this);
-		IsConnect = true;
-	}
-
 	if (GameEngineInput::IsDown("NetTestDestroy"))
 	{
 		int ID = GetNetObjectID();
@@ -148,7 +132,7 @@ void NetTestPlayer::Update_SendPacket(float _DeltaTime)
 
 	//NetworkManager를 통해서 업데이트 패킷을 보내면 됩니다.
 	//그 외 패킷은 다른곳에서 보내도 상관없습니다.(아마도)
-	NetworkManager::SendUpdatePacket(this, this, 1.f);
+	NetworkManager::PushUpdatePacket(this, this, 1.f);
 
 	//패킷을 보낼땐 모두 NetworkManager를 통해서 보낼 예정입니다.
 	//추후 다양한 패킷 생성 예정

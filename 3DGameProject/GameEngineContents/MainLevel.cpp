@@ -4,6 +4,9 @@
 #include "NetworkManager.h"
 
 #include "NetTestPlayer.h"
+#include "NetTestEnemy.h"
+
+MainLevel* MainLevel::Inst = nullptr;
 
 #include "JudgementCut.h"
 #include "ZoomEffect.h"
@@ -11,10 +14,12 @@
 
 MainLevel::MainLevel() 
 {
+	Inst = this;
 }
 
 MainLevel::~MainLevel() 
 {
+	Inst = nullptr;
 }
 
 void MainLevel::Start()
@@ -35,13 +40,16 @@ void MainLevel::Start()
 		GameEngineInput::CreateKey("SelectLevel_08", '8');
 		GameEngineInput::CreateKey("SelectLevel_09", '9');
 		GameEngineInput::CreateKey("ReturnToMainLevel", '0');
+
+		GameEngineInput::CreateKey("ConnectServer", 'C');
+		GameEngineInput::CreateKey("CreateTestNetEnemy", 'V');
 	}
 
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -500.0f });
 
-	std::shared_ptr<NetTestPlayer> NewActor = CreateActor<NetTestPlayer>();
-	NewActor->SetUserControllType();
+	/*std::shared_ptr<NetTestPlayer> NewActor = CreateActor<NetTestPlayer>();
+	NewActor->SetUserControllType();*/
 }
 
 void MainLevel::Update(float _DeltaTime)
@@ -82,6 +90,20 @@ void MainLevel::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsDown("SelectLevel_06"))
 	{
 		GameEngineCore::ChangeLevel("StartStageLevel");
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("ConnectServer"))
+	{
+		NetworkManager::ConnectServer(PlayerType::Nero);
+		return;
+	}
+
+	if (true == GameEngineInput::IsDown("CreateTestNetEnemy") && NetworkManager::IsServer())
+	{
+		//std::shared_ptr<NetTestEnemy> Enemy = nullptr;
+		//Enemy = CreateActor<NetTestEnemy>();
+		////Enemy->InitNetObject(GameEngineNetObject::CreateServerID(), )
 		return;
 	}
 }
