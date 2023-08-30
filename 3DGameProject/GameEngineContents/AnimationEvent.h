@@ -10,6 +10,7 @@ public:
 	std::vector<std::function<void()>> CallBacks_void = std::vector<std::function<void()>>();
 	std::vector<std::function<void(int)>> CallBacks_int = std::vector<std::function<void(int)>>();
 	std::vector<std::function<void(float)>> CallBacks_float = std::vector<std::function<void(float)>>();
+	std::vector<std::function<void(float4)>> CallBacks_float4 = std::vector<std::function<void(float4)>>();
 };
 
 enum class EventType

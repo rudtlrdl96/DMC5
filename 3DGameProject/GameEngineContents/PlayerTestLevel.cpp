@@ -52,6 +52,7 @@ void PlayerTestLevel::Update(float _DeltaTime)
 
 void PlayerTestLevel::LevelChangeStart()
 {
+	SetLevelSceneGravity(2000);
 	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
 	Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
 	std::shared_ptr<GameEngineActor> CollisionActor = CreateActor<GameEngineActor>();

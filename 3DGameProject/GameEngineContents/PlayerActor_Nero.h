@@ -44,24 +44,6 @@ public:
 	PlayerActor_Nero& operator=(const PlayerActor_Nero& _Other) = delete;
 	PlayerActor_Nero& operator=(PlayerActor_Nero&& _Other) noexcept = delete;
 
-	/*void ChangeFSM(int _State)
-	{
-		FSM.ChangeState(_State);
-	}*/
-
-	//void InputCheckOn()
-	//{
-	//	InputCheck = true;
-	//}
-	void SetPush(const float4& _Value);
-	void SetSpeed(float _Speed)
-	{
-		DashSpeed = _Speed;
-	}
-
-	float JumpForce = 500.0f;
-	void SetMass(float _Value);
-
 protected:
 	void Start() override;
 	void TestLoad();
@@ -74,6 +56,7 @@ private:
 	float RunSpeed = 450;
 	float DashSpeed = 800;
 	float DashTimer = 0;
+	float JumpForce = 7000.0f;
 	bool InputCheck = false;
 	char CurDir = 'n';
 
