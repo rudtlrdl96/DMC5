@@ -127,6 +127,17 @@ public:
 		return Units[_Index];
 	}
 
+	inline float4 GetBaseColor() const
+	{
+		return BaseValue.BaseColor;
+	}
+
+	inline void SetBaseColor(const float4& _Color)
+	{
+		BaseValue.BaseColor = _Color;
+	}
+
+
 protected:
 	void Start();
 

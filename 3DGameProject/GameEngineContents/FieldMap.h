@@ -21,6 +21,8 @@ protected:
 	void Start();
 	void Update(float _DeltaTime);
 
+	void DrawEditor() override;
+
 private:
 	std::shared_ptr<class GameEngineFBXRenderer> FieldMapRenderer = nullptr;
 	std::vector<std::shared_ptr<class GameEngineCollision>> MapCols;

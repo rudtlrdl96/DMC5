@@ -46,3 +46,19 @@ void FieldMap::Start()
 void FieldMap::Update(float _DeltaTime)
 {
 }
+
+#include <GameEngineCore/imgui.h>
+
+void FieldMap::DrawEditor()
+{
+	ImGui::Spacing();
+	ImGui::Spacing();
+
+	float4 Color = FieldMapRenderer->GetBaseColor();
+
+	float InputColor[4] = { Color.x, Color.y, Color.z, Color.w };
+	ImGui::DragFloat4("Color", InputColor, 0.01f, 0.0f, 1.0f);
+
+	FieldMapRenderer->SetBaseColor(float4(InputColor[0], InputColor[1], InputColor[2], InputColor[3]));
+
+}

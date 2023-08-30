@@ -94,7 +94,7 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
         float Step = ((_Input.POSITION.x + (_Input.POSITION.y * 2)) % 5) + 1;
                 
         // 0 ~ 1        
-        ResultColor.a = 1.0f - (Step / 5.0f);
+        ResultColor.a = 1.0f - ((Step / 5.0f) * (1.0f - BaseColor.a));
     }
     
     return ResultColor;
