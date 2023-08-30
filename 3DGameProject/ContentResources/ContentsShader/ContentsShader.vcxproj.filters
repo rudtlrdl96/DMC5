@@ -43,10 +43,10 @@
     <FxCompile Include="FXAA.hlsl">
       <Filter>PostEffect</Filter>
     </FxCompile>
-    <FxCompile Include="NoneAlphaMesh_MultiTexture.hlsl">
+    <FxCompile Include="ContentsMesh_Mix.hlsl">
       <Filter>MeshShader</Filter>
     </FxCompile>
-    <FxCompile Include="NoneAlphaMeshAniTexture_MultiTexture.hlsl">
+    <FxCompile Include="ContentsAniMesh_Mix.hlsl">
       <Filter>MeshShader</Filter>
     </FxCompile>
     <FxCompile Include="MultiTexture.fx">

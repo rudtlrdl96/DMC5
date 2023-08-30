@@ -1,0 +1,17 @@
+1. ALBM 
+ x = red
+ y = green
+ z = blue
+ w = Metal
+
+2. NRMR
+ x = BINORMAL
+  y = TANGENT
+ z = NORMAL
+
+3. ATOS
+
+ x = Alpha
+ y = Metal Translucency Occlusion SSS
+ z = Metal Translucency Occlusion SSS
+ w = Metal Translucency Occlusion SSS
