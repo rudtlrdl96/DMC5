@@ -14,7 +14,10 @@ public:
 	Nero_InvenToryUI(Nero_InvenToryUI&& _Other) noexcept = delete;
 	Nero_InvenToryUI& operator=(const Nero_InvenToryUI& _Other) = delete;
 	Nero_InvenToryUI& operator=(Nero_InvenToryUI&& _Other) noexcept = delete;
-
+	std::shared_ptr<class GameEngineUIRenderer> GetRender()
+	{
+		return InvenBaseRender;
+	}
 	static void CreateNeroInven(GameEngineLevel* _Level);
 	
 protected:

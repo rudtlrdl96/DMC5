@@ -85,29 +85,20 @@ void Menu_NeroInfo::Start()
 	Nero_InvenToryUI::CreateNeroInven(GetLevel());
 	Nero_InvenToryUI::CreateNeroInven(GetLevel());
 	Nero_InvenToryUI::CreateNeroInven(GetLevel());
-
+	Nero_InvenToryUI::Invens[0]->On();
+	Nero_InvenToryUI::Invens[0]->GetTransform()->SetLocalPosition(CenterPos);
+	Nero_InvenToryUI::Invens[1]->Off();
+	Nero_InvenToryUI::Invens[2]->Off();
 }
 
 void Menu_NeroInfo::Update(float _Delta)
 {
-	if (InvenMinusValue == true)
-	{
-		//벡터의 prevIndex값을 먼저 >>으로 러프한 후 사라지면 ->벡터의 Index 값이 >>으로 러프한다.
-		//PrevIndex의 값은 0 0 0 으로 고정시켜 놓고 index의 값은 -100 0 0 으로 고정시킨후 
-		//prevIndex 값을 100 0 0 으로 러프한 후 alpha가 0 이되면 index을 0 0 0 으로 러프시킨다.
-		//PrevIndex의 값은 -100.0 0 0 으로 고정시켜 놓고 
-		//index의 값은 0 0 0 으로 고정시킨후 
-		int asd = Index;
-		InvenMinusValue = false;
-		int a = 0;
-		Test.push_back(1);
-	}
-	if (InvenPlusValue == true)
-	{
-		int asd = Index;
-		InvenPlusValue = false;
-		Test.push_back(1);
-	}
+	//if (StartInven == false)
+	//{
+	//	Nero_InvenToryUI::Invens[0]->On();
+	//	StartInven
+	//}
+	MoveInven(_Delta);
 	if (Index == 0)
 	{
 		FontRender->SetText("MAGAZINE");
@@ -121,7 +112,7 @@ void Menu_NeroInfo::Update(float _Delta)
 		FontRender->SetText("MAGAZINE02");
 	}
 
-	if (InvenPlusValue == false && true == GameEngineInput::IsUp("UI_Tab"))
+	if (InvenPlusValue == false && true == GameEngineInput::IsUp("UI_Tab") && InvenMinusValue == false)
 	{
 		PrevIndex = Index;
 		if (Index == 2)
@@ -133,6 +124,100 @@ void Menu_NeroInfo::Update(float _Delta)
 		{
 			InvenPlusValue = true;
 			Index++;
+		}
+	}
+}
+
+void Menu_NeroInfo::MoveInven(float _Delta)
+{
+	if (InvenMinusValue == true)
+	{
+		Speed += _Delta;
+		// 0번 러프후 2번 러프
+		if (SetPosValue == false)
+		{
+			Nero_InvenToryUI::Invens[PrevIndex]->GetTransform()->SetLocalPosition(CenterPos);
+			Nero_InvenToryUI::Invens[Index]->GetTransform()->SetLocalPosition(LeftPos);
+			Nero_InvenToryUI::Invens[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a = 1.0f;
+			Nero_InvenToryUI::Invens[PrevIndex]->On();
+			SetPosValue = true;
+		}
+		if (ScendMove == true)
+		{
+			Nero_InvenToryUI::Invens[Index]->GetRender()->ColorOptionValue.MulColor.a = 0.5f;
+			Nero_InvenToryUI::Invens[Index]->On();
+			float4 M1 = float4::LerpClamp(LeftPos, CenterPos, Ratio * Speed);
+			Nero_InvenToryUI::Invens[Index]->GetTransform()->SetLocalPosition(M1);
+			if (Nero_InvenToryUI::Invens[Index]->GetRender()->ColorOptionValue.MulColor.a <= 1.0f)
+			{
+				Nero_InvenToryUI::Invens[Index]->GetRender()->ColorOptionValue.MulColor.a += Speed * 0.5f;
+			}
+			if (Nero_InvenToryUI::Invens[Index]->GetTransform()->GetLocalPosition() == CenterPos)
+			{
+				InvenMinusValue = false;
+				SetPosValue = false;
+				ScendMove = false;
+				Nero_InvenToryUI::Invens[Index]->GetRender()->ColorOptionValue.MulColor.a = 1.0f;
+				Speed = 0.0f;
+			}
+
+		}
+		else if (ScendMove == false)
+		{
+			float4 M0 = float4::LerpClamp(CenterPos, RightPos, Ratio * Speed);
+			Nero_InvenToryUI::Invens[PrevIndex]->GetTransform()->SetLocalPosition(M0);
+			Nero_InvenToryUI::Invens[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a -= Speed * 0.5f;
+			if (Nero_InvenToryUI::Invens[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a <= 0.5f)
+			{
+				Nero_InvenToryUI::Invens[PrevIndex]->Off();
+				ScendMove = true;
+
+			}
+		}
+	}
+	if (InvenPlusValue == true)
+	{
+		Speed += _Delta;
+		// 0번 러프후 2번 러프
+		if (SetPosValue == false)
+		{
+			Nero_InvenToryUI::Invens[PrevIndex]->GetTransform()->SetLocalPosition(CenterPos);
+			Nero_InvenToryUI::Invens[Index]->GetTransform()->SetLocalPosition(RightPos);
+			Nero_InvenToryUI::Invens[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a = 1.0f;
+			Nero_InvenToryUI::Invens[PrevIndex]->On();
+			SetPosValue = true;
+		}
+		if (ScendMove == true)
+		{
+			Nero_InvenToryUI::Invens[Index]->GetRender()->ColorOptionValue.MulColor.a = 0.5f;
+			Nero_InvenToryUI::Invens[Index]->On();
+			float4 M1 = float4::LerpClamp(RightPos, CenterPos, Ratio * Speed);
+			Nero_InvenToryUI::Invens[Index]->GetTransform()->SetLocalPosition(M1);
+			if (Nero_InvenToryUI::Invens[Index]->GetRender()->ColorOptionValue.MulColor.a <= 1.0f)
+			{
+				Nero_InvenToryUI::Invens[Index]->GetRender()->ColorOptionValue.MulColor.a += Speed * 0.5f;
+			}
+			if (Nero_InvenToryUI::Invens[Index]->GetTransform()->GetLocalPosition() == CenterPos)
+			{
+				InvenPlusValue = false;
+				SetPosValue = false;
+				ScendMove = false;
+				Nero_InvenToryUI::Invens[Index]->GetRender()->ColorOptionValue.MulColor.a = 1.0f;
+				Speed = 0.0f;
+			}
+
+		}
+		else if (ScendMove == false)
+		{
+			float4 M0 = float4::LerpClamp(CenterPos, LeftPos, Ratio * Speed);
+			Nero_InvenToryUI::Invens[PrevIndex]->GetTransform()->SetLocalPosition(M0);
+			Nero_InvenToryUI::Invens[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a -= Speed * 0.5f;
+			if (Nero_InvenToryUI::Invens[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a <= 0.5f)
+			{
+				Nero_InvenToryUI::Invens[PrevIndex]->Off();
+				ScendMove = true;
+
+			}
 		}
 	}
 }
