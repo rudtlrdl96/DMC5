@@ -74,6 +74,11 @@ public:
 	//Reset ÇÔ¼ö
 	void ResetDynamic();
 
+	void SetLinearVelocityZero()
+	{
+		m_pDynamic->setLinearVelocity({ 0.0f, 0.0f, 0.0f });
+	}
+
 	inline void SetlockAxis()
 	{
 		m_pDynamic->setRigidDynamicLockFlags(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X | physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y | physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z);
