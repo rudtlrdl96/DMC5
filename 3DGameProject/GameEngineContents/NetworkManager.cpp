@@ -30,6 +30,7 @@ std::vector<GameEngineLevel*> NetworkManager::AllBattleLevels;
 GameEngineLevel* NetworkManager::CurLevel = nullptr;
 
 std::map<unsigned int, std::shared_ptr<ObjectUpdatePacket>> NetworkManager::AllUpdatePacket;
+std::vector<std::shared_ptr<class MessageChatPacket>> NetworkManager::AllMsgChatPacket;
 GameEngineSerializer NetworkManager::ChunkUpdatePackets;
 
 PlayerType NetworkManager::CharacterType = PlayerType::None;
@@ -121,13 +122,15 @@ void NetworkManager::ConnectServer(PlayerType _CharacterType)
 }
 
 
-void NetworkManager::SendChat(const std::string_view& _Msg)
+void NetworkManager::PushChat(const std::string_view& _Msg)
 {
 	std::shared_ptr<MessageChatPacket> ChatPacket = std::make_shared<MessageChatPacket>();
 	ChatPacket->SetPacketID(PacketEnum::MessageChatPacket);
 	ChatPacket->SetObjectID(NetID);
 	ChatPacket->Message = _Msg;
-	NetInst->SendPacket(ChatPacket);
+
+	//NetInst->SendPacket(ChatPacket);
+	AllMsgChatPacket.push_back(ChatPacket);
 }
 
 
@@ -229,6 +232,13 @@ void NetworkManager::FlushUpdatePacket()
 	//자료구조, 직렬화 버퍼 클리어
 	AllUpdatePacket.clear();
 	ChunkUpdatePackets.Reset();
+
+
+	for (size_t i = 0; i < AllMsgChatPacket.size(); i++)
+	{
+		NetInst->SendPacket(AllMsgChatPacket[i]);
+	}
+	AllMsgChatPacket.clear();
 }
 
 

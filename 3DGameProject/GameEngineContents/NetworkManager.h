@@ -67,7 +67,7 @@ public:
 	}
 
 
-	static void SendChat(const std::string_view& _Msg);
+	static void PushChat(const std::string_view& _Msg);
 
 
 	//Update패킷을 보낼때 이 인터페이스를 이용해서 보내주시면 됩니다.
@@ -105,6 +105,7 @@ private:
 
 	//업데이트 패킷을 보낼때 중복을 피하기 위한 맵 <오브젝트 아이디, 오브젝트 업데이트 패킷 포인터>
 	static std::map<unsigned int, std::shared_ptr<class ObjectUpdatePacket>> AllUpdatePacket;
+	static std::vector<std::shared_ptr<class MessageChatPacket>> AllMsgChatPacket;
 	static GameEngineSerializer ChunkUpdatePackets;
 
 	static std::vector<class GameEngineLevel*> AllBattleLevels;

@@ -167,7 +167,7 @@ void NetworkGUI::Update_OnFieldStage()
 
 		std::string Msg = NickName + " : " + Message;
 		PrintLog(Msg);
-		NetworkManager::SendChat(Msg);
+		NetworkManager::PushChat(Msg);
 		for (char& C : Message)
 			C = 0;
 	}

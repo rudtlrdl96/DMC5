@@ -43,7 +43,7 @@ void NetworkManager::ClientPacketInit()
 		//연결 성공 메세지 보내기
 		const std::string& ClientName = NetworkGUI::GetInst()->GetNickName();
 		std::string ChatMsg = ClientName + " Success Server Connect";
-		SendChat(ChatMsg);
+		PushChat(ChatMsg);
 	});
 
 
