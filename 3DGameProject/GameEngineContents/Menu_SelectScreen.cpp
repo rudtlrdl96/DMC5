@@ -34,11 +34,6 @@ void Menu_SelectScreen::Start()
 	MissionButton->SetEvent([this]()
 		{
 			NetworkManager::ConnectServer(PlayerType::Nero);
-			NetworkManager::ConnectServer(PlayerType::Nero);
-			NetworkManager::ConnectServer(PlayerType::Nero);
-			NetworkManager::ConnectServer(PlayerType::Nero);
-			NetworkManager::ConnectServer(PlayerType::Nero);
-
 			GameEngineCore::ChangeLevel("MainLevel");
 		});
 	CustomizeButton = GetLevel()->CreateActor<UIButton>();
