@@ -14,6 +14,9 @@
 #include "StartStageLevel.h"
 #include "BossStageLevel.h"
 
+#include "PlayerActor_Nero.h"
+#include "PlayerActor_Vergil.h"
+
 unsigned int NetworkManager::NetID = 0;
 
 GameEngineNet* NetworkManager::NetInst = nullptr;
@@ -217,7 +220,7 @@ void NetworkManager::FlushUpdatePacket()
 }
 
 
-#include "NetTestPlayer.h"
+
 
 std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorType _ActorType, int _ObjectID /*= -1*/)
 {
@@ -230,10 +233,10 @@ std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorTyp
 	switch (_ActorType)
 	{
 	case Net_ActorType::Nero:
-		NetObject = CurLevel->CreateActor<NetTestPlayer>();	//이거 나중에 꼭 바꿀것
+		NetObject = CurLevel->CreateActor<PlayerActor_Nero>();	
 		break;
 	case Net_ActorType::Vergil:
-		NetObject = CurLevel->CreateActor<NetTestPlayer>();	//이거 나중에 꼭 바꿀것
+		NetObject = CurLevel->CreateActor<PlayerActor_Vergil>();	
 		break;
 	default:
 	{
@@ -256,13 +259,11 @@ std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorTyp
 }
 
 
-
-
-//#include "BasePlayerActor"	//얘가 네로랑 버질의 부모면서 NetObject 상속받음, 나중에 _Type 으로 분리처리 해주자
+#include <GameEngineCore/PhysXCapsuleComponent.h>
 
 void NetworkManager::CreateLocalPlayer(class GameEngineLevel* _Level, int _ObjectID)
 {
-	//std::shared_ptr<BasePlayerActor> Player = nullptr;
+	std::shared_ptr<BasePlayerActor> Player = nullptr;
 
 	if (PlayerType::None == CharacterType)
 	{
@@ -270,16 +271,14 @@ void NetworkManager::CreateLocalPlayer(class GameEngineLevel* _Level, int _Objec
 	}
 	else if (PlayerType::Nero == CharacterType)
 	{
-
+		Player = _Level->CreateActor<PlayerActor_Nero>();
 	}
 	else if (PlayerType::Vergil == CharacterType)
 	{
-
+		Player = _Level->CreateActor<PlayerActor_Vergil>();
 	}
 
-	std::shared_ptr<NetTestPlayer> Player = nullptr;
-	Player = _Level->CreateActor<NetTestPlayer>();
 	Player->InitNetObject(_ObjectID, NetInst);
-	
 	Player->SetUserControllType();
+	Player->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
 }

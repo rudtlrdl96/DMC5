@@ -49,11 +49,6 @@ void MainLevel::Start()
 
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -500.0f });
-
-	/*std::shared_ptr<NetTestPlayer> NewActor = CreateActor<NetTestPlayer>();
-	NewActor->SetUserControllType();*/
-
-	//std::shared_ptr<Plane> Flat = CreateActor<Plane>();
 }
 
 void MainLevel::Update(float _DeltaTime)
@@ -114,6 +109,7 @@ void MainLevel::Update(float _DeltaTime)
 void MainLevel::LevelChangeStart()
 {
 	GameEngineLevel::LevelChangeStart();
+	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
 }
 
 void MainLevel::LevelChangeEnd()
