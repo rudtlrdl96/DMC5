@@ -38,6 +38,9 @@ void Enemy_Empusa::EnemyTypeLoad()
 	EnemyCodeValue = EnemyCode::Empusa;
 	EnemyTypeValue = EnemyType::Normal;
 	EnemySizeValue = EnemySize::Middle;
+	EnemyHP = 0;
+	RN_Range = float4::ZERO;;
+	//RN_Player = false;
 }
 
 void Enemy_Empusa::EnemyAnimationLoad()
@@ -119,7 +122,7 @@ void Enemy_Empusa::Attack_Exit()
 
 void Enemy_Empusa::Hit_Enter()
 {
-	EnemyRenderer->ChangeAnimation("em0100_angledamage_front");
+	//EnemyRenderer->ChangeAnimation("em0100_angledamage_front");
 	//EnemyRenderer->ChangeAnimation("em0100_angledamage_left");
 	//EnemyRenderer->ChangeAnimation("em0100_angledamage_right");
 	//EnemyRenderer->ChangeAnimation("em0100_angledamage_back");
@@ -129,11 +132,10 @@ void Enemy_Empusa::Hit_Enter()
 
 void Enemy_Empusa::Hit_Update(float _DeltaTime)
 {
-	int a = 0;
-	if (true==EnemyRenderer->IsAnimationEnd())
+	/*if (true==EnemyRenderer->IsAnimationEnd())
 	{
 		EnemyFSM.ChangeState(EnemyState::M_Idle);
-	}
+	}*/
 }
 
 void Enemy_Empusa::Hit_Exit()
@@ -143,7 +145,7 @@ void Enemy_Empusa::Hit_Exit()
 
 void Enemy_Empusa::Death_Enter()
 {
-	EnemyRenderer->ChangeAnimation("em0100_death_front");
+	//EnemyRenderer->ChangeAnimation("em0100_death_front");
 	//EnemyRenderer->ChangeAnimation("em0100_death_left");
 	//EnemyRenderer->ChangeAnimation("em0100_death_right");
 	//EnemyRenderer->ChangeAnimation("em0100_death_back");
@@ -191,4 +193,9 @@ void Enemy_Empusa::Buster_Update(float _DeltaTime)
 
 void Enemy_Empusa::Buster_Exit()
 {
+}
+
+void Enemy_Empusa::RN_Idle()
+{
+	
 }

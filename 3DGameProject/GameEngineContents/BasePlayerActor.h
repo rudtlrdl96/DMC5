@@ -33,6 +33,7 @@ public:
 	void SetForce(float4 _Value);
 	void SetPush(float4 _Value);
 	void SetMove(float4 _Value);
+	void SetWorldPosition(float4 _Value);
 
 protected:
 	void Start() override;
