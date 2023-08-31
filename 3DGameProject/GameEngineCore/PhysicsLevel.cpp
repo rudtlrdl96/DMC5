@@ -13,7 +13,6 @@ PhysicsLevel::~PhysicsLevel()
 {
 }
 
-
 // 皋葛府力芭
 void PhysicsLevel::ReleasePhysicsX()
 {
@@ -151,8 +150,6 @@ void PhysicsLevel::CreatePhysicsX()
 	{
 		MsgAssert("PxCooking 积己 角菩");
 	}
-
-	StepSize = 1.0f / 60.0f;
 
 	// Aggregate积己
 	//MapAggregate_ = Physics_->createAggregate(2000, false);

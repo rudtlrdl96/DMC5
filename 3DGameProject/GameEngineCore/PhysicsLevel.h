@@ -87,12 +87,7 @@ private:
 	physx::PxCooking* m_pCooking = nullptr;
 
 	CustomCallback* CustomCallbackEvent;
-
-	float WaitTime = 0.0f;
-	float StepSize = 0;
 	float CurGravity = 0.0f;
-
-	void advance(physx::PxReal _DeltaTime);
 
 };
 
