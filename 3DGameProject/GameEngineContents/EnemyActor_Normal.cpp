@@ -91,6 +91,7 @@ void EnemyActor_Normal::Start()
 
 void EnemyActor_Normal::Update(float _DeltaTime)
 {
+	//Test용 업데이트(user update가 안돌아서)
 	EnemyFSM.Update(_DeltaTime);
 }
 

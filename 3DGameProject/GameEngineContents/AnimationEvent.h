@@ -56,7 +56,7 @@ public:
 	AnimationEvent()
 	{
 		AnimationName = "";
-		Speed = 6.0f;
+		Speed = 1.0f;
 		Events = std::map<size_t, std::vector<EventData>>();
 	}
 
@@ -87,7 +87,7 @@ public:
 	void Clear()
 	{
 		AnimationName = " ";
-		Speed = 6.0f;
+		Speed = 1.0f;
 		Events.clear();
 	}
 protected:
