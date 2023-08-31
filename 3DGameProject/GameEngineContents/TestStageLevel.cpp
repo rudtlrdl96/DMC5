@@ -87,5 +87,4 @@ void TestStageLevel::LevelChangeStart()
 	CreateActor<FreeCameraActor>();
 
 	CreateStage(AllStageDatas[0]);
-	CreateActor<TestObject>();
 }
