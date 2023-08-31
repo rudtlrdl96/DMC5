@@ -101,9 +101,10 @@ void AnimationEvent::LoadAll(const AnimLoadParameter& _Parameter)
 			break;
 		}
 		// 애니메이션 생성
-		_Parameter.Renderer->CreateFBXAnimation(Event.AnimationName, Event.AnimationName + ".FBX");
+		_Parameter.Renderer->CreateFBXAnimation(Event.AnimationName, Event.AnimationName + ".FBX", {.Inter = 0.01666f,});
 		// .animation 내용 적용
 		std::shared_ptr<GameEngineFBXAnimationInfo> AnimInfo = _Parameter.Renderer->GetAnimation(Event.AnimationName);
+		AnimInfo->Loop = Event.Loop; // 루프 적용
 		AnimInfo->TimeScale = Event.Speed; // 속도 적용
 
 		// 애니메이션 이벤트 구현

@@ -210,6 +210,7 @@ void AnimationToolWindow::AnimationTimeLine()
 
 	// 애니메이션 속도 조절
 	ImGui::DragFloat("Speed", &AnimEvent.Speed, 0.1f, 0.0f, 20.0f);
+	ImGui::Checkbox("Loop", &AnimEvent.Loop);
 	if (IsStop)
 	{
 		Renderer->CurAnimation->CurFrame = CurrentFrame;
@@ -229,6 +230,7 @@ void AnimationToolWindow::AnimationTimeLine()
 	{
 		IsStop = false;
 		Renderer->CurAnimation->TimeScale = AnimEvent.Speed;
+		Renderer->CurAnimation->Loop = AnimEvent.Loop;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Stop"))
@@ -423,6 +425,7 @@ void AnimationToolWindow::MeshCreate(std::shared_ptr<GameEngineLevel> _Level)
 		PhysXCapsule->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
 		PhysXCapsule->CreatePhysXActors(_Level->GetLevelScene(), _Level->GetLevelPhysics(), { 150, 100, 150 });
 		PhysXCapsule->GetDynamic()->setMass(5.0f);
+		PhysXCapsule->TurnOffGravity();
 	}
 
 	Renderer = Actor->CreateComponent<GameEngineFBXRenderer>();
@@ -444,7 +447,7 @@ void AnimationToolWindow::AnimationCreate(std::shared_ptr<GameEngineLevel> Level
 	std::string UpperName = GameEngineString::ToUpper(AnimationName);
 	if (Renderer->Animations.end() == Renderer->Animations.find(UpperName))
 	{
-		Renderer->CreateFBXAnimation(UpperName, AnimationFBXName);
+		Renderer->CreateFBXAnimation(UpperName, AnimationFBXName, {.Inter = 0.01666f, .Loop = true});
 	}
 	AnimEvent.AnimationName = AnimationName;
 	Renderer->ChangeAnimation(UpperName);
@@ -460,7 +463,6 @@ void AnimationToolWindow::AnimationFrameUpdate()
 		PhysXCapsule->SetWorldPosition(float4::ZERO);
 		
 	}
-	BaseLog::PushLog(0, Actor->GetTransform()->GetWorldPosition().ToString());
 	// 프리뷰 화면에서 애니메이션 이벤트의 내용을 표시하는 함수(프레임이 변경시 실행해줍니다)
 	std::vector<EventData>::iterator Iter = AnimEvent.Events[CurrentFrame].begin();
 	std::vector<EventData>::iterator End = AnimEvent.Events[CurrentFrame].end();

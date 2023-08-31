@@ -64,6 +64,7 @@ public:
 	{
 		_File << AnimationName;
 		_File << Speed;
+		_File << Loop;
 		EventsWrite(_File);
 	}
 
@@ -71,6 +72,7 @@ public:
 	{
 		_File >> AnimationName;
 		_File >> Speed;
+		_File >> Loop;
 		EventsRead(_File);
 	}
 
@@ -92,7 +94,8 @@ protected:
 
 private:
 	std::string AnimationName;
-	float Speed = 6.0;
+	float Speed = 1.0;
+	bool Loop = true;
 	std::map<size_t, std::vector<EventData>> Events;
 };
 

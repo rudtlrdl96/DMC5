@@ -388,7 +388,7 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh(const st
 	//}
 //}
 
-void GameEngineFBXRenderer::CreateFBXAnimation(const std::string& _AnimationName, const std::string& _AnimationFBXName, int _Index)
+void GameEngineFBXRenderer::CreateFBXAnimation(const std::string& _AnimationName, const std::string& _AnimationFBXName, const AnimationCreateParams& _Params, int _Index)
 {
 	// 애니메이션 방식은 무조건 1개일것이라고 보고.
 	std::string UpperName = GameEngineString::ToUpper(_AnimationName);
@@ -425,6 +425,8 @@ void GameEngineFBXRenderer::CreateFBXAnimation(const std::string& _AnimationName
 	NewAnimation->Mesh = GetFBXMesh();
 	NewAnimation->Aniamtion = Animation;
 	NewAnimation->ParentRenderer = this;
+	NewAnimation->Inter = _Params.Inter;
+	NewAnimation->Loop = _Params.Loop;
 	NewAnimation->Reset();
 	NewAnimation->Init(_AnimationName, _Index);
 
@@ -441,7 +443,7 @@ void GameEngineFBXRenderer::PauseSwtich()
 	Pause = !Pause;
 }
 
-void GameEngineFBXRenderer::ChangeAnimation(const std::string& _AnimationName)
+void GameEngineFBXRenderer::ChangeAnimation(const std::string& _AnimationName, bool _Force /*= false*/)
 {
 	std::string UpperName = GameEngineString::ToUpper(_AnimationName);
 
@@ -453,7 +455,13 @@ void GameEngineFBXRenderer::ChangeAnimation(const std::string& _AnimationName)
 		return;
 	}
 
+	if (false == _Force && CurAnimation == FindIter->second)
+	{
+		return;
+	}
+
 	CurAnimation = FindIter->second;
+
 	CurAnimation->CurFrame = 0;
 	CurAnimation->IsEnd = false;
 
@@ -464,6 +472,7 @@ void GameEngineFBXRenderer::ChangeAnimation(const std::string& _AnimationName)
 			CurAnimation->AnimationEvent[0][i]();
 		}
 	}
+
 }
 
 bool GameEngineFBXRenderer::IsAnimationEnd()
