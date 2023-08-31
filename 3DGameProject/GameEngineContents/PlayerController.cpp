@@ -226,11 +226,11 @@ void PlayerController::ActionInput()
 	// Jump
 	if (GameEngineInput::IsDown("Player_Jump"))
 	{
-		if (true == InputCheck_Dir('4'))
+		if (true == InputCheck_Dir('4') || true == InputCheck_Dir('1') || true == InputCheck_Dir('7'))
 		{
 			IsLeftJump = true;
 		}
-		else if (true == InputCheck_Dir('6'))
+		else if (true == InputCheck_Dir('6') || true == InputCheck_Dir('3') || true == InputCheck_Dir('9'))
 		{
 			IsRightJump = true;
 		}

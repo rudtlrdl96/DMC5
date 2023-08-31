@@ -206,7 +206,31 @@ void AnimationToolWindow::AnimationTimeLine()
 		CurrentFrame++;
 	}
 	ImGui::SameLine();
+	if (ImGui::Button("<<") && 0 < CurrentFrame)
+	{
+		while (0 < --CurrentFrame)
+		{
+			if (0 < AnimEvent.Events[CurrentFrame].size())
+			{
+				break;
+			}
+		}
+	}
+	ImGui::SameLine();
+	if (ImGui::Button(">>") && CurrentFrame < FrameSize)
+	{
+		while (++CurrentFrame < FrameSize)
+		{
+			if (0 < AnimEvent.Events[CurrentFrame].size())
+			{
+				break;
+			}
+		}
+	}
+	ImGui::SameLine();
 	ImGui::Text((" (" + std::to_string(CurrentFrame) + " / " + std::to_string(FrameSize) + ")").c_str());
+
+
 
 	// 애니메이션 속도 조절
 	ImGui::DragFloat("Speed", &AnimEvent.Speed, 0.1f, 0.0f, 20.0f);
@@ -237,6 +261,12 @@ void AnimationToolWindow::AnimationTimeLine()
 	{
 		IsStop = true;
 		Renderer->CurAnimation->TimeScale = 0;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Reset"))
+	{
+		PhysXCapsule->SetLinearVelocityZero();
+		PhysXCapsule->SetWorldPosition(float4::ZERO);
 	}
 }
 
