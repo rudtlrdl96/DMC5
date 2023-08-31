@@ -1,12 +1,6 @@
 #include "PrecompileHeader.h"
 #include "MainLevel.h"
 
-#include "NetworkManager.h"
-
-#include "NetTestPlayer.h"
-#include "NetTestEnemy.h"
-
-MainLevel* MainLevel::Inst = nullptr;
 
 #include "JudgementCut.h"
 #include "ZoomEffect.h"
@@ -14,6 +8,10 @@ MainLevel* MainLevel::Inst = nullptr;
 
 #include "ShaderTestActor.h"
 #include "Plane.h"
+
+
+
+MainLevel* MainLevel::Inst = nullptr;
 
 MainLevel::MainLevel() 
 {
@@ -44,9 +42,6 @@ void MainLevel::Start()
 		GameEngineInput::CreateKey("SelectLevel_08", '8');
 		GameEngineInput::CreateKey("SelectLevel_09", '9');
 		GameEngineInput::CreateKey("ReturnToMainLevel", '0');
-
-		GameEngineInput::CreateKey("ConnectServer", 'C');
-		GameEngineInput::CreateKey("CreateTestNetEnemy", 'V');
 	}
 
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
@@ -101,17 +96,9 @@ void MainLevel::Update(float _DeltaTime)
 		GameEngineCore::ChangeLevel("MonsterTestLevel");
 		return;
 	}
-
-	if (true == GameEngineInput::IsDown("ConnectServer"))
+	if (true == GameEngineInput::IsDown("SelectLevel_08"))
 	{
-		NetworkManager::ConnectServer(PlayerType::Nero);
-		return;
-	}
-
-	if (true == GameEngineInput::IsDown("CreateTestNetEnemy") && NetworkManager::IsServer())
-	{
-		std::shared_ptr<NetTestPlayer> OtherPlayer = nullptr;
-		OtherPlayer = NetworkManager::CreateNetworkActor<NetTestPlayer>(Net_ActorType::Nero);
+		GameEngineCore::ChangeLevel("NetworkTestLevel");
 		return;
 	}
 }

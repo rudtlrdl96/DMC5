@@ -6,6 +6,7 @@
 
 #include "PlayerTestLevel.h"
 #include "ShaderTestLevel.h"
+#include "NetworkTestLevel.h"
 
 //UI
 #include "MainLevel.h"
@@ -23,6 +24,7 @@
 #include "StartStageLevel.h"
 #include "StageEditLevel.h"
 #include "MonsterTestLevel.h"
+
 
 #include "AnimationToolLevel.h"
 ContentsCore::ContentsCore() 
@@ -51,6 +53,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<BossStageLevel>();
 	GameEngineCore::CreateLevel<StartStageLevel>();
 	GameEngineCore::CreateLevel<ShaderTestLevel>();
+	GameEngineCore::CreateLevel<NetworkTestLevel>();
 	GameEngineCore::CreateLevel<MonsterTestLevel>();
 	GameEngineCore::CreateLevel<PlayUITestLevel>();
 	GameEngineCore::CreateLevel<Nero_ShopLevel>();

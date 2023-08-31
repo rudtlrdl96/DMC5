@@ -328,6 +328,9 @@
     <ClInclude Include="ShaderTestActor.h">
       <Filter>Actor\Test</Filter>
     </ClInclude>
+    <ClInclude Include="NetworkTestLevel.h">
+      <Filter>Levels\Test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -647,6 +650,9 @@
     </ClCompile>
     <ClCompile Include="ShaderTestActor.cpp">
       <Filter>Actor\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkTestLevel.cpp">
+      <Filter>Levels\Test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
