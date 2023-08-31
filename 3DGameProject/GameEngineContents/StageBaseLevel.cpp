@@ -5,6 +5,7 @@
 #include "NetworkManager.h"
 #include "SkyBox.h"
 #include "NavMesh.h"
+#include "ContentGrid.h"
 
 std::vector<StageData> StageBaseLevel::AllStageDatas;
 
@@ -34,17 +35,18 @@ void StageBaseLevel::LoadAllStageData()
 
 void StageBaseLevel::Start()
 {
-	if (!GameEngineInput::IsKey("StageTestKey"))
-	{
-		GameEngineInput::CreateKey("StageTestKey", 'M');
-	}
-
+	CreateScene(GetName());
 	LoadAllStageData();
 }
 
 void StageBaseLevel::Update(float _DeltaTime)
 {
 	BaseLevel::Update(_DeltaTime);
+}
+
+void StageBaseLevel::LevelChangeStart()
+{
+	DebugGrid = CreateActor<ContentGrid>();
 }
 
 void StageBaseLevel::CreateStage(const StageData& _Data)

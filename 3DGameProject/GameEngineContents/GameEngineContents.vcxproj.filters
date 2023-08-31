@@ -334,6 +334,12 @@
     <ClInclude Include="NavMesh.h">
       <Filter>Actor\Stage</Filter>
     </ClInclude>
+    <ClInclude Include="ContentGrid.h">
+      <Filter>Actor\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="TestStageLevel.h">
+      <Filter>Levels\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -659,6 +665,12 @@
     </ClCompile>
     <ClCompile Include="NavMesh.cpp">
       <Filter>Actor\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="ContentGrid.cpp">
+      <Filter>Actor\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="TestStageLevel.cpp">
+      <Filter>Levels\Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

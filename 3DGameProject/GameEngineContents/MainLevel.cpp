@@ -48,7 +48,6 @@ void MainLevel::Start()
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -500.0f });
 
 	CreateActor<ShaderTestActor>()->GetTransform()->SetLocalPosition({0, 10, 0});
-	CreateActor<Plane>();
 }
 
 void MainLevel::Update(float _DeltaTime)
@@ -88,7 +87,7 @@ void MainLevel::Update(float _DeltaTime)
 	}
 	if (true == GameEngineInput::IsDown("SelectLevel_06"))
 	{
-		GameEngineCore::ChangeLevel("StartStageLevel");
+		GameEngineCore::ChangeLevel("TestStageLevel");
 		return;
 	}
 	if (true == GameEngineInput::IsDown("SelectLevel_07"))

@@ -24,9 +24,7 @@ protected:
 
 private:
 
-
 	static StartStageLevel* Inst;
-
 
 };
 

@@ -22,6 +22,7 @@
 //Map
 #include "BossStageLevel.h"
 #include "StartStageLevel.h"
+#include "TestStageLevel.h"
 #include "StageEditLevel.h"
 #include "MonsterTestLevel.h"
 
@@ -51,7 +52,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<EnemyTestLevel>();
 	GameEngineCore::CreateLevel<AnimationToolLevel>();
 	GameEngineCore::CreateLevel<BossStageLevel>();
-	GameEngineCore::CreateLevel<StartStageLevel>();
+	GameEngineCore::CreateLevel<TestStageLevel>();
 	GameEngineCore::CreateLevel<ShaderTestLevel>();
 	GameEngineCore::CreateLevel<NetworkTestLevel>();
 	GameEngineCore::CreateLevel<MonsterTestLevel>();

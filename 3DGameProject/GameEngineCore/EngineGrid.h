@@ -26,16 +26,15 @@ protected:
 	void Update(float _Delta) override;
 	void Render(float _Delta) override;
 
+	std::shared_ptr<class GameEngineRenderer> Renderer = nullptr;
+
 private:
 	GridData GridDataInst;
-
 
 	float4 MinGridInter = { 100.0f, 5.0f, 100.0f, };
 
 	float4 MinSize = { 10000.0f, 1.0f, 10000.0f };
 
 	float Inter = 100.0f;
-
-	std::shared_ptr<class GameEngineRenderer> Renderer = nullptr;
 };
 

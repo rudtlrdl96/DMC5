@@ -1,5 +1,5 @@
 #include "PrecompileHeader.h"
-#include "StartStageLevel.h"
+#include "TestStageLevel.h"
 #include "NetworkManager.h"
 #include <GameEngineCore/GameEngineFBXMesh.h>
 #include "FreeCameraActor.h"
@@ -12,19 +12,19 @@
 #include "Plane.h"
 #include "TestObject.h"
 
-StartStageLevel* StartStageLevel::Inst = nullptr;
+TestStageLevel* TestStageLevel::Inst = nullptr;
 
-StartStageLevel::StartStageLevel()
+TestStageLevel::TestStageLevel()
 {
 	Inst = this;
 }
 
-StartStageLevel::~StartStageLevel()
+TestStageLevel::~TestStageLevel()
 {
 	Inst = nullptr;
 }
 
-void StartStageLevel::Start()
+void TestStageLevel::Start()
 {
 	GetCamera(0)->ReflectionOn();
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
@@ -35,12 +35,12 @@ void StartStageLevel::Start()
 
 }
 
-void StartStageLevel::Update(float _DeltaTime)
+void TestStageLevel::Update(float _DeltaTime)
 {
 	StageBaseLevel::Update(_DeltaTime);
 }
 
-void StartStageLevel::LevelChangeStart()
+void TestStageLevel::LevelChangeStart()
 {
 	StageBaseLevel::LevelChangeStart();
 	{
@@ -89,9 +89,3 @@ void StartStageLevel::LevelChangeStart()
 	CreateStage(AllStageDatas[0]);
 	CreateActor<TestObject>();
 }
-
-
-
-
-
-
