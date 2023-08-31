@@ -13,6 +13,7 @@
 #include "GameEngineDevice.h"
 #include "GameEngineVideo.h"
 #include "GameEngineGUI.h"
+#include "GameEnginePhysics.h"
 
 GameEngineThreadJobQueue GameEngineCore::JobQueue;
 
@@ -68,6 +69,7 @@ void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 	GameEngineDevice::Initialize();        // 다이렉트 디바이스 생성
 	CoreResourcesInit();                   // 다이렉트 리소스 생성
 	GameEngineGUI::Initialize();           // Imgui 생성
+	GameEnginePhysics::CreatePhysicsX();
 
 	if (nullptr == _ContentsStart)
 	{
@@ -114,7 +116,6 @@ void GameEngineCore::EngineUpdate()
 		if (nullptr != MainLevel)
 		{
 			MainLevel->LevelChangeEnd();
-			MainLevel->ReleasePhysicsX();
 			MainLevel->ActorLevelChangeEnd();
 		}
 
@@ -123,7 +124,6 @@ void GameEngineCore::EngineUpdate()
 		if (nullptr != MainLevel)
 		{
 			CurLoadLevel = MainLevel;
-			MainLevel->CreatePhysicsX();
 			MainLevel->LevelChangeStart();
 			MainLevel->ActorLevelChangeStart();
 		}
@@ -164,7 +164,7 @@ void GameEngineCore::EngineUpdate()
 
 	MainLevel->TimeEvent.Update(TimeDeltaTime);
 	MainLevel->AccLiveTime(TimeDeltaTime);
-	MainLevel->Simulate(TimeDeltaTime);
+	GameEnginePhysics::Simulate(TimeDeltaTime);
 	MainLevel->Update(TimeDeltaTime);
 	MainLevel->ActorUpdate(TimeDeltaTime);
 	MainLevel->NetworkUpdate(TimeDeltaTime);
@@ -192,7 +192,7 @@ void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)
 
 	GameEngineGUI::Release();
 
-	MainLevel->ReleasePhysicsX();
+	GameEnginePhysics::ReleasePhysicsX();
 	LevelMap.clear();
 	CoreResourcesEnd();
 	Release();

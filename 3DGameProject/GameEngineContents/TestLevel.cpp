@@ -28,6 +28,8 @@ TestLevel::~TestLevel()
 
 void TestLevel::Start()
 {
+	GameEnginePhysics::CreateScene(GetName());
+
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 50.0f, -100.0f });
 
@@ -50,6 +52,8 @@ void TestLevel::Update(float _DeltaTime)
 
 void TestLevel::LevelChangeStart()
 {
+	GameEnginePhysics::ChangeScene(GetName());
+
 	std::shared_ptr<TestObject> Component = CreateActor<TestObject>();
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
 

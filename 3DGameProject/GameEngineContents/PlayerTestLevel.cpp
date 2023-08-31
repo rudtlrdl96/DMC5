@@ -30,6 +30,8 @@ PlayerTestLevel::~PlayerTestLevel()
 
 void PlayerTestLevel::Start()
 {
+	CreateScene(GetName());
+
 	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
 
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
@@ -52,6 +54,8 @@ void PlayerTestLevel::Update(float _DeltaTime)
 
 void PlayerTestLevel::LevelChangeStart()
 {
+	ChangeScene(GetName());
+
 	SetLevelSceneGravity(2000);
 	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
 	Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });

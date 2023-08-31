@@ -10,6 +10,7 @@
 #include "GameEngineCollision.h"
 #include "GameEngineDebug3D.h"
 #include "GameEngineLight.h"
+#include "GameEnginePhysics.h"
 #include "GameEngineDevice.h"
 
 
@@ -169,13 +170,13 @@ void GameEngineLevel::ActorUpdate(float _DeltaTime)
 
 	if (true == MainCamera->IsFreeCamera())
 	{
-		IsPhysics = true;
+		GameEnginePhysics::SetIsPhysics(true);
 		MainCamera->Update(_DeltaTime);
 		GameEngineInput::AllReset();
 	}
 	else
 	{
-		IsPhysics = false;
+		GameEnginePhysics::SetIsPhysics(false);
 	}
 
 	{

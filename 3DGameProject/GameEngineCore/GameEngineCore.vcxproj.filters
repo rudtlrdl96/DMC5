@@ -796,6 +796,9 @@
     <ClInclude Include="EngineGrid.h">
       <Filter>Content\Grid</Filter>
     </ClInclude>
+    <ClInclude Include="GameEnginePhysics.h">
+      <Filter>Physics\common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -1003,6 +1006,9 @@
     </ClCompile>
     <ClCompile Include="EngineGrid.cpp">
       <Filter>Content\Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEnginePhysics.cpp">
+      <Filter>Physics\common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

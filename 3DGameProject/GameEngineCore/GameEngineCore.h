@@ -56,6 +56,8 @@ public:
 			MsgAssert("같은 이름의 레벨을 2개 만들수는 없습니다.");
 		}
 
+		NewLevel->SetName(Name);
+
 		LevelInit(NewLevel);
 
 		LevelMap.insert(std::make_pair(Name, NewLevel));
