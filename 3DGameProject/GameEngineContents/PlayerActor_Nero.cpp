@@ -410,7 +410,6 @@ void PlayerActor_Nero::NeroLoad()
 		// Jump_Vertical
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Jump_Vertical,
 			.Start = [=] {
-				PhysXCapsule->SetJump(JumpForce);
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Jump_Vertical");
 			},
@@ -423,7 +422,6 @@ void PlayerActor_Nero::NeroLoad()
 				PhysXCapsule->SetMove(MoveDir);
 			},
 			.End = [=] {
-
 			}
 			});
 
