@@ -17,7 +17,7 @@ enum class EventType
 {
 	None,
 	ObjectUpdate,		// 오브젝트의 On, Off. Transform의 변경 등 이벤트
-	CallBackVoid,
+	CallBackVoid, 
 	CallBackInt,
 	CallBackFloat,
 	CallBackFloat4,
