@@ -18,8 +18,12 @@ Shop_TitleButton::~Shop_TitleButton()
 void Shop_TitleButton::Start()
 {
 	Render = CreateComponent<GameEngineUIRenderer>(1);
-	Render->SetScaleToTexture("");
-	Render_Select = CreateComponent<GameEngineUIRenderer>(2);
+	Render->SetScaleToTexture("Shop_TitleButton.png");
+	Render_Bottom = CreateComponent<GameEngineUIRenderer>(1);
+	Render_Bottom->SetScaleToTexture("NullTexture.png");
+	Render_Top = CreateComponent<GameEngineUIRenderer>(1);
+	Render_Top->SetScaleToTexture("NullTexture.png");
+	Render->Off();
 	FontCreate();
 }
 
@@ -58,20 +62,51 @@ void Shop_TitleButton::Update(float _Delta)
 	}
 	if (IsSelect == true)
 	{
-	
+		AddTime += _Delta;
+		Render->On();
+		Ratio = AddTime + 0.2f;
+		if (IsValue == false)
+		{
+			M0 = GameEngineMath::LerpLimit(0.4f, 1.2f, AddTime * 2.0f);
+			if (M0 == 1.2f)
+			{
+				IsValue = true;
+				AddTime = 0.0f;
+			}
+		}
+		else
+		{
+			M0 = GameEngineMath::LerpLimit(1.2f, 0.4f, AddTime * 2.0f);
+			if (M0 == 0.4f)
+			{
+				IsValue = false;
+				AddTime = 0.0f;
+			}
+		}
+		Render->BSCControl(M0, 0.5f, 0.5f);
+		Render_Bottom->BSCControl(M0, 0.5f, 0.5f);
+		FontRender->SetColor(float4::WHITE);
+		FontRender->GetTransform()->SetLocalPosition({ 0.0f,22.f,0.0f });
 
 	}
 	else
 	{
+		Render->Off();
+		FontRender->SetColor(float4(0.462f,0.58f,0.576f));
+		FontRender->GetTransform()->SetLocalPosition({ 0.0f,21.f,0.0f });
+
 	}
+	SetTextFont(Text);
+
 }
 
 void Shop_TitleButton::FontCreate()
 {
 	FontRender = CreateComponent<GameEngineFontRenderer>(4);
-	FontRender->SetFont(Font);
+	FontRender->GetTransform()->SetParent(GetTransform());
+	FontRender->SetFont("Tahoma Bold");
 	FontRender->SetFontFlag(FW1_CENTER);
-	FontRender->SetScale(32);
+	FontRender->SetScale(28);
 	FontRender->SetColor(float4::WHITE);
 	FontRender->GetTransform()->SetLocalPosition({ 0.0f,22.f,0.0f });
 
@@ -103,7 +138,7 @@ void Shop_TitleButton::FontCreate()
 
 
 
-void Shop_TitleButton::SetTextFont(std::string_view& _Text)
+void Shop_TitleButton::SetTextFont(std::string_view _Text)
 {
 	FontRender->SetText(_Text);
 }

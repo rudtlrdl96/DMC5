@@ -17,11 +17,23 @@ public:
 	Shop_TitleButton(Shop_TitleButton&& _Other) noexcept = delete;
 	Shop_TitleButton& operator=(const Shop_TitleButton& _Other) = delete;
 	Shop_TitleButton& operator=(Shop_TitleButton&& _Other) noexcept = delete;
+	std::shared_ptr<GameEngineUIRenderer> GetRender()
+	{
+		return Render;
+	}
+	std::shared_ptr<GameEngineUIRenderer> GetRender_Bottom()
+	{
+		return Render_Bottom;
+	}
+	std::shared_ptr<GameEngineUIRenderer> GetRender_Top()
+	{
+		return Render_Top;
+	}
 	void SetEvent(std::function<void()> _Click)
 	{
 		Click = _Click;
 	}
-	void SetUIText(std::string_view& _Text)
+	void SetUIText(std::string_view _Text)
 	{
 		Text = _Text;
 	};
@@ -37,17 +49,20 @@ public:
 	{
 		IsValue = _Value;
 	}
-
+	std::shared_ptr<class GameEngineFontRenderer> GetFont()
+	{
+		return FontRender;
+	}
 protected:
 	void Start() override;
 	void Update(float _Delta) override;
 
 private:
 	void FontCreate();
-	void RenderOnOff();
-	void SetTextFont(std::string_view& _Text);
+	void SetTextFont(std::string_view _Text);
 	std::shared_ptr<GameEngineUIRenderer> Render = nullptr;
-	std::shared_ptr<GameEngineUIRenderer> Render_Select = nullptr;
+	std::shared_ptr<GameEngineUIRenderer> Render_Bottom = nullptr;
+	std::shared_ptr<GameEngineUIRenderer> Render_Top = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> FontRender = nullptr;
 
 
@@ -57,5 +72,10 @@ private:
 	bool IsSelect = false;
 	bool IsValue = false;
 	bool SwichValue = false;
+
+	float AddTime = 0.0f;
+	float Ratio = 0.0f;
+
+	float M0 = 0.0f;
 };
 
