@@ -24,6 +24,7 @@ void NetworkTestLevel::Start()
 
 	GameEngineInput::CreateKey("Test_ConnectServer", 'C');
 	GameEngineInput::CreateKey("Test_CreateTestNetEnemy", 'V');
+	GameEngineInput::CreateKey("Test_BackMainLevel", VK_ESCAPE);
 }
 
 void NetworkTestLevel::Update(float _DeltaTime)
@@ -31,7 +32,7 @@ void NetworkTestLevel::Update(float _DeltaTime)
 	BaseLevel::Update(_DeltaTime);
 
 	//0¹ø
-	if (true == GameEngineInput::IsDown("ReturnToMainLevel"))
+	if (true == GameEngineInput::IsDown("Test_BackMainLevel"))
 	{
 		GameEngineCore::ChangeLevel("MainLevel");
 		return;
