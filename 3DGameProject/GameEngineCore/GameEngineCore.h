@@ -56,7 +56,7 @@ public:
 			MsgAssert("같은 이름의 레벨을 2개 만들수는 없습니다.");
 		}
 
-		NewLevel->SetName(Name);
+		LevelSetName(NewLevel, Name);
 
 		LevelInit(NewLevel);
 
@@ -64,6 +64,8 @@ public:
 
 		return std::dynamic_pointer_cast<LevelType>(NewLevel);
 	}
+
+	static void LevelSetName(std::shared_ptr<GameEngineLevel> Level, std::string _Name);
 
 	static void ChangeLevel(const std::string_view& _Name);
 

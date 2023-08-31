@@ -87,6 +87,11 @@ void GameEngineCore::LevelInit(std::shared_ptr<GameEngineLevel> _Level)
 	CurLoadLevel = nullptr;
 }
 
+void GameEngineCore::LevelSetName(std::shared_ptr<GameEngineLevel> Level, std::string _Name)
+{
+	Level->SetName(_Name);
+}
+
 void GameEngineCore::ChangeLevel(const std::string_view& _Name)
 {
 	std::string UpperName = GameEngineString::ToUpper(_Name);
