@@ -578,3 +578,8 @@ void GameEngineTransform::TransformUpdate()
 	WorldDecompose();
 	LocalDecompose();
 }
+
+bool GameEngineTransform::TriCollision(float4 _Start, float4 _Dir, float4 Point0, float4 Point1, float4 Point2, float& _Len)
+{
+	return DirectX::TriangleTests::Intersects(_Start.DirectVector, _Dir.DirectVector, Point1.DirectVector, Point2.DirectVector, Point2.DirectVector, _Len);
+}

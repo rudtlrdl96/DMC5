@@ -5,6 +5,7 @@
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/PhysXCapsuleComponent.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
+#include <GameEngineCore/PhysXTriangleComponent.h>
 
 #include "TestLevel.h"
 
@@ -37,44 +38,37 @@ void TestObject::Start()
 	//GetTransform()->AddWorldPosition(float4{ 0, 100.0f, 0 });
 
 	Renderer = CreateComponent<GameEngineFBXRenderer>();
-
-	if (nullptr == GameEngineFBXMesh::Find("em0100.FBX"))
-	{
-		std::string Path = GameEnginePath::GetFileFullPath
-		(
-			"ContentResources",
-			{
-				"Character", "Enemy", "em0100", "mesh"
-			},
-			"em0100.FBX"
-		);
-		GameEngineFBXMesh::Load(Path);
-	}
-
-	Renderer->SetFBXMesh("em0100.fbx", "FBX");
+	Renderer->SetFBXMesh("Knight.fbx", "FBX");
 	Renderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
+	//if (nullptr == GameEngineFBXMesh::Find("em0100.FBX"))
+	//{
+	//	std::string Path = GameEnginePath::GetFileFullPath
+	//	(
+	//		"ContentResources",
+	//		{
+	//			"Character", "Enemy", "em0100", "mesh"
+	//		},
+	//		"em0100.FBX"
+	//	);
+	//	GameEngineFBXMesh::Load(Path);
+	//}
 
-	Renderer->LightOff();
-
-	Renderer2 = CreateComponent<GameEngineFBXRenderer>();
-	Renderer2->SetFBXMesh("em0100.fbx", "FBX");
-	Renderer2->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
-
-	//Renderer->GetAllRenderUnit()[0][0];
+	//Renderer->SetFBXMesh("em0100.fbx", "FBX");
+	//Renderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
 
 	float4 RenderScale = Renderer->GetFBXMesh()->GetRenderUnit(0)->BoundScaleBox;
 	float4 MeshScale = Renderer->GetMeshScale();
 
 	physx::PxVec3 VecSclae = { RenderScale.x, RenderScale.y, RenderScale.z };
 
-	float4 world = GetTransform()->GetWorldScale();
-	float4 local = GetTransform()->GetLocalScale();
 
-	Component = CreateComponent<PhysXCapsuleComponent>();
-
-	//                          정지  운동  반발
-	Component->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
-	Component->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), VecSclae * 0.1f);
+	//Component = CreateComponent<PhysXCapsuleComponent>();
+	//Component->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
+	//Component->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), VecSclae * 0.1f);
+	
+	TriCom = CreateComponent<PhysXTriangleComponent>();
+	TriCom->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
+	TriCom->CreatePhysXActors("Knight.fbx", GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), GetLevel()->GetCooking(), false, VecSclae * 0.1f);
 
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
 	//Renderer->SetFBXMesh("Nero.FBX", "MeshTexture");
@@ -96,7 +90,7 @@ void TestObject::Start()
 	//	Renderer->SetText("aaaaaaaaaa");
 	//}
 
-	Component->GetDynamic()->setMass(10.f);
+	//Component->GetDynamic()->setMass(10.f);
 	//Component->GetDynamic()->setLinearDamping(physx::PxReal(1.f));
 	//Component->GetDynamic()->setMaxAngularVelocity(physx::PxReal(10.0f));
 	//Component->GetDynamic()->setAngularDamping(physx::PxReal(0.01f));
@@ -178,29 +172,29 @@ void TestObject::UserUpdate(float _DeltaTime)
 	if (true == GameEngineInput::IsDown("Jump"))
 	{
 		//Component->SetclearForce();
-		Component->SetJump(3000.f);
+		//Component->SetJump(3000.f);
 	}
 
-	Component->SetMove(MoveDir.NormalizeReturn() * 500.0f);
+	//Component->SetMove(MoveDir.NormalizeReturn() * 500.0f);
 	
 	{
 		//float4 playerpos = GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition();
 		//float4 playerposeye = GetLevel()->GetMainCamera()->GetTransform()->GetWorldForwardVector();
 
-		float4 playerpos = GetTransform()->GetWorldPosition();
-		float4 playerposeye = GetTransform()->GetWorldForwardVector();
+		//float4 playerpos = GetTransform()->GetWorldPosition();
+		//float4 playerposeye = GetTransform()->GetWorldForwardVector();
 
-		float4 Colleye = float4::ZERO;
+		//float4 Colleye = float4::ZERO;
 
-		playerpos.w = 0.0f;
-		playerposeye.w = 0.0f;
-		Colleye.w = 0.0f;
+		//playerpos.w = 0.0f;
+		//playerposeye.w = 0.0f;
+		//Colleye.w = 0.0f;
 
-		GetLevel()->RayCast(playerpos, playerposeye, Colleye);
+		//GetLevel()->RayCast(playerpos, playerposeye, Colleye);
 
-		float4 result = Colleye;
-		Renderer2->GetTransform()->SetWorldPosition(result);
-		int a = 0;
+		//float4 result = Colleye;
+		//Renderer2->GetTransform()->SetWorldPosition(result);
+		//int a = 0;
 	}
 }
 

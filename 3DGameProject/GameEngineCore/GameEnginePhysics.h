@@ -48,6 +48,11 @@ private:
 		return m_pScene;
 	}
 
+	static inline physx::PxCooking* GetCooking()
+	{
+		return m_pCooking;
+	}
+
 	static void SetIsPhysics(bool _Is)
 	{
 		IsPhysics = _Is;

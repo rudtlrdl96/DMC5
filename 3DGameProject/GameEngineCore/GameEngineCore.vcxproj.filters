@@ -799,6 +799,9 @@
     <ClInclude Include="GameEnginePhysics.h">
       <Filter>Physics\common</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineNavi.h">
+      <Filter>Object\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -1009,6 +1012,9 @@
     </ClCompile>
     <ClCompile Include="GameEnginePhysics.cpp">
       <Filter>Physics\common</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineNavi.cpp">
+      <Filter>Object\Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

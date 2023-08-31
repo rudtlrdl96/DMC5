@@ -40,16 +40,9 @@ void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, phy
 
 	// 마찰, 탄성계수
 	m_pMaterial = _physics->createMaterial(Staticfriction, Dynamicfriction, Resitution);
-	//material_ = _physics->createMaterial(0.7f, 1.5f, resitution_);
-
 
 	// 충돌체의 종류
 	m_pRigidStatic = _physics->createRigidStatic(localTm);
-	// TODO::배율을 적용할 경우 이쪽 코드를 사용
-	//float4 tmpMagnification = { SIZE_MAGNIFICATION_RATIO };
-	//physx::PxVec3 tmpGeoMetryScale(_GeoMetryScale.x * tmpMagnification.x * 0.5f, 
-	//							   _GeoMetryScale.y * tmpMagnification.y * 0.5f, 
-	//							   _GeoMetryScale.z * tmpMagnification.z * 0.5f);
 
 	physx::PxVec3 tmpGeoMetryScale
 	(
@@ -58,10 +51,7 @@ void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, phy
 		_GeoMetryScale.z * 0.5f
 	);
 
-	// 충돌체의 형태
-	// 충돌체의 크기는 절반의 크기를 설정하므로 실제 Renderer의 스케일은 충돌체의 2배로 설정되어야 함
-	// TODO::부모 액터의 RenderUnit으로부터 Mesh의 Scale 과 WorldScale의 연산의 결과를 지오메트리의 Scale로 세팅해야함.
-	//shape_ = _physics->createShape();
+	//GameEngineFBXMesh::Find();
 
 	int RenderinfoCount = static_cast<int>(Mesh->GetRenderUnitCount());
 	
@@ -191,62 +181,64 @@ void PhysXTriangleComponent::CustomFBXLoad(const std::string& _MeshName, bool _I
 	//Dir.Move(DIR_PHYSXMESH);
 	//std::string Path = Dir.PlusFilePath(_MeshName);
 
-	////매쉬를 찾는다
-	//std::shared_ptr<GameEngineFBXMesh> FindFBXMesh = GameEngineFBXMesh::Find(_MeshName);
-	//if (FindFBXMesh == nullptr)
-	//{
-	//	//만약 매시가 없을경우 로드한다
-	//	Mesh = GameEngineFBXMesh::Load(Path);
-	//}
-	//else
-	//{
-	//	//만약 매시가 존재할경우는 그대로 얻어온다.
-	//	Mesh = FindFBXMesh;
-	//}
-
-	////랜더유닛카운트를 불러와 백터에 reserve를 한다
-	//int RenderinfoCount = Mesh->GetRenderUnitCount();
-
-	//VertexVec.reserve(RenderinfoCount + 1);
-	//IndexVec.reserve(RenderinfoCount + 1);
-
-	//for (size_t i = 0; i < RenderinfoCount; i++)
-	//{
-	//	//i 번째 GetRenderUnit에서 RenderUnitInfo를 Get한다
-	//	FbxRenderUnitInfo* RenderUnitInfo = Mesh->GetRenderUnit(i);
-
-	//	std::vector<GameEngineVertex> MeshVertexs = RenderUnitInfo->Vertexs;
-	//	std::vector<unsigned int> Indexes = RenderUnitInfo->Indexs[0];
-
-	//	int VertexSize = MeshVertexs.size();
-	//	int IndexSize = Indexes.size();
-	//	std::vector<physx::PxVec3> InstVertVec;
-	//	std::vector<unsigned int> InstIndexVec;
-	//	//Vertex와 Index 정보를 VertexVec, IndexVec에 저장한다
-	//	for (size_t j = 0; j < VertexSize; j++)
-	//	{
-	//		InstVertVec.push_back(physx::PxVec3(MeshVertexs[j].POSITION.x, MeshVertexs[j].POSITION.y, MeshVertexs[j].POSITION.z));
-	//	}
-
-	//	if (_InverseIndex == true)
-	//	{
-	//		for (size_t j = 0; j < IndexSize; j++)
-	//		{
-	//			InstIndexVec.push_back(physx::PxU32(Indexes[j]));
-	//		}
-	//	}
-	//	if (_InverseIndex == false)
-	//	{
-	//		for (int j = IndexSize - 1; j >= 0; --j)
-	//		{
-	//			InstIndexVec.push_back(physx::PxU32(Indexes[j]));
-	//		}
-	//	}
+	//매쉬를 찾는다
+	std::shared_ptr<GameEngineFBXMesh> FindFBXMesh = GameEngineFBXMesh::Find(_MeshName);
+	if (FindFBXMesh == nullptr)
+	{
+		//만약 매시가 없을경우 로드한다
+		// Mesh = GameEngineFBXMesh::Load(Path);
 
 
-	//	VertexVec.push_back(InstVertVec);
-	//	IndexVec.push_back(InstIndexVec);
-	//}
+	}
+	else
+	{
+		//만약 매시가 존재할경우는 그대로 얻어온다.
+		Mesh = FindFBXMesh;
+	}
+
+	//랜더유닛카운트를 불러와 백터에 reserve를 한다
+	int RenderinfoCount = Mesh->GetRenderUnitCount();
+
+	VertexVec.reserve(RenderinfoCount + 1);
+	IndexVec.reserve(RenderinfoCount + 1);
+
+	for (size_t i = 0; i < RenderinfoCount; i++)
+	{
+		//i 번째 GetRenderUnit에서 RenderUnitInfo를 Get한다
+		FbxRenderUnitInfo* RenderUnitInfo = Mesh->GetRenderUnit(i);
+
+		std::vector<GameEngineVertex> MeshVertexs = RenderUnitInfo->Vertexs;
+		std::vector<unsigned int> Indexes = RenderUnitInfo->Indexs[0];
+
+		int VertexSize = MeshVertexs.size();
+		int IndexSize = Indexes.size();
+		std::vector<physx::PxVec3> InstVertVec;
+		std::vector<unsigned int> InstIndexVec;
+		//Vertex와 Index 정보를 VertexVec, IndexVec에 저장한다
+		for (size_t j = 0; j < VertexSize; j++)
+		{
+			InstVertVec.push_back(physx::PxVec3(MeshVertexs[j].POSITION.x, MeshVertexs[j].POSITION.y, MeshVertexs[j].POSITION.z));
+		}
+
+		if (_InverseIndex == true)
+		{
+			for (size_t j = 0; j < IndexSize; j++)
+			{
+				InstIndexVec.push_back(physx::PxU32(Indexes[j]));
+			}
+		}
+		if (_InverseIndex == false)
+		{
+			for (int j = IndexSize - 1; j >= 0; --j)
+			{
+				InstIndexVec.push_back(physx::PxU32(Indexes[j]));
+			}
+		}
+
+
+		VertexVec.push_back(InstVertVec);
+		IndexVec.push_back(InstIndexVec);
+	}
 
 	//Mesh->UserLoad();
 }

@@ -17,6 +17,21 @@ public:
 	PhysicsLevel& operator=(const PhysicsLevel& _Other) = delete;
 	PhysicsLevel& operator=(PhysicsLevel&& _Other) noexcept = delete;
 
+	inline physx::PxPhysics* GetLevelPhysics()
+	{
+		return GameEnginePhysics::GetPhysics();
+	}
+
+	inline physx::PxScene* GetLevelScene()
+	{
+		return GameEnginePhysics::GetCurrentScene();
+	}
+
+	inline physx::PxCooking* GetCooking()
+	{
+		return GameEnginePhysics::GetCooking();
+	}
+
 	void CreateScene(const std::string_view& _Name)
 	{
 		GameEnginePhysics::CreateScene(_Name);
@@ -35,16 +50,6 @@ public:
 	inline float GetLevelSceneGravity()
 	{
 		return GameEnginePhysics::GetSceneGravity();
-	}
-
-	inline physx::PxPhysics* GetLevelPhysics()
-	{
-		return GameEnginePhysics::GetPhysics();
-	}
-
-	inline physx::PxScene* GetLevelScene()
-	{
-		return GameEnginePhysics::GetCurrentScene();
 	}
 
 	bool RayCast(const float4& _vOrigin, const float4& _vDir, OUT float4& _vPoint, float _fDistance = 1000.f)
