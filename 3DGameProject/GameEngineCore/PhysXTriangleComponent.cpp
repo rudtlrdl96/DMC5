@@ -17,7 +17,7 @@ PhysXTriangleComponent::~PhysXTriangleComponent()
 void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, physx::PxScene* _Scene, physx::PxPhysics* _physics,
 	physx::PxCooking* _cooking, bool _InverseIndex, physx::PxVec3 _GeoMetryScale, float4 _GeoMetryRot)
 {
-	CustomFBXLoad(_MeshName, _InverseIndex);
+	CustomFBXLoad(_MeshName, _GeoMetryScale, _InverseIndex);
 	float4 tmpQuat = _GeoMetryRot.DegreeRotationToQuaternionReturn();
 
 	// 부모 액터로부터 위치 생성
@@ -172,7 +172,7 @@ void PhysXTriangleComponent::Update(float _DeltaTime)
 	}
 }
 
-void PhysXTriangleComponent::CustomFBXLoad(const std::string& _MeshName, bool _InverseIndex)
+void PhysXTriangleComponent::CustomFBXLoad(const std::string& _MeshName, physx::PxVec3 _GeoMetryScale, bool _InverseIndex)
 {
 	//GameEngineDirectory Dir;
 
@@ -217,7 +217,7 @@ void PhysXTriangleComponent::CustomFBXLoad(const std::string& _MeshName, bool _I
 		//Vertex와 Index 정보를 VertexVec, IndexVec에 저장한다
 		for (size_t j = 0; j < VertexSize; j++)
 		{
-			InstVertVec.push_back(physx::PxVec3(MeshVertexs[j].POSITION.x, MeshVertexs[j].POSITION.y, MeshVertexs[j].POSITION.z));
+			InstVertVec.push_back(physx::PxVec3(MeshVertexs[j].POSITION.x * _GeoMetryScale.x, MeshVertexs[j].POSITION.y * _GeoMetryScale.y, MeshVertexs[j].POSITION.z * _GeoMetryScale.z));
 		}
 
 		if (_InverseIndex == true)

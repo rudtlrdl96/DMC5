@@ -38,7 +38,7 @@ protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
-	void CustomFBXLoad(const std::string& _MeshName, bool _InverseIndex);
+	void CustomFBXLoad(const std::string& _MeshName, physx::PxVec3 _GeoMetryScale, bool _InverseIndex);
 
 private:
 	// Phys액터 생성에 필요한 정보

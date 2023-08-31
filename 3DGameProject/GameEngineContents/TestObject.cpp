@@ -59,7 +59,7 @@ void TestObject::Start()
 	float4 RenderScale = Renderer->GetFBXMesh()->GetRenderUnit(0)->BoundScaleBox;
 	float4 MeshScale = Renderer->GetMeshScale();
 
-	physx::PxVec3 VecSclae = { RenderScale.x, RenderScale.y, RenderScale.z };
+	physx::PxVec3 VecSclae = { 0.01f, 0.01f, 0.01f };
 
 
 	//Component = CreateComponent<PhysXCapsuleComponent>();
@@ -68,7 +68,7 @@ void TestObject::Start()
 	
 	TriCom = CreateComponent<PhysXTriangleComponent>();
 	TriCom->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
-	TriCom->CreatePhysXActors("Knight.fbx", GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), GetLevel()->GetCooking(), false, VecSclae * 0.1f);
+	TriCom->CreatePhysXActors("Knight.fbx", GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), GetLevel()->GetCooking(), false, VecSclae);
 
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
 	//Renderer->SetFBXMesh("Nero.FBX", "MeshTexture");
