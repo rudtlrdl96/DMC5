@@ -64,7 +64,6 @@ private:
 	void RedQueenOn();
 	void RedQueenOff();
 	void BlueRoseOn();
-	void BlueRoseOff();
 	void WeaponIdle();
 };
 

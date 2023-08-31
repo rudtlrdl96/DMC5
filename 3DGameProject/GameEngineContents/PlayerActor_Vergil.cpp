@@ -163,10 +163,7 @@ void PlayerActor_Vergil::VergilLoad()
 					return;
 				}
 
-				if (nullptr != LockOnEnemyTransform)
-				{
-					LookTarget(LockOnEnemyTransform->GetWorldPosition());
-				}
+				LookTarget();
 				float4 MoveDir = Controller->GetMoveVector() * WalkSpeed;
 				PhysXCapsule->SetMove(MoveDir);
 

@@ -48,12 +48,62 @@ void BasePlayerActor::LookDir(const float4& _LookDir)
 		PhysXCapsule->SetWorldRotation(Rot);
 	}
 	return;
-
 }
 
-void BasePlayerActor::LookTarget(const float4& _Target)
+void BasePlayerActor::LookTarget()
 {
-	LookDir((_Target - GetTransform()->GetWorldPosition()).NormalizeReturn());
+	if (nullptr == LockOnEnemyTransform)
+	{
+		return;
+	}
+	LookDir((LockOnEnemyTransform->GetWorldPosition() - GetTransform()->GetWorldPosition()).NormalizeReturn());
+}
+
+void BasePlayerActor::RotationToDir(const float4& _Dir, float _MaxValue)
+{
+	float4 LocalForward = GetTransform()->GetWorldLeftVector();
+
+	float4 Cross = float4::Cross3DReturnNormal(LocalForward, _Dir);
+	float Dot = float4::DotProduct3D(LocalForward, _Dir);
+
+	if (Cross.y == -1.0f)
+	{
+		Rot.y += std::min<float>(180.0f, _MaxValue);
+		PhysXCapsule->SetWorldRotation(Rot);
+	}
+	else
+	{
+		float RotValue = -GameEngineMath::RadToDeg * Dot;
+		if (RotValue < 0)
+		{
+			RotValue = std::max<float>(RotValue, -_MaxValue);
+		}
+		else
+		{
+			RotValue = std::min<float>(RotValue, _MaxValue);
+		}
+		Rot.y += RotValue;
+		PhysXCapsule->SetWorldRotation(Rot);
+	}
+}
+
+void BasePlayerActor::RotationToTarget(float _MaxValue /* = 360.0f */)
+{
+	if (nullptr == LockOnEnemyTransform)
+	{
+		return;
+	}
+	RotationToDir((LockOnEnemyTransform->GetWorldPosition() - GetTransform()->GetWorldPosition()).NormalizeReturn());
+}
+
+void BasePlayerActor::RotationToMoveVector(float _MaxValue)
+{
+	const float4& MoveVector = Controller->GetMoveVector();
+	if (MoveVector == float4::ZERO)
+	{
+		return;
+	}
+	RotationToDir(MoveVector, _MaxValue);
 }
 
 void BasePlayerActor::Start()

@@ -22,7 +22,11 @@ public:
 	BasePlayerActor& operator=(BasePlayerActor&& _Other) noexcept = delete;
 
 	void LookDir(const float4& _LookDir);
-	void LookTarget(const float4& _Target);
+	void LookTarget();
+	void RotationToDir(const float4& _Dir , float _MaxValue = 360.0f);
+	void RotationToTarget(float _MaxValue = 360.0f);
+	void RotationToMoveVector(float _MaxValue = 360.0f);
+
 	GameEngineTransform* LockOnEnemyTransform = nullptr;
 
 	std::shared_ptr<class PhysXCapsuleComponent> GetPhysXComponent()
