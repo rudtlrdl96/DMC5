@@ -46,6 +46,10 @@ void PlayerActor_Vergil::VergilLoad()
 			.Objects = { (GameEngineObject*)AttackCollision.get() },
 			.CallBacks_void = {
 				std::bind([=] {InputCheck = true; }),
+				std::bind(&PlayerActor_Vergil::YamatoOn, this),
+				std::bind(&PlayerActor_Vergil::YamatoOff, this),
+				std::bind(&PlayerActor_Vergil::SetHuman, this),
+				std::bind(&PlayerActor_Vergil::SetMajin, this),
 				std::bind(&PhysXCapsuleComponent::SetLinearVelocityZero, PhysXCapsule)
 			},
 			.CallBacks_int = {
@@ -58,7 +62,7 @@ void PlayerActor_Vergil::VergilLoad()
 			}
 			});
 
-		PlayerWindow::Renderer = Renderer.get();
+		SetHuman();
 	}
 
 	/* 기본 움직임 */
@@ -70,7 +74,7 @@ void PlayerActor_Vergil::VergilLoad()
 				Renderer->ChangeAnimation("pl0300_Idle_Normal");
 			},
 			.Update = [=](float _DeltaTime) {
-
+				
 				if (Controller->GetSwordDown())
 				{
 					//FSM.ChangeState(FSM_State_Vergil::Vergil_RQ_ComboA_1);
@@ -105,7 +109,11 @@ void PlayerActor_Vergil::VergilLoad()
 				Renderer->ChangeAnimation("pl0300_Idle_Normal");
 			},
 			.Update = [=](float _DeltaTime) {
-
+				if (Controller->GetIsSpecialMove())
+				{
+					FSM.ChangeState(FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_1);
+					return;
+				}
 				if (Controller->GetSwordDown())
 				{
 					//FSM.ChangeState(FSM_State_Vergil::Vergil_RQ_ComboA_1);
@@ -136,24 +144,50 @@ void PlayerActor_Vergil::VergilLoad()
 		// Walk
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Walk,
 			.Start = [=] {
-				Renderer->ChangeAnimation("pl0300_Walk_Front");
+				CurDir = 'n';
 			},
 			.Update = [=](float _DeltaTime) {
-				if (Controller->GetSwordDown())
-				{
-					//FSM.ChangeState(FSM_State_Vergil::Vergil_RQ_ComboA_1);
-					return;
-				}
-				if (Controller->GetIsJump())
-				{
-					//FSM.ChangeState(FSM_State_Vergil::Vergil_Jump_Vertical);
-					return;
-				}
-
 				if (Controller->GetMoveVector() == float4::ZERO)
 				{
 					FSM.ChangeState(FSM_State_Vergil::Vergil_IdleLockOn);
 					return;
+				}
+				if (true == Controller->GetLockOnFree())
+				{
+					FSM.ChangeState(FSM_State_Vergil::Vergil_RunStart);
+					return;
+				}
+				if (Controller->GetIsSpecialMove())
+				{
+					FSM.ChangeState(FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_1);
+					return;
+				}
+
+				if (nullptr != LockOnEnemyTransform)
+				{
+					LookTarget(LockOnEnemyTransform->GetWorldPosition());
+				}
+				float4 MoveDir = Controller->GetMoveVector() * WalkSpeed;
+				PhysXCapsule->SetMove(MoveDir);
+
+				char NewDir = Controller->MoveVectorToChar4(Controller->GetMoveVector());
+				if (CurDir == NewDir) { return; }
+				CurDir = NewDir;
+
+				switch (CurDir)
+				{
+				case '8':
+					Renderer->ChangeAnimation("pl0300_Walk_Front");
+					break;
+				case '4':
+					Renderer->ChangeAnimation("pl0300_Walk_Left");
+					break;
+				case '2':
+					Renderer->ChangeAnimation("pl0300_Walk_Back");
+					break;
+				case '6':
+					Renderer->ChangeAnimation("pl0300_Walk_Right");
+					break;
 				}
 			},
 			.End = [=] {
@@ -201,80 +235,157 @@ void PlayerActor_Vergil::VergilLoad()
 			}
 			});
 
-		// Run
-		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Run,
+			// Run
+			FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Run,
+				.Start = [=] {
+					Renderer->ChangeAnimation("pl0300_Run_Loop");
+				},
+				.Update = [=](float _DeltaTime) {
+					if (Controller->GetSwordDown())
+					{
+						//FSM.ChangeState(FSM_State_Vergil::Vergil_RQ_ComboA_1);
+						return;
+					}
+					if (Controller->GetIsJump())
+					{
+						//FSM.ChangeState(FSM_State_Vergil::Vergil_Jump_Vertical);
+						return;
+					}
+					if (Controller->GetMoveVector() == float4::ZERO)
+					{
+						FSM.ChangeState(FSM_State_Vergil::Vergil_RunStop);
+						return;
+					}
+
+					if (true == IsLockOn)
+					{
+						FSM.ChangeState(FSM_State_Vergil::Vergil_Walk);
+						return;
+					}
+
+					LookDir(Controller->GetMoveVector());
+					float4 MoveDir = Controller->GetMoveVector() * RunSpeed;
+					PhysXCapsule->SetMove(MoveDir);
+				},
+				.End = [=] {
+					PhysXCapsule->SetLinearVelocityZero();
+				}
+				});
+
+			// RunStop
+			FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_RunStop,
+				.Start = [=] {
+					InputCheck = false;
+					Renderer->ChangeAnimation("pl0300_Run_Stop");
+				},
+				.Update = [=](float _DeltaTime) {
+					if (Controller->GetSwordDown())
+					{
+						//FSM.ChangeState(FSM_State_Vergil::Vergil_RQ_ComboA_1);
+						return;
+					}
+					if (Controller->GetIsJump())
+					{
+						//FSM.ChangeState(FSM_State_Vergil::Vergil_Jump_Vertical);
+						return;
+					}
+
+					if (false == InputCheck) { return; }
+
+					if (Controller->GetMoveVector() != float4::ZERO)
+					{
+						FSM.ChangeState(FSM_State_Vergil::Vergil_RunStart);
+						return;
+					}
+				},
+				.End = [=] {
+
+				}
+				});
+	}
+
+	/* 야마토 */
+	{
+		// Vergil_yamato_JudgementCutEnd_1
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_1,
 			.Start = [=] {
-				Renderer->ChangeAnimation("pl0300_Run_Loop");
+				PhysXCapsule->SetLinearVelocityZero();
+				Renderer->ChangeAnimation("pl0300_yamato_JudgementCutEnd_1");
 			},
 			.Update = [=](float _DeltaTime) {
-				if (Controller->GetSwordDown())
+				if (true == Renderer->IsAnimationEnd())
 				{
-					//FSM.ChangeState(FSM_State_Vergil::Vergil_RQ_ComboA_1);
-					return;
+					FSM.ChangeState(FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_2);
 				}
-				if (Controller->GetIsJump())
-				{
-					//FSM.ChangeState(FSM_State_Vergil::Vergil_Jump_Vertical);
-					return;
-				}
-				if (Controller->GetMoveVector() == float4::ZERO)
-				{
-					FSM.ChangeState(FSM_State_Vergil::Vergil_RunStop);
-					return;
-				}
-
-				if (true == IsLockOn)
-				{
-					FSM.ChangeState(FSM_State_Vergil::Vergil_Walk);
-					return;
-				}
-
-				LookDir(Controller->GetMoveVector());
-				float4 MoveDir = Controller->GetMoveVector() * RunSpeed;
-				PhysXCapsule->SetMove(MoveDir);
 			},
 			.End = [=] {
-				PhysXCapsule->SetLinearVelocityZero();
+
 			}
 			});
 
-		// RunStop
-		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_RunStop,
+		// Vergil_yamato_JudgementCutEnd_2
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_2,
 			.Start = [=] {
-				InputCheck = false;
-				Renderer->ChangeAnimation("pl0300_Run_Stop");
+				PhysXCapsule->SetLinearVelocityZero();
+				Renderer->ChangeAnimation("pl0300_yamato_JudgementCutEnd_2");
 			},
 			.Update = [=](float _DeltaTime) {
-				if (Controller->GetSwordDown())
-				{
-					//FSM.ChangeState(FSM_State_Vergil::Vergil_RQ_ComboA_1);
-					return;
-				}
-				if (Controller->GetIsJump())
-				{
-					//FSM.ChangeState(FSM_State_Vergil::Vergil_Jump_Vertical);
-					return;
-				}
-
-				if (false == InputCheck) { return; }
-
-				if (Controller->GetMoveVector() != float4::ZERO)
-				{
-					FSM.ChangeState(FSM_State_Vergil::Vergil_RunStart);
-					return;
-				}
 			},
 			.End = [=] {
 
 			}
 			});
 	}
+
 	FSM.ChangeState(FSM_State_Vergil::Vergil_Idle);
 }
 
 void PlayerActor_Vergil::Update_Character(float _DeltaTime)
 {
 	FSM.Update(_DeltaTime);
+}
+
+void PlayerActor_Vergil::SetHuman()
+{
+	for (int i = 0; i <= 17; i++)
+	{
+		Renderer->GetAllRenderUnit()[0][i]->On();
+	}
+	for (int i = 20; i <= 22; i++)
+	{
+		Renderer->GetAllRenderUnit()[0][i]->Off();
+	}
+}
+
+void PlayerActor_Vergil::SetMajin()
+{
+	for (int i = 0; i <= 17; i++)
+	{
+		Renderer->GetAllRenderUnit()[0][i]->Off();
+	}
+	for (int i = 20; i <= 22; i++)
+	{
+		Renderer->GetAllRenderUnit()[0][i]->On();
+	}
+}
+
+void PlayerActor_Vergil::YamatoOff()
+{
+	Renderer->GetAllRenderUnit()[0][18]->Off();
+	Renderer->GetAllRenderUnit()[0][19]->Off();
+	Renderer->GetAllRenderUnit()[0][24]->On();
+	Renderer->GetAllRenderUnit()[0][25]->On();
+	Renderer->GetAllRenderUnit()[0][26]->On();
+}
+
+void PlayerActor_Vergil::YamatoOn()
+{
+	Renderer->GetAllRenderUnit()[0][18]->On();
+	Renderer->GetAllRenderUnit()[0][19]->On();
+
+	Renderer->GetAllRenderUnit()[0][24]->Off();
+	Renderer->GetAllRenderUnit()[0][25]->Off();
+	Renderer->GetAllRenderUnit()[0][26]->Off();
 }
 
 

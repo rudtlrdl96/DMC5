@@ -84,7 +84,11 @@ public:
 		CameraTransform = _Transform;
 	}
 
+	// 벡터에 대한 방향을 8방향으로 알려주는 함수 (키패드 참조 8: 앞, 2 : 뒤)
 	char MoveVectorToChar(const float4& _Value);
+
+	// 벡터에 대한 방향을 4방향으로 알려주는 함수 (키패드 참조 8: 앞, 2 : 뒤)
+	char MoveVectorToChar4(const float4& _Value);
 
 
 protected:
@@ -117,6 +121,8 @@ private:
 	bool IsBackFrontSkill = false;
 	bool IsFrontSkill = false;
 
+	bool IsSpecialMove = false;
+
 	bool InputCheck_BackFront();
 	bool InputCheck_Dir(char _Dir);
 
@@ -133,6 +139,7 @@ public:
 	bool GetIsJump() { return IsJump; }
 	bool GetIsLeftJump() { return IsLeftJump; }
 	bool GetIsRightJump() { return IsRightJump; }
+	bool GetIsSpecialMove() { return IsSpecialMove; }
 	bool IsLockOn = false;
 };
 

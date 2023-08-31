@@ -15,6 +15,7 @@ AnimationToolLevel::~AnimationToolLevel()
 
 void AnimationToolLevel::Start()
 {
+	CreateScene(GetName());
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -500 });
 
@@ -32,7 +33,6 @@ void AnimationToolLevel::Update(float _DeltaTime)
 
 void AnimationToolLevel::LevelChangeStart()
 {
-	SetLevelSceneGravity(2000);
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
 	Flat->GetTransform()->SetLocalPosition({ 0, -50, 0 });
 	//Flat->Component->GetDynamic()->setGlobalPose({ 0, -1, 0 });

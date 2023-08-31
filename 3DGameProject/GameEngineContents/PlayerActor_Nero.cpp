@@ -691,6 +691,7 @@ void PlayerActor_Nero::NeroLoad()
 			}
 			});
 
+		// Strafe
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Strafe,
 			.Start = [=] {
 				BlueRoseOn();
@@ -774,6 +775,7 @@ void PlayerActor_Nero::NeroLoad()
 
 			} });
 
+		// LockOn To Idle
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Switch_Lockon_to_Idle,
 			.Start = [=] {
 				PhysXCapsule->SetLinearVelocityZero();
@@ -808,6 +810,7 @@ void PlayerActor_Nero::NeroLoad()
 			}
 			});
 
+		// Evade
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Evade_Left,
 			.Start = [=] {
 				InputCheck = false;
@@ -847,6 +850,7 @@ void PlayerActor_Nero::NeroLoad()
 			}
 			});
 
+		// Evade
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Evade_Right,
 			.Start = [=] {
 				InputCheck = false;

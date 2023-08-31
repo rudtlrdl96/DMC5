@@ -70,6 +70,50 @@ char PlayerController::MoveVectorToChar(const float4& _Value)
 	return 0;
 }
 
+char PlayerController::MoveVectorToChar4(const float4& _Value)
+{
+	if (_Value == float4::ZERO)
+	{
+		return 'n';
+	}
+	float4 ForwardVector = PlayerTransform->GetWorldForwardVector();	// 카메라상 정면
+	float4 Cross = float4::Cross3DReturnNormal(ForwardVector, _Value); // 외적
+	float Dot = float4::DotProduct3D(ForwardVector, _Value);
+
+	if (0 < Cross.y)
+	{
+		if (Dot < 0.25f)
+		{
+			return '2';
+		}
+		else if (Dot < 0.75f)
+		{
+			return '6';
+		}
+		else
+		{
+			return '8';
+		}
+	}
+	else
+	{
+		if (Dot < 0.25f)
+		{
+			return '2';
+		}
+		else if (Dot < 0.75f)
+		{
+			return '4';
+		}
+		else
+		{
+			return '8';
+		}
+	}
+
+	return 0;
+}
+
 void PlayerController::Start()
 {
 	if (false == GameEngineInput::IsKey("Player_Up"))
@@ -118,6 +162,8 @@ void PlayerController::InputReset()
 	// 스킬
 	IsBackFrontSkill = false;
 	IsFrontSkill = false;
+
+	IsSpecialMove = false;
 }
 
 void PlayerController::MoveInput()
@@ -166,6 +212,10 @@ void PlayerController::ActionInput()
 		}
 		else if (true == InputCheck_Dir('8'))
 		{
+			if (GameEngineInput::IsPress("Player_Skill") && GameEngineInput::GetPressTime("Player_Skill") < 0.05f)
+			{
+				IsSpecialMove = true;
+			}
 			int a = 0;
 		}
 		else if (true == InputCheck_Dir('2'))
@@ -204,6 +254,23 @@ void PlayerController::ActionInput()
 		if (nullptr != CallBack_LockOnUp)
 		{
 			CallBack_LockOnUp();
+		}
+	}
+	// Skill
+	if (GameEngineInput::IsDown("Player_Skill"))
+	{
+		if (true == InputCheck_Dir('8'))
+		{
+			if (GameEngineInput::IsPress("Player_Sword") && GameEngineInput::GetPressTime("Player_Sword") < 0.05f)
+			{
+				IsSpecialMove = true;
+			}
+
+			int a = 0;
+		}
+		else if (true == InputCheck_Dir('2'))
+		{
+			int a = 0;
 		}
 	}
 }

@@ -48,5 +48,10 @@ private:
 	bool InputCheck = false;
 	char CurDir = 'n';
 
+	void SetHuman();
+	void SetMajin();
+	void YamatoOff();
+	void YamatoOn();
+
 };
 
