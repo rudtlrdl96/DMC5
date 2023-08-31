@@ -78,13 +78,27 @@ void GameEngineFBXAnimationInfo::Update(float _DeltaTime)
 	if (NextFrame >= End)
 	{
 		IsEnd = true;
-		NextFrame = 0;
+		if (true == Loop)
+		{
+			NextFrame = Start;
+		}
+		else
+		{
+			NextFrame = End - 1;
+		}
 	}
 
 	if (CurFrame >= End)
 	{
 		IsEnd = true;
-		CurFrame = 0;
+		if (true == Loop)
+		{
+			CurFrame = Start;
+		}
+		else
+		{
+			CurFrame = End - 1;
+		}
 	}
 
 	// mesh      subset
