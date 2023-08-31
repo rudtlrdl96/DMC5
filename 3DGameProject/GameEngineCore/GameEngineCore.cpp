@@ -124,7 +124,8 @@ void GameEngineCore::EngineUpdate()
 		if (nullptr != MainLevel)
 		{
 			CurLoadLevel = MainLevel;
-			MainLevel->LevelChangeStart();
+			GameEnginePhysics::ChangeScene(MainLevel->GetName());
+ 			MainLevel->LevelChangeStart();
 			MainLevel->ActorLevelChangeStart();
 		}
 

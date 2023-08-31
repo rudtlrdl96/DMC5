@@ -216,9 +216,9 @@ void GameEnginePhysics::ChangeScene(const std::string_view& _Name)
 
 	if (AllScene.end() == AllScene.find(Name))
 	{
-		MsgAssert("해당 이름의 씬은 존재하지 않습니다." + Name);
+		return;
 	}
-
+		
 	m_pScene = AllScene[Name];
 }
 
