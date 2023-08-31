@@ -14,7 +14,7 @@ void EnemyActor_Normal::Start()
 	EnemyTypeValue = EnemyType::Normal;
 
 	BaseEnemyActor::Start();
-
+	
 	EnemyFSM.CreateState
 	(
 		{ 
@@ -87,6 +87,11 @@ void EnemyActor_Normal::Start()
 		}
 	);
 	EnemyFSM.ChangeState(EnemyState::M_Idle);
+}
+
+void EnemyActor_Normal::Update(float _DeltaTime)
+{
+	EnemyFSM.Update(_DeltaTime);
 }
 
 void EnemyActor_Normal::Idle_Enter()

@@ -210,15 +210,8 @@ void BaseEnemyActor::Start()
 
 void BaseEnemyActor::Update(float _DeltaTime)
 {
-	BindFSM();
 	if (true == GameEngineInput::IsPress("EnemyDebug_Ctrl"))
 	{
-		//float4 AttackerPos = float4::ZERO;
-		//MonsterDamageType Type = MonsterDamageType::None;
-		//float Damage = 0.0f;
-		//float4 ForceDir = float4::ZERO;
-		//float ForcePower = 1.0f;
-
 		if (true == GameEngineInput::IsDown("EnemyDebug_1"))
 		{
 			AddForceEnemy(float4::UP, 10000);

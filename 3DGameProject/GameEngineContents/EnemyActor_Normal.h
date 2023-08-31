@@ -30,6 +30,7 @@ public:
 
 protected:
 	void Start() override;
+	void Update(float _DeltaTime) override;
 private:
 	// 대기상태
 	virtual void Idle_Enter();

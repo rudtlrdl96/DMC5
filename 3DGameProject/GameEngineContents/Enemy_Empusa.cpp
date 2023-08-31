@@ -60,7 +60,11 @@ void Enemy_Empusa::EnemyAnimationLoad()
 				//Functional사용할 함수들 적는곳
 			},
 			.CallBacks_int = {
-				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)} //ChangeState,인자있음
+				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
+			}, //ChangeState,인자있음
+			.CallBacks_float4 = {
+			
+			}
 		}
 	);
 }
@@ -120,10 +124,6 @@ void Enemy_Empusa::Hit_Enter()
 	//EnemyRenderer->ChangeAnimation("em0100_angledamage_right");
 	//EnemyRenderer->ChangeAnimation("em0100_angledamage_back");
 	//EnemyRenderer->ChangeAnimation("em0100_air_damage");
-	//EnemyRenderer->ChangeAnimation("em0100_air_damage_under");
-	//EnemyRenderer->ChangeAnimation("em0100_blown_front_landing");
-	//EnemyRenderer->ChangeAnimation("em0100_blown_front_loop");
-	//EnemyRenderer->ChangeAnimation("em0100_blown_front_start");
 	//EnemyRenderer->ChangeAnimation("em0100_air_damage_under");
 }
 
