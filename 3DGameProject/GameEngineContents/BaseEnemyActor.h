@@ -115,9 +115,14 @@ protected:
 
 	GameEngineFSM EnemyFSM;
 
+	//Type+Data
 	EnemyCode EnemyCodeValue = EnemyCode::None;
 	EnemyType EnemyTypeValue  = EnemyType::None;
 	EnemySize EnemySizeValue = EnemySize::None;
+	float EnemyHP = 0.0f;
+	//Recognize
+	float4 RN_Range = float4::ZERO;
+	bool RN_Player = false;
 
 	bool IsSuperArmorValue = false;
 

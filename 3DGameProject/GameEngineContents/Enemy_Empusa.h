@@ -13,7 +13,7 @@ public:
 	Enemy_Empusa(Enemy_Empusa&& _Other) noexcept = delete;
 	Enemy_Empusa& operator=(const Enemy_Empusa& _Other) = delete;
 	Enemy_Empusa& operator=(Enemy_Empusa&& _Other) noexcept = delete;
-
+	void RN_Idle();
 protected:
 	void EnemyMeshLoad() override;
 	void EnemyTypeLoad() override;
