@@ -35,42 +35,55 @@ void TestObject::Start()
 		GameEngineInput::CreateKey("Jump", VK_SPACE);
 	}
 
-	//GetTransform()->AddWorldPosition(float4{ 0, 100.0f, 0 });
-
 	Renderer = CreateComponent<GameEngineFBXRenderer>();
-	Renderer->SetFBXMesh("Knight.fbx", "FBX");
-	Renderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
-	//if (nullptr == GameEngineFBXMesh::Find("em0100.FBX"))
-	//{
-	//	std::string Path = GameEnginePath::GetFileFullPath
-	//	(
-	//		"ContentResources",
-	//		{
-	//			"Character", "Enemy", "em0100", "mesh"
-	//		},
-	//		"em0100.FBX"
-	//	);
-	//	GameEngineFBXMesh::Load(Path);
-	//}
 
-	//Renderer->SetFBXMesh("em0100.fbx", "FBX");
-	//Renderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
+	if (nullptr == GameEngineFBXMesh::Find("em0100.FBX"))
+	{
+		std::string Path = GameEnginePath::GetFileFullPath
+		(
+			"ContentResources",
+			{
+				"Character", "Enemy", "em0100", "mesh"
+			},
+			"em0100.FBX"
+		);
+		GameEngineFBXMesh::Load(Path);
+	}
+
+	Renderer->SetFBXMesh("em0100.fbx", "FBX");
+	Renderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
+
+	Renderer->LightOff();
+
+	Renderer2 = CreateComponent<GameEngineFBXRenderer>();
+	Renderer2->SetFBXMesh("em0100.fbx", "FBX");
+	Renderer2->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
+
+	//Renderer->GetAllRenderUnit()[0][0];
 
 	float4 RenderScale = Renderer->GetFBXMesh()->GetRenderUnit(0)->BoundScaleBox;
 	float4 MeshScale = Renderer->GetMeshScale();
 
-	physx::PxVec3 VecSclae = { 0.01f, 0.01f, 0.01f };
+	physx::PxVec3 VecSclae = { RenderScale.x, RenderScale.y, RenderScale.z };
 
+	float4 world = GetTransform()->GetWorldScale();
+	float4 local = GetTransform()->GetLocalScale();
 
-	//Component = CreateComponent<PhysXCapsuleComponent>();
-	//Component->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
-	//Component->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), VecSclae * 0.1f);
-	
-	TriCom = CreateComponent<PhysXTriangleComponent>();
-	TriCom->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
-	TriCom->CreatePhysXActors("Knight.fbx", GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), GetLevel()->GetCooking(), false, VecSclae);
+	Component = CreateComponent<PhysXCapsuleComponent>();
+
+	//                          정지  운동  반발
+	Component->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
+	Component->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), VecSclae * 0.1f);
 
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
+
+	//Renderer->SetFBXMesh("Knight.fbx", "FBX");
+	//Renderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
+	
+	//TriCom = CreateComponent<PhysXTriangleComponent>();
+	//TriCom->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
+	//TriCom->CreatePhysXActors("Knight.fbx", GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), GetLevel()->GetCooking(), false, VecSclae);
+
 	//Renderer->SetFBXMesh("Nero.FBX", "MeshTexture");
 	//Renderer->CreateFBXAnimation("Dash", "pl0000_Dash_Loop.FBX");
 	//Renderer->ChangeAnimation("Dash");
@@ -90,7 +103,7 @@ void TestObject::Start()
 	//	Renderer->SetText("aaaaaaaaaa");
 	//}
 
-	//Component->GetDynamic()->setMass(10.f);
+	Component->GetDynamic()->setMass(10.f);
 	//Component->GetDynamic()->setLinearDamping(physx::PxReal(1.f));
 	//Component->GetDynamic()->setMaxAngularVelocity(physx::PxReal(10.0f));
 	//Component->GetDynamic()->setAngularDamping(physx::PxReal(0.01f));
@@ -171,11 +184,11 @@ void TestObject::UserUpdate(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("Jump"))
 	{
-		//Component->SetclearForce();
-		//Component->SetJump(3000.f);
+		Component->SetclearForce();
+		Component->SetJump(3000.f);
 	}
 
-	//Component->SetMove(MoveDir.NormalizeReturn() * 500.0f);
+	Component->SetMove(MoveDir.NormalizeReturn() * 500.0f);
 	
 	{
 		//float4 playerpos = GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition();
