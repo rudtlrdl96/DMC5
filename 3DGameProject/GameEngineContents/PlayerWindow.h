@@ -16,6 +16,7 @@ public:
 	PlayerWindow& operator=(PlayerWindow&& _Other) noexcept = delete;
 
 	static PlayerActor_Nero* _Nero;
+	static class GameEngineFBXRenderer* Renderer;
 	static std::function<void(float)> Function1;
 
 protected:

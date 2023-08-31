@@ -4,31 +4,31 @@
 
 enum FSM_State_Nero
 {
-	None,
-	Idle,
-	RunStart,
-	Run,
-	RunStop,
-	Dash,
-	DashStop,
-	Jump_Vertical,
-	Jump_Fly,
-	Landing,
-	Evade_Left,
-	Evade_Right,
+	Nero_None,
+	Nero_Idle,
+	Nero_RunStart,
+	Nero_Run,
+	Nero_RunStop,
+	Nero_Dash,
+	Nero_DashStop,
+	Nero_Jump_Vertical,
+	Nero_Jump_Fly,
+	Nero_Landing,
+	Nero_Evade_Left,
+	Nero_Evade_Right,
 
-	RQ_ComboA_1,
-	RQ_ComboA_2,
-	RQ_ComboA_3,
-	RQ_ComboA_4,
-
-
+	Nero_RQ_ComboA_1,
+	Nero_RQ_ComboA_2,
+	Nero_RQ_ComboA_3,
+	Nero_RQ_ComboA_4,
 
 
-	BR_Switch_Idle_to_Lockon,	// 기본자세에서 락온으로
-	BR_Switch_Lockon_to_Idle,	// 락온에서 기본자세로
-	BR_Lockon_Front,			// 정면 락온
-	BR_Strafe,		// 락온하며 움직임
+
+
+	Nero_BR_Switch_Idle_to_Lockon,	// 기본자세에서 락온으로
+	Nero_BR_Switch_Lockon_to_Idle,	// 락온에서 기본자세로
+	Nero_BR_Lockon_Front,			// 정면 락온
+	Nero_BR_Strafe,		// 락온하며 움직임
 };
 
 class PlayerActor_Nero : public BasePlayerActor

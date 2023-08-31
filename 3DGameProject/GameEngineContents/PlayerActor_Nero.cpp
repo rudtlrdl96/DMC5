@@ -29,18 +29,18 @@ void PlayerActor_Nero::TestLoad()
 	Renderer->SetFBXMesh("House1.fbx", "FBX");
 
 	{
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Idle,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Idle,
 			.Start = [=] {
 			},
 			.Update = [=](float _DeltaTime) {
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
-					FSM.ChangeState(FSM_State_Nero::Run);
+					FSM.ChangeState(FSM_State_Nero::Nero_Run);
 					return;
 				}
 				if (true == IsLockOn)
 				{
-					FSM.ChangeState(BR_Switch_Idle_to_Lockon);
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon);
 					return;
 				}
 			},
@@ -49,19 +49,19 @@ void PlayerActor_Nero::TestLoad()
 			}
 			});
 
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Run,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Run,
 			.Start = [=] {
 			},
 			.Update = [=](float _DeltaTime) {
 				if (Controller->GetMoveVector() == float4::ZERO)
 				{
-					FSM.ChangeState(FSM_State_Nero::Idle);
+					FSM.ChangeState(FSM_State_Nero::Nero_Idle);
 					return;
 				}
 
 				if (true == IsLockOn)
 				{
-					FSM.ChangeState(BR_Switch_Idle_to_Lockon);
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon);
 					return;
 				}
 
@@ -74,13 +74,13 @@ void PlayerActor_Nero::TestLoad()
 			}
 			});
 
-		FSM.CreateState({ .StateValue = FSM_State_Nero::BR_Switch_Idle_to_Lockon,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon,
 			.Start = [=] {
 			},
 			.Update = [=](float _DeltaTime) {
 				if (false == IsLockOn)
 				{
-					FSM.ChangeState(Idle);
+					FSM.ChangeState(FSM_State_Nero::Nero_Idle);
 					return;
 				}
 				if (nullptr != LockOnEnemyTransform)
@@ -96,7 +96,7 @@ void PlayerActor_Nero::TestLoad()
 			});
 	}
 
-	FSM.ChangeState(FSM_State_Nero::Idle);
+	FSM.ChangeState(FSM_State_Nero::Nero_Idle);
 }
 
 void PlayerActor_Nero::NeroLoad()
@@ -172,7 +172,7 @@ void PlayerActor_Nero::NeroLoad()
 	/* 기본 움직임 */
 	{
 		// Idle
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Idle,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Idle,
 			.Start = [=] {
 				PhysXCapsule->SetLinearVelocityZero();
 				WeaponIdle();
@@ -182,23 +182,23 @@ void PlayerActor_Nero::NeroLoad()
 
 				if (Controller->GetSwordDown())
 				{
-					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
 				}
 				if (Controller->GetIsJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
 					return;
 				}
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
-					FSM.ChangeState(FSM_State_Nero::RunStart);
+					FSM.ChangeState(FSM_State_Nero::Nero_RunStart);
 					return;
 				}
 
 				if (true == IsLockOn)
 				{
-					FSM.ChangeState(BR_Switch_Idle_to_Lockon);
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon);
 					return;
 				}
 			},
@@ -208,7 +208,7 @@ void PlayerActor_Nero::NeroLoad()
 			});
 
 		// Run Start
-		FSM.CreateState({ .StateValue = FSM_State_Nero::RunStart,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RunStart,
 			.Start = [=] {
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Run_Start");
@@ -216,27 +216,27 @@ void PlayerActor_Nero::NeroLoad()
 			.Update = [=](float _DeltaTime) {
 				if (Controller->GetSwordDown())
 				{
-					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
 				}
 				if (Controller->GetIsJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
 					return;
 				}
 				if (Controller->GetMoveVector() == float4::ZERO)
 				{
-					FSM.ChangeState(FSM_State_Nero::RunStop);
+					FSM.ChangeState(FSM_State_Nero::Nero_RunStop);
 					return;
 				}
 				if (true == IsLockOn)
 				{
-					FSM.ChangeState(BR_Switch_Idle_to_Lockon);
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon);
 					return;
 				}
 				if (true == Renderer->IsAnimationEnd())
 				{
-					FSM.ChangeState(FSM_State_Nero::Run);
+					FSM.ChangeState(FSM_State_Nero::Nero_Run);
 					return;
 				}
 				LookDir(Controller->GetMoveVector());
@@ -249,7 +249,7 @@ void PlayerActor_Nero::NeroLoad()
 			});
 
 		// Run
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Run,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Run,
 			.Start = [=] {
 				DashTimer = 0;
 				WeaponIdle();
@@ -259,29 +259,29 @@ void PlayerActor_Nero::NeroLoad()
 				DashTimer += _DeltaTime;
 				if (Controller->GetSwordDown())
 				{
-					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
 				}
 				if (Controller->GetIsJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
 					return;
 				}
 				if (Controller->GetMoveVector() == float4::ZERO)
 				{
-					FSM.ChangeState(FSM_State_Nero::RunStop);
+					FSM.ChangeState(FSM_State_Nero::Nero_RunStop);
 					return;
 				}
 
 				if (true == IsLockOn)
 				{
-					FSM.ChangeState(FSM_State_Nero::BR_Switch_Idle_to_Lockon);
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon);
 					return;
 				}
 
 				if (1 < DashTimer)
 				{
-					FSM.ChangeState(FSM_State_Nero::Dash);
+					FSM.ChangeState(FSM_State_Nero::Nero_Dash);
 					return;
 				}
 
@@ -295,7 +295,7 @@ void PlayerActor_Nero::NeroLoad()
 			});
 
 		// RunStop
-		FSM.CreateState({ .StateValue = FSM_State_Nero::RunStop,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RunStop,
 			.Start = [=] {
 				InputCheck = false;
 				WeaponIdle();
@@ -304,12 +304,12 @@ void PlayerActor_Nero::NeroLoad()
 			.Update = [=](float _DeltaTime) {
 				if (Controller->GetSwordDown())
 				{
-					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
 				}
 				if (Controller->GetIsJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
 					return;
 				}
 
@@ -317,12 +317,12 @@ void PlayerActor_Nero::NeroLoad()
 
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
-					FSM.ChangeState(FSM_State_Nero::RunStart);
+					FSM.ChangeState(FSM_State_Nero::Nero_RunStart);
 					return;
 				}
 				if (true == IsLockOn)
 				{
-					FSM.ChangeState(FSM_State_Nero::BR_Switch_Idle_to_Lockon);
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon);
 					return;
 				}
 			},
@@ -332,7 +332,7 @@ void PlayerActor_Nero::NeroLoad()
 			});
 
 		// Dash
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Dash,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Dash,
 			.Start = [=] {
 				DashTimer = 0;
 				WeaponIdle();
@@ -342,22 +342,22 @@ void PlayerActor_Nero::NeroLoad()
 				DashTimer += _DeltaTime;
 				if (Controller->GetSwordDown())
 				{
-					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
 				}
 				if (Controller->GetIsJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
 					return;
 				}
 				if (Controller->GetMoveVector() == float4::ZERO)
 				{
-					FSM.ChangeState(FSM_State_Nero::DashStop);
+					FSM.ChangeState(FSM_State_Nero::Nero_DashStop);
 					return;
 				}
 				if (true == IsLockOn)
 				{
-					FSM.ChangeState(FSM_State_Nero::BR_Switch_Idle_to_Lockon);
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon);
 					return;
 				}
 
@@ -371,7 +371,7 @@ void PlayerActor_Nero::NeroLoad()
 			});
 
 		// DashStop
-		FSM.CreateState({ .StateValue = FSM_State_Nero::DashStop,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_DashStop,
 			.Start = [=] {
 				InputCheck = false;
 				WeaponIdle();
@@ -380,12 +380,12 @@ void PlayerActor_Nero::NeroLoad()
 			.Update = [=](float _DeltaTime) {
 				if (Controller->GetSwordDown())
 				{
-					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
 				}
 				if (Controller->GetIsJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
 					return;
 				}
 
@@ -393,12 +393,12 @@ void PlayerActor_Nero::NeroLoad()
 
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
-					FSM.ChangeState(FSM_State_Nero::RunStart);
+					FSM.ChangeState(FSM_State_Nero::Nero_RunStart);
 					return;
 				}
 				if (true == IsLockOn)
 				{
-					FSM.ChangeState(FSM_State_Nero::BR_Switch_Idle_to_Lockon);
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon);
 					return;
 				}
 			},
@@ -408,7 +408,7 @@ void PlayerActor_Nero::NeroLoad()
 			});
 
 		// Jump_Vertical
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Jump_Vertical,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Jump_Vertical,
 			.Start = [=] {
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Jump_Vertical");
@@ -416,7 +416,7 @@ void PlayerActor_Nero::NeroLoad()
 			.Update = [=](float _DeltaTime) {
 				if (Renderer->IsAnimationEnd())
 				{
-					FSM.ChangeState(FSM_State_Nero::Jump_Fly);
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Fly);
 				}
 				float4 MoveDir = Controller->GetMoveVector() * RunSpeed;
 				PhysXCapsule->SetMove(MoveDir);
@@ -427,7 +427,7 @@ void PlayerActor_Nero::NeroLoad()
 
 		static float Timer = 0;
 		// Jump Fly
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Jump_Fly,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Jump_Fly,
 			.Start = [=] {
 				Timer = 0;
 				WeaponIdle();
@@ -437,7 +437,7 @@ void PlayerActor_Nero::NeroLoad()
 				Timer += _DeltaTime;
 				if (0.5f < Timer)
 				{
-					FSM.ChangeState(FSM_State_Nero::Landing);
+					FSM.ChangeState(FSM_State_Nero::Nero_Landing);
 				}
 				float4 MoveDir = Controller->GetMoveVector() * RunSpeed;
 				PhysXCapsule->SetMove(MoveDir);
@@ -447,7 +447,7 @@ void PlayerActor_Nero::NeroLoad()
 			}
 			});
 
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Landing,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Landing,
 			.Start = [=] {
 				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
@@ -459,23 +459,23 @@ void PlayerActor_Nero::NeroLoad()
 				{
 					if (Controller->GetSwordDown())
 					{
-						FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
+						FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 						return;
 					}
 					if (Controller->GetIsJump())
 					{
-						FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+						FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
 						return;
 					}
 					if (Controller->GetMoveVector() != float4::ZERO)
 					{
-						FSM.ChangeState(FSM_State_Nero::RunStart);
+						FSM.ChangeState(FSM_State_Nero::Nero_RunStart);
 						return;
 					}
 				}
 				if (Renderer->IsAnimationEnd())
 				{
-					FSM.ChangeState(FSM_State_Nero::Idle);
+					FSM.ChangeState(FSM_State_Nero::Nero_Idle);
 				}
 			},
 			.End = [=] {
@@ -488,7 +488,7 @@ void PlayerActor_Nero::NeroLoad()
 	{
 
 		// RedQueen ComboA1
-		FSM.CreateState({ .StateValue = FSM_State_Nero::RQ_ComboA_1,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_1,
 			.Start = [=] {
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0000_RQ_ComboA_1");
@@ -498,12 +498,12 @@ void PlayerActor_Nero::NeroLoad()
 				if (InputCheck == false) { return; }
 				if (Controller->GetSwordDown())
 				{
-					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_2);
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_2);
 					return;
 				}
 				if (Controller->GetIsJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
 					return;
 				}
 			},
@@ -513,7 +513,7 @@ void PlayerActor_Nero::NeroLoad()
 			});
 
 		// RedQueen ComboA2
-		FSM.CreateState({ .StateValue = FSM_State_Nero::RQ_ComboA_2,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_2,
 			.Start = [=] {
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
@@ -524,12 +524,12 @@ void PlayerActor_Nero::NeroLoad()
 				if (InputCheck == false) { return; }
 				if (Controller->GetSwordDown())
 				{
-					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_3);
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_3);
 					return;
 				}
 				if (Controller->GetIsJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
 					return;
 				}
 			},
@@ -539,7 +539,7 @@ void PlayerActor_Nero::NeroLoad()
 			});
 
 		// RedQueen ComboA3
-		FSM.CreateState({ .StateValue = FSM_State_Nero::RQ_ComboA_3,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_3,
 			.Start = [=] {
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
@@ -550,12 +550,12 @@ void PlayerActor_Nero::NeroLoad()
 				if (InputCheck == false) { return; }
 				if (Controller->GetSwordDown())
 				{
-					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_4);
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_4);
 					return;
 				}
 				if (Controller->GetIsJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
 					return;
 				}
 			},
@@ -565,7 +565,7 @@ void PlayerActor_Nero::NeroLoad()
 			});
 
 		// RedQueen ComboA4
-		FSM.CreateState({ .StateValue = FSM_State_Nero::RQ_ComboA_4,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_4,
 			.Start = [=] {
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
@@ -576,7 +576,7 @@ void PlayerActor_Nero::NeroLoad()
 				if (InputCheck == false) { return; }
 				if (Controller->GetIsJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
 					return;
 				}
 			},
@@ -589,7 +589,7 @@ void PlayerActor_Nero::NeroLoad()
 
 	/* 블루 로즈 (락온) */
 	{
-		FSM.CreateState({ .StateValue = FSM_State_Nero::BR_Switch_Idle_to_Lockon,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon,
 			.Start = [=] {
 				PhysXCapsule->SetLinearVelocityZero();
 				WeaponIdle();
@@ -602,37 +602,37 @@ void PlayerActor_Nero::NeroLoad()
 			.Update = [=](float _DeltaTime) {
 				if (true == Controller->GetLockOnFree())
 				{
-					FSM.ChangeState(FSM_State_Nero::BR_Switch_Lockon_to_Idle);
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Switch_Lockon_to_Idle);
 					return;
 				}
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
-					FSM.ChangeState(FSM_State_Nero::BR_Strafe);
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Strafe);
 					return;
 				}
 				if (Controller->GetIsLeftJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Evade_Left);
+					FSM.ChangeState(FSM_State_Nero::Nero_Evade_Left);
 					return;
 				}
 				if (Controller->GetIsRightJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Evade_Right);
+					FSM.ChangeState(FSM_State_Nero::Nero_Evade_Right);
 					return;
 				}
 				if (Controller->GetIsJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
 					return;
 				}
 				if (Controller->GetSwordDown())
 				{
-					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
 				}
 				if (true == Renderer->IsAnimationEnd())
 				{
-					FSM.ChangeState(FSM_State_Nero::BR_Lockon_Front);
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Lockon_Front);
 					return;
 				}
 				if (nullptr != LockOnEnemyTransform)
@@ -645,7 +645,7 @@ void PlayerActor_Nero::NeroLoad()
 			}
 			});
 
-		FSM.CreateState({ .StateValue = FSM_State_Nero::BR_Lockon_Front,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Lockon_Front,
 			.Start = [=] {
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0000_BR_Lockon_Front");
@@ -653,32 +653,32 @@ void PlayerActor_Nero::NeroLoad()
 			.Update = [=](float _DeltaTime) {
 				if (true == Controller->GetLockOnFree())
 				{
-					FSM.ChangeState(FSM_State_Nero::BR_Switch_Lockon_to_Idle);
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Switch_Lockon_to_Idle);
 					return;
 				}
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
-					FSM.ChangeState(FSM_State_Nero::BR_Strafe);
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Strafe);
 					return;
 				}
 				if (Controller->GetIsLeftJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Evade_Left);
+					FSM.ChangeState(FSM_State_Nero::Nero_Evade_Left);
 					return;
 				}
 				if (Controller->GetIsRightJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Evade_Right);
+					FSM.ChangeState(FSM_State_Nero::Nero_Evade_Right);
 					return;
 				}
 				if (Controller->GetIsJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
 					return;
 				}
 				if (Controller->GetSwordDown())
 				{
-					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
 				}
 				if (nullptr != LockOnEnemyTransform)
@@ -691,7 +691,7 @@ void PlayerActor_Nero::NeroLoad()
 			}
 			});
 
-		FSM.CreateState({ .StateValue = FSM_State_Nero::BR_Strafe,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Strafe,
 			.Start = [=] {
 				BlueRoseOn();
 				CurDir = 'n';
@@ -699,32 +699,32 @@ void PlayerActor_Nero::NeroLoad()
 			.Update = [=](float _DeltaTime) {
 				if (true == Controller->GetLockOnFree())
 				{
-					FSM.ChangeState(FSM_State_Nero::BR_Switch_Lockon_to_Idle);
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Switch_Lockon_to_Idle);
 					return;
 				}
 				if (Controller->GetMoveVector() == float4::ZERO)
 				{
-					FSM.ChangeState(FSM_State_Nero::BR_Lockon_Front);
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Lockon_Front);
 					return;
 				}
 				if (Controller->GetIsLeftJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Evade_Left);
+					FSM.ChangeState(FSM_State_Nero::Nero_Evade_Left);
 					return;
 				}
 				if (Controller->GetIsRightJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Evade_Right);
+					FSM.ChangeState(FSM_State_Nero::Nero_Evade_Right);
 					return;
 				}
 				if (Controller->GetIsJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
 					return;
 				}
 				if (Controller->GetSwordDown())
 				{
-					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
 				}
 
@@ -774,7 +774,7 @@ void PlayerActor_Nero::NeroLoad()
 
 			} });
 
-		FSM.CreateState({ .StateValue = FSM_State_Nero::BR_Switch_Lockon_to_Idle,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Switch_Lockon_to_Idle,
 			.Start = [=] {
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0000_BR_Switch_Lockon_to_Idle");
@@ -782,24 +782,24 @@ void PlayerActor_Nero::NeroLoad()
 			.Update = [=](float _DeltaTime) {
 				if (true == Renderer->IsAnimationEnd())
 				{
-					FSM.ChangeState(FSM_State_Nero::Idle);
+					FSM.ChangeState(FSM_State_Nero::Nero_Idle);
 					return;
 				}
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
-					FSM.ChangeState(FSM_State_Nero::RunStart);
+					FSM.ChangeState(FSM_State_Nero::Nero_RunStart);
 					return;
 				}
 
 
 				if (Controller->GetIsJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Evade_Left);
+					FSM.ChangeState(FSM_State_Nero::Nero_Evade_Left);
 					return;
 				}
 				if (Controller->GetSwordDown())
 				{
-					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
 				}
 			},
@@ -808,7 +808,7 @@ void PlayerActor_Nero::NeroLoad()
 			}
 			});
 
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Evade_Left,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Evade_Left,
 			.Start = [=] {
 				InputCheck = false;
 				Renderer->ChangeAnimation("pl0000_Evade_Left");
@@ -816,29 +816,29 @@ void PlayerActor_Nero::NeroLoad()
 			.Update = [=](float _DeltaTime) {
 				if (true == Renderer->IsAnimationEnd())
 				{
-					FSM.ChangeState(FSM_State_Nero::BR_Lockon_Front);
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Lockon_Front);
 					return;
 				}
 
 				if (false == InputCheck) { return; }
 				if (Controller->GetIsLeftJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Evade_Left);
+					FSM.ChangeState(FSM_State_Nero::Nero_Evade_Left);
 					return;
 				}
 				if (Controller->GetIsRightJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Evade_Right);
+					FSM.ChangeState(FSM_State_Nero::Nero_Evade_Right);
 					return;
 				}
 				if (Controller->GetIsJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
 					return;
 				}
 				if (Controller->GetSwordDown())
 				{
-					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
 				}
 			},
@@ -847,7 +847,7 @@ void PlayerActor_Nero::NeroLoad()
 			}
 			});
 
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Evade_Right,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Evade_Right,
 			.Start = [=] {
 				InputCheck = false;
 				Renderer->ChangeAnimation("pl0000_Evade_Right");
@@ -855,29 +855,29 @@ void PlayerActor_Nero::NeroLoad()
 			.Update = [=](float _DeltaTime) {
 				if (true == Renderer->IsAnimationEnd())
 				{
-					FSM.ChangeState(FSM_State_Nero::BR_Lockon_Front);
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Lockon_Front);
 					return;
 				}
 
 				if (false == InputCheck) { return; }
 				if (Controller->GetIsLeftJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Evade_Left);
+					FSM.ChangeState(FSM_State_Nero::Nero_Evade_Left);
 					return;
 				}
 				if (Controller->GetIsRightJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Evade_Right);
+					FSM.ChangeState(FSM_State_Nero::Nero_Evade_Right);
 					return;
 				}
 				if (Controller->GetIsJump())
 				{
-					FSM.ChangeState(FSM_State_Nero::Jump_Vertical);
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
 					return;
 				}
 				if (Controller->GetSwordDown())
 				{
-					FSM.ChangeState(FSM_State_Nero::RQ_ComboA_1);
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
 				}
 			},
@@ -886,7 +886,7 @@ void PlayerActor_Nero::NeroLoad()
 			}
 			});
 	}
-	FSM.ChangeState(FSM_State_Nero::Idle);
+	FSM.ChangeState(FSM_State_Nero::Nero_Idle);
 }
 
 void PlayerActor_Nero::Update_Character(float _DeltaTime)
