@@ -78,7 +78,6 @@ void BasePlayerActor::Start()
 	PhysXCapsule->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
 	PhysXCapsule->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), VecSclae);
 	PhysXCapsule->GetDynamic()->setMass(5.0f);
-	PhysXCapsule->TurnOffGravity();
 
 	LockOnCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
 	LockOnCollision->GetTransform()->SetLocalScale({ 1000, 500, 3000 });
@@ -189,5 +188,10 @@ void BasePlayerActor::SetPush(float4 _Value)
 void BasePlayerActor::SetMove(float4 _Value)
 {
 	PhysXCapsule->SetMove(_Value.RotaitonYDegReturn(Rot.y));
+}
+
+void BasePlayerActor::SetWorldPosition(float4 _Value)
+{
+	PhysXCapsule->SetWorldPosition(_Value);
 }
 

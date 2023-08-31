@@ -58,6 +58,7 @@ private:
 	float DashTimer = 0;
 	float JumpForce = 7000.0f;
 	bool InputCheck = false;
+	bool MoveCheck = false;
 	char CurDir = 'n';
 
 	void RedQueenOn();
