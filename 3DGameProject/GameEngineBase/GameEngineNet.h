@@ -55,5 +55,8 @@ private:
 
 	//메인스레드에서 패킷 처리를 위한 별도 자료구조(Lock걸고 ProcessPackets = RecvPacket 할 예정)
 	std::list<std::shared_ptr<GameEnginePacket>> ProcessPackets;
+
+
+	static bool SearchPacketData(GameEngineSerializer& _Ser, unsigned int& _PacketType, unsigned int& _PacketSize);
 };
 

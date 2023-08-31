@@ -11,7 +11,7 @@
 #include "ObjectUpdatePacket.h"
 #include "MessageChatPacket.h"
 
-#include "MainLevel.h"
+#include "NetworkTestLevel.h"
 #include "StartStageLevel.h"
 #include "BossStageLevel.h"
 
@@ -30,8 +30,9 @@ std::vector<GameEngineLevel*> NetworkManager::AllBattleLevels;
 GameEngineLevel* NetworkManager::CurLevel = nullptr;
 
 std::map<unsigned int, std::shared_ptr<ObjectUpdatePacket>> NetworkManager::AllUpdatePacket;
-std::vector<std::shared_ptr<class MessageChatPacket>> NetworkManager::AllMsgChatPacket;
-GameEngineSerializer NetworkManager::ChunkUpdatePackets;
+std::map<PacketEnum, std::vector<std::shared_ptr<GameEnginePacket>>> NetworkManager::AllPacket;
+std::map<PacketEnum, GameEngineSerializer> NetworkManager::ChunkPackets;
+GameEngineSerializer NetworkManager::ChunkBytes;
 
 PlayerType NetworkManager::CharacterType = PlayerType::None;
 
@@ -74,7 +75,7 @@ void NetworkManager::ConnectServer(PlayerType _CharacterType)
 	//전투가 실행되는 레벨을 벡터에 저장
 	if (true == AllBattleLevels.empty())
 	{
-		AllBattleLevels.push_back(MainLevel::GetInst());
+		AllBattleLevels.push_back(NetworkTestLevel::GetInst());
 		AllBattleLevels.push_back(StartStageLevel::GetInst());
 		AllBattleLevels.push_back(BossStageLevel::GetInst());
 	}
@@ -128,9 +129,7 @@ void NetworkManager::PushChat(const std::string_view& _Msg)
 	ChatPacket->SetPacketID(PacketEnum::MessageChatPacket);
 	ChatPacket->SetObjectID(NetID);
 	ChatPacket->Message = _Msg;
-
-	//NetInst->SendPacket(ChatPacket);
-	AllMsgChatPacket.push_back(ChatPacket);
+	AllPacket[PacketEnum::MessageChatPacket].push_back(ChatPacket);
 }
 
 
@@ -202,43 +201,92 @@ void NetworkManager::PushUpdatePacket(GameEngineNetObject* _NetObj, GameEngineAc
 
 void NetworkManager::FlushUpdatePacket()
 {
-	if (true == AllUpdatePacket.empty())
+	if (nullptr == NetInst)
 		return;
 
-	int PacketSize = 0;
-	int Count = 0;
-
-	//패킷 모아 보내기
-	for (const std::pair<unsigned int, std::shared_ptr<ObjectUpdatePacket>>& Pair : AllUpdatePacket)
+	//업데이트 패킷 직렬화
+	if (false == AllUpdatePacket.empty())
 	{
-		std::shared_ptr<ObjectUpdatePacket> UpdatePacket = Pair.second;
-		UpdatePacket->SerializePacket(ChunkUpdatePackets);
-		
+		std::vector <std::shared_ptr<GameEnginePacket>>& UpdataPackets = AllPacket[PacketEnum::ObjectUpdatePacket];
+		UpdataPackets.reserve(AllUpdatePacket.size());
+
+		for (const std::pair<unsigned int, std::shared_ptr<ObjectUpdatePacket>>& Pair : AllUpdatePacket)
+		{
+			UpdataPackets.push_back(Pair.second);
+		}
+
+		SerializePackets(UpdataPackets, ChunkPackets[PacketEnum::ObjectUpdatePacket]);
+		AllUpdatePacket.clear();
+		UpdataPackets.clear();
+	}
+
+
+	//모든 패킷 직렬화, 직렬화 결과는 ChunkPackets에 쌓이게 됨
+	auto PacketGroupStartIter = AllPacket.begin();
+	auto PacketGroupEndIter = AllPacket.end();
+	while (PacketGroupStartIter != PacketGroupEndIter)
+	{
+		PacketEnum Type = PacketGroupStartIter->first;
+		std::vector<std::shared_ptr<GameEnginePacket>>& Packets = PacketGroupStartIter->second;
+
+		if (false == Packets.empty())
+		{
+			SerializePackets(Packets, ChunkPackets[Type]);
+			Packets.clear();
+		}
+
+		++PacketGroupStartIter;
+	}
+
+
+	
+	//각 패킷의 직렬화 결과인 ChunkPackets들을 하나의 바이트인 ChunkBytes에 옮긴다
+	auto PacketByteStartIter = ChunkPackets.begin();
+	auto PacketByteEndIter = ChunkPackets.end();
+	while (PacketByteStartIter != PacketByteEndIter)
+	{
+		GameEngineSerializer& Ser = PacketByteStartIter->second;
+		if (0 < Ser.GetWriteOffSet())
+		{
+			ChunkBytes << Ser;
+			Ser.Reset();
+		}
+
+		++PacketByteStartIter;
+	}
+
+
+	if (0 == ChunkBytes.GetWriteOffSet())
+		return;
+
+	NetInst->Send(ChunkBytes.GetConstCharPtr(), ChunkBytes.GetWriteOffSet());
+	ChunkBytes.Reset();
+}
+
+
+
+void NetworkManager::SerializePackets(const std::vector<std::shared_ptr<GameEnginePacket>>& _Packets, GameEngineSerializer& _Ser)
+{
+	_Ser.Reset();
+	int PacketSize = 0;
+
+	for (size_t i = 0; i < _Packets.size(); ++i)
+	{
+		_Packets[i]->SerializePacket(_Ser);
+
+		//처음으로 패킷 사이즈를 찾을때
 		if (0 == PacketSize)
 		{
-			unsigned char* Ptr = ChunkUpdatePackets.GetDataPtr();
+			unsigned char* Ptr = _Ser.GetDataPtr();
 			memcpy_s(&PacketSize, sizeof(int), &Ptr[4], sizeof(int));
 			continue;
 		}
-		
-		unsigned char* SizePtr = ChunkUpdatePackets.GetDataPtr();
-		int SizePos = (PacketSize * Count++) + 4;
+
+		//패킷을 직렬화 할 때 마다 Size위치의 값을 수정
+		unsigned char* SizePtr = _Ser.GetDataPtr();
+		int SizePos = (PacketSize * i) + 4;
 		memcpy_s(&SizePtr[SizePos], sizeof(int), &PacketSize, sizeof(int));
 	}
-
-	//한 바이트로 모은 패킷 보내기
-	NetInst->Send(ChunkUpdatePackets.GetConstCharPtr(), ChunkUpdatePackets.GetWriteOffSet());
-
-	//자료구조, 직렬화 버퍼 클리어
-	AllUpdatePacket.clear();
-	ChunkUpdatePackets.Reset();
-
-
-	for (size_t i = 0; i < AllMsgChatPacket.size(); i++)
-	{
-		NetInst->SendPacket(AllMsgChatPacket[i]);
-	}
-	AllMsgChatPacket.clear();
 }
 
 

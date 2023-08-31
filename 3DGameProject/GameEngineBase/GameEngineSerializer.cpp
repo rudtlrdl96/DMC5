@@ -132,8 +132,8 @@ void GameEngineSerializer::operator>>(uint64_t& _Value)
 
 void GameEngineSerializer::ClearReadData()
 {
-	memcpy_s(&Data[0], WriteOffset, &Data[ReadOffset], WriteOffset - ReadOffset);
-	//memcpy_s(&Data[0], WriteOffset - ReadOffset, &Data[ReadOffset], WriteOffset - ReadOffset);
+	//memcpy_s(&Data[0], WriteOffset, &Data[ReadOffset], WriteOffset - ReadOffset);
+	memcpy_s(&Data[0], WriteOffset - ReadOffset, &Data[ReadOffset], WriteOffset - ReadOffset);
 	WriteOffset -= ReadOffset;
 	ReadOffset = 0;
 }

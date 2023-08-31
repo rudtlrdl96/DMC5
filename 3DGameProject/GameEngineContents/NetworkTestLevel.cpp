@@ -2,6 +2,7 @@
 #include "NetworkTestLevel.h"
 
 #include "NetworkManager.h"
+#include "NetTestPlayer.h"
 
 NetworkTestLevel* NetworkTestLevel::Inst = nullptr;
 
@@ -47,8 +48,8 @@ void NetworkTestLevel::Update(float _DeltaTime)
 	//2¹ø
 	if (true == GameEngineInput::IsDown("Test_CreateTestNetEnemy") && NetworkManager::IsServer())
 	{
-		/*std::shared_ptr<NetTestPlayer> OtherPlayer = nullptr;
-		OtherPlayer = NetworkManager::CreateNetworkActor<NetTestPlayer>(Net_ActorType::Nero);*/
+		std::shared_ptr<NetTestPlayer> OtherPlayer = nullptr;
+		OtherPlayer = NetworkManager::CreateNetworkActor<NetTestPlayer>(Net_ActorType::Nero);
 		return;
 	}
 }

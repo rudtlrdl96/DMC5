@@ -105,8 +105,10 @@ private:
 
 	//업데이트 패킷을 보낼때 중복을 피하기 위한 맵 <오브젝트 아이디, 오브젝트 업데이트 패킷 포인터>
 	static std::map<unsigned int, std::shared_ptr<class ObjectUpdatePacket>> AllUpdatePacket;
-	static std::vector<std::shared_ptr<class MessageChatPacket>> AllMsgChatPacket;
-	static GameEngineSerializer ChunkUpdatePackets;
+	static std::map<PacketEnum, std::vector<std::shared_ptr<class GameEnginePacket>>> AllPacket;
+	static std::map<PacketEnum, GameEngineSerializer> ChunkPackets;
+	static GameEngineSerializer ChunkBytes;
+
 
 	static std::vector<class GameEngineLevel*> AllBattleLevels;
 
@@ -129,6 +131,10 @@ private:
 
 
 	static void CreateLocalPlayer(class GameEngineLevel* _Level, int _ObjectID);
+
+
+	//vector 형태의 패킷들을 _Ser인자에 직렬화 시킴
+	static void SerializePackets(const std::vector<std::shared_ptr<class GameEnginePacket>>& _Packets, GameEngineSerializer& _Ser);
 
 
 	NetworkManager(){}

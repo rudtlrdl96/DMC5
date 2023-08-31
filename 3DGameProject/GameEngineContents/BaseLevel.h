@@ -20,5 +20,6 @@ protected:
 private:
 	float Timer = 0.f;
 	const float WaitTime = 0.01f;
+	//const float WaitTime = 10.01f;
 };
 

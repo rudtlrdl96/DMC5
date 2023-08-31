@@ -15,7 +15,7 @@ GameEngineNet::~GameEngineNet()
 
 void GameEngineNet::RecvThreadFunction(SOCKET _Socket, GameEngineNet* _Net)
 {
-	char Data[1024] = { 0 };
+	char Data[4096] = { 0 };
 	GameEngineSerializer Serializer;
 
 	unsigned int PacketType = -1;
@@ -40,45 +40,23 @@ void GameEngineNet::RecvThreadFunction(SOCKET _Socket, GameEngineNet* _Net)
 
 		//여태까지 받은 바이트를 읽어보기
 		Serializer.Write(Data, Result);
-		//아직 패킷을 분석할 정도의 바이트 크기가 아니라면 다시 수신대기
-		if (8 > Serializer.GetWriteOffSet())
-		{
-			/*
-				TCP는 언제나 바이트가 짤려서 오거나 다음 패킷과 같이
-				붙어서 올 수가 있다는 점을 유의하자
-			*/
+
+		
+		//여태까지 읽은 바이트를 조사해서 8바이트 미만이면 데이터 수신 대기,
+		//8바이트 이상이면 패킷 타입과 사이즈를 조사한다
+		if (false == SearchPacketData(Serializer, PacketType, PacketSize))
 			continue;
-		}
 
-
-		// 8바이트 이상 받았고
-		// 아직 패킷타입이 뭔지 알아내지 못했다면(PacketType 초기값이 -1)
-		if (-1 == PacketType)
-		{
-			// 패킷타입 알아낸다.(앞쪽 4바이트 분석)
-			{
-				unsigned char* TypePivotPtr = &Serializer.GetDataPtr()[0];
-				unsigned int* ConvertPtr = reinterpret_cast<unsigned int*>(TypePivotPtr);
-				PacketType = *ConvertPtr;
-			}
-
-			// 사이즈 알아내고(4~8의 바이트 분석)
-			{
-				unsigned char* SizePivotPtr = &Serializer.GetDataPtr()[4];
-				unsigned int* ConvertPtr = reinterpret_cast<unsigned int*>(SizePivotPtr);
-				PacketSize = *ConvertPtr;
-			}
-		}
 
 		// 패킷사이즈가 말도 안되는 크기인 경우(오류)
 		if (-1 == PacketSize)
 		{
+			MsgAssert("패킷 사이즈가 -1이 나왔습니다");
 			return;
 		}
 
 		// 8바이트 이상 받았지만
 		// 그걸 통해서 알아낸 패킷의 크기보다는 덜 온 경우
-		//if (PacketSize > static_cast<int>(Serializer.GetWriteOffSet()))
 		if (PacketSize > Serializer.GetWriteOffSet())
 		{
 			//다음 수신을 대기
@@ -105,50 +83,31 @@ void GameEngineNet::RecvThreadFunction(SOCKET _Socket, GameEngineNet* _Net)
 				return;
 			}
 
+			//현재 패킷을 처리했기 때문에 타입과 사이즈 리셋
+			PacketType = -1;
+			PacketSize = -1;
+
 			//수신받은 모든 바이트를 패킷크기에 딱 맞게 처리한 경우
 			if (Serializer.GetWriteOffSet() == Serializer.GetReadOffSet())
 			{
 				Serializer.Reset();
-				PacketType = -1;
-				PacketSize = -1;
 				break;
 			}
 
 			//아직 처리해야 하는 바이트가 남은 경우
 			else
 			{
+				//다음 패킷을 조사할 수 없는 Byte크기인 경우엔 데이터 수신 대기,
+				//조사할 수 없는 Byte크기일땐 패킷 타입과 사이즈를 알아낸다
+				if (false == SearchPacketData(Serializer, PacketType, PacketSize))
+					break;
+
+				//직렬화 버퍼에 남아있는 바이트 크기
 				unsigned int RemainSize = Serializer.GetWriteOffSet() - Serializer.GetReadOffSet();
 
-				//남은 바이트가 8바이트 미만인 경우 다시 데이터 수신을 대기한다(23번째 줄로 이동)
-				if (8 > RemainSize)
-				{
-					//직렬화 버퍼를 정리하고(앞쪽으로 땡기고) 다시 데이터 수신
-					Serializer.ClearReadData();
-					break;
-				}
-
-
-				//패킷 타입 분석
-				{
-					unsigned char* TypePivotPtr = &Serializer.GetDataPtr()[0];
-					unsigned int* ConvertPtr = reinterpret_cast<unsigned int*>(TypePivotPtr);
-					PacketType = *ConvertPtr;
-				}
-
-				//패킷 사이즈 분석
-				{
-					unsigned char* SizePivotPtr = &Serializer.GetDataPtr()[4];
-					unsigned int* ConvertPtr = reinterpret_cast<unsigned int*>(SizePivotPtr);
-					PacketSize = *ConvertPtr;
-				}
-
-				//남은 데이터가 8바이트 보다는 적은 경우엔
+				//남은 데이터가 8바이트 보다는 적은 경우엔 데이터 수신 대기
 				if (RemainSize < PacketSize)
-				{
-					//직렬화 버퍼를 정리하고(앞쪽으로 땡기고) 다시 데이터 수신
-					Serializer.ClearReadData();
 					break;
-				}
 
 				//지금 당장 붙어있던 패킷을 처리할 수 있던 경우엔
 				//지금 While문으로 이동해서 바이트를 패킷으로 변환
@@ -157,6 +116,47 @@ void GameEngineNet::RecvThreadFunction(SOCKET _Socket, GameEngineNet* _Net)
 
 	}
 }
+
+
+
+bool GameEngineNet::SearchPacketData(GameEngineSerializer& _Ser, unsigned int& _PacketType, unsigned int& _PacketSize)
+{
+	//바이트 버퍼가 왼쪽정렬이 되어있지 않은 경우엔 왼쪽 정렬한다
+	if (0 != _Ser.GetReadOffSet())
+	{
+		_Ser.ClearReadData();
+	}
+	
+	//읽어들인 바이트가 8바이트 미만일땐 실행하지 않음
+	unsigned int BuffSize = _Ser.GetWriteOffSet() - _Ser.GetReadOffSet();
+	if (BuffSize < 8)
+		return false;
+
+
+	// 패킷타입 알아낸다.(앞쪽 4바이트 분석)
+	if (-1 == _PacketType)
+	{
+		//실제 직렬화를 Read하는 부분은 패킷쪽에서 이루어짐, 지금은 조사만
+		unsigned char* TypePivotPtr = &_Ser.GetDataPtr()[0];
+		unsigned int* ConvertPtr = reinterpret_cast<unsigned int*>(TypePivotPtr);
+		_PacketType = *ConvertPtr;
+	}
+
+	// 패킷사이즈를 알아낸다.(4~8의 바이트 분석)
+	if (-1 == _PacketSize)
+	{
+		//실제 직렬화를 Read하는 부분은 패킷쪽에서 이루어짐, 지금은 조사만
+		unsigned char* SizePivotPtr = &_Ser.GetDataPtr()[4];
+		unsigned int* ConvertPtr = reinterpret_cast<unsigned int*>(SizePivotPtr);
+		_PacketSize = *ConvertPtr;
+	}
+
+	return true;
+}
+
+
+
+
 
 void GameEngineNet::SendPacket(std::shared_ptr<GameEnginePacket> _Packet, int _IgnoreID)
 {
