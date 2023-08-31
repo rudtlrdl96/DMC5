@@ -32,7 +32,6 @@ void StartStageLevel::Start()
 	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
 
 	StageBaseLevel::Start();
-
 }
 
 void StartStageLevel::Update(float _DeltaTime)
@@ -82,12 +81,10 @@ void StartStageLevel::LevelChangeStart()
 		GameEngineFBXMesh::Load(Path);
 	}
 
-
 	SetCamera({ 0,0,-500 });
-	CreateActor<FreeCameraActor>();
 
-	CreateStage(AllStageDatas[0]);
-	CreateActor<TestObject>();
+	CreateStage(AllStageDatas[1]);
+	//CreateActor<TestObject>();
 }
 
 

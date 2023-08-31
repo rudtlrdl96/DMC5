@@ -25,6 +25,7 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineFBXRenderer> Nav = nullptr;
+	std::shared_ptr<class PhysXTriangleComponent> Colider = nullptr;
 
 };
 

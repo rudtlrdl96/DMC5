@@ -35,6 +35,7 @@ void StageBaseLevel::LoadAllStageData()
 
 void StageBaseLevel::Start()
 {
+	BaseLevel::Start();
 	CreateScene(GetName());
 	LoadAllStageData();
 }
@@ -119,18 +120,6 @@ void StageBaseLevel::EraseSkyBox()
 void StageBaseLevel::ClearStage()
 {
 	StageName = "";
-	//for (size_t i = 0; i < AcFieldMaps.size(); i++)
-	//{
-	//	AcFieldMaps[i]->Death();
-	//	AcFieldMaps[i] = nullptr;
-	//}
-	//AcFieldMaps.clear();
-	//
-	//if (AcSkyBox != nullptr)
-	//{
-	//	AcSkyBox->Death();
-	//	AcSkyBox = nullptr;
-	//}
 	EraseStageFieldMap();
 	EraseSkyBox();
 	EraseNavMesh();
