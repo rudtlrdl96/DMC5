@@ -93,6 +93,11 @@ void GameEngineShader::ShaderResCheck()
 		}
 		case D3D_SIT_TEXTURE:
 		{
+			if (9 == ResDesc.BindPoint)
+			{
+				continue;
+			}
+
 			std::shared_ptr<GameEngineTexture> Res = GameEngineTexture::Find("EngineBaseTex.png");
 
 			GameEngineTextureSetter Setter;

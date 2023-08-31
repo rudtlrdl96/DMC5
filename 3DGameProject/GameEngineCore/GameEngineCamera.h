@@ -63,13 +63,15 @@ public:
 	void Render(float _DeltaTime) override;
 
 	void CameraTransformUpdate();
+
+	void ReflectionTransformUpdate();
 	void ReflectionRender(float _DeltaTime);
 
 	std::shared_ptr<GameEngineRenderTarget> GetCamTarget()
 	{
 		return CamTarget;
-	}	
-	
+	}		
+		
 	bool IsView(const TransformData& _TransData);
 
 	template<typename EnumType>

@@ -1,7 +1,7 @@
 #include "Transform.fx"
 #include "Light.fx"
 #include "RenderBaseValue.fx"
-#include "MultiTexture.fx"
+#include "Reflection.fx"
 
 struct Input
 {
@@ -51,7 +51,6 @@ Output MeshAniTexture_VS(Input _Input)
 Texture2D DiffuseTexture : register(t0); // ALBM
 Texture2D NormalTexture : register(t1);  // NRMR
 Texture2D SpecularTexture : register(t2); // ATOS
-Texture2D ReflectionTexture : register(t3);
 
 SamplerState ENGINEBASE : register(s0);
 
@@ -67,6 +66,10 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
     }
     
     float4 RGBA = { AlbmData.r, AlbmData.g, AlbmData.b, AtosData.r};
+    
+    RGBA.a *= 0.0f;
+    RGBA.a += 1.0f;
+    
     float4 ResultColor = RGBA;
     
     if (0 != IsLight)
@@ -90,6 +93,12 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
         float A = RGBA.w;
         ResultColor = RGBA * (DiffuseRatio + SpacularRatio + AmbientRatio);
         ResultColor.a = A;
+        
+        float2 RevX_UV = { -_Input.TEXCOORD.x, _Input.TEXCOORD.y };
+        float4 ReflectTexture = ReflectionTexture.Sample(ENGINEBASE, NormalDir.xy);
+                      
+        //ResultColor.xyz -= ResultColor.xyz;
+        ResultColor.xyz += ReflectTexture.xyz * AlbmData.a;
     }
             
     if (1.0f != BaseColor.a)
@@ -98,7 +107,7 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
         ResultColor.a = 1.0f - ((Step / 5.0f) * (1.0f - BaseColor.a));
     }
     
-    ResultColor += ReflectionTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy) * 0.2f;
+    //ResultColor.xyz += ReflectionTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy).xyz ;
     
     return ResultColor;
 }

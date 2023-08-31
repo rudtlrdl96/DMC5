@@ -49,7 +49,7 @@
     <FxCompile Include="ContentsAniMesh_Mix.hlsl">
       <Filter>MeshShader</Filter>
     </FxCompile>
-    <FxCompile Include="MultiTexture.fx">
+    <FxCompile Include="Reflection.fx">
       <Filter>Header</Filter>
     </FxCompile>
   </ItemGroup>

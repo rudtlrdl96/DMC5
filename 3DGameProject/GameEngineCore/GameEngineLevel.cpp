@@ -1,13 +1,17 @@
 #include "PrecompileHeader.h"
 #include "GameEngineLevel.h"
+
+#include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEngineCore/GameEngineLight.h>
+
 #include "GameEngineActor.h"
 #include "GameEngineCamera.h"
 #include "GameEngineGUI.h"
 #include "GameEngineCollision.h"
 #include "GameEngineDebug3D.h"
 #include "GameEngineLight.h"
-#include <GameEngineCore/GameEngineLight.h>
-#include <GameEnginePlatform/GameEngineInput.h>
+#include "GameEngineDevice.h"
+
 
 bool GameEngineLevel::IsDebugRender = false;
 
@@ -95,7 +99,8 @@ void GameEngineLevel::Render(float _DeltaTime)
 		}
 
 		Cam->ReflectionSetting();
-		Cam->ReflectionRender(_DeltaTime);
+		Cam->ReflectionTransformUpdate();
+		Cam->Render(_DeltaTime);
 
 		Cam->Setting();
 		Cam->CameraTransformUpdate();

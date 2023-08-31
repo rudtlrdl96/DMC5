@@ -157,7 +157,7 @@
     <FxCompile Include="FadeShader.hlsl" />
     <FxCompile Include="JudgementCutShader.hlsl" />
     <FxCompile Include="Light.fx" />
-    <FxCompile Include="MultiTexture.fx" />
+    <FxCompile Include="Reflection.fx" />
     <FxCompile Include="MyShader.fx" />
     <FxCompile Include="ContentsMesh_Mix.hlsl" />
     <FxCompile Include="ContentsMesh.hlsl" />

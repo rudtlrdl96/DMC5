@@ -2,7 +2,6 @@
 #include "Animation.fx"
 #include "Light.fx"
 #include "RenderBaseValue.fx"
-#include "MultiTexture.fx"
 
 struct Input
 {
@@ -71,9 +70,7 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
     {
         clip(-1);
     }
-    
-    Color = ColorMix(Color, MixTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy));
-    
+        
     float4 ResultColor = Color;
         
     if (0 != IsLight)

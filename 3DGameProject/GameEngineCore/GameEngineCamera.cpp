@@ -157,10 +157,21 @@ void GameEngineCamera::Setting()
 	GameEngineDevice::GetContext()->RSSetViewports(1, &ViewPortData);
 	CamTarget->Clear();
 	CamTarget->Setting();
+
+	if (nullptr != ReflectionTarget)
+	{
+		ID3D11ShaderResourceView* SRV = ReflectionTarget->GetTexture(0)->GetSRV();
+		GameEngineDevice::GetContext()->PSSetShaderResources(9, 1, &SRV);
+	}
 }
 
 void GameEngineCamera::ReflectionSetting()
 {
+	std::shared_ptr<GameEngineTexture> NullTex = GameEngineTexture::Find("EngineNullTex.png");
+
+	ID3D11ShaderResourceView* SRV = NullTex->GetSRV();
+	GameEngineDevice::GetContext()->PSSetShaderResources(9, 1, &SRV);
+
 	if (nullptr == ReflectionTarget)
 	{
 		return;
@@ -300,7 +311,7 @@ void GameEngineCamera::CameraTransformUpdate()
 	Box.Orientation = GetTransform()->GetWorldQuaternion().DirectFloat4;
 }
 
-void GameEngineCamera::ReflectionRender(float _DeltaTime)
+void GameEngineCamera::ReflectionTransformUpdate()
 {
 	if (nullptr == ReflectionTarget)
 	{
@@ -313,7 +324,7 @@ void GameEngineCamera::ReflectionRender(float _DeltaTime)
 	float4 EyeUp = GetTransform()->GetLocalUpVector();
 
 	// N : ¹ý¼±
-	float4 UpVector = float4::UP; 
+	float4 UpVector = float4::UP;
 
 	EyeDir = (-EyeDir + UpVector * 2.0f * float4::DotProduct3D(EyeDir, UpVector));
 	EyeUp = (-EyeUp + UpVector * 2.0f * float4::DotProduct3D(EyeUp, UpVector));
@@ -348,8 +359,11 @@ void GameEngineCamera::ReflectionRender(float _DeltaTime)
 	Box.Extents.x = Width * 0.6f;
 	Box.Extents.y = Height * 0.6f;
 	Box.Orientation = GetTransform()->GetWorldQuaternion().DirectFloat4;
+}
 
-	Render(_DeltaTime);
+void GameEngineCamera::ReflectionRender(float _DeltaTime)
+{
+
 }
 
 void GameEngineCamera::PushRenderer(std::shared_ptr<GameEngineRenderer> _Render)
