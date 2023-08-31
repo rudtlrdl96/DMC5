@@ -22,12 +22,6 @@ void FieldMapColData::ReadFieldMapColData(GameEngineSerializer& _Serializer)
 void FieldMapData::WriteFieldMapData(GameEngineSerializer& _Serializer)
 {
 	_Serializer << MeshFileName;
-	_Serializer << NavMeshFileName;
-	//_Serializer << static_cast<int>(ColDatas.size());
-	//for (size_t i = 0; i < ColDatas.size(); i++)
-	//{
-	//	ColDatas[i].WriteFieldMapColData(_Serializer);
-	//}
 	_Serializer << FieldMapPosition;
 	_Serializer << FieldMapScale;
 	_Serializer << FieldMapRotation;
@@ -36,14 +30,6 @@ void FieldMapData::WriteFieldMapData(GameEngineSerializer& _Serializer)
 void FieldMapData::ReadFieldMapData(GameEngineSerializer& _Serializer)
 {
 	_Serializer >> MeshFileName;
-	_Serializer >> NavMeshFileName;
-	//int tempsize = 0;
-	//_Serializer >> tempsize;
-	//ColDatas.resize(tempsize);
-	//for (size_t i = 0; i < ColDatas.size(); i++)
-	//{
-	//	ColDatas[i].ReadFieldMapColData(_Serializer);
-	//}
 	_Serializer >> FieldMapPosition;
 	_Serializer >> FieldMapScale;
 	_Serializer >> FieldMapRotation;
@@ -58,6 +44,7 @@ void StageData::WriteStageData(GameEngineSerializer& _Serializer)
 		MapDatas[i].WriteFieldMapData(_Serializer);
 	}
 	_Serializer << SkyboxFileName;
+	_Serializer << NavMeshFileName;
 }
 
 void StageData::ReadStageData(GameEngineSerializer& _Serializer)
@@ -71,6 +58,7 @@ void StageData::ReadStageData(GameEngineSerializer& _Serializer)
 		MapDatas[i].ReadFieldMapData(_Serializer);
 	}
 	_Serializer >> SkyboxFileName;
+	_Serializer >> NavMeshFileName;
 }
 
 void StageData::WriteAllStageData(GameEngineSerializer& _Serializer, std::vector<StageData>& _AllData)

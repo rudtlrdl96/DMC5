@@ -23,10 +23,3 @@ std::shared_ptr<SkyBox> SkyBox::CreateSkyBox(GameEngineLevel* _Level, const std:
 	return Result;
 }
 
-void SkyBox::Start()
-{
-}
-
-void SkyBox::Update(float _DeltaTime)
-{
-}

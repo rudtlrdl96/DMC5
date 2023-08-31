@@ -331,6 +331,9 @@
     <ClInclude Include="NetworkTestLevel.h">
       <Filter>Levels\Test</Filter>
     </ClInclude>
+    <ClInclude Include="NavMesh.h">
+      <Filter>Actor\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -653,6 +656,9 @@
     </ClCompile>
     <ClCompile Include="NetworkTestLevel.cpp">
       <Filter>Levels\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="NavMesh.cpp">
+      <Filter>Actor\Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

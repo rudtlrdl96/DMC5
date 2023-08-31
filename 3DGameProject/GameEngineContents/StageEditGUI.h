@@ -61,6 +61,9 @@ private:
 	void FieldMapCombo();
 	void FieldMapTransformEditUI(std::shared_ptr<GameEngineObject> _Obj = nullptr);
 
+	//NavMesh 관련
+	
+	
 	//Collision 관련
 	//size_t Collision_current = 0;
 	//void FieldMapColList();

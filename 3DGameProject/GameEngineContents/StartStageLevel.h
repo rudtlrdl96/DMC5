@@ -9,8 +9,6 @@ public:
 		return Inst;
 	}
 
-	StageData TempData = StageData();
-
 	StartStageLevel();
 	~StartStageLevel();
 	StartStageLevel(const StartStageLevel& _Other) = delete;

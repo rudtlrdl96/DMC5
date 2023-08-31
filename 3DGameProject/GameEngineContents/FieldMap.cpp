@@ -41,7 +41,7 @@ FieldMap::~FieldMap()
 //	return Result;
 //}
 
-std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, const std::string_view& _FBXName, const std::string_view& _NavMeshName, const float4& _MapPosition, const float4& _MapScale, const float4& _MapRotation)
+std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, const std::string_view& _FBXName, const float4& _MapPosition, const float4& _MapScale, const float4& _MapRotation)
 {
 	std::shared_ptr<FieldMap> Result;
 	Result = _Level->CreateActor<FieldMap>();
@@ -50,12 +50,6 @@ std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, cons
 	Result->GetTransform()->SetLocalRotation(_MapRotation);
 	Result->FieldMapRenderer = Result->CreateComponent<GameEngineFBXRenderer>();
 	Result->FieldMapRenderer->SetFBXMesh(_FBXName.data(), "FBX"); //메쉬를 깝니다
-
-	if (_NavMeshName != "")
-	{
-		Result->FieldMapRenderer = Result->CreateComponent<GameEngineFBXRenderer>();
-		Result->FieldMapRenderer->SetFBXMesh(_NavMeshName.data(), "FBX"); //내비메쉬를 깝니다
-	}
 
 	return Result;
 }

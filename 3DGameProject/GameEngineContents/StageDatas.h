@@ -18,8 +18,6 @@ class FieldMapData
 {
 public:
 	std::string MeshFileName = "";
-	std::string NavMeshFileName = "";
-	//std::vector<FieldMapColData> ColDatas;
 	float4 FieldMapPosition = float4::ZERO;
 	float4 FieldMapScale = float4::ONE;
 	float4 FieldMapRotation = float4::ZERO;
@@ -34,6 +32,7 @@ public:
 	std::string StageName = "";
 	std::vector<FieldMapData> MapDatas;
 	std::string SkyboxFileName = "";
+	std::string NavMeshFileName = "";
 
 	void WriteStageData(GameEngineSerializer& _Serializer);
 	void ReadStageData(GameEngineSerializer& _Serializer);

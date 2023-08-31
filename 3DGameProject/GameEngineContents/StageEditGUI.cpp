@@ -5,6 +5,7 @@
 #include <GameEngineBase/GameEngineFile.h>
 #include "StageBaseLevel.h"
 #include "FieldMap.h"
+#include "NavMesh.h"
 
 StageEditGUI::StageEditGUI()
 {
@@ -58,13 +59,12 @@ void StageEditGUI::LoadStageData(std::shared_ptr<GameEngineLevel> _Level)
 {
 	GameEngineSerializer LoadSerializer = GameEngineSerializer();
 
-	std::string Temp = GetOpenFilePath();
-	std::string_view Temp_view = Temp;
+	std::filesystem::path Temp = GetOpenFilePath();
 	if (Temp == "")
 	{
 		return;
 	}
-	GameEngineFile File(Temp_view);
+	GameEngineFile File(Temp);
 	File.LoadBin(LoadSerializer);
 
 	StageData::ReadAllStageData(LoadSerializer, AllData);
@@ -212,6 +212,7 @@ void StageEditGUI::InputStageInfo(std::shared_ptr<GameEngineLevel> _Level)
 	ImGui::BeginChild("InputStageInfo", ImVec2(300, 0), true);
 	if (ImGui::Button("SetSkyBox"))
 	{
+		ImGui::SeparatorText("StageInfo");
 		std::filesystem::path filepath = GetOpenFilePath();
 		if (!filepath.empty())
 		{
@@ -223,6 +224,38 @@ void StageEditGUI::InputStageInfo(std::shared_ptr<GameEngineLevel> _Level)
 
 	ImGui::SameLine();
 	ImGui::Text(AllData[Stage_current].SkyboxFileName.c_str());
+
+	if (ImGui::Button("SetNavMesh"))
+	{
+		std::filesystem::path filepath = GetOpenFilePath();
+		if (!filepath.empty())
+		{
+			Parent->EraseNavMesh();
+			AllData[Stage_current].NavMeshFileName = filepath.filename().string();
+			Parent->CreateNavMesh(AllData[Stage_current].NavMeshFileName);
+		}
+	}
+
+	ImGui::SameLine();
+
+	ImGui::Text(AllData[Stage_current].NavMeshFileName.c_str());
+
+	if (!AllData[Stage_current].NavMeshFileName.empty())
+	{
+		static bool check = true;
+		ImGui::Checkbox("Nav On/Off", &check);
+		if (Parent->AcNavMesh != nullptr)
+		{
+			if (check && !Parent->AcNavMesh->NavRenderIsUpdate())
+			{
+				Parent->AcNavMesh->NavRenderOn();
+			}
+			else if (!check && Parent->AcNavMesh->NavRenderIsUpdate())
+			{
+				Parent->AcNavMesh->NavRenderOff();
+			}
+		}
+	}
 
 	if (ImGui::Button("AddMap"))
 	{
@@ -250,7 +283,6 @@ void StageEditGUI::InputStageInfo(std::shared_ptr<GameEngineLevel> _Level)
 	if (!AllData[Stage_current].MapDatas.empty())
 	{
 		FieldMapTransformEditUI(Parent->AcFieldMaps[FieldMap_current]);
-		//FieldMapColList();
 	}
 
 	ImGui::EndChild();

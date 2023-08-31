@@ -4,6 +4,7 @@
 
 #include "NetworkManager.h"
 #include "SkyBox.h"
+#include "NavMesh.h"
 
 std::vector<StageData> StageBaseLevel::AllStageDatas;
 
@@ -15,12 +16,30 @@ StageBaseLevel::~StageBaseLevel()
 {
 }
 
+void StageBaseLevel::LoadAllStageData()
+{
+	GameEngineSerializer LoadSerializer = GameEngineSerializer();
+
+	GameEngineDirectory Dir;
+	Dir.MoveParentToDirectory("ContentData");
+	Dir.Move("ContentData");
+	Dir.Move("StageData");
+	std::filesystem::path temp = Dir.GetPlusFileName("Test0").GetFullPath();
+
+	GameEngineFile File(temp);
+	File.LoadBin(LoadSerializer);
+
+	StageData::ReadAllStageData(LoadSerializer, AllStageDatas);
+}
+
 void StageBaseLevel::Start()
 {
 	if (!GameEngineInput::IsKey("StageTestKey"))
 	{
 		GameEngineInput::CreateKey("StageTestKey", 'M');
 	}
+
+	LoadAllStageData();
 }
 
 void StageBaseLevel::Update(float _DeltaTime)
@@ -33,6 +52,7 @@ void StageBaseLevel::CreateStage(const StageData& _Data)
 	StageName = _Data.StageName;
 	CreateStageFieldMap(_Data.MapDatas);
 	CreateSkyBox(_Data.SkyboxFileName);
+	CreateNavMesh(_Data.NavMeshFileName);
 }
 
 void StageBaseLevel::SetCamera(float4 _Position)
@@ -46,6 +66,16 @@ void StageBaseLevel::SetCamera(float4 _Position)
 
 void StageBaseLevel::EraseStageFieldMap(int _index)
 {
+	if (_index == -1)
+	{
+		for (size_t i = 0; i < AcFieldMaps.size(); i++)
+		{
+			AcFieldMaps[i]->Death();
+			AcFieldMaps[i] = nullptr;
+		}
+		AcFieldMaps.clear();
+	}
+
 	if (AcFieldMaps.size() <= _index)
 	{
 		return;
@@ -60,7 +90,7 @@ void StageBaseLevel::CreateStageFieldMap(const std::vector<FieldMapData>& _MapDa
 	AcFieldMaps.resize(_MapDatas.size());
 	for (size_t i = 0; i < AcFieldMaps.size(); i++)
 	{
-		AcFieldMaps[i] = FieldMap::CreateFieldMap(this, _MapDatas[i].MeshFileName, _MapDatas[i].NavMeshFileName, _MapDatas[i].FieldMapPosition, _MapDatas[i].FieldMapScale, _MapDatas[i].FieldMapRotation);
+		AcFieldMaps[i] = FieldMap::CreateFieldMap(this, _MapDatas[i].MeshFileName, _MapDatas[i].FieldMapPosition, _MapDatas[i].FieldMapScale, _MapDatas[i].FieldMapRotation);
 	}
 }
 
@@ -87,19 +117,41 @@ void StageBaseLevel::EraseSkyBox()
 void StageBaseLevel::ClearStage()
 {
 	StageName = "";
-	for (size_t i = 0; i < AcFieldMaps.size(); i++)
+	//for (size_t i = 0; i < AcFieldMaps.size(); i++)
+	//{
+	//	AcFieldMaps[i]->Death();
+	//	AcFieldMaps[i] = nullptr;
+	//}
+	//AcFieldMaps.clear();
+	//
+	//if (AcSkyBox != nullptr)
+	//{
+	//	AcSkyBox->Death();
+	//	AcSkyBox = nullptr;
+	//}
+	EraseStageFieldMap();
+	EraseSkyBox();
+	EraseNavMesh();
+}
+
+void StageBaseLevel::CreateNavMesh(const std::string_view& _MeshFileName)
+{
+	if (_MeshFileName == "\0")
 	{
-		AcFieldMaps[i]->Death();
-		AcFieldMaps[i] = nullptr;
+		return;
 	}
-	AcFieldMaps.clear();
-	
-	if (AcSkyBox != nullptr)
+
+	AcNavMesh = NavMesh::CreateNavMesh(this, _MeshFileName);
+}
+
+void StageBaseLevel::EraseNavMesh()
+{
+	if (AcNavMesh == nullptr)
 	{
-		AcSkyBox->Death();
-		AcSkyBox = nullptr;
+		return;
 	}
-	
+	AcNavMesh->Death();
+	AcNavMesh = nullptr;
 }
 
 

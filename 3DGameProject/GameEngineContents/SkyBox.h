@@ -17,8 +17,6 @@ public:
 	static std::shared_ptr<SkyBox> CreateSkyBox(GameEngineLevel* _Level, const std::string_view& _FBXName);
 
 protected:
-	void Start() override;
-	void Update(float _DeltaTime) override;
 
 private:
 	std::shared_ptr<class GameEngineFBXRenderer> Sky = nullptr;
