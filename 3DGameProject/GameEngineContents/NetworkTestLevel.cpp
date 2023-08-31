@@ -22,8 +22,8 @@ void NetworkTestLevel::Start()
 	BaseLevel::Start();
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 
-	GameEngineInput::CreateKey("Test_ConnectServer", '1');
-	GameEngineInput::CreateKey("Test_CreateTestNetEnemy", '2');
+	GameEngineInput::CreateKey("Test_ConnectServer", 'C');
+	GameEngineInput::CreateKey("Test_CreateTestNetEnemy", 'V');
 }
 
 void NetworkTestLevel::Update(float _DeltaTime)
