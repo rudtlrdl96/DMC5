@@ -20,6 +20,10 @@ private:
 // Ό³Έν :
 class GameEnginePhysics
 {
+	friend class PhysicsLevel;
+	friend class GameEngineLevel;
+	friend class GameEngineCore;
+
 public:
 	// constrcuter destructer
 	GameEnginePhysics();
@@ -31,6 +35,9 @@ public:
 	GameEnginePhysics& operator=(const GameEnginePhysics& _Other) = delete;
 	GameEnginePhysics& operator=(GameEnginePhysics&& _Other) noexcept = delete;
 
+protected:
+
+private:
 	static inline physx::PxPhysics* GetPhysics()
 	{
 		return m_pPhysics;
@@ -75,9 +82,6 @@ public:
 	static void ChangeScene(const std::string_view& _Name);
 	static void CreateScene(const std::string_view& _Name);
 
-protected:
-
-private:
 	static bool IsPhysics;
 	static float SceneGravity;
 

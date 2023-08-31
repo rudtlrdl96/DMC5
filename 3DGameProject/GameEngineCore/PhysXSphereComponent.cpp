@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "PhysXSphereComponent.h"
 
+#include "GameEngineLevel.h"
 
 PhysXSphereComponent::PhysXSphereComponent()
 {
@@ -100,8 +101,14 @@ physx::PxRigidDynamic* PhysXSphereComponent::CreatePhysXActors(physx::PxScene* _
 	//m_pRigidDynamic->setMaxAngularVelocity(physx::PxReal(20.0f));
 	//m_pRigidDynamic->setAngularDamping(physx::PxReal(2.0f));
 
+	if (m_pScene == nullptr)
+	{
+		std::string LevelName = GetLevel()->GetName().data();
+		MsgAssert("1. Start에서 피직스액터 생성하지 마세요\n2. 레벨에 CreateScene 하세요\n  오류가 뜬 레벨 이름 : " + LevelName);
+	}
+
 	// Scene에 액터 추가
-	_Scene->addActor(*m_pRigidDynamic);
+	m_pScene->addActor(*m_pRigidDynamic);
 
 	// TODO::virtualPhysXLevel에서 Callback 함수에 호출하기 위한 Dynamic 리턴
 	return m_pRigidDynamic;

@@ -28,12 +28,12 @@ TestLevel::~TestLevel()
 
 void TestLevel::Start()
 {
-	GameEnginePhysics::CreateScene(GetName());
+	CreateScene(GetName());
 
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 50.0f, -100.0f });
 
-	std::shared_ptr<EngineGrid> Grid = CreateActor<EngineGrid>();
+	// std::shared_ptr<EngineGrid> Grid = CreateActor<EngineGrid>();
 }
 
 void TestLevel::Update(float _DeltaTime)

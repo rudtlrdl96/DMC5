@@ -54,6 +54,8 @@ void TestObject::Start()
 	Renderer->SetFBXMesh("em0100.fbx", "FBX");
 	Renderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
 
+	Renderer->LightOff();
+
 	Renderer2 = CreateComponent<GameEngineFBXRenderer>();
 	Renderer2->SetFBXMesh("em0100.fbx", "FBX");
 	Renderer2->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
@@ -179,9 +181,8 @@ void TestObject::UserUpdate(float _DeltaTime)
 		Component->SetJump(3000.f);
 	}
 
-	Component->SetMove(MoveDir.NormalizeReturn() * 1000.0f);
-
-
+	Component->SetMove(MoveDir.NormalizeReturn() * 500.0f);
+	
 	{
 		//float4 playerpos = GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition();
 		//float4 playerposeye = GetLevel()->GetMainCamera()->GetTransform()->GetWorldForwardVector();

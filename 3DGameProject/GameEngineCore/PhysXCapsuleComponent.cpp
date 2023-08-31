@@ -2,6 +2,7 @@
 #include "PhysXCapsuleComponent.h"
 
 #include <GameEngineBase/GameEngineMath.h>
+#include "GameEngineLevel.h"
 
 PhysXCapsuleComponent::PhysXCapsuleComponent()
 {
@@ -133,9 +134,15 @@ void PhysXCapsuleComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxP
 	//m_pDynamic->setLinearDamping(physx::PxReal(0.01f));
 	//m_pDynamic->setMaxAngularVelocity(physx::PxReal(20.0f));
 	//m_pDynamic->setAngularDamping(physx::PxReal(2.0f));
+	
+	if (m_pScene == nullptr)
+	{
+		std::string LevelName = GetLevel()->GetName().data();
+		MsgAssert("1. Start에서 피직스액터 생성하지 마세요\n2. 레벨에 CreateScene 하세요\n  오류가 뜬 레벨 이름 : " + LevelName);
+	}
 
 	// Scene에 액터 추가
-	_Scene->addActor(*m_pDynamic);
+	m_pScene->addActor(*m_pDynamic);
 }
 
 //void Collider::SetRayCastTarget(const bool _bRayCastTarget)

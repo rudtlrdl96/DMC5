@@ -1,6 +1,8 @@
 #include "PrecompileHeader.h"
 #include "PhysXConvexComponent.h"
 
+#include "GameEngineLevel.h"
+
 PhysXConvexComponent::PhysXConvexComponent() 
 {
 }
@@ -120,6 +122,12 @@ void PhysXConvexComponent::CreatePhysXActors(const std::string& _MeshName, physx
 	// 제동비율
 	//dynamic_->setAngularDamping(physx::PxReal(0.05f));
 
+	if (m_pScene == nullptr)
+	{
+		std::string LevelName = GetLevel()->GetName().data();
+		MsgAssert("1. Start에서 피직스액터 생성하지 마세요\n2. 레벨에 CreateScene 하세요\n  오류가 뜬 레벨 이름 : " + LevelName);
+	}
+
 	// Scene에 액터 추가
 	if (true == IsAggregateObject)
 	{
@@ -127,7 +135,7 @@ void PhysXConvexComponent::CreatePhysXActors(const std::string& _MeshName, physx
 	}
 	else
 	{
-		_Scene->addActor(*m_pDynamic);
+		m_pScene->addActor(*m_pDynamic);
 	}
 
 	//// 시소를 받칠 발판 생성

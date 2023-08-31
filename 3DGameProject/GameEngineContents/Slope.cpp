@@ -19,6 +19,7 @@ void Slope::Start()
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
 	Renderer->SetFBXMesh("Ground_Mesh.FBX", "MeshTexture");
 	//Renderer->SetClipColor(float4(1.0f, 0.0f, 0.0f));
+	Renderer->LightOff();
 
 	float4 RenderMeshScale = Renderer->GetFBXMesh()->GetRenderUnit(0)->BoundScaleBox;
 	physx::PxVec3 GeoMetryScale = { RenderMeshScale.x, RenderMeshScale.y, RenderMeshScale.z };

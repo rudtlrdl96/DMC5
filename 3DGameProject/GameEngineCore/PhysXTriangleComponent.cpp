@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "PhysXTriangleComponent.h"
 
+#include "GameEngineLevel.h"
 #include "GameEngineFBXMesh.h"
 
 PhysXTriangleComponent::PhysXTriangleComponent() 
@@ -131,6 +132,12 @@ void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, phy
 	//_Scene->addActor(*dynamic_);
 
 	//rigidStatic_->attachShape(*shape_);
+
+	if (_Scene == nullptr)
+	{
+		std::string LevelName = GetLevel()->GetName().data();
+		MsgAssert("1. Start에서 피직스액터 생성하지 마세요\n2. 레벨에 CreateScene 하세요\n  오류가 뜬 레벨 이름 : " + LevelName);
+	}
 
 	// Scene에 액터 추가
 	if (true == IsAggregateObject)

@@ -2,6 +2,7 @@
 #include "PhysXBoxComponent.h"
 
 #include <GameEngineCore/GameEngineActor.h>
+#include "GameEngineLevel.h"
 
 PhysXBoxComponent::PhysXBoxComponent()
 {
@@ -92,6 +93,12 @@ void PhysXBoxComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysi
 
 	//콜백피벗 설정
 	m_pShape->setLocalPose(physx::PxTransform(Pivot));
+
+	if (m_pScene == nullptr)
+	{
+		std::string LevelName = GetLevel()->GetName().data();
+		MsgAssert("1. Start에서 피직스액터 생성하지 마세요\n2. 레벨에 CreateScene 하세요\n  오류가 뜬 레벨 이름 : " + LevelName);
+	}
 
 	// Scene에 액터 추가
 	if (true == IsAggregateObject)
