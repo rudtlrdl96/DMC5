@@ -284,7 +284,7 @@ void NetworkManager::SerializePackets(const std::vector<std::shared_ptr<GameEngi
 
 		//패킷을 직렬화 할 때 마다 Size위치의 값을 수정
 		unsigned char* SizePtr = _Ser.GetDataPtr();
-		int SizePos = (PacketSize * i) + 4;
+		size_t SizePos = (static_cast<size_t>(PacketSize) * i) + 4;
 		memcpy_s(&SizePtr[SizePos], sizeof(int), &PacketSize, sizeof(int));
 	}
 }
@@ -332,6 +332,12 @@ std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorTyp
 
 void NetworkManager::CreateLocalPlayer(class GameEngineLevel* _Level, int _ObjectID)
 {
+	if (nullptr == _Level)
+	{
+		MsgAssert("플레이어를 생성하려는 Level이 nullptr입니다");
+		return;
+	}
+
 	//std::shared_ptr<BasePlayerActor> Player = nullptr;
 
 	if (PlayerType::None == CharacterType)

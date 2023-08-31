@@ -53,6 +53,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<AnimationToolLevel>();
 	GameEngineCore::CreateLevel<BossStageLevel>();
 	GameEngineCore::CreateLevel<TestStageLevel>();
+	GameEngineCore::CreateLevel<StartStageLevel>();
 	GameEngineCore::CreateLevel<ShaderTestLevel>();
 	GameEngineCore::CreateLevel<NetworkTestLevel>();
 	GameEngineCore::CreateLevel<MonsterTestLevel>();
