@@ -60,7 +60,7 @@ void StageBaseLevel::CreateStageFieldMap(const std::vector<FieldMapData>& _MapDa
 	AcFieldMaps.resize(_MapDatas.size());
 	for (size_t i = 0; i < AcFieldMaps.size(); i++)
 	{
-		AcFieldMaps[i] = FieldMap::CreateFieldMap(this, _MapDatas[i].MeshFileName, _MapDatas[i].ColDatas, _MapDatas[i].FieldMapPosition, _MapDatas[i].FieldMapScale, _MapDatas[i].FieldMapRotation);
+		AcFieldMaps[i] = FieldMap::CreateFieldMap(this, _MapDatas[i].MeshFileName, _MapDatas[i].NavMeshFileName, _MapDatas[i].FieldMapPosition, _MapDatas[i].FieldMapScale, _MapDatas[i].FieldMapRotation);
 	}
 }
 
@@ -93,8 +93,13 @@ void StageBaseLevel::ClearStage()
 		AcFieldMaps[i] = nullptr;
 	}
 	AcFieldMaps.clear();
-	AcSkyBox->Death();
-	//AcSkyBox = nullptr;
+	
+	if (AcSkyBox != nullptr)
+	{
+		AcSkyBox->Death();
+		AcSkyBox = nullptr;
+	}
+	
 }
 
 

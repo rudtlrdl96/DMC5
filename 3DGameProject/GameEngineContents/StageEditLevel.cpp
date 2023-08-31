@@ -61,46 +61,52 @@ void StageEditLevel::LevelChangeStart()
 		std::shared_ptr<GameEngineGUIWindow> EditGUI = GameEngineGUI::GUIWindowCreate<StageEditGUI>("StageEditGUI");
 		Editor = EditGUI;
 	}
+
 	Editor->On();
 
+	if (!IsResourceLoaded)
 	{
-		std::string Path = GameEnginePath::GetFileFullPath
-		(
-			"ContentResources",
-			{
-				"Map", "TestMap"
-			},
-			"Location2.FBX"
-		);
+		{
+			IsResourceLoaded = true;
+			std::string Path = GameEnginePath::GetFileFullPath
+			(
+				"ContentResources",
+				{
+					"Map", "TestMap"
+				},
+				"Location2.FBX"
+			);
 
-		GameEngineFBXMesh::Load(Path);
+			GameEngineFBXMesh::Load(Path);
+		}
+
+		{
+			std::string Path = GameEnginePath::GetFileFullPath
+			(
+				"ContentResources",
+				{
+					"Map", "TestMap"
+				},
+				"SkyBox.fbx"
+			);
+
+			GameEngineFBXMesh::Load(Path);
+		}
+
+		{
+			std::string Path = GameEnginePath::GetFileFullPath
+			(
+				"ContentResources",
+				{
+					"Map", "TestMap"
+				},
+				"Location2ColGuide.fbx"
+			);
+
+			GameEngineFBXMesh::Load(Path);
+		}
 	}
-
-	{
-		std::string Path = GameEnginePath::GetFileFullPath
-		(
-			"ContentResources",
-			{
-				"Map", "TestMap"
-			},
-			"SkyBox.fbx"
-		);
-
-		GameEngineFBXMesh::Load(Path);
-	}
-
-	{
-		std::string Path = GameEnginePath::GetFileFullPath
-		(
-			"ContentResources",
-			{
-				"Map", "TestMap"
-			},
-			"Location2ColGuide.fbx"
-		);
-
-		GameEngineFBXMesh::Load(Path);
-	}
+	
 }
 
 void StageEditLevel::LevelChangeEnd()

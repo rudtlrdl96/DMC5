@@ -20,5 +20,6 @@ private:
 	std::shared_ptr<GameEngineGUIWindow> Editor = nullptr;
 	std::shared_ptr<class EngineGrid> Grid = nullptr;
 	std::shared_ptr<class FreeCameraActor> FreeCam = nullptr;
+	bool IsResourceLoaded = false;
 };
 

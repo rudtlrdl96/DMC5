@@ -61,6 +61,8 @@ private:
 	void FieldMapCombo();
 	void FieldMapTransformEditUI(std::shared_ptr<GameEngineObject> _Obj = nullptr);
 
-
+	//Collision ฐüทร
+	//size_t Collision_current = 0;
+	//void FieldMapColList();
 };
 

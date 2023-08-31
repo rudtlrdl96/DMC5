@@ -18,7 +18,8 @@ class FieldMapData
 {
 public:
 	std::string MeshFileName = "";
-	std::vector<FieldMapColData> ColDatas;
+	std::string NavMeshFileName = "";
+	//std::vector<FieldMapColData> ColDatas;
 	float4 FieldMapPosition = float4::ZERO;
 	float4 FieldMapScale = float4::ONE;
 	float4 FieldMapRotation = float4::ZERO;

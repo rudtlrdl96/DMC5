@@ -15,7 +15,8 @@ public:
 	FieldMap& operator=(const FieldMap& _Other) = delete;
 	FieldMap& operator=(FieldMap&& _Other) noexcept = delete;
 
-	static std::shared_ptr<FieldMap> CreateFieldMap(GameEngineLevel* _Level, const std::string_view& _FBXName, const std::vector<FieldMapColData>& _ColVector = std::vector<FieldMapColData>(), const float4& _MapPosition = float4::ZERO, const float4& _MapScale = float4::ONE, const float4& _MapRotation = float4::ZERO);
+	//static std::shared_ptr<FieldMap> CreateFieldMap(GameEngineLevel* _Level, const std::string_view& _FBXName, const std::vector<FieldMapColData>& _ColVector = std::vector<FieldMapColData>(), const float4& _MapPosition = float4::ZERO, const float4& _MapScale = float4::ONE, const float4& _MapRotation = float4::ZERO);
+	static std::shared_ptr<FieldMap> CreateFieldMap(GameEngineLevel* _Level, const std::string_view& _FBXName, const std::string_view& _NavMeshName = "", const float4& _MapPosition = float4::ZERO, const float4& _MapScale = float4::ONE, const float4& _MapRotation = float4::ZERO);
 	
 protected:
 	void Start();
@@ -25,6 +26,7 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineFBXRenderer> FieldMapRenderer = nullptr;
-	std::vector<std::shared_ptr<class GameEngineCollision>> MapCols;
+	std::shared_ptr<class GameEngineFBXRenderer> NavMesh = nullptr;
+	//std::vector<std::shared_ptr<class GameEngineCollision>> MapCols;
 };
 

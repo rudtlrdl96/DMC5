@@ -109,9 +109,15 @@ void StageEditGUI::FieldMapTransformEditUI(std::shared_ptr<GameEngineObject> _Ob
 		AllData[Stage_current].MapDatas[FieldMap_current].FieldMapRotation = Transform->GetLocalRotation();
 
 		ImGui::SameLine();
-		ImGui::Text("Input Success");
 	}
 }
+
+//void StageEditGUI::FieldMapColList()
+//{
+//	ImGui::SeparatorText("FieldMapColList");
+//	ImGui::BeginChild("FieldMapColList", ImVec2(150, 0), true);
+//	ImGui::EndChild();
+//}
 
 void StageEditGUI::ShowTransformInfo(std::shared_ptr<GameEngineObject> _Obj)
 {
@@ -140,6 +146,9 @@ void StageEditGUI::StageListBox(std::shared_ptr<GameEngineLevel> _Level)
 {
     ImGui::InputText("input StageName", StageNameInputSpace, IM_ARRAYSIZE(StageNameInputSpace));
 
+
+	
+
     if (ImGui::Button("AddStg"))
     {
         if (std::string(StageNameInputSpace) != "")
@@ -155,13 +164,20 @@ void StageEditGUI::StageListBox(std::shared_ptr<GameEngineLevel> _Level)
     if (ImGui::Button("DelStg"))
     {
         erase_Data(AllData, Stage_current);
+		if (!AllData.empty())
+		{
+			if (AllData[Stage_current].StageName != Parent->StageName)
+			{
+				Parent->StageName = AllData[Stage_current].StageName;
+				CreateStage(AllData[Stage_current]);
+			}
+		}
 		return;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("LoadStg"))
 	{
 		LoadStageData(_Level);
-		IsCreateStage = true;
 		return;
 	}
 	ImGui::SameLine();
@@ -234,6 +250,7 @@ void StageEditGUI::InputStageInfo(std::shared_ptr<GameEngineLevel> _Level)
 	if (!AllData[Stage_current].MapDatas.empty())
 	{
 		FieldMapTransformEditUI(Parent->AcFieldMaps[FieldMap_current]);
+		//FieldMapColList();
 	}
 
 	ImGui::EndChild();
@@ -241,6 +258,7 @@ void StageEditGUI::InputStageInfo(std::shared_ptr<GameEngineLevel> _Level)
 
 void StageEditGUI::CreateStage(StageData _Data)
 {
+	Parent->ClearStage();
 	Parent->CreateStage(_Data);
 	IsCreateStage = true;
 }
