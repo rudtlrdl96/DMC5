@@ -37,6 +37,7 @@ enum FSM_State_Nero
 	Nero_BR_Lockon_Front,			// 정면 락온
 	Nero_BR_Strafe,		// 락온하며 움직임
 	Nero_BR_Shoot,		// 사격
+	Nero_BR_AirShoot,		// 공중사격
 };
 
 class PlayerActor_Nero : public BasePlayerActor

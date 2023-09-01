@@ -436,6 +436,7 @@ void PlayerActor_Nero::NeroLoad()
 		// Jump_Vertical
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Jump_Vertical,
 			.Start = [=] {
+				InputCheck = false;
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Jump_Vertical");
 			},
@@ -446,6 +447,13 @@ void PlayerActor_Nero::NeroLoad()
 				}
 				float4 MoveDir = Controller->GetMoveVector() * RunSpeed;
 				PhysXCapsule->SetMove(MoveDir);
+
+				if (false == InputCheck) { return; }
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_AirShoot);
+					return;
+				}
 			},
 			.End = [=] {
 			}
@@ -459,6 +467,12 @@ void PlayerActor_Nero::NeroLoad()
 				Renderer->ChangeAnimation("pl0000_Jump_Fly_loop");
 			},
 			.Update = [=](float _DeltaTime) {
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_AirShoot);
+					return;
+				}
+
 				Timer += _DeltaTime;
 				if (0.5f < Timer)
 				{
@@ -466,6 +480,7 @@ void PlayerActor_Nero::NeroLoad()
 				}
 				float4 MoveDir = Controller->GetMoveVector() * RunSpeed;
 				PhysXCapsule->SetMove(MoveDir);
+
 			},
 			.End = [=] {
 
@@ -746,6 +761,11 @@ void PlayerActor_Nero::NeroLoad()
 				if (Controller->GetIsJump())
 				{
 					//FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
+					return;
+				}
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_AirShoot);
 					return;
 				}
 			},
@@ -1180,6 +1200,48 @@ void PlayerActor_Nero::NeroLoad()
 			},
 			.End = [=] {
 
+			}
+			});
+
+		// Air Shoot
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_AirShoot,
+			.Start = [=] {
+				BlueRoseOn();
+				InputCheck = false;
+				MoveCheck = false;
+				Renderer->ChangeAnimation("pl0000_BR_Air_Shoot", true);
+			},
+			.Update = [=](float _DeltaTime) {
+				if (true == Renderer->IsAnimationEnd())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+					return;
+				}
+
+				if (false == InputCheck) { return; }
+				if (Controller->GetIsLeftJump())
+				{
+					//FSM.ChangeState(FSM_State_Nero::Nero_Evade_Left);
+					return;
+				}
+				if (Controller->GetIsRightJump())
+				{
+					//FSM.ChangeState(FSM_State_Nero::Nero_Evade_Right);
+					return;
+				}
+				if (Controller->GetIsJump())
+				{
+					//FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
+					return;
+				}
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_AirShoot);
+					return;
+				}
+			},
+			.End = [=] {
+				BlueRoseOff();
 			}
 			});
 	}
