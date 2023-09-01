@@ -9,6 +9,11 @@ class UserErrorCallback : public physx::PxErrorCallback
 private:
 	void reportError(physx::PxErrorCode::Enum code, const char* message, const char* file, int line) override
 	{
+		if (physx::PxErrorCode::eDEBUG_WARNING == code)
+		{
+			return;
+		}
+
 		std::string Code = "Code : " + std::to_string(code)
 			+ "\nMsg : " + message
 			+ "\nFile : " + file

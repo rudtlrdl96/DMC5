@@ -34,7 +34,7 @@ protected:
 	void CreateStage(const StageData& _Data); // 데이터 넣어주면 스테이지 생성
 
 private:
-	std::shared_ptr<class ContentGrid> DebugGrid = nullptr;
+	//std::shared_ptr<class ContentGrid> DebugGrid = nullptr;
 
 	void CreateStageFieldMap(const std::vector<FieldMapData>& _MapDatas);
 	void EraseStageFieldMap(int _index = -1);

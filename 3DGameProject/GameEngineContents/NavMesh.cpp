@@ -21,14 +21,11 @@ std::shared_ptr<NavMesh> NavMesh::CreateNavMesh(GameEngineLevel* _Level, const s
 	Result->Nav->SetFBXMesh(_FBXName.data(), "FBX");
 	Result->Nav->Off();
 
-	float4 RenderScale = Result->Nav->GetFBXMesh()->GetRenderUnit(0)->BoundScaleBox;
-	float4 MeshScale = Result->Nav->GetMeshScale();
-
-	physx::PxVec3 VecSclae = { RenderScale.x, RenderScale.y, RenderScale.z };
+	float Ratio = 1.f;
 
 	Result->Colider = Result->CreateComponent<PhysXTriangleComponent>(); // 콜라이더 생성
 	Result->Colider->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
-	Result->Colider->CreatePhysXActors(_FBXName.data(), _Level->GetLevelScene(), _Level->GetLevelPhysics(), _Level->GetCooking(), false, 0.01f);
+	Result->Colider->CreatePhysXActors(_FBXName.data(), _Level->GetLevelScene(), _Level->GetLevelPhysics(), _Level->GetCooking(), true, { Ratio,Ratio,Ratio });
 
 	return Result;
 }

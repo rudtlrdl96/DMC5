@@ -47,7 +47,7 @@ void StageBaseLevel::Update(float _DeltaTime)
 
 void StageBaseLevel::LevelChangeStart()
 {
-	DebugGrid = CreateActor<ContentGrid>();
+	//DebugGrid = CreateActor<ContentGrid>();
 }
 
 void StageBaseLevel::CreateStage(const StageData& _Data)

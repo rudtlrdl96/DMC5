@@ -11,6 +11,7 @@
 
 #include "Plane.h"
 #include "TestObject.h"
+#include "PlayerActor_Nero.h"
 
 StartStageLevel* StartStageLevel::Inst = nullptr;
 
@@ -84,7 +85,8 @@ void StartStageLevel::LevelChangeStart()
 	SetCamera({ 0,0,-500 });
 
 	CreateStage(AllStageDatas[1]);
-	//CreateActor<TestObject>();
+	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
+	Nero->SetWorldPosition({ 0, 1000, 0 });
 }
 
 
