@@ -1241,7 +1241,7 @@ void PlayerActor_Nero::NeroLoad()
 				}
 			},
 			.End = [=] {
-				BlueRoseOff();
+				WeaponIdle();
 			}
 			});
 	}
