@@ -33,8 +33,9 @@ void AnimationToolLevel::Update(float _DeltaTime)
 
 void AnimationToolLevel::LevelChangeStart()
 {
-	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
-	Flat->GetTransform()->SetLocalPosition({ 0, -50, 0 });
+	SetLevelSceneGravity(0);
+	//std::shared_ptr<Plane> Flat = CreateActor<Plane>();
+	//Flat->GetTransform()->SetLocalPosition({ 0, -50, 0 });
 	//Flat->Component->GetDynamic()->setGlobalPose({ 0, -1, 0 });
 	if (false == IsMessage)
 	{

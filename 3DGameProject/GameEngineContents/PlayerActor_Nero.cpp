@@ -177,8 +177,7 @@ void PlayerActor_Nero::NeroLoad()
 		Renderer->GetAllRenderUnit()[0][18]->On();	// 등 레드퀸
 		Renderer->GetAllRenderUnit()[0][19]->Off();	// 블루로즈
 	}
-
-	/* 기본 움직임 */
+	// 기본 움직임
 	{
 		// Idle
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Idle,
@@ -193,7 +192,7 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
 					return;
 				}
-				if (Controller->GetSwordDown())
+				if (Controller->GetIsSword())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
@@ -232,7 +231,7 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
 					return;
 				}
-				if (Controller->GetSwordDown())
+				if (Controller->GetIsSword())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
@@ -279,7 +278,7 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
 					return;
 				}
-				if (Controller->GetSwordDown())
+				if (Controller->GetIsSword())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
@@ -327,7 +326,7 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
 					return;
 				}
-				if (Controller->GetSwordDown())
+				if (Controller->GetIsSword())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
@@ -366,7 +365,7 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
 					return;
 				}
-				if (Controller->GetSwordDown())
+				if (Controller->GetIsSword())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
@@ -407,7 +406,7 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
 					return;
 				}
-				if (Controller->GetSwordDown())
+				if (Controller->GetIsSword())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
@@ -486,7 +485,7 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
 					return;
 				}
-				if (Controller->GetSwordDown())
+				if (Controller->GetIsSword())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
@@ -511,10 +510,9 @@ void PlayerActor_Nero::NeroLoad()
 			}
 			});
 	}
-
-	/*레드 퀸*/
+	{}
+	// 레드 퀸
 	{
-
 		// RedQueen ComboA1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_1,
 			.Start = [=] {
@@ -531,7 +529,12 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
 					return;
 				}
-				if (Controller->GetSwordDown())
+				if (Controller->GetIsBackSword())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_Skill_HR);
+					return;
+				}
+				if (Controller->GetIsSword())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_2);
 					return;
@@ -581,7 +584,12 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
 					return;
 				}
-				if (Controller->GetSwordDown())
+				if (Controller->GetIsBackSword())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_Skill_HR);
+					return;
+				}
+				if (Controller->GetIsSword())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_3);
 					return;
@@ -631,7 +639,12 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
 					return;
 				}
-				if (Controller->GetSwordDown())
+				if (Controller->GetIsBackSword())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_Skill_HR);
+					return;
+				}
+				if (Controller->GetIsSword())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_4);
 					return;
@@ -704,10 +717,47 @@ void PlayerActor_Nero::NeroLoad()
 			}
 			});
 
+		// RedQueen HR
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_HR,
+			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
+				RedQueenOn();
+				Renderer->ChangeAnimation("pl0000_RQ_Skill_HR-EX");
+				RotationToTarget(30.0f);
+				InputCheck = false;
+				MoveCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (true == Renderer->IsAnimationEnd())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+				}
+				if (InputCheck == false) { return; }
+				if (Controller->GetIsLeftJump())
+				{
+					//FSM.ChangeState(FSM_State_Nero::Nero_Evade_Left);
+					return;
+				}
+				if (Controller->GetIsRightJump())
+				{
+					//FSM.ChangeState(FSM_State_Nero::Nero_Evade_Right);
+					return;
+				}
+				if (Controller->GetIsJump())
+				{
+					//FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
+					return;
+				}
+			},
+			.End = [=] {
+				WeaponIdle();
+			}
+			});
 	}
-
-	/* 블루 로즈 (락온) */
+	{}
+	// 블루 로즈 (락온)
 	{
+		// Idle To LockOn
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon,
 			.Start = [=] {
 				PhysXCapsule->SetLinearVelocityZero();
@@ -745,7 +795,12 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
 					return;
 				}
-				if (Controller->GetSwordDown())
+				if (Controller->GetIsBackSword())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_Skill_HR);
+					return;
+				}
+				if (Controller->GetIsSword())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
@@ -763,6 +818,7 @@ void PlayerActor_Nero::NeroLoad()
 			}
 			});
 
+		// LockOnFront
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Lockon_Front,
 			.Start = [=] {
 				PhysXCapsule->SetLinearVelocityZero();
@@ -799,7 +855,12 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
 					return;
 				}
-				if (Controller->GetSwordDown())
+				if (Controller->GetIsBackSword())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_Skill_HR);
+					return;
+				}
+				if (Controller->GetIsSword())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
@@ -848,7 +909,12 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
 					return;
 				}
-				if (Controller->GetSwordDown())
+				if (Controller->GetIsBackSword())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_Skill_HR);
+					return;
+				}
+				if (Controller->GetIsSword())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
@@ -924,7 +990,12 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
 					return;
 				}
-				if (Controller->GetSwordDown())
+				if (Controller->GetIsBackSword())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_Skill_HR);
+					return;
+				}
+				if (Controller->GetIsSword())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
@@ -971,7 +1042,12 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
 					return;
 				}
-				if (Controller->GetSwordDown())
+				if (Controller->GetIsBackSword())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_Skill_HR);
+					return;
+				}
+				if (Controller->GetIsSword())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
@@ -1025,7 +1101,12 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
 					return;
 				}
-				if (Controller->GetSwordDown())
+				if (Controller->GetIsBackSword())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_Skill_HR);
+					return;
+				}
+				if (Controller->GetIsSword())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
@@ -1079,7 +1160,12 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
 					return;
 				}
-				if (Controller->GetSwordDown())
+				if (Controller->GetIsBackSword())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_Skill_HR);
+					return;
+				}
+				if (Controller->GetIsSword())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;

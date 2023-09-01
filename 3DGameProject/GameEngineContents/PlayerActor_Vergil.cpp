@@ -75,7 +75,7 @@ void PlayerActor_Vergil::VergilLoad()
 			},
 			.Update = [=](float _DeltaTime) {
 				
-				if (Controller->GetSwordDown())
+				if (Controller->GetIsSword())
 				{
 					//FSM.ChangeState(FSM_State_Vergil::Vergil_RQ_ComboA_1);
 					return;
@@ -114,7 +114,7 @@ void PlayerActor_Vergil::VergilLoad()
 					FSM.ChangeState(FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_1);
 					return;
 				}
-				if (Controller->GetSwordDown())
+				if (Controller->GetIsSword())
 				{
 					//FSM.ChangeState(FSM_State_Vergil::Vergil_RQ_ComboA_1);
 					return;
@@ -198,7 +198,7 @@ void PlayerActor_Vergil::VergilLoad()
 				Renderer->ChangeAnimation("pl0300_Run_Start");
 			},
 			.Update = [=](float _DeltaTime) {
-				if (Controller->GetSwordDown())
+				if (Controller->GetIsSword())
 				{
 					//FSM.ChangeState(FSM_State_Vergil::Vergil_RQ_ComboA_1);
 					return;
@@ -238,7 +238,7 @@ void PlayerActor_Vergil::VergilLoad()
 					Renderer->ChangeAnimation("pl0300_Run_Loop");
 				},
 				.Update = [=](float _DeltaTime) {
-					if (Controller->GetSwordDown())
+					if (Controller->GetIsSword())
 					{
 						//FSM.ChangeState(FSM_State_Vergil::Vergil_RQ_ComboA_1);
 						return;
@@ -276,7 +276,7 @@ void PlayerActor_Vergil::VergilLoad()
 					Renderer->ChangeAnimation("pl0300_Run_Stop");
 				},
 				.Update = [=](float _DeltaTime) {
-					if (Controller->GetSwordDown())
+					if (Controller->GetIsSword())
 					{
 						//FSM.ChangeState(FSM_State_Vergil::Vergil_RQ_ComboA_1);
 						return;

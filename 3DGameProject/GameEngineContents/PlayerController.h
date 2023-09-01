@@ -109,6 +109,7 @@ private:
 	bool IsBackFrontSword = false;
 	bool IsFrontSword = false;
 	bool IsBackSword = false;
+	bool IsSword = false;
 	// มกวม
 	bool IsLeftJump = false;
 	bool IsRightJump = false;
@@ -132,10 +133,13 @@ public:
 	std::function<void()> CallBack_LockOnUp = nullptr;
 
 	
-	bool GetSwordDown() { return GameEngineInput::IsDown("Player_Sword"); }
 	bool GetGunUp() { return GameEngineInput::IsUp("Player_Gun"); }
 	bool GetLockOnFree() { return GameEngineInput::IsFree("Player_LockOn"); }
 	//bool GetJumpDown() { return GameEngineInput::IsDown("Player_Jump"); }
+
+	bool GetIsSword() { return IsSword; }
+	bool GetIsAnySword() { return IsBackFrontSword || IsFrontSword || IsBackSword || IsSword; }
+	bool GetIsBackSword() { return IsBackSword; }
 	bool GetIsJump() { return IsJump; }
 	bool GetIsLeftJump() { return IsLeftJump; }
 	bool GetIsRightJump() { return IsRightJump; }

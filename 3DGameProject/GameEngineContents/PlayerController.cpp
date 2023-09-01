@@ -148,9 +148,10 @@ void PlayerController::Update(float _DeltaTime)
 void PlayerController::InputReset()
 {
 	// °Ë
-	 IsBackFrontSword = false;
-	 IsFrontSword = false;
-	 IsBackSword = false;
+	IsBackFrontSword = false;
+	IsFrontSword = false;
+	IsBackSword = false;
+	IsSword = false;
 	// Á¡ÇÁ
 	IsLeftJump = false;
 	IsRightJump = false;
@@ -208,7 +209,7 @@ void PlayerController::ActionInput()
 	{
 		if (true == InputCheck_BackFront())
 		{
-			int a = 0;
+			IsBackFrontSword = true;
 		}
 		else if (true == InputCheck_Dir('8'))
 		{
@@ -216,11 +217,18 @@ void PlayerController::ActionInput()
 			{
 				IsSpecialMove = true;
 			}
-			int a = 0;
+			else
+			{
+				IsFrontSword = true;
+			}
 		}
 		else if (true == InputCheck_Dir('2'))
 		{
-			int a = 0;
+			IsBackSword = true;
+		}
+		else
+		{
+			IsSword = true;
 		}
 	}
 	// Jump
