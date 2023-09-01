@@ -188,7 +188,11 @@ void PlayerActor_Nero::NeroLoad()
 				Renderer->ChangeAnimation("pl0000_Idle_Normal");
 			},
 			.Update = [=](float _DeltaTime) {
-
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
+					return;
+				}
 				if (Controller->GetSwordDown())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
@@ -223,6 +227,11 @@ void PlayerActor_Nero::NeroLoad()
 				Renderer->ChangeAnimation("pl0000_Run_Start");
 			},
 			.Update = [=](float _DeltaTime) {
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
+					return;
+				}
 				if (Controller->GetSwordDown())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
@@ -265,6 +274,11 @@ void PlayerActor_Nero::NeroLoad()
 			},
 			.Update = [=](float _DeltaTime) {
 				DashTimer += _DeltaTime;
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
+					return;
+				}
 				if (Controller->GetSwordDown())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
@@ -308,6 +322,11 @@ void PlayerActor_Nero::NeroLoad()
 				Renderer->ChangeAnimation("pl0000_Run_Stop");
 			},
 			.Update = [=](float _DeltaTime) {
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
+					return;
+				}
 				if (Controller->GetSwordDown())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
@@ -342,6 +361,11 @@ void PlayerActor_Nero::NeroLoad()
 			},
 			.Update = [=](float _DeltaTime) {
 				DashTimer += _DeltaTime;
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
+					return;
+				}
 				if (Controller->GetSwordDown())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
@@ -378,6 +402,11 @@ void PlayerActor_Nero::NeroLoad()
 				Renderer->ChangeAnimation("pl0000_Dash_Stop");
 			},
 			.Update = [=](float _DeltaTime) {
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
+					return;
+				}
 				if (Controller->GetSwordDown())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
@@ -452,6 +481,11 @@ void PlayerActor_Nero::NeroLoad()
 				Renderer->ChangeAnimation("pl0000_Jump_Landing");
 			},
 			.Update = [=](float _DeltaTime) {
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
+					return;
+				}
 				if (Controller->GetSwordDown())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
@@ -492,6 +526,11 @@ void PlayerActor_Nero::NeroLoad()
 			},
 			.Update = [=](float _DeltaTime) {
 				if (InputCheck == false) { return; }
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
+					return;
+				}
 				if (Controller->GetSwordDown())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_2);
@@ -537,6 +576,11 @@ void PlayerActor_Nero::NeroLoad()
 			},
 			.Update = [=](float _DeltaTime) {
 				if (InputCheck == false) { return; }
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
+					return;
+				}
 				if (Controller->GetSwordDown())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_3);
@@ -582,6 +626,11 @@ void PlayerActor_Nero::NeroLoad()
 			},
 			.Update = [=](float _DeltaTime) {
 				if (InputCheck == false) { return; }
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
+					return;
+				}
 				if (Controller->GetSwordDown())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_4);
@@ -691,6 +740,11 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
 					return;
 				}
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
+					return;
+				}
 				if (Controller->GetSwordDown())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
@@ -740,6 +794,11 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
 					return;
 				}
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
+					return;
+				}
 				if (Controller->GetSwordDown())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
@@ -782,6 +841,11 @@ void PlayerActor_Nero::NeroLoad()
 				if (Controller->GetIsJump())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
+					return;
+				}
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
 					return;
 				}
 				if (Controller->GetSwordDown())
@@ -855,6 +919,11 @@ void PlayerActor_Nero::NeroLoad()
 					FSM.ChangeState(FSM_State_Nero::Nero_Evade_Left);
 					return;
 				}
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
+					return;
+				}
 				if (Controller->GetSwordDown())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
@@ -895,6 +964,11 @@ void PlayerActor_Nero::NeroLoad()
 				if (Controller->GetIsJump())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
+					return;
+				}
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
 					return;
 				}
 				if (Controller->GetSwordDown())
@@ -944,6 +1018,65 @@ void PlayerActor_Nero::NeroLoad()
 				if (Controller->GetIsJump())
 				{
 					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
+					return;
+				}
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
+					return;
+				}
+				if (Controller->GetSwordDown())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
+					return;
+				}
+
+				if (false == MoveCheck) { return; }
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_RunStart);
+					return;
+				}
+			},
+			.End = [=] {
+
+			}
+			});
+
+		// Shoot
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Shoot,
+			.Start = [=] {
+				BlueRoseOn();
+				InputCheck = false;
+				MoveCheck = false;
+				Renderer->ChangeAnimation("pl0000_BR_Shoot", true);
+			},
+			.Update = [=](float _DeltaTime) {
+				if (true == Renderer->IsAnimationEnd())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Lockon_Front);
+					return;
+				}
+
+				if (false == InputCheck) { return; }
+				if (Controller->GetIsLeftJump())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_Evade_Left);
+					return;
+				}
+				if (Controller->GetIsRightJump())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_Evade_Right);
+					return;
+				}
+				if (Controller->GetIsJump())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
+					return;
+				}
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
 					return;
 				}
 				if (Controller->GetSwordDown())

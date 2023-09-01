@@ -29,6 +29,7 @@ enum FSM_State_Nero
 	Nero_BR_Switch_Lockon_to_Idle,	// 락온에서 기본자세로
 	Nero_BR_Lockon_Front,			// 정면 락온
 	Nero_BR_Strafe,		// 락온하며 움직임
+	Nero_BR_Shoot,		// 사격
 };
 
 class PlayerActor_Nero : public BasePlayerActor
