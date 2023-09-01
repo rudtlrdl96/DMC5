@@ -13,6 +13,8 @@
 #include "TestObject.h"
 #include "PlayerActor_Nero.h"
 
+#include "ShaderTestActor.h"
+
 StartStageLevel* StartStageLevel::Inst = nullptr;
 
 StartStageLevel::StartStageLevel()
@@ -27,6 +29,8 @@ StartStageLevel::~StartStageLevel()
 
 void StartStageLevel::Start()
 {
+	CreateActor<ShaderTestActor>();
+
 	GetCamera(0)->ReflectionOn();
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();

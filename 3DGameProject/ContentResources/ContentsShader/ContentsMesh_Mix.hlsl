@@ -65,11 +65,7 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
         clip(-1);
     }
     
-    float4 RGBA = { AlbmData.r, AlbmData.g, AlbmData.b, AtosData.r};
-    
-    RGBA.a *= 0.0f;
-    RGBA.a += 1.0f;
-    
+    float4 RGBA = { AlbmData.r, AlbmData.g, AlbmData.b, AtosData.r};    
     float4 ResultColor = RGBA;
     
     if (0 != IsLight)
@@ -81,24 +77,34 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
             float3 BumpNormal = NrmrData.xyz;
             
             BumpNormal = (BumpNormal * 2.0f) - 1.0f;
-            BumpNormal = (BumpNormal.z * _Input.NORMAL) + (BumpNormal.x * _Input.BINORMAL) + (BumpNormal.y * -_Input.TANGENT);
+            BumpNormal = (BumpNormal.z * _Input.NORMAL) + (BumpNormal.x * _Input.BINORMAL) + (BumpNormal.y * _Input.TANGENT);
         
             NormalDir.xyz = BumpNormal.xyz;
         }
-        
+                
         float4 DiffuseRatio = CalDiffuseLight(_Input.VIEWPOSITION, NormalDir, AllLight[0]);
-        float4 SpacularRatio = CalSpacularLight(_Input.VIEWPOSITION, NormalDir, AllLight[0]);
+        float4 SpacularRatio = CalSpacularLight(_Input.VIEWPOSITION, NormalDir, AllLight[0]);     
         float4 AmbientRatio = CalAmbientLight(AllLight[0]);
         
         float A = RGBA.w;
         ResultColor = RGBA * (DiffuseRatio + SpacularRatio + AmbientRatio);
         ResultColor.a = A;
+                                        
+        // 추후 공식 수정필요
         
-        float2 RevX_UV = { -_Input.TEXCOORD.x, _Input.TEXCOORD.y };
-        float4 ReflectTexture = ReflectionTexture.Sample(ENGINEBASE, NormalDir.xy);
-                      
-        //ResultColor.xyz -= ResultColor.xyz;
-        ResultColor.xyz += ReflectTexture.xyz * AlbmData.a;
+        // ScreenScale;
+        float3 Eye = normalize(AllLight[0].CameraPosition.xyz - _Input.VIEWPOSITION.xyz); // L
+        float3 RefDir = _Input.NORMAL.xyz;
+        
+        RefDir.x = map(RefDir.x, -1.0f, 1.0f, 0.0f, 1.0f);
+        RefDir.y = map(-RefDir.y, -1.0f, 1.0f, 0.0f, 1.0f);        
+        RefDir.z = 0;
+        
+        normalize(RefDir);
+                
+        float4 ReflectTexture = ReflectionTexture.Sample(ENGINEBASE, RefDir.xy);
+                                     
+        ResultColor.xyz += ReflectTexture.xyz * (AlbmData.a);
     }
             
     if (1.0f != BaseColor.a)

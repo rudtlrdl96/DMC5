@@ -320,14 +320,11 @@ void GameEngineCamera::ReflectionTransformUpdate()
 
 	// R = P + 2 * n * (-P dot n)
 	// -P
-	float4 EyeDir = GetTransform()->GetLocalForwardVector();
-	float4 EyeUp = GetTransform()->GetLocalUpVector();
+	float4 EyeDir = -GetTransform()->GetLocalForwardVector();
+	float4 EyeUp = float4::UP;
 
-	// N : ¹ý¼±
-	float4 UpVector = float4::UP;
-
-	EyeDir = (-EyeDir + UpVector * 2.0f * float4::DotProduct3D(EyeDir, UpVector));
-	EyeUp = (-EyeUp + UpVector * 2.0f * float4::DotProduct3D(EyeUp, UpVector));
+	EyeDir.y = 0.0f;
+	EyeDir.Normalize();
 
 	float4 EyePos = GetTransform()->GetLocalPosition();
 
