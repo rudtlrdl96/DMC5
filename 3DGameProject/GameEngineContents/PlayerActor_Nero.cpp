@@ -134,6 +134,7 @@ void PlayerActor_Nero::NeroLoad()
 				std::bind(&PlayerActor_Nero::WeaponIdle, this),
 				std::bind(&PhysXCapsuleComponent::SetLinearVelocityZero, PhysXCapsule),
 				std::bind([=] {MoveCheck = true; }),
+				std::bind([=] {DelayCheck = true; }),
 			},
 			.CallBacks_int = {
 				std::bind(&GameEngineFSM::ChangeState, &FSM, std::placeholders::_1)
@@ -159,6 +160,7 @@ void PlayerActor_Nero::NeroLoad()
 		//콜백void = 4 : WeaponIdle (빈손, 칼 등에)
 		//콜백void = 5 : SetLinearVelocityZero
 		//콜백void = 6 : 이동체크 시작
+		//콜백void = 7 : 딜레이체크 시작
 		//
 		//콜백 int = 0 : FSM변경
 		// 
@@ -591,6 +593,7 @@ void PlayerActor_Nero::NeroLoad()
 				RotationToTarget(30.0f);
 				InputCheck = false;
 				MoveCheck = false;
+				DelayCheck = false;
 			},
 			.Update = [=](float _DeltaTime) {
 				if (InputCheck == false) { return; }
@@ -606,6 +609,11 @@ void PlayerActor_Nero::NeroLoad()
 				}
 				if (Controller->GetIsSword())
 				{
+					if (true == DelayCheck)
+					{
+						FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboD_1);
+						return;
+					}
 					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboA_3);
 					return;
 				}
@@ -732,6 +740,211 @@ void PlayerActor_Nero::NeroLoad()
 			}
 			});
 
+		// RedQueen ComboD1
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboD_1,
+			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
+				RedQueenOn();
+				Renderer->ChangeAnimation("pl0000_RQ_ComboD_1");
+				RotationToTarget(30.0f);
+				InputCheck = false;
+				MoveCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (InputCheck == false) { return; }
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
+					return;
+				}
+				if (Controller->GetIsBackSword())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_Skill_HR);
+					return;
+				}
+				if (Controller->GetIsSword())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboD_2);
+					return;
+				}
+				if (Controller->GetIsLeftJump())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_Evade_Left);
+					return;
+				}
+				if (Controller->GetIsRightJump())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_Evade_Right);
+					return;
+				}
+				if (Controller->GetIsJump())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
+					return;
+				}
+
+				if (MoveCheck == false) { return; }
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_RunStart);
+					return;
+				}
+			},
+			.End = [=] {
+				WeaponIdle();
+			}
+			});
+
+		// RedQueen ComboD2
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboD_2,
+			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
+				RedQueenOn();
+				Renderer->ChangeAnimation("pl0000_RQ_ComboD_2");
+				RotationToTarget(30.0f);
+				InputCheck = false;
+				MoveCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (InputCheck == false) { return; }
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
+					return;
+				}
+				if (Controller->GetIsBackSword())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_Skill_HR);
+					return;
+				}
+				if (Controller->GetIsSword())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboD_3);
+					return;
+				}
+				if (Controller->GetIsLeftJump())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_Evade_Left);
+					return;
+				}
+				if (Controller->GetIsRightJump())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_Evade_Right);
+					return;
+				}
+				if (Controller->GetIsJump())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
+					return;
+				}
+
+				if (MoveCheck == false) { return; }
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_RunStart);
+					return;
+				}
+			},
+			.End = [=] {
+				WeaponIdle();
+			}
+			});
+
+		// RedQueen ComboD3
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboD_3,
+			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
+				RedQueenOn();
+				Renderer->ChangeAnimation("pl0000_RQ_ComboD_3");
+				RotationToTarget(30.0f);
+				InputCheck = false;
+				MoveCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (InputCheck == false) { return; }
+				if (Controller->GetGunUp())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_BR_Shoot);
+					return;
+				}
+				if (Controller->GetIsBackSword())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_Skill_HR);
+					return;
+				}
+				if (Controller->GetIsSword())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_RQ_ComboD_4);
+					return;
+				}
+				if (Controller->GetIsLeftJump())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_Evade_Left);
+					return;
+				}
+				if (Controller->GetIsRightJump())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_Evade_Right);
+					return;
+				}
+				if (Controller->GetIsJump())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
+					return;
+				}
+
+				if (MoveCheck == false) { return; }
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_RunStart);
+					return;
+				}
+			},
+			.End = [=] {
+				WeaponIdle();
+			}
+			});
+
+		// RedQueen ComboD4
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboD_4,
+			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
+				RedQueenOn();
+				Renderer->ChangeAnimation("pl0000_RQ_ComboD_4");
+				RotationToTarget(30.0f);
+				InputCheck = false;
+				MoveCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (InputCheck == false) { return; }
+				if (Controller->GetIsLeftJump())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_Evade_Left);
+					return;
+				}
+				if (Controller->GetIsRightJump())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_Evade_Right);
+					return;
+				}
+				if (Controller->GetIsJump())
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
+					return;
+				}
+
+				if (MoveCheck == false) { return; }
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					FSM.ChangeState(FSM_State_Nero::Nero_RunStart);
+					return;
+				}
+			},
+			.End = [=] {
+				WeaponIdle();
+			}
+			});
+
 		// RedQueen HR
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_HR,
 			.Start = [=] {
@@ -773,6 +986,7 @@ void PlayerActor_Nero::NeroLoad()
 				WeaponIdle();
 			}
 			});
+
 	}
 	{}
 	// 블루 로즈 (락온)

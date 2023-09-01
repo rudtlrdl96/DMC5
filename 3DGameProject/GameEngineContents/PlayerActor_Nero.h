@@ -21,6 +21,10 @@ enum FSM_State_Nero
 	Nero_RQ_ComboA_2,
 	Nero_RQ_ComboA_3,
 	Nero_RQ_ComboA_4,
+	Nero_RQ_ComboD_1,
+	Nero_RQ_ComboD_2,
+	Nero_RQ_ComboD_3,
+	Nero_RQ_ComboD_4,
 
 	// 하이룰러 (뛰우는 공격)
 	Nero_RQ_Skill_HR,
@@ -66,8 +70,10 @@ private:
 	float DashSpeed = 800;
 	float DashTimer = 0;
 	float JumpForce = 7000.0f;
-	bool InputCheck = false;
-	bool MoveCheck = false;
+
+	bool InputCheck = false;	// 애니메이션 재생중 다른 입력을 받아 FSM변경이 가능한지 여부
+	bool MoveCheck = false;		// 애니메이션 재생중 이동 입력을 받아 FSM변경이 가능한지 여부
+	bool DelayCheck = false;	// 다른 콤보로 연결되기 위한 딜레이 여부
 	char CurDir = 'n';
 
 	void RedQueenOn();
