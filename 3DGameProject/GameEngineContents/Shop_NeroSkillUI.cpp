@@ -1,7 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Shop_NeroSkillUI.h"
 #include "Shop_TitleButton.h"
-
+#include "Shop_ItemButton.h"
 #include <GameEngineCore/GameEngineFontRenderer.h>
 Shop_NeroSkillUI::Shop_NeroSkillUI() 
 {
@@ -24,13 +24,33 @@ void Shop_NeroSkillUI::Start()
 	RedQueenButton->GetRender_Top()->SetTexture("Shop_SkillTopBar.png");
 	RedQueenButton->GetRender_Top()->GetTransform()->SetLocalScale({ 84.0f,23.0f,0.0f });
 	RedQueenButton->GetRender_Top()->GetTransform()->SetLocalPosition({ -558.0f,292.0f,0.0f });
+	RedQueenButton->GetRender_Select()->SetTexture("Shop_SkillSelect.png");
+	RedQueenButton->GetRender_Select()->GetTransform()->SetLocalScale({ 228.0f,62.0f,0.0f });
+	RedQueenButton->GetRender_Select()->GetTransform()->SetLocalPosition({ -630.0f,250.0f,0.0f });
 	RedQueenButton->SetSelectValue(true);
 	RedQueenButton->GetFont()->SetFont("DMC5Font");
+	RedQueenButton->SetIsPosValue(true);
+	RedQueenButton->GetFont()->GetTransform()->SetLocalPosition({ -680.0f,224.0f,0.0f });
+	SkillButton = GetLevel()->CreateActor<Shop_ItemButton>();
+	SkillButton->GetTransform()->SetParent(GetTransform());
+	SkillButton->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
 }
 
 void Shop_NeroSkillUI::Update(float _Delta)
 {
 	RedQueenButton->SetUIText("RED QUEEN");
-	RedQueenButton->GetFont()->GetTransform()->SetWorldPosition({ -558.0f,292.0f,0.0f });
+	if (true == GameEngineInput::IsUp("UIDEBUGMODE"))
+	{
+		if (Test==false)
+		{
+			SkillButton->SetSelectValue(true);
+			Test = true;
+		}
+		else
+		{
+			SkillButton->SetSelectValue(false);
+			Test = false;
+		}
+	}
 }
 

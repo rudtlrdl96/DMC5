@@ -19,6 +19,7 @@ protected:
 	void Update(float _Delta) override;
 private:
 	std::shared_ptr<class Shop_TitleButton> RedQueenButton = nullptr;
-
+	std::shared_ptr<class Shop_ItemButton>  SkillButton = nullptr;
+	bool Test = false;
 };
 

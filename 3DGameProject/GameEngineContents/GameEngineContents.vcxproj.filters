@@ -343,6 +343,9 @@
     <ClInclude Include="Shop_NeroSkillUI.h">
       <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
     </ClInclude>
+    <ClInclude Include="Shop_ItemButton.h">
+      <Filter>UI\UI_Base\ShopItemButton</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -678,6 +681,9 @@
     <ClCompile Include="Shop_NeroSkillUI.cpp">
       <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
     </ClCompile>
+    <ClCompile Include="Shop_ItemButton.cpp">
+      <Filter>UI\UI_Base\ShopItemButton</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
@@ -886,6 +892,9 @@
     </Filter>
     <Filter Include="UI\UI_Base\ShopTitleButton">
       <UniqueIdentifier>{4b4d624e-f4f6-473c-b4a2-fdbcf8cc9b34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Base\ShopItemButton">
+      <UniqueIdentifier>{36189945-f06e-4396-8641-f1980811982c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -4,6 +4,7 @@
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineFont.h>
 // Ό³Έν :
+
 class GameEngineCollision;
 class Shop_TitleButton : public GameEngineActor
 {
@@ -20,6 +21,10 @@ public:
 	std::shared_ptr<GameEngineUIRenderer> GetRender()
 	{
 		return Render;
+	}
+	std::shared_ptr<GameEngineUIRenderer> GetRender_Select()
+	{
+		return Render_Select;
 	}
 	std::shared_ptr<GameEngineUIRenderer> GetRender_Bottom()
 	{
@@ -49,6 +54,14 @@ public:
 	{
 		IsValue = _Value;
 	}
+	bool GetIsPosValue()
+	{
+		return IsPosValue;
+	}
+	void SetIsPosValue(bool _Value)
+	{
+		IsPosValue = _Value;
+	}
 	std::shared_ptr<class GameEngineFontRenderer> GetFont()
 	{
 		return FontRender;
@@ -61,6 +74,7 @@ private:
 	void FontCreate();
 	void SetTextFont(std::string_view _Text);
 	std::shared_ptr<GameEngineUIRenderer> Render = nullptr;
+	std::shared_ptr<GameEngineUIRenderer> Render_Select = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> Render_Bottom = nullptr;
 	std::shared_ptr<GameEngineUIRenderer> Render_Top = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> FontRender = nullptr;
@@ -72,10 +86,12 @@ private:
 	bool IsSelect = false;
 	bool IsValue = false;
 	bool SwichValue = false;
+	bool IsPosValue = false;
 
 	float AddTime = 0.0f;
 	float Ratio = 0.0f;
 
 	float M0 = 0.0f;
+	
 };
 

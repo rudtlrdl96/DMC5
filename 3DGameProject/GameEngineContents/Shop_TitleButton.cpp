@@ -23,6 +23,9 @@ void Shop_TitleButton::Start()
 	Render_Bottom->SetScaleToTexture("NullTexture.png");
 	Render_Top = CreateComponent<GameEngineUIRenderer>(1);
 	Render_Top->SetScaleToTexture("NullTexture.png");
+	Render_Select = CreateComponent<GameEngineUIRenderer>(2);
+	Render_Select->SetScaleToTexture("NullTexture.png");
+	Render_Select->ColorOptionValue.MulColor.a = 0.5f;
 	Render->Off();
 	FontCreate();
 }
@@ -64,7 +67,6 @@ void Shop_TitleButton::Update(float _Delta)
 	{
 		AddTime += _Delta;
 		Render->On();
-		Ratio = AddTime + 0.2f;
 		if (IsValue == false)
 		{
 			M0 = GameEngineMath::LerpLimit(0.4f, 1.2f, AddTime * 2.0f);
@@ -83,21 +85,28 @@ void Shop_TitleButton::Update(float _Delta)
 				AddTime = 0.0f;
 			}
 		}
-		Render->BSCControl(M0, 0.5f, 0.5f);
-		Render_Bottom->BSCControl(M0, 0.5f, 0.5f);
 		FontRender->SetColor(float4::WHITE);
-		FontRender->GetTransform()->SetLocalPosition({ 0.0f,22.f,0.0f });
+		if (IsPosValue == false)
+		{
+			FontRender->GetTransform()->SetLocalPosition({ 0.0f,22.f,0.0f });
+			Render->BSCControl(M0, 0.5f, 0.5f);
+		}
+		else
+		{
+			Render_Select->BSCControl(M0, 0.5f, 0.5f);
+		}
 
 	}
 	else
 	{
 		Render->Off();
 		FontRender->SetColor(float4(0.462f,0.58f,0.576f));
-		FontRender->GetTransform()->SetLocalPosition({ 0.0f,21.f,0.0f });
-
+		if (IsPosValue == false)
+		{
+			FontRender->GetTransform()->SetLocalPosition({ 0.0f,21.f,0.0f });
+		}
 	}
 	SetTextFont(Text);
-
 }
 
 void Shop_TitleButton::FontCreate()

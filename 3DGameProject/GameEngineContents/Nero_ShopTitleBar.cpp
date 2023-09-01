@@ -2,7 +2,7 @@
 #include "Nero_ShopTitleBar.h"
 #include "Shop_TitleButton.h"
 #include "Shop_NeroSkillUI.h"
-
+#include "Shop_ItemButton.h"
 #include <GameEngineCore/GameEngineLevel.h>
 Nero_ShopTitleBar::Nero_ShopTitleBar() 
 {
@@ -28,10 +28,9 @@ void Nero_ShopTitleBar::Start()
 		{
 			TitleIndex = 1;
 		});
-
+	//Å×½ºÆ®
 	std::shared_ptr<Shop_NeroSkillUI> RQButton = GetLevel()->CreateActor<Shop_NeroSkillUI>();
 	RQButton->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
-
 }
 
 void Nero_ShopTitleBar::Update(float _Delta)
