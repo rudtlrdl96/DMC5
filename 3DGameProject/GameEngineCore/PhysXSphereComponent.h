@@ -106,7 +106,7 @@ public:
 
 	void SetMainPlayerFlags()
 	{
-		m_pShape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic),
+		m_pShape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::Player),
 			static_cast<physx::PxU32>(PhysXFilterGroup::Ground),
 			static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle), 0));
 		//m_pInstshape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::Player), 0, 0, 0));

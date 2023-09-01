@@ -15,9 +15,9 @@ PhysXTriangleComponent::~PhysXTriangleComponent()
 //_MeshName(불러올 매시의 이름), _Scene, _Physics, _Cooking (InitPhysics 에서 불러온 값), _InverseIndex(Index를 역순으로 할지에 대한 bool값), 
 // _GeoMetryScale(스케일값), _GeoMetryRot(로테이션값)
 void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, physx::PxScene* _Scene, physx::PxPhysics* _physics,
-	physx::PxCooking* _cooking, bool _InverseIndex, physx::PxVec3 _GeoMetryScale, float4 _GeoMetryRot)
+	physx::PxCooking* _cooking, bool _InverseIndex, float _Ratio /*= 1.f*/, float4 _GeoMetryRot /*= { 0.0f, 0.0f }*/)
 {
-	CustomFBXLoad(_MeshName, _GeoMetryScale, _InverseIndex);
+	CustomFBXLoad(_MeshName, _Ratio, _InverseIndex);
 	float4 tmpQuat = _GeoMetryRot.DegreeRotationToQuaternionReturn();
 
 	// 부모 액터로부터 위치 생성
@@ -92,17 +92,17 @@ void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, phy
 		// Triangle에서는 Trigger를 사용할 수 없음
 		//shape_->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
 
-		// 충돌시점 콜백을 위한 세팅
-		if (IsObstacle == true)
-		{
-			m_pShape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle)
-				, static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), 0, 0));
-		}
-		else if (IsGround == true)
-		{
-			m_pShape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::Ground)
-				, static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), 0, 0));
-		}
+		//충돌할때 필요한 필터 데이터
+		m_pShape->setSimulationFilterData
+		(
+			physx::PxFilterData
+			(
+				static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle),
+				static_cast<physx::PxU32>(PhysXFilterGroup::Player),
+				0,
+				0
+			)
+		);
 
 		//콜백피벗 설정
 		m_pShape->setLocalPose(physx::PxTransform(Pivot));
@@ -172,29 +172,16 @@ void PhysXTriangleComponent::Update(float _DeltaTime)
 	}
 }
 
-void PhysXTriangleComponent::CustomFBXLoad(const std::string& _MeshName, physx::PxVec3 _GeoMetryScale, bool _InverseIndex)
+void PhysXTriangleComponent::CustomFBXLoad(const std::string& _MeshName, float _Ratio, bool _InverseIndex)
 {
-	//GameEngineDirectory Dir;
-
-	//Dir.MoveParentToExitsChildDirectory(DIR_RESOURCES);
-	//Dir.Move(DIR_RESOURCES);
-	//Dir.Move(DIR_PHYSXMESH);
-	//std::string Path = Dir.PlusFilePath(_MeshName);
-
 	//매쉬를 찾는다
 	std::shared_ptr<GameEngineFBXMesh> FindFBXMesh = GameEngineFBXMesh::Find(_MeshName);
 	if (FindFBXMesh == nullptr)
 	{
-		//만약 매시가 없을경우 로드한다
-		// Mesh = GameEngineFBXMesh::Load(Path);
-
-
+		MsgAssert("해당 매쉬는 존재하지 않습니다. " + _MeshName);
 	}
-	else
-	{
-		//만약 매시가 존재할경우는 그대로 얻어온다.
-		Mesh = FindFBXMesh;
-	}
+
+	Mesh = FindFBXMesh;
 
 	//랜더유닛카운트를 불러와 백터에 reserve를 한다
 	int RenderinfoCount = Mesh->GetRenderUnitCount();
@@ -217,7 +204,7 @@ void PhysXTriangleComponent::CustomFBXLoad(const std::string& _MeshName, physx::
 		//Vertex와 Index 정보를 VertexVec, IndexVec에 저장한다
 		for (size_t j = 0; j < VertexSize; j++)
 		{
-			InstVertVec.push_back(physx::PxVec3(MeshVertexs[j].POSITION.x * _GeoMetryScale.x, MeshVertexs[j].POSITION.y * _GeoMetryScale.y, MeshVertexs[j].POSITION.z * _GeoMetryScale.z));
+			InstVertVec.push_back(physx::PxVec3(MeshVertexs[j].POSITION.x, MeshVertexs[j].POSITION.y, MeshVertexs[j].POSITION.z) * _Ratio);
 		}
 
 		if (_InverseIndex == true)
@@ -239,6 +226,4 @@ void PhysXTriangleComponent::CustomFBXLoad(const std::string& _MeshName, physx::
 		VertexVec.push_back(InstVertVec);
 		IndexVec.push_back(InstIndexVec);
 	}
-
-	//Mesh->UserLoad();
 }

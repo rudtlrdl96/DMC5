@@ -27,11 +27,6 @@ void Wall::Start()
 	Component->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
 	Component->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), GeoMetryScale);
 	Component->SetPositionSetFromParentFlag(true);
-
-	physx::PxTransform PhyTF = Component->GetDynamic()->getGlobalPose();
-	PhyTF.q.z += 90.0f;
-
-	//Component->GetDynamic()->setGlobalPose(PhyTF);
 }
 
 void Wall::Update(float _DeltaTime)

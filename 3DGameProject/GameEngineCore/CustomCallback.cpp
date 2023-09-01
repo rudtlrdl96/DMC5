@@ -13,7 +13,7 @@ void CustomCallback::onContact(const physx::PxContactPairHeader& pairHeader, con
 		physx::PxFilterData ContactFilterdata = tmpContactActor->getSimulationFilterData();
 		physx::PxFilterData OtherFilterdata = tmpOtherActor->getSimulationFilterData();
 
-		if (ContactFilterdata.word0 & static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic) &&
+		if (ContactFilterdata.word0 & static_cast<physx::PxU32>(PhysXFilterGroup::Player) &&
 			OtherFilterdata.word0 & static_cast<physx::PxU32>(PhysXFilterGroup::Ground))
 		{
 			if (current.events & physx::PxPairFlag::eNOTIFY_TOUCH_PERSISTS)
@@ -50,7 +50,7 @@ void CustomCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 count)
 		//충돌체의 filterData가 ground이면서 닿았을 경우
 
 		if (OtherFilterdata.word0 & static_cast<physx::PxU32>(PhysXFilterGroup::Ground) &&
-			TriggerFilterdata.word0 & static_cast<physx::PxU32>(PhysXFilterGroup::PlayerFace) &&
+			TriggerFilterdata.word0 & static_cast<physx::PxU32>(PhysXFilterGroup::Player) &&
 			current.status & physx::PxPairFlag::eNOTIFY_TOUCH_FOUND)
 		{
 			//if (Component != nullptr)

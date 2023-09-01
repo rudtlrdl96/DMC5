@@ -107,13 +107,13 @@ void PhysXConvexComponent::CreatePhysXActors(const std::string& _MeshName, physx
 	if (IsObstacle == true)
 	{
 		m_pShape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle)
-			, static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), 0, 0));
+			, static_cast<physx::PxU32>(PhysXFilterGroup::Player), 0, 0));
 	}
 
 	else if (IsGround == true)
 	{
 		m_pShape->setSimulationFilterData(physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::Ground)
-			, static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), 0, 0));
+			, static_cast<physx::PxU32>(PhysXFilterGroup::Player), 0, 0));
 	}
 
 

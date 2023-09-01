@@ -29,11 +29,6 @@ void Slope::Start()
 	Component->SetPhysxMaterial(1.0f, 1.0f, 0.0f);
 	Component->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), GeoMetryScale);
 	Component->SetPositionSetFromParentFlag(true);
-
-	physx::PxTransform PhyTF = Component->GetDynamic()->getGlobalPose();
-	PhyTF.q.z += 90.0f;
-
-	//Component->GetDynamic()->setGlobalPose(PhyTF);
 }
 
 void Slope::Update(float _DeltaTime)

@@ -18,7 +18,7 @@ public:
 	PhysXTriangleComponent& operator=(PhysXTriangleComponent&& _Other) noexcept = delete;
 	
 	void CreatePhysXActors(const std::string& _MeshName, physx::PxScene* _Scene, physx::PxPhysics* _physics,
-		physx::PxCooking* _cooking, bool _InverseIndex = true, physx::PxVec3 _GeoMetryScale = physx::PxVec3(2.0f), float4 _GeoMetryRot = { 0.0f, 0.0f });
+		physx::PxCooking* _cooking, bool _InverseIndex = true, float _Ratio = 1.f, float4 _GeoMetryRot = { 0.0f, 0.0f });
 
 	inline void ReleasePhysX()
 	{
@@ -38,7 +38,7 @@ protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
-	void CustomFBXLoad(const std::string& _MeshName, physx::PxVec3 _GeoMetryScale, bool _InverseIndex);
+	void CustomFBXLoad(const std::string& _MeshName, float _Ratio, bool _InverseIndex);
 
 private:
 	// Phys액터 생성에 필요한 정보

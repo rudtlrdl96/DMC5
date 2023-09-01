@@ -87,7 +87,7 @@ physx::PxRigidDynamic* PhysXSphereComponent::CreatePhysXActors(physx::PxScene* _
 		physx::PxFilterData
 		(
 			static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle),
-			static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), 
+			static_cast<physx::PxU32>(PhysXFilterGroup::Player), 
 			0,
 			0
 		)

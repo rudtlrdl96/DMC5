@@ -34,12 +34,6 @@ void PhysXBoxComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysi
 	// Staticfriction : 정적마찰 // Dynamicfriction : 동적마찰 // Resitution : 탄성계수
 	m_pMaterial = m_pPhysics->createMaterial(Staticfriction, Dynamicfriction, Resitution);
 
-	// TODO::배율을 적용할 경우 이쪽 코드를 사용
-	//float4 tmpMagnification = { SIZE_MAGNIFICATION_RATIO };
-	//physx::PxVec3 tmpGeoMetryScale(_GeoMetryScale.x * tmpMagnification.x * 0.5f, 
-	//							   _GeoMetryScale.y * tmpMagnification.y * 0.5f, 
-	//							   _GeoMetryScale.z * tmpMagnification.z * 0.5f);
-
 	physx::PxVec3 tmpGeoMetryScale
 	(
 		_GeoMetryScale.x * 0.5f,
@@ -48,6 +42,7 @@ void PhysXBoxComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysi
 	);
 
 	// 충돌체의 종류
+	//m_pRigidDynamic = _physics->createRigidDynamic(localTm);
 	m_pRigidDynamic = _physics->createRigidDynamic(localTm);
 
 	// 중력이 적용되지 않도록
@@ -56,8 +51,6 @@ void PhysXBoxComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysi
 	m_pRigidDynamic->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, true);
 
 	// 충돌체의 형태
-	// 충돌체의 크기는 절반의 크기를 설정하므로 실제 Renderer의 스케일은 충돌체의 2배로 설정되어야 함
-	// TODO::부모 액터의 RenderUnit으로부터 Mesh의 Scale 과 WorldScale의 연산의 결과를 지오메트리의 Scale로 세팅해야함.
 	m_pShape = physx::PxRigidActorExt::createExclusiveShape(*m_pRigidDynamic, physx::PxBoxGeometry(tmpGeoMetryScale), *m_pMaterial);
 
 	// RigidDynamic의 밀도를 설정
@@ -68,27 +61,15 @@ void PhysXBoxComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysi
 	m_pShape->setLocalPose(physx::PxTransform(Pivot));
 
 	//충돌할때 필요한 필터 데이터
-	//if (IsObstacle == true)
-	//{
-	//	m_pShape->setSimulationFilterData
-	//	(
-	//		physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle)
-	//		, static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), 0, 0)
-	//	);
-	//}
-	//else if (IsGround == true)
-	//{
-	//	m_pShape->setSimulationFilterData
-	//	(
-	//		physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::Ground)
-	//		, static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), 0, 0)
-	//	);
-	//}
-
 	m_pShape->setSimulationFilterData
 	(
-		physx::PxFilterData(static_cast<physx::PxU32>(PhysXFilterGroup::Ground)
-			, static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic), 0, 0)
+		physx::PxFilterData
+		(
+			static_cast<physx::PxU32>(PhysXFilterGroup::Ground),
+			static_cast<physx::PxU32>(PhysXFilterGroup::Player),
+			0,
+			0
+		)
 	);
 
 	//콜백피벗 설정

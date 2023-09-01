@@ -116,7 +116,7 @@ public:
 		(
 			physx::PxFilterData
 			(
-				static_cast<physx::PxU32>(PhysXFilterGroup::PlayerDynamic),
+				static_cast<physx::PxU32>(PhysXFilterGroup::Player),
 				static_cast<physx::PxU32>(PhysXFilterGroup::Ground),
 				static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle), 
 				0
