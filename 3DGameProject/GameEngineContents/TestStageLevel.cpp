@@ -12,6 +12,10 @@
 #include "Plane.h"
 #include "TestObject.h"
 #include "PlayerActor_Nero.h"
+
+#include "ShaderTestActor.h"
+#include "FreeCameraActor.h"
+
 TestStageLevel* TestStageLevel::Inst = nullptr;
 
 TestStageLevel::TestStageLevel()
@@ -26,6 +30,9 @@ TestStageLevel::~TestStageLevel()
 
 void TestStageLevel::Start()
 {
+	CreateActor<FreeCameraActor>();
+	CreateActor<ShaderTestActor>()->GetTransform()->SetLocalPosition({ 0, 100, 0 });
+
 	GetCamera(0)->ReflectionOn();
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
@@ -87,6 +94,6 @@ void TestStageLevel::LevelChangeStart()
 
 	CreateStage(AllStageDatas[0]);
 
-	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
-	Nero->SetWorldPosition({ 0, 100, 0 });
+	//std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
+	//Nero->SetWorldPosition({ 0, 100, 0 });
 }

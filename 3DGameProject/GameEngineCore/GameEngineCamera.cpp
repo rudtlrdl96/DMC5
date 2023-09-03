@@ -57,6 +57,8 @@ void GameEngineCamera::Start()
 
 void GameEngineCamera::ReflectionOn()
 {
+	return;
+
 	if (nullptr != ReflectionTarget)
 	{
 		return;

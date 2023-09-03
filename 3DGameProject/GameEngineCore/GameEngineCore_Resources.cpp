@@ -31,7 +31,7 @@ void GameEngineCore::CoreResourcesInit()
 		NewDir.MoveParentToDirectory("EngineResources");
 		NewDir.Move("EngineResources");
 
-		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", ".Tga"});
 
 		for (size_t i = 0; i < File.size(); i++)
 		{

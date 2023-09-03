@@ -29,8 +29,6 @@ StartStageLevel::~StartStageLevel()
 
 void StartStageLevel::Start()
 {
-	CreateActor<ShaderTestActor>();
-
 	GetCamera(0)->ReflectionOn();
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();

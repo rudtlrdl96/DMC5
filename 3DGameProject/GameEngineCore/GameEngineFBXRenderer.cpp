@@ -359,6 +359,10 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh(const st
 		{
 			RenderUnit->ShaderResHelper.SetTexture("NormalTexture", MatData.NorTextureName);
 		}
+		else
+		{
+			RenderUnit->ShaderResHelper.SetTexture("NormalTexture", "EngineBaseNormal.tga");
+		}
 
 		BaseValue.IsNormal = 1;
 	}	
@@ -371,8 +375,10 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh(const st
 		{
 			RenderUnit->ShaderResHelper.SetTexture("SpecularTexture", MatData.SpcTextureName);
 		}
-
-		BaseValue.IsNormal = 1;
+		else
+		{
+			RenderUnit->ShaderResHelper.SetTexture("SpecularTexture", "EngineBaseSpecular.tga");
+		}
 	}
 
 

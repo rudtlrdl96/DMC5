@@ -54,10 +54,24 @@ Texture2D SpecularTexture : register(t2); // ATOS
 
 SamplerState ENGINEBASE : register(s0);
 
+float GGX_Distribution(float3 normal, float3 halfVector, float roughness)
+{
+    float NdotH = max(dot(normal, halfVector), 0.0f);
+    float roughnessSqr = roughness * roughness;
+    float a = roughnessSqr * roughnessSqr;
+    float denominator = (NdotH * NdotH * (a - 1.0f) + 1.0f);
+    return a / (3.14f * denominator * denominator);
+}
+
 float4 MeshAniTexture_PS(Output _Input) : SV_Target0
 {
+    // rgb = 색상, a = metallicValue 
     float4 AlbmData = DiffuseTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
+    
+    // rgb = NormalMap, a = roughnessValue 
     float4 NrmrData = NormalTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
+    
+    // r = Alpha
     float4 AtosData = SpecularTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
     
     if (AlbmData.x == ClipColor.x && AlbmData.y == ClipColor.y && AlbmData.z == ClipColor.z)
@@ -65,7 +79,9 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
         clip(-1);
     }
     
-    float4 RGBA = { AlbmData.r, AlbmData.g, AlbmData.b, AtosData.r};    
+    float3 metalReflection = lerp(AlbmData.rgb, float3(0.8, 0.8, 0.8), AlbmData.a);
+    
+    float4 RGBA = { metalReflection.r, metalReflection.g, metalReflection.b, AtosData.r };
     float4 ResultColor = RGBA;
     
     if (0 != IsLight)
@@ -81,30 +97,26 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
         
             NormalDir.xyz = BumpNormal.xyz;
         }
-                
+        
+        
+        //float roughness = 1.0 - smoothness; // smoothness는 러프니스 값입니다.
+        float3 reflection = reflect(AllLight[0].LightRevDir.xyz, NormalDir.xyz); // 빛의 반사 방향 계산
+        float distribution = GGX_Distribution(NormalDir.xyz, reflection, NrmrData.r); // 반사 분포 계산
+        
+        // Diffuse Light 계산
         float4 DiffuseRatio = CalDiffuseLight(_Input.VIEWPOSITION, NormalDir, AllLight[0]);
-        float4 SpacularRatio = CalSpacularLight(_Input.VIEWPOSITION, NormalDir, AllLight[0]);     
+        
+        // Spacular Light 계산
+        float4 SpacularRatio = CalSpacularLight(_Input.VIEWPOSITION, NormalDir, AllLight[0]) * AlbmData.a;
+        
+        // Ambient Light 계산
         float4 AmbientRatio = CalAmbientLight(AllLight[0]);
         
         float A = RGBA.w;
         ResultColor = RGBA * (DiffuseRatio + SpacularRatio + AmbientRatio);
         ResultColor.a = A;
-                                        
-        // 추후 공식 수정필요
         
-        // ScreenScale;
-        float3 Eye = normalize(AllLight[0].CameraPosition.xyz - _Input.VIEWPOSITION.xyz); // L
-        float3 RefDir = _Input.NORMAL.xyz;
         
-        RefDir.x = map(RefDir.x, -1.0f, 1.0f, 0.0f, 1.0f);
-        RefDir.y = map(-RefDir.y, -1.0f, 1.0f, 0.0f, 1.0f);        
-        RefDir.z = 0;
-        
-        normalize(RefDir);
-                
-        float4 ReflectTexture = ReflectionTexture.Sample(ENGINEBASE, RefDir.xy);
-                                     
-        ResultColor.xyz += ReflectTexture.xyz * (AlbmData.a);
     }
             
     if (1.0f != BaseColor.a)
@@ -112,8 +124,6 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
         float Step = ((_Input.POSITION.x + (_Input.POSITION.y * 2)) % 5) + 1;
         ResultColor.a = 1.0f - ((Step / 5.0f) * (1.0f - BaseColor.a));
     }
-    
-    //ResultColor.xyz += ReflectionTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy).xyz ;
-    
+        
     return ResultColor;
 }

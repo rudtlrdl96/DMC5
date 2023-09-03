@@ -5,6 +5,12 @@
 
 // 이 데이터 1개가 빛 1개입니다.
 
+enum class LightType
+{
+
+
+};
+
 struct LightData
 {
     friend class GameEngineLight;
@@ -23,6 +29,7 @@ struct LightData
     float4 ViewLightDir;
     float4 ViewLightRevDir;
     float4 CameraPosition;
+    float4 CameraView;
     float LightTargetSizeX;
     float LightTargetSizeY;
     float LightNear;
@@ -66,6 +73,11 @@ public:
     const LightData& GetLightData()
     {
         return LightDataValue;
+    }
+
+    void SetLightType()
+    {
+    
     }
 
 protected:
