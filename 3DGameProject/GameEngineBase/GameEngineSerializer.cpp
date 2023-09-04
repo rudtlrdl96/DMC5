@@ -137,12 +137,3 @@ void GameEngineSerializer::ClearReadData()
 	WriteOffset -= ReadOffset;
 	ReadOffset = 0;
 }
-
-void GameEngineSerializer::operator << (const GameEngineSerializer& _Ser)
-{
-	unsigned int MoveSize = (_Ser.WriteOffset - _Ser.ReadOffset);
-	if (MoveSize == 0)
-		return;
-	
-	Write(&_Ser.Data[_Ser.ReadOffset], MoveSize);
-}

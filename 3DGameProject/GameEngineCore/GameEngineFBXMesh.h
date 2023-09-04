@@ -18,6 +18,7 @@ public:
 	double Weight;
 };
 
+
 class FbxExMaterialSettingData : public GameEngineSerializObject
 {
 public:
@@ -73,10 +74,10 @@ public:
 		_File >> SpcTextureName; // 텍스처
 	}
 
+
 public:
 	FbxExMaterialSettingData() {}
 	~FbxExMaterialSettingData() {}
-
 };
 
 struct FbxExMeshInfo : public GameEngineSerializObject
@@ -136,19 +137,19 @@ struct FbxExMeshInfo : public GameEngineSerializObject
 
 	void Read(GameEngineSerializer& _File) override
 	{
-		_File << Name;
-		_File << bTriangulated;
-		_File << UniqueId;
-		_File << FaceNum;
-		_File << VertexNum;
-		_File << MaterialNum;
-		_File << bIsSkeletalMesh;
-		_File << SkeletonRoot;
-		_File << SkeletonElemNum;
-		_File << bIsLodGroup;
-		_File << LODGroupName;
-		_File << LodLevel;
-		_File << MorphNum;
+		_File >> Name;
+		_File >> bTriangulated;
+		_File >> UniqueId;
+		_File >> FaceNum;
+		_File >> VertexNum;
+		_File >> MaterialNum;
+		_File >> bIsSkeletalMesh;
+		_File >> SkeletonRoot;
+		_File >> SkeletonElemNum;
+		_File >> bIsLodGroup;
+		_File >> LODGroupName;
+		_File >> LodLevel;
+		_File >> MorphNum;
 	}
 };
 
@@ -253,6 +254,8 @@ public:
 
 	}
 };
+
+
 
 struct JointPos
 {
@@ -527,6 +530,7 @@ struct JointPos
 	}
 };
 
+
 class FbxClusterData
 {
 public:
@@ -543,6 +547,8 @@ public:
 
 	}
 };
+
+
 
 struct Bone : public GameEngineSerializObject
 {
@@ -585,6 +591,7 @@ struct Bone : public GameEngineSerializObject
 	}
 };
 
+
 // 버텍스 버퍼 만드는 용도
 // 설명 :
 class GameEngineFBXMesh : public GameEngineFBX, public GameEngineResource<GameEngineFBXMesh>
@@ -610,6 +617,7 @@ public:
 	}
 
 	static std::shared_ptr<GameEngineFBXMesh> Load(const std::string& _Path, const std::string& _Name);
+
 
 	std::shared_ptr<GameEngineMesh> GetGameEngineMesh(size_t _MeshIndex, size_t _SubIndex);
 
@@ -641,18 +649,20 @@ public:
 		return MeshInfos.size();
 	}
 
-	size_t GetBoneCount(size_t _Index)
+	size_t GetBoneCount()
 	{
-		return AllBones[_Index].size();
+		return AllBones.size();
 	}
 
-	// Bone 찾아주는 함수
-	Bone* FindBone(size_t MeshIndex, size_t _BoneIndex);
-	Bone* FindBone(size_t MeshIndex, std::string _Name);
 
-	std::shared_ptr<GameEngineStructuredBuffer> GetAnimationStructuredBuffer(size_t _Index);
+	// Bone 찾아주는 함수
+	Bone* FindBone(size_t _BoneIndex);
+	Bone* FindBone(std::string _Name);
+
+	std::shared_ptr<GameEngineStructuredBuffer> GetAnimationStructuredBuffer();
 
 	void Initialize();
+
 
 	//void UserLoad(const std::string_view& _Path/*GameEngineFile& _File*/);
 	//void UserSave(const std::string_view& _Path/*GameEngineFile& _File*/);
@@ -667,24 +677,24 @@ protected:
 	std::string FBXMeshName;
 
 	std::vector<FbxExMeshInfo> MeshInfos;
-	std::vector<std::vector<Bone>> AllBones;
+	std::vector<Bone> AllBones;
 
 
 	std::vector<FbxRenderUnitInfo> RenderUnitInfos;
 
-	std::vector<std::shared_ptr<GameEngineStructuredBuffer>> AllBoneStructuredBuffers; // 본정보체
+	std::shared_ptr<GameEngineStructuredBuffer> AllBoneStructuredBuffers; // 본정보체
 
-	std::vector<std::map<std::string, Bone*>> AllFindMap;
+	std::map<std::string, Bone*> AllFindMap;
 	std::vector<std::vector<FbxClusterData>> ClusterData;
 
 private:
 	void LoadMesh(const std::string& _Path, const std::string& _Name);
 
-	void MeshLoad();
+	bool IsInit = false;
 
+	void MeshLoad();
 	void CreateGameEngineStructuredBuffer();
 
-	bool IsInit = false;
 
 	// 매쉬 정보 획득
 	void MeshNodeCheck();
@@ -722,7 +732,5 @@ private:
 	void LoadAnimationVertexData(FbxRenderUnitInfo* _DrawData, const std::vector<FbxClusterData>& vecClusterData);
 	void DrawSetWeightAndIndexSetting(FbxRenderUnitInfo* _DrawSet, fbxsdk::FbxMesh* _Mesh, fbxsdk::FbxCluster* _Cluster, int _BoneIndex);
 	void CalAnimationVertexData(FbxRenderUnitInfo& _DrawSet);
-
-	
 };
 

@@ -36,7 +36,7 @@ public:
 
 	// Event
 
-	void Init(const std::string_view& _Name, int _Index);
+	void Init(std::shared_ptr<GameEngineFBXMesh> _Mesh, std::shared_ptr<GameEngineFBXAnimation> _Animation, const std::string_view& _Name, int _Index);
 	void Reset();
 	void Update(float _DeltaTime);
 
@@ -236,9 +236,9 @@ private:
 	// 앞쪽에 키는 매쉬 개수 x 본개수의 뜻을 가지게 된다.
 
 	// 스트럭처드 버퍼랑 링크가 되는 녀석.
-	std::map<size_t, std::vector<float4x4>> AnimationBoneMatrixs;
+	std::vector<float4x4> AnimationBoneMatrixs;
 
 
-	std::map<size_t, std::vector<AnimationBoneData>> AnimationBoneDatas;
+	std::vector<AnimationBoneData> AnimationBoneDatas;
 };
 

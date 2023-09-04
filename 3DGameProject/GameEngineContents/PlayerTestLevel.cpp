@@ -76,10 +76,16 @@ void PlayerTestLevel::LevelChangeStart()
 	Flat2->GetTransform()->AddWorldPosition(float4{ 700, 0, 700 });
 	Flat2->GetTransform()->AddWorldRotation(float4{ 0, 0, 90 });
 
+	std::shared_ptr<Plane> Flat3 = CreateActor<Plane>();
+	Flat3->GetTransform()->AddWorldPosition(float4{ -500, -100, 0 });
 	//std::shared_ptr<Slope> Flat3 = CreateActor<Slope>();
 	//Flat3->GetTransform()->AddWorldPosition(float4{ -200, 0, 100 });
 	//Flat3->GetTransform()->AddWorldRotation(float4{ 0, 0, -30 });
 	//Flat3->GetTransform()->AddWorldRotation(float4{ 0, -45, 0 });
+	std::shared_ptr<Wall> Flat4 = CreateActor<Wall>();
+	Flat4->GetTransform()->AddWorldPosition(float4{ 300, 0, 300 });
+	Flat4->GetTransform()->AddWorldRotation(float4{ 0, 0, 90 });
+	Flat4->GetTransform()->AddWorldRotation(float4{ 0, -40, 0 });
 
 	std::shared_ptr<GameEngineLight> Light = CreateActor<GameEngineLight>();
 
