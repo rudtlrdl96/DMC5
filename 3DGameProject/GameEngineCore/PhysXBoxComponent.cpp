@@ -12,10 +12,10 @@ PhysXBoxComponent::~PhysXBoxComponent()
 {
 }
 
-void PhysXBoxComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale, float4 _GeoMetryRot)
+void PhysXBoxComponent::CreatePhysXActors(physx::PxVec3 _GeoMetryScale, float4 _GeoMetryRot)
 {
-	m_pPhysics = _physics;
-    m_pScene = _Scene;
+	m_pPhysics = GetLevel()->GetLevelPhysics();
+    m_pScene = GetLevel()->GetLevelScene();
 
 	float4 tmpQuat = _GeoMetryRot.EulerDegToQuaternion();
 
@@ -43,7 +43,7 @@ void PhysXBoxComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysi
 
 	// 충돌체의 종류
 	//m_pRigidDynamic = _physics->createRigidDynamic(localTm);
-	m_pRigidDynamic = _physics->createRigidDynamic(localTm);
+	m_pRigidDynamic = m_pPhysics->createRigidDynamic(localTm);
 
 	// 중력이 적용되지 않도록
 	// TODO::RigidStatic으로 변경해야
@@ -57,23 +57,67 @@ void PhysXBoxComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysi
 	physx::PxRigidBodyExt::updateMassAndInertia(*m_pRigidDynamic, 0.1f);
 
 	//피벗 설정
-	physx::PxVec3 Pivot(DynamicPivot.x, DynamicPivot.y, DynamicPivot.z);
+ 	physx::PxVec3 Pivot(DynamicPivot.x, tmpGeoMetryScale.y, DynamicPivot.z);
 	m_pShape->setLocalPose(physx::PxTransform(Pivot));
 
 	//충돌할때 필요한 필터 데이터
-	m_pShape->setSimulationFilterData
-	(
-		physx::PxFilterData
+	if (true == IsObstacle)
+	{
+		m_pShape->setSimulationFilterData
 		(
-			static_cast<physx::PxU32>(PhysXFilterGroup::Ground),
-			static_cast<physx::PxU32>(PhysXFilterGroup::Player),
-			0,
-			0
-		)
-	);
-
-	//콜백피벗 설정
-	m_pShape->setLocalPose(physx::PxTransform(Pivot));
+			physx::PxFilterData
+			(
+				static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle),
+				static_cast<physx::PxU32>(PhysXFilterGroup::Player),
+				0,
+				0
+			)
+		);
+	}
+	else if (true == IsGround)
+	{
+		m_pShape->setSimulationFilterData
+		(
+			physx::PxFilterData
+			(
+				static_cast<physx::PxU32>(PhysXFilterGroup::Ground),
+				static_cast<physx::PxU32>(PhysXFilterGroup::Player),
+				0,
+				0
+			)
+		);
+	}
+	else if (true == IsWall)
+	{
+		m_pShape->setSimulationFilterData
+		(
+			physx::PxFilterData
+			(
+				static_cast<physx::PxU32>(PhysXFilterGroup::Wall),
+				static_cast<physx::PxU32>(PhysXFilterGroup::Player),
+				0,
+				0
+			)
+		);
+	}
+	else if (true == IsSlope)
+	{
+		m_pShape->setSimulationFilterData
+		(
+			physx::PxFilterData
+			(
+				static_cast<physx::PxU32>(PhysXFilterGroup::Slope),
+				static_cast<physx::PxU32>(PhysXFilterGroup::Player),
+				0,
+				0
+			)
+		);
+	}
+	else
+	{
+		std::string ParentName = GetActor()->GetName().data();
+		MsgTextBox("충돌 플래그가 설정되지 않았습니다. " + ParentName);
+	}
 
 	if (m_pScene == nullptr)
 	{

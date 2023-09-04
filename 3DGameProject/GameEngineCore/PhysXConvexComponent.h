@@ -17,8 +17,7 @@ public:
 	PhysXConvexComponent& operator=(const PhysXConvexComponent& _Other) = delete;
 	PhysXConvexComponent& operator=(PhysXConvexComponent&& _Other) noexcept = delete;
 
-	void CreatePhysXActors(const std::string& _MeshName, physx::PxScene* _Scene, physx::PxPhysics* _physics,
-		physx::PxCooking* _cooking, bool _InverseIndex = true, physx::PxVec3 _GeoMetryScale = physx::PxVec3(2.0f), float4 _GeoMetryRot = { 0.0f, 0.0f }, bool _Gravity = false);
+	void CreatePhysXActors(const std::string& _MeshName, physx::PxCooking* _cooking, bool _InverseIndex = true, physx::PxVec3 _GeoMetryScale = physx::PxVec3(2.0f), float4 _GeoMetryRot = { 0.0f, 0.0f }, bool _Gravity = false);
 
 	// 힘을 추가
 	void AddForce(float4 _Force);
@@ -59,23 +58,24 @@ protected:
 
 private:
 	// Phys액터 생성에 필요한 정보
-	physx::PxPhysics* m_pPhysics;
-	physx::PxScene* m_pScene;
+	physx::PxPhysics* m_pPhysics = nullptr;
+	physx::PxScene* m_pScene = nullptr;
+	physx::PxCooking* m_pCooking = nullptr;
 
-	physx::PxMaterial* m_pMaterial;
-	physx::PxShape* m_pShape;
-	physx::PxRigidDynamic* m_pDynamic;
+	physx::PxMaterial* m_pMaterial = nullptr;
+	physx::PxShape* m_pShape = nullptr;
+	physx::PxRigidDynamic* m_pDynamic = nullptr;
 
-	physx::PxConvexMesh* m_pConvexMesh;
+	physx::PxConvexMesh* m_pConvexMesh = nullptr;
+
+	std::shared_ptr<class GameEngineFBXMesh> Mesh = nullptr;
+
 	std::vector<physx::PxVec3> VertexVec;
-	std::shared_ptr<class GameEngineFBXMesh> Mesh;
-
 	physx::PxVec3 SeesawPos;
+	physx::PxVec3 AddUpdateForce;
 
 	// 이 컴포넌트를 가지고 있는 Parent에 대한 정보
 	std::weak_ptr<class GameEngineActor> ParentActor;
-
-	physx::PxVec3 AddUpdateForce;
 
 	bool PositionSetFromParentFlag;
 

@@ -57,16 +57,24 @@ public:
 		DynamicPivot = _Pivot;
 	}
 
-	//오브젝트의 필터데이터를 넣기위한 bool값을 설정하는 함수
-	inline void SetObjectObstacle()
+	inline void SetObstacleObject()
 	{
 		IsObstacle = true;
 	}
 	
-	//오브젝트의 필터데이터를 넣기위한 bool값을 설정하는 함수
-	inline void SetObjectGround()
+	inline void SetGroundObject()
 	{
 		IsGround = true;
+	}
+
+	inline void SetWallObject()
+	{
+		IsWall = true;
+	}
+
+	inline void SetSlopeObject()
+	{
+		IsSlope = true;
 	}
 
 	inline void SetAggregateObj(bool _Flag)
@@ -99,6 +107,8 @@ protected:
 	
 	bool IsObstacle = false;
 	bool IsGround = false;
+	bool IsWall = false;
+	bool IsSlope = false;
 	bool IsAggregateObject = false;
 
 	static physx::PxAggregate* MapAggregate;

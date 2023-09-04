@@ -129,19 +129,18 @@ private:
 	physx::PxMaterial* m_pMaterial = nullptr;
 	physx::PxShape* m_pShape = nullptr;
 
-	bool m_bSpeedLimit = false;
-
 	// 이 컴포넌트를 가지고 있는 Parent에 대한 정보
 	std::weak_ptr<class GameEngineActor> ParentActor;
-	physx::PxVec3 GeoMetryScale;
 
 	//속도제한 함수
 	void SpeedLimit();
 
+	physx::PxVec3 GeoMetryScale;
 	physx::PxVec3 InitVec3;
 	physx::PxTransform RecentTransform;
 
 	// 메인플레이어 플래그
 	bool IsMain = false;
+	bool m_bSpeedLimit = false;
 };
 

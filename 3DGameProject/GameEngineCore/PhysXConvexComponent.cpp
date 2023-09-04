@@ -11,13 +11,14 @@ PhysXConvexComponent::~PhysXConvexComponent()
 {
 }
 
-void PhysXConvexComponent::CreatePhysXActors(const std::string& _MeshName, physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxCooking* _cooking, bool _InverseIndex, physx::PxVec3 _GeoMetryScale, float4 _GeoMetryRot, bool _Gravity)
+void PhysXConvexComponent::CreatePhysXActors(const std::string& _MeshName, physx::PxCooking* _cooking, bool _InverseIndex, physx::PxVec3 _GeoMetryScale, float4 _GeoMetryRot, bool _Gravity)
 {
 	CustomFBXLoad(_MeshName);
 	float4 tmpQuat = _GeoMetryRot.DegreeRotationToQuaternionReturn();
 
-	m_pPhysics = _physics;
-	m_pScene = _Scene;
+	m_pPhysics = GetLevel()->GetLevelPhysics();
+	m_pScene = GetLevel()->GetLevelScene();
+	m_pCooking = GetLevel()->GetCooking();
 
 	// 시소 위치 고정
 	SeesawPos = physx::PxVec3
@@ -43,7 +44,7 @@ void PhysXConvexComponent::CreatePhysXActors(const std::string& _MeshName, physx
 	// 마찰, 탄성계수
 	//material_ = _physics->createMaterial(0.0f, 0.0f, 0.0f);	
 
-	m_pMaterial = _physics->createMaterial(Staticfriction, Dynamicfriction, Resitution);
+	m_pMaterial = m_pPhysics->createMaterial(Staticfriction, Dynamicfriction, Resitution);
 
 	// TODO::배율을 적용할 경우 이쪽 코드를 사용
 	//float4 tmpMagnification = { SIZE_MAGNIFICATION_RATIO };
@@ -80,10 +81,10 @@ void PhysXConvexComponent::CreatePhysXActors(const std::string& _MeshName, physx
 		MsgAssert("매쉬를 불러와 피직스X 충동체를 만드는데 실패했습니다");
 	}
 	physx::PxDefaultMemoryInputData input(buf.getData(), buf.getSize());
-	physx::PxConvexMesh* convexMesh = _physics->createConvexMesh(input);
+	physx::PxConvexMesh* convexMesh = m_pPhysics->createConvexMesh(input);
 
 	// 충돌체의 종류
-	m_pDynamic = _physics->createRigidDynamic(localTm);
+	m_pDynamic = m_pPhysics->createRigidDynamic(localTm);
 	//중력 flag // true시 중력받지않음
 	m_pDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, _Gravity);
 	// 충돌체의 형태

@@ -24,7 +24,6 @@ protected:
 	void ServerUpdate(float _DeltaTime);
 
 private:
-	//std::shared_ptr<class PhysXBoxComponent> Component = nullptr;
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
 	std::shared_ptr<class PhysXCapsuleComponent> Component = nullptr;
 	std::shared_ptr<class PhysXTriangleComponent> TriCom = nullptr;

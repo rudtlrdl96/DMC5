@@ -70,10 +70,14 @@ public:
 			Name.replace(0, 6, "");
 		}
 
+		ActorSetName(NewActor, Name);
+
 		ActorInit(NewActor, _Order, this);
 
 		return std::dynamic_pointer_cast<ActorType>(NewActor);
 	}
+
+	void ActorSetName(std::shared_ptr<GameEngineActor> _Actor, std::string _Name);
 
 	std::shared_ptr<class GameEngineCamera> CreateNewCamera(int _Order);
 

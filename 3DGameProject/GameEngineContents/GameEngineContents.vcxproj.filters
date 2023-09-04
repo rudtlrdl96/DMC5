@@ -101,10 +101,10 @@
       <Filter>Actor\Player\Base</Filter>
     </ClInclude>
     <ClInclude Include="Plane.h">
-      <Filter>Actor\Test</Filter>
+      <Filter>Actor\TestObject</Filter>
     </ClInclude>
     <ClInclude Include="TestObject.h">
-      <Filter>Actor\Test</Filter>
+      <Filter>Actor\TestObject</Filter>
     </ClInclude>
     <ClInclude Include="TestLevel.h">
       <Filter>Levels\Test</Filter>
@@ -140,7 +140,7 @@
       <Filter>GUI</Filter>
     </ClInclude>
     <ClInclude Include="FreeCameraActor.h">
-      <Filter>Actor\Test</Filter>
+      <Filter>Actor\TestObject</Filter>
     </ClInclude>
     <ClInclude Include="AnimationEvent.h">
       <Filter>Actor\Animation</Filter>
@@ -185,13 +185,13 @@
       <Filter>Levels\Stage\0.StageBase</Filter>
     </ClInclude>
     <ClInclude Include="Box200.h">
-      <Filter>Actor\Test</Filter>
+      <Filter>Actor\TestObject</Filter>
     </ClInclude>
     <ClInclude Include="Box300.h">
-      <Filter>Actor\Test</Filter>
+      <Filter>Actor\TestObject</Filter>
     </ClInclude>
     <ClInclude Include="Ball.h">
-      <Filter>Actor\Test</Filter>
+      <Filter>Actor\TestObject</Filter>
     </ClInclude>
     <ClInclude Include="Intro_BackGround.h">
       <Filter>UI\UI_Actor\IntroUI</Filter>
@@ -218,7 +218,7 @@
       <Filter>UI\UI_Actor\C_ChoiceUI</Filter>
     </ClInclude>
     <ClInclude Include="Ramp.h">
-      <Filter>Actor\Test</Filter>
+      <Filter>Actor\TestObject</Filter>
     </ClInclude>
     <ClInclude Include="ContentDefine.h">
       <Filter>Basic</Filter>
@@ -271,10 +271,10 @@
     <ClInclude Include="StageEditGUI.h" />
     <ClInclude Include="StageEditLevel.h" />
     <ClInclude Include="Wall.h">
-      <Filter>Actor\Test</Filter>
+      <Filter>Actor\TestObject</Filter>
     </ClInclude>
     <ClInclude Include="Slope.h">
-      <Filter>Actor\Test</Filter>
+      <Filter>Actor\TestObject</Filter>
     </ClInclude>
     <ClInclude Include="ShaderTestLevel.h" />
     <ClInclude Include="StageEditLevel.h">
@@ -326,7 +326,7 @@
       <Filter>UI\UI_Actor\ShopUI</Filter>
     </ClInclude>
     <ClInclude Include="ShaderTestActor.h">
-      <Filter>Actor\Test</Filter>
+      <Filter>Actor\TestObject</Filter>
     </ClInclude>
     <ClInclude Include="NetworkTestLevel.h">
       <Filter>Levels\Test</Filter>
@@ -448,10 +448,10 @@
       <Filter>Actor\Player\Base</Filter>
     </ClCompile>
     <ClCompile Include="Plane.cpp">
-      <Filter>Actor\Test</Filter>
+      <Filter>Actor\TestObject</Filter>
     </ClCompile>
     <ClCompile Include="TestObject.cpp">
-      <Filter>Actor\Test</Filter>
+      <Filter>Actor\TestObject</Filter>
     </ClCompile>
     <ClCompile Include="TestLevel.cpp">
       <Filter>Levels\Test</Filter>
@@ -478,7 +478,7 @@
       <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="FreeCameraActor.cpp">
-      <Filter>Actor\Test</Filter>
+      <Filter>Actor\TestObject</Filter>
     </ClCompile>
     <ClCompile Include="AnimationEvent.cpp">
       <Filter>Actor\Animation</Filter>
@@ -520,13 +520,13 @@
       <Filter>Levels\Stage\0.StageBase</Filter>
     </ClCompile>
     <ClCompile Include="Box200.cpp">
-      <Filter>Actor\Test</Filter>
+      <Filter>Actor\TestObject</Filter>
     </ClCompile>
     <ClCompile Include="Box300.cpp">
-      <Filter>Actor\Test</Filter>
+      <Filter>Actor\TestObject</Filter>
     </ClCompile>
     <ClCompile Include="Ball.cpp">
-      <Filter>Actor\Test</Filter>
+      <Filter>Actor\TestObject</Filter>
     </ClCompile>
     <ClCompile Include="Intro_BackGround.cpp">
       <Filter>UI\UI_Actor\IntroUI</Filter>
@@ -553,7 +553,7 @@
       <Filter>UI\UI_Actor\C_ChoiceUI</Filter>
     </ClCompile>
     <ClCompile Include="Ramp.cpp">
-      <Filter>Actor\Test</Filter>
+      <Filter>Actor\TestObject</Filter>
     </ClCompile>
     <ClCompile Include="ContentDefine.cpp">
       <Filter>Basic</Filter>
@@ -606,10 +606,10 @@
     <ClCompile Include="StageEditGUI.cpp" />
     <ClCompile Include="StageEditLevel.cpp" />
     <ClCompile Include="Wall.cpp">
-      <Filter>Actor\Test</Filter>
+      <Filter>Actor\TestObject</Filter>
     </ClCompile>
     <ClCompile Include="Slope.cpp">
-      <Filter>Actor\Test</Filter>
+      <Filter>Actor\TestObject</Filter>
     </ClCompile>
     <ClCompile Include="ShaderTestLevel.cpp" />
     <ClCompile Include="StageEditGUI.cpp">
@@ -661,7 +661,7 @@
       <Filter>UI\UI_Actor\ShopUI</Filter>
     </ClCompile>
     <ClCompile Include="ShaderTestActor.cpp">
-      <Filter>Actor\Test</Filter>
+      <Filter>Actor\TestObject</Filter>
     </ClCompile>
     <ClCompile Include="NetworkTestLevel.cpp">
       <Filter>Levels\Test</Filter>
@@ -745,9 +745,6 @@
     </Filter>
     <Filter Include="Actor\Enemy\EnemySpawn">
       <UniqueIdentifier>{4aeb497a-468f-4b41-8ab2-3ddcb2d4576b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Actor\Test">
-      <UniqueIdentifier>{839ddcf0-fa0f-4e30-a291-488d8933e823}</UniqueIdentifier>
     </Filter>
     <Filter Include="Server\01.Packet\02.Global">
       <UniqueIdentifier>{234ddb00-f25c-49a7-91ff-a9c25878617e}</UniqueIdentifier>
@@ -889,6 +886,9 @@
     </Filter>
     <Filter Include="UI\UI_Base\ShopItemButton">
       <UniqueIdentifier>{36189945-f06e-4396-8641-f1980811982c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\TestObject">
+      <UniqueIdentifier>{839ddcf0-fa0f-4e30-a291-488d8933e823}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

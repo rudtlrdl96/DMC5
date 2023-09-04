@@ -1,6 +1,9 @@
 #include "PrecompileHeader.h"
 #include "Box300.h"
 
+#include <GameEngineCore/GameEngineFBXRenderer.h>
+#include <GameEngineCore/PhysXBoxComponent.h>
+
 Box300::Box300() 
 {
 }

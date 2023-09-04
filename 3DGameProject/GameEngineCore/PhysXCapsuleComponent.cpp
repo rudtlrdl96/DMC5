@@ -38,10 +38,10 @@ void PhysXCapsuleComponent::Update(float _DeltaTime)
 	//}
 }
 
-void PhysXCapsuleComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale, float4 _GeoMetryRotation)
+void PhysXCapsuleComponent::CreatePhysXActors(physx::PxVec3 _GeoMetryScale, float4 _GeoMetryRotation)
 {
-	m_pScene = _Scene;
-	m_pPhysics = _physics;
+	m_pPhysics = GetLevel()->GetLevelPhysics();
+	m_pScene = GetLevel()->GetLevelScene();
 
 	float4 tmpQuat = _GeoMetryRotation.DegreeRotationToQuaternionReturn();
 
@@ -58,7 +58,7 @@ void PhysXCapsuleComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxP
 	);
 
 	// Staticfriction : 정적마찰 // Dynamicfriction : 동적마찰 // Resitution : 탄성계수
-	m_pMaterial = _physics->createMaterial(Staticfriction, Dynamicfriction, Resitution);
+	m_pMaterial = m_pPhysics->createMaterial(Staticfriction, Dynamicfriction, Resitution);
 
 	physx::PxVec3 tmpGeoMetryScale
 	(
@@ -68,7 +68,7 @@ void PhysXCapsuleComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxP
 	);
 
 	// 충돌체의 종류
-	m_pDynamic = _physics->createRigidDynamic(localTm);
+	m_pDynamic = m_pPhysics->createRigidDynamic(localTm);
 
 	// 특정 축을 따라/주위로 동작을 잠그는 메커니즘을 제공하는 플래그 모음
 	// 무언가와 충돌해서 쓰러져야 할경우에는 setRigidDynamicLockFlag({flag}, false)로 flag를 해제해야함.
@@ -169,8 +169,8 @@ void PhysXCapsuleComponent::SetWorldRotation(float4 _Value)
 	m_pDynamic->setGlobalPose(tmpTansform);
 }
 
-void PhysXCapsuleComponent::SpeedLimit()
-{
+//void PhysXCapsuleComponent::SpeedLimit()
+//{
 	//physx::PxVec3 Velo = m_pDynamic->getLinearVelocity();
 	//physx::PxVec2 Velo2D(Velo.x, Velo.z);
 
@@ -183,7 +183,7 @@ void PhysXCapsuleComponent::SpeedLimit()
 
 	//	m_pDynamic->setLinearVelocity(Velo);
 	//}
-	}
+//}
 
 void PhysXCapsuleComponent::SetJump(float _JumpPower)
 {

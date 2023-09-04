@@ -13,8 +13,8 @@ PhysXSphereComponent::~PhysXSphereComponent()
 
 physx::PxRigidDynamic* PhysXSphereComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale, float4 _GeoMetryRotation)
 {
-	m_pScene = _Scene;
-	m_pPhysics = _physics;
+	m_pPhysics = GetLevel()->GetLevelPhysics();
+	m_pScene = GetLevel()->GetLevelScene();
 
 	float4 tmpQuat = _GeoMetryRotation.EulerDegToQuaternion();
 
@@ -31,7 +31,7 @@ physx::PxRigidDynamic* PhysXSphereComponent::CreatePhysXActors(physx::PxScene* _
 	);
 
 	// Staticfriction : 정적마찰 // Dynamicfriction : 동적마찰 // Resitution : 탄성계수
-	m_pMaterial = _physics->createMaterial(Staticfriction, Dynamicfriction, Resitution);
+	m_pMaterial = m_pPhysics->createMaterial(Staticfriction, Dynamicfriction, Resitution);
 
 	// TODO::배율을 적용할 경우 이쪽 코드를 사용
 	//float4 tmpMagnification = { SIZE_MAGNIFICATION_RATIO };
@@ -49,7 +49,7 @@ physx::PxRigidDynamic* PhysXSphereComponent::CreatePhysXActors(physx::PxScene* _
 	);
 
 	// 충돌체의 종류
-	m_pRigidDynamic = _physics->createRigidDynamic(localTm);
+	m_pRigidDynamic = m_pPhysics->createRigidDynamic(localTm);
 
 	// 특정 축을 따라/주위로 동작을 잠그는 메커니즘을 제공하는 플래그 모음
 	m_pRigidDynamic->setRigidDynamicLockFlags

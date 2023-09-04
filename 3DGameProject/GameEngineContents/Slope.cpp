@@ -18,7 +18,6 @@ void Slope::Start()
 {
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
 	Renderer->SetFBXMesh("Ground_Mesh.FBX", "MeshTexture");
-	//Renderer->SetClipColor(float4(1.0f, 0.0f, 0.0f));
 	Renderer->LightOff();
 
 	float4 RenderMeshScale = Renderer->GetFBXMesh()->GetRenderUnit(0)->BoundScaleBox;
@@ -27,7 +26,7 @@ void Slope::Start()
 	Component = CreateComponent<PhysXBoxComponent>();
 	//Component->SetPhysxMaterial(1.f, 3.5f, 0.1f);
 	Component->SetPhysxMaterial(1.0f, 1.0f, 0.0f);
-	Component->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), GeoMetryScale);
+	Component->CreatePhysXActors(GeoMetryScale);
 	Component->SetPositionSetFromParentFlag(true);
 }
 

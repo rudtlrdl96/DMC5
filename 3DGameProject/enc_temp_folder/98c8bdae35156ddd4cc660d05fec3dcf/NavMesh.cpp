@@ -28,7 +28,7 @@ std::shared_ptr<NavMesh> NavMesh::CreateNavMesh(GameEngineLevel* _Level, const s
 	Result->Colider = Result->CreateComponent<PhysXTriangleComponent>(); // 콜라이더 생성
 	Result->Colider->SetName("Colider");
 	Result->Colider->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
-	Result->Colider->CreatePhysXActors(_FBXName.data(), true, Ratio);
+	Result->Colider->CreatePhysXActors(_FBXName.data(), _Level->GetLevelScene(), _Level->GetLevelPhysics(), _Level->GetCooking(), true, Ratio);
 
 	return Result;
 }

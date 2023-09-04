@@ -18,7 +18,7 @@ public:
 	PhysXCapsuleComponent& operator=(PhysXCapsuleComponent&& _Other) noexcept = delete;
 
 	// Component 积己
-	void CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale = physx::PxVec3(2.0f), float4 _GeoMetryRotation = { 0.0f , 0.0f });
+	void CreatePhysXActors(physx::PxVec3 _GeoMetryScale = physx::PxVec3(2.0f), float4 _GeoMetryRotation = { 0.0f , 0.0f });
 
 	physx::PxRigidDynamic* GetDynamic()
 	{
@@ -153,7 +153,7 @@ private:
 	physx::PxVec3 GeoMetryScale;
 
 	//加档力茄 窃荐
-	void SpeedLimit();
+	//void SpeedLimit();
 
 	//float SpeedLimitValue = 150.0f;
 

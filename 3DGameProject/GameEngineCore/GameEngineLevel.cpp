@@ -44,6 +44,11 @@ GameEngineLevel::~GameEngineLevel()
 {
 }
 
+void GameEngineLevel::ActorSetName(std::shared_ptr<GameEngineActor> _Actor, std::string _Name)
+{
+	_Actor->SetName(_Name);
+}
+
 void GameEngineLevel::Start()
 {
 }

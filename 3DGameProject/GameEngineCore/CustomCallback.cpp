@@ -30,6 +30,24 @@ void CustomCallback::onContact(const physx::PxContactPairHeader& pairHeader, con
 			}
 
 		}
+
+		if (ContactFilterdata.word0 & static_cast<physx::PxU32>(PhysXFilterGroup::Player) &&
+			OtherFilterdata.word0 & static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle))
+		{
+			if (current.events & physx::PxPairFlag::eNOTIFY_TOUCH_PERSISTS)
+			{
+				static_cast<physx::PxRigidDynamic*>(tmpContactActor->getActor());
+
+				int a = 0;
+				//Component->IsGround_true();
+			}
+			if (current.events & physx::PxPairFlag::eNOTIFY_TOUCH_LOST)
+			{
+				int a = 0;
+				//Component->IsGround_false();
+			}
+
+		}
 	}
 }
 

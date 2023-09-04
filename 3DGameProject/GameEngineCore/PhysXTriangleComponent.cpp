@@ -14,11 +14,14 @@ PhysXTriangleComponent::~PhysXTriangleComponent()
 
 //_MeshName(불러올 매시의 이름), _Scene, _Physics, _Cooking (InitPhysics 에서 불러온 값), _InverseIndex(Index를 역순으로 할지에 대한 bool값), 
 // _GeoMetryScale(스케일값), _GeoMetryRot(로테이션값)
-void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, physx::PxScene* _Scene, physx::PxPhysics* _physics,
-	physx::PxCooking* _cooking, bool _InverseIndex, float _Ratio /*= 1.f*/, float4 _GeoMetryRot /*= { 0.0f, 0.0f }*/)
+void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, bool _InverseIndex, float _Ratio /*= 1.f*/, float4 _GeoMetryRot /*= { 0.0f, 0.0f }*/)
 {
 	CustomFBXLoad(_MeshName, _Ratio, _InverseIndex);
 	float4 tmpQuat = _GeoMetryRot.DegreeRotationToQuaternionReturn();
+
+	m_pPhysics = GetLevel()->GetLevelPhysics();
+	m_pScene = GetLevel()->GetLevelScene();
+	m_pCooking = GetLevel()->GetCooking();
 
 	// 부모 액터로부터 위치 생성
 	physx::PxTransform localTm
@@ -39,10 +42,10 @@ void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, phy
 	);
 
 	// 마찰, 탄성계수
-	m_pMaterial = _physics->createMaterial(Staticfriction, Dynamicfriction, Resitution);
+	m_pMaterial = m_pPhysics->createMaterial(Staticfriction, Dynamicfriction, Resitution);
 
 	// 충돌체의 종류
-	m_pRigidStatic = _physics->createRigidStatic(localTm);
+	m_pRigidStatic = m_pPhysics->createRigidStatic(localTm);
 
 	int RenderinfoCount = static_cast<int>(Mesh->GetRenderUnitCount());
 	
@@ -65,14 +68,14 @@ void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, phy
 
 		physx::PxDefaultMemoryOutputStream writeBuffer;
 		physx::PxTriangleMeshCookingResult::Enum* result = nullptr;
-		bool status = _cooking->cookTriangleMesh(meshDesc, writeBuffer, result);
+		bool status = m_pCooking->cookTriangleMesh(meshDesc, writeBuffer, result);
 		if (!status)
 		{
 			MsgAssert("매쉬를 불러와 피직스X 충돌체를 만드는데 실패했습니다 TriMesh");
 		}
 
 		physx::PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
-		physx::PxTriangleMesh* TriangleMesh = _physics->createTriangleMesh(readBuffer);
+		physx::PxTriangleMesh* TriangleMesh = m_pPhysics->createTriangleMesh(readBuffer);
 		//createExclusiveShapefh RigidStatic에 Shape를 넣어준다.
 		m_pShape = physx::PxRigidActorExt::createExclusiveShape(*m_pRigidStatic, physx::PxTriangleMeshGeometry(TriangleMesh), *m_pMaterial);
 		//피벗 설정
@@ -84,19 +87,64 @@ void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, phy
 		//shape_->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
 
 		//충돌할때 필요한 필터 데이터
-		m_pShape->setSimulationFilterData
-		(
-			physx::PxFilterData
+			//충돌할때 필요한 필터 데이터
+		if (true == IsObstacle)
+		{
+			m_pShape->setSimulationFilterData
 			(
-				static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle),
-				static_cast<physx::PxU32>(PhysXFilterGroup::Player),
-				0,
-				0
-			)
-		);
-
-		//콜백피벗 설정
-		m_pShape->setLocalPose(physx::PxTransform(Pivot));
+				physx::PxFilterData
+				(
+					static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle),
+					static_cast<physx::PxU32>(PhysXFilterGroup::Player),
+					0,
+					0
+				)
+			);
+		}
+		else if (true == IsGround)
+		{
+			m_pShape->setSimulationFilterData
+			(
+				physx::PxFilterData
+				(
+					static_cast<physx::PxU32>(PhysXFilterGroup::Ground),
+					static_cast<physx::PxU32>(PhysXFilterGroup::Player),
+					0,
+					0
+				)
+			);
+		}
+		else if (true == IsWall)
+		{
+			m_pShape->setSimulationFilterData
+			(
+				physx::PxFilterData
+				(
+					static_cast<physx::PxU32>(PhysXFilterGroup::Wall),
+					static_cast<physx::PxU32>(PhysXFilterGroup::Player),
+					0,
+					0
+				)
+			);
+		}
+		else if (true == IsSlope)
+		{
+			m_pShape->setSimulationFilterData
+			(
+				physx::PxFilterData
+				(
+					static_cast<physx::PxU32>(PhysXFilterGroup::Slope),
+					static_cast<physx::PxU32>(PhysXFilterGroup::Player),
+					0,
+					0
+				)
+			);
+		}
+		else
+		{
+			std::string ParentName = GetActor()->GetName().data();
+			MsgTextBox("충돌 플래그가 설정되지 않았습니다. " + ParentName);
+		}
 	}
 
 	//// 충돌체의 종류
@@ -114,7 +162,7 @@ void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, phy
 
 	//rigidStatic_->attachShape(*shape_);
 
-	if (_Scene == nullptr)
+	if (m_pScene == nullptr)
 	{
 		std::string LevelName = GetLevel()->GetName().data();
 		MsgAssert("1. Start에서 피직스액터 생성하지 마세요\n2. 레벨에 CreateScene 하세요\n  오류가 뜬 레벨 이름 : " + LevelName);
@@ -127,7 +175,7 @@ void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, phy
 	}
 	else
 	{
-		_Scene->addActor(*m_pRigidStatic);
+		m_pScene->addActor(*m_pRigidStatic);
 	}
 }
 

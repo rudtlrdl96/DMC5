@@ -108,11 +108,10 @@ void BasePlayerActor::RotationToMoveVector(float _MaxValue)
 
 void BasePlayerActor::Start()
 {
-
 	// PhysX ÄÝ¸®Àü
 	PhysXCapsule = CreateComponent<PhysXCapsuleComponent>();
 	PhysXCapsule->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
-	PhysXCapsule->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), { 150, 100, 150 });
+	PhysXCapsule->CreatePhysXActors({ 150, 100, 150 });
 	PhysXCapsule->GetDynamic()->setMass(5.0f);
 	
 	if (NetControllType::NetControll == GameEngineNetObject::GetControllType())

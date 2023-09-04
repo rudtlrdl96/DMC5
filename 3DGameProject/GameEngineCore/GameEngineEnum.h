@@ -19,6 +19,7 @@ enum class PhysXFilterGroup
 	Player = (1 << 0),			// 플레이어
 	Ground = (1 << 1),			// 바닥
 	Wall = (1 << 2),            // 벽
-	Obstacle = (1 << 3),		// 장애물
-	GroundTrigger = (1 << 4),	// 땅 트리거
+	Slope = (1 << 3),           // 비탈길
+	Obstacle = (1 << 4),		// 장애물
+	Trigger = (1 << 5),	        // 땅 트리거
 };

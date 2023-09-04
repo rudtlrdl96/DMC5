@@ -25,7 +25,8 @@ void Wall::Start()
 
 	Component = CreateComponent<PhysXBoxComponent>();
 	Component->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
-	Component->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), GeoMetryScale);
+	Component->SetWallObject();
+	Component->CreatePhysXActors(GeoMetryScale);
 	Component->SetPositionSetFromParentFlag(true);
 }
 

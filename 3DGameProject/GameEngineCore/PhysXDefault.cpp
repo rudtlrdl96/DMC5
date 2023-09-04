@@ -16,7 +16,7 @@ void PhysXDefault::SetupFiltering(physx::PxShape* _Shape, physx::PxU32 _FilterGr
 {
 	physx::PxFilterData filterData;
 	filterData.word0 = _FilterGroup; // word0 = own ID
-	filterData.word1 = _FilterMask;	// word1 = ID mask to filter pairs that trigger a contact callback;
+	filterData.word1 = _FilterMask;	 // word1 = ID mask to filter pairs that trigger a contact callback;
 
 	_Shape->setSimulationFilterData(filterData);
 }

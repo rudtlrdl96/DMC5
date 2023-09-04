@@ -29,6 +29,8 @@ void TestObject::Start()
 		GameEngineInput::CreateKey("MoveBack", 'S');
 		GameEngineInput::CreateKey("RotateRight", 'T');
 		GameEngineInput::CreateKey("RotateLeft", 'R');
+		GameEngineInput::CreateKey("Select_01", 'Y');
+		GameEngineInput::CreateKey("Select_02", 'U');
 	}
 	if (false == GameEngineInput::IsKey("Jump"))
 	{
@@ -62,7 +64,7 @@ void TestObject::Start()
 
 	Component = CreateComponent<PhysXCapsuleComponent>();
 	Component->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
-	Component->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), VecSclae * 0.1f);
+	Component->CreatePhysXActors(VecSclae * 0.1f);
 
 	//TriCom = CreateComponent<PhysXTriangleComponent>();
 	//TriCom->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
@@ -70,7 +72,8 @@ void TestObject::Start()
 
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
 
-	//Component->GetDynamic()->setMass(10.f);
+	Component->GetDynamic()->setMass(10.f);
+	Component->GetDynamic()->setGlobalPose({0.0f, 200.0f, 0.0f});
 	//Component->GetDynamic()->setLinearDamping(physx::PxReal(1.f));
 	//Component->GetDynamic()->setMaxAngularVelocity(physx::PxReal(10.0f));
 	//Component->GetDynamic()->setAngularDamping(physx::PxReal(0.01f));
@@ -150,7 +153,7 @@ void TestObject::UserUpdate(float _DeltaTime)
 		Component->SetJump(3000.f);
 	}
 
-	Component->SetMove(MoveDir.NormalizeReturn() * 500.0f);
+	Component->SetMove(MoveDir.NormalizeReturn() * 450.0f);
 	
 	{
 		//float4 playerpos = GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition();
