@@ -98,14 +98,14 @@ void Shop_ItemButton::FontCreate()
 	NameText_Render = CreateComponent<GameEngineFontRenderer>(6);
 	NameText_Render->GetTransform()->SetParent(GetTransform());
 	NameText_Render->SetFont(Font);
-	NameText_Render->SetFontFlag(FW1_CENTER);
+	NameText_Render->SetFontFlag(FW1_LEFT);
 	NameText_Render->SetScale(28);
 
 
 	PriceText_Render = CreateComponent<GameEngineFontRenderer>(6);
 	PriceText_Render->GetTransform()->SetParent(GetTransform());
 	PriceText_Render->SetFont(Font);
-	PriceText_Render->SetFontFlag(FW1_CENTER);
+	PriceText_Render->SetFontFlag(FW1_LEFT);
 	PriceText_Render->SetScale(28);
 
 	BuyText_Render = CreateComponent<GameEngineFontRenderer>(6);
@@ -170,16 +170,16 @@ void Shop_ItemButton::MoveRender(float _Delta)
 		FillTime += _Delta;
 		FallTime = 0.0f;
 		BuyText_Render->GetTransform()->SetLocalPosition({ 153.0f,-31.f,0.0f });
-		PriceText_Render->GetTransform()->SetLocalPosition(LerpScaleSize({ -20.0f,-18.f,0.0f }, { 11.0f,-18.f,0.0f }, FillTime * Ratio));
-		NameText_Render->GetTransform()->SetLocalPosition(LerpScaleSize({ -26.0f,36.f,0.0f }, { 8.0f,36.f,0.0f }, FillTime * Ratio));
+		PriceText_Render->GetTransform()->SetLocalPosition(LerpScaleSize({ -40.0f,-18.f,0.0f }, { -9.0f,-18.f,0.0f }, FillTime * Ratio));
+		NameText_Render->GetTransform()->SetLocalPosition(LerpScaleSize({ -66.0f,36.f,0.0f }, { -32.0f,36.f,0.0f }, FillTime * Ratio));
 		Money_Render->GetTransform()->SetLocalPosition(LerpScaleSize({ -56.0f,-36.0f,0.0f }, { -24.0f,-36.0f,0.0f }, FillTime * Ratio));
 	}
 	else
 	{
 		FallTime += _Delta;
 		FillTime = 0.0f;
-		PriceText_Render->GetTransform()->SetLocalPosition(LerpScaleSize({ 11.0f,-18.f,0.0f }, { -20.0f,-18.f,0.0f }, FallTime * Ratio));
-		NameText_Render->GetTransform()->SetLocalPosition(LerpScaleSize({ 8.0f,36.f,0.0f }, { -26.0f,36.f,0.0f }, FallTime * Ratio));
+		PriceText_Render->GetTransform()->SetLocalPosition(LerpScaleSize({ -9.0f,-18.f,0.0f }, { -40.0f,-18.f,0.0f }, FallTime * Ratio));
+		NameText_Render->GetTransform()->SetLocalPosition(LerpScaleSize({ -32.0f,36.f,0.0f }, { -66.0f,36.f,0.0f }, FallTime * Ratio));
 		Money_Render->GetTransform()->SetLocalPosition(LerpScaleSize({ -24.0f,-36.0f,0.0f }, { -56.0f,-36.0f,0.0f }, FallTime * Ratio));
 
 	}
