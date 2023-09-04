@@ -21,5 +21,6 @@ private:
 	std::shared_ptr<class Shop_TitleButton> RedQueenButton = nullptr;
 	std::shared_ptr<class Shop_ItemButton>  SkillButton = nullptr;
 	bool Test = false;
+	
 };
 

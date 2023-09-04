@@ -9,6 +9,7 @@ class ShopTextParameter
 public:
 	std::string _Name = "";
 	std::string _Price = "";
+	std::string _png = "";
 	int Index = 0;
 
 };
@@ -16,6 +17,8 @@ class GameEngineCollision;
 class Shop_ItemButton : public GameEngineActor
 {
 public:
+	static std::vector<std::shared_ptr<Shop_ItemButton>> Items;
+
 	// constrcuter destructer
 	Shop_ItemButton();
 	~Shop_ItemButton();
@@ -29,14 +32,19 @@ public:
 	{
 		return Skill_Render;
 	}
+	std::shared_ptr<class GameEngineFontRenderer> GetPriceText()
+	{
+		return PriceText_Render;
+	}
+	std::shared_ptr<class GameEngineFontRenderer> GetNameText()
+	{
+		return NameText_Render;
+	}
 	void SetEvent(std::function<void()> _Click)
 	{
 		Click = _Click;
 	}
-	void SetUIText(std::string_view _Text)
-	{
-		Text = _Text;
-	};
+
 	void SetSelectValue(bool _Value)
 	{
 		IsSelect = _Value;
@@ -58,19 +66,28 @@ public:
 		IsPosValue = _Value;
 	}
 	void SetTextFont(const ShopTextParameter& _Parameter);
+	
+	static void CreateItemUI(GameEngineLevel* _Level,float4 _Pos,const ShopTextParameter& _Param);
+
 protected:
 	void Start() override;
 	void Update(float _Delta) override;
 
 private:
 	void FontCreate();
+	void RenderOnOff();
+	void BlinkRender(float _Delta);
+	void MoveRender(float _Delta);
+	void SizeUpDown(float _Delta);
+
+	float4 LerpScaleSize(float4 _Start , float4 _End , float _Ratio); // 공통기능으로 만들기
 	std::shared_ptr<GameEngineUIRenderer> Render = nullptr; //선택 아닐때 기본렌더
 	std::shared_ptr<GameEngineUIRenderer> Render_Select = nullptr; // 선택되면 차오르는 놈
 	std::shared_ptr<GameEngineUIRenderer> SkillBase_Render = nullptr; //선택 아닐때 기본 스킬창 틀
 	std::shared_ptr<GameEngineUIRenderer> SkillSelect_Render = nullptr; // 선택시 러프로 커지며 테두리가 빛나는 렌더
 	std::shared_ptr<GameEngineUIRenderer> Skill_Render = nullptr; // 선택과 아닐때 크기차이가 다름
 	std::shared_ptr<GameEngineUIRenderer> BuyButton_Render = nullptr; // 버튼렌더
-
+	std::shared_ptr<GameEngineUIRenderer> Money_Render = nullptr; // 돈
 	std::shared_ptr<class GameEngineFontRenderer> NameText_Render = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> PriceText_Render = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> BuyText_Render = nullptr;
@@ -78,7 +95,6 @@ private:
 
 	std::function<void()> Click;
 	std::string Font = "DMC5Font";
-	std::string_view Text = "";
 	bool IsSelect = false;
 	bool IsValue = false;
 	bool SwichValue = false;
@@ -87,10 +103,15 @@ private:
 	float AddTime = 0.0f;
 	float ScaleUpTime = 0.0f;
 	float ScaleDownTime = 0.0f;
-
-	float FallTime = 0.0f;
 	float M0 = 0.0f;
+	float FallTime = 0.0f;
+	float FillTime = 0.0f;
+	float Ratio = 10.0f;
 	float4 UpScale = { 225.0f,142.0f,0.0f };
 	float4 DownScale = { 157.0f,100.0f,0.0f };
+
+
+	float4 NoneColor = { 0.431f,0.589f,0.627f };
+	float4 SelectColor = { 0.69f,0.792f,0.827f };
 };
 

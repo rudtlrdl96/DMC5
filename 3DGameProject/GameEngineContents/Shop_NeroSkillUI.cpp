@@ -31,9 +31,10 @@ void Shop_NeroSkillUI::Start()
 	RedQueenButton->GetFont()->SetFont("DMC5Font");
 	RedQueenButton->SetIsPosValue(true);
 	RedQueenButton->GetFont()->GetTransform()->SetLocalPosition({ -680.0f,224.0f,0.0f });
-	SkillButton = GetLevel()->CreateActor<Shop_ItemButton>();
-	SkillButton->GetTransform()->SetParent(GetTransform());
-	SkillButton->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
+	Shop_ItemButton::CreateItemUI(GetLevel(), { 0.0f,0.0f,0.0f }, { ._Name = "STRAKE",._Price = "800",._png = "StreakSkill.png", });
+	//SkillButton = GetLevel()->CreateActor<Shop_ItemButton>();
+	//SkillButton->GetTransform()->SetParent(GetTransform());
+	//SkillButton->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
 }
 
 void Shop_NeroSkillUI::Update(float _Delta)
@@ -43,14 +44,16 @@ void Shop_NeroSkillUI::Update(float _Delta)
 	{
 		if (Test==false)
 		{
-			SkillButton->SetSelectValue(true);
+			Shop_ItemButton::Items[0]->SetSelectValue(true);
 			Test = true;
 		}
 		else
 		{
-			SkillButton->SetSelectValue(false);
+			Shop_ItemButton::Items[0]->SetSelectValue(false);
+
 			Test = false;
 		}
 	}
+	//SkillButton->SetTextFont({ ._Name = "SPREAK",._Price = "800" });
 }
 
