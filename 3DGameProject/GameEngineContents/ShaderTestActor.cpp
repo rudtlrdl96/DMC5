@@ -42,7 +42,7 @@ void ShaderTestActor::Start()
 		GameEngineFBXMesh::Load(Path);
 	}
 
-	TestRenderer->SetFBXMesh("shaderTest.fbx", "FBX_DMC");
+	TestRenderer->SetFBXMesh("shaderTest.fbx", "FBX");
 
 	TestRenderer->NormalOff();
 }

@@ -51,7 +51,7 @@ std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, cons
 	Result->GetTransform()->SetLocalRotation(_MapRotation);
 	Result->FieldMapRenderer = Result->CreateComponent<GameEngineFBXRenderer>();
 	Result->FieldMapRenderer->SetName("Renderer");
-	Result->FieldMapRenderer->SetFBXMesh(_FBXName.data(), "FBX_DMC"); //메쉬를 깝니다
+	Result->FieldMapRenderer->SetFBXMesh(_FBXName.data(), "FBX"); //메쉬를 깝니다
 
 	return Result;
 }

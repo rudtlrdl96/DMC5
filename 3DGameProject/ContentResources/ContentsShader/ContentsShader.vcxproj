@@ -159,9 +159,7 @@
     <FxCompile Include="Light.fx" />
     <FxCompile Include="Reflection.fx" />
     <FxCompile Include="MyShader.fx" />
-    <FxCompile Include="ContentsMesh_Mix.hlsl" />
     <FxCompile Include="ContentsMesh.hlsl" />
-    <FxCompile Include="ContentsAniMesh_Mix.hlsl" />
     <FxCompile Include="ContentsAniMesh.hlsl" />
     <FxCompile Include="OldFilmShader.hlsl" />
     <FxCompile Include="OldTVShader.hlsl" />

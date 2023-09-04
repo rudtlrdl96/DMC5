@@ -45,26 +45,26 @@ void MainLevel::Start()
 	}
 
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -500.0f });
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 140, 0, -250.0f });
 
 	std::shared_ptr<ShaderTestActor> NewTestActor0 = CreateActor<ShaderTestActor>();
 	NewTestActor0->GetTransform()->SetLocalPosition({ 0, 10, 0 });
 	NewTestActor0->InitTest(0);
 
 	std::shared_ptr<ShaderTestActor> NewTestActor1 = CreateActor<ShaderTestActor>();
-	NewTestActor1->GetTransform()->SetLocalPosition({ 100, 10, 0 });
+	NewTestActor1->GetTransform()->SetLocalPosition({ 70, 10, 0 });
 	NewTestActor1->InitTest(1);
 
 	std::shared_ptr<ShaderTestActor> NewTestActor2 = CreateActor<ShaderTestActor>();
-	NewTestActor2->GetTransform()->SetLocalPosition({ 200, 10, 0 });
+	NewTestActor2->GetTransform()->SetLocalPosition({ 140, 10, 0 });
 	NewTestActor2->InitTest(2);
 
 	std::shared_ptr<ShaderTestActor> NewTestActor3 = CreateActor<ShaderTestActor>();
-	NewTestActor3->GetTransform()->SetLocalPosition({ 300, 10, 0 });
+	NewTestActor3->GetTransform()->SetLocalPosition({ 210, 10, 0 });
 	NewTestActor3->InitTest(3);
 
 	std::shared_ptr<ShaderTestActor> NewTestActor4 = CreateActor<ShaderTestActor>();
-	NewTestActor4->GetTransform()->SetLocalPosition({ 400, 10, 0 });
+	NewTestActor4->GetTransform()->SetLocalPosition({ 280, 10, 0 });
 	NewTestActor4->InitTest(4);
 }
 

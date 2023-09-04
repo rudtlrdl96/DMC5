@@ -43,12 +43,6 @@
     <FxCompile Include="FXAA.hlsl">
       <Filter>PostEffect</Filter>
     </FxCompile>
-    <FxCompile Include="ContentsMesh_Mix.hlsl">
-      <Filter>MeshShader</Filter>
-    </FxCompile>
-    <FxCompile Include="ContentsAniMesh_Mix.hlsl">
-      <Filter>MeshShader</Filter>
-    </FxCompile>
     <FxCompile Include="Reflection.fx">
       <Filter>Header</Filter>
     </FxCompile>
