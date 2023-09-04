@@ -501,6 +501,17 @@ bool GameEngineFBXRenderer::IsAnimationEnd()
 }
 
 
+void GameEngineFBXRenderer::SetTexture(const std::string_view& _SettingName, const std::string_view& _ImageName)
+{
+	for (size_t i = 0; i < Unit.size(); i++)
+	{
+		for (size_t j = 0; j < Unit[i].size(); j++)
+		{
+			Unit[i][j]->ShaderResHelper.SetTexture(_SettingName, _ImageName);
+		}
+	}
+}
+
 void GameEngineFBXRenderer::Update(float _DeltaTime)
 {
 	if (nullptr == CurAnimation)

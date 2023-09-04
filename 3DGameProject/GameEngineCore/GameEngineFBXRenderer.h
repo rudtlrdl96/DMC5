@@ -148,6 +148,9 @@ public:
 		return Unit;
 	}
 
+	// 모든 랜더 유닛의 텍스쳐를 변경합니다.
+	void SetTexture(const std::string_view& _SettingName, const std::string_view& _ImageName);
+
 	void Update(float _DeltaTime) override;
 
 	void PauseSwtich();
@@ -155,6 +158,16 @@ public:
 	void ChangeAnimation(const std::string& _AnimationName, bool _Force = false);
 
 	bool IsAnimationEnd();
+
+	inline void NormalOn()
+	{
+		BaseValue.IsNormal = true;
+	}
+
+	inline void NormalOff()
+	{
+		BaseValue.IsNormal = false;
+	}
 
 	float4 GetMeshScale()
 	{

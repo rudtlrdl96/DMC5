@@ -71,17 +71,15 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
     // rgb = NormalMap, a = roughnessValue 
     float4 NrmrData = NormalTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
     
-    // r = Alpha
+    // r = Alpha, gba = sss
     float4 AtosData = SpecularTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
     
     if (AlbmData.x == ClipColor.x && AlbmData.y == ClipColor.y && AlbmData.z == ClipColor.z)
     {
         clip(-1);
     }
-    
-    float3 metalReflection = lerp(AlbmData.rgb, float3(0.8, 0.8, 0.8), AlbmData.a);
-    
-    float4 RGBA = { metalReflection.r, metalReflection.g, metalReflection.b, AtosData.r };
+        
+    float4 RGBA = { AlbmData.r, AlbmData.g, AlbmData.b, AtosData.r };    
     float4 ResultColor = RGBA;
     
     if (0 != IsLight)
@@ -90,24 +88,22 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
         
         if (0 != IsNormal)
         {
-            float3 BumpNormal = NrmrData.xyz;
-            
-            BumpNormal = (BumpNormal * 2.0f) - 1.0f;
-            BumpNormal = (BumpNormal.z * _Input.NORMAL) + (BumpNormal.x * _Input.BINORMAL) + (BumpNormal.y * _Input.TANGENT);
-        
-            NormalDir.xyz = BumpNormal.xyz;
+            NormalDir += NormalTexCalculate(NrmrData, _Input.TEXCOORD, _Input.TANGENT, _Input.BINORMAL, _Input.NORMAL);
         }
-        
-        
+                
         //float roughness = 1.0 - smoothness; // smoothness는 러프니스 값입니다.
-        float3 reflection = reflect(AllLight[0].LightRevDir.xyz, NormalDir.xyz); // 빛의 반사 방향 계산
-        float distribution = GGX_Distribution(NormalDir.xyz, reflection, NrmrData.r); // 반사 분포 계산
+        //float3 reflection = reflect(AllLight[0].LightRevDir.xyz, NormalDir.xyz); // 빛의 반사 방향 계산
+        //float distribution = GGX_Distribution(NormalDir.xyz, reflection, NrmrData.r); // 반사 분포 계산
+                               
+        float metallic = saturate(AlbmData.a - NrmrData.a);
+        
+        RGBA.rgb = lerp(AlbmData.rgb, AlbmData.rgb * float3(0.8, 0.8, 0.8), metallic);
         
         // Diffuse Light 계산
         float4 DiffuseRatio = CalDiffuseLight(_Input.VIEWPOSITION, NormalDir, AllLight[0]);
         
         // Spacular Light 계산
-        float4 SpacularRatio = CalSpacularLight(_Input.VIEWPOSITION, NormalDir, AllLight[0]) * AlbmData.a;
+        float4 SpacularRatio = saturate(CalSpacularLight(_Input.VIEWPOSITION, NormalDir, AllLight[0]) * metallic);
         
         // Ambient Light 계산
         float4 AmbientRatio = CalAmbientLight(AllLight[0]);

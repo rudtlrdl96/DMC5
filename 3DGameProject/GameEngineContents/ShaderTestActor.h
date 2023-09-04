@@ -17,6 +17,9 @@ public:
 
 	void Start() override;
 
+	void InitTest(int _Index);
+
+
 protected:
 
 private:
