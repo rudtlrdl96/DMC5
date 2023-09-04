@@ -153,6 +153,8 @@ public:
 	bool GetIsLeftJump() { return IsLeftJump; }
 	bool GetIsRightJump() { return IsRightJump; }
 	bool GetIsSpecialMove() { return IsSpecialMove; }
+	bool GetIsDevilTrigger() { return GameEngineInput::IsDown("Player_DT"); }
+
 	bool IsLockOn = false;
 };
 
