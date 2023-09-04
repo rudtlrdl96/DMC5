@@ -6,9 +6,9 @@
 class BasePlayerActor : public GameEngineActor, public GameEngineNetObject
 {
 public:
-	static BasePlayerActor* GetInstance()
+	static BasePlayerActor* GetMainPlayer()
 	{
-		return Instance;
+		return MainPlayer;
 	}
 
 	// constrcuter destructer
@@ -39,6 +39,10 @@ public:
 	void SetMove(float4 _Value);
 	void SetWorldPosition(float4 _Value);
 
+	// 현재의 FSM상태를 서버로 보내는 함수
+	void FSM_SendPacket(int _StateValue);
+	// FSM상태를 지정하는 함수
+	virtual void SetFSMStateValue(int _StateValue) = 0;
 protected:
 	void Start() override;
 
@@ -67,6 +71,6 @@ protected:
 	bool IsLockOn = false;
 
 private:
-	static BasePlayerActor* Instance;
+	static BasePlayerActor* MainPlayer;
 };
 

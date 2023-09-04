@@ -82,11 +82,11 @@ char PlayerController::MoveVectorToChar4(const float4& _Value)
 
 	if (0 < Cross.y)
 	{
-		if (Dot < 0.25f)
+		if (Dot < -0.5f)
 		{
 			return '2';
 		}
-		else if (Dot < 0.75f)
+		else if (Dot < 0.5f)
 		{
 			return '6';
 		}
@@ -97,11 +97,11 @@ char PlayerController::MoveVectorToChar4(const float4& _Value)
 	}
 	else
 	{
-		if (Dot < 0.25f)
+		if (Dot < -0.5f)
 		{
 			return '2';
 		}
-		else if (Dot < 0.75f)
+		else if (Dot < 0.5f)
 		{
 			return '4';
 		}

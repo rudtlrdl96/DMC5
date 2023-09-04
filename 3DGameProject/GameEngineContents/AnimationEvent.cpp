@@ -117,7 +117,7 @@ void AnimationEvent::LoadAll(const AnimLoadParameter& _Parameter)
 				if (Data.Type == EventType::ObjectUpdate)
 				{
 					// 오브젝트 업데이트 유형 적용
-					if (_Parameter.Objects.size() < Data.Index || _Parameter.Objects[Data.Index] == nullptr)
+					if (_Parameter.Objects.size() <= Data.Index || _Parameter.Objects[Data.Index] == nullptr)
 					{
 						// Index값이 파라미터에 넣은 오브젝트 벡터의 사이즈 보다 클 시
 						// Index값의 오브젝트가 nullptr일 시 continue
@@ -140,7 +140,7 @@ void AnimationEvent::LoadAll(const AnimLoadParameter& _Parameter)
 				else if (Data.Type == EventType::CallBackVoid)
 				{
 					// void 콜백함수
-					if (_Parameter.CallBacks_void[Data.Index] == nullptr)
+					if (_Parameter.CallBacks_void.size() <= Data.Index || _Parameter.CallBacks_void[Data.Index] == nullptr)
 					{
 						continue;
 					}
@@ -149,7 +149,7 @@ void AnimationEvent::LoadAll(const AnimLoadParameter& _Parameter)
 				else if (Data.Type == EventType::CallBackInt)
 				{
 					// int 콜백함수
-					if (_Parameter.CallBacks_int[Data.Index] == nullptr)
+					if (_Parameter.CallBacks_int.size() <= Data.Index || _Parameter.CallBacks_int[Data.Index] == nullptr)
 					{
 						continue;
 					}
@@ -158,7 +158,7 @@ void AnimationEvent::LoadAll(const AnimLoadParameter& _Parameter)
 				else if (Data.Type == EventType::CallBackFloat)
 				{
 					// float 콜백함수
-					if (_Parameter.CallBacks_float[Data.Index] == nullptr)
+					if (_Parameter.CallBacks_float.size() <= Data.Index || _Parameter.CallBacks_float[Data.Index] == nullptr)
 					{
 						continue;
 					}
@@ -167,7 +167,7 @@ void AnimationEvent::LoadAll(const AnimLoadParameter& _Parameter)
 				else if (Data.Type == EventType::CallBackFloat4)
 				{
 					// float4 콜백함수
-					if (_Parameter.CallBacks_float4[Data.Index] == nullptr)
+					if (_Parameter.CallBacks_float4.size() <= Data.Index || _Parameter.CallBacks_float4[Data.Index] == nullptr)
 					{
 						continue;
 					}

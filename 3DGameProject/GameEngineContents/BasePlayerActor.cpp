@@ -13,13 +13,13 @@
 #include "NetworkManager.h"
 #include <GameEngineCore/PhysXCapsuleComponent.h>
 
-BasePlayerActor* BasePlayerActor::Instance = nullptr;
+BasePlayerActor* BasePlayerActor::MainPlayer = nullptr;
 
 BasePlayerActor::BasePlayerActor()
 {
 	if (GameEngineNetObject::GetControllType() == NetControllType::UserControll)
 	{
-		Instance = this;
+		MainPlayer = this;
 	}
 }
 
@@ -108,31 +108,43 @@ void BasePlayerActor::RotationToMoveVector(float _MaxValue)
 
 void BasePlayerActor::Start()
 {
-	Camera = GetLevel()->CreateActor<PlayerCamera>();
-	Camera->SetPlayerTranform(GetTransform());
 
-	Controller = CreateComponent<PlayerController>();
-	Controller->SetCameraTransform(Camera->GetTransform());
-	Controller->CallBack_LockOnDown = std::bind(&BasePlayerActor::LockOn, this);
-	Controller->CallBack_LockOnUp = std::bind(&BasePlayerActor::LockOff, this);
-
-	PlayerCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
-	PlayerCollision->GetTransform()->SetLocalScale({ 100, 100, 100 });
-	PlayerCollision->SetColType(ColType::OBBBOX3D);
-
-	AttackCollision = CreateComponent<GameEngineCollision>(CollisionOrder::PlayerAttack);;
-
-	physx::PxVec3 VecSclae = { 150, 100, 150 };
-
+	// PhysX 콜리전
 	PhysXCapsule = CreateComponent<PhysXCapsuleComponent>();
 	PhysXCapsule->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
-	PhysXCapsule->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), VecSclae);
+	PhysXCapsule->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), { 150, 100, 150 });
 	PhysXCapsule->GetDynamic()->setMass(5.0f);
+	
+	if (NetControllType::NetControll == GameEngineNetObject::GetControllType())
+	{
+		// 넷 컨트롤 인 경우 실행
+		PhysXCapsule->TurnOffGravity();
+	}
+	else if (NetControllType::UserControll == GameEngineNetObject::GetControllType())
+	{
+		// 유저 컨트롤 엑터인 경우 실행
+		Camera = GetLevel()->CreateActor<PlayerCamera>();
+		Camera->SetPlayerTranform(GetTransform());
 
-	LockOnCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
-	LockOnCollision->GetTransform()->SetLocalScale({ 1000, 500, 3000 });
-	LockOnCollision->GetTransform()->SetLocalPosition({ 0, 0, 1500 });
-	LockOnCollision->SetColType(ColType::OBBBOX3D);
+		// 플레이어 컨트롤러 (조작 체계)
+		Controller = CreateComponent<PlayerController>();
+		Controller->SetCameraTransform(Camera->GetTransform());
+		Controller->CallBack_LockOnDown = std::bind(&BasePlayerActor::LockOn, this);
+		Controller->CallBack_LockOnUp = std::bind(&BasePlayerActor::LockOff, this);
+
+		// 플레이어 충돌체
+		PlayerCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
+		PlayerCollision->GetTransform()->SetLocalScale({ 100, 100, 100 });
+		PlayerCollision->SetColType(ColType::OBBBOX3D);
+
+		// 록온 용 충돌체
+		LockOnCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
+		LockOnCollision->GetTransform()->SetLocalScale({ 1000, 500, 3000 });
+		LockOnCollision->GetTransform()->SetLocalPosition({ 0, 0, 1500 });
+		LockOnCollision->SetColType(ColType::OBBBOX3D);
+	}
+	// 플레이어 공격용 충돌체
+	AttackCollision = CreateComponent<GameEngineCollision>(CollisionOrder::PlayerAttack);
 }
 
 void BasePlayerActor::Update_ProcessPacket()
@@ -243,5 +255,9 @@ void BasePlayerActor::SetMove(float4 _Value)
 void BasePlayerActor::SetWorldPosition(float4 _Value)
 {
 	PhysXCapsule->SetWorldPosition(_Value);
+}
+
+void BasePlayerActor::FSM_SendPacket(int _StateValue)
+{
 }
 

@@ -253,6 +253,7 @@ void AnimationToolWindow::AnimationTimeLine()
 	if (ImGui::Button("Play"))
 	{
 		IsStop = false;
+		Renderer->CurAnimation->CurFrame = 0;
 		Renderer->CurAnimation->TimeScale = AnimEvent.Speed;
 		Renderer->CurAnimation->Loop = AnimEvent.Loop;
 	}
@@ -558,6 +559,17 @@ void AnimationToolWindow::PreviewObject()
 
 void AnimationToolWindow::Release()
 {
+	if (Renderer != nullptr && ImGui::Button("Set Vergil Human"))
+	{
+		for (int i = 0; i <= 17; i++)
+		{
+			Renderer->GetAllRenderUnit()[0][i]->On();
+		}
+		for (int i = 20; i <= 22; i++)
+		{
+			Renderer->GetAllRenderUnit()[0][i]->Off();
+		}
+	}
 	// 생성한 엑터, 렌더러 등을 제거하는 기능
 	if (ImGui::Button("Release"))
 	{

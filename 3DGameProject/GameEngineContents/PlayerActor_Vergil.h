@@ -8,6 +8,10 @@ enum FSM_State_Vergil
 	Vergil_Idle,
 	Vergil_IdleLockOn,
 	Vergil_Walk,
+	Vergil_WalkFront,
+	Vergil_WalkLeft,
+	Vergil_WalkBack,
+	Vergil_WalkRight,
 	Vergil_RunStart,
 	Vergil_Run,
 	Vergil_RunStop,
@@ -26,8 +30,15 @@ class PlayerActor_Vergil : public BasePlayerActor
 {
 public:
 	// constrcuter destructer
-	PlayerActor_Vergil();
+	PlayerActor_Vergil()
+	{
+		SetControll(NetControllType::UserControll);
+	}
 	~PlayerActor_Vergil();
+	PlayerActor_Vergil(NetControllType _ControllType)
+	{
+		SetControll(_ControllType);
+	}
 
 	// delete Function
 	PlayerActor_Vergil(const PlayerActor_Vergil& _Other) = delete;
@@ -35,19 +46,27 @@ public:
 	PlayerActor_Vergil& operator=(const PlayerActor_Vergil& _Other) = delete;
 	PlayerActor_Vergil& operator=(PlayerActor_Vergil&& _Other) noexcept = delete;
 
+	void SetFSMStateValue(int _StateValue) override
+	{
+		FSM.ChangeState(_StateValue);
+	}
 protected:
 	void Start() override;
 	void VergilLoad();
+	void NetLoad();
 	void Update_Character(float _DeltaTime) override;
 
 private:
 	GameEngineFSM FSM;
 	float WalkSpeed = 300;
-	float RunSpeed = 450;
+	float RunSpeed = 550;
 	float JumpForce = 7000.0f;
-	bool InputCheck = false;
-	char CurDir = 'n';
 
+	bool InputCheck = false;	// 애니메이션 재생중 다른 입력을 받아 FSM변경이 가능한지 여부
+	bool MoveCheck = false;		// 애니메이션 재생중 이동 입력을 받아 FSM변경이 가능한지 여부
+	bool DelayCheck = false;	// 다른 콤보로 연결되기 위한 딜레이 여부
+
+	void ChangeState(FSM_State_Vergil _State);
 	void SetHuman();
 	void SetMajin();
 	void YamatoOff();
