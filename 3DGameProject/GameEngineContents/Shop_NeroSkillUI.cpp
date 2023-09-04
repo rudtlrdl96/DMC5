@@ -55,10 +55,12 @@ void Shop_NeroSkillUI::Update(float _Delta)
 		{
 			Index--;
 		}
-		if (PrevIndex == 1 && Index == 0)
+		if (Shop_ItemButton::Items[1]->GetTransform()->GetLocalPosition() != Pos_1 && PrevIndex == 1 && Index == 0)
 		{
 			UpSwich = true;
 		}
+
+
 	}
 	if (IsValue == false && true == GameEngineInput::IsUp("UI_DOWN"))
 	{
@@ -72,10 +74,11 @@ void Shop_NeroSkillUI::Update(float _Delta)
 		{
 			Index++;
 		}
-		if (PrevIndex == 4 && Index == 5)
+		if (Shop_ItemButton::Items[5]->GetTransform()->GetLocalPosition()!= Pos_4 &&  PrevIndex == 4 && Index == 5)
 		{
 			DownSwich = true;
 		}
+	
 		
 	}
 	Shop_ItemButton::Items[PrevIndex]->SetSelectValue(false);

@@ -24,6 +24,7 @@ private:
 	
 	int Index = 0;
 	int PrevIndex = 5;
+	bool Exception = false;
 	bool IsValue = false;
 	bool DownSwich = false;
 	bool UpSwich = false;
