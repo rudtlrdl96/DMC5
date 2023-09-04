@@ -4,7 +4,6 @@
 #include "PhysXCapsuleComponent.h"
 #include "GameEngineLevel.h"
 
-std::shared_ptr<class GameEngineLevel> CustomCallback::CallBackLevel = nullptr;
 PhysXCapsuleComponent* CustomCallback::MainPlayer = nullptr;
 
 void CustomCallback::onContact(const physx::PxContactPairHeader& pairHeader, const physx::PxContactPair* pairs, physx::PxU32 nbPairs)
@@ -20,7 +19,8 @@ void CustomCallback::onContact(const physx::PxContactPairHeader& pairHeader, con
 		physx::PxFilterData OtherFilterdata = tmpOtherActor->getSimulationFilterData();     // ´ë»ó
 
 		if (ContactFilterdata.word0 & static_cast<physx::PxU32>(PhysXFilterGroup::Player) &&
-			OtherFilterdata.word0 & static_cast<physx::PxU32>(PhysXFilterGroup::Ground))
+			OtherFilterdata.word0 & static_cast<physx::PxU32>(PhysXFilterGroup::Ground) &&
+			nullptr != MainPlayer)
 		{
 			if (current.events & physx::PxPairFlag::eNOTIFY_TOUCH_PERSISTS)
 			{
@@ -34,7 +34,8 @@ void CustomCallback::onContact(const physx::PxContactPairHeader& pairHeader, con
 		}
 
 		if (ContactFilterdata.word0 & static_cast<physx::PxU32>(PhysXFilterGroup::Player) &&
-			OtherFilterdata.word0 & static_cast<physx::PxU32>(PhysXFilterGroup::Wall))
+			OtherFilterdata.word0 & static_cast<physx::PxU32>(PhysXFilterGroup::Wall) &&
+			nullptr != MainPlayer)
 		{
 			if (current.events & physx::PxPairFlag::eNOTIFY_TOUCH_PERSISTS)
 			{

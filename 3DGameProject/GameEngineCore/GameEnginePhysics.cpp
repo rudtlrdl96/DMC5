@@ -156,17 +156,15 @@ void GameEnginePhysics::CreateScene(const std::string_view& _Name)
 	AllScene.emplace(Name, NewScene);
 }
 
-void GameEnginePhysics::ChangeScene(std::shared_ptr<class GameEngineLevel> _ChangeLevel)
+void GameEnginePhysics::ChangeScene(const std::string_view& _Name)
 {
-	std::string Name = GameEngineString::ToUpper(_ChangeLevel->GetName());
+	std::string Name = GameEngineString::ToUpper(_Name);
 
 	if (AllScene.end() == AllScene.find(Name))
 	{
-		CustomCallback::SetSceneLevel(nullptr);
 		return;
 	}
 	
-	CustomCallback::SetSceneLevel(_ChangeLevel);
 	m_pScene = AllScene[Name];
 }
 
@@ -230,16 +228,8 @@ void GameEnginePhysics::ReleasePhysicsX()
 		while (ReleaseStartIter != ReleaseEndIter)
 		{
 			physx::PxScene* ReleaseScene = ReleaseStartIter->second;
-
-			//ReleaseScene->simulate(1.f / 60.f);
-			//ReleaseScene->fetchResults(true);
-
 			delete ReleaseScene->getSimulationEventCallback();
-
 			PX_RELEASE(ReleaseScene);
-
-
-
 			++ReleaseStartIter;
 		}
 	}
