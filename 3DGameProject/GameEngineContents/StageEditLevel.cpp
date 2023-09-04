@@ -105,6 +105,19 @@ void StageEditLevel::LevelChangeStart()
 
 			GameEngineFBXMesh::Load(Path);
 		}
+
+		{
+			std::string Path = GameEnginePath::GetFileFullPath
+			(
+				"ContentResources",
+				{
+					"Map", "TestMap"
+				},
+				"TestCol.fbx"
+			);
+
+			GameEngineFBXMesh::Load(Path);
+		}
 	}
 	
 }
