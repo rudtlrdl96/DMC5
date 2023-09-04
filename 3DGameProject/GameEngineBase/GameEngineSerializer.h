@@ -105,11 +105,39 @@ public:
 		Write(reinterpret_cast<const void*>(&_Data), sizeof(Type));
 	}
 
+
 	template<typename Type>
 	void Write(const Type& _Data)
 	{
 		Write(reinterpret_cast<const void*>(&_Data), sizeof(Type));
 	}
+
+
+	template<typename Type>
+	void Write(std::vector<Type>& _Data)
+	{
+		unsigned int Size = static_cast<unsigned int>(_Data.size());
+		operator<<(Size);
+
+		if (Size <= 0)
+		{
+			return;
+		}
+
+		for (size_t i = 0; i < _Data.size(); i++)
+		{
+			if (false == std::is_base_of<GameEngineSerializObject, Type>::value)
+			{
+				Write(_Data[i]);
+			}
+			else
+			{
+				GameEngineSerializObject* Ser = reinterpret_cast<GameEngineSerializObject*>(&_Data[i]);
+				Ser->Write(*this);
+			}
+		}
+	}
+
 
 	void operator<<(const std::string& _Value);
 	void operator<<(const int _Value);
@@ -160,14 +188,13 @@ public:
 		{
 			if (false == std::is_base_of<GameEngineSerializObject, Value>::value)
 			{
-				Write(&_Data[i], sizeof(Value));
+				Write(_Data[i]);
 			}
 			else
 			{
 				GameEngineSerializObject* Ser = reinterpret_cast<GameEngineSerializObject*>(&_Data[i]);
 				Ser->Write(*this);
 			}
-
 		}
 	}
 
@@ -216,6 +243,35 @@ public:
 	void operator>>(float4& _Value);
 	void operator>>(float4x4& _Value);
 
+
+	template<typename Type>
+	void Read(std::vector<Type>& _Data)
+	{
+		unsigned int Size = 0;
+		operator>>(Size);
+
+		if (Size <= 0)
+		{
+			return;
+		}
+
+		_Data.resize(Size);
+
+		for (size_t i = 0; i < Size; i++)
+		{
+			if (false == std::is_base_of<GameEngineSerializObject, Type>::value)
+			{
+				Read(_Data[i]);
+			}
+			else
+			{
+				GameEngineSerializObject* Ser = reinterpret_cast<GameEngineSerializObject*>(&_Data[i]);
+				Ser->Read(*this);
+			}
+		}
+	}
+
+
 	template<typename T>
 	void ReadEnum(T& _Value)
 	{
@@ -246,7 +302,7 @@ public:
 		{
 			if (false == std::is_base_of<GameEngineSerializObject, Value>::value)
 			{
-				Read(&_Data[i], sizeof(Value));
+				Read(_Data[i]);
 			}
 			else
 			{
@@ -308,8 +364,6 @@ public:
 
 		return Return;
 	}
-
-	void operator << (const GameEngineSerializer& _Ser);
 
 protected:
 

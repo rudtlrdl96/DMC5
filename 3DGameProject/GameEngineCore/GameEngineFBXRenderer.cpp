@@ -4,13 +4,21 @@
 #include "GameEngineMaterial.h"
 
 
-void GameEngineFBXAnimationInfo::Init(const std::string_view& _Name, int _Index)
+void GameEngineFBXAnimationInfo::Init(std::shared_ptr<GameEngineFBXMesh> _Mesh, std::shared_ptr<GameEngineFBXAnimation> _Animation, const std::string_view& _Name, int _Index)
 {
 	// GameENgineFBXAnimation의 행렬 정보가 완전해지는것은 
 	// CalFbxExBoneFrameTransMatrix가 호출되고 난 후입니다.
 	// 애니메이션의 행렬이 계산되는겁니다.
-	Aniamtion->AnimationMatrixLoad(Mesh, _Name, _Index);
+
+	_Animation->AnimationMatrixLoad(_Mesh, _Name, _Index);
+	Aniamtion = _Animation;
 	FBXAnimationData = Aniamtion->GetAnimationData(_Index);
+	Start = static_cast<UINT>(FBXAnimationData->TimeStartCount);
+	End = static_cast<UINT>(FBXAnimationData->TimeEndCount);
+	Mesh = _Mesh;
+	Aniamtion = _Animation;
+
+
 	Start = 0;
 	End = static_cast<unsigned int>(FBXAnimationData->TimeEndCount);
 }
@@ -103,64 +111,41 @@ void GameEngineFBXAnimationInfo::Update(float _DeltaTime)
 
 	// mesh      subset
 	std::vector<std::vector< std::shared_ptr<GameEngineRenderUnit>>>& Units = ParentRenderer->GetAllRenderUnit();
+	std::vector<float4x4>& AnimationBoneMatrix = ParentRenderer->AnimationBoneMatrixs;
 
-	for (size_t UnitSetIndex = 0; UnitSetIndex < Units.size(); ++UnitSetIndex)
+	std::vector<AnimationBoneData>& AnimationBoneData = ParentRenderer->AnimationBoneDatas;
+
+	for (int i = 0; i < AnimationBoneMatrix.size(); i++)
 	{
-		for (size_t RenderUnitIndex = 0; RenderUnitIndex < Units[UnitSetIndex].size(); ++RenderUnitIndex)
+		if (0 == FBXAnimationData->AniFrameData.size())
 		{
-			std::shared_ptr<GameEngineRenderUnit>& Render = Units[UnitSetIndex][RenderUnitIndex];
-
-			// 위험!!!! 위험!!!! 뭔가 기분이 멜랑꽇ㄹㅁㄴ어ㅏ림ㄴㅇ엉라ㅣㅁㄴ
-			std::map<size_t, std::vector<float4x4>>::iterator MatrixIter = ParentRenderer->AnimationBoneMatrixs.find(UnitSetIndex);
-
-			if (MatrixIter == ParentRenderer->AnimationBoneMatrixs.end())
-			{
-				continue;
-			}
-
-			// 68개 
-			std::vector<float4x4>& AnimationBoneMatrix = MatrixIter->second;
-
-			std::map<size_t, std::vector<AnimationBoneData>>::iterator AnimationDataIter = ParentRenderer->AnimationBoneDatas.find(UnitSetIndex);
-			// 68개 
-			std::vector<AnimationBoneData>& AnimationBoneData = AnimationDataIter->second;
-
-			size_t MeshIndex = 0;
-
-			for (int i = 0; i < AnimationBoneMatrix.size(); i++)
-			{
-				if (0 == FBXAnimationData->AniFrameData[MeshIndex].size())
-				{
-					continue;
-				}
-
-				Bone* BoneData = ParentRenderer->GetFBXMesh()->FindBone(MeshIndex, i);
-
-				if (true == FBXAnimationData->AniFrameData[MeshIndex][i].BoneMatData.empty())
-				{
-					AnimationBoneMatrix[i] = float4x4::Affine(BoneData->BonePos.GlobalScale, BoneData->BonePos.GlobalRotation, BoneData->BonePos.GlobalTranslation);
-					return;
-				}
-
-				// 애니메이션 블랜드 등은 하나도 안들어가 있다.
-
-				// CurFrame + 1
-
-				FbxExBoneFrameData& CurData = FBXAnimationData->AniFrameData[MeshIndex][i].BoneMatData[CurFrame];
-				FbxExBoneFrameData& NextData = FBXAnimationData->AniFrameData[MeshIndex][i].BoneMatData[NextFrame];
-
-				AnimationBoneData[i].Scale = float4::Lerp(CurData.S, NextData.S, CurFrameTime);
-				AnimationBoneData[i].RotQuaternion = float4::SLerpQuaternion(CurData.Q, NextData.Q, CurFrameTime);
-				AnimationBoneData[i].Pos = float4::Lerp(CurData.T, NextData.T, CurFrameTime);
-
-				size_t Size = sizeof(float4x4);
-
-				float4x4 Mat = float4x4::Affine(AnimationBoneData[i].Scale, AnimationBoneData[i].RotQuaternion, AnimationBoneData[i].Pos);
-
-				AnimationBoneMatrix[i] = BoneData->BonePos.Offset * Mat;
-			}
+			continue;
 		}
 
+		Bone* BoneData = ParentRenderer->GetFBXMesh()->FindBone(i);
+
+		if (true == FBXAnimationData->AniFrameData[i].BoneMatData.empty())
+		{
+			AnimationBoneMatrix[i] = float4x4::Affine(BoneData->BonePos.GlobalScale, BoneData->BonePos.GlobalRotation, BoneData->BonePos.GlobalTranslation);
+			return;
+		}
+
+		// 애니메이션 블랜드 등은 하나도 안들어가 있다.
+
+		// CurFrame + 1
+
+		FbxExBoneFrameData& CurData = FBXAnimationData->AniFrameData[i].BoneMatData[CurFrame];
+		FbxExBoneFrameData& NextData = FBXAnimationData->AniFrameData[i].BoneMatData[NextFrame];
+
+		AnimationBoneData[i].Scale = float4::Lerp(CurData.S, NextData.S, CurFrameTime);
+		AnimationBoneData[i].RotQuaternion = float4::SLerpQuaternion(CurData.Q, NextData.Q, CurFrameTime);
+		AnimationBoneData[i].Pos = float4::Lerp(CurData.T, NextData.T, CurFrameTime);
+
+		size_t Size = sizeof(float4x4);
+
+		float4x4 Mat = float4x4::Affine(AnimationBoneData[i].Scale, AnimationBoneData[i].RotQuaternion, AnimationBoneData[i].Pos);
+
+		AnimationBoneMatrix[i] = BoneData->BonePos.Offset * Mat;
 	}
 }
 
@@ -287,6 +272,7 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh(const st
 	}
 
 	FindFBXMesh->Initialize();
+
 	// return nullptr;
 
 	if (Unit.empty())
@@ -310,18 +296,25 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh(const st
 	RenderUnit->SetMesh(GetFBXMesh);
 	RenderUnit->SetMaterial(_Material);
 
-	if (RenderUnit->ShaderResHelper.IsStructuredBuffer("ArrAniMationMatrix"))
+	if (0 == AnimationBoneMatrixs.size())
 	{
-		if (AnimationBoneMatrixs.end() == AnimationBoneMatrixs.find(_MeshIndex))
+		size_t Count = FBXMesh->GetBoneCount();
+
+		if (nullptr == FBXMesh)
 		{
-			size_t Count = FBXMesh->GetBoneCount(_MeshIndex);
-			AnimationBoneMatrixs[_MeshIndex].resize(Count);
-			AnimationBoneDatas[_MeshIndex].resize(Count);
+			MsgAssert("본이 존재하지 않는 매쉬에 애니메이션을 넣으려고 했습니다.");
 		}
 
+		AnimationBoneMatrixs.resize(Count);
+		AnimationBoneDatas.resize(Count);
+	}
+
+
+	if (RenderUnit->ShaderResHelper.IsStructuredBuffer("ArrAniMationMatrix"))
+	{
 		GameEngineStructuredBufferSetter* AnimationBuffer = RenderUnit->ShaderResHelper.GetStructuredBufferSetter("ArrAniMationMatrix");
 
-		AnimationBuffer->Res = FBXMesh->GetAnimationStructuredBuffer(_MeshIndex);
+		AnimationBuffer->Res = FBXMesh->GetAnimationStructuredBuffer();
 
 		if (nullptr == AnimationBuffer->Res)
 		{
@@ -329,15 +322,15 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh(const st
 			return RenderUnit;
 		}
 
-		if (0 == AnimationBoneMatrixs[_MeshIndex].size())
+		if (0 == AnimationBoneMatrixs.size())
 		{
 			return RenderUnit;
 		}
 
 		// 링크를 걸어준것.
-		AnimationBuffer->SetData = &AnimationBoneMatrixs[_MeshIndex][0];
+		AnimationBuffer->SetData = &AnimationBoneMatrixs[0];
 		AnimationBuffer->Size = sizeof(float4x4);
-		AnimationBuffer->Count = AnimationBoneMatrixs[_MeshIndex].size();
+		AnimationBuffer->Count = AnimationBoneMatrixs.size();
 	}
 
 
@@ -351,6 +344,7 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh(const st
 		}
 	}
 
+
 	if (RenderUnit->ShaderResHelper.IsTexture("NormalTexture"))
 	{
 		const FbxExMaterialSettingData& MatData = FBXMesh->GetMaterialSettingData(_MeshIndex, _SubSetIndex);
@@ -359,26 +353,8 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh(const st
 		{
 			RenderUnit->ShaderResHelper.SetTexture("NormalTexture", MatData.NorTextureName);
 		}
-		else
-		{
-			RenderUnit->ShaderResHelper.SetTexture("NormalTexture", "EngineBaseNormal.tga");
-		}
 
 		BaseValue.IsNormal = 1;
-	}	
-	
-	if (RenderUnit->ShaderResHelper.IsTexture("SpecularTexture"))
-	{
-		const FbxExMaterialSettingData& MatData = FBXMesh->GetMaterialSettingData(_MeshIndex, _SubSetIndex);
-
-		if (nullptr != GameEngineTexture::Find(MatData.SpcTextureName))
-		{
-			RenderUnit->ShaderResHelper.SetTexture("SpecularTexture", MatData.SpcTextureName);
-		}
-		else
-		{
-			RenderUnit->ShaderResHelper.SetTexture("SpecularTexture", "EngineBaseSpecular.tga");
-		}
 	}
 
 
@@ -436,26 +412,27 @@ void GameEngineFBXRenderer::CreateFBXAnimation(const std::string& _AnimationName
 		return;
 	}
 
-	Animation->Initialize();
+	//GameEngineFile File;
+	//File.SetPath(Animation->GetPath());
+	//File.ChangeExtension(".AnimationFBX");
+
+	//if (false == File.IsExists())
+	//{
+	//	Animation->Initialize();
+	//}
 
 	std::shared_ptr<GameEngineFBXAnimationInfo> NewAnimation = std::make_shared<GameEngineFBXAnimationInfo>();
-	FbxExAniData* AnimData = Animation->GetAnimationData(_Index);
-	NewAnimation->Start = static_cast<UINT>(AnimData->TimeStartCount);
-	NewAnimation->End = static_cast<UINT>(AnimData->TimeEndCount);
-	NewAnimation->Mesh = GetFBXMesh();
-	NewAnimation->Aniamtion = Animation;
+	NewAnimation->Init(FBXMesh, Animation, _AnimationName, _Index);
 	NewAnimation->ParentRenderer = this;
 	NewAnimation->Inter = _Params.Inter;
 	NewAnimation->Loop = _Params.Loop;
 	NewAnimation->Reset();
-	NewAnimation->Init(_AnimationName, _Index);
 
 	BaseValue.IsAnimation = 1;
 	Animations.insert(std::make_pair(UpperName, NewAnimation));
 
 	Animation;
 }
-
 
 
 void GameEngineFBXRenderer::PauseSwtich()

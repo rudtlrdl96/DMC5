@@ -41,6 +41,8 @@ public:
 
 	void LoadText(GameEngineSerializer& _Data);
 
+	void ChangeExtension(std::string_view _NewExtension);
+
 	std::string GetString();
 
 	uintmax_t GetFileSize();
@@ -48,8 +50,6 @@ public:
 	GameEngineDirectory GetDirectory();
 
 protected:
-
-private:
 
 };
 

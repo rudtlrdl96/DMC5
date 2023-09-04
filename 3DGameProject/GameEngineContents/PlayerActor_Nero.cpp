@@ -298,7 +298,11 @@ void PlayerActor_Nero::NeroLoad()
 					ChangeState(FSM_State_Nero::Nero_RunStop);
 					return;
 				}
-
+				if (false == PhysXCapsule->GetIsPlayerGroundTouch())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+					return;
+				}
 				if (true == IsLockOn)
 				{
 					ChangeState(FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon);
@@ -376,6 +380,11 @@ void PlayerActor_Nero::NeroLoad()
 				if (Controller->GetIsJump())
 				{
 					ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
+					return;
+				}
+				if (false == PhysXCapsule->GetIsPlayerGroundTouch())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
 					return;
 				}
 				if (Controller->GetMoveVector() == float4::ZERO)
