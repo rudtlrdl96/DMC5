@@ -131,6 +131,11 @@ void PhysXCapsuleComponent::CreatePhysXActors(physx::PxVec3 _GeoMetryScale, floa
 
 	// Scene에 액터 추가
 	m_pScene->addActor(*m_pDynamic);
+
+	if (true == IsMainPlayer)
+	{
+		CustomCallback::SetMainPlayer(this);
+	}
 }
 
 void PhysXCapsuleComponent::SetWorldPosition(float4 _Value)

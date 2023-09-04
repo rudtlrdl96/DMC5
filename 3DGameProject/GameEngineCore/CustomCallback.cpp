@@ -1,6 +1,12 @@
 #include "PrecompileHeader.h"
 #include "CustomCallback.h"
 
+#include "PhysXCapsuleComponent.h"
+#include "GameEngineLevel.h"
+
+std::shared_ptr<class GameEngineLevel> CustomCallback::CallBackLevel = nullptr;
+PhysXCapsuleComponent* CustomCallback::MainPlayer = nullptr;
+
 void CustomCallback::onContact(const physx::PxContactPairHeader& pairHeader, const physx::PxContactPair* pairs, physx::PxU32 nbPairs)
 {
 	while (nbPairs--)
@@ -10,41 +16,36 @@ void CustomCallback::onContact(const physx::PxContactPairHeader& pairHeader, con
 		physx::PxShape* tmpContactActor = current.shapes[0];
 		physx::PxShape* tmpOtherActor = current.shapes[1];
 
-		physx::PxFilterData ContactFilterdata = tmpContactActor->getSimulationFilterData();
-		physx::PxFilterData OtherFilterdata = tmpOtherActor->getSimulationFilterData();
+		physx::PxFilterData ContactFilterdata = tmpContactActor->getSimulationFilterData(); // 주체
+		physx::PxFilterData OtherFilterdata = tmpOtherActor->getSimulationFilterData();     // 대상
 
 		if (ContactFilterdata.word0 & static_cast<physx::PxU32>(PhysXFilterGroup::Player) &&
 			OtherFilterdata.word0 & static_cast<physx::PxU32>(PhysXFilterGroup::Ground))
 		{
 			if (current.events & physx::PxPairFlag::eNOTIFY_TOUCH_PERSISTS)
 			{
-				static_cast<physx::PxRigidDynamic*>(tmpContactActor->getActor());
-
-				int a = 0;
-				//Component->IsGround_true();
+				MainPlayer->SetIsPlayerGroundTouch(true);
 			}
 			if (current.events & physx::PxPairFlag::eNOTIFY_TOUCH_LOST)
 			{
-				int a = 0;
-				//Component->IsGround_false();
+				MainPlayer->SetIsPlayerGroundTouch(false);
 			}
 
 		}
 
 		if (ContactFilterdata.word0 & static_cast<physx::PxU32>(PhysXFilterGroup::Player) &&
-			OtherFilterdata.word0 & static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle))
+			OtherFilterdata.word0 & static_cast<physx::PxU32>(PhysXFilterGroup::Wall))
 		{
 			if (current.events & physx::PxPairFlag::eNOTIFY_TOUCH_PERSISTS)
 			{
 				static_cast<physx::PxRigidDynamic*>(tmpContactActor->getActor());
 
-				int a = 0;
-				//Component->IsGround_true();
+				MainPlayer->SetIsPlayerWallTouch(true);
 			}
 			if (current.events & physx::PxPairFlag::eNOTIFY_TOUCH_LOST)
 			{
 				int a = 0;
-				//Component->IsGround_false();
+				MainPlayer->SetIsPlayerWallTouch(false);
 			}
 
 		}

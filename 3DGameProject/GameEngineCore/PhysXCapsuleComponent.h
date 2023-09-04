@@ -124,15 +124,22 @@ public:
 		);
 	}
 
-	inline void IsGround_false()
+	inline void SetMainPlayer()
 	{
-		IsGround = false;
+		IsMainPlayer = true;
 	}
 
-	inline void IsGround_true()
+	inline void SetIsPlayerGroundTouch(bool _Is)
 	{
-		IsGround = true;
+		IsGroundTouch = _Is;
 	}
+
+	inline void SetIsPlayerWallTouch(bool _Is)
+	{
+		IsWallTouch = _Is;
+	}
+
+	//std::function<void()> _Function;
 
 protected:
 	void Start() override;
@@ -165,6 +172,8 @@ private:
 	physx::PxVec3 TargetVec3;
 	physx::PxTransform RecentTransform;
 
-	bool IsGround = false;
+	bool IsGroundTouch = false;
+	bool IsWallTouch = false;
+	bool IsMainPlayer = false;
 };
 

@@ -10,8 +10,18 @@ public:
 	void onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 count) override;
 	void onAdvance(const physx::PxRigidBody* const* bodyBuffer, const physx::PxTransform* poseBuffer, const physx::PxU32 count) override {};
 
-	std::function<void()> _Dynamic = nullptr;
+	static void SetSceneLevel(std::shared_ptr<class GameEngineLevel> _Level)
+	{
+		CallBackLevel = _Level;
+	}
+
+	static void SetMainPlayer(PhysXCapsuleComponent* _MainPlayer)
+	{
+		MainPlayer = _MainPlayer;
+	}
 
 private:
+	static std::shared_ptr<class GameEngineLevel> CallBackLevel;
+	static PhysXCapsuleComponent* MainPlayer;
 
 };

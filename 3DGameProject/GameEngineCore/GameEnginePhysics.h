@@ -89,8 +89,8 @@ private:
 	static void ReleasePhysicsX();
 
 	static bool RayCast(const float4& _vOrigin, const float4& _vDir, OUT float4& _vPoint, float _fDistance = 1000.f);
-	static void ChangeScene(const std::string_view& _Name);
 	static void CreateScene(const std::string_view& _Name);
+	static void ChangeScene(std::shared_ptr<class GameEngineLevel> _ChangeLevel);
 
 	static bool IsPhysics;
 	static float SceneGravity;
@@ -107,9 +107,8 @@ private:
 	static physx::PxDefaultCpuDispatcher* m_pDispatcher;
 	static physx::PxMaterial* m_pMaterial;
 	static physx::PxCooking* m_pCooking;
-
+	
 	static CustomCallback* CustomCallbackEvent;
-
 	static std::map<std::string, physx::PxScene*> AllScene;
 
 };

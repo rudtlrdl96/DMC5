@@ -37,9 +37,9 @@ public:
 		GameEnginePhysics::CreateScene(_Name);
 	}
 
-	void ChangeScene(const std::string_view& _Name)
+	void ChangeScene(std::shared_ptr<class GameEngineLevel> _Level)
 	{
-		GameEnginePhysics::ChangeScene(_Name);
+		GameEnginePhysics::ChangeScene(_Level);
 	}
 
 	void SetLevelSceneGravity(float _gravity)

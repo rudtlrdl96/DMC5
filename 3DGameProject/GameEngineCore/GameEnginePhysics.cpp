@@ -5,6 +5,8 @@
 #include <PhysXSDKSnippets/SnippetPrint.h>
 #include <PhysXSDKSnippets/SnippetPVD.h>
 
+#include "GameEngineLevel.h"
+
 physx::PxDefaultAllocator GameEnginePhysics::m_Allocator;
 UserErrorCallback GameEnginePhysics::m_ErrorCallback;
 
@@ -32,77 +34,23 @@ GameEnginePhysics::~GameEnginePhysics()
 {
 }
 
-// 메모리제거
-void GameEnginePhysics::ReleasePhysicsX()
-{
-	if (nullptr != m_pCooking)
-	{
-		PX_RELEASE(m_pCooking);
-	}
-	{
-		std::map<std::string, physx::PxScene*>::iterator ReleaseStartIter = AllScene.begin();
-		std::map<std::string, physx::PxScene*>::iterator ReleaseEndIter = AllScene.end();
-
-		while (ReleaseStartIter != ReleaseEndIter)
-		{
-			physx::PxScene* ReleaseScene = ReleaseStartIter->second;
-
-			//ReleaseScene->simulate(1.f / 60.f);
-			//ReleaseScene->fetchResults(true);
-
-			delete ReleaseScene->getSimulationEventCallback();
-
-			PX_RELEASE(ReleaseScene);
-			
-
-
-			++ReleaseStartIter;
-		}
-	}
-	//if (nullptr != m_pScene)
-	//{
-	//	//delete CustomCallbackEvent;
-	//	//CustomCallbackEvent = nullptr;
-
-	//	delete m_pScene->getSimulationEventCallback();
-	//	
-	//	PX_RELEASE(m_pScene);
-	//}
-	if (nullptr != m_pDispatcher)
-	{
-		PX_RELEASE(m_pDispatcher);
-	}
-	if (nullptr != m_pPhysics)
-	{
-		PX_RELEASE(m_pPhysics);
-	}
-	if (nullptr != m_pPvd)
-	{
-		PX_RELEASE(m_pPvd);
-	}
-	if (nullptr != m_pTransport)
-	{
-		PX_RELEASE(m_pTransport);
-	}
-	if (nullptr != m_pFoundation)
-	{
-		PX_RELEASE(m_pFoundation);
-	}
-}
-
 physx::PxFilterFlags CustomFilterShader(physx::PxFilterObjectAttributes attributes0, physx::PxFilterData filterData0, physx::PxFilterObjectAttributes attributes1, physx::PxFilterData filterData1, physx::PxPairFlags& pairFlags, const void* constantBlock, physx::PxU32 constantBlockSize)
 {
-	// SampleSubmarineFilterShader로부터 가져옴
-	// 
 	// let triggers through
 	if (physx::PxFilterObjectIsTrigger(attributes0) || physx::PxFilterObjectIsTrigger(attributes1))
 	{
 		pairFlags = physx::PxPairFlag::eTRIGGER_DEFAULT | physx::PxPairFlag::eNOTIFY_TOUCH_PERSISTS;
+
 		return physx::PxFilterFlag::eDEFAULT;
 	}
+
 	//generate contacts for all that were not filtered above
-	pairFlags = physx::PxPairFlag::eNOTIFY_TOUCH_FOUND | physx::PxPairFlag::eNOTIFY_TOUCH_PERSISTS | physx::PxPairFlag::eNOTIFY_TOUCH_LOST |
-		physx::PxPairFlag::eDETECT_DISCRETE_CONTACT | physx::PxPairFlag::eSOLVE_CONTACT;
+	pairFlags = 
+		physx::PxPairFlag::eNOTIFY_TOUCH_FOUND | 
+		physx::PxPairFlag::eNOTIFY_TOUCH_PERSISTS | 
+		physx::PxPairFlag::eNOTIFY_TOUCH_LOST |
+		physx::PxPairFlag::eDETECT_DISCRETE_CONTACT | 
+		physx::PxPairFlag::eSOLVE_CONTACT;
 
 	return physx::PxFilterFlag::eDEFAULT;
 
@@ -161,8 +109,6 @@ void GameEnginePhysics::CreatePhysicsX()
 		MsgAssert("PxPhysics 생성 실패");
 	}
 
-
-
 	m_pCooking = PxCreateCooking(PX_PHYSICS_VERSION, *m_pFoundation, physx::PxCookingParams(m_pPhysics->getTolerancesScale()));
 	if (!m_pCooking)
 	{
@@ -210,15 +156,17 @@ void GameEnginePhysics::CreateScene(const std::string_view& _Name)
 	AllScene.emplace(Name, NewScene);
 }
 
-void GameEnginePhysics::ChangeScene(const std::string_view& _Name)
+void GameEnginePhysics::ChangeScene(std::shared_ptr<class GameEngineLevel> _ChangeLevel)
 {
-	std::string Name = GameEngineString::ToUpper(_Name);
+	std::string Name = GameEngineString::ToUpper(_ChangeLevel->GetName());
 
 	if (AllScene.end() == AllScene.find(Name))
 	{
+		CustomCallback::SetSceneLevel(nullptr);
 		return;
 	}
-		
+	
+	CustomCallback::SetSceneLevel(_ChangeLevel);
 	m_pScene = AllScene[Name];
 }
 
@@ -266,4 +214,53 @@ bool GameEnginePhysics::RayCast(const float4& _vOrigin, const float4& _vDir, OUT
 	}
 
 	return false;
+}
+
+// 메모리제거
+void GameEnginePhysics::ReleasePhysicsX()
+{
+	if (nullptr != m_pCooking)
+	{
+		PX_RELEASE(m_pCooking);
+	}
+	{
+		std::map<std::string, physx::PxScene*>::iterator ReleaseStartIter = AllScene.begin();
+		std::map<std::string, physx::PxScene*>::iterator ReleaseEndIter = AllScene.end();
+
+		while (ReleaseStartIter != ReleaseEndIter)
+		{
+			physx::PxScene* ReleaseScene = ReleaseStartIter->second;
+
+			//ReleaseScene->simulate(1.f / 60.f);
+			//ReleaseScene->fetchResults(true);
+
+			delete ReleaseScene->getSimulationEventCallback();
+
+			PX_RELEASE(ReleaseScene);
+
+
+
+			++ReleaseStartIter;
+		}
+	}
+	if (nullptr != m_pDispatcher)
+	{
+		PX_RELEASE(m_pDispatcher);
+	}
+	if (nullptr != m_pPhysics)
+	{
+		PX_RELEASE(m_pPhysics);
+	}
+	if (nullptr != m_pPvd)
+	{
+		PX_RELEASE(m_pPvd);
+	}
+	if (nullptr != m_pTransport)
+	{
+		PX_RELEASE(m_pTransport);
+	}
+	if (nullptr != m_pFoundation)
+	{
+		PX_RELEASE(m_pFoundation);
+	}
 }
