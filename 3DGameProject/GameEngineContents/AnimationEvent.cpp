@@ -178,3 +178,29 @@ void AnimationEvent::LoadAll(const AnimLoadParameter& _Parameter)
 	}
 
 }
+
+void AnimationEvent::AnimationAllBuild(std::shared_ptr<GameEngineLevel> _Level, const std::string_view& _Dir, const std::string& MeshName)
+{
+	GameEngineDirectory Dir;
+	Dir.SetPath(_Dir);
+
+	// Dir 경로에 모든 .animation 파일을 읽어 애니메이션 이벤트를 구현합니다
+	std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".FBX" });
+	std::vector<GameEngineFile> AnimFiles = Dir.GetAllFile({ ".ANIMATION" });
+	std::shared_ptr<GameEngineFBXRenderer> Renderer = nullptr;
+	for (GameEngineFile _File : FBXFiles)
+	{
+		if (_File.GetFileName() == MeshName)
+		{
+			GameEngineFBXMesh::Load(_File.GetFullPath());
+			Renderer = _Level->CreateActor<GameEngineActor>()->CreateComponent<GameEngineFBXRenderer>();
+			break;
+		}
+	}
+
+	for (GameEngineFile _File : AnimFiles)
+	{
+		GameEngineFBXAnimation::Load(_File.GetFullPath());
+		Renderer->CreateFBXAnimation(_File.GetFileName(), {});
+	}
+}

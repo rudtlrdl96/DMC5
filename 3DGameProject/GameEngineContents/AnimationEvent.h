@@ -83,6 +83,7 @@ public:
 	* Dir 경로에 있는 애니메이션 FBX 파일을 모두 로드하고 .animation 파일을 찾아 애니메이션 이벤트를 추가합니다
 	*/
 	static void LoadAll(const AnimLoadParameter& _Parameter);
+	static void AnimationAllBuild(std::shared_ptr<GameEngineLevel> _Level, const std::string_view& Dir, const std::string& MeshName);
 
 	void Clear()
 	{
