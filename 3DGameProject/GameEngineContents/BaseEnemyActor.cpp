@@ -192,11 +192,11 @@ void BaseEnemyActor::Start()
 	{
 		GameEngineInput::CreateKey("EnemyDebug_Ctrl", VK_LCONTROL);
 		GameEngineInput::CreateKey("EnemyDebug_0", '0');
-		GameEngineInput::CreateKey("EnemyDebug_1", '1');
-		GameEngineInput::CreateKey("EnemyDebug_2", '2');
-		GameEngineInput::CreateKey("EnemyDebug_3", '3');
-		GameEngineInput::CreateKey("EnemyDebug_4", '4');
-		GameEngineInput::CreateKey("EnemyDebug_5", '5');
+		GameEngineInput::CreateKey("EnemyDebug_Forward", VK_F9);
+		GameEngineInput::CreateKey("EnemyDebug_Left", VK_F10);
+		GameEngineInput::CreateKey("EnemyDebug_Back", '2');
+		GameEngineInput::CreateKey("EnemyDebug_Right", '1');
+		GameEngineInput::CreateKey("EnemyDebug_Attack", VK_F11);
 		GameEngineInput::CreateKey("EnemyDebug_6", '6');
 		GameEngineInput::CreateKey("EnemyDebug_7", '7');
 		GameEngineInput::CreateKey("EnemyDebug_8", '8');
@@ -212,26 +212,26 @@ void BaseEnemyActor::Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsPress("EnemyDebug_Ctrl"))
 	{
-		if (true == GameEngineInput::IsDown("EnemyDebug_1"))
+		if (true == GameEngineInput::IsDown("EnemyDebug_Forward"))
 		{
-			AddForceEnemy(float4::UP, 10000);
+			AddForceEnemy(float4::FORWARD, 10000);
 
 			//EnemyHitDir Result = GetHitDir(GetTransform()->GetWorldPosition() + float4::FORWARD);
 		}
-		if (true == GameEngineInput::IsDown("EnemyDebug_2"))
+		if (true == GameEngineInput::IsDown("EnemyDebug_Left"))
 		{
-			AddForceEnemy(float4::UP, 50000);
+			AddForceEnemy(float4::LEFT, 50000);
 			//EnemyHitDir Result = GetHitDir(GetTransform()->GetWorldPosition() + float4::BACK);
 		}
-		if (true == GameEngineInput::IsDown("EnemyDebug_3"))
+		if (true == GameEngineInput::IsDown("EnemyDebug_Back"))
 		{
 
-			AddForceEnemy(float4::UP, 100000);
+			AddForceEnemy(float4::BACK, 100000);
 			//EnemyHitDir Result = GetHitDir(GetTransform()->GetWorldPosition() + float4::LEFT);
 		}
-		if (true == GameEngineInput::IsDown("EnemyDebug_4"))
+		if (true == GameEngineInput::IsDown("EnemyDebug_Right"))
 		{
-			AddForceEnemy(float4::UP, 500000);
+			AddForceEnemy(float4::RIGHT, 500000);
 			//EnemyHitDir Result = GetHitDir(GetTransform()->GetWorldPosition() + float4::RIGHT);
 		}
 	}
@@ -291,9 +291,4 @@ void BaseEnemyActor::SuperArmorOff()
 	{
 		SuperArmorOff_Callback();
 	}
-}
-
-void BaseEnemyActor::BindFSM()
-{
-	/*if()*/
 }

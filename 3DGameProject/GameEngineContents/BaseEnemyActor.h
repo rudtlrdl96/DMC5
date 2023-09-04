@@ -98,8 +98,6 @@ public:
 	}
 
 	EnemyHitDir GetHitDir(const float4& _WolrdPos);
-
-	void BindFSM();
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -119,10 +117,13 @@ protected:
 	EnemyCode EnemyCodeValue = EnemyCode::None;
 	EnemyType EnemyTypeValue  = EnemyType::None;
 	EnemySize EnemySizeValue = EnemySize::None;
+	//HP
 	float EnemyHP = 0.0f;
-	//Recognize
+	//Recognize(인식범위)
 	float4 RN_Range = float4::ZERO;
 	bool RN_Player = false;
+	//공격범위
+	float4 AttackRange = float4::ZERO;
 
 	bool IsSuperArmorValue = false;
 
