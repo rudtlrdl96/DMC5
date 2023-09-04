@@ -197,7 +197,13 @@ void PlayerController::InputRecord()
 	char MoveChar = MoveVectorToChar(MoveVector);
 	Command.TimeCheck(GetLiveTime());
 
-	if (false == IsLockOn) { return; }
+	if (false == IsLockOn) { 
+		if (0 < Command.Size)
+		{
+			Command.ClearKey();
+		}
+		return;
+	}
 
 	Command.AddKey(MoveVectorToChar(MoveVector), GetLiveTime());
 }

@@ -44,6 +44,15 @@ public:
 		Size--;
 	}
 
+	void ClearKey()
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			Keys[i] = 'n';
+			Times[i] = 0;
+		}
+		Size = 0;
+	}
 	void MoveKey()
 	{
 		for (int i = Size; 0 < i; i--)

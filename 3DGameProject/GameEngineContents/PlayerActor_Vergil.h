@@ -21,6 +21,14 @@ enum FSM_State_Vergil
 	Vergil_Evade_Left,
 	Vergil_Evade_Right,
 
+	Vergil_yamato_Combo_1,
+	Vergil_yamato_Combo_2,
+	Vergil_yamato_Combo_3,
+	Vergil_yamato_Combo_4,
+	Vergil_yamato_ComboC_1,
+	Vergil_yamato_ComboC_2,
+	Vergil_yamato_ComboC_3,
+
 	Vergil_yamato_JudgementCutEnd_1,
 	Vergil_yamato_JudgementCutEnd_2,
 
