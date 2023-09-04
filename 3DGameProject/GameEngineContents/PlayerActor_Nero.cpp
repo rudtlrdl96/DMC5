@@ -467,11 +467,9 @@ void PlayerActor_Nero::NeroLoad()
 			}
 			});
 
-		static float Timer = 0;
 		// Jump Fly
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Jump_Fly,
 			.Start = [=] {
-				Timer = 0;
 				Renderer->ChangeAnimation("pl0000_Jump_Fly_loop");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -486,10 +484,10 @@ void PlayerActor_Nero::NeroLoad()
 					return;
 				}
 
-				Timer += _DeltaTime;
-				if (0.5f < Timer)
+				if (true == PhysXCapsule->GetIsPlayerGroundTouch())
 				{
 					ChangeState(FSM_State_Nero::Nero_Landing);
+					return;
 				}
 				float4 MoveDir = Controller->GetMoveVector() * RunSpeed;
 				PhysXCapsule->SetMove(MoveDir);
@@ -668,6 +666,11 @@ void PlayerActor_Nero::NeroLoad()
 			},
 			.Update = [=](float _DeltaTime) {
 				if (InputCheck == false) { return; }
+				if (true == PhysXCapsule->GetIsPlayerGroundTouch())
+				{
+					ChangeState(FSM_State_Nero::Nero_Landing);
+					return;
+				}
 				if (Controller->GetGunUp())
 				{
 					ChangeState(FSM_State_Nero::Nero_BR_Shoot);

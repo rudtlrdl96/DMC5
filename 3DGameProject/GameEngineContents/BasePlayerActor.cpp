@@ -122,6 +122,9 @@ void BasePlayerActor::Start()
 	else if (NetControllType::UserControll == GameEngineNetObject::GetControllType())
 	{
 		// 유저 컨트롤 엑터인 경우 실행
+		PhysXCapsule->SetMainPlayer();
+		CustomCallback::SetMainPlayer(PhysXCapsule.get());
+
 		Camera = GetLevel()->CreateActor<PlayerCamera>();
 		Camera->SetPlayerTranform(GetTransform());
 

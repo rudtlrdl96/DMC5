@@ -129,6 +129,16 @@ public:
 		IsMainPlayer = true;
 	}
 
+	inline bool GetIsPlayerGroundTouch()
+	{
+		return IsGroundTouch;
+	}
+
+	inline bool GetIsPlayerWallTouch()
+	{
+		return IsWallTouch;
+	}
+
 	inline void SetIsPlayerGroundTouch(bool _Is)
 	{
 		IsGroundTouch = _Is;
