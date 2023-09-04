@@ -1,5 +1,6 @@
 #pragma once
 
+class PhysXCapsuleComponent;
 class CustomCallback : public physx::PxSimulationEventCallback
 {
 public:
