@@ -26,8 +26,15 @@ enum FSM_State_Nero
 	Nero_RQ_ComboD_3,
 	Nero_RQ_ComboD_4,
 
+	Nero_RQ_AirComboA_1,
+	Nero_RQ_AirComboA_2,
+	Nero_RQ_AirComboA_3,
+	Nero_RQ_AirComboB,
+
 	// ÇÏÀÌ·ê·¯ (¶Ù¿ì´Â °ø°Ý)
 	Nero_RQ_Skill_HR,
+
+
 	// ½ºÇÇ¸´ (³«°ø)
 	Nero_RQ_Skill_Split_1,
 	Nero_RQ_Skill_Split_2,

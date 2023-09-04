@@ -1239,7 +1239,31 @@ void PlayerActor_Vergil::NetLoad()
 		}
 			});
 	}
+	/* µ¥ºô Æ®¸®°Å */
+	{
+		// Demon Start
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Demon_Start,
+		.Start = [=] {
+			Renderer->ChangeAnimation("pl0300_Demon_Start", true);
+			},
+		.Update = [=](float _DeltaTime) {
+		},
+		.End = [=] {
 
+		}
+			});
+		// Demon End
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Demon_End,
+		.Start = [=] {
+			Renderer->ChangeAnimation("pl0300_Demon_End", true);
+			},
+		.Update = [=](float _DeltaTime) {
+		},
+		.End = [=] {
+
+		}
+			});
+	}
 	ChangeState(FSM_State_Vergil::Vergil_Idle);
 
 }

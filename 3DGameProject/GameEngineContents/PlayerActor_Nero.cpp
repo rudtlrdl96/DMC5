@@ -457,6 +457,11 @@ void PlayerActor_Nero::NeroLoad()
 					ChangeState(FSM_State_Nero::Nero_BR_AirShoot);
 					return;
 				}
+				if (Controller->GetIsSword())
+				{
+					ChangeState(FSM_State_Nero::Nero_RQ_AirComboA_1);
+					return;
+				}
 			},
 			.End = [=] {
 			}
@@ -473,6 +478,11 @@ void PlayerActor_Nero::NeroLoad()
 				if (Controller->GetGunUp())
 				{
 					ChangeState(FSM_State_Nero::Nero_BR_AirShoot);
+					return;
+				}
+				if (Controller->GetIsSword())
+				{
+					ChangeState(FSM_State_Nero::Nero_RQ_AirComboA_1);
 					return;
 				}
 
@@ -988,6 +998,142 @@ void PlayerActor_Nero::NeroLoad()
 			}
 			});
 
+		// RedQueen AirComboA1
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_1,
+			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
+				PhysXCapsule->TurnOffGravity();
+				Renderer->ChangeAnimation("pl0000_RQ_AT-Jump_1");
+				RotationToTarget(30.0f);
+				InputCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (InputCheck == false) { return; }
+				if (Controller->GetGunUp())
+				{
+					ChangeState(FSM_State_Nero::Nero_BR_AirShoot);
+					return;
+				}
+				if (Controller->GetIsSword())
+				{
+					ChangeState(FSM_State_Nero::Nero_RQ_AirComboA_2);
+					return;
+				}
+				if (Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+				}
+			},
+			.End = [=] {
+				WeaponIdle();
+				PhysXCapsule->TurnOnGravity();
+			}
+			});
+
+		// RedQueen AirComboA2
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_2,
+			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
+				PhysXCapsule->TurnOffGravity();
+				RedQueenOn();
+				Renderer->ChangeAnimation("pl0000_RQ_AT-Jump_2");
+				RotationToTarget(30.0f);
+				InputCheck = false;
+				DelayCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (InputCheck == false) { return; }
+				if (Controller->GetGunUp())
+				{
+					ChangeState(FSM_State_Nero::Nero_BR_AirShoot);
+					return;
+				}
+				if (Controller->GetIsSword())
+				{
+					if (DelayCheck == true) { 
+						ChangeState(FSM_State_Nero::Nero_RQ_AirComboB);
+						return;
+					}
+
+					ChangeState(FSM_State_Nero::Nero_RQ_AirComboA_3);
+					return;
+				}
+				if (Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+				}
+			},
+			.End = [=] {
+				WeaponIdle();
+				PhysXCapsule->TurnOnGravity();
+			}
+			});
+
+		// RedQueen AirComboA3
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_3,
+			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
+				PhysXCapsule->TurnOffGravity();
+				RedQueenOn();
+				Renderer->ChangeAnimation("pl0000_RQ_AT-Jump_3");
+				RotationToTarget(30.0f);
+				InputCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (InputCheck == false) { return; }
+				if (Controller->GetGunUp())
+				{
+					ChangeState(FSM_State_Nero::Nero_BR_AirShoot);
+					return;
+				}
+				if (Controller->GetIsSword())
+				{
+					ChangeState(FSM_State_Nero::Nero_RQ_AirComboA_1);
+					return;
+				}
+				if (Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+				}
+			},
+			.End = [=] {
+				WeaponIdle();
+				PhysXCapsule->TurnOnGravity();
+			}
+			});
+
+		// RedQueen AirComboB
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboB,
+			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
+				PhysXCapsule->TurnOffGravity();
+				RedQueenOn();
+				Renderer->ChangeAnimation("pl0000_RQ_AirComboB");
+				RotationToTarget(30.0f);
+				InputCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (InputCheck == false) { return; }
+				if (Controller->GetGunUp())
+				{
+					ChangeState(FSM_State_Nero::Nero_BR_AirShoot);
+					return;
+				}
+				if (Controller->GetIsSword())
+				{
+					ChangeState(FSM_State_Nero::Nero_RQ_AirComboA_1);
+					return;
+				}
+				if (Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+				}
+			},
+			.End = [=] {
+				WeaponIdle();
+				PhysXCapsule->TurnOnGravity();
+			}
+			});
 	}
 	{}
 	// 블루 로즈 (락온)
@@ -1455,6 +1601,11 @@ void PlayerActor_Nero::NeroLoad()
 					ChangeState(FSM_State_Nero::Nero_BR_AirShoot);
 					return;
 				}
+				if (Controller->GetIsSword())
+				{
+					ChangeState(FSM_State_Nero::Nero_RQ_AirComboA_1);
+					return;
+				}
 			},
 			.End = [=] {
 				WeaponIdle();
@@ -1748,6 +1899,57 @@ void PlayerActor_Nero::NetLoad()
 			}
 			});
 
+
+		// RedQueen AirComboA1
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_1,
+			.Start = [=] {
+				Renderer->ChangeAnimation("pl0000_RQ_AT-Jump_1");
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+				WeaponIdle();
+			}
+			});
+
+		// RedQueen AirComboA2
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_2,
+			.Start = [=] {
+				RedQueenOn();
+				Renderer->ChangeAnimation("pl0000_RQ_AT-Jump_2");
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+				WeaponIdle();
+			}
+			});
+
+		// RedQueen AirComboA3
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_3,
+			.Start = [=] {
+				RedQueenOn();
+				Renderer->ChangeAnimation("pl0000_RQ_AT-Jump_3");
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+				WeaponIdle();
+			}
+			});
+
+		// RedQueen AirComboB
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboB,
+			.Start = [=] {
+				RedQueenOn();
+				Renderer->ChangeAnimation("pl0000_RQ_AirComboB");
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+				WeaponIdle();
+			}
+			});
 	}
 	{}
 	// 블루 로즈 (락온)
