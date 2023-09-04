@@ -215,10 +215,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="ContentGrid.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="C_ChoiceBG.h" />
     <ClInclude Include="EnemyTestLevel.h">
@@ -592,10 +588,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="ContentDefine.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="ContentGrid.cpp">
       <SubType>
       </SubType>
     </ClCompile>

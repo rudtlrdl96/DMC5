@@ -334,17 +334,14 @@
     <ClInclude Include="NavMesh.h">
       <Filter>Actor\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="ContentGrid.h">
-      <Filter>Actor\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="TestStageLevel.h">
-      <Filter>Levels\Stage</Filter>
-    </ClInclude>
     <ClInclude Include="Shop_NeroSkillUI.h">
       <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
     </ClInclude>
     <ClInclude Include="Shop_ItemButton.h">
       <Filter>UI\UI_Base\ShopItemButton</Filter>
+    </ClInclude>
+    <ClInclude Include="TestStageLevel.h">
+      <Filter>Levels\Test</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -672,17 +669,14 @@
     <ClCompile Include="NavMesh.cpp">
       <Filter>Actor\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="ContentGrid.cpp">
-      <Filter>Actor\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="TestStageLevel.cpp">
-      <Filter>Levels\Stage</Filter>
-    </ClCompile>
     <ClCompile Include="Shop_NeroSkillUI.cpp">
       <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
     </ClCompile>
     <ClCompile Include="Shop_ItemButton.cpp">
       <Filter>UI\UI_Base\ShopItemButton</Filter>
+    </ClCompile>
+    <ClCompile Include="TestStageLevel.cpp">
+      <Filter>Levels\Test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

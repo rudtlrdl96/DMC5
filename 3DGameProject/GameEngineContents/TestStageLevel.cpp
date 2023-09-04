@@ -49,6 +49,7 @@ void TestStageLevel::Update(float _DeltaTime)
 
 void TestStageLevel::LevelChangeStart()
 {
+	//임시 불러오기, 추후 수정 예정
 	StageBaseLevel::LevelChangeStart();
 	{
 		std::string Path = GameEnginePath::GetFileFullPath

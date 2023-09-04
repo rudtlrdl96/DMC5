@@ -17,7 +17,9 @@ std::shared_ptr<SkyBox> SkyBox::CreateSkyBox(GameEngineLevel* _Level, const std:
 {
 	std::shared_ptr<SkyBox> Result;
 	Result = _Level->CreateActor<SkyBox>();
+	Result->SetName("SkyBox");
 	Result->Sky = Result->CreateComponent<GameEngineFBXRenderer>();
+	Result->Sky->SetName("Renderer");
 	Result->Sky->SetFBXMesh(_FBXName.data(), "FBX");
 	Result->Sky->LightOff();
 	return Result;

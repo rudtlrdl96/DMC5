@@ -17,13 +17,16 @@ std::shared_ptr<NavMesh> NavMesh::CreateNavMesh(GameEngineLevel* _Level, const s
 {
 	std::shared_ptr<NavMesh> Result;
 	Result = _Level->CreateActor<NavMesh>(); // 렌더러 생성
+	Result->SetName("NavMesh");
 	Result->Nav = Result->CreateComponent<GameEngineFBXRenderer>();
+	Result->Nav->SetName("Renderer");
 	Result->Nav->SetFBXMesh(_FBXName.data(), "FBX");
 	Result->Nav->Off();
 
 	float Ratio = 1.f;
 
 	Result->Colider = Result->CreateComponent<PhysXTriangleComponent>(); // 콜라이더 생성
+	Result->Colider->SetName("Colider");
 	Result->Colider->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
 	Result->Colider->CreatePhysXActors(_FBXName.data(), _Level->GetLevelScene(), _Level->GetLevelPhysics(), _Level->GetCooking(), true, Ratio);
 

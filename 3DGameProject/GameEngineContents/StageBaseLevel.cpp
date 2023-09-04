@@ -5,7 +5,6 @@
 #include "NetworkManager.h"
 #include "SkyBox.h"
 #include "NavMesh.h"
-#include "ContentGrid.h"
 
 std::vector<StageData> StageBaseLevel::AllStageDatas;
 
@@ -25,7 +24,7 @@ void StageBaseLevel::LoadAllStageData()
 	Dir.MoveParentToDirectory("ContentData");
 	Dir.Move("ContentData");
 	Dir.Move("StageData");
-	std::filesystem::path temp = Dir.GetPlusFileName("Test0").GetFullPath();
+	std::filesystem::path temp = Dir.GetPlusFileName("TestStage").GetFullPath();
 
 	GameEngineFile File(temp);
 	File.LoadBin(LoadSerializer);
@@ -47,7 +46,6 @@ void StageBaseLevel::Update(float _DeltaTime)
 
 void StageBaseLevel::LevelChangeStart()
 {
-	//DebugGrid = CreateActor<ContentGrid>();
 }
 
 void StageBaseLevel::CreateStage(const StageData& _Data)
