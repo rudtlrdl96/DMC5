@@ -43,28 +43,30 @@ void Shop_NeroSkillUI::Start()
 void Shop_NeroSkillUI::Update(float _Delta)
 {
 	RedQueenButton->SetUIText("RED QUEEN");
-	if (true == GameEngineInput::IsUp("UI_UP"))
+	if (IsValue == false && true == GameEngineInput::IsUp("UI_UP"))
 	{
 		PrevIndex = Index;
 		if (Index == 0)
 		{
 			Index = 5;
+			DownSwich = true;
 		}
 		else
 		{
 			Index--;
 		}
-		if (PrevIndex == 5 && Index == 4)
+		if (PrevIndex == 1 && Index == 0)
 		{
-			int a = 0;
+			UpSwich = true;
 		}
 	}
-	if (true == GameEngineInput::IsUp("UI_DOWN"))
+	if (IsValue == false && true == GameEngineInput::IsUp("UI_DOWN"))
 	{
 		PrevIndex = Index;
 		if (Index == 5)
 		{
 			Index = 0;
+			UpSwich = true;
 		}
 		else
 		{
@@ -72,7 +74,6 @@ void Shop_NeroSkillUI::Update(float _Delta)
 		}
 		if (PrevIndex == 4 && Index == 5)
 		{
-			int a = 0;//5는 4로 4는 3으로 3은 2로 2는 1로 1은 0 으로 0은 중간에 사라지기.
 			DownSwich = true;
 		}
 		
@@ -81,22 +82,57 @@ void Shop_NeroSkillUI::Update(float _Delta)
 	Shop_ItemButton::Items[Index]->SetSelectValue(true);
 	if (DownSwich == true)
 	{
+		IsValue = true;
 		LerpTime += _Delta;
-		Shop_ItemButton::Items[Index]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_5, Pos_4, LerpTime *3.0f));
+		Shop_ItemButton::Items[5]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_5, Pos_4, LerpTime *5.0f));
 		
-		Shop_ItemButton::Items[Index-1]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_4, Pos_3, LerpTime * 3.0f));
+		Shop_ItemButton::Items[4]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_4, Pos_3, LerpTime * 5.0f));
 		
-		Shop_ItemButton::Items[Index-2]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_3, Pos_2, LerpTime * 3.0f));
+		Shop_ItemButton::Items[3]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_3, Pos_2, LerpTime * 5.0f));
 
-		Shop_ItemButton::Items[Index - 3]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_2, Pos_1, LerpTime * 3.0f));
+		Shop_ItemButton::Items[2]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_2, Pos_1, LerpTime * 5.0f));
 		
-		Shop_ItemButton::Items[Index - 4]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_1, Pos_0, LerpTime * 3.0f));
+		Shop_ItemButton::Items[1]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_1, Pos_0, LerpTime * 5.0f));
 	
-		Shop_ItemButton::Items[Index -5]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_0, Pos_Null, LerpTime * 3.0f));
+		Shop_ItemButton::Items[0]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_0, Pos_Null, LerpTime * 5.0f));
 
-		if (Shop_ItemButton::Items[Index - 5]->GetTransform()->GetLocalPosition().y == (Pos_Null.y + Pos_0.y)/2)
+		if (Shop_ItemButton::Items[0]->GetTransform()->GetLocalPosition().y >= (Pos_Null.y + Pos_0.y)/2)
 		{
-			Shop_ItemButton::Items[Index - 5]->Off();
+			Shop_ItemButton::Items[0]->Off();
+		}
+		if (Shop_ItemButton::Items[5]->GetTransform()->GetLocalPosition() == Pos_4)
+		{
+			DownSwich = false;
+			LerpTime = 0.0f;
+			IsValue = false;
+		}
+	}
+	if (UpSwich == true)
+	{
+		IsValue = true;
+		LerpTime += _Delta;
+		Shop_ItemButton::Items[0]->On();
+		Shop_ItemButton::Items[0]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_Null, Pos_0, LerpTime * 5.0f));
+
+		Shop_ItemButton::Items[1]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_0, Pos_1, LerpTime * 5.0f));
+
+		Shop_ItemButton::Items[2]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_1, Pos_2, LerpTime * 5.0f));
+								
+		Shop_ItemButton::Items[3]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_2, Pos_3, LerpTime * 5.0f));
+								
+		Shop_ItemButton::Items[4]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_3, Pos_4, LerpTime * 5.0f));
+								
+		Shop_ItemButton::Items[5]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_4, Pos_5, LerpTime * 5.0f));
+
+		//if (Shop_ItemButton::Items[Index - 5]->GetTransform()->GetLocalPosition().y >= (Pos_Null.y + Pos_0.y) / 2)
+		//{
+		//	Shop_ItemButton::Items[Index - 5]->Off();
+		//}
+		if (Shop_ItemButton::Items[0]->GetTransform()->GetLocalPosition() == Pos_0)
+		{
+			IsValue = false;
+			UpSwich = false;
+			LerpTime = 0.0f;
 		}
 	}
 }

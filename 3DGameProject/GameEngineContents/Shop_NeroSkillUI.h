@@ -24,7 +24,9 @@ private:
 	
 	int Index = 0;
 	int PrevIndex = 5;
+	bool IsValue = false;
 	bool DownSwich = false;
+	bool UpSwich = false;
 	float LerpTime = 0.0f;
 	float4 Pos_Null = { -190.0f,364.0f,0.0f };
 	float4 Pos_0 = { -190.0f,234.0f,0.0f };
