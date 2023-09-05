@@ -1,4 +1,5 @@
 #pragma once
+
 #include "GameEngineObject.h"
 
 // Ό³Έν :
@@ -35,7 +36,6 @@ public:
 	}
 
 	void SetOrder(int _Order) override;
-
 
 protected:
 	virtual void Start() {}

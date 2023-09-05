@@ -45,7 +45,7 @@ void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, boo
 	m_pMaterial = m_pPhysics->createMaterial(Staticfriction, Dynamicfriction, Resitution);
 
 	// 충돌체의 종류
-	m_pRigidStatic = m_pPhysics->createRigidStatic(localTm);
+	m_pStatic = m_pPhysics->createRigidStatic(localTm);
 
 	int RenderinfoCount = static_cast<int>(Mesh->GetRenderUnitCount());
 	
@@ -77,7 +77,7 @@ void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, boo
 		physx::PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
 		physx::PxTriangleMesh* TriangleMesh = m_pPhysics->createTriangleMesh(readBuffer);
 		//createExclusiveShapefh RigidStatic에 Shape를 넣어준다.
-		m_pShape = physx::PxRigidActorExt::createExclusiveShape(*m_pRigidStatic, physx::PxTriangleMeshGeometry(TriangleMesh), *m_pMaterial);
+		m_pShape = physx::PxRigidActorExt::createExclusiveShape(*m_pStatic, physx::PxTriangleMeshGeometry(TriangleMesh), *m_pMaterial);
 		//피벗 설정
 		physx::PxVec3 Pivot(DynamicPivot.x, DynamicPivot.y, DynamicPivot.z);
 		m_pShape->setLocalPose(physx::PxTransform(Pivot));
@@ -171,11 +171,11 @@ void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, boo
 	// Scene에 액터 추가
 	if (true == IsAggregateObject)
 	{
-		AddActorAggregate(m_pRigidStatic);
+		AddActorAggregate(m_pStatic);
 	}
 	else
 	{
-		m_pScene->addActor(*m_pRigidStatic);
+		m_pScene->addActor(*m_pStatic);
 	}
 }
 
@@ -206,7 +206,7 @@ void PhysXTriangleComponent::Update(float _DeltaTime)
 		);
 
 		// 부모의 Transform정보를 바탕으로 PhysX Actor의 트랜스폼을 갱신
-		m_pRigidStatic->setGlobalPose(tmpPxTransform);
+		m_pStatic->setGlobalPose(tmpPxTransform);
 		// TODO::회전도 처리해야함. DegreeToQuat
 	}
 }

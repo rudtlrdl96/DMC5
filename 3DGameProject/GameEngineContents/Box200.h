@@ -1,7 +1,9 @@
 #pragma once
 
+#include <GameEngineCore/PhysXActor.h>
+
 // Ό³Έν :
-class Box200 : public GameEngineActor, public GameEngineNetObject
+class Box200 : public GameEngineActor, public GameEngineNetObject, public PhysXActor
 {
 public:
 	// constrcuter destructer

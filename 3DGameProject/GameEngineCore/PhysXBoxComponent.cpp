@@ -42,19 +42,19 @@ void PhysXBoxComponent::CreatePhysXActors(physx::PxVec3 _GeoMetryScale, float4 _
 	);
 
 	// 충돌체의 종류
-	//m_pRigidDynamic = _physics->createRigidDynamic(localTm);
-	m_pRigidDynamic = m_pPhysics->createRigidDynamic(localTm);
+	//m_pDynamic = _physics->createRigidDynamic(localTm);
+	m_pDynamic = m_pPhysics->createRigidDynamic(localTm);
 
 	// 중력이 적용되지 않도록
 	// TODO::RigidStatic으로 변경해야
-	m_pRigidDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, true);
-	m_pRigidDynamic->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, true);
+	m_pDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, true);
+	m_pDynamic->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, true);
 
 	// 충돌체의 형태
-	m_pShape = physx::PxRigidActorExt::createExclusiveShape(*m_pRigidDynamic, physx::PxBoxGeometry(tmpGeoMetryScale), *m_pMaterial);
+	m_pShape = physx::PxRigidActorExt::createExclusiveShape(*m_pDynamic, physx::PxBoxGeometry(tmpGeoMetryScale), *m_pMaterial);
 
 	// RigidDynamic의 밀도를 설정
-	physx::PxRigidBodyExt::updateMassAndInertia(*m_pRigidDynamic, 0.1f);
+	physx::PxRigidBodyExt::updateMassAndInertia(*m_pDynamic, 0.1f);
 
 	//피벗 설정
  	physx::PxVec3 Pivot(DynamicPivot.x, tmpGeoMetryScale.y, DynamicPivot.z);
@@ -128,11 +128,11 @@ void PhysXBoxComponent::CreatePhysXActors(physx::PxVec3 _GeoMetryScale, float4 _
 	// Scene에 액터 추가
 	if (true == IsAggregateObject)
 	{
-		AddActorAggregate(m_pRigidDynamic);
+		AddActorAggregate(m_pDynamic);
 	}
 	else
 	{
-		m_pScene->addActor(*m_pRigidDynamic);
+		m_pScene->addActor(*m_pDynamic);
 	}
 }
 
@@ -149,12 +149,12 @@ void PhysXBoxComponent::Update(float _DeltaTime)
 		// PhysX Actor의 상태에 맞춰서 부모의 Transform정보를 갱신
 		float4 tmpWorldPos = 
 		{ 
-			m_pRigidDynamic->getGlobalPose().p.x
-			, m_pRigidDynamic->getGlobalPose().p.y
-			, m_pRigidDynamic->getGlobalPose().p.z 
+			m_pDynamic->getGlobalPose().p.x
+			, m_pDynamic->getGlobalPose().p.y
+			, m_pDynamic->getGlobalPose().p.z 
 		};
 
-		float4 EulerRot = PhysXDefault::GetQuaternionEulerAngles(m_pRigidDynamic->getGlobalPose().q) * GameEngineMath::RadToDeg;
+		float4 EulerRot = PhysXDefault::GetQuaternionEulerAngles(m_pDynamic->getGlobalPose().q) * GameEngineMath::RadToDeg;
 
 		ParentActor.lock()->GetTransform()->SetWorldRotation(float4{ EulerRot.x, EulerRot.y, EulerRot.z });
 		ParentActor.lock()->GetTransform()->SetWorldPosition(tmpWorldPos);
@@ -172,8 +172,8 @@ void PhysXBoxComponent::Update(float _DeltaTime)
 		);
 
 		// 부모의 Transform정보를 바탕으로 PhysX Actor의 트랜스폼을 갱신
-		m_pRigidDynamic->setKinematicTarget(tmpPxTransform);
-		//m_pRigidDynamic->setGlobalPose(tmpPxTransform);
+		m_pDynamic->setKinematicTarget(tmpPxTransform);
+		//m_pDynamic->setGlobalPose(tmpPxTransform);
 		// TODO::회전도 처리해야함. DegreeToQuat
 	}
 }

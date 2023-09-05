@@ -12,7 +12,7 @@
 #include "GameEngineLight.h"
 #include "GameEnginePhysics.h"
 #include "GameEngineDevice.h"
-
+#include "PhysXActor.h"
 
 bool GameEngineLevel::IsDebugRender = false;
 
@@ -341,6 +341,12 @@ void GameEngineLevel::ActorRelease()
 					RelaseActor->AllRelease();
 					++ActorStart;
 					continue;
+				}
+
+				std::shared_ptr<PhysXActor> pPhysXActor = RelaseActor->DynamicThis<PhysXActor>();
+				if (nullptr != pPhysXActor)
+				{
+					pPhysXActor->Release();
 				}
 
 				RelaseActor->Release();
