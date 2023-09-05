@@ -134,6 +134,8 @@ void PhysXBoxComponent::CreatePhysXActors(physx::PxVec3 _GeoMetryScale, float4 _
 	{
 		m_pScene->addActor(*m_pDynamic);
 	}
+
+	PhysicsComponent = DynamicThis<PhysXBoxComponent>();
 }
 
 void PhysXBoxComponent::Start()

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "PhysXDefault.h"
 #include "GameEnginePhysics.h"
 
 // Ό³Έν :

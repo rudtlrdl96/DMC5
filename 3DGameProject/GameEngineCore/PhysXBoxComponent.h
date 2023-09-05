@@ -1,10 +1,10 @@
 #pragma once
 
 #include "GameEngineComponent.h"
-#include "PhysXDefault.h"
+#include "PhysicsActor.h"
 
 // Ό³Έν :
-class PhysXBoxComponent : public GameEngineComponent, public PhysXDefault
+class PhysXBoxComponent : public GameEngineComponent, public PhysicsActor
 {
 public:
 	// constrcuter destructer
@@ -44,8 +44,6 @@ private:
 
 	physx::PxMaterial* m_pMaterial = nullptr;
 	physx::PxShape* m_pShape = nullptr;
-
-	std::weak_ptr<GameEngineActor> ParentActor;
 
 	bool PositionSetFromParentFlag = true;
 

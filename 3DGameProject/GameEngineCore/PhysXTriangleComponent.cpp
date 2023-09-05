@@ -177,6 +177,8 @@ void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, boo
 	{
 		m_pScene->addActor(*m_pStatic);
 	}
+
+	PhysicsComponent = DynamicThis<PhysXTriangleComponent>();
 }
 
 void PhysXTriangleComponent::Start()

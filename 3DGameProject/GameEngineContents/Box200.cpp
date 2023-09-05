@@ -24,12 +24,10 @@ void Box200::Start()
 	physx::PxVec3 GeoMetryScale = { RenderMeshScale.x, RenderMeshScale.y, RenderMeshScale.z };
 
 	Component = CreateComponent<PhysXBoxComponent>();
-	SetPhysXComponent(Component);
 	Component->SetPhysxMaterial(1.0f, 1.0f, 0.0f);
 	Component->SetPositionSetFromParentFlag(true);
 	Component->SetObstacleObject();
 	Component->CreatePhysXActors(GeoMetryScale * 0.5f);
-
 
 	//GameEngineInput::CreateKey("Select_01", 'Y');
 	//GameEngineInput::CreateKey("Select_02", 'U');

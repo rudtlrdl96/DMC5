@@ -136,6 +136,8 @@ void PhysXCapsuleComponent::CreatePhysXActors(physx::PxVec3 _GeoMetryScale, floa
 	{
 		CustomCallback::SetMainPlayer(this);
 	}
+
+	PhysicsComponent = DynamicThis<PhysXCapsuleComponent>();
 }
 
 void PhysXCapsuleComponent::SetWorldPosition(float4 _Value)

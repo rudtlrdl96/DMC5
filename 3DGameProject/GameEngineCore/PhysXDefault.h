@@ -98,32 +98,7 @@ public:
 	float dotProduct(vector v1, vector v2);
 	vector matrixMultiply(matrix m, vector v);
 
-	void ReleaseRigid()
-	{
-		if (m_pStatic != nullptr && m_pStatic->isReleasable())
-		{
-			m_pStatic->release();
-		}
-		if (m_pDynamic != nullptr && m_pDynamic->isReleasable())
-		{
-			m_pDynamic->release();
-		}
-	}
-
-	physx::PxRigidDynamic* GetDynamic()
-	{
-		return m_pDynamic;
-	}
-
-	physx::PxRigidStatic* GetStatic()
-	{
-		return m_pStatic;
-	}
-
 protected:
-	physx::PxRigidDynamic* m_pDynamic = nullptr;
-	physx::PxRigidStatic* m_pStatic = nullptr;
-
 	float Staticfriction = 0.0f;              // Á¤Àû¸¶Âû
 	float Dynamicfriction = 0.0f;             // µ¿Àû¸¶Âû
 	float Resitution = 0.0f;                  // Åº¼º°è¼ö

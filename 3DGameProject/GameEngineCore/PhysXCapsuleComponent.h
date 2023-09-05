@@ -1,10 +1,10 @@
 #pragma once
 
 #include "GameEngineComponent.h"
-#include "PhysXDefault.h"
+#include "PhysicsActor.h"
 
 // 설명 :
-class PhysXCapsuleComponent : public GameEngineComponent, public PhysXDefault
+class PhysXCapsuleComponent : public GameEngineComponent, public PhysicsActor
 {
 public:
 	// constrcuter destructer
@@ -164,8 +164,6 @@ private:
 	physx::PxMaterial* m_pMaterial = nullptr;
 	physx::PxShape* m_pShape = nullptr;
 
-	// 이 컴포넌트를 가지고 있는 Parent에 대한 정보
-	std::weak_ptr<class GameEngineActor> ParentActor;
 	physx::PxVec3 GeoMetryScale;
 
 	//속도제한 함수
