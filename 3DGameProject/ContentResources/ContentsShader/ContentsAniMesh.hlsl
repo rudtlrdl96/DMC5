@@ -137,7 +137,7 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
             if (2 == AllLight[i].LightType)
             {
                 float3 LightVec = normalize(AllLight[i].LightPos.xyz - _Input.WORLDPOSITION.xyz);
-                float3 SpotCone = dot(LightVec, normalize(AllLight[i].LightDir.xyz));
+                float3 SpotCone = pow(saturate(dot(LightVec, normalize(AllLight[i].LightDir.xyz))), AllLight[i].LightAngle);
                 
                 LightPower *= SpotCone;
             }
