@@ -84,8 +84,7 @@ public:
 	}
 protected:
 	void Start() override;
-	void TestLoad();
-	void NeroLoad();
+	void PlayerLoad();
 	void NetLoad();
 	void Update_Character(float _DeltaTime) override;
 
@@ -107,5 +106,8 @@ private:
 	void RedQueenOff();
 	void BlueRoseOn();
 	void WeaponIdle();
+	void SetHuman();
+	void SetDemon();
+	void SetOverture();
 };
 

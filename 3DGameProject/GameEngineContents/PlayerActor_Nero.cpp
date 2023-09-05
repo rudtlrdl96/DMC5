@@ -4,6 +4,8 @@
 #include <GameEngineCore/PhysXCapsuleComponent.h>
 #include "AnimationEvent.h"
 #include "PlayerController.h"
+
+#include "PlayerWindow.h"
 PlayerActor_Nero::~PlayerActor_Nero()
 {
 }
@@ -22,90 +24,13 @@ void PlayerActor_Nero::Start()
 		{
 			GameEngineInput::CreateKey("Escape", VK_F10);
 		}	
-#ifdef _DEBUG
-	TestLoad();
-#else
-	NeroLoad();
-#endif
+		PlayerLoad();
 	}
 
 
 }
 
-void PlayerActor_Nero::TestLoad()
-{
-	Renderer = CreateComponent<GameEngineFBXRenderer>();
-	Renderer->SetFBXMesh("House1.fbx", "FBX");
-
-	{
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Idle,
-			.Start = [=] {
-			},
-			.Update = [=](float _DeltaTime) {
-				if (Controller->GetMoveVector() != float4::ZERO)
-				{
-					ChangeState(FSM_State_Nero::Nero_Run);
-					return;
-				}
-				if (true == IsLockOn)
-				{
-					ChangeState(FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon);
-					return;
-				}
-			},
-			.End = [=] {
-
-			}
-			});
-
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Run,
-			.Start = [=] {
-			},
-			.Update = [=](float _DeltaTime) {
-				if (Controller->GetMoveVector() == float4::ZERO)
-				{
-					ChangeState(FSM_State_Nero::Nero_Idle);
-					return;
-				}
-
-				if (true == IsLockOn)
-				{
-					ChangeState(FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon);
-					return;
-				}
-
-				LookDir(Controller->GetMoveVector());
-				float4 MoveDir = Controller->GetMoveVector() * RunSpeed;
-				PhysXCapsule->SetMove(MoveDir);
-			},
-			.End = [=] {
-
-			}
-			});
-
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon,
-			.Start = [=] {
-			},
-			.Update = [=](float _DeltaTime) {
-				if (false == IsLockOn)
-				{
-					ChangeState(FSM_State_Nero::Nero_Idle);
-					return;
-				}
-				LookTarget();
-				float4 MoveDir = Controller->GetMoveVector() * RunSpeed;
-				PhysXCapsule->SetMove(MoveDir);
-			},
-			.End = [=] {
-
-			}
-			});
-	}
-
-	ChangeState(FSM_State_Nero::Nero_Idle);
-}
-
-void PlayerActor_Nero::NeroLoad()
+void PlayerActor_Nero::PlayerLoad()
 {
 	// Renderer 생성
 	{
@@ -152,7 +77,7 @@ void PlayerActor_Nero::NeroLoad()
 				std::bind(&BasePlayerActor::SetMove, this, std::placeholders::_1)
 			}
 			});
-
+		PlayerWindow::Renderer = Renderer.get();
 
 		//Object = 0 : 공격 충돌체
 		//
@@ -170,17 +95,9 @@ void PlayerActor_Nero::NeroLoad()
 		//콜백 float4 = 0 : SetForce
 		//콜백 float4 = 0 : SetPush
 		//콜백 float4 = 0 : SetMove
-
-
-
-		Renderer->GetAllRenderUnit()[0][12]->Off();	// 버스터 암
-		Renderer->GetAllRenderUnit()[0][13]->Off();	// 버스터 암
-		Renderer->GetAllRenderUnit()[0][14]->On();	// 오버추어
-		Renderer->GetAllRenderUnit()[0][15]->Off();	// 거베라
-		Renderer->GetAllRenderUnit()[0][16]->Off();	// 거베라
-		Renderer->GetAllRenderUnit()[0][17]->Off();	// 손 레드퀸
-		Renderer->GetAllRenderUnit()[0][18]->On();	// 등 레드퀸
-		Renderer->GetAllRenderUnit()[0][19]->Off();	// 블루로즈
+		SetHuman();
+		SetOverture();
+		WeaponIdle();
 	}
 	// 기본 움직임
 	{
@@ -2171,29 +2088,94 @@ void PlayerActor_Nero::ChangeState(FSM_State_Nero _State)
 */
 void PlayerActor_Nero::RedQueenOn()
 {
-	Renderer->GetAllRenderUnit()[0][17]->On();	// 손 레드퀸
-	Renderer->GetAllRenderUnit()[0][18]->Off();	// 등 레드퀸
-	Renderer->GetAllRenderUnit()[0][19]->Off();	// 블루로즈
+	Renderer->GetAllRenderUnit()[0][15]->On();	// 손 레드퀸
+	Renderer->GetAllRenderUnit()[0][24]->Off();	// 등 레드퀸
+	Renderer->GetAllRenderUnit()[0][16]->Off();	// 블루로즈
 }
 
 void PlayerActor_Nero::RedQueenOff()
 {
-	Renderer->GetAllRenderUnit()[0][17]->Off();	// 손 레드퀸
-	Renderer->GetAllRenderUnit()[0][18]->On();	// 등 레드퀸
+	Renderer->GetAllRenderUnit()[0][15]->Off();	// 손 레드퀸
+	Renderer->GetAllRenderUnit()[0][24]->On();	// 등 레드퀸
 }
 
 void PlayerActor_Nero::BlueRoseOn()
 {
-	Renderer->GetAllRenderUnit()[0][17]->Off();	// 손 레드퀸
-	Renderer->GetAllRenderUnit()[0][18]->On();	// 등 레드퀸
-	Renderer->GetAllRenderUnit()[0][19]->On();	// 블루로즈
+	Renderer->GetAllRenderUnit()[0][15]->Off();	// 손 레드퀸
+	Renderer->GetAllRenderUnit()[0][24]->On();	// 등 레드퀸
+	Renderer->GetAllRenderUnit()[0][16]->On();	// 블루로즈
 }
 
 void PlayerActor_Nero::WeaponIdle()
 {
-	Renderer->GetAllRenderUnit()[0][17]->Off();	// 손 레드퀸
-	Renderer->GetAllRenderUnit()[0][18]->On();	// 등 레드퀸
-	Renderer->GetAllRenderUnit()[0][19]->Off();	// 블루로즈
+	Renderer->GetAllRenderUnit()[0][15]->Off();	// 손 레드퀸
+	Renderer->GetAllRenderUnit()[0][24]->On();	// 등 레드퀸
+	Renderer->GetAllRenderUnit()[0][16]->Off();	// 블루로즈
 }
 
-//LookDir((LockOnEnemyTransform->GetWorldPosition() - GetTransform()->GetWorldPosition()).NormalizeReturn());
+void PlayerActor_Nero::SetHuman()
+{
+	for (int i = 0; i <= 14; i++)
+	{
+		Renderer->GetAllRenderUnit()[0][i]->On();
+	}
+
+	for (int i = 17; i <= 23; i++)
+	{
+		Renderer->GetAllRenderUnit()[0][i]->Off();
+	}
+}
+
+void PlayerActor_Nero::SetDemon()
+{
+	for (int i = 0; i <= 8; i++)
+	{
+		Renderer->GetAllRenderUnit()[0][i]->Off();
+	}
+	Renderer->GetAllRenderUnit()[0][14]->Off();
+
+	for (int i = 17; i <= 23; i++)
+	{
+		Renderer->GetAllRenderUnit()[0][i]->On();
+	}
+}
+
+void PlayerActor_Nero::SetOverture()
+{
+	Renderer->GetAllRenderUnit()[0][13]->On();
+	Renderer->GetAllRenderUnit()[0][12]->Off();
+	Renderer->GetAllRenderUnit()[0][11]->Off();
+	Renderer->GetAllRenderUnit()[0][10]->Off();
+	Renderer->GetAllRenderUnit()[0][9]->Off();
+}
+
+/*
+네로 렌더 유닛
+
+0 인간팔
+1 인간옷
+2 인간옷
+3 인간옷
+4 인간 눈썹
+5 인간 눈
+6 인간 속눈썹
+7 인간머리
+8 인간헤어
+9 버스터암
+10 버스터암
+11 거베라
+12 거베라
+13 오버추어
+14 인간 기계팔
+15 손 레드퀸
+16 손 블루로즈
+
+17 DT 얼굴
+18 DT 몸
+19 DT 손발
+20 DT 눈
+21 DT 헤어
+22 DT 헤어
+23 DT 날개
+24 등 레드퀸
+*/
