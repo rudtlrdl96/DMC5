@@ -19,16 +19,11 @@ public:
 
 	void CreatePhysXActors(physx::PxVec3 _GeoMetryScale = physx::PxVec3(2.0f), float4 _GeoMetryRot = float4::ZERO);
 
-	physx::PxRigidDynamic* GetDynamic()
-	{
-		return m_pRigidDynamic;
-	}
-
 	inline void ReleasePhysX()
 	{
-		if (true == m_pRigidDynamic->isReleasable())
+		if (true == m_pDynamic->isReleasable())
 		{
-			m_pRigidDynamic->release();
+			m_pDynamic->release();
 			ParentActor.lock()->Death();
 		}
 	}
@@ -49,7 +44,6 @@ private:
 
 	physx::PxMaterial* m_pMaterial = nullptr;
 	physx::PxShape* m_pShape = nullptr;
-	physx::PxRigidDynamic* m_pRigidDynamic = nullptr;
 
 	std::weak_ptr<GameEngineActor> ParentActor;
 

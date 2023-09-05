@@ -16,6 +16,8 @@ public:
 		MainPlayer = _MainPlayer;
 	}
 
+	std::function<void()> _Func;
+
 private:
 	static PhysXCapsuleComponent* MainPlayer;
 

@@ -64,7 +64,6 @@ private:
 
 	physx::PxMaterial* m_pMaterial = nullptr;
 	physx::PxShape* m_pShape = nullptr;
-	physx::PxRigidDynamic* m_pDynamic = nullptr;
 
 	physx::PxConvexMesh* m_pConvexMesh = nullptr;
 
