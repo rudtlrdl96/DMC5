@@ -39,7 +39,7 @@ void GameEngineLevel::LevelLightInit()
 	DirectionalLight = CreateActor<GameEngineLight>();
 	DirectionalLight->SetName("Directional Light");
 	DirectionalLight->SetLightType(LightType::Directional);
-	DirectionalLight->LightDataValue.LightPower = 0.0f;
+	DirectionalLight->LightDataValue.LightPower = 1.0f;
 }
 
 GameEngineLevel::~GameEngineLevel()
