@@ -21,7 +21,11 @@ private:
 	std::shared_ptr<class Shop_TitleButton> SkillButton = nullptr;
 	std::shared_ptr<class Shop_TitleButton> DBButton = nullptr;
 
+	std::shared_ptr<class Shop_NeroSkillUI> RQButton = nullptr;
 
+	float LerpTime = 0.0f;
 	int TitleIndex = 0;
+
+	bool IsSwich = false;
 };
 

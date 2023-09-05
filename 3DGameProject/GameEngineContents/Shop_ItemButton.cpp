@@ -16,9 +16,10 @@ Shop_ItemButton::~Shop_ItemButton()
 }
 
 
-void Shop_ItemButton::CreateItemUI(GameEngineLevel* _Level, float4 _Pos, const ShopTextParameter& _Param)
+void Shop_ItemButton::CreateItemUI(GameEngineLevel* _Level, float4 _Pos, const ShopTextParameter& _Param, GameEngineTransform* _Trans)
 {
 	std::shared_ptr<Shop_ItemButton> ItemButton = _Level->CreateActor<Shop_ItemButton>();
+	ItemButton->GetTransform()->SetParent(_Trans);
 	ItemButton->GetTransform()->SetLocalPosition(_Pos);
 	ItemButton->GetSkillRender()->SetTexture(_Param._png);
 	ItemButton->GetNameText()->SetText(_Param._Name);
@@ -30,6 +31,8 @@ void Shop_ItemButton::Start()
 	Render = CreateComponent<GameEngineUIRenderer>(1);
 	Render->SetTexture("Shop_ItemNoneSelect.png");
 	Render->GetTransform()->SetLocalScale({ 480.0f,102.0f,0.0f });
+	Render->ColorOptionValue.MulColor.a = 0.8f;
+	Render->ColorOptionValue.BSCColor = { 0.4f,0.4f,0.4f };
 
 	Render_Select = CreateComponent<GameEngineUIRenderer>(2);
 	Render_Select->SetTexture("Shop_ItemSelect.png");
@@ -65,7 +68,7 @@ void Shop_ItemButton::Start()
 
 void Shop_ItemButton::Update(float _Delta)
 {
-	if(IsSelect ==true)
+	if (IsSelect == true)
 	{
 		if (true == GameEngineInput::IsUp("CLICK"))
 		{
@@ -84,7 +87,7 @@ void Shop_ItemButton::Update(float _Delta)
 	}
 	else
 	{
-	
+
 		MoveRender(_Delta);
 		RenderOnOff();
 		SizeUpDown(_Delta);
@@ -196,7 +199,7 @@ void Shop_ItemButton::SizeUpDown(float _Delta)
 		SkillSelect_Render->GetTransform()->SetLocalScale(LerpUpScale);
 		Skill_Render->GetTransform()->SetLocalScale({ LerpUpScale.x - 5.0f,LerpUpScale.y - 9.0f,LerpUpScale.z });
 		Skill_Render->BSCControl(1.0f, 0.5f, 0.5f);
-		Render_Select->ImageClippingX(ScaleUpTime * 8.0f, ClipXDir::Left);
+		Render_Select->ImageClippingX(ScaleUpTime * 4.0f, ClipXDir::Left);
 
 	}
 	else
@@ -205,8 +208,8 @@ void Shop_ItemButton::SizeUpDown(float _Delta)
 		ScaleDownTime += _Delta;
 		float4 LerpDownScale = float4::LerpClamp(UpScale, DownScale, ScaleDownTime * 10.0f);
 		SkillSelect_Render->GetTransform()->SetLocalScale(LerpDownScale);
-		Skill_Render->GetTransform()->SetLocalScale({ LerpDownScale.x-5.0f,LerpDownScale.y-9.0f,LerpDownScale.z });
-		Render_Select->ImageClippingX(1 - ScaleDownTime * 8.0f, ClipXDir::Left);
+		Skill_Render->GetTransform()->SetLocalScale({ LerpDownScale.x - 5.0f,LerpDownScale.y - 9.0f,LerpDownScale.z });
+		Render_Select->ImageClippingX(1 - ScaleDownTime * 4.0f, ClipXDir::Left);
 		Skill_Render->BSCControl(0.5f, 0.5f, 0.5f);
 		if (LerpDownScale == DownScale)
 		{
