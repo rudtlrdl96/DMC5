@@ -89,5 +89,7 @@ private:
     {
         LightDataValue.LightType = static_cast<int>(_Type);
     }
+
+    void DrawEditor() override;
 };
 

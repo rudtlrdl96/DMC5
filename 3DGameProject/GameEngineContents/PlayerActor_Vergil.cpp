@@ -38,7 +38,7 @@ void PlayerActor_Vergil::VergilLoad()
 		Renderer = CreateComponent<GameEngineFBXRenderer>();
 		Renderer->GetTransform()->SetLocalRotation({ 0, 0, 0 });
 		Renderer->GetTransform()->SetLocalPosition({ 0, -75, 0 });
-		Renderer->SetFBXMesh("Vergil.FBX", "MeshAniTexture");
+		Renderer->SetFBXMesh("Vergil.FBX", "AniFBX");
 		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer,
 			.Objects = { (GameEngineObject*)AttackCollision.get() },
 			.CallBacks_void = {

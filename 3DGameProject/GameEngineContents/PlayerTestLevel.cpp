@@ -87,7 +87,7 @@ void PlayerTestLevel::LevelChangeStart()
 	Flat4->GetTransform()->AddWorldRotation(float4{ 0, 0, 90 });
 	Flat4->GetTransform()->AddWorldRotation(float4{ 0, -40, 0 });
 
-	std::shared_ptr<GameEngineLight> Light = CreateActor<GameEngineLight>();
+	//std::shared_ptr<GameEngineLight> Light = CreateActor<GameEngineLight>();
 
 	//std::shared_ptr<Ball> ball = CreateActor<Ball>();
 

@@ -71,7 +71,7 @@ void MainLevel::Start()
 
 	//std::shared_ptr<GameEngineLight> NewPointLight = CreatePointLight(float4(140, 10, 0), 300);
 
-	CreateScene("MainLevel");
+	//CreateScene("MainLevel");
 
 	std::shared_ptr<GameEngineLight> NewSpotLight = CreateSpotLight(float4(0, 50, 0), 500, 5);
 	NewSpotLight->GetTransform()->SetLocalRotation(float4(-90, 0, 0));

@@ -19,8 +19,8 @@ Plane::~Plane()
 void Plane::Start()
 {
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
-	Renderer->SetFBXMesh("Ground_Mesh.FBX", "MeshTexture");
-	Renderer->LightOff();
+	Renderer->SetFBXMesh("Ground_Mesh.FBX", "FBX");
+	//Renderer->LightOff();
 
 	float4 RenderMeshScale = Renderer->GetFBXMesh()->GetRenderUnit(0)->BoundScaleBox;
 	physx::PxVec3 GeoMetryScale = { RenderMeshScale.x, RenderMeshScale.y, RenderMeshScale.z};

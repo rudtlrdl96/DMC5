@@ -37,3 +37,42 @@ void GameEngineLight::LightUpdate(GameEngineCamera* _Camera, float _DeltaTime)
 	LightDataValue.CameraPosition = _Camera->GetTransform()->GetWorldPosition() * _Camera->GetView();
 	LightDataValue.CameraPosition = _Camera->GetTransform()->GetWorldForwardVector();
 }
+
+#include <GameEngineCore/imgui.h>
+
+void GameEngineLight::DrawEditor()
+{
+	ImGui::Spacing();
+	ImGui::Spacing();
+
+	float LightColor[3] = { LightDataValue.LightColor.x, LightDataValue.LightColor.y, LightDataValue.LightColor.z };
+
+	ImGui::DragFloat3("Light Color", LightColor, 0.01f);
+
+	LightDataValue.LightColor.x = LightColor[0];
+	LightDataValue.LightColor.y = LightColor[1];
+	LightDataValue.LightColor.z = LightColor[2];
+
+	switch (LightDataValue.LightType)
+	{
+	case 0: // Directional
+	{
+	}
+		break;
+
+	case 1: // Point
+	{
+		ImGui::DragFloat("Light Range", &LightDataValue.LightRange, 1.0f);	
+	}
+		break;
+
+	case 2: // Spot
+	{
+		ImGui::DragFloat("Light Range", &LightDataValue.LightRange, 1.0f);
+		ImGui::DragFloat("Light Angle", &LightDataValue.LightAngle, 0.1f);
+	}
+		break;
+	default:
+		break;
+	}
+}

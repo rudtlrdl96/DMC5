@@ -84,12 +84,17 @@ float4 MeshTexture_PS(Output _Input) : SV_Target0
     float4 RGBA = { AlbmData.r, AlbmData.g, AlbmData.b, AtosData.r };
     float4 ResultColor = float4(0, 0, 0, 0);
     
+    // Alpha 값 고정
+    float A = RGBA.w;
+    
     if (0 != IsLight)
     {
+        // WorldView Normal
         float4 NormalDir = _Input.NORMAL;
         
         if (0 != IsNormal)
         {
+            // NormalMap 텍스쳐 적용
             NormalDir += NormalTexCalculate(NrmrData, _Input.TEXCOORD, _Input.TANGENT, _Input.BINORMAL, _Input.NORMAL);
         }
                 
@@ -98,17 +103,16 @@ float4 MeshTexture_PS(Output _Input) : SV_Target0
         float3 reflection = reflect(AllLight[0].LightRevDir.xyz, NormalDir.xyz); // 빛의 반사 방향 계산
         float distribution = GGX_Distribution(NormalDir.xyz, reflection, roughness); // 반사 분포 계산
                                
+        // 계산된 메탈릭 값
         float metallic = saturate(AlbmData.a - distribution);
         
         // AlbmData -> metallicValue 값에 따라서 결정되어야 한다        
         RGBA.rgb = lerp(AlbmData.rgb, AlbmData.rgb * 0.6f, metallic);
-        
-        float A = RGBA.w;        
-        
-       float4 AmbientRatio = AllLight[0].AmbientLight;
+                
+        float4 AmbientRatio = AllLight[0].AmbientLight;
         
         for (int i = 0; i < LightCount; ++i)
-        {            
+        {
             float LightPower = AllLight[i].LightPower;
             
             if (0 != AllLight[i].LightType)
@@ -118,7 +122,7 @@ float4 MeshTexture_PS(Output _Input) : SV_Target0
                 float FallOffStart = AllLight[i].LightRange * 0.15f;
                 float FallOffEnd = AllLight[i].LightRange;
                 
-                if (Distance > FallOffEnd)
+                if (Distance > FallOffEnd + FallOffStart)
                 {
                     continue;
                 }
@@ -126,13 +130,13 @@ float4 MeshTexture_PS(Output _Input) : SV_Target0
                 LightPower *= saturate((FallOffEnd - Distance) / (FallOffEnd - FallOffStart));
             }
             
-            if(2 == AllLight[i].LightType)
-            {                
+            if (2 == AllLight[i].LightType)
+            {
                 float3 LightVec = normalize(AllLight[i].LightPos.xyz - _Input.WORLDPOSITION.xyz);
                 float3 SpotCone = pow(saturate(dot(LightVec, normalize(AllLight[i].LightDir.xyz))), AllLight[i].LightAngle);
                 
                 LightPower *= SpotCone;
-            }            
+            }
             
             if (0.0f < LightPower)
             {
@@ -141,15 +145,17 @@ float4 MeshTexture_PS(Output _Input) : SV_Target0
             
                 // Spacular Light 계산
                 float4 SpacularRatio = CalSpacularLight(_Input.VIEWPOSITION, NormalDir, AllLight[i]) * (1.0f - AlbmData.a);
-            
-                ResultColor += ((RGBA * DiffuseRatio) + (AlbmData * SpacularRatio)) * LightPower;
-            } 
+                            
+                ResultColor += AllLight[i].LightColor * (RGBA * (DiffuseRatio.x + SpacularRatio.x) * LightPower);
+            }
         }
         
         ResultColor += RGBA * AmbientRatio;
-        ResultColor.a = A;
     }
             
+    // Alpha 값 고정
+    ResultColor.a = A;
+    
     if (1.0f != BaseColor.a)
     {
         float Step = ((_Input.POSITION.x + (_Input.POSITION.y * 2)) % 5) + 1;
