@@ -388,11 +388,8 @@
     <ClInclude Include="imstb_rectpack.h" />
     <ClInclude Include="imstb_textedit.h" />
     <ClInclude Include="imstb_truetype.h" />
+    <ClInclude Include="PhysicsActor.h" />
     <ClInclude Include="PhysicsLevel.h" />
-    <ClInclude Include="PhysXActor.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="PhysXBoxComponent.h" />
     <ClInclude Include="PhysXConvexComponent.h">
       <SubType>
@@ -830,11 +827,8 @@
     <ClCompile Include="imgui_impl_win32.cpp" />
     <ClCompile Include="imgui_tables.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
+    <ClCompile Include="PhysicsActor.cpp" />
     <ClCompile Include="PhysicsLevel.cpp" />
-    <ClCompile Include="PhysXActor.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="PhysXBoxComponent.cpp" />
     <ClCompile Include="PhysXConvexComponent.cpp">
       <SubType>

@@ -4,18 +4,18 @@
 #include "PhysXDefault.h"
 
 // Ό³Έν :
-class PhysXActor
+class PhysicsActor
 {
 public:
 	// constrcuter destructer
-	PhysXActor();
-	~PhysXActor();
+	PhysicsActor();
+	~PhysicsActor();
 
 	// delete Function
-	PhysXActor(const PhysXActor& _Other) = delete;
-	PhysXActor(PhysXActor&& _Other) noexcept = delete;
-	PhysXActor& operator=(const PhysXActor& _Other) = delete;
-	PhysXActor& operator=(PhysXActor&& _Other) noexcept = delete;
+	PhysicsActor(const PhysicsActor& _Other) = delete;
+	PhysicsActor(PhysicsActor&& _Other) noexcept = delete;
+	PhysicsActor& operator=(const PhysicsActor& _Other) = delete;
+	PhysicsActor& operator=(PhysicsActor&& _Other) noexcept = delete;
 
 	template<typename Type>
 	void SetPhysXComponent(std::shared_ptr<Type> _Component)
@@ -36,10 +36,10 @@ public:
 		}
 	}
 
+	std::shared_ptr<GameEngineComponent> PhysXComponent = nullptr;
 protected:
 
 private:
-	std::shared_ptr<GameEngineComponent> PhysXComponent = nullptr;
 
 };
 

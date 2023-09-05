@@ -13,6 +13,7 @@
 #include <GameEngineCore/GameEngineDebug3D.h>
 #include <GameEngineCore/GameEngineActor.h>
 #include <GameEngineCore/GameEngineLevel.h>
+#include <GameEngineCore/PhysicsActor.h>
 
 #include "ContentsEnum.h"
 #include "BaseLog.h"
