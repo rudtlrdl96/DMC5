@@ -559,13 +559,26 @@ void AnimationToolWindow::PreviewObject()
 
 void AnimationToolWindow::Release()
 {
-	if (Renderer != nullptr && ImGui::Button("Set Vergil Human"))
+	if (ImGui::Button("Set Nero Human"))
 	{
-		for (int i = 0; i <= 17; i++)
+		for (int i = 0; i <= 14; i++)
 		{
 			Renderer->GetAllRenderUnit()[0][i]->On();
 		}
-		for (int i = 20; i <= 22; i++)
+
+		for (int i = 17; i <= 23; i++)
+		{
+			Renderer->GetAllRenderUnit()[0][i]->Off();
+		}
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Set Vergil Human"))
+	{
+		for (int i = 9; i <= 21; i++)
+		{
+			Renderer->GetAllRenderUnit()[0][i]->On();
+		}
+		for (int i = 2; i <= 4; i++)
 		{
 			Renderer->GetAllRenderUnit()[0][i]->Off();
 		}
