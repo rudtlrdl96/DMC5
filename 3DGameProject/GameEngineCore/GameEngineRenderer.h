@@ -38,6 +38,7 @@ public:
 	int IsAnimation = 0;
 	int IsLight = 1;
 	int IsNormal = 0;
+	int IsSpecular = 0;
 	float4 ScreenScale;
 	float4 Mouse;
 	float4 ClipColor = float4(-1.0f, -1.0f, -1.0f, 0.0f);

@@ -1,5 +1,5 @@
 
-struct LightData 
+struct LightData
 {
     float4x4 LightViewMatrix;
     float4x4 LightViewInverseMatrix;
@@ -26,7 +26,9 @@ struct LightData
     float AmbLightPower;
     float SpcPow;
     int LightType;
-    float PointLightRange;
+    float LightRange;
+    float LightAngle;
+    float LightPower;
     int Temp2;
     int Temp3;
 };
@@ -42,9 +44,24 @@ float4 CalDiffuseLight(float4 _Pos,  float4 _Normal, LightData _Data)
     float4 ResultRatio = (float4) 0.0f;
 
     _Normal = normalize(_Normal); // N
-    float4 LightRevDir = normalize(_Data.ViewLightRevDir); // L
     
+    float4 LightRevDir = float4(0, 0, 0, 0);
+       
+    if(0 == _Data.LightType) // Dir
+    {
+        LightRevDir = normalize(_Data.ViewLightRevDir); // L
+    }
+    else if (1 == _Data.LightType) // Point
+    {
+        LightRevDir = float4(normalize(_Data.LightPos.xyz - _Pos.xyz), 0.0f); // L
+    }
+    else if (2 == _Data.LightType) // Spot
+    {
+        LightRevDir = float4(normalize(_Data.LightPos.xyz - _Pos.xyz), 0.0f); // L
+    }
+        
     ResultRatio = max(0.0f, dot(_Normal.xyz, LightRevDir.xyz));
+    
     return ResultRatio;
 }
 
@@ -55,27 +72,40 @@ float4 CalSpacularLight(float4 _Pos, float4 _Normal, LightData _Data)
     _Normal.xyz = normalize(_Normal.xyz); // N
     _Data.ViewLightRevDir.xyz = normalize(_Data.ViewLightRevDir.xyz); // L
     
-    float4 LightDir = _Data.ViewLightRevDir;
+    float4 LightRevDir = (float4)0;
+    
+    if (0 == _Data.LightType) // Dir
+    {
+        LightRevDir = normalize(_Data.ViewLightRevDir); // L
+    }
+    else if (1 == _Data.LightType) // Point
+    {
+        LightRevDir = float4(normalize(_Data.LightPos.xyz - _Pos.xyz), 0.0f); // L
+    }
+    else if (2 == _Data.LightType) // Spot
+    {
+        LightRevDir = float4(normalize(_Data.LightPos.xyz - _Pos.xyz), 0.0f); // L
+    }
     
     // ¹Ý»çº¤ÅÍ
     // 
-    float3 Reflection = normalize(2.0f * _Normal.xyz * dot(LightDir.xyz, _Normal.xyz) - LightDir.xyz); //  N
+    float3 Reflection = normalize(2.0f * _Normal.xyz * dot(LightRevDir.xyz, _Normal.xyz) - LightRevDir.xyz); //  N
     
     // ´«ÀÌ ¾îµðÀÖ³Ä
     float3 Eye = normalize(_Data.CameraPosition.xyz - _Pos.xyz); // L
     
     // 0 ~ 1
     float Result = max(0.0f, dot(Reflection.xyz, Eye.xyz));
-    
+        
     // SpacularLight.xyzw = Result;
-    SpacularLight.xyzw = pow(Result, 100);
-    
+    SpacularLight.xyzw = pow(Result, 10);
+        
     return SpacularLight;
 
 }
 
 float4 CalAmbientLight(LightData _LightData)
-{
+{    
     return _LightData.AmbientLight;
 }
 

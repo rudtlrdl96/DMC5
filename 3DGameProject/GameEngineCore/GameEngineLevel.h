@@ -121,6 +121,13 @@ public:
 		return DirectionalLight;
 	}
 
+	// Point Ligh를 생성합니다
+	std::shared_ptr<GameEngineLight> CreatePointLight(const float4& _Pos, float _Range);
+
+	// Spot Light를 생성합니다.
+	std::shared_ptr<GameEngineLight> CreateSpotLight(const float4& _Pos, float _Range, float _Angle);
+
+
 protected:
 	// 레벨이 바뀌어서 시작할때
 	virtual void LevelChangeStart();

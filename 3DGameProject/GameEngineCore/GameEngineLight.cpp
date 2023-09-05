@@ -20,8 +20,11 @@ void GameEngineLight::Start()
 
 void GameEngineLight::Update(float _DeltaTime)
 {
-	//LightDataValue.LightPos = GetTransform()->GetWorldPosition();
-	//LightDataValue.LightDir = GetTransform()->GetLocalForwardVector();
+	if (true == IsDebugDraw)
+	{
+		GetTransform()->SetWorldScale(float4(LightDataValue.LightRange, LightDataValue.LightRange, LightDataValue.LightRange));
+		GameEngineDebug::DrawSphere(GetLevel()->GetCamera(0).get(), GetTransform(), float4::GREEN);
+	}
 }
 
 void GameEngineLight::LightUpdate(GameEngineCamera* _Camera, float _DeltaTime)

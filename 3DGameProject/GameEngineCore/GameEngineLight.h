@@ -7,8 +7,9 @@
 
 enum class LightType
 {
-
-
+    Directional,
+    Point,
+    Spot
 };
 
 struct LightData
@@ -39,7 +40,9 @@ struct LightData
     float AmbLightPower = 1.0f;
     float SpcPow = 50.0f;
     int LightType = 0;
-    float PointLightRange = 100.0f;
+    float LightRange = 100.0f;
+    float LightAngle = 10.0f;
+    float LightPower = 1.0f;
     int Temp2;
     int Temp3;
 };
@@ -74,16 +77,17 @@ public:
     {
         return LightDataValue;
     }
-
-    void SetLightType()
-    {
     
-    }
+    bool IsDebugDraw = false;
 
 protected:
 
 private:
     LightData LightDataValue;
 
+    inline void SetLightType(LightType _Type)
+    {
+        LightDataValue.LightType = static_cast<int>(_Type);
+    }
 };
 

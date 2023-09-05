@@ -8,7 +8,7 @@
 
 #include "ShaderTestActor.h"
 #include "Plane.h"
-
+#include "FreeCameraActor.h"
 
 
 MainLevel* MainLevel::Inst = nullptr;
@@ -66,6 +66,15 @@ void MainLevel::Start()
 	std::shared_ptr<ShaderTestActor> NewTestActor4 = CreateActor<ShaderTestActor>();
 	NewTestActor4->GetTransform()->SetLocalPosition({ 280, 10, 0 });
 	NewTestActor4->InitTest(4);
+
+	CreateActor<FreeCameraActor>();
+
+	//std::shared_ptr<GameEngineLight> NewPointLight = CreatePointLight(float4(140, 10, 0), 300);
+
+	CreateScene("MainLevel");
+
+	std::shared_ptr<GameEngineLight> NewSpotLight = CreateSpotLight(float4(0, 50, 0), 500, 5);
+	NewSpotLight->GetTransform()->SetLocalRotation(float4(-90, 0, 0));
 }
 
 void MainLevel::Update(float _DeltaTime)
@@ -123,8 +132,6 @@ void MainLevel::Update(float _DeltaTime)
 void MainLevel::LevelChangeStart()
 {
 	GameEngineLevel::LevelChangeStart();
-
-
 }
 
 void MainLevel::LevelChangeEnd()

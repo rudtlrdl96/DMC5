@@ -17,7 +17,8 @@ struct Input
 struct Output
 {
     float4 POSITION : SV_POSITION;
-    float4 VIEWPOSITION : POSITION;
+    float4 WORLDPOSITION : POSITION1;
+    float4 VIEWPOSITION : POSITION2;
     float4 TEXCOORD : TEXCOORD;
     float4 NORMAL : NORMAL;
     float4 TANGENT : TANGENT;
@@ -34,6 +35,7 @@ Output MeshTexture_VS(Input _Input)
     NewOutPut.POSITION = mul(InputPos, WorldViewProjectionMatrix);
     NewOutPut.TEXCOORD = _Input.TEXCOORD;
     
+    NewOutPut.WORLDPOSITION = mul(InputPos, WorldMatrix);
     NewOutPut.VIEWPOSITION = mul(InputPos, WorldView);
     
     _Input.NORMAL.w = 0.0f;
@@ -80,7 +82,7 @@ float4 MeshTexture_PS(Output _Input) : SV_Target0
     }
         
     float4 RGBA = { AlbmData.r, AlbmData.g, AlbmData.b, AtosData.r };
-    float4 ResultColor = RGBA;
+    float4 ResultColor = float4(0, 0, 0, 0);
     
     if (0 != IsLight)
     {
@@ -98,21 +100,53 @@ float4 MeshTexture_PS(Output _Input) : SV_Target0
                                
         float metallic = saturate(AlbmData.a - distribution);
         
+        // AlbmData -> metallicValue 값에 따라서 결정되어야 한다        
         RGBA.rgb = lerp(AlbmData.rgb, AlbmData.rgb * 0.6f, metallic);
         
-        // AlbmData -> metallicValue 값에 따라서 결정되어야 한다
+        float A = RGBA.w;        
         
-        // Diffuse Light 계산
-        float4 DiffuseRatio = CalDiffuseLight(_Input.VIEWPOSITION, NormalDir, AllLight[0]);
+       float4 AmbientRatio = AllLight[0].AmbientLight;
         
-        // Spacular Light 계산
-        float4 SpacularRatio = CalSpacularLight(_Input.VIEWPOSITION, NormalDir, AllLight[0]) * (1.0f - AlbmData.a);
+        for (int i = 0; i < LightCount; ++i)
+        {            
+            float LightPower = AllLight[i].LightPower;
+            
+            if (0 != AllLight[i].LightType)
+            {
+                float Distance = length(AllLight[i].LightPos.xyz - _Input.WORLDPOSITION.xyz);
+                
+                float FallOffStart = AllLight[i].LightRange * 0.15f;
+                float FallOffEnd = AllLight[i].LightRange;
+                
+                if (Distance > FallOffEnd)
+                {
+                    continue;
+                }
+                
+                LightPower *= saturate((FallOffEnd - Distance) / (FallOffEnd - FallOffStart));
+            }
+            
+            if(2 == AllLight[i].LightType)
+            {                
+                float3 LightVec = normalize(AllLight[i].LightPos.xyz - _Input.WORLDPOSITION.xyz);
+                float3 SpotCone = dot(LightVec, normalize(AllLight[i].LightDir.xyz));
+                
+                LightPower *= SpotCone;
+            }            
+            
+            if (0.0f < LightPower)
+            {
+                // Diffuse Light 계산
+                float4 DiffuseRatio = CalDiffuseLight(_Input.VIEWPOSITION, NormalDir, AllLight[i]);
+            
+                // Spacular Light 계산
+                float4 SpacularRatio = CalSpacularLight(_Input.VIEWPOSITION, NormalDir, AllLight[i]) * (1.0f - AlbmData.a);
+            
+                ResultColor += ((RGBA * DiffuseRatio) + (AlbmData * SpacularRatio)) * LightPower;
+            } 
+        }
         
-        // Ambient Light 계산
-        float4 AmbientRatio = CalAmbientLight(AllLight[0]);
-        
-        float A = RGBA.w;
-        ResultColor = (RGBA * DiffuseRatio) + (AlbmData * (SpacularRatio + AmbientRatio));
+        ResultColor += RGBA * AmbientRatio;
         ResultColor.a = A;
     }
             
