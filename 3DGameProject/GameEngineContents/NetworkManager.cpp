@@ -1,13 +1,13 @@
 #include "PrecompileHeader.h"
 #include "NetworkManager.h"
 
-#include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineActor.h>
 
 #include "NetworkGUI.h"
+#include "ContentsEnum.h"
+#include "BaseLevel.h"
 
 #include "PacketEnum.h"
-#include "ContentsEnum.h"
 #include "ObjectUpdatePacket.h"
 #include "MessageChatPacket.h"
 #include "LinkObjectPacket.h"
@@ -16,8 +16,10 @@
 #include "StartStageLevel.h"
 #include "BossStageLevel.h"
 
-//#include "PlayerActor_Nero.h"
-//#include "PlayerActor_Vergil.h"
+#include "PlayerActor_Nero.h"
+#include "PlayerActor_Vergil.h"
+#include "NetTestPlayer.h"
+
 
 unsigned int NetworkManager::NetID = 0;
 
@@ -27,15 +29,16 @@ GameEngineNetClient NetworkManager::ClientInst;
 
 NetworkManager::NetworkState NetworkManager::NowState = NetworkManager::NetworkState::None;
 
-std::vector<GameEngineLevel*> NetworkManager::AllBattleLevels;
-GameEngineLevel* NetworkManager::CurLevel = nullptr;
+std::function<void(unsigned int)> NetworkManager::ConnectCallBack = nullptr;
+BaseLevel* NetworkManager::CurLevel = nullptr;
+Net_LevelType NetworkManager::CurLevelType = Net_LevelType::UNKNOWN;
 
 std::map<unsigned int, std::shared_ptr<ObjectUpdatePacket>> NetworkManager::AllUpdatePacket;
+
 std::map<PacketEnum, std::vector<std::shared_ptr<GameEnginePacket>>> NetworkManager::AllPacket;
 std::map<PacketEnum, GameEngineSerializer> NetworkManager::ChunkPackets;
 GameEngineSerializer NetworkManager::ChunkBytes;
 
-PlayerType NetworkManager::CharacterType = PlayerType::None;
 
 
 
@@ -65,43 +68,10 @@ unsigned int NetworkManager::ServerOpen(int _Port)
 
 
 
-void NetworkManager::ConnectServer(PlayerType _CharacterType)
+void NetworkManager::ConnectServer(const std::string& _IP, int PortNum, std::function<void(unsigned int)> _ConnectCallBack)
 {
-	if (false == NetworkGUI::GetInst()->ChangeFieldState())
-	{
-		MsgAssert("NetworkGUI에서 서버 연동 작업을 실행하지 않았습니다");
-		return;
-	}
-
-	//전투가 실행되는 레벨을 벡터에 저장
-	if (true == AllBattleLevels.empty())
-	{
-		AllBattleLevels.push_back(NetworkTestLevel::GetInst());
-		AllBattleLevels.push_back(StartStageLevel::GetInst());
-		AllBattleLevels.push_back(BossStageLevel::GetInst());
-	}
-	else
-	{
-		MsgAssert("이미 네트워크 기능을 실행했는데, 다시 한번 네트워크 연동을 실행하였습니다");
-		return;
-	}
-
-	CharacterType = _CharacterType;
-
-	//서버인 경우 각 전투 레벨에 플레이어 생성
-	if (NetworkState::Server == NowState)
-	{
-		for (GameEngineLevel* Level : AllBattleLevels)
-		{
-			CreateLocalPlayer(Level, GameEngineNetObject::CreateServerID());
-		}
-		return;
-	}
-
-	//클라이언트인 경우, 서버에 연결 시도
-	const std::pair<std::string_view, int> NetworkData = NetworkGUI::GetInst()->GetNetworkData();
-	const std::string_view IP = NetworkData.first;
-	const int PortNum = NetworkData.second;
+	//ConnectID 패킷을 받았을때 처리할 콜백함수 등록
+	ConnectCallBack = _ConnectCallBack;
 
 	//Thread 이름 설정
 	SetThreadDescription(GetCurrentThread(), L"Client Main Thread");
@@ -111,7 +81,7 @@ void NetworkManager::ConnectServer(PlayerType _CharacterType)
 	ClientPacketInit();
 
 	//서버 접속
-	bool IsResult = ClientInst.Connect(IP.data(), static_cast<unsigned short>(PortNum));
+	bool IsResult = ClientInst.Connect(_IP, static_cast<unsigned short>(PortNum));
 	if (true == IsResult)
 	{
 		NowState = NetworkState::Client;
@@ -119,8 +89,22 @@ void NetworkManager::ConnectServer(PlayerType _CharacterType)
 	}
 
 	//서버 접속 실패한 경우
-	std::string ErrorIP = IP.data();
+	std::string ErrorIP = _IP.data();
 	MsgAssert("이 클라이언트가 서버 접속에 실패하였습니다.\n접속을 시도한 IP : " + ErrorIP);
+}
+
+
+
+void NetworkManager::Update_PacketProcess(BaseLevel* _CurrentLevel)
+{
+	//레벨 저장(패킷 처리할때 사용됨)
+	CurLevel = _CurrentLevel;
+	CurLevelType = CurLevel->GetNetLevelType();
+
+	if (nullptr == NetInst)
+		return;
+
+	NetInst->UpdatePacket();
 }
 
 
@@ -179,7 +163,28 @@ void NetworkManager::PushUpdatePacket(GameEngineNetObject* _NetObj, GameEngineAc
 
 	//오브젝트 타입
 	UpdatePacket->ActorType = _NetObj->GetNetObjectType();
+	if (-1 == UpdatePacket->ActorType)
+	{
+		MsgAssert("ObjectUpdate패킷을 보내려는 객체의 NetObjectType을 설정해주지 않았습니다");
+		return;
+	}
 
+	//레벨 타입
+	BaseLevel* Level = dynamic_cast<BaseLevel*>(_ActorPtr->GetLevel());
+	if (nullptr == Level)
+	{
+		MsgAssert("ObjectUpdate패킷을 전송하려는 Actor가 BaseLevel을 상속받은 레벨에 존재하지 않습니다");
+		return;
+	}
+
+	Net_LevelType LevelType = Level->GetNetLevelType();
+	if (Net_LevelType::UNKNOWN == LevelType)
+	{
+		MsgAssert("ObjectUpdate패킷을 전송하려는 Actor가 알 수 없는 레벨에 존재합니다.");
+		return;
+	}
+
+	UpdatePacket->LevelType = LevelType;
 
 	GameEngineTransform* TransPtr = _ActorPtr->GetTransform();
 
@@ -202,13 +207,16 @@ void NetworkManager::PushUpdatePacket(GameEngineNetObject* _NetObj, GameEngineAc
 
 void NetworkManager::LinkNetwork(GameEngineNetObject* _NetObjPtr)
 {
-	//프로세스가 서버를 오픈하거나, 접속하지 않은 경우
-	if (nullptr == NetInst)
-		return;
-
 	//이미 서버와 연동된 경우에는 아래를 실행시키지 않음
 	if (-1 != _NetObjPtr->GetNetObjectID())
 		return;
+
+	//싱글모드 일때
+	if (nullptr == NetInst)
+	{
+		_NetObjPtr->SetUserControllType();
+		return;
+	}
 
 	//서버인 경우엔 해당 엑터를 바로 서버 연동 및 유저 컨트롤
 	if (true == IsServer())
@@ -319,7 +327,10 @@ void NetworkManager::SerializePackets(const std::vector<std::shared_ptr<GameEngi
 }
 
 
-#include "NetTestPlayer.h"
+
+
+
+
 
 std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorType _ActorType, int _ObjectID /*= -1*/)
 {
@@ -331,11 +342,14 @@ std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorTyp
 	std::shared_ptr<GameEngineNetObject> NetObject = nullptr;
 	switch (_ActorType)
 	{
-	case Net_ActorType::Nero:
+	case Net_ActorType::TestPlayer:
 		NetObject = CurLevel->CreateActor<NetTestPlayer>();
 		break;
+	case Net_ActorType::Nero:
+		NetObject = CurLevel->CreateActor<PlayerActor_Nero>();
+		break;
 	case Net_ActorType::Vergil:
-		NetObject = CurLevel->CreateActor<NetTestPlayer>();
+		NetObject = CurLevel->CreateActor<PlayerActor_Vergil>();
 		break;
 	default:
 	{
@@ -355,35 +369,4 @@ std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorTyp
 	}
 
 	return NetObject;
-}
-
-
-
-void NetworkManager::CreateLocalPlayer(class GameEngineLevel* _Level, int _ObjectID)
-{
-	if (nullptr == _Level)
-	{
-		MsgAssert("플레이어를 생성하려는 Level이 nullptr입니다");
-		return;
-	}
-
-	//std::shared_ptr<BasePlayerActor> Player = nullptr;
-
-	if (PlayerType::None == CharacterType)
-	{
-		MsgAssert("선택한 플레이어가 PlayerType::None입니다");
-	}
-	/*else if (PlayerType::Nero == CharacterType)
-	{
-		Player = _Level->CreateActor<PlayerActor_Nero>();
-	}
-	else if (PlayerType::Vergil == CharacterType)
-	{
-		Player = _Level->CreateActor<PlayerActor_Vergil>();
-	}*/
-
-	std::shared_ptr<NetTestPlayer> Player = nullptr;
-	Player = _Level->CreateActor<NetTestPlayer>();
-	Player->InitNetObject(_ObjectID, NetInst);
-	Player->SetUserControllType();
 }

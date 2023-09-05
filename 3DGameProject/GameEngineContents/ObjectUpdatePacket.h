@@ -3,6 +3,7 @@
 #include <GameEngineCore/GameEngineTransform.h>
 
 #include "PacketEnum.h"
+#include "ContentsEnum.h"
 
 class ObjectUpdatePacket : public GameEnginePacket
 {
@@ -40,6 +41,9 @@ protected:
 
 		_Ser << TimeScale;
 		_Ser << IsDeath;
+
+		unsigned int Level = static_cast<int>(LevelType);
+		_Ser << Level;
 	}
 
 	void DeSeralize(GameEngineSerializer& _Ser) override
@@ -54,10 +58,15 @@ protected:
 
 		_Ser >> TimeScale;
 		_Ser >> IsDeath;
+
+		unsigned int Level = 0;
+		_Ser >> Level;
+		LevelType = static_cast<Net_LevelType>(Level);
 	}
 
 private:
 	unsigned int NetID = -1;
 	unsigned int ActorType = -1;
+	Net_LevelType LevelType = Net_LevelType::UNKNOWN;
 };
 

@@ -23,13 +23,6 @@ void NetworkManager::AcceptCallback(SOCKET _Socket, GameEngineNetServer* _Server
 	int ClientID = GameEngineNetObject::CreateServerID();
 	Packet->SetObjectID(ClientID);
 
-	//플레이어 캐릭터를 생성시킬 오브젝트 아이디 생성
-	Packet->AllObjectID.resize(AllBattleLevels.size(), 0);
-	for (size_t i = 0; i < AllBattleLevels.size(); ++i)
-	{
-		Packet->AllObjectID[i] = GameEngineNetObject::CreateServerID();
-	}
-
 	//상대방의 ID와 소켓을 연관지어 저장
 	_Server->AddUser(ClientID, _Socket);
 
@@ -46,6 +39,10 @@ void NetworkManager::ServerPacketInit()
 	NetInst->Dispatcher.AddHandler<ObjectUpdatePacket>(
 		[=](std::shared_ptr<ObjectUpdatePacket> _Packet)
 	{
+		//클라로 부터 받은 패킷이 현재 레벨과 다른 경우
+		if (CurLevelType != _Packet->LevelType)
+			return;
+
 		unsigned int ObjID = _Packet->GetObjectID();
 
 		//해당 NetObejctID의 객체가 존재하지 않는 경우 여기서 만들어버리기

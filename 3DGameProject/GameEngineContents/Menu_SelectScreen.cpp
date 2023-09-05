@@ -33,7 +33,7 @@ void Menu_SelectScreen::Start()
 	MissionButton->GetRender_Enter2()->GetTransform()->SetLocalPosition({ 200.0f,0.0f,0.0f });
 	MissionButton->SetEvent([this]()
 		{
-			NetworkManager::ConnectServer(PlayerType::Nero);
+			//NetworkManager::ConnectServer(PlayerType::Nero);
 			GameEngineCore::ChangeLevel("TestStageLevel");
 		});
 	CustomizeButton = GetLevel()->CreateActor<UIButton>();

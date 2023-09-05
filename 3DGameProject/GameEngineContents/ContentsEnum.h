@@ -27,6 +27,7 @@ enum class Net_ActorType
 	//플레이어
 	Nero,
 	Vergil,
+	TestPlayer,
 
 	//몬스터
 
@@ -45,13 +46,11 @@ enum class PlayerType
 
 enum class Net_LevelType
 {
-	Intro,
-	Title,
-	SelectCharacter,
-
 	StartStage,
 	BossStage,
-	//TODO
+	NetTestLevel,
+
+	UNKNOWN
 };
 
 enum class ActorOrder

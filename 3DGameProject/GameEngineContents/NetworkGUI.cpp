@@ -21,17 +21,7 @@ void NetworkGUI::Start()
 {
 	AllStateFunc.resize(static_cast<size_t>(State::COUNT), nullptr);
 	AllStateFunc[static_cast<size_t>(State::SelectWait)] = std::bind(&NetworkGUI::Update_SelectWait, this);
-	AllStateFunc[static_cast<size_t>(State::ServerWait)] = [=]() 
-	{
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), Title.c_str());
-		ImGui::Text("Server Open Success");
-	};
-	AllStateFunc[static_cast<size_t>(State::ClientWait)] = [=]() 
-	{
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), Title.c_str());
-		ImGui::Text("Waiting Server Connect..");
-	};
-	AllStateFunc[static_cast<size_t>(State::OnFieldStage)] = std::bind(&NetworkGUI::Update_OnFieldStage, this);
+	AllStateFunc[static_cast<size_t>(State::Chat)] = std::bind(&NetworkGUI::Update_Chat, this);
 
 	NickName.resize(16, 0);
 	Message.resize(32, 0);
@@ -64,25 +54,22 @@ void NetworkGUI::Update_SelectWait()
 {
 	ImGui::Text(Title.c_str());
 
-	ImGui::InputText("IP", IpNum, 64);
+	ImGui::InputText("IP", IpNum, 16);
 	ImGui::InputInt("Port ", &PortNum);
 	ImGui::InputText("NickName", &NickName[0], NickName.size());
 
 	//호스트 버튼을 누른 경우
-	if (ImGui::Button(BtnText_ForHost.data()))
+	if (ImGui::Button("Play For Host"))
 	{
-		CurState = State::ServerWait;
-
-		//GUI 제목 초기화
-		Title = "This is Host";
-
-		//닉네임 초기화
-		/*if (0 == NickName.front())
-		{
-			NickName = "Unknown";
-		}*/
+		//서버 오픈 및 닉네임 초기화
 		unsigned int NetID = NetworkManager::ServerOpen(PortNum);
 		InitName(NetID);
+
+
+		//GUI 제목 및 상태 변경
+		Title = "Server Open Success!";
+		CurState = State::Chat;
+
 
 		//UI쪽에서 넣은 콜백 호출
 		if (nullptr != EntryCallBack)
@@ -94,20 +81,14 @@ void NetworkGUI::Update_SelectWait()
 	}
 
 	//클라이언트 버튼을 누른 경우
-	if (ImGui::Button(BtnText_ForClient.data()))
+	if (ImGui::Button("Play For Client"))
 	{
-		CurState = State::ClientWait;
+		//서버와 연결 및 닉네임 변경 콜백 등록
+		NetworkManager::ConnectServer(IpNum, PortNum, std::bind(&NetworkGUI::InitName, this, std::placeholders::_1));
 
-		//GUI 제목 초기화
-		Title = "This is Client";
-
-		//닉네임 초기화
-		/*if (0 == NickName.front())
-		{
-			NickName = "Unknown";
-		}*/
-
-		//서버 연결은 캐릭터를 선택하고 난 뒤에
+		//GUI 제목 및 상태 변경
+		Title = "Server Connect Success";
+		CurState = State::Chat;
 
 		//UI쪽에서 넣은 콜백 호출
 		if (nullptr != EntryCallBack)
@@ -119,16 +100,6 @@ void NetworkGUI::Update_SelectWait()
 	}
 }
 
-
-
-bool NetworkGUI::ChangeFieldState()
-{
-	if (State::ServerWait != CurState && State::ClientWait != CurState)
-		return false;
-
-	CurState = State::OnFieldStage;
-	return true;
-}
 
 void NetworkGUI::InitName(unsigned int _NetID)
 {
@@ -148,7 +119,7 @@ void NetworkGUI::InitName(unsigned int _NetID)
 }
 
 
-void NetworkGUI::Update_OnFieldStage() 
+void NetworkGUI::Update_Chat()
 {
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), Title.c_str());
 	ImGui::Text(LocalPrintNickName.c_str());

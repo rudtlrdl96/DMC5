@@ -41,14 +41,6 @@ void GameEngineNetObject::Update_ProcessPackets()
 		if (NetControllType::UserControll == Pair.second->ControllType)
 			continue;
 
-		//연결이 끊긴 경우
-		if (true == Pair.second->IsDisconnect)
-		{
-			int a = 0;
-			//continue;
-		}
-			
-
 		//처리할 패킷이 없는 경우
 		if (true == Pair.second->Packets.empty())
 			continue;

@@ -20,11 +20,25 @@ NetworkTestLevel::~NetworkTestLevel()
 void NetworkTestLevel::Start()
 {
 	BaseLevel::Start();
+	BaseLevel::SetNetLevelType(Net_LevelType::NetTestLevel);
+
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 
 	GameEngineInput::CreateKey("Test_ConnectServer", 'C');
 	GameEngineInput::CreateKey("Test_CreateTestNetEnemy", 'V');
 	GameEngineInput::CreateKey("Test_BackMainLevel", VK_ESCAPE);
+}
+
+void NetworkTestLevel::LevelChangeStart()
+{
+	BaseLevel::LevelChangeStart();
+
+	//예시코드
+	std::shared_ptr<NetTestPlayer> Player = nullptr;
+	Player = CreateActor<NetTestPlayer>();
+
+	//요걸 호출시켜주시면 됩니다.
+	NetworkManager::LinkNetwork(Player.get());
 }
 
 void NetworkTestLevel::Update(float _DeltaTime)
@@ -42,7 +56,7 @@ void NetworkTestLevel::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsDown("Test_ConnectServer") && false == IsConnect)
 	{
 		IsConnect = true;
-		NetworkManager::ConnectServer(PlayerType::Nero);
+		//NetworkManager::ConnectServer(PlayerType::Nero);
 		return;
 	}
 
