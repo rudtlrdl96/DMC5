@@ -5,7 +5,6 @@
 #include "AnimationEvent.h"
 #include "PlayerController.h"
 
-#include "PlayerWindow.h"
 
 PlayerActor_Vergil::~PlayerActor_Vergil()
 {
@@ -60,7 +59,6 @@ void PlayerActor_Vergil::VergilLoad()
 				std::bind(&BasePlayerActor::SetMove, this, std::placeholders::_1)
 			}
 			});
-		PlayerWindow::Renderer = Renderer.get();
 		SetHuman();
 		YamatoOff();
 	}
