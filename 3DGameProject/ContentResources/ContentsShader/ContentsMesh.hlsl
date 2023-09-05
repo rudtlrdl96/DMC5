@@ -68,7 +68,7 @@ float4 MeshTexture_PS(Output _Input) : SV_Target0
     // rgb = 색상, a = metallicValue 
     float4 AlbmData = DiffuseTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
     
-    // rgb = NormalMap, a = roughnessValue 
+    // rgb = NormalMap, a = smoothnessValue 
     float4 NrmrData = NormalTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
     
     // r = Alpha, gba = sss
@@ -91,13 +91,14 @@ float4 MeshTexture_PS(Output _Input) : SV_Target0
             NormalDir += NormalTexCalculate(NrmrData, _Input.TEXCOORD, _Input.TANGENT, _Input.BINORMAL, _Input.NORMAL);
         }
                 
+        // 반사량 계산 공식 러프니스 값에 따라서 결정된다        
         float roughness = 1.0 - NrmrData.r; // smoothness는 러프니스 값입니다.
         float3 reflection = reflect(AllLight[0].LightRevDir.xyz, NormalDir.xyz); // 빛의 반사 방향 계산
         float distribution = GGX_Distribution(NormalDir.xyz, reflection, roughness); // 반사 분포 계산
                                
         float metallic = saturate(AlbmData.a - distribution);
         
-        RGBA.rgb = lerp(AlbmData.rgb, AlbmData.rgb * 0.5f, metallic);
+        RGBA.rgb = lerp(AlbmData.rgb, AlbmData.rgb * 0.6f, metallic);
         
         // AlbmData -> metallicValue 값에 따라서 결정되어야 한다
         
@@ -120,6 +121,8 @@ float4 MeshTexture_PS(Output _Input) : SV_Target0
         float Step = ((_Input.POSITION.x + (_Input.POSITION.y * 2)) % 5) + 1;
         ResultColor.a = 1.0f - ((Step / 5.0f) * (1.0f - BaseColor.a));
     }
-        
+    
+    clip(1.0f - ResultColor.a);
+            
     return ResultColor;
 }

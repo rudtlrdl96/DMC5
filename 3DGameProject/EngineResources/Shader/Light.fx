@@ -68,7 +68,7 @@ float4 CalSpacularLight(float4 _Pos, float4 _Normal, LightData _Data)
     float Result = max(0.0f, dot(Reflection.xyz, Eye.xyz));
     
     // SpacularLight.xyzw = Result;
-    SpacularLight.xyzw = pow(Result, 200);
+    SpacularLight.xyzw = pow(Result, 100);
     
     return SpacularLight;
 
