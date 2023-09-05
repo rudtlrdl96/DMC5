@@ -236,6 +236,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="LinkObjectPacket.h" />
     <ClInclude Include="MainMenuBG.h">
       <SubType>
       </SubType>

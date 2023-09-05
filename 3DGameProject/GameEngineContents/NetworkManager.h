@@ -67,14 +67,17 @@ public:
 	}
 
 
-	static void PushChat(const std::string_view& _Msg);
+	static void PushChatPacket(const std::string_view& _Msg);
 
 
 	//Update패킷을 보낼때 이 인터페이스를 이용해서 보내주시면 됩니다.
 	static void PushUpdatePacket(GameEngineNetObject* _NetObj, GameEngineActor* _ActorPtr, float _TimeScale = 1.f);
 
-	//실제 업데이트 패킷을 처리하는 부분
-	static void FlushUpdatePacket();
+	//이미 생성되어 있는 오브젝트를 서버와 연동시킵니다.
+	static void LinkNetwork(GameEngineNetObject* _NetObjPtr);
+
+	//쌓여있던 모든 패킷을 전송하는 부분
+	static void FlushPackets();
 
 protected:
 	static GameEngineNet* GetNetInst()

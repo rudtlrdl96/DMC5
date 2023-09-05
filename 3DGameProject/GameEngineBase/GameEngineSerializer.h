@@ -365,6 +365,8 @@ public:
 		return Return;
 	}
 
+	void operator << (const GameEngineSerializer& _Ser);
+
 protected:
 
 private:

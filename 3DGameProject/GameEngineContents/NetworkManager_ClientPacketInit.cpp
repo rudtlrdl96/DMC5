@@ -8,6 +8,7 @@
 #include "ConnectIDPacket.h"
 #include "ObjectUpdatePacket.h"
 #include "MessageChatPacket.h"
+#include "LinkObjectPacket.h"
 
 ////////
 //		클라 패킷 초기화
@@ -43,7 +44,7 @@ void NetworkManager::ClientPacketInit()
 		//연결 성공 메세지 보내기
 		const std::string& ClientName = NetworkGUI::GetInst()->GetNickName();
 		std::string ChatMsg = ClientName + " Success Server Connect";
-		PushChat(ChatMsg);
+		PushChatPacket(ChatMsg);
 	});
 
 
@@ -95,4 +96,13 @@ void NetworkManager::ClientPacketInit()
 		NetworkGUI::GetInst()->PrintLog(_Packet->Message);
 	});
 	
+
+	//LinkObjectPacket 처리
+	NetInst->Dispatcher.AddHandler<LinkObjectPacket>(
+		[](std::shared_ptr<LinkObjectPacket> _Packet)
+	{
+		GameEngineNetObject* ObjPtr = reinterpret_cast<GameEngineNetObject*>(_Packet->Ptr);
+		ObjPtr->InitNetObject(_Packet->GetObjectID(), NetInst);
+		ObjPtr->SetUserControllType();
+	});
 }

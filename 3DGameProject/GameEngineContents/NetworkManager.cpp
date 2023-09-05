@@ -10,6 +10,7 @@
 #include "ContentsEnum.h"
 #include "ObjectUpdatePacket.h"
 #include "MessageChatPacket.h"
+#include "LinkObjectPacket.h"
 
 #include "NetworkTestLevel.h"
 #include "StartStageLevel.h"
@@ -123,7 +124,7 @@ void NetworkManager::ConnectServer(PlayerType _CharacterType)
 }
 
 
-void NetworkManager::PushChat(const std::string_view& _Msg)
+void NetworkManager::PushChatPacket(const std::string_view& _Msg)
 {
 	std::shared_ptr<MessageChatPacket> ChatPacket = std::make_shared<MessageChatPacket>();
 	ChatPacket->SetPacketID(PacketEnum::MessageChatPacket);
@@ -199,7 +200,35 @@ void NetworkManager::PushUpdatePacket(GameEngineNetObject* _NetObj, GameEngineAc
 }
 
 
-void NetworkManager::FlushUpdatePacket()
+void NetworkManager::LinkNetwork(GameEngineNetObject* _NetObjPtr)
+{
+	//프로세스가 서버를 오픈하거나, 접속하지 않은 경우
+	if (nullptr == NetInst)
+		return;
+
+	//이미 서버와 연동된 경우에는 아래를 실행시키지 않음
+	if (-1 != _NetObjPtr->GetNetObjectID())
+		return;
+
+	//서버인 경우엔 해당 엑터를 바로 서버 연동 및 유저 컨트롤
+	if (true == IsServer())
+	{
+		_NetObjPtr->InitNetObject(GameEngineNetObject::CreateServerID(), NetInst);
+		_NetObjPtr->SetUserControllType();
+		return;
+	}
+
+	//클라인 경우엔 서버에 생성 요청 패킷을 생성
+	std::shared_ptr<LinkObjectPacket> LinkPacket = std::make_shared<LinkObjectPacket>();
+	LinkPacket->SetObjectID(NetID);
+	LinkPacket->ActorType = _NetObjPtr->GetNetObjectType();
+	LinkPacket->Ptr = reinterpret_cast<unsigned __int64>(_NetObjPtr);
+
+	AllPacket[PacketEnum::LinkObjectPacket].push_back(LinkPacket);
+}
+
+
+void NetworkManager::FlushPackets()
 {
 	if (nullptr == NetInst)
 		return;

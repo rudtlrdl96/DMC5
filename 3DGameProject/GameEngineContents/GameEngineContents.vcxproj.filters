@@ -343,6 +343,9 @@
     <ClInclude Include="TestStageLevel.h">
       <Filter>Levels\Test</Filter>
     </ClInclude>
+    <ClInclude Include="LinkObjectPacket.h">
+      <Filter>Server\01.Packet\02.Global</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
