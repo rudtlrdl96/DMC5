@@ -18,10 +18,14 @@ protected:
 	void Start() override;
 	void Update(float _Delta) override;
 private:
+	void LerpItem(float _Delta);
+	void SetIndex();
+	void SetExText();
 	std::shared_ptr<class Shop_TitleButton> RedQueenButton = nullptr;
 	std::shared_ptr<class Shop_ItemButton>  SkillButton = nullptr;
+	std::shared_ptr<class Shop_ExplaneUI> ExplanePtr = nullptr;
 	bool Test = false;
-	
+
 	int Index = 0;
 	int PrevIndex = 5;
 	bool Exception = false;

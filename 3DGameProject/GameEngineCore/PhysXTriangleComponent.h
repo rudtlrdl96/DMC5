@@ -1,10 +1,10 @@
 #pragma once
 
 #include "GameEngineComponent.h"
-#include "PhysXDefault.h"
+#include "PhysicsActor.h"
 
 // 설명 :
-class PhysXTriangleComponent : public GameEngineComponent, public PhysXDefault
+class PhysXTriangleComponent : public GameEngineComponent, public PhysicsActor
 {
 public:
 	// constrcuter destructer
@@ -18,15 +18,6 @@ public:
 	PhysXTriangleComponent& operator=(PhysXTriangleComponent&& _Other) noexcept = delete;
 	
 	void CreatePhysXActors(const std::string& _MeshName, bool _InverseIndex = true, float _Ratio = 1.f, float4 _GeoMetryRot = { 0.0f, 0.0f });
-
-	inline void ReleasePhysX()
-	{
-		if (true == m_pRigidStatic->isReleasable())
-		{
-			m_pRigidStatic->release();
-			ParentActor.lock()->Death();
-		}
-	}
 
 	inline void SetPositionSetFromParentFlag(bool _Flag)
 	{
@@ -48,16 +39,12 @@ private:
 	physx::PxMaterial* m_pMaterial = nullptr;
 	physx::PxShape* m_pShape = nullptr;
 	physx::PxShape* m_pTriggershape = nullptr;
-	physx::PxRigidStatic* m_pRigidStatic = nullptr;
 
 	physx::PxConvexMesh* m_pConvexMesh = nullptr;
 
 	std::vector<std::vector<physx::PxVec3>> VertexVec;
 	std::vector<std::vector<physx::PxU32>> IndexVec;
 	std::shared_ptr<class GameEngineFBXMesh> Mesh = nullptr;
-
-	// 이 컴포넌트를 가지고 있는 Parent에 대한 정보
-	std::weak_ptr<GameEngineActor> ParentActor;
 
 	bool PositionSetFromParentFlag;
 

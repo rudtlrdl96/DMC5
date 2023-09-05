@@ -396,3 +396,8 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# ImGui
+/3DGameProject/App/imgui.ini
+/3DGameProject/App/imgui.ini
+/3DGameProject/ContentResources/Map/TestMap/Location2.MeshFBX

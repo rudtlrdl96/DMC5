@@ -10,8 +10,6 @@ public:
 	std::string _Name = "";
 	std::string _Price = "";
 	std::string _png = "";
-	int Index = 0;
-
 };
 class GameEngineCollision;
 class Shop_ItemButton : public GameEngineActor
@@ -65,9 +63,7 @@ public:
 	{
 		IsPosValue = _Value;
 	}
-	void SetTextFont(const ShopTextParameter& _Parameter);
-	
-	static void CreateItemUI(GameEngineLevel* _Level,float4 _Pos,const ShopTextParameter& _Param);
+	static void CreateItemUI(GameEngineLevel* _Level, float4 _Pos, const ShopTextParameter& _Param, GameEngineTransform* _Trans);
 
 protected:
 	void Start() override;
@@ -80,7 +76,7 @@ private:
 	void MoveRender(float _Delta);
 	void SizeUpDown(float _Delta);
 
-	float4 LerpScaleSize(float4 _Start , float4 _End , float _Ratio); // 공통기능으로 만들기
+	float4 LerpScaleSize(float4 _Start, float4 _End, float _Ratio); // 공통기능으로 만들기
 	std::shared_ptr<GameEngineUIRenderer> Render = nullptr; //선택 아닐때 기본렌더
 	std::shared_ptr<GameEngineUIRenderer> Render_Select = nullptr; // 선택되면 차오르는 놈
 	std::shared_ptr<GameEngineUIRenderer> SkillBase_Render = nullptr; //선택 아닐때 기본 스킬창 틀

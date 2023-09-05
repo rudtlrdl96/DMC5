@@ -19,8 +19,7 @@ void PlayerCamera::Start()
 
 	CameraTarget = GetLevel()->CreateActor<GameEngineActor>()->GetTransform();
 	CameraTarget->SetParent(CameraArm);
-	CameraTarget->SetLocalPosition({ 0, 100, -300 });
-
+	CameraTarget->SetLocalPosition(CameraDistance);
 	CameraTransform = GetLevel()->GetMainCamera()->GetTransform();
 }
 
@@ -52,6 +51,14 @@ void PlayerCamera::Update(float _DeltaTime)
 	if (GameEngineInput::IsPress("Player_CameraDown"))
 	{
 		x += CameraRotXSpeed * _DeltaTime;
+	}
+	if (GameEngineInput::IsPress("UI_UP"))
+	{
+		CameraDistance += float4::FORWARD * 100.0f * _DeltaTime;
+	}
+	if (GameEngineInput::IsPress("UI_Down"))
+	{
+		CameraDistance += float4::BACK * 100.0f * _DeltaTime;
 	}
 	// X축 회전값 제한
 	if (x < 180.0f)
@@ -89,7 +96,7 @@ void PlayerCamera::TargetCheck(float _DeltaTime)
 		// 기존의 카메라 위치로 Lerp 이용하여 이동
 		CameraArm->SetLocalPosition(float4::LerpClamp(CameraArm->GetLocalPosition(), float4::ZERO, _DeltaTime * LockOnTrackingSpeed));
 
-		CameraTarget->SetLocalPosition(float4::LerpClamp(CameraTarget->GetLocalPosition(), { 0, 100, -300 }, _DeltaTime * LockOnTrackingSpeed));
+		CameraTarget->SetLocalPosition(float4::LerpClamp(CameraTarget->GetLocalPosition(), CameraDistance, _DeltaTime * LockOnTrackingSpeed));
 		return;
 	}
 	// 락온 대상이 있을 시

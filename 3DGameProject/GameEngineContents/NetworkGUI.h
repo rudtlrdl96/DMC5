@@ -6,7 +6,7 @@ enum class PlayerType;
 
 class NetworkGUI : public GameEngineGUIWindow
 {
-	friend class NetworkManager;
+	//friend class NetworkManager;
 
 public:
 	static NetworkGUI* GetInst()
@@ -35,8 +35,6 @@ public:
 		return std::make_pair(IpNum, PortNum);
 	}
 
-	bool ChangeFieldState();
-
 	inline const std::string& GetNickName() const
 	{
 		return NickName;
@@ -52,22 +50,13 @@ private:
 	enum class State
 	{
 		SelectWait,
-		ServerWait,
-		ClientWait,
-		OnFieldStage,
+		Chat,
 
 		COUNT
 	};
 	
 	State CurState = State::SelectWait;
 	std::vector<std::function<void()>> AllStateFunc;
-
-
-
-
-
-	const std::string_view BtnText_ForHost = "Play For Host";
-	const std::string_view BtnText_ForClient = "Play For Client";
 
 	int PortNum = 30000;
 	char IpNum[16] = "127.0.0.1";
@@ -81,7 +70,7 @@ private:
 
 
 	void Update_SelectWait();
-	void Update_OnFieldStage();
+	void Update_Chat();
 
 	void InitName(unsigned int _NetID);
 };

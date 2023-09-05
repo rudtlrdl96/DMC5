@@ -145,6 +145,8 @@ void PhysXConvexComponent::CreatePhysXActors(const std::string& _MeshName, physx
 
 	//// Scene에 액터 추가
 	//_Scene->addActor(*PlaneStatic);
+
+	PhysicsComponent = DynamicThis<PhysXConvexComponent>();
 }
 
 void PhysXConvexComponent::AddForce(float4 _Force)

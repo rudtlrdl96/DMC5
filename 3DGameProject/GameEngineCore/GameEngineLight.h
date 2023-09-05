@@ -7,8 +7,9 @@
 
 enum class LightType
 {
-
-
+    Directional,
+    Point,
+    Spot
 };
 
 struct LightData
@@ -21,7 +22,7 @@ struct LightData
     float4x4 LightViewProjectionMatrix;
     float4x4 CameraViewInverseMatrix;
     float4 LightColor = float4(1.0f, 1.0f, 1.0f, 0.0f);
-    float4 AmbientLight = float4(0.2f, 0.2f, 0.2f, 1.0f);
+    float4 AmbientLight = float4(0.3f, 0.3f, 0.3f, 1.0f);
     float4 LightPos;
     float4 LightDir;
     float4 LightRevDir;
@@ -39,7 +40,9 @@ struct LightData
     float AmbLightPower = 1.0f;
     float SpcPow = 50.0f;
     int LightType = 0;
-    float PointLightRange = 100.0f;
+    float LightRange = 100.0f;
+    float LightAngle = 10.0f;
+    float LightPower = 1.0f;
     int Temp2;
     int Temp3;
 };
@@ -74,16 +77,19 @@ public:
     {
         return LightDataValue;
     }
-
-    void SetLightType()
-    {
     
-    }
+    bool IsDebugDraw = false;
 
 protected:
 
 private:
     LightData LightDataValue;
 
+    inline void SetLightType(LightType _Type)
+    {
+        LightDataValue.LightType = static_cast<int>(_Type);
+    }
+
+    void DrawEditor() override;
 };
 

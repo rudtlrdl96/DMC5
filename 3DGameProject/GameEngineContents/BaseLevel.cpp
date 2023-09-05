@@ -42,6 +42,6 @@ void BaseLevel::NetworkUpdate(float _DeltaTime)
 	if (Timer < WaitTime)
 		return;
 
-	NetworkManager::FlushUpdatePacket();
+	NetworkManager::FlushPackets();
 	Timer -= WaitTime;
 }

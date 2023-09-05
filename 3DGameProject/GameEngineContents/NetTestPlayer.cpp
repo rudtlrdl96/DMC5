@@ -25,7 +25,7 @@ void NetTestPlayer::Start()
 {
 	//서버와 통신할 때 이 엑터가 어떤 종류인지 정의하는 부분입니다.
 	//ObjectUpdatePacket을 사용하기 위해서는 반드시 이 부분을 호출해주셔야 합니다
-	SetNetObjectType(Net_ActorType::Nero);
+	SetNetObjectType(Net_ActorType::TestPlayer);
 
 	//이건 그냥 예시 렌더링
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
@@ -61,11 +61,6 @@ void NetTestPlayer::Update_ProcessPacket()
 		{
 			//패킷을 템플릿 포인터로 꺼내옵니다(Enum값과 포인터값을 맞게 해주셔야 하는 부분 유의부탁드려요)
 			std::shared_ptr<ObjectUpdatePacket> ObjectUpdate = PopFirstPacket<ObjectUpdatePacket>();
-			if (true == ObjectUpdate->IsDeath)
-			{
-				Death();
-				break;
-			}
 
 			//패킷의 정보에 따라 자신의 값 수정
 			GetTransform()->SetLocalPosition(ObjectUpdate->Position);

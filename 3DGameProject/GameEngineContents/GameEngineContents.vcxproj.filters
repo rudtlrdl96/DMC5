@@ -343,6 +343,12 @@
     <ClInclude Include="TestStageLevel.h">
       <Filter>Levels\Test</Filter>
     </ClInclude>
+    <ClInclude Include="LinkObjectPacket.h">
+      <Filter>Server\01.Packet\02.Global</Filter>
+    </ClInclude>
+    <ClInclude Include="Shop_ExplaneUI.h">
+      <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -677,6 +683,9 @@
     </ClCompile>
     <ClCompile Include="TestStageLevel.cpp">
       <Filter>Levels\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Shop_ExplaneUI.cpp">
+      <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

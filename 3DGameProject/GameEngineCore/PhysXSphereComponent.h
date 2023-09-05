@@ -1,9 +1,9 @@
 #pragma once
 #include <GameEngineCore/GameEngineComponent.h>
-#include "PhysXDefault.h"
+#include "PhysicsActor.h"
 
 // 설명 :
-class PhysXSphereComponent : public GameEngineComponent, public PhysXDefault
+class PhysXSphereComponent : public GameEngineComponent, public PhysicsActor
 {
 public:
 	// constrcuter destructer
@@ -18,36 +18,24 @@ public:
 
 	physx::PxRigidDynamic* CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale = physx::PxVec3(2.0f), float4 _GeoMetryRotation = { 0.0f , 0.0f });
 
-
 	void SetMoveSpeed(float4 _MoveSpeed);
-
 
 	// RigidDynamic을 CCT에서 해제하는 함수
 	void SetDynamicIdle();
 
 	inline physx::PxVec3 GetLinearVelocity()
 	{
-		return m_pRigidDynamic->getLinearVelocity();
+		return m_pDynamic->getLinearVelocity();
 	}
 
 	inline void SetlockAxis()
 	{
-		m_pRigidDynamic->setRigidDynamicLockFlags(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X | physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y | physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z);
-	}
-
-	inline void SetUnlockAxis()
-	{
-		// 고정된 축을 해제
-		m_pRigidDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, false);
-		m_pRigidDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, false);
-		m_pRigidDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, false);
-
-		m_pRigidDynamic->addForce(physx::PxVec3(0.0f, 0.01f, 0.0f), physx::PxForceMode::eIMPULSE);
+		m_pDynamic->setRigidDynamicLockFlags(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X | physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y | physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z);
 	}
 
 	inline float4 GetWorldPosition()
 	{
-		return float4(m_pRigidDynamic->getGlobalPose().p.x, m_pRigidDynamic->getGlobalPose().p.y, m_pRigidDynamic->getGlobalPose().p.z);
+		return float4(m_pDynamic->getGlobalPose().p.x, m_pDynamic->getGlobalPose().p.y, m_pDynamic->getGlobalPose().p.z);
 	}
 
 
@@ -72,7 +60,7 @@ public:
 
 	float4 GetDynamicVelocity()
 	{
-		physx::PxVec3 Vec3 = m_pRigidDynamic->getLinearVelocity();
+		physx::PxVec3 Vec3 = m_pDynamic->getLinearVelocity();
 		return float4{ Vec3.x, Vec3.y, Vec3.z };
 	}
 
@@ -82,17 +70,16 @@ public:
 	//중력끄기
 	void TurnOffGravity()
 	{
-		m_pRigidDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, true);
+		m_pDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, true);
 	}
 
 	//중력키기
 	void TurnOnGravity()
 	{
-		m_pRigidDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, false);
+		m_pDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, false);
 	}
 
 	//void LockAxis();
-
 
 	//플레이어 멈추는 함수
 	void FreezeDynamic();
@@ -102,7 +89,6 @@ public:
 
 	//Reset 함수
 	void ResetDynamic();
-
 
 	void SetMainPlayerFlags()
 	{
@@ -124,13 +110,9 @@ private:
 	physx::PxScene* m_pScene = nullptr;
 	physx::PxPhysics* m_pPhysics = nullptr;
 	physx::PxControllerManager* m_pCtrManager = nullptr;
-	physx::PxRigidDynamic* m_pRigidDynamic;
 
 	physx::PxMaterial* m_pMaterial = nullptr;
 	physx::PxShape* m_pShape = nullptr;
-
-	// 이 컴포넌트를 가지고 있는 Parent에 대한 정보
-	std::weak_ptr<class GameEngineActor> ParentActor;
 
 	//속도제한 함수
 	void SpeedLimit();

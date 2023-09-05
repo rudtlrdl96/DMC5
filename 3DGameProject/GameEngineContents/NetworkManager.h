@@ -3,7 +3,7 @@
 #include <GameEngineBase/GameEngineNetClient.h>
 #include "ContentsEnum.h"
 
-class GameEngineLevel;
+class BaseLevel;
 class GameEngineNetObject;
 class GameEngineActor;
 enum class PacketEnum;
@@ -38,24 +38,21 @@ public:
 
 	static unsigned int ServerOpen(int _Port);
 
-	static void ConnectServer(PlayerType _CharacterType);
+	static void ConnectServer(const std::string& _IP, int PortNum, std::function<void(unsigned int)> _ConnectCallBack);
+
 
 	//전송받은 패킷을 처리하는 부분
-	static void Update_PacketProcess(GameEngineLevel* _CurrentLevel)
-	{
-		//레벨 저장(패킷 처리할때 사용됨)
-		CurLevel = _CurrentLevel;
+	static void Update_PacketProcess(BaseLevel* _CurrentLevel);
 
-		if (nullptr == NetInst)
-			return;
 
-		NetInst->UpdatePacket();
-	}
+
 
 	//네트워크용 엑터를 생성합니다. 클라이언트의 경우엔 nullptr을 반환하니 꼭 nullptr를 해주세요
 	template <typename ActorPtr>
 	static std::shared_ptr<ActorPtr> CreateNetworkActor(Net_ActorType _NetActorType)
 	{
+		//플레이어를 제외한 모든 생성은 서버(호스트)에서만 이루어 집니다.
+		//그러니 서버가 아니면 nullptr가 리턴되는점 주의부탁드립니다.
 		if (false == IsServer())
 			return nullptr;
 
@@ -67,22 +64,19 @@ public:
 	}
 
 
-	static void PushChat(const std::string_view& _Msg);
 
+	static void PushChatPacket(const std::string_view& _Msg);
 
 	//Update패킷을 보낼때 이 인터페이스를 이용해서 보내주시면 됩니다.
 	static void PushUpdatePacket(GameEngineNetObject* _NetObj, GameEngineActor* _ActorPtr, float _TimeScale = 1.f);
 
-	//실제 업데이트 패킷을 처리하는 부분
-	static void FlushUpdatePacket();
+	//이미 생성되어 있는 오브젝트를 서버와 연동시킵니다.
+	static void LinkNetwork(GameEngineNetObject* _NetObjPtr);
+
+	//쌓여있던 모든 패킷을 전송하는 부분
+	static void FlushPackets();
 
 protected:
-	static GameEngineNet* GetNetInst()
-	{
-		return NetInst;
-	}
-
-private:
 	static GameEngineNet* NetInst;
 	static GameEngineNetServer ServerInst;
 	static GameEngineNetClient ClientInst;
@@ -97,26 +91,22 @@ private:
 	static void ServerPacketInit();
 	static void ClientPacketInit();
 
-	
-
 private:
 	//네트워크에서 이 프로세스 고유의 번호
 	static unsigned int NetID;
 
 	//업데이트 패킷을 보낼때 중복을 피하기 위한 맵 <오브젝트 아이디, 오브젝트 업데이트 패킷 포인터>
 	static std::map<unsigned int, std::shared_ptr<class ObjectUpdatePacket>> AllUpdatePacket;
+
 	static std::map<PacketEnum, std::vector<std::shared_ptr<class GameEnginePacket>>> AllPacket;
 	static std::map<PacketEnum, GameEngineSerializer> ChunkPackets;
 	static GameEngineSerializer ChunkBytes;
 
 
-	static std::vector<class GameEngineLevel*> AllBattleLevels;
+	static BaseLevel* CurLevel;
+	static Net_LevelType CurLevelType;
 
-	static GameEngineLevel* CurLevel;
-
-	static PlayerType CharacterType;
-
-	
+	static std::function<void(unsigned int)> ConnectCallBack;
 
 
 
@@ -128,9 +118,6 @@ private:
 	}
 
 	static std::shared_ptr<GameEngineNetObject> CreateNetActor(Net_ActorType _ActorType, int _ObjectID = -1);
-
-
-	static void CreateLocalPlayer(class GameEngineLevel* _Level, int _ObjectID);
 
 
 	//vector 형태의 패킷들을 _Ser인자에 직렬화 시킴

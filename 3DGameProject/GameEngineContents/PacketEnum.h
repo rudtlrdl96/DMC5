@@ -6,5 +6,6 @@ enum class PacketEnum
 	ConnectIDPacket,
 	ObjectUpdatePacket,
 	MessageChatPacket,
+	LinkObjectPacket,
 };
 

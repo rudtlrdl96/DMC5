@@ -1,10 +1,10 @@
 #pragma once
 
 #include "GameEngineComponent.h"
-#include "PhysXDefault.h"
+#include "PhysicsActor.h"
 
 // 설명 :
-class PhysXConvexComponent : public GameEngineComponent, public PhysXDefault
+class PhysXConvexComponent : public GameEngineComponent, public PhysicsActor
 {
 public:
 	// constrcuter destructer
@@ -64,7 +64,6 @@ private:
 
 	physx::PxMaterial* m_pMaterial = nullptr;
 	physx::PxShape* m_pShape = nullptr;
-	physx::PxRigidDynamic* m_pDynamic = nullptr;
 
 	physx::PxConvexMesh* m_pConvexMesh = nullptr;
 
@@ -73,9 +72,6 @@ private:
 	std::vector<physx::PxVec3> VertexVec;
 	physx::PxVec3 SeesawPos;
 	physx::PxVec3 AddUpdateForce;
-
-	// 이 컴포넌트를 가지고 있는 Parent에 대한 정보
-	std::weak_ptr<class GameEngineActor> ParentActor;
 
 	bool PositionSetFromParentFlag;
 

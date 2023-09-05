@@ -8,6 +8,7 @@
 #include "ConnectIDPacket.h"
 #include "ObjectUpdatePacket.h"
 #include "MessageChatPacket.h"
+#include "LinkObjectPacket.h"
 
 ////////
 //		서버 패킷 초기화
@@ -21,13 +22,6 @@ void NetworkManager::AcceptCallback(SOCKET _Socket, GameEngineNetServer* _Server
 	//방금 들어온 클라이언트의 네트워크 아이디 지정
 	int ClientID = GameEngineNetObject::CreateServerID();
 	Packet->SetObjectID(ClientID);
-
-	//플레이어 캐릭터를 생성시킬 오브젝트 아이디 생성
-	Packet->AllObjectID.resize(AllBattleLevels.size(), 0);
-	for (size_t i = 0; i < AllBattleLevels.size(); ++i)
-	{
-		Packet->AllObjectID[i] = GameEngineNetObject::CreateServerID();
-	}
 
 	//상대방의 ID와 소켓을 연관지어 저장
 	_Server->AddUser(ClientID, _Socket);
@@ -45,6 +39,10 @@ void NetworkManager::ServerPacketInit()
 	NetInst->Dispatcher.AddHandler<ObjectUpdatePacket>(
 		[=](std::shared_ptr<ObjectUpdatePacket> _Packet)
 	{
+		//클라로 부터 받은 패킷이 현재 레벨과 다른 경우
+		if (CurLevelType != _Packet->LevelType)
+			return;
+
 		unsigned int ObjID = _Packet->GetObjectID();
 
 		//해당 NetObejctID의 객체가 존재하지 않는 경우 여기서 만들어버리기
@@ -92,6 +90,36 @@ void NetworkManager::ServerPacketInit()
 
 		//서버의 경우엔 수신받은 특정 오브젝트의 패킷을 다른 클라에 다 뿌려야 한다
 		NetInst->SendPacket(_Packet, _Packet->GetObjectID());
+	});
+
+
+	//LinkObjectPacket 처리
+	NetInst->Dispatcher.AddHandler<LinkObjectPacket>(
+		[=](std::shared_ptr<LinkObjectPacket> _Packet)
+	{
+		unsigned int CliendID = _Packet->GetObjectID();
+		unsigned int NewID = GameEngineNetObject::CreateServerID();
+
+		//수신받은 오브젝트 생성
+		std::shared_ptr<GameEngineNetObject> NewNetObj = nullptr;
+		NewNetObj = NetworkManager::CreateNetActor(_Packet->ActorType, NewID);
+		//서버가 컨트롤 하지 않음
+		NewNetObj->SetControll(NetControllType::NetControll);
+
+
+		//답장용 새 패킷
+		std::shared_ptr<LinkObjectPacket> ReplyLinkPacket = std::make_shared<LinkObjectPacket>();
+		//생성했을때 사용한 새 오브젝트 ID 넣음
+		ReplyLinkPacket->SetObjectID(NewID);
+		ReplyLinkPacket->Ptr = _Packet->Ptr;
+
+		//패킷직렬화
+		GameEngineSerializer Ser;
+		ReplyLinkPacket->SerializePacket(Ser);
+
+		//나에게 전송한 유저한테만 답장패킷을 보낸다
+		SOCKET ClientSocket = ServerInst.GetUser(CliendID);
+		GameEngineNet::Send(ClientSocket, Ser.GetConstCharPtr(), Ser.GetWriteOffSet());
 	});
 }
 

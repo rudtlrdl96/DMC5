@@ -236,6 +236,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="LinkObjectPacket.h" />
     <ClInclude Include="MainMenuBG.h">
       <SubType>
       </SubType>
@@ -476,6 +477,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="ShopBG.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Shop_ExplaneUI.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -849,6 +854,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="ShopBG.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Shop_ExplaneUI.cpp">
       <SubType>
       </SubType>
     </ClCompile>

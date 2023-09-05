@@ -24,19 +24,18 @@ void Box200::Start()
 	physx::PxVec3 GeoMetryScale = { RenderMeshScale.x, RenderMeshScale.y, RenderMeshScale.z };
 
 	Component = CreateComponent<PhysXBoxComponent>();
-
 	Component->SetPhysxMaterial(1.0f, 1.0f, 0.0f);
 	Component->SetPositionSetFromParentFlag(true);
 	Component->SetObstacleObject();
 	Component->CreatePhysXActors(GeoMetryScale * 0.5f);
-
 
 	//GameEngineInput::CreateKey("Select_01", 'Y');
 	//GameEngineInput::CreateKey("Select_02", 'U');
 }
 void Box200::Update(float _DeltaTime)
 {
-	NetControllType Type = GetControllType();
+	NetControllType Type = NetControllType::UserControll;
+
 	switch (Type)
 	{
 	case NetControllType::UserControll:
@@ -52,7 +51,10 @@ void Box200::Update(float _DeltaTime)
 
 void Box200::UserUpdate(float _DeltaTime)
 {
-
+	if (true == GameEngineInput::IsDown("Select_01"))
+	{
+		Death();
+	}
 }
 void Box200::ServerUpdate(float _DeltaTime)
 {

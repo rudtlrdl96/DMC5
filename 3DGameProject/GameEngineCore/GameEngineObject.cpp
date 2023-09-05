@@ -2,6 +2,7 @@
 #include "GameEngineObject.h"
 #include "imgui.h"
 #include "GameEngineLevel.h"
+#include "PhysicsActor.h"
 
 int GameEngineObject::NextActorID = 0;
 int GameEngineObject::GUI_SelectActorIndex = -1;
@@ -131,6 +132,13 @@ void GameEngineObject::AllDestroy()
 {
 	if (true == IsDeath())
 	{
+		std::shared_ptr<PhysicsActor> pPhysXActor = this->DynamicThis<PhysicsActor>();
+
+		if (nullptr != pPhysXActor)
+		{
+			pPhysXActor->Release();
+		}
+
 		Destroy();
 	}
 

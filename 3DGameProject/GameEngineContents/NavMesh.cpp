@@ -25,10 +25,11 @@ std::shared_ptr<NavMesh> NavMesh::CreateNavMesh(GameEngineLevel* _Level, const s
 
 	float Ratio = 1.f;
 
-	Result->Colider = Result->CreateComponent<PhysXTriangleComponent>(); // 콜라이더 생성
-	Result->Colider->SetName("Colider");
-	Result->Colider->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
-	Result->Colider->CreatePhysXActors(_FBXName.data(), true, Ratio);
+	Result->Collider = Result->CreateComponent<PhysXTriangleComponent>(); // 콜라이더 생성
+	Result->Collider->SetName("Collider");
+	Result->Collider->SetPhysxMaterial(1.0f, 1.0f, 0.05f);
+	Result->Collider->SetGroundObject();
+	Result->Collider->CreatePhysXActors(_FBXName.data(), true, Ratio);
 
 	return Result;
 }

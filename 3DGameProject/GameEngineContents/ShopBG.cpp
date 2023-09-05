@@ -11,9 +11,13 @@ ShopBG::~ShopBG()
 
 void ShopBG::Start()
 {
-	ShopBGRender = CreateComponent<GameEngineUIRenderer>(0);
-	ShopBGRender->GetTransform()->SetLocalScale(Scale);
-	ShopBGRender->SetTexture("ShopTestBG.png");
+	ShopBGRender0 = CreateComponent<GameEngineUIRenderer>(0);
+	ShopBGRender0->SetScaleToTexture("ShopBlackBG.png");
+	ShopBGRender1 = CreateComponent<GameEngineUIRenderer>(0);
+	ShopBGRender1->SetScaleToTexture("ShopBG.png");
+	ShopBGRender2 = CreateComponent<GameEngineUIRenderer>(8);
+	ShopBGRender2->SetScaleToTexture("ShopFrontBG.png");
+
 }
 
 

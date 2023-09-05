@@ -14,6 +14,11 @@ GameEngineActor::~GameEngineActor()
 
 void GameEngineActor::ComponentInit(std::shared_ptr<class GameEngineComponent> _Component, int _Order)
 {
+	//if (nullptr != _Component->DynamicThis<PhysXDefault>())
+	//{
+	//	PhysXComponent = _Component;
+	//}
+
 	_Component->Actor = this;
 	_Component->Level = GetLevel();
 	_Component->GetTransform()->SetParent(GetTransform(), false);

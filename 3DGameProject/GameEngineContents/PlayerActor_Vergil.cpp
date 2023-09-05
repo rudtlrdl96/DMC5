@@ -5,7 +5,6 @@
 #include "AnimationEvent.h"
 #include "PlayerController.h"
 
-#include "PlayerWindow.h"
 
 PlayerActor_Vergil::~PlayerActor_Vergil()
 {
@@ -38,7 +37,7 @@ void PlayerActor_Vergil::VergilLoad()
 		Renderer = CreateComponent<GameEngineFBXRenderer>();
 		Renderer->GetTransform()->SetLocalRotation({ 0, 0, 0 });
 		Renderer->GetTransform()->SetLocalPosition({ 0, -75, 0 });
-		Renderer->SetFBXMesh("Vergil.FBX", "MeshAniTexture");
+		Renderer->SetFBXMesh("Vergil.FBX", "AniFBX");
 		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer,
 			.Objects = { (GameEngineObject*)AttackCollision.get() },
 			.CallBacks_void = {
@@ -60,8 +59,8 @@ void PlayerActor_Vergil::VergilLoad()
 				std::bind(&BasePlayerActor::SetMove, this, std::placeholders::_1)
 			}
 			});
-
 		SetHuman();
+		YamatoOff();
 	}
 
 	/* 기본 움직임 */
@@ -1281,11 +1280,11 @@ void PlayerActor_Vergil::ChangeState(FSM_State_Vergil _State)
 
 void PlayerActor_Vergil::SetHuman()
 {
-	for (int i = 0; i <= 17; i++)
+	for (int i = 9; i <= 21; i++)
 	{
 		Renderer->GetAllRenderUnit()[0][i]->On();
 	}
-	for (int i = 20; i <= 22; i++)
+	for (int i = 2; i <= 4; i++)
 	{
 		Renderer->GetAllRenderUnit()[0][i]->Off();
 	}
@@ -1293,11 +1292,11 @@ void PlayerActor_Vergil::SetHuman()
 
 void PlayerActor_Vergil::SetMajin()
 {
-	for (int i = 0; i <= 17; i++)
+	for (int i = 9; i <= 21; i++)
 	{
 		Renderer->GetAllRenderUnit()[0][i]->Off();
 	}
-	for (int i = 20; i <= 22; i++)
+	for (int i = 2; i <= 4; i++)
 	{
 		Renderer->GetAllRenderUnit()[0][i]->On();
 	}
@@ -1305,45 +1304,35 @@ void PlayerActor_Vergil::SetMajin()
 
 void PlayerActor_Vergil::YamatoOff()
 {
-	Renderer->GetAllRenderUnit()[0][18]->Off();
-	Renderer->GetAllRenderUnit()[0][19]->Off();
-	Renderer->GetAllRenderUnit()[0][24]->On();
-	Renderer->GetAllRenderUnit()[0][25]->On();
-	Renderer->GetAllRenderUnit()[0][26]->On();
+	Renderer->GetAllRenderUnit()[0][0]->Off();
+	Renderer->GetAllRenderUnit()[0][1]->Off();
+	Renderer->GetAllRenderUnit()[0][6]->On();
+	Renderer->GetAllRenderUnit()[0][7]->On();
+	Renderer->GetAllRenderUnit()[0][8]->On();
 }
 
 void PlayerActor_Vergil::YamatoOn()
 {
-	Renderer->GetAllRenderUnit()[0][18]->On();
-	Renderer->GetAllRenderUnit()[0][19]->On();
+	Renderer->GetAllRenderUnit()[0][0]->On();
+	Renderer->GetAllRenderUnit()[0][1]->On();
 
-	Renderer->GetAllRenderUnit()[0][24]->Off();
-	Renderer->GetAllRenderUnit()[0][25]->Off();
-	Renderer->GetAllRenderUnit()[0][26]->Off();
+	Renderer->GetAllRenderUnit()[0][6]->Off();
+	Renderer->GetAllRenderUnit()[0][7]->Off();
+	Renderer->GetAllRenderUnit()[0][8]->Off();
 }
 
 
 /*
 버질 렌더 유닛
-0 옷
-1 옷
-2 옷
-3 머리카락
-4 옷
-5 옷
-6 팔
-7 장갑
-8 옷
-9 안면
-10 ~ 17 얼굴
-18 오른손  야마토
-19 오른손 야마토 2
-20 뿔
-21 마인
-22 마인 뿔
+0 오른손 야마토
+1 오른손 야마토
+2 DT 뿔
+3 DT 몸
+4 DT 뿔
+5 왼손 야마토 검집
+6 왼손 야마토
+7 왼손 야마토
+8 왼손 야마토
 
-23 왼손 야마토 검집
-24 왼손 야마토 손잡이 악세사리
-25 왼손 야마토 검
-26 왼손 야마토 손잡이
+9 ~ 21 인간
 */

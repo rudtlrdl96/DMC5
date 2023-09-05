@@ -36,7 +36,8 @@ private:
 	GameEngineTransform* CameraTarget = nullptr;
 	GameEngineTransform* CameraTransform = nullptr;
 	float4 CameraTargetPos;
-
+	float4 CameraDistance = { 0, 100, -300 };
+	
 	float CameraRotYSpeed = 150.0f;
 	float CameraRotXSpeed = 80.0f;
 

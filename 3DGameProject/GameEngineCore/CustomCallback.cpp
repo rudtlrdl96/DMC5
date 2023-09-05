@@ -12,11 +12,16 @@ void CustomCallback::onContact(const physx::PxContactPairHeader& pairHeader, con
 	{
 		physx::PxContactPair current = *pairs++;
 		
+		if (current.contactPatches == 0)
+		{
+			continue;
+		}
+
 		physx::PxShape* tmpContactActor = current.shapes[0];
 		physx::PxShape* tmpOtherActor = current.shapes[1];
 
 		physx::PxFilterData ContactFilterdata = tmpContactActor->getSimulationFilterData(); // 주체
-		physx::PxFilterData OtherFilterdata = tmpOtherActor->getSimulationFilterData();     // 대상
+ 		physx::PxFilterData OtherFilterdata = tmpOtherActor->getSimulationFilterData();     // 대상
 
 		if (ContactFilterdata.word0 & static_cast<physx::PxU32>(PhysXFilterGroup::Player) &&
 			OtherFilterdata.word0 & static_cast<physx::PxU32>(PhysXFilterGroup::Ground) &&
