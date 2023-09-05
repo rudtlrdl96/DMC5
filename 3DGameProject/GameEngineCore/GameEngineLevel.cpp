@@ -38,10 +38,41 @@ void GameEngineLevel::LevelLightInit()
 {
 	DirectionalLight = CreateActor<GameEngineLight>();
 	DirectionalLight->SetName("Directional Light");
+	DirectionalLight->SetLightType(LightType::Directional);
+	DirectionalLight->LightDataValue.LightPower = 0.0f;
 }
 
 GameEngineLevel::~GameEngineLevel()
 {
+}
+
+std::shared_ptr<GameEngineLight> GameEngineLevel::CreatePointLight(const float4& _Pos, float _Range)
+{
+	std::shared_ptr<GameEngineLight> NewLight = CreateActor<GameEngineLight>();
+
+	NewLight->GetTransform()->SetLocalPosition(_Pos);
+
+	NewLight->SetName("Point Light");
+	NewLight->SetLightType(LightType::Point);
+
+	NewLight->LightDataValue.LightRange = _Range;
+
+	return NewLight;
+}
+
+std::shared_ptr<GameEngineLight> GameEngineLevel::CreateSpotLight(const float4& _Pos, float _Range, float _Angle)
+{
+	std::shared_ptr<GameEngineLight> NewLight = CreateActor<GameEngineLight>();
+
+	NewLight->GetTransform()->SetLocalPosition(_Pos);
+
+	NewLight->SetName("Spot Light");
+	NewLight->SetLightType(LightType::Spot);
+
+	NewLight->LightDataValue.LightRange = _Range;
+	NewLight->LightDataValue.LightAngle = _Angle;
+
+	return NewLight;
 }
 
 void GameEngineLevel::ActorSetName(std::shared_ptr<GameEngineActor> _Actor, std::string _Name)
