@@ -4,8 +4,6 @@
 #include <GameEngineCore/PhysXCapsuleComponent.h>
 #include "AnimationEvent.h"
 #include "PlayerController.h"
-
-#include "PlayerWindow.h"
 PlayerActor_Nero::~PlayerActor_Nero()
 {
 }
@@ -77,7 +75,6 @@ void PlayerActor_Nero::PlayerLoad()
 				std::bind(&BasePlayerActor::SetMove, this, std::placeholders::_1)
 			}
 			});
-		PlayerWindow::Renderer = Renderer.get();
 
 		//Object = 0 : 공격 충돌체
 		//
