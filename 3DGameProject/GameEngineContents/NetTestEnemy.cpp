@@ -82,7 +82,13 @@ void NetTestEnemy::Update_SendPacket(float _DeltaTime)
 {
 	//NetworkManager를 통해서 업데이트 패킷을 보내면 됩니다.
 	//그 외 패킷은 다른곳에서 보내도 상관없습니다.(아마도)
-	NetworkManager::PushUpdatePacket(this, this, 1.f);
+	NetworkManager::PushUpdatePacket(UpdatePacketParameter
+		{
+			.ObjPtr = this,
+			.FsmState = 0,
+			.IsFsmForce = false,
+			.TimeScale = 1.f
+		});
 
 	//패킷을 보낼땐 모두 NetworkManager를 통해서 보낼 예정입니다.
 	//추후 다양한 패킷 생성 예정

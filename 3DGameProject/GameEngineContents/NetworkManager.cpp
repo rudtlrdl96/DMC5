@@ -119,17 +119,33 @@ void NetworkManager::PushChatPacket(const std::string_view& _Msg)
 
 
 
-void NetworkManager::PushUpdatePacket(GameEngineNetObject* _NetObj, GameEngineActor* _ActorPtr, float _TimeScale /*= 1.f*/)
+void NetworkManager::PushUpdatePacket(const UpdatePacketParameter& _Param)
 {
+	GameEngineNetObject* NetPtr = _Param.ObjPtr;
+	if (nullptr == NetPtr)
+	{
+		MsgAssert("업데이트 패킷을 전송할땐 파라미터 인자의 ObjPtr의 값은 반드시 넣어주어야 합니다.");
+		return;
+	}
+
+	GameEngineActor* ActorPtr = dynamic_cast<GameEngineActor*>(NetPtr);
+	if (nullptr == ActorPtr)
+	{
+		MsgAssert("Update패킷을 전송할때 인자로 받은 ObjPtr이 GameEngineActor를 상속받지 않았습니다");
+		return;
+	}
+
+
 	if (NetworkState::None == NowState)
 		return;
 
+	
 	//현재 진행중인 레벨의 엑터들만 실행
-	if (_ActorPtr->GetLevel() != CurLevel)
+	if (ActorPtr->GetLevel() != CurLevel)
 		return;
 
 	//인자로 받은 오브젝트의 네트워크용 오브젝트 아이디
-	unsigned int ObjectID = _NetObj->GetNetObjectID();
+	unsigned int ObjectID = NetPtr->GetNetObjectID();
 	if (false == GameEngineNetObject::IsNetObject(ObjectID))
 	{
 		MsgAssert(GameEngineString::ToString(ObjectID) + " ID를 가진 오브젝트가 존재하지 않는데, UpdatePacket을 사용하려고 했습니다");
@@ -162,7 +178,7 @@ void NetworkManager::PushUpdatePacket(GameEngineNetObject* _NetObj, GameEngineAc
 	UpdatePacket->NetID = NetID;
 
 	//오브젝트 타입
-	UpdatePacket->ActorType = _NetObj->GetNetObjectType();
+	UpdatePacket->ActorType = NetPtr->GetNetObjectType();
 	if (-1 == UpdatePacket->ActorType)
 	{
 		MsgAssert("ObjectUpdate패킷을 보내려는 객체의 NetObjectType을 설정해주지 않았습니다");
@@ -170,7 +186,7 @@ void NetworkManager::PushUpdatePacket(GameEngineNetObject* _NetObj, GameEngineAc
 	}
 
 	//레벨 타입
-	BaseLevel* Level = dynamic_cast<BaseLevel*>(_ActorPtr->GetLevel());
+	BaseLevel* Level = dynamic_cast<BaseLevel*>(ActorPtr->GetLevel());
 	if (nullptr == Level)
 	{
 		MsgAssert("ObjectUpdate패킷을 전송하려는 Actor가 BaseLevel을 상속받은 레벨에 존재하지 않습니다");
@@ -186,21 +202,28 @@ void NetworkManager::PushUpdatePacket(GameEngineNetObject* _NetObj, GameEngineAc
 
 	UpdatePacket->LevelType = LevelType;
 
-	GameEngineTransform* TransPtr = _ActorPtr->GetTransform();
+	GameEngineTransform* TransPtr = ActorPtr->GetTransform();
 
 	//위치
 	UpdatePacket->Rotation = TransPtr->GetWorldRotation();
 	//위치
 	UpdatePacket->Position = TransPtr->GetWorldPosition();
 	//타임 크기
-	UpdatePacket->TimeScale = _TimeScale;
+	UpdatePacket->TimeScale = _Param.TimeScale;
 
 	//파괴 여부
-	UpdatePacket->IsDeath = _ActorPtr->IsDeath();
+	UpdatePacket->IsDeath = ActorPtr->IsDeath();
 	if (true == UpdatePacket->IsDeath)
 	{
 		//이 NetObject는 이제부터 전송/수신을 받지 않음
-		_NetObj->NetDisconnect();
+		NetPtr->NetDisconnect();
+	}
+
+	//FSM 상태 및 변경 여부
+	UpdatePacket->FsmState = _Param.FsmState;
+	if (false == UpdatePacket->FsmState)
+	{
+		UpdatePacket->FsmState = _Param.IsFsmForce;
 	}
 }
 
