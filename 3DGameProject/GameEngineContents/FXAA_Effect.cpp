@@ -20,25 +20,15 @@ void FXAA_Effect::Start(GameEngineRenderTarget* _Target)
 	BaseValue.ScreenScale = GameEngineWindow::GetScreenSize();
 
 	ResultTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-
-	if (false == GameEngineInput::IsKey("Debug_TAASwitch"))
-	{
-		GameEngineInput::CreateKey("Debug_TAASwitch", VK_F4);
-	}
 }
 
 void FXAA_Effect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 {
-	if (true == GameEngineInput::IsDown("Debug_TAASwitch"))
-	{
-		IsTAAEffectOn = !IsTAAEffectOn;
-	}
-
-	if (false == IsTAAEffectOn)
+	if (GameEngineOptionValue::None == GameEngineOption::GetOption("FXAA"))
 	{
 		return;
 	}
-
+	
 	ResultTarget->Clear();
 	TAAUnit->ShaderResHelper.SetTexture("DiffuseTex", _Target->GetTexture(0));
 	ResultTarget->Setting();

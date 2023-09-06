@@ -40,6 +40,8 @@ enum FSM_State_Nero
 	Nero_RQ_Skill_Split_2,
 	Nero_RQ_Skill_Split_3,
 
+	Nero_RQ_Skill_Caliber_1,
+	Nero_RQ_Skill_Caliber_2,
 
 
 
@@ -82,6 +84,9 @@ public:
 	{
 		FSM.ChangeState(_StateValue);
 	}
+
+	void SinglePlayLoad();
+
 protected:
 	void Start() override;
 	void PlayerLoad();
@@ -101,7 +106,10 @@ private:
 	bool MoveCheck = false;		// 애니메이션 재생중 이동 입력을 받아 FSM변경이 가능한지 여부
 	bool DelayCheck = false;	// 다른 콤보로 연결되기 위한 딜레이 여부
 
-	void ChangeState(FSM_State_Nero _State);
+	bool LoadCheck = false;
+	void ChangeState(FSM_State_Nero _StateValue);
+
+	//NeRoUI;
 	void RedQueenOn();
 	void RedQueenOff();
 	void BlueRoseOn();

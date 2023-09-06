@@ -176,8 +176,12 @@ private:
 
 	void ActorUpdate(float _DeltaTime);
 	void ActorRelease();
+
 	void ActorLevelChangeStart();
 	void ActorLevelChangeEnd();
+
+	void PostProcessLevelChangeStart();
+	void PostProcessLevelChangeEnd();
 
 	void DestroyCamera();
 

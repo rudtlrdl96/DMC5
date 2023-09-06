@@ -260,6 +260,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GameEngineScreenShoot.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameEngineGUI.h">
       <SubType>
       </SubType>
@@ -376,6 +380,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="GameEngineVideo.h" />
+    <ClInclude Include="GameEngineOption.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="HierarchyGUI.h">
       <SubType>
       </SubType>
@@ -700,6 +708,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameEngineScreenShoot.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameEngineGUI.cpp">
       <SubType>
       </SubType>
@@ -816,6 +828,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="GameEngineVideo.cpp" />
+    <ClCompile Include="GameEngineOption.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="HierarchyGUI.cpp">
       <SubType>
       </SubType>

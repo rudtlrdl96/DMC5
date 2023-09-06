@@ -349,6 +349,9 @@
     <ClInclude Include="Shop_ExplaneUI.h">
       <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
     </ClInclude>
+    <ClInclude Include="Shop_NeroArmUI.h">
+      <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -685,6 +688,9 @@
       <Filter>Levels\Test</Filter>
     </ClCompile>
     <ClCompile Include="Shop_ExplaneUI.cpp">
+      <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Shop_NeroArmUI.cpp">
       <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
     </ClCompile>
   </ItemGroup>

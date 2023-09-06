@@ -5,6 +5,13 @@
 
 class JudgementCut : public GameEnginePostProcess
 {
+public:
+	static JudgementCut* GetJudgementCutEffect()
+	{
+		return CurLevelJudgementCut;
+	}
+
+private:
 	class JudgementBuffer
 	{
 	public:
@@ -13,6 +20,8 @@ class JudgementCut : public GameEnginePostProcess
 		float LineThickness = 1.5f;
 		float LineInter = 0.5f;
 	};
+
+	static JudgementCut* CurLevelJudgementCut;
 
 public:
 	// constrcuter destructer
@@ -62,5 +71,15 @@ private:
 
 	float Speed = 25.0f;
 	float MaxCut = 5.0f;
+
+	void LevelChangeStart() override
+	{
+		CurLevelJudgementCut = this;
+	}
+
+	void LevelChangeEnd() override
+	{
+		CurLevelJudgementCut = nullptr;
+	}
 };
 

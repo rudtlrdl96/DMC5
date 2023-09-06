@@ -22,10 +22,14 @@ private:
 	std::shared_ptr<class Shop_TitleButton> DBButton = nullptr;
 
 	std::shared_ptr<class Shop_NeroSkillUI> RQButton = nullptr;
+	std::shared_ptr<class Shop_NeroArmUI> ArmButton = nullptr;
 
 	float LerpTime = 0.0f;
 	int TitleIndex = 0;
 
 	bool IsSwich = false;
+
+	float4 SkillStartPos = { 0.0f,0.0f,0.0f };
+	float4 ItemStartPos = { -118.0f,0.0f,0.0f };
 };
 

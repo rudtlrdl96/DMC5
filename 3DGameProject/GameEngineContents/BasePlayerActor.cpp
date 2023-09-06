@@ -113,40 +113,38 @@ void BasePlayerActor::Start()
 	PhysXCapsule->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
 	PhysXCapsule->CreatePhysXActors({ 150, 100, 150 });
 	PhysXCapsule->GetDynamic()->setMass(5.0f);
-	
-	if (NetControllType::NetControll == GameEngineNetObject::GetControllType())
-	{
-		// 넷 컨트롤 인 경우 실행
-		PhysXCapsule->TurnOffGravity();
-	}
-	else if (NetControllType::UserControll == GameEngineNetObject::GetControllType())
-	{
-		// 유저 컨트롤 엑터인 경우 실행
-		PhysXCapsule->SetMainPlayer();
-		CustomCallback::SetMainPlayer(PhysXCapsule.get());
+}
 
-		Camera = GetLevel()->CreateActor<PlayerCamera>();
-		Camera->SetPlayerTranform(GetTransform());
+void BasePlayerActor::NetControllLoad()
+{
+	PhysXCapsule->TurnOffGravity();
+}
 
-		// 플레이어 컨트롤러 (조작 체계)
-		Controller = CreateComponent<PlayerController>();
-		Controller->SetCameraTransform(Camera->GetTransform());
-		Controller->CallBack_LockOnDown = std::bind(&BasePlayerActor::LockOn, this);
-		Controller->CallBack_LockOnUp = std::bind(&BasePlayerActor::LockOff, this);
+void BasePlayerActor::UserControllLoad()
+{
+	// 유저 컨트롤 엑터인 경우 실행
+	PhysXCapsule->SetMainPlayer();
+	CustomCallback::SetMainPlayer(PhysXCapsule.get());
 
-		// 플레이어 충돌체
-		PlayerCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
-		PlayerCollision->GetTransform()->SetLocalScale({ 100, 100, 100 });
-		PlayerCollision->SetColType(ColType::OBBBOX3D);
+	Camera = GetLevel()->CreateActor<PlayerCamera>();
+	Camera->SetPlayerTranform(GetTransform());
 
-		// 록온 용 충돌체
-		LockOnCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
-		LockOnCollision->GetTransform()->SetLocalScale({ 1000, 500, 3000 });
-		LockOnCollision->GetTransform()->SetLocalPosition({ 0, 0, 1500 });
-		LockOnCollision->SetColType(ColType::OBBBOX3D);
-	}
-	// 플레이어 공격용 충돌체
-	AttackCollision = CreateComponent<GameEngineCollision>(CollisionOrder::PlayerAttack);
+	// 플레이어 컨트롤러 (조작 체계)
+	Controller = CreateComponent<PlayerController>();
+	Controller->SetCameraTransform(Camera->GetTransform());
+	Controller->CallBack_LockOnDown = std::bind(&BasePlayerActor::LockOn, this);
+	Controller->CallBack_LockOnUp = std::bind(&BasePlayerActor::LockOff, this);
+
+	// 플레이어 충돌체
+	PlayerCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
+	PlayerCollision->GetTransform()->SetLocalScale({ 100, 100, 100 });
+	PlayerCollision->SetColType(ColType::OBBBOX3D);
+
+	// 록온 용 충돌체
+	LockOnCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
+	LockOnCollision->GetTransform()->SetLocalScale({ 1000, 500, 3000 });
+	LockOnCollision->GetTransform()->SetLocalPosition({ 0, 0, 1500 });
+	LockOnCollision->SetColType(ColType::OBBBOX3D);
 }
 
 void BasePlayerActor::Update_ProcessPacket()
@@ -164,16 +162,32 @@ void BasePlayerActor::Update_ProcessPacket()
 		{
 			//패킷을 템플릿 포인터로 꺼내옵니다(Enum값과 포인터값을 맞게 해주셔야 하는 부분 유의부탁드려요)
 			std::shared_ptr<ObjectUpdatePacket> ObjectUpdate = PopFirstPacket<ObjectUpdatePacket>();
-			if (true == ObjectUpdate->IsDeath)
-			{
-				Death();
-				break;
-			}
 
 			//패킷의 정보에 따라 자신의 값 수정
-			GetTransform()->SetLocalPosition(ObjectUpdate->Position);
-			GetTransform()->SetLocalRotation(ObjectUpdate->Rotation);
+			Server_PrevPos = GetTransform()->GetWorldPosition();
+			Server_NextPos = ObjectUpdate->Position;
+			Server_Timer = 0.0f;
+			PhysXCapsule->SetWorldRotation(ObjectUpdate->Rotation);
 			ObjectUpdate->TimeScale;
+
+			float TimeScale = ObjectUpdate->TimeScale;
+			unsigned int FsmState = ObjectUpdate->FsmState;
+			bool IsFsmForce = ObjectUpdate->IsFsmForce;
+
+			if (FSMValue == FsmState)
+			{
+				if (true == IsFsmForce)
+				{
+					SetFSMStateValue(FsmState);
+					FSMValue = FsmState;
+				}
+			}
+			else
+			{
+				SetFSMStateValue(FsmState);
+				FSMValue = FsmState;
+			}
+
 			break;
 		}
 		default:
@@ -187,22 +201,20 @@ void BasePlayerActor::Update_ProcessPacket()
 
 void BasePlayerActor::Update(float _DeltaTime)
 {
-	Update_ProcessPacket();
 	Update_Character(_DeltaTime);
 
-	if (NetControllType::UserControll == GameEngineNetObject::GetControllType())
+	if (NetControllType::NetControll == GameEngineNetObject::GetControllType())
 	{
-		//Update_Character(_DeltaTime);
+		Server_Timer += _DeltaTime;
+		float Ratio = Server_Timer / Server_UpdateTime;
+		PhysXCapsule->SetWorldPosition(float4::LerpClamp(Server_PrevPos, Server_NextPos, Ratio));
 	}
 	Update_SendPacket(_DeltaTime);
-
-
-
 }
 
 void BasePlayerActor::Update_SendPacket(float _DeltaTime)
 {
-	NetworkManager::PushUpdatePacket(this, this, 1.f);
+	NetworkManager::PushUpdatePacket({ .ObjPtr = this, .FsmState = static_cast<unsigned int>(FSMValue), .IsFsmForce = FSMForce, .TimeScale = 1.0f });
 }
 
 void BasePlayerActor::LockOn()
@@ -238,6 +250,12 @@ void BasePlayerActor::LockOff()
 	Camera->SetTargetTranform(nullptr);
 }
 
+bool BasePlayerActor::FloorCheck()
+{
+	float4 Point;
+	return GetLevel()->RayCast(GetTransform()->GetWorldPosition(), float4::DOWN, Point, 100.0f) || PhysXCapsule->GetIsPlayerGroundTouch();
+}
+
 void BasePlayerActor::SetForce(float4 _Value)
 {
 	float4 re = _Value.RotaitonYDegReturn(Rot.y);
@@ -258,8 +276,3 @@ void BasePlayerActor::SetWorldPosition(float4 _Value)
 {
 	PhysXCapsule->SetWorldPosition(_Value);
 }
-
-void BasePlayerActor::FSM_SendPacket(int _StateValue)
-{
-}
-

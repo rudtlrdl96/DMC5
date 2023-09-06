@@ -32,7 +32,7 @@ void ContentsCore::ContentsResourcesCreate()
 /////////////////////////////////////////////////////////////////////// File Load //////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	// FontUpload();
+	FontUpload();
 	GameEngineFont::Load("泵辑");
 
 	// 牧刨明 溅捞歹 颇老 肺靛
@@ -263,9 +263,19 @@ void ContentsCore::ContentsResourcesCreate()
 	{
 		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("FBX");
 
-		Material->SetVertexShader("ContentsMesh.hlsl");
+		Material->SetVertexShader("ContentsMesh.hlsl");				
 		Material->SetRasterizer("Engine2DBase");
 		Material->SetPixelShader("ContentsMesh.hlsl");
+		Material->SetBlendState("AlphaBlend");
+		Material->SetDepthState("EngineDepth");
+	}
+
+	{
+		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("FBX_Low");
+
+		Material->SetVertexShader("ContentsMesh_LowOption.hlsl");
+		Material->SetRasterizer("Engine2DBase");
+		Material->SetPixelShader("ContentsMesh_LowOption.hlsl");
 		Material->SetBlendState("AlphaBlend");
 		Material->SetDepthState("EngineDepth");
 	}
@@ -279,4 +289,26 @@ void ContentsCore::ContentsResourcesCreate()
 		Material->SetBlendState("AlphaBlend");
 		Material->SetDepthState("EngineDepth");
 	}
+
+	{
+		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("AniFBX_Low");
+
+		Material->SetVertexShader("ContentsAniMesh_LowOption.hlsl");
+		Material->SetRasterizer("Engine2DBase");
+		Material->SetPixelShader("ContentsAniMesh_LowOption.hlsl");
+		Material->SetBlendState("AlphaBlend");
+		Material->SetDepthState("EngineDepth");
+	}
+}
+
+void ContentsCore::SetOption()
+{
+	//GameEngineOption::ChangeOption("Texture", GameEngineOptionValue::High);
+	//GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::Low);
+
+	GameEngineOption::ChangeOption("Texture", GameEngineOptionValue::Low);
+	GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::Low);
+
+	// FXAA 可记 积己
+	GameEngineOption::CreateOption("FXAA", GameEngineOptionValue::None);
 }

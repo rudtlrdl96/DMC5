@@ -33,7 +33,6 @@ void TestStageLevel::Start()
 	CreateActor<FreeCameraActor>();
 	CreateActor<ShaderTestActor>()->GetTransform()->SetLocalPosition({ 0, 100, 0 });
 
-	GetCamera(0)->ReflectionOn();
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
@@ -52,55 +51,18 @@ void TestStageLevel::LevelChangeStart()
 	//임시 불러오기, 추후 수정 예정
 	StageBaseLevel::LevelChangeStart();
 	{
-		std::string Path = GameEnginePath::GetFileFullPath
+		GameEngineDirectory Dir = GameEnginePath::GetFileFullPath
 		(
 			"ContentResources",
 			{
 				"Map", "TestMap"
-			},
-			"Location2.FBX"
+			}
 		);
-
-		GameEngineFBXMesh::Load(Path);
-	}
-
-	{
-		std::string Path = GameEnginePath::GetFileFullPath
-		(
-			"ContentResources",
-			{
-				"Map", "TestMap"
-			},
-			"SkyBox.fbx"
-		);
-
-		GameEngineFBXMesh::Load(Path);
-	}
-
-	{
-		std::string Path = GameEnginePath::GetFileFullPath
-		(
-			"ContentResources",
-			{
-				"Map", "TestMap"
-			},
-			"Location2ColGuide.fbx"
-		);
-
-		GameEngineFBXMesh::Load(Path);
-	}
-
-	{
-		std::string Path = GameEnginePath::GetFileFullPath
-		(
-			"ContentResources",
-			{
-				"Map", "TestMap"
-			},
-			"TestCol.fbx"
-		);
-
-		GameEngineFBXMesh::Load(Path);
+		std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".fbx" });
+		for (GameEngineFile& File : FBXFiles)
+		{
+			GameEngineFBXMesh::Load(File.GetFullPath());
+		}
 	}
 
 
@@ -108,6 +70,6 @@ void TestStageLevel::LevelChangeStart()
 
 	CreateStage(AllStageDatas[0]);
 
-	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
-	Nero->SetWorldPosition({ 0, 100, 0 });
+	//std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
+	//Nero->SetWorldPosition({ 0, 100, 0 });
 }

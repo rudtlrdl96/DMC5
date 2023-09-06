@@ -47,7 +47,6 @@ public:
 	}
 
 	void Setting();
-	void ReflectionSetting();
 
 	void SetProjectionType(CameraType _Type)
 	{
@@ -63,9 +62,6 @@ public:
 	void Render(float _DeltaTime) override;
 
 	void CameraTransformUpdate();
-
-	void ReflectionTransformUpdate();
-	void ReflectionRender(float _DeltaTime);
 
 	std::shared_ptr<GameEngineRenderTarget> GetCamTarget()
 	{
@@ -99,8 +95,6 @@ public:
 	{
 		return ZoomRatio;
 	}
-
-	void ReflectionOn();
 
 protected:
 	void Start() override;
@@ -140,7 +134,6 @@ private:
 	void Release();
 
 	std::shared_ptr<GameEngineRenderTarget> CamTarget = nullptr;
-	std::shared_ptr<GameEngineRenderTarget> ReflectionTarget = nullptr;
 
 	void FreeCameraSwitch();
 };

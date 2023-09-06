@@ -1,8 +1,13 @@
 #include "PrecompileHeader.h"
 #include "NetworkTestLevel.h"
 
+#include <GameEngineCore/PhysXCapsuleComponent.h>
+
 #include "NetworkManager.h"
 #include "NetTestPlayer.h"
+#include "PlayerActor_Nero.h"
+#include "PlayerActor_Vergil.h"
+#include "Plane.h"
 
 NetworkTestLevel* NetworkTestLevel::Inst = nullptr;
 
@@ -19,13 +24,13 @@ NetworkTestLevel::~NetworkTestLevel()
 
 void NetworkTestLevel::Start()
 {
+	CreateScene(GetName());
+
 	BaseLevel::Start();
 	BaseLevel::SetNetLevelType(Net_LevelType::NetTestLevel);
 
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 
-	GameEngineInput::CreateKey("Test_ConnectServer", 'C');
-	GameEngineInput::CreateKey("Test_CreateTestNetEnemy", 'V');
 	GameEngineInput::CreateKey("Test_BackMainLevel", VK_ESCAPE);
 }
 
@@ -34,11 +39,15 @@ void NetworkTestLevel::LevelChangeStart()
 	BaseLevel::LevelChangeStart();
 
 	//예시코드
-	std::shared_ptr<NetTestPlayer> Player = nullptr;
-	Player = CreateActor<NetTestPlayer>();
+	//std::shared_ptr<NetTestPlayer> Player = nullptr;
+	//Player = CreateActor<NetTestPlayer>();
+
+	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
+	Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
 
 	//요걸 호출시켜주시면 됩니다.
-	NetworkManager::LinkNetwork(Player.get());
+	NetworkManager::LinkNetwork(Nero.get());
+	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
 }
 
 void NetworkTestLevel::Update(float _DeltaTime)
@@ -49,22 +58,6 @@ void NetworkTestLevel::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsDown("Test_BackMainLevel"))
 	{
 		GameEngineCore::ChangeLevel("MainLevel");
-		return;
-	}
-
-	//1번
-	if (true == GameEngineInput::IsDown("Test_ConnectServer") && false == IsConnect)
-	{
-		IsConnect = true;
-		//NetworkManager::ConnectServer(PlayerType::Nero);
-		return;
-	}
-
-	//2번
-	if (true == GameEngineInput::IsDown("Test_CreateTestNetEnemy") && NetworkManager::IsServer())
-	{
-		std::shared_ptr<NetTestPlayer> OtherPlayer = nullptr;
-		OtherPlayer = NetworkManager::CreateNetworkActor<NetTestPlayer>(Net_ActorType::Nero);
 		return;
 	}
 }

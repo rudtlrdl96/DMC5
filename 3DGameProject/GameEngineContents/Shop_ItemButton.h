@@ -10,12 +10,17 @@ public:
 	std::string _Name = "";
 	std::string _Price = "";
 	std::string _png = "";
+	std::string _BaseNone = "";
+	std::string _BaseSelect = "";
+	bool IsValue = false;
+
 };
 class GameEngineCollision;
 class Shop_ItemButton : public GameEngineActor
 {
 public:
 	static std::vector<std::shared_ptr<Shop_ItemButton>> Items;
+	static std::vector<std::shared_ptr<Shop_ItemButton>> Skills;
 
 	// constrcuter destructer
 	Shop_ItemButton();
@@ -26,9 +31,25 @@ public:
 	Shop_ItemButton(Shop_ItemButton&& _Other) noexcept = delete;
 	Shop_ItemButton& operator=(const Shop_ItemButton& _Other) = delete;
 	Shop_ItemButton& operator=(Shop_ItemButton&& _Other) noexcept = delete;
+	std::shared_ptr<GameEngineUIRenderer> GetRender()
+	{
+		return Render;
+	}
+	std::shared_ptr<GameEngineUIRenderer> GetRender_Select()
+	{
+		return Render_Select;
+	}
 	std::shared_ptr<GameEngineUIRenderer> GetSkillRender()
 	{
 		return Skill_Render;
+	}
+	std::shared_ptr<GameEngineUIRenderer> GetBaseRender()
+	{
+		return SkillBase_Render;
+	}
+	std::shared_ptr<GameEngineUIRenderer> GetSelectRender()
+	{
+		return SkillSelect_Render;
 	}
 	std::shared_ptr<class GameEngineFontRenderer> GetPriceText()
 	{
@@ -63,13 +84,18 @@ public:
 	{
 		IsPosValue = _Value;
 	}
-	static void CreateItemUI(GameEngineLevel* _Level, float4 _Pos, const ShopTextParameter& _Param, GameEngineTransform* _Trans);
+	void SetSizeValue(bool _Value)
+	{
+		SizeValue = _Value;
+	}
+	static void CreateItemUI(GameEngineLevel* _Level, float4 _Pos, const ShopTextParameter& _Param, GameEngineTransform* _Trans,float4 _RenderScale,float4 _RenderPos);
 
 protected:
 	void Start() override;
 	void Update(float _Delta) override;
 
 private:
+	static bool IsScaleValue;
 	void FontCreate();
 	void RenderOnOff();
 	void BlinkRender(float _Delta);
@@ -91,11 +117,11 @@ private:
 
 	std::function<void()> Click;
 	std::string Font = "DMC5Font";
+	bool SizeValue = false;
 	bool IsSelect = false;
 	bool IsValue = false;
 	bool SwichValue = false;
 	bool IsPosValue = false;
-
 	float AddTime = 0.0f;
 	float ScaleUpTime = 0.0f;
 	float ScaleDownTime = 0.0f;

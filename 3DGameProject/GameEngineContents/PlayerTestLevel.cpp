@@ -58,8 +58,9 @@ void PlayerTestLevel::LevelChangeStart()
 	SetLevelSceneGravity(2000);
 	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
 	Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	Nero->SinglePlayLoad();
 	//std::shared_ptr<PlayerActor_Vergil> Vergil = CreateActor<PlayerActor_Vergil>();
-	//5Vergil->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//Vergil->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
 	std::shared_ptr<GameEngineActor> CollisionActor = CreateActor<GameEngineActor>();
 	std::shared_ptr<GameEngineCollision> Collision = CollisionActor->CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
 	CollisionActor->GetTransform()->SetLocalScale({ 100, 100, 100 });
@@ -93,7 +94,7 @@ void PlayerTestLevel::LevelChangeStart()
 
 	//std::shared_ptr<TestEmpusa> Em = CreateActor<TestEmpusa>();
 
-	GameEngineGUI::GUIWindowCreate<PlayerWindow>("PlayerWindow");
+	//GameEngineGUI::GUIWindowCreate<PlayerWindow>("PlayerWindow");
 	//PlayerWindow::_Nero = Nero.get();
 }
 

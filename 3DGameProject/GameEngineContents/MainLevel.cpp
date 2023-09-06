@@ -25,10 +25,9 @@ MainLevel::~MainLevel()
 
 void MainLevel::Start()
 {
-	//GetCamera(0)->ReflectionOn();
-	//GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
-	//GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
-	//GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
+	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
+	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
+	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
 
 	if (false == GameEngineInput::IsKey("SelectLevel_01"))
 	{

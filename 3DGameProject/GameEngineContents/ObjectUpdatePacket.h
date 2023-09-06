@@ -26,7 +26,9 @@ public:
 	float4 Rotation;
 	float4 Position;
 	float TimeScale = 1.f;
-	bool IsDeath = false;
+
+	unsigned int FsmState = -1;
+	bool IsFsmForce = false;
 
 protected:
 	void Serialize(GameEngineSerializer& _Ser) override
@@ -44,6 +46,9 @@ protected:
 
 		unsigned int Level = static_cast<int>(LevelType);
 		_Ser << Level;
+
+		_Ser << FsmState;
+		_Ser << IsFsmForce;
 	}
 
 	void DeSeralize(GameEngineSerializer& _Ser) override
@@ -62,11 +67,16 @@ protected:
 		unsigned int Level = 0;
 		_Ser >> Level;
 		LevelType = static_cast<Net_LevelType>(Level);
+
+		_Ser >> FsmState;
+		_Ser >> IsFsmForce;
 	}
 
 private:
 	unsigned int NetID = -1;
 	unsigned int ActorType = -1;
 	Net_LevelType LevelType = Net_LevelType::UNKNOWN;
+	bool IsDeath = false;
+
 };
 

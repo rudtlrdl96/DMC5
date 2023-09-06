@@ -81,8 +81,14 @@ void Player::Update(float _DeltaTime)
 
 void Player::Update_SendPacket(float _DeltaTime)
 {
-	if (false == NetworkManager::IsServer())
+	/*if (false == NetworkManager::IsServer())
 		return;
 
-	NetworkManager::PushUpdatePacket(this, this, 1.f);
+	NetworkManager::PushUpdatePacket(UpdatePacketParameter
+		{
+			.ObjPtr = this,
+			.FsmState = 0,
+			.IsFsmForce = false,
+			.TimeScale = 1.f
+		});*/
 }
