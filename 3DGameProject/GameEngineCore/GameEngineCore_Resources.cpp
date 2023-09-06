@@ -557,7 +557,10 @@ void GameEngineCore::CoreResourcesInit()
 
 void GameEngineCore::CoreOptionInit()
 {
+	// 텍스쳐 품질
 	GameEngineOption::CreateOption("Texture", GameEngineOptionValue::High);
+
+	// 쉐이더 적용
 	GameEngineOption::CreateOption("Shader", GameEngineOptionValue::High);
 }
 

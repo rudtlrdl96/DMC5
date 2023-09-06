@@ -1,7 +1,7 @@
 #include "PrecompileHeader.h"
 #include "GameEngineFBXMesh.h"
 #include "GameEngineMesh.h"
-
+#include "GameEngineOption.h"
 
 GameEngineFBXMesh::GameEngineFBXMesh()
 {
@@ -1111,19 +1111,31 @@ std::shared_ptr<GameEngineMesh> GameEngineFBXMesh::GetGameEngineMesh(size_t _Mes
 		if (nullptr == Texture)
 		{
 			Path = GameEnginePath::GetFolderPath(GetPath());
+			std::string LoadPath = "";
+			std::string PlusOption = "";
+			std::string Directory = Unit.MaterialData[_SubIndex].DifTextureName;
 
-			std::string FilePath = Path + Unit.MaterialData[_SubIndex].DifTextureName;
-			GameEnginePath Path = FilePath;
+			if (GameEngineOptionValue::Low == GameEngineOption::GetOption("Texture"))
+			{
+				PlusOption = "Low\\";
+			}
+			else if (GameEngineOptionValue::High == GameEngineOption::GetOption("Texture"))
+			{
+				PlusOption = "High\\";
+			}
+
+			std::string CheckPath_Plus = Path + PlusOption + Directory;
+			std::string CheckPath = Path + Directory;
+			GameEnginePath Path = CheckPath_Plus;
 
 			if (false == Path.IsExists())
 			{
-				// MsgTextBox("FBX매쉬도중 텍스처가 존재하지 않습니다." + std::string(FilePath));
+				GameEngineTexture::Load(CheckPath);
 			}
 			else
 			{
-				GameEngineTexture::Load(FilePath);
+				GameEngineTexture::Load(CheckPath_Plus);
 			}
-
 		}
 	}
 
@@ -1137,19 +1149,30 @@ std::shared_ptr<GameEngineMesh> GameEngineFBXMesh::GetGameEngineMesh(size_t _Mes
 		if (nullptr == Texture)
 		{
 			Path = GameEnginePath::GetFolderPath(GetPath());
+			std::string LoadPath = "";
+			std::string PlusOption = "";
+			std::string Directory = Unit.MaterialData[_SubIndex].NorTextureName;
 
-			// CH_NPC_MOB_Anashar_A01_Lower_D_KGW.tga
+			if (GameEngineOptionValue::Low == GameEngineOption::GetOption("Texture"))
+			{
+				PlusOption = "Low\\";
+			}
+			else if (GameEngineOptionValue::High == GameEngineOption::GetOption("Texture"))
+			{
+				PlusOption = "High\\";
+			}
 
-			std::string FilePath = Path + Unit.MaterialData[_SubIndex].NorTextureName;
-			GameEnginePath Path = FilePath;
+			std::string CheckPath_Plus = Path + PlusOption + Directory;
+			std::string CheckPath = Path + Directory;
+			GameEnginePath Path = CheckPath_Plus;
 
 			if (false == Path.IsExists())
 			{
-				// MsgTextBox("FBX매쉬도중 텍스처가 존재하지 않습니다." + std::string(FilePath));
+				GameEngineTexture::Load(CheckPath);
 			}
 			else
 			{
-				GameEngineTexture::Load(FilePath);
+				GameEngineTexture::Load(CheckPath_Plus);
 			}
 		}
 	}
