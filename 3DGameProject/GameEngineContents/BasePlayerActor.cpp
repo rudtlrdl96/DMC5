@@ -174,6 +174,8 @@ void BasePlayerActor::Update_ProcessPacket()
 			GetTransform()->SetLocalPosition(ObjectUpdate->Position);
 			GetTransform()->SetLocalRotation(ObjectUpdate->Rotation);
 			ObjectUpdate->TimeScale;
+
+			// FSM 값 받는 거 추가해야함
 			break;
 		}
 		default:

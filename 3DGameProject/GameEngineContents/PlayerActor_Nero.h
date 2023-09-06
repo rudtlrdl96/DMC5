@@ -82,6 +82,7 @@ public:
 	{
 		FSM.ChangeState(_StateValue);
 	}
+
 protected:
 	void Start() override;
 	void PlayerLoad();
@@ -100,6 +101,8 @@ private:
 	bool InputCheck = false;	// 애니메이션 재생중 다른 입력을 받아 FSM변경이 가능한지 여부
 	bool MoveCheck = false;		// 애니메이션 재생중 이동 입력을 받아 FSM변경이 가능한지 여부
 	bool DelayCheck = false;	// 다른 콤보로 연결되기 위한 딜레이 여부
+
+	//NeRoUI;
 
 	void ChangeState(FSM_State_Nero _State);
 	void RedQueenOn();

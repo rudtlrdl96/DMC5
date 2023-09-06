@@ -78,7 +78,7 @@ void ContentsCore::FontUpload()
 	NewDir.Move("ContentResources");
 	NewDir.Move("Font");
 
-	if (0 == AddFontResourceA(NewDir.GetPlusFileName("DMC5Font.ttf").GetFullPath().data()))
+	if (0 == AddFontResourceA(NewDir.GetPlusFileName("DMC5Font.otf").GetFullPath().data()))
 	{
 		MsgAssert("폰트 로드에 실패했습니다.");
 		return;
