@@ -14,7 +14,7 @@ void CustomCallback::onContact(const physx::PxContactPairHeader& pairHeader, con
 		
 		if (current.contactPatches == 0)
 		{
-			//continue;
+			continue;
 		}
 
 		physx::PxShape* tmpContactActor = current.shapes[0];

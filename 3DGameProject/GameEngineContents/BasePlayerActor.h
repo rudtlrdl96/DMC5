@@ -60,6 +60,7 @@ protected:
 	void LockOn();
 	void LockOff();
 
+	bool FloorCheck();
 
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
 	std::shared_ptr<class PlayerController> Controller = nullptr;

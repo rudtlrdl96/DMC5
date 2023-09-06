@@ -250,6 +250,12 @@ void BasePlayerActor::LockOff()
 	Camera->SetTargetTranform(nullptr);
 }
 
+bool BasePlayerActor::FloorCheck()
+{
+	float4 Point;
+	return GetLevel()->RayCast(GetTransform()->GetWorldPosition(), float4::DOWN, Point, 100.0f) || PhysXCapsule->GetIsPlayerGroundTouch();
+}
+
 void BasePlayerActor::SetForce(float4 _Value)
 {
 	float4 re = _Value.RotaitonYDegReturn(Rot.y);

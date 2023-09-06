@@ -40,6 +40,8 @@ enum FSM_State_Nero
 	Nero_RQ_Skill_Split_2,
 	Nero_RQ_Skill_Split_3,
 
+	Nero_RQ_Skill_Caliber_1,
+	Nero_RQ_Skill_Caliber_2,
 
 
 
@@ -82,6 +84,8 @@ public:
 	{
 		FSM.ChangeState(_StateValue);
 	}
+
+	void SinglePlayLoad();
 
 protected:
 	void Start() override;

@@ -456,7 +456,6 @@ void AnimationToolWindow::MeshCreate(std::shared_ptr<GameEngineLevel> _Level)
 		PhysXCapsule->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
 		PhysXCapsule->CreatePhysXActors({ 150, 100, 150 });
 		PhysXCapsule->GetDynamic()->setMass(5.0f);
-		PhysXCapsule->TurnOffGravity();
 	}
 
 	Renderer = Actor->CreateComponent<GameEngineFBXRenderer>();
