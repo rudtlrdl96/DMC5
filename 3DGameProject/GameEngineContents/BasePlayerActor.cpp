@@ -113,40 +113,38 @@ void BasePlayerActor::Start()
 	PhysXCapsule->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
 	PhysXCapsule->CreatePhysXActors({ 150, 100, 150 });
 	PhysXCapsule->GetDynamic()->setMass(5.0f);
-	
-	if (NetControllType::NetControll == GameEngineNetObject::GetControllType())
-	{
-		// 넷 컨트롤 인 경우 실행
-		PhysXCapsule->TurnOffGravity();
-	}
-	else if (NetControllType::UserControll == GameEngineNetObject::GetControllType())
-	{
-		// 유저 컨트롤 엑터인 경우 실행
-		PhysXCapsule->SetMainPlayer();
-		CustomCallback::SetMainPlayer(PhysXCapsule.get());
+}
 
-		Camera = GetLevel()->CreateActor<PlayerCamera>();
-		Camera->SetPlayerTranform(GetTransform());
+void BasePlayerActor::NetControllLoad()
+{
+	PhysXCapsule->TurnOffGravity();
+}
 
-		// 플레이어 컨트롤러 (조작 체계)
-		Controller = CreateComponent<PlayerController>();
-		Controller->SetCameraTransform(Camera->GetTransform());
-		Controller->CallBack_LockOnDown = std::bind(&BasePlayerActor::LockOn, this);
-		Controller->CallBack_LockOnUp = std::bind(&BasePlayerActor::LockOff, this);
+void BasePlayerActor::UserControllLoad()
+{
+	// 유저 컨트롤 엑터인 경우 실행
+	PhysXCapsule->SetMainPlayer();
+	CustomCallback::SetMainPlayer(PhysXCapsule.get());
 
-		// 플레이어 충돌체
-		PlayerCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
-		PlayerCollision->GetTransform()->SetLocalScale({ 100, 100, 100 });
-		PlayerCollision->SetColType(ColType::OBBBOX3D);
+	Camera = GetLevel()->CreateActor<PlayerCamera>();
+	Camera->SetPlayerTranform(GetTransform());
 
-		// 록온 용 충돌체
-		LockOnCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
-		LockOnCollision->GetTransform()->SetLocalScale({ 1000, 500, 3000 });
-		LockOnCollision->GetTransform()->SetLocalPosition({ 0, 0, 1500 });
-		LockOnCollision->SetColType(ColType::OBBBOX3D);
-	}
-	// 플레이어 공격용 충돌체
-	AttackCollision = CreateComponent<GameEngineCollision>(CollisionOrder::PlayerAttack);
+	// 플레이어 컨트롤러 (조작 체계)
+	Controller = CreateComponent<PlayerController>();
+	Controller->SetCameraTransform(Camera->GetTransform());
+	Controller->CallBack_LockOnDown = std::bind(&BasePlayerActor::LockOn, this);
+	Controller->CallBack_LockOnUp = std::bind(&BasePlayerActor::LockOff, this);
+
+	// 플레이어 충돌체
+	PlayerCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
+	PlayerCollision->GetTransform()->SetLocalScale({ 100, 100, 100 });
+	PlayerCollision->SetColType(ColType::OBBBOX3D);
+
+	// 록온 용 충돌체
+	LockOnCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
+	LockOnCollision->GetTransform()->SetLocalScale({ 1000, 500, 3000 });
+	LockOnCollision->GetTransform()->SetLocalPosition({ 0, 0, 1500 });
+	LockOnCollision->SetColType(ColType::OBBBOX3D);
 }
 
 void BasePlayerActor::Update_ProcessPacket()

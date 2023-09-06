@@ -17,6 +17,7 @@ void PlayerActor_Nero::Start()
 	//NetControllType::NetControll으로 변경될 때 아래 콜백이 실행됩니다. 
 	SetControllCallBack(NetControllType::NetControll, [=]()
 	{
+		NetControllLoad();
 		NetLoad();
 		LoadCheck = true;
 	});
@@ -24,6 +25,7 @@ void PlayerActor_Nero::Start()
 	//NetControllType::UserControll으로 변경될 때 아래 콜백이 실행됩니다.
 	SetControllCallBack(NetControllType::UserControll, [=]()
 	{
+		UserControllLoad();
 		if (false == GameEngineInput::IsKey("Escape"))
 		{
 			GameEngineInput::CreateKey("Escape", VK_F10);
