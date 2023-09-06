@@ -50,11 +50,26 @@ public:
 	//네트워크와 연결
 	void InitNetObject(int _ObjectID, GameEngineNet* _Net);
 
+	//NetControllType이 변경될 때 호출되는 (일회성)콜백입니다.
+	inline void SetControllCallBack(NetControllType _ControllType, std::function<void()> _CallBack)
+	{
+		ControllCallBack[_ControllType] = _CallBack;
+	}
 
 	// 네트워크 상에서 컨트롤을 클라이언트가 담당할 것인지, 서버가 담당할 것인지 여부
 	inline void SetControll(NetControllType _ControllType)
 	{
 		ControllType = _ControllType;
+
+		std::map<NetControllType, std::function<void()>>::iterator FindIter = ControllCallBack.find(_ControllType);
+		if (ControllCallBack.end() == FindIter)
+			return;
+		
+		if (nullptr == FindIter->second)
+			return;
+
+		FindIter->second();
+		FindIter->second = nullptr;
 	}
 
 	inline NetControllType  GetControllType() const
@@ -65,8 +80,9 @@ public:
 	//유저가 직접 조종하는 객체로 설정
 	inline void SetUserControllType()
 	{
-		ControllType = NetControllType::UserControll;
+		SetControll(NetControllType::UserControll);
 	}
+
 
 	//이 객체의 고유 네트워크 아이디(번호) 알려주기
 	inline int GetNetObjectID() const
@@ -160,5 +176,8 @@ private:
 
 	//수신받은 패킷들을 각각의 객체가 처리하기 위해 리스트에 보관(마치 큐 처럼 사용)
 	std::list<std::shared_ptr<GameEnginePacket>> Packets;
+
+	//ControllType이 변경될 때 호출되는 콜백
+	std::map<NetControllType, std::function<void()>> ControllCallBack;
 };
 

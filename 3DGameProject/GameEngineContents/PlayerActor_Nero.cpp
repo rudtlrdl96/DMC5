@@ -14,7 +14,24 @@ void PlayerActor_Nero::Start()
 
 	SetNetObjectType(Net_ActorType::Nero);
 
-	if (NetControllType::NetControll == GameEngineNetObject::GetControllType())
+	//NetControllType::NetControll으로 변경될 때 아래 콜백이 실행됩니다. 
+	SetControllCallBack(NetControllType::NetControll, [=]()
+	{
+		NetLoad();
+	});
+
+	//NetControllType::UserControll으로 변경될 때 아래 콜백이 실행됩니다.
+	SetControllCallBack(NetControllType::UserControll, [=]()
+	{
+		if (false == GameEngineInput::IsKey("Escape"))
+		{
+			GameEngineInput::CreateKey("Escape", VK_F10);
+		}
+		PlayerLoad();
+	});
+
+
+	/*if (NetControllType::NetControll == GameEngineNetObject::GetControllType())
 	{
 		NetLoad();
 	}
@@ -25,9 +42,7 @@ void PlayerActor_Nero::Start()
 			GameEngineInput::CreateKey("Escape", VK_F10);
 		}	
 		PlayerLoad();
-	}
-
-
+	}*/
 }
 
 void PlayerActor_Nero::PlayerLoad()

@@ -164,18 +164,16 @@ void BasePlayerActor::Update_ProcessPacket()
 		{
 			//패킷을 템플릿 포인터로 꺼내옵니다(Enum값과 포인터값을 맞게 해주셔야 하는 부분 유의부탁드려요)
 			std::shared_ptr<ObjectUpdatePacket> ObjectUpdate = PopFirstPacket<ObjectUpdatePacket>();
-			if (true == ObjectUpdate->IsDeath)
-			{
-				Death();
-				break;
-			}
-
+			
 			//패킷의 정보에 따라 자신의 값 수정
 			GetTransform()->SetLocalPosition(ObjectUpdate->Position);
 			GetTransform()->SetLocalRotation(ObjectUpdate->Rotation);
-			ObjectUpdate->TimeScale;
 
-			// FSM 값 받는 거 추가해야함
+			float TimeScale = ObjectUpdate->TimeScale;
+			unsigned int FsmState = ObjectUpdate->FsmState;
+			bool IsFsmForce = ObjectUpdate->IsFsmForce;
+
+
 			break;
 		}
 		default:
