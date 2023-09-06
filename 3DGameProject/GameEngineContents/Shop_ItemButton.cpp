@@ -6,7 +6,10 @@
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineCamera.h>
-std::vector<std::shared_ptr<Shop_ItemButton>> Shop_ItemButton::Items;
+std::vector<std::shared_ptr<Shop_ItemButton>> Shop_ItemButton::Items; 
+std::vector<std::shared_ptr<Shop_ItemButton>> Shop_ItemButton::Skills;
+
+bool  Shop_ItemButton::IsScaleValue = false;
 Shop_ItemButton::Shop_ItemButton()
 {
 }
@@ -16,40 +19,51 @@ Shop_ItemButton::~Shop_ItemButton()
 }
 
 
-void Shop_ItemButton::CreateItemUI(GameEngineLevel* _Level, float4 _Pos, const ShopTextParameter& _Param, GameEngineTransform* _Trans)
+void Shop_ItemButton::CreateItemUI(GameEngineLevel* _Level, float4 _Pos, const ShopTextParameter& _Param, GameEngineTransform* _Trans, float4 _RenderScale, float4 _RenderPos)
 {
 	std::shared_ptr<Shop_ItemButton> ItemButton = _Level->CreateActor<Shop_ItemButton>();
 	ItemButton->GetTransform()->SetParent(_Trans);
 	ItemButton->GetTransform()->SetLocalPosition(_Pos);
-	ItemButton->GetSkillRender()->SetTexture(_Param._png);
+	ItemButton->GetSkillRender()->SetScaleToTexture(_Param._png);
+	ItemButton->GetBaseRender()->SetScaleToTexture(_Param._BaseNone);
+	ItemButton->GetSelectRender()->SetScaleToTexture(_Param._BaseSelect);
+	ItemButton->GetSelectRender()->GetTransform()->SetLocalScale(_RenderScale);
+	ItemButton->GetSelectRender()->GetTransform()->SetLocalPosition(_RenderPos);
+	ItemButton->GetBaseRender()->GetTransform()->SetLocalScale(_RenderScale);
+	ItemButton->GetBaseRender()->GetTransform()->SetLocalPosition(_RenderPos);
 	ItemButton->GetNameText()->SetText(_Param._Name);
 	ItemButton->GetPriceText()->SetText(_Param._Price);
-	Items.push_back(ItemButton);
+	IsScaleValue = _Param.IsValue;
+	if (_Param.IsValue == true)
+	{
+		ItemButton->GetRender()->GetTransform()->SetLocalScale({ 480.0f,102.0f,0.0f });
+		ItemButton->GetRender_Select()->GetTransform()->SetLocalScale({ 480.0f,102.0f,0.0f });
+		Skills.push_back(ItemButton);
+	}
+	else
+	{
+		ItemButton->GetRender()->GetTransform()->SetLocalScale({ 356.0f,102.0f,0.0f });
+		ItemButton->GetRender_Select()->GetTransform()->SetLocalScale({ 356.0f,102.0f,0.0f });
+		Items.push_back(ItemButton);
+	}
 }
 void Shop_ItemButton::Start()
 {
 	Render = CreateComponent<GameEngineUIRenderer>(1);
 	Render->SetTexture("Shop_ItemNoneSelect.png");
-	Render->GetTransform()->SetLocalScale({ 480.0f,102.0f,0.0f });
+
 	Render->ColorOptionValue.MulColor.a = 0.8f;
 	Render->ColorOptionValue.BSCColor = { 0.4f,0.4f,0.4f };
 
 	Render_Select = CreateComponent<GameEngineUIRenderer>(2);
 	Render_Select->SetTexture("Shop_ItemSelect.png");
-	Render_Select->GetTransform()->SetLocalScale({ 480.0f,102.0f,0.0f });
 	Render_Select->GetTransform()->SetLocalPosition({ 0.f, 0.0f, 0.0f });
 
 
 	SkillBase_Render = CreateComponent<GameEngineUIRenderer>(4);
-	SkillBase_Render->SetTexture("Shop_SkillMovieNone.png");
-	SkillBase_Render->GetTransform()->SetLocalScale({ 157.0f,100.0f,0.0f });
-	SkillBase_Render->GetTransform()->SetLocalPosition({ -160.0f,0.0f,0.0f });
-	SkillBase_Render->ColorOptionValue.MulColor.a = 0.5f;
+	//SkillBase_Render->ColorOptionValue.MulColor.a = 0.5f;
 
 	SkillSelect_Render = CreateComponent<GameEngineUIRenderer>(4);
-	SkillSelect_Render->SetTexture("Shop_SkillMovie.png");
-	SkillSelect_Render->GetTransform()->SetLocalScale({ 157.0f,100.0f,0.0f });
-	SkillSelect_Render->GetTransform()->SetLocalPosition({ -160.0f,0.0f,0.0f });
 	SkillSelect_Render->ColorOptionValue.MulColor.a = 0.5f;
 
 	BuyButton_Render = CreateComponent<GameEngineUIRenderer>(5);
@@ -61,7 +75,7 @@ void Shop_ItemButton::Start()
 	Money_Render->SetTexture("Shop_Coin.png");
 	Money_Render->GetTransform()->SetLocalScale({ 31.0f,28.0f,0.0f });
 
-	Skill_Render = CreateComponent<GameEngineUIRenderer>(3);
+	Skill_Render = CreateComponent<GameEngineUIRenderer>(4);
 	Skill_Render->GetTransform()->SetLocalPosition({ -160.0f,0.0f,0.0f });
 	FontCreate();
 }
@@ -113,11 +127,20 @@ void Shop_ItemButton::FontCreate()
 
 	BuyText_Render = CreateComponent<GameEngineFontRenderer>(6);
 	BuyText_Render->GetTransform()->SetParent(GetTransform());
-	BuyText_Render->SetFont("Tahoma Bold");
+	BuyText_Render->SetFont("나눔바른고딕 옛한글");
 	BuyText_Render->SetFontFlag(FW1_CENTER);
 	BuyText_Render->SetScale(20);
 	BuyText_Render->SetColor(float4::WHITE);
-	BuyText_Render->SetText("배우기");
+	if (SizeValue == true)
+	{
+		BuyText_Render->SetText("배우기");
+
+	}
+	else
+	{
+		BuyText_Render->SetText("구매");
+
+	}
 
 
 }
@@ -129,7 +152,6 @@ void Shop_ItemButton::RenderOnOff()
 		BuyButton_Render->On();
 		BuyText_Render->On();
 		Render_Select->On();
-		SkillBase_Render->Off();
 		SkillSelect_Render->On();
 	}
 	else
@@ -137,6 +159,7 @@ void Shop_ItemButton::RenderOnOff()
 		Render->On();
 		BuyButton_Render->Off();
 		BuyText_Render->Off();
+		SkillSelect_Render->Off();
 	}
 }
 void Shop_ItemButton::BlinkRender(float _Delta)
@@ -146,8 +169,8 @@ void Shop_ItemButton::BlinkRender(float _Delta)
 		AddTime += _Delta;
 		if (IsValue == false)
 		{
-			M0 = GameEngineMath::LerpLimit(0.4f, 1.2f, AddTime * 2.0f);
-			if (M0 == 1.2f)
+			M0 = GameEngineMath::LerpLimit(0.5f, 1.5f, AddTime * 2.0f);
+			if (M0 == 1.5f)
 			{
 				IsValue = true;
 				AddTime = 0.0f;
@@ -155,8 +178,8 @@ void Shop_ItemButton::BlinkRender(float _Delta)
 		}
 		else
 		{
-			M0 = GameEngineMath::LerpLimit(1.2f, 0.4f, AddTime * 2.0f);
-			if (M0 == 0.4f)
+			M0 = GameEngineMath::LerpLimit(1.5f, 0.5f, AddTime *2.0f);
+			if (M0 == 0.5f)
 			{
 				IsValue = false;
 				AddTime = 0.0f;
@@ -196,8 +219,11 @@ void Shop_ItemButton::SizeUpDown(float _Delta)
 		float LerpPos = GameEngineMath::LerpLimit(0.0f, 40.0f, ScaleUpTime * 10.0f);
 		Render_Select->GetTransform()->SetLocalPosition({ LerpPos, 0.0f, 0.0 });
 		float4 LerpUpScale = float4::LerpClamp(DownScale, UpScale, ScaleUpTime * 10.0f);
-		SkillSelect_Render->GetTransform()->SetLocalScale(LerpUpScale);
-		Skill_Render->GetTransform()->SetLocalScale({ LerpUpScale.x - 5.0f,LerpUpScale.y - 9.0f,LerpUpScale.z });
+		if (SizeValue == true)
+		{
+			SkillSelect_Render->GetTransform()->SetLocalScale(LerpUpScale);
+			Skill_Render->GetTransform()->SetLocalScale({ LerpUpScale.x - 5.0f,LerpUpScale.y - 9.0f,LerpUpScale.z });
+		}
 		Skill_Render->BSCControl(1.0f, 0.5f, 0.5f);
 		Render_Select->ImageClippingX(ScaleUpTime * 4.0f, ClipXDir::Left);
 
@@ -207,8 +233,11 @@ void Shop_ItemButton::SizeUpDown(float _Delta)
 		ScaleUpTime = 0.0f;
 		ScaleDownTime += _Delta;
 		float4 LerpDownScale = float4::LerpClamp(UpScale, DownScale, ScaleDownTime * 10.0f);
-		SkillSelect_Render->GetTransform()->SetLocalScale(LerpDownScale);
-		Skill_Render->GetTransform()->SetLocalScale({ LerpDownScale.x - 5.0f,LerpDownScale.y - 9.0f,LerpDownScale.z });
+		if (SizeValue == true)
+		{
+			SkillSelect_Render->GetTransform()->SetLocalScale(LerpDownScale);
+			Skill_Render->GetTransform()->SetLocalScale({ LerpDownScale.x - 5.0f,LerpDownScale.y - 9.0f,LerpDownScale.z });
+		}
 		Render_Select->ImageClippingX(1 - ScaleDownTime * 4.0f, ClipXDir::Left);
 		Skill_Render->BSCControl(0.5f, 0.5f, 0.5f);
 		if (LerpDownScale == DownScale)

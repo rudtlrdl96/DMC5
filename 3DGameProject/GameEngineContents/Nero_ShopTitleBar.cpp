@@ -3,6 +3,7 @@
 #include "Shop_TitleButton.h"
 #include "Shop_NeroSkillUI.h"
 #include "Shop_ItemButton.h"
+#include "Shop_NeroArmUI.h"
 #include <GameEngineCore/GameEngineLevel.h>
 Nero_ShopTitleBar::Nero_ShopTitleBar()
 {
@@ -31,7 +32,13 @@ void Nero_ShopTitleBar::Start()
 	//Å×½ºÆ®
 	RQButton = GetLevel()->CreateActor<Shop_NeroSkillUI>();
 	RQButton->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
-}
+	RQButton->Off();
+	ArmButton = GetLevel()->CreateActor<Shop_NeroArmUI>();
+	ArmButton->GetTransform()->SetLocalPosition({ -118.0f,0.0f,0.0f });
+	ArmButton->Off();
+}	
+
+
 
 void Nero_ShopTitleBar::Update(float _Delta)
 {
@@ -39,16 +46,20 @@ void Nero_ShopTitleBar::Update(float _Delta)
 	{
 		DBButton->SetSelectValue(false);
 		SkillButton->SetSelectValue(true);
+		RQButton->On();
+		ArmButton->Off();
 		LerpTime = 0.0f;
 	}
 	else if (TitleIndex == 1)
 	{
+		RQButton->Off();
+		ArmButton->On();
 		LerpTime += _Delta;
-		RQButton->GetTransform()->SetLocalPosition(float4::LerpClamp(float4::ZERONULL, { -1000.0f,0.0f,0.0f }, LerpTime * 2));
-		if (RQButton->GetTransform()->GetLocalPosition() == float4(-1000.0f, 0.0f, 0.f))
-		{
-			RQButton->Off();
-		}
+		//RQButton->GetTransform()->SetLocalPosition(float4::LerpClamp(float4::ZERONULL, { -1000.0f,0.0f,0.0f }, LerpTime * 2));
+		//if (RQButton->GetTransform()->GetLocalPosition() == float4(-1000.0f, 0.0f, 0.f))
+		//{
+		//	RQButton->Off();
+		//}
 		SkillButton->SetSelectValue(false);
 		DBButton->SetSelectValue(true);
 	}

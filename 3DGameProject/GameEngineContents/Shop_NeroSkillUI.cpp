@@ -35,23 +35,24 @@ void Shop_NeroSkillUI::Start()
 	RedQueenButton->GetFont()->SetFont("DMC5Font");
 	RedQueenButton->SetIsPosValue(true);
 	RedQueenButton->GetFont()->GetTransform()->SetLocalPosition({ -680.0f,224.0f,0.0f });
-	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_0, { ._Name = "STREAK",._Price = "800",._png = "StreakSkill.png", }, GetTransform());
-	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_1, { ._Name = "SPLIT",._Price = "1200",._png = "SplitSkill.png", }, GetTransform());
-	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_2, { ._Name = "RED QUEEN COMBO C",._Price = "5000",._png = "RedQuennCSkill.png", }, GetTransform());
-	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_3, { ._Name = "ROULETTE SPIN",._Price = "7000",._png = "RouletteSpinSkill.png", }, GetTransform());
-	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_4, { ._Name = "SHUFLE",._Price = "8000",._png = "ShuffleSkill.png", }, GetTransform());
-	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_5, { ._Name = "CALIBUR",._Price = "25000",._png = "CaliburSkill.png", }, GetTransform());
+	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_0, { ._Name = "STREAK",._Price = "800",._png = "StreakSkill.png",._BaseNone = "Shop_SkillMovieNone.png", ._BaseSelect = "Shop_SkillMovie.png",.IsValue = true }, GetTransform(), float4(157.0f, 100.0f, 0.0f), float4(-160.0f, 0.0f, 0.0f));
+	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_1, { ._Name = "SPLIT",._Price = "1200",._png = "SplitSkill.png",._BaseNone = "Shop_SkillMovieNone.png", ._BaseSelect = "Shop_SkillMovie.png" ,.IsValue = true }, GetTransform(), float4(157.0f, 100.0f, 0.0f), float4(-160.0f, 0.0f, 0.0f));
+	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_2, { ._Name = "RED QUEEN COMBO C",._Price = "5000",._png = "RedQuennCSkill.png",._BaseNone = "Shop_SkillMovieNone.png", ._BaseSelect = "Shop_SkillMovie.png",.IsValue = true }, GetTransform(), float4(157.0f, 100.0f, 0.0f), float4(-160.0f, 0.0f, 0.0f));
+	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_3, { ._Name = "ROULETTE SPIN",._Price = "7000",._png = "RouletteSpinSkill.png",._BaseNone = "Shop_SkillMovieNone.png", ._BaseSelect = "Shop_SkillMovie.png" ,.IsValue = true }, GetTransform(), float4(157.0f, 100.0f, 0.0f), float4(-160.0f, 0.0f, 0.0f));
+	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_4, { ._Name = "SHUFLE",._Price = "8000",._png = "ShuffleSkill.png",._BaseNone = "Shop_SkillMovieNone.png", ._BaseSelect = "Shop_SkillMovie.png",.IsValue = true }, GetTransform(), float4(157.0f, 100.0f, 0.0f), float4(-160.0f, 0.0f, 0.0f));
+	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_5, { ._Name = "CALIBUR",._Price = "25000",._png = "CaliburSkill.png", ._BaseNone = "Shop_SkillMovieNone.png", ._BaseSelect = "Shop_SkillMovie.png",.IsValue = true }, GetTransform(), float4(157.0f, 100.0f, 0.0f), float4(-160.0f, 0.0f, 0.0f));
 
 	ExplanePtr = GetLevel()->CreateActor<Shop_ExplaneUI>();
-	ExplanePtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
-
+	ExplanePtr->GetTransform()->SetParent(GetTransform());
+	ExplanePtr->GetTransform()->SetWorldPosition({ 0.0f,0.0f,0.0f });
+	SetValue();
 }
 
 void Shop_NeroSkillUI::Update(float _Delta)
 {
 	SetIndex();
-	Shop_ItemButton::Items[PrevIndex]->SetSelectValue(false);
-	Shop_ItemButton::Items[Index]->SetSelectValue(true);
+	Shop_ItemButton::Skills[PrevIndex]->SetSelectValue(false);
+	Shop_ItemButton::Skills[Index]->SetSelectValue(true);
 	LerpItem(_Delta);
 	SetExText();
 
@@ -63,23 +64,23 @@ void Shop_NeroSkillUI::LerpItem(float _Delta)
 	{
 		IsValue = true;
 		LerpTime += _Delta;
-		Shop_ItemButton::Items[Index]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_5, Pos_4, LerpTime * 5.0f));
+		Shop_ItemButton::Skills[Index]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_5, Pos_4, LerpTime * 5.0f));
 
-		Shop_ItemButton::Items[Index - 1]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_4, Pos_3, LerpTime * 5.0f));
+		Shop_ItemButton::Skills[Index - 1]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_4, Pos_3, LerpTime * 5.0f));
 
-		Shop_ItemButton::Items[Index - 2]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_3, Pos_2, LerpTime * 5.0f));
+		Shop_ItemButton::Skills[Index - 2]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_3, Pos_2, LerpTime * 5.0f));
 
-		Shop_ItemButton::Items[Index - 3]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_2, Pos_1, LerpTime * 5.0f));
+		Shop_ItemButton::Skills[Index - 3]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_2, Pos_1, LerpTime * 5.0f));
 
-		Shop_ItemButton::Items[Index - 4]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_1, Pos_0, LerpTime * 5.0f));
+		Shop_ItemButton::Skills[Index - 4]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_1, Pos_0, LerpTime * 5.0f));
 
-		Shop_ItemButton::Items[Index - 5]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_0, Pos_Null, LerpTime * 5.0f));
+		Shop_ItemButton::Skills[Index - 5]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_0, Pos_Null, LerpTime * 5.0f));
 
-		if (Shop_ItemButton::Items[Index - 5]->GetTransform()->GetLocalPosition().y >= (Pos_Null.y + Pos_0.y) / 2)
+		if (Shop_ItemButton::Skills[Index - 5]->GetTransform()->GetLocalPosition().y >= (Pos_Null.y + Pos_0.y) / 2)
 		{
-			Shop_ItemButton::Items[Index - 5]->Off();
+			Shop_ItemButton::Skills[Index - 5]->Off();
 		}
-		if (Shop_ItemButton::Items[Index]->GetTransform()->GetLocalPosition() == Pos_4)
+		if (Shop_ItemButton::Skills[Index]->GetTransform()->GetLocalPosition() == Pos_4)
 		{
 			DownSwich = false;
 			LerpTime = 0.0f;
@@ -90,20 +91,20 @@ void Shop_NeroSkillUI::LerpItem(float _Delta)
 	{
 		IsValue = true;
 		LerpTime += _Delta;
-		Shop_ItemButton::Items[Index]->On();
-		Shop_ItemButton::Items[Index]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_Null, Pos_0, LerpTime * 5.0f));
+		Shop_ItemButton::Skills[Index]->On();
+		Shop_ItemButton::Skills[Index]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_Null, Pos_0, LerpTime * 5.0f));
 
-		Shop_ItemButton::Items[Index + 1]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_0, Pos_1, LerpTime * 5.0f));
+		Shop_ItemButton::Skills[Index + 1]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_0, Pos_1, LerpTime * 5.0f));
 
-		Shop_ItemButton::Items[Index + 2]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_1, Pos_2, LerpTime * 5.0f));
+		Shop_ItemButton::Skills[Index + 2]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_1, Pos_2, LerpTime * 5.0f));
 
-		Shop_ItemButton::Items[Index + 3]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_2, Pos_3, LerpTime * 5.0f));
+		Shop_ItemButton::Skills[Index + 3]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_2, Pos_3, LerpTime * 5.0f));
 
-		Shop_ItemButton::Items[Index + 4]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_3, Pos_4, LerpTime * 5.0f));
+		Shop_ItemButton::Skills[Index + 4]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_3, Pos_4, LerpTime * 5.0f));
 
-		Shop_ItemButton::Items[Index + 5]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_4, Pos_5, LerpTime * 5.0f));
+		Shop_ItemButton::Skills[Index + 5]->GetTransform()->SetLocalPosition(float4::LerpClamp(Pos_4, Pos_5, LerpTime * 5.0f));
 
-		if (Shop_ItemButton::Items[Index]->GetTransform()->GetLocalPosition() == Pos_0)
+		if (Shop_ItemButton::Skills[Index]->GetTransform()->GetLocalPosition() == Pos_0)
 		{
 			IsValue = false;
 			UpSwich = false;
@@ -127,7 +128,7 @@ void Shop_NeroSkillUI::SetIndex()
 		{
 			Index--;
 		}
-		if (Shop_ItemButton::Items[1]->GetTransform()->GetLocalPosition() != Pos_1 && PrevIndex == 1 && Index == 0)
+		if (Shop_ItemButton::Skills[1]->GetTransform()->GetLocalPosition() != Pos_1 && PrevIndex == 1 && Index == 0)
 		{
 			UpSwich = true;
 		}
@@ -146,7 +147,7 @@ void Shop_NeroSkillUI::SetIndex()
 		{
 			Index++;
 		}
-		if (Shop_ItemButton::Items[5]->GetTransform()->GetLocalPosition() != Pos_4 && PrevIndex == 4 && Index == 5)
+		if (Shop_ItemButton::Skills[5]->GetTransform()->GetLocalPosition() != Pos_4 && PrevIndex == 4 && Index == 5)
 		{
 			DownSwich = true;
 		}
@@ -181,6 +182,14 @@ void Shop_NeroSkillUI::SetExText()
 
 	default:
 		break;
+	}
+}
+
+void Shop_NeroSkillUI::SetValue()
+{
+	for (int i = 0; i < Shop_ItemButton::Skills.size(); i++)
+	{
+		Shop_ItemButton::Skills[i]->SetSizeValue(true);
 	}
 }
 

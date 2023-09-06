@@ -21,6 +21,7 @@ private:
 	void LerpItem(float _Delta);
 	void SetIndex();
 	void SetExText();
+	void SetValue();
 	std::shared_ptr<class Shop_TitleButton> RedQueenButton = nullptr;
 	std::shared_ptr<class Shop_ItemButton>  SkillButton = nullptr;
 	std::shared_ptr<class Shop_ExplaneUI> ExplanePtr = nullptr;
