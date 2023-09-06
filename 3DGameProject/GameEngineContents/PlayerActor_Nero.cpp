@@ -2,6 +2,7 @@
 #include "PlayerActor_Nero.h"
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/PhysXCapsuleComponent.h>
+#include <GameEngineCore/GameEngineFBXAnimation.h>
 #include "AnimationEvent.h"
 #include "PlayerController.h"
 PlayerActor_Nero::~PlayerActor_Nero()
@@ -146,6 +147,38 @@ void PlayerActor_Nero::PlayerLoad()
 		SetOverture();
 		WeaponIdle();
 	}
+
+	// OvertureRenderer 생성
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Character");
+		NewDir.Move("Player");
+		NewDir.Move("Nero");
+		NewDir.Move("Overture");
+		NewDir.Move("Mesh");
+		if (nullptr == GameEngineFBXMesh::Find("Overture.FBX"))
+		{
+			GameEngineFBXMesh::Load(NewDir.GetPlusFileName("Overture.fbx").GetFullPath());
+		}
+		Renderer_Overture = CreateComponent<GameEngineFBXRenderer>();
+		Renderer_Overture->GetTransform()->SetLocalPosition({ 0, 0, 0 });
+		Renderer_Overture->SetFBXMesh("Overture.FBX", "MeshAniTexture");
+		NewDir.MoveParent();
+		NewDir.Move("Animation");
+		if (nullptr == GameEngineFBXAnimation::Find("wp00_010_Shoot.fbx"))
+		{
+			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".fbx" });
+			for (GameEngineFile File : Files)
+			{
+				GameEngineFBXAnimation::Load(File.GetFullPath());
+				Renderer_Overture->CreateFBXAnimation(File.GetFileName(), { .Inter = 0.0166f, .Loop = true });
+			}
+		}
+		Renderer_Overture->ChangeAnimation("wp00_010_Shoot.fbx");
+	}
+
 	// 기본 움직임
 	{
 		// Idle
@@ -1767,6 +1800,8 @@ void PlayerActor_Nero::NetLoad()
 		SetDemon();
 		WeaponIdle();
 	}
+
+
 	// 기본 움직임
 	{
 		// Idle

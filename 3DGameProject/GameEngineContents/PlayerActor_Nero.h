@@ -95,6 +95,8 @@ protected:
 
 
 private:
+	std::shared_ptr<class GameEngineFBXRenderer> Renderer_Overture = nullptr;
+
 	GameEngineFSM FSM;
 	float WalkSpeed = 300;
 	float RunSpeed = 550;
