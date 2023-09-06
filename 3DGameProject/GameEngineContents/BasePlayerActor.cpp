@@ -178,7 +178,7 @@ void BasePlayerActor::Update_ProcessPacket()
 			unsigned int FsmState = ObjectUpdate->FsmState;
 			bool IsFsmForce = ObjectUpdate->IsFsmForce;
 
-
+			SetFSMStateValue(FsmState);
 			break;
 		}
 		default:
