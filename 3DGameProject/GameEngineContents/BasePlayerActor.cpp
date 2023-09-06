@@ -207,7 +207,7 @@ void BasePlayerActor::Update(float _DeltaTime)
 
 void BasePlayerActor::Update_SendPacket(float _DeltaTime)
 {
-	//NetworkManager::PushUpdatePacket(this, this, 1.f);
+	NetworkManager::PushUpdatePacket({.ObjPtr = this, .FsmState = static_cast<unsigned int>(FSMValue), .IsFsmForce = FSMForce, .TimeScale = 1.0f });
 }
 
 void BasePlayerActor::LockOn()
@@ -263,9 +263,3 @@ void BasePlayerActor::SetWorldPosition(float4 _Value)
 {
 	PhysXCapsule->SetWorldPosition(_Value);
 }
-
-void BasePlayerActor::FSM_SendPacket(int _StateValue)
-{
-
-}
-

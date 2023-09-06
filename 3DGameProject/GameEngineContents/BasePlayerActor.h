@@ -67,6 +67,7 @@ protected:
 	std::shared_ptr<class PhysXCapsuleComponent> PhysXCapsule = nullptr;
 	float4 Rot = float4::ZERO;
 	int FSMValue = 0;
+	bool FSMForce = false;
 	bool IsLockOn = false;
 
 private:
