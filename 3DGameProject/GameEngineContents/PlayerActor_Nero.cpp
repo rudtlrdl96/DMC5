@@ -1399,8 +1399,8 @@ void PlayerActor_Nero::PlayerLoad()
 				if (false == InputCheck) { return; }
 				if (Controller->GetIsLeftJump())
 				{
-					FSMForce = true;
 					ChangeState(FSM_State_Nero::Nero_Evade_Left);
+					FSMForce = true;
 					return;
 				}
 				if (Controller->GetIsRightJump())
@@ -1437,6 +1437,7 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 			},
 			.End = [=] {
+				FSMForce = false;
 
 			}
 			});
@@ -1464,6 +1465,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (Controller->GetIsRightJump())
 				{
 					ChangeState(FSM_State_Nero::Nero_Evade_Right);
+					FSMForce = true;
 					return;
 				}
 				if (Controller->GetIsJump())
@@ -1495,7 +1497,7 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 			},
 			.End = [=] {
-
+				FSMForce = false;
 			}
 			});
 		// Shoot
@@ -1521,7 +1523,6 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 				if (Controller->GetIsRightJump())
 				{
-					FSMForce = true;
 					ChangeState(FSM_State_Nero::Nero_Evade_Right);
 					return;
 				}
@@ -1532,8 +1533,8 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 				if (Controller->GetGunUp())
 				{
-					FSMForce = true;
 					ChangeState(FSM_State_Nero::Nero_BR_Shoot);
+					FSMForce = true;
 					return;
 				}
 				if (Controller->GetIsBackSword())
@@ -1555,7 +1556,7 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 			},
 			.End = [=] {
-
+				FSMForce = false;
 			}
 			});
 		// Air Shoot
@@ -1591,8 +1592,8 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 				if (Controller->GetGunUp())
 				{
-					FSMForce = true;
 					ChangeState(FSM_State_Nero::Nero_BR_AirShoot);
+					FSMForce = true;
 					return;
 				}
 				if (Controller->GetIsSword())
@@ -1603,6 +1604,7 @@ void PlayerActor_Nero::PlayerLoad()
 			},
 			.End = [=] {
 				WeaponIdle();
+				FSMForce = false;
 			}
 			});
 	}

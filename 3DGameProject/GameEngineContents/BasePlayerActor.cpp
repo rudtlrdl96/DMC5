@@ -162,7 +162,7 @@ void BasePlayerActor::Update_ProcessPacket()
 		{
 			//패킷을 템플릿 포인터로 꺼내옵니다(Enum값과 포인터값을 맞게 해주셔야 하는 부분 유의부탁드려요)
 			std::shared_ptr<ObjectUpdatePacket> ObjectUpdate = PopFirstPacket<ObjectUpdatePacket>();
-			
+
 			//패킷의 정보에 따라 자신의 값 수정
 			Server_PrevPos = GetTransform()->GetWorldPosition();
 			Server_NextPos = ObjectUpdate->Position;
@@ -173,11 +173,21 @@ void BasePlayerActor::Update_ProcessPacket()
 			float TimeScale = ObjectUpdate->TimeScale;
 			unsigned int FsmState = ObjectUpdate->FsmState;
 			bool IsFsmForce = ObjectUpdate->IsFsmForce;
-			if (FsmState != -1 && IsFsmForce == true)
+
+			if (FSMValue == FsmState)
+			{
+				if (true == IsFsmForce)
+				{
+					SetFSMStateValue(FsmState);
+					FSMValue = FsmState;
+				}
+			}
+			else
 			{
 				SetFSMStateValue(FsmState);
-				IsFsmForce = false;
+				FSMValue = FsmState;
 			}
+
 			break;
 		}
 		default:
@@ -204,7 +214,7 @@ void BasePlayerActor::Update(float _DeltaTime)
 
 void BasePlayerActor::Update_SendPacket(float _DeltaTime)
 {
-	NetworkManager::PushUpdatePacket({.ObjPtr = this, .FsmState = static_cast<unsigned int>(FSMValue), .IsFsmForce = FSMForce, .TimeScale = 1.0f });
+	NetworkManager::PushUpdatePacket({ .ObjPtr = this, .FsmState = static_cast<unsigned int>(FSMValue), .IsFsmForce = FSMForce, .TimeScale = 1.0f });
 }
 
 void BasePlayerActor::LockOn()
