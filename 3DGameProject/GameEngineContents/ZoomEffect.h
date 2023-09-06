@@ -4,6 +4,15 @@
 // Ό³Έν :
 class ZoomEffect : public GameEnginePostProcess
 {
+public:
+	static ZoomEffect* GetZoomEffect()
+	{
+		return CurLevelZoomEffect;
+	}
+
+private:
+	static ZoomEffect* CurLevelZoomEffect;
+
 	class ZoomEffectBuffer
 	{
 	public:
@@ -53,5 +62,14 @@ private:
 	float ProgressTime = 1.0f;
 	float Ratio = 1.0f;
 	float Speed = 3.0f;
-};
 
+	void LevelChangeStart() override
+	{
+		CurLevelZoomEffect = this;
+	}
+
+	void LevelChangeEnd() override
+	{
+		CurLevelZoomEffect = nullptr;
+	}
+};

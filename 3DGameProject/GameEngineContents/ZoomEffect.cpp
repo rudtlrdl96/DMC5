@@ -1,6 +1,8 @@
 #include "PrecompileHeader.h"
 #include "ZoomEffect.h"
 
+ZoomEffect* ZoomEffect::CurLevelZoomEffect = nullptr;
+
 ZoomEffect::ZoomEffect() 
 {
 }
