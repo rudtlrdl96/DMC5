@@ -103,8 +103,6 @@ private:
 	bool DelayCheck = false;	// 다른 콤보로 연결되기 위한 딜레이 여부
 
 	//NeRoUI;
-
-	void ChangeState(FSM_State_Nero _State);
 	void RedQueenOn();
 	void RedQueenOff();
 	void BlueRoseOn();
