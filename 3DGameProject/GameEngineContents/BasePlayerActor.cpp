@@ -175,8 +175,10 @@ void BasePlayerActor::Update_ProcessPacket()
 			float TimeScale = ObjectUpdate->TimeScale;
 			unsigned int FsmState = ObjectUpdate->FsmState;
 			bool IsFsmForce = ObjectUpdate->IsFsmForce;
-
-			SetFSMStateValue(FsmState);
+			if (FSMValue != -1)
+			{
+				SetFSMStateValue(FsmState);
+			}
 			break;
 		}
 		default:

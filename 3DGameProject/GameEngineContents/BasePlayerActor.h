@@ -69,7 +69,7 @@ protected:
 	std::shared_ptr<class GameEngineCollision> LockOnCollision = nullptr;
 	std::shared_ptr<class PhysXCapsuleComponent> PhysXCapsule = nullptr;
 	float4 Rot = float4::ZERO;
-	int FSMValue = 0;
+	int FSMValue = -1;
 	bool FSMForce = false;
 	bool IsLockOn = false;
 

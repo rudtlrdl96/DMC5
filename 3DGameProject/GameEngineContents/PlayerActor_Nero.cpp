@@ -2110,7 +2110,7 @@ void PlayerActor_Nero::NetLoad()
 			}
 			});
 	}
-	ChangeState(FSM_State_Nero::Nero_Idle);
+	FSM.ChangeState(FSM_State_Nero::Nero_Idle);
 }
 
 void PlayerActor_Nero::Update_Character(float _DeltaTime)
