@@ -134,10 +134,6 @@ void GameEngineLevel::Render(float _DeltaTime)
 			++LightDataObject.LightCount;
 		}
 
-		Cam->ReflectionSetting();
-		Cam->ReflectionTransformUpdate();
-		Cam->Render(_DeltaTime);
-
 		Cam->Setting();
 		Cam->CameraTransformUpdate();
 		Cam->Render(_DeltaTime);
@@ -281,6 +277,61 @@ void GameEngineLevel::ActorLevelChangeEnd()
 				Actor->AllLevelChangeEnd();
 			}
 		}
+	}
+}
+
+void GameEngineLevel::PostProcessLevelChangeStart()
+{
+	std::vector<std::shared_ptr<GameEnginePostProcess>>& LastTargetProcess = LastTarget->Effects;
+
+	for (size_t i = 0; i < LastTargetProcess.size(); i++)
+	{
+		LastTargetProcess[i]->LevelChangeStart();
+	}
+
+	std::map<int, std::shared_ptr<GameEngineCamera>>::iterator CameraLoop = Cameras.begin();
+	std::map<int, std::shared_ptr<GameEngineCamera>>::iterator CameraEnd = Cameras.end();
+
+	while (CameraLoop != CameraEnd)
+	{
+		std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamEffectLoop = CameraLoop->second->CamTarget->Effects.begin();
+		std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamEffectEnd = CameraLoop->second->CamTarget->Effects.end();
+
+		while (CamEffectLoop != CamEffectEnd)
+		{
+			(*CamEffectLoop)->LevelChangeStart();
+
+			++CamEffectLoop;
+		}
+
+		++CameraLoop;
+	}
+}
+
+void GameEngineLevel::PostProcessLevelChangeEnd()
+{
+	std::vector<std::shared_ptr<GameEnginePostProcess>>& LastTargetProcess = LastTarget->Effects;
+
+	for (size_t i = 0; i < LastTargetProcess.size(); i++)
+	{
+		LastTargetProcess[i]->LevelChangeEnd();
+	}
+
+	std::map<int, std::shared_ptr<GameEngineCamera>>::iterator CameraLoop = Cameras.begin();
+	std::map<int, std::shared_ptr<GameEngineCamera>>::iterator CameraEnd = Cameras.end();
+
+	while (CameraLoop != CameraEnd)
+	{
+		std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamEffectLoop = CameraLoop->second->CamTarget->Effects.begin();
+		std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamEffectEnd = CameraLoop->second->CamTarget->Effects.end();
+
+		while (CamEffectLoop != CamEffectEnd)
+		{
+			(*CamEffectLoop)->LevelChangeEnd();
+			++CamEffectLoop;
+		}
+
+		++CameraLoop;
 	}
 }
 

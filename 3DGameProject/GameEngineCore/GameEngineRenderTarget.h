@@ -3,9 +3,11 @@
 #include "GameEngineCore.h"
 
 class GameEngineRenderTarget;
+class GameEngineLevel;
 class GameEnginePostProcess : std::enable_shared_from_this<GameEnginePostProcess>
 {
 	friend GameEngineRenderTarget;
+	friend  GameEngineLevel;
 
 public:
 	std::shared_ptr<GameEngineRenderTarget> ResultTarget;
@@ -13,6 +15,9 @@ public:
 protected:
 	virtual void Start(GameEngineRenderTarget* _Target) = 0;
 	virtual void Effect(GameEngineRenderTarget* _Target, float _DeltaTime) = 0;
+
+	virtual void LevelChangeStart() {}
+	virtual void LevelChangeEnd() {}
 };
 
 // Ό³Έν :
@@ -20,6 +25,7 @@ class GameEngineTexture;
 class GameEngineRenderTarget : public GameEngineResource<GameEngineRenderTarget>, std::enable_shared_from_this<GameEngineRenderTarget>
 {
 	friend class GameEngineCore;
+	friend class GameEngineLevel;
 public:
 	// constrcuter destructer
 	GameEngineRenderTarget();

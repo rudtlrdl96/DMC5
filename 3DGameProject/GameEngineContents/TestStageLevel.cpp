@@ -33,7 +33,6 @@ void TestStageLevel::Start()
 	CreateActor<FreeCameraActor>();
 	CreateActor<ShaderTestActor>()->GetTransform()->SetLocalPosition({ 0, 100, 0 });
 
-	GetCamera(0)->ReflectionOn();
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();

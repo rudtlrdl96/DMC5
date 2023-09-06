@@ -1,6 +1,8 @@
 #include "PrecompileHeader.h"
 #include "JudgementCut.h"
 
+JudgementCut* JudgementCut::CurLevelJudgementCut = nullptr;
+
 JudgementCut::JudgementCut() 
 {
 }

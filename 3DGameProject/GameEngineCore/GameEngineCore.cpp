@@ -124,6 +124,7 @@ void GameEngineCore::EngineUpdate()
 		{
 			MainLevel->LevelChangeEnd();
 			MainLevel->ActorLevelChangeEnd();
+			MainLevel->PostProcessLevelChangeEnd();
 		}
 
 		MainLevel = NextLevel;
@@ -134,6 +135,7 @@ void GameEngineCore::EngineUpdate()
 			GameEnginePhysics::ChangeScene(MainLevel->GetName());
  			MainLevel->LevelChangeStart();
 			MainLevel->ActorLevelChangeStart();
+			MainLevel->PostProcessLevelChangeStart();
 		}
 
 		NextLevel = nullptr;
