@@ -24,6 +24,7 @@ void GameEngineRenderTarget::ResCreate(std::shared_ptr<GameEngineTexture> _Textu
 {
 	Color = _Color;                     // 백버퍼의 디폴트 색 지정(우리는 파란색)
 	Textures.push_back(_Texture);       // 생성된 텍스쳐 값을 벡터에 푸쉬백
+	SRVs.push_back(_Texture->GetSRV());
 	RTVs.push_back(_Texture->GetRTV()); // 생성된 텍스쳐의 RTV 값을 벡터에 푸쉬백
 }
 
@@ -43,6 +44,7 @@ void GameEngineRenderTarget::ResCreate(DXGI_FORMAT _Format, float4 _Scale, float
 
 	std::shared_ptr<GameEngineTexture> Tex = GameEngineTexture::Create(Desc);
 	Textures.push_back(Tex);
+	SRVs.push_back(Tex->GetSRV());
 	RTVs.push_back(Tex->GetRTV());
 }
 
@@ -89,6 +91,8 @@ void GameEngineRenderTarget::Clear()
 
 void GameEngineRenderTarget::Setting()
 {
+	// https://learn.microsoft.com/en-us/windows/win32/direct3d11/overviews-direct3d-11-resources-limits
+
 	ID3D11RenderTargetView** RTV = &RTVs[0];
 
 	if (nullptr == RTV)
@@ -103,7 +107,7 @@ void GameEngineRenderTarget::Setting()
 		DSV = nullptr;
 	}
 
-	GameEngineDevice::GetContext()->OMSetRenderTargets(1, RTV, DSV);
+	GameEngineDevice::GetContext()->OMSetRenderTargets(static_cast<UINT>(RTVs.size()), RTV, DSV);
 }
 
 void GameEngineRenderTarget::Reset()

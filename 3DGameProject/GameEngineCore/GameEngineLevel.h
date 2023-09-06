@@ -16,6 +16,7 @@ class GameEngineRenderer;
 class GameEngineCollision;
 class GameEngineLevel : public GameEngineObject, public PhysicsLevel
 {
+	friend class GameEngineCamera;
 	friend class GameEngineLight;
 	friend class GameEngineRenderer;
 	friend class GameEngineRenderUnit;

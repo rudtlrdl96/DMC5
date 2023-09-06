@@ -22,6 +22,9 @@
       <Filter>Header</Filter>
     </FxCompile>
     <FxCompile Include="GridShader.hlsl" />
+    <FxCompile Include="MeshAniTextureDeferred.hlsl" />
+    <FxCompile Include="DeferredCalLight.hlsl" />
+    <FxCompile Include="DeferredMerge.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">

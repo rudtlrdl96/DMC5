@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "MainLevel.h"
 
+#include <GameEngineCore/GameEngineCoreWindow.h>
 
 #include "JudgementCut.h"
 #include "ZoomEffect.h"
@@ -25,6 +26,11 @@ MainLevel::~MainLevel()
 
 void MainLevel::Start()
 {
+	GameEngineCoreWindow::AddDebugRenderTarget(0, "AllRenderTarget", GetMainCamera()->GetCamAllRenderTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(1, "LightRenderTarget", GetMainCamera()->GetDeferredLightTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(2, "MainCameraForwardTarget", GetMainCamera()->GetCamForwardTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(3, "DeferredTarget", GetMainCamera()->GetCamDeferrdTarget());
+
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();

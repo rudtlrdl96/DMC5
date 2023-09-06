@@ -24,6 +24,7 @@ protected:
 class GameEngineTexture;
 class GameEngineRenderTarget : public GameEngineResource<GameEngineRenderTarget>, std::enable_shared_from_this<GameEngineRenderTarget>
 {
+	friend class GameEngineCoreWindow;
 	friend class GameEngineCore;
 	friend class GameEngineLevel;
 public:
@@ -59,6 +60,16 @@ public:
 	void CreateDepthTexture(int _Index = 0);
 	void Merge(std::shared_ptr<GameEngineRenderTarget> _Other, size_t _Index = 0);
 
+	std::shared_ptr<GameEngineTexture> GetDepthTexture()
+	{
+		return DepthTexture;
+	}
+
+	void SetDepthTexture(std::shared_ptr<GameEngineTexture> _DepthTex)
+	{
+		DepthTexture = _DepthTex;
+	}
+
 	template<typename EffectType>
 	std::shared_ptr<EffectType> CreateEffect()
 	{
@@ -87,6 +98,11 @@ public:
 		DepthSetting = false;
 	}
 
+	void AddNewTexture(DXGI_FORMAT _Format, float4 _Scale, float4 _Color)
+	{
+		ResCreate(_Format, _Scale, _Color);
+	}
+
 protected:
 
 private:
@@ -100,6 +116,7 @@ private:
 	std::vector<std::shared_ptr<GameEnginePostProcess>> Effects;
 	std::vector<std::shared_ptr<GameEngineTexture>> Textures;
 	std::vector<ID3D11RenderTargetView*> RTVs;
+	std::vector<ID3D11ShaderResourceView*> SRVs;
 	std::shared_ptr<GameEngineTexture> DepthTexture;
 
 	void ResCreate(std::shared_ptr<GameEngineTexture> _Texture, float4 _Color);

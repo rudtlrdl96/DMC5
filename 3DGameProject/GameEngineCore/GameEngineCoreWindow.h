@@ -1,6 +1,22 @@
 #pragma once
 #include "GameEngineGUI.h"
 #include "GameEngineLevel.h"
+#include <map>
+
+class GameEngineImageShotWindow : public GameEngineGUIWindow
+{
+public:
+	ImTextureID RenderTexture;
+	ImVec2 Size;
+
+public:
+	void RenderTextureSetting(ImTextureID RenderTexture, ImVec2 Size);
+
+public:
+	void Initialize(class GameEngineLevel* _Level) {}
+	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;
+};
+
 
 // Ό³Έν :
 class GameEngineCoreWindow : public GameEngineGUIWindow
@@ -16,12 +32,13 @@ public:
 	GameEngineCoreWindow& operator=(const GameEngineCoreWindow& _Other) = delete;
 	GameEngineCoreWindow& operator=(GameEngineCoreWindow&& _Other) noexcept = delete;
 
-	std::function<void()> Test;
-
 	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;
+
+	static void AddDebugRenderTarget(int _Order, const std::string_view& _Name, std::shared_ptr<GameEngineRenderTarget> _Target);
 
 protected:
 
 private:
+	static std::map<int, std::shared_ptr<GameEngineRenderTarget>> DebugRenderTarget;
 };
 

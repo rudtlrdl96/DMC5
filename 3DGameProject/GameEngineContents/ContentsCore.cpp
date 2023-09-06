@@ -25,9 +25,8 @@
 #include "TestStageLevel.h"
 #include "StageEditLevel.h"
 #include "MonsterTestLevel.h"
-
-
 #include "AnimationToolLevel.h"
+
 ContentsCore::ContentsCore() 
 {
 }

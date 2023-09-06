@@ -1,6 +1,7 @@
 #pragma once
-#include "GameEngineActor.h"
 #include "GameEngineEnum.h"
+#include "GameEngineActor.h"
+#include "GameEngineRenderer.h"
 #include <list>
 #include <map>
 
@@ -31,6 +32,41 @@ public:
 	GameEngineCamera& operator=(const GameEngineCamera& _Other) = delete;
 	GameEngineCamera& operator=(GameEngineCamera&& _Other) noexcept = delete;
 
+	void Update(float _DeltaTime) override;
+	void Render(float _DeltaTime) override;
+	void CameraTransformUpdate();
+
+	void ViewPortSetting();
+
+	void Setting();
+
+	bool IsView(const TransformData& _TransData);
+
+	std::shared_ptr<GameEngineRenderTarget> GetCamTarget()
+	{
+		return CamTarget;
+	}
+
+	std::shared_ptr<GameEngineRenderTarget> GetCamForwardTarget()
+	{
+		return CamForwardTarget;
+	}
+
+	std::shared_ptr<GameEngineRenderTarget> GetCamDeferrdTarget()
+	{
+		return CamDeferrdTarget;
+	}
+
+	std::shared_ptr<GameEngineRenderTarget> GetDeferredLightTarget()
+	{
+		return DeferredLightTarget;
+	}
+
+	std::shared_ptr<GameEngineRenderTarget> GetCamAllRenderTarget()
+	{
+		return AllRenderTarget;
+	}
+
 	inline float4x4 GetView()
 	{
 		return View;
@@ -46,8 +82,6 @@ public:
 		return ViewPort;
 	}
 
-	void Setting();
-
 	void SetProjectionType(CameraType _Type)
 	{
 		ProjectionType = _Type;
@@ -57,18 +91,6 @@ public:
 	{
 		return FreeCamera;
 	}
-
-	void Update(float _DeltaTime) override;
-	void Render(float _DeltaTime) override;
-
-	void CameraTransformUpdate();
-
-	std::shared_ptr<GameEngineRenderTarget> GetCamTarget()
-	{
-		return CamTarget;
-	}		
-		
-	bool IsView(const TransformData& _TransData);
 
 	template<typename EnumType>
 	void SetSortType(EnumType _Index, SortType _Sort)
@@ -128,12 +150,21 @@ private:
 	float Near = 0.1f;
 	float Far = 100000.0f;
 
-	void PushRenderer(std::shared_ptr<GameEngineRenderer> _Render);
-	void PushRenderUnit(std::shared_ptr<GameEngineRenderUnit> _Unit);
+	void PushRenderer(std::shared_ptr<class GameEngineRenderer> _Render);
+	void PushRenderUnit(std::shared_ptr<class GameEngineRenderUnit> _Unit);
 
 	void Release();
 
-	std::shared_ptr<GameEngineRenderTarget> CamTarget = nullptr;
+	std::shared_ptr<class GameEngineRenderTarget> CamTarget;
+	std::shared_ptr<class GameEngineRenderTarget> CamForwardTarget;
+	std::shared_ptr<class GameEngineRenderTarget> CamDeferrdTarget;
+	std::shared_ptr<class GameEngineRenderTarget> AllRenderTarget;
+
+	GameEngineRenderUnit CalLightUnit;
+	GameEngineRenderUnit DefferdMergeUnit;
+
+	// 빛계산의 결과물을 받기 위한 타겟.
+	std::shared_ptr<class GameEngineRenderTarget> DeferredLightTarget;
 
 	void FreeCameraSwitch();
 };

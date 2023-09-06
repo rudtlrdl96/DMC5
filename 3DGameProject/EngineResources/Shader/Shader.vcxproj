@@ -146,10 +146,13 @@
     <FxCompile Include="Animation.fx" />
     <FxCompile Include="BlurShader.hlsl" />
     <FxCompile Include="DebugMeshRender.hlsl" />
+    <FxCompile Include="DeferredCalLight.hlsl" />
+    <FxCompile Include="DeferredMerge.hlsl" />
     <FxCompile Include="GridShader.hlsl" />
     <FxCompile Include="Light.fx" />
     <FxCompile Include="MergeShader.hlsl" />
     <FxCompile Include="MeshAniTexture.hlsl" />
+    <FxCompile Include="MeshAniTextureDeferred.hlsl" />
     <FxCompile Include="MeshColor.hlsl" />
     <FxCompile Include="MeshTexture.hlsl" />
     <FxCompile Include="RenderBaseValue.fx" />

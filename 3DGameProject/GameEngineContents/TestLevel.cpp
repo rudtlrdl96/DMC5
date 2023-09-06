@@ -62,8 +62,8 @@ void TestLevel::LevelChangeStart()
 	Flat2->GetTransform()->AddWorldRotation(float4{ 0, 0, 90 });
 	Flat2->GetTransform()->AddWorldRotation(float4{ 0, -40, 0});
 
-	std::shared_ptr<Box200> Box = CreateActor<Box200>();
-	Box->GetTransform()->AddWorldPosition(float4{ -300, 100, -300 });
+	//std::shared_ptr<Box200> Box = CreateActor<Box200>();
+	//Box->GetTransform()->AddWorldPosition(float4{ -300, 100, -300 });
 
 	//std::shared_ptr<Box200> Box2 = CreateActor<Box200>();
 	//Box2->GetTransform()->AddWorldPosition(float4{ -100, 0, 100 });

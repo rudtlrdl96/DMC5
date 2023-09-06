@@ -134,10 +134,17 @@ void GameEngineLevel::Render(float _DeltaTime)
 			++LightDataObject.LightCount;
 		}
 
-		Cam->Setting();
+		Cam->ViewPortSetting();
+
+		Cam->AllRenderTarget->Clear();
+		Cam->AllRenderTarget->Setting();
+
 		Cam->CameraTransformUpdate();
 		Cam->Render(_DeltaTime);
-		Cam->CamTarget->Effect(_DeltaTime);
+
+		Cam->CamForwardTarget->Clear();
+		Cam->CamForwardTarget->Merge(Cam->AllRenderTarget, 0);
+		Cam->CamForwardTarget->Effect(_DeltaTime);
 
 		if (false == IsDebugRender)
 		{
@@ -152,7 +159,7 @@ void GameEngineLevel::Render(float _DeltaTime)
 	for (std::pair<int, std::shared_ptr<GameEngineCamera>> Pair : Cameras)
 	{
 		std::shared_ptr<GameEngineCamera> Camera = Pair.second;
-		std::shared_ptr<GameEngineRenderTarget> Target = Camera->GetCamTarget();
+		std::shared_ptr<GameEngineRenderTarget> Target = Camera->CamTarget;
 
 		LastTarget->Merge(Target);
 	}

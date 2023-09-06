@@ -553,6 +553,33 @@ void GameEngineCore::CoreResourcesInit()
 		Pipe->SetBlendState("AlphaBlend");
 		Pipe->SetDepthState("AlwayDepth");
 	}
+	{
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("MeshAniTextureDeferred");
+
+		Pipe->SetVertexShader("MeshAniTextureDeferred.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("MeshAniTextureDeferred.hlsl");
+		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetDepthState("EngineDepth");
+	}
+	{
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("DeferredCalLight");
+
+		Pipe->SetVertexShader("DeferredCalLight.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("DeferredCalLight.hlsl");
+		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetDepthState("AlwayDepth");
+	}
+	{
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("DeferredMerge");
+
+		Pipe->SetVertexShader("DeferredMerge.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("DeferredMerge.hlsl");
+		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetDepthState("AlwayDepth");
+	}
 }
 
 void GameEngineCore::CoreOptionInit()

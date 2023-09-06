@@ -2,6 +2,7 @@
 #include "GameEngineCamera.h"
 #include <GameEnginePlatform/GameEngineInput.h>
 #include <GameEnginePlatform/GameEngineWindow.h>
+#include "GameEngineRenderer.h"
 #include "GameEngineDevice.h"
 #include "GameEngineRenderer.h"
 #include "GameEngineRenderTarget.h"
@@ -51,8 +52,42 @@ void GameEngineCamera::Start()
 	Width = ViewPortData.Width;
 	Height = ViewPortData.Height;
 
-	CamTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	CamTarget->CreateDepthTexture();	
+	AllRenderTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	AllRenderTarget->CreateDepthTexture();
+
+	CamTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 디퓨즈 라이트
+
+	DeferredLightTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 디퓨즈 라이트
+	DeferredLightTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 스펙큘러 라이트
+	DeferredLightTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 앰비언트 라이트를 담는다.
+
+	CamForwardTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	CamForwardTarget->CreateDepthTexture();
+
+	CamDeferrdTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	CamDeferrdTarget->SetDepthTexture(CamForwardTarget->GetDepthTexture());
+
+	CalLightUnit.SetMesh("FullRect");
+	CalLightUnit.SetMaterial("DeferredCalLight");
+
+	LightDatas& Data = GetLevel()->LightDataObject;
+	CalLightUnit.ShaderResHelper.SetConstantBufferLink("LightDatas", Data);
+	CalLightUnit.ShaderResHelper.SetTexture("PositionTex", AllRenderTarget->GetTexture(2));
+	CalLightUnit.ShaderResHelper.SetTexture("NormalTex", AllRenderTarget->GetTexture(3));
+
+	DefferdMergeUnit.SetMesh("FullRect");
+	DefferdMergeUnit.SetMaterial("DeferredMerge");
+	DefferdMergeUnit.ShaderResHelper.SetTexture("DifColor", AllRenderTarget->GetTexture(1));
+	DefferdMergeUnit.ShaderResHelper.SetTexture("DifLight", DeferredLightTarget->GetTexture(0));
+	DefferdMergeUnit.ShaderResHelper.SetTexture("SpcLight", DeferredLightTarget->GetTexture(1));
+	DefferdMergeUnit.ShaderResHelper.SetTexture("AmbLight", DeferredLightTarget->GetTexture(2));
 }
 
 void GameEngineCamera::FreeCameraSwitch()
@@ -141,11 +176,15 @@ void GameEngineCamera::Update(float _DeltaTime)
 	}
 }
 
-void GameEngineCamera::Setting()
+void GameEngineCamera::ViewPortSetting()
 {
 	GameEngineDevice::GetContext()->RSSetViewports(1, &ViewPortData);
-	CamTarget->Clear();
-	CamTarget->Setting();
+}
+
+void GameEngineCamera::Setting()
+{
+	CamForwardTarget->Clear();
+	CamForwardTarget->Setting();
 }
 
 void GameEngineCamera::Render(float _DeltaTime)
@@ -238,6 +277,20 @@ void GameEngineCamera::Render(float _DeltaTime)
 				}
 			}
 		}
+
+		// 오브젝트들은 그릴만한 애들은 다 그렸다고 판단하고
+		// 빛계산의 결과가 들어갈 애들이 여기에서 세팅되고
+		DeferredLightTarget->Clear();
+		DeferredLightTarget->Setting();
+		CalLightUnit.Render(_DeltaTime);
+
+		CamDeferrdTarget->Clear();
+		CamDeferrdTarget->Setting();
+		DefferdMergeUnit.Render(_DeltaTime);
+
+		CamTarget->Clear();
+		CamTarget->Merge(CamForwardTarget);
+		CamTarget->Merge(CamDeferrdTarget);
 	}
 }
 

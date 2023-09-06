@@ -12,6 +12,7 @@
 #include <GameEngineCore/GameEngineGUI.h>
 #include <GameEngineCore/HierarchyGUI.h>
 #include <GameEngineCore/GameEngineFont.h>
+#include <GameEngineCore/GameEngineCoreWindow.h>
 
 #include "NetworkGUI.h"
 #include "ConsoleGUI.h"
@@ -27,6 +28,7 @@ void ContentsCore::ContentsResourcesCreate()
 	GameEngineGUI::GUIWindowCreate<NetworkGUI>("NetworkGUI");
 	GameEngineGUI::GUIWindowCreate<ConsoleGUI>("ConsoleGUI");
 	GameEngineGUI::GUIWindowCreate<HierarchyGUI>("HierarchyGUI");
+	GameEngineGUI::GUIWindowCreate<GameEngineCoreWindow>("CoreWindow");
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////// File Load //////////////////////////////////////////////////////////////////////////////////////
