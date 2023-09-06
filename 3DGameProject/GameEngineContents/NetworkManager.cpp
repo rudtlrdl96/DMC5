@@ -228,17 +228,14 @@ void NetworkManager::PushUpdatePacket(const UpdatePacketParameter& _Param)
 	//이전과 같은 FSM인 경우
 	if(_Param.FsmState == UpdatePacket->FsmState)
 	{
-		//IsForce가 true면 IsFsmForce는 변경X
-		if (false == UpdatePacket->IsFsmForce)
-		{
-			UpdatePacket->IsFsmForce = _Param.IsFsmForce;
-		}
+		UpdatePacket->FsmState = _Param.FsmState;
+		UpdatePacket->IsFsmForce = _Param.IsFsmForce;
 	}
 	//이전과 다른 FSM인 경우
 	else
 	{
 		UpdatePacket->FsmState = _Param.FsmState;
-		UpdatePacket->IsFsmForce = _Param.IsFsmForce;
+		UpdatePacket->IsFsmForce = true;
 	}
 }
 
