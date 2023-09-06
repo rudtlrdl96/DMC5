@@ -164,20 +164,19 @@ void BasePlayerActor::Update_ProcessPacket()
 			std::shared_ptr<ObjectUpdatePacket> ObjectUpdate = PopFirstPacket<ObjectUpdatePacket>();
 			
 			//패킷의 정보에 따라 자신의 값 수정
-			PhysXCapsule->SetWorldPosition(ObjectUpdate->Position);
+			Server_PrevPos = GetTransform()->GetWorldPosition();
+			Server_NextPos = ObjectUpdate->Position;
+			Server_Timer = 0.0f;
 			PhysXCapsule->SetWorldRotation(ObjectUpdate->Rotation);
-			//GetTransform()->SetLocalPosition(ObjectUpdate->Position);
-			//GetTransform()->SetLocalRotation(ObjectUpdate->Rotation);
 			ObjectUpdate->TimeScale;
-			//GetTransform()->SetLocalPosition(ObjectUpdate->Position);
-			//GetTransform()->SetLocalRotation(ObjectUpdate->Rotation);
 
 			float TimeScale = ObjectUpdate->TimeScale;
 			unsigned int FsmState = ObjectUpdate->FsmState;
 			bool IsFsmForce = ObjectUpdate->IsFsmForce;
-			if (FSMValue != -1)
+			if (FsmState != -1 && IsFsmForce == true)
 			{
 				SetFSMStateValue(FsmState);
+				IsFsmForce = false;
 			}
 			break;
 		}
@@ -194,14 +193,13 @@ void BasePlayerActor::Update(float _DeltaTime)
 {
 	Update_Character(_DeltaTime);
 
-	if (NetControllType::UserControll == GameEngineNetObject::GetControllType())
+	if (NetControllType::NetControll == GameEngineNetObject::GetControllType())
 	{
-		//Update_Character(_DeltaTime);
+		Server_Timer += _DeltaTime;
+		float Ratio = Server_Timer / Server_UpdateTime;
+		PhysXCapsule->SetWorldPosition(float4::LerpClamp(Server_PrevPos, Server_NextPos, Ratio));
 	}
 	Update_SendPacket(_DeltaTime);
-
-
-
 }
 
 void BasePlayerActor::Update_SendPacket(float _DeltaTime)

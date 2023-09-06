@@ -1399,6 +1399,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (false == InputCheck) { return; }
 				if (Controller->GetIsLeftJump())
 				{
+					FSMForce = true;
 					ChangeState(FSM_State_Nero::Nero_Evade_Left);
 					return;
 				}
@@ -1520,6 +1521,7 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 				if (Controller->GetIsRightJump())
 				{
+					FSMForce = true;
 					ChangeState(FSM_State_Nero::Nero_Evade_Right);
 					return;
 				}
@@ -1530,6 +1532,7 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 				if (Controller->GetGunUp())
 				{
+					FSMForce = true;
 					ChangeState(FSM_State_Nero::Nero_BR_Shoot);
 					return;
 				}
@@ -1588,6 +1591,7 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 				if (Controller->GetGunUp())
 				{
+					FSMForce = true;
 					ChangeState(FSM_State_Nero::Nero_BR_AirShoot);
 					return;
 				}

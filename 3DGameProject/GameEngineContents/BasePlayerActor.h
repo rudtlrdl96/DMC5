@@ -60,7 +60,6 @@ protected:
 	void LockOff();
 
 
-
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
 	std::shared_ptr<class PlayerController> Controller = nullptr;
 	std::shared_ptr<class PlayerCamera> Camera = nullptr;
@@ -75,5 +74,10 @@ protected:
 
 private:
 	static BasePlayerActor* MainPlayer;
+
+	float4 Server_NextPos;
+	float4 Server_PrevPos;
+	float Server_Timer = 0.0f;
+	const float Server_UpdateTime = 0.01f;
 };
 
