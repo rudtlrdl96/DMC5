@@ -146,6 +146,11 @@ void NetworkManager::PushUpdatePacket(const UpdatePacketParameter& _Param)
 
 	//인자로 받은 오브젝트의 네트워크용 오브젝트 아이디
 	unsigned int ObjectID = NetPtr->GetNetObjectID();
+	
+	//아직 Init처리되지 않은 경우
+	if (-1 == ObjectID)
+		return;
+
 	if (false == GameEngineNetObject::IsNetObject(ObjectID))
 	{
 		MsgAssert(GameEngineString::ToString(ObjectID) + " ID를 가진 오브젝트가 존재하지 않는데, UpdatePacket을 사용하려고 했습니다");
