@@ -94,6 +94,7 @@ private:
 	static void EngineEnd(std::function<void()> __ContentsEnd);
 	static void LevelInit(std::shared_ptr<GameEngineLevel> _Level);
 	static void CoreResourcesInit();
+	static void CoreOptionInit();
 	static void CoreResourcesEnd();
 
 	static std::map<std::string, std::shared_ptr<GameEngineLevel>> LevelMap;

@@ -108,6 +108,6 @@ void TestStageLevel::LevelChangeStart()
 
 	CreateStage(AllStageDatas[0]);
 
-	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
-	Nero->SetWorldPosition({ 0, 100, 0 });
+	//std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
+	//Nero->SetWorldPosition({ 0, 100, 0 });
 }

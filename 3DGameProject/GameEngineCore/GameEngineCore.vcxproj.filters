@@ -805,6 +805,9 @@
     <ClInclude Include="PhysicsActor.h">
       <Filter>Physics\common</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineOption.h">
+      <Filter>Content\Option</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -1022,6 +1025,9 @@
     <ClCompile Include="PhysicsActor.cpp">
       <Filter>Physics\common</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineOption.cpp">
+      <Filter>Content\Option</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -1215,6 +1221,9 @@
     </Filter>
     <Filter Include="Content\Grid">
       <UniqueIdentifier>{fc709344-c3f6-40cf-b512-597b25dbe103}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Option">
+      <UniqueIdentifier>{4333f03b-ef27-49a7-8f59-e19bb7bdc905}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

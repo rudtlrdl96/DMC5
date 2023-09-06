@@ -1,8 +1,6 @@
-
 #include "Transform.fx"
 #include "Light.fx"
 #include "RenderBaseValue.fx"
-#include "Reflection.fx"
 #include "Animation.fx"
 
 struct Input
@@ -81,14 +79,9 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
     // rgb = NormalMap, a = smoothnessValue 
     float4 NrmrData = NormalTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
     
-    // r = Alpha, gba = sss
+    // r = Alpha, gba = sss (subsurface scattering)
     float4 AtosData = SpecularTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
-    
-    if (AlbmData.x == ClipColor.x && AlbmData.y == ClipColor.y && AlbmData.z == ClipColor.z)
-    {
-        clip(-1);
-    }
-        
+            
     float4 RGBA = { AlbmData.r, AlbmData.g, AlbmData.b, AtosData.r };
     float4 ResultColor = float4(0, 0, 0, 0);
     

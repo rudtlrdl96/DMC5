@@ -22,6 +22,7 @@
 #include "GameEngineConstantBuffer.h"
 #include "GameEngineFBXAnimation.h"
 #include "GameEngineMaterial.h"
+#include "GameEngineOption.h"
 
 void GameEngineCore::CoreResourcesInit()
 {
@@ -552,6 +553,12 @@ void GameEngineCore::CoreResourcesInit()
 		Pipe->SetBlendState("AlphaBlend");
 		Pipe->SetDepthState("AlwayDepth");
 	}
+}
+
+void GameEngineCore::CoreOptionInit()
+{
+	GameEngineOption::CreateOption("Texture", GameEngineOptionValue::High);
+	GameEngineOption::CreateOption("Shader", GameEngineOptionValue::High);
 }
 
 void GameEngineCore::CoreResourcesEnd()
