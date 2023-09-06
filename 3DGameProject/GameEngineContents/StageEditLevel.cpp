@@ -68,55 +68,18 @@ void StageEditLevel::LevelChangeStart()
 	{
 		{
 			IsResourceLoaded = true;
-			std::string Path = GameEnginePath::GetFileFullPath
+			GameEngineDirectory Dir = GameEnginePath::GetFileFullPath
 			(
 				"ContentResources",
 				{
 					"Map", "TestMap"
-				},
-				"Location2.FBX"
+				}
 			);
-
-			GameEngineFBXMesh::Load(Path);
-		}
-
-		{
-			std::string Path = GameEnginePath::GetFileFullPath
-			(
-				"ContentResources",
-				{
-					"Map", "TestMap"
-				},
-				"SkyBox.fbx"
-			);
-
-			GameEngineFBXMesh::Load(Path);
-		}
-
-		{
-			std::string Path = GameEnginePath::GetFileFullPath
-			(
-				"ContentResources",
-				{
-					"Map", "TestMap"
-				},
-				"Location2ColGuide.fbx"
-			);
-
-			GameEngineFBXMesh::Load(Path);
-		}
-
-		{
-			std::string Path = GameEnginePath::GetFileFullPath
-			(
-				"ContentResources",
-				{
-					"Map", "TestMap"
-				},
-				"TestCol.fbx"
-			);
-
-			GameEngineFBXMesh::Load(Path);
+			std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".fbx" });
+			for (GameEngineFile& File : FBXFiles)
+			{
+				GameEngineFBXMesh::Load(File.GetFullPath());
+			}
 		}
 	}
 	
