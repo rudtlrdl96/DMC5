@@ -18,6 +18,7 @@ void PlayerActor_Nero::Start()
 	SetControllCallBack(NetControllType::NetControll, [=]()
 	{
 		NetLoad();
+		LoadCheck = true;
 	});
 
 	//NetControllType::UserControll으로 변경될 때 아래 콜백이 실행됩니다.
@@ -28,6 +29,7 @@ void PlayerActor_Nero::Start()
 			GameEngineInput::CreateKey("Escape", VK_F10);
 		}
 		PlayerLoad();
+		LoadCheck = true;
 	});
 
 
@@ -2117,6 +2119,7 @@ void PlayerActor_Nero::NetLoad()
 
 void PlayerActor_Nero::Update_Character(float _DeltaTime)
 {
+	if (LoadCheck == false) { return; }
 	FSM.Update(_DeltaTime);
 	if (NetControllType::UserControll == GameEngineNetObject::GetControllType())
 	{
