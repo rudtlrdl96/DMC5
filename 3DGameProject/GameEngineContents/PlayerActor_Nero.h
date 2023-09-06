@@ -102,9 +102,10 @@ private:
 	bool MoveCheck = false;		// 애니메이션 재생중 이동 입력을 받아 FSM변경이 가능한지 여부
 	bool DelayCheck = false;	// 다른 콤보로 연결되기 위한 딜레이 여부
 
-	//NeRoUI;
+	bool LoadCheck = false;
+	void ChangeState(FSM_State_Nero _StateValue);
 
-	void ChangeState(FSM_State_Nero _State);
+	//NeRoUI;
 	void RedQueenOn();
 	void RedQueenOff();
 	void BlueRoseOn();

@@ -166,14 +166,19 @@ void BasePlayerActor::Update_ProcessPacket()
 			std::shared_ptr<ObjectUpdatePacket> ObjectUpdate = PopFirstPacket<ObjectUpdatePacket>();
 			
 			//패킷의 정보에 따라 자신의 값 수정
-			GetTransform()->SetLocalPosition(ObjectUpdate->Position);
-			GetTransform()->SetLocalRotation(ObjectUpdate->Rotation);
+			PhysXCapsule->SetWorldPosition(ObjectUpdate->Position);
+			PhysXCapsule->SetWorldRotation(ObjectUpdate->Rotation);
+			//GetTransform()->SetLocalPosition(ObjectUpdate->Position);
+			//GetTransform()->SetLocalRotation(ObjectUpdate->Rotation);
+			ObjectUpdate->TimeScale;
+			//GetTransform()->SetLocalPosition(ObjectUpdate->Position);
+			//GetTransform()->SetLocalRotation(ObjectUpdate->Rotation);
 
 			float TimeScale = ObjectUpdate->TimeScale;
 			unsigned int FsmState = ObjectUpdate->FsmState;
 			bool IsFsmForce = ObjectUpdate->IsFsmForce;
 
-
+			SetFSMStateValue(FsmState);
 			break;
 		}
 		default:
@@ -202,7 +207,7 @@ void BasePlayerActor::Update(float _DeltaTime)
 
 void BasePlayerActor::Update_SendPacket(float _DeltaTime)
 {
-	NetworkManager::PushUpdatePacket(this, this, 1.f);
+	NetworkManager::PushUpdatePacket({.ObjPtr = this, .FsmState = static_cast<unsigned int>(FSMValue), .IsFsmForce = FSMForce, .TimeScale = 1.0f });
 }
 
 void BasePlayerActor::LockOn()
@@ -258,9 +263,3 @@ void BasePlayerActor::SetWorldPosition(float4 _Value)
 {
 	PhysXCapsule->SetWorldPosition(_Value);
 }
-
-void BasePlayerActor::FSM_SendPacket(int _StateValue)
-{
-
-}
-

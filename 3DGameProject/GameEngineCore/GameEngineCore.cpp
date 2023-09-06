@@ -14,6 +14,7 @@
 #include "GameEngineVideo.h"
 #include "GameEngineGUI.h"
 #include "GameEnginePhysics.h"
+#include "GameEngineOption.h"
 
 GameEngineThreadJobQueue GameEngineCore::JobQueue;
 
@@ -70,6 +71,7 @@ void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 	CoreResourcesInit();                   // 促捞泛飘 府家胶 积己
 	GameEngineGUI::Initialize();           // Imgui 积己
 	GameEnginePhysics::CreatePhysicsX();
+	CoreOptionInit();					   // 扁夯 可记 积己 
 
 	if (nullptr == _ContentsStart)
 	{

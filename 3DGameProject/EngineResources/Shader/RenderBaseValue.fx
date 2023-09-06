@@ -9,5 +9,4 @@ cbuffer RenderBaseValue : register(b11)
     int IsSpecular = 0;
     float4 ScreenScale;
     float4 Mouse;
-    float4 ClipColor;
 };

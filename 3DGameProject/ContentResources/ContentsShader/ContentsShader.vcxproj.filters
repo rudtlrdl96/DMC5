@@ -46,6 +46,12 @@
     <FxCompile Include="Reflection.fx">
       <Filter>Header</Filter>
     </FxCompile>
+    <FxCompile Include="ContentsMesh_LowOption.hlsl">
+      <Filter>MeshShader</Filter>
+    </FxCompile>
+    <FxCompile Include="ContentsAniMesh_LowOption.hlsl">
+      <Filter>MeshShader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
