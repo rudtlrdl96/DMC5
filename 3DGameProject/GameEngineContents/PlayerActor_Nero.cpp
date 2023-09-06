@@ -1649,14 +1649,8 @@ void PlayerActor_Nero::NetLoad()
 		//콜백 int = 0 : FSM변경
 		// 
 
-		Renderer->GetAllRenderUnit()[0][12]->Off();	// 버스터 암
-		Renderer->GetAllRenderUnit()[0][13]->Off();	// 버스터 암
-		Renderer->GetAllRenderUnit()[0][14]->On();	// 오버추어
-		Renderer->GetAllRenderUnit()[0][15]->Off();	// 거베라
-		Renderer->GetAllRenderUnit()[0][16]->Off();	// 거베라
-		Renderer->GetAllRenderUnit()[0][17]->Off();	// 손 레드퀸
-		Renderer->GetAllRenderUnit()[0][18]->On();	// 등 레드퀸
-		Renderer->GetAllRenderUnit()[0][19]->Off();	// 블루로즈
+		SetDemon();
+		WeaponIdle();
 	}
 	// 기본 움직임
 	{
