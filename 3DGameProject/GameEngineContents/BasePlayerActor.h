@@ -39,8 +39,6 @@ public:
 	void SetMove(float4 _Value);
 	void SetWorldPosition(float4 _Value);
 
-	// 현재의 FSM상태를 서버로 보내는 함수
-	void FSM_SendPacket(int _StateValue);
 	// FSM상태를 지정하는 함수
 	virtual void SetFSMStateValue(int _StateValue) = 0;
 protected:
@@ -68,6 +66,7 @@ protected:
 	std::shared_ptr<class GameEngineCollision> LockOnCollision = nullptr;
 	std::shared_ptr<class PhysXCapsuleComponent> PhysXCapsule = nullptr;
 	float4 Rot = float4::ZERO;
+	int FSMValue = 0;
 	bool IsLockOn = false;
 
 private:

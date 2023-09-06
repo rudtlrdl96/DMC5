@@ -108,7 +108,6 @@ void PlayerActor_Vergil::VergilLoad()
 
 			}
 			});
-
 		// Idle LockOn
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_IdleLockOn,
 			.Start = [=] {
@@ -167,7 +166,6 @@ void PlayerActor_Vergil::VergilLoad()
 
 			}
 			});
-
 		// Walk
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Walk,
 			.Start = [=] {
@@ -226,22 +224,22 @@ void PlayerActor_Vergil::VergilLoad()
 				{
 				case '8':
 					Renderer->ChangeAnimation("pl0300_Walk_Front");
-					FSM_SendPacket(Vergil_WalkFront);
+					FSMValue = FSM_State_Vergil::Vergil_WalkFront;
 					MoveDir = GetTransform()->GetWorldForwardVector() * WalkSpeed;
 					break;
 				case '4':
 					Renderer->ChangeAnimation("pl0300_Walk_Left");
-					FSM_SendPacket(Vergil_WalkLeft);
+					FSMValue = FSM_State_Vergil::Vergil_WalkLeft;
 					MoveDir = GetTransform()->GetWorldLeftVector() * WalkSpeed;
 					break;
 				case '2':
 					Renderer->ChangeAnimation("pl0300_Walk_Back");
-					FSM_SendPacket(Vergil_WalkBack);
+					FSMValue = FSM_State_Vergil::Vergil_WalkBack;
 					MoveDir = GetTransform()->GetWorldBackVector() * WalkSpeed;
 					break;
 				case '6':
 					Renderer->ChangeAnimation("pl0300_Walk_Right");
-					FSM_SendPacket(Vergil_WalkRight);
+					FSMValue = FSM_State_Vergil::Vergil_WalkRight;
 					MoveDir = GetTransform()->GetWorldRightVector() * WalkSpeed;
 					break;
 				}
@@ -252,7 +250,6 @@ void PlayerActor_Vergil::VergilLoad()
 
 			}
 			});
-
 		// Run Start
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_RunStart,
 			.Start = [=] {
@@ -302,7 +299,6 @@ void PlayerActor_Vergil::VergilLoad()
 
 			}
 			});
-
 		// Run
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Run,
 			.Start = [=] {
@@ -349,7 +345,6 @@ void PlayerActor_Vergil::VergilLoad()
 				PhysXCapsule->SetLinearVelocityZero();
 			}
 			});
-
 		// RunStop
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_RunStop,
 			.Start = [=] {
@@ -411,7 +406,6 @@ void PlayerActor_Vergil::VergilLoad()
 
 		}
 			});
-
 		static float Timer = 0;
 		// Jump Fly
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Jump_Fly,
@@ -433,7 +427,6 @@ void PlayerActor_Vergil::VergilLoad()
 
 			}
 			});
-
 		// Landing
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Landing,
 			.Start = [=] {
@@ -1270,6 +1263,12 @@ void PlayerActor_Vergil::NetLoad()
 void PlayerActor_Vergil::Update_Character(float _DeltaTime)
 {
 	FSM.Update(_DeltaTime);
+}
+
+void PlayerActor_Vergil::ChangeState(FSM_State_Vergil _StateValue)
+{
+	FSM.ChangeState(_StateValue);
+	FSMValue = _StateValue;
 }
 
 void PlayerActor_Vergil::SetHuman()
