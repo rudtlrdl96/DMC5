@@ -3,6 +3,8 @@
 
 #include "NetworkManager.h"
 #include "NetTestPlayer.h"
+#include "PlayerActor_Nero.h"
+#include "PlayerActor_Vergil.h"
 
 NetworkTestLevel* NetworkTestLevel::Inst = nullptr;
 
@@ -34,11 +36,12 @@ void NetworkTestLevel::LevelChangeStart()
 	BaseLevel::LevelChangeStart();
 
 	//예시코드
-	std::shared_ptr<NetTestPlayer> Player = nullptr;
-	Player = CreateActor<NetTestPlayer>();
+	//std::shared_ptr<NetTestPlayer> Player = nullptr;
+	//Player = CreateActor<NetTestPlayer>();
 
+	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
 	//요걸 호출시켜주시면 됩니다.
-	NetworkManager::LinkNetwork(Player.get());
+	NetworkManager::LinkNetwork(Nero.get());
 }
 
 void NetworkTestLevel::Update(float _DeltaTime)

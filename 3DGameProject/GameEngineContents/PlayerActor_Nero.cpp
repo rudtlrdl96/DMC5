@@ -12,6 +12,8 @@ void PlayerActor_Nero::Start()
 {
 	BasePlayerActor::Start();
 
+	SetNetObjectType(Net_ActorType::Nero);
+
 	if (NetControllType::NetControll == GameEngineNetObject::GetControllType())
 	{
 		NetLoad();
@@ -380,6 +382,11 @@ void PlayerActor_Nero::PlayerLoad()
 					ChangeState(FSM_State_Nero::Nero_BR_AirShoot);
 					return;
 				}
+				if (Controller->GetIsBackSword())
+				{
+					ChangeState(FSM_State_Nero::Nero_RQ_Skill_Split_1);
+					return;
+				}
 				if (Controller->GetIsSword())
 				{
 					ChangeState(FSM_State_Nero::Nero_RQ_AirComboA_1);
@@ -399,6 +406,11 @@ void PlayerActor_Nero::PlayerLoad()
 				if (Controller->GetGunUp())
 				{
 					ChangeState(FSM_State_Nero::Nero_BR_AirShoot);
+					return;
+				}
+				if (Controller->GetIsBackSword())
+				{
+					ChangeState(FSM_State_Nero::Nero_RQ_Skill_Split_1);
 					return;
 				}
 				if (Controller->GetIsSword())
@@ -1057,6 +1069,53 @@ void PlayerActor_Nero::PlayerLoad()
 			},
 			.End = [=] {
 				WeaponIdle();
+				PhysXCapsule->TurnOnGravity();
+			}
+			});
+
+		// RedQueen Split_1
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Split_1,
+			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
+				PhysXCapsule->TurnOffGravity();
+				RedQueenOn();
+				Renderer->ChangeAnimation("pl0000_RQ_Skill_Split_1");
+			},
+			.Update = [=](float _DeltaTime) {
+				if (Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Nero::Nero_RQ_Skill_Split_2);
+				}
+			},
+			.End = [=] {
+			}
+			});
+
+		// RedQueen Split_2
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Split_2,
+			.Start = [=] {
+				Renderer->ChangeAnimation("pl0000_RQ_Skill_Split_2_Loop");
+			},
+			.Update = [=](float _DeltaTime) {
+				PhysXCapsule->SetMove(float4::DOWN * 2000);
+				if (true == PhysXCapsule->GetIsPlayerGroundTouch())
+				{
+					ChangeState(FSM_State_Nero::Nero_RQ_Skill_Split_3);
+					return;
+				}
+			},
+			.End = [=] {
+			}
+			});
+
+		// RedQueen Split_3
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Split_3,
+			.Start = [=] {
+				Renderer->ChangeAnimation("pl0000_RQ_Skill_Split_3");
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
 				PhysXCapsule->TurnOnGravity();
 			}
 			});
@@ -2065,6 +2124,7 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 		if (GameEngineInput::IsDown("Escape"))
 		{
 			SetWorldPosition({ 0, 100, 0 });
+			ChangeState(Nero_Idle);
 		}
 	}
 }
