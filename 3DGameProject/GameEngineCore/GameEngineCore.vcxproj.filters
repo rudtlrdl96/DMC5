@@ -808,6 +808,9 @@
     <ClInclude Include="GameEngineOption.h">
       <Filter>Content\Option</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineScreenShoot.h">
+      <Filter>Content\ScreenShoot</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -1028,6 +1031,9 @@
     <ClCompile Include="GameEngineOption.cpp">
       <Filter>Content\Option</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineScreenShoot.cpp">
+      <Filter>Content\ScreenShoot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -1224,6 +1230,9 @@
     </Filter>
     <Filter Include="Content\Option">
       <UniqueIdentifier>{4333f03b-ef27-49a7-8f59-e19bb7bdc905}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\ScreenShoot">
+      <UniqueIdentifier>{530cc628-b1b9-4e74-8d3e-4db1201fc20f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
