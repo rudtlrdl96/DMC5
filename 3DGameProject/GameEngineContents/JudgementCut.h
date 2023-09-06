@@ -58,6 +58,11 @@ private:
 	RenderBaseValue BaseValue = RenderBaseValue();
 	JudgementBuffer ShaderBuffer = JudgementBuffer();
 
+	void LevelChangeStart() override
+	{
+		int a = 0;
+	}
+
 	bool IsEffectOn = false;
 
 	float Speed = 25.0f;

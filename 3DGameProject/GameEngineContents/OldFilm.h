@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 #include <GameEngineCore/GameEngineRenderTarget.h>
 #include <GameEngineCore/GameEngineSprite.h>
 
