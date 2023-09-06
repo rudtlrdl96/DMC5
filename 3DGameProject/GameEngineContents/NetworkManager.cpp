@@ -224,11 +224,21 @@ void NetworkManager::PushUpdatePacket(const UpdatePacketParameter& _Param)
 		NetPtr->NetDisconnect();
 	}
 
-	//FSM 상태 및 변경 여부
-	UpdatePacket->FsmState = _Param.FsmState;
-	if (false == UpdatePacket->FsmState)
+	//FSM 처리
+	//이전과 같은 FSM인 경우
+	if(_Param.FsmState == UpdatePacket->FsmState)
 	{
-		UpdatePacket->FsmState = _Param.IsFsmForce;
+		//IsForce가 true면 IsFsmForce는 변경X
+		if (false == UpdatePacket->IsFsmForce)
+		{
+			UpdatePacket->IsFsmForce = _Param.IsFsmForce;
+		}
+	}
+	//이전과 다른 FSM인 경우
+	else
+	{
+		UpdatePacket->FsmState = _Param.FsmState;
+		UpdatePacket->IsFsmForce = _Param.IsFsmForce;
 	}
 }
 

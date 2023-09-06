@@ -192,7 +192,6 @@ void BasePlayerActor::Update_ProcessPacket()
 
 void BasePlayerActor::Update(float _DeltaTime)
 {
-	Update_ProcessPacket();
 	Update_Character(_DeltaTime);
 
 	if (NetControllType::UserControll == GameEngineNetObject::GetControllType())
