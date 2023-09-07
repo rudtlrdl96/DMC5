@@ -303,7 +303,7 @@ void ContentsCore::ContentsResourcesCreate()
 	}
 }
 
-void ContentsCore::ContentsKeyCreate()
+void ContentsCore::CreateContentsKey()
 {
 	if (false == GameEngineInput::IsKey("UIDEBUGMODE"))
 	{
