@@ -122,12 +122,12 @@ private:
 	bool DelayCheck = false;	// 다른 콤보로 연결되기 위한 딜레이 여부
 	bool LoadCheck = false;		// FBX 로드가 완료되었는지
 
-	DevilBreaker CurDevilBreaker = DevilBreaker::None;
+	DevilBreaker CurDevilBreaker = DevilBreaker::Overture;
 	
 	// 검 버튼을 입력한 경우 실행
-	bool Input_SwordCheck();
+	bool Input_SwordCheck(int AddState = 0);
 	// 검 버튼을 공중에서 입력한 경우 실행
-	bool Input_SwordCheckFly();
+	bool Input_SwordCheckFly(int AddState = 0);
 	// 총 버튼을 입력한 경우 실행
 	bool Input_GunCheck();
 	// 총 버튼을 공중에서 입력한 경우 실행
@@ -142,6 +142,7 @@ private:
 	bool Input_DevilBreakerCheckFly();
 
 	void ChangeState(FSM_State_Nero _StateValue);	// FSM 변경 함수
+	void ChangeState(int _StateValue);	// FSM 변경 함수
 
 	void RedQueenOn();	// 레드퀸을 꺼낸 상태
 	void RedQueenOff();	// 레드퀸을 등에 둔 상태
