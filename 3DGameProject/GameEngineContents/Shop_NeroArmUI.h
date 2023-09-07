@@ -14,6 +14,10 @@ public:
 	Shop_NeroArmUI& operator=(const Shop_NeroArmUI& _Other) = delete;
 	Shop_NeroArmUI& operator=(Shop_NeroArmUI&& _Other) noexcept = delete;
 
+	std::shared_ptr<class Shop_ExplaneUI> GetExPlane()
+	{
+		return ArmExplane;
+	}
 protected:
 	void Start() override;
 	void Update(float _Delta) override;

@@ -111,25 +111,25 @@ void UIButton::FontCreate()
 	SeletText->Off();
 
 	ExplaneText = CreateComponent<GameEngineFontRenderer>(5);
-	ExplaneText->SetFont("¸¼Àº °íµñ");
+	ExplaneText->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
 	ExplaneText->SetFontFlag(Flag);
 	ExplaneText->SetScale(24);
 	ExplaneText->SetColor(float4::WHITE);
 
 	ExplaneText_1 = CreateComponent<GameEngineFontRenderer>(4);
-	ExplaneText_1->SetFont("¸¼Àº °íµñ");
+	ExplaneText_1->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
 	ExplaneText_1->SetFontFlag(Flag);
 	ExplaneText_1->SetScale(24);
 	ExplaneText_1->SetColor(float4(0.0f, 0.0f, 0.0f, 0.8f));
 
 	ExplaneText_2 = CreateComponent<GameEngineFontRenderer>(4);
-	ExplaneText_2->SetFont("¸¼Àº °íµñ");
+	ExplaneText_2->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
 	ExplaneText_2->SetFontFlag(Flag);
 	ExplaneText_2->SetScale(24);
 	ExplaneText_2->SetColor(float4(0.0f, 0.0f, 0.0f, 0.8f));
 
 	ExplaneText_3 = CreateComponent<GameEngineFontRenderer>(4);
-	ExplaneText_3->SetFont("¸¼Àº °íµñ");
+	ExplaneText_3->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
 	ExplaneText_3->SetFontFlag(Flag);
 	ExplaneText_3->SetScale(24);
 	ExplaneText_3->SetColor(float4(0.0f,0.0f,0.0f,0.8f));

@@ -113,7 +113,7 @@ void Shop_TitleButton::FontCreate()
 {
 	FontRender = CreateComponent<GameEngineFontRenderer>(4);
 	FontRender->GetTransform()->SetParent(GetTransform());
-	FontRender->SetFont("Tahoma Bold");
+	FontRender->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
 	FontRender->SetFontFlag(FW1_CENTER);
 	FontRender->SetScale(28);
 	FontRender->SetColor(float4::WHITE);

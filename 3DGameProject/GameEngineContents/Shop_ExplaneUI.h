@@ -1,6 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
-class ExplaneParameter
+class ExplaneOneParameter
 {
 public:
 	std::string _EName = "";
@@ -23,7 +23,9 @@ public:
 	Shop_ExplaneUI(Shop_ExplaneUI&& _Other) noexcept = delete;
 	Shop_ExplaneUI& operator=(const Shop_ExplaneUI& _Other) = delete;
 	Shop_ExplaneUI& operator=(Shop_ExplaneUI&& _Other) noexcept = delete;
-	void SetExplaneText(const ExplaneParameter& _Param);
+	void SetExplaneText(const ExplaneOneParameter& _Param);
+	void SetSecoundText(const ExplaneOneParameter& _Param);
+
 protected:
 	void Start() override;
 	void Update(float _Delta) override;
@@ -38,6 +40,7 @@ private:
 	std::shared_ptr<class GameEngineFontRenderer> ExplaneText1 = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> ExplaneText2 = nullptr;
 
+	std::shared_ptr<class GameEngineFontRenderer> SecoundExPlane = nullptr;
 
 
 };

@@ -13,7 +13,10 @@ public:
 	Shop_NeroSkillUI(Shop_NeroSkillUI&& _Other) noexcept = delete;
 	Shop_NeroSkillUI& operator=(const Shop_NeroSkillUI& _Other) = delete;
 	Shop_NeroSkillUI& operator=(Shop_NeroSkillUI&& _Other) noexcept = delete;
-
+	std::shared_ptr<class Shop_ExplaneUI> GetExPlane()
+	{
+		return ExplanePtr;
+	}
 protected:
 	void Start() override;
 	void Update(float _Delta) override;
