@@ -6,6 +6,8 @@
 
 class LinkObjectPacket : public GameEnginePacket
 {
+	friend class NetworkManager;
+
 public:
 	static const PacketEnum Type = PacketEnum::LinkObjectPacket;
 
@@ -19,10 +21,6 @@ public:
 	{
 
 	}
-
-	unsigned __int64 Ptr = 0;
-	unsigned int ActorType = -1;
-
 
 protected:
 	void Serialize(GameEngineSerializer& _Ser) override
@@ -42,6 +40,7 @@ protected:
 	}
 
 private:
-
+	unsigned __int64 Ptr = 0;
+	unsigned int ActorType = -1;
 };
 

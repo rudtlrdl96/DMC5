@@ -114,10 +114,10 @@ void NetworkManager::ServerPacketInit()
 		unsigned int NewID = GameEngineNetObject::CreateServerID();
 
 		//수신받은 오브젝트 생성
-		std::shared_ptr<GameEngineNetObject> NewNetObj = nullptr;
-		NewNetObj = NetworkManager::CreateNetActor(_Packet->ActorType, NewID);
-		//서버가 컨트롤 하지 않음
-		NewNetObj->SetControll(NetControllType::NetControll);
+		//std::shared_ptr<GameEngineNetObject> NewNetObj = nullptr;
+		//NewNetObj = NetworkManager::CreateNetActor(_Packet->ActorType, NewID);
+		////서버가 컨트롤 하지 않음
+		//NewNetObj->SetControll(NetControllType::NetControll);
 
 
 		//답장용 새 패킷

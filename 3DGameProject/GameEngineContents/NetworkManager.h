@@ -120,8 +120,6 @@ private:
 
 	static std::function<void(unsigned int)> ConnectCallBack;
 
-
-
 	//¿¢ÅÍ »ý¼º
 	static std::shared_ptr<GameEngineNetObject> CreateNetActor(unsigned int _ActorType, int _ObjectID = -1)
 	{

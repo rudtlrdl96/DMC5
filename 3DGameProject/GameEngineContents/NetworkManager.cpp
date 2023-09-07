@@ -290,14 +290,14 @@ void NetworkManager::SendFsmChangePacket(GameEngineNetObject* _NetObjPtr, int _F
 	BaseLevel* Level = dynamic_cast<BaseLevel*>(ActorPtr->GetLevel());
 	if (nullptr == Level)
 	{
-		MsgAssert("ObjectUpdate패킷을 전송하려는 Actor가 BaseLevel을 상속받은 레벨에 존재하지 않습니다");
+		MsgAssert("FSM 변환 패킷을 전송하려는 Actor가 BaseLevel을 상속받은 레벨에 존재하지 않습니다");
 		return;
 	}
 
 	Net_LevelType LevelType = Level->GetNetLevelType();
 	if (Net_LevelType::UNKNOWN == LevelType)
 	{
-		MsgAssert("ObjectUpdate패킷을 전송하려는 Actor가 알 수 없는 레벨에 존재합니다.");
+		MsgAssert("FSM 변환 패킷을 전송하려는 Actor가 알 수 없는 레벨에 존재합니다.");
 		return;
 	}
 
