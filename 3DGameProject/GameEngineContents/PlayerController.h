@@ -130,6 +130,7 @@ private:
 	// ½ºÅ³
 	bool IsBackFrontSkill = false;
 	bool IsFrontSkill = false;
+	bool IsSkill = false;
 
 	bool IsSpecialMove = false;
 
@@ -155,6 +156,7 @@ public:
 	bool GetIsRightJump() { return IsRightJump; }
 	bool GetIsSpecialMove() { return IsSpecialMove; }
 	bool GetIsDevilTrigger() { return GameEngineInput::IsDown("Player_DT"); }
+	bool GetIsSkill() { return IsSkill; }
 
 	bool IsLockOn = false;
 };

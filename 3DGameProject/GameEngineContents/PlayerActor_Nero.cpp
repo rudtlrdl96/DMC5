@@ -63,6 +63,37 @@ void PlayerActor_Nero::Start()
 
 void PlayerActor_Nero::PlayerLoad()
 {
+	// Effect 생성
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Effect");
+		NewDir.Move("Mesh");
+		if (nullptr == GameEngineFBXMesh::Find("Effect_Mesh_01.FBX"))
+		{
+			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".fbx" });
+			for (GameEngineFile File : Files)
+			{
+				GameEngineFBXMesh::Load(File.GetFullPath());
+			}
+		}
+		NewDir.MoveParent();
+		NewDir.Move("Texture");
+		if (nullptr == GameEngineTexture::Find("Effect_Texture_01.png"))
+		{
+			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".png" });
+			for (GameEngineFile File : Files)
+			{
+				GameEngineTexture::Load(File.GetFullPath());
+			}
+		}
+		Renderer_EffectMesh = CreateComponent<GameEngineFBXRenderer>();
+		Renderer_EffectMesh->SetFBXMesh("Effect_Mesh_01.FBX", "FBX");
+		Renderer_EffectMesh->SetTexture("DiffuseTexture", "Effect_Texture_01.png");
+		Renderer_EffectMesh->Off();
+	}
+
 	// Renderer 생성
 	{
 		GameEngineDirectory NewDir;
@@ -111,6 +142,7 @@ void PlayerActor_Nero::PlayerLoad()
 				std::bind([=] {MoveCheck = true; }),
 				std::bind([=] {DelayCheck = true; }),
 				std::bind(&PhysXCapsuleComponent::TurnOnGravity, PhysXCapsule),
+				std::bind(&PlayerActor_Nero::SetOverture, this),
 			},
 			.CallBacks_int = {
 				std::bind(&GameEngineFSM::ChangeState, &FSM, std::placeholders::_1)
@@ -137,15 +169,14 @@ void PlayerActor_Nero::PlayerLoad()
 		//콜백void = 6 : 이동체크 시작
 		//콜백void = 7 : 딜레이체크 시작
 		//콜백void = 8 : 중력 적용
+		//콜백void = 9 : SetOverture
 		//
 		//콜백 int = 0 : FSM변경
 		// 
 		//콜백 float4 = 0 : SetForce
 		//콜백 float4 = 0 : SetPush
 		//콜백 float4 = 0 : SetMove
-		SetHuman();
-		SetOverture();
-		WeaponIdle();
+
 	}
 
 	// OvertureRenderer 생성
@@ -163,7 +194,7 @@ void PlayerActor_Nero::PlayerLoad()
 			GameEngineFBXMesh::Load(NewDir.GetPlusFileName("Overture.fbx").GetFullPath());
 		}
 		Renderer_Overture = CreateComponent<GameEngineFBXRenderer>();
-		Renderer_Overture->GetTransform()->SetLocalPosition({ 0, 0, 0 });
+		Renderer_Overture->GetTransform()->SetLocalPosition({ 0, -75, 0 });
 		Renderer_Overture->SetFBXMesh("Overture.FBX", "MeshAniTexture");
 		NewDir.MoveParent();
 		NewDir.Move("Animation");
@@ -173,11 +204,16 @@ void PlayerActor_Nero::PlayerLoad()
 			for (GameEngineFile File : Files)
 			{
 				GameEngineFBXAnimation::Load(File.GetFullPath());
-				Renderer_Overture->CreateFBXAnimation(File.GetFileName(), { .Inter = 0.0166f, .Loop = true });
+				Renderer_Overture->CreateFBXAnimation(File.GetFileName(), { .Inter = 0.0166f, .Loop = false });
 			}
 		}
 		Renderer_Overture->ChangeAnimation("wp00_010_Shoot.fbx");
+		Renderer_Overture->Off();
 	}
+
+	SetHuman();
+	SetOverture();
+	WeaponIdle();
 
 	// 기본 움직임
 	{
@@ -207,6 +243,11 @@ void PlayerActor_Nero::PlayerLoad()
 				if (Controller->GetIsJump())
 				{
 					ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
+					return;
+				}
+				if (Controller->GetIsSkill())
+				{
+					ChangeState(FSM_State_Nero::Nero_Overture_Shoot);
 					return;
 				}
 				if (Controller->GetMoveVector() != float4::ZERO)
@@ -1694,59 +1735,120 @@ void PlayerActor_Nero::PlayerLoad()
 				FSMForce = false;
 			}
 			});
-		// Air Shoot
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_AirShoot,
+			// Air Shoot
+			FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_AirShoot,
+				.Start = [=] {
+					BlueRoseOn();
+					PhysXCapsule->SetLinearVelocityZero();
+					PhysXCapsule->TurnOffGravity();
+					InputCheck = false;
+					MoveCheck = false;
+					Renderer->ChangeAnimation("pl0000_BR_Air_Shoot", true);
+				},
+				.Update = [=](float _DeltaTime) {
+					if (true == FloorCheck())
+					{
+						ChangeState(FSM_State_Nero::Nero_Landing);
+						return;
+					}
+					if (true == Renderer->IsAnimationEnd())
+					{
+						ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+						return;
+					}
+
+					if (false == InputCheck) { return; }
+					if (Controller->GetIsLeftJump())
+					{
+						//ChangeState(FSM_State_Nero::Nero_Evade_Left);
+						return;
+					}
+					if (Controller->GetIsRightJump())
+					{
+						//ChangeState(FSM_State_Nero::Nero_Evade_Right);
+						return;
+					}
+					if (Controller->GetIsJump())
+					{
+						//ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
+						return;
+					}
+					if (Controller->GetGunUp())
+					{
+						ChangeState(FSM_State_Nero::Nero_BR_AirShoot);
+						FSMForce = true;
+						return;
+					}
+					if (Controller->GetIsSword())
+					{
+						ChangeState(FSM_State_Nero::Nero_RQ_AirComboA_1);
+						return;
+					}
+				},
+				.End = [=] {
+					WeaponIdle();
+					FSMForce = false;
+				}
+				});
+	}
+	// 오버추어
+	{}
+	{
+		// Nero_Overture_Shoot
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Overture_Shoot,
 			.Start = [=] {
-				BlueRoseOn();
+				OffDevilBreaker();
 				PhysXCapsule->SetLinearVelocityZero();
-				PhysXCapsule->TurnOffGravity();
+				Renderer->ChangeAnimation("pl0000_Overture_Shoot");
+				Renderer_Overture->On();
+				Renderer_Overture->ChangeAnimation("wp00_010_Shoot.fbx", true);
+				RotationToTarget(30.0f);
 				InputCheck = false;
 				MoveCheck = false;
-				Renderer->ChangeAnimation("pl0000_BR_Air_Shoot", true);
 			},
 			.Update = [=](float _DeltaTime) {
-				if (true == FloorCheck())
-				{
-					ChangeState(FSM_State_Nero::Nero_Landing);
-					return;
-				}
-				if (true == Renderer->IsAnimationEnd())
-				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
-					return;
-				}
-
-				if (false == InputCheck) { return; }
-				if (Controller->GetIsLeftJump())
-				{
-					//ChangeState(FSM_State_Nero::Nero_Evade_Left);
-					return;
-				}
-				if (Controller->GetIsRightJump())
-				{
-					//ChangeState(FSM_State_Nero::Nero_Evade_Right);
-					return;
-				}
-				if (Controller->GetIsJump())
-				{
-					//ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
-					return;
-				}
+				if (InputCheck == false) { return; }
 				if (Controller->GetGunUp())
 				{
-					ChangeState(FSM_State_Nero::Nero_BR_AirShoot);
-					FSMForce = true;
+					ChangeState(FSM_State_Nero::Nero_BR_Shoot);
+					return;
+				}
+				if (Controller->GetIsBackSword())
+				{
+					ChangeState(FSM_State_Nero::Nero_RQ_Skill_HR);
 					return;
 				}
 				if (Controller->GetIsSword())
 				{
-					ChangeState(FSM_State_Nero::Nero_RQ_AirComboA_1);
+					ChangeState(FSM_State_Nero::Nero_RQ_ComboA_2);
+					return;
+				}
+				if (Controller->GetIsLeftJump())
+				{
+					ChangeState(FSM_State_Nero::Nero_Evade_Left);
+					return;
+				}
+				if (Controller->GetIsRightJump())
+				{
+					ChangeState(FSM_State_Nero::Nero_Evade_Right);
+					return;
+				}
+				if (Controller->GetIsJump())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
+					return;
+				}
+
+				if (MoveCheck == false) { return; }
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					ChangeState(FSM_State_Nero::Nero_RunStart);
 					return;
 				}
 			},
 			.End = [=] {
+				SetOverture();
 				WeaponIdle();
-				FSMForce = false;
 			}
 			});
 	}
@@ -2348,6 +2450,16 @@ void PlayerActor_Nero::SetDemon()
 void PlayerActor_Nero::SetOverture()
 {
 	Renderer->GetAllRenderUnit()[0][13]->On();
+	Renderer->GetAllRenderUnit()[0][12]->Off();
+	Renderer->GetAllRenderUnit()[0][11]->Off();
+	Renderer->GetAllRenderUnit()[0][10]->Off();
+	Renderer->GetAllRenderUnit()[0][9]->Off();
+	Renderer_Overture->Off();
+}
+
+void PlayerActor_Nero::OffDevilBreaker()
+{
+	Renderer->GetAllRenderUnit()[0][13]->Off();
 	Renderer->GetAllRenderUnit()[0][12]->Off();
 	Renderer->GetAllRenderUnit()[0][11]->Off();
 	Renderer->GetAllRenderUnit()[0][10]->Off();

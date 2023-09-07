@@ -163,6 +163,7 @@ void PlayerController::InputReset()
 	// ½ºÅ³
 	IsBackFrontSkill = false;
 	IsFrontSkill = false;
+	IsSkill = false;
 
 	IsSpecialMove = false;
 }
@@ -273,7 +274,11 @@ void PlayerController::ActionInput()
 	// Skill
 	if (GameEngineInput::IsDown("Player_Skill"))
 	{
-		if (true == InputCheck_Dir('8'))
+		if (IsLockOn == false)
+		{
+			IsSkill = true;
+		}
+		else if (true == InputCheck_Dir('8'))
 		{
 			if (GameEngineInput::IsPress("Player_Sword") && GameEngineInput::GetPressTime("Player_Sword") < 0.05f)
 			{

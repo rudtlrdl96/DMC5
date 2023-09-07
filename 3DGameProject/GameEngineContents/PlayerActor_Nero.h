@@ -58,6 +58,8 @@ enum FSM_State_Nero
 	Nero_BR_Strafe_R,		// 락온하며 움직임
 	Nero_BR_Shoot,		// 사격
 	Nero_BR_AirShoot,		// 공중사격
+
+	Nero_Overture_Shoot,
 };
 
 class PlayerActor_Nero : public BasePlayerActor
@@ -95,6 +97,7 @@ protected:
 
 
 private:
+	std::shared_ptr<class GameEngineFBXRenderer> Renderer_EffectMesh = nullptr;
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer_Overture = nullptr;
 
 	GameEngineFSM FSM;
@@ -119,5 +122,6 @@ private:
 	void SetHuman();
 	void SetDemon();
 	void SetOverture();
+	void OffDevilBreaker();
 };
 
