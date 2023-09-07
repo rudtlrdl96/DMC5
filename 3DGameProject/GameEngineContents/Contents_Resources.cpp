@@ -303,6 +303,21 @@ void ContentsCore::ContentsResourcesCreate()
 	}
 }
 
+void ContentsCore::ContentsKeyCreate()
+{
+	if (false == GameEngineInput::IsKey("UIDEBUGMODE"))
+	{
+		GameEngineInput::CreateKey("UIDEBUGMODE", 'U');
+		GameEngineInput::CreateKey("ENTER", VK_RETURN);
+		GameEngineInput::CreateKey("UI_UP", VK_UP);
+		GameEngineInput::CreateKey("UI_Down", VK_DOWN);
+		GameEngineInput::CreateKey("UI_Enter", VK_RETURN);
+		GameEngineInput::CreateKey("UI_Left", VK_LEFT);
+		GameEngineInput::CreateKey("UI_Right", VK_RIGHT);
+		GameEngineInput::CreateKey("UI_Tab", VK_TAB);
+	}
+}
+
 void ContentsCore::SetOption()
 {
 	//GameEngineOption::ChangeOption("Texture", GameEngineOptionValue::High);

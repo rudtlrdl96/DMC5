@@ -17,6 +17,7 @@ public:
 	static void GameStart();
 	static void GameEnd();
 	static void ContentsResourcesCreate();
+	static void ContentsKeyCreate();
 	static void SetOption();
 
 protected:
