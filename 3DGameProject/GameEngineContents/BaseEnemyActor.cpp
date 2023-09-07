@@ -3,6 +3,8 @@
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include "EnemyActor_Normal.h"
 
+#include "BasePlayerActor.h"
+
 BaseEnemyActor::BaseEnemyActor()
 {
 }
@@ -174,14 +176,17 @@ EnemyHitDir BaseEnemyActor::GetHitDir(const float4& _WorldPos)
 
 void BaseEnemyActor::Start()
 {
+	//Render생성
 	EnemyRenderer = CreateComponent<GameEngineFBXRenderer>();
-
+	//PhysX(충돌)
 	CapsulCol = CreateComponent<PhysXCapsuleComponent>();
-
 	CapsulCol->SetPhysxMaterial(0, 0, 0);
-	CapsulCol->CreatePhysXActors({4, 10, 4});
+	CapsulCol->CreatePhysXActors({100, 70, 100});
 	CapsulCol->SetWorldPosition({ 0, 100, 0 });
 
+	MonsterCollision=CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
+
+	RN_MonsterCollision = CreateComponent<GameEngineCollision>(CollisionOrder::RN_Enemy);
 	//초기화
 	EnemyCodeValue = EnemyCode::None;
 	EnemyTypeValue = EnemyType::None;
@@ -207,6 +212,7 @@ void BaseEnemyActor::Start()
 	EnemyAnimationLoad();
 	EnemyCreateFSM();
 }
+
 
 void BaseEnemyActor::Update(float _DeltaTime)
 {
@@ -290,5 +296,21 @@ void BaseEnemyActor::SuperArmorOff()
 	if (nullptr != SuperArmorOff_Callback)
 	{
 		SuperArmorOff_Callback();
+	}
+}
+
+void BaseEnemyActor::ChasePlayer()
+{
+	//Player를 인식했을때만
+	if (true == RN_Player)
+	{
+		//서버에서 Player가 vector로 담아져있음. 그 벡터를 돌면서 따라감
+		//거리값계산해서 가까운 플레이어로 추적하는기능 만들어야함
+		for (BasePlayerActor* Players : BasePlayerActor::GetPlayers()) 
+		{
+			float4 EnemyPosition = EnemyRenderer->GetTransform()->GetWorldPosition();
+			float4 PlayerPosition = Players->GetTransform()->GetWorldPosition();
+			CapsulCol->SetMove((PlayerPosition - EnemyPosition));
+		}
 	}
 }

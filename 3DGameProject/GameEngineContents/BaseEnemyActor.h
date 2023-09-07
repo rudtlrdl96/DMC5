@@ -109,6 +109,9 @@ protected:
 	std::shared_ptr<PhysXCapsuleComponent> CapsulCol = nullptr;
 
 	// Monster의 Collision
+	//범위인식
+	std::shared_ptr<class GameEngineCollision> RN_MonsterCollision = nullptr;
+	//자체Collision
 	std::shared_ptr<class GameEngineCollision> MonsterCollision = nullptr;
 
 	GameEngineFSM EnemyFSM;
@@ -130,6 +133,7 @@ protected:
 	std::function<void()> SuperArmorOn_Callback = nullptr;
 	std::function<void()> SuperArmorOff_Callback = nullptr;
 
+	void ChasePlayer();
 	void SuperArmorOn();
 	void SuperArmorOff();
 

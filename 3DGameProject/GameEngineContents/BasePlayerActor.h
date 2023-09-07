@@ -10,7 +10,7 @@ public:
 	{
 		return Players;
 	}
-
+	
 	// constrcuter destructer
 	BasePlayerActor();
 	~BasePlayerActor();
@@ -41,6 +41,8 @@ public:
 
 	// FSM상태를 지정하는 함수
 	virtual void SetFSMStateValue(int _StateValue) = 0;
+
+
 
 protected:
 	void Start() override;

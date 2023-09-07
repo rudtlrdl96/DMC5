@@ -6,6 +6,7 @@
 
 #include "AnimationEvent.h"
 #include "EnemyActor_Normal.h"
+#include "BasePlayerActor.h"
 
 Enemy_Empusa::Enemy_Empusa() 
 {
@@ -243,12 +244,8 @@ void Enemy_Empusa::Move()
 	}
 	if (EnemyRenderer->IsAnimationEnd())
 	{
-		//Player방향으로
-		/*AddForceEnemy(float4::FORWARD, 100.0f);*/
+		ChasePlayer();
 		EnemyRenderer->ChangeAnimation("em0100_biped_walk_loop");
-		CapsulCol->SetMove(float4::FORWARD * 10.0f);
-		float4 Test1=CapsulCol->GetWorldPosition();
-		int a = 0;
 	}
 	//if 공격 범위내에 플레이어가 있다면
 	//EnemyRenderer->ChangeAnimation("em0100_biped_walk_stop");
@@ -257,6 +254,3 @@ void Enemy_Empusa::Move()
 		EnemyFSM.ChangeState(EnemyState::M_Attack);
 	}
 }
-
-
-//attack_A,B -> Idle_variation_C

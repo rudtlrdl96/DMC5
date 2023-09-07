@@ -55,6 +55,11 @@ void MonsterTestLevel::Update(float _DeltaTime)
 
 void MonsterTestLevel::LevelChangeStart()
 {
+	SetLevelSceneGravity(2000);
+	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
+	Nero->GetPhysXComponent()->SetWorldPosition({ 200, 100, 0 });
+	Nero->SinglePlayLoad();
+
 	TestMonster = CreateActor<Enemy_Empusa>();
 
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
@@ -64,10 +69,7 @@ void MonsterTestLevel::LevelChangeStart()
 	Flat2->GetTransform()->AddWorldRotation(float4{ 0, 0, 90 });
 	Flat2->GetTransform()->AddWorldRotation(float4{ 0, -40, 0 });
 
-	SetLevelSceneGravity(2000);
-	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
-	Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	Nero->SinglePlayLoad();
+	
 }
 
 void MonsterTestLevel::LevelChangeEnd()

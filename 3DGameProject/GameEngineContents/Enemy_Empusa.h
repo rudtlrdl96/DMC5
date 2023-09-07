@@ -25,6 +25,9 @@ protected:
 private:
 	bool CheckBool = false;
 
+	
+	float MoveSpeed = 50.0f;
+
 	// 대기상태
 	void Idle_Enter();
 	void Idle_Update(float _DeltaTime);
