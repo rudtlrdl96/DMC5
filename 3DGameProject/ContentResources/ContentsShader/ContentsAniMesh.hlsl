@@ -121,10 +121,10 @@ DeferredOutPut MeshAniTexture_PS(Output _Input)
     Result.DifTarget.rgb = lerp(AlbmData.rgb, AlbmData.rgb * 0.6f, metallic);
     Result.DifTarget.a = AtosData.r;
     
-    //Result.PosTarget.a = 1.0f;
-    //Result.NorTarget.a = 1.0f;    
-    Result.PosTarget.a = metallic;
-    Result.NorTarget.a = roughness;
+    Result.PosTarget.a = 1.0f;
+    Result.NorTarget.a = 1.0f;    
+    //Result.PosTarget.a = metallic;
+    //Result.NorTarget.a = roughness;
         
     return Result;
 }

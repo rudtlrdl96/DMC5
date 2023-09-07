@@ -97,12 +97,12 @@ void PlayerActor_Nero::PlayerLoad()
 		{
 		case GameEngineOptionValue::Low:
 		{
-			Renderer->SetFBXMesh("Nero.FBX", "MeshAniTextureDeferred");
+			Renderer->SetFBXMesh("Nero.FBX", "AniFBX_Low");
 		}
 		break;
 		case GameEngineOptionValue::High:
 		{
-			Renderer->SetFBXMesh("Nero.FBX", "MeshAniTextureDeferred");
+			Renderer->SetFBXMesh("Nero.FBX", "AniFBX");
 		}
 		break;
 		default:

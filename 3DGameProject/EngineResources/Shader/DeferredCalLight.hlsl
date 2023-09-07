@@ -39,6 +39,7 @@ struct LightOutPut
 
 Texture2D PositionTex : register(t0); //rgb = pos, a = Materia
 Texture2D NormalTex : register(t1); // rgb = normal, a = roughness
+Texture2D MatTex : register(t2); // rgb = normal, a = roughness
 SamplerState POINTWRAP : register(s0);
 
 float GGX_Distribution(float3 normal, float3 halfVector, float roughness)
@@ -54,9 +55,9 @@ LightOutPut DeferredCalLight_PS(Output _Input) : SV_Target0
 {
     LightOutPut NewOutPut = (LightOutPut) 0;
     
-    float4 Position = PositionTex.Sample(POINTWRAP, _Input.TEXCOORD.xy);
-        
+    float4 Position = PositionTex.Sample(POINTWRAP, _Input.TEXCOORD.xy);        
     float4 Normal = NormalTex.Sample(POINTWRAP, _Input.TEXCOORD.xy);
+    float4 Mat = MatTex.Sample(POINTWRAP, _Input.TEXCOORD.xy);
             
     if(0 == Normal.z)
     {
@@ -100,14 +101,8 @@ LightOutPut DeferredCalLight_PS(Output _Input) : SV_Target0
             DiffuseRatio.xyz += CalDiffuseLight(Position, Normal, AllLight[i]).xyz;
         
             // Spacular Light 계산
-            SpacularRatio.xyz += CalSpacularLight(Position, Normal, AllLight[i]).xyz * (1.0f - Position.a);
-        }
-        
-        // Diffuse Light 계산
-        DiffuseRatio.xyz += CalDiffuseLight(Position, Normal, AllLight[i]).xyz;
-        
-        // Spacular Light 계산
-        SpacularRatio.xyz += CalSpacularLight(Position, Normal, AllLight[i]).xyz;
+            SpacularRatio.xyz += CalSpacularLight(Position, Normal, AllLight[i]).xyz * (1.0f - Mat.r);
+        }        
     }
     
     // 개선 여지 있음. 

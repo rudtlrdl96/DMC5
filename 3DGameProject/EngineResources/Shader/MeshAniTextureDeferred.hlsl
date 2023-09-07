@@ -51,7 +51,7 @@ Output MeshAniTextureDeferred_VS(Input _Input)
     if (IsAnimation != 0)
     {
         Skinning(InputPos, _Input.BLENDWEIGHT, _Input.BLENDINDICES, ArrAniMationMatrix);
-        // SkinningNormal(InputNormal, _Input.BLENDWEIGHT, _Input.BLENDINDICES, ArrAniMationMatrix);
+        SkinningNormal(InputNormal, _Input.BLENDWEIGHT, _Input.BLENDINDICES, ArrAniMationMatrix);
         InputPos.w = 1.0f;
         InputNormal.w = 0.0f;
     }
