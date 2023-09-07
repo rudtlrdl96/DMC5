@@ -12,6 +12,7 @@
 #include "AnimationEvent.h"
 #include "NetworkManager.h"
 #include <GameEngineCore/PhysXCapsuleComponent.h>
+#include "FsmChangePacket.h"
 
 std::vector<BasePlayerActor*> BasePlayerActor::Players = std::vector<BasePlayerActor*>();
 
