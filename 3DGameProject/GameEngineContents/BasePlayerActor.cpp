@@ -13,14 +13,11 @@
 #include "NetworkManager.h"
 #include <GameEngineCore/PhysXCapsuleComponent.h>
 
-BasePlayerActor* BasePlayerActor::MainPlayer = nullptr;
+std::vector<BasePlayerActor*> BasePlayerActor::Players = std::vector<BasePlayerActor*>(2);
 
 BasePlayerActor::BasePlayerActor()
 {
-	if (GameEngineNetObject::GetControllType() == NetControllType::UserControll)
-	{
-		MainPlayer = this;
-	}
+	Players.push_back(this);
 }
 
 BasePlayerActor::~BasePlayerActor()

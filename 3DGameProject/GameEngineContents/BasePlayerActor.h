@@ -6,9 +6,9 @@
 class BasePlayerActor : public GameEngineActor, public GameEngineNetObject
 {
 public:
-	static BasePlayerActor* GetMainPlayer()
+	static std::vector<BasePlayerActor*>& GetPlayers()
 	{
-		return MainPlayer;
+		return Players;
 	}
 
 	// constrcuter destructer
@@ -75,7 +75,7 @@ protected:
 	bool IsLockOn = false;
 
 private:
-	static BasePlayerActor* MainPlayer;
+	static std::vector<BasePlayerActor*> Players;
 
 	float4 Server_NextPos;
 	float4 Server_PrevPos;
