@@ -87,14 +87,14 @@ void Enemy_Empusa::Idle_Enter()
 void Enemy_Empusa::Idle_Update(float _DeltaTime)
 {
 	//if(player가 범위내에 인식이되면)
-	//RN_Player = true;
-
+	
 	//if범위를 탐색해서 플레이어가 범위내에있다면 Attack(Chage State)
 	//멀리떨어져있다면 Run(update)
-	//if (플레이어와의거리가 멀어지면)
-	//{
+
+	if (true==RN_Player)
+	{
 		Move();
-	//}
+	}
 }
 
 void Enemy_Empusa::Idle_Exit()
@@ -118,7 +118,6 @@ void Enemy_Empusa::Attack_Enter()
 {
 	//GetPlayer Pos(위치 받아서 어떤 공격을할지 설정)
 	//Debug(공격=플레이어를 인식했다고 가정)
-	RN_Player = true;
 	EnemyRenderer->ChangeAnimation("em0100_attack_D");
 	//Debug
 	//"em0100_attack_A" //slow attack

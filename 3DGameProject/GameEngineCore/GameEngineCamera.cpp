@@ -81,6 +81,7 @@ void GameEngineCamera::Start()
 	CalLightUnit.ShaderResHelper.SetConstantBufferLink("LightDatas", Data);
 	CalLightUnit.ShaderResHelper.SetTexture("PositionTex", AllRenderTarget->GetTexture(2));
 	CalLightUnit.ShaderResHelper.SetTexture("NormalTex", AllRenderTarget->GetTexture(3));
+	CalLightUnit.ShaderResHelper.SetTexture("MatTex", AllRenderTarget->GetTexture(4));
 
 	DefferdMergeUnit.SetMesh("FullRect");
 	DefferdMergeUnit.SetMaterial("DeferredMerge");

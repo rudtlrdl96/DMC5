@@ -60,6 +60,7 @@ struct DeferredOutPut
     float4 DifTarget : SV_Target1;
     float4 PosTarget : SV_Target2;
     float4 NorTarget : SV_Target3;
+    float4 MatTarget : SV_Target4;
 };
 
 float GGX_Distribution(float3 normal, float3 halfVector, float roughness)
@@ -114,10 +115,10 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     Result.DifTarget.rgb = lerp(AlbmData.rgb, AlbmData.rgb * 0.6f, metallic);
     Result.DifTarget.a = AtosData.r;
     
-    //Result.PosTarget.a = 1.0f;
-    //Result.NorTarget.a = 1.0f;    
-    Result.PosTarget.a = metallic;
-    Result.NorTarget.a = roughness;
+    Result.PosTarget.a = 1.0f;
+    Result.NorTarget.a = 1.0f;    
+    Result.MatTarget.r = metallic;
+    Result.MatTarget.g = roughness;
         
     return Result;
 }

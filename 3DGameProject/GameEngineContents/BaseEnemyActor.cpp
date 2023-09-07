@@ -191,7 +191,7 @@ void BaseEnemyActor::Start()
 	MonsterCollision->SetColType(ColType::OBBBOX3D);
 	//주변 플레이어를 인식하는 Collision
 	RN_MonsterCollision = CreateComponent<GameEngineCollision>(CollisionOrder::RN_Enemy);
-	RN_MonsterCollision->GetTransform()->SetLocalScale({ 1000, 1000, 1000 });
+	RN_MonsterCollision->GetTransform()->SetLocalScale({ 300, 300, 300 });
 	RN_MonsterCollision->SetColType(ColType::OBBBOX3D);
 	//초기화
 	EnemyCodeValue = EnemyCode::None;
