@@ -27,6 +27,7 @@ private:
 	std::shared_ptr<InvenUIButton> Arrow1Ptr = nullptr;
 	std::shared_ptr<InvenUIButton> Arrow2Ptr = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> FontRender = nullptr;
+	std::shared_ptr<class Nero_Inven> AcNeroInven = nullptr;
 	int Index = 0;
 	int PrevIndex = 0;
 	bool InvenPlusValue = false;

@@ -5,6 +5,8 @@
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
 
+#include "Nero_Inven.h"
+
 Menu_NeroInfo::Menu_NeroInfo() 
 {
 }
@@ -82,22 +84,18 @@ void Menu_NeroInfo::Start()
 	FontRender->SetColor(float4(0.305f, 0.96f, 0.94f, 1.0f));
 	FontRender->GetTransform()->SetLocalPosition(float4(610.f, -125.f, 0.0f));
 
-	Nero_InvenToryUI::CreateNeroInven(GetLevel(),GetTransform());
-	Nero_InvenToryUI::CreateNeroInven(GetLevel(), GetTransform());
-	Nero_InvenToryUI::CreateNeroInven(GetLevel(), GetTransform());
-
-	Nero_InvenToryUI::Invens[0]->On();
-	Nero_InvenToryUI::Invens[0]->GetTransform()->SetLocalPosition(CenterPos);
-	Nero_InvenToryUI::Invens[1]->Off();
-	Nero_InvenToryUI::Invens[2]->Off();
-
+	AcNeroInven = GetLevel()->CreateActor<Nero_Inven>();
+	AcNeroInven->GetInvenVec()[0]->GetTransform()->SetLocalPosition(CenterPos);
+	AcNeroInven->GetInvenVec()[0]->On();
+	AcNeroInven->GetInvenVec()[1]->Off();
+	AcNeroInven->GetInvenVec()[2]->Off();
 }
 
 void Menu_NeroInfo::Update(float _Delta)
 {
 	//if (StartInven == false)
 	//{
-	//	Nero_InvenToryUI::Invens[0]->On();
+	//	AcNeroInven->GetInvenVec()[0]->On();
 	//	StartInven
 	//}
 	MoveInven(_Delta);
@@ -138,28 +136,28 @@ void Menu_NeroInfo::MoveInven(float _Delta)
 		// 0번 러프후 2번 러프
 		if (SetPosValue == false)
 		{
-			Nero_InvenToryUI::Invens[PrevIndex]->GetTransform()->SetLocalPosition(CenterPos);
-			Nero_InvenToryUI::Invens[Index]->GetTransform()->SetLocalPosition(LeftPos);
-			Nero_InvenToryUI::Invens[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a = 1.0f;
-			Nero_InvenToryUI::Invens[PrevIndex]->On();
+			AcNeroInven->GetInvenVec()[PrevIndex]->GetTransform()->SetLocalPosition(CenterPos);
+			AcNeroInven->GetInvenVec()[Index]->GetTransform()->SetLocalPosition(LeftPos);
+			AcNeroInven->GetInvenVec()[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a = 1.0f;
+			AcNeroInven->GetInvenVec()[PrevIndex]->On();
 			SetPosValue = true;
 		}
 		if (ScendMove == true)
 		{
-			Nero_InvenToryUI::Invens[Index]->GetRender()->ColorOptionValue.MulColor.a = 0.5f;
-			Nero_InvenToryUI::Invens[Index]->On();
+			AcNeroInven->GetInvenVec()[Index]->GetRender()->ColorOptionValue.MulColor.a = 0.5f;
+			AcNeroInven->GetInvenVec()[Index]->On();
 			float4 M1 = float4::LerpClamp(LeftPos, CenterPos, Ratio * Speed);
-			Nero_InvenToryUI::Invens[Index]->GetTransform()->SetLocalPosition(M1);
-			if (Nero_InvenToryUI::Invens[Index]->GetRender()->ColorOptionValue.MulColor.a <= 1.0f)
+			AcNeroInven->GetInvenVec()[Index]->GetTransform()->SetLocalPosition(M1);
+			if (AcNeroInven->GetInvenVec()[Index]->GetRender()->ColorOptionValue.MulColor.a <= 1.0f)
 			{
-				Nero_InvenToryUI::Invens[Index]->GetRender()->ColorOptionValue.MulColor.a += Speed * 0.5f;
+				AcNeroInven->GetInvenVec()[Index]->GetRender()->ColorOptionValue.MulColor.a += Speed * 0.5f;
 			}
-			if (Nero_InvenToryUI::Invens[Index]->GetTransform()->GetLocalPosition() == CenterPos)
+			if (AcNeroInven->GetInvenVec()[Index]->GetTransform()->GetLocalPosition() == CenterPos)
 			{
 				InvenMinusValue = false;
 				SetPosValue = false;
 				ScendMove = false;
-				Nero_InvenToryUI::Invens[Index]->GetRender()->ColorOptionValue.MulColor.a = 1.0f;
+				AcNeroInven->GetInvenVec()[Index]->GetRender()->ColorOptionValue.MulColor.a = 1.0f;
 				Speed = 0.0f;
 			}
 
@@ -167,11 +165,11 @@ void Menu_NeroInfo::MoveInven(float _Delta)
 		else if (ScendMove == false)
 		{
 			float4 M0 = float4::LerpClamp(CenterPos, RightPos, Ratio * Speed);
-			Nero_InvenToryUI::Invens[PrevIndex]->GetTransform()->SetLocalPosition(M0);
-			Nero_InvenToryUI::Invens[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a -= Speed * 0.5f;
-			if (Nero_InvenToryUI::Invens[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a <= 0.5f)
+			AcNeroInven->GetInvenVec()[PrevIndex]->GetTransform()->SetLocalPosition(M0);
+			AcNeroInven->GetInvenVec()[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a -= Speed * 0.5f;
+			if (AcNeroInven->GetInvenVec()[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a <= 0.5f)
 			{
-				Nero_InvenToryUI::Invens[PrevIndex]->Off();
+				AcNeroInven->GetInvenVec()[PrevIndex]->Off();
 				ScendMove = true;
 
 			}
@@ -183,28 +181,28 @@ void Menu_NeroInfo::MoveInven(float _Delta)
 		// 0번 러프후 2번 러프
 		if (SetPosValue == false)
 		{
-			Nero_InvenToryUI::Invens[PrevIndex]->GetTransform()->SetLocalPosition(CenterPos);
-			Nero_InvenToryUI::Invens[Index]->GetTransform()->SetLocalPosition(RightPos);
-			Nero_InvenToryUI::Invens[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a = 1.0f;
-			Nero_InvenToryUI::Invens[PrevIndex]->On();
+			AcNeroInven->GetInvenVec()[PrevIndex]->GetTransform()->SetLocalPosition(CenterPos);
+			AcNeroInven->GetInvenVec()[Index]->GetTransform()->SetLocalPosition(RightPos);
+			AcNeroInven->GetInvenVec()[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a = 1.0f;
+			AcNeroInven->GetInvenVec()[PrevIndex]->On();
 			SetPosValue = true;
 		}
 		if (ScendMove == true)
 		{
-			Nero_InvenToryUI::Invens[Index]->GetRender()->ColorOptionValue.MulColor.a = 0.5f;
-			Nero_InvenToryUI::Invens[Index]->On();
+			AcNeroInven->GetInvenVec()[Index]->GetRender()->ColorOptionValue.MulColor.a = 0.5f;
+			AcNeroInven->GetInvenVec()[Index]->On();
 			float4 M1 = float4::LerpClamp(RightPos, CenterPos, Ratio * Speed);
-			Nero_InvenToryUI::Invens[Index]->GetTransform()->SetLocalPosition(M1);
-			if (Nero_InvenToryUI::Invens[Index]->GetRender()->ColorOptionValue.MulColor.a <= 1.0f)
+			AcNeroInven->GetInvenVec()[Index]->GetTransform()->SetLocalPosition(M1);
+			if (AcNeroInven->GetInvenVec()[Index]->GetRender()->ColorOptionValue.MulColor.a <= 1.0f)
 			{
-				Nero_InvenToryUI::Invens[Index]->GetRender()->ColorOptionValue.MulColor.a += Speed * 0.5f;
+				AcNeroInven->GetInvenVec()[Index]->GetRender()->ColorOptionValue.MulColor.a += Speed * 0.5f;
 			}
-			if (Nero_InvenToryUI::Invens[Index]->GetTransform()->GetLocalPosition() == CenterPos)
+			if (AcNeroInven->GetInvenVec()[Index]->GetTransform()->GetLocalPosition() == CenterPos)
 			{
 				InvenPlusValue = false;
 				SetPosValue = false;
 				ScendMove = false;
-				Nero_InvenToryUI::Invens[Index]->GetRender()->ColorOptionValue.MulColor.a = 1.0f;
+				AcNeroInven->GetInvenVec()[Index]->GetRender()->ColorOptionValue.MulColor.a = 1.0f;
 				Speed = 0.0f;
 			}
 
@@ -212,11 +210,11 @@ void Menu_NeroInfo::MoveInven(float _Delta)
 		else if (ScendMove == false)
 		{
 			float4 M0 = float4::LerpClamp(CenterPos, LeftPos, Ratio * Speed);
-			Nero_InvenToryUI::Invens[PrevIndex]->GetTransform()->SetLocalPosition(M0);
-			Nero_InvenToryUI::Invens[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a -= Speed * 0.5f;
-			if (Nero_InvenToryUI::Invens[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a <= 0.5f)
+			AcNeroInven->GetInvenVec()[PrevIndex]->GetTransform()->SetLocalPosition(M0);
+			AcNeroInven->GetInvenVec()[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a -= Speed * 0.5f;
+			if (AcNeroInven->GetInvenVec()[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a <= 0.5f)
 			{
-				Nero_InvenToryUI::Invens[PrevIndex]->Off();
+				AcNeroInven->GetInvenVec()[PrevIndex]->Off();
 				ScendMove = true;
 
 			}

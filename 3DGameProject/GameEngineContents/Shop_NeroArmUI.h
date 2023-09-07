@@ -27,6 +27,7 @@ private:
 	std::shared_ptr<class Shop_ItemButton>  ArmButton = nullptr;
 	std::shared_ptr<class Shop_ExplaneUI> ArmExplane = nullptr;
 	std::shared_ptr<class Nero_InvenToryUI> InvenTory = nullptr;
+	std::shared_ptr<class Nero_Inven> AcNeroInven = nullptr;
 	bool Test = false;
 
 	int Index = 0;

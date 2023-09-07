@@ -3,7 +3,7 @@
 
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineLevel.h>
-std::vector<std::shared_ptr<Nero_InvenToryUI>> Nero_InvenToryUI::Invens;
+//std::vector<std::shared_ptr<Nero_InvenToryUI>> Nero_InvenToryUI::Invens;
 Nero_InvenToryUI::Nero_InvenToryUI() 
 {
 }
@@ -11,13 +11,6 @@ Nero_InvenToryUI::Nero_InvenToryUI()
 Nero_InvenToryUI::~Nero_InvenToryUI() 
 {
 }
-
-void Nero_InvenToryUI::CreateNeroInven(GameEngineLevel* _Level, GameEngineTransform* _Trans)
-{
-	std::shared_ptr<Nero_InvenToryUI> Inven = _Level->CreateActor<Nero_InvenToryUI>();
-	Inven->GetTransform()->SetParent(_Trans);
-	Invens.push_back(Inven);
-};
 
 void Nero_InvenToryUI::Start()
 {

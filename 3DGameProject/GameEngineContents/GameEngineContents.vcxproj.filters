@@ -304,9 +304,6 @@
     <ClInclude Include="Menu_VirgilInfo.h">
       <Filter>UI\UI_Actor\MenuUI\VergilInfo</Filter>
     </ClInclude>
-    <ClInclude Include="Nero_InvenToryUI.h">
-      <Filter>UI\UI_Actor\MenuUI\NeroInfo</Filter>
-    </ClInclude>
     <ClInclude Include="NeroHPUI.h">
       <Filter>UI\UI_Actor\PlayUI</Filter>
     </ClInclude>
@@ -351,6 +348,12 @@
     </ClInclude>
     <ClInclude Include="MapCollisionMesh.h">
       <Filter>Actor\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Nero_InvenToryUI.h">
+      <Filter>UI\UI_Actor\MenuUI\NeroInfo\Nero_Inven</Filter>
+    </ClInclude>
+    <ClInclude Include="Nero_Inven.h">
+      <Filter>UI\UI_Actor\MenuUI\NeroInfo\Nero_Inven</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -648,9 +651,6 @@
     <ClCompile Include="Menu_VirgilInfo.cpp">
       <Filter>UI\UI_Actor\MenuUI\VergilInfo</Filter>
     </ClCompile>
-    <ClCompile Include="Nero_InvenToryUI.cpp">
-      <Filter>UI\UI_Actor\MenuUI\NeroInfo</Filter>
-    </ClCompile>
     <ClCompile Include="NeroHPUI.cpp">
       <Filter>UI\UI_Actor\PlayUI</Filter>
     </ClCompile>
@@ -689,6 +689,12 @@
     </ClCompile>
     <ClCompile Include="MapCollisionMesh.cpp">
       <Filter>Actor\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Nero_InvenToryUI.cpp">
+      <Filter>UI\UI_Actor\MenuUI\NeroInfo\Nero_Inven</Filter>
+    </ClCompile>
+    <ClCompile Include="Nero_Inven.cpp">
+      <Filter>UI\UI_Actor\MenuUI\NeroInfo\Nero_Inven</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -901,6 +907,9 @@
     </Filter>
     <Filter Include="Actor\TestObject">
       <UniqueIdentifier>{839ddcf0-fa0f-4e30-a291-488d8933e823}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\MenuUI\NeroInfo\Nero_Inven">
+      <UniqueIdentifier>{cc08c3f7-0476-4cc8-a589-1c0f7d4beeb2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

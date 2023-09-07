@@ -6,6 +6,7 @@
 #include "Nero_InvenToryUI.h"
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include <GameEngineCore/GameEngineLevel.h>
+#include "Nero_Inven.h"
 
 Shop_NeroArmUI::Shop_NeroArmUI()
 {
@@ -24,19 +25,26 @@ void Shop_NeroArmUI::Start()
 	ArmExplane = GetLevel()->CreateActor<Shop_ExplaneUI>();
 	ArmExplane->GetTransform()->SetParent(GetTransform());
 	ArmExplane->GetTransform()->SetWorldPosition({ 0.0f,0.0f,0.0f });
-	
+	AcNeroInven = GetLevel()->CreateActor<Nero_Inven>();
 }
 
 void Shop_NeroArmUI::Update(float _Delta)
 {
-	Nero_InvenToryUI::Invens[0]->GetTransform()->SetParent(GetTransform());
 	if (ArmExplane->IsUpdate() == false)
 	{
+		AcNeroInven->GetInvenVec()[1]->Off();
+		AcNeroInven->GetInvenVec()[2]->Off();
+		AcNeroInven->GetInvenVec()[0]->Off();
+
 	}
 	else
 	{
-
+		//인자로 메인메뉴에서 들고있던 인벤 인덱스 넣어주기
+		AcNeroInven->GetInvenVec()[0]->On();
+		AcNeroInven->GetInvenVec()[0]->GetTransform()->SetLocalPosition({ 565.0f,-233.0f,0.0f });
 	}
+
+
 	SetIndex();
 	Shop_ItemButton::Items[PrevIndex]->SetSelectValue(false);
 	Shop_ItemButton::Items[Index]->SetSelectValue(true);

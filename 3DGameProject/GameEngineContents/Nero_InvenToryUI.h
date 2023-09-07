@@ -4,7 +4,7 @@
 class Nero_InvenToryUI :public GameEngineActor
 {
 public:
-	static std::vector<std::shared_ptr<Nero_InvenToryUI>> Invens;
+	//static std::vector<std::shared_ptr<Nero_InvenToryUI>> Invens;
 	// constrcuter destructer
 	Nero_InvenToryUI();
 	~Nero_InvenToryUI();
@@ -18,7 +18,7 @@ public:
 	{
 		return InvenBaseRender;
 	}
-	static void CreateNeroInven(GameEngineLevel* _Level , GameEngineTransform* _Trans);
+	//static std::shared_ptr<Nero_InvenToryUI> CreateNeroInven(GameEngineLevel* _Level);
 	
 protected:
 	void Start() override;

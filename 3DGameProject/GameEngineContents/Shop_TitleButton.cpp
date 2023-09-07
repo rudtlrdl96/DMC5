@@ -88,7 +88,7 @@ void Shop_TitleButton::Update(float _Delta)
 		FontRender->SetColor(float4::WHITE);
 		if (IsPosValue == false)
 		{
-			FontRender->GetTransform()->SetLocalPosition({ 0.0f,22.f,0.0f });
+			FontRender->GetTransform()->SetLocalPosition({ 0.0f,20.f,0.0f });
 			Render->BSCControl(M0, 0.5f, 0.5f);
 		}
 		else
@@ -103,7 +103,7 @@ void Shop_TitleButton::Update(float _Delta)
 		FontRender->SetColor(float4(0.462f,0.58f,0.576f));
 		if (IsPosValue == false)
 		{
-			FontRender->GetTransform()->SetLocalPosition({ 0.0f,21.f,0.0f });
+			FontRender->GetTransform()->SetLocalPosition({ 0.0f,19.f,0.0f });
 		}
 	}
 	SetTextFont(Text);
@@ -117,7 +117,7 @@ void Shop_TitleButton::FontCreate()
 	FontRender->SetFontFlag(FW1_CENTER);
 	FontRender->SetScale(28);
 	FontRender->SetColor(float4::WHITE);
-	FontRender->GetTransform()->SetLocalPosition({ 0.0f,22.f,0.0f });
+	FontRender->GetTransform()->SetLocalPosition({ 0.0f,20.f,0.0f });
 
 }
 
