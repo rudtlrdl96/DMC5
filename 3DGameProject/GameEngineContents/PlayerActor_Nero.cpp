@@ -12,10 +12,6 @@ PlayerActor_Nero::~PlayerActor_Nero()
 
 void PlayerActor_Nero::SinglePlayLoad()
 {
-	if (false == GameEngineInput::IsKey("Escape"))
-	{
-		GameEngineInput::CreateKey("Escape", VK_F10);
-	}
 	UserControllLoad();
 	PlayerLoad();
 	LoadCheck = true;
@@ -39,27 +35,9 @@ void PlayerActor_Nero::Start()
 	SetControllCallBack(NetControllType::UserControll, [=]()
 		{
 			UserControllLoad();
-			if (false == GameEngineInput::IsKey("Escape"))
-			{
-				GameEngineInput::CreateKey("Escape", VK_F10);
-			}
 			PlayerLoad();
 			LoadCheck = true;
 		});
-
-
-	/*if (NetControllType::NetControll == GameEngineNetObject::GetControllType())
-	{
-		NetLoad();
-	}
-	else if (NetControllType::UserControll == GameEngineNetObject::GetControllType())
-	{
-		if (false == GameEngineInput::IsKey("Escape"))
-		{
-			GameEngineInput::CreateKey("Escape", VK_F10);
-		}
-		PlayerLoad();
-	}*/
 }
 
 void PlayerActor_Nero::PlayerLoad()

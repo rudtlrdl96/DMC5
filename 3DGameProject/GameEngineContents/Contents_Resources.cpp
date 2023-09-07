@@ -316,6 +316,39 @@ void ContentsCore::CreateContentsKey()
 		GameEngineInput::CreateKey("UI_Right", VK_RIGHT);
 		GameEngineInput::CreateKey("UI_Tab", VK_TAB);
 	}
+	if (false == GameEngineInput::IsKey("Player_Up"))
+	{
+		GameEngineInput::CreateKey("Escape", VK_F10);
+		GameEngineInput::CreateKey("Player_Up", 'W');
+		GameEngineInput::CreateKey("Player_Left", 'A');
+		GameEngineInput::CreateKey("Player_Down", 'S');
+		GameEngineInput::CreateKey("Player_Right", 'D');
+		GameEngineInput::CreateKey("Player_Sword", 'I');
+		GameEngineInput::CreateKey("Player_Gun", 'J');
+		GameEngineInput::CreateKey("Player_Jump", 'K');
+		GameEngineInput::CreateKey("Player_Skill", 'L');
+		GameEngineInput::CreateKey("Player_Exceed", 'Q');
+		GameEngineInput::CreateKey("Player_LockOn", VK_SPACE);
+		GameEngineInput::CreateKey("Player_DT", VK_LSHIFT);
+		GameEngineInput::CreateKey("Player_CameraLeft", 'U');
+		GameEngineInput::CreateKey("Player_CameraRight", 'O');
+		GameEngineInput::CreateKey("Player_CameraUp", 'Y');
+		GameEngineInput::CreateKey("Player_CameraDown", 'P');
+	}
+
+
+	if (GameEngineInput::IsKey("FreeCam_SpeedUp") == false)
+	{
+		GameEngineInput::CreateKey("FreeCam_SpeedUp", VK_UP);
+		GameEngineInput::CreateKey("FreeCam_SpeedDown", VK_DOWN);
+
+		GameEngineInput::CreateKey("FreeCam_LookLeft", VK_NUMPAD4);
+		GameEngineInput::CreateKey("FreeCam_LookRight", VK_NUMPAD6);
+		GameEngineInput::CreateKey("FreeCam_LookUp", VK_NUMPAD8);
+		GameEngineInput::CreateKey("FreeCam_LookDown", VK_NUMPAD2);
+		GameEngineInput::CreateKey("FreeCam_LookBack", VK_NUMPAD5);
+		GameEngineInput::CreateKey("FreeCam_LookFront", VK_NUMPAD0);
+	}
 }
 
 void ContentsCore::SetOption()

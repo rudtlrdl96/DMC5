@@ -20,7 +20,6 @@
 #include "PlayUITestLevel.h"
 #include "Nero_ShopLevel.h"
 //Map
-//#include "BossStageLevel.h"
 #include "StartStageLevel.h"
 #include "TestStageLevel.h"
 #include "StageEditLevel.h"
@@ -41,7 +40,6 @@ void ContentsCore::GameStart()
 
 	SetOption();
 	ContentsResourcesCreate();
-	CreateContentsKey();
 
 	GameEngineCore::CreateLevel<MainLevel>();
 	//GameEngineCore::CreateLevel<TestLevel>();
@@ -51,8 +49,7 @@ void ContentsCore::GameStart()
 	//GameEngineCore::CreateLevel<MainMenuLevel>();
 	GameEngineCore::CreateLevel<PlayerTestLevel>();
 	//GameEngineCore::CreateLevel<EnemyTestLevel>();
-	//GameEngineCore::CreateLevel<AnimationToolLevel>();
-	//GameEngineCore::CreateLevel<BossStageLevel>();
+	GameEngineCore::CreateLevel<AnimationToolLevel>();
 	//GameEngineCore::CreateLevel<TestStageLevel>();
 	//GameEngineCore::CreateLevel<StartStageLevel>();
 	//GameEngineCore::CreateLevel<ShaderTestLevel>();
@@ -60,10 +57,10 @@ void ContentsCore::GameStart()
 	//GameEngineCore::CreateLevel<MonsterTestLevel>();
 	//GameEngineCore::CreateLevel<PlayUITestLevel>();
 	//GameEngineCore::CreateLevel<Nero_ShopLevel>();
-	//
+	////
 	//GameEngineCore::CreateLevel<StageEditLevel>();
 
-	GameEngineCore::ChangeLevel("PlayerTestLevel");
+	GameEngineCore::ChangeLevel("MainLevel");
 }
 
 void ContentsCore::GameEnd() 
