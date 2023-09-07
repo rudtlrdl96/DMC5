@@ -2,6 +2,7 @@
 #include "Enemy_Empusa.h"
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/GameEngineFBXAnimation.h>
+#include "BaseEnemyActor.h"
 
 #include "AnimationEvent.h"
 #include "EnemyActor_Normal.h"
@@ -28,8 +29,8 @@ void Enemy_Empusa::EnemyMeshLoad()
 	}
 	
 	//EnemyBase에서 Start에서 생성된 Component에 Mesh Set
-	EnemyRenderer->SetFBXMesh("em0100.fbx", "MeshAniTexture");
-	EnemyRenderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f , 0.1f });
+	EnemyRenderer->SetFBXMesh("em0100.fbx", "AniFBX_Low");
+	EnemyRenderer->GetTransform()->SetLocalScale({ 1.0f , 1.0f , 1.0f });
 }
 
 void Enemy_Empusa::EnemyTypeLoad()
@@ -242,7 +243,12 @@ void Enemy_Empusa::Move()
 	}
 	if (EnemyRenderer->IsAnimationEnd())
 	{
+		//Player방향으로
+		/*AddForceEnemy(float4::FORWARD, 100.0f);*/
 		EnemyRenderer->ChangeAnimation("em0100_biped_walk_loop");
+		CapsulCol->SetMove(float4::FORWARD * 10.0f);
+		float4 Test1=CapsulCol->GetWorldPosition();
+		int a = 0;
 	}
 	//if 공격 범위내에 플레이어가 있다면
 	//EnemyRenderer->ChangeAnimation("em0100_biped_walk_stop");

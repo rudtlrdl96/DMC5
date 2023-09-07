@@ -13,7 +13,9 @@
 #include "Wall.h"
 #include "Slope.h"
 #include <GameEngineCore/EngineGrid.h>
+
 #include "Enemy_Empusa.h"
+#include "PlayerActor_Nero.h"
 
 
 MonsterTestLevel::MonsterTestLevel()
@@ -30,6 +32,9 @@ void MonsterTestLevel::Start()
 {
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 50.0f, -100.0f });
+
+	CreateScene(GetName());
+
 }
 
 void MonsterTestLevel::Update(float _DeltaTime)
@@ -51,6 +56,18 @@ void MonsterTestLevel::Update(float _DeltaTime)
 void MonsterTestLevel::LevelChangeStart()
 {
 	TestMonster = CreateActor<Enemy_Empusa>();
+
+	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
+
+	std::shared_ptr<Wall> Flat2 = CreateActor<Wall>();
+	Flat2->GetTransform()->AddWorldPosition(float4{ 300, 0, 300 });
+	Flat2->GetTransform()->AddWorldRotation(float4{ 0, 0, 90 });
+	Flat2->GetTransform()->AddWorldRotation(float4{ 0, -40, 0 });
+
+	SetLevelSceneGravity(2000);
+	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
+	Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	Nero->SinglePlayLoad();
 }
 
 void MonsterTestLevel::LevelChangeEnd()

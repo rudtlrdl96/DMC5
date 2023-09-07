@@ -176,11 +176,11 @@ void BaseEnemyActor::Start()
 {
 	EnemyRenderer = CreateComponent<GameEngineFBXRenderer>();
 
-	//CapsulCol = CreateComponent<PhysXCapsuleComponent>();
+	CapsulCol = CreateComponent<PhysXCapsuleComponent>();
 
-	//CapsulCol->SetPhysxMaterial(0, 0, 0);
-	//CapsulCol->CreatePhysXActors(GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), {4, 10, 4});
-	//CapsulCol->SetWorldPosition({ 0, 100, 0 });
+	CapsulCol->SetPhysxMaterial(0, 0, 0);
+	CapsulCol->CreatePhysXActors({4, 10, 4});
+	CapsulCol->SetWorldPosition({ 0, 100, 0 });
 
 	//√ ±‚»≠
 	EnemyCodeValue = EnemyCode::None;
