@@ -15,7 +15,7 @@ Box200::~Box200()
 void Box200::Start()
 {
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
-	Renderer->SetFBXMesh("Box_350x250x200_Mesh.FBX", "MeshTexture");
+	Renderer->SetFBXMesh("Box_350x250x200_Mesh.FBX", "FBX_Low");
 	Renderer->GetTransform()->SetLocalScale({ 0.5f, 0.5f, 0.5f });
 	//Renderer->LightOff();
 

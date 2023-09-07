@@ -15,6 +15,7 @@
 #include "GameEngineGUI.h"
 #include "GameEnginePhysics.h"
 #include "GameEngineOption.h"
+#include "GameEngineScreenShoot.h"
 
 GameEngineThreadJobQueue GameEngineCore::JobQueue;
 
@@ -63,6 +64,10 @@ void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 		{
 			GameEngineInput::CreateKey("EngineMouseLeft", VK_LBUTTON);
 			GameEngineInput::CreateKey("EngineMouseRight", VK_RBUTTON);
+		}
+		if (false == GameEngineInput::IsKey("ScreenShoot"))
+		{
+			GameEngineInput::CreateKey("ScreenShoot", VK_OEM_PLUS);
 		}
 	}
 
@@ -186,6 +191,13 @@ void GameEngineCore::EngineUpdate()
 		GameEngineDevice::RenderStart();
 		MainLevel->Render(TimeDeltaTime);
 		GameEngineDevice::RenderEnd();
+	}
+
+	if (true == GameEngineInput::IsDown("ScreenShoot"))
+	{
+		ID3D11Resource* asdf;
+		MainLevel->GetMainCamera()->GetCamTarget()->GetTexture(0)->GetSRV()->GetResource(&asdf);
+		GameEngineScreenShoot::ScreenShoot(asdf);
 	}
 
 	MainLevel->ActorRelease();

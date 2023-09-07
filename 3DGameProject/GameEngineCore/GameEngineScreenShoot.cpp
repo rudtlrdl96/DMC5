@@ -23,6 +23,7 @@
 
 #include "PrecompileHeader.h"
 #include "GameEngineScreenShoot.h"
+#include "GameEngineLevel.h"
 
 #include <algorithm>
 #include <cassert>
@@ -31,9 +32,7 @@
 #include <memory>
 #include <new>
 #include <tuple>
-
 #include <wincodec.h>
-
 #include <wrl\client.h>
 
 #ifdef _MSC_VER
@@ -68,6 +67,15 @@ using Microsoft::WRL::ComPtr;
 //
 // See DDS.h in the 'Texconv' sample and the 'DirectXTex' library
 //--------------------------------------------------------------------------------------
+
+GameEngineScreenShoot::GameEngineScreenShoot()
+{
+}
+
+GameEngineScreenShoot::~GameEngineScreenShoot()
+{
+}
+
 namespace
 {
 #pragma pack(push,1)
@@ -791,7 +799,7 @@ namespace
 
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
-HRESULT DirectX::SaveDDSTextureToFile
+HRESULT GameEngineScreenShoot::SaveDDSTextureToFile
 (
     ID3D11DeviceContext* pContext,
     ID3D11Resource* pSource,
@@ -838,6 +846,7 @@ HRESULT DirectX::SaveDDSTextureToFile
 
     // Try to use a legacy .DDS pixel format for better tools support, otherwise fallback to 'DX10' header extension
     DDS_HEADER_DXT10* extHeader = nullptr;
+
     switch (desc.Format)
     {
     case DXGI_FORMAT_R8G8B8A8_UNORM:        memcpy_s(&header->ddspf, sizeof(header->ddspf), &DDSPF_A8B8G8R8, sizeof(DDS_PIXELFORMAT));    break;
@@ -961,7 +970,7 @@ HRESULT DirectX::SaveDDSTextureToFile
 
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
-HRESULT DirectX::SaveWICTextureToFile
+HRESULT GameEngineScreenShoot::SaveWICTextureToFile
 (
     ID3D11DeviceContext* pContext,
     ID3D11Resource* pSource,
@@ -1264,6 +1273,25 @@ HRESULT DirectX::SaveWICTextureToFile
         return hr;
 
     delonfail.clear();
+
+    return S_OK;
+}
+
+HRESULT GameEngineScreenShoot::ScreenShoot(ID3D11Resource* _Resource)
+{
+    WICPixelFormatGUID CurGuid = {};
+    WICPixelFormatGUID targetGuid = {};
+
+    CurGuid = GUID_ContainerFormatPng;
+    targetGuid = GUID_ContainerFormatPng;
+
+    std::string capturefile = "ScreenShoot.png";
+    std::wstring wcapturefile = GameEngineString::AnsiToUniCode(capturefile);
+
+    if (S_OK != SaveWICTextureToFile(GameEngineDevice::GetContext(), _Resource, CurGuid, wcapturefile.c_str()))
+    {
+        MsgAssert("Fuck");
+    }
 
     return S_OK;
 }
