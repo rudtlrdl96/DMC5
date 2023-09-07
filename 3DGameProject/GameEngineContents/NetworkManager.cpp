@@ -11,10 +11,11 @@
 #include "ObjectUpdatePacket.h"
 #include "MessageChatPacket.h"
 #include "LinkObjectPacket.h"
+#include "FsmChangePacket.h"
 
-#include "NetworkTestLevel.h"
-#include "StartStageLevel.h"
-#include "BossStageLevel.h"
+//#include "NetworkTestLevel.h"
+//#include "StartStageLevel.h"
+//#include "BossStageLevel.h"
 
 #include "PlayerActor_Nero.h"
 #include "PlayerActor_Vergil.h"
@@ -135,7 +136,7 @@ void NetworkManager::PushUpdatePacket(const UpdatePacketParameter& _Param)
 		return;
 	}
 
-
+	//네트워크 연결 상태가 아닌경우
 	if (NetworkState::None == NowState)
 		return;
 
@@ -225,39 +226,84 @@ void NetworkManager::PushUpdatePacket(const UpdatePacketParameter& _Param)
 	}
 
 
-	UpdatePacket->FsmState = _Param.FsmState;
-	UpdatePacket->IsFsmForce= _Param.IsFsmForce;
+	/*UpdatePacket->FsmState = _Param.FsmState;
+	UpdatePacket->IsFsmForce= _Param.IsFsmForce;*/
+}
 
-	////FSM 처리
-	////이전과 같은 FSM인 경우
-	//if(_Param.FsmState == UpdatePacket->FsmState)
-	//{
-	//	UpdatePacket->FsmState = _Param.FsmState;
-	//	UpdatePacket->IsFsmForce = _Param.IsFsmForce;
-	//}
-	////이전과 다른 FSM인 경우
-	//else
-	//{
-	//	UpdatePacket->FsmState = _Param.FsmState;
-	//	UpdatePacket->IsFsmForce = true;
-	//}
 
-	////FSM 처리
-	////이전과 같은 FSM인 경우
-	//if (_Param.FsmState == UpdatePacket->FsmState)
-	//{
-	//	//IsForce가 true면 IsFsmForce는 변경X
-	//	if (false == UpdatePacket->IsFsmForce)
-	//	{
-	//		UpdatePacket->IsFsmForce = _Param.IsFsmForce;
-	//	}
-	//}
-	////이전과 다른 FSM인 경우
-	//else
-	//{
-	//	UpdatePacket->FsmState = _Param.FsmState;
-	//	UpdatePacket->IsFsmForce = _Param.IsFsmForce;
-	//}
+void NetworkManager::SendFsmChangePacket(GameEngineNetObject* _NetObjPtr, int _FsmState)
+{
+	if (nullptr == _NetObjPtr)
+	{
+		MsgAssert("FSM 변환 패킷을 전송할땐 파라미터 인자의 _NetObjPtr의 값은 반드시 넣어주어야 합니다.");
+		return;
+	}
+
+	GameEngineActor* ActorPtr = dynamic_cast<GameEngineActor*>(_NetObjPtr);
+	if (nullptr == ActorPtr)
+	{
+		MsgAssert("FSM 변환 패킷을 전송할땐 인자로 받은 _NetObjPtr이 GameEngineActor를 상속받지 않았습니다");
+		return;
+	}
+
+	//네트워크 연결 상태가 아닌경우
+	if (NetworkState::None == NowState)
+		return;
+
+
+	//현재 진행중인 레벨의 엑터들만 실행
+	if (ActorPtr->GetLevel() != CurLevel)
+		return;
+
+	//인자로 받은 오브젝트의 네트워크용 오브젝트 아이디
+	unsigned int ObjectID = _NetObjPtr->GetNetObjectID();
+
+	//아직 Init처리되지 않은 경우
+	if (-1 == ObjectID)
+		return;
+
+	if (false == GameEngineNetObject::IsNetObject(ObjectID))
+	{
+		MsgAssert(GameEngineString::ToString(ObjectID) + " ID를 가진 오브젝트가 존재하지 않는데, Fsm 변환 패킷을 사용하려고 했습니다");
+		return;
+	}
+
+	if (NetControllType::NetControll == _NetObjPtr->GetControllType())
+	{
+		MsgAssert("패킷을 받아 처리되는 오브젝트가 Fsm변경 패킷을 보낼려고 했습니다");
+		return;
+	}
+
+	//이미 Death처리되어서 동작되지 않는 오브젝트인 경우
+	if (true == _NetObjPtr->IsNetDisconnected())
+		return;
+
+	
+	std::shared_ptr<FsmChangePacket> Packet = nullptr;
+	Packet = std::make_shared<FsmChangePacket>();
+
+	Packet->SetObjectID(ObjectID);
+	Packet->FsmState = _FsmState;
+	Packet->NetID = NetID;
+
+	//레벨 타입
+	BaseLevel* Level = dynamic_cast<BaseLevel*>(ActorPtr->GetLevel());
+	if (nullptr == Level)
+	{
+		MsgAssert("ObjectUpdate패킷을 전송하려는 Actor가 BaseLevel을 상속받은 레벨에 존재하지 않습니다");
+		return;
+	}
+
+	Net_LevelType LevelType = Level->GetNetLevelType();
+	if (Net_LevelType::UNKNOWN == LevelType)
+	{
+		MsgAssert("ObjectUpdate패킷을 전송하려는 Actor가 알 수 없는 레벨에 존재합니다.");
+		return;
+	}
+
+	Packet->LevelType = LevelType;
+
+	NetInst->SendPacket(Packet);
 }
 
 

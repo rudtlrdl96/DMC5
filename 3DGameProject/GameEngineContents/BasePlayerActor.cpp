@@ -171,8 +171,10 @@ void BasePlayerActor::Update_ProcessPacket()
 			ObjectUpdate->TimeScale;
 
 			float TimeScale = ObjectUpdate->TimeScale;
-			unsigned int FsmState = ObjectUpdate->FsmState;
-			bool IsFsmForce = ObjectUpdate->IsFsmForce;
+			//unsigned int FsmState = ObjectUpdate->FsmState;
+			unsigned int FsmState = 1;
+			//bool IsFsmForce = ObjectUpdate->IsFsmForce;
+			bool IsFsmForce = true;
 
 			if (FSMValue == FsmState)
 			{
@@ -214,7 +216,7 @@ void BasePlayerActor::Update(float _DeltaTime)
 
 void BasePlayerActor::Update_SendPacket(float _DeltaTime)
 {
-	NetworkManager::PushUpdatePacket({ .ObjPtr = this, .FsmState = static_cast<unsigned int>(FSMValue), .IsFsmForce = FSMForce, .TimeScale = 1.0f });
+	NetworkManager::PushUpdatePacket({ .ObjPtr = this, .TimeScale = 1.0f });
 }
 
 void BasePlayerActor::LockOn()

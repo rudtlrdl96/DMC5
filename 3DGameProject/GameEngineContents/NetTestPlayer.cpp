@@ -130,8 +130,6 @@ void NetTestPlayer::Update_SendPacket(float _DeltaTime)
 	NetworkManager::PushUpdatePacket(UpdatePacketParameter
 		{
 			.ObjPtr = this,
-			.FsmState = 0,
-			.IsFsmForce = false,
 			.TimeScale = 1.f
 		});
 

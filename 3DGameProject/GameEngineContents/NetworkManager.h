@@ -11,8 +11,6 @@ enum class PacketEnum;
 struct UpdatePacketParameter
 {
 	GameEngineNetObject* ObjPtr = nullptr;
-	unsigned int FsmState = -1;
-	bool IsFsmForce = false;
 	float TimeScale = 1.f;
 };
 
@@ -79,6 +77,10 @@ public:
 
 	//Update패킷을 보낼때 이 인터페이스를 이용해서 보내주시면 됩니다.
 	static void PushUpdatePacket(const UpdatePacketParameter& _Param);
+
+	//Update패킷을 보낼때 이 인터페이스를 이용해서 보내주시면 됩니다.(얘는 패킷을 바로 보냅니다)
+	static void SendFsmChangePacket(GameEngineNetObject* _NetObjPtr, int _FsmState);
+
 
 	//이미 생성되어 있는 오브젝트를 서버와 연동시킵니다.
 	static void LinkNetwork(GameEngineNetObject* _NetObjPtr);

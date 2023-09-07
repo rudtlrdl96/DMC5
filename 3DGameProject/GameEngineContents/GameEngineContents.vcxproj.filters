@@ -349,6 +349,9 @@
     <ClInclude Include="Shop_ExplaneUI.h">
       <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
     </ClInclude>
+    <ClInclude Include="FsmChangePacket.h">
+      <Filter>Server\01.Packet\02.Global</Filter>
+    </ClInclude>
     <ClInclude Include="Shop_NeroArmUI.h">
       <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
     </ClInclude>

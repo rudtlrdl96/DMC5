@@ -9,6 +9,7 @@
 #include "ObjectUpdatePacket.h"
 #include "MessageChatPacket.h"
 #include "LinkObjectPacket.h"
+#include "FsmChangePacket.h"
 
 ////////
 //		클라 패킷 초기화
@@ -17,7 +18,9 @@
 
 void NetworkManager::ClientPacketInit()
 {
+	//----------------------------------------------------------------------------------------------------------------------------------------------------
 	//ConnectIDPacket 처리
+	//----------------------------------------------------------------------------------------------------------------------------------------------------
 	NetInst->Dispatcher.AddHandler<ConnectIDPacket>
 		([=](std::shared_ptr<ConnectIDPacket> _Packet)
 	{
@@ -37,7 +40,10 @@ void NetworkManager::ClientPacketInit()
 	});
 
 
+
+	//----------------------------------------------------------------------------------------------------------------------------------------------------
 	//ObjectUpdatePacket 처리
+	//----------------------------------------------------------------------------------------------------------------------------------------------------
 	NetInst->Dispatcher.AddHandler<ObjectUpdatePacket>(
 		[=](std::shared_ptr<ObjectUpdatePacket> _Packet)
 	{
@@ -82,7 +88,9 @@ void NetworkManager::ClientPacketInit()
 
 
 
+	//----------------------------------------------------------------------------------------------------------------------------------------------------
 	//MessageChatPacket 처리
+	//----------------------------------------------------------------------------------------------------------------------------------------------------
 	NetInst->Dispatcher.AddHandler<MessageChatPacket>(
 		[](std::shared_ptr<MessageChatPacket> _Packet)
 	{
@@ -90,12 +98,45 @@ void NetworkManager::ClientPacketInit()
 	});
 	
 
+
+	//----------------------------------------------------------------------------------------------------------------------------------------------------
 	//LinkObjectPacket 처리
+	//----------------------------------------------------------------------------------------------------------------------------------------------------
 	NetInst->Dispatcher.AddHandler<LinkObjectPacket>(
 		[](std::shared_ptr<LinkObjectPacket> _Packet)
 	{
 		GameEngineNetObject* ObjPtr = reinterpret_cast<GameEngineNetObject*>(_Packet->Ptr);
 		ObjPtr->InitNetObject(_Packet->GetObjectID(), NetInst);
 		ObjPtr->SetUserControllType();
+	});
+
+
+
+	//----------------------------------------------------------------------------------------------------------------------------------------------------
+	//FsmChangePacket 처리
+	//----------------------------------------------------------------------------------------------------------------------------------------------------
+
+	NetInst->Dispatcher.AddHandler<FsmChangePacket>(
+		[](std::shared_ptr<FsmChangePacket> _Packet)
+	{
+		unsigned int ObjID = _Packet->GetObjectID();
+
+		//해당 NetObejctID의 객체가 존재하지 않는 수행하지 않음
+		if (false == GameEngineNetObject::IsNetObject(ObjID))
+			return;
+
+
+		//클라로 부터 받은 패킷이 현재 레벨과 다른 경우
+		if (CurLevelType != _Packet->LevelType)
+			return;
+
+		//네트워크 연결이 끊긴 경우에도 수행하지 않음
+		GameEngineNetObject* NetObj = nullptr;
+		NetObj = GameEngineNetObject::GetNetObject(ObjID);
+		if (true == NetObj->IsNetDisconnected())
+			return;
+
+		//각자 스스로 처리할 수 있게 자료구조에 저장
+		GameEngineNetObject::PushNetObjectPacket(_Packet);
 	});
 }

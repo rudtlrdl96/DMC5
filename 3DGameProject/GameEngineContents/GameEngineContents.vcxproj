@@ -200,6 +200,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="FsmChangePacket.h" />
     <ClInclude Include="Char_ChoiceButton.h" />
     <ClInclude Include="Char_ChoiceLevel.h" />
     <ClInclude Include="Char_ChoiceUI.h" />

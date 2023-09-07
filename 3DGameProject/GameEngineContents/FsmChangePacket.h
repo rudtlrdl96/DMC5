@@ -5,42 +5,34 @@
 #include "PacketEnum.h"
 #include "ContentsEnum.h"
 
-class ObjectUpdatePacket : public GameEnginePacket
+class FsmChangePacket : public GameEnginePacket
 {
 	friend class NetworkManager;
 
 public:
-	static const PacketEnum Type = PacketEnum::ObjectUpdatePacket;
+	static const PacketEnum Type = PacketEnum::FsmChangePacket;
 
 public:
-	ObjectUpdatePacket()
+	FsmChangePacket()
 	{
 		SetPacketID(Type);
 	}
 
-	~ObjectUpdatePacket() override
+	~FsmChangePacket() override
 	{
 
 	}
 
-	float4 Rotation;
-	float4 Position;
-	float TimeScale = 1.f;
+	int FsmState = -1;
 
 protected:
 	void Serialize(GameEngineSerializer& _Ser) override
 	{
 		GameEnginePacket::Serialize(_Ser);
-		
+
+		_Ser << FsmState;
 		_Ser << NetID;
-		_Ser << ActorType;
-
-		_Ser << Rotation;
-		_Ser << Position;
-
-		_Ser << TimeScale;
-		_Ser << IsDeath;
-
+		
 		unsigned int Level = static_cast<int>(LevelType);
 		_Ser << Level;
 	}
@@ -49,14 +41,8 @@ protected:
 	{
 		GameEnginePacket::DeSeralize(_Ser);
 
+		_Ser >> FsmState;
 		_Ser >> NetID;
-		_Ser >> ActorType;
-
-		_Ser >> Rotation;
-		_Ser >> Position;
-
-		_Ser >> TimeScale;
-		_Ser >> IsDeath;
 
 		unsigned int Level = 0;
 		_Ser >> Level;
@@ -65,8 +51,6 @@ protected:
 
 private:
 	unsigned int NetID = -1;
-	unsigned int ActorType = -1;
 	Net_LevelType LevelType = Net_LevelType::UNKNOWN;
-	bool IsDeath = false;
 };
 

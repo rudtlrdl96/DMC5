@@ -137,6 +137,10 @@ public:
 		IsDisconnect = true;
 	}
 
+	inline bool IsNetDisconnected() const
+	{
+		return IsDisconnect;
+	}
 
 protected:
 	//수신받은 패킷을 처리하는 부분입니다.(레벨 업데이트 맨 처음에 호출됩니다)
