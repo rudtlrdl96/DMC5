@@ -70,3 +70,11 @@ enum class CollisionOrder
 	PlayerAttack,
 	RN_Enemy, //Monster가Player를 인식하는 범위Collision
 };
+
+enum class DevilBreaker
+{
+	None,
+	Overture,
+	Gerbera,
+	BusterArm
+};

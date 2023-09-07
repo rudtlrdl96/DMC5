@@ -209,33 +209,16 @@ void PlayerActor_Nero::PlayerLoad()
 					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
 					return;
 				}
-				if (Controller->GetGunUp())
-				{
-					ChangeState(FSM_State_Nero::Nero_BR_Shoot);
-					return;
-				}
-				if (Controller->GetIsSword())
-				{
-					ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
-					return;
-				}
-				if (Controller->GetIsJump())
-				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
-					return;
-				}
-				if (Controller->GetIsSkill())
-				{
-					ChangeState(FSM_State_Nero::Nero_Overture_Shoot);
-					return;
-				}
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_DevilBreakerCheck()) { return; }
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
 					ChangeState(FSM_State_Nero::Nero_RunStart);
 					return;
 				}
-
-				if (true == IsLockOn)
+				if (true == Controller->GetIsLockOn())
 				{
 					ChangeState(FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon);
 					return;
@@ -257,19 +240,13 @@ void PlayerActor_Nero::PlayerLoad()
 					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
 					return;
 				}
-				if (Controller->GetGunUp())
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_DevilBreakerCheck()) { return; }
+				if (true == Controller->GetIsLockOn())
 				{
-					ChangeState(FSM_State_Nero::Nero_BR_Shoot);
-					return;
-				}
-				if (Controller->GetIsSword())
-				{
-					ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
-					return;
-				}
-				if (Controller->GetIsJump())
-				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
+					ChangeState(FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon);
 					return;
 				}
 				if (Controller->GetMoveVector() == float4::ZERO)
@@ -277,11 +254,7 @@ void PlayerActor_Nero::PlayerLoad()
 					ChangeState(FSM_State_Nero::Nero_RunStop);
 					return;
 				}
-				if (true == IsLockOn)
-				{
-					ChangeState(FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon);
-					return;
-				}
+
 				if (true == Renderer->IsAnimationEnd())
 				{
 					ChangeState(FSM_State_Nero::Nero_Run);
@@ -303,34 +276,25 @@ void PlayerActor_Nero::PlayerLoad()
 			},
 			.Update = [=](float _DeltaTime) {
 				DashTimer += _DeltaTime;
+
 				if (false == FloorCheck())
 				{
 					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
 					return;
 				}
-				if (Controller->GetGunUp())
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_DevilBreakerCheck()) { return; }
+				if (true == Controller->GetIsLockOn())
 				{
-					ChangeState(FSM_State_Nero::Nero_BR_Shoot);
+					ChangeState(FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon);
 					return;
 				}
-				if (Controller->GetIsSword())
-				{
-					ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
-					return;
-				}
-				if (Controller->GetIsJump())
-				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
-					return;
-				}
+
 				if (Controller->GetMoveVector() == float4::ZERO)
 				{
 					ChangeState(FSM_State_Nero::Nero_RunStop);
-					return;
-				}
-				if (true == IsLockOn)
-				{
-					ChangeState(FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon);
 					return;
 				}
 				if (1 < DashTimer)
@@ -358,29 +322,18 @@ void PlayerActor_Nero::PlayerLoad()
 					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
 					return;
 				}
-				if (Controller->GetGunUp())
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_DevilBreakerCheck()) { return; }
+				if (true == Controller->GetIsLockOn())
 				{
-					ChangeState(FSM_State_Nero::Nero_BR_Shoot);
-					return;
-				}
-				if (Controller->GetIsSword())
-				{
-					ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
-					return;
-				}
-				if (Controller->GetIsJump())
-				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
+					ChangeState(FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon);
 					return;
 				}
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
 					ChangeState(FSM_State_Nero::Nero_RunStart);
-					return;
-				}
-				if (true == IsLockOn)
-				{
-					ChangeState(FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon);
 					return;
 				}
 			},
@@ -394,35 +347,23 @@ void PlayerActor_Nero::PlayerLoad()
 				Renderer->ChangeAnimation("pl0000_Dash_Loop");
 			},
 			.Update = [=](float _DeltaTime) {
-
 				if (false == FloorCheck())
 				{
 					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
 					return;
 				}
-				if (Controller->GetGunUp())
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_DevilBreakerCheck()) { return; }
+				if (true == Controller->GetIsLockOn())
 				{
-					ChangeState(FSM_State_Nero::Nero_BR_Shoot);
-					return;
-				}
-				if (Controller->GetIsSword())
-				{
-					ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
-					return;
-				}
-				if (Controller->GetIsJump())
-				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
+					ChangeState(FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon);
 					return;
 				}
 				if (Controller->GetMoveVector() == float4::ZERO)
 				{
 					ChangeState(FSM_State_Nero::Nero_DashStop);
-					return;
-				}
-				if (true == IsLockOn)
-				{
-					ChangeState(FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon);
 					return;
 				}
 
@@ -440,30 +381,19 @@ void PlayerActor_Nero::PlayerLoad()
 				Renderer->ChangeAnimation("pl0000_Dash_Stop");
 			},
 			.Update = [=](float _DeltaTime) {
-				if (Controller->GetGunUp())
+				if (false == FloorCheck())
 				{
-					ChangeState(FSM_State_Nero::Nero_BR_Shoot);
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
 					return;
 				}
-				if (Controller->GetIsSword())
-				{
-					ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
-					return;
-				}
-				if (Controller->GetIsJump())
-				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
-					return;
-				}
-
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_DevilBreakerCheck()) { return; }
+				if (true == Controller->GetIsLockOn())
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
 					ChangeState(FSM_State_Nero::Nero_RunStart);
-					return;
-				}
-				if (true == IsLockOn)
-				{
-					ChangeState(FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon);
 					return;
 				}
 			},
@@ -501,14 +431,14 @@ void PlayerActor_Nero::PlayerLoad()
 					ChangeState(FSM_State_Nero::Nero_RQ_Skill_Split_1);
 					return;
 				}
-				if (Controller->GetIsSkill())
-				{
-					ChangeState(FSM_State_Nero::Nero_Gerbera_Back);
-					return;
-				}
 				if (Controller->GetIsSword())
 				{
 					ChangeState(FSM_State_Nero::Nero_RQ_AirComboA_1);
+					return;
+				}
+				if (Controller->GetIsSkill())
+				{
+					ChangeState(FSM_State_Nero::Nero_Gerbera_Back);
 					return;
 				}
 
@@ -1368,44 +1298,25 @@ void PlayerActor_Nero::PlayerLoad()
 				Renderer->ChangeAnimation("pl0000_BR_Switch_Idle_to_Lockon");
 			},
 			.Update = [=](float _DeltaTime) {
-				if (true == Controller->GetLockOnFree())
+
+				if (false == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+					return;
+				}
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_DevilBreakerCheck()) { return; }
+				if (false == Controller->GetIsLockOn())
 				{
 					ChangeState(FSM_State_Nero::Nero_BR_Switch_Lockon_to_Idle);
 					return;
+
 				}
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
 					ChangeState(FSM_State_Nero::Nero_BR_Strafe);
-					return;
-				}
-				if (Controller->GetIsLeftJump())
-				{
-					ChangeState(FSM_State_Nero::Nero_Evade_Left);
-					return;
-				}
-				if (Controller->GetIsRightJump())
-				{
-					ChangeState(FSM_State_Nero::Nero_Evade_Right);
-					return;
-				}
-				if (Controller->GetIsJump())
-				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
-					return;
-				}
-				if (Controller->GetGunUp())
-				{
-					ChangeState(FSM_State_Nero::Nero_BR_Shoot);
-					return;
-				}
-				if (Controller->GetIsBackSword())
-				{
-					ChangeState(FSM_State_Nero::Nero_RQ_Skill_HR);
-					return;
-				}
-				if (Controller->GetIsSword())
-				{
-					ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
 				}
 				if (true == Renderer->IsAnimationEnd())
@@ -1427,46 +1338,27 @@ void PlayerActor_Nero::PlayerLoad()
 				Renderer->ChangeAnimation("pl0000_BR_Lockon_Front");
 			},
 			.Update = [=](float _DeltaTime) {
-				if (true == Controller->GetLockOnFree())
+				if (false == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+					return;
+				}
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_DevilBreakerCheck()) { return; }
+				if (false == Controller->GetIsLockOn())
 				{
 					ChangeState(FSM_State_Nero::Nero_BR_Switch_Lockon_to_Idle);
 					return;
+
 				}
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
 					ChangeState(FSM_State_Nero::Nero_BR_Strafe);
 					return;
 				}
-				if (Controller->GetIsLeftJump())
-				{
-					ChangeState(FSM_State_Nero::Nero_Evade_Left);
-					return;
-				}
-				if (Controller->GetIsRightJump())
-				{
-					ChangeState(FSM_State_Nero::Nero_Evade_Right);
-					return;
-				}
-				if (Controller->GetIsJump())
-				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
-					return;
-				}
-				if (Controller->GetGunUp())
-				{
-					ChangeState(FSM_State_Nero::Nero_BR_Shoot);
-					return;
-				}
-				if (Controller->GetIsBackSword())
-				{
-					ChangeState(FSM_State_Nero::Nero_RQ_Skill_HR);
-					return;
-				}
-				if (Controller->GetIsSword())
-				{
-					ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
-					return;
-				}
+
 				LookTarget();
 			},
 			.End = [=] {
@@ -1479,54 +1371,25 @@ void PlayerActor_Nero::PlayerLoad()
 				BlueRoseOn();
 			},
 			.Update = [=](float _DeltaTime) {
-				if (true == Controller->GetLockOnFree())
+
+				if (false == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+					return;
+				}
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_DevilBreakerCheck()) { return; }
+				if (false == Controller->GetIsLockOn())
 				{
 					ChangeState(FSM_State_Nero::Nero_BR_Switch_Lockon_to_Idle);
 					return;
+
 				}
 				if (Controller->GetMoveVector() == float4::ZERO)
 				{
 					ChangeState(FSM_State_Nero::Nero_BR_Lockon_Front);
-					return;
-				}
-				if (Controller->GetIsLeftJump())
-				{
-					ChangeState(FSM_State_Nero::Nero_Evade_Left);
-					return;
-				}
-				if (Controller->GetIsRightJump())
-				{
-					ChangeState(FSM_State_Nero::Nero_Evade_Right);
-					return;
-				}
-				if (Controller->GetIsJump())
-				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
-					return;
-				}
-				if (Controller->GetGunUp())
-				{
-					ChangeState(FSM_State_Nero::Nero_BR_Shoot);
-					return;
-				}
-				if (Controller->GetIsBackFrontSword())
-				{
-					ChangeState(FSM_State_Nero::Nero_RQ_Skill_Shuffle);
-					return;
-				}
-				if (Controller->GetIsFrontSword())
-				{
-					ChangeState(FSM_State_Nero::Nero_RQ_Skill_Stleak1);
-					return;
-				}
-				if (Controller->GetIsBackSword())
-				{
-					ChangeState(FSM_State_Nero::Nero_RQ_Skill_HR);
-					return;
-				}
-				if (Controller->GetIsSword())
-				{
-					ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
 					return;
 				}
 
@@ -1580,9 +1443,18 @@ void PlayerActor_Nero::PlayerLoad()
 				Renderer->ChangeAnimation("pl0000_BR_Switch_Lockon_to_Idle");
 			},
 			.Update = [=](float _DeltaTime) {
-				if (true == Renderer->IsAnimationEnd())
+				if (false == FloorCheck())
 				{
-					ChangeState(FSM_State_Nero::Nero_Idle);
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+					return;
+				}
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_DevilBreakerCheck()) { return; }
+				if (true == Controller->GetIsLockOn())
+				{
+					ChangeState(FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon);
 					return;
 				}
 				if (Controller->GetMoveVector() != float4::ZERO)
@@ -1590,26 +1462,9 @@ void PlayerActor_Nero::PlayerLoad()
 					ChangeState(FSM_State_Nero::Nero_RunStart);
 					return;
 				}
-
-
-				if (Controller->GetIsJump())
+				if (true == Renderer->IsAnimationEnd())
 				{
-					ChangeState(FSM_State_Nero::Nero_Evade_Left);
-					return;
-				}
-				if (Controller->GetGunUp())
-				{
-					ChangeState(FSM_State_Nero::Nero_BR_Shoot);
-					return;
-				}
-				if (Controller->GetIsBackSword())
-				{
-					ChangeState(FSM_State_Nero::Nero_RQ_Skill_HR);
-					return;
-				}
-				if (Controller->GetIsSword())
-				{
-					ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
+					ChangeState(FSM_State_Nero::Nero_Idle);
 					return;
 				}
 			},
@@ -1857,7 +1712,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Nero_Overture_Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Overture_Shoot,
 			.Start = [=] {
-				OffDevilBreaker();
+				SetOvertureAnimation();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0000_Overture_Shoot");
 				Renderer_Overture->On();
@@ -1914,7 +1769,7 @@ void PlayerActor_Nero::PlayerLoad()
 			// Nero_Overture_AirShoot
 			FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Overture_AirShoot,
 				.Start = [=] {
-					OffDevilBreaker();
+					SetOvertureAnimation();
 					PhysXCapsule->SetLinearVelocityZero();
 					PhysXCapsule->TurnOffGravity();
 					Renderer->ChangeAnimation("pl0000_Overture_Air_Shoot");
@@ -2553,6 +2408,171 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 	}
 }
 
+bool PlayerActor_Nero::Input_SwordCheck()
+{
+	if (false == Controller->GetIsLockOn())
+	{
+		if (Controller->GetIsAnySword())
+		{
+			ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
+			return true;
+		}
+		return false;
+	}
+
+	if (Controller->GetIsBackFrontSword())
+	{
+		ChangeState(FSM_State_Nero::Nero_RQ_Skill_Shuffle);
+		return true;
+	}
+	if (Controller->GetIsFrontSword())
+	{
+		ChangeState(FSM_State_Nero::Nero_RQ_Skill_Stleak1);
+		return true;
+	}
+	if (Controller->GetIsBackSword())
+	{
+		ChangeState(FSM_State_Nero::Nero_RQ_Skill_HR);
+		return true;
+	}
+	if (Controller->GetIsSword())
+	{
+		ChangeState(FSM_State_Nero::Nero_RQ_ComboA_1);
+		return true;
+	}
+	return false;
+}
+
+bool PlayerActor_Nero::Input_SwordCheckFly()
+{
+	if (false == Controller->GetIsLockOn())
+	{
+		if (Controller->GetIsAnySword())
+		{
+			ChangeState(FSM_State_Nero::Nero_RQ_AirComboA_1);
+			return true;
+		}
+		return false;
+	}
+
+	if (Controller->GetIsBackFrontSword())
+	{
+		ChangeState(FSM_State_Nero::Nero_RQ_Skill_Caliber_1);
+		return true;
+	}
+	if (Controller->GetIsBackSword())
+	{
+		ChangeState(FSM_State_Nero::Nero_RQ_Skill_Split_1);
+		return true;
+	}
+	if (Controller->GetIsSword())
+	{
+		ChangeState(FSM_State_Nero::Nero_RQ_AirComboA_1);
+		return true;
+	}
+	return false;
+}
+
+bool PlayerActor_Nero::Input_GunCheck()
+{
+	if (Controller->GetGunUp())
+	{
+		ChangeState(FSM_State_Nero::Nero_BR_Shoot);
+		return true;
+	}
+	return false;
+}
+
+bool PlayerActor_Nero::Input_GunCheckFly()
+{
+	if (Controller->GetGunUp())
+	{
+		ChangeState(FSM_State_Nero::Nero_BR_AirShoot);
+		return true;
+	}
+	return false;
+}
+
+bool PlayerActor_Nero::Input_JumpCheck()
+{
+	if (false == Controller->GetIsLockOn())
+	{
+		if (Controller->GetIsAnyJump())
+		{
+			ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
+			return true;
+		}
+		return false;
+	}
+
+
+	if (Controller->GetIsLeftJump())
+	{
+		ChangeState(FSM_State_Nero::Nero_Evade_Left);
+		return true;
+	}
+	if (Controller->GetIsRightJump())
+	{
+		ChangeState(FSM_State_Nero::Nero_Evade_Right);
+		return true;
+	}
+	if (Controller->GetIsJump())
+	{
+		ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
+		return true;
+	}
+	return false;
+}
+
+bool PlayerActor_Nero::Input_JumpCheckFly()
+{
+	return false;
+}
+
+bool PlayerActor_Nero::Input_DevilBreakerCheck()
+{
+	if (false == Controller->GetIsSkill())
+	{
+		return false;
+	}
+
+	switch (CurDevilBreaker)
+	{
+	case DevilBreaker::Overture:
+		ChangeState(FSM_State_Nero::Nero_Overture_Shoot);
+		break;
+	case DevilBreaker::Gerbera:
+		ChangeState(FSM_State_Nero::Nero_Gerbera_Back);
+		break;
+	case DevilBreaker::BusterArm:
+		//ChangeState(FSM_State_Nero::Nero_Gerbera_Back);
+		break;
+	}
+	return true;
+}
+
+bool PlayerActor_Nero::Input_DevilBreakerCheckFly()
+{
+	if (false == Controller->GetIsSkill())
+	{
+		return false;
+	}
+
+	switch (CurDevilBreaker)
+	{
+	case DevilBreaker::Overture:
+		ChangeState(FSM_State_Nero::Nero_Overture_AirShoot);
+		break;
+	case DevilBreaker::Gerbera:
+		ChangeState(FSM_State_Nero::Nero_Gerbera_Back);
+		break;
+	case DevilBreaker::BusterArm:
+		//ChangeState(FSM_State_Nero::Nero_Gerbera_Back);
+		break;
+	}
+	return true;
+}
+
 void PlayerActor_Nero::ChangeState(FSM_State_Nero _StateValue)
 {
 	FSM.ChangeState(_StateValue);
@@ -2632,13 +2652,14 @@ void PlayerActor_Nero::SetOverture()
 	Renderer_Overture->Off();
 }
 
-void PlayerActor_Nero::OffDevilBreaker()
+void PlayerActor_Nero::SetOvertureAnimation()
 {
 	Renderer->GetAllRenderUnit()[0][13]->Off();
 	Renderer->GetAllRenderUnit()[0][12]->Off();
 	Renderer->GetAllRenderUnit()[0][11]->Off();
 	Renderer->GetAllRenderUnit()[0][10]->Off();
 	Renderer->GetAllRenderUnit()[0][9]->Off();
+	Renderer_Overture->On();
 }
 
 /*

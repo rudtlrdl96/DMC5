@@ -137,6 +137,7 @@ private:
 	bool InputCheck_BackFront();
 	bool InputCheck_Dir(char _Dir);
 
+	bool IsLockOn = false;
 public:
 	// CALLBACK Lock
 	std::function<void()> CallBack_LockOnDown = nullptr;
@@ -152,13 +153,14 @@ public:
 	bool GetIsBackSword() { return IsBackSword; }
 	bool GetIsFrontSword() { return IsFrontSword; }
 	bool GetIsBackFrontSword() { return IsBackFrontSword; }
+	bool GetIsAnyJump() { return IsJump || IsLeftJump || IsRightJump; }
 	bool GetIsJump() { return IsJump; }
 	bool GetIsLeftJump() { return IsLeftJump; }
 	bool GetIsRightJump() { return IsRightJump; }
 	bool GetIsSpecialMove() { return IsSpecialMove; }
 	bool GetIsDevilTrigger() { return GameEngineInput::IsDown("Player_DT"); }
 	bool GetIsSkill() { return IsSkill; }
+	bool GetIsLockOn() { return IsLockOn; }
 
-	bool IsLockOn = false;
 };
 

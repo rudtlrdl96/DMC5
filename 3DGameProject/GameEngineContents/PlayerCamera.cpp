@@ -31,7 +31,7 @@ void PlayerCamera::Update(float _DeltaTime)
 	// X축 회전은 제한값을 두기 위해 값을 받아둠.
 	float x = CameraArm->GetWorldRotation().x;
 
-	if (GameEngineInput::IsPress("CLICK"))
+	if (GameEngineInput::IsPress("EngineMouseLeft"))
 	{
 		GetTransform()->AddWorldRotation({ 0, GameEngineInput::GetMouseDirection().x, 0 });
 		x += GameEngineInput::GetMouseDirection().y;

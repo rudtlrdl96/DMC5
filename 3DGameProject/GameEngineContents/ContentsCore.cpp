@@ -40,6 +40,7 @@ void ContentsCore::GameStart()
 
 	SetOption();
 	ContentsResourcesCreate();
+	CreateContentsKey();
 
 	GameEngineCore::CreateLevel<MainLevel>();
 	GameEngineCore::CreateLevel<TestLevel>();

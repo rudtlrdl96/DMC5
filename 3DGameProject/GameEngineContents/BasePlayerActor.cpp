@@ -228,13 +228,11 @@ void BasePlayerActor::LockOn()
 		}
 		LockOnEnemyTransform = MinCol->GetActor()->GetTransform();
 		Camera->SetTargetTranform(LockOnEnemyTransform);
-		IsLockOn = true;
 	}
 }
 
 void BasePlayerActor::LockOff()
 {
-	IsLockOn = false;
 	LockOnEnemyTransform = nullptr;
 	Camera->SetTargetTranform(nullptr);
 }

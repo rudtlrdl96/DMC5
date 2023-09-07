@@ -120,18 +120,37 @@ private:
 	bool InputCheck = false;	// 애니메이션 재생중 다른 입력을 받아 FSM변경이 가능한지 여부
 	bool MoveCheck = false;		// 애니메이션 재생중 이동 입력을 받아 FSM변경이 가능한지 여부
 	bool DelayCheck = false;	// 다른 콤보로 연결되기 위한 딜레이 여부
+	bool LoadCheck = false;		// FBX 로드가 완료되었는지
 
-	bool LoadCheck = false;
-	void ChangeState(FSM_State_Nero _StateValue);
+	DevilBreaker CurDevilBreaker = DevilBreaker::None;
+	
+	// 검 버튼을 입력한 경우 실행
+	bool Input_SwordCheck();
+	// 검 버튼을 공중에서 입력한 경우 실행
+	bool Input_SwordCheckFly();
+	// 총 버튼을 입력한 경우 실행
+	bool Input_GunCheck();
+	// 총 버튼을 공중에서 입력한 경우 실행
+	bool Input_GunCheckFly();
+	// 점프 버튼을 입력한 경우 실행
+	bool Input_JumpCheck();
+	// 점프 버튼을 공중에서 입력한 경우 실행
+	bool Input_JumpCheckFly();
+	// 데빌브레이커 버튼을 입력한 경우 실행
+	bool Input_DevilBreakerCheck();
+	// 데빌브레이커 버튼을 공중에서 입력한 경우 실행
+	bool Input_DevilBreakerCheckFly();
 
-	//NeRoUI;
-	void RedQueenOn();
-	void RedQueenOff();
-	void BlueRoseOn();
-	void WeaponIdle();
-	void SetHuman();
-	void SetDemon();
-	void SetOverture();
-	void OffDevilBreaker();
+	void ChangeState(FSM_State_Nero _StateValue);	// FSM 변경 함수
+
+	void RedQueenOn();	// 레드퀸을 꺼낸 상태
+	void RedQueenOff();	// 레드퀸을 등에 둔 상태
+	void BlueRoseOn();	// 블루로즈 장착
+	void WeaponIdle();	// Idle 상태시의 무기로 변경
+	void SetHuman();	// 인간 모습
+	void SetDemon();	// 데빌트리거 모습
+
+	void SetOverture();	// 오버추어를 장착한 모습으로 지정
+	void SetOvertureAnimation();	// 오버추어 발사 애니메이션으로 지정
 };
 

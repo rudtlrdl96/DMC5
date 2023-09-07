@@ -98,7 +98,7 @@ void PlayerActor_Vergil::VergilLoad()
 					return;
 				}
 
-				if (true == IsLockOn)
+				if (true == Controller->GetIsLockOn())
 				{
 					FSM.ChangeState(FSM_State_Vergil::Vergil_IdleLockOn);
 					return;
@@ -156,7 +156,7 @@ void PlayerActor_Vergil::VergilLoad()
 					return;
 				}
 
-				if (false == IsLockOn)
+				if (false == Controller->GetIsLockOn())
 				{
 					FSM.ChangeState(FSM_State_Vergil::Vergil_Idle);
 					return;
@@ -281,7 +281,7 @@ void PlayerActor_Vergil::VergilLoad()
 					FSM.ChangeState(FSM_State_Vergil::Vergil_RunStop);
 					return;
 				}
-				if (true == IsLockOn)
+				if (true == Controller->GetIsLockOn())
 				{
 					FSM.ChangeState(FSM_State_Vergil::Vergil_Walk);
 					return;
@@ -331,7 +331,7 @@ void PlayerActor_Vergil::VergilLoad()
 					return;
 				}
 
-				if (true == IsLockOn)
+				if (true == Controller->GetIsLockOn())
 				{
 					FSM.ChangeState(FSM_State_Vergil::Vergil_Walk);
 					return;

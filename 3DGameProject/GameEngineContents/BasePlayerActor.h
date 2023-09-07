@@ -74,8 +74,6 @@ protected:
 	float4 Rot = float4::ZERO;
 	int FSMValue = -1;
 	bool FSMForce = false;
-	bool IsLockOn = false;
-
 private:
 	static std::vector<BasePlayerActor*> Players;
 
