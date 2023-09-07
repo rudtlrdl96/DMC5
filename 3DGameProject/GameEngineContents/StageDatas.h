@@ -32,7 +32,8 @@ public:
 	std::string StageName = "";
 	std::vector<FieldMapData> MapDatas;
 	std::string SkyboxFileName = "";
-	std::string NavMeshFileName = "";
+	std::string GroundMeshFileName = "";
+	std::string WallMeshFileName = "";
 
 	void WriteStageData(GameEngineSerializer& _Serializer);
 	void ReadStageData(GameEngineSerializer& _Serializer);

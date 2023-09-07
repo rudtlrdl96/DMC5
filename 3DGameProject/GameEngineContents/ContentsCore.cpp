@@ -20,7 +20,6 @@
 #include "PlayUITestLevel.h"
 #include "Nero_ShopLevel.h"
 //Map
-#include "BossStageLevel.h"
 #include "StartStageLevel.h"
 #include "TestStageLevel.h"
 #include "StageEditLevel.h"
@@ -51,7 +50,6 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<PlayerTestLevel>();
 	GameEngineCore::CreateLevel<EnemyTestLevel>();
 	GameEngineCore::CreateLevel<AnimationToolLevel>();
-	GameEngineCore::CreateLevel<BossStageLevel>();
 	GameEngineCore::CreateLevel<TestStageLevel>();
 	GameEngineCore::CreateLevel<StartStageLevel>();
 	GameEngineCore::CreateLevel<ShaderTestLevel>();

@@ -191,7 +191,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="BossStageLevel.h" />
     <ClInclude Include="Box200.h">
       <SubType>
       </SubType>
@@ -266,7 +265,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="NavMesh.h">
+    <ClInclude Include="MapCollisionMesh.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -577,7 +576,6 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="BossStageLevel.cpp" />
     <ClCompile Include="Box200.cpp">
       <SubType>
       </SubType>
@@ -649,7 +647,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="NavMesh.cpp">
+    <ClCompile Include="MapCollisionMesh.cpp">
       <SubType>
       </SubType>
     </ClCompile>
