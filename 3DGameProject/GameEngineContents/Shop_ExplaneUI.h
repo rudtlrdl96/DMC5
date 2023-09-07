@@ -33,7 +33,6 @@ private:
 	void FontCreate();
 	std::shared_ptr<class GameEngineUIRenderer> ExplaneBar_0 = nullptr;
 	std::shared_ptr<class GameEngineUIRenderer> ExplaneBar_1 = nullptr;
-
 	std::shared_ptr<class GameEngineFontRenderer> E_NameRender = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> K_NameRender = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> ExplaneText0 = nullptr;
@@ -41,6 +40,9 @@ private:
 	std::shared_ptr<class GameEngineFontRenderer> ExplaneText2 = nullptr;
 
 	std::shared_ptr<class GameEngineFontRenderer> SecoundExPlane = nullptr;
+	std::shared_ptr<class GameEngineUIRenderer> S_ExplaneRender0 = nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> S_ExplaneText0 = nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> S_ExplaneText1 = nullptr;
 
 
 };

@@ -26,6 +26,7 @@ private:
 	void SetExText();
 	std::shared_ptr<class Shop_ItemButton>  ArmButton = nullptr;
 	std::shared_ptr<class Shop_ExplaneUI> ArmExplane = nullptr;
+	std::shared_ptr<class Nero_InvenToryUI> InvenTory = nullptr;
 	bool Test = false;
 
 	int Index = 0;

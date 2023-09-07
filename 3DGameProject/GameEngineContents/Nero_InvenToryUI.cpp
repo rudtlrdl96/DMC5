@@ -12,9 +12,10 @@ Nero_InvenToryUI::~Nero_InvenToryUI()
 {
 }
 
-void Nero_InvenToryUI::CreateNeroInven(GameEngineLevel* _Level)
+void Nero_InvenToryUI::CreateNeroInven(GameEngineLevel* _Level, GameEngineTransform* _Trans)
 {
 	std::shared_ptr<Nero_InvenToryUI> Inven = _Level->CreateActor<Nero_InvenToryUI>();
+	Inven->GetTransform()->SetParent(_Trans);
 	Invens.push_back(Inven);
 };
 

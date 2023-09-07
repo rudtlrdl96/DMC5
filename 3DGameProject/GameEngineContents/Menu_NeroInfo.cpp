@@ -82,13 +82,15 @@ void Menu_NeroInfo::Start()
 	FontRender->SetColor(float4(0.305f, 0.96f, 0.94f, 1.0f));
 	FontRender->GetTransform()->SetLocalPosition(float4(610.f, -125.f, 0.0f));
 
-	Nero_InvenToryUI::CreateNeroInven(GetLevel());
-	Nero_InvenToryUI::CreateNeroInven(GetLevel());
-	Nero_InvenToryUI::CreateNeroInven(GetLevel());
+	Nero_InvenToryUI::CreateNeroInven(GetLevel(),GetTransform());
+	Nero_InvenToryUI::CreateNeroInven(GetLevel(), GetTransform());
+	Nero_InvenToryUI::CreateNeroInven(GetLevel(), GetTransform());
+
 	Nero_InvenToryUI::Invens[0]->On();
 	Nero_InvenToryUI::Invens[0]->GetTransform()->SetLocalPosition(CenterPos);
 	Nero_InvenToryUI::Invens[1]->Off();
 	Nero_InvenToryUI::Invens[2]->Off();
+
 }
 
 void Menu_NeroInfo::Update(float _Delta)

@@ -2,6 +2,7 @@
 #include "Shop_ExplaneUI.h"
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
+#include "Nero_InvenToryUI.h"
 Shop_ExplaneUI::Shop_ExplaneUI()
 {
 }
@@ -22,7 +23,8 @@ void Shop_ExplaneUI::SetExplaneText(const ExplaneOneParameter& _Param)
 void Shop_ExplaneUI::SetSecoundText(const ExplaneOneParameter& _Param)
 {
 	SecoundExPlane->SetText(_Param._EName);
-
+	S_ExplaneRender0->SetTexture(_Param._Explane1);
+	S_ExplaneText0->SetText(_Param._Explane2);
 }
 
 void Shop_ExplaneUI::Start()
@@ -35,7 +37,12 @@ void Shop_ExplaneUI::Start()
 	ExplaneBar_1 = CreateComponent<GameEngineUIRenderer>(1);
 	ExplaneBar_1->SetTexture("Menu_InfoBar.png");
 	ExplaneBar_1->GetTransform()->SetLocalScale({ 736.0f,5.0f,0.0f });
-	ExplaneBar_1->GetTransform()->SetLocalPosition({ 711.f, -102.0f, 0.0f });
+	ExplaneBar_1->GetTransform()->SetLocalPosition({ 711.f, -102.0f, 0.0f }); 
+
+	S_ExplaneRender0 = CreateComponent<GameEngineUIRenderer>(1);
+	S_ExplaneRender0->GetTransform()->SetLocalScale({ 774.0f,40.0f,0.0f });
+	S_ExplaneRender0->GetTransform()->SetLocalPosition({ 711.f, -150.0f, 0.0f });
+
 	FontCreate();
 }
 
@@ -92,6 +99,14 @@ void Shop_ExplaneUI::FontCreate()
 	SecoundExPlane->SetFontFlag(FW1_LEFT);
 	SecoundExPlane->SetScale(28);
 	SecoundExPlane->SetColor({ 0.69f,0.792f,0.827f });
-	SecoundExPlane->GetTransform()->SetLocalPosition({ 367.0f,-66.f,0.0f });
+	SecoundExPlane->GetTransform()->SetLocalPosition({ 367.0f,-66.f,0.0f }); 
+	
+	S_ExplaneText0 = CreateComponent<GameEngineFontRenderer>(2);
+	S_ExplaneText0->GetTransform()->SetParent(GetTransform());
+	S_ExplaneText0->SetFont("DMC5Font");
+	S_ExplaneText0->SetFontFlag(FW1_LEFT);
+	S_ExplaneText0->SetScale(28);
+	S_ExplaneText0->SetColor({ 0.305f,0.96f,0.94f,1.0f });
+	S_ExplaneText0->GetTransform()->SetLocalPosition({ 493.0f,-133.f,0.0f });
 }
 

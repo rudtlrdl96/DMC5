@@ -18,7 +18,7 @@ public:
 	{
 		return InvenBaseRender;
 	}
-	static void CreateNeroInven(GameEngineLevel* _Level);
+	static void CreateNeroInven(GameEngineLevel* _Level , GameEngineTransform* _Trans);
 	
 protected:
 	void Start() override;

@@ -3,7 +3,7 @@
 #include "Shop_TitleButton.h"
 #include "Shop_ItemButton.h"
 #include "Shop_ExplaneUI.h"
-
+#include "Nero_InvenToryUI.h"
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include <GameEngineCore/GameEngineLevel.h>
 
@@ -24,11 +24,19 @@ void Shop_NeroArmUI::Start()
 	ArmExplane = GetLevel()->CreateActor<Shop_ExplaneUI>();
 	ArmExplane->GetTransform()->SetParent(GetTransform());
 	ArmExplane->GetTransform()->SetWorldPosition({ 0.0f,0.0f,0.0f });
-
+	
 }
 
 void Shop_NeroArmUI::Update(float _Delta)
 {
+	Nero_InvenToryUI::Invens[0]->GetTransform()->SetParent(GetTransform());
+	if (ArmExplane->IsUpdate() == false)
+	{
+	}
+	else
+	{
+
+	}
 	SetIndex();
 	Shop_ItemButton::Items[PrevIndex]->SetSelectValue(false);
 	Shop_ItemButton::Items[Index]->SetSelectValue(true);
@@ -68,6 +76,8 @@ void Shop_NeroArmUI::SetIndex()
 
 void Shop_NeroArmUI::SetExText()
 {
+	ArmExplane->SetSecoundText({ ._EName = "EQUIPMENT" ,._Explane1 = "Menu_difficultyBase.png",
+	._Explane2 = "MAGAZINE" });
 	switch (Index)
 	{
 	case 0:
@@ -75,28 +85,18 @@ void Shop_NeroArmUI::SetExText()
 			,._Explane1 = "다용도로 사용가능한 데빌 브레이커.",
 			._Explane2 = "전기 충격파로 적을 날리거나,"
 			,._Explane3 = "적에게 찔러 넣고 폭발시킬 수 있다." });
-		ArmExplane->SetSecoundText({ ._EName = "EQUIPMENT" ,._KName = ""
-			,._Explane1 = "",
-			._Explane2 = ""
-			,._Explane3 = "" });
+
 			break;
 	case 1:
 		ArmExplane->SetExplaneText({ ._EName = "GERBERA" ,._KName = "거베라" ,
 			._Explane1 = "이동력을 가진 데빌 브레이커."
 			,._Explane2 = "큰 범위의 충격파로 공격을 무력화하거나"
 			,._Explane3 = "강한 힘을 가진 광선을 발사한다." });
-		ArmExplane->SetSecoundText({ ._EName = "EQUIPMENT" ,._KName = ""
-			,._Explane1 = "",
-			._Explane2 = ""
-			,._Explane3 = "" });
 		break;
 		break;
 	case 2:
 		ArmExplane->SetExplaneText({ ._EName = "BUSTER ARM" ,._KName = "버스트 암" ,._Explane1 = "화려한 검 콤보로",._Explane2 = "보다 넓은 범위에 걸쳐",._Explane3 = "적들을 해치웁니다." });
-		ArmExplane->SetSecoundText({ ._EName = "EQUIPMENT" ,._KName = ""
-			,._Explane1 = "",
-			._Explane2 = ""
-			,._Explane3 = "" });
+
 		break;
 		break;
 

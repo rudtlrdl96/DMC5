@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Nero_ShopLevel.h"
 #include "ShopBG.h"
+#include "Nero_InvenToryUI.h"
 #include "FadeEffect.h"
 #include "Nero_ShopTitleBar.h"
 #include <GameEngineCore/GameEngineFont.h>
