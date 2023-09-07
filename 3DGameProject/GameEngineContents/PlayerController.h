@@ -150,6 +150,7 @@ public:
 	bool GetIsSword() { return IsSword; }
 	bool GetIsAnySword() { return IsBackFrontSword || IsFrontSword || IsBackSword || IsSword; }
 	bool GetIsBackSword() { return IsBackSword; }
+	bool GetIsFrontSword() { return IsFrontSword; }
 	bool GetIsBackFrontSword() { return IsBackFrontSword; }
 	bool GetIsJump() { return IsJump; }
 	bool GetIsLeftJump() { return IsLeftJump; }

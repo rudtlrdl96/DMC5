@@ -33,6 +33,10 @@ enum FSM_State_Nero
 
 	// 하이룰러 (뛰우는 공격)
 	Nero_RQ_Skill_HR,
+	Nero_RQ_Skill_Shuffle,
+	Nero_RQ_Skill_Stleak1,
+	Nero_RQ_Skill_Stleak2,
+	Nero_RQ_Skill_Stleak3,
 
 
 	// 스피릿 (낙공)
@@ -61,6 +65,11 @@ enum FSM_State_Nero
 
 	Nero_Overture_Shoot,
 	Nero_Overture_AirShoot,
+
+	Nero_Gerbera_Back,	// 거베라 뒤로쏨 (앞으로 이동)
+	Nero_Gerbera_Front,
+	Nero_Gerbera_Left,
+	Nero_Gerbera_Right,
 };
 
 class PlayerActor_Nero : public BasePlayerActor
