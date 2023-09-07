@@ -191,9 +191,8 @@ void BaseEnemyActor::Start()
 	MonsterCollision->SetColType(ColType::OBBBOX3D);
 	//주변 플레이어를 인식하는 Collision
 	RN_MonsterCollision = CreateComponent<GameEngineCollision>(CollisionOrder::RN_Enemy);
-	RN_MonsterCollision->GetTransform()->SetLocalScale({ 100, 100, 100 });
+	RN_MonsterCollision->GetTransform()->SetLocalScale({ 1000, 1000, 1000 });
 	RN_MonsterCollision->SetColType(ColType::OBBBOX3D);
-
 	//초기화
 	EnemyCodeValue = EnemyCode::None;
 	EnemyTypeValue = EnemyType::None;
@@ -203,7 +202,7 @@ void BaseEnemyActor::Start()
 	if (false == GameEngineInput::IsKey("EnemyDebug_Ctrl"))
 	{
 		GameEngineInput::CreateKey("EnemyDebug_Ctrl", VK_LCONTROL);
-		GameEngineInput::CreateKey("EnemyDebug_0", '0');
+		GameEngineInput::CreateKey("DebugSwitch", '0');
 		GameEngineInput::CreateKey("EnemyDebug_Forward", VK_F9);
 		GameEngineInput::CreateKey("EnemyDebug_Left", VK_F10);
 		GameEngineInput::CreateKey("EnemyDebug_Back", '2');
@@ -223,6 +222,9 @@ void BaseEnemyActor::Start()
 
 void BaseEnemyActor::Update(float _DeltaTime)
 {
+	RN_MonsterCollision->DebugOn();
+	MonsterCollision->DebugOn();
+
 	NetControllType Type = GetControllType();
 
 	switch (Type)
