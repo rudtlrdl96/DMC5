@@ -5,7 +5,7 @@
 #include <GameEngineBase/GameEngineFile.h>
 #include "StageBaseLevel.h"
 #include "FieldMap.h"
-#include "NavMesh.h"
+#include "MapCollisionMesh.h"
 
 StageEditGUI::StageEditGUI()
 {
@@ -225,34 +225,66 @@ void StageEditGUI::InputStageInfo(std::shared_ptr<GameEngineLevel> _Level)
 	ImGui::SameLine();
 	ImGui::Text(AllData[Stage_current].SkyboxFileName.c_str());
 
-	if (ImGui::Button("SetNavMesh"))
+	if (ImGui::Button("SetGroundMesh"))
 	{
 		std::filesystem::path filepath = GetOpenFilePath();
 		if (!filepath.empty())
 		{
-			Parent->EraseNavMesh();
-			AllData[Stage_current].NavMeshFileName = filepath.filename().string();
-			Parent->CreateNavMesh(AllData[Stage_current].NavMeshFileName);
+			Parent->EraseGroundCol();
+			AllData[Stage_current].GroundMeshFileName = filepath.filename().string();
+			Parent->CreateGroundCol(AllData[Stage_current].GroundMeshFileName);
 		}
 	}
 
 	ImGui::SameLine();
 
-	ImGui::Text(AllData[Stage_current].NavMeshFileName.c_str());
+	ImGui::Text(AllData[Stage_current].GroundMeshFileName.c_str());
 
-	if (!AllData[Stage_current].NavMeshFileName.empty())
+	if (!AllData[Stage_current].GroundMeshFileName.empty())
 	{
 		static bool check = true;
-		ImGui::Checkbox("Nav On/Off", &check);
-		if (Parent->AcNavMesh != nullptr)
+		ImGui::Checkbox("Ground On/Off", &check);
+		if (Parent->AcGroundCol != nullptr)
 		{
-			if (check && !Parent->AcNavMesh->NavRenderIsUpdate())
+			if (check && !Parent->AcGroundCol->RenderIsUpdate())
 			{
-				Parent->AcNavMesh->NavRenderOn();
+				Parent->AcGroundCol->RenderOn();
 			}
-			else if (!check && Parent->AcNavMesh->NavRenderIsUpdate())
+			else if (!check && Parent->AcGroundCol->RenderIsUpdate())
 			{
-				Parent->AcNavMesh->NavRenderOff();
+				Parent->AcGroundCol->RenderOff();
+			}
+		}
+	}
+
+	if (ImGui::Button("SetWallMesh"))
+	{
+		std::filesystem::path filepath = GetOpenFilePath();
+		if (!filepath.empty())
+		{
+			Parent->EraseWallCol();
+			AllData[Stage_current].WallMeshFileName = filepath.filename().string();
+			Parent->CreateWallCol(AllData[Stage_current].WallMeshFileName);
+		}
+	}
+
+	ImGui::SameLine();
+
+	ImGui::Text(AllData[Stage_current].WallMeshFileName.c_str());
+
+	if (!AllData[Stage_current].WallMeshFileName.empty())
+	{
+		static bool check = true;
+		ImGui::Checkbox("Wall On/Off", &check);
+		if (Parent->AcWallCol != nullptr)
+		{
+			if (check && !Parent->AcWallCol->RenderIsUpdate())
+			{
+				Parent->AcWallCol->RenderOn();
+			}
+			else if (!check && Parent->AcWallCol->RenderIsUpdate())
+			{
+				Parent->AcWallCol->RenderOff();
 			}
 		}
 	}

@@ -4,7 +4,7 @@
 
 #include "NetworkManager.h"
 #include "SkyBox.h"
-#include "NavMesh.h"
+#include "MapCollisionMesh.h"
 
 std::vector<StageData> StageBaseLevel::AllStageDatas;
 
@@ -36,7 +36,10 @@ void StageBaseLevel::Start()
 {
 	BaseLevel::Start();
 	CreateScene(GetName());
-	LoadAllStageData();
+	if (AllStageDatas.empty())
+	{
+		LoadAllStageData();
+	}
 }
 
 void StageBaseLevel::Update(float _DeltaTime)
@@ -53,7 +56,8 @@ void StageBaseLevel::CreateStage(const StageData& _Data)
 	StageName = _Data.StageName;
 	CreateStageFieldMap(_Data.MapDatas);
 	CreateSkyBox(_Data.SkyboxFileName);
-	CreateNavMesh(_Data.NavMeshFileName);
+	CreateGroundCol(_Data.GroundMeshFileName);
+	CreateWallCol(_Data.WallMeshFileName);
 }
 
 void StageBaseLevel::SetCamera(float4 _Position)
@@ -115,32 +119,51 @@ void StageBaseLevel::EraseSkyBox()
 	AcSkyBox = nullptr;
 }
 
-void StageBaseLevel::ClearStage()
-{
-	StageName = "";
-	EraseStageFieldMap();
-	EraseSkyBox();
-	EraseNavMesh();
-}
-
-void StageBaseLevel::CreateNavMesh(const std::string_view& _MeshFileName)
+void StageBaseLevel::CreateGroundCol(const std::string_view& _MeshFileName)
 {
 	if (_MeshFileName == "\0")
 	{
 		return;
 	}
-
-	AcNavMesh = NavMesh::CreateNavMesh(this, _MeshFileName);
+	AcGroundCol = MapCollisionMesh::CreateGroundCollisionMesh(this, _MeshFileName);
 }
 
-void StageBaseLevel::EraseNavMesh()
+void StageBaseLevel::EraseGroundCol()
 {
-	if (AcNavMesh == nullptr)
+	if (AcGroundCol == nullptr)
 	{
 		return;
 	}
-	AcNavMesh->Death();
-	AcNavMesh = nullptr;
+	AcGroundCol->Death();
+	AcGroundCol = nullptr;
+}
+
+void StageBaseLevel::ClearStage()
+{
+	StageName = "";
+	EraseStageFieldMap();
+	EraseSkyBox();
+	EraseGroundCol();
+	EraseWallCol();
+}
+
+void StageBaseLevel::CreateWallCol(const std::string_view& _MeshFileName)
+{
+	if (_MeshFileName == "\0")
+	{
+		return;
+	}
+	AcWallCol = MapCollisionMesh::CreateWallCollisionMesh(this, _MeshFileName);
+}
+
+void StageBaseLevel::EraseWallCol()
+{
+	if (AcWallCol == nullptr)
+	{
+		return;
+	}
+	AcWallCol->Death();
+	AcWallCol = nullptr;
 }
 
 

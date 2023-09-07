@@ -44,7 +44,8 @@ void StageData::WriteStageData(GameEngineSerializer& _Serializer)
 		MapDatas[i].WriteFieldMapData(_Serializer);
 	}
 	_Serializer << SkyboxFileName;
-	_Serializer << NavMeshFileName;
+	_Serializer << GroundMeshFileName;
+	_Serializer << WallMeshFileName;
 }
 
 void StageData::ReadStageData(GameEngineSerializer& _Serializer)
@@ -58,7 +59,8 @@ void StageData::ReadStageData(GameEngineSerializer& _Serializer)
 		MapDatas[i].ReadFieldMapData(_Serializer);
 	}
 	_Serializer >> SkyboxFileName;
-	_Serializer >> NavMeshFileName;
+	_Serializer >> GroundMeshFileName;
+	_Serializer >> WallMeshFileName;
 }
 
 void StageData::WriteAllStageData(GameEngineSerializer& _Serializer, std::vector<StageData>& _AllData)

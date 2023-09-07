@@ -29,7 +29,8 @@ protected:
 	std::string StageName = "";
 	std::vector<std::shared_ptr<class FieldMap>> AcFieldMaps;
 	std::shared_ptr<class SkyBox> AcSkyBox = nullptr;
-	std::shared_ptr<class NavMesh> AcNavMesh = nullptr;
+	std::shared_ptr<class MapCollisionMesh> AcGroundCol = nullptr;
+	std::shared_ptr<class MapCollisionMesh> AcWallCol = nullptr;
 
 	void CreateStage(const StageData& _Data); // 데이터 넣어주면 스테이지 생성
 
@@ -40,8 +41,10 @@ private:
 	void EraseStageFieldMap(int _index = -1);
 	void CreateSkyBox(const std::string_view& _MeshFileName);
 	void EraseSkyBox();
-	void CreateNavMesh(const std::string_view& _MeshFileName);
-	void EraseNavMesh();
+	void CreateGroundCol(const std::string_view& _MeshFileName);
+	void EraseGroundCol();
+	void CreateWallCol(const std::string_view& _MeshFileName);
+	void EraseWallCol();
 
 	void ClearStage();
 };

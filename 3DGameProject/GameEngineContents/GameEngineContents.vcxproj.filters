@@ -163,9 +163,6 @@
     <ClInclude Include="StageBaseLevel.h">
       <Filter>Levels\Stage\0.StageBase</Filter>
     </ClInclude>
-    <ClInclude Include="BossStageLevel.h">
-      <Filter>Levels\Stage\2.BossStage</Filter>
-    </ClInclude>
     <ClInclude Include="StartStageLevel.h">
       <Filter>Levels\Stage\1.StartStage</Filter>
     </ClInclude>
@@ -331,9 +328,6 @@
     <ClInclude Include="NetworkTestLevel.h">
       <Filter>Levels\Test</Filter>
     </ClInclude>
-    <ClInclude Include="NavMesh.h">
-      <Filter>Actor\Stage</Filter>
-    </ClInclude>
     <ClInclude Include="Shop_NeroSkillUI.h">
       <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
     </ClInclude>
@@ -354,6 +348,9 @@
     </ClInclude>
     <ClInclude Include="Shop_NeroArmUI.h">
       <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MapCollisionMesh.h">
+      <Filter>Actor\Stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -509,9 +506,6 @@
     </ClCompile>
     <ClCompile Include="StageBaseLevel.cpp">
       <Filter>Levels\Stage\0.StageBase</Filter>
-    </ClCompile>
-    <ClCompile Include="BossStageLevel.cpp">
-      <Filter>Levels\Stage\2.BossStage</Filter>
     </ClCompile>
     <ClCompile Include="StartStageLevel.cpp">
       <Filter>Levels\Stage\1.StartStage</Filter>
@@ -678,9 +672,6 @@
     <ClCompile Include="NetworkTestLevel.cpp">
       <Filter>Levels\Test</Filter>
     </ClCompile>
-    <ClCompile Include="NavMesh.cpp">
-      <Filter>Actor\Stage</Filter>
-    </ClCompile>
     <ClCompile Include="Shop_NeroSkillUI.cpp">
       <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
     </ClCompile>
@@ -695,6 +686,9 @@
     </ClCompile>
     <ClCompile Include="Shop_NeroArmUI.cpp">
       <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MapCollisionMesh.cpp">
+      <Filter>Actor\Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
