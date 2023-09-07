@@ -145,6 +145,4 @@ protected:
 private:
 	void UserUpdate(float _DeltaTime);
 	void ServerUpdate(float _DeltaTime);
-
-	void AddForceEnemy(const float4& _Dir, float _Power);
 };

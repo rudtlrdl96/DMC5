@@ -28,6 +28,7 @@ public:
 		return IsSuperArmorValue;
 	}
 
+	void RNPlayer();
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 #include "EnemyActor_Normal.h"
+#include <GameEngineCore/GameEngineCollision.h>
 
 EnemyActor_Normal::EnemyActor_Normal()
 {
@@ -93,6 +94,7 @@ void EnemyActor_Normal::Update(float _DeltaTime)
 {
 	//Test용 업데이트(user update가 안돌아서)
 	EnemyFSM.Update(_DeltaTime);
+	RNPlayer();
 }
 
 void EnemyActor_Normal::Idle_Enter()
@@ -189,4 +191,14 @@ void EnemyActor_Normal::Buster_Update(float _DeltaTime)
 
 void EnemyActor_Normal::Buster_Exit()
 {
+}
+
+//Normal몬스터의 플레이어 인식
+void EnemyActor_Normal::RNPlayer()
+{
+	if (RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::OBBBOX3D, ColType::OBBBOX3D)
+		&& false == RN_Player)
+	{
+		RN_Player = true;
+	}
 }

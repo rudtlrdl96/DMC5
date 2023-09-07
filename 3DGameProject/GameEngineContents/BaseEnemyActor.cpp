@@ -1,8 +1,9 @@
 #include "PrecompileHeader.h"
 #include "BaseEnemyActor.h"
 #include <GameEngineCore/GameEngineFBXRenderer.h>
+#include <GameEngineCore/GameEngineCollision.h>
 #include "EnemyActor_Normal.h"
-
+#include "ContentsEnum.h"
 #include "BasePlayerActor.h"
 
 BaseEnemyActor::BaseEnemyActor()
@@ -184,9 +185,15 @@ void BaseEnemyActor::Start()
 	CapsulCol->CreatePhysXActors({100, 70, 100});
 	CapsulCol->SetWorldPosition({ 0, 100, 0 });
 
+	//공격 가능한 Enemy Collision
 	MonsterCollision=CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
-
+	MonsterCollision->GetTransform()->SetLocalScale({ 100, 100, 100 });
+	MonsterCollision->SetColType(ColType::OBBBOX3D);
+	//주변 플레이어를 인식하는 Collision
 	RN_MonsterCollision = CreateComponent<GameEngineCollision>(CollisionOrder::RN_Enemy);
+	RN_MonsterCollision->GetTransform()->SetLocalScale({ 100, 100, 100 });
+	RN_MonsterCollision->SetColType(ColType::OBBBOX3D);
+
 	//초기화
 	EnemyCodeValue = EnemyCode::None;
 	EnemyTypeValue = EnemyType::None;
@@ -216,32 +223,6 @@ void BaseEnemyActor::Start()
 
 void BaseEnemyActor::Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsPress("EnemyDebug_Ctrl"))
-	{
-		if (true == GameEngineInput::IsDown("EnemyDebug_Forward"))
-		{
-			AddForceEnemy(float4::FORWARD, 10000);
-
-			//EnemyHitDir Result = GetHitDir(GetTransform()->GetWorldPosition() + float4::FORWARD);
-		}
-		if (true == GameEngineInput::IsDown("EnemyDebug_Left"))
-		{
-			AddForceEnemy(float4::LEFT, 50000);
-			//EnemyHitDir Result = GetHitDir(GetTransform()->GetWorldPosition() + float4::BACK);
-		}
-		if (true == GameEngineInput::IsDown("EnemyDebug_Back"))
-		{
-
-			AddForceEnemy(float4::BACK, 100000);
-			//EnemyHitDir Result = GetHitDir(GetTransform()->GetWorldPosition() + float4::LEFT);
-		}
-		if (true == GameEngineInput::IsDown("EnemyDebug_Right"))
-		{
-			AddForceEnemy(float4::RIGHT, 500000);
-			//EnemyHitDir Result = GetHitDir(GetTransform()->GetWorldPosition() + float4::RIGHT);
-		}
-	}
-
 	NetControllType Type = GetControllType();
 
 	switch (Type)
@@ -268,16 +249,6 @@ void BaseEnemyActor::UserUpdate(float _DeltaTime)
 void BaseEnemyActor::ServerUpdate(float _DeltaTime)
 {
 }
-
-void BaseEnemyActor::AddForceEnemy(const float4& _Dir, float _Power)
-{
-	float4 PushDir = _Dir.NormalizeReturn();
-	float4 TotalDir = PushDir * _Power;
-
-	CapsulCol->GetDynamic()->setLinearVelocity({ 0, 0, 0 });
-	CapsulCol->GetDynamic()->addForce({ TotalDir.x, TotalDir.y, TotalDir.z });
-}
-
 
 void BaseEnemyActor::SuperArmorOn()
 {

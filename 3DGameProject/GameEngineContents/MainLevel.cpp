@@ -90,46 +90,46 @@ void MainLevel::Update(float _DeltaTime)
 		MsgTextBox("CurrentLevel is MainLevel");
 	}
 
-	//if (true == GameEngineInput::IsDown("SelectLevel_01"))
-	//{
-	//	GameEngineCore::ChangeLevel("TestLevel");
-	//	return;
-	//}
-	//if (true == GameEngineInput::IsDown("SelectLevel_02"))
-	//{
-	//	GameEngineCore::ChangeLevel("PlayerTestLevel");
-	//	return;
-	//}
-	//if (true == GameEngineInput::IsDown("SelectLevel_03"))
-	//{
-	//	GameEngineCore::ChangeLevel("AnimationToolLevel");
-	//	return;
-	//}
-	//if (true == GameEngineInput::IsDown("SelectLevel_04"))
-	//{
-	//	GameEngineCore::ChangeLevel("StageEditLevel");
-	//	return;
-	//}
-	//if (true == GameEngineInput::IsDown("SelectLevel_05"))
-	//{
-	//	GameEngineCore::ChangeLevel("TitleLevel");
-	//	return;
-	//}
-	//if (true == GameEngineInput::IsDown("SelectLevel_06"))
-	//{
-	//	GameEngineCore::ChangeLevel("TestStageLevel");
-	//	return;
-	//}
-	//if (true == GameEngineInput::IsDown("SelectLevel_07"))
-	//{
-	//	GameEngineCore::ChangeLevel("MonsterTestLevel");
-	//	return;
-	//}
-	//if (true == GameEngineInput::IsDown("SelectLevel_08"))
-	//{
-	//	GameEngineCore::ChangeLevel("NetworkTestLevel");
-	//	return;
-	//}
+	if (true == GameEngineInput::IsDown("SelectLevel_01"))
+	{
+		GameEngineCore::ChangeLevel("TestLevel");
+		return;
+	}
+	if (true == GameEngineInput::IsDown("SelectLevel_02"))
+	{
+		GameEngineCore::ChangeLevel("PlayerTestLevel");
+		return;
+	}
+	if (true == GameEngineInput::IsDown("SelectLevel_03"))
+	{
+		GameEngineCore::ChangeLevel("AnimationToolLevel");
+		return;
+	}
+	if (true == GameEngineInput::IsDown("SelectLevel_04"))
+	{
+		GameEngineCore::ChangeLevel("StageEditLevel");
+		return;
+	}
+	if (true == GameEngineInput::IsDown("SelectLevel_05"))
+	{
+		GameEngineCore::ChangeLevel("TitleLevel");
+		return;
+	}
+	if (true == GameEngineInput::IsDown("SelectLevel_06"))
+	{
+		GameEngineCore::ChangeLevel("TestStageLevel");
+		return;
+	}
+	if (true == GameEngineInput::IsDown("SelectLevel_07"))
+	{
+		GameEngineCore::ChangeLevel("MonsterTestLevel");
+		return;
+	}
+	if (true == GameEngineInput::IsDown("SelectLevel_08"))
+	{
+		GameEngineCore::ChangeLevel("NetworkTestLevel");
+		return;
+	}
 }
 
 void MainLevel::LevelChangeStart()
