@@ -12,7 +12,7 @@
 #include "AnimationEvent.h"
 #include "NetworkManager.h"
 #include <GameEngineCore/PhysXCapsuleComponent.h>
-
+#include "FsmChangePacket.h"
 std::vector<BasePlayerActor*> BasePlayerActor::Players = std::vector<BasePlayerActor*>(2);
 
 BasePlayerActor::BasePlayerActor()
@@ -169,24 +169,13 @@ void BasePlayerActor::Update_ProcessPacket()
 
 			float TimeScale = ObjectUpdate->TimeScale;
 			//unsigned int FsmState = ObjectUpdate->FsmState;
-			unsigned int FsmState = 1;
 			//bool IsFsmForce = ObjectUpdate->IsFsmForce;
-			bool IsFsmForce = true;
-
-			if (FSMValue == FsmState)
-			{
-				if (true == IsFsmForce)
-				{
-					SetFSMStateValue(FsmState);
-					FSMValue = FsmState;
-				}
-			}
-			else
-			{
-				SetFSMStateValue(FsmState);
-				FSMValue = FsmState;
-			}
-
+			break;
+		}
+		case PacketEnum::FsmChangePacket:
+		{
+			std::shared_ptr<FsmChangePacket> FsmChange = PopFirstPacket<FsmChangePacket>();
+			SetFSMStateValue(FsmChange->FsmState);
 			break;
 		}
 		default:

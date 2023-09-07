@@ -5,6 +5,7 @@
 #include <GameEngineCore/GameEngineFBXAnimation.h>
 #include "AnimationEvent.h"
 #include "PlayerController.h"
+#include "NetworkManager.h"
 PlayerActor_Nero::~PlayerActor_Nero()
 {
 }
@@ -1508,6 +1509,7 @@ void PlayerActor_Nero::PlayerLoad()
 					FSMValue = FSM_State_Nero::Nero_BR_Strafe_R;
 					break;
 				}
+				NetworkManager::SendFsmChangePacket(this, FSMValue);
 
 			},
 			.End = [=] {
@@ -2383,6 +2385,7 @@ void PlayerActor_Nero::ChangeState(FSM_State_Nero _StateValue)
 {
 	FSM.ChangeState(_StateValue);
 	FSMValue = _StateValue;
+	NetworkManager::SendFsmChangePacket(this, _StateValue);
 }
 
 /*
