@@ -57,7 +57,7 @@ void MonsterTestLevel::LevelChangeStart()
 {
 	SetLevelSceneGravity(2000);
 	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
-	Nero->GetPhysXComponent()->SetWorldPosition({ 200, 100, 0 });
+	Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 1000 });
 	Nero->SinglePlayLoad();
 
 	TestMonster = CreateActor<Enemy_Empusa>();

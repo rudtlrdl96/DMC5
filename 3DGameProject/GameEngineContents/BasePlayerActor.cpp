@@ -139,7 +139,7 @@ void BasePlayerActor::UserControllLoad()
 	PlayerCollision->SetColType(ColType::OBBBOX3D);
 
 	// 록온 용 충돌체
-	LockOnCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
+	LockOnCollision = CreateComponent<GameEngineCollision>(CollisionOrder::PlayerLockOn);
 	LockOnCollision->GetTransform()->SetLocalScale({ 1000, 500, 3000 });
 	LockOnCollision->GetTransform()->SetLocalPosition({ 0, 0, 1500 });
 	LockOnCollision->SetColType(ColType::OBBBOX3D);
