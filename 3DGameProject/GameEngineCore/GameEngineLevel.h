@@ -99,6 +99,11 @@ public:
 		return LastTarget;
 	}
 
+	std::shared_ptr<GameEngineRenderTarget> GetScreenShootTarget()
+	{
+		return ScreenShootTarget;
+	}
+
 	// 일부러 무겁게 만든 함수.
 	template<typename EnumType>
 	std::list<std::shared_ptr<GameEngineActor>> GetActorGroup(EnumType _Index)
@@ -145,6 +150,7 @@ private:
 
 	// 모든 카메라의 내용이 다 종합된.
 	std::shared_ptr<GameEngineRenderTarget> LastTarget;
+	std::shared_ptr<GameEngineRenderTarget> ScreenShootTarget;
 
 	//      이름           경로
 	std::map<std::string, std::string> TexturePath;

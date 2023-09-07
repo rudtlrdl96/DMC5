@@ -144,6 +144,11 @@ public:
 		return DSV;
 	}
 
+	ID3D11Texture2D* GetTexture2D()
+	{
+		return Texture2D;
+	}
+
 	int GetWidth() 
 	{
 		return Desc.Width;

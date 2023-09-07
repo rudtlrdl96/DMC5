@@ -31,6 +31,7 @@ void GameEngineLevel::LevelCameraInit()
 	UICamera->SetName("UI Camera");
 
 	LastTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	ScreenShootTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 }
 
 void GameEngineLevel::LevelLightInit()
@@ -159,6 +160,13 @@ void GameEngineLevel::Render(float _DeltaTime)
 		std::shared_ptr<GameEngineRenderTarget> Target = Camera->CamTarget;
 
 		LastTarget->Merge(Target);
+
+		if (MainCamera == Camera)
+		{
+			ScreenShootTarget->Clear();
+			ScreenShootTarget->Merge(Target);
+			ScreenShootTarget->Setting();
+		}
 	}
 
 	LastTarget->Effect(_DeltaTime);

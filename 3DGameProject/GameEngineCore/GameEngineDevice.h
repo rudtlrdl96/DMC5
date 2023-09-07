@@ -35,6 +35,11 @@ public:
 		return BackBufferTarget;
 	}
 
+	static IDXGISwapChain* GetSwapChain()
+	{
+		return SwapChain;
+	}
+
 	// HWND
 protected:
 

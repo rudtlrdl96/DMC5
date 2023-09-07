@@ -68,6 +68,7 @@ void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 		if (false == GameEngineInput::IsKey("ScreenShoot"))
 		{
 			GameEngineInput::CreateKey("ScreenShoot", VK_OEM_PLUS);
+			GameEngineInput::CreateKey("RenderTargetShoot", VK_OEM_MINUS);
 		}
 	}
 
@@ -195,9 +196,12 @@ void GameEngineCore::EngineUpdate()
 
 	if (true == GameEngineInput::IsDown("ScreenShoot"))
 	{
-		ID3D11Resource* asdf;
-		MainLevel->GetMainCamera()->GetCamTarget()->GetTexture(0)->GetSRV()->GetResource(&asdf);
-		GameEngineScreenShoot::ScreenShoot(asdf);
+		GameEngineScreenShoot::ScreenShoot();
+	}
+	if (true == GameEngineInput::IsDown("RenderTargetShoot"))
+	{
+		ID3D11Texture2D* ScreenShootTargetTexture2D = MainLevel->GetScreenShootTarget()->GetTexture(0)->GetTexture2D();
+		GameEngineScreenShoot::RenderTargetShoot(ScreenShootTargetTexture2D);
 	}
 
 	MainLevel->ActorRelease();

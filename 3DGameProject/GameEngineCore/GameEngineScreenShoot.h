@@ -55,7 +55,8 @@ public:
 	GameEngineScreenShoot& operator=(const GameEngineScreenShoot& _Other) = delete;
 	GameEngineScreenShoot& operator=(GameEngineScreenShoot&& _Other) noexcept = delete;
 
-	static HRESULT ScreenShoot(ID3D11Resource* _Resource);
+	static HRESULT ScreenShoot();
+	static HRESULT RenderTargetShoot(ID3D11Texture2D* _Resource);
 
 	static HRESULT __cdecl SaveDDSTextureToFile
 	(

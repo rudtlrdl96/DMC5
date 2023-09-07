@@ -1277,20 +1277,34 @@ HRESULT GameEngineScreenShoot::SaveWICTextureToFile
     return S_OK;
 }
 
-HRESULT GameEngineScreenShoot::ScreenShoot(ID3D11Resource* _Resource)
+HRESULT GameEngineScreenShoot::ScreenShoot()
 {
-    WICPixelFormatGUID CurGuid = {};
-    WICPixelFormatGUID targetGuid = {};
+    ID3D11Texture2D* buffer = GameEngineDevice::GetBackBufferTarget()->GetTexture(0)->GetTexture2D();
 
-    CurGuid = GUID_ContainerFormatPng;
-    targetGuid = GUID_ContainerFormatPng;
-
-    std::string capturefile = "ScreenShoot.png";
-    std::wstring wcapturefile = GameEngineString::AnsiToUniCode(capturefile);
-
-    if (S_OK != SaveWICTextureToFile(GameEngineDevice::GetContext(), _Resource, CurGuid, wcapturefile.c_str()))
+    if (nullptr != buffer)
     {
-        MsgAssert("Fuck");
+        //SaveDDSTextureToFile(GameEngineDevice::GetContext(), buffer, L"SCREENSHOT.DDS");
+        SaveWICTextureToFile(GameEngineDevice::GetContext(), buffer, GUID_ContainerFormatJpeg, L"SCREENSHOT.JPG");
+    }
+
+    //ComPtr<ID3D11Texture2D> backBuffer = _Resource;
+    //HRESULT hr = GameEngineDevice::GetSwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<LPVOID*>(backBuffer.GetAddressOf()));
+
+    //if (SUCCEEDED(hr))
+    //{
+    //    hr = SaveDDSTextureToFile(GameEngineDevice::GetContext(), backBuffer.Get(), L"SCREENSHOT.DDS");
+    //    hr = SaveWICTextureToFile(GameEngineDevice::GetContext(), backBuffer.Get(), GUID_ContainerFormatJpeg, L"SCREENSHOT.JPG");
+    //}
+
+    return S_OK;
+}
+
+HRESULT GameEngineScreenShoot::RenderTargetShoot(ID3D11Texture2D* _Resource)
+{
+    if (nullptr != _Resource)
+    {
+        //SaveDDSTextureToFile(GameEngineDevice::GetContext(), _Resource, L"RenderTargetShoot.DDS");
+        SaveWICTextureToFile(GameEngineDevice::GetContext(), _Resource, GUID_ContainerFormatJpeg, L"RenderTargetShoot.JPG");
     }
 
     return S_OK;
