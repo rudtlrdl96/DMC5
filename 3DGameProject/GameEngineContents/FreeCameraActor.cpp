@@ -16,6 +16,7 @@ void FreeCameraActor::Start()
 
 	if (GameEngineInput::IsKey("SpeedUp") == false)
 	{
+		GameEngineInput::CreateKey("Click", MK_LBUTTON);
 		GameEngineInput::CreateKey("SpeedUp", VK_UP);
 		GameEngineInput::CreateKey("SpeedDown", VK_DOWN);
 

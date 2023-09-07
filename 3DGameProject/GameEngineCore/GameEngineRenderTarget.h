@@ -55,6 +55,10 @@ public:
 	}
 
 	void Clear();
+
+	void TextureClear();
+	void DepthClear();
+
 	void Setting() override;
 	void Reset();
 	void CreateDepthTexture(int _Index = 0);

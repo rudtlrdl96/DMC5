@@ -20,7 +20,7 @@ void ShaderTestLevel::Start()
 
 void ShaderTestLevel::LevelChangeStart()
 {
-	std::shared_ptr<TestObject> NewTestObject = CreateActor<TestObject>();
-	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
+	//std::shared_ptr<TestObject> NewTestObject = CreateActor<TestObject>();
+	//std::shared_ptr<Plane> Flat = CreateActor<Plane>();
 }
 

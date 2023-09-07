@@ -135,16 +135,13 @@ void GameEngineLevel::Render(float _DeltaTime)
 		}
 
 		Cam->ViewPortSetting();
-
-		Cam->AllRenderTarget->Clear();
-		Cam->AllRenderTarget->Setting();
+		Cam->Setting();
 
 		Cam->CameraTransformUpdate();
 		Cam->Render(_DeltaTime);
 
-		Cam->CamForwardTarget->Clear();
-		Cam->CamForwardTarget->Merge(Cam->AllRenderTarget, 0);
-		Cam->CamForwardTarget->Effect(_DeltaTime);
+		Cam->ForwardMerge(_DeltaTime);
+		Cam->DeferredMerge(_DeltaTime);
 
 		if (false == IsDebugRender)
 		{

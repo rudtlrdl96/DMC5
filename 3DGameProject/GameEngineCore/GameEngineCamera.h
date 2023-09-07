@@ -36,6 +36,9 @@ public:
 	void Render(float _DeltaTime) override;
 	void CameraTransformUpdate();
 
+	void ForwardMerge(float _DeltaTime);
+	void DeferredMerge(float _DeltaTime);
+
 	void ViewPortSetting();
 
 	void Setting();

@@ -68,6 +68,12 @@ void GameEngineRenderTarget::CreateDepthTexture(int _Index)
 
 void GameEngineRenderTarget::Clear()
 {
+	TextureClear();
+	DepthClear();
+}
+
+void GameEngineRenderTarget::TextureClear()
+{
 	for (size_t i = 0; i < Textures.size(); i++)
 	{
 		ID3D11RenderTargetView* RTV = Textures[i]->GetRTV();
@@ -80,7 +86,10 @@ void GameEngineRenderTarget::Clear()
 
 		GameEngineDevice::GetContext()->ClearRenderTargetView(RTV, Color.Arr1D);
 	}
+}
 
+void GameEngineRenderTarget::DepthClear()
+{
 	ID3D11DepthStencilView* DSV = DepthTexture != nullptr ? DepthTexture->GetDSV() : nullptr;
 
 	if (nullptr != DSV)

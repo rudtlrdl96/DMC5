@@ -20,6 +20,8 @@
 #include "PlayerWindow.h"
 #include <GameEngineCore/PhysXBoxComponent.h>
 #include <GameEngineCore/PhysXDefault.h>
+#include <GameEngineCore/GameEngineCoreWindow.h>
+
 PlayerTestLevel::PlayerTestLevel()
 {
 }
@@ -55,6 +57,12 @@ void PlayerTestLevel::Update(float _DeltaTime)
 
 void PlayerTestLevel::LevelChangeStart()
 {
+	GameEngineCoreWindow::Clear();
+	GameEngineCoreWindow::AddDebugRenderTarget(0, "AllRenderTarget", GetMainCamera()->GetCamAllRenderTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(1, "LightRenderTarget", GetMainCamera()->GetDeferredLightTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(2, "MainCameraForwardTarget", GetMainCamera()->GetCamForwardTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(3, "DeferredTarget", GetMainCamera()->GetCamDeferrdTarget());
+
 	SetLevelSceneGravity(2000);
 	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
 	Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });

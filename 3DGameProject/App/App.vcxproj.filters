@@ -17,4 +17,9 @@
       <Filter>Documentation</Filter>
     </Text>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\.gitignore">
+      <Filter>Documentation</Filter>
+    </None>
+  </ItemGroup>
 </Project>

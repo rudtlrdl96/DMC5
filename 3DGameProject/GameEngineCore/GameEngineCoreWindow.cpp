@@ -69,3 +69,8 @@ void GameEngineCoreWindow::AddDebugRenderTarget(int _Order, const std::string_vi
 	_Target->SetName(_Name);
 	DebugRenderTarget[_Order] = _Target;
 }
+
+void GameEngineCoreWindow::Clear()
+{
+	DebugRenderTarget.clear();
+}

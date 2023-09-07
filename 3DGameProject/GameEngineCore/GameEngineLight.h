@@ -21,8 +21,8 @@ struct LightData
     float4x4 LightProjectionInverseMatrix;
     float4x4 LightViewProjectionMatrix;
     float4x4 CameraViewInverseMatrix;
-    float4 LightColor = float4(1.0f, 1.0f, 1.0f, 0.0f);
-    float4 AmbientLight = float4(0.3f, 0.3f, 0.3f, 1.0f);
+    float4 LightColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
+    float4 AmbientLight = float4(0.2f, 0.2f, 0.2f, 1.0f);
     float4 LightPos;
     float4 LightDir;
     float4 LightRevDir;

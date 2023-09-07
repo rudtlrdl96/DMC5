@@ -73,7 +73,7 @@ void GameEngineCamera::Start()
 
 	CamDeferrdTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 	CamDeferrdTarget->SetDepthTexture(CamForwardTarget->GetDepthTexture());
-
+	
 	CalLightUnit.SetMesh("FullRect");
 	CalLightUnit.SetMaterial("DeferredCalLight");
 
@@ -103,7 +103,8 @@ void GameEngineCamera::FreeCameraSwitch()
 	{
 		OldData = GetTransform()->GetTransDataRef();
 	}
-	else {
+	else 
+	{
 		GetTransform()->SetTransformData(OldData);
 	}
 }
@@ -183,8 +184,8 @@ void GameEngineCamera::ViewPortSetting()
 
 void GameEngineCamera::Setting()
 {
-	CamForwardTarget->Clear();
-	CamForwardTarget->Setting();
+	AllRenderTarget->Clear();
+	AllRenderTarget->Setting();
 }
 
 void GameEngineCamera::Render(float _DeltaTime)
@@ -277,20 +278,6 @@ void GameEngineCamera::Render(float _DeltaTime)
 				}
 			}
 		}
-
-		// 오브젝트들은 그릴만한 애들은 다 그렸다고 판단하고
-		// 빛계산의 결과가 들어갈 애들이 여기에서 세팅되고
-		DeferredLightTarget->Clear();
-		DeferredLightTarget->Setting();
-		CalLightUnit.Render(_DeltaTime);
-
-		CamDeferrdTarget->Clear();
-		CamDeferrdTarget->Setting();
-		DefferdMergeUnit.Render(_DeltaTime);
-
-		CamTarget->Clear();
-		CamTarget->Merge(CamForwardTarget);
-		CamTarget->Merge(CamDeferrdTarget);
 	}
 }
 
@@ -328,6 +315,28 @@ void GameEngineCamera::CameraTransformUpdate()
 	Box.Extents.x = Width * 0.6f;
 	Box.Extents.y = Height * 0.6f;
 	Box.Orientation = GetTransform()->GetWorldQuaternion().DirectFloat4;
+}
+
+void GameEngineCamera::ForwardMerge(float _DeltaTime)
+{
+	CamForwardTarget->Clear();
+	CamForwardTarget->Merge(AllRenderTarget, 0);
+	CamForwardTarget->Effect(_DeltaTime);
+}
+
+void GameEngineCamera::DeferredMerge(float _DeltaTime)
+{
+	DeferredLightTarget->Clear();
+	DeferredLightTarget->Setting();
+	CalLightUnit.Render(_DeltaTime);
+
+	CamDeferrdTarget->Clear();
+	CamDeferrdTarget->Setting();
+	DefferdMergeUnit.Render(_DeltaTime);
+
+	CamTarget->Clear();
+	CamTarget->Merge(CamForwardTarget);
+	CamTarget->Merge(CamDeferrdTarget);
 }
 
 void GameEngineCamera::PushRenderer(std::shared_ptr<GameEngineRenderer> _Render)

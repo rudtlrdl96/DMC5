@@ -308,8 +308,8 @@ void ContentsCore::SetOption()
 	//GameEngineOption::ChangeOption("Texture", GameEngineOptionValue::High);
 	//GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::Low);
 
-	GameEngineOption::ChangeOption("Texture", GameEngineOptionValue::Low);
-	GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::Low);
+	GameEngineOption::ChangeOption("Texture", GameEngineOptionValue::High);
+	GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::High);
 
 	// FXAA 可记 积己
 	GameEngineOption::CreateOption("FXAA", GameEngineOptionValue::None);

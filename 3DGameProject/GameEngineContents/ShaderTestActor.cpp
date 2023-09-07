@@ -32,18 +32,18 @@ void ShaderTestActor::Start()
 	TestRenderer = CreateComponent<GameEngineFBXRenderer>();
 
 	//FBX파일경로를 찾아서 로드
-	if (nullptr == GameEngineFBXMesh::Find("shaderTest.FBX"))
+	if (nullptr == GameEngineFBXMesh::Find("SoccerBallMesh.FBX"))
 	{
 		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
 			{
 				"Mesh", "TestMesh"
-			}, "shaderTest.FBX");
+			}, "SoccerBallMesh.FBX");
 
 		GameEngineFBXMesh::Load(Path);
 	}
 
-	TestRenderer->SetFBXMesh("shaderTest.fbx", "FBX");
-
+	TestRenderer->SetFBXMesh("SoccerBallMesh.fbx", "FBX");
+	TestRenderer->GetTransform()->SetLocalScale({ 0.01f, 0.01f, 0.01f });
 	TestRenderer->NormalOff();
 }
 

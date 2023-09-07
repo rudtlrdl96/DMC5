@@ -20,6 +20,7 @@
 #include "PlayUITestLevel.h"
 #include "Nero_ShopLevel.h"
 //Map
+#include "BossStageLevel.h"
 #include "StartStageLevel.h"
 #include "TestStageLevel.h"
 #include "StageEditLevel.h"
@@ -41,26 +42,39 @@ void ContentsCore::GameStart()
 	SetOption();
 	ContentsResourcesCreate();
 
-	GameEngineCore::CreateLevel<MainLevel>();
-	GameEngineCore::CreateLevel<TestLevel>();
-	GameEngineCore::CreateLevel<IntroLevel>();
-	GameEngineCore::CreateLevel<TitleLevel>();
-	GameEngineCore::CreateLevel<Char_ChoiceLevel>();
-	GameEngineCore::CreateLevel<MainMenuLevel>();
-	GameEngineCore::CreateLevel<PlayerTestLevel>();
-	GameEngineCore::CreateLevel<EnemyTestLevel>();
-	GameEngineCore::CreateLevel<AnimationToolLevel>();
-	GameEngineCore::CreateLevel<TestStageLevel>();
-	GameEngineCore::CreateLevel<StartStageLevel>();
-	GameEngineCore::CreateLevel<ShaderTestLevel>();
-	GameEngineCore::CreateLevel<NetworkTestLevel>();
-	GameEngineCore::CreateLevel<MonsterTestLevel>();
-	GameEngineCore::CreateLevel<PlayUITestLevel>();
-	GameEngineCore::CreateLevel<Nero_ShopLevel>();
-	//
-	GameEngineCore::CreateLevel<StageEditLevel>();
+	if (false == GameEngineInput::IsKey("UIDEBUGMODE"))
+	{
+		GameEngineInput::CreateKey("UIDEBUGMODE", 'U');
+		GameEngineInput::CreateKey("ENTER", VK_RETURN);
+		GameEngineInput::CreateKey("UI_UP", VK_UP);
+		GameEngineInput::CreateKey("UI_Down", VK_DOWN);
+		GameEngineInput::CreateKey("UI_Enter", VK_RETURN);
+		GameEngineInput::CreateKey("UI_Left", VK_LEFT);
+		GameEngineInput::CreateKey("UI_Right", VK_RIGHT);
+		GameEngineInput::CreateKey("UI_Tab", VK_TAB);
+	}
 
-	GameEngineCore::ChangeLevel("MainLevel");
+	GameEngineCore::CreateLevel<MainLevel>();
+	//GameEngineCore::CreateLevel<TestLevel>();
+	//GameEngineCore::CreateLevel<IntroLevel>();
+	//GameEngineCore::CreateLevel<TitleLevel>();
+	//GameEngineCore::CreateLevel<Char_ChoiceLevel>();
+	//GameEngineCore::CreateLevel<MainMenuLevel>();
+	GameEngineCore::CreateLevel<PlayerTestLevel>();
+	//GameEngineCore::CreateLevel<EnemyTestLevel>();
+	//GameEngineCore::CreateLevel<AnimationToolLevel>();
+	//GameEngineCore::CreateLevel<BossStageLevel>();
+	//GameEngineCore::CreateLevel<TestStageLevel>();
+	//GameEngineCore::CreateLevel<StartStageLevel>();
+	//GameEngineCore::CreateLevel<ShaderTestLevel>();
+	//GameEngineCore::CreateLevel<NetworkTestLevel>();
+	//GameEngineCore::CreateLevel<MonsterTestLevel>();
+	//GameEngineCore::CreateLevel<PlayUITestLevel>();
+	//GameEngineCore::CreateLevel<Nero_ShopLevel>();
+	//
+	//GameEngineCore::CreateLevel<StageEditLevel>();
+
+	GameEngineCore::ChangeLevel("PlayerTestLevel");
 }
 
 void ContentsCore::GameEnd() 
