@@ -60,6 +60,7 @@ enum FSM_State_Nero
 	Nero_BR_AirShoot,		// 공중사격
 
 	Nero_Overture_Shoot,
+	Nero_Overture_AirShoot,
 };
 
 class PlayerActor_Nero : public BasePlayerActor
