@@ -108,6 +108,17 @@ void Shop_ItemButton::Update(float _Delta)
 		NameText_Render->SetColor(NoneColor);
 		PriceText_Render->SetColor(NoneColor);
 	}
+	if (SizeValue == true)
+	{
+		BuyText_Render->SetText("배우기");
+
+	}
+	else
+	{
+		BuyText_Render->SetText("구매");
+
+	}
+
 }
 
 void Shop_ItemButton::FontCreate()
@@ -131,16 +142,6 @@ void Shop_ItemButton::FontCreate()
 	BuyText_Render->SetFontFlag(FW1_CENTER);
 	BuyText_Render->SetScale(20);
 	BuyText_Render->SetColor(float4::WHITE);
-	if (SizeValue == true)
-	{
-		BuyText_Render->SetText("배우기");
-
-	}
-	else
-	{
-		BuyText_Render->SetText("구매");
-
-	}
 
 
 }

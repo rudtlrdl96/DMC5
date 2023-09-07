@@ -2,6 +2,7 @@
 #include "Nero_ShopTitleBar.h"
 #include "Shop_TitleButton.h"
 #include "Shop_NeroSkillUI.h"
+#include "Shop_ExplaneUI.h"
 #include "Shop_ItemButton.h"
 #include "Shop_NeroArmUI.h"
 #include <GameEngineCore/GameEngineLevel.h>
@@ -30,41 +31,35 @@ void Nero_ShopTitleBar::Start()
 			TitleIndex = 1;
 		});
 	//Å×½ºÆ®
-	RQButton = GetLevel()->CreateActor<Shop_NeroSkillUI>();
-	RQButton->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
-	RQButton->Off();
-	ArmButton = GetLevel()->CreateActor<Shop_NeroArmUI>();
-	ArmButton->GetTransform()->SetLocalPosition({ -118.0f,0.0f,0.0f });
-	ArmButton->Off();
+	SkillScreen = GetLevel()->CreateActor<Shop_NeroSkillUI>();
+	SkillScreen->GetTransform()->SetLocalPosition(SkillStartPos);
+	ArmScreen = GetLevel()->CreateActor<Shop_NeroArmUI>();
+	ArmScreen->GetTransform()->SetLocalPosition(ItemDefaulPos);
 }	
 
 
 
 void Nero_ShopTitleBar::Update(float _Delta)
 {
+	LerpScreen(_Delta);
 	if (TitleIndex == 0)
 	{
 		DBButton->SetSelectValue(false);
 		SkillButton->SetSelectValue(true);
-		RQButton->On();
-		ArmButton->Off();
-		LerpTime = 0.0f;
+		SkillScreen->GetExPlane()->On();
+		ArmScreen->GetExPlane()->Off();
 	}
 	else if (TitleIndex == 1)
 	{
-		RQButton->Off();
-		ArmButton->On();
-		LerpTime += _Delta;
-		//RQButton->GetTransform()->SetLocalPosition(float4::LerpClamp(float4::ZERONULL, { -1000.0f,0.0f,0.0f }, LerpTime * 2));
-		//if (RQButton->GetTransform()->GetLocalPosition() == float4(-1000.0f, 0.0f, 0.f))
-		//{
-		//	RQButton->Off();
-		//}
+
+		SkillScreen->GetExPlane()->Off();
+		ArmScreen->GetExPlane()->On();
 		SkillButton->SetSelectValue(false);
 		DBButton->SetSelectValue(true);
 	}
 	if (true == GameEngineInput::IsUp("UI_Tab"))
 	{
+		PrevIndex = TitleIndex;
 		if (TitleIndex == 1)
 		{
 			TitleIndex = 0;
@@ -73,6 +68,56 @@ void Nero_ShopTitleBar::Update(float _Delta)
 		{
 			TitleIndex++;
 		}
+		if (TitleIndex == 0 && PrevIndex == 1)
+		{
+			IsValue = true;
+			IsValue2 = false;
+		}
+		else if (PrevIndex == 0 && TitleIndex == 1)
+		{
+			IsValue2 = true;
+			IsValue = false;
+		}
+	}
+}
+
+void Nero_ShopTitleBar::LerpScreen(float _Delta)
+{
+	if (IsValue==true)
+	{
+		LerpTime += _Delta;
+		if (IsSwichItem == false)
+		{
+			SkillScreen->GetTransform()->SetLocalPosition(float4::LerpClamp(SkillDefaultPos, SkillStartPos, LerpTime * 2.5f));
+			ArmScreen->GetTransform()->SetLocalPosition(float4::LerpClamp(ItemStartPos, ItemEndPos, LerpTime * 2.5f));
+			if (ArmScreen->GetTransform()->GetLocalPosition() == ItemEndPos)
+			{
+				ArmScreen->GetTransform()->SetLocalPosition(ItemDefaulPos);
+				IsSwichSkill = false;
+				IsSwichItem = true;
+				IsValue = false;
+				LerpTime = 0.0f;
+			}
+		}
+		
+	}
+	else if(IsValue2== true)
+	{
+		LerpTime += _Delta;
+		if (IsSwichSkill == false)
+		{
+			SkillScreen->GetTransform()->SetLocalPosition(float4::LerpClamp(SkillStartPos, SkillEndPos, LerpTime * 2.5f));
+			ArmScreen->GetTransform()->SetLocalPosition(float4::LerpClamp(ItemDefaulPos, ItemStartPos, LerpTime * 2.5f));
+			if (SkillScreen->GetTransform()->GetLocalPosition() == SkillEndPos)
+			{
+				SkillScreen->GetTransform()->SetLocalPosition(SkillDefaultPos);
+				IsSwichSkill = true;
+				IsSwichItem = false;
+				IsValue2 = false;
+				LerpTime = 0.0f;
+			}
+		}
+		
 	}
 }
 
