@@ -72,7 +72,8 @@ void MainLevel::Start()
 	NewTestActor4->GetTransform()->SetLocalPosition({ 280, 10, 0 });
 	NewTestActor4->InitTest(4);
 
-	CreateActor<FreeCameraActor>();
+	std::shared_ptr<FreeCameraActor> FreeCameraAc = CreateActor<FreeCameraActor>();
+	FreeCameraAc->GetTransform()->AddWorldPosition({ 0.0f, 0.0f, -300.0f });
 
 	//std::shared_ptr<GameEngineLight> NewPointLight = CreatePointLight(float4(140, 10, 0), 300);
 

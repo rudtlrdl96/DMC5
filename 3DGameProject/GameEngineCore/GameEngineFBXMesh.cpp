@@ -1126,11 +1126,21 @@ std::shared_ptr<GameEngineMesh> GameEngineFBXMesh::GetGameEngineMesh(size_t _Mes
 
 			std::string CheckPath_Plus = Path + PlusOption + Directory;
 			std::string CheckPath = Path + Directory;
-			GameEnginePath Path = CheckPath_Plus;
+			GameEnginePath Path_Plus = CheckPath_Plus;
+			GameEnginePath Path = CheckPath;
 
-			if (false == Path.IsExists())
+			if (false == Path_Plus.IsExists())
 			{
-				GameEngineTexture::Load(CheckPath);
+				if (false == Path.IsExists())
+				{
+					// 문제없음
+				}
+				else
+				{
+					MsgTextBox("폴더가 분류되어 있지 않습니다. 기존 폴더 내에서 로드합니다.");
+					GameEngineTexture::Load(CheckPath);
+				}
+				
 			}
 			else
 			{
@@ -1164,11 +1174,21 @@ std::shared_ptr<GameEngineMesh> GameEngineFBXMesh::GetGameEngineMesh(size_t _Mes
 
 			std::string CheckPath_Plus = Path + PlusOption + Directory;
 			std::string CheckPath = Path + Directory;
-			GameEnginePath Path = CheckPath_Plus;
+			GameEnginePath Path_Plus = CheckPath_Plus;
+			GameEnginePath Path = CheckPath;
 
-			if (false == Path.IsExists())
+			if (false == Path_Plus.IsExists())
 			{
-				GameEngineTexture::Load(CheckPath);
+				if (false == Path.IsExists())
+				{
+					// 문제없음
+				}
+				else
+				{
+					MsgTextBox("폴더가 분류되어 있지 않습니다. 기존 폴더 내에서 로드합니다.");
+					GameEngineTexture::Load(CheckPath);
+				}
+
 			}
 			else
 			{
