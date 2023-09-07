@@ -20,7 +20,7 @@
 #include "PlayUITestLevel.h"
 #include "Nero_ShopLevel.h"
 //Map
-#include "BossStageLevel.h"
+//#include "BossStageLevel.h"
 #include "StartStageLevel.h"
 #include "TestStageLevel.h"
 #include "StageEditLevel.h"
