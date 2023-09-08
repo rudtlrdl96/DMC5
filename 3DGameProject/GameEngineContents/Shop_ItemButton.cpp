@@ -84,7 +84,7 @@ void Shop_ItemButton::Update(float _Delta)
 {
 	if (IsSelect == true)
 	{
-		if (true == GameEngineInput::IsUp("CLICK"))
+		if (true == GameEngineInput::IsUp("UI_CLICK"))
 		{
 			if (nullptr != Click)
 			{

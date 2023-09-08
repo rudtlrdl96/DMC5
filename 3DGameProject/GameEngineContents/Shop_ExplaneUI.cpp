@@ -23,7 +23,7 @@ void Shop_ExplaneUI::SetExplaneText(const ExplaneOneParameter& _Param)
 void Shop_ExplaneUI::SetSecoundText(const ExplaneOneParameter& _Param)
 {
 	SecoundExPlane->SetText(_Param._EName);
-	S_ExplaneRender0->SetTexture(_Param._Explane1);
+	S_ExplaneRender0->SetScaleToTexture(_Param._Explane1);
 	S_ExplaneText0->SetText(_Param._Explane2);
 }
 
@@ -40,7 +40,6 @@ void Shop_ExplaneUI::Start()
 	ExplaneBar_1->GetTransform()->SetLocalPosition({ 711.f, -102.0f, 0.0f }); 
 
 	S_ExplaneRender0 = CreateComponent<GameEngineUIRenderer>(1);
-	S_ExplaneRender0->GetTransform()->SetLocalScale({ 774.0f,40.0f,0.0f });
 	S_ExplaneRender0->GetTransform()->SetLocalPosition({ 711.f, -150.0f, 0.0f });
 
 	FontCreate();
@@ -65,7 +64,7 @@ void Shop_ExplaneUI::FontCreate()
 	K_NameRender->GetTransform()->SetParent(GetTransform());
 	K_NameRender->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
 	K_NameRender->SetFontFlag(FW1_LEFT);
-	K_NameRender->SetScale(18);
+	K_NameRender->SetScale(20);
 	K_NameRender->SetColor(float4::WHITE);
 	K_NameRender->GetTransform()->SetLocalPosition({ 372.0f,215.f,0.0f });
 
@@ -73,7 +72,7 @@ void Shop_ExplaneUI::FontCreate()
 	ExplaneText0->GetTransform()->SetParent(GetTransform());
 	ExplaneText0->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
 	ExplaneText0->SetFontFlag(FW1_LEFT);
-	ExplaneText0->SetScale(18);
+	ExplaneText0->SetScale(20);
 	ExplaneText0->SetColor(float4::WHITE);
 	ExplaneText0->GetTransform()->SetLocalPosition({ 372.0f,158.f,0.0f });
 
@@ -81,7 +80,7 @@ void Shop_ExplaneUI::FontCreate()
 	ExplaneText1->GetTransform()->SetParent(GetTransform());
 	ExplaneText1->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
 	ExplaneText1->SetFontFlag(FW1_LEFT);
-	ExplaneText1->SetScale(18);
+	ExplaneText1->SetScale(20);
 	ExplaneText1->SetColor(float4::WHITE);
 	ExplaneText1->GetTransform()->SetLocalPosition({ 372.0f,122.f,0.0f });
 
@@ -89,7 +88,7 @@ void Shop_ExplaneUI::FontCreate()
 	ExplaneText2->GetTransform()->SetParent(GetTransform());
 	ExplaneText2->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
 	ExplaneText2->SetFontFlag(FW1_LEFT);
-	ExplaneText2->SetScale(18);
+	ExplaneText2->SetScale(20);
 	ExplaneText2->SetColor(float4::WHITE);
 	ExplaneText2->GetTransform()->SetLocalPosition({ 372.0f,86.f,0.0f });
 	

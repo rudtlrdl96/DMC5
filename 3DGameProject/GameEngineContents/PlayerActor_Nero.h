@@ -1,6 +1,7 @@
 #pragma once
 #include "BasePlayerActor.h"
 #include <GameEngineCore/GameEngineFSM.h>
+#include <stack>
 
 enum FSM_State_Nero
 {
@@ -71,6 +72,15 @@ enum FSM_State_Nero
 	Nero_Gerbera_Front,
 	Nero_Gerbera_Left,
 	Nero_Gerbera_Right,
+
+	// 데빌트리거 사용
+	Nero_DT_Start,
+	Nero_DT_AirStart,
+	Nero_GT_Bomb,
+	Nero_GT_AirBomb,
+	Nero_Provocation_1,
+	Nero_Provocation_2,
+	Nero_Provocation_Air,
 };
 
 class PlayerActor_Nero : public BasePlayerActor
@@ -123,8 +133,10 @@ private:
 	bool DelayCheck = false;	// 다른 콤보로 연결되기 위한 딜레이 여부
 	bool LoadCheck = false;		// FBX 로드가 완료되었는지
 	bool UseDoubleJump = false;
+	bool IsDevilTrigger = false;
 	DevilBreaker CurDevilBreaker = DevilBreaker::Overture;
-	
+	std::stack<DevilBreaker> BreakerStack;
+
 	// 검 버튼을 입력한 경우 실행
 	bool Input_SwordCheck(int AddState = 0);
 	// 검 버튼을 공중에서 입력한 경우 실행
@@ -142,6 +154,9 @@ private:
 	// 데빌브레이커 버튼을 공중에서 입력한 경우 실행
 	bool Input_DevilBreakerCheckFly();
 
+	bool Input_SpecialCheck();
+	bool Input_SpecialCheckFly();
+
 	void ChangeState(FSM_State_Nero _StateValue);	// FSM 변경 함수
 	void ChangeState(int _StateValue);	// FSM 변경 함수
 
@@ -153,6 +168,12 @@ private:
 	void SetDemon();	// 데빌트리거 모습
 
 	void SetOverture();	// 오버추어를 장착한 모습으로 지정
+	void SetGerbera();	// 거베라를 장착한 모습으로 지정
+	void SetBusterArm();	// 버스터암을 장착한 모습으로 지정
 	void SetOvertureAnimation();	// 오버추어 발사 애니메이션으로 지정
+	void OffDevilBraeker();
+
+	void AddBreaker(DevilBreaker _Breaker);
+	void DestroyBreaker();
 };
 

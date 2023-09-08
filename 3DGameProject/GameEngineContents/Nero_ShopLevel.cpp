@@ -28,6 +28,7 @@ void Nero_ShopLevel::Start()
 	ShopBGPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
 	std::shared_ptr<Nero_ShopTitleBar> Nero_ShopTitleBarPtr = CreateActor<Nero_ShopTitleBar>();
 	Nero_ShopTitleBarPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
+
 }
 
 void Nero_ShopLevel::Update(float _DeltaTime)

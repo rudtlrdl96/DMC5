@@ -51,7 +51,7 @@ void Shop_TitleButton::Update(float _Delta)
 	MouseData.SPHERE.Radius = 0.0f;
 	if (true == GameEngineTransform::AABB2DToSpehre2D(Render->GetTransform()->GetCollisionData(), MouseData))
 	{
-		if (true == GameEngineInput::IsUp("CLICK"))
+		if (true == GameEngineInput::IsUp("UI_CLICK"))
 		{
 			if (nullptr != Click)
 			{
