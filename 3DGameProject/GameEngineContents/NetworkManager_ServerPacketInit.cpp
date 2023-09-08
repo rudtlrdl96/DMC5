@@ -56,6 +56,11 @@ void NetworkManager::ServerPacketInit()
 			std::shared_ptr<GameEngineNetObject> NewNetObj = nullptr;
 			NewNetObj = NetworkManager::CreateNetActor(_Packet->ActorType, ObjID);
 			NewNetObj->SetControll(NetControllType::NetControll);
+
+			//어떤 유저로부터 어떤 타입의 엑터가 생성되었는지 GUI에 출력
+			NetworkGUI::GetInst()->PrintLog("Create Object From UpdatePacket", float4::GREEN);
+			std::string NewMsg = "User : " + std::to_string(_Packet->NetID) + ", ActorType : " + std::to_string(_Packet->ActorType);
+			NetworkGUI::GetInst()->PrintLog(NewMsg, float4::GREEN);
 		}
 
 		//패킷이 Death처리 된 경우
@@ -95,7 +100,7 @@ void NetworkManager::ServerPacketInit()
 	NetInst->Dispatcher.AddHandler<MessageChatPacket>(
 		[=](std::shared_ptr<MessageChatPacket> _Packet)
 	{
-		NetworkGUI::GetInst()->PrintLog(_Packet->Message);
+		NetworkGUI::GetInst()->PrintLog(_Packet->Message, _Packet->Color);
 
 		//서버의 경우엔 수신받은 특정 오브젝트의 패킷을 다른 클라에 다 뿌려야 한다
 		NetInst->SendPacket(_Packet, _Packet->GetObjectID());

@@ -36,7 +36,7 @@ void NetworkManager::ClientPacketInit()
 		//연결 성공 메세지 보내기
 		const std::string& ClientName = NetworkGUI::GetInst()->GetNickName();
 		std::string ChatMsg = ClientName + " Connect Server";
-		PushChatPacket(ChatMsg);
+		PushChatPacket(ChatMsg, float4::BLUE);
 	});
 
 
@@ -59,6 +59,11 @@ void NetworkManager::ClientPacketInit()
 			std::shared_ptr<GameEngineNetObject> NewNetObj = nullptr;
 			NewNetObj = NetworkManager::CreateNetActor(_Packet->ActorType, ObjID);
 			NewNetObj->SetControll(NetControllType::NetControll);
+
+			//어떤 타입의 엑터가 생성되었는지 GUI에 출력
+			NetworkGUI::GetInst()->PrintLog("Create Object From UpdatePacket", float4::GREEN);
+			std::string NewMsg = "ActorType : " + std::to_string(_Packet->ActorType);
+			NetworkGUI::GetInst()->PrintLog(NewMsg, float4::GREEN);
 		}
 
 		//패킷이 Death처리 된 경우
@@ -94,7 +99,7 @@ void NetworkManager::ClientPacketInit()
 	NetInst->Dispatcher.AddHandler<MessageChatPacket>(
 		[](std::shared_ptr<MessageChatPacket> _Packet)
 	{
-		NetworkGUI::GetInst()->PrintLog(_Packet->Message);
+		NetworkGUI::GetInst()->PrintLog(_Packet->Message, _Packet->Color);
 	});
 	
 

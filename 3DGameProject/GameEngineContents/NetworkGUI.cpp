@@ -26,10 +26,12 @@ void NetworkGUI::Start()
 	NickName.resize(16, 0);
 	Message.resize(32, 0);
 
-	for (size_t i = 0; i < 20; ++i)
+	/*for (size_t i = 0; i < 20; ++i)
 	{
 		BaseLog::PushLog(LogOrder::Network, " ");
-	}
+	}*/
+
+	AllLog.resize(20, { " ", float4::WHITE });
 }
 
 
@@ -124,11 +126,27 @@ void NetworkGUI::Update_Chat()
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), Title.c_str());
 	ImGui::Text(LocalPrintNickName.c_str());
 
-	const std::vector<std::string>& AllLog = BaseLog::GetLog(LogOrder::Network);
+	/*const std::vector<std::string>& AllLog = BaseLog::GetLog(LogOrder::Network);
 	for (const std::string& Log : AllLog)
 	{
 		ImGui::Text(Log.c_str());
+	}*/
+
+	for (const std::pair<std::string, float4>& Log : AllLog)
+	{
+		const std::string& LogValue = Log.first;
+		const float4& LogColor = Log.second;
+
+		if (float4::WHITE == LogColor)
+		{
+			ImGui::Text(LogValue.c_str());
+		}
+		else
+		{
+			ImGui::TextColored(ImVec4(LogColor.r, LogColor.g, LogColor.b, 1), LogValue.c_str());
+		}
 	}
+
 
 	ImGui::InputText("Message", &Message[0], Message.size());
 	if (ImGui::Button("SendMessage"))
@@ -145,7 +163,10 @@ void NetworkGUI::Update_Chat()
 }
 
 
-void NetworkGUI::PrintLog(const std::string_view& _LogText)
+void NetworkGUI::PrintLog(const std::string_view& _LogText, const float4& _Color /*= float4::WHITE*/)
 {
 	BaseLog::PushLog(LogOrder::Network, _LogText.data());
+
+	AllLog.pop_front();
+	AllLog.push_back(std::make_pair(_LogText.data(), _Color));
 }

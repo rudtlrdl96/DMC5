@@ -13,10 +13,6 @@
 #include "LinkObjectPacket.h"
 #include "FsmChangePacket.h"
 
-//#include "NetworkTestLevel.h"
-//#include "StartStageLevel.h"
-//#include "BossStageLevel.h"
-
 #include "PlayerActor_Nero.h"
 #include "PlayerActor_Vergil.h"
 #include "NetTestPlayer.h"
@@ -109,12 +105,13 @@ void NetworkManager::Update_PacketProcess(BaseLevel* _CurrentLevel)
 }
 
 
-void NetworkManager::PushChatPacket(const std::string_view& _Msg)
+void NetworkManager::PushChatPacket(const std::string_view& _Msg, const float4& _Color /*= float4::WHITE*/)
 {
 	std::shared_ptr<MessageChatPacket> ChatPacket = std::make_shared<MessageChatPacket>();
 	ChatPacket->SetPacketID(PacketEnum::MessageChatPacket);
 	ChatPacket->SetObjectID(NetID);
 	ChatPacket->Message = _Msg;
+	ChatPacket->Color = _Color;
 	AllPacket[PacketEnum::MessageChatPacket].push_back(ChatPacket);
 }
 

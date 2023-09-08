@@ -73,7 +73,7 @@ public:
 
 
 
-	static void PushChatPacket(const std::string_view& _Msg);
+	static void PushChatPacket(const std::string_view& _Msg, const float4& _Color = float4::WHITE);
 
 	//Update패킷을 보낼때 이 인터페이스를 이용해서 보내주시면 됩니다.
 	static void PushUpdatePacket(const UpdatePacketParameter& _Param);
