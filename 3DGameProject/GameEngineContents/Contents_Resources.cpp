@@ -172,6 +172,7 @@ void ContentsCore::ContentsResourcesCreate()
 //////////////////////////////////////////////////////////////////// Create PipeLine ///////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	// 2D Sprite
 	{
 		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("My2DTexture");
 
@@ -182,6 +183,7 @@ void ContentsCore::ContentsResourcesCreate()
 		Pipe->SetDepthState("EngineDepth");
 	}
 
+	// PostEffect
 	{
 		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("Fade");
 
@@ -262,6 +264,7 @@ void ContentsCore::ContentsResourcesCreate()
 		Pipe->SetDepthState("EngineDepth");
 	}
 
+	// FBX
 	{
 		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("FBX");
 
@@ -298,6 +301,17 @@ void ContentsCore::ContentsResourcesCreate()
 		Material->SetVertexShader("ContentsAniMesh_LowOption.hlsl");
 		Material->SetRasterizer("Engine2DBase");
 		Material->SetPixelShader("ContentsAniMesh_LowOption.hlsl");
+		Material->SetBlendState("AlphaBlend");
+		Material->SetDepthState("EngineDepth");
+	}
+
+	// 3D Effect
+	{
+		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("ClipEffect");
+
+		Material->SetVertexShader("ClipEffectMesh.hlsl");
+		Material->SetRasterizer("Engine2DBase");
+		Material->SetPixelShader("ClipEffectMesh.hlsl");
 		Material->SetBlendState("AlphaBlend");
 		Material->SetDepthState("EngineDepth");
 	}

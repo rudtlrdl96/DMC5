@@ -199,6 +199,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="EffectFBXRenderer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="FsmChangePacket.h" />
     <ClInclude Include="Char_ChoiceButton.h" />
     <ClInclude Include="Char_ChoiceLevel.h" />
@@ -604,6 +608,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="C_ChoiceBG.cpp" />
+    <ClCompile Include="EffectFBXRenderer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="EnemyTestLevel.cpp">
       <SubType>
       </SubType>

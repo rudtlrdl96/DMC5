@@ -43,23 +43,22 @@ void ContentsCore::GameStart()
 	CreateContentsKey();
 
 	GameEngineCore::CreateLevel<MainLevel>();
-	//GameEngineCore::CreateLevel<TestLevel>();
-	//GameEngineCore::CreateLevel<IntroLevel>();
-	//GameEngineCore::CreateLevel<TitleLevel>();
-	//GameEngineCore::CreateLevel<Char_ChoiceLevel>();
-	//GameEngineCore::CreateLevel<MainMenuLevel>();
+	GameEngineCore::CreateLevel<TestLevel>();
+	GameEngineCore::CreateLevel<IntroLevel>();
+	GameEngineCore::CreateLevel<TitleLevel>();
+	GameEngineCore::CreateLevel<Char_ChoiceLevel>();
+	GameEngineCore::CreateLevel<MainMenuLevel>();
 	GameEngineCore::CreateLevel<PlayerTestLevel>();
-	//GameEngineCore::CreateLevel<EnemyTestLevel>();
-	//GameEngineCore::CreateLevel<AnimationToolLevel>();
-	//GameEngineCore::CreateLevel<TestStageLevel>();
-	//GameEngineCore::CreateLevel<StartStageLevel>();
-	//GameEngineCore::CreateLevel<ShaderTestLevel>();
-	//GameEngineCore::CreateLevel<NetworkTestLevel>();
-	//GameEngineCore::CreateLevel<MonsterTestLevel>();
-	//GameEngineCore::CreateLevel<PlayUITestLevel>();
-	//GameEngineCore::CreateLevel<Nero_ShopLevel>();
-	////
-	//GameEngineCore::CreateLevel<StageEditLevel>();
+	GameEngineCore::CreateLevel<EnemyTestLevel>();
+	GameEngineCore::CreateLevel<AnimationToolLevel>();
+	GameEngineCore::CreateLevel<TestStageLevel>();
+	GameEngineCore::CreateLevel<StartStageLevel>();
+	GameEngineCore::CreateLevel<ShaderTestLevel>();
+	GameEngineCore::CreateLevel<NetworkTestLevel>();
+	GameEngineCore::CreateLevel<MonsterTestLevel>();
+	GameEngineCore::CreateLevel<PlayUITestLevel>();
+	GameEngineCore::CreateLevel<Nero_ShopLevel>();
+	GameEngineCore::CreateLevel<StageEditLevel>();
 
 	GameEngineCore::ChangeLevel("MainLevel");
 }

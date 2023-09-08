@@ -355,6 +355,9 @@
     <ClInclude Include="Nero_Inven.h">
       <Filter>UI\UI_Actor\MenuUI\NeroInfo\Nero_Inven</Filter>
     </ClInclude>
+    <ClInclude Include="EffectFBXRenderer.h">
+      <Filter>Component\Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -695,6 +698,9 @@
     </ClCompile>
     <ClCompile Include="Nero_Inven.cpp">
       <Filter>UI\UI_Actor\MenuUI\NeroInfo\Nero_Inven</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectFBXRenderer.cpp">
+      <Filter>Component\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

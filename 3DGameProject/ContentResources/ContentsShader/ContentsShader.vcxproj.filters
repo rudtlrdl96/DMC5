@@ -52,6 +52,9 @@
     <FxCompile Include="ContentsAniMesh_LowOption.hlsl">
       <Filter>MeshShader</Filter>
     </FxCompile>
+    <FxCompile Include="ClipEffectMesh.hlsl">
+      <Filter>Effect</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
@@ -62,6 +65,9 @@
     </Filter>
     <Filter Include="MeshShader">
       <UniqueIdentifier>{520cd694-8525-4f25-a57a-f9f5585ae8bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effect">
+      <UniqueIdentifier>{d3f088ad-72bf-4607-bc38-e6765577e202}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -506,6 +506,25 @@ void GameEngineFBXRenderer::SetTexture(const std::string_view& _SettingName, con
 	}
 }
 
+void GameEngineFBXRenderer::SetSpecularTexture(const std::string_view& _DiffuseTexture, const std::string_view& _SpecularTexture)
+{
+	std::string UpperTexName = GameEngineString::ToUpper(_DiffuseTexture);
+	std::string UpperSpeName = GameEngineString::ToUpper(_SpecularTexture);
+
+	for (size_t i = 0; i < Unit.size(); i++)
+	{
+		for (size_t j = 0; j < Unit[i].size(); j++)
+		{
+			std::string DiffuseTextureName = Unit[i][j]->ShaderResHelper.GetTextureSetter("DiffuseTexture")->Res->GetNameToString();
+
+			if (UpperTexName == DiffuseTextureName)
+			{
+				Unit[i][j]->ShaderResHelper.SetTexture("SpecularTexture", UpperSpeName);
+			}
+		}
+	}
+}
+
 void GameEngineFBXRenderer::Update(float _DeltaTime)
 {
 	if (nullptr == CurAnimation)

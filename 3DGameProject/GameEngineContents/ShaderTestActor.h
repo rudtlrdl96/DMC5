@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineFBXRenderer.h>
+#include "EffectFBXRenderer.h"
 
 // Ό³Έν :
 class ShaderTestActor : public GameEngineActor
@@ -23,7 +24,7 @@ public:
 protected:
 
 private:
-	std::shared_ptr<GameEngineFBXRenderer> TestRenderer = nullptr;
+	std::shared_ptr<EffectFBXRenderer> TestRenderer = nullptr;
 
 
 };
