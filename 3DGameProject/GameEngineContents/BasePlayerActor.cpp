@@ -35,7 +35,7 @@ void BasePlayerActor::LookDir(const float4& _LookDir)
 	float Dot = float4::DotProduct3D(LocalForward, _LookDir);
 	//float Dot = float4::DotProduct3D(_LookDir, LocalForward);
 
-	if (Cross.y == -1.0f)
+	if (Cross.y <= 0.0f)
 	{
 		Rot.y += 180;
 		PhysXCapsule->SetWorldRotation(Rot);
@@ -64,7 +64,7 @@ void BasePlayerActor::RotationToDir(const float4& _Dir, float _MaxValue)
 	float4 Cross = float4::Cross3DReturnNormal(LocalForward, _Dir);
 	float Dot = float4::DotProduct3D(LocalForward, _Dir);
 
-	if (Cross.y == -1.0f)
+	if (Cross.y <= 0.0f)
 	{
 		Rot.y += std::min<float>(180.0f, _MaxValue);
 		PhysXCapsule->SetWorldRotation(Rot);

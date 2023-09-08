@@ -12,8 +12,10 @@ enum FSM_State_Nero
 	Nero_Dash,
 	Nero_DashStop,
 	Nero_Jump_Vertical,
+	Nero_Jump_Back,
 	Nero_Jump_Fly,
 	Nero_2nd_Jump,
+	Nero_2nd_Jump_Back,
 	Nero_Landing,
 	Nero_Evade_Left,
 	Nero_Evade_Right,
@@ -120,7 +122,7 @@ private:
 	bool MoveCheck = false;		// 애니메이션 재생중 이동 입력을 받아 FSM변경이 가능한지 여부
 	bool DelayCheck = false;	// 다른 콤보로 연결되기 위한 딜레이 여부
 	bool LoadCheck = false;		// FBX 로드가 완료되었는지
-
+	bool UseDoubleJump = false;
 	DevilBreaker CurDevilBreaker = DevilBreaker::Overture;
 	
 	// 검 버튼을 입력한 경우 실행

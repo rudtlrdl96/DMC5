@@ -418,12 +418,39 @@ void PlayerActor_Nero::PlayerLoad()
 		// Jump_Vertical
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Jump_Vertical,
 			.Start = [=] {
+				RotationToMoveVector();
 				PhysXCapsule->TurnOnGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->SetMove(Controller->GetMoveVector() * 500);
 				InputCheck = false;
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Jump_Vertical");
+			},
+			.Update = [=](float _DeltaTime) {
+				if (Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+				}
+				if (false == InputCheck) { return; }
+				if (true == Input_JumpCheckFly()) { return; }
+				if (true == Input_SwordCheckFly()) { return; }
+				if (true == Input_GunCheckFly()) { return; }
+				if (true == Input_DevilBreakerCheckFly()) { return; }
+
+				PhysXCapsule->SetForce(Controller->GetMoveVector() * 5000);
+			},
+			.End = [=] {
+			}
+			});
+		// Jump_Back
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Jump_Back,
+			.Start = [=] {
+				PhysXCapsule->TurnOnGravity();
+				PhysXCapsule->SetLinearVelocityZero();
+				PhysXCapsule->SetMove(Controller->GetMoveVector() * 500);
+				InputCheck = false;
+				WeaponIdle();
+				Renderer->ChangeAnimation("pl0000_Jump_Back");
 			},
 			.Update = [=](float _DeltaTime) {
 				if (Renderer->IsAnimationEnd())
@@ -466,6 +493,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Landing
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Landing,
 			.Start = [=] {
+				UseDoubleJump = false;
 				PhysXCapsule->SetLinearVelocityZero();
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Jump_Landing");
@@ -497,12 +525,39 @@ void PlayerActor_Nero::PlayerLoad()
 		// 2nd_Jump
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_2nd_Jump,
 			.Start = [=] {
+				RotationToMoveVector();
 				PhysXCapsule->TurnOnGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->SetMove(Controller->GetMoveVector() * 500);
 				InputCheck = false;
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Jump_2ndJump");
+			},
+			.Update = [=](float _DeltaTime) {
+				if (Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+				}
+				if (false == InputCheck) { return; }
+				if (true == Input_JumpCheckFly()) { return; }
+				if (true == Input_SwordCheckFly()) { return; }
+				if (true == Input_GunCheckFly()) { return; }
+				if (true == Input_DevilBreakerCheckFly()) { return; }
+
+				PhysXCapsule->SetForce(Controller->GetMoveVector() * 5000);
+			},
+			.End = [=] {
+			}
+			});
+		// 2nd_Jump_Back
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_2nd_Jump_Back,
+			.Start = [=] {
+				PhysXCapsule->TurnOnGravity();
+				PhysXCapsule->SetLinearVelocityZero();
+				PhysXCapsule->SetMove(Controller->GetMoveVector() * 500);
+				InputCheck = false;
+				WeaponIdle();
+				Renderer->ChangeAnimation("pl0000_Jump_Back_2ndJump");
 			},
 			.Update = [=](float _DeltaTime) {
 				if (Renderer->IsAnimationEnd())
@@ -845,6 +900,9 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Shuffle
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Shuffle,
 			.Start = [=] {
+				InputCheck = false;
+				PhysXCapsule->SetLinearVelocityZero();
+				RotationToTarget(30.0f);
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Shuffle");
 			},
@@ -879,6 +937,8 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Stleak1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Stleak1,
 			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
+				RotationToTarget(30.0f);
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Stleak_1");
 			},
@@ -925,6 +985,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Stleak3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Stleak3,
 			.Start = [=] {
+				InputCheck = false;
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Stleak_3");
 			},
@@ -963,10 +1024,11 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
 				Renderer->ChangeAnimation("pl0000_RQ_AT-Jump_1");
-				RotationToTarget(30.0f);
+				RotationToMoveVector(30.0f);
 				InputCheck = false;
 			},
 			.Update = [=](float _DeltaTime) {
+				LookTarget();
 				if (Renderer->IsAnimationEnd())
 				{
 					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
@@ -995,6 +1057,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->TurnOffGravity();
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_AT-Jump_2");
+				RotationToMoveVector(30.0f);
 				RotationToTarget(30.0f);
 				InputCheck = false;
 				DelayCheck = false;
@@ -1034,6 +1097,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->TurnOffGravity();
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_AT-Jump_3");
+				RotationToMoveVector(30.0f);
 				RotationToTarget(30.0f);
 				InputCheck = false;
 			},
@@ -1477,6 +1541,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Shoot,
 			.Start = [=] {
+				LookTarget();
 				BlueRoseOn();
 				InputCheck = false;
 				MoveCheck = false;
@@ -1522,6 +1587,7 @@ void PlayerActor_Nero::PlayerLoad()
 				Renderer->ChangeAnimation("pl0000_BR_Air_Shoot", true);
 			},
 			.Update = [=](float _DeltaTime) {
+				LookTarget();
 				if (Renderer->IsAnimationEnd())
 				{
 					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
@@ -2322,6 +2388,11 @@ bool PlayerActor_Nero::Input_JumpCheck()
 	{
 		if (Controller->GetIsAnyJump())
 		{
+			if ('2' == Controller->MoveVectorToChar4(Controller->GetMoveVector()))
+			{
+				ChangeState(FSM_State_Nero::Nero_Jump_Back);
+				return true;
+			}
 			ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
 			return true;
 		}
@@ -2341,6 +2412,11 @@ bool PlayerActor_Nero::Input_JumpCheck()
 	}
 	if (Controller->GetIsJump())
 	{
+		if ('2' == Controller->MoveVectorToChar4(Controller->GetMoveVector()))
+		{
+			ChangeState(FSM_State_Nero::Nero_Jump_Back);
+			return true;
+		}
 		ChangeState(FSM_State_Nero::Nero_Jump_Vertical);
 		return true;
 	}
@@ -2349,8 +2425,18 @@ bool PlayerActor_Nero::Input_JumpCheck()
 
 bool PlayerActor_Nero::Input_JumpCheckFly()
 {
+	if (true == UseDoubleJump)
+	{
+		return false;
+	}
 	if (Controller->GetIsAnyJump())
 	{
+		UseDoubleJump = true;
+		if ('2' == Controller->MoveVectorToChar4(Controller->GetMoveVector()))
+		{
+			ChangeState(FSM_State_Nero::Nero_2nd_Jump_Back);
+			return true;
+		}
 		ChangeState(FSM_State_Nero::Nero_2nd_Jump);
 		return true;
 	}
