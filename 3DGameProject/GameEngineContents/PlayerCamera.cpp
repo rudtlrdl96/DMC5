@@ -60,15 +60,18 @@ void PlayerCamera::Update(float _DeltaTime)
 	{
 		CameraDistance += float4::BACK * 100.0f * _DeltaTime;
 	}
-	// X축 회전값 제한
-	if (x < 180.0f)
-	{
-		x = std::clamp(x, -1.0f, 40.0f);
-	}
-	else
-	{
-		x = std::clamp(x, 10.0f, 21.0f);
-	}
+
+	x = std::clamp(x, -20.0f, 60.0f);
+
+	//// X축 회전값 제한
+	//if (x < 180.0f)
+	//{
+	//	x = std::clamp(x, -1.0f, 40.0f);
+	//}
+	//else
+	//{
+	//	x = std::clamp(x, 10.0f, 21.0f);
+	//}
 	CameraArm->SetLocalRotation({ x, 0, 0 });
 
 	// 락온 여부에 따라 카메라 추적 속도 조절
@@ -95,7 +98,6 @@ void PlayerCamera::TargetCheck(float _DeltaTime)
 		// 락온 대상이 없을 시
 		// 기존의 카메라 위치로 Lerp 이용하여 이동
 		CameraArm->SetLocalPosition(float4::LerpClamp(CameraArm->GetLocalPosition(), float4::ZERO, _DeltaTime * LockOnTrackingSpeed));
-
 		CameraTarget->SetLocalPosition(float4::LerpClamp(CameraTarget->GetLocalPosition(), CameraDistance, _DeltaTime * LockOnTrackingSpeed));
 		return;
 	}

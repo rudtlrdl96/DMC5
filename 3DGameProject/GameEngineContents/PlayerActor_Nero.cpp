@@ -1476,6 +1476,8 @@ void PlayerActor_Nero::PlayerLoad()
 		// Evade
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Evade_Left,
 			.Start = [=] {
+				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->SetLinearVelocityZero();
 				BlueRoseOn();
 				InputCheck = false;
 				MoveCheck = false;
@@ -1514,6 +1516,8 @@ void PlayerActor_Nero::PlayerLoad()
 		// Evade
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Evade_Right,
 			.Start = [=] {
+				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->SetLinearVelocityZero();
 				BlueRoseOn();
 				InputCheck = false;
 				MoveCheck = false;
@@ -1551,6 +1555,8 @@ void PlayerActor_Nero::PlayerLoad()
 		// Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Shoot,
 			.Start = [=] {
+				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->SetLinearVelocityZero();
 				LookTarget();
 				BlueRoseOn();
 				InputCheck = false;
@@ -2018,6 +2024,7 @@ void PlayerActor_Nero::PlayerLoad()
 
 void PlayerActor_Nero::NetLoad()
 {
+
 	// Renderer »ý¼º
 	{
 		GameEngineDirectory NewDir;
@@ -2037,7 +2044,21 @@ void PlayerActor_Nero::NetLoad()
 		Renderer = CreateComponent<GameEngineFBXRenderer>();
 		Renderer->GetTransform()->SetLocalRotation({ 0, 0, 0 });
 		Renderer->GetTransform()->SetLocalPosition({ 0, -75, 0 });
-		Renderer->SetFBXMesh("Nero.FBX", "MeshAniTexture");
+		switch (GameEngineOption::GetOption("Shader"))
+		{
+		case GameEngineOptionValue::Low:
+		{
+			Renderer->SetFBXMesh("Nero.FBX", "AniFBX_Low");
+		}
+		break;
+		case GameEngineOptionValue::High:
+		{
+			Renderer->SetFBXMesh("Nero.FBX", "AniFBX");
+		}
+		break;
+		default:
+			break;
+		}
 		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer,
 			.Objects = { (GameEngineObject*)AttackCollision.get() },
 			.CallBacks_void = {

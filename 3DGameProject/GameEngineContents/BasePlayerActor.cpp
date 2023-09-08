@@ -140,8 +140,9 @@ void BasePlayerActor::UserControllLoad()
 
 	// 록온 용 충돌체
 	LockOnCollision = CreateComponent<GameEngineCollision>(CollisionOrder::PlayerLockOn);
-	LockOnCollision->GetTransform()->SetLocalScale({ 1000, 500, 3000 });
-	LockOnCollision->GetTransform()->SetLocalPosition({ 0, 0, 1500 });
+	LockOnCollision->GetTransform()->SetParent(Camera->GetCameraTarget());
+	LockOnCollision->GetTransform()->SetLocalScale({ 2000, 5000, 5000 });
+	LockOnCollision->GetTransform()->SetLocalPosition({ 0, 0, 2500 });
 	LockOnCollision->SetColType(ColType::OBBBOX3D);
 }
 
@@ -234,7 +235,7 @@ void BasePlayerActor::LockOn()
 void BasePlayerActor::LockOff()
 {
 	LockOnEnemyTransform = nullptr;
-	Camera->SetTargetTranform(nullptr);
+	//Camera->SetTargetTranform(nullptr);
 }
 
 bool BasePlayerActor::FloorCheck()
