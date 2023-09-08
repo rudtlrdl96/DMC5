@@ -62,9 +62,9 @@ void GameEngineCamera::Start()
 	CamAlphaTarget = GameEngineRenderTarget::Create();
 }
 
-void GameEngineCamera::CameraBasalAdd()
+void GameEngineCamera::RenderTargetTextureLoad()
 {
-	if (true == BasalInit)
+	if (true == IsLoad)
 	{
 		return;
 	}
@@ -91,8 +91,6 @@ void GameEngineCamera::CameraBasalAdd()
 
 	CamAlphaTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 
-
-
 	CalLightUnit.SetMesh("FullRect");
 	CalLightUnit.SetMaterial("DeferredCalLight");
 
@@ -109,79 +107,24 @@ void GameEngineCamera::CameraBasalAdd()
 	DefferdMergeUnit.ShaderResHelper.SetTexture("SpcLight", DeferredLightTarget->GetTexture(1));
 	DefferdMergeUnit.ShaderResHelper.SetTexture("AmbLight", DeferredLightTarget->GetTexture(2));
 
-	BasalInit = true;
+	IsLoad = true;
 }
 
-void GameEngineCamera::CameraRenderTargetRelease()
+void GameEngineCamera::RenderTargetTextureRelease()
 {
-	if (false == BasalInit)
+	if (false == IsLoad)
 	{
 		return;
 	}
 
-	std::vector<std::shared_ptr<GameEngineTexture>> TextureVector;
+	AllRenderTarget->ReleaseTextures();
+	CamTarget->ReleaseTextures();
+	CamForwardTarget->ReleaseTextures();
+	CamDeferrdTarget->ReleaseTextures();
+	CamAlphaTarget->ReleaseTextures();
+	DeferredLightTarget->ReleaseTextures();
 
-	TextureVector = AllRenderTarget->GetTextureVector();
-	size_t AllRenderTargetCount = TextureVector.size();
-
-	for (size_t i = 0; i < AllRenderTargetCount; i++)
-	{
-		TextureVector[i]->Release();
-		TextureVector[i] = nullptr;
-	}
-
-	AllRenderTarget->GetTextureVector().clear();
-	AllRenderTarget->GetTextureVector().resize(0);
-
-	TextureVector = CamTarget->GetTextureVector();
-	size_t CamTargetCount = TextureVector.size();
-
-	for (size_t i = 0; i < CamTargetCount; i++)
-	{
-		TextureVector[i]->Release();
-		TextureVector[i] = nullptr;
-	}
-
-	CamTarget->GetTextureVector().clear();
-	CamTarget->GetTextureVector().resize(0);
-
-	TextureVector = DeferredLightTarget->GetTextureVector();
-	size_t DeferredLightTargetCount = TextureVector.size();
-
-	for (size_t i = 0; i < DeferredLightTargetCount; i++)
-	{
-		TextureVector[i]->Release();
-		TextureVector[i] = nullptr;
-	}
-
-	DeferredLightTarget->GetTextureVector().clear();
-	DeferredLightTarget->GetTextureVector().resize(0);
-
-	TextureVector = CamForwardTarget->GetTextureVector();
-	size_t CamForwardTargetCount = TextureVector.size();
-
-	for (size_t i = 0; i < CamForwardTargetCount; i++)
-	{
-		TextureVector[i]->Release();
-		TextureVector[i] = nullptr;
-	}
-
-	CamForwardTarget->GetTextureVector().clear();
-	CamForwardTarget->GetTextureVector().resize(0);
-
-	TextureVector = CamDeferrdTarget->GetTextureVector();
-	size_t CamDeferrdTargetCount = TextureVector.size();
-
-	for (size_t i = 0; i < CamDeferrdTargetCount; i++)
-	{
-		TextureVector[i]->Release();
-		TextureVector[i] = nullptr;
-	}
-
-	CamDeferrdTarget->GetTextureVector().clear();
-	CamDeferrdTarget->GetTextureVector().resize(0);
-
-	BasalInit = false;
+	IsLoad = false;
 }
 
 void GameEngineCamera::FreeCameraSwitch()

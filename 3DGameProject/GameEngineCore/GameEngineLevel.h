@@ -199,7 +199,7 @@ private:
 	void TextureReLoad(GameEngineLevel* _PrevLevel);
 
 	void RenderTargetTextureRelease();
-	void CameraBasalInit();
+	void RenderTargetTextureCreate();
 };
 
  

@@ -76,7 +76,7 @@ void GameEngineCore::EngineStart(std::function<void()> _ContentsStart)
 	GameEngineDevice::Initialize();        // 다이렉트 디바이스 생성
 	CoreResourcesInit();                   // 다이렉트 리소스 생성
 	GameEngineGUI::Initialize();           // Imgui 생성
-	GameEnginePhysics::CreatePhysicsX();
+	GameEnginePhysics::CreatePhysicsX();   // 피직스 이니셜
 	CoreOptionInit();					   // 기본 옵션 생성 
 
 	if (nullptr == _ContentsStart)
@@ -131,7 +131,7 @@ void GameEngineCore::EngineUpdate()
 			MainLevel->LevelChangeEnd();
 			MainLevel->ActorLevelChangeEnd();
 			MainLevel->PostProcessLevelChangeEnd();
-			//MainLevel->RenderTargetTextureRelease();
+			MainLevel->RenderTargetTextureRelease();
 		}
 
 		MainLevel = NextLevel;
@@ -139,7 +139,7 @@ void GameEngineCore::EngineUpdate()
 		if (nullptr != MainLevel)
 		{
 			CurLoadLevel = MainLevel;
-			MainLevel->CameraBasalInit();
+			MainLevel->RenderTargetTextureCreate();
 			GameEnginePhysics::ChangeScene(MainLevel->GetName());
  			MainLevel->LevelChangeStart();
 			MainLevel->ActorLevelChangeStart();

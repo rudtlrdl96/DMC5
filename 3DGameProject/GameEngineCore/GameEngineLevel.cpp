@@ -26,7 +26,7 @@ GameEngineLevel::~GameEngineLevel()
 
 }
 
-void GameEngineLevel::CameraBasalInit()
+void GameEngineLevel::RenderTargetTextureCreate()
 {
 	std::map<int, std::shared_ptr<GameEngineCamera>>::iterator GroupStartIter = Cameras.begin();
 	std::map<int, std::shared_ptr<GameEngineCamera>>::iterator GroupEndIter = Cameras.end();
@@ -34,7 +34,19 @@ void GameEngineLevel::CameraBasalInit()
 	for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
 	{
 		std::shared_ptr<GameEngineCamera> InitCamera = GroupStartIter->second;
-		InitCamera->CameraBasalAdd();
+		InitCamera->RenderTargetTextureLoad();
+	}
+}
+
+void GameEngineLevel::RenderTargetTextureRelease()
+{
+	std::map<int, std::shared_ptr<GameEngineCamera>>::iterator GroupStartIter = Cameras.begin();
+	std::map<int, std::shared_ptr<GameEngineCamera>>::iterator GroupEndIter = Cameras.end();
+
+	for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
+	{
+		std::shared_ptr<GameEngineCamera> InitCamera = GroupStartIter->second;
+		InitCamera->RenderTargetTextureRelease();
 	}
 }
 
@@ -365,18 +377,6 @@ void GameEngineLevel::PostProcessLevelChangeEnd()
 		}
 
 		++CameraLoop;
-	}
-}
-
-void GameEngineLevel::RenderTargetTextureRelease()
-{
-	std::map<int, std::shared_ptr<GameEngineCamera>>::iterator GroupStartIter = Cameras.begin();
-	std::map<int, std::shared_ptr<GameEngineCamera>>::iterator GroupEndIter = Cameras.end();
-
-	for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
-	{
-		std::shared_ptr<GameEngineCamera> InitCamera = GroupStartIter->second;
-		InitCamera->CameraRenderTargetRelease();
 	}
 }
 

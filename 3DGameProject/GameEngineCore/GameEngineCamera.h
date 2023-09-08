@@ -121,9 +121,6 @@ public:
 		return ZoomRatio;
 	}
 
-	void CameraBasalAdd();
-	void CameraRenderTargetRelease();
-
 protected:
 	void Start() override;
 
@@ -136,7 +133,7 @@ private:
 	DirectX::BoundingOrientedBox Box;
 
 	bool FreeCamera = false;
-	bool BasalInit = false;
+	bool IsLoad = false;
 
 	float ZoomRatio = 1.0f;
 
@@ -175,5 +172,8 @@ private:
 	GameEngineRenderUnit DefferdMergeUnit;
 
 	void FreeCameraSwitch();
+
+	void RenderTargetTextureLoad();
+	void RenderTargetTextureRelease();
 };
 

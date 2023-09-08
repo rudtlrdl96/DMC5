@@ -9,7 +9,6 @@ void GameEngineRenderTarget::RenderTargetUnitInit()
 	MergeUnit.SetMaterial("Merge");
 }
 
-
 GameEngineRenderTarget::GameEngineRenderTarget()
 {
 }
@@ -17,6 +16,25 @@ GameEngineRenderTarget::GameEngineRenderTarget()
 GameEngineRenderTarget::~GameEngineRenderTarget()
 {
 	DepthTexture = nullptr;
+}
+
+void GameEngineRenderTarget::ReleaseTextures()
+{
+	size_t TexturesSize = Textures.size();
+
+	for (size_t i = 0; i < TexturesSize; i++)
+	{
+		if (nullptr != Textures[i])
+		{
+			Textures[i]->Release();
+		}
+		
+		Textures[i] = nullptr;
+	}
+
+	Textures.clear();
+	RTVs.clear();
+	SRVs.clear();
 }
 
 // 랜더타겟 생성

@@ -98,11 +98,6 @@ public:
 		return Textures[_Index];
 	}
 
-	std::vector<std::shared_ptr<GameEngineTexture>> GetTextureVector()
-	{
-		return Textures;
-	}
-
 	void DepthSettingOn() 
 	{
 		DepthSetting = true;
@@ -117,6 +112,8 @@ public:
 	{
 		ResCreate(_Format, _Scale, _Color);
 	}
+
+	void ReleaseTextures();
 
 protected:
 
