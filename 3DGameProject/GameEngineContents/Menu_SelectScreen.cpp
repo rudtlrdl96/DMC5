@@ -33,7 +33,6 @@ void Menu_SelectScreen::Start()
 	MissionButton->GetRender_Enter2()->GetTransform()->SetLocalPosition({ 200.0f,0.0f,0.0f });
 	MissionButton->SetEvent([this]()
 		{
-			//NetworkManager::ConnectServer(PlayerType::Nero);
 			GameEngineCore::ChangeLevel("TestStageLevel");
 		});
 	CustomizeButton = GetLevel()->CreateActor<UIButton>();
@@ -48,7 +47,7 @@ void Menu_SelectScreen::Start()
 	CustomizeButton->GetRender_Select2()->GetTransform()->SetLocalPosition({ 250.0f,0.0f,0.0f });
 	CustomizeButton->SetEvent([this]()
 		{
-			GameEngineCore::ChangeLevel("Nero_ShopLevel");
+			GameEngineCore::ChangeLevel("ShopLevel");
 		});
 	PrevButton = GetLevel()->CreateActor<UIButton>();
 	PrevButton->GetTransform()->SetLocalPosition({ -670.0f,30.0f,0.0f });

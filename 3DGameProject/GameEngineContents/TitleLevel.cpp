@@ -32,18 +32,6 @@ void TitleLevel::Start()
 	{
 		GameEngineTexture::Load(File[i].GetFullPath());
 	}
-	if (false == GameEngineInput::IsKey("UIDEBUGMODE"))
-	{
-		GameEngineInput::CreateKey("UIDEBUGMODE", 'U');
-		GameEngineInput::CreateKey("UI_UP", VK_UP);
-		GameEngineInput::CreateKey("UI_Down", VK_DOWN);
-		GameEngineInput::CreateKey("UI_Enter", VK_RETURN);
-		GameEngineInput::CreateKey("UI_Left", VK_LEFT);
-		GameEngineInput::CreateKey("UI_Right", VK_RIGHT);
-		GameEngineInput::CreateKey("UI_Tab", VK_TAB);
-
-
-	}
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
 	GetMainCamera()->GetCamTarget()->DepthSettingOff();

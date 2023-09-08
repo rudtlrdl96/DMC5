@@ -285,7 +285,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="Nero_ShopLevel.h">
+    <ClInclude Include="ShopLevel.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -675,7 +675,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="Nero_ShopLevel.cpp">
+    <ClCompile Include="ShopLevel.cpp">
       <SubType>
       </SubType>
     </ClCompile>

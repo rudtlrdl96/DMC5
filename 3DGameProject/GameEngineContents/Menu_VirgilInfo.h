@@ -1,7 +1,8 @@
 #pragma once
-
+#include <GameEngineCore/GameEngineActor.h>
+#include "InfoUIRender.h"
 // Ό³Έν :
-class Menu_VirgilInfo
+class Menu_VirgilInfo : public GameEngineActor
 {
 public:
 	// constrcuter destructer
@@ -15,8 +16,10 @@ public:
 	Menu_VirgilInfo& operator=(Menu_VirgilInfo&& _Other) noexcept = delete;
 
 protected:
+	void Start() override;
+	void Update(float _Delta) override;
 
 private:
-
+	std::shared_ptr<InfoUIRender> VergilInfoPtr = nullptr;
 };
 

@@ -49,12 +49,6 @@
     <ClInclude Include="EnemyActor_Normal.h">
       <Filter>Actor\Enemy\NormalEnemy</Filter>
     </ClInclude>
-    <ClInclude Include="IntroLevel.h">
-      <Filter>UI\UI_Level</Filter>
-    </ClInclude>
-    <ClInclude Include="TitleLevel.h">
-      <Filter>UI\UI_Level</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyActor_Boss.h">
       <Filter>Actor\Enemy\BossEnemy</Filter>
     </ClInclude>
@@ -208,9 +202,6 @@
     <ClInclude Include="UIButton.h">
       <Filter>UI\UI_Base</Filter>
     </ClInclude>
-    <ClInclude Include="Char_ChoiceLevel.h">
-      <Filter>UI\UI_Level</Filter>
-    </ClInclude>
     <ClInclude Include="C_ChoiceBG.h">
       <Filter>UI\UI_Actor\C_ChoiceUI</Filter>
     </ClInclude>
@@ -234,9 +225,6 @@
     </ClInclude>
     <ClInclude Include="MainMenuBG.h">
       <Filter>UI\UI_Actor\MenuUI</Filter>
-    </ClInclude>
-    <ClInclude Include="MainMenuLevel.h">
-      <Filter>UI\UI_Level</Filter>
     </ClInclude>
     <ClInclude Include="Menu_SelectScreen.h">
       <Filter>UI\UI_Actor\MenuUI\MenuScreen</Filter>
@@ -307,9 +295,6 @@
     <ClInclude Include="NeroHPUI.h">
       <Filter>UI\UI_Actor\PlayUI</Filter>
     </ClInclude>
-    <ClInclude Include="Nero_ShopLevel.h">
-      <Filter>UI\UI_Level</Filter>
-    </ClInclude>
     <ClInclude Include="Nero_ShopTitleBar.h">
       <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
     </ClInclude>
@@ -357,6 +342,21 @@
     </ClInclude>
     <ClInclude Include="EffectFBXRenderer.h">
       <Filter>Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroLevel.h">
+      <Filter>UI\UI_Level\Intro</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleLevel.h">
+      <Filter>UI\UI_Level\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuLevel.h">
+      <Filter>UI\UI_Level\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Char_ChoiceLevel.h">
+      <Filter>UI\UI_Level\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="ShopLevel.h">
+      <Filter>UI\UI_Level\Shop</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -410,12 +410,6 @@
     </ClCompile>
     <ClCompile Include="EnemyActor_Normal.cpp">
       <Filter>Actor\Enemy\NormalEnemy</Filter>
-    </ClCompile>
-    <ClCompile Include="IntroLevel.cpp">
-      <Filter>UI\UI_Level</Filter>
-    </ClCompile>
-    <ClCompile Include="TitleLevel.cpp">
-      <Filter>UI\UI_Level</Filter>
     </ClCompile>
     <ClCompile Include="EnemyActor_Boss.cpp">
       <Filter>Actor\Enemy\BossEnemy</Filter>
@@ -558,9 +552,6 @@
     <ClCompile Include="UIButton.cpp">
       <Filter>UI\UI_Base</Filter>
     </ClCompile>
-    <ClCompile Include="Char_ChoiceLevel.cpp">
-      <Filter>UI\UI_Level</Filter>
-    </ClCompile>
     <ClCompile Include="C_ChoiceBG.cpp">
       <Filter>UI\UI_Actor\C_ChoiceUI</Filter>
     </ClCompile>
@@ -584,9 +575,6 @@
     </ClCompile>
     <ClCompile Include="MainMenuBG.cpp">
       <Filter>UI\UI_Actor\MenuUI</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenuLevel.cpp">
-      <Filter>UI\UI_Level</Filter>
     </ClCompile>
     <ClCompile Include="Menu_SelectScreen.cpp">
       <Filter>UI\UI_Actor\MenuUI\MenuScreen</Filter>
@@ -657,9 +645,6 @@
     <ClCompile Include="NeroHPUI.cpp">
       <Filter>UI\UI_Actor\PlayUI</Filter>
     </ClCompile>
-    <ClCompile Include="Nero_ShopLevel.cpp">
-      <Filter>UI\UI_Level</Filter>
-    </ClCompile>
     <ClCompile Include="Nero_ShopTitleBar.cpp">
       <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
     </ClCompile>
@@ -701,6 +686,21 @@
     </ClCompile>
     <ClCompile Include="EffectFBXRenderer.cpp">
       <Filter>Component\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="IntroLevel.cpp">
+      <Filter>UI\UI_Level\Intro</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleLevel.cpp">
+      <Filter>UI\UI_Level\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuLevel.cpp">
+      <Filter>UI\UI_Level\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Char_ChoiceLevel.cpp">
+      <Filter>UI\UI_Level\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="ShopLevel.cpp">
+      <Filter>UI\UI_Level\Shop</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -916,6 +916,21 @@
     </Filter>
     <Filter Include="UI\UI_Actor\MenuUI\NeroInfo\Nero_Inven">
       <UniqueIdentifier>{cc08c3f7-0476-4cc8-a589-1c0f7d4beeb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Level\Intro">
+      <UniqueIdentifier>{112ad33f-5ed3-425f-bf82-f93cbdbd6cd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Level\Title">
+      <UniqueIdentifier>{e3870555-e01d-4d24-af46-048e392396e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Level\Menu">
+      <UniqueIdentifier>{0704f51b-d411-4fa6-bd4e-e6a4275befc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Level\Shop">
+      <UniqueIdentifier>{bacbd842-2d89-49ea-b9bd-037d9d04714b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\ShopUI\VergilShopUI">
+      <UniqueIdentifier>{0ad76571-dc6e-4190-868c-f1bcd206ef0d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

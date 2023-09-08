@@ -15,10 +15,10 @@
 #include "TitleLevel.h"
 #include "Char_ChoiceLevel.h"
 #include "MainMenuLevel.h"
+#include "ShopLevel.h"
 #include "PlayerTestLevel.h"
 #include "EnemyTestLevel.h"
 #include "PlayUITestLevel.h"
-#include "Nero_ShopLevel.h"
 //Map
 #include "StartStageLevel.h"
 #include "TestStageLevel.h"
@@ -57,10 +57,10 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<NetworkTestLevel>();
 	GameEngineCore::CreateLevel<MonsterTestLevel>();
 	GameEngineCore::CreateLevel<PlayUITestLevel>();
-	GameEngineCore::CreateLevel<Nero_ShopLevel>();
 	////
 	GameEngineCore::CreateLevel<StageEditLevel>();
-
+	GameEngineCore::CreateLevel<ShopLevel>();
+	
 	GameEngineCore::ChangeLevel("MainLevel");
 }
 

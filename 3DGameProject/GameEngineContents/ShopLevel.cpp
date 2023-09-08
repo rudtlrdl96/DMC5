@@ -1,5 +1,5 @@
 #include "PrecompileHeader.h"
-#include "Nero_ShopLevel.h"
+#include "ShopLevel.h"
 #include "ShopBG.h"
 #include "Nero_InvenToryUI.h"
 #include "FadeEffect.h"
@@ -7,16 +7,16 @@
 #include <GameEngineCore/GameEngineFont.h>
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEnginePlatform/GameEngineInput.h>
-Nero_ShopLevel::Nero_ShopLevel()
+ShopLevel::ShopLevel()
 {
 }
 
-Nero_ShopLevel::~Nero_ShopLevel()
+ShopLevel::~ShopLevel()
 {
 
 }
 
-void Nero_ShopLevel::Start()
+void ShopLevel::Start()
 {
 
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
@@ -31,7 +31,7 @@ void Nero_ShopLevel::Start()
 
 }
 
-void Nero_ShopLevel::Update(float _DeltaTime)
+void ShopLevel::Update(float _DeltaTime)
 {
 	if (GameEngineInput::IsDown("UIDEBUGMODE"))
 	{
@@ -40,11 +40,11 @@ void Nero_ShopLevel::Update(float _DeltaTime)
 	BaseLevel::Update(_DeltaTime);
 }
 
-void Nero_ShopLevel::LevelChangeStart()
+void ShopLevel::LevelChangeStart()
 {
 	FEffect->FadeOut();
 }
 
-void Nero_ShopLevel::LevelChangeEnd()
+void ShopLevel::LevelChangeEnd()
 {
 }
