@@ -35,8 +35,6 @@ void TitleLevel::Start()
 	if (false == GameEngineInput::IsKey("UIDEBUGMODE"))
 	{
 		GameEngineInput::CreateKey("UIDEBUGMODE", 'U');
-		GameEngineInput::CreateKey("ENTER", VK_RETURN);
-		GameEngineInput::CreateKey("CLICK", VK_LBUTTON);
 		GameEngineInput::CreateKey("UI_UP", VK_UP);
 		GameEngineInput::CreateKey("UI_Down", VK_DOWN);
 		GameEngineInput::CreateKey("UI_Enter", VK_RETURN);

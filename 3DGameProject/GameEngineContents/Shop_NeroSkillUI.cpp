@@ -161,27 +161,33 @@ void Shop_NeroSkillUI::SetExText()
 	{
 	case 0:
 		ExplanePtr->SetExplaneText({ ._EName = "STREAK" ,._KName = "스트리크" ,._Explane1 = "멋진 돌진공격으로 주변의",._Explane2 = "적들을 쓸어버립니다.",._Explane3 = "" });
-		ExplanePtr->SetSecoundText({ ._EName = "COMMAND" ,._KName = "" ,._Explane1 = "NullTexture.png",._Explane2 = "",._Explane3 = "" });
+		ExplanePtr->SetSecoundText({ ._EName = "COMMAND" ,._Explane1 = "SteakCommand.png" });
+		ExplanePtr->GetExplane()->GetTransform()->SetLocalPosition({ 523.0f,-138.0f,0.0f });
 		break;
 	case 1:
 		ExplanePtr->SetExplaneText({ ._EName = "SPLIT" ,._KName = "스플릿" ,._Explane1 = "적을 무지막지한 공격으로",._Explane2 = "내려쳐 정확히 둘로 갈라버립니다.",._Explane3 = "" });
-		ExplanePtr->SetSecoundText({ ._EName = "COMMAND" ,._KName = "" ,._Explane1 = "NullTexture.png",._Explane2 = "",._Explane3 = "" });
+		ExplanePtr->SetSecoundText({ ._EName = "COMMAND" ,._Explane1 = "SplitCommand.png"});
+		ExplanePtr->GetExplane()->GetTransform()->SetLocalPosition({ 536.0f,-140.0f,0.0f });
 		break;
 	case 2:
 		ExplanePtr->SetExplaneText({ ._EName = "RED QUEEN COMBO C" ,._KName = "레드 퀸 콤보 C" ,._Explane1 = "화려한 검 콤보로",._Explane2 = "보다 넓은 범위에 걸쳐",._Explane3 = "적들을 해치웁니다." });
-		ExplanePtr->SetSecoundText({ ._EName = "COMMAND" ,._KName = "" ,._Explane1 = "NullTexture.png",._Explane2 = "",._Explane3 = "" });
+		ExplanePtr->SetSecoundText({ ._EName = "COMMAND" ,._Explane1 = "RedQuennCCommand.png" });
+		ExplanePtr->GetExplane()->GetTransform()->SetLocalPosition({ 477.0f,-170.0f,0.0f });
 		break;
 	case 3:
 		ExplanePtr->SetExplaneText({ ._EName = "ROULETTE SPIN" ,._KName = "룰렛 스핀" ,._Explane1 = "공중에서 레드 퀸의 칼날을 회전시켜",._Explane2 = "적을 썰어버립니다.",._Explane3 = "몸이 약간 떠오릅니다." });
-		ExplanePtr->SetSecoundText({ ._EName = "COMMAND" ,._KName = "" ,._Explane1 = "NullTexture.png",._Explane2 = "",._Explane3 = "" });
+		ExplanePtr->SetSecoundText({ ._EName = "COMMAND" ,._Explane1 = "RouletteSpinCommand.png" });
+		ExplanePtr->GetExplane()->GetTransform()->SetLocalPosition({ 461.0f,-153.0f,0.0f });
 		break;
 	case 4:
 		ExplanePtr->SetExplaneText({ ._EName = "SHUFLE" ,._KName = "셔플" ,._Explane1 = "백스텝으로 공격을 피한 후,",._Explane2 = "앞으로 돌진하면서 빠르고.",._Explane3 = "강력한 카운터를 날립니다." });
-		ExplanePtr->SetSecoundText({ ._EName = "COMMAND" ,._KName = "" ,._Explane1 = "NullTexture.png",._Explane2 = "",._Explane3 = "" });
+		ExplanePtr->SetSecoundText({ ._EName = "COMMAND" ,._Explane1 = "ShuffleSkillCommand.png" });
+		ExplanePtr->GetExplane()->GetTransform()->SetLocalPosition({ 557.0f,-141.0f,0.0f });
 		break;
 	case 5:
 		ExplanePtr->SetExplaneText({ ._EName = "CALIBUR" ,._KName = "칼리버" ,._Explane1 = "공중에서 적에게 돌진해",._Explane2 = "강력한 한방을 날립니다.",._Explane3 = "" });
-		ExplanePtr->SetSecoundText({ ._EName = "COMMAND" ,._KName = "" ,._Explane1 = "NullTexture.png",._Explane2 = "",._Explane3 = "" });
+		ExplanePtr->SetSecoundText({ ._EName = "COMMAND" ,._Explane1 = "CaliburCommand.png" });
+		ExplanePtr->GetExplane()->GetTransform()->SetLocalPosition({ 570.0f,-139.0f,0.0f });
 		break;
 
 

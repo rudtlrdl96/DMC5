@@ -25,7 +25,10 @@ public:
 	Shop_ExplaneUI& operator=(Shop_ExplaneUI&& _Other) noexcept = delete;
 	void SetExplaneText(const ExplaneOneParameter& _Param);
 	void SetSecoundText(const ExplaneOneParameter& _Param);
-
+	std::shared_ptr<class GameEngineUIRenderer> GetExplane()
+	{
+		return S_ExplaneRender0;
+	}
 protected:
 	void Start() override;
 	void Update(float _Delta) override;
