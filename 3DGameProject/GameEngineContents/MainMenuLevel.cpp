@@ -4,6 +4,7 @@
 #include "Menu_SelectScreen.h"
 #include "Menu_MissionFont.h"
 #include "Menu_NeroInfo.h"
+#include "Menu_VirgilInfo.h"
 #include "FadeEffect.h"
 #include <GameEngineCore/GameEngineFont.h>
 #include <GameEngineCore/GameEngineTexture.h>
@@ -45,9 +46,11 @@ void MainMenuLevel::Start()
 	Menu_MissionFontPtr->GetTransform()->SetLocalPosition({ -680.0f,330.0f,0.0f });
 
 	//만약 플레이어가 네로라면
-	std::shared_ptr<Menu_NeroInfo> Menu_NeroInfoPtr = CreateActor<Menu_NeroInfo>();
+	//std::shared_ptr<Menu_NeroInfo> Menu_NeroInfoPtr = CreateActor<Menu_NeroInfo>();
 
 	//만약 플레이어가 버질이라면,
+	std::shared_ptr<Menu_VirgilInfo> Menu_VirgilInfoPtr = CreateActor<Menu_VirgilInfo>();
+	
 }
 
 void MainMenuLevel::Update(float _DeltaTime)
