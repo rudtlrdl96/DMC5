@@ -41,7 +41,7 @@ void GameEngineRenderUnit::SetMesh(std::shared_ptr<GameEngineMesh> _Mesh)
 	}
 }
 
-void GameEngineRenderUnit::SetMaterial(const std::string_view& _Name)
+void GameEngineRenderUnit::SetMaterial(const std::string_view& _Name, RenderPath _Path /*= RenderPath::None*/)
 {
 	Material = GameEngineMaterial::Find(_Name);
 
@@ -81,6 +81,11 @@ void GameEngineRenderUnit::SetMaterial(const std::string_view& _Name)
 	{
 		LightDatas& Data = ParentRenderer->GetActor()->GetLevel()->LightDataObject;
 		ShaderResHelper.SetConstantBufferLink("LightDatas", Data);
+	}
+
+	if (nullptr != GetRenderer())
+	{
+		GetRenderer()->GetCamera()->PushRenderUnit(shared_from_this(), _Path);
 	}
 }
 
@@ -207,8 +212,6 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineRenderer::CreateRenderUnit()
 	Unit->SetRenderer(this);
 	Units.push_back(Unit);
 
-	GetCamera()->PushRenderUnit(Unit);
-
 	return Unit;
 }
 
@@ -223,7 +226,6 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineRenderer::CreateRenderUnitToInde
 	Unit->SetRenderer(this);
 	Units[_Index] = Unit;
 
-	GetCamera()->PushRenderUnit(Unit);
 	return Unit;
 }
 

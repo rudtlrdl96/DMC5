@@ -13,8 +13,8 @@ EngineGrid::~EngineGrid()
 void EngineGrid::Start()
 {
 	std::shared_ptr<GameEngineRenderer> Ptr = CreateComponent<GameEngineRenderer>();
-	Ptr->SetMesh("GridRect");
 	Ptr->SetMaterial("GridShader");
+	Ptr->SetMesh("GridRect");
 	Ptr->GetShaderResHelper().SetConstantBufferLink("GridData", GridDataInst);
 
 

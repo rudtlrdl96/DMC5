@@ -182,7 +182,19 @@ void GameEngineShader::AutoCompile(GameEngineFile& _File)
 				size_t FirstIndex = ShaderCode.find_last_of(" ", EntryIndex);
 				std::string EntryName = ShaderCode.substr(FirstIndex + 1, EntryIndex - FirstIndex - 1);
 				EntryName += "_PS";
-				GameEnginePixelShader::Load(_File.GetFullPath(), EntryName);
+				std::shared_ptr<GameEnginePixelShader> Shader = GameEnginePixelShader::Load(_File.GetFullPath(), EntryName);
+
+				if (nullptr != Shader)
+				{
+					size_t PixelBody = ShaderCode.rfind("\n", EntryIndex);
+
+					std::string PixelFirst = ShaderCode.substr(PixelBody + 1, EntryIndex - PixelBody);
+
+					if (std::string::npos != PixelFirst.find("DeferredOut"))
+					{
+						Shader->Path = RenderPath::Deferred;
+					}
+				}
 			}
 		}
 	}

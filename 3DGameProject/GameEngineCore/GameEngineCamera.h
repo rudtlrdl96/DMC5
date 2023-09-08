@@ -128,7 +128,7 @@ protected:
 	void Start() override;
 
 private:
-	std::map<int, std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>> Units;
+	std::map<RenderPath, std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>> Units;
 
 	std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>> Renderers;
 	std::map<int, SortType> SortValues;
@@ -158,20 +158,21 @@ private:
 	float Far = 100000.0f;
 
 	void PushRenderer(std::shared_ptr<class GameEngineRenderer> _Render);
-	void PushRenderUnit(std::shared_ptr<class GameEngineRenderUnit> _Unit);
+	void PushRenderUnit(std::shared_ptr<GameEngineRenderUnit> _Unit, RenderPath _Path = RenderPath::None);
 
 	void Release();
 
 	std::shared_ptr<class GameEngineRenderTarget> CamTarget;
 	std::shared_ptr<class GameEngineRenderTarget> CamForwardTarget;
 	std::shared_ptr<class GameEngineRenderTarget> CamDeferrdTarget;
+	std::shared_ptr<class GameEngineRenderTarget> CamAlphaTarget;
 	std::shared_ptr<class GameEngineRenderTarget> AllRenderTarget;
-
-	GameEngineRenderUnit CalLightUnit;
-	GameEngineRenderUnit DefferdMergeUnit;
 
 	// 빛계산의 결과물을 받기 위한 타겟.
 	std::shared_ptr<class GameEngineRenderTarget> DeferredLightTarget;
+
+	GameEngineRenderUnit CalLightUnit;
+	GameEngineRenderUnit DefferdMergeUnit;
 
 	void FreeCameraSwitch();
 };

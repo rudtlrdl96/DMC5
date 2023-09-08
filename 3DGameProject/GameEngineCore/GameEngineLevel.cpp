@@ -159,14 +159,11 @@ void GameEngineLevel::Render(float _DeltaTime)
 			++LightDataObject.LightCount;
 		}
 
-		Cam->ViewPortSetting();
-		Cam->Setting();
-
 		Cam->CameraTransformUpdate();
+		Cam->ViewPortSetting();
+		Cam->AllRenderTarget->Clear();
+		Cam->AllRenderTarget->Setting();
 		Cam->Render(_DeltaTime);
-
-		Cam->ForwardMerge(_DeltaTime);
-		Cam->DeferredMerge(_DeltaTime);
 
 		if (false == IsDebugRender)
 		{

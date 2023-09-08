@@ -7,6 +7,8 @@
 #include "GameEngineRenderer.h"
 #include "GameEngineRenderTarget.h"
 #include "GameEngineTexture.h"
+#include "GameEngineMaterial.h"
+#include "GameEnginePixelShader.h"
 
 GameEngineCamera::GameEngineCamera()
 {
@@ -52,49 +54,12 @@ void GameEngineCamera::Start()
 	Width = ViewPortData.Width;
 	Height = ViewPortData.Height;
 
-	//AllRenderTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	//AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	//AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	//AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	//AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	//AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	//AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	//AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	//AllRenderTarget->CreateDepthTexture();
-
-	//CamTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 디퓨즈 라이트
-
-	//DeferredLightTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 디퓨즈 라이트
-	//DeferredLightTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 스펙큘러 라이트
-	//DeferredLightTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 앰비언트 라이트를 담는다.
-
-	//CamForwardTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	//CamForwardTarget->CreateDepthTexture();
-
-	//CamDeferrdTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	//CamDeferrdTarget->SetDepthTexture(CamForwardTarget->GetDepthTexture());
-	//
-	//CalLightUnit.SetMesh("FullRect");
-	//CalLightUnit.SetMaterial("DeferredCalLight");
-
-	//LightDatas& Data = GetLevel()->LightDataObject;
-	//CalLightUnit.ShaderResHelper.SetConstantBufferLink("LightDatas", Data);
-	//CalLightUnit.ShaderResHelper.SetTexture("PositionTex", AllRenderTarget->GetTexture(2));
-	//CalLightUnit.ShaderResHelper.SetTexture("NormalTex", AllRenderTarget->GetTexture(3));
-	//CalLightUnit.ShaderResHelper.SetTexture("MatTex", AllRenderTarget->GetTexture(4));
-
-	//DefferdMergeUnit.SetMesh("FullRect");
-	//DefferdMergeUnit.SetMaterial("DeferredMerge");
-	//DefferdMergeUnit.ShaderResHelper.SetTexture("DifColor", AllRenderTarget->GetTexture(1));
-	//DefferdMergeUnit.ShaderResHelper.SetTexture("DifLight", DeferredLightTarget->GetTexture(0));
-	//DefferdMergeUnit.ShaderResHelper.SetTexture("SpcLight", DeferredLightTarget->GetTexture(1));
-	//DefferdMergeUnit.ShaderResHelper.SetTexture("AmbLight", DeferredLightTarget->GetTexture(2));
-
 	AllRenderTarget = GameEngineRenderTarget::Create();
 	CamTarget = GameEngineRenderTarget::Create();
-	DeferredLightTarget = GameEngineRenderTarget::Create(); 
+	DeferredLightTarget = GameEngineRenderTarget::Create();
 	CamForwardTarget = GameEngineRenderTarget::Create();
 	CamDeferrdTarget = GameEngineRenderTarget::Create();
+	CamAlphaTarget = GameEngineRenderTarget::Create();
 }
 
 void GameEngineCamera::CameraBasalAdd()
@@ -114,17 +79,19 @@ void GameEngineCamera::CameraBasalAdd()
 	AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 	AllRenderTarget->CreateDepthTexture();
 
-	CamTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 원래것
+	CamTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 
 	DeferredLightTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 원래것, 디퓨즈 라이트
 	DeferredLightTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 스펙큘러 라이트
 	DeferredLightTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 앰비언트 라이트를 담는다.
 
-	CamForwardTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 원래것
-	CamForwardTarget->CreateDepthTexture();
+	CamForwardTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 
-	CamDeferrdTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 원래것
-	CamDeferrdTarget->SetDepthTexture(CamForwardTarget->GetDepthTexture());
+	CamDeferrdTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+
+	CamAlphaTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+
+
 
 	CalLightUnit.SetMesh("FullRect");
 	CalLightUnit.SetMaterial("DeferredCalLight");
@@ -230,7 +197,7 @@ void GameEngineCamera::FreeCameraSwitch()
 	{
 		OldData = GetTransform()->GetTransDataRef();
 	}
-	else 
+	else
 	{
 		GetTransform()->SetTransformData(OldData);
 	}
@@ -370,9 +337,9 @@ void GameEngineCamera::Render(float _DeltaTime)
 	}
 
 	{
-		for (std::pair<const int, std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>>& UnitGroup : Units)
+		for (std::pair<const RenderPath, std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>>& Path : Units)
 		{
-			std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>& UnitPath = UnitGroup.second;
+			std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>& UnitPath = Path.second;
 
 			std::map<int, std::list<std::shared_ptr<GameEngineRenderUnit>>>::iterator RenderGroupStartIter = UnitPath.begin();
 			std::map<int, std::list<std::shared_ptr<GameEngineRenderUnit>>>::iterator RenderGroupEndIter = UnitPath.end();
@@ -405,6 +372,21 @@ void GameEngineCamera::Render(float _DeltaTime)
 				}
 			}
 		}
+
+		DeferredLightTarget->Clear();
+		DeferredLightTarget->Setting();
+		CalLightUnit.Render(_DeltaTime);
+
+		CamDeferrdTarget->Clear();
+		CamDeferrdTarget->Setting();
+		DefferdMergeUnit.Render(_DeltaTime);
+
+		CamForwardTarget->Clear();
+		CamForwardTarget->Merge(AllRenderTarget, 0);
+
+		CamTarget->Clear();
+		CamTarget->Merge(CamForwardTarget);
+		CamTarget->Merge(CamDeferrdTarget);
 	}
 }
 
@@ -479,7 +461,7 @@ void GameEngineCamera::PushRenderer(std::shared_ptr<GameEngineRenderer> _Render)
 	Renderers[_Render->GetOrder()].push_back(_Render);
 }
 
-void GameEngineCamera::PushRenderUnit(std::shared_ptr<GameEngineRenderUnit> _Unit)
+void GameEngineCamera::PushRenderUnit(std::shared_ptr<GameEngineRenderUnit> _Unit, RenderPath _Path /*= RenderPath::None*/)
 {
 	if (nullptr == _Unit->GetRenderer())
 	{
@@ -489,7 +471,14 @@ void GameEngineCamera::PushRenderUnit(std::shared_ptr<GameEngineRenderUnit> _Uni
 
 	int Order = _Unit->GetRenderer()->GetOrder();
 
-	Units[0][Order].push_back(_Unit);
+	RenderPath Path = _Unit->Material->GetPixelShader()->GetRenderPath();
+
+	if (_Path != RenderPath::None)
+	{
+		Path = _Path;
+	}
+
+	Units[Path][Order].push_back(_Unit);
 }
 
 bool GameEngineCamera::IsView(const TransformData& _TransData)
@@ -529,57 +518,60 @@ bool GameEngineCamera::IsView(const TransformData& _TransData)
 void GameEngineCamera::Release()
 {
 	{
-		std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>& UnitPath = Units[0];
+		for (std::pair<const RenderPath, std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>>& Path : Units)
+		{
+			std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>& UnitPath = Path.second;
 
-		std::map<int, std::list<std::shared_ptr<GameEngineRenderUnit>>>::iterator RenderGroupStartIter = UnitPath.begin();
-		std::map<int, std::list<std::shared_ptr<GameEngineRenderUnit>>>::iterator RenderGroupEndIter = UnitPath.end();
+			std::map<int, std::list<std::shared_ptr<GameEngineRenderUnit>>>::iterator RenderGroupStartIter = UnitPath.begin();
+			std::map<int, std::list<std::shared_ptr<GameEngineRenderUnit>>>::iterator RenderGroupEndIter = UnitPath.end();
 
+
+			for (; RenderGroupStartIter != RenderGroupEndIter; ++RenderGroupStartIter)
+			{
+				std::list<std::shared_ptr<GameEngineRenderUnit>>& RenderGroup = RenderGroupStartIter->second;
+
+				std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator StartRenderUnit = RenderGroup.begin();
+				std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator EndRenderUnit = RenderGroup.end();
+
+				float ScaleTime = GameEngineTime::GlobalTime.GetRenderOrderTimeScale(RenderGroupStartIter->first);
+
+				for (; StartRenderUnit != EndRenderUnit; /*++StartRenderer*/)
+				{
+					std::shared_ptr<GameEngineRenderUnit>& Render = *StartRenderUnit;
+
+					if (false == Render->GetRenderer()->IsDeath())
+					{
+						++StartRenderUnit;
+						continue;
+					}
+
+					StartRenderUnit = RenderGroup.erase(StartRenderUnit);
+				}
+			}
+		}
+
+		std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>>::iterator RenderGroupStartIter = Renderers.begin();
+		std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>>::iterator RenderGroupEndIter = Renderers.end();
 
 		for (; RenderGroupStartIter != RenderGroupEndIter; ++RenderGroupStartIter)
 		{
-			std::list<std::shared_ptr<GameEngineRenderUnit>>& RenderGroup = RenderGroupStartIter->second;
+			std::list<std::shared_ptr<GameEngineRenderer>>& RenderGroup = RenderGroupStartIter->second;
 
-			std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator StartRenderUnit = RenderGroup.begin();
-			std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator EndRenderUnit = RenderGroup.end();
+			std::list<std::shared_ptr<GameEngineRenderer>>::iterator StartRenderer = RenderGroup.begin();
+			std::list<std::shared_ptr<GameEngineRenderer>>::iterator EndRenderer = RenderGroup.end();
 
-			float ScaleTime = GameEngineTime::GlobalTime.GetRenderOrderTimeScale(RenderGroupStartIter->first);
-
-			for (; StartRenderUnit != EndRenderUnit; /*++StartRenderer*/)
+			for (; StartRenderer != EndRenderer;)
 			{
-				std::shared_ptr<GameEngineRenderUnit>& Render = *StartRenderUnit;
+				std::shared_ptr<GameEngineRenderer>& Render = *StartRenderer;
 
-				if (false == Render->GetRenderer()->IsDeath())
+				if (false == Render->IsDeath())
 				{
-					++StartRenderUnit;
+					++StartRenderer;
 					continue;
 				}
 
-				StartRenderUnit = RenderGroup.erase(StartRenderUnit);
+				StartRenderer = RenderGroup.erase(StartRenderer);
 			}
-		}
-	}
-
-	std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>>::iterator RenderGroupStartIter = Renderers.begin();
-	std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>>::iterator RenderGroupEndIter = Renderers.end();
-
-	for (; RenderGroupStartIter != RenderGroupEndIter; ++RenderGroupStartIter)
-	{
-		std::list<std::shared_ptr<GameEngineRenderer>>& RenderGroup = RenderGroupStartIter->second;
-
-		std::list<std::shared_ptr<GameEngineRenderer>>::iterator StartRenderer = RenderGroup.begin();
-		std::list<std::shared_ptr<GameEngineRenderer>>::iterator EndRenderer = RenderGroup.end();
-
-		for (; StartRenderer != EndRenderer;)
-		{
-			std::shared_ptr<GameEngineRenderer>& Render = *StartRenderer;
-
-			if (false == Render->IsDeath())
-			{
-				++StartRenderer;
-				continue;
-			}
-
-			StartRenderer = RenderGroup.erase(StartRenderer);
 		}
 	}
 }
