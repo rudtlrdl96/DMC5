@@ -25,7 +25,6 @@ protected:
 private:
 	bool CheckBool = false;
 
-	
 	float MoveSpeed = 50.0f;
 
 	// 대기상태

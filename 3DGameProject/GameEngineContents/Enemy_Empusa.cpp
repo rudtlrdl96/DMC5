@@ -2,6 +2,7 @@
 #include "Enemy_Empusa.h"
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/GameEngineFBXAnimation.h>
+#include <GameEngineCore/GameEngineCollision.h>
 #include "BaseEnemyActor.h"
 
 #include "AnimationEvent.h"
@@ -76,7 +77,7 @@ void Enemy_Empusa::EnemyAnimationLoad()
 
 void Enemy_Empusa::EnemyCreateFSM()
 {
-	
+		
 }
 
 void Enemy_Empusa::Idle_Enter()
@@ -235,21 +236,20 @@ void Enemy_Empusa::RN_Idle()
 
 void Enemy_Empusa::Move()
 {
-	static bool Testboolss = true;
-	if (Testboolss == true)
+	static bool Moves = true;
+	if (Moves == true)
 	{
 		EnemyRenderer->ChangeAnimation("em0100_biped_walk_start");
-		Testboolss = false;
+		Moves = false;
 	}
 	if (EnemyRenderer->IsAnimationEnd())
 	{
 		ChasePlayer();
 		EnemyRenderer->ChangeAnimation("em0100_biped_walk_loop");
-	}
-	//if 공격 범위내에 플레이어가 있다면
-	//EnemyRenderer->ChangeAnimation("em0100_biped_walk_stop");
-	if (true == GameEngineInput::IsDown("EnemyDebug_Attack"))
-	{
-		EnemyFSM.ChangeState(EnemyState::M_Attack);
+		if (RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::OBBBOX3D, ColType::OBBBOX3D))
+		{
+			EnemyFSM.ChangeState(EnemyState::M_Attack);
+			Moves = true;
+		}
 	}
 }

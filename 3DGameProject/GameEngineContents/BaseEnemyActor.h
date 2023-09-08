@@ -111,6 +111,8 @@ protected:
 	// Monster의 Collision
 	//범위인식
 	std::shared_ptr<class GameEngineCollision> RN_MonsterCollision = nullptr;
+	//공격범위
+	std::shared_ptr<class GameEngineCollision> MonsterAttackRange = nullptr;
 	//자체Collision
 	std::shared_ptr<class GameEngineCollision> MonsterCollision = nullptr;
 
@@ -141,8 +143,16 @@ protected:
 	virtual void EnemyTypeLoad() = 0;
 	virtual void EnemyAnimationLoad() = 0;
 	virtual void EnemyCreateFSM() = 0;
+	/*{
+		ChasePlayer();
+		SuperArmorOn();
+		SuperArmorOff();
+	}*/
 
 private:
 	void UserUpdate(float _DeltaTime);
 	void ServerUpdate(float _DeltaTime);
+	/*std::function<void()> ChasePlayer = nullptr;
+	std::function<void()> SuperArmorOn = nullptr;
+	std::function<void()> SuperArmorOff = nullptr;*/
 };

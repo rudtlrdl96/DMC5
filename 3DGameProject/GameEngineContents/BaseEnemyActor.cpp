@@ -187,12 +187,11 @@ void BaseEnemyActor::Start()
 
 	//공격 가능한 Enemy Collision
 	MonsterCollision=CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
-	MonsterCollision->GetTransform()->SetLocalScale({ 100, 100, 100 });
-	MonsterCollision->SetColType(ColType::OBBBOX3D);
-	//주변 플레이어를 인식하는 Collision
+	//주변 플레이어를 인식하는 Collision(1회용)
 	RN_MonsterCollision = CreateComponent<GameEngineCollision>(CollisionOrder::RN_Enemy);
-	RN_MonsterCollision->GetTransform()->SetLocalScale({ 300, 300, 300 });
-	RN_MonsterCollision->SetColType(ColType::OBBBOX3D);
+	//몬스터의 공격범위 Collision
+	MonsterAttackRange = CreateComponent<GameEngineCollision>(CollisionOrder::RN_Enemy);
+	
 	//초기화
 	EnemyCodeValue = EnemyCode::None;
 	EnemyTypeValue = EnemyType::None;
