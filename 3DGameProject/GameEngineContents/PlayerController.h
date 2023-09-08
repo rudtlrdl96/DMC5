@@ -159,6 +159,8 @@ public:
 	bool GetIsRightJump() { return IsRightJump; }
 	bool GetIsSpecialMove() { return IsSpecialMove; }
 	bool GetIsDevilTrigger() { return GameEngineInput::IsDown("Player_DT"); }
+	bool GetIsGTBomb() { return GameEngineInput::IsDown("Player_GT_Bomb"); }
+	bool GetIsProvocation() { return GameEngineInput::IsDown("Player_Provocation"); }
 	bool GetIsSkill() { return IsSkill; }
 	bool GetIsLockOn() { return IsLockOn; }
 

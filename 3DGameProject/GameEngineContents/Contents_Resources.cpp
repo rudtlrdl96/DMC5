@@ -357,6 +357,8 @@ void ContentsCore::CreateContentsKey()
 		GameEngineInput::CreateKey("Player_Jump", 'K');
 		GameEngineInput::CreateKey("Player_Skill", 'L');
 		GameEngineInput::CreateKey("Player_Exceed", 'Q');
+		GameEngineInput::CreateKey("Player_GT_Bomb", 'E');
+		GameEngineInput::CreateKey("Player_Provocation", 'R');
 		GameEngineInput::CreateKey("Player_LockOn", VK_SPACE);
 		GameEngineInput::CreateKey("Player_DT", VK_LSHIFT);
 		GameEngineInput::CreateKey("Player_CameraLeft", 'U');
