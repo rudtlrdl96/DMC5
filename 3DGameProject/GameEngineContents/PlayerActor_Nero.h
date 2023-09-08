@@ -78,8 +78,7 @@ enum FSM_State_Nero
 	Nero_DT_AirStart,
 	Nero_GT_Bomb,
 	Nero_GT_AirBomb,
-	Nero_Provocation_1,
-	Nero_Provocation_2,
+	Nero_Provocation,
 	Nero_Provocation_Air,
 };
 

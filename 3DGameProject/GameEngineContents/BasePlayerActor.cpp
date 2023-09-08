@@ -91,7 +91,7 @@ void BasePlayerActor::RotationToTarget(float _MaxValue /* = 360.0f */)
 	{
 		return;
 	}
-	RotationToDir((LockOnEnemyTransform->GetWorldPosition() - GetTransform()->GetWorldPosition()).NormalizeReturn());
+	RotationToDir((LockOnEnemyTransform->GetWorldPosition() - GetTransform()->GetWorldPosition()).NormalizeReturn(), _MaxValue);
 }
 
 void BasePlayerActor::RotationToMoveVector(float _MaxValue)
