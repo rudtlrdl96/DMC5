@@ -69,33 +69,67 @@ void StageBaseLevel::SetCamera(float4 _Position)
 	GetMainCamera()->GetTransform()->SetLocalPosition(_Position);
 }
 
-void StageBaseLevel::EraseStageFieldMap(int _index)
+void StageBaseLevel::EraseStageFieldMap(int _mapbundleindex, int _mapindex)
 {
-	if (_index == -1)
+	if (AcFieldMaps.size() <= _mapbundleindex)
 	{
-		for (size_t i = 0; i < AcFieldMaps.size(); i++)
+		return;
+	}
+
+	if (AcFieldMaps.size() <= _mapindex)
+	{
+		return;
+	}
+
+	if (_mapbundleindex == -1)
+	{
+		for (auto& i : AcFieldMaps)
 		{
-			AcFieldMaps[i]->Death();
-			AcFieldMaps[i] = nullptr;
+			for (size_t j = 0; j < i.second.size(); j++)
+			{
+				i.second[j]->Death();
+				i.second[j] = nullptr;
+			}
+			i.second.clear();
 		}
 		AcFieldMaps.clear();
 	}
 
-	if (AcFieldMaps.size() <= _index)
+	if (_mapindex == -1)
 	{
-		return;
+		for (size_t j = 0; j < AcFieldMaps.find(_mapbundleindex)->second.size(); j++)
+		{
+			AcFieldMaps.find(_mapbundleindex)->second[j]->Death();
+			AcFieldMaps.find(_mapbundleindex)->second[j] = nullptr;
+		}
+		AcFieldMaps.find(_mapbundleindex)->second.clear();
 	}
-	AcFieldMaps[_index]->Death();
-	AcFieldMaps[_index] = nullptr;
-	AcFieldMaps.erase(AcFieldMaps.begin() + _index);
+
+	AcFieldMaps.find(_mapbundleindex)->second[_mapindex]->Death();
+	AcFieldMaps.find(_mapbundleindex)->second[_mapindex] = nullptr;
+	AcFieldMaps.find(_mapbundleindex)->second.erase(AcFieldMaps.find(_mapbundleindex)->second.begin() + _mapindex);
 }
 
-void StageBaseLevel::CreateStageFieldMap(const std::vector<FieldMapData>& _MapDatas)
+void StageBaseLevel::CreateStageFieldMap(const std::map<int, std::vector<FieldMapData>>& _MapDatas)
 {
-	AcFieldMaps.resize(_MapDatas.size());
-	for (size_t i = 0; i < AcFieldMaps.size(); i++)
+	//AcFieldMaps.resize(_MapDatas.size());
+	for (auto& i : _MapDatas)
 	{
-		AcFieldMaps[i] = FieldMap::CreateFieldMap(this, _MapDatas[i].MeshFileName, _MapDatas[i].FieldMapPosition, _MapDatas[i].FieldMapScale, _MapDatas[i].FieldMapRotation);
+		int temp_first = i.first;
+		std::vector<std::shared_ptr<FieldMap>> temp_second;
+		temp_second.resize(i.second.size());
+		for (size_t j = 0; j < temp_second.size(); j++)
+		{
+			temp_second[j] = FieldMap::CreateFieldMap
+			(
+				this,
+				i.second[j].MeshFileName,
+				i.second[j].FieldMapPosition,
+				i.second[j].FieldMapScale,
+				i.second[j].FieldMapRotation
+			);
+		}
+		AcFieldMaps.insert(std::make_pair(temp_first, temp_second));
 	}
 }
 

@@ -57,7 +57,11 @@ private:
 	void InputStageInfo(std::shared_ptr<GameEngineLevel> _Level);
 
 	//FieldMap ฐüทร
+	int MapBundleIndex = 0;
+	int MapBundle_current = 0;
 	size_t FieldMap_current = 0;
+	void MapBundleCombo();
+	void FieldMapAddButton();
 	void FieldMapCombo();
 	void FieldMapTransformEditUI(std::shared_ptr<GameEngineObject> _Obj = nullptr);
 

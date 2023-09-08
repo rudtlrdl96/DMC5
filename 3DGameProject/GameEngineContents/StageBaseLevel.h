@@ -27,7 +27,7 @@ protected:
 	void LevelChangeStart() override;
 
 	std::string StageName = "";
-	std::vector<std::shared_ptr<class FieldMap>> AcFieldMaps;
+	std::map<int, std::vector<std::shared_ptr<class FieldMap>>> AcFieldMaps;
 	std::shared_ptr<class SkyBox> AcSkyBox = nullptr;
 	std::shared_ptr<class MapCollisionMesh> AcGroundCol = nullptr;
 	std::shared_ptr<class MapCollisionMesh> AcWallCol = nullptr;
@@ -37,8 +37,8 @@ protected:
 private:
 	//std::shared_ptr<class ContentGrid> DebugGrid = nullptr;
 
-	void CreateStageFieldMap(const std::vector<FieldMapData>& _MapDatas);
-	void EraseStageFieldMap(int _index = -1);
+	void CreateStageFieldMap(const std::map<int, std::vector<FieldMapData>>& _MapDatas);
+	void EraseStageFieldMap(int _mapbundleindex = -1, int _mapindex = -1);
 	void CreateSkyBox(const std::string_view& _MeshFileName);
 	void EraseSkyBox();
 	void CreateGroundCol(const std::string_view& _MeshFileName);

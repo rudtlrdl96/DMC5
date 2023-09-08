@@ -30,7 +30,7 @@ class StageData
 {
 public:
 	std::string StageName = "";
-	std::vector<FieldMapData> MapDatas;
+	std::map<int, std::vector<FieldMapData>> MapDatas;
 	std::string SkyboxFileName = "";
 	std::string GroundMeshFileName = "";
 	std::string WallMeshFileName = "";

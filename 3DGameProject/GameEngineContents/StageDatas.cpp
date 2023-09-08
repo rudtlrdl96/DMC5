@@ -39,10 +39,16 @@ void StageData::WriteStageData(GameEngineSerializer& _Serializer)
 {
 	_Serializer << StageName;
 	_Serializer << static_cast<int>(MapDatas.size());
-	for (size_t i = 0; i < MapDatas.size(); i++)
+	for (auto i : MapDatas)
 	{
-		MapDatas[i].WriteFieldMapData(_Serializer);
+		_Serializer << i.first;
+		_Serializer << static_cast<int>(i.second.size());
+		for (size_t j = 0; j < i.second.size(); j++)
+		{
+			i.second[j].WriteFieldMapData(_Serializer);
+		}
 	}
+
 	_Serializer << SkyboxFileName;
 	_Serializer << GroundMeshFileName;
 	_Serializer << WallMeshFileName;
@@ -51,13 +57,24 @@ void StageData::WriteStageData(GameEngineSerializer& _Serializer)
 void StageData::ReadStageData(GameEngineSerializer& _Serializer)
 {
 	_Serializer >> StageName;
-	int tempsize = 0;
-	_Serializer >> tempsize;
-	MapDatas.resize(tempsize);
-	for (size_t i = 0; i < MapDatas.size(); i++)
+	int temp_map_size = 0;
+	_Serializer >> temp_map_size;
+	for (int i = 0; i < temp_map_size; i++)
 	{
-		MapDatas[i].ReadFieldMapData(_Serializer);
+		int temp_first = 0;
+		int temp_second_size = 0;
+		std::vector<FieldMapData> temp_second;
+		_Serializer >> temp_first;
+		_Serializer >> temp_second_size;
+		temp_second.resize(temp_second_size);
+		for (int j = 0; j < temp_second_size; j++)
+		{
+			temp_second[j].ReadFieldMapData(_Serializer);
+		}
+
+		MapDatas.insert(std::make_pair(temp_first, temp_second));
 	}
+
 	_Serializer >> SkyboxFileName;
 	_Serializer >> GroundMeshFileName;
 	_Serializer >> WallMeshFileName;
