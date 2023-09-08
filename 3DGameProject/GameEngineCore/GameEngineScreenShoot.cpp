@@ -1,26 +1,3 @@
-//--------------------------------------------------------------------------------------
-// File: ScreenGrab11.cpp
-//
-// Function for capturing a 2D texture and saving it to a file (aka a 'screenshot'
-// when used on a Direct3D Render Target).
-//
-// Note these functions are useful as a light-weight runtime screen grabber. For
-// full-featured texture capture, DDS writer, and texture processing pipeline,
-// see the 'Texconv' sample and the 'DirectXTex' library.
-//
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-//
-// http://go.microsoft.com/fwlink/?LinkId=248926
-// http://go.microsoft.com/fwlink/?LinkId=248929
-//--------------------------------------------------------------------------------------
-
-// Does not capture 1D textures or 3D textures (volume maps)
-
-// Does not capture mipmap chains, only the top-most texture level is saved
-
-// For 2D array textures and cubemaps, it captures only the first image in the array
-
 #include "PrecompileHeader.h"
 #include "GameEngineScreenShoot.h"
 #include "GameEngineLevel.h"

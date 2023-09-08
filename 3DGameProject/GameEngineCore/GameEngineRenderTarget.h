@@ -38,6 +38,12 @@ public:
 	GameEngineRenderTarget& operator=(const GameEngineRenderTarget& _Other) = delete;
 	GameEngineRenderTarget& operator=(GameEngineRenderTarget&& _Other) noexcept = delete;
 
+	static std::shared_ptr<GameEngineRenderTarget> Create()
+	{
+		std::shared_ptr<GameEngineRenderTarget> NewRenderTarget = GameEngineResource::CreateUnNamed();
+		return NewRenderTarget;
+	}
+
 	static std::shared_ptr<GameEngineRenderTarget> Create(const std::string_view& _Name, std::shared_ptr<GameEngineTexture> _Texture, float4 _Color)
 	{
 		std::shared_ptr<GameEngineRenderTarget> NewRenderTarget = GameEngineResource::Create(_Name);
@@ -90,6 +96,11 @@ public:
 	std::shared_ptr<GameEngineTexture> GetTexture(int _Index)
 	{
 		return Textures[_Index];
+	}
+
+	std::vector<std::shared_ptr<GameEngineTexture>> GetTextureVector()
+	{
+		return Textures;
 	}
 
 	void DepthSettingOn() 

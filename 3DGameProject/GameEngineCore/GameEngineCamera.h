@@ -121,6 +121,8 @@ public:
 		return ZoomRatio;
 	}
 
+	void CameraBasalAdd();
+
 protected:
 	void Start() override;
 
@@ -133,6 +135,7 @@ private:
 	DirectX::BoundingOrientedBox Box;
 
 	bool FreeCamera = false;
+	bool BasalInit = false;
 
 	float ZoomRatio = 1.0f;
 

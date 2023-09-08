@@ -1,19 +1,3 @@
-//--------------------------------------------------------------------------------------
-// File: ScreenGrab11.h
-//
-// Function for capturing a 2D texture and saving it to a file (aka a 'screenshot'
-// when used on a Direct3D 11 Render Target).
-//
-// Note these functions are useful as a light-weight runtime screen grabber. For
-// full-featured texture capture, DDS writer, and texture processing pipeline,
-// see the 'Texconv' sample and the 'DirectXTex' library.
-//
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-//
-// http://go.microsoft.com/fwlink/?LinkId=248926
-// http://go.microsoft.com/fwlink/?LinkId=248929
-//--------------------------------------------------------------------------------------
 #pragma once
 
 #include <d3d11_1.h>
@@ -25,21 +9,6 @@
 #endif
 
 #include <functional>
-
-//#include <GameEngineCore/ThirdParty/DirectXTex/inc/DirectXTex.h>
-
-//using namespace Microsoft::WRL;
-//
-//ComPtr<ID3D11Texture2D> backBuffer;
-//HRESULT hr = swapChain->GetBuffer(0,
-//	__uuidof(ID3D11Texture2D),
-//	reinterpret_cast<LPVOID*>(backBuffer.GetAddressOf()));
-//if (SUCCEEDED(hr))
-//{
-//	hr = SaveWICTextureToFile(immContext.Get(), backBuffer.Get(),
-//		GUID_ContainerFormatJpeg, L"SCREENSHOT.JPG");
-//}
-//DX::ThrowIfFailed(hr);
 
 // Ό³Έν :
 class GameEngineScreenShoot
@@ -58,6 +27,9 @@ public:
 	static HRESULT ScreenShoot();
 	static HRESULT RenderTargetShoot(ID3D11Texture2D* _Resource);
 
+protected:
+
+private:
 	static HRESULT __cdecl SaveDDSTextureToFile
 	(
 		_In_ ID3D11DeviceContext* pContext,
@@ -75,9 +47,5 @@ public:
 		_In_opt_ std::function<void __cdecl(IPropertyBag2*)> setCustomProps = nullptr,
 		_In_ bool forceSRGB = false
 	);
-
-protected:
-
-private:
 
 };

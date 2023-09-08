@@ -133,7 +133,6 @@ public:
 	// Spot Light를 생성합니다.
 	std::shared_ptr<GameEngineLight> CreateSpotLight(const float4& _Pos, float _Range, float _Angle);
 
-
 protected:
 	// 레벨이 바뀌어서 시작할때
 	virtual void LevelChangeStart();
@@ -145,6 +144,7 @@ protected:
 	void Render(float _DeltaTime) override;
 
 	void AllActorDestroy();
+
 private:
 	static bool IsDebugRender;
 
@@ -198,6 +198,8 @@ private:
 	void TextureUnLoad(GameEngineLevel* _NextLevel);
 	void TextureReLoad(GameEngineLevel* _PrevLevel);
 
+	void RenderTargetTextureRelease();
+	void CameraBasalInit();
 };
 
  

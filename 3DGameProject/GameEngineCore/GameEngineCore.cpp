@@ -131,6 +131,7 @@ void GameEngineCore::EngineUpdate()
 			MainLevel->LevelChangeEnd();
 			MainLevel->ActorLevelChangeEnd();
 			MainLevel->PostProcessLevelChangeEnd();
+			//MainLevel->RenderTargetTextureRelease();
 		}
 
 		MainLevel = NextLevel;
@@ -138,6 +139,7 @@ void GameEngineCore::EngineUpdate()
 		if (nullptr != MainLevel)
 		{
 			CurLoadLevel = MainLevel;
+			MainLevel->CameraBasalInit();
 			GameEnginePhysics::ChangeScene(MainLevel->GetName());
  			MainLevel->LevelChangeStart();
 			MainLevel->ActorLevelChangeStart();
