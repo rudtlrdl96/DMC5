@@ -69,10 +69,10 @@ void GameEngineCamera::Start()
 	DeferredLightTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 앰비언트 라이트를 담는다.
 
 	CamForwardTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	CamForwardTarget->CreateDepthTexture();
+	//CamForwardTarget->CreateDepthTexture();
 
 	CamDeferrdTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	CamDeferrdTarget->SetDepthTexture(CamForwardTarget->GetDepthTexture());
+	//CamDeferrdTarget->SetDepthTexture(CamForwardTarget->GetDepthTexture());
 	
 	CalLightUnit.SetMesh("FullRect");
 	CalLightUnit.SetMaterial("DeferredCalLight");

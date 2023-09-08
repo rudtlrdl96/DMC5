@@ -44,8 +44,18 @@ float4 CalDiffuseLight(float4 _Pos, float4 _Normal, LightData _Data)
     float4 ResultRatio = (float4) 0.0f;
 
     _Normal.xyz = normalize(_Normal.xyz); // N
-    float4 LightRevDir;
-    LightRevDir.xyz = normalize(_Data.ViewLightRevDir.xyz); // L
+    
+    float4 LightRevDir = (float4)0;
+    
+    if(0 == _Data.LightType)
+    {
+        LightRevDir.xyz = normalize(_Data.ViewLightRevDir.xyz); // L
+    }
+    else
+    {
+        LightRevDir.xyz = normalize(_Data.ViewLightPos.xyz - _Pos.xyz); // L
+    }
+    
     
     ResultRatio = max(0.0f, dot(_Normal.xyz, LightRevDir.xyz));
     return ResultRatio;
@@ -58,11 +68,20 @@ float4 CalSpacularLight(float4 _Pos, float4 _Normal, LightData _Data)
     _Normal.xyz = normalize(_Normal.xyz); // N
     _Data.ViewLightRevDir.xyz = normalize(_Data.ViewLightRevDir.xyz); // L
     
-    float4 LightDir = _Data.ViewLightRevDir;
+    float4 LightRevDir = (float4) 0;
+    
+    if (0 == _Data.LightType)
+    {
+        LightRevDir.xyz = normalize(_Data.ViewLightRevDir.xyz); // L
+    }
+    else
+    {
+        LightRevDir.xyz = normalize(_Data.ViewLightPos.xyz - _Pos.xyz); // L
+    }
     
     // ¹Ý»çº¤ÅÍ
     // 
-    float3 Reflection = normalize(2.0f * _Normal.xyz * dot(LightDir.xyz, _Normal.xyz) - LightDir.xyz); //  N
+    float3 Reflection = normalize(2.0f * _Normal.xyz * dot(LightRevDir.xyz, _Normal.xyz) - LightRevDir.xyz); //  N
     
     // ´«ÀÌ ¾îµðÀÖ³Ä
     float3 Eye = normalize(_Data.CameraPosition.xyz - _Pos.xyz); // L
