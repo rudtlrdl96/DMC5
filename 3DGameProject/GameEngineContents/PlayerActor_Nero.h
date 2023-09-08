@@ -13,6 +13,7 @@ enum FSM_State_Nero
 	Nero_DashStop,
 	Nero_Jump_Vertical,
 	Nero_Jump_Fly,
+	Nero_2nd_Jump,
 	Nero_Landing,
 	Nero_Evade_Left,
 	Nero_Evade_Right,
@@ -46,8 +47,6 @@ enum FSM_State_Nero
 
 	Nero_RQ_Skill_Caliber_1,
 	Nero_RQ_Skill_Caliber_2,
-
-
 
 	Nero_BR_Switch_Idle_to_Lockon,	// 기본자세에서 락온으로
 	Nero_BR_Switch_Lockon_to_Idle,	// 락온에서 기본자세로
