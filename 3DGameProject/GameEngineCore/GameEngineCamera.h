@@ -122,6 +122,7 @@ public:
 	}
 
 	void CameraBasalAdd();
+	void CameraRenderTargetRelease();
 
 protected:
 	void Start() override;

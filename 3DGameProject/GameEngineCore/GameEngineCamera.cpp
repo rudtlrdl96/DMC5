@@ -145,6 +145,78 @@ void GameEngineCamera::CameraBasalAdd()
 	BasalInit = true;
 }
 
+void GameEngineCamera::CameraRenderTargetRelease()
+{
+	if (false == BasalInit)
+	{
+		return;
+	}
+
+	std::vector<std::shared_ptr<GameEngineTexture>> TextureVector;
+
+	TextureVector = AllRenderTarget->GetTextureVector();
+	size_t AllRenderTargetCount = TextureVector.size();
+
+	for (size_t i = 0; i < AllRenderTargetCount; i++)
+	{
+		TextureVector[i]->Release();
+		TextureVector[i] = nullptr;
+	}
+
+	AllRenderTarget->GetTextureVector().clear();
+	AllRenderTarget->GetTextureVector().resize(0);
+
+	TextureVector = CamTarget->GetTextureVector();
+	size_t CamTargetCount = TextureVector.size();
+
+	for (size_t i = 0; i < CamTargetCount; i++)
+	{
+		TextureVector[i]->Release();
+		TextureVector[i] = nullptr;
+	}
+
+	CamTarget->GetTextureVector().clear();
+	CamTarget->GetTextureVector().resize(0);
+
+	TextureVector = DeferredLightTarget->GetTextureVector();
+	size_t DeferredLightTargetCount = TextureVector.size();
+
+	for (size_t i = 0; i < DeferredLightTargetCount; i++)
+	{
+		TextureVector[i]->Release();
+		TextureVector[i] = nullptr;
+	}
+
+	DeferredLightTarget->GetTextureVector().clear();
+	DeferredLightTarget->GetTextureVector().resize(0);
+
+	TextureVector = CamForwardTarget->GetTextureVector();
+	size_t CamForwardTargetCount = TextureVector.size();
+
+	for (size_t i = 0; i < CamForwardTargetCount; i++)
+	{
+		TextureVector[i]->Release();
+		TextureVector[i] = nullptr;
+	}
+
+	CamForwardTarget->GetTextureVector().clear();
+	CamForwardTarget->GetTextureVector().resize(0);
+
+	TextureVector = CamDeferrdTarget->GetTextureVector();
+	size_t CamDeferrdTargetCount = TextureVector.size();
+
+	for (size_t i = 0; i < CamDeferrdTargetCount; i++)
+	{
+		TextureVector[i]->Release();
+		TextureVector[i] = nullptr;
+	}
+
+	CamDeferrdTarget->GetTextureVector().clear();
+	CamDeferrdTarget->GetTextureVector().resize(0);
+
+	BasalInit = false;
+}
+
 void GameEngineCamera::FreeCameraSwitch()
 {
 	if (GetLevel()->GetMainCamera().get() != this)

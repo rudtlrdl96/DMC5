@@ -373,127 +373,13 @@ void GameEngineLevel::PostProcessLevelChangeEnd()
 
 void GameEngineLevel::RenderTargetTextureRelease()
 {
-	std::vector<std::shared_ptr<GameEngineTexture>> TextureVector;
-	
-	// LastTarget
-	TextureVector = LastTarget->GetTextureVector();
-	size_t LastTargetCount = TextureVector.size();
+	std::map<int, std::shared_ptr<GameEngineCamera>>::iterator GroupStartIter = Cameras.begin();
+	std::map<int, std::shared_ptr<GameEngineCamera>>::iterator GroupEndIter = Cameras.end();
 
-	for (size_t i = 0; i < LastTargetCount; i++)
+	for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
 	{
-		ID3D11Texture2D* Deletetexture = TextureVector[i]->GetTexture2D();
-
-		if (nullptr == Deletetexture)
-		{
-			MsgAssert("존재하지 않는 텍스처를 언로드 하려고 했습니다.");
-		}
-
-		Deletetexture->Release();
-	}
-
-	// ScreenTarget
-	TextureVector = ScreenShootTarget->GetTextureVector();
-	size_t ScreenShootTargetCount = TextureVector.size();
-
-	for (size_t i = 0; i < ScreenShootTargetCount; i++)
-	{
-		ID3D11Texture2D* Deletetexture = TextureVector[i]->GetTexture2D();
-
-		if (nullptr == Deletetexture)
-		{
-			MsgAssert("존재하지 않는 텍스처를 언로드 하려고 했습니다.");
-		}
-
-		Deletetexture->Release();
-	}
-
-	// 카메라 순회하여 타겟 텍스쳐 클리어
-	std::map<int, std::shared_ptr<GameEngineCamera>>::iterator StartIter = Cameras.begin();
-	std::map<int, std::shared_ptr<GameEngineCamera>>::iterator EndIter = Cameras.end();
-
-	for (; StartIter != EndIter; ++StartIter)
-	{
-		std::shared_ptr<GameEngineCamera> ReleaseCamera = StartIter->second;
-
-		// DeferredLightTarget
-		TextureVector = ReleaseCamera->GetDeferredLightTarget()->GetTextureVector();
-		size_t DeferredLightTargetCount = TextureVector.size();
-
-		for (size_t i = 0; i < DeferredLightTargetCount; i++)
-		{
-			ID3D11Texture2D* Deletetexture = TextureVector[i]->GetTexture2D();
-			
-			if (nullptr == Deletetexture)
-			{
-				MsgAssert("존재하지 않는 텍스처를 언로드 하려고 했습니다.");
-			}
-
-			Deletetexture->Release();
-		}
-
-		// CamTarget
-		TextureVector = ReleaseCamera->GetCamTarget()->GetTextureVector();
-		size_t CamTargetCount = TextureVector.size();
-
-		for (size_t i = 0; i < CamTargetCount; i++)
-		{
-			ID3D11Texture2D* Deletetexture = TextureVector[i]->GetTexture2D();
-
-			if (nullptr == Deletetexture)
-			{
-				MsgAssert("존재하지 않는 텍스처를 언로드 하려고 했습니다.");
-			}
-
-			Deletetexture->Release();
-		}
-
-		// CamForwardTarget
-		TextureVector = ReleaseCamera->GetCamForwardTarget()->GetTextureVector();
-		size_t CamForwardTargetCount = TextureVector.size();
-
-		for (size_t i = 0; i < CamForwardTargetCount; i++)
-		{
-			ID3D11Texture2D* Deletetexture = TextureVector[i]->GetTexture2D();
-
-			if (nullptr == Deletetexture)
-			{
-				MsgAssert("존재하지 않는 텍스처를 언로드 하려고 했습니다.");
-			}
-
-			Deletetexture->Release();
-		}
-
-		// CamDeferrdTarget
-		TextureVector = ReleaseCamera->GetCamDeferrdTarget()->GetTextureVector();
-		size_t CamDeferrdTargetCount = TextureVector.size();
-
-		for (size_t i = 0; i < CamDeferrdTargetCount; i++)
-		{
-			ID3D11Texture2D* Deletetexture = TextureVector[i]->GetTexture2D();
-
-			if (nullptr == Deletetexture)
-			{
-				MsgAssert("존재하지 않는 텍스처를 언로드 하려고 했습니다.");
-			}
-
-			Deletetexture->Release();
-		}
-
-		// CamAllRenderTarget
-		TextureVector = ReleaseCamera->GetCamAllRenderTarget()->GetTextureVector();
-		size_t CamAllRenderTargetCount = TextureVector.size();
-
-		for (size_t i = 0; i < CamAllRenderTargetCount; i++)
-		{
-			ID3D11Texture2D* Deletetexture = TextureVector[i]->GetTexture2D();
-
-			if (nullptr == Deletetexture)
-			{
-				MsgAssert("존재하지 않는 텍스처를 언로드 하려고 했습니다.");
-			}
-
-			Deletetexture->Release();
-		}
+		std::shared_ptr<GameEngineCamera> InitCamera = GroupStartIter->second;
+		InitCamera->CameraRenderTargetRelease();
 	}
 }
 
