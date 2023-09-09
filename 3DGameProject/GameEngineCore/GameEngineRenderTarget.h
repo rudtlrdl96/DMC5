@@ -116,8 +116,6 @@ public:
 	void ReleaseTextures();
 
 protected:
-
-private:
 	static void RenderTargetUnitInit();
 	static GameEngineRenderUnit MergeUnit;
 
@@ -134,5 +132,8 @@ private:
 	void ResCreate(std::shared_ptr<GameEngineTexture> _Texture, float4 _Color);
 	void ResCreate(DXGI_FORMAT _Format, float4 _Scale, float4 _Color);
 	void EffectInit(std::shared_ptr<GameEnginePostProcess> _PostProcess);
+
+private:
+
 
 };

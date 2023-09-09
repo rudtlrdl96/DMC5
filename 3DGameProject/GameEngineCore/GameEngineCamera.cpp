@@ -9,6 +9,7 @@
 #include "GameEngineTexture.h"
 #include "GameEngineMaterial.h"
 #include "GameEnginePixelShader.h"
+#include "GameEngineCubeMap.h"
 
 GameEngineCamera::GameEngineCamera()
 {
@@ -50,6 +51,16 @@ void GameEngineCamera::Start()
 	ViewPortData.Height = GameEngineWindow::GetScreenSize().y;
 	ViewPortData.MinDepth = 0.0f;
 	ViewPortData.MaxDepth = 1.0f;
+
+	// Å¥ºê
+	{
+		//ViewPortData[0].TopLeftX = 0;
+		//ViewPortData[0].TopLeftY = 0;
+		//ViewPortData[0].Width = 256; // Texture->Desc.Width
+		//ViewPortData[0].Height = 256; // Texture->Desc.Height
+		//ViewPortData[0].MinDepth = 0.0f;
+		//ViewPortData[0].MaxDepth = 1.0f;
+	}
 
 	Width = ViewPortData.Width;
 	Height = ViewPortData.Height;

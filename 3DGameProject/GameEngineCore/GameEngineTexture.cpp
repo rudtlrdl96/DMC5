@@ -106,6 +106,54 @@ void GameEngineTexture::ResCreate(const D3D11_TEXTURE2D_DESC& _Value)
 	}
 }
 
+void GameEngineTexture::CubeResCreate(const D3D11_TEXTURE2D_DESC& _Value, const D3D11_RENDER_TARGET_VIEW_DESC& _RTV, const D3D11_SHADER_RESOURCE_VIEW_DESC& _SRV)
+{
+	Desc = _Value;
+	D3D11_RENDER_TARGET_VIEW_DESC DescRTV = _RTV;
+	D3D11_SHADER_RESOURCE_VIEW_DESC DescSRV = _SRV;
+
+	HRESULT TextureResult = GameEngineDevice::GetDevice()->CreateTexture2D(&Desc, nullptr, &Texture2D);
+	if (S_OK != TextureResult)
+	{
+		MsgAssert("큐브 텍스쳐 생성에 실패했습니다.");
+		return;
+	}
+
+	HRESULT RTVResult = GameEngineDevice::GetDevice()->CreateRenderTargetView(Texture2D, &DescRTV, &RTV);
+	if (S_OK != RTVResult)
+	{
+		MsgAssert("큐브 랜더타겟 뷰 생성에 실패했습니다.");
+		return;
+	}
+
+	HRESULT SRVResult = GameEngineDevice::GetDevice()->CreateShaderResourceView(Texture2D, &DescSRV, &SRV);
+	if (S_OK != SRVResult)
+	{
+		MsgAssert("큐브 쉐이더 리소스 뷰 생성에 실패했습니다.");
+		return;
+	}
+}
+
+void GameEngineTexture::CubeResCreate(const D3D11_TEXTURE2D_DESC& _Value, const D3D11_DEPTH_STENCIL_VIEW_DESC& _DSV)
+{
+	Desc = _Value;
+	D3D11_DEPTH_STENCIL_VIEW_DESC DescDSV = _DSV;
+
+	HRESULT TextureResult = GameEngineDevice::GetDevice()->CreateTexture2D(&Desc, nullptr, &Texture2D);
+	if (S_OK != TextureResult)
+	{
+		MsgAssert("큐브 뎁스 텍스쳐 생성에 실패했습니다.");
+		return;
+	}
+
+	HRESULT Result = GameEngineDevice::GetDevice()->CreateDepthStencilView(Texture2D, nullptr, &DSV);
+	if (S_OK != Result)
+	{
+		MsgAssert("큐브 뎁스 스텐실 뷰 생성에 실패했습니다.");
+		return;
+	}
+}
+
 // 랜더타겟뷰(RTV) 생성, CreateRenderTargetView()
 void GameEngineTexture::CreateRenderTargetView()
 {

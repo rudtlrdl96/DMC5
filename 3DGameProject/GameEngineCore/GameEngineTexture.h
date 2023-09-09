@@ -94,6 +94,27 @@ public:
 		return NewTexture;
 	}
 
+	static std::shared_ptr<GameEngineTexture> CreateCubeTexture
+	(
+		const D3D11_TEXTURE2D_DESC& _Value, 
+		const D3D11_RENDER_TARGET_VIEW_DESC& _RTV, 
+		const D3D11_SHADER_RESOURCE_VIEW_DESC& _SRV
+	)
+	{
+		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::CreateUnNamed();
+		NewTexture->CubeResCreate(_Value, _RTV, _SRV);
+
+		return NewTexture;
+	}
+
+	static std::shared_ptr<GameEngineTexture> CreateCubeDepth(const D3D11_TEXTURE2D_DESC& _Value, const D3D11_DEPTH_STENCIL_VIEW_DESC& _DSV)
+	{
+		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::CreateUnNamed();
+		NewTexture->CubeResCreate(_Value, _DSV);
+
+		return NewTexture;
+	}
+
 	static std::shared_ptr<GameEngineTexture> UnLoad(const std::string_view& _Name)
 	{
 		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::Find(_Name);
@@ -182,9 +203,11 @@ private:
 	DirectX::TexMetadata Data;
 	DirectX::ScratchImage Image;
 
-	void ResLoad(const std::string_view& _Path);
 	void ResCreate(ID3D11Texture2D* _Value);
+	void ResLoad(const std::string_view& _Path);
 	void ResCreate(const D3D11_TEXTURE2D_DESC& _Value);
+	void CubeResCreate(const D3D11_TEXTURE2D_DESC& _Value, const D3D11_DEPTH_STENCIL_VIEW_DESC& _DSV);
+	void CubeResCreate(const D3D11_TEXTURE2D_DESC& _Value, const D3D11_RENDER_TARGET_VIEW_DESC& _RTV, const D3D11_SHADER_RESOURCE_VIEW_DESC& _SRV);
 
 	void CreateRenderTargetView();
 	void CreateShaderResourcesView();
