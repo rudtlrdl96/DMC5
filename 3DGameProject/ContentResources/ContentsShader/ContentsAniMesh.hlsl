@@ -67,6 +67,7 @@ struct DeferredOutPut
     float4 DifTarget : SV_Target1;
     float4 PosTarget : SV_Target2;
     float4 NorTarget : SV_Target3;
+    float4 MatTarget : SV_Target4;
 };
 
 float GGX_Distribution(float3 normal, float3 halfVector, float roughness)
@@ -91,10 +92,10 @@ DeferredOutPut MeshAniTexture_PS(Output _Input)
     // r = Alpha, gba = sss (subsurface scattering)
     float4 AtosData = SpecularTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
          
-    //if (0.0f >= AtosData.r)
-    //{
-    //    clip(-1);
-    //}
+    if (0.0f >= AtosData.r)
+    {
+        clip(-1);
+    }
     
     Result.PosTarget = _Input.VIEWPOSITION;
     Result.DifTarget = float4(AlbmData.r, AlbmData.g, AlbmData.b, AtosData.r);
@@ -117,14 +118,17 @@ DeferredOutPut MeshAniTexture_PS(Output _Input)
     // 계산된 메탈릭 값
     float metallic = saturate(AlbmData.a - distribution);
         
+    AlbmData.rgb *= AtosData.a;
+    
     // AlbmData -> metallicValue 값에 따라서 결정되어야 한다        
     Result.DifTarget.rgb = lerp(AlbmData.rgb, AlbmData.rgb * 0.6f, metallic);
-    Result.DifTarget.a = AtosData.r;
     
+    Result.DifTarget.a = 1.0f;
     Result.PosTarget.a = 1.0f;
-    Result.NorTarget.a = 1.0f;    
-    //Result.PosTarget.a = metallic;
-    //Result.NorTarget.a = roughness;
+    Result.NorTarget.a = 1.0f;
+    
+    Result.MatTarget.a = metallic;
+    Result.MatTarget.a = roughness;
         
     return Result;
 }
