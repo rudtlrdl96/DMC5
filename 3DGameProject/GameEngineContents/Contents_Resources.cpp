@@ -391,5 +391,5 @@ void ContentsCore::SetOption()
 	GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::High);
 
 	// FXAA 可记 积己
-	GameEngineOption::CreateOption("FXAA", GameEngineOptionValue::None);
+	GameEngineOption::CreateOption("FXAA", GameEngineOptionValue::High);
 }

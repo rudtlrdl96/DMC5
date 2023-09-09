@@ -113,10 +113,11 @@ DeferredOutPut MeshTexture_PS(Output _Input)
             
     // AlbmData -> metallicValue 값에 따라서 결정되어야 한다        
     Result.DifTarget.rgb = lerp(AlbmData.rgb, AlbmData.rgb * 0.6f, metallic);
-    Result.DifTarget.a = AtosData.r;
     
+    Result.DifTarget.a = 1.0f;
     Result.PosTarget.a = 1.0f;
     Result.NorTarget.a = 1.0f;    
+    
     Result.MatTarget.r = metallic;
     Result.MatTarget.g = roughness;
         

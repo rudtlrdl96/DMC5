@@ -98,10 +98,10 @@ LightOutPut DeferredCalLight_PS(Output _Input) : SV_Target0
         if (0.0f < LightPower)
         {
             // Diffuse Light 계산
-            DiffuseRatio.xyz += CalDiffuseLight(Position, Normal, AllLight[i]).xyz;
+            DiffuseRatio.xyz += AllLight[i].LightColor.xyz * CalDiffuseLight(Position, Normal, AllLight[i]).xyz;
         
             // Spacular Light 계산
-            SpacularRatio.xyz += CalSpacularLight(Position, Normal, AllLight[i]).xyz * (1.0f - Mat.r);
+            SpacularRatio.xyz += AllLight[i].LightColor.xyz * CalSpacularLight(Position, Normal, AllLight[i]).xyz * (1.0f - Mat.r);
         }        
     }
     
