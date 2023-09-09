@@ -413,3 +413,42 @@ bool GameEngineShaderResHelper::IsTexture(const std::string& _Name)
 
 	return false;
 }
+
+void GameEngineShaderResHelper::AllResourcesRelease()
+{
+	std::multimap<std::string, GameEngineConstantBufferSetter>::iterator ConstantBufferSetter = ConstantBufferSetters.begin();
+
+	for (; ConstantBufferSetter != ConstantBufferSetters.end(); ++ConstantBufferSetter)
+	{
+		ConstantBufferSetter->second.Reset();
+	}
+
+	ConstantBufferSetters.clear();
+
+	std::multimap<std::string, GameEngineTextureSetter>::iterator TextureSetter = TextureSetters.begin();
+
+	for (; TextureSetter != TextureSetters.end(); ++TextureSetter)
+	{
+		TextureSetter->second.Reset();
+	}
+
+	TextureSetters.clear();
+
+	std::multimap<std::string, GameEngineSamplerSetter>::iterator SamplerSetter = SamplerSetters.begin();
+
+	for (; SamplerSetter != SamplerSetters.end(); ++SamplerSetter)
+	{
+		SamplerSetter->second.Reset();
+	}
+
+	SamplerSetters.clear();
+
+	std::multimap<std::string, GameEngineStructuredBufferSetter>::iterator StructuredBufferSetter = StructuredBufferSetters.begin();
+
+	for (; StructuredBufferSetter != StructuredBufferSetters.end(); ++StructuredBufferSetter)
+	{
+		StructuredBufferSetter->second.Reset();
+	}
+
+	StructuredBufferSetters.clear();
+}

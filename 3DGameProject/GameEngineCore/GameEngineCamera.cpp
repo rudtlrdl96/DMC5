@@ -117,6 +117,9 @@ void GameEngineCamera::RenderTargetTextureRelease()
 		return;
 	}
 
+	CalLightUnit.ShaderResHelper.AllResourcesRelease();
+	DefferdMergeUnit.ShaderResHelper.AllResourcesRelease();
+
 	AllRenderTarget->ReleaseTextures();
 	CamTarget->ReleaseTextures();
 	CamForwardTarget->ReleaseTextures();

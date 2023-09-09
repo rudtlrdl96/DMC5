@@ -133,4 +133,7 @@ public:
 	void Setting();
 
 	void AllResourcesReset();
+
+	void AllResourcesRelease();
+
 };
