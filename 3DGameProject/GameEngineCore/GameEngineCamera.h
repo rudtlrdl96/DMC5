@@ -164,6 +164,7 @@ private:
 	std::shared_ptr<class GameEngineRenderTarget> CamDeferrdTarget;
 	std::shared_ptr<class GameEngineRenderTarget> CamAlphaTarget;
 	std::shared_ptr<class GameEngineRenderTarget> AllRenderTarget;
+	std::shared_ptr<class GameEngineRenderTarget> CubeRenderTarget;
 
 	// 빛계산의 결과물을 받기 위한 타겟.
 	std::shared_ptr<class GameEngineRenderTarget> DeferredLightTarget;

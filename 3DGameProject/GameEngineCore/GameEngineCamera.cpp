@@ -9,7 +9,6 @@
 #include "GameEngineTexture.h"
 #include "GameEngineMaterial.h"
 #include "GameEnginePixelShader.h"
-#include "GameEngineCubeMap.h"
 
 GameEngineCamera::GameEngineCamera()
 {
@@ -71,6 +70,8 @@ void GameEngineCamera::Start()
 	CamForwardTarget = GameEngineRenderTarget::Create();
 	CamDeferrdTarget = GameEngineRenderTarget::Create();
 	CamAlphaTarget = GameEngineRenderTarget::Create();
+
+	CubeRenderTarget = GameEngineRenderTarget::Create();
 }
 
 void GameEngineCamera::RenderTargetTextureLoad()
@@ -101,6 +102,8 @@ void GameEngineCamera::RenderTargetTextureLoad()
 	CamDeferrdTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 
 	CamAlphaTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+
+	CubeRenderTarget->CreateCubeTexture();
 
 	CalLightUnit.SetMesh("FullRect");
 	CalLightUnit.SetMaterial("DeferredCalLight");
@@ -137,6 +140,7 @@ void GameEngineCamera::RenderTargetTextureRelease()
 	CamDeferrdTarget->ReleaseTextures();
 	CamAlphaTarget->ReleaseTextures();
 	DeferredLightTarget->ReleaseTextures();
+	CubeRenderTarget->ReleaseTextures();
 
 	IsLoad = false;
 }

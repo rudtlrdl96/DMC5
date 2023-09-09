@@ -811,9 +811,6 @@
     <ClInclude Include="GameEngineScreenShoot.h">
       <Filter>Content\ScreenShoot</Filter>
     </ClInclude>
-    <ClInclude Include="GameEngineCubeMap.h">
-      <Filter>Content\CubeMap</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -848,9 +845,6 @@
       <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineNameObject.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="GameEngineCore_Resources.cpp">
       <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineDevice.cpp">
@@ -1037,9 +1031,7 @@
     <ClCompile Include="GameEngineScreenShoot.cpp">
       <Filter>Content\ScreenShoot</Filter>
     </ClCompile>
-    <ClCompile Include="GameEngineCubeMap.cpp">
-      <Filter>Content\CubeMap</Filter>
-    </ClCompile>
+    <ClCompile Include="GameEngineCore_Resources.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -1239,9 +1231,6 @@
     </Filter>
     <Filter Include="Content\ScreenShoot">
       <UniqueIdentifier>{530cc628-b1b9-4e74-8d3e-4db1201fc20f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\CubeMap">
-      <UniqueIdentifier>{d3c9c0b7-eac5-4426-9f2e-521157d67cda}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -27,6 +27,7 @@ class GameEngineRenderTarget : public GameEngineResource<GameEngineRenderTarget>
 	friend class GameEngineCoreWindow;
 	friend class GameEngineCore;
 	friend class GameEngineLevel;
+
 public:
 	// constrcuter destructer
 	GameEngineRenderTarget();
@@ -48,7 +49,6 @@ public:
 	{
 		std::shared_ptr<GameEngineRenderTarget> NewRenderTarget = GameEngineResource::Create(_Name);
 		NewRenderTarget->ResCreate(_Texture, _Color);
-
 		return NewRenderTarget;
 	}
 
@@ -56,7 +56,6 @@ public:
 	{
 		std::shared_ptr<GameEngineRenderTarget> NewRenderTarget = GameEngineResource::CreateUnNamed();
 		NewRenderTarget->ResCreate(_Format, _Scale, _Color);
-
 		return NewRenderTarget;
 	}
 
@@ -115,7 +114,12 @@ public:
 
 	void ReleaseTextures();
 
+	void CreateCubeTexture();
+	void CreateCubeDepth(int _Index);
+
 protected:
+
+private:
 	static void RenderTargetUnitInit();
 	static GameEngineRenderUnit MergeUnit;
 
@@ -123,17 +127,14 @@ protected:
 
 	float4 Color = { 0.0f, 0.0f, 0.0f, 0.0f };
 
-	std::vector<std::shared_ptr<GameEnginePostProcess>> Effects;
-	std::vector<std::shared_ptr<GameEngineTexture>> Textures;
-	std::vector<ID3D11RenderTargetView*> RTVs;
-	std::vector<ID3D11ShaderResourceView*> SRVs;
-	std::shared_ptr<GameEngineTexture> DepthTexture;
+	std::vector<std::shared_ptr<GameEnginePostProcess>> Effects = {};
+	std::vector<std::shared_ptr<GameEngineTexture>> Textures = {};
+	std::vector<ID3D11RenderTargetView*> RTVs = {};
+	std::vector<ID3D11ShaderResourceView*> SRVs = {};
+	std::shared_ptr<GameEngineTexture> DepthTexture = {};
 
 	void ResCreate(std::shared_ptr<GameEngineTexture> _Texture, float4 _Color);
 	void ResCreate(DXGI_FORMAT _Format, float4 _Scale, float4 _Color);
 	void EffectInit(std::shared_ptr<GameEnginePostProcess> _PostProcess);
-
-private:
-
 
 };
