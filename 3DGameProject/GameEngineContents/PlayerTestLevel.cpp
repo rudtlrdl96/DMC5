@@ -62,7 +62,7 @@ void PlayerTestLevel::LevelChangeStart()
 	GameEngineCoreWindow::AddDebugRenderTarget(1, "LightRenderTarget", GetMainCamera()->GetDeferredLightTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(2, "MainCameraForwardTarget", GetMainCamera()->GetCamForwardTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(3, "DeferredTarget", GetMainCamera()->GetCamDeferrdTarget());
-	GameEngineCoreWindow::AddDebugRenderTarget(4, "CubeRenderTarget", GetMainCamera()->GetCubeRenderTarget());
+	//GameEngineCoreWindow::AddDebugRenderTarget(4, "CubeRenderTarget", GetMainCamera()->GetCubeRenderTarget());
 
 	SetLevelSceneGravity(2000);
 	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();

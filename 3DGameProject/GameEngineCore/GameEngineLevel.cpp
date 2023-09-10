@@ -191,7 +191,7 @@ void GameEngineLevel::Render(float _DeltaTime)
 	{
 		std::shared_ptr<GameEngineCamera> Camera = Pair.second;
 		std::shared_ptr<GameEngineRenderTarget> Target = Camera->CamTarget;
-		std::shared_ptr<GameEngineRenderTarget> CubeTarget = Camera->CubeRenderTarget;
+		//std::shared_ptr<GameEngineRenderTarget> CubeTarget = Camera->CubeRenderTarget;
 
 		LastTarget->Merge(Target);
 
@@ -202,9 +202,9 @@ void GameEngineLevel::Render(float _DeltaTime)
 			ScreenShootTarget->Setting();
 		}
 
-		CubeTarget->Clear();
-		CubeTarget->Merge(Target);
-		CubeTarget->Setting();
+		//CubeTarget->Clear();
+		//CubeTarget->Merge(Target);
+		//CubeTarget->Setting();
 	}
 
 	LastTarget->Effect(_DeltaTime);

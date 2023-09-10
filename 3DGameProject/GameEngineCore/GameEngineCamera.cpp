@@ -141,7 +141,7 @@ void GameEngineCamera::RenderTargetTextureRelease()
 	CamDeferrdTarget->ReleaseTextures();
 	CamAlphaTarget->ReleaseTextures();
 	DeferredLightTarget->ReleaseTextures();
-	CubeRenderTarget->ReleaseTextures();
+	//CubeRenderTarget->ReleaseTextures();
 
 	IsLoad = false;
 }
