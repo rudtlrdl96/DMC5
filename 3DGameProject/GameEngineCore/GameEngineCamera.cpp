@@ -71,7 +71,7 @@ void GameEngineCamera::Start()
 	CamDeferrdTarget = GameEngineRenderTarget::Create();
 	CamAlphaTarget = GameEngineRenderTarget::Create();
 
-	CubeRenderTarget = GameEngineRenderTarget::Create();
+	//CubeRenderTarget = GameEngineRenderTarget::Create();
 }
 
 void GameEngineCamera::RenderTargetTextureLoad()
@@ -103,7 +103,8 @@ void GameEngineCamera::RenderTargetTextureLoad()
 
 	CamAlphaTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 
-	CubeRenderTarget->CreateCubeTexture();
+	//CubeRenderTarget->CreateCubeTexture();
+	//CubeRenderTarget->CreateCubeDepth();
 
 	CalLightUnit.SetMesh("FullRect");
 	CalLightUnit.SetMaterial("DeferredCalLight");

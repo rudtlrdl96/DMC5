@@ -112,13 +112,29 @@ void GameEngineTexture::CubeResCreate(const D3D11_TEXTURE2D_DESC& _Value, const 
 	D3D11_RENDER_TARGET_VIEW_DESC DescRTV = _RTV;
 	D3D11_SHADER_RESOURCE_VIEW_DESC DescSRV = _SRV;
 
-	HRESULT TextureResult = GameEngineDevice::GetDevice()->CreateTexture2D(&Desc, nullptr, &Texture2D);
+	std::shared_ptr<GameEngineTexture> Tex = Find("EngineBaseTex.png");
+
+	//Array to fill which we will use to point D3D at our loaded CPU images.
+	D3D11_SUBRESOURCE_DATA pData[6];
+	for (int cubeMapFaceIndex = 0; cubeMapFaceIndex < 6; cubeMapFaceIndex++)
+	{
+		//Pointer to the pixel data
+		pData[cubeMapFaceIndex].pSysMem = Tex->Image.GetImages()->pixels;
+		//Line width in bytes
+		pData[cubeMapFaceIndex].SysMemPitch = static_cast<UINT>(Tex->Image.GetImages()->rowPitch);
+		// This is only used for 3d textures.
+		pData[cubeMapFaceIndex].SysMemSlicePitch = 0;
+	}
+
+	//Create the Texture Resource
+	HRESULT TextureResult = GameEngineDevice::GetDevice()->CreateTexture2D(&Desc, &pData[0], &Texture2D);
 	if (S_OK != TextureResult)
 	{
 		MsgAssert("큐브 텍스쳐 생성에 실패했습니다.");
 		return;
 	}
 
+	//HRESULT RTVResult = GameEngineDevice::GetDevice()->CreateRenderTargetView(Texture2D, nullptr, &RTV);
 	HRESULT RTVResult = GameEngineDevice::GetDevice()->CreateRenderTargetView(Texture2D, &DescRTV, &RTV);
 	if (S_OK != RTVResult)
 	{
@@ -126,6 +142,8 @@ void GameEngineTexture::CubeResCreate(const D3D11_TEXTURE2D_DESC& _Value, const 
 		return;
 	}
 
+	//If we have created the texture resource for the six faces 
+	//we create the Shader Resource View to use in our shaders.
 	HRESULT SRVResult = GameEngineDevice::GetDevice()->CreateShaderResourceView(Texture2D, &DescSRV, &SRV);
 	if (S_OK != SRVResult)
 	{

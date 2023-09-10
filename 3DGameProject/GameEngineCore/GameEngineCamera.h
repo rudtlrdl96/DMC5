@@ -70,6 +70,11 @@ public:
 		return AllRenderTarget;
 	}
 
+	std::shared_ptr<GameEngineRenderTarget> GetCubeRenderTarget()
+	{
+		return CubeRenderTarget;
+	}
+
 	inline float4x4 GetView()
 	{
 		return View;

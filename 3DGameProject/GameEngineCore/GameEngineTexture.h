@@ -180,6 +180,11 @@ public:
 		return Desc.Height;
 	}
 
+	DirectX::ScratchImage& GetScratchImage()
+	{
+		return Image;
+	}
+
 	float4 GetScale() 
 	{
 		return float4(static_cast<float>(Desc.Width), static_cast<float>(Desc.Height));

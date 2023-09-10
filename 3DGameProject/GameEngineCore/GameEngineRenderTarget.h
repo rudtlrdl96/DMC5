@@ -115,7 +115,7 @@ public:
 	void ReleaseTextures();
 
 	void CreateCubeTexture();
-	void CreateCubeDepth(int _Index);
+	void CreateCubeDepth(int _Index = 0);
 
 protected:
 
