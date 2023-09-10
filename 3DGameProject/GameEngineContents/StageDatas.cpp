@@ -1,54 +1,70 @@
 #include "PrecompileHeader.h"
 #include "StageDatas.h"
 
-void FieldMapColData::WriteFieldMapColData(GameEngineSerializer& _Serializer)
+void ObjTransformData::WriteObjTransformData(GameEngineSerializer& _Serializer)
 {
 	_Serializer << Pos;
 	_Serializer << Scale;
 	_Serializer << Rot;
-	_Serializer.Write(&Type, sizeof(ColType));
-	_Serializer.Write(&ColOrder, sizeof(CollisionOrder));
 }
 
-void FieldMapColData::ReadFieldMapColData(GameEngineSerializer& _Serializer)
+void ObjTransformData::ReadObjTransformData(GameEngineSerializer& _Serializer)
 {
 	_Serializer >> Pos;
 	_Serializer >> Scale;
 	_Serializer >> Rot;
-	_Serializer.Read(&Type, sizeof(ColType));
-	_Serializer.Read(&ColOrder, sizeof(CollisionOrder));
 }
 
 void FieldMapData::WriteFieldMapData(GameEngineSerializer& _Serializer)
 {
-	_Serializer << MeshFileName;
-	_Serializer << FieldMapPosition;
-	_Serializer << FieldMapScale;
-	_Serializer << FieldMapRotation;
+	_Serializer << static_cast<int>(PartsMeshFileNames.size());
+	for (size_t i = 0; i < PartsMeshFileNames.size(); i++)
+	{
+		_Serializer << PartsMeshFileNames[i];
+	}
+	_Serializer << static_cast<int>(CullingColTransform.size());
+	for (size_t i = 0; i < CullingColTransform.size(); i++)
+	{
+		CullingColTransform[i].WriteObjTransformData(_Serializer);
+	}
+	_Serializer << static_cast<int>(NodeIndex.size());
+	for (size_t i = 0; i < NodeIndex.size(); i++)
+	{
+		_Serializer << NodeIndex[i];
+	}
 }
 
 void FieldMapData::ReadFieldMapData(GameEngineSerializer& _Serializer)
 {
-	_Serializer >> MeshFileName;
-	_Serializer >> FieldMapPosition;
-	_Serializer >> FieldMapScale;
-	_Serializer >> FieldMapRotation;
+	int tempsize = 0;
+	_Serializer >> tempsize;
+	PartsMeshFileNames.resize(tempsize);
+	for (size_t i = 0; i < PartsMeshFileNames.size(); i++)
+	{
+		_Serializer >> PartsMeshFileNames[i];
+	}
+	_Serializer >> tempsize;
+	CullingColTransform.resize(tempsize);
+	for (size_t i = 0; i < CullingColTransform.size(); i++)
+	{
+		CullingColTransform[i].ReadObjTransformData(_Serializer);
+	}
+	_Serializer >> tempsize;
+	NodeIndex.resize(tempsize);
+	for (size_t i = 0; i < NodeIndex.size(); i++)
+	{
+		_Serializer >> NodeIndex[i];
+	}
 }
 
 void StageData::WriteStageData(GameEngineSerializer& _Serializer)
 {
 	_Serializer << StageName;
 	_Serializer << static_cast<int>(MapDatas.size());
-	for (auto i : MapDatas)
+	for (size_t i = 0; i < MapDatas.size(); i++)
 	{
-		_Serializer << i.first;
-		_Serializer << static_cast<int>(i.second.size());
-		for (size_t j = 0; j < i.second.size(); j++)
-		{
-			i.second[j].WriteFieldMapData(_Serializer);
-		}
+		MapDatas[i].WriteFieldMapData(_Serializer);
 	}
-
 	_Serializer << SkyboxFileName;
 	_Serializer << GroundMeshFileName;
 	_Serializer << WallMeshFileName;
@@ -57,24 +73,13 @@ void StageData::WriteStageData(GameEngineSerializer& _Serializer)
 void StageData::ReadStageData(GameEngineSerializer& _Serializer)
 {
 	_Serializer >> StageName;
-	int temp_map_size = 0;
-	_Serializer >> temp_map_size;
-	for (int i = 0; i < temp_map_size; i++)
+	int tempsize = 0;
+	_Serializer >> tempsize;
+	MapDatas.resize(tempsize);
+	for (size_t i = 0; i < MapDatas.size(); i++)
 	{
-		int temp_first = 0;
-		int temp_second_size = 0;
-		std::vector<FieldMapData> temp_second;
-		_Serializer >> temp_first;
-		_Serializer >> temp_second_size;
-		temp_second.resize(temp_second_size);
-		for (int j = 0; j < temp_second_size; j++)
-		{
-			temp_second[j].ReadFieldMapData(_Serializer);
-		}
-
-		MapDatas.insert(std::make_pair(temp_first, temp_second));
+		MapDatas[i].ReadFieldMapData(_Serializer);
 	}
-
 	_Serializer >> SkyboxFileName;
 	_Serializer >> GroundMeshFileName;
 	_Serializer >> WallMeshFileName;
@@ -99,3 +104,5 @@ void StageData::ReadAllStageData(GameEngineSerializer& _Serializer, std::vector<
 		_AllData[i].ReadStageData(_Serializer);
 	}
 }
+
+

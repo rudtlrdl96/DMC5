@@ -3,9 +3,11 @@
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineActor.h>
 #include <GameEngineBase/GameEngineFile.h>
-#include "StageBaseLevel.h"
+#include <GameEngineCore/GameEngineCollision.h>
+#include "StageEditLevel.h"
 #include "FieldMap.h"
 #include "MapCollisionMesh.h"
+#include "FreeCameraActor.h"
 
 StageEditGUI::StageEditGUI()
 {
@@ -19,16 +21,21 @@ void StageEditGUI::OnGUI(std::shared_ptr<GameEngineLevel> _Level, float _DeltaTi
 {
 	if (Parent == nullptr)
 	{
-		Parent = _Level->DynamicThis<StageBaseLevel>().get();
+		Parent = _Level->DynamicThis<StageEditLevel>().get();
+	}
+
+	static bool FreeCamCheck;
+	ImGui::Checkbox("FreeCam On/Off", &FreeCamCheck);
+	if (FreeCamCheck && !Parent->FreeCam->IsUpdate())
+	{
+		Parent->FreeCam->On();
+	}
+	else if(!FreeCamCheck && Parent->FreeCam->IsUpdate())
+	{
+		Parent->FreeCam->Off();
 	}
 
     StageListBox(_Level);
-
-	if (IsCreateStage == true)
-	{
-		IsCreateStage = false;
-		return;
-	}
 
 	if (AllData.empty())
 	{
@@ -69,106 +76,11 @@ void StageEditGUI::LoadStageData(std::shared_ptr<GameEngineLevel> _Level)
 
 	StageData::ReadAllStageData(LoadSerializer, AllData);
 
-	CreateStage(AllData[0]);
-}
-
-void StageEditGUI::MapBundleCombo()
-{
-	if (AllData[Stage_current].MapDatas.empty())
+	if (!AllData.empty())
 	{
-		return;
-	}
-
-	std::string temp = std::to_string(MapBundle_current);
-	const char* combo_preview_value = temp.c_str();
-	if (ImGui::BeginCombo("MapBundle", combo_preview_value, 0))
-	{
-		for (int n = 0; n < AllData[Stage_current].MapDatas.size(); n++)
-		{
-			const bool is_selected = (MapBundle_current == n);
-			if (ImGui::Selectable(std::to_string(n).c_str(), is_selected))
-				MapBundle_current = n;
-
-			if (is_selected)
-			{
-				ImGui::SetItemDefaultFocus();
-			}
-		}
-		ImGui::EndCombo();
-	}
-
-	FieldMapAddButton();
-}
-
-void StageEditGUI::FieldMapAddButton()
-{
-	if (AllData[Stage_current].MapDatas.empty())
-	{
-		return;
-	}
-
-	if (ImGui::Button("AddMap"))
-	{
-		std::filesystem::path filepath = GetOpenFilePath();
-
-		if (!filepath.empty())
-		{
-			pushback_Data(AllData[Stage_current].MapDatas.find(MapBundle_current)->second);
-			auto TempIter = AllData[Stage_current].MapDatas.find(MapBundle_current)->second.end();
-			TempIter--;
-			TempIter->MeshFileName = filepath.filename().string();
-			Parent->CreateStageFieldMap(AllData[Stage_current].MapDatas);
-		}
-	}
-	FieldMapCombo();
-}
-
-void StageEditGUI::FieldMapCombo()
-{
-	if (AllData[Stage_current].MapDatas.find(MapBundle_current)->second.empty())
-	{
-		return;
-	}
-	
-	const char* combo_preview_value = AllData[Stage_current].MapDatas.find(MapBundle_current)->second[FieldMap_current].MeshFileName.c_str();
-	if (ImGui::BeginCombo("FieldMap", combo_preview_value, 0))
-	{
-		for (int n = 0; n < AllData[Stage_current].MapDatas.find(MapBundle_current)->second.size(); n++)
-		{
-			const bool is_selected = (FieldMap_current == n);
-			if (ImGui::Selectable(AllData[Stage_current].MapDatas.find(MapBundle_current)->second[n].MeshFileName.c_str(), is_selected))
-				FieldMap_current = n;
-
-			if (is_selected)
-			{
-				ImGui::SetItemDefaultFocus();
-			}
-		}
-		ImGui::EndCombo();
+		CreateStage(AllData[0]);
 	}
 }
-
-void StageEditGUI::FieldMapTransformEditUI(std::shared_ptr<GameEngineObject> _Obj)
-{
-	ImGui::SeparatorText("FieldMapTransform");
-	ShowTransformInfo(_Obj);
-	if (ImGui::Button("InputTransform"))
-	{
-		GameEngineTransform* Transform = _Obj->GetTransform();
-		AllData[Stage_current].MapDatas.find(MapBundle_current)->second[FieldMap_current].FieldMapPosition = Transform->GetLocalPosition();
-		AllData[Stage_current].MapDatas.find(MapBundle_current)->second[FieldMap_current].FieldMapScale = Transform->GetLocalScale();
-		AllData[Stage_current].MapDatas.find(MapBundle_current)->second[FieldMap_current].FieldMapRotation = Transform->GetLocalRotation();
-
-		ImGui::SameLine();
-	}
-}
-
-//void StageEditGUI::FieldMapColList()
-//{
-//	ImGui::SeparatorText("FieldMapColList");
-//	ImGui::BeginChild("FieldMapColList", ImVec2(150, 0), true);
-//	ImGui::EndChild();
-//}
 
 void StageEditGUI::ShowTransformInfo(std::shared_ptr<GameEngineObject> _Obj)
 {
@@ -184,9 +96,9 @@ void StageEditGUI::ShowTransformInfo(std::shared_ptr<GameEngineObject> _Obj)
 
 	// TransData 표시 및 TransformUpdate를 위한 0위치이동 실행
 
-	ImGui::DragFloat4("Position", Position.Arr1D);
+	ImGui::DragFloat4("Position", Position.Arr1D, 50.f);
 	ImGui::DragFloat4("Rotation", Rotation.Arr1D);
-	ImGui::DragFloat4("Scale", Scale.Arr1D);
+	ImGui::DragFloat4("Scale", Scale.Arr1D, 50.f);
 
 	Transform->SetLocalPosition(Position);
 	Transform->SetLocalRotation(Rotation);
@@ -197,34 +109,26 @@ void StageEditGUI::StageListBox(std::shared_ptr<GameEngineLevel> _Level)
 {
     ImGui::InputText("input StageName", StageNameInputSpace, IM_ARRAYSIZE(StageNameInputSpace));
 
-
-	
-
     if (ImGui::Button("AddStg"))
     {
         if (std::string(StageNameInputSpace) != "")
         {
-            pushback_Data(AllData);
-            auto TempIter = AllData.end();
-            TempIter--;
-            TempIter->StageName = StageNameInputSpace;
+			AllData.emplace_back().StageName = StageNameInputSpace;
         }
 		return;
 	}
+
     ImGui::SameLine();
-    if (ImGui::Button("DelStg"))
+    
+	if (ImGui::Button("DelStg"))
     {
-        erase_Data(AllData, Stage_current);
 		if (!AllData.empty())
 		{
-			if (AllData[Stage_current].StageName != Parent->StageName)
-			{
-				Parent->StageName = AllData[Stage_current].StageName;
-				CreateStage(AllData[Stage_current]);
-			}
+			AllData.pop_back();
 		}
 		return;
 	}
+
 	ImGui::SameLine();
 	if (ImGui::Button("LoadStg"))
 	{
@@ -245,12 +149,7 @@ void StageEditGUI::StageListBox(std::shared_ptr<GameEngineLevel> _Level)
 		if (ImGui::Selectable(StageLabel.c_str(), Stage_current == i))
 		{
 			Stage_current = i;
-			Parent->ClearStage();
-			Parent->StageName = AllData[Stage_current].StageName;
-			if (!AllData[Stage_current].MapDatas.empty())
-			{
-				CreateStage(AllData[Stage_current]);
-			}
+			CreateStage(AllData[i]);
 		}
     }
     ImGui::EndChild();
@@ -261,113 +160,293 @@ void StageEditGUI::InputStageInfo(std::shared_ptr<GameEngineLevel> _Level)
 {
 	ImGui::SameLine();
 	ImGui::BeginChild("InputStageInfo", ImVec2(300, 0), true);
+	InputSkyBox();
+	InputMapCol();
+	InputFieldMap();
+	ImGui::EndChild();
+}
+
+void StageEditGUI::InputSkyBox()
+{
 	if (ImGui::Button("SetSkyBox"))
 	{
-		ImGui::SeparatorText("StageInfo");
 		std::filesystem::path filepath = GetOpenFilePath();
 		if (!filepath.empty())
 		{
-			Parent->EraseSkyBox();
 			AllData[Stage_current].SkyboxFileName = filepath.filename().string();
-			Parent->CreateSkyBox(AllData[Stage_current].SkyboxFileName);
+			CreateStage(AllData[Stage_current]);
 		}
 	}
-
 	ImGui::SameLine();
 	ImGui::Text(AllData[Stage_current].SkyboxFileName.c_str());
+}
 
+void StageEditGUI::InputMapCol()
+{
 	if (ImGui::Button("SetGroundMesh"))
 	{
 		std::filesystem::path filepath = GetOpenFilePath();
 		if (!filepath.empty())
 		{
-			Parent->EraseGroundCol();
 			AllData[Stage_current].GroundMeshFileName = filepath.filename().string();
-			Parent->CreateGroundCol(AllData[Stage_current].GroundMeshFileName);
+			CreateStage(AllData[Stage_current]);
 		}
 	}
-
 	ImGui::SameLine();
-
 	ImGui::Text(AllData[Stage_current].GroundMeshFileName.c_str());
 
-	if (!AllData[Stage_current].GroundMeshFileName.empty())
-	{
-		static bool check = true;
-		ImGui::Checkbox("Ground On/Off", &check);
-		if (Parent->AcGroundCol != nullptr)
-		{
-			if (check && !Parent->AcGroundCol->RenderIsUpdate())
-			{
-				Parent->AcGroundCol->RenderOn();
-			}
-			else if (!check && Parent->AcGroundCol->RenderIsUpdate())
-			{
-				Parent->AcGroundCol->RenderOff();
-			}
-		}
-	}
+	//if (!AllData[Stage_current].GroundMeshFileName.empty())
+	//{
+	//	static bool check = true;
+	//	ImGui::Checkbox("Ground On/Off", &check);
+	//	if (Parent->AcGroundCol != nullptr)
+	//	{
+	//		if (check && !Parent->AcGroundCol->RenderIsUpdate())
+	//		{
+	//			Parent->AcGroundCol->RenderOn();
+	//		}
+	//		else if (!check && Parent->AcGroundCol->RenderIsUpdate())
+	//		{
+	//			Parent->AcGroundCol->RenderOff();
+	//		}
+	//	}
+	//}
 
 	if (ImGui::Button("SetWallMesh"))
 	{
 		std::filesystem::path filepath = GetOpenFilePath();
 		if (!filepath.empty())
 		{
-			Parent->EraseWallCol();
 			AllData[Stage_current].WallMeshFileName = filepath.filename().string();
-			Parent->CreateWallCol(AllData[Stage_current].WallMeshFileName);
+			CreateStage(AllData[Stage_current]);
 		}
 	}
-
 	ImGui::SameLine();
-
 	ImGui::Text(AllData[Stage_current].WallMeshFileName.c_str());
 
-	if (!AllData[Stage_current].WallMeshFileName.empty())
+	//if (!AllData[Stage_current].WallMeshFileName.empty())
+	//{
+	//	static bool check = true;
+	//	ImGui::Checkbox("Wall On/Off", &check);
+	//	if (Parent->AcWallCol != nullptr)
+	//	{
+	//		if (check && !Parent->AcWallCol->RenderIsUpdate())
+	//		{
+	//			Parent->AcWallCol->RenderOn();
+	//		}
+	//		else if (!check && Parent->AcWallCol->RenderIsUpdate())
+	//		{
+	//			Parent->AcWallCol->RenderOff();
+	//		}
+	//	}
+	//}
+}
+
+void StageEditGUI::InputFieldMap()
+{
+	if (ImGui::Button("AddFieldMap"))
 	{
-		static bool check = true;
-		ImGui::Checkbox("Wall On/Off", &check);
-		if (Parent->AcWallCol != nullptr)
+		AllData[Stage_current].MapDatas.emplace_back();
+		CreateStage(AllData[Stage_current]);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("DelFieldMap"))
+	{
+		if (!AllData[Stage_current].MapDatas.empty())
 		{
-			if (check && !Parent->AcWallCol->RenderIsUpdate())
-			{
-				Parent->AcWallCol->RenderOn();
-			}
-			else if (!check && Parent->AcWallCol->RenderIsUpdate())
-			{
-				Parent->AcWallCol->RenderOff();
-			}
+			AllData[Stage_current].MapDatas.pop_back();
+			CreateStage(AllData[Stage_current]);
 		}
 	}
 
-	if (ImGui::Button("AddMapBundle"))
+	if (AllData[Stage_current].MapDatas.empty())
 	{
-		AllData[Stage_current].MapDatas.insert(std::make_pair(MapBundleIndex++, std::vector<FieldMapData>()));
+		return;
 	}
-	
+
+	FieldMapCombo();
+
+}
+
+void StageEditGUI::FieldMapCombo()
+{	
+	ImGui::SeparatorText("FieldMapOption");
+
+	std::string TempStr = std::string("FieldMap " + std::to_string(FieldMap_current));
+	const char* combo_preview_value = TempStr.c_str();
+	if (ImGui::BeginCombo("FieldMap", combo_preview_value, 0))
+	{
+		for (int n = 0; n < AllData[Stage_current].MapDatas.size(); n++)
+		{
+			const bool is_selected = (FieldMap_current == n);
+			if (ImGui::Selectable(std::string("FieldMap " + std::to_string(n)).c_str(), is_selected))
+				FieldMap_current = n;
+
+			if (is_selected)
+			{
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+
+	if (AllData[Stage_current].MapDatas.empty())
+	{
+		return;
+	}
+
+	InputMapParts();
+	InputCullingCol();
+	InputNode();
+}
+
+void StageEditGUI::InputMapParts()
+{
+	if (ImGui::Button("AddMapParts"))
+	{
+		std::filesystem::path filepath = GetOpenFilePath();
+		if (!filepath.empty())
+		{
+			AllData[Stage_current].MapDatas[FieldMap_current].PartsMeshFileNames.emplace_back(filepath.filename().string());
+			CreateStage(AllData[Stage_current]);
+		}
+	}
 	ImGui::SameLine();
-	
-	if (ImGui::Button("DelMapBundle"))
+	if (ImGui::Button("DelMapParts"))
 	{
-
-		AllData[Stage_current].MapDatas.erase(MapBundleIndex--);
+		if (!AllData[Stage_current].MapDatas[FieldMap_current].PartsMeshFileNames.empty())
+		{
+			AllData[Stage_current].MapDatas[FieldMap_current].PartsMeshFileNames.pop_back();
+			CreateStage(AllData[Stage_current]);
+		}
 	}
 
-	MapBundleCombo();
+	if (AllData[Stage_current].MapDatas[FieldMap_current].PartsMeshFileNames.empty())
+	{
+		return;
+	}
 
-	//if (!AllData[Stage_current].MapDatas.empty())
+	MapPartsCombo();
+}
+
+void StageEditGUI::MapPartsCombo()
+{
+	const char* combo_preview_value = AllData[Stage_current].MapDatas[FieldMap_current].PartsMeshFileNames[MapParts_current].c_str();
+	if (ImGui::BeginCombo("MapRenders", combo_preview_value, 0))
+	{
+		for (int n = 0; n < AllData[Stage_current].MapDatas[FieldMap_current].PartsMeshFileNames.size(); n++)
+		{
+			const bool is_selected = (MapParts_current == n);
+			if (ImGui::Selectable(AllData[Stage_current].MapDatas[FieldMap_current].PartsMeshFileNames[n].c_str(), is_selected))
+				MapParts_current = n;
+
+			if (is_selected)
+			{
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+}
+
+void StageEditGUI::InputCullingCol()
+{
+	if (ImGui::Button("AddCullingCol"))
+	{
+		AllData[Stage_current].MapDatas[FieldMap_current].CullingColTransform.emplace_back();
+		CreateStage(AllData[Stage_current]);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("DelCullingCol"))
+	{
+		if (!AllData[Stage_current].MapDatas[FieldMap_current].CullingColTransform.empty())
+		{
+			AllData[Stage_current].MapDatas[FieldMap_current].CullingColTransform.pop_back();
+			CreateStage(AllData[Stage_current]);
+		}
+	}
+
+	if (AllData[Stage_current].MapDatas[FieldMap_current].CullingColTransform.empty())
+	{
+		return;
+	}
+
+	CullingColCombo();
+}
+
+void StageEditGUI::CullingColCombo()
+{
+	std::string TempStr = std::string("Col " + std::to_string(CullingCol_current));
+	const char* combo_preview_value = TempStr.c_str();
+	if (ImGui::BeginCombo("CullingCol", combo_preview_value, 0))
+	{
+		for (int n = 0; n < AllData[Stage_current].MapDatas[FieldMap_current].CullingColTransform.size(); n++)
+		{
+			const bool is_selected = (CullingCol_current == n);
+			if (ImGui::Selectable(std::string("Col " + std::to_string(n)).c_str(), is_selected))
+				CullingCol_current = n;
+
+			if (is_selected)
+			{
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+
+	ShowTransformInfo(Parent->AcFieldMaps[FieldMap_current]->FieldMapCullingCol[CullingCol_current]);
+	if (ImGui::Button("Input"))
+	{
+		AllData[Stage_current].MapDatas[FieldMap_current].CullingColTransform[CullingCol_current].Pos 
+			= Parent->AcFieldMaps[FieldMap_current]->FieldMapCullingCol[CullingCol_current]->GetTransform()->GetLocalPosition();
+		AllData[Stage_current].MapDatas[FieldMap_current].CullingColTransform[CullingCol_current].Scale
+			= Parent->AcFieldMaps[FieldMap_current]->FieldMapCullingCol[CullingCol_current]->GetTransform()->GetLocalScale();
+		AllData[Stage_current].MapDatas[FieldMap_current].CullingColTransform[CullingCol_current].Rot
+			= Parent->AcFieldMaps[FieldMap_current]->FieldMapCullingCol[CullingCol_current]->GetTransform()->GetLocalRotation();
+	}
+}
+
+void StageEditGUI::InputNode()
+{
+	NodeCheckBox();
+}
+
+void StageEditGUI::NodeCheckBox()
+{
+	//for (size_t i = 0; i < AllData[Stage_current].MapDatas.size(); i++)
 	//{
-	//	FieldMapTransformEditUI(Parent->AcFieldMaps.find(MapBundle_current)->second[FieldMap_current]);
+	//	static bool check = true;
+	//	ImGui::Checkbox(std::to_string(i).c_str(), &check);
+	//
+	//	if (i % 5 != 4)
+	//	{
+	//		ImGui::SameLine();
+	//	}
 	//}
 
-	ImGui::EndChild();
+	//if (!AllData[Stage_current].GroundMeshFileName.empty())
+	//{
+	//	static bool check = true;
+	//	ImGui::Checkbox("Ground On/Off", &check);
+	//	if (Parent->AcGroundCol != nullptr)
+	//	{
+	//		if (check && !Parent->AcGroundCol->RenderIsUpdate())
+	//		{
+	//			Parent->AcGroundCol->RenderOn();
+	//		}
+	//		else if (!check && Parent->AcGroundCol->RenderIsUpdate())
+	//		{
+	//			Parent->AcGroundCol->RenderOff();
+	//		}
+	//	}
+	//}
 }
 
 void StageEditGUI::CreateStage(StageData _Data)
 {
 	Parent->ClearStage();
 	Parent->CreateStage(_Data);
-	IsCreateStage = true;
+	//IsCreateStage = true;
 }
 
 std::string StageEditGUI::GetOpenFilePath()

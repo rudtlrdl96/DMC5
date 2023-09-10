@@ -4,6 +4,8 @@
 
 class FieldMap : public BaseStageActor
 {
+	friend class StageBaseLevel;
+	friend class StageEditGUI;
 public:
 	// construtor destructor
 	FieldMap();
@@ -15,19 +17,25 @@ public:
 	FieldMap& operator=(const FieldMap& _Other) = delete;
 	FieldMap& operator=(FieldMap&& _Other) noexcept = delete;
 
-	//static std::shared_ptr<FieldMap> CreateFieldMap(GameEngineLevel* _Level, const std::string_view& _FBXName, const std::vector<FieldMapColData>& _ColVector = std::vector<FieldMapColData>(), const float4& _MapPosition = float4::ZERO, const float4& _MapScale = float4::ONE, const float4& _MapRotation = float4::ZERO);
-	static std::shared_ptr<FieldMap> CreateFieldMap(GameEngineLevel* _Level, const std::string_view& _FBXName, const float4& _MapPosition = float4::ZERO, const float4& _MapScale = float4::ONE, const float4& _MapRotation = float4::ZERO);
-	
-protected:
-	void Start();
-	void Update(float _DeltaTime);
+	static std::shared_ptr<FieldMap> CreateFieldMap
+	(
+		GameEngineLevel* _Level,
+		const std::vector<std::string>& _FBXNames,
+		const std::vector<ObjTransformData>& _CullingCols
+		//const std::vector<int>& _NodeIndex
+	);
 
+	void EraseFieldMap();
+
+protected:
 	void DrawEditor() override;
 
 private:
-	std::shared_ptr<class GameEngineFBXRenderer> FieldMapRenderer = nullptr;
-	//std::shared_ptr<class GameEngineFBXRenderer> NavMesh = nullptr;
+	std::vector<std::shared_ptr<class GameEngineFBXRenderer>> FieldMapRenderer;
+	std::vector<std::shared_ptr<class GameEngineCollision>> FieldMapCullingCol;
+	//std::vector<int> NodeIndex;
 	
-	//std::vector<std::shared_ptr<class GameEngineCollision>> MapCols;
+	void ClearFieldMapRenderer();
+	void ClearFieldMapCullingCol();
 };
 

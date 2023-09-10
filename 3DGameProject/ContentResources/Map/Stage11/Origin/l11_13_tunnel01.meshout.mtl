@@ -1,0 +1,104 @@
+newmtl phong1
+Kd 0.741176 0.482353 0.380392
+Ks 0.250000 0.250000 0.250000
+Ns 1.000000
+map_Kd l04_10_brick02_ALBM.tga
+map_Ks l04_10_brick02_ALBM.tga
+map_bump l04_10_brick04_NRMR.tga
+
+newmtl phong2
+Kd 0.862745 0.615686 0.517647
+Ks 0.250000 0.250000 0.250000
+Ns 1.000000
+map_Kd l11_13_wallpaint_ALBM.tga
+map_Ks l11_13_wallpaint_ALBM.tga
+map_bump l04_10_brick04_NRMR.tga
+
+newmtl phong3
+Kd 0.741176 0.482353 0.380392
+Ks 0.250000 0.250000 0.250000
+Ns 1.000000
+map_Kd l04_10_brick03_ALBM.tga
+map_Ks l04_10_brick03_ALBM.tga
+map_bump l04_10_brick04_NRMR.tga
+
+newmtl l02_pavement019
+Kd 0.200000 0.200000 0.200000
+Ks 0.250000 0.250000 0.250000
+Ns 1.000000
+map_Kd l02_pavement06_ALBM.tga
+map_Ks l02_pavement06_ALBM.tga
+map_bump l02_pavement06_NRMR.tga
+
+newmtl l04_10_brick05
+Kd 0.741176 0.482353 0.376471
+Ks 0.250000 0.250000 0.250000
+Ns 1.000000
+map_Kd l04_10_brick00_ALBM.tga
+map_Ks l04_10_brick00_ALBM.tga
+map_bump l04_10_brick00_NRMR.tga
+
+newmtl l04_10_iron017
+Kd 1.000000 1.000000 1.000000
+Ks 0.250000 0.250000 0.250000
+Ns 1.000000
+map_Kd l04_10_iron00_ALBM.tga
+map_Ks l04_10_iron00_ALBM.tga
+map_bump l04_10_iron00_NRMR.tga
+
+newmtl l04_10_iron018
+Kd 1.000000 1.000000 1.000000
+Ks 0.250000 0.250000 0.250000
+Ns 1.000000
+map_Kd l04_10_iron01_ALBM.tga
+map_Ks l04_10_iron01_ALBM.tga
+map_bump l04_10_iron01_NRMR.tga
+
+newmtl l04_10_iron019
+Kd 1.000000 1.000000 1.000000
+Ks 0.250000 0.250000 0.250000
+Ns 1.000000
+map_Kd l04_10_iron06_ALBM.tga
+map_Ks l04_10_iron06_ALBM.tga
+map_bump l04_10_iron06_NRMR.tga
+
+newmtl l04_10_iron020
+Kd 1.000000 1.000000 1.000000
+Ks 0.250000 0.250000 0.250000
+Ns 1.000000
+map_Kd l04_10_iron07_ALBM.tga
+map_Ks l04_10_iron07_ALBM.tga
+map_bump l04_10_iron07_NRMR.tga
+
+newmtl l04_10_stone08
+Kd 0.400000 0.400000 0.400000
+Ks 0.250000 0.250000 0.250000
+Ns 1.000000
+map_Kd l04_10_stone03_ALBM.tga
+map_Ks l04_10_stone03_ALBM.tga
+map_bump l04_10_stone03_NRMR.tga
+
+newmtl l11_concreteA_Mat5
+Kd 0.560784 0.560784 0.560784
+Ks 0.250000 0.250000 0.250000
+Ns 1.000000
+map_Kd l11_concreteA_ALBM.tga
+map_Ks l11_concreteA_ALBM.tga
+map_bump l11_concreteA_NRMR.tga
+
+newmtl m02_asphalt08
+Kd 0.200000 0.200000 0.200000
+Ks 0.250000 0.250000 0.250000
+Ns 1.000000
+map_Kd m02_asphalt02_ALBM.tga
+map_Ks m02_asphalt02_ALBM.tga
+map_bump m02_asphalt02_NRMR.tga
+
+newmtl m02_pavement010
+Kd 0.200000 0.200000 0.200000
+Ks 0.250000 0.250000 0.250000
+Ns 1.000000
+map_Kd m02_pavement05_ALBM.tga
+map_Ks m02_pavement05_ALBM.tga
+map_bump m02_pavement05_NRMR.tga
+

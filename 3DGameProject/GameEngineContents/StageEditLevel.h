@@ -3,6 +3,8 @@
 
 class StageEditLevel : public StageBaseLevel
 {
+	friend class StageEditGUI;
+
 public:
 	StageEditLevel();
 	~StageEditLevel();
@@ -16,10 +18,11 @@ protected:
 	void Update(float _DeltaTime) override;
 	void LevelChangeStart() override;
 	void LevelChangeEnd() override;
+
 private:
+	std::shared_ptr<class FreeCameraActor> FreeCam = nullptr;
 	std::shared_ptr<GameEngineGUIWindow> Editor = nullptr;
 	std::shared_ptr<class EngineGrid> Grid = nullptr;
-	std::shared_ptr<class FreeCameraActor> FreeCam = nullptr;
 	bool IsResourceLoaded = false;
 };
 

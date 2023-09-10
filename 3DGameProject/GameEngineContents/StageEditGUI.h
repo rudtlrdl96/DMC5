@@ -19,7 +19,7 @@ protected:
 
 private:
 	//부모 레벨
-	class StageBaseLevel* Parent = nullptr;
+	class StageEditLevel* Parent = nullptr;
 
 	//상용 함수
 	static std::string GetOpenFilePath(); //파일 불러오기
@@ -29,26 +29,10 @@ private:
 
 	//Data 관련
 	std::vector<StageData> AllData;
-	template <typename T>
-	void pushback_Data(std::vector<T>& _Vector)
-	{
-		_Vector.emplace_back();
-	}
-
-	template <typename T>
-	void erase_Data(std::vector<T>& _Vector, size_t _current)
-	{
-		if (_Vector.size() <= _current)
-		{
-			return;
-		}
-		_Vector.erase(_Vector.begin() + _current);
-	}
 
 	void SaveStageData();
 	void LoadStageData(std::shared_ptr<GameEngineLevel> _Level);
 	void CreateStage(StageData _Data);
-	bool IsCreateStage = false;
 
 	//Stage 관련
 	size_t Stage_current = 0;
@@ -56,20 +40,29 @@ private:
 	void StageListBox(std::shared_ptr<GameEngineLevel> _Level);
 	void InputStageInfo(std::shared_ptr<GameEngineLevel> _Level);
 
+	void InputSkyBox();
+	void InputMapCol();
+	void InputFieldMap();
+	
 	//FieldMap 관련
-	int MapBundleIndex = 0;
-	int MapBundle_current = 0;
 	size_t FieldMap_current = 0;
-	void MapBundleCombo();
-	void FieldMapAddButton();
 	void FieldMapCombo();
-	void FieldMapTransformEditUI(std::shared_ptr<GameEngineObject> _Obj = nullptr);
+	
+	//맵렌더러 관련
+	size_t MapParts_current = 0;
+	void InputMapParts();
+	void MapPartsCombo();
 
-	//NavMesh 관련
-	
-	
-	//Collision 관련
-	//size_t Collision_current = 0;
-	//void FieldMapColList();
+	//맵 컬링 콜리전 관련
+	size_t CullingCol_current = 0;
+	void InputCullingCol();
+	void CullingColCombo();
+
+	//맵 컬링 노드 관련
+	std::vector<bool> NodeCheckBool;
+
+	void InputNode();
+	void NodeCheckBox();
+
 };
 

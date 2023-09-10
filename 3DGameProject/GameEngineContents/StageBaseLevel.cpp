@@ -69,67 +69,85 @@ void StageBaseLevel::SetCamera(float4 _Position)
 	GetMainCamera()->GetTransform()->SetLocalPosition(_Position);
 }
 
-void StageBaseLevel::EraseStageFieldMap(int _mapbundleindex, int _mapindex)
+//void StageBaseLevel::FieldMapOn(int _Index)
+//{
+//	if (_Index == -1)
+//	{
+//		for (auto& i : AcFieldMaps)
+//		{
+//			for (auto& j : i.second)
+//			{
+//				j->On();
+//			}
+//		}
+//
+//	}
+//	else
+//	{
+//		if (AcFieldMaps.find(_Index) == AcFieldMaps.end())
+//		{
+//			return;
+//		}
+//		std::vector<std::shared_ptr<FieldMap>>& tempFieldMap = AcFieldMaps.find(_Index)->second;
+//		for (size_t i = 0; i < tempFieldMap.size(); i++)
+//		{
+//			tempFieldMap[i]->On();
+//		}
+//	}
+//}
+//
+//void StageBaseLevel::FieldMapOff(int _Index)
+//{
+//	if (_Index == -1)
+//	{
+//		for (auto& i : AcFieldMaps)
+//		{
+//			for (auto& j : i.second)
+//			{
+//				j->Off();
+//			}
+//		}
+//	}
+//	else
+//	{
+//		if (AcFieldMaps.find(_Index) == AcFieldMaps.end())
+//		{
+//			return;
+//		}
+//		std::vector<std::shared_ptr<FieldMap>>& tempFieldMap = AcFieldMaps.find(_Index)->second;
+//		for (size_t i = 0; i < tempFieldMap.size(); i++)
+//		{
+//			tempFieldMap[i]->Off();
+//		}
+//	}
+//}
+
+void StageBaseLevel::EraseStageFieldMap()
 {
-	if (AcFieldMaps.size() <= _mapbundleindex)
+	if (AcFieldMaps.empty())
 	{
 		return;
 	}
 
-	if (AcFieldMaps.size() <= _mapindex)
+	for (size_t i = 0; i < AcFieldMaps.size(); i++)
 	{
-		return;
+		AcFieldMaps[i]->EraseFieldMap();
+		AcFieldMaps[i] = nullptr;
 	}
-
-	if (_mapbundleindex == -1)
-	{
-		for (auto& i : AcFieldMaps)
-		{
-			for (size_t j = 0; j < i.second.size(); j++)
-			{
-				i.second[j]->Death();
-				i.second[j] = nullptr;
-			}
-			i.second.clear();
-		}
-		AcFieldMaps.clear();
-	}
-
-	if (_mapindex == -1)
-	{
-		for (size_t j = 0; j < AcFieldMaps.find(_mapbundleindex)->second.size(); j++)
-		{
-			AcFieldMaps.find(_mapbundleindex)->second[j]->Death();
-			AcFieldMaps.find(_mapbundleindex)->second[j] = nullptr;
-		}
-		AcFieldMaps.find(_mapbundleindex)->second.clear();
-	}
-
-	AcFieldMaps.find(_mapbundleindex)->second[_mapindex]->Death();
-	AcFieldMaps.find(_mapbundleindex)->second[_mapindex] = nullptr;
-	AcFieldMaps.find(_mapbundleindex)->second.erase(AcFieldMaps.find(_mapbundleindex)->second.begin() + _mapindex);
+	AcFieldMaps.clear();
 }
 
-void StageBaseLevel::CreateStageFieldMap(const std::map<int, std::vector<FieldMapData>>& _MapDatas)
+void StageBaseLevel::CreateStageFieldMap(const std::vector<FieldMapData>& _MapDatas)
 {
-	//AcFieldMaps.resize(_MapDatas.size());
-	for (auto& i : _MapDatas)
+	if (_MapDatas.empty())
 	{
-		int temp_first = i.first;
-		std::vector<std::shared_ptr<FieldMap>> temp_second;
-		temp_second.resize(i.second.size());
-		for (size_t j = 0; j < temp_second.size(); j++)
-		{
-			temp_second[j] = FieldMap::CreateFieldMap
-			(
-				this,
-				i.second[j].MeshFileName,
-				i.second[j].FieldMapPosition,
-				i.second[j].FieldMapScale,
-				i.second[j].FieldMapRotation
-			);
-		}
-		AcFieldMaps.insert(std::make_pair(temp_first, temp_second));
+		return;
+	}
+
+	AcFieldMaps.resize(_MapDatas.size());
+	for (size_t i = 0; i < AcFieldMaps.size(); i++)
+	{
+		AcFieldMaps[i] = FieldMap::CreateFieldMap(this, _MapDatas[i].PartsMeshFileNames, _MapDatas[i].CullingColTransform);
 	}
 }
 
@@ -174,6 +192,10 @@ void StageBaseLevel::EraseGroundCol()
 
 void StageBaseLevel::ClearStage()
 {
+	if (StageName == "")
+	{
+		return;
+	}
 	StageName = "";
 	EraseStageFieldMap();
 	EraseSkyBox();

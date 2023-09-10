@@ -16,6 +16,9 @@ public:
 	StageBaseLevel& operator=(StageBaseLevel&& _Other) noexcept = delete;
 
 	void SetCamera(float4 _Position);
+
+	//void FieldMapOn(int _Index = -1);
+	//void FieldMapOff(int _Index = -1);
 	
 protected:
 	static std::vector<StageData> AllStageDatas;
@@ -27,7 +30,7 @@ protected:
 	void LevelChangeStart() override;
 
 	std::string StageName = "";
-	std::map<int, std::vector<std::shared_ptr<class FieldMap>>> AcFieldMaps;
+	std::vector<std::shared_ptr<class FieldMap>> AcFieldMaps;
 	std::shared_ptr<class SkyBox> AcSkyBox = nullptr;
 	std::shared_ptr<class MapCollisionMesh> AcGroundCol = nullptr;
 	std::shared_ptr<class MapCollisionMesh> AcWallCol = nullptr;
@@ -37,8 +40,8 @@ protected:
 private:
 	//std::shared_ptr<class ContentGrid> DebugGrid = nullptr;
 
-	void CreateStageFieldMap(const std::map<int, std::vector<FieldMapData>>& _MapDatas);
-	void EraseStageFieldMap(int _mapbundleindex = -1, int _mapindex = -1);
+	void CreateStageFieldMap(const std::vector<FieldMapData>& _MapDatas);
+	void EraseStageFieldMap();
 	void CreateSkyBox(const std::string_view& _MeshFileName);
 	void EraseSkyBox();
 	void CreateGroundCol(const std::string_view& _MeshFileName);

@@ -9,6 +9,7 @@
 #include "StageEditGUI.h"
 #include "FreeCameraActor.h"
 
+
 StageEditLevel::StageEditLevel()
 {
 }
@@ -41,6 +42,8 @@ void StageEditLevel::Start()
 
 	Grid = CreateActor<EngineGrid>();
 	FreeCam = CreateActor<FreeCameraActor>();
+
+	IsDebugSwitch();
 }
 
 void StageEditLevel::Update(float _DeltaTime)
@@ -82,7 +85,6 @@ void StageEditLevel::LevelChangeStart()
 			}
 		}
 	}
-	
 }
 
 void StageEditLevel::LevelChangeEnd()

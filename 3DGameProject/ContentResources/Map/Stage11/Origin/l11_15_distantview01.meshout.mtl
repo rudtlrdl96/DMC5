@@ -1,0 +1,16 @@
+newmtl bossarea_rooptest_lambert41
+Kd 1.000000 1.000000 1.000000
+Ks 0.250000 0.250000 0.250000
+Ns 1.000000
+map_Kd sm0703_land_A_ALBM.tga
+map_Ks sm0703_land_A_ALBM.tga
+map_bump sm0703_land_A_NRMR.tga
+
+newmtl l09_01_rock1
+Kd 1.000000 1.000000 1.000000
+Ks 0.250000 0.250000 0.250000
+Ns 1.000000
+map_Kd l09_01_rock12_ALBM.tga
+map_Ks l09_01_rock12_ALBM.tga
+map_bump l09_01_rock12_NRMR.tga
+
