@@ -208,7 +208,6 @@ void GameEngineLevel::Render(float _DeltaTime)
 	}
 
 	LastTarget->Effect(_DeltaTime);
-
 	LastTarget->Setting();
 
 	GameEngineDevice::GetBackBufferTarget()->Merge(LastTarget);

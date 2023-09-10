@@ -55,6 +55,9 @@
     <FxCompile Include="ClipEffectMesh.hlsl">
       <Filter>Effect</Filter>
     </FxCompile>
+    <FxCompile Include="CubemapMergeShader.hlsl">
+      <Filter>Cubemap</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
@@ -68,6 +71,9 @@
     </Filter>
     <Filter Include="Effect">
       <UniqueIdentifier>{d3f088ad-72bf-4607-bc38-e6765577e202}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cubemap">
+      <UniqueIdentifier>{555a44d2-9b7c-4093-8b6d-200ddabc0ef7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -15,6 +15,7 @@
 
 #include "ShaderTestActor.h"
 #include "FreeCameraActor.h"
+#include "ReflectionProbe.h"
 
 TestStageLevel* TestStageLevel::Inst = nullptr;
 
@@ -39,11 +40,25 @@ void TestStageLevel::Start()
 
 	StageBaseLevel::Start();
 
+	if (false == GameEngineInput::IsKey("RefTestKey"))
+	{
+		GameEngineInput::CreateKey("RefTestKey", VK_SPACE);
+	}
+
 }
 
 void TestStageLevel::Update(float _DeltaTime)
 {
 	StageBaseLevel::Update(_DeltaTime);
+
+	if (true == GameEngineInput::IsDown("RefTestKey"))
+	{
+		std::shared_ptr<GameEngineActor> TempActor = CreateActor<GameEngineActor>();
+		TempActor->GetTransform()->SetLocalPosition(float4(0, 100, 0));
+
+		std::shared_ptr<ReflectionProbe> Reflect = TempActor->CreateComponent<ReflectionProbe>();
+		Reflect->Init("Temp.png");
+	}
 }
 
 void TestStageLevel::LevelChangeStart()
@@ -67,7 +82,6 @@ void TestStageLevel::LevelChangeStart()
 
 
 	SetCamera({ 0,0,-500 });
-
 	CreateStage(AllStageDatas[0]);
 
 	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();

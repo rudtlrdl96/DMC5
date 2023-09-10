@@ -172,6 +172,17 @@ void ContentsCore::ContentsResourcesCreate()
 //////////////////////////////////////////////////////////////////// Create PipeLine ///////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	// Merge
+	{
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("CubemapMerge");
+
+		Pipe->SetVertexShader("CubemapMergeShader.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("CubemapMergeShader.hlsl");
+		Pipe->SetBlendState("MergeBlend");
+		Pipe->SetDepthState("EngineDepth");
+	}
+
 	// 2D Sprite
 	{
 		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("My2DTexture");

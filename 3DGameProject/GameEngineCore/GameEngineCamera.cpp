@@ -19,6 +19,46 @@ GameEngineCamera::~GameEngineCamera()
 {
 }
 
+void GameEngineCamera::CaptureCubemap(std::shared_ptr<GameEngineRenderTarget> _MergeTarget, const float4& _Pos, const float4& _Rot, const float4& _CaptureScale /*= float4(128, 128)*/)
+{
+	TransformData CurTransData = GetTransform()->GetTransDataRef();
+	
+	GetTransform()->SetWorldPosition(_Pos);
+	GetTransform()->SetWorldRotation(_Rot);
+	
+	float CurWidth = Width;
+	float CurHeight = Height;
+	
+	Width = _CaptureScale.x;
+	Height = _CaptureScale.y;
+
+	CamTarget->Clear();
+	CamForwardTarget->Clear();
+	CamDeferrdTarget->Clear();
+	CamAlphaTarget->Clear();
+	AllRenderTarget->Clear();
+
+	CameraTransformUpdate();
+	ViewPortSetting();
+	AllRenderTarget->Clear();
+	AllRenderTarget->Setting();
+	Render(0.0f);
+
+	_MergeTarget->Clear();
+	_MergeTarget->Merge(CamTarget);
+
+	CamTarget->Clear();
+	CamForwardTarget->Clear();
+	CamDeferrdTarget->Clear();
+	CamAlphaTarget->Clear();
+	AllRenderTarget->Clear();
+
+	Width = CurWidth;
+	Height = CurHeight;
+	
+	GetTransform()->SetTransformData(CurTransData);
+}
+
 void GameEngineCamera::Start()
 {
 	if (false == GameEngineInput::IsKey("CamMoveLeft"))
@@ -378,7 +418,7 @@ void GameEngineCamera::CameraTransformUpdate()
 		break;
 	}
 
-	ViewPort.ViewPort(GameEngineWindow::GetScreenSize().x, GameEngineWindow::GetScreenSize().y, 0.0f, 0.0f);
+	ViewPort.ViewPort(Width, Height, 0.0f, 0.0f);
 
 	float4 WorldPos = GetTransform()->GetWorldPosition();
 	float4 Dir = GetTransform()->GetLocalForwardVector();

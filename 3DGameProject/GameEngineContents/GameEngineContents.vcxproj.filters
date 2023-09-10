@@ -358,6 +358,9 @@
     <ClInclude Include="ShopLevel.h">
       <Filter>UI\UI_Level\Shop</Filter>
     </ClInclude>
+    <ClInclude Include="ReflectionProbe.h">
+      <Filter>Component\Light</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -702,6 +705,9 @@
     <ClCompile Include="ShopLevel.cpp">
       <Filter>UI\UI_Level\Shop</Filter>
     </ClCompile>
+    <ClCompile Include="ReflectionProbe.cpp">
+      <Filter>Component\Light</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
@@ -931,6 +937,9 @@
     </Filter>
     <Filter Include="UI\UI_Actor\ShopUI\VergilShopUI">
       <UniqueIdentifier>{0ad76571-dc6e-4190-868c-f1bcd206ef0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Light">
+      <UniqueIdentifier>{ef3c6322-abc7-42f5-8d92-d842b4482801}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
