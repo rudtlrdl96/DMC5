@@ -112,6 +112,7 @@ private:
 	float4 MoveVector;
 	GameEngineTransform* PlayerTransform = nullptr;
 	GameEngineTransform* CameraTransform = nullptr;
+	class BasePlayerActor* Actor = nullptr;
 	CommandRecord Command;
 
 	// °Ë

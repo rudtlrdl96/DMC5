@@ -30,12 +30,17 @@ void BasePlayerActor::LookDir(const float4& _LookDir)
  	float4 LocalForward = GetTransform()->GetWorldForwardVector().NormalizeReturn();
 	float4 LookDir = _LookDir.NormalizeReturn();
  	float Dot = float4::DotProduct3D(LocalForward, LookDir); 
-	if (1.0f < Dot || Dot == 0.0f)
+	if (1.0f < Dot || Dot == 0.0f || LocalForward == LookDir)
 	{
 		return;
 	}
 	float Angle = acosf(Dot) * GameEngineMath::RadToDeg;
 	float4 Cross = float4::Cross3DReturnNormal(LocalForward, LookDir);
+
+	if (std::isnan(Angle)) 
+	{
+		return; 
+	}
 
 	if (Cross.y < 0.0f)
 	{
@@ -51,16 +56,21 @@ void BasePlayerActor::LookDir(const float4& _LookDir)
 
 void BasePlayerActor::LookTarget()
 {
-	if (nullptr == LockOnEnemyTransform)
+	if (nullptr == LockOnEnemyTransform || LockOnEnemyTransform->GetWorldPosition() == GetTransform()->GetWorldPosition())
 	{
 		return;
 	}
 
-	float4 LocalForward = GetTransform()->GetWorldLeftVector();
-	float4 LookDir = (LockOnEnemyTransform->GetWorldPosition() - GetTransform()->GetWorldPosition()).NormalizeReturn();
+	float4 LocalForward = GetTransform()->GetWorldLeftVector().NormalizeReturn();
+	float4 LookDir = LockOnEnemyTransform->GetWorldPosition() - GetTransform()->GetWorldPosition();
+	LookDir.y = 0;
+	LookDir.Normalize();
 	float4 Cross = float4::Cross3DReturnNormal(LocalForward, LookDir);
 	float Dot = float4::DotProduct3D(LocalForward, LookDir);
-
+	if (std::isnan(Dot))
+	{
+		return;
+	}
 	if (Cross.y <= 0.0f)
 	{
 		Rot.y += 180;
@@ -79,13 +89,16 @@ void BasePlayerActor::RotationToDir(const float4& _Dir, float _MaxValue)
 	float4 LocalForward = GetTransform()->GetWorldForwardVector().NormalizeReturn();
 	float4 LookDir = _Dir.NormalizeReturn();
 	float Dot = float4::DotProduct3D(LocalForward, LookDir);
-	if (1.0f < Dot || Dot == 0.0f)
+	if (1.0f < Dot || Dot == 0.0f || LocalForward == LookDir)
 	{
 		return;
 	}
 	float Angle = acosf(Dot) * GameEngineMath::RadToDeg;
 	float4 Cross = float4::Cross3DReturnNormal(LocalForward, LookDir);
-
+	if (std::isnan(Angle))
+	{
+		return;
+	}
 	if (Cross.y < 0.0f)
 	{
 		Rot.y -= std::clamp(Angle, -_MaxValue, _MaxValue);
@@ -104,7 +117,10 @@ void BasePlayerActor::RotationToTarget(float _MaxValue /* = 360.0f */)
 	{
 		return;
 	}
-	RotationToDir((LockOnEnemyTransform->GetWorldPosition() - GetTransform()->GetWorldPosition()).NormalizeReturn(), _MaxValue);
+	float4 Dir = LockOnEnemyTransform->GetWorldPosition() - GetTransform()->GetWorldPosition();
+	Dir.y = 0;
+	Dir.Normalize();
+	RotationToDir(Dir, _MaxValue);
 }
 
 void BasePlayerActor::RotationToMoveVector(float _MaxValue)
@@ -259,7 +275,7 @@ void BasePlayerActor::LockOn()
 void BasePlayerActor::LockOff()
 {
 	LockOnEnemyTransform = nullptr;
-	//Camera->SetTargetTranform(nullptr);
+	Camera->SetTargetTranform(nullptr);
 }
 
 bool BasePlayerActor::FloorCheck()

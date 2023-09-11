@@ -1,7 +1,7 @@
 #include "PrecompileHeader.h"
 #include "PlayerController.h"
 #include "PlayerWindow.h"
-
+#include "BasePlayerActor.h"
 PlayerController::PlayerController() 
 {
 }
@@ -16,7 +16,17 @@ char PlayerController::MoveVectorToChar(const float4& _Value)
 	{
 		return 'n';
 	}
-	float4 ForwardVector = PlayerTransform->GetWorldForwardVector();	// 카메라상 정면
+	float4 ForwardVector;
+	if (nullptr != Actor->LockOnEnemyTransform)
+	{
+		ForwardVector = Actor->LockOnEnemyTransform->GetWorldPosition() - GetTransform()->GetWorldPosition();
+		ForwardVector.y = 0;
+		ForwardVector.Normalize();
+	}
+	else
+	{
+		ForwardVector = PlayerTransform->GetWorldForwardVector();	// 플레이어 정면
+	}
 	float4 Cross = float4::Cross3DReturnNormal(ForwardVector, _Value); // 외적
 	float Dot = float4::DotProduct3D(ForwardVector, _Value);
 
@@ -76,7 +86,17 @@ char PlayerController::MoveVectorToChar4(const float4& _Value)
 	{
 		return 'n';
 	}
-	float4 ForwardVector = PlayerTransform->GetWorldForwardVector();	// 카메라상 정면
+	float4 ForwardVector;
+	if (nullptr != Actor->LockOnEnemyTransform)
+	{
+		ForwardVector = Actor->LockOnEnemyTransform->GetWorldPosition() - GetTransform()->GetWorldPosition();
+		ForwardVector.y = 0;
+		ForwardVector.Normalize();
+	}
+	else
+	{
+		ForwardVector = PlayerTransform->GetWorldForwardVector();	// 플레이어 정면
+	}
 	float4 Cross = float4::Cross3DReturnNormal(ForwardVector, _Value); // 외적
 	float Dot = float4::DotProduct3D(ForwardVector, _Value);
 
@@ -116,7 +136,7 @@ char PlayerController::MoveVectorToChar4(const float4& _Value)
 
 void PlayerController::Start()
 {
-
+	Actor = dynamic_cast<BasePlayerActor*>(GetActor());
 	PlayerTransform = GetActor()->GetTransform();
 }
 
@@ -177,18 +197,10 @@ void PlayerController::MoveInput()
 
 void PlayerController::InputRecord()
 {
-	// 이동 입력 내역을 기록한다
-	char MoveChar = MoveVectorToChar(MoveVector);
 	Command.TimeCheck(GetLiveTime());
 
-	if (false == IsLockOn) { 
-		if (0 < Command.Size)
-		{
-			Command.ClearKey();
-		}
-		return;
-	}
-
+	// 이동 입력 내역을 기록한다
+	char MoveChar = MoveVectorToChar(MoveVector);
 	Command.AddKey(MoveVectorToChar(MoveVector), GetLiveTime());
 }
 
