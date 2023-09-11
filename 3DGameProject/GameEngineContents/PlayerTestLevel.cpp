@@ -75,7 +75,7 @@ void PlayerTestLevel::LevelChangeStart()
 	CollisionActor->GetTransform()->SetLocalScale({ 100, 100, 100 });
 	CollisionActor->GetTransform()->SetLocalPosition({ 100, 0, 100 });
 	Collision->SetColType(ColType::OBBBOX3D);
-	Collision->DebugOn();
+	//Collision->DebugOn();
 	//IsDebugSwitch();
 
 	//std::shared_ptr<TestObject> Component = CreateActor<TestObject>();

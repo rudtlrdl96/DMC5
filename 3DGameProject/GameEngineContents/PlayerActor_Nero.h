@@ -153,6 +153,7 @@ private:
 	// 데빌브레이커 버튼을 공중에서 입력한 경우 실행
 	bool Input_DevilBreakerCheckFly();
 
+	// 어떤 프레임이나 상관없이 캔슬하여 나가는 기술
 	bool Input_SpecialCheck();
 	bool Input_SpecialCheckFly();
 
@@ -170,6 +171,7 @@ private:
 	void SetGerbera();	// 거베라를 장착한 모습으로 지정
 	void SetBusterArm();	// 버스터암을 장착한 모습으로 지정
 	void SetOvertureAnimation();	// 오버추어 발사 애니메이션으로 지정
+	void OnDevilBraeker();
 	void OffDevilBraeker();
 
 	void AddBreaker(DevilBreaker _Breaker);
