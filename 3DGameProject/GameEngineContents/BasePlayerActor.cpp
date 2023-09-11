@@ -151,6 +151,10 @@ void BasePlayerActor::UserControllLoad()
 	PlayerCollision->GetTransform()->SetLocalScale({ 100, 100, 100 });
 	PlayerCollision->SetColType(ColType::OBBBOX3D);
 
+	EnemyStepCheckCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
+	EnemyStepCheckCollision->GetTransform()->SetLocalPosition({ 0, -100, 0 });
+	EnemyStepCheckCollision->GetTransform()->SetLocalScale({ 200, 300, 200 });
+	EnemyStepCheckCollision->SetColType(ColType::OBBBOX3D);
 	// 록온 용 충돌체
 	LockOnCollision = CreateComponent<GameEngineCollision>(CollisionOrder::PlayerLockOn);
 	LockOnCollision->GetTransform()->SetParent(Camera->GetCameraTarget());

@@ -3,6 +3,7 @@
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/PhysXCapsuleComponent.h>
 #include <GameEngineCore/GameEngineFBXAnimation.h>
+#include <GameEngineCore/GameEngineCollision.h>
 #include "AnimationEvent.h"
 #include "PlayerController.h"
 #include "NetworkManager.h"
@@ -134,7 +135,7 @@ void PlayerActor_Nero::PlayerLoad()
 				std::bind(&PlayerActor_Nero::DestroyBreaker, this),
 			},
 			.CallBacks_int = {
-				std::bind(&GameEngineFSM::ChangeState, &FSM, std::placeholders::_1)
+				std::bind(&PlayerActor_Nero::ChangeState, this, std::placeholders::_1)
 			},
 			.CallBacks_float = {
 				std::bind(&BasePlayerActor::RotationToTarget, this, std::placeholders::_1),
@@ -556,9 +557,8 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->TurnOnGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->SetMove(Controller->GetMoveVector() * 500);
-				InputCheck = false;
 				WeaponIdle();
-				Renderer->ChangeAnimation("pl0000_Jump_2ndJump");
+				Renderer->ChangeAnimation("pl0000_Jump_2ndJump", true);
 			},
 			.Update = [=](float _DeltaTime) {
 				if (Renderer->IsAnimationEnd())
@@ -566,7 +566,6 @@ void PlayerActor_Nero::PlayerLoad()
 					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
 				}
 				if (true == Input_SpecialCheckFly()) { return; }
-				if (false == InputCheck) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly()) { return; }
 				if (true == Input_GunCheckFly()) { return; }
@@ -583,9 +582,8 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->TurnOnGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->SetMove(Controller->GetMoveVector() * 500);
-				InputCheck = false;
 				WeaponIdle();
-				Renderer->ChangeAnimation("pl0000_Jump_Back_2ndJump");
+				Renderer->ChangeAnimation("pl0000_Jump_Back_2ndJump", true);
 			},
 			.Update = [=](float _DeltaTime) {
 				if (Renderer->IsAnimationEnd())
@@ -593,7 +591,6 @@ void PlayerActor_Nero::PlayerLoad()
 					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
 				}
 				if (true == Input_SpecialCheckFly()) { return; }
-				if (false == InputCheck) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly()) { return; }
 				if (true == Input_GunCheckFly()) { return; }
@@ -2012,6 +2009,35 @@ void PlayerActor_Nero::PlayerLoad()
 			}
 			});
 
+		// EnemyStep
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_EnemyStep,
+			.Start = [=] {
+				WeaponIdle();
+				UseDoubleJump = false;
+				PhysXCapsule->SetLinearVelocityZero();
+				PhysXCapsule->TurnOffGravity();
+				Renderer->ChangeAnimation("pl0000_EnemyStep", true);
+			},
+			.Update = [=](float _DeltaTime) {
+				if (true == Input_SwordCheckFly()) { return; }
+				if (true == Input_GunCheckFly()) { return; }
+				if (true == Input_DevilBreakerCheckFly()) { return; }
+				if (Renderer->IsAnimationEnd())
+				{
+					if ('2' == Controller->MoveVectorToChar4(Controller->GetMoveVector()))
+					{
+						ChangeState(FSM_State_Nero::Nero_2nd_Jump_Back);
+						return;
+					}
+					ChangeState(FSM_State_Nero::Nero_2nd_Jump);
+					return;
+				}
+			},
+			.End = [=] {
+			}
+			});
+
+
 		// Provocation 1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Provocation,
 		.Start = [=] {
@@ -2959,6 +2985,15 @@ bool PlayerActor_Nero::Input_SpecialCheck()
 
 bool PlayerActor_Nero::Input_SpecialCheckFly()
 {
+	if (Controller->GetIsAnyJump())
+	{
+		std::vector<std::shared_ptr<GameEngineCollision>> Cols;
+		if (true == EnemyStepCheckCollision->CollisionAll(CollisionOrder::Enemy, Cols))
+		{
+			ChangeState(FSM_State_Nero::Nero_EnemyStep);
+			return true;
+		}
+	}
 	if (Controller->GetIsDevilTrigger())
 	{
 		if (false == IsDevilTrigger)
@@ -2981,12 +3016,12 @@ bool PlayerActor_Nero::Input_SpecialCheckFly()
 	return false;
 }
 
-void PlayerActor_Nero::ChangeState(FSM_State_Nero _StateValue)
-{
-	FSM.ChangeState(_StateValue);
-	FSMValue = _StateValue;
-	NetworkManager::SendFsmChangePacket(this, _StateValue);
-}
+//void PlayerActor_Nero::ChangeState(FSM_State_Nero _StateValue)
+//{
+//	FSM.ChangeState(_StateValue);
+//	FSMValue = _StateValue;
+//	NetworkManager::SendFsmChangePacket(this, _StateValue);
+//}
 
 void PlayerActor_Nero::ChangeState(int _StateValue)
 {

@@ -72,8 +72,8 @@ void PlayerTestLevel::LevelChangeStart()
 	//Vergil->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
 	std::shared_ptr<GameEngineActor> CollisionActor = CreateActor<GameEngineActor>();
 	std::shared_ptr<GameEngineCollision> Collision = CollisionActor->CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
-	CollisionActor->GetTransform()->SetLocalScale({ 100, 100, 100 });
-	CollisionActor->GetTransform()->SetLocalPosition({ 100, 0, 100 });
+	CollisionActor->GetTransform()->SetLocalScale({ 100, 200, 100 });
+	CollisionActor->GetTransform()->SetLocalPosition({ 100, 100, 100 });
 	Collision->SetColType(ColType::OBBBOX3D);
 	//Collision->DebugOn();
 	//IsDebugSwitch();

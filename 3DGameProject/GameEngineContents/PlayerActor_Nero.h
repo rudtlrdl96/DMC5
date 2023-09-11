@@ -80,6 +80,7 @@ enum FSM_State_Nero
 	Nero_GT_AirBomb,
 	Nero_Provocation,
 	Nero_Provocation_Air,
+	Nero_EnemyStep,
 };
 
 class PlayerActor_Nero : public BasePlayerActor
@@ -157,7 +158,7 @@ private:
 	bool Input_SpecialCheck();
 	bool Input_SpecialCheckFly();
 
-	void ChangeState(FSM_State_Nero _StateValue);	// FSM 변경 함수
+	//void ChangeState(FSM_State_Nero _StateValue);	// FSM 변경 함수
 	void ChangeState(int _StateValue);	// FSM 변경 함수
 
 	void RedQueenOn();	// 레드퀸을 꺼낸 상태
