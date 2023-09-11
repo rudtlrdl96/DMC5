@@ -44,6 +44,7 @@ void Enemy_Empusa::EnemyTypeLoad()
 	EnemyHP = 0;
 	RN_Range = float4::ZERO;;
 	RN_Player = false;
+	MoveSpeed = 50.0f;
 }
 
 void Enemy_Empusa::EnemyAnimationLoad()
@@ -94,7 +95,7 @@ void Enemy_Empusa::Idle_Update(float _DeltaTime)
 {
 	if (true==RN_Player)
 	{
-		Move();
+		Move(_DeltaTime);
 	}
 }
 
@@ -138,6 +139,7 @@ void Enemy_Empusa::Attack_Update(float _DeltaTime)
 
 void Enemy_Empusa::Attack_Exit()
 {
+	ColValue = nullptr;
 }
 
 void Enemy_Empusa::Hit_Enter()
@@ -234,7 +236,7 @@ void Enemy_Empusa::RN_Idle()
 	}
 }
 
-void Enemy_Empusa::Move()
+void Enemy_Empusa::Move(float _DeltaTime)
 {
 	static bool Moves = true;
 	if (Moves == true)
@@ -244,7 +246,7 @@ void Enemy_Empusa::Move()
 	}
 	if (false == Moves)
 	{
-		ChasePlayer();
+		ChasePlayer(_DeltaTime);
 		EnemyRenderer->ChangeAnimation("em0100_biped_walk_loop");
 		if (MonsterAttackRange->Collision(CollisionOrder::Player, ColType::OBBBOX3D, ColType::OBBBOX3D))
 		{
@@ -252,5 +254,4 @@ void Enemy_Empusa::Move()
 			Moves = true;
 		}
 	}
-	
 }

@@ -115,9 +115,12 @@ protected:
 	std::shared_ptr<class GameEngineCollision> MonsterAttackRange = nullptr;
 	//자체Collision
 	std::shared_ptr<class GameEngineCollision> MonsterCollision = nullptr;
-
+	//Forward Collision
+	std::shared_ptr<class GameEngineCollision> ForWardCollision = nullptr;
+	std::shared_ptr<class GameEngineCollision> ColValue = nullptr;
 	GameEngineFSM EnemyFSM;
 
+	//하위에서 설정해줘야하는 Data들=====================================================
 	//Type+Data
 	EnemyCode EnemyCodeValue = EnemyCode::None;
 	EnemyType EnemyTypeValue  = EnemyType::None;
@@ -129,13 +132,15 @@ protected:
 	bool RN_Player = false;
 	//공격범위
 	float4 AttackRange = float4::ZERO;
+	float MoveSpeed = 0.0f;
+	//=================================================================================
 
 	bool IsSuperArmorValue = false;
 
 	std::function<void()> SuperArmorOn_Callback = nullptr;
 	std::function<void()> SuperArmorOff_Callback = nullptr;
 
-	void ChasePlayer();
+	void ChasePlayer(float _DeltaTime);
 	void SuperArmorOn();
 	void SuperArmorOff();
 
@@ -143,16 +148,7 @@ protected:
 	virtual void EnemyTypeLoad() = 0;
 	virtual void EnemyAnimationLoad() = 0;
 	virtual void EnemyCreateFSM() = 0;
-	/*{
-		ChasePlayer();
-		SuperArmorOn();
-		SuperArmorOff();
-	}*/
-
 private:
 	void UserUpdate(float _DeltaTime);
 	void ServerUpdate(float _DeltaTime);
-	/*std::function<void()> ChasePlayer = nullptr;
-	std::function<void()> SuperArmorOn = nullptr;
-	std::function<void()> SuperArmorOff = nullptr;*/
 };

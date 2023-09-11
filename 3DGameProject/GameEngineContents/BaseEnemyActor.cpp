@@ -191,6 +191,10 @@ void BaseEnemyActor::Start()
 	RN_MonsterCollision = CreateComponent<GameEngineCollision>(CollisionOrder::RN_Enemy);
 	//몬스터의 공격범위 Collision
 	MonsterAttackRange = CreateComponent<GameEngineCollision>(CollisionOrder::RN_Enemy);
+	//ForWardCollision
+	ForWardCollision = CreateComponent<GameEngineCollision>(CollisionOrder::RN_Enemy);
+	ForWardCollision->GetTransform()->SetWorldScale({50,500,5000});
+	ForWardCollision->SetColType(ColType::OBBBOX3D);
 	
 	//초기화
 	EnemyCodeValue = EnemyCode::None;
@@ -271,7 +275,7 @@ void BaseEnemyActor::SuperArmorOff()
 	}
 }
 
-void BaseEnemyActor::ChasePlayer()
+void BaseEnemyActor::ChasePlayer(float _DeltaTime)
 {
 	//Player를 인식했을때만
 	if (true == RN_Player)
@@ -283,6 +287,12 @@ void BaseEnemyActor::ChasePlayer()
 			float4 EnemyPosition = EnemyRenderer->GetTransform()->GetWorldPosition();
 			float4 PlayerPosition = Players->GetTransform()->GetWorldPosition();
 			CapsulCol->SetMove((PlayerPosition - EnemyPosition));
+		}
+		ColValue = ForWardCollision->Collision(CollisionOrder::Player, ColType::OBBBOX3D, ColType::OBBBOX3D);
+		if(nullptr== ColValue)
+		{
+			EnemyRenderer->GetTransform()->AddLocalRotation({ 0,2,0 });
+			ForWardCollision->GetTransform()->AddLocalRotation({ 0,2,0 });
 		}
 	}
 }
