@@ -22,6 +22,7 @@ void BlurEffect::Start(GameEngineRenderTarget* _Target)
 void BlurEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 {
 	ResultTarget->Clear();
+
 	BlurUnit->ShaderResHelper.SetTexture("DiffuseTex", _Target->GetTexture(0));
 	ResultTarget->Setting();
 	BlurUnit->Render(_DeltaTime);

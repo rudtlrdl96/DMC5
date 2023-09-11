@@ -22,9 +22,9 @@ OutPut Merge_VS(Input _Value)
 }
 
 Texture2D DiffuseTex : register(t0);
-SamplerState WRAPSAMPLER : register(s0);
+SamplerState CLAMPSAMPLER : register(s0);
 
-cbuffer CutData : register(b0)
+cbuffer CutData : register(b1)
 {
     float CutStartX;
     float CutEndX;
@@ -34,7 +34,7 @@ cbuffer CutData : register(b0)
 
 float4 Merge_PS(OutPut _Value) : SV_Target0
 {
-    float2 UV = _Value.UV.xy;
+    float2 UV = _Value.UV.xy;    
     
     if (UV.x < CutStartX || UV.x > CutEndX)
     {
@@ -46,11 +46,11 @@ float4 Merge_PS(OutPut _Value) : SV_Target0
         clip(-1);
     }
     
-    UV.x = map(UV.x, 0.0f, 1.0f, CutStartX, CutEndX);
-    UV.y = map(UV.y, 0.0f, 1.0f, CutStartY, CutEndY);
+    UV.x = map(UV.x, CutStartX, CutEndX, 0.0f, 1.0f);
+    UV.y = map(UV.y, CutStartY, CutEndY, 0.0f, 1.0f);
     
-    float4 Color = DiffuseTex.Sample(WRAPSAMPLER, UV);
-       
+    float4 Color = DiffuseTex.Sample(CLAMPSAMPLER, UV);
+    
     Color.a = saturate(Color.a);
     
     return Color;

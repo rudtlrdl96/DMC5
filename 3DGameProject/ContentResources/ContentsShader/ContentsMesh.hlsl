@@ -85,10 +85,10 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     // r = Alpha, gba = sss (subsurface scattering)
     float4 AtosData = SpecularTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
                    
-    //if (0.0f >= AtosData.a)
-    //{
-    //    clip(-1);
-    //}
+    if (0.0f >= AtosData.a)
+    {
+        clip(-1);
+    }
     
     Result.PosTarget = _Input.VIEWPOSITION;    
     Result.DifTarget = float4(AlbmData.r, AlbmData.g, AlbmData.b, AtosData.r);

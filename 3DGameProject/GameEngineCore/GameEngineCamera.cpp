@@ -38,6 +38,8 @@ void GameEngineCamera::CaptureCubemap(std::shared_ptr<GameEngineRenderTarget> _M
 	CamAlphaTarget->Clear();
 	AllRenderTarget->Clear();
 
+	// Light
+
 	CameraTransformUpdate();
 	ViewPortSetting();
 	AllRenderTarget->Clear();
@@ -46,12 +48,6 @@ void GameEngineCamera::CaptureCubemap(std::shared_ptr<GameEngineRenderTarget> _M
 
 	_MergeTarget->Clear();
 	_MergeTarget->Merge(CamTarget);
-
-	CamTarget->Clear();
-	CamForwardTarget->Clear();
-	CamDeferrdTarget->Clear();
-	CamAlphaTarget->Clear();
-	AllRenderTarget->Clear();
 
 	Width = CurWidth;
 	Height = CurHeight;
@@ -378,13 +374,14 @@ void GameEngineCamera::Render(float _DeltaTime)
 		DeferredLightTarget->Clear();
 		DeferredLightTarget->Setting();
 		CalLightUnit.Render(_DeltaTime);
-
+		
 		CamDeferrdTarget->Clear();
 		CamDeferrdTarget->Setting();
 		DefferdMergeUnit.Render(_DeltaTime);
+		DefferdMergeUnit.ShaderResHelper.AllResourcesReset();
 
 		CamForwardTarget->Clear();
-		CamForwardTarget->Merge(AllRenderTarget, 0);
+		CamForwardTarget->Merge(AllRenderTarget);
 
 		CamTarget->Clear();
 		CamTarget->Merge(CamForwardTarget);
@@ -427,28 +424,6 @@ void GameEngineCamera::CameraTransformUpdate()
 	Box.Extents.x = Width * 0.6f;
 	Box.Extents.y = Height * 0.6f;
 	Box.Orientation = GetTransform()->GetWorldQuaternion().DirectFloat4;
-}
-
-void GameEngineCamera::ForwardMerge(float _DeltaTime)
-{
-	CamForwardTarget->Clear();
-	CamForwardTarget->Merge(AllRenderTarget, 0);
-	CamForwardTarget->Effect(_DeltaTime);
-}
-
-void GameEngineCamera::DeferredMerge(float _DeltaTime)
-{
-	DeferredLightTarget->Clear();
-	DeferredLightTarget->Setting();
-	CalLightUnit.Render(_DeltaTime);
-
-	CamDeferrdTarget->Clear();
-	CamDeferrdTarget->Setting();
-	DefferdMergeUnit.Render(_DeltaTime);
-
-	CamTarget->Clear();
-	CamTarget->Merge(CamForwardTarget);
-	CamTarget->Merge(CamDeferrdTarget);
 }
 
 void GameEngineCamera::PushRenderer(std::shared_ptr<GameEngineRenderer> _Render)

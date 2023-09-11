@@ -199,7 +199,7 @@ void GameEngineLevel::Render(float _DeltaTime)
 		{
 			ScreenShootTarget->Clear();
 			ScreenShootTarget->Merge(Target);
-			ScreenShootTarget->Setting();
+			//ScreenShootTarget->Setting();
 		}
 
 		//CubeTarget->Clear();

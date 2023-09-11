@@ -8,10 +8,10 @@ private:
 	class CubeCaptureData
 	{
 	public:
-		float CutStartX = 0.0f;
-		float CutEndX = 1.0f;
-		float CutStartY = 0.0f;
-		float CutEndY = 1.0f;
+		float CutStartX;
+		float CutEndX;
+		float CutStartY;
+		float CutEndY;
 	};
 
 	static bool RenderTargetInit;

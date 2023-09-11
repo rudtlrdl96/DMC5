@@ -151,6 +151,10 @@ public:
 	// 모든 랜더 유닛의 텍스쳐를 변경합니다.
 	void SetTexture(const std::string_view& _SettingName, const std::string_view& _ImageName);
 
+	// 모든 랜더 유닛을 탐색하며 DiffuseTexture 의 이름이 일치하는 유닛의 _DiffuseTexture를 세팅합니다.
+	// 반드시 DiffuseTexture가 먼저 세팅되어야 합니다
+	void SetDiffuseTexture(const std::string_view& _OldDiffuseTexture, const std::string_view& _NewsDiffuseTexture);
+
 	// 모든 랜더 유닛을 탐색하며 DiffuseTexture 의 이름이 일치하는 유닛의 SpecularTexture를 세팅합니다.
 	// 반드시 DiffuseTexture가 먼저 세팅되어야 합니다.
 	void SetSpecularTexture(const std::string_view& _DiffuseTexture, const std::string_view& _SpecularTexture);
