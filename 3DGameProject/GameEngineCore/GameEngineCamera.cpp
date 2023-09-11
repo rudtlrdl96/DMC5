@@ -19,7 +19,7 @@ GameEngineCamera::~GameEngineCamera()
 {
 }
 
-void GameEngineCamera::CaptureCubemap(std::shared_ptr<GameEngineRenderTarget> _MergeTarget, const float4& _Pos, const float4& _Rot, const float4& _CaptureScale /*= float4(128, 128)*/)
+void GameEngineCamera::CaptureCubemap(const float4& _Pos, const float4& _Rot, const float4& _CaptureScale /*= float4(128, 128)*/)
 {
 	TransformData CurTransData = GetTransform()->GetTransDataRef();
 	
@@ -38,16 +38,20 @@ void GameEngineCamera::CaptureCubemap(std::shared_ptr<GameEngineRenderTarget> _M
 	CamAlphaTarget->Clear();
 	AllRenderTarget->Clear();
 
-	// Light
-
 	CameraTransformUpdate();
 	ViewPortSetting();
-	AllRenderTarget->Clear();
+
+	// Light
+	GetLevel()->LightDataObject.LightCount = 0;
+	for (std::shared_ptr<GameEngineLight> Light : GetLevel()->AllLight)
+	{
+		Light->LightUpdate(this, 0.0f);
+		GetLevel()->LightDataObject.AllLight[GetLevel()->LightDataObject.LightCount] = Light->GetLightData();
+		++GetLevel()->LightDataObject.LightCount;
+	}
+
 	AllRenderTarget->Setting();
 	Render(0.0f);
-
-	_MergeTarget->Clear();
-	_MergeTarget->Merge(CamTarget);
 
 	Width = CurWidth;
 	Height = CurHeight;

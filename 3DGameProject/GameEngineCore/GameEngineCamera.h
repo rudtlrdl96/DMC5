@@ -123,7 +123,7 @@ public:
 		return ZoomRatio;
 	}
 
-	void CaptureCubemap(std::shared_ptr<GameEngineRenderTarget> _MergeTarget, const float4& _Pos, const float4& _Rot, const float4& _CaptureScale = float4(128, 128));
+	void CaptureCubemap(const float4& _Pos, const float4& _Rot, const float4& _CaptureScale = float4(128, 128));
 
 protected:
 	void Start() override;

@@ -163,7 +163,11 @@ void GameEngineLevel::Render(float _DeltaTime)
 
 		std::shared_ptr<GameEngineCamera> Cam = Pair.second;
 
+		Cam->CameraTransformUpdate();
+		Cam->ViewPortSetting();
+
 		LightDataObject.LightCount = 0;
+
 		for (std::shared_ptr<GameEngineLight> Light : AllLight)
 		{
 			Light->LightUpdate(Cam.get(), _DeltaTime);
@@ -171,8 +175,8 @@ void GameEngineLevel::Render(float _DeltaTime)
 			++LightDataObject.LightCount;
 		}
 
-		Cam->CameraTransformUpdate();
-		Cam->ViewPortSetting();
+		Cam->AllRenderTarget->Clear();
+		Cam->AllRenderTarget->Setting();
 		Cam->Render(_DeltaTime);
 
 		if (false == IsDebugRender)

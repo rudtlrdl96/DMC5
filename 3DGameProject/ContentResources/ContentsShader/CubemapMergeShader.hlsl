@@ -15,8 +15,9 @@ struct OutPut
 OutPut Merge_VS(Input _Value)
 {
     OutPut OutPutValue = (OutPut) 0;
-    OutPutValue.Pos = _Value.Pos;
-    OutPutValue.UV = _Value.UV;
+    
+    OutPutValue.Pos = _Value.Pos;    
+    OutPutValue.UV = _Value.UV;    
     
     return OutPutValue;
 }

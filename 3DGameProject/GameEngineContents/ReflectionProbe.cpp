@@ -5,7 +5,7 @@
 
 bool ReflectionProbe::RenderTargetInit = false;
 GameEngineRenderUnit ReflectionProbe::CubemapMergeTarget;
-ReflectionProbe::CubeCaptureData ReflectionProbe::CutData;
+ReflectionProbe::CubeCaptureData ReflectionProbe::CutData; 
 
 ReflectionProbe::ReflectionProbe()
 {
@@ -43,86 +43,43 @@ void ReflectionProbe::Init(const std::string_view& _CaptureTextureName, const fl
 			return;
 		}
 
-		CaptureTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, float4(900, 900), float4::ZERONULL);
+		CaptureTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, _Scale, float4::ZERONULL);
 
-		float4 TextureScale = float4(_Scale.x * 4.0f, _Scale.y * 3.0f);
-		TextureTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, float4(1600, 900), float4::ZERONULL);
+		float4 TextureSacle = float4(_Scale.x * 4.0f, _Scale.y * 3.0f);
+		TextureTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, TextureSacle, float4::ZERONULL);
 
 		float4 CenterPos = GetTransform()->GetWorldPosition();
 		float4 CenterRot = GetTransform()->GetWorldRotation();
 
 		// Forward
-		GetLevel()->GetMainCamera()->CaptureCubemap(CaptureTarget, CenterPos, CenterRot, float4(900, 900));
-		CutData.CutStartX = 0.25f;
-		CutData.CutEndX = 0.5f;
-		CutData.CutStartY = 1.0f / 3.0f;
-		CutData.CutEndY = 2.0f / 3.0f;
-		TextureTarget->Setting();
-		CubemapMergeTarget.ShaderResHelper.SetTexture("DiffuseTex", CaptureTarget->GetTexture(0));
-		CubemapMergeTarget.Render(0.0f);
-		CubemapMergeTarget.ShaderResHelper.AllResourcesReset();
-		TextureTarget->Reset();
-		
+		GetLevel()->GetMainCamera()->CaptureCubemap(CenterPos, CenterRot, float4(900, 900));
+		CaptureTarget->Merge(GetLevel()->GetMainCamera()->GetCamTarget());
+		CubemapMerge({ 0.25f, 0.5f, (1.0f / 3.0f), (2.0f / 3.0f) }, TextureTarget, CaptureTarget);
+
 		// Right
-		GetLevel()->GetMainCamera()->CaptureCubemap(CaptureTarget, CenterPos, CenterRot + float4(0, 90, 0), float4(900, 900));
-		CutData.CutStartX = 0.5f;
-		CutData.CutEndX = 0.75f;
-		CutData.CutStartY = 1.0f / 3.0f;
-		CutData.CutEndY = 2.0f / 3.0f;
-		TextureTarget->Setting();
-		CubemapMergeTarget.ShaderResHelper.SetTexture("DiffuseTex", CaptureTarget->GetTexture(0));
-		CubemapMergeTarget.Render(0.0f);
-		CubemapMergeTarget.ShaderResHelper.AllResourcesReset();
-		TextureTarget->Reset();
-		
+		GetLevel()->GetMainCamera()->CaptureCubemap(CenterPos, CenterRot + float4(0, 90, 0), float4(900, 900));
+		CaptureTarget->Merge(GetLevel()->GetMainCamera()->GetCamTarget());
+		CubemapMerge({ 0.5f, 0.75f, (1.0f / 3.0f), (2.0f / 3.0f) }, TextureTarget, CaptureTarget);
+
 		// Left
-		GetLevel()->GetMainCamera()->CaptureCubemap(CaptureTarget, CenterPos, CenterRot + float4(0, -90, 0), float4(900, 900));
-		CutData.CutStartX = 0.0f;
-		CutData.CutEndX = 0.25f;
-		CutData.CutStartY = 1.0f / 3.0f;
-		CutData.CutEndY = 2.0f / 3.0f;
-		TextureTarget->Setting();
-		CubemapMergeTarget.ShaderResHelper.SetTexture("DiffuseTex", CaptureTarget->GetTexture(0));
-		CubemapMergeTarget.Render(0.0f);
-		CubemapMergeTarget.ShaderResHelper.AllResourcesReset();
-		TextureTarget->Reset();
-		
+		GetLevel()->GetMainCamera()->CaptureCubemap(CenterPos, CenterRot + float4(0, -90, 0), float4(900, 900));
+		CaptureTarget->Merge(GetLevel()->GetMainCamera()->GetCamTarget());
+		CubemapMerge({0.0f, 0.25f, (1.0f / 3.0f), (2.0f / 3.0f) }, TextureTarget, CaptureTarget);
+
 		// Back
-		GetLevel()->GetMainCamera()->CaptureCubemap(CaptureTarget, CenterPos, CenterRot + float4(0, 180, 0), float4(900, 900));
-		CutData.CutStartX = 0.75f;
-		CutData.CutEndX = 1.0f;
-		CutData.CutStartY = 1.0f / 3.0f;
-		CutData.CutEndY = 2.0f / 3.0f;
-		TextureTarget->Setting();
-		CubemapMergeTarget.ShaderResHelper.SetTexture("DiffuseTex", CaptureTarget->GetTexture(0));
-		CubemapMergeTarget.Render(0.0f);
-		CubemapMergeTarget.ShaderResHelper.AllResourcesReset();
-		TextureTarget->Reset();
-		
+		GetLevel()->GetMainCamera()->CaptureCubemap(CenterPos, CenterRot + float4(0, 180, 0), float4(900, 900));
+		CaptureTarget->Merge(GetLevel()->GetMainCamera()->GetCamTarget());
+		CubemapMerge({ 0.75f, 1.0f, (1.0f / 3.0f), (2.0f / 3.0f) }, TextureTarget, CaptureTarget);
+
 		// Top
-		GetLevel()->GetMainCamera()->CaptureCubemap(CaptureTarget, CenterPos, CenterRot + float4(-90, 0, 0), float4(900, 900));
-		CutData.CutStartX = 0.25f;
-		CutData.CutEndX = 0.5f;
-		CutData.CutStartY = 0.0f;
-		CutData.CutEndY = 1.0f / 3.0f;
-		TextureTarget->Setting();
-		CubemapMergeTarget.ShaderResHelper.SetTexture("DiffuseTex", CaptureTarget->GetTexture(0));
-		CubemapMergeTarget.Render(0.0f);
-		CubemapMergeTarget.ShaderResHelper.AllResourcesReset();
-		TextureTarget->Reset();
+		GetLevel()->GetMainCamera()->CaptureCubemap(CenterPos, CenterRot + float4(-90, 0, 0), float4(900, 900));
+		CaptureTarget->Merge(GetLevel()->GetMainCamera()->GetCamTarget());
+		CubemapMerge({ 0.25f, 0.5f, 0.0f, (1.0f / 3.0f)}, TextureTarget, CaptureTarget);
 
 		// Bottom
-		GetLevel()->GetMainCamera()->CaptureCubemap(CaptureTarget, CenterPos, CenterRot + float4(90, 0, 0), float4(900, 900));
-		CutData.CutStartX = 0.25f;
-		CutData.CutEndX = 0.5f;
-		CutData.CutStartY = (2.0f / 3.0f);
-		CutData.CutEndY = (1.0f);
-
-		TextureTarget->Setting();
-		CubemapMergeTarget.ShaderResHelper.SetTexture("DiffuseTex", CaptureTarget->GetTexture(0));
-		CubemapMergeTarget.Render(0.0f);
-		CubemapMergeTarget.ShaderResHelper.AllResourcesReset();
-		TextureTarget->Reset();
+		GetLevel()->GetMainCamera()->CaptureCubemap(CenterPos, CenterRot + float4(90, 0, 0), float4(900, 900));
+		CaptureTarget->Merge(GetLevel()->GetMainCamera()->GetCamTarget());
+		CubemapMerge({ 0.25f, 0.5f, (2.0f / 3.0f), 1.0f}, TextureTarget, CaptureTarget);
 
 		GameEngineScreenShoot::RenderTargetShoot(TextureTarget->GetTexture(0)->GetTexture2D());
 	
@@ -150,4 +107,17 @@ void ReflectionProbe::Update(float _DeltaTime)
 	{
 		MsgAssert("ReflectionProbe 컴포넌트의 Init 함수가 호출되지 않았습니다.");
 	}
+}
+
+void ReflectionProbe::CubemapMerge(const CubeCaptureData& _Cut, std::shared_ptr<GameEngineRenderTarget> _Target, std::shared_ptr<GameEngineRenderTarget> _Merge)
+{
+	CutData = _Cut;
+
+	_Target->Setting();
+	CubemapMergeTarget.ShaderResHelper.SetTexture("DiffuseTex", _Merge->GetTexture(0));
+	CubemapMergeTarget.Render(0.0f);
+	CubemapMergeTarget.ShaderResHelper.AllResourcesReset();
+	_Target->Reset();
+
+	_Merge->Clear();
 }

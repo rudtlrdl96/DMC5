@@ -181,8 +181,8 @@ void ContentsCore::ContentsResourcesCreate()
 		Pipe->SetPixelShader("CubemapMergeShader.hlsl");
 		Pipe->SetBlendState("MergeBlend");
 		Pipe->SetDepthState("EngineDepth");
-	}
-
+	}	
+	
 	// 2D Sprite
 	{
 		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("My2DTexture");
