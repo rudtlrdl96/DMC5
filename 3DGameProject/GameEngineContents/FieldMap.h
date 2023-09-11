@@ -25,17 +25,31 @@ public:
 		//const std::vector<int>& _NodeIndex
 	);
 
+	void PushNode(const std::vector<std::shared_ptr<FieldMap>>& _RenderOn, const std::vector<std::shared_ptr<FieldMap>>& _RenderOff);
+
 	void EraseFieldMap();
+
+
 
 protected:
 	void DrawEditor() override;
+	void Update(float _DeltaTime) override;
 
 private:
 	std::vector<std::shared_ptr<class GameEngineFBXRenderer>> FieldMapRenderer;
 	std::vector<std::shared_ptr<class GameEngineCollision>> FieldMapCullingCol;
-	//std::vector<int> NodeIndex;
+	std::vector<std::weak_ptr<FieldMap>> RenderOnNode;
+	std::vector<std::weak_ptr<FieldMap>> RenderOffNode;
 	
 	void ClearFieldMapRenderer();
 	void ClearFieldMapCullingCol();
+	void ClearRenderNode();
+
+	bool IsPlayerCollsionToCullingCol();
+
+	void FieldMapRendererOn();
+	void FieldMapRendererOff();
+
+	void MapCulling();
 };
 

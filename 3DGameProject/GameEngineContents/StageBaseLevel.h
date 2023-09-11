@@ -48,6 +48,7 @@ private:
 	void EraseGroundCol();
 	void CreateWallCol(const std::string_view& _MeshFileName);
 	void EraseWallCol();
+	void LinkNode(std::shared_ptr<class FieldMap> _FieldMap, const std::vector<int>& _NodeIndex);
 
 	void ClearStage();
 };

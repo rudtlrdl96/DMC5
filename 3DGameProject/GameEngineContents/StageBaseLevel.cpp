@@ -58,6 +58,16 @@ void StageBaseLevel::CreateStage(const StageData& _Data)
 	CreateSkyBox(_Data.SkyboxFileName);
 	CreateGroundCol(_Data.GroundMeshFileName);
 	CreateWallCol(_Data.WallMeshFileName);
+
+	if (AcFieldMaps.empty())
+	{
+		return;
+	}
+
+	for (size_t i = 0; i < AcFieldMaps.size(); i++)
+	{
+		LinkNode(AcFieldMaps[i], _Data.MapDatas[i].NodeIndex);
+	}
 }
 
 void StageBaseLevel::SetCamera(float4 _Position)
@@ -68,59 +78,6 @@ void StageBaseLevel::SetCamera(float4 _Position)
 	}
 	GetMainCamera()->GetTransform()->SetLocalPosition(_Position);
 }
-
-//void StageBaseLevel::FieldMapOn(int _Index)
-//{
-//	if (_Index == -1)
-//	{
-//		for (auto& i : AcFieldMaps)
-//		{
-//			for (auto& j : i.second)
-//			{
-//				j->On();
-//			}
-//		}
-//
-//	}
-//	else
-//	{
-//		if (AcFieldMaps.find(_Index) == AcFieldMaps.end())
-//		{
-//			return;
-//		}
-//		std::vector<std::shared_ptr<FieldMap>>& tempFieldMap = AcFieldMaps.find(_Index)->second;
-//		for (size_t i = 0; i < tempFieldMap.size(); i++)
-//		{
-//			tempFieldMap[i]->On();
-//		}
-//	}
-//}
-//
-//void StageBaseLevel::FieldMapOff(int _Index)
-//{
-//	if (_Index == -1)
-//	{
-//		for (auto& i : AcFieldMaps)
-//		{
-//			for (auto& j : i.second)
-//			{
-//				j->Off();
-//			}
-//		}
-//	}
-//	else
-//	{
-//		if (AcFieldMaps.find(_Index) == AcFieldMaps.end())
-//		{
-//			return;
-//		}
-//		std::vector<std::shared_ptr<FieldMap>>& tempFieldMap = AcFieldMaps.find(_Index)->second;
-//		for (size_t i = 0; i < tempFieldMap.size(); i++)
-//		{
-//			tempFieldMap[i]->Off();
-//		}
-//	}
-//}
 
 void StageBaseLevel::EraseStageFieldMap()
 {
@@ -221,5 +178,56 @@ void StageBaseLevel::EraseWallCol()
 	AcWallCol->Death();
 	AcWallCol = nullptr;
 }
+
+void StageBaseLevel::LinkNode(std::shared_ptr<FieldMap> _FieldMap, const std::vector<int>& _NodeIndex)
+{
+	//인덱스를 받는다
+	//필드맵 안에 필드맵 여러개를 넣어야하는 상황
+	//1. 필드맵의 주소를 받는 벡터를 하나 만든다.
+	std::vector<std::shared_ptr<FieldMap>> TempRenderOnNodes;
+	std::vector<std::shared_ptr<FieldMap>> TempRenderOffNodes;
+	std::vector<int> TempOffNodeIndex;
+
+	if (AcFieldMaps.empty())
+	{
+		return;
+	}
+
+	for (int i = 0; i < AcFieldMaps.size(); i++)
+	{
+		bool IsSame = false;
+		for (int j = 0; j < _NodeIndex.size(); j++)
+		{
+			if (_NodeIndex[j] == i)
+			{
+				IsSame = true;
+				break;
+			}
+		}
+
+		if (!IsSame)
+		{
+			TempOffNodeIndex.push_back(i);
+		}
+	}
+
+	
+	//2. 노드 인덱스와 같은 인덱스를 가진 필드맵을 TempNodes에 넣는다
+	TempRenderOnNodes.reserve(_NodeIndex.size());
+	for (size_t i = 0; i < TempRenderOnNodes.capacity(); i++)
+	{
+		TempRenderOnNodes.push_back(AcFieldMaps[_NodeIndex[i]]);
+	}
+	
+	TempRenderOffNodes.reserve(TempOffNodeIndex.size());
+	for (size_t i = 0; i < TempRenderOffNodes.capacity(); i++)
+	{
+		TempRenderOffNodes.push_back(AcFieldMaps[TempOffNodeIndex[i]]);
+	}
+
+	//3. 
+	_FieldMap->PushNode(TempRenderOnNodes, TempRenderOffNodes);
+}
+
 
 

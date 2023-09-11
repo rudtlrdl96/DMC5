@@ -37,7 +37,7 @@ private:
 	//Stage 관련
 	size_t Stage_current = 0;
 	char StageNameInputSpace[128] = "";
-	void StageListBox(std::shared_ptr<GameEngineLevel> _Level);
+	void StageCombo(std::shared_ptr<GameEngineLevel> _Level);
 	void InputStageInfo(std::shared_ptr<GameEngineLevel> _Level);
 
 	void InputSkyBox();
@@ -59,7 +59,7 @@ private:
 	void CullingColCombo();
 
 	//맵 컬링 노드 관련
-	std::vector<bool> NodeCheckBool;
+	bool NodeCheckBool[100] = {};
 
 	void InputNode();
 	void NodeCheckBox();

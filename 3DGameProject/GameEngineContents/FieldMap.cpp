@@ -33,27 +33,28 @@ std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, cons
 		{
 			MapRenderersRef[i]->SetFBXMesh(_FBXNames[i].data(), "FBX");
 		}
+
+		MapRenderersRef[i]->Off();
 	}
 
 	std::vector<std::shared_ptr<GameEngineCollision>>& MapCullingColRef = Result->FieldMapCullingCol;
 	MapCullingColRef.resize(_CullingCols.size());
 	for (size_t i = 0; i < MapCullingColRef.size(); i++)
 	{
-		MapCullingColRef[i] = Result->CreateComponent<GameEngineCollision>();
+		MapCullingColRef[i] = Result->CreateComponent<GameEngineCollision>(CollisionOrder::CullingCol);
 		MapCullingColRef[i]->SetColType(ColType::OBBBOX3D);
 		MapCullingColRef[i]->GetTransform()->SetLocalPosition(_CullingCols[i].Pos);
 		MapCullingColRef[i]->GetTransform()->SetLocalScale(_CullingCols[i].Scale);
 		MapCullingColRef[i]->GetTransform()->SetLocalRotation(_CullingCols[i].Rot);
 	}
 
-	//std::vector<int>& NodeIndexRef = Result->NodeIndex;
-	//NodeIndexRef.resize(_NodeIndex.size());
-	//for (size_t i = 0; i < NodeIndexRef.size(); i++)
-	//{
-	//	NodeIndexRef[i] = _NodeIndex[i];
-	//}
-
 	return Result;
+}
+
+void FieldMap::PushNode(const std::vector<std::shared_ptr<FieldMap>>& _RenderOn, const std::vector<std::shared_ptr<FieldMap>>& _RenderOff)
+{
+	std::copy(_RenderOn.begin(), _RenderOn.end(), std::back_inserter(RenderOnNode));
+	std::copy(_RenderOff.begin(), _RenderOff.end(), std::back_inserter(RenderOffNode));
 }
 
 void FieldMap::EraseFieldMap()
@@ -61,6 +62,91 @@ void FieldMap::EraseFieldMap()
 	ClearFieldMapRenderer();
 	ClearFieldMapCullingCol();
 }
+
+void FieldMap::Update(float _DeltaTime)
+{
+	if (IsPlayerCollsionToCullingCol())
+	{
+		MapCulling();
+	}
+}
+
+void FieldMap::ClearFieldMapRenderer()
+{
+	for (size_t i = 0; i < FieldMapRenderer.size(); i++)
+	{
+		FieldMapRenderer[i]->Death();
+		FieldMapRenderer[i] = nullptr;
+	}
+	FieldMapRenderer.clear();
+}
+
+bool FieldMap::IsPlayerCollsionToCullingCol()
+{
+	for (size_t i = 0; i < FieldMapCullingCol.size(); i++)
+	{
+		if (nullptr != FieldMapCullingCol[i]->Collision(CollisionOrder::Player, ColType::OBBBOX3D, ColType::OBBBOX3D))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+void FieldMap::ClearRenderNode()
+{
+	if (RenderOnNode.empty())
+	{
+		return;
+	}
+	RenderOnNode.clear();
+
+	if (RenderOffNode.empty())
+	{
+		return;
+	}
+	RenderOffNode.clear();
+}
+
+void FieldMap::MapCulling()
+{
+	for (size_t i = 0; i < RenderOnNode.size(); i++)
+	{
+		RenderOnNode[i].lock()->FieldMapRendererOn();
+	}
+
+	for (size_t i = 0; i < RenderOffNode.size(); i++)
+	{
+		RenderOffNode[i].lock()->FieldMapRendererOff();
+	}
+}
+
+void FieldMap::FieldMapRendererOn()
+{
+	for (size_t i = 0; i < FieldMapRenderer.size(); i++)
+	{
+		FieldMapRenderer[i]->On();
+	}
+}
+
+void FieldMap::FieldMapRendererOff()
+{
+	for (size_t i = 0; i < FieldMapRenderer.size(); i++)
+	{
+		FieldMapRenderer[i]->Off();
+	}
+}
+
+void FieldMap::ClearFieldMapCullingCol()
+{
+	for (size_t i = 0; i < FieldMapCullingCol.size(); i++)
+	{
+		FieldMapCullingCol[i]->Death();
+		FieldMapCullingCol[i] = nullptr;
+	}
+	FieldMapCullingCol.clear();
+}
+
 
 #include <GameEngineCore/imgui.h>
 
@@ -80,23 +166,4 @@ void FieldMap::DrawEditor()
 	}
 }
 
-void FieldMap::ClearFieldMapRenderer()
-{
-	for (size_t i = 0; i < FieldMapRenderer.size(); i++)
-	{
-		FieldMapRenderer[i]->Death();
-		FieldMapRenderer[i] = nullptr;
-	}
-	FieldMapRenderer.clear();
-}
-
-void FieldMap::ClearFieldMapCullingCol()
-{
-	for (size_t i = 0; i < FieldMapCullingCol.size(); i++)
-	{
-		FieldMapCullingCol[i]->Death();
-		FieldMapCullingCol[i] = nullptr;
-	}
-	FieldMapCullingCol.clear();
-}
 

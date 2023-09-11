@@ -66,11 +66,10 @@ enum class CollisionOrder
 	Player,
 	PlayerLockOn,
 	Enemy,
-	Wall,
-	JumpWall,
 	PlayerAttack,
 	RN_Enemy,
 	RN_Player,
+	CullingCol,
 };
 
 enum class DevilBreaker

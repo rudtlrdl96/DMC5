@@ -55,6 +55,11 @@ void StageEditLevel::Update(float _DeltaTime)
 		GameEngineCore::ChangeLevel("MainLevel");
 		return;
 	}
+
+	if (GameEngineInput::IsDown("DebugSwitch"))
+	{
+		GameEngineLevel::IsDebugSwitch();
+	}
 }
 
 void StageEditLevel::LevelChangeStart()

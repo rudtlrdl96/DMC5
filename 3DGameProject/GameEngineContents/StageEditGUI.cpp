@@ -35,7 +35,7 @@ void StageEditGUI::OnGUI(std::shared_ptr<GameEngineLevel> _Level, float _DeltaTi
 		Parent->FreeCam->Off();
 	}
 
-    StageListBox(_Level);
+    StageCombo(_Level);
 
 	if (AllData.empty())
 	{
@@ -105,7 +105,7 @@ void StageEditGUI::ShowTransformInfo(std::shared_ptr<GameEngineObject> _Obj)
 	Transform->SetLocalScale(Scale);
 }
 
-void StageEditGUI::StageListBox(std::shared_ptr<GameEngineLevel> _Level)
+void StageEditGUI::StageCombo(std::shared_ptr<GameEngineLevel> _Level)
 {
     ImGui::InputText("input StageName", StageNameInputSpace, IM_ARRAYSIZE(StageNameInputSpace));
 
@@ -142,23 +142,31 @@ void StageEditGUI::StageListBox(std::shared_ptr<GameEngineLevel> _Level)
 		return;
 	}
 
-    ImGui::BeginChild("StageList", ImVec2(150, 0), true);
-    for (size_t i = 0; i < AllData.size(); i++)
-    {
-        std::string StageLabel = AllData[i].StageName;
-		if (ImGui::Selectable(StageLabel.c_str(), Stage_current == i))
+	if (AllData.empty())
+	{
+		return;
+	}
+
+	const char* combo_preview_value = AllData[Stage_current].StageName.c_str();
+	if (ImGui::BeginCombo("Stage", combo_preview_value, 0))
+	{
+		for (int n = 0; n < AllData.size(); n++)
 		{
-			Stage_current = i;
-			CreateStage(AllData[i]);
+			const bool is_selected = (Stage_current == n);
+			if (ImGui::Selectable(AllData[n].StageName.c_str(), is_selected))
+				Stage_current = n;
+
+			if (is_selected)
+			{
+				ImGui::SetItemDefaultFocus();
+			}
 		}
-    }
-    ImGui::EndChild();
-    ImGui::SameLine();
+		ImGui::EndCombo();
+	}
 }
 
 void StageEditGUI::InputStageInfo(std::shared_ptr<GameEngineLevel> _Level)
 {
-	ImGui::SameLine();
 	ImGui::BeginChild("InputStageInfo", ImVec2(300, 0), true);
 	InputSkyBox();
 	InputMapCol();
@@ -195,22 +203,22 @@ void StageEditGUI::InputMapCol()
 	ImGui::SameLine();
 	ImGui::Text(AllData[Stage_current].GroundMeshFileName.c_str());
 
-	//if (!AllData[Stage_current].GroundMeshFileName.empty())
-	//{
-	//	static bool check = true;
-	//	ImGui::Checkbox("Ground On/Off", &check);
-	//	if (Parent->AcGroundCol != nullptr)
-	//	{
-	//		if (check && !Parent->AcGroundCol->RenderIsUpdate())
-	//		{
-	//			Parent->AcGroundCol->RenderOn();
-	//		}
-	//		else if (!check && Parent->AcGroundCol->RenderIsUpdate())
-	//		{
-	//			Parent->AcGroundCol->RenderOff();
-	//		}
-	//	}
-	//}
+	if (!AllData[Stage_current].GroundMeshFileName.empty())
+	{
+		static bool check = true;
+		ImGui::Checkbox("Ground On/Off", &check);
+		if (Parent->AcGroundCol != nullptr)
+		{
+			if (check && !Parent->AcGroundCol->RenderIsUpdate())
+			{
+				Parent->AcGroundCol->RenderOn();
+			}
+			else if (!check && Parent->AcGroundCol->RenderIsUpdate())
+			{
+				Parent->AcGroundCol->RenderOff();
+			}
+		}
+	}
 
 	if (ImGui::Button("SetWallMesh"))
 	{
@@ -224,22 +232,22 @@ void StageEditGUI::InputMapCol()
 	ImGui::SameLine();
 	ImGui::Text(AllData[Stage_current].WallMeshFileName.c_str());
 
-	//if (!AllData[Stage_current].WallMeshFileName.empty())
-	//{
-	//	static bool check = true;
-	//	ImGui::Checkbox("Wall On/Off", &check);
-	//	if (Parent->AcWallCol != nullptr)
-	//	{
-	//		if (check && !Parent->AcWallCol->RenderIsUpdate())
-	//		{
-	//			Parent->AcWallCol->RenderOn();
-	//		}
-	//		else if (!check && Parent->AcWallCol->RenderIsUpdate())
-	//		{
-	//			Parent->AcWallCol->RenderOff();
-	//		}
-	//	}
-	//}
+	if (!AllData[Stage_current].WallMeshFileName.empty())
+	{
+		static bool check = true;
+		ImGui::Checkbox("Wall On/Off", &check);
+		if (Parent->AcWallCol != nullptr)
+		{
+			if (check && !Parent->AcWallCol->RenderIsUpdate())
+			{
+				Parent->AcWallCol->RenderOn();
+			}
+			else if (!check && Parent->AcWallCol->RenderIsUpdate())
+			{
+				Parent->AcWallCol->RenderOff();
+			}
+		}
+	}
 }
 
 void StageEditGUI::InputFieldMap()
@@ -395,7 +403,7 @@ void StageEditGUI::CullingColCombo()
 	}
 
 	ShowTransformInfo(Parent->AcFieldMaps[FieldMap_current]->FieldMapCullingCol[CullingCol_current]);
-	if (ImGui::Button("Input"))
+	if (ImGui::Button("Input Transform"))
 	{
 		AllData[Stage_current].MapDatas[FieldMap_current].CullingColTransform[CullingCol_current].Pos 
 			= Parent->AcFieldMaps[FieldMap_current]->FieldMapCullingCol[CullingCol_current]->GetTransform()->GetLocalPosition();
@@ -413,33 +421,36 @@ void StageEditGUI::InputNode()
 
 void StageEditGUI::NodeCheckBox()
 {
-	//for (size_t i = 0; i < AllData[Stage_current].MapDatas.size(); i++)
-	//{
-	//	static bool check = true;
-	//	ImGui::Checkbox(std::to_string(i).c_str(), &check);
-	//
-	//	if (i % 5 != 4)
-	//	{
-	//		ImGui::SameLine();
-	//	}
-	//}
+	ImGui::Spacing();
+	ImGui::Spacing();
 
-	//if (!AllData[Stage_current].GroundMeshFileName.empty())
-	//{
-	//	static bool check = true;
-	//	ImGui::Checkbox("Ground On/Off", &check);
-	//	if (Parent->AcGroundCol != nullptr)
-	//	{
-	//		if (check && !Parent->AcGroundCol->RenderIsUpdate())
-	//		{
-	//			Parent->AcGroundCol->RenderOn();
-	//		}
-	//		else if (!check && Parent->AcGroundCol->RenderIsUpdate())
-	//		{
-	//			Parent->AcGroundCol->RenderOff();
-	//		}
-	//	}
-	//}
+	std::string Temp("FieldMap ");
+
+	ImGui::Text("CullingMap Node Select");
+	for (size_t i = 0; i < AllData[Stage_current].MapDatas.size(); i++)
+	{
+		ImGui::Checkbox((Temp + std::to_string(i)).c_str(), &NodeCheckBool[i]);
+	
+		if (i % 2 != 1)
+		{
+			ImGui::SameLine();
+		}
+	}
+
+	ImGui::NewLine();
+
+	if (ImGui::Button("CullingMap Node Input"))
+	{
+		AllData[Stage_current].MapDatas[FieldMap_current].NodeIndex.clear();
+		AllData[Stage_current].MapDatas[FieldMap_current].NodeIndex.reserve(AllData[Stage_current].MapDatas.size());
+		for (size_t i = 0; i < AllData[Stage_current].MapDatas[FieldMap_current].NodeIndex.capacity(); i++)
+		{
+			if (NodeCheckBool[i])
+			{
+				AllData[Stage_current].MapDatas[FieldMap_current].NodeIndex.emplace_back(static_cast<int>(i));
+			}
+		}
+	}
 }
 
 void StageEditGUI::CreateStage(StageData _Data)
