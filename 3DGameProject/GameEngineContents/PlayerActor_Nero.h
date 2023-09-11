@@ -73,6 +73,8 @@ enum FSM_State_Nero
 	Nero_Gerbera_Left,
 	Nero_Gerbera_Right,
 
+	Nero_Buster_Catch,
+
 	// 데빌트리거 사용
 	Nero_DT_Start,
 	Nero_DT_AirStart,

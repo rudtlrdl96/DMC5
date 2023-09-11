@@ -1055,7 +1055,7 @@ void PlayerActor_Nero::PlayerLoad()
 					ChangeState(FSM_State_Nero::Nero_RQ_Skill_Stleak3);
 					return;
 				}
-				PhysXCapsule->SetMove(GetTransform()->GetWorldForwardVector() * 1000);
+				PhysXCapsule->SetMove(GetTransform()->GetWorldForwardVector() * 1300);
 			},
 			.End = [=] {
 				RedQueenOff();
@@ -1111,7 +1111,6 @@ void PlayerActor_Nero::PlayerLoad()
 				InputCheck = false;
 			},
 			.Update = [=](float _DeltaTime) {
-				LookTarget();
 				if (Renderer->IsAnimationEnd())
 				{
 					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
@@ -1646,7 +1645,7 @@ void PlayerActor_Nero::PlayerLoad()
 			.Start = [=] {
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
-				LookTarget();
+				RotationToTarget();
 				BlueRoseOn();
 				InputCheck = false;
 				MoveCheck = false;
@@ -1689,12 +1688,12 @@ void PlayerActor_Nero::PlayerLoad()
 				BlueRoseOn();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
+				RotationToTarget();
 				InputCheck = false;
 				MoveCheck = false;
 				Renderer->ChangeAnimation("pl0000_BR_Air_Shoot", true);
 			},
 			.Update = [=](float _DeltaTime) {
-				LookTarget();
 				if (Renderer->IsAnimationEnd())
 				{
 					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
@@ -1834,96 +1833,140 @@ void PlayerActor_Nero::PlayerLoad()
 			}
 			});
 
-		// Nero_Gerbera_Front
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Gerbera_Front,
-			.Start = [=] {
-				PhysXCapsule->TurnOffGravity();
-				PhysXCapsule->SetLinearVelocityZero();
-				InputCheck = false;
-				WeaponIdle();
-				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Front", true);
-			},
-			.Update = [=](float _DeltaTime) {
-				if (Renderer->IsAnimationEnd())
-				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+			// Nero_Gerbera_Front
+			FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Gerbera_Front,
+				.Start = [=] {
+					PhysXCapsule->TurnOffGravity();
+					PhysXCapsule->SetLinearVelocityZero();
+					InputCheck = false;
+					WeaponIdle();
+					Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Front", true);
+				},
+				.Update = [=](float _DeltaTime) {
+					if (Renderer->IsAnimationEnd())
+					{
+						ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+					}
+					if (true == Input_SpecialCheckFly()) { return; }
+					if (false == InputCheck) { return; }
+					if (true == FloorCheck())
+					{
+						ChangeState(FSM_State_Nero::Nero_Landing);
+						return;
+					}
+					if (true == Input_JumpCheckFly()) { return; }
+					if (true == Input_SwordCheckFly()) { return; }
+					if (true == Input_GunCheckFly()) { return; }
+					if (true == Input_DevilBreakerCheckFly()) { return; }
+				},
+				.End = [=] {
 				}
-				if (true == Input_SpecialCheckFly()) { return; }
-				if (false == InputCheck) { return; }
-				if (true == FloorCheck())
-				{
-					ChangeState(FSM_State_Nero::Nero_Landing);
-					return;
-				}
-				if (true == Input_JumpCheckFly()) { return; }
-				if (true == Input_SwordCheckFly()) { return; }
-				if (true == Input_GunCheckFly()) { return; }
-				if (true == Input_DevilBreakerCheckFly()) { return; }
-			},
-			.End = [=] {
-			}
-			});
+				});
 
-		// Nero_Gerbera_Left
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Gerbera_Left,
-			.Start = [=] {
-				PhysXCapsule->TurnOffGravity();
-				PhysXCapsule->SetLinearVelocityZero();
-				InputCheck = false;
-				WeaponIdle();
-				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Left", true);
-			},
-			.Update = [=](float _DeltaTime) {
-				if (Renderer->IsAnimationEnd())
-				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+			// Nero_Gerbera_Left
+			FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Gerbera_Left,
+				.Start = [=] {
+					PhysXCapsule->TurnOffGravity();
+					PhysXCapsule->SetLinearVelocityZero();
+					InputCheck = false;
+					WeaponIdle();
+					Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Left", true);
+				},
+				.Update = [=](float _DeltaTime) {
+					if (Renderer->IsAnimationEnd())
+					{
+						ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+					}
+					if (true == Input_SpecialCheckFly()) { return; }
+					if (false == InputCheck) { return; }
+					if (true == FloorCheck())
+					{
+						ChangeState(FSM_State_Nero::Nero_Landing);
+						return;
+					}
+					if (true == Input_JumpCheckFly()) { return; }
+					if (true == Input_SwordCheckFly()) { return; }
+					if (true == Input_GunCheckFly()) { return; }
+					if (true == Input_DevilBreakerCheckFly()) { return; }
+				},
+				.End = [=] {
 				}
-				if (true == Input_SpecialCheckFly()) { return; }
-				if (false == InputCheck) { return; }
-				if (true == FloorCheck())
-				{
-					ChangeState(FSM_State_Nero::Nero_Landing);
-					return;
-				}
-				if (true == Input_JumpCheckFly()) { return; }
-				if (true == Input_SwordCheckFly()) { return; }
-				if (true == Input_GunCheckFly()) { return; }
-				if (true == Input_DevilBreakerCheckFly()) { return; }
-			},
-			.End = [=] {
-			}
-			});
+				});
 
-		// Nero_Gerbera_Right
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Gerbera_Right,
+			// Nero_Gerbera_Right
+			FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Gerbera_Right,
+				.Start = [=] {
+					PhysXCapsule->TurnOffGravity();
+					PhysXCapsule->SetLinearVelocityZero();
+					InputCheck = false;
+					WeaponIdle();
+					Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Right", true);
+				},
+				.Update = [=](float _DeltaTime) {
+					if (Renderer->IsAnimationEnd())
+					{
+						ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+					}
+					if (true == Input_SpecialCheckFly()) { return; }
+					if (false == InputCheck) { return; }
+					if (true == FloorCheck())
+					{
+						ChangeState(FSM_State_Nero::Nero_Landing);
+						return;
+					}
+					if (true == Input_JumpCheckFly()) { return; }
+					if (true == Input_SwordCheckFly()) { return; }
+					if (true == Input_GunCheckFly()) { return; }
+					if (true == Input_DevilBreakerCheckFly()) { return; }
+				},
+				.End = [=] {
+				}
+				});
+	}
+	// 버스터암
+	{}
+	{
+		// BusterArm Catch
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Catch,
 			.Start = [=] {
-				PhysXCapsule->TurnOffGravity();
-				PhysXCapsule->SetLinearVelocityZero();
-				InputCheck = false;
 				WeaponIdle();
-				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Right", true);
+				PhysXCapsule->SetLinearVelocityZero();
+				Renderer->ChangeAnimation("pl0000_Buster_Catch", true);
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					LookDir(Controller->GetMoveVector());
+				}
+				InputCheck = false;
+				MoveCheck = false;
 			},
 			.Update = [=](float _DeltaTime) {
-				if (Renderer->IsAnimationEnd())
+				if (false == FloorCheck())
 				{
 					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
-				}
-				if (true == Input_SpecialCheckFly()) { return; }
-				if (false == InputCheck) { return; }
-				if (true == FloorCheck())
-				{
-					ChangeState(FSM_State_Nero::Nero_Landing);
 					return;
 				}
-				if (true == Input_JumpCheckFly()) { return; }
-				if (true == Input_SwordCheckFly()) { return; }
-				if (true == Input_GunCheckFly()) { return; }
-				if (true == Input_DevilBreakerCheckFly()) { return; }
+
+				if (true == Input_SpecialCheck()) { return; }
+				if (InputCheck == false) { return; }
+
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_DevilBreakerCheck()) { return; }
+
+				if (MoveCheck == false) { return; }
+
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					ChangeState(FSM_State_Nero::Nero_RunStart);
+					return;
+				}
 			},
 			.End = [=] {
 			}
 			});
 	}
+
 	// 특수
 	{}
 	{
@@ -2959,7 +3002,7 @@ bool PlayerActor_Nero::Input_DevilBreakerCheck()
 		break;
 	}
 	case DevilBreaker::BusterArm:
-		//ChangeState(FSM_State_Nero::Nero_Gerbera_Back);
+		ChangeState(FSM_State_Nero::Nero_Buster_Catch);
 		break;
 	}
 	return true;
@@ -3003,7 +3046,7 @@ bool PlayerActor_Nero::Input_DevilBreakerCheckFly()
 		break;
 	}
 	case DevilBreaker::BusterArm:
-		//ChangeState(FSM_State_Nero::Nero_Gerbera_Back);
+		ChangeState(FSM_State_Nero::Nero_Buster_Catch);
 		break;
 	}
 	return true;
