@@ -81,7 +81,14 @@ void ReflectionProbe::Init(const std::string_view& _CaptureTextureName, const fl
 		CaptureTarget->Merge(GetLevel()->GetMainCamera()->GetCamTarget());
 		CubemapMerge({ 0.25f, 0.5f, (2.0f / 3.0f), 1.0f}, TextureTarget, CaptureTarget);
 
-		GameEngineScreenShoot::RenderTargetShoot(TextureTarget->GetTexture(0)->GetTexture2D());
+		{
+			std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+				{
+					"Texture", "ReflectionTexture"
+				});
+
+			GameEngineScreenShoot::RenderTargetShoot(TextureTarget, Path, _CaptureTextureName);
+		}
 	
 		GameEngineCoreWindow::Clear();
 		GameEngineCoreWindow::AddDebugRenderTarget(0, "AllRenderTarget", GetLevel()->GetMainCamera()->GetCamAllRenderTarget());

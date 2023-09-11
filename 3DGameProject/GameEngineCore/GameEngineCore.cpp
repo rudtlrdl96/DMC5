@@ -202,8 +202,12 @@ void GameEngineCore::EngineUpdate()
 	}
 	if (true == GameEngineInput::IsDown("RenderTargetShoot"))
 	{
-		ID3D11Texture2D* ScreenShootTargetTexture2D = MainLevel->GetScreenShootTarget()->GetTexture(0)->GetTexture2D();
-		GameEngineScreenShoot::RenderTargetShoot(ScreenShootTargetTexture2D);
+		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+			{
+				"Texture", "ScreenShot"
+			});
+
+		GameEngineScreenShoot::RenderTargetShoot(MainLevel->GetScreenShootTarget(), Path, "RenderTargetShoot.JPG");
 	}
 
 	MainLevel->ActorRelease();

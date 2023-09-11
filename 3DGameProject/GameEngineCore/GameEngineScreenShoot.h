@@ -25,7 +25,7 @@ public:
 	GameEngineScreenShoot& operator=(GameEngineScreenShoot&& _Other) noexcept = delete;
 
 	static HRESULT ScreenShoot();
-	static HRESULT RenderTargetShoot(ID3D11Texture2D* _Resource);
+	static HRESULT RenderTargetShoot(std::shared_ptr<GameEngineRenderTarget> _CaptureTarget, const std::string_view& _Path, const std::string_view& _TextureName);
 
 protected:
 
