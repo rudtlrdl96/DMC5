@@ -322,9 +322,6 @@
     <ClInclude Include="LinkObjectPacket.h">
       <Filter>Server\01.Packet\02.Global</Filter>
     </ClInclude>
-    <ClInclude Include="Shop_ExplaneUI.h">
-      <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
-    </ClInclude>
     <ClInclude Include="FsmChangePacket.h">
       <Filter>Server\01.Packet\02.Global</Filter>
     </ClInclude>
@@ -360,6 +357,21 @@
     </ClInclude>
     <ClInclude Include="ReflectionProbe.h">
       <Filter>Component\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Shop_ExplaneUI.h">
+      <Filter>UI\UI_Actor\ShopUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Vergil_ShopTitleBar.h">
+      <Filter>UI\UI_Actor\ShopUI\VergilShopUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Shop_VergilYamatoUI.h">
+      <Filter>UI\UI_Actor\ShopUI\VergilShopUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Shop_VergilMirgeUI.h">
+      <Filter>UI\UI_Actor\ShopUI\VergilShopUI</Filter>
+    </ClInclude>
+    <ClInclude Include="testarea.h">
+      <Filter>UI\UI_Actor\ShopUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -672,9 +684,6 @@
     <ClCompile Include="TestStageLevel.cpp">
       <Filter>Levels\Test</Filter>
     </ClCompile>
-    <ClCompile Include="Shop_ExplaneUI.cpp">
-      <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
-    </ClCompile>
     <ClCompile Include="Shop_NeroArmUI.cpp">
       <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
     </ClCompile>
@@ -707,6 +716,21 @@
     </ClCompile>
     <ClCompile Include="ReflectionProbe.cpp">
       <Filter>Component\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Shop_ExplaneUI.cpp">
+      <Filter>UI\UI_Actor\ShopUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Vergil_ShopTitleBar.cpp">
+      <Filter>UI\UI_Actor\ShopUI\VergilShopUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Shop_VergilYamatoUI.cpp">
+      <Filter>UI\UI_Actor\ShopUI\VergilShopUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Shop_VergilMirgeUI.cpp">
+      <Filter>UI\UI_Actor\ShopUI\VergilShopUI</Filter>
+    </ClCompile>
+    <ClCompile Include="testarea.cpp">
+      <Filter>UI\UI_Actor\ShopUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

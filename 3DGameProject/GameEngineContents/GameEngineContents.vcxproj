@@ -512,6 +512,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Shop_VergilMirgeUI.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Shop_VergilYamatoUI.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="SkyBox.h">
       <SubType>
       </SubType>
@@ -526,6 +534,10 @@
     <ClInclude Include="StageEditLevel.h" />
     <ClInclude Include="StartStageLevel.h" />
     <ClInclude Include="FXAA_Effect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="testarea.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -551,6 +563,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="InfoUIRender.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Vergil_ShopTitleBar.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -904,6 +920,14 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Shop_VergilMirgeUI.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Shop_VergilYamatoUI.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="SkyBox.cpp">
       <SubType>
       </SubType>
@@ -918,6 +942,10 @@
     <ClCompile Include="StageEditLevel.cpp" />
     <ClCompile Include="StartStageLevel.cpp" />
     <ClCompile Include="FXAA_Effect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="testarea.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -939,6 +967,10 @@
     <ClCompile Include="Title_SelectScreen.cpp" />
     <ClCompile Include="Title_StartScreen.cpp" />
     <ClCompile Include="InfoUIRender.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Vergil_ShopTitleBar.cpp">
       <SubType>
       </SubType>
     </ClCompile>

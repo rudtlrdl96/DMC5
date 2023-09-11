@@ -18,6 +18,9 @@ void Shop_ExplaneUI::SetExplaneText(const ExplaneOneParameter& _Param)
 	ExplaneText0->SetText(_Param._Explane1);
 	ExplaneText1->SetText(_Param._Explane2);
 	ExplaneText2->SetText(_Param._Explane3);
+	ExplaneText3->SetText(_Param._Explane4);
+	ExplaneText4->SetText(_Param._Explane5);
+	ExplaneText5->SetText(_Param._Explane6);
 }
 
 void Shop_ExplaneUI::SetSecoundText(const ExplaneOneParameter& _Param)
@@ -92,6 +95,30 @@ void Shop_ExplaneUI::FontCreate()
 	ExplaneText2->SetColor(float4::WHITE);
 	ExplaneText2->GetTransform()->SetLocalPosition({ 372.0f,86.f,0.0f });
 	
+	ExplaneText3 = CreateComponent<GameEngineFontRenderer>(2);
+	ExplaneText3->GetTransform()->SetParent(GetTransform());
+	ExplaneText3->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
+	ExplaneText3->SetFontFlag(FW1_LEFT);
+	ExplaneText3->SetScale(20);
+	ExplaneText3->SetColor(float4::WHITE);
+	ExplaneText3->GetTransform()->SetLocalPosition({ 372.0f,50.f,0.0f });
+
+	ExplaneText4 = CreateComponent<GameEngineFontRenderer>(2);
+	ExplaneText4->GetTransform()->SetParent(GetTransform());
+	ExplaneText4->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
+	ExplaneText4->SetFontFlag(FW1_LEFT);
+	ExplaneText4->SetScale(20);
+	ExplaneText4->SetColor(float4::WHITE);
+	ExplaneText4->GetTransform()->SetLocalPosition({ 372.0f,24.f,0.0f });
+
+	ExplaneText5 = CreateComponent<GameEngineFontRenderer>(2);
+	ExplaneText5->GetTransform()->SetParent(GetTransform());
+	ExplaneText5->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
+	ExplaneText5->SetFontFlag(FW1_LEFT);
+	ExplaneText5->SetScale(20);
+	ExplaneText5->SetColor(float4::WHITE);
+	ExplaneText5->GetTransform()->SetLocalPosition({ 372.0f,-12.f,0.0f });
+
 	SecoundExPlane = CreateComponent<GameEngineFontRenderer>(2);
 	SecoundExPlane->GetTransform()->SetParent(GetTransform());
 	SecoundExPlane->SetFont("DMC5Font");

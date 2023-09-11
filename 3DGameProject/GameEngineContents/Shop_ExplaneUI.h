@@ -8,7 +8,9 @@ public:
 	std::string _Explane1 = "";
 	std::string _Explane2 = "";
 	std::string _Explane3 = "";
-
+	std::string _Explane4 = "";
+	std::string _Explane5 = "";
+	std::string _Explane6 = "";
 };
 // Ό³Έν :
 class Shop_ExplaneUI : public GameEngineActor
@@ -41,6 +43,9 @@ private:
 	std::shared_ptr<class GameEngineFontRenderer> ExplaneText0 = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> ExplaneText1 = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> ExplaneText2 = nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> ExplaneText3 = nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> ExplaneText4 = nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> ExplaneText5 = nullptr;
 
 	std::shared_ptr<class GameEngineFontRenderer> SecoundExPlane = nullptr;
 	std::shared_ptr<class GameEngineUIRenderer> S_ExplaneRender0 = nullptr;

@@ -82,7 +82,6 @@ void ContentsCore::FontUpload()
 		MsgAssert("폰트 로드에 실패했습니다.");
 		return;
 	}
-
 	SendMessage(GameEngineWindow::GetHWnd(), WM_FONTCHANGE, NULL, NULL);
 }
 
