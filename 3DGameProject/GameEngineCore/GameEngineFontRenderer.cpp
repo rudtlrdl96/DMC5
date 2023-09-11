@@ -24,7 +24,8 @@ void GameEngineFontRenderer::SetText(const std::string_view& _Text)
 void GameEngineFontRenderer::Start()
 {
 	PushCameraRender(100);
-	Unit = CreateRenderUnit();
+	Unit = CreateRenderUnit("Rect", "2DTexture");
+
 	Unit->RenderFunction = std::bind(&GameEngineFontRenderer::Render, this, std::placeholders::_1);
 }
 
@@ -50,12 +51,4 @@ void GameEngineFontRenderer::Render(float _Delta)
 	Font->FontDraw(Text, Pos, FontScale, FontColor, FwTextFlag);
 
 	GameEngineDevice::GetContext()->GSSetShader(nullptr, nullptr, 0);
-}
-
-void GameEngineFontRenderer::Start()
-{
-	PushCameraRender(100);
-	Unit = CreateRenderUnit("Rect","2DTexture");
-
-	Unit->RenderFunction = std::bind(&GameEngineFontRenderer::Render, this, std::placeholders::_1);
 }
