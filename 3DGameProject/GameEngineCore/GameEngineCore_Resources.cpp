@@ -524,7 +524,25 @@ void GameEngineCore::CoreResourcesInit()
 		Pipe->SetRasterizer("Engine2DBase");
 		Pipe->SetPixelShader("BlurShader.hlsl");
 		Pipe->SetBlendState("AlphaBlend");
-		Pipe->SetDepthState("EngineDepth");
+		Pipe->SetDepthState("AlwayDepth");
+	}
+	{
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("Bloom");
+
+		Pipe->SetVertexShader("BloomShader.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("BloomShader.hlsl");
+		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetDepthState("AlwayDepth");
+	}
+	{
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("BloomBlur");
+
+		Pipe->SetVertexShader("BloomBlur.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("BloomBlur.hlsl");
+		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetDepthState("AlwayDepth");
 	}
 	{
 		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("MeshAniTexture");

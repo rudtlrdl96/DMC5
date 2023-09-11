@@ -173,8 +173,6 @@ void GameEngineLevel::Render(float _DeltaTime)
 
 		Cam->CameraTransformUpdate();
 		Cam->ViewPortSetting();
-		Cam->AllRenderTarget->Clear();
-		Cam->AllRenderTarget->Setting();
 		Cam->Render(_DeltaTime);
 
 		if (false == IsDebugRender)

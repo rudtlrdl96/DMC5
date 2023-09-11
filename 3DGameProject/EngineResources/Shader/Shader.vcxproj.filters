@@ -25,6 +25,8 @@
     <FxCompile Include="MeshAniTextureDeferred.hlsl" />
     <FxCompile Include="DeferredCalLight.hlsl" />
     <FxCompile Include="DeferredMerge.hlsl" />
+    <FxCompile Include="BloomShader.hlsl" />
+    <FxCompile Include="BloomBlur.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">

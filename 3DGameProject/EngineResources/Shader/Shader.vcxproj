@@ -144,6 +144,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <FxCompile Include="Animation.fx" />
+    <FxCompile Include="BloomBlur.hlsl" />
+    <FxCompile Include="BloomShader.hlsl" />
     <FxCompile Include="BlurShader.hlsl" />
     <FxCompile Include="DebugMeshRender.hlsl" />
     <FxCompile Include="DeferredCalLight.hlsl" />

@@ -811,6 +811,9 @@
     <ClInclude Include="GameEngineScreenShoot.h">
       <Filter>Content\ScreenShoot</Filter>
     </ClInclude>
+    <ClInclude Include="BloomEffect.h">
+      <Filter>Content\PostEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -1032,6 +1035,9 @@
       <Filter>Content\ScreenShoot</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineCore_Resources.cpp" />
+    <ClCompile Include="BloomEffect.cpp">
+      <Filter>Content\PostEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">

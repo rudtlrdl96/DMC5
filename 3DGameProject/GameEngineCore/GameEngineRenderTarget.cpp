@@ -42,6 +42,18 @@ void GameEngineRenderTarget::ReleaseTextures()
 void GameEngineRenderTarget::ResCreate(std::shared_ptr<GameEngineTexture> _Texture, float4 _Color)
 {
 	Color = _Color;                     // 백버퍼의 디폴트 색 지정(우리는 파란색)
+
+	D3D11_VIEWPORT ViewPortData;
+
+	ViewPortData.TopLeftX = 0;
+	ViewPortData.TopLeftY = 0;
+	ViewPortData.Width = _Texture->GetScale().x;
+	ViewPortData.Height = _Texture->GetScale().y;
+	ViewPortData.MinDepth = 0.0f;
+	ViewPortData.MaxDepth = 1.0f;
+
+	ViewPortDatas.push_back(ViewPortData);
+
 	Textures.push_back(_Texture);       // 생성된 텍스쳐 값을 벡터에 푸쉬백
 	SRVs.push_back(_Texture->GetSRV());
 	RTVs.push_back(_Texture->GetRTV()); // 생성된 텍스쳐의 RTV 값을 벡터에 푸쉬백
@@ -62,6 +74,18 @@ void GameEngineRenderTarget::ResCreate(DXGI_FORMAT _Format, float4 _Scale, float
 	Desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE;
 
 	std::shared_ptr<GameEngineTexture> Tex = GameEngineTexture::Create(Desc);
+
+	D3D11_VIEWPORT ViewPortData;
+
+	ViewPortData.TopLeftX = 0;
+	ViewPortData.TopLeftY = 0;
+	ViewPortData.Width = _Scale.x;
+	ViewPortData.Height = _Scale.y;
+	ViewPortData.MinDepth = 0.0f;
+	ViewPortData.MaxDepth = 1.0f;
+
+	ViewPortDatas.push_back(ViewPortData);
+
 	Textures.push_back(Tex);
 	SRVs.push_back(Tex->GetSRV());
 	RTVs.push_back(Tex->GetRTV());
@@ -200,6 +224,7 @@ void GameEngineRenderTarget::Setting()
 	}
 
 	GameEngineDevice::GetContext()->OMSetRenderTargets(static_cast<UINT>(RTVs.size()), RTV, DSV);
+	GameEngineDevice::GetContext()->RSSetViewports(static_cast<UINT>(ViewPortDatas.size()), &ViewPortDatas[0]);
 }
 
 void GameEngineRenderTarget::Reset()
