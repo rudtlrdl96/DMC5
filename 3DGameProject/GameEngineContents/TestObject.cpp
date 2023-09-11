@@ -70,6 +70,13 @@ void TestObject::Start()
 	//TriCom->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
 	//TriCom->CreatePhysXActors("Knight.fbx", GetLevel()->GetLevelScene(), GetLevel()->GetLevelPhysics(), GetLevel()->GetCooking(), false, VecSclae);
 
+	std::shared_ptr<class GameEngineFontRenderer> FontRender = CreateComponent<GameEngineFontRenderer>();
+
+	FontRender->GetTransform()->SetLocalPosition(GetTransform()->GetWorldPosition());
+	FontRender->SetFont("DMC5Font");
+	FontRender->SetScale(30.0f);
+	FontRender->SetText("Say, fellas. thanks for\nsettling things down\naround here.");
+
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
 
 	Component->GetDynamic()->setMass(10.f);

@@ -16,8 +16,6 @@ public:
 	{
 		if (nullptr != GameEngineFont::Factory)
 		{
-			// 다시 사용할때 비어있다는것을 알려주기 위해서
-			// 프로그램이 종료될때 되는것.
 			GameEngineFont::Factory->Release();
 			GameEngineFont::Factory = nullptr;
 		}
