@@ -205,5 +205,6 @@ void EnemyActor_Normal::RNPlayer()
 		&& false == RN_Player)
 	{
 		RN_Player = true;
+		RN_MonsterCollision->Death();
 	}
 }

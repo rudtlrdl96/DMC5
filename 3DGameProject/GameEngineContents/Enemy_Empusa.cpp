@@ -77,7 +77,12 @@ void Enemy_Empusa::EnemyAnimationLoad()
 
 void Enemy_Empusa::EnemyCreateFSM()
 {
-		
+	MonsterCollision->GetTransform()->SetWorldScale({300,100,300});
+	MonsterCollision->SetColType(ColType::OBBBOX3D);
+	RN_MonsterCollision->GetTransform()->SetWorldScale({800,800,800});
+	RN_MonsterCollision->SetColType(ColType::OBBBOX2D);
+	MonsterAttackRange->GetTransform()->SetWorldScale({400,400,400});
+	MonsterAttackRange->SetColType(ColType::OBBBOX3D);
 }
 
 void Enemy_Empusa::Idle_Enter()
@@ -87,11 +92,6 @@ void Enemy_Empusa::Idle_Enter()
 
 void Enemy_Empusa::Idle_Update(float _DeltaTime)
 {
-	//if(player가 범위내에 인식이되면)
-	
-	//if범위를 탐색해서 플레이어가 범위내에있다면 Attack(Chage State)
-	//멀리떨어져있다면 Run(update)
-
 	if (true==RN_Player)
 	{
 		Move();
@@ -242,14 +242,15 @@ void Enemy_Empusa::Move()
 		EnemyRenderer->ChangeAnimation("em0100_biped_walk_start");
 		Moves = false;
 	}
-	if (EnemyRenderer->IsAnimationEnd())
+	if (false == Moves)
 	{
 		ChasePlayer();
 		EnemyRenderer->ChangeAnimation("em0100_biped_walk_loop");
-		if (RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::OBBBOX3D, ColType::OBBBOX3D))
+		if (MonsterAttackRange->Collision(CollisionOrder::Player, ColType::OBBBOX3D, ColType::OBBBOX3D))
 		{
 			EnemyFSM.ChangeState(EnemyState::M_Attack);
 			Moves = true;
 		}
 	}
+	
 }
