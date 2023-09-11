@@ -290,21 +290,17 @@ void BaseEnemyActor::ChasePlayer(float _DeltaTime)
 			float4 EnemyForWardVector = EnemyRenderer->GetTransform()->GetWorldForwardVector();
 			EnemyForWardVector.y = 0;
 			EnemyForWardVector.Normalize();
+
 			float4 ToPlayerVector = (PlayerPosition - EnemyPosition);
 			ToPlayerVector.y = 0;
 			ToPlayerVector.Normalize();
+
 			float4 CrossVector = float4::Cross3DReturnNormal(EnemyForWardVector, ToPlayerVector);
-			if (CrossVector.y < 0)
-			{
-				EnemyRenderer->GetTransform()->AddLocalRotation({ 0,-2,0 });
-				ForWardCollision->GetTransform()->AddLocalRotation({ 0,-2,0 });
-			}
-			else
-			{
-				EnemyRenderer->GetTransform()->AddLocalRotation({ 0,2,0 });
-				ForWardCollision->GetTransform()->AddLocalRotation({ 0,2,0 });
-			}
+			if (CrossVector.y < 0){	RotateValue = -2;}
+			else{RotateValue = 2;}
+
+			EnemyRenderer->GetTransform()->AddLocalRotation({ 0,RotateValue,0 });
+			ForWardCollision->GetTransform()->AddLocalRotation({ 0,RotateValue,0 });
 		}
-		
 	}
 }
