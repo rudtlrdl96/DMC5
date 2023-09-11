@@ -161,6 +161,13 @@ void BasePlayerActor::UserControllLoad()
 	LockOnCollision->GetTransform()->SetLocalScale({ 2000, 5000, 5000 });
 	LockOnCollision->GetTransform()->SetLocalPosition({ 0, 0, 2500 });
 	LockOnCollision->SetColType(ColType::OBBBOX3D);
+
+	//몬스터->플레이어 방향 인식용 충돌체
+	RotateDotCollision = CreateComponent<GameEngineCollision>(CollisionOrder::RN_Player);
+	RotateDotCollision->GetTransform()->SetLocalScale({50,50,50});
+	RotateDotCollision->SetColType(ColType::OBBBOX3D);
+
+
 }
 
 void BasePlayerActor::Update_ProcessPacket()

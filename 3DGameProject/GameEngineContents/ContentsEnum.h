@@ -69,7 +69,8 @@ enum class CollisionOrder
 	Wall,
 	JumpWall,
 	PlayerAttack,
-	RN_Enemy, //Monster가Player를 인식하는 범위Collision
+	RN_Enemy,
+	RN_Player,
 };
 
 enum class DevilBreaker

@@ -71,6 +71,7 @@ protected:
 	std::shared_ptr<class GameEngineCollision> EnemyStepCheckCollision = nullptr;
 	std::shared_ptr<class GameEngineCollision> AttackCollision = nullptr;
 	std::shared_ptr<class GameEngineCollision> LockOnCollision = nullptr;
+	std::shared_ptr<class GameEngineCollision> RotateDotCollision = nullptr;
 	std::shared_ptr<class PhysXCapsuleComponent> PhysXCapsule = nullptr;
 	float4 Rot = float4::ZERO;
 	int FSMValue = -1;

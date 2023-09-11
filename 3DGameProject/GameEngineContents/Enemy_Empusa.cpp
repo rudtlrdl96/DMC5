@@ -82,8 +82,8 @@ void Enemy_Empusa::EnemyCreateFSM()
 	MonsterCollision->SetColType(ColType::OBBBOX3D);
 	RN_MonsterCollision->GetTransform()->SetWorldScale({800,800,800});
 	RN_MonsterCollision->SetColType(ColType::OBBBOX2D);
-	MonsterAttackRange->GetTransform()->SetWorldScale({400,400,400});
-	MonsterAttackRange->SetColType(ColType::OBBBOX3D);
+	MonsterAttackRange->GetTransform()->SetWorldScale({300,300,300});
+	MonsterAttackRange->SetColType(ColType::SPHERE3D);
 }
 
 void Enemy_Empusa::Idle_Enter()
@@ -139,7 +139,7 @@ void Enemy_Empusa::Attack_Update(float _DeltaTime)
 
 void Enemy_Empusa::Attack_Exit()
 {
-	ColValue = nullptr;
+	
 }
 
 void Enemy_Empusa::Hit_Enter()

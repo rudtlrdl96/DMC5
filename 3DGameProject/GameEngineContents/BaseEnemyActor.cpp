@@ -193,7 +193,7 @@ void BaseEnemyActor::Start()
 	MonsterAttackRange = CreateComponent<GameEngineCollision>(CollisionOrder::RN_Enemy);
 	//ForWardCollision
 	ForWardCollision = CreateComponent<GameEngineCollision>(CollisionOrder::RN_Enemy);
-	ForWardCollision->GetTransform()->SetWorldScale({50,500,5000});
+	ForWardCollision->GetTransform()->SetWorldScale({50,500,4000});
 	ForWardCollision->SetColType(ColType::OBBBOX3D);
 	
 	//초기화
@@ -277,22 +277,34 @@ void BaseEnemyActor::SuperArmorOff()
 
 void BaseEnemyActor::ChasePlayer(float _DeltaTime)
 {
-	//Player를 인식했을때만
-	if (true == RN_Player)
+	//서버에서 Player가 vector로 담아져있음. 그 벡터를 돌면서 따라감
+	for (BasePlayerActor* Players : BasePlayerActor::GetPlayers())
 	{
-		//서버에서 Player가 vector로 담아져있음. 그 벡터를 돌면서 따라감
-		//거리값계산해서 가까운 플레이어로 추적하는기능 만들어야함
-		for (BasePlayerActor* Players : BasePlayerActor::GetPlayers()) 
+		float4 EnemyPosition = EnemyRenderer->GetTransform()->GetWorldPosition();
+		float4 PlayerPosition = Players->GetTransform()->GetWorldPosition();
+		CapsulCol->SetMove((PlayerPosition - EnemyPosition));
+		//자연스럽게 돌리기
+		ColValue = ForWardCollision->Collision(CollisionOrder::RN_Player, ColType::OBBBOX3D, ColType::OBBBOX3D);
+		if (nullptr == ColValue)
 		{
-			float4 EnemyPosition = EnemyRenderer->GetTransform()->GetWorldPosition();
-			float4 PlayerPosition = Players->GetTransform()->GetWorldPosition();
-			CapsulCol->SetMove((PlayerPosition - EnemyPosition));
+			float4 EnemyForWardVector = EnemyRenderer->GetTransform()->GetWorldForwardVector();
+			EnemyForWardVector.y = 0;
+			EnemyForWardVector.Normalize();
+			float4 ToPlayerVector = (PlayerPosition - EnemyPosition);
+			ToPlayerVector.y = 0;
+			ToPlayerVector.Normalize();
+			float4 CrossVector = float4::Cross3DReturnNormal(EnemyForWardVector, ToPlayerVector);
+			if (CrossVector.y < 0)
+			{
+				EnemyRenderer->GetTransform()->AddLocalRotation({ 0,-2,0 });
+				ForWardCollision->GetTransform()->AddLocalRotation({ 0,-2,0 });
+			}
+			else
+			{
+				EnemyRenderer->GetTransform()->AddLocalRotation({ 0,2,0 });
+				ForWardCollision->GetTransform()->AddLocalRotation({ 0,2,0 });
+			}
 		}
-		ColValue = ForWardCollision->Collision(CollisionOrder::Player, ColType::OBBBOX3D, ColType::OBBBOX3D);
-		if(nullptr== ColValue)
-		{
-			EnemyRenderer->GetTransform()->AddLocalRotation({ 0,2,0 });
-			ForWardCollision->GetTransform()->AddLocalRotation({ 0,2,0 });
-		}
+		
 	}
 }
