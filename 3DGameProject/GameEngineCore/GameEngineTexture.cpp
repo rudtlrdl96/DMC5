@@ -273,7 +273,6 @@ void GameEngineTexture::ResLoad(const std::string_view& _Path)
 	Desc.Width = static_cast<UINT>(Data.width);
 	Desc.Height = static_cast<UINT>(Data.height);
 
-	DirectX::CreateWICTextureFromFile();
 	// Texture2D->GetDesc(&Desc);
 }
 
