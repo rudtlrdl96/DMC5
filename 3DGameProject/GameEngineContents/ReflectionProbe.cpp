@@ -87,7 +87,7 @@ void ReflectionProbe::Init(const std::string_view& _CaptureTextureName, const fl
 					"Texture", "ReflectionTexture"
 				});
 
-			GameEngineScreenShoot::RenderTargetShoot(TextureTarget, Path, _CaptureTextureName);
+			GameEngineScreenShoot::RenderTargetCubemapShoot(TextureTarget, _Scale, Path, _CaptureTextureName);
 		}
 	
 		GameEngineCoreWindow::Clear();

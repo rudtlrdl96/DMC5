@@ -91,6 +91,46 @@ void GameEngineRenderTarget::ResCreate(DXGI_FORMAT _Format, float4 _Scale, float
 	RTVs.push_back(Tex->GetRTV());
 }
 
+void GameEngineRenderTarget::ResCreateCubemap(DXGI_FORMAT _Format, float4 _Scale, float4 _Color)
+{
+	D3D11_TEXTURE2D_DESC Desc;
+	Desc.Width = _Scale.ix();
+	Desc.Height = _Scale.iy();
+	Desc.MipLevels = 1;
+	Desc.ArraySize = 6;
+	Desc.SampleDesc.Quality = 0;
+	Desc.SampleDesc.Count = 1;
+	Desc.Format = _Format; // DXGI_FORMAT_R32G32B32A32_FLOAT // DXGI_FORMAT_R8G8B8A8_UNORM // DXGI_FORMAT_R16G16B16A16_FLOAT
+	Desc.Usage = D3D11_USAGE_DEFAULT;
+	Desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	Desc.CPUAccessFlags = 0;
+	Desc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+
+	//The Shader Resource view description
+	D3D11_SHADER_RESOURCE_VIEW_DESC DescSRV;
+	DescSRV.Format = Desc.Format;
+	DescSRV.ViewDimension = D3D_SRV_DIMENSION_TEXTURECUBE;
+	DescSRV.TextureCube.MipLevels = Desc.MipLevels;
+	DescSRV.TextureCube.MostDetailedMip = 0;
+
+	std::shared_ptr<GameEngineTexture> Tex = GameEngineTexture::Create(Desc);
+
+	D3D11_VIEWPORT ViewPortData;
+
+	ViewPortData.TopLeftX = 0;
+	ViewPortData.TopLeftY = 0;
+	ViewPortData.Width = _Scale.x;
+	ViewPortData.Height = _Scale.y;
+	ViewPortData.MinDepth = 0.0f;
+	ViewPortData.MaxDepth = 1.0f;
+
+	ViewPortDatas.push_back(ViewPortData);
+
+	Textures.push_back(Tex);
+	SRVs.push_back(Tex->GetSRV());
+	RTVs.push_back(Tex->GetRTV());
+}
+
 void GameEngineRenderTarget::CreateDepthTexture(int _Index)
 {
 	D3D11_TEXTURE2D_DESC Desc = { 0, };

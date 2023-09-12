@@ -58,7 +58,7 @@ void TestStageLevel::Update(float _DeltaTime)
 		TempActor->GetTransform()->SetLocalPosition(float4(0, 300, 0));
 
 		std::shared_ptr<ReflectionProbe> Reflect = TempActor->CreateComponent<ReflectionProbe>();
-		Reflect->Init("TestSaveTexture.Jpg");
+		Reflect->Init("TestSaveTexture.DDS");
 	}
 
 	//GameEngineCore::GetFrameRate();

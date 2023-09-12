@@ -1296,6 +1296,41 @@ HRESULT GameEngineScreenShoot::RenderTargetShoot(std::shared_ptr<GameEngineRende
 
         std::shared_ptr<GameEngineRenderTarget> MergeTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_B8G8R8A8_UNORM, float4((float)TexInfo.Width, (float)TexInfo.Height), float4::ZERONULL);
         MergeTarget->Merge(_CaptureTarget);
+        
+        // 기존 경로 저장
+        wchar_t PrevPath[255];
+        GetCurrentDirectory(255, PrevPath);
+
+        // 경로 변경
+        SetCurrentDirectory(GameEngineString::AnsiToUniCode(_Path).data());
+
+        SaveDDSTextureToFile(GameEngineDevice::GetContext(), MergeTarget->GetTexture(0)->GetTexture2D(), GameEngineString::AnsiToUniCode(_TextureName).data());
+        //SaveWICTextureToFile(GameEngineDevice::GetContext(), MergeTarget->GetTexture(0)->GetTexture2D(), GUID_ContainerFormatJpeg, GameEngineString::AnsiToUniCode(_TextureName).data());
+
+        // 이전 경로 되돌리기
+        SetCurrentDirectory(PrevPath);
+
+        MergeTarget->ReleaseTextures();
+
+        return S_OK;
+    }
+
+    return S_FALSE;
+}
+
+HRESULT GameEngineScreenShoot::RenderTargetCubemapShoot(std::shared_ptr<GameEngineRenderTarget> _CaptureTarget, const float4& _CaptureSize, const std::string_view& _Path, const std::string_view& _TextureName)
+{
+    if (nullptr == _CaptureTarget)
+    {
+        return S_FALSE;
+    }
+
+    ID3D11Texture2D* Resource = _CaptureTarget->GetTexture(0)->GetTexture2D();
+
+    if (nullptr != Resource)
+    {
+        std::shared_ptr<GameEngineRenderTarget> MergeTarget = GameEngineRenderTarget::CreateCubemap(DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM, _CaptureSize, float4::ZERONULL);
+        MergeTarget->Merge(_CaptureTarget);
 
         // 기존 경로 저장
         wchar_t PrevPath[255];
@@ -1304,7 +1339,8 @@ HRESULT GameEngineScreenShoot::RenderTargetShoot(std::shared_ptr<GameEngineRende
         // 경로 변경
         SetCurrentDirectory(GameEngineString::AnsiToUniCode(_Path).data());
 
-        SaveWICTextureToFile(GameEngineDevice::GetContext(), MergeTarget->GetTexture(0)->GetTexture2D(), GUID_ContainerFormatJpeg, GameEngineString::AnsiToUniCode(_TextureName).data());
+        SaveDDSTextureToFile(GameEngineDevice::GetContext(), MergeTarget->GetTexture(0)->GetTexture2D(), GameEngineString::AnsiToUniCode(_TextureName).data());
+        //SaveWICTextureToFile(GameEngineDevice::GetContext(), MergeTarget->GetTexture(0)->GetTexture2D(), GUID_ContainerFormatJpeg, GameEngineString::AnsiToUniCode(_TextureName).data());
 
         // 이전 경로 되돌리기
         SetCurrentDirectory(PrevPath);
