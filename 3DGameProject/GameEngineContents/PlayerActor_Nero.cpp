@@ -4015,6 +4015,12 @@ bool PlayerActor_Nero::Input_SpecialCheckFly()
 			ChangeState(FSM_State_Nero::Nero_EnemyStep);
 			return true;
 		}
+		if (false == UseDoubleJump && PhysXCapsule->GetIsPlayerWallTouch())
+		{
+			ChangeState(FSM_State_Nero::Nero_EnemyStep);
+			UseDoubleJump = true;
+			return true;
+		}
 	}
 	if (Controller->GetIsDevilTrigger())
 	{
