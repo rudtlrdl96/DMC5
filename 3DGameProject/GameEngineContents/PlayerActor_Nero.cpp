@@ -2702,7 +2702,7 @@ void PlayerActor_Nero::NetLoad()
 				nullptr,
 			},
 			.CallBacks_int = {
-				std::bind(&PlayerActor_Nero::ChangeState, this, std::placeholders::_1)
+				std::bind(&GameEngineFSM::ChangeState, &FSM, std::placeholders::_1)
 			},
 			});
 
