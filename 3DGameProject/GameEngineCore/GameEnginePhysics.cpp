@@ -131,7 +131,7 @@ void GameEnginePhysics::CreateScene(const std::string_view& _Name)
 
 	physx::PxSceneDesc SceneDesc(m_pPhysics->getTolerancesScale());
 	physx::PxScene* NewScene = nullptr;
-	SceneGravity = 500.0f;
+	SceneGravity = 2000.0f;
 	CustomCallbackEvent = new CustomCallback();
 
 	SceneDesc.gravity = physx::PxVec3(0.0f, -SceneGravity, 0.0f);

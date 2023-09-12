@@ -150,7 +150,7 @@ void BasePlayerActor::Start()
 {
 	// PhysX ÄÝ¸®Àü
 	PhysXCapsule = CreateComponent<PhysXCapsuleComponent>();
-	PhysXCapsule->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
+	PhysXCapsule->SetPhysxMaterial(0.1f, 0.1f, 0.0f);
 	PhysXCapsule->IsMainPlayerCapsule();
 	PhysXCapsule->CreatePhysXActors({ 150, 100, 150 });
 	PhysXCapsule->GetDynamic()->setMass(5.0f);
@@ -224,6 +224,16 @@ void BasePlayerActor::Update_ProcessPacket()
 			ObjectUpdate->TimeScale;
 
 			float TimeScale = ObjectUpdate->TimeScale;
+			if (ArmValue != ObjectUpdate->ArmState)
+			{
+				ArmValue = ObjectUpdate->ArmState;
+				SetArm(ArmValue);
+			}
+			if (DTValue != ObjectUpdate->IsEvolve)
+			{
+				DTValue = ObjectUpdate->IsEvolve;
+				SetDT(DTValue);
+			}
 			//unsigned int FsmState = ObjectUpdate->FsmState;
 			//bool IsFsmForce = ObjectUpdate->IsFsmForce;
 			break;
@@ -258,7 +268,7 @@ void BasePlayerActor::Update(float _DeltaTime)
 
 void BasePlayerActor::Update_SendPacket(float _DeltaTime)
 {
-	NetworkManager::PushUpdatePacket({ .ObjPtr = this, .TimeScale = 1.0f });
+	NetworkManager::PushUpdatePacket({ .ObjPtr = this, .TimeScale = 1.0f, .UnionData = {ArmValue, DTValue} });
 }
 
 void BasePlayerActor::LockOn()
@@ -295,7 +305,7 @@ void BasePlayerActor::LockOff()
 bool BasePlayerActor::FloorCheck()
 {
 	float4 Point;
-	return GetLevel()->RayCast(GetTransform()->GetWorldPosition(), float4::DOWN, Point, 100.0f) || PhysXCapsule->GetIsPlayerGroundTouch();
+	return GetLevel()->RayCast(GetTransform()->GetWorldPosition(), float4::DOWN, Point, 100.0f);
 }
 
 void BasePlayerActor::SetForce(float4 _Value)

@@ -1273,6 +1273,7 @@ void PlayerActor_Vergil::ChangeState(FSM_State_Vergil _StateValue)
 
 void PlayerActor_Vergil::SetHuman()
 {
+
 	for (int i = 9; i <= 21; i++)
 	{
 		Renderer->GetAllRenderUnit()[0][i]->On();

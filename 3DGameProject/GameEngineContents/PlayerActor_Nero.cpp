@@ -4075,6 +4075,7 @@ void PlayerActor_Nero::WeaponIdle()
 
 void PlayerActor_Nero::SetHuman()
 {
+	DTValue = 0;
 	for (int i = 0; i <= 14; i++)
 	{
 		Renderer->GetAllRenderUnit()[0][i]->On();
@@ -4088,6 +4089,8 @@ void PlayerActor_Nero::SetHuman()
 
 void PlayerActor_Nero::SetDemon()
 {
+	DTValue = 1;
+	ArmValue = 0;
 	for (int i = 0; i <= 8; i++)
 	{
 		Renderer->GetAllRenderUnit()[0][i]->Off();
@@ -4111,6 +4114,7 @@ void PlayerActor_Nero::SetOverture()
 	{
 		return;
 	}
+	ArmValue = 1;
 	Renderer->GetAllRenderUnit()[0][13]->On();
 	Renderer->GetAllRenderUnit()[0][12]->Off();
 	Renderer->GetAllRenderUnit()[0][11]->Off();
@@ -4125,6 +4129,7 @@ void PlayerActor_Nero::SetGerbera()
 	{
 		return;
 	}
+	ArmValue = 2;
 	Renderer->GetAllRenderUnit()[0][13]->Off();
 	Renderer->GetAllRenderUnit()[0][12]->On();
 	Renderer->GetAllRenderUnit()[0][11]->On();
@@ -4139,6 +4144,7 @@ void PlayerActor_Nero::SetBusterArm()
 	{
 		return;
 	}
+	ArmValue = 3;
 	Renderer->GetAllRenderUnit()[0][13]->Off();
 	Renderer->GetAllRenderUnit()[0][12]->Off();
 	Renderer->GetAllRenderUnit()[0][11]->Off();
@@ -4183,6 +4189,7 @@ void PlayerActor_Nero::OnDevilBraeker()
 
 void PlayerActor_Nero::OffDevilBraeker()
 {
+	ArmValue = 0;
 	Renderer->GetAllRenderUnit()[0][13]->Off();
 	Renderer->GetAllRenderUnit()[0][12]->Off();
 	Renderer->GetAllRenderUnit()[0][11]->Off();

@@ -41,6 +41,11 @@ public:
 
 	// FSM상태를 지정하는 함수
 	virtual void SetFSMStateValue(int _StateValue) = 0;
+	// DT 상태 변환
+	virtual void SetDT(unsigned int _DTValue) = 0;
+	// Arm 상태 변환
+	virtual void SetArm(unsigned int _ArmValue) {}
+
 
 
 
@@ -75,6 +80,8 @@ protected:
 	std::shared_ptr<class PhysXCapsuleComponent> PhysXCapsule = nullptr;
 	float4 Rot = float4::ZERO;
 	int FSMValue = -1;
+	unsigned int DTValue;
+	unsigned int ArmValue;
 private:
 	static std::vector<BasePlayerActor*> Players;
 

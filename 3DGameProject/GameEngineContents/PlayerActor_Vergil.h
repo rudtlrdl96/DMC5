@@ -61,6 +61,10 @@ public:
 	{
 		FSM.ChangeState(_StateValue);
 	}
+	void SetDT(unsigned int _DTValue) override
+	{
+
+	}
 protected:
 	void Start() override;
 	void VergilLoad();

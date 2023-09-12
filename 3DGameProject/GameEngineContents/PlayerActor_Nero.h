@@ -123,6 +123,36 @@ public:
 	{
 		FSM.ChangeState(_StateValue);
 	}
+	void SetDT(unsigned int _DTValue) override
+	{
+		if (_DTValue == 1)
+		{
+			SetDemon();
+		}
+		else
+		{
+			SetHuman();
+		}
+	}
+	void SetArm(unsigned int _ArmValue) override
+	{
+		if (_ArmValue == 0)
+		{
+			OffDevilBraeker();
+		}
+		else if (_ArmValue == 1)
+		{
+			SetOverture();
+		}
+		else if (_ArmValue == 2)
+		{
+			SetGerbera();
+		}
+		else if (_ArmValue == 3)
+		{
+			SetBusterArm();
+		}
+	}
 
 	void SinglePlayLoad();
 
