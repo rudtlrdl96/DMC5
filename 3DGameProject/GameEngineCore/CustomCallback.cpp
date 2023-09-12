@@ -44,8 +44,6 @@ void CustomCallback::onContact(const physx::PxContactPairHeader& pairHeader, con
 		{
 			if (current.events & physx::PxPairFlag::eNOTIFY_TOUCH_PERSISTS)
 			{
-				static_cast<physx::PxRigidDynamic*>(tmpContactActor->getActor());
-
 				MainPlayer->SetIsPlayerWallTouch(true);
 			}
 			if (current.events & physx::PxPairFlag::eNOTIFY_TOUCH_LOST)

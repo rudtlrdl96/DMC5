@@ -1260,18 +1260,22 @@ HRESULT GameEngineScreenShoot::ScreenShoot()
 
     if (nullptr != buffer)
     {
-        //SaveDDSTextureToFile(GameEngineDevice::GetContext(), buffer, L"SCREENSHOT.DDS");
+        GameEngineDirectory Dir;
+        Dir.MoveParentToDirectory("ScreenShoot");
+        Dir.Move("ScreenShoot");
+
+        wchar_t PrevPath[255];
+        GetCurrentDirectory(255, PrevPath);
+
+        std::string Path = Dir.GetFullPath();
+
+        // 경로 변경
+        SetCurrentDirectory(GameEngineString::AnsiToUniCode(Path).data());
+
         SaveWICTextureToFile(GameEngineDevice::GetContext(), buffer, GUID_ContainerFormatJpeg, L"SCREENSHOT.JPG");
+
+        SetCurrentDirectory(PrevPath);
     }
-
-    //ComPtr<ID3D11Texture2D> backBuffer = _Resource;
-    //HRESULT hr = GameEngineDevice::GetSwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<LPVOID*>(backBuffer.GetAddressOf()));
-
-    //if (SUCCEEDED(hr))
-    //{
-    //    hr = SaveDDSTextureToFile(GameEngineDevice::GetContext(), backBuffer.Get(), L"SCREENSHOT.DDS");
-    //    hr = SaveWICTextureToFile(GameEngineDevice::GetContext(), backBuffer.Get(), GUID_ContainerFormatJpeg, L"SCREENSHOT.JPG");
-    //}
 
     return S_OK;
 }
