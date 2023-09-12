@@ -38,8 +38,8 @@ void ShopLevel::Start()
 	std::shared_ptr<Vergil_ShopTitleBar> Vergil_ShopTitleBarPtr = CreateActor<Vergil_ShopTitleBar>();
 	Vergil_ShopTitleBarPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
 
-	//std::shared_ptr<testarea> testareaPtr = CreateActor<testarea>();
-	//testareaPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
+	std::shared_ptr<testarea> testareaPtr = CreateActor<testarea>();
+	testareaPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
 
 }
 

@@ -28,6 +28,8 @@ private:
 	std::shared_ptr<class Shop_TitleButton> YamatoButton = nullptr;
 	std::shared_ptr<class Shop_TitleButton> MirgeButton = nullptr;
 	std::shared_ptr<class Shop_VergilYamatoUI> YamatoSkill = nullptr;
+	std::shared_ptr<class Shop_VergilMirgeUI> MirgeSkill = nullptr;
+	
 	float LerpTime = 0.0f;
 	int ButtonIndex = 0;
 	int Index = 0;

@@ -13,15 +13,15 @@ public:
 	std::string _BaseNone = "";
 	std::string _BaseSelect = "";
 	bool IsValue = false;
-
+	int Value = 0;
 };
 class GameEngineCollision;
 class Shop_ItemButton : public GameEngineActor
 {
 public:
 	static std::vector<std::shared_ptr<Shop_ItemButton>> Items;
-	static std::vector<std::shared_ptr<Shop_ItemButton>> Skills;
-
+	static std::vector<std::shared_ptr<Shop_ItemButton>> Skills; 
+		static std::vector<std::shared_ptr<Shop_ItemButton>> SecoundSkills;
 	// constrcuter destructer
 	Shop_ItemButton();
 	~Shop_ItemButton();

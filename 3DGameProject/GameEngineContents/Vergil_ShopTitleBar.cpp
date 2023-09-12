@@ -4,6 +4,7 @@
 #include "Shop_ExplaneUI.h"
 #include "Shop_ItemButton.h"
 #include "Shop_VergilYamatoUI.h"
+#include "Shop_VergilMirgeUI.h"
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
 Vergil_ShopTitleBar* Vergil_ShopTitleBar::Vergil_ShopBar = nullptr;
@@ -59,9 +60,13 @@ void Vergil_ShopTitleBar::Start()
 	MirgeButton->GetFont()->SetFontFlag(FW1_LEFT);
 	MirgeButton->SetIsPosValue(true);
 	MirgeButton->GetFont()->GetTransform()->SetLocalPosition({ -736.0f,222.0f,0.0f });
-
+	
 	YamatoSkill = GetLevel()->CreateActor<Shop_VergilYamatoUI>();
 	YamatoSkill->Off();
+
+	MirgeSkill = GetLevel()->CreateActor<Shop_VergilMirgeUI>();
+	MirgeSkill->Off();
+
 }
 
 
@@ -79,9 +84,14 @@ void Vergil_ShopTitleBar::Update(float _Delta)
 		YamatoButton->SetSelectValue(true);
 		MirgeButton->SetSelectValue(false);
 		YamatoSkill->On();
+		MirgeSkill->Off();
 		for (int i = 0; i < Shop_ItemButton::Skills.size(); i++)
 		{
 			Shop_ItemButton::Skills[i]->On();
+		}
+		for (int i = 0; i < Shop_ItemButton::SecoundSkills.size(); i++)
+		{
+			Shop_ItemButton::SecoundSkills[i]->Off();
 		}
 	}
 	else
@@ -90,9 +100,14 @@ void Vergil_ShopTitleBar::Update(float _Delta)
 		MirgeButton->SetSelectValue(true);
 		YamatoButton->SetSelectValue(false);
 		YamatoSkill->Off();
+		MirgeSkill->On();
 		for (int i = 0; i < Shop_ItemButton::Skills.size(); i++)
 		{
 			Shop_ItemButton::Skills[i]->Off();
+		}
+		for (int i = 0; i < Shop_ItemButton::SecoundSkills.size(); i++)
+		{
+			Shop_ItemButton::SecoundSkills[i]->On();
 		}
 	}
 	if (Index == 1)

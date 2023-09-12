@@ -8,7 +8,7 @@
 #include <GameEngineCore/GameEngineCamera.h>
 std::vector<std::shared_ptr<Shop_ItemButton>> Shop_ItemButton::Items; 
 std::vector<std::shared_ptr<Shop_ItemButton>> Shop_ItemButton::Skills;
-
+std::vector<std::shared_ptr<Shop_ItemButton>> Shop_ItemButton::SecoundSkills;
 bool  Shop_ItemButton::IsScaleValue = false;
 Shop_ItemButton::Shop_ItemButton()
 {
@@ -45,6 +45,12 @@ void Shop_ItemButton::CreateItemUI(GameEngineLevel* _Level, float4 _Pos, const S
 		ItemButton->GetRender()->GetTransform()->SetLocalScale({ 356.0f,102.0f,0.0f });
 		ItemButton->GetRender_Select()->GetTransform()->SetLocalScale({ 356.0f,102.0f,0.0f });
 		Items.push_back(ItemButton);
+	}
+	if (_Param.Value == 1)
+	{
+		ItemButton->GetRender()->GetTransform()->SetLocalScale({ 480.0f,102.0f,0.0f });
+		ItemButton->GetRender_Select()->GetTransform()->SetLocalScale({ 480.0f,102.0f,0.0f });
+		SecoundSkills.push_back(ItemButton);
 	}
 }
 void Shop_ItemButton::Start()
