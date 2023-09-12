@@ -30,8 +30,14 @@ void BasePlayerActor::LookDir(const float4& _LookDir)
  	float4 LocalForward = GetTransform()->GetWorldForwardVector().NormalizeReturn();
 	float4 LookDir = _LookDir.NormalizeReturn();
  	float Dot = float4::DotProduct3D(LocalForward, LookDir); 
-	if (1.0f < Dot || Dot == 0.0f || LocalForward == LookDir)
+	if (1.0f < Dot || LocalForward == LookDir)
 	{
+		return;
+	}
+	if (Dot < -1.0f)
+	{
+		Rot.y += 180;
+		PhysXCapsule->SetWorldRotation(Rot);
 		return;
 	}
 	float Angle = acosf(Dot) * GameEngineMath::RadToDeg;
@@ -89,12 +95,19 @@ void BasePlayerActor::RotationToDir(const float4& _Dir, float _MaxValue)
 	float4 LocalForward = GetTransform()->GetWorldForwardVector().NormalizeReturn();
 	float4 LookDir = _Dir.NormalizeReturn();
 	float Dot = float4::DotProduct3D(LocalForward, LookDir);
-	if (1.0f < Dot || Dot == 0.0f || LocalForward == LookDir)
+	if (1.0f < Dot || LocalForward == LookDir)
 	{
+		return;
+	}
+	if (Dot < -1.0f)
+	{
+		Rot.y += 180;
+		PhysXCapsule->SetWorldRotation(Rot);
 		return;
 	}
 	float Angle = acosf(Dot) * GameEngineMath::RadToDeg;
 	float4 Cross = float4::Cross3DReturnNormal(LocalForward, LookDir);
+
 	if (std::isnan(Angle))
 	{
 		return;
