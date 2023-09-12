@@ -3,6 +3,7 @@
 #include "UIEnums.h"
 #include <GameEngineCore/GameEngineUIRenderer.h>
 Char_ChoiceUI* Char_ChoiceUI::CharChoicePtr = nullptr;
+ChoicePlayerType Char_ChoiceUI::Type = ChoicePlayerType::NONE;
 Char_ChoiceUI::Char_ChoiceUI()
 {
 	CharChoicePtr = this;
@@ -22,6 +23,7 @@ void Char_ChoiceUI::Start()
 	Nero_ChoiceUIRender->GetTextSelectRender()->GetTransform()->SetLocalPosition({ 20.0f,-150.0f,0.0f });
 	Nero_ChoiceUIRender->SetEvent([this]()
 		{
+			Type = ChoicePlayerType::NERO;
 			GameEngineCore::ChangeLevel("MainMenuLevel");
 			if (nullptr != CharTypeCallBack)
 			{
@@ -39,6 +41,7 @@ void Char_ChoiceUI::Start()
 	._ExplaneText = "The Alpha and the Omega" });
 	Vergil_ChoiceUIRender->SetEvent([this]()
 		{
+			Type = ChoicePlayerType::VERGIL;
 			GameEngineCore::ChangeLevel("MainMenuLevel");
 			if (nullptr != CharTypeCallBack)
 			{

@@ -26,47 +26,17 @@ void Shop_TitleButton::Start()
 	Render_Select = CreateComponent<GameEngineUIRenderer>(2);
 	Render_Select->SetScaleToTexture("NullTexture.png");
 	Render_Select->ColorOptionValue.MulColor.a = 0.5f;
-	Render->Off();
 	FontCreate();
 }
 
 void Shop_TitleButton::Update(float _Delta)
 {
-	GameEngineCamera* Camera = Render->GetCamera();
 
-	// 랜더러 
-	float4x4 ViewPort = Camera->GetViewPort();
-	float4x4 Proj = Camera->GetProjection();
-	float4x4 View = Camera->GetView();
-
-	float4 Mouse = GameEngineInput::GetMousePosition();
-
-	Mouse *= ViewPort.InverseReturn();
-	Mouse *= Proj.InverseReturn();
-	Mouse *= View.InverseReturn();
-
-
-	CollisionData MouseData;
-	MouseData.SPHERE.Center = Mouse.DirectFloat3;
-	MouseData.SPHERE.Radius = 0.0f;
-	if (true == GameEngineTransform::AABB2DToSpehre2D(Render->GetTransform()->GetCollisionData(), MouseData))
-	{
-		if (true == GameEngineInput::IsUp("UI_CLICK"))
-		{
-			if (nullptr != Click)
-			{
-				Click();
-			}
-		}
-	}
-	else
-	{
-		
-	}
 	if (IsSelect == true)
 	{
 		AddTime += _Delta;
 		Render->On();
+		Render_Bottom->On();
 		if (IsValue == false)
 		{
 			M0 = GameEngineMath::LerpLimit(0.4f, 1.2f, AddTime * 2.0f);
@@ -93,18 +63,42 @@ void Shop_TitleButton::Update(float _Delta)
 		}
 		else
 		{
-			Render_Select->BSCControl(M0, 0.5f, 0.5f);
+			//크기 1.1배 커지기.
+			//Render,Renderbottom render top
+			if (IsBlink == true)
+			{
+				Render_Select->On();
+				Render_Select->BSCControl(M0, 0.5f, 0.5f);
+				Render->BSCControl(1.0f, 0.7f, 0.5f);
+			}
+			else
+			{
+				Render_Select->Off();
+				Render->BSCControl(0.5f, 0.5f, 0.5f);
+
+			}
+
+
 		}
 
 	}
 	else
 	{
-		Render->Off();
-		FontRender->SetColor(float4(0.462f,0.58f,0.576f));
+
 		if (IsPosValue == false)
 		{
 			FontRender->GetTransform()->SetLocalPosition({ 0.0f,19.f,0.0f });
+			Render->Off();
 		}
+		else
+		{
+			Render_Select->Off();
+			Render_Bottom->Off();
+			Render->BSCControl(0.3f, 0.3f, 0.5f);
+
+		}
+		FontRender->SetColor(float4(0.462f, 0.58f, 0.576f));
+
 	}
 	SetTextFont(Text);
 }
@@ -121,29 +115,6 @@ void Shop_TitleButton::FontCreate()
 
 }
 
-//void Shop_TitleButton::RenderOnOff()
-//{
-//	if (IsSelect == true)
-//	{
-//		Render->Off();
-//		ExplaneText->On();
-//		SeletText->On();
-//		Text->Off();
-//		ExplaneText_1->On();
-//		ExplaneText_2->On();
-//		ExplaneText_3->On();
-//	}
-//	else
-//	{
-//		Text->On();
-//		SeletText->Off();
-//		Render->On();
-//		ExplaneText->Off();
-//		ExplaneText_1->Off();
-//		ExplaneText_2->Off();
-//		ExplaneText_3->Off();
-//	}
-//}
 
 
 

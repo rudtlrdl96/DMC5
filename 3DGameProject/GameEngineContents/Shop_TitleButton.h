@@ -46,6 +46,10 @@ public:
 	{
 		IsSelect = _Value;
 	}
+	void SetBlinkValue(bool _Value)
+	{
+		IsBlink = _Value;
+	}
 	bool GetIsValue()
 	{
 		return IsValue;
@@ -85,6 +89,7 @@ private:
 	std::string_view Text = "";
 	bool IsSelect = false;
 	bool IsValue = false;
+	bool IsBlink = false;
 	bool SwichValue = false;
 	bool IsPosValue = false;
 

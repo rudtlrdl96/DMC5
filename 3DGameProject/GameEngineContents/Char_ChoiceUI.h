@@ -2,7 +2,12 @@
 #include <GameEngineCore/GameEngineActor.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include "Char_ChoiceButton.h"
-
+enum class ChoicePlayerType
+{
+	NONE,
+	NERO,
+	VERGIL
+};
 // Ό³Έν :
 class Char_ChoiceUI : public GameEngineActor
 {
@@ -22,6 +27,10 @@ public:
 	{
 		CharTypeCallBack = _CharTypeCallBack;
 	}
+	static ChoicePlayerType GetPlayerType()
+	{
+		return Type;
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -30,6 +39,7 @@ private:
 	std::shared_ptr<Char_ChoiceButton> Nero_ChoiceUIRender = nullptr;
 	std::shared_ptr<Char_ChoiceButton> Vergil_ChoiceUIRender = nullptr;
 
+	static ChoicePlayerType Type;
 	float4 Scale = { 342.0f,627.0f,0.0f };
 	float4 SeletScale = { 376.0f,690.0f,0.0f };
 	float ScaleUpTime = 0.0f;
