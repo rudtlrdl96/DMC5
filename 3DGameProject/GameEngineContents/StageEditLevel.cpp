@@ -48,17 +48,12 @@ void StageEditLevel::Start()
 
 void StageEditLevel::Update(float _DeltaTime)
 {
-	StageBaseLevel::Update(_DeltaTime);
+	//StageBaseLevel::Update(_DeltaTime);
 	//Test
 	if (true == GameEngineInput::IsDown("SelectLevel_01"))
 	{
 		GameEngineCore::ChangeLevel("MainLevel");
 		return;
-	}
-
-	if (GameEngineInput::IsDown("DebugSwitch"))
-	{
-		GameEngineLevel::IsDebugSwitch();
 	}
 }
 

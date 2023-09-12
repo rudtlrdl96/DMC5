@@ -373,6 +373,9 @@
     <ClInclude Include="testarea.h">
       <Filter>UI\UI_Actor\ShopUI</Filter>
     </ClInclude>
+    <ClInclude Include="StageGUI.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -731,6 +734,9 @@
     </ClCompile>
     <ClCompile Include="testarea.cpp">
       <Filter>UI\UI_Actor\ShopUI</Filter>
+    </ClCompile>
+    <ClCompile Include="StageGUI.cpp">
+      <Filter>GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

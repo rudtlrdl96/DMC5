@@ -4,6 +4,7 @@
 #include <GameEngineCore/GameEngineActor.h>
 #include <GameEngineBase/GameEngineFile.h>
 #include <GameEngineCore/GameEngineCollision.h>
+#include <GameEngineCore/GameEngineFBXRenderer.h>
 #include "StageEditLevel.h"
 #include "FieldMap.h"
 #include "MapCollisionMesh.h"
@@ -457,6 +458,13 @@ void StageEditGUI::CreateStage(StageData _Data)
 {
 	Parent->ClearStage();
 	Parent->CreateStage(_Data);
+	for (auto& i : Parent->AcFieldMaps)
+	{
+		for (auto& j : i->FieldMapRenderer)
+		{
+			j->On();
+		}
+	}
 	//IsCreateStage = true;
 }
 

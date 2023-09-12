@@ -6,6 +6,9 @@
 #include "SkyBox.h"
 #include "MapCollisionMesh.h"
 
+#include <GameEngineCore/GameEngineGUI.h>
+#include "StageGUI.h"
+
 std::vector<StageData> StageBaseLevel::AllStageDatas;
 
 StageBaseLevel::StageBaseLevel()
@@ -49,6 +52,16 @@ void StageBaseLevel::Update(float _DeltaTime)
 
 void StageBaseLevel::LevelChangeStart()
 {
+	//if (GUI == nullptr)
+	//{
+	//	GUI = GameEngineGUI::GUIWindowCreate<StageGUI>("StageGUI");
+	//}
+	//GUI->On();
+}
+
+void StageBaseLevel::LevelChangeEnd()
+{
+	/*GUI->Off();*/
 }
 
 void StageBaseLevel::CreateStage(const StageData& _Data)

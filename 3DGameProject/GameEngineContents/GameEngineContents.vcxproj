@@ -532,6 +532,10 @@
     <ClInclude Include="StageDatas.h" />
     <ClInclude Include="StageEditGUI.h" />
     <ClInclude Include="StageEditLevel.h" />
+    <ClInclude Include="StageGUI.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="StartStageLevel.h" />
     <ClInclude Include="FXAA_Effect.h">
       <SubType>
@@ -940,6 +944,10 @@
     <ClCompile Include="StageDatas.cpp" />
     <ClCompile Include="StageEditGUI.cpp" />
     <ClCompile Include="StageEditLevel.cpp" />
+    <ClCompile Include="StageGUI.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="StartStageLevel.cpp" />
     <ClCompile Include="FXAA_Effect.cpp">
       <SubType>

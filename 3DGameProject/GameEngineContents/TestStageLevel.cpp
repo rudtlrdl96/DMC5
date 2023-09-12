@@ -17,6 +17,8 @@
 #include "FreeCameraActor.h"
 #include "ReflectionProbe.h"
 
+#include <GameEngineCore/GameEngineGUI.h>
+
 TestStageLevel* TestStageLevel::Inst = nullptr;
 
 TestStageLevel::TestStageLevel()
@@ -44,7 +46,6 @@ void TestStageLevel::Start()
 	{
 		GameEngineInput::CreateKey("RefTestKey", VK_SPACE);
 	}
-
 }
 
 void TestStageLevel::Update(float _DeltaTime)
@@ -59,6 +60,8 @@ void TestStageLevel::Update(float _DeltaTime)
 		std::shared_ptr<ReflectionProbe> Reflect = TempActor->CreateComponent<ReflectionProbe>();
 		Reflect->Init("TestSaveTexture.Jpg");
 	}
+
+	//GameEngineCore::GetFrameRate();
 }
 
 void TestStageLevel::LevelChangeStart()

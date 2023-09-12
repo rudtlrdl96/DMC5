@@ -23,11 +23,13 @@ public:
 protected:
 	static std::vector<StageData> AllStageDatas;
 	static void LoadAllStageData();
+	std::shared_ptr<class GameEngineGUIWindow> GUI = nullptr;
 
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	
 	void LevelChangeStart() override;
+	void LevelChangeEnd() override;
 
 	std::string StageName = "";
 	std::vector<std::shared_ptr<class FieldMap>> AcFieldMaps;
