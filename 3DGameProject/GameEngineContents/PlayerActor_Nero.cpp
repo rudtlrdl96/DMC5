@@ -1946,6 +1946,13 @@ void PlayerActor_Nero::PlayerLoad()
 					return;
 				}
 
+				if (true == Controller->GetIsSkill())
+				{
+					// 임시용
+					ChangeState(FSM_State_Nero::Nero_Buster_Repelled);
+					return;
+				}
+
 				if (true == Input_SpecialCheck()) { return; }
 				if (InputCheck == false) { return; }
 
@@ -1965,8 +1972,401 @@ void PlayerActor_Nero::PlayerLoad()
 			.End = [=] {
 			}
 			});
-	}
 
+		// BusterArm Strike
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Strike,
+			.Start = [=] {
+				Renderer->ChangeAnimation("pl0000_Buster_Strike_Common");
+				InputCheck = false;
+				MoveCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (false == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+					return;
+				}
+
+				
+				if (InputCheck == false) { return; }
+
+				if (true == Input_SpecialCheck()) { return; }
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_DevilBreakerCheck()) { return; }
+
+				if (MoveCheck == false) { return; }
+
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					ChangeState(FSM_State_Nero::Nero_RunStart);
+					return;
+				}
+			},
+			.End = [=] {
+			}
+			});
+
+		// BusterArm Repelled
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Repelled,
+			.Start = [=] {
+				Renderer->ChangeAnimation("pl0000_Buster_Catch_Repelled");
+				InputCheck = false;
+				MoveCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (false == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+					return;
+				}
+
+
+				if (InputCheck == false) { return; }
+
+				if (true == Input_SpecialCheck()) { return; }
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_DevilBreakerCheck()) { return; }
+
+				if (MoveCheck == false) { return; }
+
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					ChangeState(FSM_State_Nero::Nero_RunStart);
+					return;
+				}
+			},
+			.End = [=] {
+			}
+			});
+
+		// BusterArm Catch Air
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Catch_Air,
+			.Start = [=] {
+				WeaponIdle();
+				PhysXCapsule->SetLinearVelocityZero();
+				PhysXCapsule->TurnOffGravity	();
+				Renderer->ChangeAnimation("pl0000_Buster_Air_Catch", true);
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					LookDir(Controller->GetMoveVector());
+				}
+				InputCheck = false;
+				MoveCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+				}
+				if (true == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Landing);
+					return;
+				}
+
+				if (true == Controller->GetIsSkill())
+				{
+					// 임시용
+					ChangeState(FSM_State_Nero::Nero_Buster_Strike_Air);
+					return;
+				}
+
+				if (true == Input_SpecialCheckFly()) { return; }
+				if (InputCheck == false) { return; }
+
+				if (true == Input_JumpCheckFly()) { return; }
+				if (true == Input_SwordCheckFly()) { return; }
+				if (true == Input_GunCheckFly()) { return; }
+				if (true == Input_DevilBreakerCheckFly()) { return; }
+			},
+			.End = [=] {
+			}
+			});
+
+		// BusterArm Strike Air
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Strike_Air,
+			.Start = [=] {
+				Renderer->ChangeAnimation("pl0000_Buster_Air_Strike_Common");
+				InputCheck = false;
+				MoveCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+				}
+				if (true == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Landing);
+					return;
+				}
+
+				if (true == Input_SpecialCheckFly()) { return; }
+				if (InputCheck == false) { return; }
+
+				if (true == Input_JumpCheckFly()) { return; }
+				if (true == Input_SwordCheckFly()) { return; }
+				if (true == Input_GunCheckFly()) { return; }
+				if (true == Input_DevilBreakerCheckFly()) { return; }
+			},
+			.End = [=] {
+			}
+			});
+
+		// BusterArm Repelled Air
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Repelled_Air,
+			.Start = [=] {
+				Renderer->ChangeAnimation("pl0000_Buster_Air_Catch_Repelled");
+				InputCheck = false;
+				MoveCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+				}
+				if (true == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Landing);
+					return;
+				}
+
+				if (true == Input_SpecialCheckFly()) { return; }
+				if (InputCheck == false) { return; }
+
+				if (true == Input_JumpCheckFly()) { return; }
+				if (true == Input_SwordCheckFly()) { return; }
+				if (true == Input_GunCheckFly()) { return; }
+				if (true == Input_DevilBreakerCheckFly()) { return; }
+			},
+			.End = [=] {
+			}
+			});
+	}
+	// 스내치
+	{}
+	{
+		// Snatch Shoot
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Snatch_Shoot,
+			.Start = [=] {
+				WeaponIdle();
+				PhysXCapsule->SetLinearVelocityZero();
+				RotationToTarget();
+				Renderer->ChangeAnimation("pl0000_Snatch", true);
+				InputCheck = false;
+				MoveCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (false == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+					return;
+				}
+
+				if (true == Controller->GetIsLockOnSkill())
+				{
+					// 임시용
+					ChangeState(FSM_State_Nero::Nero_Snatch_Pull);
+					return;
+				}
+
+				if (InputCheck == false) { return; }
+
+				if (true == Input_SpecialCheck()) { return; }
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_DevilBreakerCheck()) { return; }
+
+				if (MoveCheck == false) { return; }
+
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					ChangeState(FSM_State_Nero::Nero_RunStart);
+					return;
+				}
+			},
+			.End = [=] {
+			}
+			});
+
+		// Snatch Pull
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Snatch_Pull,
+			.Start = [=] {
+				RotationToTarget();
+				Renderer->ChangeAnimation("pl0000_Snatch_Pull");
+				InputCheck = false;
+				MoveCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (false == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+					return;
+				}
+
+				if (InputCheck == false) { return; }
+
+				if (true == Input_SpecialCheck()) { return; }
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_DevilBreakerCheck()) { return; }
+
+				if (MoveCheck == false) { return; }
+
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					ChangeState(FSM_State_Nero::Nero_RunStart);
+					return;
+				}
+			},
+			.End = [=] {
+			}
+			});
+
+		// Snatch Repel
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Snatch_Repel,
+			.Start = [=] {
+				RotationToTarget();
+				Renderer->ChangeAnimation("pl0000_Snatch_Repel");
+				InputCheck = false;
+				MoveCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (false == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+					return;
+				}
+
+				if (InputCheck == false) { return; }
+
+				if (true == Input_SpecialCheck()) { return; }
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_DevilBreakerCheck()) { return; }
+
+				if (MoveCheck == false) { return; }
+
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					ChangeState(FSM_State_Nero::Nero_RunStart);
+					return;
+				}
+			},
+			.End = [=] {
+			}
+			});
+
+		// Snatch Shoot Air
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Snatch_Shoot_Air,
+			.Start = [=] {
+				WeaponIdle();
+				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->SetLinearVelocityZero();
+				RotationToTarget();
+				Renderer->ChangeAnimation("pl0000_Air_Snatch", true);
+				InputCheck = false;
+				MoveCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+				}
+				if (true == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Landing);
+					return;
+				}
+
+				if (true == Controller->GetIsLockOnSkill())
+				{
+					// 임시용
+					ChangeState(FSM_State_Nero::Nero_Snatch_Repel_Air);
+					return;
+				}
+
+				if (InputCheck == false) { return; }
+
+				if (true == Input_SpecialCheckFly()) { return; }
+				if (true == Input_JumpCheckFly()) { return; }
+				if (true == Input_SwordCheckFly()) { return; }
+				if (true == Input_GunCheckFly()) { return; }
+				if (true == Input_DevilBreakerCheckFly()) { return; }
+			},
+			.End = [=] {
+			}
+			});
+
+		// Snatch Pull Air
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Snatch_Pull_Air,
+			.Start = [=] {
+				RotationToTarget();
+				Renderer->ChangeAnimation("pl0000_Air_Snatch_Pull", true);
+				InputCheck = false;
+				MoveCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+				}
+				if (true == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Landing);
+					return;
+				}
+
+				if (InputCheck == false) { return; }
+
+				if (true == Input_SpecialCheckFly()) { return; }
+				if (true == Input_JumpCheckFly()) { return; }
+				if (true == Input_SwordCheckFly()) { return; }
+				if (true == Input_GunCheckFly()) { return; }
+				if (true == Input_DevilBreakerCheckFly()) { return; }
+			},
+			.End = [=] {
+			}
+			});
+
+		// Snatch Repel Air
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Snatch_Repel_Air,
+			.Start = [=] {
+				RotationToTarget();
+				Renderer->ChangeAnimation("pl0000_Air_Snatch_Repel", true);
+				InputCheck = false;
+				MoveCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+				}
+				if (true == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Landing);
+					return;
+				}
+
+				if (InputCheck == false) { return; }
+
+				if (true == Input_SpecialCheckFly()) { return; }
+				if (true == Input_JumpCheckFly()) { return; }
+				if (true == Input_SwordCheckFly()) { return; }
+				if (true == Input_GunCheckFly()) { return; }
+				if (true == Input_DevilBreakerCheckFly()) { return; }
+			},
+			.End = [=] {
+			}
+			});
+	}
 	// 특수
 	{}
 	{
@@ -2966,90 +3366,101 @@ bool PlayerActor_Nero::Input_JumpCheckFly()
 
 bool PlayerActor_Nero::Input_DevilBreakerCheck()
 {
-	if (false == Controller->GetIsSkill())
+	if (true == Controller->GetIsSkill())
 	{
-		return false;
-	}
-	if (CurDevilBreaker == DevilBreaker::None)
-	{
-		return false;
+		if (CurDevilBreaker == DevilBreaker::None)
+		{
+			return false;
+		}
+
+		switch (CurDevilBreaker)
+		{
+		case DevilBreaker::Overture:
+			ChangeState(FSM_State_Nero::Nero_Overture_Shoot);
+			break;
+		case DevilBreaker::Gerbera:
+		{
+			char Dir = Controller->MoveVectorToChar4(Controller->GetMoveVector());
+			if (Dir == '4')
+			{
+				ChangeState(FSM_State_Nero::Nero_Gerbera_Right);
+			}
+			else if (Dir == '6')
+			{
+				ChangeState(FSM_State_Nero::Nero_Gerbera_Left);
+			}
+			else if (Dir == '2')
+			{
+				ChangeState(FSM_State_Nero::Nero_Gerbera_Front);
+			}
+			else
+			{
+				ChangeState(FSM_State_Nero::Nero_Gerbera_Back);
+			}
+			break;
+		}
+		case DevilBreaker::BusterArm:
+			ChangeState(FSM_State_Nero::Nero_Buster_Catch);
+			break;
+		}
+		return true;
 	}
 
-	switch (CurDevilBreaker)
+	if (true == Controller->GetIsLockOnSkill())
 	{
-	case DevilBreaker::Overture:
-		ChangeState(FSM_State_Nero::Nero_Overture_Shoot);
-		break;
-	case DevilBreaker::Gerbera:
-	{
-		char Dir = Controller->MoveVectorToChar4(Controller->GetMoveVector());
-		if (Dir == '4')
-		{
-			ChangeState(FSM_State_Nero::Nero_Gerbera_Right);
-		}
-		else if (Dir == '6')
-		{
-			ChangeState(FSM_State_Nero::Nero_Gerbera_Left);
-		}
-		else if (Dir == '2')
-		{
-			ChangeState(FSM_State_Nero::Nero_Gerbera_Front);
-		}
-		else
-		{
-			ChangeState(FSM_State_Nero::Nero_Gerbera_Back);
-		}
-		break;
+		ChangeState(FSM_State_Nero::Nero_Snatch_Shoot);
+		return true;
 	}
-	case DevilBreaker::BusterArm:
-		ChangeState(FSM_State_Nero::Nero_Buster_Catch);
-		break;
-	}
-	return true;
 }
 
 bool PlayerActor_Nero::Input_DevilBreakerCheckFly()
 {
-	if (false == Controller->GetIsSkill())
+	if (true == Controller->GetIsSkill())
 	{
-		return false;
-	}
-	if (CurDevilBreaker == DevilBreaker::None)
-	{
-		return false;
+
+		if (CurDevilBreaker == DevilBreaker::None)
+		{
+			return false;
+		}
+
+		switch (CurDevilBreaker)
+		{
+		case DevilBreaker::Overture:
+			ChangeState(FSM_State_Nero::Nero_Overture_AirShoot);
+			break;
+		case DevilBreaker::Gerbera:
+		{
+			char Dir = Controller->MoveVectorToChar4(Controller->GetMoveVector());
+			if (Dir == '4')
+			{
+				ChangeState(FSM_State_Nero::Nero_Gerbera_Right);
+			}
+			else if (Dir == '6')
+			{
+				ChangeState(FSM_State_Nero::Nero_Gerbera_Left);
+			}
+			else if (Dir == '2')
+			{
+				ChangeState(FSM_State_Nero::Nero_Gerbera_Front);
+			}
+			else
+			{
+				ChangeState(FSM_State_Nero::Nero_Gerbera_Back);
+			}
+			break;
+		}
+		case DevilBreaker::BusterArm:
+			ChangeState(FSM_State_Nero::Nero_Buster_Catch_Air);
+			break;
+		}
+		return true;
 	}
 
-	switch (CurDevilBreaker)
+	if (true == Controller->GetIsLockOnSkill())
 	{
-	case DevilBreaker::Overture:
-		ChangeState(FSM_State_Nero::Nero_Overture_AirShoot);
-		break;
-	case DevilBreaker::Gerbera:
-	{
-		char Dir = Controller->MoveVectorToChar4(Controller->GetMoveVector());
-		if (Dir == '4')
-		{
-			ChangeState(FSM_State_Nero::Nero_Gerbera_Right);
-		}
-		else if (Dir == '6')
-		{
-			ChangeState(FSM_State_Nero::Nero_Gerbera_Left);
-		}
-		else if (Dir == '2')
-		{
-			ChangeState(FSM_State_Nero::Nero_Gerbera_Front);
-		}
-		else
-		{
-			ChangeState(FSM_State_Nero::Nero_Gerbera_Back);
-		}
-		break;
+		ChangeState(FSM_State_Nero::Nero_Snatch_Shoot_Air);
+		return true;
 	}
-	case DevilBreaker::BusterArm:
-		ChangeState(FSM_State_Nero::Nero_Buster_Catch);
-		break;
-	}
-	return true;
 }
 
 bool PlayerActor_Nero::Input_SpecialCheck()
