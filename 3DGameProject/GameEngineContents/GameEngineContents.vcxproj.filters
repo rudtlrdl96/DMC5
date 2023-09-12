@@ -376,6 +376,9 @@
     <ClInclude Include="Location11_Level.h">
       <Filter>Levels\Stage\2.Location11</Filter>
     </ClInclude>
+    <ClInclude Include="StartStageLevel.h">
+      <Filter>Levels\Stage\0.StageBase</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -737,6 +740,9 @@
     </ClCompile>
     <ClCompile Include="Location11_Level.cpp">
       <Filter>Levels\Stage\2.Location11</Filter>
+    </ClCompile>
+    <ClCompile Include="StartStageLevel.cpp">
+      <Filter>Levels\Stage\0.StageBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

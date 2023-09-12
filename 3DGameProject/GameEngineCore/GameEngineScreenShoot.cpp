@@ -1318,7 +1318,7 @@ HRESULT GameEngineScreenShoot::RenderTargetShoot(std::shared_ptr<GameEngineRende
     return S_FALSE;
 }
 
-HRESULT GameEngineScreenShoot::RenderTargetCubemapShoot(std::shared_ptr<GameEngineRenderTarget> _CaptureTarget, const float4& _CaptureSize, const std::string_view& _Path, const std::string_view& _TextureName)
+HRESULT GameEngineScreenShoot::RenderTargetCubemapShoot(std::shared_ptr<GameEngineRenderTarget> _CaptureTarget, const std::string_view& _Path, const std::string_view& _TextureName)
 {
     if (nullptr == _CaptureTarget)
     {
@@ -1329,9 +1329,6 @@ HRESULT GameEngineScreenShoot::RenderTargetCubemapShoot(std::shared_ptr<GameEngi
 
     if (nullptr != Resource)
     {
-        std::shared_ptr<GameEngineRenderTarget> MergeTarget = GameEngineRenderTarget::CreateCubemap(DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM, _CaptureSize, float4::ZERONULL);
-        MergeTarget->Merge(_CaptureTarget);
-
         // 기존 경로 저장
         wchar_t PrevPath[255];
         GetCurrentDirectory(255, PrevPath);
@@ -1339,15 +1336,21 @@ HRESULT GameEngineScreenShoot::RenderTargetCubemapShoot(std::shared_ptr<GameEngi
         // 경로 변경
         SetCurrentDirectory(GameEngineString::AnsiToUniCode(_Path).data());
 
-        SaveDDSTextureToFile(GameEngineDevice::GetContext(), MergeTarget->GetTexture(0)->GetTexture2D(), GameEngineString::AnsiToUniCode(_TextureName).data());
+        DirectX::ScratchImage image;
+        HRESULT result = CaptureTexture(GameEngineDevice::GetDevice(), GameEngineDevice::GetContext(), Resource, image);
+
+        if (SUCCEEDED(result))
+        {
+            return SaveToDDSFile(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DirectX::DDS_FLAGS_NONE, GameEngineString::AnsiToUniCode(_TextureName).data());
+        }
+
+        //HRESULT hr = SaveDDSTextureToFile(GameEngineDevice::GetContext(), _CaptureTarget->GetTexture(0)->GetTexture2D(), GameEngineString::AnsiToUniCode(_TextureName).data());
         //SaveWICTextureToFile(GameEngineDevice::GetContext(), MergeTarget->GetTexture(0)->GetTexture2D(), GUID_ContainerFormatJpeg, GameEngineString::AnsiToUniCode(_TextureName).data());
 
         // 이전 경로 되돌리기
         SetCurrentDirectory(PrevPath);
 
-        MergeTarget->ReleaseTextures();
-
-        return S_OK;
+        // return hr;
     }
 
     return S_FALSE;

@@ -544,6 +544,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="StartStageLevel.h" />
     <ClInclude Include="testarea.h">
       <SubType>
       </SubType>
@@ -959,6 +960,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="StartStageLevel.cpp" />
     <ClCompile Include="testarea.cpp">
       <SubType>
       </SubType>

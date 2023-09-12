@@ -1,19 +1,12 @@
 #include "PrecompileHeader.h"
 #include "StartStageLevel.h"
-#include "NetworkManager.h"
 #include <GameEngineCore/GameEngineFBXMesh.h>
+
+#include "NetworkManager.h"
 #include "FreeCameraActor.h"
-
-#include "JudgementCut.h"
-#include "ColorEffect.h"
-#include "FXAA_Effect.h"
-#include "ZoomEffect.h"
-
 #include "Plane.h"
 #include "TestObject.h"
 #include "PlayerActor_Nero.h"
-
-#include "ShaderTestActor.h"
 
 StartStageLevel* StartStageLevel::Inst = nullptr;
 
@@ -29,10 +22,6 @@ StartStageLevel::~StartStageLevel()
 
 void StartStageLevel::Start()
 {
-	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
-	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
-	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
-
 	StageBaseLevel::Start();
 }
 

@@ -109,23 +109,21 @@ void GameEngineTexture::ResCreate(const D3D11_TEXTURE2D_DESC& _Value)
 	}
 }
 
-void GameEngineTexture::CubeResCreate(const D3D11_TEXTURE2D_DESC& _Value, const D3D11_RENDER_TARGET_VIEW_DESC& _RTV, const D3D11_SHADER_RESOURCE_VIEW_DESC& _SRV)
+void GameEngineTexture::ResCreate(std::vector<std::shared_ptr<GameEngineTexture>>& _Textures, const D3D11_TEXTURE2D_DESC& _Value, const D3D11_RENDER_TARGET_VIEW_DESC& _RTV, const D3D11_SHADER_RESOURCE_VIEW_DESC& _SRV)
 {
 	Desc = _Value;
 	D3D11_RENDER_TARGET_VIEW_DESC DescRTV = _RTV;
 	D3D11_SHADER_RESOURCE_VIEW_DESC DescSRV = _SRV;
 
-	std::shared_ptr<GameEngineTexture> Tex = Find("EngineBaseTex.png");
-
 	//Array to fill which we will use to point D3D at our loaded CPU images.
 	D3D11_SUBRESOURCE_DATA pData[6];
 	for (int cubeMapFaceIndex = 0; cubeMapFaceIndex < 6; cubeMapFaceIndex++)
 	{
-		//Pointer to the pixel data
-		pData[cubeMapFaceIndex].pSysMem = Tex->Image.GetImages()->pixels;
-		//Line width in bytes
-		pData[cubeMapFaceIndex].SysMemPitch = static_cast<UINT>(Tex->Image.GetImages()->rowPitch);
-		// This is only used for 3d textures.
+		DirectX::ScratchImage Image;
+		DirectX::CaptureTexture(GameEngineDevice::GetDevice(), GameEngineDevice::GetContext(), _Textures[cubeMapFaceIndex]->GetTexture2D(), Image);
+
+		pData[cubeMapFaceIndex].pSysMem = Image.GetImages()->pixels;
+		pData[cubeMapFaceIndex].SysMemPitch = (UINT)Image.GetImages()->rowPitch;
 		pData[cubeMapFaceIndex].SysMemSlicePitch = 0;
 	}
 
@@ -138,7 +136,9 @@ void GameEngineTexture::CubeResCreate(const D3D11_TEXTURE2D_DESC& _Value, const 
 	}
 
 	//HRESULT RTVResult = GameEngineDevice::GetDevice()->CreateRenderTargetView(Texture2D, nullptr, &RTV);
+
 	HRESULT RTVResult = GameEngineDevice::GetDevice()->CreateRenderTargetView(Texture2D, &DescRTV, &RTV);
+	
 	if (S_OK != RTVResult)
 	{
 		MsgAssert("큐브 랜더타겟 뷰 생성에 실패했습니다.");
@@ -147,30 +147,10 @@ void GameEngineTexture::CubeResCreate(const D3D11_TEXTURE2D_DESC& _Value, const 
 
 	//If we have created the texture resource for the six faces 
 	//we create the Shader Resource View to use in our shaders.
-	HRESULT SRVResult = GameEngineDevice::GetDevice()->CreateShaderResourceView(Texture2D, &DescSRV, &SRV);
+	HRESULT SRVResult = GameEngineDevice::GetDevice()->CreateShaderResourceView(Texture2D, &_SRV, &SRV);
 	if (S_OK != SRVResult)
 	{
 		MsgAssert("큐브 쉐이더 리소스 뷰 생성에 실패했습니다.");
-		return;
-	}
-}
-
-void GameEngineTexture::CubeResCreate(const D3D11_TEXTURE2D_DESC& _Value, const D3D11_DEPTH_STENCIL_VIEW_DESC& _DSV)
-{
-	Desc = _Value;
-	D3D11_DEPTH_STENCIL_VIEW_DESC DescDSV = _DSV;
-
-	HRESULT TextureResult = GameEngineDevice::GetDevice()->CreateTexture2D(&Desc, nullptr, &Texture2D);
-	if (S_OK != TextureResult)
-	{
-		MsgAssert("큐브 뎁스 텍스쳐 생성에 실패했습니다.");
-		return;
-	}
-
-	HRESULT Result = GameEngineDevice::GetDevice()->CreateDepthStencilView(Texture2D, nullptr, &DSV);
-	if (S_OK != Result)
-	{
-		MsgAssert("큐브 뎁스 스텐실 뷰 생성에 실패했습니다.");
 		return;
 	}
 }
@@ -236,9 +216,8 @@ void GameEngineTexture::ResLoad(const std::string_view& _Path)
 	GameEnginePath NewPath(_Path);
 
 	std::string Ext = GameEngineString::ToUpper(NewPath.GetExtension());
-
 	std::wstring Path = GameEngineString::AnsiToUniCode(NewPath.GetFullPath());
-
+	
 	if (Ext == ".TGA")
 	{
 		if (S_OK != DirectX::LoadFromTGAFile(Path.c_str(), DirectX::TGA_FLAGS_NONE, &Data, Image))
@@ -274,73 +253,6 @@ void GameEngineTexture::ResLoad(const std::string_view& _Path)
 	Desc.Height = static_cast<UINT>(Data.height);
 
 	// Texture2D->GetDesc(&Desc);
-}
-
-void GameEngineTexture::ResLoadCubemap(const std::string_view& _Path)
-{
-	GameEnginePath NewPath(_Path);
-
-	std::string Ext = GameEngineString::ToUpper(NewPath.GetExtension());
-	std::wstring Path = GameEngineString::AnsiToUniCode(NewPath.GetFullPath());
-
-	DirectX::ScratchImage TempLoadImage;
-
-	if (Ext == ".TGA")
-	{
-		if (S_OK != DirectX::LoadFromTGAFile(Path.c_str(), DirectX::TGA_FLAGS_NONE, &Data, TempLoadImage))
-		{
-			MsgAssert("TGA 포맷 로드 실패." + std::string(_Path.data()));
-		}
-	}
-	else if (Ext == ".DDS")
-	{
-		if (S_OK != DirectX::LoadFromDDSFile(Path.c_str(), DirectX::DDS_FLAGS_NONE, &Data, TempLoadImage))
-		{
-			MsgAssert("DDS 포맷 로드 실패." + std::string(_Path.data()));
-		}
-	}
-	else if (S_OK != DirectX::LoadFromWICFile(Path.c_str(), DirectX::WIC_FLAGS_NONE, &Data, TempLoadImage))
-	{
-		MsgAssert("텍스처 로드에 실패했습니다." + std::string(_Path.data()));
-	}
-
-	HRESULT hr = Image.InitializeCube(TempLoadImage.GetMetadata().format, TempLoadImage.GetMetadata().width, TempLoadImage.GetMetadata().height, 1, 1);
-
-	if (FAILED(hr)) 
-	{
-		MsgAssert("큐브맵 텍스쳐 생성에 실패했습니다.");
-	}
-
-	const DirectX::TexMetadata& metadata = TempLoadImage.GetMetadata();
-
-	// 이미지 데이터를 큐브맵 텍스처로 복사
-	for (size_t i = 0; i < 6; ++i) 
-	{
-		const DirectX::Image* srcImage = TempLoadImage.GetImage(0, 0, 0); // 모든 면에서 같은 원본 이미지 사용
-		const DirectX::Image* dstImage = Image.GetImage(0, i, 0); // 큐브맵 면 하나씩 대상 이미지로 선택
-
-		DirectX::Rect srcRect; // 복사 영역 설정
-		srcRect.x = 0;
-		srcRect.y = i * (metadata.height / 6);
-		srcRect.w = metadata.width;
-		srcRect.h = metadata.height / 6;
-
-		hr = DirectX::CopyRectangle(*srcImage, srcRect, *dstImage, DirectX::TEX_FILTER_DEFAULT, 0, 0);
-
-		if (FAILED(hr)) 
-		{
-			// 오류 처리
-		}
-	}
-
-	if (S_OK != hr)
-	{
-		MsgAssert("쉐이더 리소스 뷰 생성에 실패했습니다." + std::string(_Path.data()));
-	}
-	
-	Desc.Width = static_cast<UINT>(Data.width);
-	Desc.Height = static_cast<UINT>(Data.height);
-
 }
 
 void GameEngineTexture::VSSetting(UINT _Slot) 

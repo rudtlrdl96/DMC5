@@ -20,17 +20,6 @@ ReflectionProbe::ReflectionProbe()
 
 ReflectionProbe::~ReflectionProbe()
 {
-	if (nullptr != CaptureTarget)
-	{
-		CaptureTarget->ReleaseTextures();
-		CaptureTarget = nullptr;
-	}
-
-	if (nullptr != TextureTarget)
-	{
-		TextureTarget->ReleaseTextures();
-		TextureTarget = nullptr;
-	}
 }
 
 void ReflectionProbe::Init(const std::string_view& _CaptureTextureName, const float4& _Scale /*= float4(128, 128)*/)
@@ -43,43 +32,53 @@ void ReflectionProbe::Init(const std::string_view& _CaptureTextureName, const fl
 			return;
 		}
 
-		CaptureTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, _Scale, float4::ZERONULL);
 
-		float4 TextureSacle = float4(_Scale.x * 4.0f, _Scale.y * 3.0f);
-		TextureTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, TextureSacle, float4::ZERONULL);
+		std::vector<std::shared_ptr<GameEngineRenderTarget>> CaptureTargets;
+		std::shared_ptr<GameEngineRenderTarget> TextureTarget = nullptr;
+
+		for (size_t i = 0; i < 6; i++)
+		{
+			CaptureTargets.push_back(GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, _Scale, float4::ZERONULL));
+		}
+
 
 		float4 CenterPos = GetTransform()->GetWorldPosition();
 		float4 CenterRot = GetTransform()->GetWorldRotation();
 
 		// Forward
 		GetLevel()->GetMainCamera()->CaptureCubemap(CenterPos, CenterRot, float4(900, 900));
-		CaptureTarget->Merge(GetLevel()->GetMainCamera()->GetCamTarget());
-		CubemapMerge({ 0.25f, 0.5f, (1.0f / 3.0f), (2.0f / 3.0f) }, TextureTarget, CaptureTarget);
-
+		CaptureTargets[0]->Merge(GetLevel()->GetMainCamera()->GetCamTarget());
+		
 		// Right
 		GetLevel()->GetMainCamera()->CaptureCubemap(CenterPos, CenterRot + float4(0, 90, 0), float4(900, 900));
-		CaptureTarget->Merge(GetLevel()->GetMainCamera()->GetCamTarget());
-		CubemapMerge({ 0.5f, 0.75f, (1.0f / 3.0f), (2.0f / 3.0f) }, TextureTarget, CaptureTarget);
+		CaptureTargets[1]->Merge(GetLevel()->GetMainCamera()->GetCamTarget());
 
 		// Left
 		GetLevel()->GetMainCamera()->CaptureCubemap(CenterPos, CenterRot + float4(0, -90, 0), float4(900, 900));
-		CaptureTarget->Merge(GetLevel()->GetMainCamera()->GetCamTarget());
-		CubemapMerge({0.0f, 0.25f, (1.0f / 3.0f), (2.0f / 3.0f) }, TextureTarget, CaptureTarget);
+		CaptureTargets[2]->Merge(GetLevel()->GetMainCamera()->GetCamTarget());
 
 		// Back
 		GetLevel()->GetMainCamera()->CaptureCubemap(CenterPos, CenterRot + float4(0, 180, 0), float4(900, 900));
-		CaptureTarget->Merge(GetLevel()->GetMainCamera()->GetCamTarget());
-		CubemapMerge({ 0.75f, 1.0f, (1.0f / 3.0f), (2.0f / 3.0f) }, TextureTarget, CaptureTarget);
+		CaptureTargets[3]->Merge(GetLevel()->GetMainCamera()->GetCamTarget());
 
 		// Top
 		GetLevel()->GetMainCamera()->CaptureCubemap(CenterPos, CenterRot + float4(-90, 0, 0), float4(900, 900));
-		CaptureTarget->Merge(GetLevel()->GetMainCamera()->GetCamTarget());
-		CubemapMerge({ 0.25f, 0.5f, 0.0f, (1.0f / 3.0f)}, TextureTarget, CaptureTarget);
+		CaptureTargets[4]->Merge(GetLevel()->GetMainCamera()->GetCamTarget());
 
 		// Bottom
 		GetLevel()->GetMainCamera()->CaptureCubemap(CenterPos, CenterRot + float4(90, 0, 0), float4(900, 900));
-		CaptureTarget->Merge(GetLevel()->GetMainCamera()->GetCamTarget());
-		CubemapMerge({ 0.25f, 0.5f, (2.0f / 3.0f), 1.0f}, TextureTarget, CaptureTarget);
+		CaptureTargets[5]->Merge(GetLevel()->GetMainCamera()->GetCamTarget());
+
+		std::vector<std::shared_ptr<GameEngineTexture>>  CaptureTextures = {
+		CaptureTargets[0]->GetTexture(0),
+		CaptureTargets[1]->GetTexture(0),
+		CaptureTargets[2]->GetTexture(0),
+		CaptureTargets[3]->GetTexture(0),
+		CaptureTargets[4]->GetTexture(0),
+		CaptureTargets[5]->GetTexture(0),		
+		};
+
+		TextureTarget = GameEngineRenderTarget::Create(CaptureTextures, DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, _Scale.ix(), float4::ZERONULL);
 
 		{
 			std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
@@ -87,7 +86,7 @@ void ReflectionProbe::Init(const std::string_view& _CaptureTextureName, const fl
 					"Texture", "ReflectionTexture"
 				});
 
-			GameEngineScreenShoot::RenderTargetCubemapShoot(TextureTarget, _Scale, Path, _CaptureTextureName);
+			GameEngineScreenShoot::RenderTargetCubemapShoot(TextureTarget, Path, _CaptureTextureName);
 		}
 	
 		GameEngineCoreWindow::Clear();

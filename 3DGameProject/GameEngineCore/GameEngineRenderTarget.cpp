@@ -91,36 +91,45 @@ void GameEngineRenderTarget::ResCreate(DXGI_FORMAT _Format, float4 _Scale, float
 	RTVs.push_back(Tex->GetRTV());
 }
 
-void GameEngineRenderTarget::ResCreateCubemap(DXGI_FORMAT _Format, float4 _Scale, float4 _Color)
+void GameEngineRenderTarget::ResCreate(std::vector<std::shared_ptr<GameEngineTexture>>& _CubemapTextures, DXGI_FORMAT _Format, UINT _Size, float4 _Color)
 {
-	D3D11_TEXTURE2D_DESC Desc;
-	Desc.Width = _Scale.ix();
-	Desc.Height = _Scale.iy();
-	Desc.MipLevels = 1;
+	Color = _Color;
+
+	D3D11_TEXTURE2D_DESC Desc = { 0 };
+
 	Desc.ArraySize = 6;
-	Desc.SampleDesc.Quality = 0;
+	Desc.Width = _Size;
+	Desc.Height = _Size;
+	Desc.Format = _Format;
 	Desc.SampleDesc.Count = 1;
-	Desc.Format = _Format; // DXGI_FORMAT_R32G32B32A32_FLOAT // DXGI_FORMAT_R8G8B8A8_UNORM // DXGI_FORMAT_R16G16B16A16_FLOAT
+	Desc.SampleDesc.Quality = 0;
+	Desc.MipLevels = 1;
 	Desc.Usage = D3D11_USAGE_DEFAULT;
-	Desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-	Desc.CPUAccessFlags = 0;
 	Desc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+	Desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE;
 
-	//The Shader Resource view description
-	D3D11_SHADER_RESOURCE_VIEW_DESC DescSRV;
-	DescSRV.Format = Desc.Format;
-	DescSRV.ViewDimension = D3D_SRV_DIMENSION_TEXTURECUBE;
-	DescSRV.TextureCube.MipLevels = Desc.MipLevels;
-	DescSRV.TextureCube.MostDetailedMip = 0;
+	D3D11_RENDER_TARGET_VIEW_DESC RTV;
+	RTV.Format = _Format;
+	RTV.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
+	RTV.Texture2DArray.ArraySize = 6;
+	RTV.Texture2DArray.FirstArraySlice = 0;
+	RTV.Texture2DArray.MipSlice = 0;
 
-	std::shared_ptr<GameEngineTexture> Tex = GameEngineTexture::Create(Desc);
+	D3D11_SHADER_RESOURCE_VIEW_DESC STV;
+
+	STV.Format = _Format;
+	STV.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+	STV.TextureCube.MipLevels = 1;
+	STV.TextureCube.MostDetailedMip = 0;
+
+	std::shared_ptr<GameEngineTexture> Tex = GameEngineTexture::Create(_CubemapTextures, Desc, RTV, STV);
 
 	D3D11_VIEWPORT ViewPortData;
 
 	ViewPortData.TopLeftX = 0;
 	ViewPortData.TopLeftY = 0;
-	ViewPortData.Width = _Scale.x;
-	ViewPortData.Height = _Scale.y;
+	ViewPortData.Width = (float)_Size;
+	ViewPortData.Height = (float)_Size;
 	ViewPortData.MinDepth = 0.0f;
 	ViewPortData.MaxDepth = 1.0f;
 
@@ -143,74 +152,9 @@ void GameEngineRenderTarget::CreateDepthTexture(int _Index)
 	Desc.SampleDesc.Quality = 0;
 	Desc.MipLevels = 1;
 	Desc.Usage = D3D11_USAGE_DEFAULT;
-	Desc.CPUAccessFlags = 0;
 	Desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL;
 
 	DepthTexture = GameEngineTexture::Create(Desc); // 뎁스스텐실뷰 생성
-}
-
-void GameEngineRenderTarget::CreateCubeTexture()
-{
-	D3D11_TEXTURE2D_DESC Desc;
-	Desc.Width = 256;
-	Desc.Height = 256;
-	Desc.MipLevels = 1;
-	Desc.ArraySize = 6;
-	Desc.SampleDesc.Quality = 0;
-	Desc.SampleDesc.Count = 1;
-	Desc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT; // DXGI_FORMAT_R32G32B32A32_FLOAT // DXGI_FORMAT_R8G8B8A8_UNORM // DXGI_FORMAT_R16G16B16A16_FLOAT
-	Desc.Usage = D3D11_USAGE_DEFAULT;
-	Desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-	Desc.CPUAccessFlags = 0;
-	Desc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
-
-	D3D11_RENDER_TARGET_VIEW_DESC DescRTV;
-	DescRTV.Format = Desc.Format;
-	DescRTV.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
-	DescRTV.Texture2DArray.ArraySize = 6; // 6면
-	DescRTV.Texture2DArray.FirstArraySlice = 0; // 0부터
-	DescRTV.Texture2DArray.MipSlice = 0;
-
-	//The Shader Resource view description
-	D3D11_SHADER_RESOURCE_VIEW_DESC DescSRV;
-	DescSRV.Format = Desc.Format;
-	DescSRV.ViewDimension = D3D_SRV_DIMENSION_TEXTURECUBE;
-	DescSRV.TextureCube.MipLevels = Desc.MipLevels;
-	DescSRV.TextureCube.MostDetailedMip = 0;
-
-	std::shared_ptr<GameEngineTexture> Tex = GameEngineTexture::CreateCubeTexture(Desc, DescRTV, DescSRV);
-
-	Textures.push_back(Tex);
-	SRVs.push_back(Tex->GetSRV());
-	RTVs.push_back(Tex->GetRTV());
-}
-
-void GameEngineRenderTarget::CreateCubeDepth(int _Index)
-{
-	D3D11_TEXTURE2D_DESC Desc = { 0, };
-
-	Desc.Width = Textures[_Index]->GetWidth();
-	Desc.Height = Textures[_Index]->GetHeight();
-	//Desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;    // 4바이트중 3바이트는 0 ~ 1.0f 표현하는데 사용하고, 나머지 1바이트는 스텐실 값으로 사용할 수 있게 해주는 포멧
-	Desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	Desc.MipLevels = 1;
-	Desc.ArraySize = 6;
-	Desc.SampleDesc.Count = 1;
-	Desc.SampleDesc.Quality = 0;
-	Desc.Usage = D3D11_USAGE_DEFAULT;
-	Desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-	Desc.CPUAccessFlags = 0;
-	Desc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
-
-	D3D11_DEPTH_STENCIL_VIEW_DESC DescDSV;
-
-	DescDSV.Format = Desc.Format;
-	DescDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DARRAY;
-	DescDSV.Texture2DArray.FirstArraySlice = 0; // 0부터
-	DescDSV.Texture2DArray.ArraySize = 6; // 6면이니까
-	DescDSV.Texture2DArray.MipSlice = 0;
-
-	DepthTexture = GameEngineTexture::CreateCubeDepth(Desc, DescDSV); // 뎁스스텐실뷰 생성
 }
 
 void GameEngineRenderTarget::Clear()

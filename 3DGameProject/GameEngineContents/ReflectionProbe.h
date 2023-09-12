@@ -37,9 +37,6 @@ protected:
 
 	
 private:
-	std::shared_ptr<GameEngineRenderTarget> CaptureTarget = nullptr;
-	std::shared_ptr<GameEngineRenderTarget> TextureTarget = nullptr;
-
 	bool IsInitCheck = false;
 
 	void CubemapMerge(const CubeCaptureData& _Cut, std::shared_ptr<GameEngineRenderTarget> _Target, std::shared_ptr<GameEngineRenderTarget> _Merge);

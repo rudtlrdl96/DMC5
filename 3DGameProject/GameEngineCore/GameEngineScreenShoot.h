@@ -26,7 +26,7 @@ public:
 
 	static HRESULT ScreenShoot();
 	static HRESULT RenderTargetShoot(std::shared_ptr<GameEngineRenderTarget> _CaptureTarget, const std::string_view& _Path, const std::string_view& _TextureName);
-	static HRESULT RenderTargetCubemapShoot(std::shared_ptr<GameEngineRenderTarget> _CaptureTarget, const float4& _CaptureSize, const std::string_view& _Path, const std::string_view& _TextureName);
+	static HRESULT RenderTargetCubemapShoot(std::shared_ptr<GameEngineRenderTarget> _CaptureTarget, const std::string_view& _Path, const std::string_view& _TextureName);
 
 protected:
 

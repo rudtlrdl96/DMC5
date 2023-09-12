@@ -78,22 +78,6 @@ public:
 		return NewTexture;
 	}
 
-	static std::shared_ptr<GameEngineTexture> LoadCubemap(const std::string_view& _Path)
-	{
-		GameEnginePath NewPath(_Path);
-		return LoadCubemap(_Path, NewPath.GetFileName());
-	}
-
-	static std::shared_ptr<GameEngineTexture> LoadCubemap(const std::string_view& _Path, const std::string_view& _Name)
-	{
-		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::Create(_Name);
-		PathCheck(_Path, _Name);
-		NewTexture->SetPath(_Path);
-		NewTexture->ResLoadCubemap(_Path);
-
-		return NewTexture;
-	}
-
 	static std::shared_ptr<GameEngineTexture> Create(const std::string_view& _Name, ID3D11Texture2D* _Value)
 	{
 		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::Create(_Name);
@@ -110,23 +94,15 @@ public:
 		return NewTexture;
 	}
 
-	static std::shared_ptr<GameEngineTexture> CreateCubeTexture
-	(
-		const D3D11_TEXTURE2D_DESC& _Value, 
-		const D3D11_RENDER_TARGET_VIEW_DESC& _RTV, 
+	static std::shared_ptr<GameEngineTexture> Create(
+		std::vector<std::shared_ptr<GameEngineTexture>>& _Textures,
+		const D3D11_TEXTURE2D_DESC& _Value,
+		const D3D11_RENDER_TARGET_VIEW_DESC& _RTV,
 		const D3D11_SHADER_RESOURCE_VIEW_DESC& _SRV
 	)
 	{
 		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::CreateUnNamed();
-		NewTexture->CubeResCreate(_Value, _RTV, _SRV);
-
-		return NewTexture;
-	}
-
-	static std::shared_ptr<GameEngineTexture> CreateCubeDepth(const D3D11_TEXTURE2D_DESC& _Value, const D3D11_DEPTH_STENCIL_VIEW_DESC& _DSV)
-	{
-		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::CreateUnNamed();
-		NewTexture->CubeResCreate(_Value, _DSV);
+		NewTexture->ResCreate(_Textures, _Value, _RTV, _SRV);
 
 		return NewTexture;
 	}
@@ -226,10 +202,8 @@ private:
 
 	void ResCreate(ID3D11Texture2D* _Value);
 	void ResLoad(const std::string_view& _Path);
-	void ResLoadCubemap(const std::string_view& _Path);
 	void ResCreate(const D3D11_TEXTURE2D_DESC& _Value);
-	void CubeResCreate(const D3D11_TEXTURE2D_DESC& _Value, const D3D11_DEPTH_STENCIL_VIEW_DESC& _DSV);
-	void CubeResCreate(const D3D11_TEXTURE2D_DESC& _Value, const D3D11_RENDER_TARGET_VIEW_DESC& _RTV, const D3D11_SHADER_RESOURCE_VIEW_DESC& _SRV);
+	void ResCreate(std::vector<std::shared_ptr<GameEngineTexture>>& _Textures, const D3D11_TEXTURE2D_DESC& _Value, const D3D11_RENDER_TARGET_VIEW_DESC& _RTV, const D3D11_SHADER_RESOURCE_VIEW_DESC& _SRV);
 
 	void CreateRenderTargetView();
 	void CreateShaderResourcesView();
