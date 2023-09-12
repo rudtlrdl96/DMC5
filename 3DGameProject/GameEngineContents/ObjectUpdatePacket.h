@@ -5,6 +5,11 @@
 #include "PacketEnum.h"
 #include "ContentsEnum.h"
 
+enum
+{
+	NETWORK_UPDATEPACKET_UNION_DATA_SIZE = 2
+};
+
 class ObjectUpdatePacket : public GameEnginePacket
 {
 	friend class NetworkManager;
