@@ -22,7 +22,6 @@ void PlayerActor_Nero::Start()
 {
 	BasePlayerActor::Start();
 	BreakerStack.push(DevilBreaker::None);
-	BreakerStack.push(DevilBreaker::Overture);
 
 	SetNetObjectType(Net_ActorType::Nero);
 
@@ -205,21 +204,23 @@ void PlayerActor_Nero::PlayerLoad()
 		}
 		NewDir.MoveParent();
 		NewDir.Move("Animation");
-		if (nullptr == GameEngineFBXAnimation::Find("wp00_010_Shoot.fbx"))
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".fbx" });
+		for (GameEngineFile File : Files)
 		{
-			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".fbx" });
-			for (GameEngineFile File : Files)
+			if (nullptr == GameEngineFBXAnimation::Find(File.GetFileName()))
 			{
 				GameEngineFBXAnimation::Load(File.GetFullPath());
-				Renderer_Overture->CreateFBXAnimation(File.GetFileName(), { .Inter = 0.0166f, .Loop = false });
 			}
+			Renderer_Overture->CreateFBXAnimation(File.GetFileName(), { .Inter = 0.0166f, .Loop = false });
 		}
 		Renderer_Overture->ChangeAnimation("wp00_010_Shoot.fbx");
 		Renderer_Overture->Off();
 	}
 
 	SetHuman();
-	SetOverture();
+	AddBreaker(DevilBreaker::BusterArm);
+	AddBreaker(DevilBreaker::Gerbera);
+	AddBreaker(DevilBreaker::Overture);
 	WeaponIdle();
 
 	// 기본 움직임
@@ -2611,6 +2612,36 @@ void PlayerActor_Nero::PlayerLoad()
 
 void PlayerActor_Nero::NetLoad()
 {
+	// Effect 생성
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Effect");
+		NewDir.Move("Mesh");
+		if (nullptr == GameEngineFBXMesh::Find("Effect_Mesh_01.FBX"))
+		{
+			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".fbx" });
+			for (GameEngineFile File : Files)
+			{
+				GameEngineFBXMesh::Load(File.GetFullPath());
+			}
+		}
+		NewDir.MoveParent();
+		NewDir.Move("Texture");
+		if (nullptr == GameEngineTexture::Find("Effect_Texture_01.png"))
+		{
+			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".png" });
+			for (GameEngineFile File : Files)
+			{
+				GameEngineTexture::Load(File.GetFullPath());
+			}
+		}
+		Renderer_EffectMesh = CreateComponent<GameEngineFBXRenderer>();
+		Renderer_EffectMesh->SetFBXMesh("Effect_Mesh_01.FBX", "FBX");
+		Renderer_EffectMesh->SetTexture("DiffuseTexture", "Effect_Texture_01.png");
+		Renderer_EffectMesh->Off();
+	}
 
 	// Renderer 생성
 	{
@@ -2624,6 +2655,8 @@ void PlayerActor_Nero::NetLoad()
 		if (nullptr == GameEngineFBXMesh::Find("Nero.FBX"))
 		{
 			GameEngineFBXMesh::Load(NewDir.GetPlusFileName("Nero.fbx").GetFullPath());
+			GameEngineTexture::Load(NewDir.GetPlusFileName("pl0010_03_atos.texout.png").GetFullPath());
+			GameEngineTexture::Load(NewDir.GetPlusFileName("pl0000_03_atos.texout.png").GetFullPath());
 		}
 		NewDir.MoveParent();
 		NewDir.Move("Animation");
@@ -2631,6 +2664,7 @@ void PlayerActor_Nero::NetLoad()
 		Renderer = CreateComponent<GameEngineFBXRenderer>();
 		Renderer->GetTransform()->SetLocalRotation({ 0, 0, 0 });
 		Renderer->GetTransform()->SetLocalPosition({ 0, -75, 0 });
+
 		switch (GameEngineOption::GetOption("Shader"))
 		{
 		case GameEngineOptionValue::Low:
@@ -2646,6 +2680,10 @@ void PlayerActor_Nero::NetLoad()
 		default:
 			break;
 		}
+
+		Renderer->SetSpecularTexture("pl0000_03_albm.texout.png", "pl0000_03_atos.texout.png");
+		Renderer->SetSpecularTexture("pl0010_03_albm.texout.png", "pl0010_03_atos.texout.png");
+
 		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer,
 			.Objects = { (GameEngineObject*)AttackCollision.get() },
 			.CallBacks_void = {
@@ -2654,24 +2692,96 @@ void PlayerActor_Nero::NetLoad()
 				std::bind(&PlayerActor_Nero::RedQueenOff, this),
 				std::bind(&PlayerActor_Nero::BlueRoseOn, this),
 				std::bind(&PlayerActor_Nero::WeaponIdle, this),
-			}
+				nullptr,
+				nullptr,
+				nullptr,
+				nullptr,
+				std::bind(&PlayerActor_Nero::SetOverture, this),
+				std::bind(&PlayerActor_Nero::SetHuman, this),
+				std::bind(&PlayerActor_Nero::SetDemon, this),
+				nullptr,
+			},
+			.CallBacks_int = {
+				std::bind(&PlayerActor_Nero::ChangeState, this, std::placeholders::_1)
+			},
 			});
-
 
 		//Object = 0 : 공격 충돌체
 		//
-		//콜백void = 0 : nullptr
+		//콜백void = 0 : 입력체크시작
 		//콜백void = 1 : 손에 레드퀸 들려줌
 		//콜백void = 2 : 손에 레드퀸 뺌
 		//콜백void = 3 : 손에 블루로즈
+		//콜백void = 4 : WeaponIdle (빈손, 칼 등에)
+		//콜백void = 5 : SetLinearVelocityZero
+		//콜백void = 6 : 이동체크 시작
+		//콜백void = 7 : 딜레이체크 시작k
+		//콜백void = 8 : 중력 적용
+		//콜백void = 9 : SetOverture
+		//콜백void = 10 : SetHuman
+		//콜백void = 11 : SetDemon
+		//콜백void = 12 : 데빌브레이커 파괴
 		//
 		//콜백 int = 0 : FSM변경
 		// 
+		//콜백 float4 = 0 : SetForce
+		//콜백 float4 = 0 : SetPush
+		//콜백 float4 = 0 : SetMove
 
-		SetDemon();
-		WeaponIdle();
 	}
 
+	// OvertureRenderer 생성
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Character");
+		NewDir.Move("Player");
+		NewDir.Move("Nero");
+		NewDir.Move("Overture");
+		NewDir.Move("Mesh");
+		if (nullptr == GameEngineFBXMesh::Find("Overture.FBX"))
+		{
+			GameEngineFBXMesh::Load(NewDir.GetPlusFileName("Overture.fbx").GetFullPath());
+		}
+		Renderer_Overture = CreateComponent<GameEngineFBXRenderer>();
+		Renderer_Overture->GetTransform()->SetLocalPosition({ 0, -75, 0 });
+		switch (GameEngineOption::GetOption("Shader"))
+		{
+		case GameEngineOptionValue::Low:
+		{
+			Renderer_Overture->SetFBXMesh("Overture.FBX", "AniFBX_Low");
+		}
+		break;
+		case GameEngineOptionValue::High:
+		{
+			Renderer_Overture->SetFBXMesh("Overture.FBX", "AniFBX");
+		}
+		break;
+		default:
+			break;
+		}
+		NewDir.MoveParent();
+		NewDir.Move("Animation");
+		
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".fbx" });
+		for (GameEngineFile File : Files)
+		{
+			if (nullptr == GameEngineFBXAnimation::Find(File.GetFileName()))
+			{
+				GameEngineFBXAnimation::Load(File.GetFullPath());
+			}
+			Renderer_Overture->CreateFBXAnimation(File.GetFileName(), { .Inter = 0.0166f, .Loop = false });
+		}
+		Renderer_Overture->ChangeAnimation("wp00_010_Shoot.fbx");
+		Renderer_Overture->Off();
+	}
+
+	SetHuman();
+	AddBreaker(DevilBreaker::BusterArm);
+	AddBreaker(DevilBreaker::Gerbera);
+	AddBreaker(DevilBreaker::Overture);
+	WeaponIdle();
 
 	// 기본 움직임
 	{
@@ -3795,6 +3905,8 @@ bool PlayerActor_Nero::Input_DevilBreakerCheck()
 		ChangeState(FSM_State_Nero::Nero_Snatch_Shoot);
 		return true;
 	}
+
+	return false;
 }
 
 bool PlayerActor_Nero::Input_DevilBreakerCheckFly()
@@ -3845,6 +3957,8 @@ bool PlayerActor_Nero::Input_DevilBreakerCheckFly()
 		ChangeState(FSM_State_Nero::Nero_Snatch_Shoot_Air);
 		return true;
 	}
+
+	return false;
 }
 
 bool PlayerActor_Nero::Input_SpecialCheck()
