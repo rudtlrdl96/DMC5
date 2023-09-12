@@ -2,6 +2,9 @@
 #include "GameEngineTexture.h"
 #include "GameEngineLevel.h"
 
+#include "..\\DirectXTK\\\WICTextureLoader.h"
+#include "..\\DirectXTK\\\DDSTextureLoader.h"
+
 #ifdef _DEBUG
 #pragma comment(lib, "..\\GameEngineCore\\ThirdParty\\DirectXTex\\lib\\x64\\Debug\\DirectXTex.lib")
 #else
@@ -270,6 +273,7 @@ void GameEngineTexture::ResLoad(const std::string_view& _Path)
 	Desc.Width = static_cast<UINT>(Data.width);
 	Desc.Height = static_cast<UINT>(Data.height);
 
+	DirectX::CreateWICTextureFromFile();
 	// Texture2D->GetDesc(&Desc);
 }
 
