@@ -52,8 +52,10 @@ Output MeshTexture_VS(Input _Input)
 Texture2D DiffuseTexture : register(t0); // ALBM
 Texture2D NormalTexture : register(t1); // NRMR
 Texture2D SpecularTexture : register(t2); // ATOS
+TextureCube ReflectionTexture : register(t3); // Reflection Cubemap
 
 SamplerState ENGINEBASE : register(s0);
+
 
 struct DeferredOutPut
 {
@@ -92,7 +94,7 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     
     Result.PosTarget = _Input.VIEWPOSITION;    
     Result.DifTarget = float4(AlbmData.r, AlbmData.g, AlbmData.b, AtosData.r);
-        
+            
     if (0 != IsNormal)
     {
         // WorldView Normal    
@@ -102,17 +104,22 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     {
         Result.NorTarget = _Input.NORMAL;
     }
-        
+            
     // 반사량 계산 공식 러프니스 값에 따라서 결정된다        
     float roughness = 1.0 - NrmrData.r; // smoothness는 러프니스 값입니다.
     float3 reflection = reflect(AllLight[0].LightRevDir.xyz, Result.NorTarget.xyz); // 빛의 반사 방향 계산
     float distribution = GGX_Distribution(Result.NorTarget.xyz, reflection, roughness); // 반사 분포 계산
                                
+    reflection.yz = -reflection.zy;
+    // Eye    
+    //float4 ReflectionColor = ReflectionTexture.Sample(ENGINEBASE, reflection);
+    
     // 계산된 메탈릭 값
     float metallic = saturate(AlbmData.a - distribution);
-            
+     
     // AlbmData -> metallicValue 값에 따라서 결정되어야 한다        
-    Result.DifTarget.rgb = lerp(AlbmData.rgb, AlbmData.rgb * 0.6f, metallic);
+    Result.DifTarget.rgb = lerp(AlbmData.rgb, float3(0, 0, 0), metallic);
+    //Result.DifTarget.rgb += lerp(float3(0, 0, 0), ReflectionColor.rgb, metallic);
     
     Result.DifTarget.a = 1.0f;
     Result.PosTarget.a = 1.0f;

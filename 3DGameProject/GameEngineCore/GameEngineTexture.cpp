@@ -276,6 +276,73 @@ void GameEngineTexture::ResLoad(const std::string_view& _Path)
 	// Texture2D->GetDesc(&Desc);
 }
 
+void GameEngineTexture::ResLoadCubemap(const std::string_view& _Path)
+{
+	GameEnginePath NewPath(_Path);
+
+	std::string Ext = GameEngineString::ToUpper(NewPath.GetExtension());
+	std::wstring Path = GameEngineString::AnsiToUniCode(NewPath.GetFullPath());
+
+	DirectX::ScratchImage TempLoadImage;
+
+	if (Ext == ".TGA")
+	{
+		if (S_OK != DirectX::LoadFromTGAFile(Path.c_str(), DirectX::TGA_FLAGS_NONE, &Data, TempLoadImage))
+		{
+			MsgAssert("TGA 포맷 로드 실패." + std::string(_Path.data()));
+		}
+	}
+	else if (Ext == ".DDS")
+	{
+		if (S_OK != DirectX::LoadFromDDSFile(Path.c_str(), DirectX::DDS_FLAGS_NONE, &Data, TempLoadImage))
+		{
+			MsgAssert("DDS 포맷 로드 실패." + std::string(_Path.data()));
+		}
+	}
+	else if (S_OK != DirectX::LoadFromWICFile(Path.c_str(), DirectX::WIC_FLAGS_NONE, &Data, TempLoadImage))
+	{
+		MsgAssert("텍스처 로드에 실패했습니다." + std::string(_Path.data()));
+	}
+
+	HRESULT hr = Image.InitializeCube(TempLoadImage.GetMetadata().format, TempLoadImage.GetMetadata().width, TempLoadImage.GetMetadata().height, 1, 1);
+
+	if (FAILED(hr)) 
+	{
+		MsgAssert("큐브맵 텍스쳐 생성에 실패했습니다.");
+	}
+
+	const DirectX::TexMetadata& metadata = TempLoadImage.GetMetadata();
+
+	// 이미지 데이터를 큐브맵 텍스처로 복사
+	for (size_t i = 0; i < 6; ++i) 
+	{
+		const DirectX::Image* srcImage = TempLoadImage.GetImage(0, 0, 0); // 모든 면에서 같은 원본 이미지 사용
+		const DirectX::Image* dstImage = Image.GetImage(0, i, 0); // 큐브맵 면 하나씩 대상 이미지로 선택
+
+		DirectX::Rect srcRect; // 복사 영역 설정
+		srcRect.x = 0;
+		srcRect.y = i * (metadata.height / 6);
+		srcRect.w = metadata.width;
+		srcRect.h = metadata.height / 6;
+
+		hr = DirectX::CopyRectangle(*srcImage, srcRect, *dstImage, DirectX::TEX_FILTER_DEFAULT, 0, 0);
+
+		if (FAILED(hr)) 
+		{
+			// 오류 처리
+		}
+	}
+
+	if (S_OK != hr)
+	{
+		MsgAssert("쉐이더 리소스 뷰 생성에 실패했습니다." + std::string(_Path.data()));
+	}
+	
+	Desc.Width = static_cast<UINT>(Data.width);
+	Desc.Height = static_cast<UINT>(Data.height);
+
+}
+
 void GameEngineTexture::VSSetting(UINT _Slot) 
 {
 	if (nullptr == SRV)

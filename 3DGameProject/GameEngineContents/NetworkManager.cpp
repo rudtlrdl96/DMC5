@@ -8,7 +8,6 @@
 #include "BaseLevel.h"
 
 #include "PacketEnum.h"
-#include "ObjectUpdatePacket.h"
 #include "MessageChatPacket.h"
 #include "LinkObjectPacket.h"
 #include "FsmChangePacket.h"

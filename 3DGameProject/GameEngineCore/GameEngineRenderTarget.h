@@ -59,6 +59,13 @@ public:
 		return NewRenderTarget;
 	}
 
+	static std::shared_ptr<GameEngineRenderTarget> CreateCubemap(DXGI_FORMAT _Format, float4 _Scale, float4 _Color)
+	{
+		std::shared_ptr<GameEngineRenderTarget> NewRenderTarget = GameEngineResource::CreateUnNamed();
+		NewRenderTarget->ResCreateCubemap(_Format, _Scale, _Color);
+		return NewRenderTarget;
+	}
+
 	void Clear();
 
 	void TextureClear();
@@ -136,6 +143,8 @@ private:
 
 	void ResCreate(std::shared_ptr<GameEngineTexture> _Texture, float4 _Color);
 	void ResCreate(DXGI_FORMAT _Format, float4 _Scale, float4 _Color);
+	void ResCreateCubemap(DXGI_FORMAT _Format, float4 _Scale, float4 _Color);
+
 	void EffectInit(std::shared_ptr<GameEnginePostProcess> _PostProcess);
 
 };

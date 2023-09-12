@@ -207,7 +207,7 @@ void GameEngineCore::EngineUpdate()
 				"Texture", "ScreenShot"
 			});
 
-		GameEngineScreenShoot::RenderTargetShoot(MainLevel->GetScreenShootTarget(), Path, "RenderTargetShoot.JPG");
+		GameEngineScreenShoot::RenderTargetShoot(MainLevel->GetScreenShootTarget(), Path, "RenderTargetShoot.DDS");
 	}
 
 	MainLevel->ActorRelease();
