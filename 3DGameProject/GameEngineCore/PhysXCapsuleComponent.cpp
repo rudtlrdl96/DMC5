@@ -12,6 +12,11 @@ PhysXCapsuleComponent::~PhysXCapsuleComponent()
 {
 }
 
+void PhysXCapsuleComponent::SetMainPlayer()
+{
+	CustomCallback::SetMainPlayer(this);
+}
+
 void PhysXCapsuleComponent::Start()
 {
 	// 부모의 정보의 저장
@@ -31,11 +36,6 @@ void PhysXCapsuleComponent::Update(float _DeltaTime)
 
 	ParentActor.lock()->GetTransform()->SetWorldRotation(float4{ EulerRot.x, EulerRot.y, EulerRot.z });
 	ParentActor.lock()->GetTransform()->SetWorldPosition(tmpWorldPos);
-
-	//if (IsSpeedLimit == true)
-	//{
-	//	SpeedLimit();
-	//}
 }
 
 void PhysXCapsuleComponent::CreatePhysXActors(physx::PxVec3 _GeoMetryScale, float4 _GeoMetryRotation)
@@ -101,19 +101,22 @@ void PhysXCapsuleComponent::CreatePhysXActors(physx::PxVec3 _GeoMetryScale, floa
 	relativePose.p = DynamicCenter;
 	m_pShape->setLocalPose(relativePose);
 
-	//충돌할때 필요한 필터 데이터
-	m_pShape->setSimulationFilterData
-	(
-		physx::PxFilterData
-		(
-			static_cast<physx::PxU32>(PhysXFilterGroup::Player), 
-			static_cast<physx::PxU32>(PhysXFilterGroup::Ground), 
-			static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle),
-			0
-		)
-	);
-
 	m_pShape->setContactOffset(0.2f);
+
+	if (true == MainPlayerCapsule)
+	{
+		//충돌할때 필요한 필터 데이터
+		m_pShape->setSimulationFilterData
+		(
+			physx::PxFilterData
+			(
+				static_cast<physx::PxU32>(PhysXFilterGroup::Player),
+				static_cast<physx::PxU32>(PhysXFilterGroup::Ground),
+				static_cast<physx::PxU32>(PhysXFilterGroup::Obstacle),
+				static_cast<physx::PxU32>(PhysXFilterGroup::Wall)
+			)
+		);
+	}
 
 	//RayCastTarget False;
 	m_pShape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, false);
@@ -131,11 +134,6 @@ void PhysXCapsuleComponent::CreatePhysXActors(physx::PxVec3 _GeoMetryScale, floa
 
 	// Scene에 액터 추가
 	m_pScene->addActor(*m_pDynamic);
-
-	if (true == IsMainPlayer)
-	{
-		CustomCallback::SetMainPlayer(this);
-	}
 
 	PhysicsComponent = DynamicThis<PhysXCapsuleComponent>();
 }

@@ -124,9 +124,11 @@ public:
 		);
 	}
 
-	inline void SetMainPlayer()
+	void SetMainPlayer();
+
+	void IsMainPlayerCapsule()
 	{
-		IsMainPlayer = true;
+		MainPlayerCapsule = true;
 	}
 
 	inline bool GetIsPlayerGroundTouch()
@@ -181,6 +183,6 @@ private:
 
 	bool IsGroundTouch = false;
 	bool IsWallTouch = false;
-	bool IsMainPlayer = false;
+	bool MainPlayerCapsule = false;
 };
 
