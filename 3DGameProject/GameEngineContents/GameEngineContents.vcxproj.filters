@@ -157,9 +157,6 @@
     <ClInclude Include="StageBaseLevel.h">
       <Filter>Levels\Stage\0.StageBase</Filter>
     </ClInclude>
-    <ClInclude Include="StartStageLevel.h">
-      <Filter>Levels\Stage\1.StartStage</Filter>
-    </ClInclude>
     <ClInclude Include="NetTestPlayer.h">
       <Filter>Actor\NetworkExample</Filter>
     </ClInclude>
@@ -376,6 +373,9 @@
     <ClInclude Include="StageGUI.h">
       <Filter>GUI</Filter>
     </ClInclude>
+    <ClInclude Include="Location11_Level.h">
+      <Filter>Levels\Stage\2.Location11</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -524,9 +524,6 @@
     </ClCompile>
     <ClCompile Include="StageBaseLevel.cpp">
       <Filter>Levels\Stage\0.StageBase</Filter>
-    </ClCompile>
-    <ClCompile Include="StartStageLevel.cpp">
-      <Filter>Levels\Stage\1.StartStage</Filter>
     </ClCompile>
     <ClCompile Include="NetTestPlayer.cpp">
       <Filter>Actor\NetworkExample</Filter>
@@ -738,6 +735,9 @@
     <ClCompile Include="StageGUI.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="Location11_Level.cpp">
+      <Filter>Levels\Stage\2.Location11</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
@@ -878,12 +878,6 @@
     <Filter Include="Levels\Stage\0.StageBase">
       <UniqueIdentifier>{e8d24add-216e-4779-a611-44420f6e67a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Levels\Stage\2.BossStage">
-      <UniqueIdentifier>{75ef1a2d-f0b3-4e78-b433-0101a05f933d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Levels\Stage\1.StartStage">
-      <UniqueIdentifier>{90b7419c-d3c5-4f35-9ed3-3e2ea44b7e0e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Actor\Player">
       <UniqueIdentifier>{c973e3f3-8c9d-4b9d-8693-81925f490cb5}</UniqueIdentifier>
     </Filter>
@@ -970,6 +964,12 @@
     </Filter>
     <Filter Include="Component\Light">
       <UniqueIdentifier>{ef3c6322-abc7-42f5-8d92-d842b4482801}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\Stage\1.Location2">
+      <UniqueIdentifier>{5a5c6a67-049c-41c0-9fef-5f60ba67a0e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\Stage\2.Location11">
+      <UniqueIdentifier>{f7a513fc-0b82-4a83-926f-3438719e303f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

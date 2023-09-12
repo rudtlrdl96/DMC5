@@ -43,7 +43,6 @@ void StageEditLevel::Start()
 	Grid = CreateActor<EngineGrid>();
 	FreeCam = CreateActor<FreeCameraActor>();
 
-	IsDebugSwitch();
 }
 
 void StageEditLevel::Update(float _DeltaTime)
@@ -85,6 +84,7 @@ void StageEditLevel::LevelChangeStart()
 			}
 		}
 	}
+	IsDebugSwitch();
 }
 
 void StageEditLevel::LevelChangeEnd()

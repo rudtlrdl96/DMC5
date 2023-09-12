@@ -43,6 +43,10 @@ void StageBaseLevel::Start()
 	{
 		LoadAllStageData();
 	}
+
+	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
+	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
+	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
 }
 
 void StageBaseLevel::Update(float _DeltaTime)

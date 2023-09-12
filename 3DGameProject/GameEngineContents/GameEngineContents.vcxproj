@@ -241,6 +241,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="LinkObjectPacket.h" />
+    <ClInclude Include="Location11_Level.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="MainMenuBG.h">
       <SubType>
       </SubType>
@@ -536,7 +540,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="StartStageLevel.h" />
     <ClInclude Include="FXAA_Effect.h">
       <SubType>
       </SubType>
@@ -652,6 +655,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="JudgementCut.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Location11_Level.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -948,7 +955,6 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="StartStageLevel.cpp" />
     <ClCompile Include="FXAA_Effect.cpp">
       <SubType>
       </SubType>
