@@ -131,6 +131,7 @@ private:
 	// ½ºÅ³
 	bool IsBackFrontSkill = false;
 	bool IsFrontSkill = false;
+	bool IsLockOnSkill = false;
 	bool IsSkill = false;
 
 	bool IsSpecialMove = false;
@@ -163,6 +164,7 @@ public:
 	bool GetIsGTBomb() { return GameEngineInput::IsDown("Player_GT_Bomb"); }
 	bool GetIsProvocation() { return GameEngineInput::IsDown("Player_Provocation"); }
 	bool GetIsSkill() { return IsSkill; }
+	bool GetIsLockOnSkill() { return IsLockOnSkill; }
 	bool GetIsLockOn() { return IsLockOn; }
 
 };

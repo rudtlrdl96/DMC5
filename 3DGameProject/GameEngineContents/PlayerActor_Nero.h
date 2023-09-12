@@ -74,6 +74,20 @@ enum FSM_State_Nero
 	Nero_Gerbera_Right,
 
 	Nero_Buster_Catch,
+	Nero_Buster_Strike,
+	Nero_Buster_Repelled,
+
+	Nero_Buster_Catch_Air,
+	Nero_Buster_Strike_Air,
+	Nero_Buster_Repelled_Air,
+
+	Nero_Snatch_Shoot,
+	Nero_Snatch_Pull,
+	Nero_Snatch_Repel,
+
+	Nero_Snatch_Shoot_Air,
+	Nero_Snatch_Pull_Air,
+	Nero_Snatch_Repel_Air,
 
 	// 데빌트리거 사용
 	Nero_DT_Start,
