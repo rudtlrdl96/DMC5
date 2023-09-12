@@ -164,7 +164,7 @@ protected:
 
 
 private:
-	std::shared_ptr<class GameEngineFBXRenderer> Renderer_EffectMesh = nullptr;
+	std::shared_ptr<class EffectFBXRenderer> Renderer_EffectMesh = nullptr;
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer_Overture = nullptr;
 
 	GameEngineFSM FSM;

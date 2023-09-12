@@ -5,6 +5,7 @@
 #include <GameEngineCore/GameEngineFBXAnimation.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include "AnimationEvent.h"
+#include "EffectFBXRenderer.h"
 #include "PlayerController.h"
 #include "NetworkManager.h"
 PlayerActor_Nero::~PlayerActor_Nero()
@@ -69,9 +70,9 @@ void PlayerActor_Nero::PlayerLoad()
 				GameEngineTexture::Load(File.GetFullPath());
 			}
 		}
-		Renderer_EffectMesh = CreateComponent<GameEngineFBXRenderer>();
-		Renderer_EffectMesh->SetFBXMesh("Effect_Mesh_01.FBX", "FBX");
-		Renderer_EffectMesh->SetTexture("DiffuseTexture", "Effect_Texture_01.png");
+		Renderer_EffectMesh = CreateComponent<EffectFBXRenderer>();
+		Renderer_EffectMesh->SetFBXMesh("Effect_Mesh_01.FBX", "ClipEffect");
+		Renderer_EffectMesh->SetTexture("DiffuseTexture", "Effect_Texture_02.tga");
 		Renderer_EffectMesh->Off();
 	}
 
@@ -2471,8 +2472,8 @@ void PlayerActor_Nero::PlayerLoad()
 			MoveCheck = false;
 		},
 		.Update = [=](float _DeltaTime) {
-			if (true == Input_SpecialCheck()) { return; }
 			if (InputCheck == false) { return; }
+			if (true == Input_SpecialCheck()) { return; }
 			if (false == FloorCheck())
 			{
 				ChangeState(FSM_State_Nero::Nero_Jump_Fly);
@@ -2511,8 +2512,8 @@ void PlayerActor_Nero::PlayerLoad()
 					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
 				}
 
-				if (true == Input_SpecialCheckFly()) { return; }
 				if (InputCheck == false) { return; }
+				if (true == Input_SpecialCheckFly()) { return; }
 				if (true == FloorCheck())
 				{
 					ChangeState(FSM_State_Nero::Nero_Landing);
@@ -2656,8 +2657,8 @@ void PlayerActor_Nero::NetLoad()
 				GameEngineTexture::Load(File.GetFullPath());
 			}
 		}
-		Renderer_EffectMesh = CreateComponent<GameEngineFBXRenderer>();
-		Renderer_EffectMesh->SetFBXMesh("Effect_Mesh_01.FBX", "FBX");
+		Renderer_EffectMesh = CreateComponent<EffectFBXRenderer>();
+		Renderer_EffectMesh->SetFBXMesh("Effect_Mesh_01.FBX", "ClipEffect");
 		Renderer_EffectMesh->SetTexture("DiffuseTexture", "Effect_Texture_01.png");
 		Renderer_EffectMesh->Off();
 	}
