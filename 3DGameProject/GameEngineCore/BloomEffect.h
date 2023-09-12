@@ -1,6 +1,12 @@
 #pragma once
 #include "GameEngineRenderTarget.h"
 
+struct BlurData
+{
+	float4 ScreenSize;
+	float4 ScreenRatio;
+};
+
 // Ό³Έν :
 class BloomEffect : public GameEnginePostProcess
 {
@@ -19,8 +25,7 @@ protected:
 private:
 	std::shared_ptr<GameEngineRenderUnit> BlurUnit;
 	std::shared_ptr<GameEngineRenderUnit> BloomBlurUnit;
-
-
+	BlurData Data;
 
 };
 

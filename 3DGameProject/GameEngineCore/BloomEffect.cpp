@@ -18,15 +18,21 @@ void BloomEffect::Start(GameEngineRenderTarget* _Target)
 	BloomBlurUnit = std::make_shared<GameEngineRenderUnit>();
 	BloomBlurUnit->SetMesh("FullRect");
 	BloomBlurUnit->SetMaterial("BloomBlur");
-	ResultTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize() * 0.25f, float4::ZERONULL);
-	BlurTarget0 = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize() * 0.25f, float4::ZERONULL);
-	BlurTarget1 = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize() * 0.25f, float4::ZERONULL);
+
+	BloomBlurUnit->ShaderResHelper.SetConstantBufferLink("BlurData", Data);
+
+	Data.ScreenSize = { 1280.0f, 720.0f };
+	Data.ScreenRatio.x = 0.5f;
+
+	ResultTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize() * Data.ScreenRatio.x, float4::ZERONULL);
+	BlurTarget0 = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize() * Data.ScreenRatio.x, float4::ZERONULL);
+	BlurTarget1 = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize() * Data.ScreenRatio.x, float4::ZERONULL);
 }
 
 void BloomEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 {
 	ResultTarget->Clear();
-	BlurUnit->ShaderResHelper.SetTexture("LightTarget", _Target->GetTexture(3));
+	BlurUnit->ShaderResHelper.SetTexture("LightTarget", _Target->GetTexture(1));
 	ResultTarget->Setting();
 	BlurUnit->Render(_DeltaTime);
 	BlurUnit->ShaderResHelper.AllResourcesReset();
@@ -38,11 +44,55 @@ void BloomEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 	BloomBlurUnit->ShaderResHelper.AllResourcesReset();
 
 	BlurTarget1->Clear();
-	_Target->Setting();
-	// _Target->Setting();
+	BlurTarget1->Setting();
 	BloomBlurUnit->ShaderResHelper.SetTexture("SmallBloomTex", BlurTarget0->GetTexture(0));
 	BloomBlurUnit->Render(_DeltaTime);
 	BloomBlurUnit->ShaderResHelper.AllResourcesReset();
 
-	// 
+	BlurTarget0->Clear();
+	BlurTarget0->Setting();
+	BloomBlurUnit->ShaderResHelper.SetTexture("SmallBloomTex", BlurTarget1->GetTexture(0));
+	BloomBlurUnit->Render(_DeltaTime);
+	BloomBlurUnit->ShaderResHelper.AllResourcesReset();
+
+	BlurTarget1->Clear();
+	BlurTarget1->Setting();
+	BloomBlurUnit->ShaderResHelper.SetTexture("SmallBloomTex", BlurTarget0->GetTexture(0));
+	BloomBlurUnit->Render(_DeltaTime);
+	BloomBlurUnit->ShaderResHelper.AllResourcesReset();
+
+	BlurTarget0->Clear();
+	BlurTarget0->Setting();
+	BloomBlurUnit->ShaderResHelper.SetTexture("SmallBloomTex", BlurTarget1->GetTexture(0));
+	BloomBlurUnit->Render(_DeltaTime);
+	BloomBlurUnit->ShaderResHelper.AllResourcesReset();
+
+	BlurTarget1->Clear();
+	BlurTarget1->Setting();
+	BloomBlurUnit->ShaderResHelper.SetTexture("SmallBloomTex", BlurTarget0->GetTexture(0));
+	BloomBlurUnit->Render(_DeltaTime);
+	BloomBlurUnit->ShaderResHelper.AllResourcesReset();
+
+	BlurTarget0->Clear();
+	BlurTarget0->Setting();
+	BloomBlurUnit->ShaderResHelper.SetTexture("SmallBloomTex", BlurTarget1->GetTexture(0));
+	BloomBlurUnit->Render(_DeltaTime);
+	BloomBlurUnit->ShaderResHelper.AllResourcesReset();
+
+	BlurTarget1->Clear();
+	BlurTarget1->Setting();
+	BloomBlurUnit->ShaderResHelper.SetTexture("SmallBloomTex", BlurTarget0->GetTexture(0));
+	BloomBlurUnit->Render(_DeltaTime);
+	BloomBlurUnit->ShaderResHelper.AllResourcesReset();
+
+	BlurTarget0->Clear();
+	BlurTarget0->Setting();
+	BloomBlurUnit->ShaderResHelper.SetTexture("SmallBloomTex", BlurTarget1->GetTexture(0));
+	BloomBlurUnit->Render(_DeltaTime);
+	BloomBlurUnit->ShaderResHelper.AllResourcesReset();
+
+	_Target->Setting();
+	BloomBlurUnit->ShaderResHelper.SetTexture("SmallBloomTex", BlurTarget0->GetTexture(0));
+	BloomBlurUnit->Render(_DeltaTime);
+	BloomBlurUnit->ShaderResHelper.AllResourcesReset();
 }

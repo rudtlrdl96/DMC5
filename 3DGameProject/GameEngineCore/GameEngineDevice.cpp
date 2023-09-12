@@ -227,7 +227,7 @@ void GameEngineDevice::CreateSwapChain()
 	BackBufferTexture->ResCreate(SwapBackBufferTexture);
 
 	// ·£´õÅ¸°Ùºä »ý¼º ÈÄ, ¸ÞÀÎ·£´õÅ¸°Ù »ý¼º
-	BackBufferTarget = GameEngineRenderTarget::Create("MainBackBufferTarget", BackBufferTexture, {0.0f, 0.0f, 1.0f, 1.0f});
+	BackBufferTarget = GameEngineRenderTarget::Create("MainBackBufferTarget", BackBufferTexture, {0.0f, 0.0f, 0.0f, 1.0f});
 	BackBufferTarget->CreateDepthTexture();
 }
 
