@@ -22,6 +22,11 @@ enum class LogOrder
 	Count
 };
 
+enum
+{
+	NETWORK_UPDATEPACKET_UNION_DATA_SIZE = 2
+};
+
 enum class Net_ActorType
 {
 	//플레이어

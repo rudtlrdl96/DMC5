@@ -12,6 +12,9 @@ struct UpdatePacketParameter
 {
 	GameEngineNetObject* ObjPtr = nullptr;
 	float TimeScale = 1.f;
+
+	//ObjectUpdatePacket의 Union값을 보고 직접 넣어주시면 됩니다.
+	unsigned int UnionData[NETWORK_UPDATEPACKET_UNION_DATA_SIZE];
 };
 
 

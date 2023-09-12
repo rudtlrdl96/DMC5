@@ -222,9 +222,7 @@ void NetworkManager::PushUpdatePacket(const UpdatePacketParameter& _Param)
 		NetPtr->NetDisconnect();
 	}
 
-
-	/*UpdatePacket->FsmState = _Param.FsmState;
-	UpdatePacket->IsFsmForce= _Param.IsFsmForce;*/
+	UpdatePacket->CopyUnionData(_Param.UnionData);
 }
 
 
