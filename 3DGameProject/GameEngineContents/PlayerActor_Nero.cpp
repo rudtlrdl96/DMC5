@@ -2669,6 +2669,7 @@ void PlayerActor_Nero::PlayerLoad()
 			.Start = [=] {
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
+				PhysXCapsule->TurnOffGravity();
 				Renderer->ChangeAnimation("pl0000_Damage_Common", true);
 				InputCheck = false;
 			},
@@ -2701,6 +2702,7 @@ void PlayerActor_Nero::PlayerLoad()
 			.Start = [=] {
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
+				PhysXCapsule->TurnOffGravity();
 				Renderer->ChangeAnimation("pl0000_Damage_Combo", true);
 				InputCheck = false;
 			},
@@ -2727,6 +2729,108 @@ void PlayerActor_Nero::PlayerLoad()
 			.End = [=] {
 			}
 			});
+
+		// Damage Fly
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Fly,
+			.Start = [=] {
+				WeaponIdle();
+				PhysXCapsule->SetLinearVelocityZero();
+				PhysXCapsule->TurnOffGravity();
+				Renderer->ChangeAnimation("pl0000_Damage_AirCombo_Fly", true);
+			},
+			.Update = [=](float _DeltaTime) {
+				if (true == Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Nero::Nero_Damage_Fall);
+					return;
+				}
+				if (true == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Damage_Ground);
+					return;
+				}
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage Fall
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Fall,
+			.Start = [=] {
+				PhysXCapsule->SetPush({ 0, -1000, 0 });
+				PhysXCapsule->TurnOnGravity();
+				Renderer->ChangeAnimation("pl0000_Damage_Supine_Fall_Loop");
+			},
+			.Update = [=](float _DeltaTime) {
+				if (true == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Damage_Ground);
+					return;
+				}
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage Ground
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Ground,
+			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
+				PhysXCapsule->TurnOffGravity();
+				Renderer->ChangeAnimation("pl0000_Damage_Away_Ground");
+				InputCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (true == Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Nero::Nero_Damage_GetUp);
+					return;
+				}
+				if (false == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+					return;
+				}
+
+				if (true == Input_SpecialCheck()) { return; }
+				if (InputCheck == false) { return; }
+
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_DevilBreakerCheck()) { return; }
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage GetUp
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_GetUp,
+			.Start = [=] {
+				Renderer->ChangeAnimation("pl0000_Damage_Away_GetUp");
+			},
+			.Update = [=](float _DeltaTime) {
+				if (false == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+					return;
+				}
+
+				if (true == Input_SpecialCheck()) { return; }
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_DevilBreakerCheck()) { return; }
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					ChangeState(FSM_State_Nero::Nero_RunStart);
+					return;
+				}
+			},
+			.End = [=] {
+			}
+			});
+
 	}
 
 	ChangeState(FSM_State_Nero::Nero_Idle);
@@ -3849,7 +3953,7 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 		}
 		if (GameEngineInput::IsDown("SelectLevel_01"))
 		{
-			ChangeState(FSM_State_Nero::Nero_Damage_Combo);
+			ChangeState(FSM_State_Nero::Nero_Damage_Fly);
 			AddBreaker(DevilBreaker::Overture);
 		}
 		if (GameEngineInput::IsDown("SelectLevel_02"))

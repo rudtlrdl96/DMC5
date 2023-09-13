@@ -101,6 +101,11 @@ enum FSM_State_Nero
 
 	Nero_Damage_Common,
 	Nero_Damage_Combo,
+
+	Nero_Damage_Fly,
+	Nero_Damage_Fall,
+	Nero_Damage_Ground,
+	Nero_Damage_GetUp,
 };
 
 class PlayerActor_Nero : public BasePlayerActor
