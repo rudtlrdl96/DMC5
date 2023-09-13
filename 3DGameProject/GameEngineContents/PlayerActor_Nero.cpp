@@ -648,6 +648,45 @@ void PlayerActor_Nero::PlayerLoad()
 			.End = [=] {
 			}
 			});
+
+		// EnemyStep Jump
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_EnemyStep_Jump,
+			.Start = [=] {
+				InputCheck = false;
+				MoveCheck = false;
+				PhysXCapsule->TurnOnGravity();
+				PhysXCapsule->SetLinearVelocityZero();
+				PhysXCapsule->SetMove(Controller->GetMoveVector() * 250);
+				WeaponIdle();
+				Renderer->ChangeAnimation("pl0000_Jump_EnemyStep", true);
+			},
+			.Update = [=](float _DeltaTime) {
+				if (Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+					return;
+				}
+				if (true == Input_JumpCheckFly()) { return; }
+				if (true == Input_SwordCheckFly()) { return; }
+				if (true == Input_GunCheckFly()) { return; }
+				if (true == Input_DevilBreakerCheckFly()) { return; }
+
+				if (true == InputCheck)
+				{
+					if (true == Input_SpecialCheckFly()) { return; }
+				}
+				PhysXCapsule->SetForce(Controller->GetMoveVector() * 3500);
+
+				if (false == MoveCheck) { return; }
+				if (true == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Landing);
+					return;
+				}
+			},
+			.End = [=] {
+			}
+			});
 	}
 	{}
 	// ทนตๅ ฤý
@@ -2543,12 +2582,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_DevilBreakerCheckFly()) { return; }
 				if (Renderer->IsAnimationEnd())
 				{
-					if ('2' == Controller->MoveVectorToChar4(Controller->GetMoveVector()))
-					{
-						ChangeState(FSM_State_Nero::Nero_2nd_Jump_Back);
-						return;
-					}
-					ChangeState(FSM_State_Nero::Nero_2nd_Jump);
+					ChangeState(FSM_State_Nero::Nero_EnemyStep_Jump);
 					return;
 				}
 			},
@@ -2930,6 +2964,17 @@ void PlayerActor_Nero::NetLoad()
 			.Start = [=] {
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Jump_Back_2ndJump", true);
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+			}
+			});
+		// EnemyStep Jump
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_EnemyStep_Jump,
+			.Start = [=] {
+				WeaponIdle();
+				Renderer->ChangeAnimation("pl0000_Jump_EnemyStep", true);
 			},
 			.Update = [=](float _DeltaTime) {
 			},

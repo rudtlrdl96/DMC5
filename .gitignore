@@ -400,3 +400,13 @@ FodyWeavers.xsd
 # ImGui
 /3DGameProject/App/imgui.ini
 /3DGameProject/ContentResources/Map/TestMap/Location2.MeshFBX
+/3DGameProject/App/imgui.ini
+/3DGameProject/ContentResources/Character/Player/Nero/Mesh/imgui.ini
+/3DGameProject/ContentResources/Character/Player/Nero/Animation/imgui.ini
+/3DGameProject/App/imgui.ini
+*.ini
+/3DGameProject/ContentResources/Character/Player/Nero/Animation/imgui.ini
+/3DGameProject/ContentResources/Character/Player/Nero/Mesh/imgui.ini
+/3DGameProject/ContentResources/Character/Player/Nero/Animation/imgui.ini
+/3DGameProject/ContentResources/Character/Player/Nero/Mesh/imgui.ini
+/3DGameProject/App/imgui.ini

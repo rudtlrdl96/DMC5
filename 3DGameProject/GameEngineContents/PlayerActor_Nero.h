@@ -17,6 +17,7 @@ enum FSM_State_Nero
 	Nero_Jump_Fly,
 	Nero_2nd_Jump,
 	Nero_2nd_Jump_Back,
+	Nero_EnemyStep_Jump,
 	Nero_Landing,
 	Nero_Evade_Left,
 	Nero_Evade_Right,
