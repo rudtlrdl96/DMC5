@@ -29,9 +29,9 @@
 
 #pragma once
 
-#include "NvCloth/Callbacks.h"
-#include "NvCloth/Allocator.h"
-#include "NvCloth/ps/PsAtomic.h"
+#include "../inc/Callbacks.h"
+#include "../inc/Allocator.h"
+#include "../inc/ps/PsAtomic.h"
 
 namespace nv
 {

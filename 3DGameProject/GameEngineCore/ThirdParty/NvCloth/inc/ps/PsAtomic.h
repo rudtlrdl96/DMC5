@@ -30,8 +30,8 @@
 #ifndef PSFOUNDATION_PSATOMIC_H
 #define PSFOUNDATION_PSATOMIC_H
 
-#include "NvCloth/ps/Ps.h"
-#include "NvCloth/Callbacks.h"
+#include "../ps/Ps.h"
+#include "../Callbacks.h"
 
 /** \brief NVidia namespace */
 namespace nv
