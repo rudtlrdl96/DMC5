@@ -9,6 +9,7 @@
 
 #include "ShaderTestActor.h"
 #include "Plane.h"
+#include "Enemy_HellCaina.h"
 #include "FreeCameraActor.h"
 
 MainLevel* MainLevel::Inst = nullptr;
@@ -48,6 +49,8 @@ void MainLevel::Start()
 	std::shared_ptr<ShaderTestActor> NewTestActor0 = CreateActor<ShaderTestActor>();
 	NewTestActor0->GetTransform()->SetLocalPosition({ 0, 10, 0 });
 	//NewTestActor0->InitTest(0);
+
+	CreateActor<Enemy_HellCaina>();
 }
 
 void MainLevel::Update(float _DeltaTime)

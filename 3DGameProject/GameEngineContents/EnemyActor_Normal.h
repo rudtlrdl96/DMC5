@@ -34,6 +34,8 @@ protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
+	virtual void SetFSMStateValue(int _StateValue) = 0;
+
 private:
 	// 대기상태
 	virtual void Idle_Enter();

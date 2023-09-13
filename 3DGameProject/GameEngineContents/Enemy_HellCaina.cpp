@@ -3,13 +3,25 @@
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/GameEngineFBXAnimation.h>
 
+#include "NetworkManager.h"
 #include "AnimationEvent.h"
+
 Enemy_HellCaina::Enemy_HellCaina() 
 {
 }
 
 Enemy_HellCaina::~Enemy_HellCaina() 
 {
+}
+
+void Enemy_HellCaina::Start()
+{
+	EnemyAnimationLoad();
+	EnemyCreateFSM();
+}
+void Enemy_HellCaina::Update(float _DeltaTime)
+{
+
 }
 
 void Enemy_HellCaina::EnemyMeshLoad()
@@ -22,7 +34,6 @@ void Enemy_HellCaina::EnemyMeshLoad()
 		}, 
 		"em0000.FBX"
 	);
-
 	GameEngineFBXMesh::Load(Path);
 
 	switch (GameEngineOption::GetOption("Shader"))
@@ -41,7 +52,7 @@ void Enemy_HellCaina::EnemyMeshLoad()
 		break;
 	}
 
-	// EnemyRenderer->GetTransform()->SetLocalScale({ 0.1f, 0.1f, 0.1f });
+	EnemyRenderer->GetTransform()->SetLocalScale({ 1.0f , 1.0f , 1.0f });
 }
 
 void Enemy_HellCaina::EnemyTypeLoad()
@@ -49,22 +60,28 @@ void Enemy_HellCaina::EnemyTypeLoad()
 	EnemyCodeValue = EnemyCode::HellCaina;
 	EnemyTypeValue = EnemyType::Normal;
 	EnemySizeValue = EnemySize::Middle;
+
+	EnemyHP = 0;
+	RN_Range = float4::ZERO;
+	RN_Player = false;
+	MoveSpeed = 50.0f;
 }
 
 void Enemy_HellCaina::EnemyAnimationLoad()
 {
 	//Animation정보 경로를 찾아서 모든animation파일 로드
-	std::string Path = GameEnginePath::GetFileFullPath
-	(
-		"ContentResources",
-		{
-			"Character", "Enemy", "HellCaina", "Animation"
-		}
-	);
+	GameEngineDirectory NewDir;
+	NewDir.MoveParentToDirectory("ContentResources");
+	NewDir.Move("ContentResources");
+	NewDir.Move("Character");
+	NewDir.Move("Enemy");
+	NewDir.Move("HellCaina");
+	NewDir.Move("Animation");
 
 	AnimationEvent::LoadAll(
 		{
-			.Dir = Path.c_str(), .Renderer = EnemyRenderer,
+			.Dir = NewDir.GetFullPath().c_str(), 
+			.Renderer = EnemyRenderer,
 			.Objects = {(GameEngineObject*)MonsterCollision.get()},
 			.CallBacks_void =
 			{
@@ -76,9 +93,59 @@ void Enemy_HellCaina::EnemyAnimationLoad()
 			}
 		}
 	);
+
+	NewDir.MoveParent();
+	NewDir.Move("Animation");
+	std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".fbx" });
+	for (GameEngineFile File : Files)
+	{
+		if (nullptr == GameEngineFBXAnimation::Find(File.GetFileName()))
+		{
+			GameEngineFBXAnimation::Load(File.GetFullPath());
+		}
+	}
+}
+
+void Enemy_HellCaina::ChangeState(int _StateValue)
+{
+	EnemyFSM.ChangeState(_StateValue);
+	EnemyFSMValue = _StateValue;
+	NetworkManager::SendFsmChangePacket(this, _StateValue);
 }
 
 void Enemy_HellCaina::EnemyCreateFSM()
 {
-}
+	{
+		// Idle
+		EnemyFSM.CreateState
+		(
+			{
+				.StateValue = FSM_State_HellCaina::HellCaina_Idle,
+				.Start = [=]
+				{
+					//PhysXCapsule->TurnOffGravity();
+					//WeaponIdle();
+					//PhysXCapsule->SetLinearVelocityZero();
+					//EnemyRenderer->ChangeAnimation("pl0000_Idle_Normal");
+				},
+				.Update = [=](float _DeltaTime)
+				{
+					//if (Controller->GetMoveVector() != float4::ZERO)
+					//{
+					//	ChangeState(FSM_State_HellCaina::HellCaina_Idle);
+					//	return;
+					//}
+					//if (true == Controller->GetIsLockOn())
+					//{
+					//	ChangeState(FSM_State_HellCaina::HellCaina_Idle);
+					//	return;
+					//}
+				},
+				.End = [=]
+				{
 
+				}
+			}
+		);
+	}
+}

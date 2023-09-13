@@ -133,6 +133,9 @@ protected:
 	//공격범위
 	float4 AttackRange = float4::ZERO;
 	float MoveSpeed = 0.0f;
+
+	// FSM 밸류
+	int EnemyFSMValue = -1;
 	//=================================================================================
 
 	bool IsSuperArmorValue = false;

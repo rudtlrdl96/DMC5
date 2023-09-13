@@ -15,6 +15,11 @@ public:
 	Enemy_RedEmpusa& operator=(const Enemy_RedEmpusa& _Other) = delete;
 	Enemy_RedEmpusa& operator=(Enemy_RedEmpusa&& _Other) noexcept = delete;
 
+	void SetFSMStateValue(int _StateValue) override
+	{
+		EnemyFSM.ChangeState(_StateValue);
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

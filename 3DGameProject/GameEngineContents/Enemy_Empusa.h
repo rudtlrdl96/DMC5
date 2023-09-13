@@ -17,6 +17,12 @@ public:
 	Enemy_Empusa& operator=(Enemy_Empusa&& _Other) noexcept = delete;
 	void RN_Idle();
 	void Move(float _DeltaTime);
+
+	void SetFSMStateValue(int _StateValue) override
+	{
+		EnemyFSM.ChangeState(_StateValue);
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
