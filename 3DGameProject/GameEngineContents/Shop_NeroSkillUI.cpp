@@ -31,6 +31,7 @@ void Shop_NeroSkillUI::Start()
 	RedQueenButton->GetRender_Select()->GetTransform()->SetLocalScale({ 228.0f,62.0f,0.0f });
 	RedQueenButton->GetRender_Select()->GetTransform()->SetLocalPosition({ -630.0f,250.0f,0.0f });
 	RedQueenButton->SetSelectValue(true);
+	RedQueenButton->SetBlinkValue(true);
 	RedQueenButton->GetFont()->SetFont("DMC5Font");
 	RedQueenButton->SetIsPosValue(true);
 	RedQueenButton->GetFont()->GetTransform()->SetLocalPosition({ -680.0f,224.0f,0.0f });

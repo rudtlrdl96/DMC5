@@ -88,7 +88,7 @@ void InfoUIRender::FontCreate()
 	ExplaneText->SetFontFlag(FW1_CENTER);
 	ExplaneText->SetScale(16);
 	ExplaneText->SetColor(float4(0.701f,0.772f,0.788f, 1.0f));
-	ExplaneText->GetTransform()->SetLocalPosition({ 515.0f,40.f,0.0f, });
+	ExplaneText->GetTransform()->SetLocalPosition({ 515.0f,36.f,0.0f, });
 
 
 	ExplaneText_2 = CreateComponent<GameEngineFontRenderer>(8);
@@ -96,7 +96,7 @@ void InfoUIRender::FontCreate()
 	ExplaneText_2->SetFontFlag(FW1_CENTER);
 	ExplaneText_2->SetScale(16);
 	ExplaneText_2->SetColor(float4(0.656f, 0.668f, 0.665f,1.0f));
-	ExplaneText_2->GetTransform()->SetLocalPosition({ 705.0f,40.f,0.0f });
+	ExplaneText_2->GetTransform()->SetLocalPosition({ 705.0f,36.f,0.0f });
 
 }
 
