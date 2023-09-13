@@ -29,10 +29,10 @@
 
 #pragma once
 
-#include "NvCloth/Range.h"
-#include <foundation/PxVec4.h>
-#include <foundation/PxVec3.h>
-#include "NvCloth/Allocator.h"
+#include "../inc/Range.h"
+#include "../../PhysX_4_1/inc/PhysX/foundation/PxVec4.h"
+#include "../../PhysX_4_1/inc/PhysX/foundation/PxVec3.h"
+#include "../inc/Allocator.h"
 
 typedef struct CUctx_st* CUcontext;
 

@@ -18,11 +18,13 @@
 #pragma comment (lib, "PhysXPvdSDK_static_64.lib")
 #pragma comment (lib, "PhysXCooking_static_64.lib")
 
+#include "../GameEngineCore/ThirdParty/NvCloth/inc/Factory.h"
+#include "../GameEngineCore/ThirdParty/NvCloth/inc/Fabric.h"
+#include "../GameEngineCore/ThirdParty/NvCloth/inc/cloth.h"
+
 #ifdef _DEBUG
-//#pragma comment(lib, "..\\GameEnginePlatform\\ThirdParty\\FMOD\\lib\\x64\\fmodL_vc.lib")
 #pragma comment (lib, "NvClothDEBUG_x64.lib")
 #else
-//#pragma comment(lib, "..\\GameEnginePlatform\\ThirdParty\\FMOD\\lib\\x64\\fmod_vc.lib")
 #pragma comment (lib, "NvCloth_x64.lib")
 #endif
 

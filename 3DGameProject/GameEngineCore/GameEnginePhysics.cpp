@@ -119,7 +119,9 @@ void GameEnginePhysics::CreatePhysicsX()
 	//MapAggregate_ = Physics_->createAggregate(2000, false);
 	//Scene_->addAggregate(*MapAggregate_);
 
-	//Nvcloth::
+	//nv::cloth::Factory::createCloth();
+	//nv::cloth::Factory::createFabric();
+	//nv::cloth::Factory::createSolver();
 }
 
 void GameEnginePhysics::CreateScene(const std::string_view& _Name)
