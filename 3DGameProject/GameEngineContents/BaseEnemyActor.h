@@ -149,6 +149,7 @@ protected:
 	virtual void EnemyTypeLoad() = 0;
 	virtual void EnemyAnimationLoad() = 0;
 	virtual void EnemyCreateFSM() = 0;
+
 private:
 	void UserUpdate(float _DeltaTime);
 	void ServerUpdate(float _DeltaTime);

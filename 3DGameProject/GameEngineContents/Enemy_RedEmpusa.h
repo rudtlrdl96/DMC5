@@ -16,10 +16,14 @@ public:
 	Enemy_RedEmpusa& operator=(Enemy_RedEmpusa&& _Other) noexcept = delete;
 
 protected:
+	void Start() override;
+	void Update(float _DeltaTime) override;
+
 	void EnemyMeshLoad() override;
 	void EnemyTypeLoad() override;
 	void EnemyAnimationLoad() override;
 	void EnemyCreateFSM() override;
+
 private:
 	bool CheckBool = false;
 

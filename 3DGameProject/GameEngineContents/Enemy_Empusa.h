@@ -18,6 +18,9 @@ public:
 	void RN_Idle();
 	void Move(float _DeltaTime);
 protected:
+	void Start() override;
+	void Update(float _DeltaTime) override;
+
 	void EnemyMeshLoad() override;
 	void EnemyTypeLoad() override;
 	void EnemyAnimationLoad() override;

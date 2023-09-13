@@ -17,6 +17,16 @@ Enemy_Empusa::~Enemy_Empusa()
 {
 }
 
+void Enemy_Empusa::Start()
+{
+	SetNetObjectType(Net_ActorType::Empusa);
+}
+
+void Enemy_Empusa::Update(float _DeltaTime)
+{
+
+}
+
 void Enemy_Empusa::EnemyMeshLoad()
 {
 	//FBX파일경로를 찾아서 로드

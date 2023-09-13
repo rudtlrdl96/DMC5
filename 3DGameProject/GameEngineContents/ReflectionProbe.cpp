@@ -24,7 +24,7 @@ ReflectionProbe::~ReflectionProbe()
 
 void ReflectionProbe::Init(const std::string_view& _CaptureTextureName, const float4& _Scale /*= float4(128, 128)*/)
 {
-	if (nullptr == GameEngineTexture::Find(_CaptureTextureName))
+	if (/*nullptr == GameEngineTexture::Find(_CaptureTextureName)*/true)
 	{
 		if (0 == _Scale.x || 0 == _Scale.y)
 		{

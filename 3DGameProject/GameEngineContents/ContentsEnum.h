@@ -30,11 +30,13 @@ enum class Net_ActorType
 	TestPlayer,
 
 	//몬스터
+	Empusa,
+
 
 
 	//이펙트?
 
-	COUNT
+	COUNT,
 };
 
 enum class PlayerType
