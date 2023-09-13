@@ -2669,7 +2669,39 @@ void PlayerActor_Nero::PlayerLoad()
 			.Start = [=] {
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
-				Renderer->ChangeAnimation("pl0000_Damage_Common");
+				Renderer->ChangeAnimation("pl0000_Damage_Common", true);
+				InputCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (false == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+					return;
+				}
+
+				if (true == Input_SpecialCheck()) { return; }
+				if (InputCheck == false) { return; }
+
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_DevilBreakerCheck()) { return; }
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					ChangeState(FSM_State_Nero::Nero_RunStart);
+					return;
+				}
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage Combo
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Combo,
+			.Start = [=] {
+				WeaponIdle();
+				PhysXCapsule->SetLinearVelocityZero();
+				Renderer->ChangeAnimation("pl0000_Damage_Combo", true);
 				InputCheck = false;
 			},
 			.Update = [=](float _DeltaTime) {
@@ -3770,6 +3802,35 @@ void PlayerActor_Nero::NetLoad()
 			});
 
 	}
+
+	// ´ë¹ÌÁö
+	{}
+	{
+		// Damage Common
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Common,
+			.Start = [=] {
+				WeaponIdle();
+				Renderer->ChangeAnimation("pl0000_Damage_Common", true);
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage Combo
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Combo,
+			.Start = [=] {
+				WeaponIdle();
+				Renderer->ChangeAnimation("pl0000_Damage_Combo", true);
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+			}
+			});
+	}
+
 	FSM.ChangeState(FSM_State_Nero::Nero_Idle);
 }
 
@@ -3788,7 +3849,7 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 		}
 		if (GameEngineInput::IsDown("SelectLevel_01"))
 		{
-			ChangeState(FSM_State_Nero::Nero_Damage_Common);
+			ChangeState(FSM_State_Nero::Nero_Damage_Combo);
 			AddBreaker(DevilBreaker::Overture);
 		}
 		if (GameEngineInput::IsDown("SelectLevel_02"))

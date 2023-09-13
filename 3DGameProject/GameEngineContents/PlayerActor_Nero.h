@@ -100,6 +100,7 @@ enum FSM_State_Nero
 	Nero_EnemyStep,
 
 	Nero_Damage_Common,
+	Nero_Damage_Combo,
 };
 
 class PlayerActor_Nero : public BasePlayerActor
