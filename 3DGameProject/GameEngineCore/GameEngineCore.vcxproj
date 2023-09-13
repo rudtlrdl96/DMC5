@@ -423,6 +423,29 @@
     <ClInclude Include="PrecompileHeader.h" />
     <ClInclude Include="ThirdParty\DirectXTex\inc\DirectXTex.h" />
     <ClInclude Include="ThirdParty\FW1Font\Inc\FW1FontWrapper.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\Allocator.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\Callbacks.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\Cloth.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\DxContextManagerCallback.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\Fabric.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\Factory.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\PhaseConfig.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\Ps.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsAlignedMalloc.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsArray.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsAtomic.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsBasicTemplates.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsBitUtils.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsHash.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsHashInternals.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsHashMap.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsIntrinsics.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsMathUtils.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsUserAllocated.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\unix\PsUnixIntrinsics.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\windows\PsWindowsIntrinsics.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\Range.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\Solver.h" />
     <ClInclude Include="ThirdParty\PhysX_4_1\inc\allocator.h" />
     <ClInclude Include="ThirdParty\PhysX_4_1\inc\assertions.h" />
     <ClInclude Include="ThirdParty\PhysX_4_1\inc\config.h" />
@@ -1273,6 +1296,18 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="ThirdParty\NvCloth\bin\Debug\NvClothDEBUG_x64.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\NvCloth\bin\Release\NvCloth_x64.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </CopyFileToFolders>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

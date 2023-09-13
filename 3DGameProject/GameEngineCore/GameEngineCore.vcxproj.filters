@@ -814,6 +814,75 @@
     <ClInclude Include="BloomEffect.h">
       <Filter>Content\PostEffect</Filter>
     </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\Allocator.h">
+      <Filter>ThirdParty\NvCloth\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\Callbacks.h">
+      <Filter>ThirdParty\NvCloth\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\Cloth.h">
+      <Filter>ThirdParty\NvCloth\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\DxContextManagerCallback.h">
+      <Filter>ThirdParty\NvCloth\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\Fabric.h">
+      <Filter>ThirdParty\NvCloth\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\Factory.h">
+      <Filter>ThirdParty\NvCloth\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\PhaseConfig.h">
+      <Filter>ThirdParty\NvCloth\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\Range.h">
+      <Filter>ThirdParty\NvCloth\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\Solver.h">
+      <Filter>ThirdParty\NvCloth\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsUserAllocated.h">
+      <Filter>ThirdParty\NvCloth\Header\ps</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\Ps.h">
+      <Filter>ThirdParty\NvCloth\Header\ps</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsAlignedMalloc.h">
+      <Filter>ThirdParty\NvCloth\Header\ps</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsArray.h">
+      <Filter>ThirdParty\NvCloth\Header\ps</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsAtomic.h">
+      <Filter>ThirdParty\NvCloth\Header\ps</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsBasicTemplates.h">
+      <Filter>ThirdParty\NvCloth\Header\ps</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsBitUtils.h">
+      <Filter>ThirdParty\NvCloth\Header\ps</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsHash.h">
+      <Filter>ThirdParty\NvCloth\Header\ps</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsHashInternals.h">
+      <Filter>ThirdParty\NvCloth\Header\ps</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsHashMap.h">
+      <Filter>ThirdParty\NvCloth\Header\ps</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsIntrinsics.h">
+      <Filter>ThirdParty\NvCloth\Header\ps</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsMathUtils.h">
+      <Filter>ThirdParty\NvCloth\Header\ps</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\unix\PsUnixIntrinsics.h">
+      <Filter>ThirdParty\NvCloth\Header\ps\unix</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\windows\PsWindowsIntrinsics.h">
+      <Filter>ThirdParty\NvCloth\Header\ps\NewFilter2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -1238,6 +1307,30 @@
     <Filter Include="Content\ScreenShoot">
       <UniqueIdentifier>{530cc628-b1b9-4e74-8d3e-4db1201fc20f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThirdParty\NvCloth">
+      <UniqueIdentifier>{36039445-be37-4076-b54a-0bfc87907b78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\NvCloth\bin">
+      <UniqueIdentifier>{7e5fecaa-c4b1-47cc-80fc-f3cdfce8ef75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\NvCloth\bin\Release">
+      <UniqueIdentifier>{01b2d0ff-b80d-4a1d-a5ed-fef97c0642de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\NvCloth\bin\Debug">
+      <UniqueIdentifier>{7c387b83-98fb-43c9-9027-e77e742a8aed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\NvCloth\Header">
+      <UniqueIdentifier>{9349d77d-6766-42d3-8e35-db1962ff931b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\NvCloth\Header\ps">
+      <UniqueIdentifier>{d12de51d-8fd7-4225-97fa-5b0898e0a47c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\NvCloth\Header\ps\NewFilter2">
+      <UniqueIdentifier>{83f40b75-0478-43d8-8099-542280348daf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\NvCloth\Header\ps\unix">
+      <UniqueIdentifier>{c47c5b23-e29f-4a2d-bb15-45fbc2474315}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ThirdParty\DirectXTex\inc\DirectXTex.inl">
@@ -1424,6 +1517,12 @@
     </CopyFileToFolders>
     <CopyFileToFolders Include="ThirdParty\PhysX_4_1\bin\Release\PhysXVehicle_static_64.lib">
       <Filter>ThirdParty\PhysX_4_1\bin\Release</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\NvCloth\bin\Debug\NvClothDEBUG_x64.lib">
+      <Filter>ThirdParty\NvCloth\bin\Debug</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\NvCloth\bin\Release\NvCloth_x64.lib">
+      <Filter>ThirdParty\NvCloth\bin\Release</Filter>
     </CopyFileToFolders>
   </ItemGroup>
 </Project>

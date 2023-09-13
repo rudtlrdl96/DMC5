@@ -118,6 +118,8 @@ void GameEnginePhysics::CreatePhysicsX()
 	// Aggregate»ý¼º
 	//MapAggregate_ = Physics_->createAggregate(2000, false);
 	//Scene_->addAggregate(*MapAggregate_);
+
+	//Nvcloth::
 }
 
 void GameEnginePhysics::CreateScene(const std::string_view& _Name)
