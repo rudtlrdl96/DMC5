@@ -82,7 +82,7 @@ void MainLevel::Update(float _DeltaTime)
 	}
 	if (true == GameEngineInput::IsDown("SelectLevel_05"))
 	{
-		GameEngineCore::ChangeLevel("TitleLevel");
+		GameEngineCore::ChangeLevel("PlayUITestLevel");
 		return;
 	}
 	if (true == GameEngineInput::IsDown("SelectLevel_06"))

@@ -15,22 +15,13 @@ PlayUITestLevel::~PlayUITestLevel()
 void PlayUITestLevel::Start()
 {
 	{
-		std::string Path = GameEnginePath::GetFileFullPath
-		(
-			"ContentResources",
-			{
-				"Mesh", "UIMesh"
-			},
-			"NeroHPUI.fbx"
-		);
 
-		GameEngineFBXMesh::Load(Path);
 	}
 
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -500.0f });
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
 	std::shared_ptr<NeroHPUI> NeroHPPtr = CreateActor<NeroHPUI>();
-	NeroHPPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,-400.0f });
+
 }
 
 void PlayUITestLevel::Update(float _DeltaTime)
