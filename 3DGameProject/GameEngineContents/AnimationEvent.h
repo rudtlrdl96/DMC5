@@ -26,8 +26,15 @@ enum class EventType
 class EventData
 {
 public:
-	EventData() {}
+	EventData() {
+		Position = float4::ZERO;
+		Rotation = float4::ZERO;
+		Scale = { 100, 100, 100 };
+	}
 	EventData(EventType _Type) {
+		Position = float4::ZERO;
+		Rotation = float4::ZERO;
+		Scale = { 100, 100, 100 };
 		Type = _Type;
 	}
 	EventType Type = EventType::None;	// 애니메이션 이벤트의 종류
