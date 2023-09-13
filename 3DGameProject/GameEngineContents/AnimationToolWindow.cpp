@@ -462,7 +462,7 @@ void AnimationToolWindow::MeshCreate(std::shared_ptr<GameEngineLevel> _Level)
 
 	if (MeshName != "")
 	{
-		Renderer->SetFBXMesh(MeshName, "MeshAniTexture");
+		Renderer->SetFBXMesh(MeshName, "AniFBX_Low");
 	}
 }
 
