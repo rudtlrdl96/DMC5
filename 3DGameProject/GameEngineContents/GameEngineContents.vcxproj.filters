@@ -382,6 +382,9 @@
     <ClInclude Include="UIFBXRenderer.h">
       <Filter>UI\UI_Base</Filter>
     </ClInclude>
+    <ClInclude Include="BaseUIActor.h">
+      <Filter>UI\UI_Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -748,6 +751,9 @@
       <Filter>UI\UI_Base\Button</Filter>
     </ClCompile>
     <ClCompile Include="UIFBXRenderer.cpp">
+      <Filter>UI\UI_Base</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseUIActor.cpp">
       <Filter>UI\UI_Base</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,7 +1,7 @@
 #pragma once
-#include <GameEngineCore/GameEngineActor.h>
+#include "BaseUIActor.h"
 // Ό³Έν :
-class NeroHPUI : public GameEngineActor, public GameEngineNetObject
+class NeroHPUI : public BaseUIActor, public GameEngineNetObject
 {
 public:
 
@@ -22,5 +22,9 @@ protected:
 
 private:
 	std::shared_ptr<class UIFBXRenderer> NeroUI_HPGlass = nullptr;
+	std::shared_ptr<class UIFBXRenderer> NeroUI_Hud1 = nullptr;
+	std::shared_ptr<class UIFBXRenderer> NeroUI_Hud2 = nullptr;
+	std::shared_ptr<class UIFBXRenderer> NeroUI_Hud3 = nullptr;
+
 };
 
