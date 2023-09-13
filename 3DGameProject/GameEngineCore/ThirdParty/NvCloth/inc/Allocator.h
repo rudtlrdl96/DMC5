@@ -35,10 +35,10 @@
 /** \cond HIDDEN_SYMBOLS */
 #pragma once
 
-#include "NvCloth/ps/PsArray.h"
-#include "NvCloth/ps/PsHashMap.h"
-#include "NvCloth/Callbacks.h"
-#include "NvCloth/ps/PsAlignedMalloc.h"
+#include "ps/PsArray.h"
+#include "ps/PsHashMap.h"
+#include "Callbacks.h"
+#include "ps/PsAlignedMalloc.h"
 
 namespace nv
 {

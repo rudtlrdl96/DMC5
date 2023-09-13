@@ -34,7 +34,7 @@
 #include "PsArray.h"
 #include "PsBitUtils.h"
 #include "PsHash.h"
-#include "foundation/PxIntrinsics.h"
+#include "../../../PhysX_4_1/inc/PhysX/foundation/PxIntrinsics.h"
 
 #if PX_VC
 #pragma warning(push)

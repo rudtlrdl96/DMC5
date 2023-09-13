@@ -432,6 +432,7 @@
     <ClInclude Include="ThirdParty\NvCloth\inc\PhaseConfig.h" />
     <ClInclude Include="ThirdParty\NvCloth\inc\ps\Ps.h" />
     <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsAlignedMalloc.h" />
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsAllocator.h" />
     <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsArray.h" />
     <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsAtomic.h" />
     <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsBasicTemplates.h" />

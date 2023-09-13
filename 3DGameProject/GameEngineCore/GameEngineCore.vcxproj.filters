@@ -883,6 +883,9 @@
     <ClInclude Include="ThirdParty\NvCloth\inc\ps\windows\PsWindowsIntrinsics.h">
       <Filter>ThirdParty\NvCloth\Header\ps\NewFilter2</Filter>
     </ClInclude>
+    <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsAllocator.h">
+      <Filter>ThirdParty\NvCloth\Header\ps</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />

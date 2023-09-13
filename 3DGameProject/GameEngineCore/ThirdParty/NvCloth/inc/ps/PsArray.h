@@ -31,9 +31,9 @@
 #define PSFOUNDATION_PSARRAY_H
 
 #include "../Callbacks.h"
-#include "foundation/PxIntrinsics.h"
+#include "../../../PhysX_4_1/inc/PhysX/foundation/PxIntrinsics.h"
 #include "PsBasicTemplates.h"
-#include "NvCloth/ps/PsAllocator.h"
+#include "PsAllocator.h"
 
 /** \brief NVidia namespace */
 namespace nv

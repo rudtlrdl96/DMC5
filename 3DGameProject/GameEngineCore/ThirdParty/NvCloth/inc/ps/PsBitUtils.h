@@ -30,7 +30,7 @@
 #ifndef PSFOUNDATION_PSBITUTILS_H
 #define PSFOUNDATION_PSBITUTILS_H
 
-#include "foundation/PxIntrinsics.h"
+#include "../../../PhysX_4_1/inc/PhysX/foundation/PxIntrinsics.h"
 #include "../Callbacks.h"
 #include "PsIntrinsics.h"
 #include "Ps.h"

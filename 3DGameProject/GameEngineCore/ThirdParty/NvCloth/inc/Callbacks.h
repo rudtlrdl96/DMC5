@@ -34,9 +34,9 @@
   */
 
 #pragma once
-#include "../../../PhysX_4_1/inc/PhysX/foundation/PxPreprocessor.h"
-#include "../../../PhysX_4_1/inc/PhysX/foundation/PxProfiler.h"
-#include "../../../PhysX_4_1/inc/PhysX/foundation/PxAllocatorCallback.h"
+#include "../../PhysX_4_1/inc/PhysX/foundation/PxPreprocessor.h"
+#include "../../PhysX_4_1/inc/PhysX/foundation/PxProfiler.h"
+#include "../../PhysX_4_1/inc/PhysX/foundation/PxAllocatorCallback.h"
 #ifndef NV_CLOTH_IMPORT
 #define NV_CLOTH_IMPORT PX_DLL_IMPORT
 #endif

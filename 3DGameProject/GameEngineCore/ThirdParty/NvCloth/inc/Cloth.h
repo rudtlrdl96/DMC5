@@ -29,10 +29,10 @@
 
 #pragma once
 
-#include "NvCloth/Range.h"
-#include "NvCloth/PhaseConfig.h"
-#include <foundation/PxVec3.h>
-#include "NvCloth/Allocator.h"
+#include "Range.h"
+#include "PhaseConfig.h"
+#include "../../PhysX_4_1/inc/PhysX/foundation/PxVec3.h"
+#include "Allocator.h"
 
 struct ID3D11Buffer;
 

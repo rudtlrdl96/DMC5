@@ -30,7 +30,7 @@
 #ifndef PSFOUNDATION_PSINTRINSICS_H
 #define PSFOUNDATION_PSINTRINSICS_H
 
-#include "foundation/PxPreprocessor.h"
+#include "../../../PhysX_4_1/inc/PhysX/foundation/PxPreprocessor.h"
 
 #if PX_WINDOWS_FAMILY
 #include "windows/PsWindowsIntrinsics.h"

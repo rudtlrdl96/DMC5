@@ -29,7 +29,7 @@
 
 #pragma once
 
-#include <foundation/Px.h>
+#include "../../PhysX_4_1/inc/PhysX/foundation/Px.h"
 
 namespace nv
 {
