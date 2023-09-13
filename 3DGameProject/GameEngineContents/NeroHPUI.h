@@ -1,5 +1,5 @@
 #pragma once
-
+#include <GameEngineCore/GameEngineActor.h>
 // Ό³Έν :
 class NeroHPUI : public GameEngineActor, public GameEngineNetObject
 {
@@ -21,6 +21,6 @@ protected:
 	void Update(float _DeltaTime) override;
 
 private:
-
+	std::shared_ptr<class UIFBXRenderer> NeroUI_HPGlass = nullptr;
 };
 
