@@ -217,7 +217,7 @@ bool GameEngineFBXAnimation::AnimationLoad(std::shared_ptr <GameEngineFBXMesh> _
 				// Ä¿ºê 
 				globalTransform = currentTransformOffset.Inverse() * pLinkNode->EvaluateGlobalTransform(currTime);
 				float4 ResetRoot = float4(-RootFrameData.T.x, -RootFrameData.T.y, RootFrameData.T.z);
-				//globalTransform.SetT(globalTransform.GetT() + float4ToFbxVec(ResetRoot));
+				globalTransform.SetT(globalTransform.GetT() + float4ToFbxVec(ResetRoot));
 
 				localTransform.SetS(pLinkNode->EvaluateLocalScaling(currTime));
 				localTransform.SetR(pLinkNode->EvaluateLocalRotation(currTime));

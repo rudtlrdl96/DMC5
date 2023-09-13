@@ -98,6 +98,8 @@ enum FSM_State_Nero
 	Nero_Provocation,
 	Nero_Provocation_Air,
 	Nero_EnemyStep,
+
+	Nero_Damage_Common,
 };
 
 class PlayerActor_Nero : public BasePlayerActor
