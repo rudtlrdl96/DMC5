@@ -134,7 +134,7 @@ private:
 
 	bool DepthSetting = true;
 
-	float4 Color = { 0.0f, 0.0f, 0.0f, 0.0f };
+	std::vector<float4> Color;
 
 	std::vector<std::shared_ptr<GameEnginePostProcess>> Effects = {};
 	std::vector<std::shared_ptr<GameEngineTexture>> Textures = {};

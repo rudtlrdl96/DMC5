@@ -27,10 +27,16 @@
     <FxCompile Include="DeferredMerge.hlsl" />
     <FxCompile Include="BloomShader.hlsl" />
     <FxCompile Include="BloomBlur.hlsl" />
+    <FxCompile Include="Shadow.hlsl">
+      <Filter>Shadow</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
       <UniqueIdentifier>{f3c4c468-ddcb-47be-9c45-7abf044cb781}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shadow">
+      <UniqueIdentifier>{f94647ce-8ba1-4311-ace0-5eea15205eca}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

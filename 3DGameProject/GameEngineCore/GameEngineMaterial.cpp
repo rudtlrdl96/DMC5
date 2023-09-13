@@ -150,7 +150,7 @@ void GameEngineMaterial::SetRasterizer(const std::string_view& _Value)
 	}
 }
 
-void GameEngineMaterial::RenderingPipeLineSetting()
+void GameEngineMaterial::Setting()
 {
 	// InputAssembler1();
 	VertexShader();

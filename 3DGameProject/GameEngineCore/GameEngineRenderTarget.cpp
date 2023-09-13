@@ -41,8 +41,7 @@ void GameEngineRenderTarget::ReleaseTextures()
 // 랜더타겟 생성
 void GameEngineRenderTarget::ResCreate(std::shared_ptr<GameEngineTexture> _Texture, float4 _Color)
 {
-	Color = _Color;                     // 백버퍼의 디폴트 색 지정(우리는 파란색)
-
+	Color.push_back(_Color);
 	D3D11_VIEWPORT ViewPortData;
 
 	ViewPortData.TopLeftX = 0;
@@ -61,6 +60,7 @@ void GameEngineRenderTarget::ResCreate(std::shared_ptr<GameEngineTexture> _Textu
 
 void GameEngineRenderTarget::ResCreate(DXGI_FORMAT _Format, float4 _Scale, float4 _Color)
 {
+	Color.push_back(_Color);
 	D3D11_TEXTURE2D_DESC Desc = { 0 };
 
 	Desc.ArraySize = 1;
@@ -93,8 +93,7 @@ void GameEngineRenderTarget::ResCreate(DXGI_FORMAT _Format, float4 _Scale, float
 
 void GameEngineRenderTarget::ResCreate(std::vector<std::shared_ptr<GameEngineTexture>>& _CubemapTextures, DXGI_FORMAT _Format, UINT _Size, float4 _Color)
 {
-	Color = _Color;
-
+	Color.push_back(_Color);
 	D3D11_TEXTURE2D_DESC Desc = { 0 };
 
 	Desc.ArraySize = 6;
@@ -175,7 +174,7 @@ void GameEngineRenderTarget::TextureClear()
 			return;
 		}
 
-		GameEngineDevice::GetContext()->ClearRenderTargetView(RTV, Color.Arr1D);
+		GameEngineDevice::GetContext()->ClearRenderTargetView(RTV, Color[i].Arr1D);
 	}
 }
 

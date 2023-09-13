@@ -25,6 +25,11 @@ void GameEngineRenderUnit::SetMesh(const std::string_view& _Name)
 {
 	Mesh = GameEngineMesh::Find(_Name);
 
+	if (nullptr == Mesh)
+	{
+		MsgAssert("존재하지 않는 매쉬를 세팅하려고 했습니다.")
+	}
+
 	if (false == InputLayOutPtr->IsCreate() && nullptr != Material)
 	{
 		InputLayOutPtr->ResCreate(Mesh->GetVertexBuffer(), Material->GetVertexShader());
@@ -89,14 +94,9 @@ void GameEngineRenderUnit::SetMaterial(const std::string_view& _Name, RenderPath
 	}
 }
 
-void GameEngineRenderUnit::Render(float _DeltaTime)
-{
-	if (nullptr != RenderFunction)
-	{
-		RenderFunction(_DeltaTime);
-		return;
-	}
 
+void GameEngineRenderUnit::Setting()
+{
 	if (nullptr == Mesh)
 	{
 		MsgAssert("매쉬가 존재하지 않는 유니트 입니다");
@@ -110,12 +110,26 @@ void GameEngineRenderUnit::Render(float _DeltaTime)
 	InputLayOutPtr->Setting();
 
 	Mesh->Setting();
-	Material->RenderingPipeLineSetting();
+	Material->Setting();
 	ShaderResHelper.Setting();
-	// Pipe->Render();
+}
 
+void GameEngineRenderUnit::Draw()
+{
 	UINT IndexCount = Mesh->IndexBufferPtr->GetIndexCount();
 	GameEngineDevice::GetContext()->DrawIndexed(IndexCount, 0, 0);
+}
+
+void GameEngineRenderUnit::Render(float _DeltaTime)
+{
+	if (nullptr != RenderFunction)
+	{
+		RenderFunction(_DeltaTime);
+		return;
+	}
+
+	Setting();
+	Draw();
 }
 
 GameEngineRenderer::GameEngineRenderer()

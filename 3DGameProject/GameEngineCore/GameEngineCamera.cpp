@@ -9,6 +9,7 @@
 #include "GameEngineTexture.h"
 #include "GameEngineMaterial.h"
 #include "GameEnginePixelShader.h"
+#include "GameEngineLight.h"
 
 GameEngineCamera::GameEngineCamera()
 {
@@ -383,6 +384,60 @@ void GameEngineCamera::Render(float _DeltaTime)
 					}
 
 					Render->Render(_DeltaTime);
+				}
+			}
+		}
+
+		GameEngineRenderUnit AniUnit;
+
+		// 여기에서 이미 그림자를 그려야하는 애들은 다 그려져 있어야 합니다.
+		for (std::shared_ptr<GameEngineLight> Light : GetLevel()->AllLight)
+		{
+			Light->GetShadowTarget()->Clear();
+			Light->GetShadowTarget()->Setting();
+
+			for (std::pair<const RenderPath, std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>>& Path : Units)
+			{
+				std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>& UnitPath = Path.second;
+
+				std::map<int, std::list<std::shared_ptr<GameEngineRenderUnit>>>::iterator RenderGroupStartIter = UnitPath.begin();
+				std::map<int, std::list<std::shared_ptr<GameEngineRenderUnit>>>::iterator RenderGroupEndIter = UnitPath.end();
+
+				for (; RenderGroupStartIter != RenderGroupEndIter; ++RenderGroupStartIter)
+				{
+					std::list<std::shared_ptr<GameEngineRenderUnit>>& RenderGroup = RenderGroupStartIter->second;
+					std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator StartRenderer = RenderGroup.begin();
+					std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator EndRenderer = RenderGroup.end();
+
+					float ScaleTime = _DeltaTime * GameEngineTime::GlobalTime.GetRenderOrderTimeScale(RenderGroupStartIter->first);
+
+					for (; StartRenderer != EndRenderer; ++StartRenderer)
+					{
+						std::shared_ptr<GameEngineRenderUnit>& Render = *StartRenderer;
+
+						if (false == Render->IsUpdate())
+						{
+							continue;
+						}
+
+						if (false == Render->GetRenderer()->IsUpdate())
+						{
+							continue;
+						}
+
+						if (false == Render->IsShadow)
+						{
+							continue;
+						}
+
+						Render->GetRenderer()->GetTransform()->SetCameraMatrix(Light->GetLightData().LightViewMatrix, Light->GetLightData().LightProjectionMatrix);
+						Render->Setting();
+						std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Find("Shadow");
+						Pipe->Rasterizer();
+						Pipe->PixelShader();
+						Pipe->OutputMerger();
+						Render->Draw();
+					}
 				}
 			}
 		}
