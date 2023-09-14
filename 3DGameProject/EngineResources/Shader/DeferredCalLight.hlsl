@@ -105,6 +105,8 @@ LightOutPut DeferredCalLight_PS(Output _Input) : SV_Target0
         }        
     }
     
+    SpacularRatio += float4(Mat.b, Mat.b, Mat.b, 0);
+    
     // 개선 여지 있음. 
     AmbientRatio = AllLight[0].AmbientLight;
     

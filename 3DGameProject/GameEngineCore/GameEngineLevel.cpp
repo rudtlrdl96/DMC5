@@ -175,8 +175,6 @@ void GameEngineLevel::Render(float _DeltaTime)
 			++LightDataObject.LightCount;
 		}
 
-		Cam->AllRenderTarget->Clear();
-		Cam->AllRenderTarget->Setting();
 		Cam->Render(_DeltaTime);
 
 		if (false == IsDebugRender)

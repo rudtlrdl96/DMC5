@@ -11,40 +11,44 @@ ShaderTestActor::~ShaderTestActor()
 
 void ShaderTestActor::Start()
 {
-	//if (nullptr == GameEngineTexture::Find("ShaderTest_Case_0_albm.png"))
-	//{
-	//	std::string DirectoryPath = GameEnginePath::GetFileFullPath("ContentResources",
-	//		{
-	//			"Texture", "ShaderDebug"
-	//		});
-	//
-	//	GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_0_albm.png");
-	//	GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_1_albm.png");
-	//	GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_2_albm.png");
-	//
-	//	GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_0_nrmr.png");
-	//	GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_1_nrmr.png");
-	//	GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_2_nrmr.png");
-	//
-	//	GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_0_atos.png");
-	//}
-	// 
-	//TestRenderer = CreateComponent<GameEngineFBXRenderer>();
-	// 	
-	////FBX파일경로를 찾아서 로드
-	//if (nullptr == GameEngineFBXMesh::Find("SoccerBallMesh.FBX"))
-	//{
-	//	std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
-	//		{
-	//			"Mesh", "TestMesh"
-	//		}, "SoccerBallMesh.FBX");
-	//
-	//	GameEngineFBXMesh::Load(Path);
-	//}
-	//
-	//TestRenderer->SetFBXMesh("SoccerBallMesh.fbx", "FBX");
+	if (nullptr == GameEngineTexture::Find("ShaderTest_Case_0_albm.png"))
+	{
+		std::string DirectoryPath = GameEnginePath::GetFileFullPath("ContentResources",
+			{
+				"Texture", "ShaderDebug"
+			});
+	
+		GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_0_albm.png");
+		GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_1_albm.png");
+		GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_2_albm.png");
+	
+		GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_0_nrmr.png");
+		GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_1_nrmr.png");
+		GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_2_nrmr.png");
+	
+		GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_0_atos.png");
+	}
+	 
+	TestRenderer = CreateComponent<GameEngineFBXRenderer>();
+	 	
+	//FBX파일경로를 찾아서 로드
+	if (nullptr == GameEngineFBXMesh::Find("SkyBox.FBX"))
+	{
+		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+			{
+				"Map", "TestMap"
+			}, "SkyBox.FBX");
+	
+		GameEngineFBXMesh::Load(Path);
+	}
+	
+	TestRenderer->SetFBXMesh("SkyBox.fbx", "FBX");
+	TestRenderer->GetTransform()->SetLocalScale(float4(0.0003f, 0.0003f, 0.0003f));
 
-	TestRenderer = CreateComponent<EffectFBXRenderer>();
+	TestRenderer->SetBaseColor(float4(0, 0, 200, 0));
+
+	//TestRenderer = CreateComponent<EffectFBXRenderer>();
+
 
 	if (nullptr == GameEngineFBXMesh::Find("Effect_Mesh_01.FBX"))
 	{
@@ -57,19 +61,16 @@ void ShaderTestActor::Start()
 			{
 				"Effect", "Texture"
 			});
-
+	
 		GameEngineTexture::Load(TexturePath + "\\Effect_Texture_01.tga");
 		GameEngineTexture::Load(TexturePath + "\\Effect_Texture_02.tga");
 		GameEngineTexture::Load(TexturePath + "\\Effect_Texture_03.tga");
 		GameEngineTexture::Load(TexturePath + "\\Effect_Texture_04.tga");
-
+	
 		GameEngineFBXMesh::Load(MeshPath + "\\Effect_Mesh_01.FBX");
 	}
 
-	TestRenderer->SetFBXMesh("Effect_Mesh_01.fbx", "ClipEffect");
-	TestRenderer->SetTexture("DiffuseTexture", "Effect_Texture_01.tga");
-	TestRenderer->GetTransform()->SetLocalScale({ 0.01f, 0.01f, 0.01f });
-	TestRenderer->NormalOff();
+	InitTest(0);
 }
 
 void ShaderTestActor::InitTest(int _Index)

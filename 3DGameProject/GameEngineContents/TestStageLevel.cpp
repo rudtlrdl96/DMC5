@@ -18,6 +18,7 @@
 #include "ReflectionProbe.h"
 
 #include <GameEngineCore/GameEngineGUI.h>
+#include <GameEngineCore/BloomEffect.h>
 
 TestStageLevel* TestStageLevel::Inst = nullptr;
 
@@ -39,6 +40,7 @@ void TestStageLevel::Start()
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
+	GetCamera(0)->GetDeferredLightTarget()->CreateEffect<BloomEffect>();
 
 	StageBaseLevel::Start();
 
@@ -79,7 +81,10 @@ void TestStageLevel::LevelChangeStart()
 		std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".fbx" });
 		for (GameEngineFile& File : FBXFiles)
 		{
-			GameEngineFBXMesh::Load(File.GetFullPath());
+			if (nullptr == GameEngineFBXMesh::Find(File.GetFileName()))
+			{
+				GameEngineFBXMesh::Load(File.GetFullPath());
+			}
 		}
 	}
 

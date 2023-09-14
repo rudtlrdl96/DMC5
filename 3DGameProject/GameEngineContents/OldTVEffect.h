@@ -21,6 +21,6 @@ protected:
 
 private:
 	RenderBaseValue BaseValue;
-	std::shared_ptr<GameEngineRenderUnit> BlurUnit;
+	std::shared_ptr<GameEngineRenderUnit> BlurUnit = nullptr;
 };
 

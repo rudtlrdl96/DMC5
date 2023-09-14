@@ -22,8 +22,8 @@ protected:
 	void Effect(GameEngineRenderTarget* _Target, float _DeltaTime) override;
 
 private:
-	std::shared_ptr<GameEngineRenderUnit> OldUnit;
-	std::shared_ptr<GameEngineSprite> OldSprite;
+	std::shared_ptr<GameEngineRenderUnit> OldUnit = nullptr;
+	std::shared_ptr<GameEngineSprite> OldSprite = nullptr;
 
 	float4 OldData;
 

@@ -282,13 +282,13 @@ void GameEngineCamera::ViewPortSetting()
 
 void GameEngineCamera::Setting()
 {
-	AllRenderTarget->Clear();
-	AllRenderTarget->Setting();
+
 }
 
 void GameEngineCamera::Render(float _DeltaTime)
 {
 	AllRenderTarget->Clear();
+	AllRenderTarget->Setting();
 
 	{
 		std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>>::iterator RenderGroupStartIter = Renderers.begin();

@@ -314,7 +314,7 @@ void ContentsCore::ContentsResourcesCreate()
 		Material->SetPixelShader("ContentsAniMesh_LowOption.hlsl");
 		Material->SetBlendState("AlphaBlend");
 		Material->SetDepthState("EngineDepth");
-	}
+	}	
 
 	// 3D Effect
 	{

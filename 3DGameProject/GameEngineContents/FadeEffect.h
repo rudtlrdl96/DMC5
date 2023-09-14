@@ -43,7 +43,7 @@ private:
 
 	FadeState State = FadeState::None;
 
-	std::shared_ptr<GameEngineRenderUnit> FadeUnit;
+	std::shared_ptr<GameEngineRenderUnit> FadeUnit = nullptr;
 
 };
 

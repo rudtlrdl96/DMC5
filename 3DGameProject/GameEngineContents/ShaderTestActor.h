@@ -24,7 +24,8 @@ public:
 protected:
 
 private:
-	std::shared_ptr<EffectFBXRenderer> TestRenderer = nullptr;
+	std::shared_ptr<GameEngineFBXRenderer> TestRenderer = nullptr;
+	//std::shared_ptr<EffectFBXRenderer> TestRenderer = nullptr;
 
 
 };

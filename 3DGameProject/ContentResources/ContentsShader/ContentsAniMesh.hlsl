@@ -129,6 +129,7 @@ DeferredOutPut MeshAniTexture_PS(Output _Input)
     
     Result.MatTarget.a = metallic;
     Result.MatTarget.a = roughness;
+    Result.MatTarget.b = BaseColor.b;
         
     return Result;
 }

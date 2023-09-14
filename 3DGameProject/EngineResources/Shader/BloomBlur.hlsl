@@ -20,34 +20,44 @@ OutPut Bloom_VS(Input _Value)
     return OutPutValue;
 }
 
+// 
+
 // 대충
-static float Gau[5][5] =
+static float Gau[7][7] =
 {
-    { 1, 4, 6, 4, 1 },
-    { 4, 16, 24, 16, 4 },
-    { 6, 24, 36, 24, 6 },
-    { 4, 16, 24, 16, 4 },
-    { 1, 4, 6, 4, 1 }
+    { 0.000f, 0.000f, 0.001f, 0.001f, 0.001f, 0.000f, 0.000f },
+    { 0.000f, 0.002f, 0.012f, 0.002f, 0.012f, 0.002f, 0.000f },
+    { 0.001f, 0.012f, 0.068f, 0.109f, 0.068f, 0.012f, 0.001f },
+    { 0.001f, 0.020f, 0.109f, 0.172f, 0.109f, 0.020f, 0.001f },
+    { 0.001f, 0.012f, 0.068f, 0.109f, 0.068f, 0.012f, 0.001f },
+    { 0.000f, 0.002f, 0.012f, 0.020f, 0.012f, 0.002f, 0.000f },
+    { 0.000f, 0.000f, 0.001f, 0.001f, 0.001f, 0.000f, 0.000f },
 };
 
 Texture2D SmallBloomTex : register(t0);
 SamplerState POINTSAMPLER : register(s0);
 
+cbuffer BlurData : register(b2)
+{
+    float4 ScreenSize;
+    float4 ScreenRatio;
+}
+
 float4 Blur_PS(OutPut _Value) : SV_Target0
 {
-    float2 PixelSize = float2(1.0f / (1280.0f * 0.25f), 1.0f / (720 * 0.25f));
+    float2 PixelSize = float2(1.0f / (ScreenSize.x * ScreenRatio.x), 1.0f / (ScreenSize.y * ScreenRatio.x));
     // 현재 UV
     float2 PixelUvCenter = _Value.UV.xy;
-    float2 StartUV = _Value.UV.xy + (-PixelSize * 2.0f);
+    float2 StartUV = _Value.UV.xy + (-PixelSize * 3.0f);
     float2 CurUV = StartUV;
     
     float4 ResultColor = (float4) 0.0f;
  
     // 쉐이더 for문 쓰는건 정말 주의해야 합니다.
     // 상수가 아닐시 에러가 뜰때가 있다.
-    for (int y = 0; y < 5; ++y)
+    for (int y = 0; y < 7; ++y)
     {
-        for (int x = 0; x < 5; ++x)
+        for (int x = 0; x < 7; ++x)
         {
             ResultColor += SmallBloomTex.Sample(POINTSAMPLER, CurUV.xy) * Gau[y][x];
             // ResultColor *= float4(0.0f, 1.0f, 0.0f, 1.0f);
@@ -58,14 +68,8 @@ float4 Blur_PS(OutPut _Value) : SV_Target0
         CurUV.y += PixelSize.y;
     }
     
+    
     ResultColor.a = ResultColor.x;
-    
-    ResultColor /= 256.0f;
-    
-    if (ResultColor.a <= 0.0f)
-    {
-        clip(-1);
-    }
     
     return ResultColor;
 }

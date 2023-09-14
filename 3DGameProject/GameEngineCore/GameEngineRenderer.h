@@ -49,7 +49,7 @@ private:
 class RenderBaseValue
 {
 public:
-	float4 BaseColor = { 1.0f, 0.0f, 0.0f, 1.0f };
+	float4 BaseColor = { 0.0f, 0.0f, 0.0f, 1.0f };
 	float DeltaTime = 0.0f;
 	float SumDeltaTime = 0.0f;
 	int IsAnimation = 0;

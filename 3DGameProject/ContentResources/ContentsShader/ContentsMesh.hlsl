@@ -127,6 +127,7 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     
     Result.MatTarget.r = metallic;
     Result.MatTarget.g = roughness;
-        
+    Result.MatTarget.b = 1.0f;
+    
     return Result;
 }
