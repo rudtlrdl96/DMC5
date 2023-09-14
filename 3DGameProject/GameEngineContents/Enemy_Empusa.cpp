@@ -97,6 +97,13 @@ void Enemy_Empusa::EnemyCreateFSM()
 	RN_MonsterCollision->SetColType(ColType::OBBBOX2D);
 	MonsterAttackRange->GetTransform()->SetWorldScale({300,300,300});
 	MonsterAttackRange->SetColType(ColType::SPHERE3D);
+	ForWardCollision->GetTransform()->SetWorldScale({ 50,500,4000 });
+	ForWardCollision->SetColType(ColType::OBBBOX3D);
+
+	Vec_AttackName.push_back("em0100_attack_B");
+	Vec_AttackName.push_back("em0100_attack_D");
+	Vec_AttackName.push_back("em0100_attack_C");
+	Vec_AttackName.push_back("em0100_attack_W");
 }
 
 void Enemy_Empusa::Idle_Enter()
@@ -131,22 +138,29 @@ void Enemy_Empusa::Chase_Exit()
 
 void Enemy_Empusa::Attack_Enter()
 {
-	//GetPlayer Pos(위치 받아서 어떤 공격을할지 설정)
-	//Debug(공격=플레이어를 인식했다고 가정)
-	EnemyRenderer->ChangeAnimation("em0100_attack_D");
-	//Debug
-	//"em0100_attack_A" //slow attack
-	//"em0100_attack_B" //fast attack
-	//"em0100_attack_C" //side attack
-	//"em0100_attack_D" 
-	//"em0100_attack_W" //twin attack
+	
+	if (AttackValue == Vec_AttackName.size())
+	{
+		AttackValue = 0;
+	}
+	EnemyRenderer->ChangeAnimation(Vec_AttackName[AttackValue]);
 }
 
 void Enemy_Empusa::Attack_Update(float _DeltaTime)
 {
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		EnemyFSM.ChangeState(EnemyState::M_Idle);
+		std::shared_ptr<GameEngineCollision> AttackCollision = MonsterAttackRange->Collision(CollisionOrder::Player, ColType::OBBBOX3D, ColType::OBBBOX3D);
+		if (nullptr != AttackCollision)
+		{
+			++AttackValue;
+			EnemyFSM.ChangeState(EnemyState::M_Attack);
+		}
+		else
+		{
+			AttackValue = 0;
+			EnemyFSM.ChangeState(EnemyState::M_Idle);
+		}
 	}
 }
 

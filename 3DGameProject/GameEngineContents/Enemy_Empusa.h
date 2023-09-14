@@ -76,6 +76,7 @@ private:
 	void Death_Update(float _DeltaTime);
 	void Death_Exit();
 
-	int AttackCount = 0;
+	std::vector<string> Vec_AttackName;
+	int AttackValue = 0;
 };
 
