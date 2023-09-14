@@ -1,11 +1,6 @@
 #pragma once
 #include "BaseStageActor.h"
 
-enum class MapColType
-{
-
-};
-
 class MapCollisionMesh : public BaseStageActor
 {
 public:

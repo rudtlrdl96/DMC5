@@ -6,6 +6,7 @@ class FieldMap : public BaseStageActor
 {
 	friend class StageBaseLevel;
 	friend class StageEditGUI;
+	friend class FieldMapObjEditGUI;
 public:
 	// construtor destructor
 	FieldMap();
@@ -21,15 +22,13 @@ public:
 	(
 		GameEngineLevel* _Level,
 		const std::vector<std::string>& _FBXNames,
-		const std::vector<ObjTransformData>& _CullingCols
-		//const std::vector<int>& _NodeIndex
+		const std::vector<ObjTransformData>& _CullingCols,
+		const std::vector<FieldMapObjData>& _FieldMapObjs
 	);
 
 	void PushNode(const std::vector<std::shared_ptr<FieldMap>>& _RenderOn, const std::vector<std::shared_ptr<FieldMap>>& _RenderOff);
 
 	void EraseFieldMap();
-
-
 
 protected:
 	void DrawEditor() override;
@@ -40,10 +39,12 @@ private:
 	std::vector<std::shared_ptr<class GameEngineCollision>> FieldMapCullingCol;
 	std::vector<std::weak_ptr<FieldMap>> RenderOnNode;
 	std::vector<std::weak_ptr<FieldMap>> RenderOffNode;
+	std::vector<std::shared_ptr<GameEngineActor>> FieldMapObj;
 	
 	void ClearFieldMapRenderer();
 	void ClearFieldMapCullingCol();
 	void ClearRenderNode();
+	void ClearFieldMapObj();
 
 	bool IsPlayerCollsionToCullingCol();
 

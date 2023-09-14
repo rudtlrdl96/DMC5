@@ -214,9 +214,6 @@
     <ClInclude Include="EnemyTestLevel.h">
       <Filter>Levels\Test</Filter>
     </ClInclude>
-    <ClInclude Include="FieldMap.h">
-      <Filter>Actor\Stage</Filter>
-    </ClInclude>
     <ClInclude Include="MainMenuBG.h">
       <Filter>UI\UI_Actor\MenuUI</Filter>
     </ClInclude>
@@ -387,6 +384,18 @@
     </ClInclude>
     <ClInclude Include="BaseUIActor.h">
       <Filter>UI\UI_Base</Filter>
+    </ClInclude>
+    <ClInclude Include="FieldMap.h">
+      <Filter>Actor\Stage\FieldMap</Filter>
+    </ClInclude>
+    <ClInclude Include="FieldMapObjEditGUI.h">
+      <Filter>Levels\Stage\StageEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="FieldMapObject.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj</Filter>
+    </ClInclude>
+    <ClInclude Include="Fountain.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -594,9 +603,6 @@
     <ClCompile Include="EnemyTestLevel.cpp">
       <Filter>Levels\Test</Filter>
     </ClCompile>
-    <ClCompile Include="FieldMap.cpp">
-      <Filter>Actor\Stage</Filter>
-    </ClCompile>
     <ClCompile Include="MainMenuBG.cpp">
       <Filter>UI\UI_Actor\MenuUI</Filter>
     </ClCompile>
@@ -762,6 +768,18 @@
     <ClCompile Include="BaseUIActor.cpp">
       <Filter>UI\UI_Base</Filter>
     </ClCompile>
+    <ClCompile Include="FieldMap.cpp">
+      <Filter>Actor\Stage\FieldMap</Filter>
+    </ClCompile>
+    <ClCompile Include="FieldMapObjEditGUI.cpp">
+      <Filter>Levels\Stage\StageEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="FieldMapObject.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj</Filter>
+    </ClCompile>
+    <ClCompile Include="Fountain.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
@@ -914,9 +932,6 @@
     <Filter Include="Levels\Stage\StageEditor">
       <UniqueIdentifier>{e15b0962-4074-4325-88f2-8fe4391fd4fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Actor\Stage\StageEditor">
-      <UniqueIdentifier>{8a458298-fa6e-48c6-9286-eb1d7d7ec353}</UniqueIdentifier>
-    </Filter>
     <Filter Include="UI\UI_Actor">
       <UniqueIdentifier>{77054d83-a4d1-4fc6-8dfb-82d743721b38}</UniqueIdentifier>
     </Filter>
@@ -1000,6 +1015,12 @@
     </Filter>
     <Filter Include="Component\Collision">
       <UniqueIdentifier>{7e5754f2-87f0-49ad-be86-2715ede33692}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Stage\FieldMap">
+      <UniqueIdentifier>{b822d67c-c791-4369-bc33-5155e8f66067}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Stage\FieldMap\FieldMapObj">
+      <UniqueIdentifier>{6732de9b-d29c-432f-8839-50ec8a4679ff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

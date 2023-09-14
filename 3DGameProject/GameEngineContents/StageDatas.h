@@ -12,15 +12,23 @@ public:
 	void ReadObjTransformData(GameEngineSerializer& _Serializer);
 };
 
+class FieldMapObjData
+{
+public:
+	FieldMapObjType Type = FieldMapObjType::Null;
+	ObjTransformData ObjTransform;
+	
+	void WriteObjData(GameEngineSerializer& _Serializer);
+	void ReadObjData(GameEngineSerializer& _Serializer);
+};
+
 class FieldMapData
 {
 public:
-	FieldMapData() {};
-	~FieldMapData() {};
-
 	std::vector<std::string> PartsMeshFileNames;
 	std::vector<ObjTransformData> CullingColTransform;
 	std::vector<int> NodeIndex;
+	std::vector<FieldMapObjData> MapObjData;
 
 	void WriteFieldMapData(GameEngineSerializer& _Serializer);
 	void ReadFieldMapData(GameEngineSerializer& _Serializer);
@@ -34,6 +42,7 @@ public:
 	std::string SkyboxFileName = "";
 	std::string GroundMeshFileName = "";
 	std::string WallMeshFileName = "";
+	ObjTransformData StartPosition;
 
 	void WriteStageData(GameEngineSerializer& _Serializer);
 	void ReadStageData(GameEngineSerializer& _Serializer);

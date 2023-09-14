@@ -27,6 +27,11 @@ void FieldMapData::WriteFieldMapData(GameEngineSerializer& _Serializer)
 	{
 		CullingColTransform[i].WriteObjTransformData(_Serializer);
 	}
+	_Serializer << static_cast<int>(MapObjData.size());
+	for (size_t i = 0; i < MapObjData.size(); i++)
+	{
+		MapObjData[i].WriteObjData(_Serializer);
+	}
 	_Serializer << static_cast<int>(NodeIndex.size());
 	for (size_t i = 0; i < NodeIndex.size(); i++)
 	{
@@ -48,6 +53,12 @@ void FieldMapData::ReadFieldMapData(GameEngineSerializer& _Serializer)
 	for (size_t i = 0; i < CullingColTransform.size(); i++)
 	{
 		CullingColTransform[i].ReadObjTransformData(_Serializer);
+	}
+	_Serializer >> tempsize;
+	MapObjData.resize(tempsize);
+	for (size_t i = 0; i < MapObjData.size(); i++)
+	{
+		MapObjData[i].ReadObjData(_Serializer);
 	}
 	_Serializer >> tempsize;
 	NodeIndex.resize(tempsize);
@@ -105,4 +116,14 @@ void StageData::ReadAllStageData(GameEngineSerializer& _Serializer, std::vector<
 	}
 }
 
+void FieldMapObjData::WriteObjData(GameEngineSerializer& _Serializer)
+{
+	_Serializer << Type;
+	_Serializer << ObjTransform;
+}
 
+void FieldMapObjData::ReadObjData(GameEngineSerializer& _Serializer)
+{
+	_Serializer >> Type;
+	_Serializer >> ObjTransform;
+}

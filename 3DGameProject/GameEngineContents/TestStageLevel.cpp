@@ -88,6 +88,21 @@ void TestStageLevel::LevelChangeStart()
 		}
 	}
 
+	{
+		GameEngineDirectory Dir = GameEnginePath::GetFileFullPath
+		(
+			"ContentResources",
+			{
+				"Map", "TestObj"
+			}
+		);
+		std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".fbx" });
+		for (GameEngineFile& File : FBXFiles)
+		{
+			GameEngineFBXMesh::Load(File.GetFullPath());
+		}
+	}
+
 
 	SetCamera({ 0,0,-500 });
 	CreateStage(AllStageDatas[0]);

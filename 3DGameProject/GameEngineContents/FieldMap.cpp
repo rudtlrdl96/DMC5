@@ -4,6 +4,8 @@
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/GameEngineMaterial.h>
 #include <GameEngineCore/GameEngineCollision.h>
+#include "FieldMapObject.h"
+
 
 FieldMap::FieldMap()
 {
@@ -15,7 +17,7 @@ FieldMap::~FieldMap()
 	
 }
 
-std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, const std::vector<std::string>& _FBXNames, const std::vector<ObjTransformData>& _CullingCols/*, const std::vector<int>& _NodeIndex*/)
+std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, const std::vector<std::string>& _FBXNames, const std::vector<ObjTransformData>& _CullingCols, const std::vector<FieldMapObjData>& _FieldMapObjs)
 {
 	std::shared_ptr<FieldMap> Result;
 	Result = _Level->CreateActor<FieldMap>();
@@ -48,6 +50,13 @@ std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, cons
 		MapCullingColRef[i]->GetTransform()->SetLocalRotation(_CullingCols[i].Rot);
 	}
 
+	std::vector<std::shared_ptr<GameEngineActor>>& FieldMapObjRef = Result->FieldMapObj;
+	FieldMapObjRef.resize(_FieldMapObjs.size());
+	for (size_t i = 0; i < FieldMapObjRef.size(); i++)
+	{
+		FieldMapObjRef[i] = FieldMapObject::CreateFieldMapObj(_Level, _FieldMapObjs[i].Type, _FieldMapObjs[i].ObjTransform);
+	}
+
 	return Result;
 }
 
@@ -61,6 +70,8 @@ void FieldMap::EraseFieldMap()
 {
 	ClearFieldMapRenderer();
 	ClearFieldMapCullingCol();
+	ClearRenderNode();
+	ClearFieldMapObj();
 }
 
 void FieldMap::Update(float _DeltaTime)
@@ -73,6 +84,11 @@ void FieldMap::Update(float _DeltaTime)
 
 void FieldMap::ClearFieldMapRenderer()
 {
+	if (FieldMapRenderer.empty())
+	{
+		return;
+	}
+
 	for (size_t i = 0; i < FieldMapRenderer.size(); i++)
 	{
 		FieldMapRenderer[i]->Death();
@@ -139,6 +155,11 @@ void FieldMap::FieldMapRendererOff()
 
 void FieldMap::ClearFieldMapCullingCol()
 {
+	if (FieldMapCullingCol.empty())
+	{
+		return;
+	}
+
 	for (size_t i = 0; i < FieldMapCullingCol.size(); i++)
 	{
 		FieldMapCullingCol[i]->Death();
@@ -146,6 +167,22 @@ void FieldMap::ClearFieldMapCullingCol()
 	}
 	FieldMapCullingCol.clear();
 }
+
+void FieldMap::ClearFieldMapObj()
+{
+	if (FieldMapObj.empty())
+	{
+		return;
+	}
+
+	for (size_t i = 0; i < FieldMapObj.size(); i++)
+	{
+		FieldMapObj[i]->Death();
+		FieldMapObj[i] = nullptr;
+	}
+	FieldMapObj.clear();
+}
+
 
 
 #include <GameEngineCore/imgui.h>

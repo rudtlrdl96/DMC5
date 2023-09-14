@@ -9,9 +9,14 @@
 #include "FieldMap.h"
 #include "MapCollisionMesh.h"
 #include "FreeCameraActor.h"
+#include "FieldMapObjEditGUI.h"
+#include "SkyBox.h"
+
+StageEditGUI* StageEditGUI::MainEditor = nullptr;
 
 StageEditGUI::StageEditGUI()
 {
+	MainEditor = this;
 }
 
 StageEditGUI::~StageEditGUI()
@@ -173,6 +178,23 @@ void StageEditGUI::InputStageInfo(std::shared_ptr<GameEngineLevel> _Level)
 	InputMapCol();
 	InputFieldMap();
 	ImGui::EndChild();
+
+	if (FieldObjEditor == nullptr)
+	{
+		FieldObjEditor = GameEngineGUI::GUIWindowCreate<FieldMapObjEditGUI>("FieldObjEditor");
+	}
+
+	if (!AllData[Stage_current].MapDatas.empty())
+	{
+		if (!FieldObjEditor->IsUpdate())
+		{
+			FieldObjEditor->On();
+		}
+	}
+	else
+	{
+		FieldObjEditor->Off();
+	}
 }
 
 void StageEditGUI::InputSkyBox()
@@ -188,6 +210,23 @@ void StageEditGUI::InputSkyBox()
 	}
 	ImGui::SameLine();
 	ImGui::Text(AllData[Stage_current].SkyboxFileName.c_str());
+
+	if (!AllData[Stage_current].SkyboxFileName.empty())
+	{
+		static bool check = true;
+		ImGui::Checkbox("Sky On/Off", &check);
+		if (Parent->AcSkyBox != nullptr)
+		{
+			if (check && !Parent->AcSkyBox->IsUpdate())
+			{
+				Parent->AcSkyBox->On();
+			}
+			else if (!check && Parent->AcSkyBox->IsUpdate())
+			{
+				Parent->AcSkyBox->Off();
+			}
+		}
+	}
 }
 
 void StageEditGUI::InputMapCol()
@@ -465,7 +504,6 @@ void StageEditGUI::CreateStage(StageData _Data)
 			j->On();
 		}
 	}
-	//IsCreateStage = true;
 }
 
 std::string StageEditGUI::GetOpenFilePath()

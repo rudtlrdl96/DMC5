@@ -97,3 +97,10 @@ enum class DevilBreaker
 	Gerbera,
 	BusterArm
 };
+
+enum class FieldMapObjType
+{
+	Null = -1,
+	Test0,
+	Test1,
+};

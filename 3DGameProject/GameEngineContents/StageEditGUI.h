@@ -4,7 +4,10 @@
 
 class StageEditGUI : public GameEngineGUIWindow
 {
+	friend class FieldMapObjEditGUI;
 public:
+	static StageEditGUI* MainEditor;
+
 	StageEditGUI();
 	~StageEditGUI();
 
@@ -63,6 +66,11 @@ private:
 
 	void InputNode();
 	void NodeCheckBox();
+
+	//맵 오브젝트 관련
+	std::shared_ptr<GameEngineGUIWindow> FieldObjEditor = nullptr;
+
+
 
 };
 

@@ -6,6 +6,7 @@
 class StageBaseLevel : public BaseLevel
 {
 	friend class StageEditGUI;
+	friend class FieldMapObjEditGUI;
 public:
 
 	StageBaseLevel();

@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
+#include "StageDatas.h"
 
 class BaseStageActor : public GameEngineActor
 {

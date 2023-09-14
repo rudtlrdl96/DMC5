@@ -211,6 +211,18 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="FieldMapObject.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="FieldMapObjEditGUI.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Fountain.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="FsmChangePacket.h" />
     <ClInclude Include="Char_ChoiceButton.h" />
     <ClInclude Include="Char_ChoiceLevel.h" />
@@ -665,6 +677,18 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="FieldMap.cpp" />
+    <ClCompile Include="FieldMapObject.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="FieldMapObjEditGUI.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Fountain.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="FreeCameraActor.cpp">
       <SubType>
       </SubType>
