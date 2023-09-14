@@ -11,7 +11,7 @@ PhysXSphereComponent::~PhysXSphereComponent()
 {
 }
 
-physx::PxRigidDynamic* PhysXSphereComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale, float4 _GeoMetryRotation)
+void PhysXSphereComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale, float4 _GeoMetryRotation)
 {
 	m_pPhysics = GetLevel()->GetLevelPhysics();
 	m_pScene = GetLevel()->GetLevelScene();
@@ -107,13 +107,11 @@ physx::PxRigidDynamic* PhysXSphereComponent::CreatePhysXActors(physx::PxScene* _
 		MsgAssert("1. Start에서 피직스액터 생성하지 마세요\n2. 레벨에 CreateScene 하세요\n  오류가 뜬 레벨 이름 : " + LevelName);
 	}
 
+	PhysicsComponent = DynamicThis<PhysXSphereComponent>();
+	m_pShape->userData = GetActor();
+
 	// Scene에 액터 추가
 	m_pScene->addActor(*m_pDynamic);
-
-	// TODO::virtualPhysXLevel에서 Callback 함수에 호출하기 위한 Dynamic 리턴
-	PhysicsComponent = DynamicThis<PhysXSphereComponent>();
-
-	return m_pDynamic;
 }
 
 void PhysXSphereComponent::SetMoveSpeed(float4 _MoveSpeed)

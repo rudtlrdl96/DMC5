@@ -136,7 +136,9 @@ void GameEngineObject::AllDestroy()
 
 		if (nullptr != pPhysXActor)
 		{
+			pPhysXActor->GetShape()->userData = nullptr;
 			pPhysXActor->Release();
+			pPhysXActor = nullptr;
 		}
 
 		Destroy();

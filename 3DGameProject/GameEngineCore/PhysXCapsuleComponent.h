@@ -164,9 +164,7 @@ private:
 	physx::PxScene* m_pScene = nullptr;
 	physx::PxPhysics* m_pPhysics = nullptr;
 	physx::PxControllerManager* m_pCtrManager = nullptr;
-
 	physx::PxMaterial* m_pMaterial = nullptr;
-	physx::PxShape* m_pShape = nullptr;
 
 	physx::PxVec3 GeoMetryScale;
 

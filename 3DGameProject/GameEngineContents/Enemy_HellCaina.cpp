@@ -188,6 +188,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	if (2.0f <= WaitTime)
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Attack_DownUp);
+		//Death();
 		return;
 	}
 	if (true == GameEngineInput::IsDown("MonsterTest4"))
