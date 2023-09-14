@@ -52,6 +52,22 @@ void ContentsCore::ContentsResourcesCreate()
 		}
 	}
 
+	// 반사 텍스쳐 로드
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Texture");
+		NewDir.Move("ReflectionTexture");
+		// 테스트 메쉬 폴더는 자동으로 로드합니다
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".PNG" });
+
+		for (size_t i = 0; i < Files.size(); i++)
+		{
+			GameEngineTexture::Load(Files[i].GetFullPath());
+		}
+	}
+
 	// 컨텐츠 FBX 파일 로드 (임시)
 	{
 		GameEngineDirectory NewDir;

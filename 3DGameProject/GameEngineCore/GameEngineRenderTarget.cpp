@@ -91,54 +91,6 @@ void GameEngineRenderTarget::ResCreate(DXGI_FORMAT _Format, float4 _Scale, float
 	RTVs.push_back(Tex->GetRTV());
 }
 
-void GameEngineRenderTarget::ResCreate(std::vector<std::shared_ptr<GameEngineTexture>>& _CubemapTextures, DXGI_FORMAT _Format, UINT _Size, float4 _Color)
-{
-	Color.push_back(_Color);
-	D3D11_TEXTURE2D_DESC Desc = { 0 };
-
-	Desc.ArraySize = 6;
-	Desc.Width = _Size;
-	Desc.Height = _Size;
-	Desc.Format = _Format;
-	Desc.SampleDesc.Count = 1;
-	Desc.SampleDesc.Quality = 0;
-	Desc.MipLevels = 1;
-	Desc.Usage = D3D11_USAGE_DEFAULT;
-	Desc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
-	Desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE;
-
-	D3D11_RENDER_TARGET_VIEW_DESC RTV;
-	RTV.Format = _Format;
-	RTV.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
-	RTV.Texture2DArray.ArraySize = 6;
-	RTV.Texture2DArray.FirstArraySlice = 0;
-	RTV.Texture2DArray.MipSlice = 0;
-
-	D3D11_SHADER_RESOURCE_VIEW_DESC STV;
-
-	STV.Format = _Format;
-	STV.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
-	STV.TextureCube.MipLevels = 1;
-	STV.TextureCube.MostDetailedMip = 0;
-
-	std::shared_ptr<GameEngineTexture> Tex = GameEngineTexture::Create(_CubemapTextures, Desc, RTV, STV);
-
-	D3D11_VIEWPORT ViewPortData;
-
-	ViewPortData.TopLeftX = 0;
-	ViewPortData.TopLeftY = 0;
-	ViewPortData.Width = (float)_Size;
-	ViewPortData.Height = (float)_Size;
-	ViewPortData.MinDepth = 0.0f;
-	ViewPortData.MaxDepth = 1.0f;
-
-	ViewPortDatas.push_back(ViewPortData);
-
-	Textures.push_back(Tex);
-	SRVs.push_back(Tex->GetSRV());
-	RTVs.push_back(Tex->GetRTV());
-}
-
 void GameEngineRenderTarget::CreateDepthTexture(int _Index)
 {
 	D3D11_TEXTURE2D_DESC Desc = { 0, };

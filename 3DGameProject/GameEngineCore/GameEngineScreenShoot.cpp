@@ -1318,7 +1318,7 @@ HRESULT GameEngineScreenShoot::RenderTargetShoot(std::shared_ptr<GameEngineRende
     return S_FALSE;
 }
 
-HRESULT GameEngineScreenShoot::RenderTargetCubemapShoot(std::shared_ptr<GameEngineRenderTarget> _CaptureTarget, const std::string_view& _Path, const std::string_view& _TextureName)
+HRESULT GameEngineScreenShoot::RenderTargetShoot_DxTex(std::shared_ptr<GameEngineRenderTarget> _CaptureTarget, const std::string_view& _Path, const std::string_view& _TextureName)
 {
     if (nullptr == _CaptureTarget)
     {
@@ -1341,7 +1341,12 @@ HRESULT GameEngineScreenShoot::RenderTargetCubemapShoot(std::shared_ptr<GameEngi
 
         if (SUCCEEDED(result))
         {
-            return SaveToDDSFile(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DirectX::DDS_FLAGS_NONE, GameEngineString::AnsiToUniCode(_TextureName).data());
+            // HRESULT __cdecl SaveToWICFile(
+            //     _In_ const Image & image, _In_ WIC_FLAGS flags, _In_ REFGUID guidContainerFormat,
+            //     _In_z_ const wchar_t* szFile, _In_opt_ const GUID * targetFormat = nullptr,
+            //     _In_opt_ std::function<void __cdecl(IPropertyBag2*)> setCustomProps = nullptr);
+
+            result = DirectX::SaveToWICFile(image.GetImages(), image.GetImageCount(), DirectX::WIC_FLAGS_NONE, GUID_ContainerFormatPng, GameEngineString::AnsiToUniCode(_TextureName).data());
         }
 
         //HRESULT hr = SaveDDSTextureToFile(GameEngineDevice::GetContext(), _CaptureTarget->GetTexture(0)->GetTexture2D(), GameEngineString::AnsiToUniCode(_TextureName).data());

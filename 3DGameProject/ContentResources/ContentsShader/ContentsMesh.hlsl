@@ -112,16 +112,18 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     float3 reflection = reflect(AllLight[0].LightRevDir.xyz, Result.NorTarget.xyz); // 빛의 반사 방향 계산
     float distribution = GGX_Distribution(Result.NorTarget.xyz, reflection, roughness); // 반사 분포 계산
                                
-    reflection.yz = -reflection.zy;
-    // Eye    
-    //float4 ReflectionColor = ReflectionTexture.Sample(ENGINEBASE, reflection);
+    // Eye        
+    float3 refvector = reflect(-normalize(AllLight[0].CameraView.xyz), Result.NorTarget.xyz);
+    refvector.yz = refvector.zy;
+        
+    float4 ReflectionColor = ReflectionTexture.Sample(ENGINEBASE, normalize(refvector));
     
     // 계산된 메탈릭 값
     float metallic = saturate(AlbmData.a - distribution);
      
     // AlbmData -> metallicValue 값에 따라서 결정되어야 한다        
     Result.DifTarget.rgb = lerp(AlbmData.rgb, float3(0, 0, 0), metallic);
-    //Result.DifTarget.rgb += lerp(float3(0, 0, 0), ReflectionColor.rgb, metallic);
+    Result.DifTarget.rgb += lerp(float3(0, 0, 0), ReflectionColor.rgb, metallic);
     
     Result.DifTarget.a = 1.0f;
     Result.PosTarget.a = 1.0f;

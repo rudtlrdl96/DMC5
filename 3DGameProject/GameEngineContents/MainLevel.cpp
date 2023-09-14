@@ -35,15 +35,6 @@ void MainLevel::Start()
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -100.0f });
 
-	if (nullptr == GameEngineTexture::Find("TestSaveTexture.DDS"))
-	{
-		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
-			{"Texture", "ReflectionTexture"},
-			"TestSaveTexture.DDS");
-	
-		GameEngineTexture::Load(Path);
-	}
-
 	std::shared_ptr<ShaderTestActor> NewTestActor0 = CreateActor<ShaderTestActor>();
 	NewTestActor0->GetTransform()->SetLocalPosition({ 0, 10, 0 });
 	//NewTestActor0->InitTest(0);

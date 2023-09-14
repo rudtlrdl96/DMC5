@@ -92,6 +92,34 @@ void StageBaseLevel::SetCamera(float4 _Position)
 	GetMainCamera()->GetTransform()->SetLocalPosition(_Position);
 }
 
+void StageBaseLevel::ReflectionTextureSetting(std::shared_ptr<GameEngineTexture> _RefTexture, const float4& _Pos, const float4& _Scale)
+{
+	DirectX::BoundingBox ReflectionCol;
+
+	ReflectionCol.Center = _Pos.DirectFloat3;
+	ReflectionCol.Extents = _Scale.DirectFloat3;
+
+	for (size_t i = 0; i < AcFieldMaps.size(); i++)
+	{
+		for (size_t j = 0; j < AcFieldMaps[i]->FieldMapRenderer.size(); j++)
+		{
+			std::shared_ptr<GameEngineFBXRenderer> MapRenderer = AcFieldMaps[i]->FieldMapRenderer[j];
+
+			GameEngineTransform* MapRendererTrans = MapRenderer->GetTransform();
+
+			DirectX::BoundingBox RendererCol;
+
+			RendererCol.Center = MapRendererTrans->GetWorldPosition().DirectFloat3;
+			RendererCol.Extents = DirectX::XMFLOAT3(1, 1, 1);
+
+			if (true == ReflectionCol.Intersects(RendererCol))
+			{
+				MapRenderer->SetTexture("ReflectionTexture", _RefTexture);
+			}
+		}
+	}
+}
+
 void StageBaseLevel::EraseStageFieldMap()
 {
 	if (AcFieldMaps.empty())

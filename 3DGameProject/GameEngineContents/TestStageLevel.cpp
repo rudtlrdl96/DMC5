@@ -19,6 +19,7 @@
 
 #include <GameEngineCore/GameEngineGUI.h>
 #include <GameEngineCore/BloomEffect.h>
+#include <GameEngineCore/GameEngineCoreWindow.h>
 
 TestStageLevel* TestStageLevel::Inst = nullptr;
 
@@ -62,7 +63,10 @@ void TestStageLevel::Update(float _DeltaTime)
 		TempActor->GetTransform()->SetLocalPosition(float4(0, 300, 0));
 
 		std::shared_ptr<ReflectionProbe> Reflect = TempActor->CreateComponent<ReflectionProbe>();
-		Reflect->Init("TestSaveTexture.DDS");
+		Reflect->Init("TestReflection");
+
+		ReflectionTextureSetting(Reflect->GetReflectionCubeTexture(), TempActor->GetTransform()->GetWorldPosition(), float4(1000, 1000, 1000));
+
 	}
 
 	//GameEngineCore::GetFrameRate();
@@ -112,4 +116,10 @@ void TestStageLevel::LevelChangeStart()
 	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
 	Nero->SinglePlayLoad();
 	Nero->SetWorldPosition({ 0, 100, 0 });
+
+	GameEngineCoreWindow::Clear();
+	GameEngineCoreWindow::AddDebugRenderTarget(0, "AllRenderTarget", GetLevel()->GetMainCamera()->GetCamAllRenderTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(1, "LightRenderTarget", GetLevel()->GetMainCamera()->GetDeferredLightTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(2, "MainCameraForwardTarget", GetLevel()->GetMainCamera()->GetCamForwardTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(3, "DeferredTarget", GetLevel()->GetMainCamera()->GetCamDeferrdTarget());
 }

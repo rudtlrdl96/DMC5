@@ -94,18 +94,7 @@ public:
 		return NewTexture;
 	}
 
-	static std::shared_ptr<GameEngineTexture> Create(
-		std::vector<std::shared_ptr<GameEngineTexture>>& _Textures,
-		const D3D11_TEXTURE2D_DESC& _Value,
-		const D3D11_RENDER_TARGET_VIEW_DESC& _RTV,
-		const D3D11_SHADER_RESOURCE_VIEW_DESC& _SRV
-	)
-	{
-		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::CreateUnNamed();
-		NewTexture->ResCreate(_Textures, _Value, _RTV, _SRV);
-
-		return NewTexture;
-	}
+	static std::shared_ptr<GameEngineTexture> Create(const std::string_view& _Name, std::vector<std::shared_ptr<GameEngineTexture>>& _Textures);
 
 	static std::shared_ptr<GameEngineTexture> UnLoad(const std::string_view& _Name)
 	{

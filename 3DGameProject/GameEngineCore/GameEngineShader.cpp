@@ -86,7 +86,6 @@ void GameEngineShader::ShaderResCheck()
 
 			ResHelper.CreateConstantBufferSetter(Setter);
 
-
 			int a = 0;
 
 			break;
@@ -98,15 +97,31 @@ void GameEngineShader::ShaderResCheck()
 				continue;
 			}
 
-			std::shared_ptr<GameEngineTexture> Res = GameEngineTexture::Find("EngineBaseTex.png");
+			if (D3D_SRV_DIMENSION_TEXTURECUBE == ResDesc.Dimension)
+			{
+				std::shared_ptr<GameEngineTexture> Res = GameEngineTexture::Find("BaseCubemap");
 
-			GameEngineTextureSetter Setter;
-			Setter.ParentShader = this;
-			Setter.Name = UpperName;
-			Setter.BindPoint = ResDesc.BindPoint;
-			Setter.Res = Res;
+				GameEngineTextureSetter Setter;
+				Setter.ParentShader = this;
+				Setter.Name = UpperName;
+				Setter.BindPoint = ResDesc.BindPoint;
+				Setter.Res = Res;
 
-			ResHelper.CreateTextureSetter(Setter);
+				ResHelper.CreateTextureSetter(Setter);
+			}
+			else
+			{
+				std::shared_ptr<GameEngineTexture> Res = GameEngineTexture::Find("EngineBaseTex.png");
+
+				GameEngineTextureSetter Setter;
+				Setter.ParentShader = this;
+				Setter.Name = UpperName;
+				Setter.BindPoint = ResDesc.BindPoint;
+				Setter.Res = Res;
+
+				ResHelper.CreateTextureSetter(Setter);
+			}
+
 			break;
 		}
 		case D3D_SIT_SAMPLER:

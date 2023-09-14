@@ -18,6 +18,8 @@ public:
 
 	void SetCamera(float4 _Position);
 
+	void ReflectionTextureSetting(std::shared_ptr<GameEngineTexture> _RefTexture, const float4& _Pos, const float4& _Scale);
+
 	//void FieldMapOn(int _Index = -1);
 	//void FieldMapOff(int _Index = -1);
 	

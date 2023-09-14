@@ -119,8 +119,7 @@ void GameEngineTexture::ResCreate(std::vector<std::shared_ptr<GameEngineTexture>
 	D3D11_SUBRESOURCE_DATA pData[6];
 	for (int cubeMapFaceIndex = 0; cubeMapFaceIndex < 6; cubeMapFaceIndex++)
 	{
-		DirectX::ScratchImage Image;
-		DirectX::CaptureTexture(GameEngineDevice::GetDevice(), GameEngineDevice::GetContext(), _Textures[cubeMapFaceIndex]->GetTexture2D(), Image);
+		DirectX::ScratchImage& Image = _Textures[cubeMapFaceIndex]->GetScratchImage();
 
 		pData[cubeMapFaceIndex].pSysMem = Image.GetImages()->pixels;
 		pData[cubeMapFaceIndex].SysMemPitch = (UINT)Image.GetImages()->rowPitch;
@@ -251,6 +250,10 @@ void GameEngineTexture::ResLoad(const std::string_view& _Path)
 
 	Desc.Width = static_cast<UINT>(Data.width);
 	Desc.Height = static_cast<UINT>(Data.height);
+	Desc.Format = Data.format;
+	Desc.ArraySize = (UINT)Data.arraySize;
+	Desc.MiscFlags = (UINT)Data.miscFlags;
+	Desc.MipLevels = (UINT)Data.mipLevels;
 
 	// Texture2D->GetDesc(&Desc);
 }
@@ -610,4 +613,41 @@ void GameEngineTexture::PathCheck(const std::string_view& _Path, const std::stri
 		return;
 	}
 	GameEngineCore::CurLoadLevel->TexturePath[_Name.data()] = _Path.data();
+}
+
+std::shared_ptr<GameEngineTexture> GameEngineTexture::Create(const std::string_view& _Name, std::vector<std::shared_ptr<GameEngineTexture>>& _Textures)
+{
+	D3D11_TEXTURE2D_DESC Desc = { 0 };
+
+	UINT Size = _Textures[0]->GetScale().ix();
+
+	Desc.ArraySize = 6;
+	Desc.Width = Size;
+	Desc.Height = Size;
+	Desc.Format = _Textures[0]->Desc.Format;
+	Desc.SampleDesc.Count = 1;
+	Desc.SampleDesc.Quality = 0;
+	Desc.MipLevels = 1;
+	Desc.Usage = D3D11_USAGE_DEFAULT;
+	Desc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+	Desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE;
+
+	D3D11_RENDER_TARGET_VIEW_DESC RTV;
+	RTV.Format = Desc.Format;
+	RTV.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
+	RTV.Texture2DArray.ArraySize = 6;
+	RTV.Texture2DArray.FirstArraySlice = 0;
+	RTV.Texture2DArray.MipSlice = 0;
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC STV;
+
+	STV.Format = Desc.Format;
+	STV.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+	STV.TextureCube.MipLevels = 1;
+	STV.TextureCube.MostDetailedMip = 0;
+
+	std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::Create(_Name);
+	NewTexture->ResCreate(_Textures, Desc, RTV, STV);
+
+	return NewTexture;
 }

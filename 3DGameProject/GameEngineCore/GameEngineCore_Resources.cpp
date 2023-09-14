@@ -40,6 +40,27 @@ void GameEngineCore::CoreResourcesInit()
 		}
 	}
 
+	std::shared_ptr<GameEngineTexture> BaseCubeTexture = GameEngineTexture::Find("EngineBaseCubemap.png");
+	std::vector<std::shared_ptr<GameEngineTexture>> CubemapRes;
+
+	CubemapRes.reserve(6);
+	CubemapRes.push_back(BaseCubeTexture);
+	CubemapRes.push_back(BaseCubeTexture);
+	CubemapRes.push_back(BaseCubeTexture);
+	CubemapRes.push_back(BaseCubeTexture);
+	CubemapRes.push_back(BaseCubeTexture);
+	CubemapRes.push_back(BaseCubeTexture);
+
+	//static std::shared_ptr<GameEngineTexture> Create(
+	//	const std::string_view & _Name,
+	//	std::vector<std::shared_ptr<GameEngineTexture>>&_Textures,
+	//	const D3D11_TEXTURE2D_DESC & _Value,
+	//	const D3D11_RENDER_TARGET_VIEW_DESC & _RTV,
+	//	const D3D11_SHADER_RESOURCE_VIEW_DESC & _SRV
+	//);
+
+	GameEngineTexture::Create("BaseCubemap", CubemapRes);
+
 	// GameEngineInputLayOutInfoø° SemanticName, Format ∞·¡§
 	GameEngineVertex::LayOut.AddInputLayOut("POSITION", DXGI_FORMAT_R32G32B32A32_FLOAT);
 	GameEngineVertex::LayOut.AddInputLayOut("TEXCOORD", DXGI_FORMAT_R32G32B32A32_FLOAT);

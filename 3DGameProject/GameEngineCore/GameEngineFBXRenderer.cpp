@@ -495,15 +495,25 @@ bool GameEngineFBXRenderer::IsAnimationEnd()
 }
 
 
-void GameEngineFBXRenderer::SetTexture(const std::string_view& _SettingName, const std::string_view& _ImageName)
+void GameEngineFBXRenderer::SetTexture(const std::string_view& _SettingName, std::shared_ptr<GameEngineTexture> _Texture)
 {
 	for (size_t i = 0; i < Unit.size(); i++)
 	{
 		for (size_t j = 0; j < Unit[i].size(); j++)
 		{
-			Unit[i][j]->ShaderResHelper.SetTexture(_SettingName, _ImageName);
+			if (false == Unit[i][j]->ShaderResHelper.IsTexture(_SettingName.data()))
+			{
+				continue;
+			}
+
+			Unit[i][j]->ShaderResHelper.SetTexture(_SettingName, _Texture);
 		}
 	}
+}
+
+void GameEngineFBXRenderer::SetTexture(const std::string_view& _SettingName, const std::string_view& _ImageName)
+{
+	SetTexture(_SettingName, GameEngineTexture::Find(_ImageName));
 }
 
 void GameEngineFBXRenderer::SetDiffuseTexture(const std::string_view& _OldDiffuseTexture, const std::string_view& _NewsDiffuseTexture)
