@@ -6,6 +6,30 @@ enum FSM_State_HellCaina
 	HellCaina_None,
 	HellCaina_Idle,           // em0000_Idle_01, 그냥 서있음
 
+	HellCaina_Turn_Left_90,   // 왼쪽 회전
+	HellCaina_Turn_Left_180,
+	HellCaina_Turn_Right_90,  // 오른쪽 회전
+	HellCaina_Turn_Right_180,
+
+	HellCaina_Walk_Start,
+	HellCaina_Walk_Loop,
+	HellCaina_Walk_Stop,
+
+	HellCaina_Standing_Damage_Weak_Front, // = 정면 약공격 히트
+	HellCaina_Standing_Damage_Weak_Back, // = 후면 약공격 히트
+	HellCaina_Standing_Damage_Weak_Left, // = 좌측 약공격 히트
+	HellCaina_Standing_Damage_Weak_Right, // = 우측 약공격 히트
+
+	//HellCaina_Blown_Front = 날아가면서 앞으로 고꾸라짐
+	//HellCaina_Blown_Front_loop = 날아가면서 앞으로 고꾸라짐 루프
+	HellCaina_Blown_Back, // = 날아가면서 뒤로 고꾸라짐
+	HellCaina_Blown_Back_Under, // = 날아가면서 뒤로 고꾸라짐 최고점 꺾을때 애니메이션
+	HellCaina_Blown_Back_Loop, //  = 날아가면서 뒤로 고꾸라짐 루프
+	HellCaina_Blown_Back_Landing, // = 날아가면서 뒤로 고꾸라짐 랜딩
+
+	HellCaina_Lie_Getup,  // 뒤로 엎어졌을 때 일어나는 모션
+	HellCaina_Prone_Getup, // 앞으로 엎어졌을 때 일어나는 모션
+
 	HellCaina_Menace_Front,   // em0000_menace_01, 앞쪽으로 위협
 	HellCaina_Menace_Up,      // em0000_menace_02, 위로 함성 위협
 
