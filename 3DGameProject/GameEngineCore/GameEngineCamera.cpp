@@ -156,6 +156,7 @@ void GameEngineCamera::RenderTargetTextureLoad()
 	CalLightUnit.ShaderResHelper.SetTexture("PositionTex", AllRenderTarget->GetTexture(2));
 	CalLightUnit.ShaderResHelper.SetTexture("NormalTex", AllRenderTarget->GetTexture(3));
 	CalLightUnit.ShaderResHelper.SetTexture("MatTex", AllRenderTarget->GetTexture(4));
+	CalLightUnit.ShaderResHelper.SetTexture("GleamTex", AllRenderTarget->GetTexture(5));
 
 	DefferdMergeUnit.SetMesh("FullRect");
 	DefferdMergeUnit.SetMaterial("DeferredMerge");

@@ -77,6 +77,7 @@ public:
 	void DepthClear();
 
 	void Setting() override;
+
 	void Reset();
 	void CreateDepthTexture(int _Index = 0);
 	void Merge(std::shared_ptr<GameEngineRenderTarget> _Other, size_t _Index = 0);

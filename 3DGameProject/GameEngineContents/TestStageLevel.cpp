@@ -38,9 +38,11 @@ void TestStageLevel::Start()
 	CreateActor<ShaderTestActor>()->GetTransform()->SetLocalPosition({ 0, 100, 0 });
 
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
+
+	GetCamera(0)->GetDeferredLightTarget()->CreateEffect<BloomEffect>();
+
 	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
-	GetCamera(0)->GetDeferredLightTarget()->CreateEffect<BloomEffect>();
 
 	StageBaseLevel::Start();
 

@@ -63,6 +63,7 @@ struct DeferredOutPut
     float4 PosTarget : SV_Target2;
     float4 NorTarget : SV_Target3;
     float4 MatTarget : SV_Target4;
+    float4 GlamTarget : SV_Target5;
 };
 
 float GGX_Distribution(float3 normal, float3 halfVector, float roughness)
@@ -104,6 +105,7 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     {
         Result.NorTarget = _Input.NORMAL;
     }
+
             
     // 반사량 계산 공식 러프니스 값에 따라서 결정된다        
     float roughness = 1.0 - NrmrData.r; // smoothness는 러프니스 값입니다.
@@ -127,7 +129,14 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     
     Result.MatTarget.r = metallic;
     Result.MatTarget.g = roughness;
-    Result.MatTarget.b = 1.0f;
+    Result.MatTarget.a = 1.0f;
     
+    if(0 != BaseColor.r)
+    {
+        Result.GlamTarget.rgb = AlbmData.rgb * BaseColor.r;
+    }
+    
+    Result.GlamTarget.a = 1.0f;
+        
     return Result;
 }

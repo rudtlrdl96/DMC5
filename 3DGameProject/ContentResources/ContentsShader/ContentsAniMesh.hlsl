@@ -68,6 +68,7 @@ struct DeferredOutPut
     float4 PosTarget : SV_Target2;
     float4 NorTarget : SV_Target3;
     float4 MatTarget : SV_Target4;
+    float4 GlamTarget : SV_Target5;
 };
 
 float GGX_Distribution(float3 normal, float3 halfVector, float roughness)
@@ -127,9 +128,16 @@ DeferredOutPut MeshAniTexture_PS(Output _Input)
     Result.PosTarget.a = 1.0f;
     Result.NorTarget.a = 1.0f;
     
-    Result.MatTarget.a = metallic;
-    Result.MatTarget.a = roughness;
-    Result.MatTarget.b = BaseColor.b;
+    Result.MatTarget.r = metallic;
+    Result.MatTarget.g = roughness;
+    Result.MatTarget.a = 1.0f;
+    
+    if (0 != BaseColor.r)
+    {
+        Result.GlamTarget.rgb = AlbmData.rgb * BaseColor.r;
+    }
+    
+    Result.GlamTarget.a = 1.0f;
         
     return Result;
 }

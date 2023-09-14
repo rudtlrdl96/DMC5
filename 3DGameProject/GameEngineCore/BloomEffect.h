@@ -15,8 +15,6 @@ public:
 	BloomEffect();
 	~BloomEffect();
 
-	std::shared_ptr<GameEngineRenderTarget> BlurTarget;
-
 protected:
 	void Start(GameEngineRenderTarget* _Target) override;
 	void Effect(GameEngineRenderTarget* _Target, float _DeltaTime) override;

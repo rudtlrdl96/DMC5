@@ -45,10 +45,13 @@ void ShaderTestActor::Start()
 	TestRenderer->SetFBXMesh("SkyBox.fbx", "FBX");
 	TestRenderer->GetTransform()->SetLocalScale(float4(0.0003f, 0.0003f, 0.0003f));
 
-	TestRenderer->SetBaseColor(float4(0, 0, 200, 0));
+	TestRenderer->SetBaseColor(float4(3, 0, 0));
 
 	//TestRenderer = CreateComponent<EffectFBXRenderer>();
 
+	std::shared_ptr<GameEngineLight> PointLight = GetLevel()->CreatePointLight(GetTransform()->GetWorldPosition(), 1000.0f);
+	PointLight->LightDataValue.LightColor = float4(1, 0, 0);
+	PointLight->GetTransform()->SetParent(GetTransform());
 
 	if (nullptr == GameEngineFBXMesh::Find("Effect_Mesh_01.FBX"))
 	{
