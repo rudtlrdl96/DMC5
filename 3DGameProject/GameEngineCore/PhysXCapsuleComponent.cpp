@@ -122,7 +122,7 @@ void PhysXCapsuleComponent::CreatePhysXActors(physx::PxVec3 _GeoMetryScale, floa
 	m_pShape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, false);
 
 	// Á¦µ¿?
-	//m_pDynamic->setLinearDamping(physx::PxReal(0.01f));
+	//m_pDynamic->setLinearDamping(physx::PxReal(10.0f));
 	//m_pDynamic->setMaxAngularVelocity(physx::PxReal(20.0f));
 	//m_pDynamic->setAngularDamping(physx::PxReal(2.0f));
 	
@@ -189,6 +189,12 @@ void PhysXCapsuleComponent::SetWorldRotation(float4 _Value)
 	//	m_pDynamic->setLinearVelocity(Velo);
 	//}
 //}
+
+void PhysXCapsuleComponent::SetAirState(float _Power)
+{
+	m_pDynamic->setLinearVelocity({ 0,0,0 });
+	m_pDynamic->addForce(physx::PxVec3(0.0f, _Power, 0.0f), physx::PxForceMode::eIMPULSE);
+}
 
 void PhysXCapsuleComponent::SetJump(float _JumpPower)
 {

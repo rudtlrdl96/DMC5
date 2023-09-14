@@ -50,6 +50,8 @@ public:
 	void SetForce(float4 _MoveSpeed);
 	void SetPush(float4 _Push);
 
+	void SetAirState(float _Power); // 몬스터용
+
 	//void SetSpeedLimitValue(float _Value)
 	//{
 	//	SpeedLimitValue = _Value;

@@ -4,9 +4,23 @@
 enum FSM_State_HellCaina
 {
 	HellCaina_None,
-	HellCaina_Idle,      // em0000_Idle_01, 그냥 서있음
-	HellCaina_RunStart,  // 
+	HellCaina_Idle,           // em0000_Idle_01, 그냥 서있음
 
+	HellCaina_Menace_Front,   // em0000_menace_01, 앞쪽으로 위협
+	HellCaina_Menace_Up,      // em0000_menace_02, 위로 함성 위협
+
+	HellCaina_Attack_DownUp,      // 아래에서 위로 베기
+	HellCaina_Attack_DownUp_step, // 아래에서 위로 베기 전 스텝
+	HellCaina_Attack_UpDown,      // 위에서 아래로 베기
+	HellCaina_Attack_Dash,        // 돌진베기
+
+	HellCaina_Air_Buster,         // 공중에서 연속공격 맞을 때
+	HellCaina_Buster_Start,       // 에어어택 스타트
+	HellCaina_Buster_Finish,      // 에어에서 땅에 떨어졌을 때
+	HellCaina_Gun_Buster,
+	HellCaina_Gun_Buster_Start,
+	HellCaina_Gun_Buster_Finish,
+	HellCaina_M_Buster,
 };
 
 // 설명 :
@@ -41,6 +55,9 @@ private:
 	bool CheckBool = false;
 
 	void ChangeState(int _StateValue);	// FSM 변경 함수
+	bool FloorCheck(float _Distance); // 바닥체크
 
+	float WaitTime = 0.0f;
+	float FallCheckDelayTime = 0.0f;
 };
 

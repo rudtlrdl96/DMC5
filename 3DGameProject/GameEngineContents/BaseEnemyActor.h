@@ -123,6 +123,9 @@ protected:
 	//Forward Collision
 	std::shared_ptr<class GameEngineCollision> ForWardCollision = nullptr;
 	std::shared_ptr<class GameEngineCollision> ColValue = nullptr;
+
+	std::shared_ptr<class GameEngineCollision> MonsterAttackCollision = nullptr;
+
 	GameEngineFSM EnemyFSM;
 
 	//하위에서 설정해줘야하는 Data들=====================================================
