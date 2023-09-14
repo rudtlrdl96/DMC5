@@ -32,8 +32,6 @@ void MainLevel::Start()
 	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
 
-
-
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -100.0f });
 
@@ -49,8 +47,6 @@ void MainLevel::Start()
 	std::shared_ptr<ShaderTestActor> NewTestActor0 = CreateActor<ShaderTestActor>();
 	NewTestActor0->GetTransform()->SetLocalPosition({ 0, 10, 0 });
 	//NewTestActor0->InitTest(0);
-
-	CreateActor<Enemy_HellCaina>();
 }
 
 void MainLevel::Update(float _DeltaTime)

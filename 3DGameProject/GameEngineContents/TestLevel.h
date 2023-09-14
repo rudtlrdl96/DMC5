@@ -28,6 +28,8 @@ protected:
 
 private:
 	bool IsMessage = false;
+	std::shared_ptr<class AnimationToolWindow> AnimWindow = nullptr;
+	std::shared_ptr<class ObjectWindow> ObjWindow = nullptr;
 
 };
 

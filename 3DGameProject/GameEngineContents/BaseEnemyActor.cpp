@@ -180,13 +180,13 @@ void BaseEnemyActor::Start()
 	//Render생성
 	EnemyRenderer = CreateComponent<GameEngineFBXRenderer>();
 	//PhysX(충돌)
-	CapsulCol = CreateComponent<PhysXCapsuleComponent>();
-	CapsulCol->SetPhysxMaterial(0, 0, 0);
-	CapsulCol->CreatePhysXActors({100, 70, 100});
-	CapsulCol->SetWorldPosition({ 0, 100, 0 });
+	PhysXCapsule = CreateComponent<PhysXCapsuleComponent>();
+	PhysXCapsule->SetPhysxMaterial(0, 0, 0);
+	PhysXCapsule->CreatePhysXActors({100, 70, 100});
+	PhysXCapsule->SetWorldPosition({ 0, 100, 0 });
 
 	//공격 가능한 Enemy Collision
-	MonsterCollision=CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
+	MonsterCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
 	//주변 플레이어를 인식하는 Collision(1회용)
 	RN_MonsterCollision = CreateComponent<GameEngineCollision>(CollisionOrder::RN_Enemy);
 	//몬스터의 공격범위 Collision
@@ -282,7 +282,7 @@ void BaseEnemyActor::ChasePlayer(float _DeltaTime)
 	{
 		float4 EnemyPosition = EnemyRenderer->GetTransform()->GetWorldPosition();
 		float4 PlayerPosition = Players->GetTransform()->GetWorldPosition();
-		CapsulCol->SetMove((PlayerPosition - EnemyPosition));
+		PhysXCapsule->SetMove((PlayerPosition - EnemyPosition));
 		//자연스럽게 돌리기
 		ColValue = ForWardCollision->Collision(CollisionOrder::RN_Player, ColType::OBBBOX3D, ColType::OBBBOX3D);
 		if (nullptr == ColValue)

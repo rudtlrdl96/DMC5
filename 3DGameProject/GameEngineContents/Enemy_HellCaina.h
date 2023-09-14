@@ -4,8 +4,8 @@
 enum FSM_State_HellCaina
 {
 	HellCaina_None,
-	HellCaina_Idle,
-	HellCaina_RunStart,
+	HellCaina_Idle,      // em0000_Idle_01, 그냥 서있음
+	HellCaina_RunStart,  // 
 
 };
 

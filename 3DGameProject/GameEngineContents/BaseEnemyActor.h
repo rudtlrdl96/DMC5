@@ -17,7 +17,6 @@ public:
 	float ForcePower = 1.0f;
 };
 
-
 enum class EnemyCode
 {
 	//초기화용
@@ -70,6 +69,11 @@ public:
 	BaseEnemyActor& operator=(const BaseEnemyActor& _Other) = delete;
 	BaseEnemyActor& operator=(BaseEnemyActor&& _Other) noexcept = delete;
 
+	std::shared_ptr<class PhysXCapsuleComponent> GetPhysXComponent()
+	{
+		return PhysXCapsule;
+	}
+
 	// 몬스터 피격 함수(때렸을 때 호출해주시면 됩니다)
 	void MonsterHit(const EnemyHitData& _HitData);
 
@@ -98,6 +102,7 @@ public:
 	}
 
 	EnemyHitDir GetHitDir(const float4& _WolrdPos);
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -106,7 +111,7 @@ protected:
 	std::shared_ptr<class GameEngineFBXRenderer> EnemyRenderer = nullptr;
 
 	// 물리 컴포넌트
-	std::shared_ptr<PhysXCapsuleComponent> CapsulCol = nullptr;
+	std::shared_ptr<PhysXCapsuleComponent> PhysXCapsule = nullptr;
 
 	// Monster의 Collision
 	//범위인식

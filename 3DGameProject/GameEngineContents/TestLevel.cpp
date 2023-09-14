@@ -1,19 +1,16 @@
 #include "PrecompileHeader.h"
 #include "TestLevel.h"
 
-#include "TestObject.h"
-#include "Plane.h"
-#include "Enemy_Empusa.h"
-#include "Enemy_GreenEmpusa.h"
-#include "Enemy_RedEmpusa.h"
+#include <GameEngineCore/GameEngineCoreWindow.h>
+#include <GameEngineCore/PhysXCapsuleComponent.h>
+#include <GameEngineCore/GameEngineCollision.h>
+
+#include "PlayerActor_Nero.h"
 #include "Enemy_HellCaina.h"
-#include "Enemy_HellAntenora.h"
-#include "CavaliereAngelo.h"
-#include "Ball.h"
+#include "Plane.h"
 #include "Wall.h"
-#include "Slope.h"
-#include <GameEngineCore/EngineGrid.h>
-#include "Box200.h"
+
+#include "FXAA_Effect.h"
 
 TestLevel* TestLevel::TestLevelPtr = nullptr;
 
@@ -31,10 +28,10 @@ void TestLevel::Start()
 {
 	CreateScene(GetName());
 
+	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
+
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 50.0f, -100.0f });
-
-	// std::shared_ptr<EngineGrid> Grid = CreateActor<EngineGrid>();
 }
 
 void TestLevel::Update(float _DeltaTime)
@@ -53,21 +50,38 @@ void TestLevel::Update(float _DeltaTime)
 
 void TestLevel::LevelChangeStart()
 {
-	std::shared_ptr<TestObject> Component = CreateActor<TestObject>();
+	GameEngineCoreWindow::Clear();
+	GameEngineCoreWindow::AddDebugRenderTarget(0, "AllRenderTarget", GetMainCamera()->GetCamAllRenderTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(1, "LightRenderTarget", GetMainCamera()->GetDeferredLightTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(2, "MainCameraForwardTarget", GetMainCamera()->GetCamForwardTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(3, "DeferredTarget", GetMainCamera()->GetCamDeferrdTarget());
+	//GameEngineCoreWindow::AddDebugRenderTarget(4, "CubeRenderTarget", GetMainCamera()->GetCubeRenderTarget());
+
+	SetLevelSceneGravity(2000);
+	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
+	Nero->GetPhysXComponent()->SetWorldPosition({ -1200, 100, -1300 });
+	Nero->SinglePlayLoad();
+
+	std::shared_ptr<GameEngineActor> CollisionActor = CreateActor<GameEngineActor>();
+	std::shared_ptr<GameEngineCollision> Collision = CollisionActor->CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
+	CollisionActor->GetTransform()->SetLocalScale({ 100, 200, 100 });
+	CollisionActor->GetTransform()->SetLocalPosition({ 100, 100, 100 });
+	Collision->SetColType(ColType::OBBBOX3D);
+	//Collision->DebugOn();
+	IsDebugSwitch();
+
+	std::shared_ptr<Enemy_HellCaina> HellCaina = CreateActor<Enemy_HellCaina>();
+	HellCaina->GetPhysXComponent()->SetWorldPosition({ 500, 100, 500 });
+	HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
 
-	std::shared_ptr<Wall> Flat2 = CreateActor<Wall>();
-	Flat2->GetTransform()->AddWorldPosition(float4{ 300, 0, 300 });
-	Flat2->GetTransform()->AddWorldRotation(float4{ 0, 0, 90 });
-	Flat2->GetTransform()->AddWorldRotation(float4{ 0, -40, 0});
+	//std::shared_ptr<Wall> Flat4 = CreateActor<Wall>();
+	//Flat4->GetTransform()->AddWorldPosition(float4{ 300, 0, -500 });
+	//Flat4->GetTransform()->AddWorldRotation(float4{ 0, 0, 90 });
+	//Flat4->GetTransform()->AddWorldRotation(float4{ 0, -40, 0 });
 
-	std::shared_ptr<Box200> Box = CreateActor<Box200>();
-	//Box->GetTransform()->AddWorldPosition(float4{ -300, 100, -300 });
-
-	//std::shared_ptr<Box200> Box2 = CreateActor<Box200>();
-	//Box2->GetTransform()->AddWorldPosition(float4{ -100, 0, 100 });
-
+	std::shared_ptr<GameEngineLight> Light = CreatePointLight(float4(0, 50, 0), 1000);
 }
 
 void TestLevel::LevelChangeEnd()
