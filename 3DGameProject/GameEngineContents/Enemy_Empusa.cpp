@@ -54,7 +54,7 @@ void Enemy_Empusa::EnemyTypeLoad()
 	EnemyCodeValue = EnemyCode::Empusa;
 	EnemyTypeValue = EnemyType::Normal;
 	EnemySizeValue = EnemySize::Middle;
-	EnemyHP = 0;
+	EnemyHP = 100.0f;
 	RN_Range = float4::ZERO;;
 	RN_Player = false;
 	MoveSpeed = 50.0f;
@@ -97,6 +97,13 @@ void Enemy_Empusa::EnemyCreateFSM()
 	RN_MonsterCollision->SetColType(ColType::OBBBOX2D);
 	MonsterAttackRange->GetTransform()->SetWorldScale({300,300,300});
 	MonsterAttackRange->SetColType(ColType::SPHERE3D);
+	ForWardCollision->GetTransform()->SetWorldScale({ 50,500,4000 });
+	ForWardCollision->SetColType(ColType::OBBBOX3D);
+
+	Vec_AttackName.push_back("em0100_attack_B");
+	Vec_AttackName.push_back("em0100_attack_D");
+	Vec_AttackName.push_back("em0100_attack_C");
+	Vec_AttackName.push_back("em0100_attack_W");
 }
 
 void Enemy_Empusa::Idle_Enter()
@@ -131,22 +138,29 @@ void Enemy_Empusa::Chase_Exit()
 
 void Enemy_Empusa::Attack_Enter()
 {
-	//GetPlayer Pos(위치 받아서 어떤 공격을할지 설정)
-	//Debug(공격=플레이어를 인식했다고 가정)
-	EnemyRenderer->ChangeAnimation("em0100_attack_D");
-	//Debug
-	//"em0100_attack_A" //slow attack
-	//"em0100_attack_B" //fast attack
-	//"em0100_attack_C" //side attack
-	//"em0100_attack_D" 
-	//"em0100_attack_W" //twin attack
+	
+	if (AttackValue == Vec_AttackName.size())
+	{
+		AttackValue = 0;
+	}
+	EnemyRenderer->ChangeAnimation(Vec_AttackName[AttackValue]);
 }
 
 void Enemy_Empusa::Attack_Update(float _DeltaTime)
 {
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		EnemyFSM.ChangeState(EnemyState::M_Idle);
+		std::shared_ptr<GameEngineCollision> AttackCollision = MonsterAttackRange->Collision(CollisionOrder::Player, ColType::OBBBOX3D, ColType::OBBBOX3D);
+		if (nullptr != AttackCollision)
+		{
+			++AttackValue;
+			EnemyFSM.ChangeState(EnemyState::M_Attack);
+		}
+		else
+		{
+			AttackValue = 0;
+			EnemyFSM.ChangeState(EnemyState::M_Idle);
+		}
 	}
 }
 
@@ -157,20 +171,33 @@ void Enemy_Empusa::Attack_Exit()
 
 void Enemy_Empusa::Hit_Enter()
 {
-	//EnemyRenderer->ChangeAnimation("em0100_angledamage_front");
-	//EnemyRenderer->ChangeAnimation("em0100_angledamage_left");
-	//EnemyRenderer->ChangeAnimation("em0100_angledamage_right");
-	//EnemyRenderer->ChangeAnimation("em0100_angledamage_back");
+	switch (HitDir)
+	{
+	case EnemyHitDir::Forward:
+		EnemyRenderer->ChangeAnimation("em0100_angledamage_front");
+		break;
+	case EnemyHitDir::Back:
+		EnemyRenderer->ChangeAnimation("em0100_angledamage_back");
+		break;
+	case EnemyHitDir::Left:
+		EnemyRenderer->ChangeAnimation("em0100_angledamage_left");
+		break;
+	case EnemyHitDir::Right:
+		EnemyRenderer->ChangeAnimation("em0100_angledamage_right");
+		break;
+	case EnemyHitDir::None:
+		MsgAssert("잘못된 방향에서 Hit 함수가 호출되었습니다." );
+	}
 	//EnemyRenderer->ChangeAnimation("em0100_air_damage");
 	//EnemyRenderer->ChangeAnimation("em0100_air_damage_under");
 }
 
 void Enemy_Empusa::Hit_Update(float _DeltaTime)
 {
-	/*if (true==EnemyRenderer->IsAnimationEnd())
+	if (true==EnemyRenderer->IsAnimationEnd())
 	{
 		EnemyFSM.ChangeState(EnemyState::M_Idle);
-	}*/
+	}
 }
 
 void Enemy_Empusa::Hit_Exit()
@@ -180,14 +207,32 @@ void Enemy_Empusa::Hit_Exit()
 
 void Enemy_Empusa::Death_Enter()
 {
-	//EnemyRenderer->ChangeAnimation("em0100_death_front");
-	//EnemyRenderer->ChangeAnimation("em0100_death_left");
-	//EnemyRenderer->ChangeAnimation("em0100_death_right");
-	//EnemyRenderer->ChangeAnimation("em0100_death_back");
+	switch (HitDir)
+	{
+	case EnemyHitDir::Forward:
+		EnemyRenderer->ChangeAnimation("em0100_death_front");
+		break;
+	case EnemyHitDir::Back:
+		EnemyRenderer->ChangeAnimation("em0100_death_back");
+		break;
+	case EnemyHitDir::Left:
+		EnemyRenderer->ChangeAnimation("em0100_death_left");
+		break;
+	case EnemyHitDir::Right:
+		EnemyRenderer->ChangeAnimation("em0100_death_right");
+		break;
+	case EnemyHitDir::None:
+		MsgAssert("잘못된 방향에서 Death 함수가 호출되었습니다.");
+	}
 }
 
 void Enemy_Empusa::Death_Update(float _DeltaTime)
 {
+	if (EnemyRenderer->IsAnimationEnd())
+	{
+		PhysXCapsule->Death();
+		Death();
+	}
 }
 
 void Enemy_Empusa::Death_Exit()
@@ -260,7 +305,10 @@ void Enemy_Empusa::Move(float _DeltaTime)
 	if (false == Moves)
 	{
 		ChasePlayer(_DeltaTime);
-		EnemyRenderer->ChangeAnimation("em0100_biped_walk_loop");
+		if (EnemyRenderer->IsAnimationEnd())
+		{
+			EnemyRenderer->ChangeAnimation("em0100_biped_walk_loop");
+		}
 		if (MonsterAttackRange->Collision(CollisionOrder::Player, ColType::OBBBOX3D, ColType::OBBBOX3D))
 		{
 			EnemyFSM.ChangeState(EnemyState::M_Attack);

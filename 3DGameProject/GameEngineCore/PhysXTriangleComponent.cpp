@@ -168,6 +168,9 @@ void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, boo
 		MsgAssert("1. Start에서 피직스액터 생성하지 마세요\n2. 레벨에 CreateScene 하세요\n  오류가 뜬 레벨 이름 : " + LevelName);
 	}
 
+	PhysicsComponent = DynamicThis<PhysXTriangleComponent>();
+	m_pShape->userData = GetActor();
+
 	// Scene에 액터 추가
 	if (true == IsAggregateObject)
 	{
@@ -177,8 +180,6 @@ void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, boo
 	{
 		m_pScene->addActor(*m_pStatic);
 	}
-
-	PhysicsComponent = DynamicThis<PhysXTriangleComponent>();
 }
 
 void PhysXTriangleComponent::Start()

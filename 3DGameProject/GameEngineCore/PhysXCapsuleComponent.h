@@ -50,6 +50,8 @@ public:
 	void SetForce(float4 _MoveSpeed);
 	void SetPush(float4 _Push);
 
+	void SetAirState(float _Power); // 몬스터용
+
 	//void SetSpeedLimitValue(float _Value)
 	//{
 	//	SpeedLimitValue = _Value;
@@ -162,9 +164,7 @@ private:
 	physx::PxScene* m_pScene = nullptr;
 	physx::PxPhysics* m_pPhysics = nullptr;
 	physx::PxControllerManager* m_pCtrManager = nullptr;
-
 	physx::PxMaterial* m_pMaterial = nullptr;
-	physx::PxShape* m_pShape = nullptr;
 
 	physx::PxVec3 GeoMetryScale;
 

@@ -125,6 +125,9 @@ void PhysXBoxComponent::CreatePhysXActors(physx::PxVec3 _GeoMetryScale, float4 _
 		MsgAssert("1. Start에서 피직스액터 생성하지 마세요\n2. 레벨에 CreateScene 하세요\n  오류가 뜬 레벨 이름 : " + LevelName);
 	}
 
+	PhysicsComponent = DynamicThis<PhysXBoxComponent>();
+	m_pShape->userData = GetActor();
+
 	// Scene에 액터 추가
 	if (true == IsAggregateObject)
 	{
@@ -134,8 +137,6 @@ void PhysXBoxComponent::CreatePhysXActors(physx::PxVec3 _GeoMetryScale, float4 _
 	{
 		m_pScene->addActor(*m_pDynamic);
 	}
-
-	PhysicsComponent = DynamicThis<PhysXBoxComponent>();
 }
 
 void PhysXBoxComponent::Start()

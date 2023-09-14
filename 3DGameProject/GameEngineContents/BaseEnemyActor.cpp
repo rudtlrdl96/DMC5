@@ -16,17 +16,9 @@ BaseEnemyActor::~BaseEnemyActor()
 
 void BaseEnemyActor::MonsterHit(const EnemyHitData& _HitData)
 {
-	GameEngineTransform* EnemyTransform = GetTransform();
-	float4 HitPos = float4::ZERO;
-
-	if (float4::ZERO == _HitData.AttackerPos)
-	{
-		HitPos = EnemyTransform->GetWorldPosition() + EnemyTransform->GetLocalForwardVector();
-	}
-	else
-	{
-		HitPos = _HitData.AttackerPos;
-	}
+	float4 HitPos = _HitData.AttackerPos;
+	EnemyHP -= _HitData.Damage;
+	HitDir = GetHitDir(HitPos);
 
 	switch (_HitData.Type)
 	{
@@ -187,14 +179,16 @@ void BaseEnemyActor::Start()
 
 	//공격 가능한 Enemy Collision
 	MonsterCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
+	MonsterCollision->GetTransform()->SetWorldScale(float4::ZERO);
 	//주변 플레이어를 인식하는 Collision(1회용)
 	RN_MonsterCollision = CreateComponent<GameEngineCollision>(CollisionOrder::RN_Enemy);
+	RN_MonsterCollision->GetTransform()->SetWorldScale(float4::ZERO);
 	//몬스터의 공격범위 Collision
 	MonsterAttackRange = CreateComponent<GameEngineCollision>(CollisionOrder::RN_Enemy);
+	MonsterAttackRange->GetTransform()->SetWorldScale(float4::ZERO);
 	//ForWardCollision
 	ForWardCollision = CreateComponent<GameEngineCollision>(CollisionOrder::RN_Enemy);
-	ForWardCollision->GetTransform()->SetWorldScale({50,500,4000});
-	ForWardCollision->SetColType(ColType::OBBBOX3D);
+	ForWardCollision->GetTransform()->SetWorldScale(float4::ZERO);
 	
 	//초기화
 	EnemyCodeValue = EnemyCode::None;
@@ -225,11 +219,7 @@ void BaseEnemyActor::Start()
 
 void BaseEnemyActor::Update(float _DeltaTime)
 {
-	RN_MonsterCollision->DebugOn();
-	MonsterCollision->DebugOn();
-
 	NetControllType Type = GetControllType();
-
 	switch (Type)
 	{
 	case NetControllType::UserControll:
@@ -240,6 +230,23 @@ void BaseEnemyActor::Update(float _DeltaTime)
 		break;
 	default:
 		break;
+	}
+
+	if (MonsterCollision->GetTransform()->GetWorldScale() == float4::ZERO)
+	{
+		MsgAssert("MonsterCollision의 크기를 설정해주지 않았습니다.");
+	}
+	if (RN_MonsterCollision->GetTransform()->GetWorldScale() == float4::ZERO)
+	{
+		MsgAssert("RN_MonsterCollision의 크기를 설정해주지 않았습니다.");
+	}
+	if (MonsterAttackRange->GetTransform()->GetWorldScale() == float4::ZERO)
+	{
+		MsgAssert("MonsterAttackRange의 크기를 설정해주지 않았습니다.");
+	}
+	if (ForWardCollision->GetTransform()->GetWorldScale() == float4::ZERO)
+	{
+		MsgAssert("ForWardCollision의 크기를 설정해주지 않았습니다.");
 	}
 }
 

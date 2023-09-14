@@ -61,9 +61,7 @@ private:
 	physx::PxPhysics* m_pPhysics = nullptr;
 	physx::PxScene* m_pScene = nullptr;
 	physx::PxCooking* m_pCooking = nullptr;
-
 	physx::PxMaterial* m_pMaterial = nullptr;
-	physx::PxShape* m_pShape = nullptr;
 
 	physx::PxConvexMesh* m_pConvexMesh = nullptr;
 

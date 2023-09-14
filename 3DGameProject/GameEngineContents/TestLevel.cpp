@@ -62,16 +62,17 @@ void TestLevel::LevelChangeStart()
 	Nero->GetPhysXComponent()->SetWorldPosition({ -1200, 100, -1300 });
 	Nero->SinglePlayLoad();
 
-	std::shared_ptr<GameEngineActor> CollisionActor = CreateActor<GameEngineActor>();
-	std::shared_ptr<GameEngineCollision> Collision = CollisionActor->CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
-	CollisionActor->GetTransform()->SetLocalScale({ 100, 200, 100 });
-	CollisionActor->GetTransform()->SetLocalPosition({ 100, 100, 100 });
-	Collision->SetColType(ColType::OBBBOX3D);
+	//std::shared_ptr<GameEngineActor> CollisionActor = CreateActor<GameEngineActor>();
+	//std::shared_ptr<GameEngineCollision> Collision = CollisionActor->CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
+	//CollisionActor->GetTransform()->SetLocalScale({ 100, 200, 100 });
+	//CollisionActor->GetTransform()->SetLocalPosition({ 100, 100, 100 });
+	//Collision->SetColType(ColType::OBBBOX3D);
 	//Collision->DebugOn();
 	IsDebugSwitch();
 
 	std::shared_ptr<Enemy_HellCaina> HellCaina = CreateActor<Enemy_HellCaina>();
-	HellCaina->GetPhysXComponent()->SetWorldPosition({ 500, 100, 500 });
+	//HellCaina->GetPhysXComponent()->SetWorldPosition({ 500, 100, 500 });
+	HellCaina->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
 	HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();

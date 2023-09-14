@@ -129,6 +129,9 @@ void PhysXConvexComponent::CreatePhysXActors(const std::string& _MeshName, physx
 		MsgAssert("1. Start에서 피직스액터 생성하지 마세요\n2. 레벨에 CreateScene 하세요\n  오류가 뜬 레벨 이름 : " + LevelName);
 	}
 
+	PhysicsComponent = DynamicThis<PhysXConvexComponent>();
+	m_pShape->userData = GetActor();
+
 	// Scene에 액터 추가
 	if (true == IsAggregateObject)
 	{
@@ -145,8 +148,6 @@ void PhysXConvexComponent::CreatePhysXActors(const std::string& _MeshName, physx
 
 	//// Scene에 액터 추가
 	//_Scene->addActor(*PlaneStatic);
-
-	PhysicsComponent = DynamicThis<PhysXConvexComponent>();
 }
 
 void PhysXConvexComponent::AddForce(float4 _Force)

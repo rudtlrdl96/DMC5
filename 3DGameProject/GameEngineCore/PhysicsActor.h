@@ -44,6 +44,16 @@ public:
 		return m_pStatic;
 	}
 
+	physx::PxShape* GetShape()
+	{
+		return m_pShape;
+	}
+
+	void UserDataRelease()
+	{
+		m_pShape->userData = nullptr;
+	}
+
 	void Release()
 	{
 		PhysicsComponent.lock()->ReleaseRigid();
@@ -55,6 +65,7 @@ protected:
 
 	physx::PxRigidDynamic* m_pDynamic = nullptr;
 	physx::PxRigidStatic* m_pStatic = nullptr;
+	physx::PxShape* m_pShape = nullptr;
 
 private:
 

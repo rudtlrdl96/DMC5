@@ -122,7 +122,7 @@ void PhysXCapsuleComponent::CreatePhysXActors(physx::PxVec3 _GeoMetryScale, floa
 	m_pShape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, false);
 
 	// 제동?
-	//m_pDynamic->setLinearDamping(physx::PxReal(0.01f));
+	//m_pDynamic->setLinearDamping(physx::PxReal(10.0f));
 	//m_pDynamic->setMaxAngularVelocity(physx::PxReal(20.0f));
 	//m_pDynamic->setAngularDamping(physx::PxReal(2.0f));
 	
@@ -132,10 +132,11 @@ void PhysXCapsuleComponent::CreatePhysXActors(physx::PxVec3 _GeoMetryScale, floa
 		MsgAssert("1. Start에서 피직스액터 생성하지 마세요\n2. 레벨에 CreateScene 하세요\n  오류가 뜬 레벨 이름 : " + LevelName);
 	}
 
+	PhysicsComponent = DynamicThis<PhysXCapsuleComponent>();
+	m_pShape->userData = GetActor();
+
 	// Scene에 액터 추가
 	m_pScene->addActor(*m_pDynamic);
-
-	PhysicsComponent = DynamicThis<PhysXCapsuleComponent>();
 }
 
 void PhysXCapsuleComponent::SetWorldPosition(float4 _Value)
@@ -189,6 +190,12 @@ void PhysXCapsuleComponent::SetWorldRotation(float4 _Value)
 	//	m_pDynamic->setLinearVelocity(Velo);
 	//}
 //}
+
+void PhysXCapsuleComponent::SetAirState(float _Power)
+{
+	m_pDynamic->setLinearVelocity({ 0,0,0 });
+	m_pDynamic->addForce(physx::PxVec3(0.0f, _Power, 0.0f), physx::PxForceMode::eIMPULSE);
+}
 
 void PhysXCapsuleComponent::SetJump(float _JumpPower)
 {

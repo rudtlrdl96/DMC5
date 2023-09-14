@@ -13,8 +13,6 @@ EnemyActor_Normal::~EnemyActor_Normal()
 void EnemyActor_Normal::Start()
 {
 	EnemyTypeValue = EnemyType::Normal;
-
-	BaseEnemyActor::Start();
 	
 	EnemyFSM.CreateState
 	(
@@ -94,11 +92,12 @@ void EnemyActor_Normal::Update(float _DeltaTime)
 {
 	//Test용 업데이트(user update가 안돌아서)
 	EnemyFSM.Update(_DeltaTime);
+	//플레이어를 인식했는지(근처 반경에 들어왔었는지)
 	RNPlayer();
-
-	if (GameEngineInput::IsDown("DebugSwitch"))
+	//Death
+	if (EnemyHP < 0.0f)
 	{
-		GameEngineLevel::IsDebugSwitch();
+		EnemyFSM.ChangeState(EnemyState::M_Death);
 	}
 }
 

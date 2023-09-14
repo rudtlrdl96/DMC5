@@ -26,5 +26,6 @@ protected:
 private:
 	bool IsMessage = false;
 	std::shared_ptr<class Enemy_Empusa> TestMonster = nullptr;
+	std::shared_ptr<class PlayerActor_Nero> TestPlayer = nullptr;
 };
 
