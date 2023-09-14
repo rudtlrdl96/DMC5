@@ -92,7 +92,13 @@ void EnemyActor_Normal::Update(float _DeltaTime)
 {
 	//Test용 업데이트(user update가 안돌아서)
 	EnemyFSM.Update(_DeltaTime);
+	//플레이어를 인식했는지(근처 반경에 들어왔었는지)
 	RNPlayer();
+	//Death
+	if (EnemyHP < 0.0f)
+	{
+		EnemyFSM.ChangeState(EnemyState::M_Death);
+	}
 }
 
 void EnemyActor_Normal::Idle_Enter()

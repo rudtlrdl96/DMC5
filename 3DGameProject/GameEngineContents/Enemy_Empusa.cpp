@@ -193,16 +193,30 @@ void Enemy_Empusa::Hit_Exit()
 
 void Enemy_Empusa::Death_Enter()
 {
-	//EnemyRenderer->ChangeAnimation("em0100_death_front");
-	//EnemyRenderer->ChangeAnimation("em0100_death_left");
-	//EnemyRenderer->ChangeAnimation("em0100_death_right");
-	//EnemyRenderer->ChangeAnimation("em0100_death_back");
+	switch (HitDir)
+	{
+	case EnemyHitDir::Forward:
+		EnemyRenderer->ChangeAnimation("em0100_death_front");
+		break;
+	case EnemyHitDir::Back:
+		EnemyRenderer->ChangeAnimation("em0100_death_back");
+		break;
+	case EnemyHitDir::Left:
+		EnemyRenderer->ChangeAnimation("em0100_death_left");
+		break;
+	case EnemyHitDir::Right:
+		EnemyRenderer->ChangeAnimation("em0100_death_right");
+		break;
+	case EnemyHitDir::None:
+		MsgAssert("잘못된 방향에서 Death 함수가 호출되었습니다.");
+	}
 }
 
 void Enemy_Empusa::Death_Update(float _DeltaTime)
 {
 	if (EnemyRenderer->IsAnimationEnd())
 	{
+		PhysXCapsule->Death();
 		Death();
 	}
 }
@@ -277,7 +291,10 @@ void Enemy_Empusa::Move(float _DeltaTime)
 	if (false == Moves)
 	{
 		ChasePlayer(_DeltaTime);
-		EnemyRenderer->ChangeAnimation("em0100_biped_walk_loop");
+		if (EnemyRenderer->IsAnimationEnd())
+		{
+			EnemyRenderer->ChangeAnimation("em0100_biped_walk_loop");
+		}
 		if (MonsterAttackRange->Collision(CollisionOrder::Player, ColType::OBBBOX3D, ColType::OBBBOX3D))
 		{
 			EnemyFSM.ChangeState(EnemyState::M_Attack);

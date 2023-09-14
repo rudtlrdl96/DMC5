@@ -50,6 +50,7 @@ void MonsterTestLevel::Update(float _DeltaTime)
 		EnemyHitData Datas;
 		Datas.Type = MonsterDamageType::Air;
 		Datas.AttackerPos = TestPlayer->GetTransform()->GetWorldPosition();
+		Datas.Damage = 30.0f;
 		TestMonster->MonsterHit(Datas);
 	}
 }

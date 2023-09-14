@@ -16,18 +16,8 @@ BaseEnemyActor::~BaseEnemyActor()
 
 void BaseEnemyActor::MonsterHit(const EnemyHitData& _HitData)
 {
-	GameEngineTransform* EnemyTransform = GetTransform();
-	float4 HitPos = float4::ZERO;
-
-	if (float4::ZERO == _HitData.AttackerPos)
-	{
-		HitPos = EnemyTransform->GetWorldPosition() + EnemyTransform->GetLocalForwardVector();
-	}
-	else
-	{
-		HitPos = _HitData.AttackerPos;
-	}
-
+	float4 HitPos = _HitData.AttackerPos;
+	EnemyHP -= _HitData.Damage;
 	HitDir = GetHitDir(HitPos);
 
 	switch (_HitData.Type)
