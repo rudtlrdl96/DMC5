@@ -84,6 +84,7 @@ enum class CollisionOrder
 	PlayerLockOn,
 	Enemy,
 	PlayerAttack,
+	EnemyAttack,
 	RN_Enemy,
 	RN_Player,
 	CullingCol,

@@ -1,13 +1,9 @@
 #pragma once
-#include <GameEngineCore/GameEngineComponent.h>
-
-class AttackColData
-{
-
-};
+#include <GameEngineCore/GameEngineCollision.h>
+#include "ContentsEnum.h"
 
 // Ό³Έν :
-class AttackCollision : public GameEngineComponent
+class AttackCollision : public GameEngineCollision
 {
 public:
 	// constrcuter destructer
@@ -20,10 +16,26 @@ public:
 	AttackCollision& operator=(const AttackCollision& _Other) = delete;
 	AttackCollision& operator=(AttackCollision&& _Other) noexcept = delete;
 
+	DamageType GetDamageType()
+	{
+		return DamageTypeValue;
+	}
+
+	int GetDamage()
+	{
+		return DamageValue;
+	}
+
+	void SetAttackData(DamageType _DamageType, int _DamageValue)
+	{
+		DamageTypeValue = _DamageType;
+		DamageValue = _DamageValue;
+	}
+
 protected:
 
 private:
-	std::shared_ptr<class GameEngineCollision> Collision = nullptr;
-
+	DamageType DamageTypeValue = DamageType::None;
+	int DamageValue = 0;
 };
 

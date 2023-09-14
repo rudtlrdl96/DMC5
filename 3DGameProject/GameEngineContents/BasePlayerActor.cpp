@@ -13,7 +13,7 @@
 #include "NetworkManager.h"
 #include <GameEngineCore/PhysXCapsuleComponent.h>
 #include "FsmChangePacket.h"
-
+#include "AttackCollision.h"
 std::vector<BasePlayerActor*> BasePlayerActor::Players = std::vector<BasePlayerActor*>();
 
 BasePlayerActor::BasePlayerActor()
@@ -177,27 +177,22 @@ void BasePlayerActor::UserControllLoad()
 	Controller->CallBack_LockOnUp = std::bind(&BasePlayerActor::LockOff, this);
 
 	// 플레이어 충돌체
-	PlayerCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
-	PlayerCollision->GetTransform()->SetLocalScale({ 100, 100, 100 });
-	PlayerCollision->SetColType(ColType::OBBBOX3D);
+	Col_Player = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
+	Col_Player->GetTransform()->SetLocalScale({ 100, 100, 100 });
+	Col_Player->SetColType(ColType::OBBBOX3D);
 
-	EnemyStepCheckCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
-	EnemyStepCheckCollision->GetTransform()->SetLocalPosition({ 0, -100, 0 });
-	EnemyStepCheckCollision->GetTransform()->SetLocalScale({ 200, 300, 200 });
-	EnemyStepCheckCollision->SetColType(ColType::OBBBOX3D);
+	Col_EnemyStepCheck = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
+	Col_EnemyStepCheck->GetTransform()->SetLocalPosition({ 0, -100, 0 });
+	Col_EnemyStepCheck->GetTransform()->SetLocalScale({ 200, 300, 200 });
+	Col_EnemyStepCheck->SetColType(ColType::OBBBOX3D);
 	// 록온 용 충돌체
-	LockOnCollision = CreateComponent<GameEngineCollision>(CollisionOrder::PlayerLockOn);
-	LockOnCollision->GetTransform()->SetParent(Camera->GetCameraTarget());
-	LockOnCollision->GetTransform()->SetLocalScale({ 2000, 5000, 5000 });
-	LockOnCollision->GetTransform()->SetLocalPosition({ 0, 0, 2500 });
-	LockOnCollision->SetColType(ColType::OBBBOX3D);
+	Col_LockOn = CreateComponent<GameEngineCollision>(CollisionOrder::PlayerLockOn);
+	Col_LockOn->GetTransform()->SetParent(Camera->GetCameraTarget());
+	Col_LockOn->GetTransform()->SetLocalScale({ 2000, 5000, 5000 });
+	Col_LockOn->GetTransform()->SetLocalPosition({ 0, 0, 2500 });
+	Col_LockOn->SetColType(ColType::OBBBOX3D);
 
-	//몬스터->플레이어 방향 인식용 충돌체
-	RotateDotCollision = CreateComponent<GameEngineCollision>(CollisionOrder::RN_Player);
-	RotateDotCollision->GetTransform()->SetLocalScale({50,50,50});
-	RotateDotCollision->SetColType(ColType::OBBBOX3D);
-
-
+	Col_Attack == CreateComponent<AttackCollision>(CollisionOrder::PlayerAttack);
 }
 
 void BasePlayerActor::Update_ProcessPacket()
@@ -275,7 +270,7 @@ void BasePlayerActor::LockOn()
 {
 	std::vector<std::shared_ptr<GameEngineCollision>> Cols;
 	std::shared_ptr<GameEngineCollision> MinCol = nullptr;
-	if (true == LockOnCollision->CollisionAll(CollisionOrder::Enemy, Cols))
+	if (true == Col_LockOn->CollisionAll(CollisionOrder::Enemy, Cols))
 	{
 		float Min = 9999;
 		for (std::shared_ptr<GameEngineCollision> Col : Cols)

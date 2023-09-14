@@ -8,6 +8,7 @@
 #include "EffectFBXRenderer.h"
 #include "PlayerController.h"
 #include "NetworkManager.h"
+#include "AttackCollision.h"
 PlayerActor_Nero::~PlayerActor_Nero()
 {
 }
@@ -118,7 +119,7 @@ void PlayerActor_Nero::PlayerLoad()
 		Renderer->SetSpecularTexture("pl0010_03_albm.texout.png", "pl0010_03_atos.texout.png");
 
 		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer,
-			.Objects = { (GameEngineObject*)AttackCollision.get() },
+			.Objects = { (GameEngineObject*)Col_Attack.get() },
 			.CallBacks_void = {
 				std::bind([=] {InputCheck = true; }),
 				std::bind(&PlayerActor_Nero::RedQueenOn, this),
@@ -1100,7 +1101,7 @@ void PlayerActor_Nero::PlayerLoad()
 					return;
 				}
 				std::vector<std::shared_ptr<GameEngineCollision>> Cols;
-				if (true == PlayerCollision->CollisionAll(CollisionOrder::Enemy, Cols))
+				if (true == Col_Player->CollisionAll(CollisionOrder::Enemy, Cols))
 				{
 					ChangeState(FSM_State_Nero::Nero_RQ_Skill_Stleak3);
 					return;
@@ -1385,7 +1386,7 @@ void PlayerActor_Nero::PlayerLoad()
 			.Update = [=](float _DeltaTime) {
 				if (true == Input_SpecialCheckFly()) { return; }
 				std::vector<std::shared_ptr<GameEngineCollision>> Cols;
-				if (true == PlayerCollision->CollisionAll(CollisionOrder::Enemy, Cols))
+				if (true == Col_Player->CollisionAll(CollisionOrder::Enemy, Cols))
 				{
 					ChangeState(FSM_State_Nero::Nero_RQ_Skill_Caliber_2);
 					return;
@@ -2911,7 +2912,7 @@ void PlayerActor_Nero::NetLoad()
 		Renderer->SetSpecularTexture("pl0010_03_albm.texout.png", "pl0010_03_atos.texout.png");
 
 		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer,
-			.Objects = { (GameEngineObject*)AttackCollision.get() },
+			.Objects = { (GameEngineObject*)Col_Attack.get() },
 			.CallBacks_void = {
 				nullptr,
 				std::bind(&PlayerActor_Nero::RedQueenOn, this),
@@ -4257,7 +4258,7 @@ bool PlayerActor_Nero::Input_SpecialCheckFly()
 	if (Controller->GetIsAnyJump())
 	{
 		std::vector<std::shared_ptr<GameEngineCollision>> Cols;
-		if (true == EnemyStepCheckCollision->CollisionAll(CollisionOrder::Enemy, Cols))
+		if (true == Col_EnemyStepCheck->CollisionAll(CollisionOrder::EnemyAttack, Cols))
 		{
 			ChangeState(FSM_State_Nero::Nero_EnemyStep);
 			return true;

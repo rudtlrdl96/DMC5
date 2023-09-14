@@ -41,7 +41,7 @@ void PlayerActor_Vergil::VergilLoad()
 		Renderer->GetTransform()->SetLocalPosition({ 0, -75, 0 });
 		Renderer->SetFBXMesh("Vergil.FBX", "AniFBX");
 		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer,
-			.Objects = { (GameEngineObject*)AttackCollision.get() },
+			.Objects = { (GameEngineObject*)Col_Attack.get() },
 			.CallBacks_void = {
 				std::bind([=] {InputCheck = true; }),			// 0
 				std::bind(&PlayerActor_Vergil::YamatoOn, this),
@@ -944,7 +944,7 @@ void PlayerActor_Vergil::NetLoad()
 		Renderer->GetTransform()->SetLocalPosition({ 0, -75, 0 });
 		Renderer->SetFBXMesh("Vergil.FBX", "MeshAniTexture");
 		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer,
-			.Objects = { (GameEngineObject*)AttackCollision.get() },
+			.Objects = { (GameEngineObject*)Col_Attack.get() },
 			.CallBacks_void = {
 				nullptr,
 				std::bind(&PlayerActor_Vergil::YamatoOn, this),
