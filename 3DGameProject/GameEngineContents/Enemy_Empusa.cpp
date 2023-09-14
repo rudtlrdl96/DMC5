@@ -19,12 +19,15 @@ Enemy_Empusa::~Enemy_Empusa()
 
 void Enemy_Empusa::Start()
 {
+	BaseEnemyActor::Start();
+	EnemyActor_Normal::Start();
 	SetNetObjectType(Net_ActorType::Empusa);
 }
 
 void Enemy_Empusa::Update(float _DeltaTime)
 {
-
+	BaseEnemyActor::Update(_DeltaTime);
+	EnemyActor_Normal::Update(_DeltaTime);
 }
 
 void Enemy_Empusa::EnemyMeshLoad()

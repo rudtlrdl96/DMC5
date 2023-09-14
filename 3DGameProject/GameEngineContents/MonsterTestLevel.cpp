@@ -60,7 +60,8 @@ void MonsterTestLevel::LevelChangeStart()
 	Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 1000 });
 	Nero->SinglePlayLoad();
 
-	TestMonster = CreateActor<Enemy_Empusa>();
+	std::shared_ptr<Enemy_Empusa> TestEmpusa = CreateActor<Enemy_Empusa>();
+	
 
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
 
