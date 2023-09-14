@@ -13,8 +13,6 @@ EnemyActor_Normal::~EnemyActor_Normal()
 void EnemyActor_Normal::Start()
 {
 	EnemyTypeValue = EnemyType::Normal;
-
-	BaseEnemyActor::Start();
 	
 	EnemyFSM.CreateState
 	(
@@ -95,11 +93,6 @@ void EnemyActor_Normal::Update(float _DeltaTime)
 	//Test용 업데이트(user update가 안돌아서)
 	EnemyFSM.Update(_DeltaTime);
 	RNPlayer();
-
-	if (GameEngineInput::IsDown("DebugSwitch"))
-	{
-		GameEngineLevel::IsDebugSwitch();
-	}
 }
 
 void EnemyActor_Normal::Idle_Enter()

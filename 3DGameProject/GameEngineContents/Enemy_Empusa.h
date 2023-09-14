@@ -75,5 +75,7 @@ private:
 	void Death_Enter();
 	void Death_Update(float _DeltaTime);
 	void Death_Exit();
+
+	int AttackCount = 0;
 };
 

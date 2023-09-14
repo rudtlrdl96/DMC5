@@ -54,7 +54,7 @@ void Enemy_Empusa::EnemyTypeLoad()
 	EnemyCodeValue = EnemyCode::Empusa;
 	EnemyTypeValue = EnemyType::Normal;
 	EnemySizeValue = EnemySize::Middle;
-	EnemyHP = 0;
+	EnemyHP = 100.0f;
 	RN_Range = float4::ZERO;;
 	RN_Player = false;
 	MoveSpeed = 50.0f;
@@ -157,20 +157,33 @@ void Enemy_Empusa::Attack_Exit()
 
 void Enemy_Empusa::Hit_Enter()
 {
-	//EnemyRenderer->ChangeAnimation("em0100_angledamage_front");
-	//EnemyRenderer->ChangeAnimation("em0100_angledamage_left");
-	//EnemyRenderer->ChangeAnimation("em0100_angledamage_right");
-	//EnemyRenderer->ChangeAnimation("em0100_angledamage_back");
+	switch (HitDir)
+	{
+	case EnemyHitDir::Forward:
+		EnemyRenderer->ChangeAnimation("em0100_angledamage_front");
+		break;
+	case EnemyHitDir::Back:
+		EnemyRenderer->ChangeAnimation("em0100_angledamage_back");
+		break;
+	case EnemyHitDir::Left:
+		EnemyRenderer->ChangeAnimation("em0100_angledamage_left");
+		break;
+	case EnemyHitDir::Right:
+		EnemyRenderer->ChangeAnimation("em0100_angledamage_right");
+		break;
+	case EnemyHitDir::None:
+		MsgAssert("잘못된 방향에서 Hit 함수가 호출되었습니다." );
+	}
 	//EnemyRenderer->ChangeAnimation("em0100_air_damage");
 	//EnemyRenderer->ChangeAnimation("em0100_air_damage_under");
 }
 
 void Enemy_Empusa::Hit_Update(float _DeltaTime)
 {
-	/*if (true==EnemyRenderer->IsAnimationEnd())
+	if (true==EnemyRenderer->IsAnimationEnd())
 	{
 		EnemyFSM.ChangeState(EnemyState::M_Idle);
-	}*/
+	}
 }
 
 void Enemy_Empusa::Hit_Exit()
@@ -188,6 +201,10 @@ void Enemy_Empusa::Death_Enter()
 
 void Enemy_Empusa::Death_Update(float _DeltaTime)
 {
+	if (EnemyRenderer->IsAnimationEnd())
+	{
+		Death();
+	}
 }
 
 void Enemy_Empusa::Death_Exit()

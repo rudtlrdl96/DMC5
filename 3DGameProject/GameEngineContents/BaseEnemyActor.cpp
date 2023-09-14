@@ -28,6 +28,8 @@ void BaseEnemyActor::MonsterHit(const EnemyHitData& _HitData)
 		HitPos = _HitData.AttackerPos;
 	}
 
+	HitDir = GetHitDir(HitPos);
+
 	switch (_HitData.Type)
 	{
 	case MonsterDamageType::None:

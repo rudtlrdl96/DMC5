@@ -49,6 +49,7 @@ void MonsterTestLevel::Update(float _DeltaTime)
 	{
 		EnemyHitData Datas;
 		Datas.Type = MonsterDamageType::Air;
+		Datas.AttackerPos = TestPlayer->GetTransform()->GetWorldPosition();
 		TestMonster->MonsterHit(Datas);
 	}
 }
@@ -56,11 +57,11 @@ void MonsterTestLevel::Update(float _DeltaTime)
 void MonsterTestLevel::LevelChangeStart()
 {
 	SetLevelSceneGravity(2000);
-	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
-	Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 1000 });
-	Nero->SinglePlayLoad();
+	TestPlayer = CreateActor<PlayerActor_Nero>();
+	TestPlayer->GetPhysXComponent()->SetWorldPosition({ 0, 100, 1000 });
+	TestPlayer->SinglePlayLoad();
 
-	std::shared_ptr<Enemy_Empusa> TestEmpusa = CreateActor<Enemy_Empusa>();
+	TestMonster = CreateActor<Enemy_Empusa>();
 	
 
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();

@@ -147,6 +147,8 @@ protected:
 	//=================================================================================
 
 	bool IsSuperArmorValue = false;
+	//맞은방향
+	EnemyHitDir HitDir = EnemyHitDir::None;
 
 	std::function<void()> SuperArmorOn_Callback = nullptr;
 	std::function<void()> SuperArmorOff_Callback = nullptr;
