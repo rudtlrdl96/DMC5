@@ -192,7 +192,7 @@ void BasePlayerActor::UserControllLoad()
 	Col_LockOn->GetTransform()->SetLocalPosition({ 0, 0, 2500 });
 	Col_LockOn->SetColType(ColType::OBBBOX3D);
 
-	Col_Attack == CreateComponent<AttackCollision>(CollisionOrder::PlayerAttack);
+	Col_Attack = CreateComponent<AttackCollision>(CollisionOrder::PlayerAttack);
 }
 
 void BasePlayerActor::Update_ProcessPacket()
