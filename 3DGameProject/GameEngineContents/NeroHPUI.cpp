@@ -11,7 +11,12 @@ NeroHPUI::NeroHPUI()
 NeroHPUI::~NeroHPUI() 
 {
 }
-
+/*
+후드,후드불
+HP바 1줄
+변신게이지
+총알
+*/
 void NeroHPUI::Start()
 {
 	GameEngineDirectory NewDir;
