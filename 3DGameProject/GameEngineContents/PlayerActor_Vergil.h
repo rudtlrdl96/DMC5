@@ -84,6 +84,27 @@ private:
 
 	void ChangeState(FSM_State_Vergil _StateValue);
 
+	// 검 버튼을 입력한 경우 True 리턴 및 State 변경
+	bool Input_SwordCheck(int AddState = 0);
+	// 검 버튼을 공중에서 입력한 경우 True 리턴 및 State 변경
+	bool Input_SwordCheckFly(int AddState = 0);
+	// 총 버튼을 입력한 경우 True 리턴 및 State 변경
+	bool Input_GunCheck();
+	// 총 버튼을 공중에서 입력한 경우 True 리턴 및 State 변경
+	bool Input_GunCheckFly();
+	// 점프 버튼을 입력한 경우 True 리턴 및 State 변경
+	bool Input_JumpCheck();
+	// 점프 버튼을 공중에서 입력한 경우 True 리턴 및 State 변경
+	bool Input_JumpCheckFly();
+	// 워프 버튼을 입력한 경우 True 리턴 및 State 변경
+	bool Input_WarpCheck();
+	// 워프 버튼을 공중에서 입력한 경우 True 리턴 및 State 변경
+	bool Input_WarpCheckFly();
+
+	// 어떤 프레임이나 상관없이 캔슬하여 나가는 기술
+	bool Input_SpecialCheck();
+	bool Input_SpecialCheckFly();
+
 	void SetHuman();
 	void SetMajin();
 	void YamatoOff();
