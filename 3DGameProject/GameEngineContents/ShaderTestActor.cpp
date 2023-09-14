@@ -49,8 +49,9 @@ void ShaderTestActor::Start()
 
 	//TestRenderer = CreateComponent<EffectFBXRenderer>();
 
-	std::shared_ptr<GameEngineLight> PointLight = GetLevel()->CreatePointLight(GetTransform()->GetWorldPosition(), 1000.0f);
+	std::shared_ptr<GameEngineLight> PointLight = GetLevel()->CreateSpotLight(GetTransform()->GetWorldPosition(), 1000.0f, 10.0f);
 	PointLight->LightDataValue.LightColor = float4(1, 0, 0);
+	PointLight->GetTransform()->SetLocalRotation(float4(-90, 0, 0));
 	PointLight->GetTransform()->SetParent(GetTransform());
 
 	if (nullptr == GameEngineFBXMesh::Find("Effect_Mesh_01.FBX"))
