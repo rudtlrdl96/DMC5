@@ -13,6 +13,8 @@ PlayerActor_Vergil::~PlayerActor_Vergil()
 void PlayerActor_Vergil::Start()
 {
 	BasePlayerActor::Start();
+	SetNetObjectType(Net_ActorType::Vergil);
+	UserControllLoad();
 	VergilLoad();
 }
 

@@ -382,6 +382,9 @@
     <ClInclude Include="UIFBXRenderer.h">
       <Filter>UI\UI_Base</Filter>
     </ClInclude>
+    <ClInclude Include="AttackCollision.h">
+      <Filter>Component\Collision</Filter>
+    </ClInclude>
     <ClInclude Include="BaseUIActor.h">
       <Filter>UI\UI_Base</Filter>
     </ClInclude>
@@ -753,6 +756,9 @@
     <ClCompile Include="UIFBXRenderer.cpp">
       <Filter>UI\UI_Base</Filter>
     </ClCompile>
+    <ClCompile Include="AttackCollision.cpp">
+      <Filter>Component\Collision</Filter>
+    </ClCompile>
     <ClCompile Include="BaseUIActor.cpp">
       <Filter>UI\UI_Base</Filter>
     </ClCompile>
@@ -991,6 +997,9 @@
     </Filter>
     <Filter Include="UI\UI_Base\Button\ShopTitleButton">
       <UniqueIdentifier>{4b4d624e-f4f6-473c-b4a2-fdbcf8cc9b34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Collision">
+      <UniqueIdentifier>{7e5754f2-87f0-49ad-be86-2715ede33692}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

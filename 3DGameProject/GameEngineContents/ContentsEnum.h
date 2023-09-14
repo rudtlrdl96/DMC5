@@ -1,5 +1,20 @@
 #pragma once
 
+enum class DamageType
+{
+	None,
+	Common,
+	Combo,
+
+};
+
+
+
+
+
+
+
+
 enum class MonsterDamageType
 {
 	None,

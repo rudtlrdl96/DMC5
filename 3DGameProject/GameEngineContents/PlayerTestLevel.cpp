@@ -65,18 +65,18 @@ void PlayerTestLevel::LevelChangeStart()
 	//GameEngineCoreWindow::AddDebugRenderTarget(4, "CubeRenderTarget", GetMainCamera()->GetCubeRenderTarget());
 
 	SetLevelSceneGravity(2000);
-	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
-	Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	Nero->SinglePlayLoad();
-	//std::shared_ptr<PlayerActor_Vergil> Vergil = CreateActor<PlayerActor_Vergil>();
-	//Vergil->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
+	//Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//Nero->SinglePlayLoad();
+	std::shared_ptr<PlayerActor_Vergil> Vergil = CreateActor<PlayerActor_Vergil>();
+	Vergil->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
 	std::shared_ptr<GameEngineActor> CollisionActor = CreateActor<GameEngineActor>();
 	std::shared_ptr<GameEngineCollision> Collision = CollisionActor->CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
 	CollisionActor->GetTransform()->SetLocalScale({ 100, 200, 100 });
 	CollisionActor->GetTransform()->SetLocalPosition({ 100, 100, 100 });
 	Collision->SetColType(ColType::OBBBOX3D);
 	//Collision->DebugOn();
-	IsDebugSwitch();
+	//IsDebugSwitch();
 
 	//std::shared_ptr<TestObject> Component = CreateActor<TestObject>();
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
