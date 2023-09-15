@@ -124,7 +124,7 @@ protected:
 	std::shared_ptr<class GameEngineCollision> ForWardCollision = nullptr;
 	std::shared_ptr<class GameEngineCollision> ColValue = nullptr;
 
-	std::shared_ptr<class GameEngineCollision> MonsterAttackCollision = nullptr;
+	std::shared_ptr<class AttackCollision> MonsterAttackCollision = nullptr;
 
 	GameEngineFSM EnemyFSM;
 

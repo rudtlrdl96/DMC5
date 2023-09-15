@@ -4,8 +4,9 @@
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/GameEngineFBXAnimation.h>
 #include <GameEngineCore/GameEngineCollision.h>
-//#include <GameEngineCore/GameEngineLevel.h>
 
+#include "AttackCollision.h"
+#include "BasePlayerActor.h"
 #include "NetworkManager.h"
 #include "AnimationEvent.h"
 
@@ -38,8 +39,10 @@ void Enemy_HellCaina::Start()
 	PhysXCapsule->GetDynamic()->setLinearDamping(1.0f);
 	PhysXCapsule->SetWorldPosition({ 0, 100, 0 });
 
-	MonsterAttackCollision = CreateComponent<GameEngineCollision>(CollisionOrder::EnemyAttack);
+	MonsterAttackCollision = CreateComponent<AttackCollision>(CollisionOrder::EnemyAttack);
+	MonsterAttackCollision->SetAttackData(DamageType::Light, 0);
 	MonsterAttackCollision->SetColType(ColType::AABBBOX3D);
+
 	MonsterCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
 	MonsterCollision->GetTransform()->SetLocalScale({ 80, 180, 70 });
 	MonsterCollision->GetTransform()->SetLocalPosition({ 0, 50, 0 });
@@ -54,6 +57,7 @@ void Enemy_HellCaina::Update(float _DeltaTime)
 {
 	//PhysXCapsule->SetLinearVelocityZero();
 	EnemyFSM.Update(_DeltaTime);
+	DamageColCheck();
 }
 
 void Enemy_HellCaina::EnemyMeshLoad()
@@ -148,11 +152,81 @@ void Enemy_HellCaina::EnemyAnimationLoad()
 	//
 }
 
+void Enemy_HellCaina::DamageColCheck()
+{
+	std::shared_ptr<GameEngineCollision> Col = MonsterCollision->Collision(CollisionOrder::PlayerAttack);
+	if (nullptr == Col) { return; }
+
+	std::shared_ptr<AttackCollision> AttackCol = std::dynamic_pointer_cast<AttackCollision>(Col);
+	if (nullptr == AttackCol) { return; }
+
+	LightDamage();
+
+	switch (AttackCol->GetDamageType())
+	{
+	case DamageType::None:
+		break;
+	case DamageType::Light:
+		LightDamage();
+		break;
+	case DamageType::Medium:
+		break;
+	case DamageType::Heavy:
+		break;
+	case DamageType::Air:
+		break;
+	case DamageType::Snatch:
+		break;
+	case DamageType::Slam:
+		break;
+	case DamageType::Buster:
+		break;
+	case DamageType::Stun:
+		break;
+	default:
+		break;
+	}
+}
+
+void Enemy_HellCaina::LightDamage()
+{
+	AttackCheck = true;
+}
+
 void Enemy_HellCaina::ChangeState(int _StateValue)
 {
 	EnemyFSM.ChangeState(_StateValue);
 	EnemyFSMValue = _StateValue;
 	NetworkManager::SendFsmChangePacket(this, _StateValue);
+}
+
+void Enemy_HellCaina::TurnToPlayer(float _DeltaTime)
+{
+	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
+	BasePlayerActor* Player = Players[0];
+
+	float4 EnemyPosition = EnemyRenderer->GetTransform()->GetWorldPosition();
+	float4 PlayerPosition = Player->GetTransform()->GetWorldPosition();
+	PhysXCapsule->SetMove((PlayerPosition - EnemyPosition));
+	ColValue = ForWardCollision->Collision(CollisionOrder::RN_Player, ColType::OBBBOX3D, ColType::OBBBOX3D);
+
+	if (nullptr == ColValue)
+	{
+		float4 EnemyForWardVector = EnemyRenderer->GetTransform()->GetWorldForwardVector();
+		EnemyForWardVector.y = 0;
+		EnemyForWardVector.Normalize();
+
+		float4 ToPlayerVector = (PlayerPosition - EnemyPosition);
+		ToPlayerVector.y = 0;
+		ToPlayerVector.Normalize();
+
+		float4 CrossVector = float4::Cross3DReturnNormal(EnemyForWardVector, ToPlayerVector);
+		if (CrossVector.y < 0) { RotateValue = -2; }
+		else { RotateValue = 2; }
+
+		EnemyRenderer->GetTransform()->AddLocalRotation({ 0,RotateValue,0 });
+		ForWardCollision->GetTransform()->AddLocalRotation({ 0,RotateValue,0 });
+	}
 }
 
 bool Enemy_HellCaina::FloorCheck(float _Distance)
@@ -185,10 +259,15 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	},
 	.Update = [=](float _DeltaTime) {
 	WaitTime += _DeltaTime;
-	if (2.0f <= WaitTime)
+	if (3.0f <= WaitTime)
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Attack_DownUp);
-		//Death();
+		return;
+	}
+	if (true == AttackCheck)
+	{
+		AttackCheck = false;
+		ChangeState(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Front);
 		return;
 	}
 	if (true == GameEngineInput::IsDown("MonsterTest4"))

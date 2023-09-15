@@ -66,6 +66,8 @@ public:
 		EnemyFSM.ChangeState(_StateValue);
 	}
 
+	void LightDamage();
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -77,9 +79,12 @@ protected:
 
 private:
 	bool CheckBool = false;
+	bool AttackCheck = false;
 
 	void ChangeState(int _StateValue);	// FSM 변경 함수
 	bool FloorCheck(float _Distance); // 바닥체크
+	void TurnToPlayer(float _DeltaTime);
+	void DamageColCheck();
 
 	float WaitTime = 0.0f;
 	float FallCheckDelayTime = 0.0f;
