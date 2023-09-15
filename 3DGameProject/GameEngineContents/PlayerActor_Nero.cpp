@@ -697,6 +697,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboA1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_1,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0000_RQ_ComboA_1");
 				RotationToTarget(30.0f);
