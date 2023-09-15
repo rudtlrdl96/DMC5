@@ -209,6 +209,10 @@ void GameEngineShader::AutoCompile(GameEngineFile& _File)
 					{
 						Shader->Path = RenderPath::Deferred;
 					}
+					else if (std::string::npos != PixelFirst.find("AlphaOut"))
+					{
+						Shader->Path = RenderPath::Alpha;
+					}
 				}
 			}
 		}

@@ -58,6 +58,9 @@
     <FxCompile Include="CubemapMergeShader.hlsl">
       <Filter>Cubemap</Filter>
     </FxCompile>
+    <FxCompile Include="ContentsMesh_Alpha.hlsl">
+      <Filter>MeshShader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">

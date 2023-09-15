@@ -165,6 +165,7 @@ void GameEngineCamera::RenderTargetTextureLoad()
 	DefferdMergeUnit.ShaderResHelper.SetTexture("SpcLight", DeferredLightTarget->GetTexture(1));
 	DefferdMergeUnit.ShaderResHelper.SetTexture("AmbLight", DeferredLightTarget->GetTexture(2));
 
+
 	IsLoad = true;
 }
 
@@ -459,6 +460,7 @@ void GameEngineCamera::Render(float _DeltaTime)
 		CamTarget->Clear();
 		CamTarget->Merge(CamForwardTarget);
 		CamTarget->Merge(CamDeferrdTarget);
+		CamTarget->Merge(AllRenderTarget, 6);
 		CamTarget->Effect(_DeltaTime);
 	}
 }

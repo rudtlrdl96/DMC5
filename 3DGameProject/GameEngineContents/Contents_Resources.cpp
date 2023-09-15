@@ -303,6 +303,16 @@ void ContentsCore::ContentsResourcesCreate()
 	}
 
 	{
+		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("FBX_Alpha");
+
+		Material->SetVertexShader("ContentsMesh_Alpha.hlsl");
+		Material->SetRasterizer("Engine2DBase");
+		Material->SetPixelShader("ContentsMesh_Alpha.hlsl");
+		Material->SetBlendState("AlphaBlend");
+		Material->SetDepthState("EngineDepth");
+	}
+
+	{
 		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("FBX_Low");
 
 		Material->SetVertexShader("ContentsMesh_LowOption.hlsl");

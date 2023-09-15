@@ -42,10 +42,11 @@ void ShaderTestActor::Start()
 		GameEngineFBXMesh::Load(Path);
 	}
 	
-	TestRenderer->SetFBXMesh("SkyBox.fbx", "FBX");
-	TestRenderer->GetTransform()->SetLocalScale(float4(0.0003f, 0.0003f, 0.0003f));
+	TestRenderer->SetFBXMesh("Box_350x250x300_Mesh.fbx", "FBX_Alpha");
+	TestRenderer->GetTransform()->SetLocalScale(float4(0.3f, 0.3f, 0.3f));
 
 	TestRenderer->SetBaseColor(float4(3, 0, 0));
+	TestRenderer->NormalOff();
 
 	//TestRenderer = CreateComponent<EffectFBXRenderer>();
 

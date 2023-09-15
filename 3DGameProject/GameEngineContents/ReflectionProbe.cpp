@@ -91,7 +91,9 @@ void ReflectionProbe::Init(const std::string_view& _CaptureTextureName, const fl
 		GameEngineTexture::Load(Path + "\\" + _CaptureTextureName.data() + "_BOT.PNG");
 	}
 
-	if (nullptr == GameEngineTexture::Find(_CaptureTextureName))
+	ReflectionCubeTexture = GameEngineTexture::Find(_CaptureTextureName);
+
+	if (nullptr == ReflectionCubeTexture)
 	{
 		std::vector<std::shared_ptr<GameEngineTexture>> CubeTextures;
 		CubeTextures.reserve(6);

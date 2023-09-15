@@ -52,18 +52,12 @@ Output MeshTexture_VS(Input _Input)
 Texture2D DiffuseTexture : register(t0); // ALBM
 Texture2D NormalTexture : register(t1); // NRMR
 Texture2D SpecularTexture : register(t2); // ATOS
-TextureCube ReflectionTexture : register(t3); // Reflection Cubemap
 
 SamplerState ENGINEBASE : register(s0);
 
-
-struct DeferredOutPut
+struct AlphaOutPut
 {
-    float4 DifTarget : SV_Target1;
-    float4 PosTarget : SV_Target2;
-    float4 NorTarget : SV_Target3;
-    float4 MatTarget : SV_Target4;
-    float4 GlamTarget : SV_Target5;
+    float4 ResultColor : SV_Target6;
 };
 
 float GGX_Distribution(float3 normal, float3 halfVector, float roughness)
@@ -75,9 +69,9 @@ float GGX_Distribution(float3 normal, float3 halfVector, float roughness)
     return a / (3.14f * denominator * denominator);
 }
 
-DeferredOutPut MeshTexture_PS(Output _Input)
+AlphaOutPut MeshTexture_PS(Output _Input)
 {
-    DeferredOutPut Result = (DeferredOutPut)0;
+    AlphaOutPut Result = (AlphaOutPut)0;
     
     // rgb = 색상, a = metallicValue 
     float4 AlbmData = DiffuseTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
@@ -93,52 +87,75 @@ DeferredOutPut MeshTexture_PS(Output _Input)
         clip(-1);
     }
     
-    Result.PosTarget = _Input.VIEWPOSITION;    
-    Result.DifTarget = float4(AlbmData.r, AlbmData.g, AlbmData.b, AtosData.r);
-            
+    Result.ResultColor.rgb = AlbmData.rgb;
+        
+    float4 Normal = _Input.NORMAL;
+    
     if (0 != IsNormal)
     {
         // WorldView Normal    
-        Result.NorTarget = NormalTexCalculate(NrmrData, _Input.TEXCOORD, _Input.TANGENT, _Input.BINORMAL, _Input.NORMAL);
+        Normal = NormalTexCalculate(NrmrData, _Input.TEXCOORD, _Input.TANGENT, _Input.BINORMAL, _Input.NORMAL);
     }
-    else
-    {
-        Result.NorTarget = _Input.NORMAL;
-    }
-
-            
+    
     // 반사량 계산 공식 러프니스 값에 따라서 결정된다        
     float roughness = 1.0 - NrmrData.r; // smoothness는 러프니스 값입니다.
-    float3 reflection = reflect(AllLight[0].LightRevDir.xyz, Result.NorTarget.xyz); // 빛의 반사 방향 계산
-    float distribution = GGX_Distribution(Result.NorTarget.xyz, reflection, roughness); // 반사 분포 계산
+    float3 reflection = reflect(AllLight[0].LightRevDir.xyz, Normal.xyz); // 빛의 반사 방향 계산
+    float distribution = GGX_Distribution(Normal.xyz, reflection, roughness); // 반사 분포 계산
                                
-    // Eye        
-    float3 refvector = reflect(-normalize(AllLight[0].CameraView.xyz), Result.NorTarget.xyz);
-    refvector.yz = refvector.zy;
-        
-    float4 ReflectionColor = ReflectionTexture.Sample(ENGINEBASE, float3(_Input.TEXCOORD.x, _Input.TEXCOORD.y, -1));
-    
     // 계산된 메탈릭 값
     float metallic = saturate(AlbmData.a - distribution);
      
     // AlbmData -> metallicValue 값에 따라서 결정되어야 한다        
-    Result.DifTarget.rgb = lerp(AlbmData.rgb, float3(0, 0, 0), metallic);
-    Result.DifTarget.rgb += lerp(float3(0, 0, 0), ReflectionColor.rgb, metallic);
+    Result.ResultColor.rgb = lerp(AlbmData.rgb, float3(0, 0, 0), metallic);
     
-    Result.DifTarget.a = 1.0f;
-    Result.PosTarget.a = 1.0f;
-    Result.NorTarget.a = 1.0f;    
+    float4 DiffuseRatio = (float4) 0.0f;
+    float4 SpacularRatio = (float4) 0.0f;
+    float4 AmbientRatio = (float4) 0.0f;
     
-    Result.MatTarget.r = metallic;
-    Result.MatTarget.g = roughness;
-    Result.MatTarget.a = 1.0f;
-    
-    if(0 != BaseColor.r)
+    for (int i = 0; i < LightCount; ++i)
     {
-        Result.GlamTarget.rgb = AlbmData.rgb * BaseColor.r;
+        float LightPower = AllLight[i].LightPower;
+        
+        if (0 != AllLight[i].LightType)
+        {
+            float Distance = length(AllLight[i].ViewLightPos.xyz - Position.xyz);
+            
+            // 200
+            float FallOffStart = AllLight[i].LightRange * 0.2f;
+            
+            // 1000
+            float FallOffEnd = AllLight[i].LightRange;
+            
+            if (Distance > FallOffEnd)
+            {
+                continue;
+            }
+            
+            LightPower *= saturate((FallOffEnd - Distance) / (FallOffEnd - FallOffStart));
+        }
+        
+        if (2 == AllLight[i].LightType)
+        {
+            float3 LightVec = normalize(AllLight[i].ViewLightPos.xyz - Position.xyz);
+            float3 SpotCone = pow(saturate(dot(LightVec, normalize(AllLight[i].ViewLightDir.xyz))), AllLight[i].LightAngle);
+            
+            LightPower *= SpotCone;
+        }
+        
+        if (0.0f < LightPower)
+        {
+            // Diffuse Light 계산
+            DiffuseRatio.xyz += AllLight[i].LightColor.xyz * CalDiffuseLight(Position, Normal, AllLight[i]).xyz * LightPower;
+        
+            // Spacular Light 계산
+            SpacularRatio.xyz += AllLight[i].LightColor.xyz * CalSpacularLight(Position, Normal, AllLight[i]).xyz * (1.0f - metallic) * LightPower;
+        }
     }
     
-    Result.GlamTarget.a = 1.0f;
+    AmbientRatio = AllLight[0].AmbientLight;
+    
+    Result.ResultColor.rgb = Result.ResultColor.rgb * (DiffuseRatio.rgb + SpacularRatio.rgb + AmbientRatio.rgb);
+    Result.ResultColor.a = AtosData.r;
         
     return Result;
 }

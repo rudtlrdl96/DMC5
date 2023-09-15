@@ -497,8 +497,9 @@ void GameEngineCore::CoreResourcesInit()
 
 		// 와이어 프레임은 선으로 표현하는 겁니다. 
 		// Desc.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
-		Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
+		Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;
 		Desc.FrontCounterClockwise = FALSE;
+
 		std::shared_ptr<GameEngineRasterizer> Res = GameEngineRasterizer::Create("Engine2DBase", Desc);
 	}
 
