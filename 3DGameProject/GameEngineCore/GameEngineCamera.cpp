@@ -82,6 +82,7 @@ void GameEngineCamera::Start()
 		GameEngineInput::CreateKey("SpeedBoost", VK_LSHIFT);
 		GameEngineInput::CreateKey("FreeCameraSwitch", VK_F1);
 		GameEngineInput::CreateKey("ProjectionModeChange", VK_F2);
+		GameEngineInput::CreateKey("CollisionDebugSwitch", VK_F3);
 		GameEngineInput::AddIgnoreKeys("FreeCameraSwitch");
 	}
 

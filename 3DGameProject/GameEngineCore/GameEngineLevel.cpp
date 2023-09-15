@@ -247,7 +247,10 @@ void GameEngineLevel::ActorUpdate(float _DeltaTime)
 		MainCamera->FreeCameraSwitch();
 		// GameEngineInput::CreateKey("FreeCameraSwitch", VK_F1);
 	}
-
+	if (true == GameEngineInput::IsDown("CollisionDebugSwitch"))
+	{
+		IsDebugSwitch();
+	}
 	if (true == MainCamera->IsFreeCamera())
 	{
 		GameEnginePhysics::SetIsPhysics(true);
