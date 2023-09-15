@@ -46,9 +46,6 @@ public:
 	// Arm 상태 변환
 	virtual void SetArm(unsigned int _ArmValue) {}
 
-	virtual void Damage() {}
-
-	virtual void LightDamage() {}
 
 
 protected:
@@ -70,6 +67,8 @@ protected:
 	void LockOff();
 
 	bool FloorCheck();
+
+	virtual void LightDamage() {}
 
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
 	std::shared_ptr<class PlayerController> Controller = nullptr;

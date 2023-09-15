@@ -171,7 +171,7 @@ protected:
 	void NetLoad();
 	void Update_Character(float _DeltaTime) override;
 
-
+	void LightDamage() override;
 private:
 	std::shared_ptr<class EffectFBXRenderer> Renderer_EffectMesh = nullptr;
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer_Overture = nullptr;

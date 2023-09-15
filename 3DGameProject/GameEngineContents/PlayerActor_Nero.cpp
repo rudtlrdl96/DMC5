@@ -729,6 +729,7 @@ void PlayerActor_Nero::PlayerLoad()
 			},
 			.End = [=] {
 				WeaponIdle();
+				Col_Attack->Off();
 			}
 			});
 		// RedQueen ComboA2
@@ -3969,6 +3970,11 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 			AddBreaker(DevilBreaker::BusterArm);
 		}
 	}
+}
+
+void PlayerActor_Nero::LightDamage()
+{
+	ChangeState(FSM_State_Nero::Nero_Damage_Common);
 }
 
 bool PlayerActor_Nero::Input_SwordCheck(int AddState /*= 0*/)

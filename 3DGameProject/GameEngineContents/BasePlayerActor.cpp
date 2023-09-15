@@ -194,6 +194,7 @@ void BasePlayerActor::UserControllLoad()
 
 	Col_Attack = CreateComponent<AttackCollision>(CollisionOrder::PlayerAttack);
 	Col_Attack->Off();
+	Col_Attack->SetColType(ColType::AABBBOX3D);
 }
 
 void BasePlayerActor::Update_ProcessPacket()
