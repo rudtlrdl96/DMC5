@@ -152,7 +152,7 @@ void BasePlayerActor::Start()
 	PhysXCapsule = CreateComponent<PhysXCapsuleComponent>();
 	PhysXCapsule->SetPhysxMaterial(0.1f, 0.1f, 0.0f);
 	PhysXCapsule->IsMainPlayerCapsule();
-	PhysXCapsule->CreatePhysXActors({ 150, 100, 150 });
+	PhysXCapsule->CreatePhysXActors({ 100, 100, 150 });
 	PhysXCapsule->GetDynamic()->setMass(5.0f);
 }
 
@@ -183,8 +183,8 @@ void BasePlayerActor::UserControllLoad()
 	Col_Player->SetColType(ColType::AABBBOX3D);
 
 	Col_EnemyStepCheck = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
-	Col_EnemyStepCheck->GetTransform()->SetLocalPosition({ 0, -100, 0 });
-	Col_EnemyStepCheck->GetTransform()->SetLocalScale({ 200, 300, 200 });
+	Col_EnemyStepCheck->GetTransform()->SetLocalPosition({ 0, -70, 0 });
+	Col_EnemyStepCheck->GetTransform()->SetLocalScale({ 200, 125, 200 });
 	Col_EnemyStepCheck->SetColType(ColType::AABBBOX3D);
 	// 록온 용 충돌체
 	Col_LockOn = CreateComponent<GameEngineCollision>(CollisionOrder::PlayerLockOn);

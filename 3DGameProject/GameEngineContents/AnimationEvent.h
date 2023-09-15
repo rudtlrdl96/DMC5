@@ -6,6 +6,7 @@ class AnimLoadParameter
 public:
 	const std::string_view& Dir;
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer;
+	float4 RendererLocalPos = float4::ZERO;
 	std::vector<GameEngineObject*> Objects = std::vector<GameEngineObject*>();
 	std::vector<std::function<void()>> CallBacks_void = std::vector<std::function<void()>>();
 	std::vector<std::function<void(int)>> CallBacks_int = std::vector<std::function<void(int)>>();

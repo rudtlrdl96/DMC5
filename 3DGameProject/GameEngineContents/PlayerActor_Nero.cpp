@@ -120,7 +120,7 @@ void PlayerActor_Nero::PlayerLoad()
 		Renderer->SetSpecularTexture("pl0000_03_albm.texout.png", "pl0000_03_atos.texout.png");
 		Renderer->SetSpecularTexture("pl0010_03_albm.texout.png", "pl0010_03_atos.texout.png");
 
-		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer,
+		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer, .RendererLocalPos = {0, -75, 0},
 			.Objects = { (GameEngineObject*)Col_Attack.get() },
 			.CallBacks_void = {
 				std::bind([=] {InputCheck = true; }),
@@ -697,6 +697,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboA1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_1,
 			.Start = [=] {
+				PhysXCapsule->TurnOffGravity();
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0000_RQ_ComboA_1");
@@ -1111,7 +1112,7 @@ void PlayerActor_Nero::PlayerLoad()
 					return;
 				}
 				std::vector<std::shared_ptr<GameEngineCollision>> Cols;
-				if (true == Col_Player->CollisionAll(CollisionOrder::Enemy, Cols))
+				if (true == Col_EnemyStepCheck->CollisionAll(CollisionOrder::Enemy, Cols))
 				{
 					ChangeState(FSM_State_Nero::Nero_RQ_Skill_Stleak3);
 					return;
@@ -1396,7 +1397,7 @@ void PlayerActor_Nero::PlayerLoad()
 			.Update = [=](float _DeltaTime) {
 				if (true == Input_SpecialCheckFly()) { return; }
 				std::vector<std::shared_ptr<GameEngineCollision>> Cols;
-				if (true == Col_Player->CollisionAll(CollisionOrder::Enemy, Cols))
+				if (true == Col_EnemyStepCheck->CollisionAll(CollisionOrder::Enemy, Cols))
 				{
 					ChangeState(FSM_State_Nero::Nero_RQ_Skill_Caliber_2);
 					return;
