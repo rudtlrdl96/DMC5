@@ -3,17 +3,15 @@
 enum class DamageType
 {
 	None,
-	Common,
-	Combo,
-
+	Light,	// 약 공격
+	Medium,	// 중 공격
+	Heavy,	// 강 공격	(날리는 공격, Blown)
+	Air,	// 뛰우는 공격
+	Snatch,	// 그랩 공격
+	Slam,	// 공중에서 찍는 공격
+	Buster,	// 네로 잡기 공격
+	Stun,	// 경직
 };
-
-
-
-
-
-
-
 
 enum class MonsterDamageType
 {

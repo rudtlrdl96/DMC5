@@ -46,7 +46,9 @@ public:
 	// Arm 상태 변환
 	virtual void SetArm(unsigned int _ArmValue) {}
 
+	virtual void Damage() {}
 
+	virtual void LightDamage() {}
 
 
 protected:
@@ -84,6 +86,8 @@ protected:
 	unsigned int DTValue;
 	unsigned int ArmValue;
 private:
+	void DamageColCheck();
+
 	static std::vector<BasePlayerActor*> Players;
 
 	float4 Server_NextPos;

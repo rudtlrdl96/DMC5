@@ -179,20 +179,21 @@ void BasePlayerActor::UserControllLoad()
 	// 플레이어 충돌체
 	Col_Player = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
 	Col_Player->GetTransform()->SetLocalScale({ 100, 100, 100 });
-	Col_Player->SetColType(ColType::OBBBOX3D);
+	Col_Player->SetColType(ColType::AABBBOX3D);
 
 	Col_EnemyStepCheck = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
 	Col_EnemyStepCheck->GetTransform()->SetLocalPosition({ 0, -100, 0 });
 	Col_EnemyStepCheck->GetTransform()->SetLocalScale({ 200, 300, 200 });
-	Col_EnemyStepCheck->SetColType(ColType::OBBBOX3D);
+	Col_EnemyStepCheck->SetColType(ColType::AABBBOX3D);
 	// 록온 용 충돌체
 	Col_LockOn = CreateComponent<GameEngineCollision>(CollisionOrder::PlayerLockOn);
 	Col_LockOn->GetTransform()->SetParent(Camera->GetCameraTarget());
 	Col_LockOn->GetTransform()->SetLocalScale({ 2000, 5000, 5000 });
 	Col_LockOn->GetTransform()->SetLocalPosition({ 0, 0, 2500 });
-	Col_LockOn->SetColType(ColType::OBBBOX3D);
+	Col_LockOn->SetColType(ColType::AABBBOX3D);
 
 	Col_Attack = CreateComponent<AttackCollision>(CollisionOrder::PlayerAttack);
+	Col_Attack->Off();
 }
 
 void BasePlayerActor::Update_ProcessPacket()
@@ -250,6 +251,7 @@ void BasePlayerActor::Update_ProcessPacket()
 
 void BasePlayerActor::Update(float _DeltaTime)
 {
+	DamageColCheck();
 	Update_Character(_DeltaTime);
 
 	if (NetControllType::NetControll == GameEngineNetObject::GetControllType())
@@ -306,6 +308,41 @@ bool BasePlayerActor::FloorCheck()
 		|| GetLevel()->RayCast(GetTransform()->GetWorldPosition() + (GetTransform()->GetWorldLeftVector() * 75), float4::DOWN, Point, 100.0f)
 		|| GetLevel()->RayCast(GetTransform()->GetWorldPosition() + (GetTransform()->GetWorldRightVector() * 75), float4::DOWN, Point, 100.0f)
 		|| GetLevel()->RayCast(GetTransform()->GetWorldPosition() + (GetTransform()->GetWorldBackVector() * 75), float4::DOWN, Point, 100.0f);
+}
+
+void BasePlayerActor::DamageColCheck()
+{
+	std::shared_ptr<GameEngineCollision> Col = Col_Player->Collision(CollisionOrder::EnemyAttack);
+	if (nullptr == Col) { return; }
+
+	std::shared_ptr<AttackCollision> AttackCol = std::dynamic_pointer_cast<AttackCollision>(Col);
+	if (nullptr == AttackCol) { return; }
+
+	switch (AttackCol->GetDamageType())
+	{
+	case DamageType::None:
+		break;
+	case DamageType::Light:
+		LightDamage();
+		break;
+	case DamageType::Medium:
+		break;
+	case DamageType::Heavy:
+		break;
+	case DamageType::Air:
+		break;
+	case DamageType::Snatch:
+		break;
+	case DamageType::Slam:
+		break;
+	case DamageType::Buster:
+		break;
+	case DamageType::Stun:
+		break;
+	default:
+		break;
+	}
+
 }
 
 void BasePlayerActor::SetForce(float4 _Value)
