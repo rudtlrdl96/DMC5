@@ -252,16 +252,6 @@ void PhysXCapsuleComponent::SetPlayerStartPos(float4 _Pos)
 	RecentTransform = tmpPxTransform;
 }
 
-void PhysXCapsuleComponent::FreezeDynamic()
-{
-	m_pDynamic->putToSleep();
-}
-
-void PhysXCapsuleComponent::WakeUpDynamic()
-{
-	m_pDynamic->wakeUp();
-}
-
 void PhysXCapsuleComponent::ResetDynamic()
 {
 	float4 tmpQuat = float4{ 0.0f,0.0f,0.0f }.DegreeRotationToQuaternionReturn();

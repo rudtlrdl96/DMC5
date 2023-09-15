@@ -17,11 +17,6 @@ public:
 	PhysicsActor& operator=(const PhysicsActor& _Other) = delete;
 	PhysicsActor& operator=(PhysicsActor&& _Other) noexcept = delete;
 
-	//std::shared_ptr<PhysicsActor> GetPhysXComponent()
-	//{
-	//	return PhysXComponent;
-	//}
-
 	void ReleaseRigid()
 	{
 		if (m_pStatic != nullptr && m_pStatic->isReleasable())
@@ -57,6 +52,24 @@ public:
 	void Release()
 	{
 		PhysicsComponent.lock()->ReleaseRigid();
+	}
+
+	// 특정 행위를 가하지 않으면 sleep상태로 진입 (리소스 절약이라고 함)
+	void DynamicPutToSleep()
+	{
+		m_pDynamic->putToSleep();
+	}
+
+	// 원할때 시뮬 돌리게 하기
+	void DynamicWakeUp()
+	{
+		m_pDynamic->wakeUp();
+	}
+
+	// sleep 상태인지 체크
+	bool IsDynamicSleep()
+	{
+		return m_pDynamic->isSleeping();
 	}
 
 protected:

@@ -52,35 +52,19 @@ public:
 
 	void SetAirState(float _Power); // 몬스터용
 
-	//void SetSpeedLimitValue(float _Value)
-	//{
-	//	SpeedLimitValue = _Value;
-	//}
-
-	inline physx::PxVec3 GetLinearVelocity()
-	{
-		return m_pDynamic->getLinearVelocity();
-	}
-
-	float4 GetDynamicVelocity()
+	float4 GetLinearVelocity()
 	{
 		physx::PxVec3 Vec3 = m_pDynamic->getLinearVelocity();
 		return float4{ Vec3.x, Vec3.y, Vec3.z };
 	}
 
-	//플레이어 멈추는 함수
-	void FreezeDynamic();
-
-	//플레이어 멈추는거 푸는 함수
-	void WakeUpDynamic();
-
-	//Reset 함수
-	void ResetDynamic();
-
 	void SetLinearVelocityZero()
 	{
 		m_pDynamic->setLinearVelocity({ 0.0f, 0.0f, 0.0f });
 	}
+
+	//Reset 함수
+	void ResetDynamic();
 
 	inline void SetlockAxis()
 	{
@@ -92,7 +76,6 @@ public:
 		// 고정된 축을 해제
 		m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, false);
 		m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, false);
-
 		m_pDynamic->addForce(physx::PxVec3(0.0f, 0.01f, 0.0f), physx::PxForceMode::eIMPULSE);
 	}
 
@@ -152,8 +135,6 @@ public:
 	{
 		IsWallTouch = _Is;
 	}
-
-	//std::function<void()> _Function;
 
 protected:
 	void Start() override;

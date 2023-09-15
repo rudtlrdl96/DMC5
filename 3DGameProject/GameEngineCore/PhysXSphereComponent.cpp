@@ -114,17 +114,6 @@ void PhysXSphereComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPh
 	m_pScene->addActor(*m_pDynamic);
 }
 
-void PhysXSphereComponent::SetMoveSpeed(float4 _MoveSpeed)
-{
-	// RigidDynamic의 축을 고정하는 Flag -> 캐릭터가 쓰러지지 않고 서있을 수 있도록
-	// 무언가와 충돌해서 쓰러져야 할경우에는 setRigidDynamicLockFlag({flag}, false)로 flag를 해제해야함.
-	m_pDynamic->setRigidDynamicLockFlags(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X | physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y | physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z);
-
-	// 캐릭터의 방향을 힘으로 조절
-	m_pDynamic->addForce(physx::PxVec3(_MoveSpeed.x, _MoveSpeed.y, _MoveSpeed.z), physx::PxForceMode::eFORCE);
-}
-
-
 void PhysXSphereComponent::SetDynamicIdle()
 {
 	// 고정된 축을 해제
@@ -208,17 +197,6 @@ void PhysXSphereComponent::SetChangedRot(float4 _Rot)
 	const physx::PxTransform tmpTansform(m_pDynamic->getGlobalPose().p, tmpPxQuat);
 
 	m_pDynamic->setGlobalPose(tmpTansform);
-}
-
-//플레이어 멈추는 함수
-void PhysXSphereComponent::FreezeDynamic()
-{
-	m_pDynamic->putToSleep();
-}
-
-void PhysXSphereComponent::WakeUpDynamic()
-{
-	m_pDynamic->wakeUp();
 }
 
 void PhysXSphereComponent::ResetDynamic()

@@ -39,12 +39,6 @@ public:
 		return m_pDynamic->getMass();
 	}
 
-	inline void ReleaseRigidBody()
-	{
-		m_pDynamic->release();
-		this->Death();
-	}
-
 	inline void SetUpdateForce(physx::PxVec3 _UpdateForce)
 	{
 		AddUpdateForce = _UpdateForce;
