@@ -60,32 +60,32 @@ void FreeCameraActor::Update(float _DeltaTime)
 
 	if (GameEngineInput::IsDown("FreeCam_LookLeft"))
 	{
-		GetTransform()->SetLocalPosition({ -1000, 0, 0 });
+		GetTransform()->SetLocalPosition({ -500, 100, 0 });
 		GetTransform()->SetLocalRotation({ 0, 90, 0 });
 	}
 	if (GameEngineInput::IsDown("FreeCam_LookRight"))
 	{
-		GetTransform()->SetLocalPosition({ 1000, 0, 0 });
+		GetTransform()->SetLocalPosition({ 500, 100, 0 });
 		GetTransform()->SetLocalRotation({ 0, -90, 0 });
 	}
 	if (GameEngineInput::IsDown("FreeCam_LookUp"))
 	{
-		GetTransform()->SetLocalPosition({ 0, 1000, 0 });
+		GetTransform()->SetLocalPosition({ 0, 500, 0 });
 		GetTransform()->SetLocalRotation({ 90, 0, 0 });
 	}
 	if (GameEngineInput::IsDown("FreeCam_LookDown"))
 	{
-		GetTransform()->SetLocalPosition({ 0, -1000, 0 });
+		GetTransform()->SetLocalPosition({ 0, -500, 0 });
 		GetTransform()->SetLocalRotation({ -90, 0, 0 });
 	}
 	if (GameEngineInput::IsDown("FreeCam_LookBack"))
 	{
-		GetTransform()->SetLocalPosition({ 0, 0, 1000 });
+		GetTransform()->SetLocalPosition({ 0, 100, 500 });
 		GetTransform()->SetLocalRotation({ 0, 180, 0 });
 	}
 	if (GameEngineInput::IsDown("FreeCam_LookFront"))
 	{
-		GetTransform()->SetLocalPosition({ 0, 0, -1000 });
+		GetTransform()->SetLocalPosition({ 0, 100, -500 });
 		GetTransform()->SetLocalRotation({ 0, 0, 0 });
 	}
 

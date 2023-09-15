@@ -178,7 +178,8 @@ void BasePlayerActor::UserControllLoad()
 
 	// 플레이어 충돌체
 	Col_Player = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
-	Col_Player->GetTransform()->SetLocalScale({ 100, 100, 100 });
+	Col_Player->GetTransform()->SetLocalPosition({ 0, 20, 0 });
+	Col_Player->GetTransform()->SetLocalScale({ 100, 200, 100 });
 	Col_Player->SetColType(ColType::AABBBOX3D);
 
 	Col_EnemyStepCheck = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
@@ -190,7 +191,7 @@ void BasePlayerActor::UserControllLoad()
 	Col_LockOn->GetTransform()->SetParent(Camera->GetCameraTarget());
 	Col_LockOn->GetTransform()->SetLocalScale({ 2000, 5000, 5000 });
 	Col_LockOn->GetTransform()->SetLocalPosition({ 0, 0, 2500 });
-	Col_LockOn->SetColType(ColType::AABBBOX3D);
+	Col_LockOn->SetColType(ColType::OBBBOX3D);
 
 	Col_Attack = CreateComponent<AttackCollision>(CollisionOrder::PlayerAttack);
 	Col_Attack->Off();
