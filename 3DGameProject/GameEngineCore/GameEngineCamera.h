@@ -67,11 +67,6 @@ public:
 		return AllRenderTarget;
 	}
 
-	std::shared_ptr<GameEngineRenderTarget> GetCubeRenderTarget()
-	{
-		return CubeRenderTarget;
-	}
-
 	inline float4x4 GetView()
 	{
 		return View;
@@ -160,6 +155,7 @@ private:
 
 	void PushRenderer(std::shared_ptr<class GameEngineRenderer> _Render);
 	void PushRenderUnit(std::shared_ptr<GameEngineRenderUnit> _Unit, RenderPath _Path = RenderPath::None);
+	void PopRenderUnit(std::shared_ptr<GameEngineRenderUnit> _Unit, RenderPath _Path = RenderPath::None);
 
 	void Release();
 
@@ -168,13 +164,14 @@ private:
 	std::shared_ptr<class GameEngineRenderTarget> CamDeferrdTarget;
 	std::shared_ptr<class GameEngineRenderTarget> CamAlphaTarget;
 	std::shared_ptr<class GameEngineRenderTarget> AllRenderTarget;
-	std::shared_ptr<class GameEngineRenderTarget> CubeRenderTarget;
+	std::shared_ptr<class GameEngineRenderTarget> AlphaRenderTarget;
 
 	// 빛계산의 결과물을 받기 위한 타겟.
 	std::shared_ptr<class GameEngineRenderTarget> DeferredLightTarget;
 
 	GameEngineRenderUnit CalLightUnit;
 	GameEngineRenderUnit DefferdMergeUnit;
+	GameEngineRenderUnit AlphaMergeUnit;
 
 	void FreeCameraSwitch();
 

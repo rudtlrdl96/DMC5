@@ -324,7 +324,7 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh(const st
 
 		if (0 == AnimationBoneMatrixs.size())
 		{
-			return RenderUnit;
+			return RenderUnit; 
 		}
 
 		// 링크를 걸어준것.
@@ -514,6 +514,25 @@ void GameEngineFBXRenderer::SetTexture(const std::string_view& _SettingName, std
 void GameEngineFBXRenderer::SetTexture(const std::string_view& _SettingName, const std::string_view& _ImageName)
 {
 	SetTexture(_SettingName, GameEngineTexture::Find(_ImageName));
+}
+
+void GameEngineFBXRenderer::SetMaterial(const std::string_view& _DeffuseTextureName, const std::string_view& _MaterialName, std::function<void(std::shared_ptr<GameEngineRenderUnit>)> _Setting)
+{
+	std::string UpperName = GameEngineString::ToUpper(_DeffuseTextureName);
+
+	for (size_t i = 0; i < Unit.size(); i++)
+	{
+		for (size_t j = 0; j < Unit[i].size(); j++)
+		{
+			std::string DiffuseTextureName = Unit[i][j]->ShaderResHelper.GetTextureSetter("DiffuseTexture")->Res->GetNameToString();
+
+			if (UpperName == DiffuseTextureName)
+			{
+				Unit[i][j]->SetMaterial(_MaterialName);
+				_Setting(Unit[i][j]);
+			}
+		}
+	}
 }
 
 void GameEngineFBXRenderer::SetDiffuseTexture(const std::string_view& _OldDiffuseTexture, const std::string_view& _NewsDiffuseTexture)

@@ -131,6 +131,22 @@ void GameEngineCore::CoreResourcesInit()
 		SamperData.MaxLOD = FLT_MAX;
 
 		GameEngineSampler::Create("WRAPSAMPLER", SamperData);
+	}	
+	
+	{
+		D3D11_SAMPLER_DESC SamperData = {};
+
+		SamperData.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_MIRROR;
+		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_MIRROR;
+		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+		SamperData.MipLODBias = 0.0f;
+		SamperData.MaxAnisotropy = 1;
+		SamperData.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+		SamperData.MinLOD = -FLT_MAX;
+		SamperData.MaxLOD = FLT_MAX;
+
+		GameEngineSampler::Create("CUBEMAPSAMPLER", SamperData);
 	}
 
 	// 기본 메쉬 생성, Rect
@@ -533,6 +549,19 @@ void GameEngineCore::CoreResourcesInit()
 
 		GameEngineRenderTarget::RenderTargetUnitInit();
 	}
+
+	{
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("AlphaMerge");
+
+		Pipe->SetVertexShader("MergeShader.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("MergeShader.hlsl");
+		Pipe->SetBlendState("MergeBlend");
+		Pipe->SetDepthState("EngineDepth");
+
+		GameEngineRenderTarget::RenderTargetUnitInit();
+	}
+
 	{
 		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("DebugMeshRender");
 

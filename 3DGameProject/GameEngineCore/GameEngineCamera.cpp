@@ -38,6 +38,7 @@ void GameEngineCamera::CaptureCubemap(const float4& _Pos, const float4& _Rot, co
 	CamDeferrdTarget->Clear();
 	CamAlphaTarget->Clear();
 	AllRenderTarget->Clear();
+	AlphaRenderTarget->Clear();
 
 	CameraTransformUpdate();
 	ViewPortSetting();
@@ -107,6 +108,7 @@ void GameEngineCamera::Start()
 	Height = ViewPortData.Height;
 
 	AllRenderTarget = GameEngineRenderTarget::Create();
+	AlphaRenderTarget = GameEngineRenderTarget::Create();
 	CamTarget = GameEngineRenderTarget::Create();
 	DeferredLightTarget = GameEngineRenderTarget::Create();
 	CamForwardTarget = GameEngineRenderTarget::Create();
@@ -133,6 +135,8 @@ void GameEngineCamera::RenderTargetTextureLoad()
 	AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 	AllRenderTarget->CreateDepthTexture();
 
+	AlphaRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	
 	CamTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 
 	DeferredLightTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 원래것, 디퓨즈 라이트
@@ -145,6 +149,7 @@ void GameEngineCamera::RenderTargetTextureLoad()
 	CamDeferrdTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 
 	CamAlphaTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	CamAlphaTarget->CreateDepthTexture();
 
 	//CubeRenderTarget->CreateCubeTexture();
 	//CubeRenderTarget->CreateCubeDepth();
@@ -166,6 +171,9 @@ void GameEngineCamera::RenderTargetTextureLoad()
 	DefferdMergeUnit.ShaderResHelper.SetTexture("SpcLight", DeferredLightTarget->GetTexture(1));
 	DefferdMergeUnit.ShaderResHelper.SetTexture("AmbLight", DeferredLightTarget->GetTexture(2));
 
+	AlphaMergeUnit.SetMesh("FullRect");
+	AlphaMergeUnit.SetMaterial("AlphaMerge");
+	AlphaMergeUnit.ShaderResHelper.SetTexture("DiffuseTex", CamAlphaTarget->GetTexture(0));
 
 	IsLoad = true;
 }
@@ -177,6 +185,7 @@ void GameEngineCamera::RenderTargetTextureRelease()
 		return;
 	}
 
+	AlphaMergeUnit.ShaderResHelper.AllResourcesRelease();
 	CalLightUnit.ShaderResHelper.AllResourcesRelease();
 	DefferdMergeUnit.ShaderResHelper.AllResourcesRelease();
 
@@ -186,7 +195,7 @@ void GameEngineCamera::RenderTargetTextureRelease()
 	CamDeferrdTarget->ReleaseTextures();
 	CamAlphaTarget->ReleaseTextures();
 	DeferredLightTarget->ReleaseTextures();
-	//CubeRenderTarget->ReleaseTextures();
+	AlphaRenderTarget->ReleaseTextures();
 
 	IsLoad = false;
 }
@@ -345,17 +354,19 @@ void GameEngineCamera::Render(float _DeltaTime)
 		}
 	}
 
-	AllRenderTarget->Setting();
 	DeferredLightTarget->Clear();
+	CamAlphaTarget->Clear();
 
 	{
 		for (std::pair<const RenderPath, std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>>& Path : Units)
 		{
-			if (Path.first == RenderPath::Forward)
+			if (Path.first == RenderPath::Alpha)
 			{
-				//AllRenderTarget->Setting();
-				//DeferredLightTarget->Setting();
-				int a = 0;
+				CamAlphaTarget->Setting();
+			}
+			else
+			{
+				AllRenderTarget->Setting();
 			}
 
 			std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>& UnitPath = Path.second;
@@ -461,7 +472,11 @@ void GameEngineCamera::Render(float _DeltaTime)
 		CamTarget->Clear();
 		CamTarget->Merge(CamForwardTarget);
 		CamTarget->Merge(CamDeferrdTarget);
-		CamTarget->Merge(AllRenderTarget, 6);
+
+		CamTarget->Setting();
+		AlphaMergeUnit.Render(0.0f);
+		AlphaMergeUnit.ShaderResHelper.AllResourcesReset();
+
 		CamTarget->Effect(_DeltaTime);
 	}
 }
@@ -533,6 +548,26 @@ void GameEngineCamera::PushRenderUnit(std::shared_ptr<GameEngineRenderUnit> _Uni
 	}
 
 	Units[Path][Order].push_back(_Unit);
+}
+
+void GameEngineCamera::PopRenderUnit(std::shared_ptr<GameEngineRenderUnit> _Unit, RenderPath _Path)
+{
+	if (nullptr == _Unit->GetRenderer())
+	{
+		MsgAssert("부모가 없는 랜더유니트입니다");
+		return;
+	}
+
+	int Order = _Unit->GetRenderer()->GetOrder();
+
+	RenderPath Path = _Unit->Material->GetPixelShader()->GetRenderPath();
+
+	if (_Path != RenderPath::None)
+	{
+		Path = _Path;
+	}
+
+	Units[Path][Order].remove(_Unit);
 }
 
 bool GameEngineCamera::IsView(const TransformData& _TransData)

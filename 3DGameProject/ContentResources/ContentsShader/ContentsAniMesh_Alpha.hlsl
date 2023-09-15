@@ -1,6 +1,7 @@
 #include "Transform.fx"
 #include "Light.fx"
 #include "RenderBaseValue.fx"
+#include "Animation.fx"
 
 struct Input
 {
@@ -24,13 +25,19 @@ struct Output
     float4 BINORMAL : BINORMAL;
 };
 
-Output MeshTexture_VS(Input _Input)
+Output MeshAniTexture_VS(Input _Input)
 {
     Output NewOutPut = (Output) 0;
     
     float4 InputPos = _Input.POSITION;
     InputPos.w = 1.0f;
-        
+    
+    if (IsAnimation != 0)
+    {
+        Skinning(InputPos, _Input.BLENDWEIGHT, _Input.BLENDINDICES, ArrAniMationMatrix);
+        InputPos.w = 1.0f;
+    }
+    
     NewOutPut.POSITION = mul(InputPos, WorldViewProjectionMatrix);
     NewOutPut.TEXCOORD = _Input.TEXCOORD;
     
@@ -71,7 +78,7 @@ float GGX_Distribution(float3 normal, float3 halfVector, float roughness)
 
 AlphaOutPut MeshTexture_PS(Output _Input)
 {
-    AlphaOutPut Result = (AlphaOutPut)0;
+    AlphaOutPut Result = (AlphaOutPut) 0;
     
     // rgb = »ö»ó, a = metallicValue 
     float4 AlbmData = DiffuseTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);

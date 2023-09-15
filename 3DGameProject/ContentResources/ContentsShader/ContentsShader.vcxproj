@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <FxCompile Include="ClipEffectMesh.hlsl" />
+    <FxCompile Include="ContentsAniMesh_Alpha.hlsl" />
     <FxCompile Include="ContentsAniMesh_LowOption.hlsl" />
     <FxCompile Include="ContentsMesh_Alpha.hlsl" />
     <FxCompile Include="ContentsMesh_LowOption.hlsl" />

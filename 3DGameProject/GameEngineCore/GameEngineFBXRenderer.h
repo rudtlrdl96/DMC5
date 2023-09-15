@@ -152,6 +152,9 @@ public:
 	void SetTexture(const std::string_view& _SettingName, std::shared_ptr<GameEngineTexture> _Texture);
 	void SetTexture(const std::string_view& _SettingName, const std::string_view& _ImageName);
 
+	// 해당 이름으로 DeffuseTexture를 사용하고 있는 랜더 유닛의 머티리얼을 변경합니다.
+	void SetMaterial(const std::string_view& _DeffuseTextureName, const std::string_view& _MaterialName, std::function<void(std::shared_ptr<GameEngineRenderUnit>)> _Setting);
+
 	// 모든 랜더 유닛을 탐색하며 DiffuseTexture 의 이름이 일치하는 유닛의 _DiffuseTexture를 세팅합니다.
 	// 반드시 DiffuseTexture가 먼저 세팅되어야 합니다
 	void SetDiffuseTexture(const std::string_view& _OldDiffuseTexture, const std::string_view& _NewsDiffuseTexture);
@@ -222,6 +225,16 @@ public:
 		return ResultBox;
 	}
 
+	inline std::shared_ptr<GameEngineFBXMesh> GetFBXMesh() const
+	{
+		return FBXMesh;
+	}
+
+	inline std::vector<float4x4> GetAnimationBoneMatrixs() const
+	{
+		return AnimationBoneMatrixs;
+	}
+
 protected:
 	// void Render(float _DeltaTime) override;
 	
@@ -233,7 +246,7 @@ private:
 
 	// 그게 불가능하다.
 	// 맨처음 세팅해준 메인 매쉬와완전히 연관되어 있는 매쉬여야만 가능하다.
-	std::shared_ptr<GameEngineFBXMesh> FBXMesh;
+	std::shared_ptr<GameEngineFBXMesh> FBXMesh = nullptr;
 
 	std::map<std::string, std::shared_ptr<GameEngineFBXAnimationInfo>> Animations;
 	std::shared_ptr<GameEngineFBXAnimationInfo> CurAnimation;

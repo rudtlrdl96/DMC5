@@ -63,9 +63,9 @@ void TestStageLevel::Update(float _DeltaTime)
 		TempActor->GetTransform()->SetLocalPosition(float4(0, 300, 0));
 
 		std::shared_ptr<ReflectionProbe> Reflect = TempActor->CreateComponent<ReflectionProbe>();
-		Reflect->Init("TestReflection");
+		Reflect->Init("TestReflection", float4(256, 256));
 
-		ReflectionTextureSetting(Reflect->GetReflectionCubeTexture(), TempActor->GetTransform()->GetWorldPosition(), float4(1000, 1000, 1000));
+		ReflectionTextureSetting(Reflect->GetReflectionCubeTexture(), TempActor->GetTransform()->GetWorldPosition(), float4(10000, 10000, 10000));
 
 	}
 

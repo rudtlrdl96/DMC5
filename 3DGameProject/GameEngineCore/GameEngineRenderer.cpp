@@ -48,6 +48,13 @@ void GameEngineRenderUnit::SetMesh(std::shared_ptr<GameEngineMesh> _Mesh)
 
 void GameEngineRenderUnit::SetMaterial(const std::string_view& _Name, RenderPath _Path /*= RenderPath::None*/)
 {
+	if (nullptr != GetRenderer() && nullptr != Material)
+	{
+		GetRenderer()->GetCamera()->PopRenderUnit(shared_from_this(), _Path);
+	}
+
+	ShaderResHelper.AllResourcesRelease();
+
 	Material = GameEngineMaterial::Find(_Name);
 
 	if (nullptr == Material)

@@ -38,6 +38,5 @@ protected:
 private:
 	void ClipSetting();	
 	void DrawEditor() override;
-
 };
 

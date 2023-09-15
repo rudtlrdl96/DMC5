@@ -55,6 +55,7 @@ Texture2D SpecularTexture : register(t2); // ATOS
 TextureCube ReflectionTexture : register(t3); // Reflection Cubemap
 
 SamplerState ENGINEBASE : register(s0);
+SamplerState CUBEMAPSAMPLER : register(s1);
 
 
 struct DeferredOutPut
@@ -113,10 +114,11 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     float distribution = GGX_Distribution(Result.NorTarget.xyz, reflection, roughness); // 반사 분포 계산
                                
     // Eye        
-    float3 refvector = reflect(-normalize(AllLight[0].CameraView.xyz), Result.NorTarget.xyz);
-    refvector.yz = refvector.zy;
+    float3 CameraEye = normalize(_Input.VIEWPOSITION - AllLight[0].CameraViewPosition);    
+    float3 refvector = normalize(reflect(CameraEye, Result.NorTarget.xyz));
+    //refvector.yz = refvector.zy;
         
-    float4 ReflectionColor = ReflectionTexture.Sample(ENGINEBASE, float3(_Input.TEXCOORD.x, _Input.TEXCOORD.y, -1));
+    float4 ReflectionColor = ReflectionTexture.Sample(CUBEMAPSAMPLER, refvector);
     
     // 계산된 메탈릭 값
     float metallic = saturate(AlbmData.a - distribution);

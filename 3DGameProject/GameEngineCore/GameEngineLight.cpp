@@ -44,8 +44,7 @@ void GameEngineLight::LightUpdate(GameEngineCamera* _Camera, float _DeltaTime)
 	LightDataValue.ViewLightDir = LightDataValue.LightDir * _Camera->GetView();
 	LightDataValue.ViewLightRevDir = -LightDataValue.ViewLightDir;
 	LightDataValue.CameraPosition = _Camera->GetTransform()->GetWorldPosition() * _Camera->GetView();
-	LightDataValue.CameraPosition = _Camera->GetTransform()->GetWorldForwardVector();
-
+	LightDataValue.CameraViewPosition = LightDataValue.CameraPosition * _Camera->GetTransform()->GetTransDataRef().WorldView;
 
 	LightDataValue.LightViewMatrix.LookToLH(
 		GetTransform()->GetWorldPosition(),

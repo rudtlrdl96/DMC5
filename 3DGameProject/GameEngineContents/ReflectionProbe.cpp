@@ -98,12 +98,12 @@ void ReflectionProbe::Init(const std::string_view& _CaptureTextureName, const fl
 		std::vector<std::shared_ptr<GameEngineTexture>> CubeTextures;
 		CubeTextures.reserve(6);
 
-		CubeTextures.push_back(GameEngineTexture::Find(_CaptureTextureName.data() + std::string("_FORWARD.PNG")));
-		CubeTextures.push_back(GameEngineTexture::Find(_CaptureTextureName.data() + std::string("_RIGHT.PNG")));
 		CubeTextures.push_back(GameEngineTexture::Find(_CaptureTextureName.data() + std::string("_LEFT.PNG")));
-		CubeTextures.push_back(GameEngineTexture::Find(_CaptureTextureName.data() + std::string("_BACK.PNG")));
+		CubeTextures.push_back(GameEngineTexture::Find(_CaptureTextureName.data() + std::string("_RIGHT.PNG")));
 		CubeTextures.push_back(GameEngineTexture::Find(_CaptureTextureName.data() + std::string("_TOP.PNG")));
 		CubeTextures.push_back(GameEngineTexture::Find(_CaptureTextureName.data() + std::string("_BOT.PNG")));
+		CubeTextures.push_back(GameEngineTexture::Find(_CaptureTextureName.data() + std::string("_BACK.PNG")));
+		CubeTextures.push_back(GameEngineTexture::Find(_CaptureTextureName.data() + std::string("_FORWARD.PNG")));
 
 		ReflectionCubeTexture = GameEngineTexture::Create(_CaptureTextureName, CubeTextures);
 	}
