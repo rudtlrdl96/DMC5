@@ -83,7 +83,7 @@ private:
 
 	void ChangeState(int _StateValue);	// FSM 변경 함수
 	void TurnToPlayer(float _DeltaTime);
-	void RotationToPlayer(float _DeltaTime);
+	void PlayerChase(float _DeltaTime);
 
 	float WaitTime = 0.0f;
 	float WalkTime = 0.0f;

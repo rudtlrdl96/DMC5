@@ -57,8 +57,6 @@ void Enemy_HellCaina::Update(float _DeltaTime)
 {
 	//PhysXCapsule->SetLinearVelocityZero();
 	DamageCollisionCheck();
-	CheckHeadingRotationValue();
-	RotationToPlayer(_DeltaTime);
 	EnemyFSM.Update(_DeltaTime);
 }
 
@@ -66,28 +64,19 @@ void Enemy_HellCaina::Update(float _DeltaTime)
 ///////////////////////////////////////////////// 움직임, 히트 관련 ///////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Enemy_HellCaina::RotationToPlayer(float _DeltaTime)
+void Enemy_HellCaina::PlayerChase(float _DeltaTime)
 {
-	RotationDelayTime += _DeltaTime;
-
-	if (5.0f >= RotationDelayTime)
-	{
-		return;
-	}
-	else
-	{
-		RotationDelayTime = 0.0f;
-	}
-
-	// 나중에 함수 분리해서 적절한 시간에 호출할 예정
 	switch (EnemyRotationValue)
 	{
 	case EnemyRotation::Forward:
-		return;
+		RotateValue = RotationToPlayerValue();
+		PhysXCapsule->AddWorldRotation({ 0, RotateValue, 0 });
+		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Start);
 		break;
 	case EnemyRotation::Left:
 		RotateValue = RotationToPlayerValue();
 		PhysXCapsule->AddWorldRotation({ 0, RotateValue, 0 });
+		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Start);
 		break;
 	case EnemyRotation::Left_90:
 		ChangeState(FSM_State_HellCaina::HellCaina_Turn_Left_90);
@@ -98,6 +87,7 @@ void Enemy_HellCaina::RotationToPlayer(float _DeltaTime)
 	case EnemyRotation::Right:
 		RotateValue = RotationToPlayerValue();
 		PhysXCapsule->AddWorldRotation({ 0, RotateValue, 0 });
+		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Start);
 		break;
 	case EnemyRotation::Right_90:
 		ChangeState(FSM_State_HellCaina::HellCaina_Turn_Right_90);
@@ -169,11 +159,12 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	},
 	.Update = [=](float _DeltaTime) {
 	WaitTime += _DeltaTime;
-	//if (3.0f <= WaitTime)
-	//{
-	//	ChangeState(FSM_State_HellCaina::HellCaina_Walk_Start);
-	//	return;
-	//}
+	if (2.0f <= WaitTime)
+	{
+		CheckHeadingRotationValue();
+		PlayerChase(_DeltaTime);
+		return;
+	}
 	},
 	.End = [=] {
 	WaitTime = 0.0f;
@@ -209,12 +200,11 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 걷기 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Walk_Start,
 	.Start = [=] {
-	PhysXCapsule->SetLinearVelocityZero();
-	MoveDir = GetTransform()->GetWorldForwardVector().NormalizeReturn();
 	EnemyRenderer->ChangeAnimation("em0000_walk_start");
 	},
 	.Update = [=](float _DeltaTime) {
 
+	MoveDir = GetTransform()->GetWorldForwardVector().NormalizeReturn();
 	PhysXCapsule->SetMove(MoveDir * 70.0f);
 
 	if (true == EnemyRenderer->IsAnimationEnd())
@@ -229,10 +219,8 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 걷기
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Walk_Loop,
 	.Start = [=] {
-
 	MoveDir = GetTransform()->GetWorldForwardVector().NormalizeReturn();
 	EnemyRenderer->ChangeAnimation("em0000_walk_loop");
-
 	},
 	.Update = [=](float _DeltaTime) {
 
