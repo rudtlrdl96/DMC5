@@ -14,23 +14,6 @@ GameEngineTime::GameEngineTime()
 GameEngineTime::~GameEngineTime() 
 {
 }
-//
-//void GameEngineTime::TimeCheckStart() 
-//{
-//	// 0월 0시 0분 0초
-//
-//	// 지금 이 함수가 실행됐을때 기준 시간부터 이 함수를 실행한 시점까지를 정수로 나타낸 숫자.
-//	// 컴퓨터가 잴수있는 그때까지 잰 시간.
-//	// 100이 나왔어요.
-//	// QueryPerformanceCounter(&Prev);
-//
-//	// 1초를 200으로 표현할수 있다.
-//
-//		//QueryPerformanceCounter()
-//
-//	// 이제부터 시간을 잴 준비를 할께
-//}
-
 
 void GameEngineTime::Reset()
 {

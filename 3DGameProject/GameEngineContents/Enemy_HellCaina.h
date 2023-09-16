@@ -81,15 +81,19 @@ private:
 	bool CheckBool = false;
 	bool AttackCheck = false;
 
+	void CollisionDelayTimeCheck(float _DeltaTime);   // 임시
 	void ChangeState(int _StateValue);	// FSM 변경 함수
 	void TurnToPlayer(float _DeltaTime);
 	void PlayerChase(float _DeltaTime);
 
+	float FallDistance = 0.0f;
 	float WaitTime = 0.0f;
 	float WalkTime = 0.0f;
 	float RotationDelayTime = 0.0f;
 	float FallCheckDelayTime = 0.0f;
+	float AttackDelayCheck = 0.0f;   // 임시
 
 	float4 MoveDir = float4::ZERO;
+	float4 PushDir = float4::ZERO;
 };
 
