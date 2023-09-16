@@ -497,6 +497,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Blown_Back,
 	.Start = [=] {
 	PushDir = GetTransform()->GetWorldBackVector().NormalizeReturn();
+	PushDir.RotaitonYDeg(RotateValue); // 1프레임 차이나기 때문에 한번 꺾어줘야함
 	PhysXCapsule->SetPush(PushDir * 100000.0f);
 	PhysXCapsule->SetPush({ 0.0f, 50000.0f, 0.0f});
 	EnemyRenderer->ChangeAnimation("em0000_blown_back");
