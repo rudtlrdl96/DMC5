@@ -57,6 +57,17 @@ enum class EnemyHitDir
 	Right,
 };
 
+enum class EnemyRotation
+{
+	Forward,
+	Left,
+	Left_90,
+	Left_180,
+	Right,
+	Right_90,
+	Right_180,
+};
+
 class BaseEnemyActor : public GameEngineActor, public GameEngineNetObject
 {
 	friend class EnemySpawnArea;
@@ -76,6 +87,7 @@ public:
 
 	// 몬스터 피격 함수(때렸을 때 호출해주시면 됩니다)
 	void MonsterHit(const EnemyHitData& _HitData);
+	void DamageColCheck();
 
 	// 현재 몬스터가 슈퍼아머 상태인지 반환합니다. 만약 슈퍼아머 상태라면 그랩, 잡기등의 공격에 면역이됩니다.
 	inline bool IsSuperArmor() const
@@ -130,9 +142,11 @@ protected:
 
 	//하위에서 설정해줘야하는 Data들=====================================================
 	//Type+Data
+	EnemyHitData HitData;
 	EnemyCode EnemyCodeValue = EnemyCode::None;
 	EnemyType EnemyTypeValue  = EnemyType::None;
 	EnemySize EnemySizeValue = EnemySize::None;
+	EnemyRotation EnemyRotationValue = EnemyRotation::Forward;
 	//HP
 	float EnemyHP = 0.0f;
 	//Recognize(인식범위)
@@ -157,11 +171,18 @@ protected:
 	void ChasePlayer(float _DeltaTime);
 	void SuperArmorOn();
 	void SuperArmorOff();
+	bool FloorCheck(float _Distance);
+
+	float4 CrossMonsterAndPlayer();			 // 플레이어와 몬스터 외적
+	float DotProductMonsterAndPlayer();      // 플레이어와 몬스터 내적
+	void CheckHeadingRotationValue();		 // 내적, 외적 후 어떤 식으로 회전할지 결정
+	float RotationToPlayerValue();			 // 몬스터가 플레이어에게 회전해야하는 정도
 
 	virtual void EnemyMeshLoad() = 0;
 	virtual void EnemyTypeLoad() = 0;
 	virtual void EnemyAnimationLoad() = 0;
 	virtual void EnemyCreateFSM() = 0;
+	virtual void DamageCollisionCheck() = 0;
 
 private:
 	void UserUpdate(float _DeltaTime);

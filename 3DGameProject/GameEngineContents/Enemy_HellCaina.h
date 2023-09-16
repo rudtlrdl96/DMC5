@@ -6,14 +6,14 @@ enum FSM_State_HellCaina
 	HellCaina_None,
 	HellCaina_Idle,           // em0000_Idle_01, 그냥 서있음
 
+	HellCaina_Walk_Start,
+	HellCaina_Walk_Loop,
+	HellCaina_Walk_Stop,
+
 	HellCaina_Turn_Left_90,   // 왼쪽 회전
 	HellCaina_Turn_Left_180,
 	HellCaina_Turn_Right_90,  // 오른쪽 회전
 	HellCaina_Turn_Right_180,
-
-	HellCaina_Walk_Start,
-	HellCaina_Walk_Loop,
-	HellCaina_Walk_Stop,
 
 	HellCaina_Standing_Damage_Weak_Front, // = 정면 약공격 히트
 	HellCaina_Standing_Damage_Weak_Back, // = 후면 약공격 히트
@@ -66,8 +66,6 @@ public:
 		EnemyFSM.ChangeState(_StateValue);
 	}
 
-	void LightDamage();
-
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -77,16 +75,21 @@ protected:
 	void EnemyAnimationLoad() override;
 	void EnemyCreateFSM() override;
 
+	void DamageCollisionCheck() override;
+
 private:
 	bool CheckBool = false;
 	bool AttackCheck = false;
 
 	void ChangeState(int _StateValue);	// FSM 변경 함수
-	bool FloorCheck(float _Distance); // 바닥체크
 	void TurnToPlayer(float _DeltaTime);
-	void DamageColCheck();
+	void RotationToPlayer(float _DeltaTime);
 
 	float WaitTime = 0.0f;
+	float WalkTime = 0.0f;
+	float RotationDelayTime = 0.0f;
 	float FallCheckDelayTime = 0.0f;
+
+	float4 MoveDir = float4::ZERO;
 };
 

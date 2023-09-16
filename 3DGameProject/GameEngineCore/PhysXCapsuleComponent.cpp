@@ -175,21 +175,20 @@ void PhysXCapsuleComponent::SetWorldRotation(float4 _Value)
 	m_pDynamic->setGlobalPose(tmpTansform);
 }
 
-//void PhysXCapsuleComponent::SpeedLimit()
-//{
-	//physx::PxVec3 Velo = m_pDynamic->getLinearVelocity();
-	//physx::PxVec2 Velo2D(Velo.x, Velo.z);
+void PhysXCapsuleComponent::AddWorldRotation(float4 _Value)
+{
+	float4 AddRptation = _Value;
+	physx::PxQuat CurQuat = m_pDynamic->getGlobalPose().q;
+	float4 CurQuatToFloat4 = { CurQuat.x , CurQuat.y, CurQuat.z, CurQuat.w };
+	float4 CurRotation = CurQuatToFloat4.QuaternionToEulerDeg();
+	float4 ResultRotation = { CurRotation.x + AddRptation.x, CurRotation.y + AddRptation.y, CurRotation.z + AddRptation.z, CurRotation.w + AddRptation.w };
 
-	//if (Velo2D.magnitude() > SpeedLimitValue)
-	//{
-	//	Velo2D.normalize();
-	//	Velo2D *= SpeedLimitValue;
-	//	Velo.x = Velo2D.x;
-	//	Velo.z = Velo2D.y;
+	float4 ResultsQuat = ResultRotation.DegreeRotationToQuaternionReturn();
+	const physx::PxQuat tmpPxQuat(ResultsQuat.x, ResultsQuat.y, ResultsQuat.z, ResultsQuat.w);
+	const physx::PxTransform tmpTansform(m_pDynamic->getGlobalPose().p, tmpPxQuat);
 
-	//	m_pDynamic->setLinearVelocity(Velo);
-	//}
-//}
+	m_pDynamic->setGlobalPose(tmpTansform);
+}
 
 void PhysXCapsuleComponent::SetAirState(float _Power)
 {

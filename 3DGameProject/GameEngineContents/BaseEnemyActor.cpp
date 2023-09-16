@@ -1,9 +1,11 @@
 #include "PrecompileHeader.h"
 #include "BaseEnemyActor.h"
+
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
-#include "EnemyActor_Normal.h"
+
 #include "ContentsEnum.h"
+#include "AttackCollision.h"
 #include "BasePlayerActor.h"
 
 BaseEnemyActor::BaseEnemyActor()
@@ -12,6 +14,18 @@ BaseEnemyActor::BaseEnemyActor()
 
 BaseEnemyActor::~BaseEnemyActor()
 {
+}
+
+bool BaseEnemyActor::FloorCheck(float _Distance)
+{
+	float4 StartPosision = this->GetTransform()->GetWorldPosition();
+	float4 Direction = float4::DOWN;
+	float4 Results = float4::ZERO; // 레이가 닿은 결과값 궁금하면 이거 사용
+	float CheckDistance = _Distance;
+
+	bool IsResults = this->GetLevel()->RayCast(StartPosision, float4::DOWN, Results, _Distance);
+
+	return IsResults;
 }
 
 void BaseEnemyActor::MonsterHit(const EnemyHitData& _HitData)
@@ -37,7 +51,7 @@ void BaseEnemyActor::MonsterHit(const EnemyHitData& _HitData)
 	}
 	case MonsterDamageType::Air:
 	{
-		EnemyFSM.ChangeState(EnemyState::M_Hit);		
+		//EnemyFSM.ChangeState(EnemyState::M_Hit);		
 		break;
 	}
 	case MonsterDamageType::Snatch:
@@ -310,4 +324,149 @@ void BaseEnemyActor::ChasePlayer(float _DeltaTime)
 			ForWardCollision->GetTransform()->AddLocalRotation({ 0,RotateValue,0 });
 		}
 	}
+}
+
+float4 BaseEnemyActor::CrossMonsterAndPlayer()
+{
+	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
+	BasePlayerActor* Player = Players[0];
+
+	if (nullptr == Player)
+	{
+		return float4::ZERO;
+	}
+
+	float4 EnemyPosition = this->GetTransform()->GetWorldPosition();
+	float4 PlayerPosition = Player->GetTransform()->GetWorldPosition();
+	float4 EnemyForWardVector = this->GetTransform()->GetWorldForwardVector();
+
+	EnemyForWardVector.y = 0;
+	EnemyForWardVector.Normalize();
+
+	float4 ToPlayerVector = (PlayerPosition - EnemyPosition);
+	ToPlayerVector.y = 0;
+	ToPlayerVector.Normalize();
+
+	float4 CrossResult = float4::Cross3DReturnNormal(EnemyForWardVector, ToPlayerVector);
+
+	return CrossResult;
+}
+
+float BaseEnemyActor::DotProductMonsterAndPlayer()
+{
+	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
+	BasePlayerActor* Player = Players[0];
+
+	if (nullptr == Player)
+	{
+		return 0.0f;
+	}
+
+	float4 EnemyPosition = this->GetTransform()->GetWorldPosition();
+	float4 PlayerPosition = Player->GetTransform()->GetWorldPosition();
+	float4 EnemyForWardVector = this->GetTransform()->GetWorldForwardVector();
+
+	EnemyForWardVector.y = 0;
+	EnemyForWardVector.Normalize();
+
+	float4 ToPlayerVector = (PlayerPosition - EnemyPosition);
+	ToPlayerVector.y = 0;
+	ToPlayerVector.Normalize();
+
+	float DotProductResult = float4::DotProduct3D(EnemyForWardVector, ToPlayerVector);
+
+	return DotProductResult;
+}
+
+void BaseEnemyActor::CheckHeadingRotationValue()
+{
+	float4 CrossResult = CrossMonsterAndPlayer();
+
+	if (float4::ZERO == CrossResult)
+	{
+		return;
+	}
+
+	float DotProductResult = DotProductMonsterAndPlayer();
+
+	if (0.0f == DotProductResult)
+	{
+		return;
+	}
+
+	if (0.95f <= DotProductResult)
+	{
+		EnemyRotationValue = EnemyRotation::Forward;
+	}
+	else if (CrossResult.y < 0)
+	{
+		if (0.25f > DotProductResult && -0.5f <= DotProductResult)
+		{
+			EnemyRotationValue = EnemyRotation::Left_90;
+		}
+		else if (-0.5f > DotProductResult && -1.0f <= DotProductResult)
+		{
+			EnemyRotationValue = EnemyRotation::Left_180;
+		}
+		else
+		{
+			EnemyRotationValue = EnemyRotation::Left;
+		}
+	}
+	else if (CrossResult.y > 0)
+	{
+		if (0.25f > DotProductResult && -0.5f <= DotProductResult)
+		{
+			EnemyRotationValue = EnemyRotation::Right_90;
+		}
+		else if (-0.5f > DotProductResult && -1.0f <= DotProductResult)
+		{
+			EnemyRotationValue = EnemyRotation::Right_180;
+		}
+		else
+		{
+			EnemyRotationValue = EnemyRotation::Right;
+		}
+	}
+	else
+	{
+		MsgAssert("회전의 내적과 외적이 몬가 잘못됨");
+	}
+}
+
+float BaseEnemyActor::RotationToPlayerValue()
+{
+	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
+	BasePlayerActor* Player = Players[0];
+
+	float RotationValue = 0.0f;
+
+	if (nullptr == Player)
+	{
+		return RotationValue;
+	}
+
+	float4 EnemyPosition = this->GetTransform()->GetWorldPosition();
+	float4 PlayerPosition = Player->GetTransform()->GetWorldPosition();
+	float4 EnemyForWardVector = this->GetTransform()->GetWorldForwardVector();
+
+	EnemyForWardVector.y = 0;
+	EnemyForWardVector.Normalize();
+
+	float4 ToPlayerVector = (PlayerPosition - EnemyPosition);
+	ToPlayerVector.y = 0;
+	ToPlayerVector.Normalize();
+
+	float4 CrossResult = CrossMonsterAndPlayer();
+
+	float4 Direct = PlayerPosition - EnemyPosition;
+	float4 RotationDirectNormal = Direct.NormalizeReturn();
+	RotationValue = float4::GetAngleVectorToVectorDeg(EnemyForWardVector, RotationDirectNormal);
+
+	if (CrossResult.y < 0)
+	{
+		RotationValue = -RotationValue;
+	}
+
+	return RotationValue;
 }

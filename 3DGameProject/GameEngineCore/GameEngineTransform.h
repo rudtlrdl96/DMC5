@@ -204,7 +204,6 @@ public:
 		SetWorldPosition(TransData.Position + _Value);
 	}
 
-
 	float4 GetWorldForwardVector()
 	{
 		return TransData.WorldMatrix.ArrVector[2].NormalizeReturn();

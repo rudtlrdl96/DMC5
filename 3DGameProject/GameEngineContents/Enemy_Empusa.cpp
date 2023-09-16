@@ -17,6 +17,11 @@ Enemy_Empusa::~Enemy_Empusa()
 {
 }
 
+void Enemy_Empusa::DamageCollisionCheck()
+{
+
+}
+
 void Enemy_Empusa::Start()
 {
 	BaseEnemyActor::Start();

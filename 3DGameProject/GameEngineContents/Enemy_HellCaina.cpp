@@ -5,10 +5,10 @@
 #include <GameEngineCore/GameEngineFBXAnimation.h>
 #include <GameEngineCore/GameEngineCollision.h>
 
-#include "AttackCollision.h"
-#include "BasePlayerActor.h"
 #include "NetworkManager.h"
 #include "AnimationEvent.h"
+#include "BasePlayerActor.h"
+#include "AttackCollision.h"
 
 Enemy_HellCaina::Enemy_HellCaina()
 {
@@ -56,103 +56,61 @@ void Enemy_HellCaina::Start()
 void Enemy_HellCaina::Update(float _DeltaTime)
 {
 	//PhysXCapsule->SetLinearVelocityZero();
+	DamageCollisionCheck();
+	CheckHeadingRotationValue();
+	RotationToPlayer(_DeltaTime);
 	EnemyFSM.Update(_DeltaTime);
-	DamageColCheck();
 }
 
-void Enemy_HellCaina::EnemyMeshLoad()
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////// 움직임, 히트 관련 ///////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Enemy_HellCaina::RotationToPlayer(float _DeltaTime)
 {
-	if (nullptr == GameEngineFBXMesh::Find("em0000.FBX"))
+	RotationDelayTime += _DeltaTime;
+
+	if (5.0f >= RotationDelayTime)
 	{
-		std::string Path = GameEnginePath::GetFileFullPath
-		(
-			"ContentResources",
-			{
-				"Character", "Enemy", "HellCaina", "mesh"
-			},
-			"em0000.FBX"
-		);
-		GameEngineFBXMesh::Load(Path);
+		return;
+	}
+	else
+	{
+		RotationDelayTime = 0.0f;
 	}
 
-	switch (GameEngineOption::GetOption("Shader"))
+	// 나중에 함수 분리해서 적절한 시간에 호출할 예정
+	switch (EnemyRotationValue)
 	{
-	case GameEngineOptionValue::Low:
-	{
-		EnemyRenderer->SetFBXMesh("em0000.fbx", "AniFBX_Low");
-	}
-	break;
-	case GameEngineOptionValue::High:
-	{
-		EnemyRenderer->SetFBXMesh("em0000.fbx", "AniFBX");
-	}
-	break;
+	case EnemyRotation::Forward:
+		return;
+		break;
+	case EnemyRotation::Left:
+		RotateValue = RotationToPlayerValue();
+		PhysXCapsule->AddWorldRotation({ 0, RotateValue, 0 });
+		break;
+	case EnemyRotation::Left_90:
+		ChangeState(FSM_State_HellCaina::HellCaina_Turn_Left_90);
+		break;
+	case EnemyRotation::Left_180:
+		ChangeState(FSM_State_HellCaina::HellCaina_Turn_Left_180);
+		break;
+	case EnemyRotation::Right:
+		RotateValue = RotationToPlayerValue();
+		PhysXCapsule->AddWorldRotation({ 0, RotateValue, 0 });
+		break;
+	case EnemyRotation::Right_90:
+		ChangeState(FSM_State_HellCaina::HellCaina_Turn_Right_90);
+		break;
+	case EnemyRotation::Right_180:
+		ChangeState(FSM_State_HellCaina::HellCaina_Turn_Right_180);
+		break;
 	default:
 		break;
 	}
-
-	EnemyRenderer->GetTransform()->SetLocalScale({ 0.8f , 0.8f , 0.8f });
 }
 
-void Enemy_HellCaina::EnemyTypeLoad()
-{
-	EnemyCodeValue = EnemyCode::HellCaina;
-	EnemyTypeValue = EnemyType::Normal;
-	EnemySizeValue = EnemySize::Small;
-
-	EnemyHP = 0;
-	RN_Range = float4::ZERO;
-	RN_Player = false;
-	MoveSpeed = 50.0f;
-}
-
-void Enemy_HellCaina::EnemyAnimationLoad()
-{
-	//Animation정보 경로를 찾아서 모든animation파일 로드
-	GameEngineDirectory NewDir;
-	NewDir.MoveParentToDirectory("ContentResources");
-	NewDir.Move("ContentResources");
-	NewDir.Move("Character");
-	NewDir.Move("Enemy");
-	NewDir.Move("HellCaina");
-	NewDir.Move("Animation");
-
-	AnimationEvent::LoadAll
-	(
-		{
-			.Dir = NewDir.GetFullPath().c_str(),
-			.Renderer = EnemyRenderer,
-			.Objects = {(GameEngineObject*)MonsterAttackCollision.get()},
-			.CallBacks_void =
-			{
-				std::bind([=] {CheckBool = true; }),
-			},
-			.CallBacks_int =
-			{
-				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
-			},
-			.CallBacks_float4 =
-			{
-
-			}
-		}
-	);
-
-	//NewDir.MoveParent();
-	//NewDir.Move("Animation");
-
-	//std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".FBX" });
-
-	//for (size_t i = 0; i < Files.size(); i++)
-	//{
-	//	std::string View = Files[i].GetFullPath().c_str();
-	//	GameEngineFBXAnimation::Load(Files[i].GetFullPath());
-	//	EnemyRenderer->CreateFBXAnimation(Files[i].GetFileName(), {.Inter = 0.0166f, .Loop = false});
-	//}
-	//
-}
-
-void Enemy_HellCaina::DamageColCheck()
+void Enemy_HellCaina::DamageCollisionCheck()
 {
 	std::shared_ptr<GameEngineCollision> Col = MonsterCollision->Collision(CollisionOrder::PlayerAttack);
 	if (nullptr == Col) { return; }
@@ -160,14 +118,12 @@ void Enemy_HellCaina::DamageColCheck()
 	std::shared_ptr<AttackCollision> AttackCol = std::dynamic_pointer_cast<AttackCollision>(Col);
 	if (nullptr == AttackCol) { return; }
 
-	LightDamage();
-
 	switch (AttackCol->GetDamageType())
 	{
 	case DamageType::None:
+		return;
 		break;
 	case DamageType::Light:
-		LightDamage();
 		break;
 	case DamageType::Medium:
 		break;
@@ -188,10 +144,9 @@ void Enemy_HellCaina::DamageColCheck()
 	}
 }
 
-void Enemy_HellCaina::LightDamage()
-{
-	AttackCheck = true;
-}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////     FSM     ///////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Enemy_HellCaina::ChangeState(int _StateValue)
 {
@@ -200,55 +155,10 @@ void Enemy_HellCaina::ChangeState(int _StateValue)
 	NetworkManager::SendFsmChangePacket(this, _StateValue);
 }
 
-void Enemy_HellCaina::TurnToPlayer(float _DeltaTime)
-{
-	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
-	BasePlayerActor* Player = Players[0];
-
-	float4 EnemyPosition = EnemyRenderer->GetTransform()->GetWorldPosition();
-	float4 PlayerPosition = Player->GetTransform()->GetWorldPosition();
-	PhysXCapsule->SetMove((PlayerPosition - EnemyPosition));
-	ColValue = ForWardCollision->Collision(CollisionOrder::RN_Player, ColType::OBBBOX3D, ColType::OBBBOX3D);
-
-	if (nullptr == ColValue)
-	{
-		float4 EnemyForWardVector = EnemyRenderer->GetTransform()->GetWorldForwardVector();
-		EnemyForWardVector.y = 0;
-		EnemyForWardVector.Normalize();
-
-		float4 ToPlayerVector = (PlayerPosition - EnemyPosition);
-		ToPlayerVector.y = 0;
-		ToPlayerVector.Normalize();
-
-		float4 CrossVector = float4::Cross3DReturnNormal(EnemyForWardVector, ToPlayerVector);
-		if (CrossVector.y < 0) { RotateValue = -2; }
-		else { RotateValue = 2; }
-
-		EnemyRenderer->GetTransform()->AddLocalRotation({ 0,RotateValue,0 });
-		ForWardCollision->GetTransform()->AddLocalRotation({ 0,RotateValue,0 });
-	}
-}
-
-bool Enemy_HellCaina::FloorCheck(float _Distance)
-{
-	float4 StartPosision = GetTransform()->GetWorldPosition();
-	float4 Direction = float4::DOWN;
-	float4 Results = float4::ZERO; // 레이가 닿은 결과값 궁금하면 이거 사용
-	float CheckDistance = _Distance;
-
-	bool IsResults = GetLevel()->RayCast(StartPosision, float4::DOWN, Results, _Distance);
-
-	return IsResults;
-		//|| GetLevel()->RayCast(GetTransform()->GetWorldPosition() + (GetTransform()->GetWorldForwardVector() * 75), float4::DOWN, Point, 100.0f)
-		//|| GetLevel()->RayCast(GetTransform()->GetWorldPosition() + (GetTransform()->GetWorldLeftVector() * 75), float4::DOWN, Point, 100.0f)
-		//|| GetLevel()->RayCast(GetTransform()->GetWorldPosition() + (GetTransform()->GetWorldRightVector() * 75), float4::DOWN, Point, 100.0f)
-		//|| GetLevel()->RayCast(GetTransform()->GetWorldPosition() + (GetTransform()->GetWorldBackVector() * 75), float4::DOWN, Point, 100.0f);
-}
-
 void Enemy_HellCaina::EnemyCreateFSM()
 {
 	/////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////   기본 행동   //////////////////////////////////////////
+	/////////////////////////////////     Idle     //////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Idle
@@ -261,28 +171,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	WaitTime += _DeltaTime;
 	if (3.0f <= WaitTime)
 	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Attack_DownUp);
-		return;
-	}
-	if (true == AttackCheck)
-	{
-		AttackCheck = false;
-		ChangeState(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Front);
-		return;
-	}
-	if (true == GameEngineInput::IsDown("MonsterTest4"))
-	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Front);
-		return;
-	}
-	if (true == GameEngineInput::IsDown("MonsterTest3"))
-	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Blown_Back);
-		return;
-	}
-	if (true == GameEngineInput::IsDown("MonsterTest"))
-	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Buster_Start);
+		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Start);
 		return;
 	}
 	},
@@ -310,6 +199,147 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 	},
 	.End = [=] {
+	}
+	});
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////      Move      //////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	// 걷기 시작
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Walk_Start,
+	.Start = [=] {
+	PhysXCapsule->SetLinearVelocityZero();
+	MoveDir = GetTransform()->GetWorldForwardVector().NormalizeReturn();
+	EnemyRenderer->ChangeAnimation("em0000_walk_start");
+	},
+	.Update = [=](float _DeltaTime) {
+
+	PhysXCapsule->SetMove(MoveDir * 70.0f);
+
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Loop);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+	});
+	// 걷기
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Walk_Loop,
+	.Start = [=] {
+
+	MoveDir = GetTransform()->GetWorldForwardVector().NormalizeReturn();
+	EnemyRenderer->ChangeAnimation("em0000_walk_loop");
+
+	},
+	.Update = [=](float _DeltaTime) {
+
+	WalkTime += _DeltaTime;
+
+	PhysXCapsule->SetMove(MoveDir * 100.0f);
+
+	if (2.f <= WalkTime)
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Stop);
+		return;
+	}
+	},
+	.End = [=] {
+	WalkTime = 0.0f;
+	}
+	});
+	// 걷기 끝
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Walk_Stop,
+	.Start = [=] {
+	MoveDir = GetTransform()->GetWorldForwardVector().NormalizeReturn();
+	EnemyRenderer->ChangeAnimation("em0000_walk_stop");
+	},
+	.Update = [=](float _DeltaTime) {
+
+	PhysXCapsule->SetMove(MoveDir * 50.0f);
+
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+	});
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////   Rotation   //////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	// 왼쪽 90도 회전
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Turn_Left_90,
+	.Start = [=] {
+	PhysXCapsule->SetLinearVelocityZero();
+	EnemyRenderer->ChangeAnimation("em0000_turn_left_90");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	PhysXCapsule->AddWorldRotation({ 0.f, -90.f, 0.f });
+	}
+	});
+	// 왼쪽 180도 회전
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Turn_Left_180,
+	.Start = [=] {
+	PhysXCapsule->SetLinearVelocityZero();
+	EnemyRenderer->ChangeAnimation("em0000_turn_left_180");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	PhysXCapsule->AddWorldRotation({ 0.f, -180.f, 0.f });
+	}
+	});
+	// 오른쪽 90도 회전
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Turn_Right_90,
+	.Start = [=] {
+	PhysXCapsule->SetLinearVelocityZero();
+	EnemyRenderer->ChangeAnimation("em0000_turn_right_90");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	PhysXCapsule->AddWorldRotation({ 0.f, 90.f, 0.f });
+	}
+	});
+	// 왼쪽 180도 회전
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Turn_Right_180,
+	.Start = [=] {
+	PhysXCapsule->SetLinearVelocityZero();
+	EnemyRenderer->ChangeAnimation("em0000_turn_right_180");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
 	}
 	});
 
@@ -609,4 +639,101 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	});
 
 	EnemyFSM.ChangeState(FSM_State_HellCaina::HellCaina_Idle);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////   Actor Init   ///////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Enemy_HellCaina::EnemyMeshLoad()
+{
+	if (nullptr == GameEngineFBXMesh::Find("em0000.FBX"))
+	{
+		std::string Path = GameEnginePath::GetFileFullPath
+		(
+			"ContentResources",
+			{
+				"Character", "Enemy", "HellCaina", "mesh"
+			},
+			"em0000.FBX"
+		);
+		GameEngineFBXMesh::Load(Path);
+	}
+
+	switch (GameEngineOption::GetOption("Shader"))
+	{
+	case GameEngineOptionValue::Low:
+	{
+		EnemyRenderer->SetFBXMesh("em0000.fbx", "AniFBX_Low");
+	}
+	break;
+	case GameEngineOptionValue::High:
+	{
+		EnemyRenderer->SetFBXMesh("em0000.fbx", "AniFBX");
+	}
+	break;
+	default:
+		break;
+	}
+
+	EnemyRenderer->GetTransform()->SetLocalScale({ 0.8f , 0.8f , 0.8f });
+}
+
+void Enemy_HellCaina::EnemyTypeLoad()
+{
+	EnemyCodeValue = EnemyCode::HellCaina;
+	EnemyTypeValue = EnemyType::Normal;
+	EnemySizeValue = EnemySize::Small;
+
+	EnemyHP = 0;
+	RN_Range = float4::ZERO;
+	RN_Player = false;
+	MoveSpeed = 50.0f;
+}
+
+void Enemy_HellCaina::EnemyAnimationLoad()
+{
+	//Animation정보 경로를 찾아서 모든animation파일 로드
+	GameEngineDirectory NewDir;
+	NewDir.MoveParentToDirectory("ContentResources");
+	NewDir.Move("ContentResources");
+	NewDir.Move("Character");
+	NewDir.Move("Enemy");
+	NewDir.Move("HellCaina");
+	NewDir.Move("Animation");
+
+	AnimationEvent::LoadAll
+	(
+		{
+			.Dir = NewDir.GetFullPath().c_str(),
+			.Renderer = EnemyRenderer,
+			.RendererLocalPos = { 0.0f, -45.0f, 0.0f },
+			.Objects = {(GameEngineObject*)MonsterAttackCollision.get()},
+			.CallBacks_void =
+			{
+				std::bind([=] {CheckBool = true; }),
+			},
+			.CallBacks_int =
+			{
+				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
+			},
+			.CallBacks_float4 =
+			{
+
+			}
+		}
+	);
+
+	//NewDir.MoveParent();
+	//NewDir.Move("Animation");
+
+	//std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".FBX" });
+
+	//for (size_t i = 0; i < Files.size(); i++)
+	//{
+	//	std::string View = Files[i].GetFullPath().c_str();
+	//	GameEngineFBXAnimation::Load(Files[i].GetFullPath());
+	//	EnemyRenderer->CreateFBXAnimation(Files[i].GetFileName(), {.Inter = 0.0166f, .Loop = false});
+	//}
+	//
 }

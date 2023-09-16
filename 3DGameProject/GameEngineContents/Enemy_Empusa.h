@@ -31,6 +31,8 @@ protected:
 	void EnemyTypeLoad() override;
 	void EnemyAnimationLoad() override;
 	void EnemyCreateFSM() override;
+	void DamageCollisionCheck() override;
+
 private:
 	bool CheckBool = false;
 
