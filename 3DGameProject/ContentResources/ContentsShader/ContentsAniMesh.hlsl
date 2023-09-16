@@ -104,7 +104,7 @@ DeferredOutPut MeshAniTexture_PS(Output _Input)
     if (0 != IsNormal)
     {
         // WorldView Normal    
-        Result.NorTarget = NormalTexCalculate(NrmrData, _Input.TEXCOORD, _Input.TANGENT, _Input.BINORMAL, _Input.NORMAL);
+        Result.NorTarget = NormalTexCalculate(NormalTexture, ENGINEBASE, _Input.TEXCOORD, _Input.TANGENT, _Input.BINORMAL, _Input.NORMAL);
     }
     else
     {

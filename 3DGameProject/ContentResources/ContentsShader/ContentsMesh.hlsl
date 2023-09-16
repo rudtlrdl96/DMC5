@@ -100,7 +100,7 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     if (0 != IsNormal)
     {
         // WorldView Normal    
-        Result.NorTarget = NormalTexCalculate(NrmrData, _Input.TEXCOORD, _Input.TANGENT, _Input.BINORMAL, _Input.NORMAL);
+        Result.NorTarget = NormalTexCalculate(NormalTexture, ENGINEBASE, _Input.TEXCOORD, _Input.TANGENT, _Input.BINORMAL, _Input.NORMAL);
     }
     else
     {
@@ -114,9 +114,16 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     float distribution = GGX_Distribution(Result.NorTarget.xyz, reflection, roughness); // 반사 분포 계산
                                
     // Eye        
-    float3 CameraEye = normalize(_Input.VIEWPOSITION - AllLight[0].CameraViewPosition);    
-    float3 refvector = normalize(reflect(CameraEye, Result.NorTarget.xyz));
-    //refvector.yz = refvector.zy;
+    
+    float3 CameraPos = AllLight[0].CameraViewPosition;
+    float3 CameraEye = normalize(_Input.VIEWPOSITION.xyz - CameraPos);
+    //CameraEye.x = -CameraEye.x;
+    
+    float3 refnormal = Result.NorTarget.xyz;
+    //refnormal.y = -refnormal.y;
+    
+    float3 refvector = normalize(-reflect(CameraEye, refnormal));
+    refvector.y = -refvector.y;
         
     float4 ReflectionColor = ReflectionTexture.Sample(CUBEMAPSAMPLER, refvector);
     
@@ -125,7 +132,7 @@ DeferredOutPut MeshTexture_PS(Output _Input)
      
     // AlbmData -> metallicValue 값에 따라서 결정되어야 한다        
     Result.DifTarget.rgb = lerp(AlbmData.rgb, float3(0, 0, 0), metallic);
-    Result.DifTarget.rgb += lerp(float3(0, 0, 0), ReflectionColor.rgb, metallic);
+    Result.DifTarget.rgb += lerp(float3(0, 0, 0), ReflectionColor.rgb * 0.5f, metallic);
     
     Result.DifTarget.a = 1.0f;
     Result.PosTarget.a = 1.0f;
