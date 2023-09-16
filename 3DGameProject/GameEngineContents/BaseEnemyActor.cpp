@@ -378,6 +378,43 @@ float BaseEnemyActor::DotProductMonsterAndPlayer()
 	return DotProductResult;
 }
 
+float BaseEnemyActor::RotationToPlayerValue()
+{
+	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
+	BasePlayerActor* Player = Players[0];
+
+	float RotationValue = 0.0f;
+
+	if (nullptr == Player)
+	{
+		return RotationValue;
+	}
+
+	float4 EnemyPosition = this->GetTransform()->GetWorldPosition();
+	float4 PlayerPosition = Player->GetTransform()->GetWorldPosition();
+	float4 EnemyForWardVector = this->GetTransform()->GetWorldForwardVector();
+
+	EnemyForWardVector.y = 0;
+	EnemyForWardVector.Normalize();
+
+	float4 ToPlayerVector = (PlayerPosition - EnemyPosition);
+	ToPlayerVector.y = 0;
+	ToPlayerVector.Normalize();
+
+	float4 CrossResult = CrossMonsterAndPlayer();
+
+	float4 Direct = PlayerPosition - EnemyPosition;
+	float4 RotationDirectNormal = Direct.NormalizeReturn();
+	RotationValue = float4::GetAngleVectorToVectorDeg(EnemyForWardVector, RotationDirectNormal);
+
+	if (CrossResult.y < 0)
+	{
+		RotationValue = -RotationValue;
+	}
+
+	return RotationValue;
+}
+
 void BaseEnemyActor::CheckHeadingRotationValue()
 {
 	float4 CrossResult = CrossMonsterAndPlayer();
@@ -432,41 +469,4 @@ void BaseEnemyActor::CheckHeadingRotationValue()
 	{
 		MsgAssert("회전의 내적과 외적이 몬가 잘못됨");
 	}
-}
-
-float BaseEnemyActor::RotationToPlayerValue()
-{
-	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
-	BasePlayerActor* Player = Players[0];
-
-	float RotationValue = 0.0f;
-
-	if (nullptr == Player)
-	{
-		return RotationValue;
-	}
-
-	float4 EnemyPosition = this->GetTransform()->GetWorldPosition();
-	float4 PlayerPosition = Player->GetTransform()->GetWorldPosition();
-	float4 EnemyForWardVector = this->GetTransform()->GetWorldForwardVector();
-
-	EnemyForWardVector.y = 0;
-	EnemyForWardVector.Normalize();
-
-	float4 ToPlayerVector = (PlayerPosition - EnemyPosition);
-	ToPlayerVector.y = 0;
-	ToPlayerVector.Normalize();
-
-	float4 CrossResult = CrossMonsterAndPlayer();
-
-	float4 Direct = PlayerPosition - EnemyPosition;
-	float4 RotationDirectNormal = Direct.NormalizeReturn();
-	RotationValue = float4::GetAngleVectorToVectorDeg(EnemyForWardVector, RotationDirectNormal);
-
-	if (CrossResult.y < 0)
-	{
-		RotationValue = -RotationValue;
-	}
-
-	return RotationValue;
 }

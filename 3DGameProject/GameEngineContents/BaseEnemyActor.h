@@ -174,9 +174,9 @@ protected:
 	bool FloorCheck(float _Distance);
 
 	float4 CrossMonsterAndPlayer();			 // 플레이어와 몬스터 외적
-	float DotProductMonsterAndPlayer();      // 플레이어와 몬스터 내적
+	float DotProductMonsterAndPlayer();      // 플레이어와 몬스터 내적 (그냥 내적)
+	float RotationToPlayerValue();			 // 플레이어와 몬스터 내적값 deg로 반환 (오른쪽 +, 왼쪽 -, 180도 까지)
 	void CheckHeadingRotationValue();		 // 내적, 외적 후 어떤 식으로 회전할지 결정
-	float RotationToPlayerValue();			 // 몬스터가 플레이어에게 회전해야하는 정도
 
 	virtual void EnemyMeshLoad() = 0;
 	virtual void EnemyTypeLoad() = 0;
