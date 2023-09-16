@@ -169,11 +169,11 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	},
 	.Update = [=](float _DeltaTime) {
 	WaitTime += _DeltaTime;
-	if (3.0f <= WaitTime)
-	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Start);
-		return;
-	}
+	//if (3.0f <= WaitTime)
+	//{
+	//	ChangeState(FSM_State_HellCaina::HellCaina_Walk_Start);
+	//	return;
+	//}
 	},
 	.End = [=] {
 	WaitTime = 0.0f;

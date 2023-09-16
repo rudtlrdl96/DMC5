@@ -387,24 +387,24 @@ void BaseEnemyActor::CheckHeadingRotationValue()
 		return;
 	}
 
-	float DotProductResult = DotProductMonsterAndPlayer();
+	float DotProductResult = RotationToPlayerValue();
 
 	if (0.0f == DotProductResult)
 	{
 		return;
 	}
 
-	if (0.95f <= DotProductResult)
+	if (0.0f <= DotProductResult && 15.0f >= DotProductResult)
 	{
 		EnemyRotationValue = EnemyRotation::Forward;
 	}
 	else if (CrossResult.y < 0)
 	{
-		if (0.25f > DotProductResult && -0.5f <= DotProductResult)
+		if (-50.0f > DotProductResult && -140.0f <= DotProductResult)
 		{
 			EnemyRotationValue = EnemyRotation::Left_90;
 		}
-		else if (-0.5f > DotProductResult && -1.0f <= DotProductResult)
+		else if (-140.0f > DotProductResult && -180.0f <= DotProductResult)
 		{
 			EnemyRotationValue = EnemyRotation::Left_180;
 		}
@@ -415,11 +415,11 @@ void BaseEnemyActor::CheckHeadingRotationValue()
 	}
 	else if (CrossResult.y > 0)
 	{
-		if (0.25f > DotProductResult && -0.5f <= DotProductResult)
+		if (50.0f < DotProductResult && 140.0f >= DotProductResult)
 		{
 			EnemyRotationValue = EnemyRotation::Right_90;
 		}
-		else if (-0.5f > DotProductResult && -1.0f <= DotProductResult)
+		else if (140.0f < DotProductResult && 180.0f >= DotProductResult)
 		{
 			EnemyRotationValue = EnemyRotation::Right_180;
 		}
