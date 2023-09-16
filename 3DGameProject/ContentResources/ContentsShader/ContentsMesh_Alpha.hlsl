@@ -94,7 +94,7 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     if (0 != IsNormal)
     {
         // WorldView Normal    
-        Normal = NormalTexCalculate(NrmrData, _Input.TEXCOORD, _Input.TANGENT, _Input.BINORMAL, _Input.NORMAL);
+        Normal = NormalTexCalculate(NormalTexture, ENGINEBASE, _Input.TEXCOORD, _Input.TANGENT, _Input.BINORMAL, _Input.NORMAL);
     }
     
     // 반사량 계산 공식 러프니스 값에 따라서 결정된다        

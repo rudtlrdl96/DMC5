@@ -62,7 +62,7 @@ LightOutPut DeferredCalLight_PS(Output _Input) : SV_Target0
     float4 Mat = MatTex.Sample(POINTWRAP, _Input.TEXCOORD.xy);
     float4 Gleam = GleamTex.Sample(POINTWRAP, _Input.TEXCOORD.xy);
             
-    if(0 == Normal.z)
+    if (0 == Position.z)
     {
         clip(-1);
     }
@@ -107,7 +107,7 @@ LightOutPut DeferredCalLight_PS(Output _Input) : SV_Target0
             DiffuseRatio.xyz += AllLight[i].LightColor.xyz * CalDiffuseLight(Position, Normal, AllLight[i]).xyz * LightPower;
         
             // Spacular Light °è»ê
-            SpacularRatio.xyz += AllLight[i].LightColor.xyz * CalSpacularLight(Position, Normal, AllLight[i]).xyz * (1.0f - Mat.r) * LightPower;
+            SpacularRatio.xyz += AllLight[i].LightColor.xyz * CalSpacularLight(Position, Normal, AllLight[i]).xyz * (1.0f - Mat.r) * LightPower * 0.5f;
         }        
     }
     
