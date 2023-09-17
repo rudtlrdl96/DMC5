@@ -26,21 +26,21 @@ const float4 float4::GREEN = { 0.0f, 1.0f, 0.0f, 1.0f };
 const float4 float4::WHITE = { 1.0f, 1.0f, 1.0f, 1.0f };
 const float4 float4::BLACK = { 0.0f, 0.0f, 0.0f, 1.0f };
 
-void float4::RotaitonXRad(float _Rad)
+void float4::RotationXRad(float _Rad)
 {
 	float4x4 Rot;
 	Rot.RotationXRad(_Rad);
 	*this *= Rot;
 }
 
-void float4::RotaitonYRad(float _Rad)
+void float4::RotationYRad(float _Rad)
 {
 	float4x4 Rot;
 	Rot.RotationYRad(_Rad);
 	*this *= Rot;
 }
 
-void float4::RotaitonZRad(float _Rad)
+void float4::RotationZRad(float _Rad)
 {
 	float4x4 Rot;
 	Rot.RotationZRad(_Rad);

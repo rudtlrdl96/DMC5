@@ -303,9 +303,9 @@ public:
 
 	}
 
-	void RotaitonXRad(float _Rad);
-	void RotaitonYRad(float _Rad);
-	void RotaitonZRad(float _Rad);
+	void RotationXRad(float _Rad);
+	void RotationYRad(float _Rad);
+	void RotationZRad(float _Rad);
 	float4 EulerDegToQuaternion();
 	float4 DegreeRotationToQuaternionReturn() const;
 	class float4x4 QuaternionToRotationMatrix();
@@ -444,40 +444,40 @@ public:
 	}
 
 
-	float4 RotaitonXDegReturn(float _Deg)
+	float4 RotationXDegReturn(float _Deg)
 	{
 		float4 ReturnValue = *this;
-		ReturnValue.RotaitonXRad(_Deg * GameEngineMath::DegToRad);
+		ReturnValue.RotationXRad(_Deg * GameEngineMath::DegToRad);
 		return ReturnValue;
 	}
 
-	float4 RotaitonYDegReturn(float _Deg)
+	float4 RotationYDegReturn(float _Deg)
 	{
 		float4 ReturnValue = *this;
-		ReturnValue.RotaitonYRad(_Deg * GameEngineMath::DegToRad);
+		ReturnValue.RotationYRad(_Deg * GameEngineMath::DegToRad);
 		return ReturnValue;
 	}
 
-	float4 RotaitonZDegReturn(float _Deg)
+	float4 RotationZDegReturn(float _Deg)
 	{
 		float4 ReturnValue = *this;
-		ReturnValue.RotaitonZRad(_Deg * GameEngineMath::DegToRad);
+		ReturnValue.RotationZRad(_Deg * GameEngineMath::DegToRad);
 		return ReturnValue;
 	}
 
-	void RotaitonXDeg(float _Deg)
+	void RotationXDeg(float _Deg)
 	{
-		RotaitonXRad(_Deg * GameEngineMath::DegToRad);
+		RotationXRad(_Deg * GameEngineMath::DegToRad);
 	}
 
-	void RotaitonYDeg(float _Deg)
+	void RotationYDeg(float _Deg)
 	{
-		RotaitonYRad(_Deg * GameEngineMath::DegToRad);
+		RotationYRad(_Deg * GameEngineMath::DegToRad);
 	}
 
-	void RotaitonZDeg(float _Deg)
+	void RotationZDeg(float _Deg)
 	{
-		RotaitonZRad(_Deg * GameEngineMath::DegToRad);
+		RotationZRad(_Deg * GameEngineMath::DegToRad);
 	}
 
 	float GetAnagleRadZ()

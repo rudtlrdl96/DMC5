@@ -349,18 +349,18 @@ void BasePlayerActor::DamageColCheck()
 
 void BasePlayerActor::SetForce(float4 _Value)
 {
-	float4 re = _Value.RotaitonYDegReturn(Rot.y);
+	float4 re = _Value.RotationYDegReturn(Rot.y);
 	PhysXCapsule->SetForce(re);
 }
 
 void BasePlayerActor::SetPush(float4 _Value)
 {
-	PhysXCapsule->SetPush(_Value.RotaitonYDegReturn(Rot.y));
+	PhysXCapsule->SetPush(_Value.RotationYDegReturn(Rot.y));
 }
 
 void BasePlayerActor::SetMove(float4 _Value)
 {
-	PhysXCapsule->SetMove(_Value.RotaitonYDegReturn(Rot.y));
+	PhysXCapsule->SetMove(_Value.RotationYDegReturn(Rot.y));
 }
 
 void BasePlayerActor::SetWorldPosition(float4 _Value)

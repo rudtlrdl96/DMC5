@@ -317,11 +317,11 @@ void BaseEnemyActor::ChasePlayer(float _DeltaTime)
 			ToPlayerVector.Normalize();
 
 			float4 CrossVector = float4::Cross3DReturnNormal(EnemyForWardVector, ToPlayerVector);
-			if (CrossVector.y < 0){	RotateValue = -2;}
-			else{RotateValue = 2;}
+			if (CrossVector.y < 0){	RotationValue = -2;}
+			else{RotationValue = 2;}
 
-			EnemyRenderer->GetTransform()->AddLocalRotation({ 0,RotateValue,0 });
-			ForWardCollision->GetTransform()->AddLocalRotation({ 0,RotateValue,0 });
+			EnemyRenderer->GetTransform()->AddLocalRotation({ 0,RotationValue,0 });
+			ForWardCollision->GetTransform()->AddLocalRotation({ 0,RotationValue,0 });
 		}
 	}
 }
@@ -469,4 +469,6 @@ void BaseEnemyActor::CheckHeadingRotationValue()
 	{
 		MsgAssert("회전의 내적과 외적이 몬가 잘못됨");
 	}
+
+	RotationValue = DotProductResult;
 }

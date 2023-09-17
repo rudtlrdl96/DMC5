@@ -167,7 +167,7 @@ protected:
 	std::function<void()> SuperArmorOn_Callback = nullptr;
 	std::function<void()> SuperArmorOff_Callback = nullptr;
 
-	float RotateValue = 0.0f;
+	float RotationValue = 0.0f;
 	void ChasePlayer(float _DeltaTime);
 	void SuperArmorOn();
 	void SuperArmorOff();
