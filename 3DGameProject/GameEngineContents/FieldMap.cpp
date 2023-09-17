@@ -55,6 +55,7 @@ std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, cons
 	for (size_t i = 0; i < FieldMapObjRef.size(); i++)
 	{
 		FieldMapObjRef[i] = FieldMapObject::CreateFieldMapObj(_Level, _FieldMapObjs[i].Type, _FieldMapObjs[i].ObjTransform);
+		FieldMapObjRef[i]->Off();
 	}
 
 	return Result;
@@ -129,11 +130,29 @@ void FieldMap::MapCulling()
 	for (size_t i = 0; i < RenderOnNode.size(); i++)
 	{
 		RenderOnNode[i].lock()->FieldMapRendererOn();
+		RenderOnNode[i].lock()->FieldMapObjOn();
 	}
 
 	for (size_t i = 0; i < RenderOffNode.size(); i++)
 	{
 		RenderOffNode[i].lock()->FieldMapRendererOff();
+		RenderOffNode[i].lock()->FieldMapObjOff();
+	}
+}
+
+void FieldMap::FieldMapObjOn()
+{
+	for (size_t i = 0; i < FieldMapObj.size(); i++)
+	{
+		FieldMapObj[i]->On();
+	}
+}
+
+void FieldMap::FieldMapObjOff()
+{
+	for (size_t i = 0; i < FieldMapObj.size(); i++)
+	{
+		FieldMapObj[i]->Off();
 	}
 }
 

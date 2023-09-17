@@ -50,6 +50,8 @@ private:
 
 	void FieldMapRendererOn();
 	void FieldMapRendererOff();
+	void FieldMapObjOn();
+	void FieldMapObjOff();
 
 	void MapCulling();
 };

@@ -108,8 +108,7 @@ void TestStageLevel::LevelChangeStart()
 			GameEngineFBXMesh::Load(File.GetFullPath());
 		}
 	}
-
-
+	
 	SetCamera({ 0,0,-500 });
 	CreateStage(AllStageDatas[0]);
 

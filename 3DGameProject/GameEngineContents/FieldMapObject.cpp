@@ -3,6 +3,7 @@
 
 #include "Fountain.h"
 #include <GameEngineCore/GameEngineFBXRenderer.h>
+#include <GameEngineCore/PhysXBoxComponent.h>
 
 FieldMapObject::FieldMapObject()
 {
@@ -37,6 +38,11 @@ void FieldMapObject::MapObj_SetFBXMesh(const std::string_view& _Name, const std:
 	{
 		FBXMesh->SetFBXMesh(_Name.data(), _Mat.data());
 	}
+
+	//PhysXBox = CreateComponent<PhysXBoxComponent>();
+	//physx::PxVec3 PxScale = { FBXMesh->GetMeshScale().x, FBXMesh->GetMeshScale().y, FBXMesh->GetMeshScale().z };
+	//PhysXBox->SetObstacleObject();
+	//PhysXBox->CreatePhysXActors(PxScale);
 }
 
 std::shared_ptr<FieldMapObject> FieldMapObject::CreateFieldMapObj(GameEngineLevel* _Level, FieldMapObjType _FieldMapObjType, const ObjTransformData& _ObjTransform)
