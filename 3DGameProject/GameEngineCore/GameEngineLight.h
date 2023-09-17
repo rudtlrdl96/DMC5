@@ -30,7 +30,6 @@ struct LightData
     float4 ViewLightDir;
     float4 ViewLightRevDir;
     float4 CameraPosition;
-    float4 CameraViewPosition;
     float ShadowTargetSizeX;
     float ShadowTargetSizeY;
     float LightNear;

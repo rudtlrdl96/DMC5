@@ -115,11 +115,7 @@ DeferredOutPut MeshAniTexture_PS(Output _Input)
     float roughness = 1.0 - NrmrData.r; // smoothness는 러프니스 값입니다.
     float3 reflection = reflect(AllLight[0].LightRevDir.xyz, Result.NorTarget.xyz); // 빛의 반사 방향 계산
     float distribution = GGX_Distribution(Result.NorTarget.xyz, reflection, roughness); // 반사 분포 계산
-    
-    float3 CameraEye = normalize(_Input.VIEWPOSITION - AllLight[0].CameraViewPosition);
-    float3 refvector = normalize(reflect(CameraEye, _Input.NORMAL.xyz));
-    //refvector.yz = refvector.zy;
-            
+                
     // 계산된 메탈릭 값
     float metallic = saturate(AlbmData.a - distribution);
      

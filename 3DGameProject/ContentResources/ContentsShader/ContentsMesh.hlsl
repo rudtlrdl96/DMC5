@@ -115,17 +115,16 @@ DeferredOutPut MeshTexture_PS(Output _Input)
                                
     // Eye        
     
-    float3 CameraPos = AllLight[0].CameraViewPosition;
-    float3 CameraEye = normalize(_Input.VIEWPOSITION.xyz - CameraPos);
-    //CameraEye.x = -CameraEye.x;
-    
-    float3 refnormal = Result.NorTarget.xyz;
-    //refnormal.y = -refnormal.y;
-    
-    float3 refvector = normalize(-reflect(CameraEye, refnormal));
-    refvector.y = -refvector.y;
+    float3 CameraPos = AllLight[0].CameraPosition;
+    float3 RefViewPos = _Input.VIEWPOSITION.xyz;
+    float3 CameraView = normalize(CameraPos - RefViewPos);    
         
-    float4 ReflectionColor = ReflectionTexture.Sample(CUBEMAPSAMPLER, refvector);
+    // 반사벡터
+    float3 refnormal = Result.NorTarget.xyz;
+    float3 refvector = normalize(2.0f * refnormal.xyz * dot(CameraView.xyz, refnormal.xyz) - CameraView.xyz);
+    refvector.y = -refvector.y;    
+    
+    float4 ReflectionColor = ReflectionTexture.Sample(CUBEMAPSAMPLER, -refvector);
     
     // 계산된 메탈릭 값
     float metallic = saturate(AlbmData.a - distribution);

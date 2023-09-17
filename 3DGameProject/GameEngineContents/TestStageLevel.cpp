@@ -60,7 +60,7 @@ void TestStageLevel::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsDown("RefTestKey"))
 	{
 		std::shared_ptr<GameEngineActor> TempActor = CreateActor<GameEngineActor>();
-		TempActor->GetTransform()->SetLocalPosition(float4(0, 300, 0));
+		TempActor->GetTransform()->SetLocalPosition(float4(-500, 300, 0));
 
 		std::shared_ptr<ReflectionProbe> Reflect = TempActor->CreateComponent<ReflectionProbe>();
 		Reflect->Init("TestReflection", float4(256, 256));

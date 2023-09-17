@@ -16,7 +16,6 @@ struct LightData
     float4 ViewLightDir;
     float4 ViewLightRevDir;
     float4 CameraPosition;
-    float4 CameraViewPosition;
     float ShadowTargetSizeX;
     float ShadowTargetSizeY;
     float LightNear;
@@ -80,7 +79,6 @@ float4 CalSpacularLight(float4 _Pos, float4 _Normal, LightData _Data)
     }
     
     // 반사벡터
-    // 
     float3 Reflection = normalize(2.0f * _Normal.xyz * dot(LightRevDir.xyz, _Normal.xyz) - LightRevDir.xyz); //  N
     
     // 눈이 어디있냐
