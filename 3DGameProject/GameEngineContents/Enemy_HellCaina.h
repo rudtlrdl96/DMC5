@@ -24,8 +24,8 @@ enum FSM_State_HellCaina
 	HellCaina_Walk_Left_Stop,   // em0000_walk_left_stop
 
 	// 회전
-	HellCaina_Navi_turn_left,  // em0000_navi_turn_left_90, 왼쪽 슬러프 회전
-	HellCaina_Navi_turn_Right, // em0000_navi_turn_right_90, 오른쪽 슬러프 회전
+	HellCaina_Navi_Turn_Left,  // em0000_navi_turn_left_90, 왼쪽 슬러프 회전
+	HellCaina_Navi_Turn_Right, // em0000_navi_turn_right_90, 오른쪽 슬러프 회전
 	HellCaina_Turn_Left_90,    // em0000_turn_left_90, 왼쪽 회전
 	HellCaina_Turn_Right_90,   // em0000_turn_right_90, 오른쪽 회전
 	HellCaina_Turn_Left_180,   // em0000_turn_left_180, 왼쪽 회전
@@ -122,10 +122,9 @@ private:
 	bool CheckBool = false;
 	bool AttackCheck = false;
 
-	void CollisionDelayTimeCheck(float _DeltaTime);   // 임시
-	void ChangeState(int _StateValue);	// FSM 변경 함수
-	void TurnToPlayer(float _DeltaTime);
 	void PlayerChase(float _DeltaTime);
+	void ChangeState(int _StateValue);
+	void CollisionDelayTimeCheck(float _DeltaTime);
 
 	float FallDistance = 0.0f;
 	float WaitTime = 0.0f;

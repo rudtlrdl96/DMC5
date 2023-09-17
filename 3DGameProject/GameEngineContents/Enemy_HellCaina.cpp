@@ -75,19 +75,13 @@ void Enemy_HellCaina::PlayerChase(float _DeltaTime)
 		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Start);
 		break;
 	case EnemyRotation::Left:
-		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Start);
-		break;
-	case EnemyRotation::Left_90:
-		ChangeState(FSM_State_HellCaina::HellCaina_Turn_Left_90);
+		ChangeState(FSM_State_HellCaina::HellCaina_Navi_Turn_Left);
 		break;
 	case EnemyRotation::Left_180:
 		ChangeState(FSM_State_HellCaina::HellCaina_Turn_Left_180);
 		break;
 	case EnemyRotation::Right:
-		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Start);
-		break;
-	case EnemyRotation::Right_90:
-		ChangeState(FSM_State_HellCaina::HellCaina_Turn_Right_90);
+		ChangeState(FSM_State_HellCaina::HellCaina_Navi_Turn_Right);
 		break;
 	case EnemyRotation::Right_180:
 		ChangeState(FSM_State_HellCaina::HellCaina_Turn_Right_180);
@@ -431,11 +425,15 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
 	// 왼쪽 슬러프 회전
-	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Navi_turn_left,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Navi_Turn_Left,
 	.Start = [=] {
+	SlerpCalculation();
 	EnemyRenderer->ChangeAnimation("em0000_navi_turn_left_90");
 	},
 	.Update = [=](float _DeltaTime) {
+	
+	SlerpTurn(_DeltaTime);
+
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Idle);
@@ -443,15 +441,19 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	SlerpTime = 0.0f;
 	}
 	});
 	// 오른쪽 슬러프 회전
-	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Navi_turn_Right,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Navi_Turn_Right,
 	.Start = [=] {
-	PhysXCapsule->SetLinearVelocityZero();
+	SlerpCalculation();
 	EnemyRenderer->ChangeAnimation("em0000_navi_turn_right_90");
 	},
 	.Update = [=](float _DeltaTime) {
+
+	SlerpTurn(_DeltaTime);
+
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Idle);
@@ -459,6 +461,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	SlerpTime = 0.0f;
 	}
 	});
 

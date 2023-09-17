@@ -177,7 +177,15 @@ protected:
 	float DotProductMonsterAndPlayer();      // 플레이어와 몬스터 내적 (그냥 내적)
 	float RotationToPlayerValue();			 // 플레이어와 몬스터 내적값 deg로 반환 (오른쪽 +, 왼쪽 -, 180도 까지)
 	void CheckHeadingRotationValue();		 // 내적, 외적 후 어떤 식으로 회전할지 결정
+	void SlerpCalculation();				 // slerp 조건 계산
+	void SlerpTurn(float _DeltaTime);        // slerp로 턴
 
+	//====================================================
+	// Slerp 계산에 사용
+	float4 CurRotation = float4::ZERO;
+	float4 GoalRotation = float4::ZERO;
+	float SlerpTime = 0.0f;
+	//====================================================
 	virtual void EnemyMeshLoad() = 0;
 	virtual void EnemyTypeLoad() = 0;
 	virtual void EnemyAnimationLoad() = 0;

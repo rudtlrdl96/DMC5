@@ -437,32 +437,24 @@ void BaseEnemyActor::CheckHeadingRotationValue()
 	}
 	else if (CrossResult.y < 0)
 	{
-		if (-50.0f > DotProductResult && -140.0f <= DotProductResult)
-		{
-			EnemyRotationValue = EnemyRotation::Left_90;
-		}
-		else if (-140.0f > DotProductResult && -180.0f <= DotProductResult)
-		{
-			EnemyRotationValue = EnemyRotation::Left_180;
-		}
-		else
+		if (-15.0f > DotProductResult && -165.0f <= DotProductResult)
 		{
 			EnemyRotationValue = EnemyRotation::Left;
+		}
+		else if (-165.0f > DotProductResult && -180.0f <= DotProductResult)
+		{
+			EnemyRotationValue = EnemyRotation::Left_180;
 		}
 	}
 	else if (CrossResult.y > 0)
 	{
-		if (50.0f < DotProductResult && 140.0f >= DotProductResult)
-		{
-			EnemyRotationValue = EnemyRotation::Right_90;
-		}
-		else if (140.0f < DotProductResult && 180.0f >= DotProductResult)
-		{
-			EnemyRotationValue = EnemyRotation::Right_180;
-		}
-		else
+		if (15.0f < DotProductResult && 165.0f >= DotProductResult)
 		{
 			EnemyRotationValue = EnemyRotation::Right;
+		}
+		else if (165.0f < DotProductResult && 180.0f >= DotProductResult)
+		{
+			EnemyRotationValue = EnemyRotation::Right_180;
 		}
 	}
 	else
@@ -471,4 +463,36 @@ void BaseEnemyActor::CheckHeadingRotationValue()
 	}
 
 	RotationValue = DotProductResult;
+}
+
+void BaseEnemyActor::SlerpCalculation()
+{
+	CurRotation = GetTransform()->GetWorldRotation();
+
+	if (CurRotation.y <= 0.0f)
+	{
+		CurRotation.y += 360.f;
+	}
+
+	float4 Value = float4{ 0.0f, RotationValue, 0.0f };
+
+	GoalRotation = CurRotation + Value;
+
+	if (GoalRotation.y <= 0.0f)
+	{
+		CurRotation.y += 360.f;
+		GoalRotation = CurRotation + Value;
+	}
+
+	CurRotation.x = 0.0f;
+	CurRotation.z = 0.0f;
+	GoalRotation.x = 0.0f;
+	GoalRotation.z = 0.0f;
+}
+
+void BaseEnemyActor::SlerpTurn(float _DeltaTime)
+{
+	SlerpTime += _DeltaTime;
+	float4 Value = float4::SLerpQuaternion(CurRotation, GoalRotation, SlerpTime);
+	PhysXCapsule->SetWorldRotation(Value);
 }
