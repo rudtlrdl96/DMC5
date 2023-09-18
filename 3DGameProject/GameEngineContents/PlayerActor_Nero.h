@@ -232,5 +232,7 @@ private:
 
 	void AddBreaker(DevilBreaker _Breaker);
 	void DestroyBreaker();
+
+	void ShootBR();
 };
 

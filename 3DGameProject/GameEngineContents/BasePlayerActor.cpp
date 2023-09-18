@@ -192,6 +192,7 @@ void BasePlayerActor::UserControllLoad()
 	Col_LockOn->GetTransform()->SetLocalScale({ 2000, 5000, 5000 });
 	Col_LockOn->GetTransform()->SetLocalPosition({ 0, 0, 2500 });
 	Col_LockOn->SetColType(ColType::OBBBOX3D);
+	Col_LockOn->Off();
 
 	Col_Attack = CreateComponent<AttackCollision>(CollisionOrder::PlayerAttack);
 	Col_Attack->Off();
@@ -274,6 +275,7 @@ void BasePlayerActor::LockOn()
 {
 	std::vector<std::shared_ptr<GameEngineCollision>> Cols;
 	std::shared_ptr<GameEngineCollision> MinCol = nullptr;
+	Col_LockOn->On();
 	if (true == Col_LockOn->CollisionAll(CollisionOrder::Enemy, Cols))
 	{
 		float Min = 9999;
@@ -288,11 +290,13 @@ void BasePlayerActor::LockOn()
 		}
 		if (MinCol == nullptr)
 		{
+			Col_LockOn->Off();
 			return;
 		}
 		LockOnEnemyTransform = MinCol->GetActor()->GetTransform();
 		Camera->SetTargetTranform(LockOnEnemyTransform);
 	}
+	Col_LockOn->Off();
 }
 
 void BasePlayerActor::LockOff()

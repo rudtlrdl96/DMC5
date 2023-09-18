@@ -9,6 +9,7 @@
 #include "PlayerController.h"
 #include "NetworkManager.h"
 #include "AttackCollision.h"
+#include "BaseEnemyActor.h"
 PlayerActor_Nero::~PlayerActor_Nero()
 {
 }
@@ -98,7 +99,7 @@ void PlayerActor_Nero::PlayerLoad()
 		Renderer = CreateComponent<GameEngineFBXRenderer>();
 		Renderer->GetTransform()->SetLocalRotation({ 0, 0, 0 });
 		Renderer->GetTransform()->SetLocalPosition({ 0, -75, 0 });
-		
+
 		//Renderer->SetBaseColor(float4(2, 0, 0));
 
 		switch (GameEngineOption::GetOption("Shader"))
@@ -463,7 +464,7 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 				if (true == Input_SpecialCheckFly()) { return; }
 				if (false == InputCheck) { return; }
-				
+
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly()) { return; }
 				if (true == Input_GunCheckFly()) { return; }
@@ -968,7 +969,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboD4
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboD_4,
 			.Start = [=] {
-				Col_Attack->SetAttackData(DamageType::Light, 50);
+				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_ComboD_4");
@@ -1006,6 +1007,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen HR
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_HR,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Air, 50);
 				PhysXCapsule->TurnOnGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
@@ -1034,6 +1036,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Shuffle
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Shuffle,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				InputCheck = false;
 				DelayCheck = false;
 				PhysXCapsule->SetLinearVelocityZero();
@@ -1172,6 +1175,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen AirComboA1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_1,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
 				Renderer->ChangeAnimation("pl0000_RQ_AT-Jump_1");
@@ -1204,6 +1208,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen AirComboA2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_2,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
 				RedQueenOn();
@@ -1244,6 +1249,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen AirComboA3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_3,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
 				RedQueenOn();
@@ -1276,6 +1282,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen AirComboB
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboB,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Air, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
 				RedQueenOn();
@@ -1720,6 +1727,8 @@ void PlayerActor_Nero::PlayerLoad()
 		// Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Shoot,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, 50);
+				ShootBR();
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				RotationToTarget();
@@ -1762,6 +1771,8 @@ void PlayerActor_Nero::PlayerLoad()
 		// Air Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_AirShoot,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, 50);
+				ShootBR();
 				BlueRoseOn();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -1910,95 +1921,95 @@ void PlayerActor_Nero::PlayerLoad()
 			}
 			});
 
-			// Nero_Gerbera_Front
-			FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Gerbera_Front,
-				.Start = [=] {
-					PhysXCapsule->TurnOffGravity();
-					PhysXCapsule->SetLinearVelocityZero();
-					InputCheck = false;
-					WeaponIdle();
-					Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Front", true);
-				},
-				.Update = [=](float _DeltaTime) {
-					if (Renderer->IsAnimationEnd())
-					{
-						ChangeState(FSM_State_Nero::Nero_Jump_Fly);
-					}
-					if (true == Input_SpecialCheckFly()) { return; }
-					if (false == InputCheck) { return; }
-					if (true == FloorCheck())
-					{
-						ChangeState(FSM_State_Nero::Nero_Landing);
-						return;
-					}
-					if (true == Input_JumpCheckFly()) { return; }
-					if (true == Input_SwordCheckFly()) { return; }
-					if (true == Input_GunCheckFly()) { return; }
-					if (true == Input_DevilBreakerCheckFly()) { return; }
-				},
-				.End = [=] {
+		// Nero_Gerbera_Front
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Gerbera_Front,
+			.Start = [=] {
+				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->SetLinearVelocityZero();
+				InputCheck = false;
+				WeaponIdle();
+				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Front", true);
+			},
+			.Update = [=](float _DeltaTime) {
+				if (Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
 				}
-				});
+				if (true == Input_SpecialCheckFly()) { return; }
+				if (false == InputCheck) { return; }
+				if (true == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Landing);
+					return;
+				}
+				if (true == Input_JumpCheckFly()) { return; }
+				if (true == Input_SwordCheckFly()) { return; }
+				if (true == Input_GunCheckFly()) { return; }
+				if (true == Input_DevilBreakerCheckFly()) { return; }
+			},
+			.End = [=] {
+			}
+			});
 
-			// Nero_Gerbera_Left
-			FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Gerbera_Left,
-				.Start = [=] {
-					PhysXCapsule->TurnOffGravity();
-					PhysXCapsule->SetLinearVelocityZero();
-					InputCheck = false;
-					WeaponIdle();
-					Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Left", true);
-				},
-				.Update = [=](float _DeltaTime) {
-					if (Renderer->IsAnimationEnd())
-					{
-						ChangeState(FSM_State_Nero::Nero_Jump_Fly);
-					}
-					if (true == Input_SpecialCheckFly()) { return; }
-					if (false == InputCheck) { return; }
-					if (true == FloorCheck())
-					{
-						ChangeState(FSM_State_Nero::Nero_Landing);
-						return;
-					}
-					if (true == Input_JumpCheckFly()) { return; }
-					if (true == Input_SwordCheckFly()) { return; }
-					if (true == Input_GunCheckFly()) { return; }
-					if (true == Input_DevilBreakerCheckFly()) { return; }
-				},
-				.End = [=] {
+		// Nero_Gerbera_Left
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Gerbera_Left,
+			.Start = [=] {
+				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->SetLinearVelocityZero();
+				InputCheck = false;
+				WeaponIdle();
+				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Left", true);
+			},
+			.Update = [=](float _DeltaTime) {
+				if (Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
 				}
-				});
+				if (true == Input_SpecialCheckFly()) { return; }
+				if (false == InputCheck) { return; }
+				if (true == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Landing);
+					return;
+				}
+				if (true == Input_JumpCheckFly()) { return; }
+				if (true == Input_SwordCheckFly()) { return; }
+				if (true == Input_GunCheckFly()) { return; }
+				if (true == Input_DevilBreakerCheckFly()) { return; }
+			},
+			.End = [=] {
+			}
+			});
 
-			// Nero_Gerbera_Right
-			FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Gerbera_Right,
-				.Start = [=] {
-					PhysXCapsule->TurnOffGravity();
-					PhysXCapsule->SetLinearVelocityZero();
-					InputCheck = false;
-					WeaponIdle();
-					Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Right", true);
-				},
-				.Update = [=](float _DeltaTime) {
-					if (Renderer->IsAnimationEnd())
-					{
-						ChangeState(FSM_State_Nero::Nero_Jump_Fly);
-					}
-					if (true == Input_SpecialCheckFly()) { return; }
-					if (false == InputCheck) { return; }
-					if (true == FloorCheck())
-					{
-						ChangeState(FSM_State_Nero::Nero_Landing);
-						return;
-					}
-					if (true == Input_JumpCheckFly()) { return; }
-					if (true == Input_SwordCheckFly()) { return; }
-					if (true == Input_GunCheckFly()) { return; }
-					if (true == Input_DevilBreakerCheckFly()) { return; }
-				},
-				.End = [=] {
+		// Nero_Gerbera_Right
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Gerbera_Right,
+			.Start = [=] {
+				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->SetLinearVelocityZero();
+				InputCheck = false;
+				WeaponIdle();
+				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Right", true);
+			},
+			.Update = [=](float _DeltaTime) {
+				if (Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
 				}
-				});
+				if (true == Input_SpecialCheckFly()) { return; }
+				if (false == InputCheck) { return; }
+				if (true == FloorCheck())
+				{
+					ChangeState(FSM_State_Nero::Nero_Landing);
+					return;
+				}
+				if (true == Input_JumpCheckFly()) { return; }
+				if (true == Input_SwordCheckFly()) { return; }
+				if (true == Input_GunCheckFly()) { return; }
+				if (true == Input_DevilBreakerCheckFly()) { return; }
+			},
+			.End = [=] {
+			}
+			});
 	}
 	// 버스터암
 	{}
@@ -2064,7 +2075,7 @@ void PlayerActor_Nero::PlayerLoad()
 					return;
 				}
 
-				
+
 				if (InputCheck == false) { return; }
 
 				if (true == Input_SpecialCheck()) { return; }
@@ -2125,7 +2136,7 @@ void PlayerActor_Nero::PlayerLoad()
 			.Start = [=] {
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
-				PhysXCapsule->TurnOffGravity	();
+				PhysXCapsule->TurnOffGravity();
 				Renderer->ChangeAnimation("pl0000_Buster_Air_Catch", true);
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
@@ -2636,7 +2647,7 @@ void PlayerActor_Nero::PlayerLoad()
 			}
 		},
 		.End = [=] {
-		}});
+		} });
 
 		// Provocation Air
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Provocation_Air,
@@ -3001,7 +3012,7 @@ void PlayerActor_Nero::NetLoad()
 		}
 		NewDir.MoveParent();
 		NewDir.Move("Animation");
-		
+
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".fbx" });
 		for (GameEngineFile File : Files)
 		{
@@ -3441,7 +3452,7 @@ void PlayerActor_Nero::NetLoad()
 				LookTarget();
 			},
 			.End = [=] {
-				
+
 			}
 			});
 		// LockOnFront
@@ -3960,7 +3971,7 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 		if (GameEngineInput::IsDown("Escape"))
 		{
 			SetWorldPosition({ 0, 100, 0 });
-			PhysXCapsule->SetWorldRotation({0, 0, 0});
+			PhysXCapsule->SetWorldRotation({ 0, 0, 0 });
 			ChangeState(Nero_Idle);
 		}
 		if (GameEngineInput::IsDown("SelectLevel_01"))
@@ -4541,6 +4552,64 @@ void PlayerActor_Nero::DestroyBreaker()
 	default:
 		break;
 	}
+}
+
+void PlayerActor_Nero::ShootBR()
+{
+	if (nullptr == LockOnEnemyTransform)
+	{
+		Col_Attack->GetTransform()->SetLocalPosition({0, 100, 1000});
+		Col_Attack->GetTransform()->SetLocalScale({ 50, 50, 2000 });
+	}
+	else
+	{
+		Col_Attack->GetTransform()->SetWorldPosition(LockOnEnemyTransform->GetWorldPosition());
+		Col_Attack->GetTransform()->SetLocalScale({ 50, 50, 50 });
+	}
+	Col_Attack->On();
+	std::shared_ptr<GameEngineCollision> Col = Col_Attack->Collision(CollisionOrder::Enemy, ColType::OBBBOX3D, ColType::OBBBOX3D);
+	if (nullptr == Col)
+	{
+		return;
+	}
+	BaseEnemyActor* EnemyActor = dynamic_cast<BaseEnemyActor*>(Col->GetActor());
+	if (nullptr == EnemyActor)
+	{
+		return;
+	}
+	//Col_Attack->Off();
+	// 
+	//float4 Origin;
+	//float4 Dir;
+	//float4 Point;
+	//Origin = GetTransform()->GetWorldPosition();
+	//Origin += {25, 50, 0};
+	//if (nullptr == LockOnEnemyTransform)
+	//{
+	//	Dir = GetTransform()->GetWorldForwardVector();
+	//}
+	//else
+	//{
+	//	Dir = LockOnEnemyTransform->GetWorldPosition() - Origin;
+	//}
+	//Dir.Normalize();
+	//if (true == GetLevel()->RayCast(Origin, Dir, Point, 9999.0f))
+	//{
+	//	Col_Attack->GetTransform()->SetWorldPosition(Point);
+	//	Col_Attack->On();
+	//	std::shared_ptr<GameEngineCollision> Col = Col_Attack->Collision(CollisionOrder::Enemy);
+	//	if (nullptr == Col)
+	//	{
+	//		return;
+	//	}
+	//	BaseEnemyActor* EnemyActor = dynamic_cast<BaseEnemyActor*>(Col->GetActor());
+	//	if (nullptr == EnemyActor)
+	//	{
+	//		return;
+	//	}
+	//	EnemyActor->DamageCollisionCheck();
+	//	Col_Attack->Off();
+	//}
 }
 
 /*
