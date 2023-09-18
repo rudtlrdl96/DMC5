@@ -1,8 +1,7 @@
 #pragma once
-#include "EnemyActor_Normal.h"
 
 // Ό³Έν :
-class Enemy_HellAntenora : public EnemyActor_Normal
+class Enemy_HellAntenora : public BaseEnemyActor
 {
 public:
 	// constrcuter destructer

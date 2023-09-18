@@ -1,9 +1,6 @@
 #pragma once
-#include "EnemyActor_Normal.h"
 
-using namespace std;
-
-class Enemy_Empusa : public EnemyActor_Normal
+class Enemy_Empusa : public BaseEnemyActor
 {
 public:
 	// constrcuter destructer
@@ -15,13 +12,9 @@ public:
 	Enemy_Empusa(Enemy_Empusa&& _Other) noexcept = delete;
 	Enemy_Empusa& operator=(const Enemy_Empusa& _Other) = delete;
 	Enemy_Empusa& operator=(Enemy_Empusa&& _Other) noexcept = delete;
+
 	void RN_Idle();
 	void Move(float _DeltaTime);
-
-	void SetFSMStateValue(int _StateValue) override
-	{
-		EnemyFSM.ChangeState(_StateValue);
-	}
 
 protected:
 	void Start() override;
@@ -78,7 +71,7 @@ private:
 	void Death_Update(float _DeltaTime);
 	void Death_Exit();
 
-	std::vector<string> Vec_AttackName;
+	std::vector<std::string> Vec_AttackName;
 	int AttackValue = 0;
 };
 

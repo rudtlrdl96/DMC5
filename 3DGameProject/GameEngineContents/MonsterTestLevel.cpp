@@ -44,15 +44,6 @@ void MonsterTestLevel::Update(float _DeltaTime)
 		IsMessage = true;
 		MsgTextBox("CurrentLevel is MonsterTest TestLevel");
 	}
-
-	if (true == GameEngineInput::IsDown("SelectLevel_02"))
-	{
-		EnemyHitData Datas;
-		Datas.Type = MonsterDamageType::Air;
-		Datas.AttackerPos = TestPlayer->GetTransform()->GetWorldPosition();
-		Datas.Damage = 30.0f;
-		TestMonster->MonsterHit(Datas);
-	}
 }
 
 void MonsterTestLevel::LevelChangeStart()

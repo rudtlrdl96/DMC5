@@ -1,8 +1,7 @@
 #pragma once
-#include "EnemyActor_Normal.h"
 
 // Ό³Έν :
-class Enemy_RedEmpusa : public EnemyActor_Normal
+class Enemy_RedEmpusa : public BaseEnemyActor
 {
 public:
 	// constrcuter destructer
@@ -14,11 +13,6 @@ public:
 	Enemy_RedEmpusa(Enemy_RedEmpusa&& _Other) noexcept = delete;
 	Enemy_RedEmpusa& operator=(const Enemy_RedEmpusa& _Other) = delete;
 	Enemy_RedEmpusa& operator=(Enemy_RedEmpusa&& _Other) noexcept = delete;
-
-	void SetFSMStateValue(int _StateValue) override
-	{
-		EnemyFSM.ChangeState(_StateValue);
-	}
 
 protected:
 	void Start() override;
