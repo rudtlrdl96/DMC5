@@ -52,7 +52,7 @@ void NetworkTestLevel::LevelChangeStart()
 	NetworkManager::LinkNetwork(Nero.get());
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
 
-	NetworkManager::CreateNetworkActor<Enemy_HellCaina>(Net_ActorType::Empusa);
+	NetworkManager::CreateNetworkActor<Enemy_HellCaina>(Net_ActorType::HellCaina, this);
 }
 
 void NetworkTestLevel::Update(float _DeltaTime)

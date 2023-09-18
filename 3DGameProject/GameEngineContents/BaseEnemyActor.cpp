@@ -78,6 +78,8 @@ bool BaseEnemyActor::FloorCheck(float _Distance)
 
 void BaseEnemyActor::Start()
 {
+	SetNetObjectType(Net_ActorType::HellCaina);
+
 	//Render생성
 	EnemyRenderer = CreateComponent<GameEngineFBXRenderer>();
 	//PhysX(충돌)

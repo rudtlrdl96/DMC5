@@ -429,27 +429,33 @@ void NetworkManager::SerializePackets(const std::vector<std::shared_ptr<GameEngi
 
 
 
-std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorType _ActorType, int _ObjectID /*= -1*/)
+std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorType _ActorType, class GameEngineLevel* _Level /*= nullptr*/, int _ObjectID /*= -1*/)
 {
 	if (nullptr == CurLevel)
 	{
 		MsgAssert("NetwortManager의 CurLevel 포인터가 nullptr입니다");
 	}
 
+	GameEngineLevel* CreateLevel = _Level;
+	if (nullptr == CreateLevel)
+	{
+		CreateLevel = CurLevel;
+	}
+
 	std::shared_ptr<GameEngineNetObject> NetObject = nullptr;
 	switch (_ActorType)
 	{
 	case Net_ActorType::TestPlayer:
-		NetObject = CurLevel->CreateActor<NetTestPlayer>();
+		NetObject = CreateLevel->CreateActor<NetTestPlayer>();
 		break;
 	case Net_ActorType::Nero:
-		NetObject = CurLevel->CreateActor<PlayerActor_Nero>();
+		NetObject = CreateLevel->CreateActor<PlayerActor_Nero>();
 		break;
 	case Net_ActorType::Vergil:
-		NetObject = CurLevel->CreateActor<PlayerActor_Vergil>();
+		NetObject = CreateLevel->CreateActor<PlayerActor_Vergil>();
 		break;
 	case Net_ActorType::HellCaina:
-		NetObject = CurLevel->CreateActor<Enemy_HellCaina>();
+		NetObject = CreateLevel->CreateActor<Enemy_HellCaina>();
 		break;
 	default:
 	{

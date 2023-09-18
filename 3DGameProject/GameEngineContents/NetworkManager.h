@@ -63,7 +63,7 @@ public:
 
 	//네트워크용 엑터를 생성합니다. 클라이언트의 경우엔 nullptr을 반환하니 꼭 nullptr를 해주세요
 	template <typename ActorPtr>
-	static std::shared_ptr<ActorPtr> CreateNetworkActor(Net_ActorType _NetActorType)
+	static std::shared_ptr<ActorPtr> CreateNetworkActor(Net_ActorType _NetActorType, class GameEngineLevel* _Level)
 	{
 		//플레이어를 제외한 모든 생성은 서버(호스트)에서만 이루어 집니다.
 		//그러니 서버가 아니면 nullptr가 리턴되는점 주의부탁드립니다.
@@ -71,7 +71,7 @@ public:
 			return nullptr;
 
 		std::shared_ptr<GameEngineNetObject> NetObjPtr = nullptr;
-		NetObjPtr = CreateNetActor(_NetActorType);
+		NetObjPtr = CreateNetActor(_NetActorType, _Level);
 		NetObjPtr->SetUserControllType();
 
 		return std::dynamic_pointer_cast<ActorPtr>(NetObjPtr);
@@ -127,13 +127,13 @@ private:
 	static std::function<void(unsigned int)> ConnectCallBack;
 
 	//엑터 생성
-	static std::shared_ptr<GameEngineNetObject> CreateNetActor(unsigned int _ActorType, int _ObjectID = -1)
+	static std::shared_ptr<GameEngineNetObject> CreateNetActor(unsigned int _ActorType, class GameEngineLevel* _Level = nullptr, int _ObjectID = -1)
 	{
 		Net_ActorType ActorType = static_cast<Net_ActorType>(_ActorType);
-		return CreateNetActor(ActorType, _ObjectID);
+		return CreateNetActor(ActorType, _Level, _ObjectID);
 	}
 
-	static std::shared_ptr<GameEngineNetObject> CreateNetActor(Net_ActorType _ActorType, int _ObjectID = -1);
+	static std::shared_ptr<GameEngineNetObject> CreateNetActor(Net_ActorType _ActorType, class GameEngineLevel* _Level = nullptr, int _ObjectID = -1);
 
 
 	//vector 형태의 패킷들을 _Ser인자에 직렬화 시킴
