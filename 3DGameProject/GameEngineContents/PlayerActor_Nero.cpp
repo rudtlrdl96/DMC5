@@ -1136,6 +1136,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Stleak3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Stleak3,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
@@ -1249,7 +1250,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen AirComboA3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_3,
 			.Start = [=] {
-				Col_Attack->SetAttackData(DamageType::Light, 50);
+				Col_Attack->SetAttackData(DamageType::Slam, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
 				RedQueenOn();
@@ -1315,6 +1316,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Split_1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Split_1,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Slam, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
 				RotationToTarget();
@@ -1361,6 +1363,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Split_3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Split_3,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				InputCheck = false;
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -1420,6 +1423,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Caliber_2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Caliber_2,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Caliber_2");
 				InputCheck = false;
 			},
@@ -4374,7 +4378,10 @@ void PlayerActor_Nero::WeaponIdle()
 	Renderer->GetAllRenderUnit()[0][24]->On();	// 등 레드퀸
 	Renderer->GetAllRenderUnit()[0][16]->Off();	// 블루로즈
 	Renderer_Overture->Off();
-	Col_Attack->Off();
+	if (nullptr != Col_Attack)
+	{
+		Col_Attack->Off();
+	}
 	if (true == IsDevilTrigger)
 	{
 		return;
