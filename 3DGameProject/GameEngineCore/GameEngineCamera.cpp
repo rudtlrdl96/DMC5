@@ -407,7 +407,6 @@ void GameEngineCamera::Render(float _DeltaTime)
 		// 여기에서 이미 그림자를 그려야하는 애들은 다 그려져 있어야 합니다.
 		for (std::shared_ptr<GameEngineLight> Light : GetLevel()->AllLight)
 		{
-			Light->GetShadowTarget()->Clear();
 			Light->GetShadowTarget()->Setting();
 
 			for (std::pair<const RenderPath, std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>>& Path : Units)
@@ -445,8 +444,10 @@ void GameEngineCamera::Render(float _DeltaTime)
 						}
 
 						Render->GetRenderer()->GetTransform()->SetCameraMatrix(Light->GetLightData().LightViewMatrix, Light->GetLightData().LightProjectionMatrix);
+						TransformData Data = Render->GetRenderer()->GetTransform()->GetTransDataRef();
 						Render->Setting();
 						std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Find("Shadow");
+						Pipe->VertexShader();
 						Pipe->Rasterizer();
 						Pipe->PixelShader();
 						Pipe->OutputMerger();
@@ -456,9 +457,16 @@ void GameEngineCamera::Render(float _DeltaTime)
 			}
 		}
 
+		GameEngineRenderTarget::Reset();
+
 		DeferredLightTarget->Setting();
-		CalLightUnit.Render(_DeltaTime);
-		
+
+		for (std::shared_ptr<GameEngineLight> Light : GetLevel()->AllLight)
+		{
+			CalLightUnit.ShaderResHelper.SetTexture("ShadowTex", Light->GetShadowTarget()->GetTexture(0));
+			CalLightUnit.Render(_DeltaTime);
+		}
+				
 		DeferredLightTarget->Effect(_DeltaTime);
 
 		CamDeferrdTarget->Clear();

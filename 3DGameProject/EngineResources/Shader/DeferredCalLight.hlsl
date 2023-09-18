@@ -41,6 +41,7 @@ Texture2D PositionTex : register(t0); //rgb = pos
 Texture2D NormalTex : register(t1); // rgb = normal
 Texture2D MatTex : register(t2); // r = metal, g = roughness
 Texture2D GleamTex : register(t3); // rgb = Gleam light
+Texture2D ShadowTex : register(t4);
 
 SamplerState POINTWRAP : register(s0);
 
@@ -108,6 +109,39 @@ LightOutPut DeferredCalLight_PS(Output _Input) : SV_Target0
         
             // Spacular Light 계산
             SpacularRatio.xyz += AllLight[i].LightColor.xyz * CalSpacularLight(Position, Normal, AllLight[i]).xyz * (1.0f - Mat.r) * LightPower * 0.5f;
+        }        
+    }
+    
+    if (DiffuseRatio.x > 0.0f)
+    {
+        float4 WorldViewPos = Position;
+        WorldViewPos.a = 1.0f;
+        // 빛이존재하므로
+        // 그림자도 존재해야할지 판단한다.
+        // 어느 world 
+        float4 WorldPos = mul(WorldViewPos, AllLight[0].CameraViewInverseMatrix);
+        
+        // 빛을 기준으로한 포지션으로 바꿨다.
+        float4 LightPos = mul(WorldPos, AllLight[0].LightViewProjectionMatrix);
+        
+        // worldviewprojection 
+        // 이 곱해지면 그건 -1~1사이의 공간입니까?
+        // w에 곱해지기전의 z값을 보관해 놓은 값이 됩니다.
+        float3 LightProjection = LightPos.xyz / LightPos.w;
+        // 모든 값은 -1~1사이의 값이 됩니다.
+        
+        float2 ShadowUV = float2(LightProjection.x * 0.5f + 0.5f, LightProjection.y * -0.5f + 0.5f);
+        float fShadowDepth = ShadowTex.Sample(POINTWRAP, float2(ShadowUV.x, ShadowUV.y)).r;
+        
+        // 가장 외각을 약간 깎아내서 
+        if (
+            0.001f < ShadowUV.x && 0.999f > ShadowUV.x
+            && 0.001f < ShadowUV.y && 0.999f > ShadowUV.y
+            && LightProjection.z >= (fShadowDepth + 0.001f)
+            )
+        {
+            DiffuseRatio *= 0.01f;
+            SpacularRatio *= 0.01f;
         }        
     }
     

@@ -17,7 +17,7 @@ enum class RenderPath
 class GameEngineRenderUnit : public GameEngineObjectBase, public std::enable_shared_from_this<GameEngineRenderUnit>
 {
 public:
-	bool IsShadow = false;
+	bool IsShadow = true;
 
 	GameEngineShaderResHelper ShaderResHelper;
 	std::shared_ptr<class GameEngineMaterial> Material;

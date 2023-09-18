@@ -17,6 +17,12 @@ public:
 	void OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime) override;
 };
 
+struct NameRenderTarget
+{
+public:
+	std::string Name;
+	std::shared_ptr<GameEngineRenderTarget> RenderTarget;
+};
 
 // Ό³Έν :
 class GameEngineCoreWindow : public GameEngineGUIWindow
@@ -40,6 +46,6 @@ public:
 protected:
 
 private:
-	static std::map<int, std::shared_ptr<GameEngineRenderTarget>> DebugRenderTarget;
+	static std::map<int, NameRenderTarget> DebugRenderTarget;
 };
 
