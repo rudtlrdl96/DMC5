@@ -321,6 +321,9 @@ bool BasePlayerActor::FloorCheck()
 
 void BasePlayerActor::DamageColCheck()
 {
+	if (nullptr == Col_Player)
+		return;
+
 	std::shared_ptr<GameEngineCollision> Col = Col_Player->Collision(CollisionOrder::EnemyAttack);
 	if (nullptr == Col) { return; }
 

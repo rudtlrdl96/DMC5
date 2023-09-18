@@ -62,7 +62,18 @@ void Enemy_HellCaina::Update(float _DeltaTime)
 	//PhysXCapsule->SetLinearVelocityZero();
 	CollisionDelayTimeCheck(_DeltaTime);
 	DamageCollisionCheck();
-	EnemyFSM.Update(_DeltaTime);
+
+	if (NetControllType::UserControll == GetControllType())
+	{
+		EnemyFSM.Update(_DeltaTime);
+	}
+	else
+	{
+		Sever_Timeer += _DeltaTime;
+		float Ratio = (Sever_Timeer / NetworkManager::PacketFlushTime);
+		float4 NowPos = float4::LerpClamp(Server_PrePosition, Server_NextPosition, Ratio);
+		PhysXCapsule->SetWorldPosition(NowPos);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

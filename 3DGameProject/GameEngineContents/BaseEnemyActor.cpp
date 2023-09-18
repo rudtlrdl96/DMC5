@@ -39,7 +39,8 @@ void BaseEnemyActor::Update_ProcessPacket()
 			Server_NextPosition = ObjectUpdate->Position;
 			Server_Rotation = ObjectUpdate->Rotation;
 			Sever_Timeer = 0.0f;
-			PhysXCapsule->SetWorldRotation(RotValue);
+			//PhysXCapsule->SetWorldRotation(RotValue);
+			PhysXCapsule->SetWorldRotation(Server_Rotation);
 			ObjectUpdate->TimeScale;
 
 			float TimeScale = ObjectUpdate->TimeScale;
@@ -150,6 +151,11 @@ void BaseEnemyActor::UserUpdate(float _DeltaTime)
 
 void BaseEnemyActor::ServerUpdate(float _DeltaTime)
 {
+	/*Sever_Timeer += _DeltaTime;
+
+	float Ratio = (Sever_Timeer / NetworkManager::PacketFlushTime);
+	float4 NowPos = float4::LerpClamp(Server_PrePosition, Server_NextPosition, Ratio);
+	PhysXCapsule->SetWorldPosition(NowPos);*/
 }
 
 void BaseEnemyActor::SuperArmorOn()
