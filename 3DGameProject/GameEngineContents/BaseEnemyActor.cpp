@@ -7,6 +7,7 @@
 #include "ContentsEnum.h"
 #include "AttackCollision.h"
 #include "BasePlayerActor.h"
+#include "NetworkManager.h"
 
 BaseEnemyActor::BaseEnemyActor()
 {
@@ -14,6 +15,53 @@ BaseEnemyActor::BaseEnemyActor()
 
 BaseEnemyActor::~BaseEnemyActor()
 {
+}
+
+void BaseEnemyActor::Update_ProcessPacket()
+{
+	//패킷을 다 처리할 때 까지
+	while (GameEngineNetObject::IsPacket())
+	{
+		//지금 처리할 패킷의 타입을 알아옵니다
+		PacketEnum Type = GameEngineNetObject::GetFirstPacketType<PacketEnum>();
+
+		switch (Type)
+		{
+		//업데이트 패킷의 경우엔
+		case PacketEnum::ObjectUpdatePacket:
+		{
+			//패킷을 템플릿 포인터로 꺼내옵니다(Enum값과 포인터값을 맞게 해주셔야 하는 부분 유의부탁드려요)
+			std::shared_ptr<ObjectUpdatePacket> ObjectUpdate = PopFirstPacket<ObjectUpdatePacket>();
+
+			//패킷의 정보에 따라 자신의 값 수정
+			Server_PrePosition = this->GetTransform()->GetWorldPosition();
+			Server_NextPosition = ObjectUpdate->Position;
+			Server_Rotation = ObjectUpdate->Rotation;
+			Sever_Timeer = 0.0f;
+			PhysXCapsule->SetWorldRotation(RotValue);
+			ObjectUpdate->TimeScale;
+
+			float TimeScale = ObjectUpdate->TimeScale;
+			break;
+		}
+		case PacketEnum::FsmChangePacket:
+		{
+			//std::shared_ptr<FsmChangePacket> FsmChange = PopFirstPacket<FsmChangePacket>();
+			//SetFSMStateValue(FsmChange->FsmState);
+			break;
+		}
+		default:
+		{
+			MsgAssert("처리하지 못하는 패킷이 플레이어로 날아왔습니다.");
+			return;
+		}
+		}
+	}
+}
+
+void BaseEnemyActor::Update_SendPacket(float _DeltaTime)
+{
+	NetworkManager::PushUpdatePacket({ .ObjPtr = this, .TimeScale = 1.0f, .UnionData = {0, } });
 }
 
 bool BaseEnemyActor::FloorCheck(float _Distance)
@@ -493,6 +541,6 @@ void BaseEnemyActor::SlerpCalculation()
 void BaseEnemyActor::SlerpTurn(float _DeltaTime)
 {
 	SlerpTime += _DeltaTime;
-	float4 Value = float4::SLerpQuaternion(CurRotation, GoalRotation, SlerpTime);
+	RotValue = float4::SLerpQuaternion(CurRotation, GoalRotation, SlerpTime);
 	PhysXCapsule->SetWorldRotation(Value);
 }

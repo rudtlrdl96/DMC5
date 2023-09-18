@@ -184,6 +184,7 @@ protected:
 	// Slerp 계산에 사용
 	float4 CurRotation = float4::ZERO;
 	float4 GoalRotation = float4::ZERO;
+	float4 RotValue = float4::ZERO;     // 계산된 결과값
 	float SlerpTime = 0.0f;
 	//====================================================
 	virtual void EnemyMeshLoad() = 0;
@@ -191,6 +192,17 @@ protected:
 	virtual void EnemyAnimationLoad() = 0;
 	virtual void EnemyCreateFSM() = 0;
 	virtual void DamageCollisionCheck() = 0;
+
+	void Update_ProcessPacket() override;
+	void Update_SendPacket(float _DeltaTime) override;
+
+	//====================================================
+	// 서버 패킷 관련
+	float4 Server_PrePosition = float4::ZERO;
+	float4 Server_NextPosition = float4::ZERO;
+	float4 Server_Rotation = float4::ZERO;
+	float Sever_Timeer = 0.0f;
+	//====================================================
 
 private:
 	void UserUpdate(float _DeltaTime);
