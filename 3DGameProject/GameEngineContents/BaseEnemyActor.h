@@ -2,20 +2,6 @@
 #include <GameEngineCore/GameEngineFSM.h>
 #include <GameEngineCore/PhysXCapsuleComponent.h>
 
-///	<param name="[AttackerPos] : ">공격 액터의 위치, 만약 ZERO일 경우 몬스터의 정면을 기준으로 애니메이션 실행 </param>
-///	<param name="[Type] : ">공격의 타입 설정 </param>
-///	<param name="[Damage] : ">플레이어 공격력 </param>
-///	<param name="[ForceDir] : ">공격 물리량의 방향 자동으로 Normalize를 실행함 </param>
-///	<param name="[ForcePower] : ">공격 물리량의 크기 </param>
-class EnemyHitData
-{
-public:
-	float4 AttackerPos = float4::ZERO;	
-	MonsterDamageType Type = MonsterDamageType::None;
-	float Damage = 0.0f;
-	float4 ForceDir = float4::ZERO;
-	float ForcePower = 1.0f;
-};
 
 enum class EnemyCode
 {
@@ -85,8 +71,6 @@ public:
 		return PhysXCapsule;
 	}
 
-	// 몬스터 피격 함수(때렸을 때 호출해주시면 됩니다)
-	void MonsterHit(const EnemyHitData& _HitData);
 	void DamageColCheck();
 
 	// 현재 몬스터가 슈퍼아머 상태인지 반환합니다. 만약 슈퍼아머 상태라면 그랩, 잡기등의 공격에 면역이됩니다.
@@ -113,8 +97,6 @@ public:
 		return EnemySizeValue;
 	}
 
-	EnemyHitDir GetHitDir(const float4& _WolrdPos);
-
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -132,8 +114,7 @@ protected:
 	std::shared_ptr<class GameEngineCollision> MonsterAttackRange = nullptr;
 	//자체Collision
 	std::shared_ptr<class GameEngineCollision> MonsterCollision = nullptr;
-	//Forward Collision
-	std::shared_ptr<class GameEngineCollision> ForWardCollision = nullptr;
+
 	std::shared_ptr<class GameEngineCollision> ColValue = nullptr;
 
 	std::shared_ptr<class AttackCollision> MonsterAttackCollision = nullptr;
@@ -141,8 +122,6 @@ protected:
 	GameEngineFSM EnemyFSM;
 
 	//하위에서 설정해줘야하는 Data들=====================================================
-	//Type+Data
-	EnemyHitData HitData;
 	EnemyCode EnemyCodeValue = EnemyCode::None;
 	EnemyType EnemyTypeValue  = EnemyType::None;
 	EnemySize EnemySizeValue = EnemySize::None;

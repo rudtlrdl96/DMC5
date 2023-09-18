@@ -8,6 +8,7 @@
 #include "AnimationEvent.h"
 #include "EnemyActor_Normal.h"
 #include "BasePlayerActor.h"
+#include "AttackCollision.h"
 
 Enemy_Empusa::Enemy_Empusa() 
 {
@@ -113,14 +114,33 @@ void Enemy_Empusa::EnemyCreateFSM()
 
 void Enemy_Empusa::Idle_Enter()
 {
-	RN_Idle();
+	EnemyRenderer->ChangeAnimation("em0100_slam_damage_start");
+	EnemyRenderer->ChangeAnimation("em0100_slam_damage_fall_loop");
+	EnemyRenderer->ChangeAnimation("em0100_slam_damage_downturn");
+	EnemyRenderer->ChangeAnimation("em0100_slam_damage_landing");
+
+	EnemyRenderer->ChangeAnimation("em0100_blown_up_loop");
+	EnemyRenderer->ChangeAnimation("em0100_blown_back_loop");
+	EnemyRenderer->ChangeAnimation("em0100_blown_front_loop");
+	EnemyRenderer->ChangeAnimation("em0100_blown_wall_back");
+	EnemyRenderer->ChangeAnimation("em0100_blown_linear_loop");
+	EnemyRenderer->ChangeAnimation("em0100_blown_left_start");
+	EnemyRenderer->ChangeAnimation("em0100_blown_right_start");
+	EnemyRenderer->ChangeAnimation("em0100_blown_front_start");
+	EnemyRenderer->ChangeAnimation("em0100_slam_damage_start");
+	EnemyRenderer->ChangeAnimation("em0100_slam_damage_start");
+	EnemyRenderer->ChangeAnimation("em0100_slam_damage_start");
+	EnemyRenderer->ChangeAnimation("em0100_slam_damage_start");
+	EnemyRenderer->ChangeAnimation("em0100_slam_damage_start");
+	
+	//RN_Idle();
 }
 
 void Enemy_Empusa::Idle_Update(float _DeltaTime)
 {
 	if (true==RN_Player)
 	{
-		Move(_DeltaTime);
+		EnemyFSM.ChangeState(EnemyState::M_Chase);
 	}
 }
 
@@ -135,6 +155,7 @@ void Enemy_Empusa::Chase_Enter()
 
 void Enemy_Empusa::Chase_Update(float _DeltaTime)
 {
+	Move(_DeltaTime);
 }
 
 void Enemy_Empusa::Chase_Exit()
@@ -176,6 +197,34 @@ void Enemy_Empusa::Attack_Exit()
 
 void Enemy_Empusa::Hit_Enter()
 {
+	switch (MonsterAttackCollision->GetDamageType())
+	{
+	case DamageType::None:
+		return;
+		break;
+	case DamageType::Light:
+		EnemyRenderer->ChangeAnimation("em0100_angledamage_front");
+		break;
+	case DamageType::Medium:
+		EnemyRenderer->ChangeAnimation("em0100_angledamage_front");
+		break;
+	case DamageType::Heavy:
+		EnemyRenderer->ChangeAnimation("em0100_angledamage_front");
+		break;
+	case DamageType::Air:
+		break;
+	case DamageType::Snatch:
+		break;
+	case DamageType::Slam:
+		break;
+	case DamageType::Buster:
+		break;
+	case DamageType::Stun:
+		break;
+	default:
+		break;
+	}
+
 	switch (HitDir)
 	{
 	case EnemyHitDir::Forward:
@@ -293,9 +342,7 @@ void Enemy_Empusa::RN_Idle()
 	//플레이어 인식o
 	else
 	{
-		//EnemyRenderer->ChangeAnimation("em0100_Idle_variation_B"); //달리기직전
-		EnemyRenderer->ChangeAnimation("em0100_Idle_variation_C");
-		//EnemyRenderer->ChangeAnimation("em0100_Idle_variation_D");
+		EnemyRenderer->ChangeAnimation("em0100_Idle_variation_B"); 
 	}
 }
 
