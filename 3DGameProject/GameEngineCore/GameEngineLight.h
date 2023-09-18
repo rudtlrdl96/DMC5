@@ -86,6 +86,10 @@ public:
     bool IsDebugDraw = false;
 
     LightData LightDataValue;
+
+    void ShadowTargetTextureLoad();
+    void ShadowTargetTextureRelease();
+
 protected:
 
 private:

@@ -23,9 +23,7 @@ void GameEngineLight::Start()
 	GetLevel()->PushLight(DynamicThis<GameEngineLight>());
 
 	// 크기가 곧 그림자가 맺히는 범위와 디테일을 의미하게 됩니다.
-	ShadowTarget = GameEngineRenderTarget::Create(DXGI_FORMAT_R32_FLOAT, { LightDataValue.ShadowTargetSizeX, LightDataValue.ShadowTargetSizeY }, float4::RED);
-	ShadowTarget->CreateDepthTexture();
-	ShadowTarget->SetName("Shadow Target");
+	ShadowTarget = GameEngineRenderTarget::Create();
 }
 
 void GameEngineLight::Update(float _DeltaTime)
@@ -35,6 +33,23 @@ void GameEngineLight::Update(float _DeltaTime)
 		GetTransform()->SetWorldScale(float4(LightDataValue.LightRange, LightDataValue.LightRange, LightDataValue.LightRange));
 		GameEngineDebug::DrawSphere(GetLevel()->GetCamera(0).get(), GetTransform(), float4::GREEN);
 	}
+}
+
+void GameEngineLight::ShadowTargetTextureLoad()
+{
+	if (nullptr == ShadowTarget)
+	{
+		return;
+	}
+
+	ShadowTarget->AddNewTexture(DXGI_FORMAT_R32_FLOAT, { LightDataValue.ShadowTargetSizeX, LightDataValue.ShadowTargetSizeY }, float4::RED);
+	ShadowTarget->CreateDepthTexture();
+	ShadowTarget->SetName("Shadow Target");
+}
+
+void GameEngineLight::ShadowTargetTextureRelease()
+{
+	ShadowTarget->ReleaseTextures();
 }
 
 void GameEngineLight::LightUpdate(GameEngineCamera* _Camera, float _DeltaTime)

@@ -36,6 +36,10 @@ void GameEngineLevel::RenderTargetTextureCreate()
 		std::shared_ptr<GameEngineCamera> InitCamera = GroupStartIter->second;
 		InitCamera->RenderTargetTextureLoad();
 	}
+	for (std::shared_ptr<GameEngineLight> Light : AllLight)
+	{
+		Light->ShadowTargetTextureLoad();
+	}
 }
 
 void GameEngineLevel::RenderTargetTextureRelease()
@@ -47,6 +51,10 @@ void GameEngineLevel::RenderTargetTextureRelease()
 	{
 		std::shared_ptr<GameEngineCamera> InitCamera = GroupStartIter->second;
 		InitCamera->RenderTargetTextureRelease();
+	}
+	for (std::shared_ptr<GameEngineLight> Light : AllLight)
+	{
+		Light->ShadowTargetTextureRelease();
 	}
 }
 
@@ -85,6 +93,7 @@ void GameEngineLevel::LevelLightInit()
 std::shared_ptr<GameEngineLight> GameEngineLevel::CreatePointLight(const float4& _Pos, float _Range)
 {
 	std::shared_ptr<GameEngineLight> NewLight = CreateActor<GameEngineLight>();
+	NewLight->ShadowTargetTextureLoad();
 
 	NewLight->GetTransform()->SetLocalPosition(_Pos);
 
@@ -99,6 +108,7 @@ std::shared_ptr<GameEngineLight> GameEngineLevel::CreatePointLight(const float4&
 std::shared_ptr<GameEngineLight> GameEngineLevel::CreateSpotLight(const float4& _Pos, float _Range, float _Angle)
 {
 	std::shared_ptr<GameEngineLight> NewLight = CreateActor<GameEngineLight>();
+	NewLight->ShadowTargetTextureLoad();
 
 	NewLight->GetTransform()->SetLocalPosition(_Pos);
 
