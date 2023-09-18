@@ -26,5 +26,7 @@ private:
 	std::shared_ptr<class UIFBXRenderer> NeroUI_Hud2 = nullptr;
 	std::shared_ptr<class UIFBXRenderer> NeroUI_Hud3 = nullptr;
 
+
+
 };
 

@@ -397,6 +397,9 @@
     <ClInclude Include="StaticFieldMapObject.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClInclude>
+    <ClInclude Include="UI_HPGaege.h">
+      <Filter>UI\UI_Actor\PlayUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -779,6 +782,9 @@
     </ClCompile>
     <ClCompile Include="StaticFieldMapObject.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_HPGaege.cpp">
+      <Filter>UI\UI_Actor\PlayUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

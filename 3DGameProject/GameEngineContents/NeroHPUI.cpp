@@ -4,6 +4,7 @@
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include "UIFBXRenderer.h"
+#include "UI_HPGaege.h"
 NeroHPUI::NeroHPUI() 
 {
 }
@@ -24,7 +25,6 @@ void NeroHPUI::Start()
 	NewDir.Move("ContentResources");
 	NewDir.Move("Mesh");
 	NewDir.Move("UIMesh");
-	NewDir.Move("NeroUIMesh");
 	if (nullptr == GameEngineFBXMesh::Find("NeroIden3.FBX"))
 	{
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".fbx" });
@@ -61,11 +61,16 @@ void NeroHPUI::Start()
 
 	std::shared_ptr<GameEngineUIRenderer> NeroUI_Back = CreateComponent<GameEngineUIRenderer>(0);
 	NeroUI_Back->SetTexture("HudBack.png");
+	NeroUI_Back->SetTexture("HudBack.png");
 	NeroUI_Back->GetTransform()->SetLocalScale({ 97.0f,131.0f,0.0f });
-	NeroUI_Back->GetTransform()->SetLocalPosition({-696.0f,334.0f,40.0f});
+	NeroUI_Back->GetTransform()->SetLocalPosition({ -696.0f,334.0f,40.0f });
+
+	std::shared_ptr<UI_HPGaege> UI_HPGaegeBar = GetLevel()->CreateActor<UI_HPGaege>();
+
 }
 
 void NeroHPUI::Update(float _DeltaTime)
 {
+
 }
 
