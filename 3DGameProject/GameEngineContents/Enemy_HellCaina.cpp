@@ -124,7 +124,7 @@ void Enemy_HellCaina::ChangeState(int _StateValue)
 {
 	EnemyFSM.ChangeState(_StateValue);
 	EnemyFSMValue = _StateValue;
-	//NetworkManager::SendFsmChangePacket(this, _StateValue);
+	NetworkManager::SendFsmChangePacket(this, _StateValue);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
