@@ -36,6 +36,10 @@ enum FSM_State_Vergil
 	Vergil_yamato_Air_ComboB_1,
 	Vergil_yamato_Air_ComboB_2,
 
+	Vergil_yamato_Raid1,
+	Vergil_yamato_Raid2,
+	Vergil_yamato_Raid3,
+
 	pl0300_yamato_Sissonal_1,	// 대시공격
 	pl0300_yamato_Sissonal_2,	
 	pl0300_yamato_Sissonal_3,

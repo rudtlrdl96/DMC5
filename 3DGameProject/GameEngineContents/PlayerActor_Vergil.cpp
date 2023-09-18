@@ -893,7 +893,6 @@ void PlayerActor_Vergil::VergilLoad()
 				YamatoOff();
 			}
 			});
-
 		// Air Combo 2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_Combo_2,
 			.Start = [=] {
@@ -932,7 +931,6 @@ void PlayerActor_Vergil::VergilLoad()
 				YamatoOff();
 			}
 			});
-
 		// Air Combo 3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_Combo_3,
 			.Start = [=] {
@@ -966,7 +964,6 @@ void PlayerActor_Vergil::VergilLoad()
 				YamatoOff();
 			}
 			});
-
 		// Air Combo B 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_ComboB_1,
 			.Start = [=] {
@@ -1000,7 +997,6 @@ void PlayerActor_Vergil::VergilLoad()
 				YamatoOff();
 			}
 			});
-		
 		// Air Combo B 2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_ComboB_2,
 			.Start = [=] {
@@ -1029,6 +1025,83 @@ void PlayerActor_Vergil::VergilLoad()
 				if (true == Input_SwordCheckFly()) { return; }
 				if (true == Input_GunCheckFly()) { return; }
 				if (true == Input_WarpCheckFly()) { return; }
+			},
+			.End = [=] {
+				YamatoOff();
+			}
+			});
+		// Raid1
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Raid1,
+			.Start = [=] {
+				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->SetLinearVelocityZero();
+				RotationToTarget();
+				Renderer->ChangeAnimation("pl0300_yamato_Raid1");
+			},
+			.Update = [=](float _DeltaTime) {
+				if (true == Input_SpecialCheck()) { return; }
+				if (true == Renderer->IsAnimationEnd())
+				{
+					FSM.ChangeState(FSM_State_Vergil::Vergil_yamato_Raid2);
+					return;
+				}
+			},
+			.End = [=] {
+				YamatoOff();
+			}
+			});
+		// Raid2
+		static float4 RaidTargetPos;
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Raid2,
+			.Start = [=] {
+				YamatoOn();
+				Renderer->ChangeAnimation("pl0300_yamato_Raid2_Loop");
+				GetLevel()->RayCast(GetTransform()->GetWorldPosition(), float4::DOWN, RaidTargetPos, 9999.0f);
+				RaidTargetPos += float4::UP * 100;
+			},
+			.Update = [=](float _DeltaTime) {
+				PhysXCapsule->SetMove(float4::DOWN * 500);
+				if (GetTransform()->GetWorldPosition().y < RaidTargetPos.y)
+				{
+					PhysXCapsule->SetWorldPosition(RaidTargetPos);
+					ChangeState(FSM_State_Vergil::Vergil_yamato_Raid3);
+					return;
+				}
+				if (true == Input_SpecialCheckFly()) { return; }
+
+				if (true == FloorCheck())
+				{
+					ChangeState(FSM_State_Vergil::Vergil_yamato_Raid3);
+					return;
+				}
+			},
+			.End = [=] {
+				YamatoOff();
+			}
+			});
+
+		// Raid3
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Raid3,
+			.Start = [=] {
+				YamatoOn();
+				Renderer->ChangeAnimation("pl0300_yamato_Raid3");
+			},
+			.Update = [=](float _DeltaTime) {
+
+				if (true == Input_SpecialCheck()) { return; }
+
+				if (InputCheck == false) { return; }
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_WarpCheck()) { return; }
+
+				if (MoveCheck == false) { return; }
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					FSM.ChangeState(FSM_State_Vergil::Vergil_RunStart);
+					return;
+				}
 			},
 			.End = [=] {
 				YamatoOff();
@@ -1624,7 +1697,11 @@ bool PlayerActor_Vergil::Input_SwordCheckFly(int AddState)
 		}
 		return false;
 	}
-
+	if (Controller->GetIsBackSword())
+	{
+		ChangeState(FSM_State_Vergil::Vergil_yamato_Raid1);
+		return true;
+	}
 	if (Controller->GetIsSword())
 	{
 		ChangeState(AddState + FSM_State_Vergil::Vergil_yamato_Air_Combo_1);
