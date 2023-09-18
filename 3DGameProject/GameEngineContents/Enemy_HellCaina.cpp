@@ -20,6 +20,8 @@ Enemy_HellCaina::~Enemy_HellCaina()
 
 void Enemy_HellCaina::Start()
 {
+	SetNetObjectType(Net_ActorType::HellCaina);
+
 	if (false == GameEngineInput::IsKey("MonsterTest"))
 	{
 		GameEngineInput::CreateKey("MonsterTest", 'M');
