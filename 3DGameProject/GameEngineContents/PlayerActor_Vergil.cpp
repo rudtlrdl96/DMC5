@@ -68,6 +68,7 @@ void PlayerActor_Vergil::VergilLoad()
 				std::bind(&PhysXCapsuleComponent::SetLinearVelocityZero, PhysXCapsule),		// 5
 				std::bind([=] {MoveCheck = true; }),
 				std::bind([=] {DelayCheck = true; }),
+				std::bind(&PhysXCapsuleComponent::TurnOnGravity, PhysXCapsule),		// 8 
 			},
 			.CallBacks_int = {
 				std::bind(&GameEngineFSM::ChangeState, &FSM, std::placeholders::_1)
@@ -680,6 +681,11 @@ void PlayerActor_Vergil::VergilLoad()
 				std::vector<std::shared_ptr<GameEngineCollision>> Cols;
 				if (true == Col_EnemyStepCheck->CollisionAll(CollisionOrder::Enemy, Cols))
 				{
+					if (true == Controller->GetIsSwordPress())
+					{
+						FSM.ChangeState(FSM_State_Vergil::pl0300_yamato_Sissonal_Up);
+						return;
+					}
 					FSM.ChangeState(FSM_State_Vergil::pl0300_yamato_Sissonal_3);
 					return;
 				}
@@ -732,6 +738,39 @@ void PlayerActor_Vergil::VergilLoad()
 				Rot.y += 180.0f;
 				PhysXCapsule->AddWorldRotation({ 0, 180, 0 });
 				GetTransform()->AddWorldRotation({ 0, 180, 0 });
+			}
+			});
+		// Sissonal Up
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Sissonal_Up,
+			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Air, 50);
+				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->SetLinearVelocityZero();
+				Renderer->ChangeAnimation("pl0300_yamato_Sissonal_Up");
+				InputCheck = false;
+				MoveCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Vergil::Vergil_Jump_Fly);
+					return;
+				}
+				if (true == Input_SpecialCheckFly()) { return; }
+
+				if (InputCheck == false) { return; }
+				if (true == Input_JumpCheckFly()) { return; }
+				if (true == Input_SwordCheckFly()) { return; }
+				if (true == Input_GunCheckFly()) { return; }
+				if (true == Input_WarpCheckFly()) { return; }
+				if (true == FloorCheck())
+				{
+					ChangeState(FSM_State_Vergil::Vergil_Landing);
+					return;
+				}
+			},
+			.End = [=] {
+				YamatoOff();
 			}
 			});
 		// Vergil_yamato_JudgementCutEnd_1
