@@ -366,7 +366,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="EnemyActor_Normal.h" />
     <ClInclude Include="EnemySpawnArea.h">
       <SubType>
       </SubType>
@@ -806,10 +805,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="EnemyActor_Fly.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="EnemyActor_Normal.cpp">
       <SubType>
       </SubType>
     </ClCompile>

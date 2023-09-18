@@ -46,9 +46,6 @@
     <ClInclude Include="BaseEnemyActor.h">
       <Filter>Actor\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyActor_Normal.h">
-      <Filter>Actor\Enemy\NormalEnemy</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyActor_Boss.h">
       <Filter>Actor\Enemy\BossEnemy</Filter>
     </ClInclude>
@@ -449,9 +446,6 @@
     </ClCompile>
     <ClCompile Include="BaseEnemyActor.cpp">
       <Filter>Actor\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyActor_Normal.cpp">
-      <Filter>Actor\Enemy\NormalEnemy</Filter>
     </ClCompile>
     <ClCompile Include="EnemyActor_Boss.cpp">
       <Filter>Actor\Enemy\BossEnemy</Filter>
