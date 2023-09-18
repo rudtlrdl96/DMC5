@@ -227,7 +227,6 @@ void GameEngineCore::CoreResourcesInit()
 		Vertex[14] = { float4(0.5f, -0.5f, 0.5f).RotationYDegReturn(90) , float4(1.0f, 1.0f), float4::RED, float4(-1.0f, 0.0f, 0.0f) };
 		Vertex[15] = { float4(-0.5f, -0.5f, 0.5f).RotationYDegReturn(90), float4(0.0f, 1.0f), float4::RED, float4(-1.0f, 0.0f, 0.0f) };
 
-
 		// À§
 		Vertex[16] = { float4(-0.5f, 0.5f, 0.5f).RotationXDegReturn(-90) , float4(0.0f, 0.0f), float4::RED, float4(0.0f, 1.0f, 0.0f) };
 		Vertex[17] = { float4(0.5f, 0.5f, 0.5f).RotationXDegReturn(-90)  , float4(1.0f, 0.0f), float4::RED, float4(0.0f, 1.0f, 0.0f) };
@@ -240,14 +239,54 @@ void GameEngineCore::CoreResourcesInit()
 		Vertex[22] = { float4(0.5f, -0.5f, 0.5f).RotationXDegReturn(90) , float4(1.0f, 1.0f), float4::RED, float4(1.0f, -1.0f, 0.0f) };
 		Vertex[23] = { float4(-0.5f, -0.5f, 0.5f).RotationXDegReturn(90), float4(0.0f, 1.0f), float4::RED, float4(1.0f, -1.0f, 0.0f) };
 
-
 		GameEngineVertexBuffer::Create("Box", Vertex);
 	}
-
 	// DebugBox
 	{
 		std::vector<int> Index;
-		// Index.resize(36);
+
+		Index.push_back(0);
+		Index.push_back(1);
+		Index.push_back(1);
+		Index.push_back(2);
+		Index.push_back(2);
+		Index.push_back(3);
+		Index.push_back(3);
+		Index.push_back(0);
+
+		Index.push_back(4 + 0);
+		Index.push_back(4 + 1);
+		Index.push_back(4 + 1);
+		Index.push_back(4 + 2);
+		Index.push_back(4 + 2);
+		Index.push_back(4 + 3);
+		Index.push_back(4 + 3);
+		Index.push_back(4 + 0);
+
+		Index.push_back(8 + 0);
+		Index.push_back(8 + 1);
+		Index.push_back(8 + 1);
+		Index.push_back(8 + 2);
+		Index.push_back(8 + 2);
+		Index.push_back(8 + 3);
+		Index.push_back(8 + 3);
+		Index.push_back(8 + 0);
+
+		Index.push_back(12 + 0);
+		Index.push_back(12 + 1);
+		Index.push_back(12 + 1);
+		Index.push_back(12 + 2);
+		Index.push_back(12 + 2);
+		Index.push_back(12 + 3);
+		Index.push_back(12 + 3);
+		Index.push_back(12 + 0);
+
+		GameEngineIndexBuffer::Create("DebugBox", Index);
+	}
+	// TriAngleBox
+	{
+		std::vector<int> Index;
+
 		for (int i = 0; i < 6; i++)
 		{
 			Index.push_back(i * 4 + 2);
@@ -259,17 +298,17 @@ void GameEngineCore::CoreResourcesInit()
 			Index.push_back(i * 4 + 0);
 		}
 
+		GameEngineIndexBuffer::Create("TriAngleBox", Index);
+	}
 
-		GameEngineIndexBuffer::Create("DebugBox", Index);
-		{
-			std::shared_ptr<GameEngineMesh> Mesh = GameEngineMesh::Create("DebugBox", "Box", "DebugBox");
-			Mesh->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
-		}
+	{
+		std::shared_ptr<GameEngineMesh> Mesh = GameEngineMesh::Create("DebugBox", "Box", "DebugBox");
+		Mesh->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	}
 
-		{
-			std::shared_ptr<GameEngineMesh> Mesh = GameEngineMesh::Create("Box", "Box", "DebugBox");
-			Mesh->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		}
+	{
+		std::shared_ptr<GameEngineMesh> Mesh = GameEngineMesh::Create("Box", "Box", "TriAngleBox");
+		Mesh->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
 
 	// Sphere
