@@ -145,7 +145,7 @@ void PlayerController::Update(float _DeltaTime)
 	InputReset();
 	MoveInput();
 	InputRecord();
-	ActionInput();
+	ActionInput(_DeltaTime);
 }
 
 void PlayerController::InputReset()
@@ -155,6 +155,7 @@ void PlayerController::InputReset()
 	IsFrontSword = false;
 	IsBackSword = false;
 	IsSword = false;
+	IsSwordChargeUp = false;
 	// มกวม
 	IsLeftJump = false;
 	IsRightJump = false;
@@ -205,11 +206,12 @@ void PlayerController::InputRecord()
 	Command.AddKey(MoveVectorToChar(MoveVector), GetLiveTime());
 }
 
-void PlayerController::ActionInput()
+void PlayerController::ActionInput(float _DeltaTime)
 {
 	// Sword
 	if (GameEngineInput::IsDown("Player_Sword"))
 	{
+		SwordChargeTimer = 0;
 		if (true == InputCheck_BackFront())
 		{
 			IsBackFrontSword = true;
@@ -233,6 +235,18 @@ void PlayerController::ActionInput()
 		{
 			IsSword = true;
 		}
+	}
+	if (GameEngineInput::IsPress("Player_Sword"))
+	{
+		SwordChargeTimer += _DeltaTime;
+	}
+	if (GameEngineInput::IsUp("Player_Sword"))
+	{
+		if (ChargeTime < SwordChargeTimer)
+		{
+			IsSwordChargeUp = true;
+		}
+		SwordChargeTimer = 0;
 	}
 	// Jump
 	if (GameEngineInput::IsDown("Player_Jump"))

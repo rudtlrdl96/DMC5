@@ -49,6 +49,14 @@ enum FSM_State_Vergil
 	pl0300_yamato_Upper_2,	// 어퍼하면서 위로
 	pl0300_yamato_Upper_3,	// 지상에서 어퍼
 
+	Vergil_yamato_JudgementCut_1,
+	Vergil_yamato_JudgementCut_2,
+	Vergil_yamato_JudgementCut_3,
+
+	Vergil_yamato_JudgementCutAir_1,
+	Vergil_yamato_JudgementCutAir_2,
+	Vergil_yamato_JudgementCutAir_3,
+
 	Vergil_yamato_JudgementCutEnd_1,
 	Vergil_yamato_JudgementCutEnd_2,
 	Vergil_DT_Start,

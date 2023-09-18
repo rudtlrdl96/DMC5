@@ -106,7 +106,7 @@ protected:
 	void InputReset();
 	void MoveInput();
 	void InputRecord();
-	void ActionInput();
+	void ActionInput(float _DeltaTime);
 
 private:
 	float4 MoveVector;
@@ -120,6 +120,8 @@ private:
 	bool IsFrontSword = false;
 	bool IsBackSword = false;
 	bool IsSword = false;
+	bool IsSwordChargeUp = false;
+
 	// มกวม
 	bool IsLeftJump = false;
 	bool IsRightJump = false;
@@ -145,7 +147,9 @@ public:
 	std::function<void()> CallBack_LockOnDown = nullptr;
 	std::function<void()> CallBack_LockOnUp = nullptr;
 
-	
+	float ChargeTime = 0.55f;
+	float SwordChargeTimer = 0.0f;
+
 	bool GetGunUp() { return GameEngineInput::IsUp("Player_Gun"); }
 	bool GetLockOnFree() { return GameEngineInput::IsFree("Player_LockOn"); }
 	//bool GetJumpDown() { return GameEngineInput::IsDown("Player_Jump"); }
@@ -156,6 +160,7 @@ public:
 	bool GetIsFrontSword() { return IsFrontSword; }
 	bool GetIsBackFrontSword() { return IsBackFrontSword; }
 	bool GetIsSwordPress() { return GameEngineInput::IsPress("Player_Sword"); }
+	bool GetIsSwordChargeUp() { return IsSwordChargeUp; }
 
 	bool GetIsAnyJump() { return IsJump || IsLeftJump || IsRightJump; }
 	bool GetIsJump() { return IsJump; }
