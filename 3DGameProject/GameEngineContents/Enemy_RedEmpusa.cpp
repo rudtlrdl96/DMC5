@@ -165,3 +165,7 @@ void Enemy_RedEmpusa::Buster_Exit()
 }
 
 
+void Enemy_RedEmpusa::EnemyCreateFSM_Client()
+{
+
+}

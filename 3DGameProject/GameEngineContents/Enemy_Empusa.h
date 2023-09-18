@@ -46,7 +46,8 @@ protected:
 	void EnemyTypeLoad() override;
 	void EnemyAnimationLoad() override;
 	void EnemyCreateFSM() override;
-	void DamageCollisionCheck() override;
+	void EnemyCreateFSM_Client() override;
+	void DamageCollisionCheck(float _DeltaTime) override;
 
 private:
 	bool CheckBool = false;

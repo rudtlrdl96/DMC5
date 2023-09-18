@@ -71,8 +71,6 @@ public:
 		return PhysXCapsule;
 	}
 
-	void DamageColCheck();
-
 	// 현재 몬스터가 슈퍼아머 상태인지 반환합니다. 만약 슈퍼아머 상태라면 그랩, 잡기등의 공격에 면역이됩니다.
 	inline bool IsSuperArmor() const
 	{
@@ -95,6 +93,11 @@ public:
 	inline EnemySize GetEnemySize() const
 	{
 		return EnemySizeValue;
+	}
+
+	void SetFSMStateValue(int _StateValue)
+	{
+		EnemyFSM_Client.ChangeState(_StateValue);
 	}
 
 protected:
@@ -120,6 +123,7 @@ protected:
 	std::shared_ptr<class AttackCollision> MonsterAttackCollision = nullptr;
 
 	GameEngineFSM EnemyFSM;
+	GameEngineFSM EnemyFSM_Client;
 
 	//하위에서 설정해줘야하는 Data들=====================================================
 	EnemyCode EnemyCodeValue = EnemyCode::None;
@@ -146,8 +150,9 @@ protected:
 	std::function<void()> SuperArmorOn_Callback = nullptr;
 	std::function<void()> SuperArmorOff_Callback = nullptr;
 
-	float RotationValue = 0.0f;
-	void ChasePlayer(float _DeltaTime);
+	float RotationValue = 0.0f;  // CheckHeadingRotationValue() 실행 후 내적 결과값
+	float FallDistance = 0.0f;   // FloorCheck() 시 필요, 각자의 몬스터 Start 부분에서 값 적용
+
 	void SuperArmorOn();
 	void SuperArmorOff();
 	bool FloorCheck(float _Distance);
@@ -170,7 +175,8 @@ protected:
 	virtual void EnemyTypeLoad() = 0;
 	virtual void EnemyAnimationLoad() = 0;
 	virtual void EnemyCreateFSM() = 0;
-	virtual void DamageCollisionCheck() = 0;
+	virtual void EnemyCreateFSM_Client() = 0;
+	virtual void DamageCollisionCheck(float _DeltaTime) = 0;
 
 	void Update_ProcessPacket() override;
 	void Update_SendPacket(float _DeltaTime) override;
@@ -180,10 +186,9 @@ protected:
 	float4 Server_PrePosition = float4::ZERO;
 	float4 Server_NextPosition = float4::ZERO;
 	float4 Server_Rotation = float4::ZERO;
-	float Sever_Timeer = 0.0f;
+	float Sever_Timer = 0.0f;
 	//====================================================
 
 private:
-	void UserUpdate(float _DeltaTime);
-	void ServerUpdate(float _DeltaTime);
+
 };

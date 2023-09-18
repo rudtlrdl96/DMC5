@@ -38,18 +38,16 @@ void BaseEnemyActor::Update_ProcessPacket()
 			Server_PrePosition = this->GetTransform()->GetWorldPosition();
 			Server_NextPosition = ObjectUpdate->Position;
 			Server_Rotation = ObjectUpdate->Rotation;
-			Sever_Timeer = 0.0f;
-			//PhysXCapsule->SetWorldRotation(RotValue);
-			PhysXCapsule->SetWorldRotation(Server_Rotation);
-			ObjectUpdate->TimeScale;
-
+			Sever_Timer = 0.0f;
 			float TimeScale = ObjectUpdate->TimeScale;
+			PhysXCapsule->SetWorldRotation(Server_Rotation);
+
 			break;
 		}
 		case PacketEnum::FsmChangePacket:
 		{
 			std::shared_ptr<FsmChangePacket> FsmChange = PopFirstPacket<FsmChangePacket>();
-			//SetFSMStateValue(FsmChange->FsmState);
+			SetFSMStateValue(FsmChange->FsmState);
 			break;
 		}
 		default:
@@ -66,96 +64,54 @@ void BaseEnemyActor::Update_SendPacket(float _DeltaTime)
 	NetworkManager::PushUpdatePacket({ .ObjPtr = this, .TimeScale = 1.0f, .UnionData = {0, } });
 }
 
-bool BaseEnemyActor::FloorCheck(float _Distance)
-{
-	float4 StartPosision = this->GetTransform()->GetWorldPosition();
-	float4 Direction = float4::DOWN;
-	float4 Results = float4::ZERO; // 레이가 닿은 결과값 궁금하면 이거 사용
-	float CheckDistance = _Distance;
-
-	bool IsResults = this->GetLevel()->RayCast(StartPosision, float4::DOWN, Results, _Distance);
-
-	return IsResults;
-}
-
 void BaseEnemyActor::Start()
 {
-	SetNetObjectType(Net_ActorType::HellCaina);
-
 	//Render생성
 	EnemyRenderer = CreateComponent<GameEngineFBXRenderer>();
 	//PhysX(충돌)
 	PhysXCapsule = CreateComponent<PhysXCapsuleComponent>();
 	PhysXCapsule->SetPhysxMaterial(0, 0, 0);
-	PhysXCapsule->CreatePhysXActors({100, 70, 100});
+	PhysXCapsule->CreatePhysXActors({ 90, 60, 90 });
+	PhysXCapsule->GetDynamic()->setMass(80.0f);
 	PhysXCapsule->SetWorldPosition({ 0, 100, 0 });
 
 	//공격 가능한 Enemy Collision
 	MonsterCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
 	MonsterCollision->GetTransform()->SetWorldScale(float4::ZERO);
+	MonsterAttackCollision = CreateComponent<AttackCollision>(CollisionOrder::EnemyAttack);
 	//주변 플레이어를 인식하는 Collision(1회용)
 	RN_MonsterCollision = CreateComponent<GameEngineCollision>(CollisionOrder::RN_Enemy);
 	RN_MonsterCollision->GetTransform()->SetWorldScale(float4::ZERO);
 	//몬스터의 공격범위 Collision
 	MonsterAttackRange = CreateComponent<GameEngineCollision>(CollisionOrder::RN_Enemy);
 	MonsterAttackRange->GetTransform()->SetWorldScale(float4::ZERO);
-	
-	//초기화
-	EnemyCodeValue = EnemyCode::None;
-	EnemyTypeValue = EnemyType::None;
-	EnemySizeValue = EnemySize::None;
 
 	EnemyMeshLoad();
 	EnemyTypeLoad();
 	EnemyAnimationLoad();
 	EnemyCreateFSM();
+	EnemyCreateFSM_Client();
 }
-
 
 void BaseEnemyActor::Update(float _DeltaTime)
 {
-	NetControllType Type = GetControllType();
-	switch (Type)
+	if (NetControllType::UserControll == GetControllType())
 	{
-	case NetControllType::UserControll:
-		UserUpdate(_DeltaTime);
-		break;
-	case NetControllType::NetControll:
-		ServerUpdate(_DeltaTime);
-		break;
-	default:
-		break;
+		EnemyFSM.Update(_DeltaTime);
+		DamageCollisionCheck(_DeltaTime);
+	}
+	else if (NetControllType::UserControll != GetControllType())
+	{
+		EnemyFSM_Client.Update(_DeltaTime);
+		Sever_Timer += _DeltaTime;
+		float Ratio = (Sever_Timer / NetworkManager::PacketFlushTime);
+		PhysXCapsule->SetWorldPosition(float4::LerpClamp(Server_PrePosition, Server_NextPosition, Ratio));
 	}
 
 	if (MonsterCollision->GetTransform()->GetWorldScale() == float4::ZERO)
 	{
 		MsgAssert("MonsterCollision의 크기를 설정해주지 않았습니다.");
 	}
-	if (RN_MonsterCollision->GetTransform()->GetWorldScale() == float4::ZERO)
-	{
-		MsgAssert("RN_MonsterCollision의 크기를 설정해주지 않았습니다.");
-	}
-	if (MonsterAttackRange->GetTransform()->GetWorldScale() == float4::ZERO)
-	{
-		MsgAssert("MonsterAttackRange의 크기를 설정해주지 않았습니다.");
-	}
-}
-
-void BaseEnemyActor::UserUpdate(float _DeltaTime)
-{
-	if (true == EnemyFSM.IsValid())
-	{
-		EnemyFSM.Update(_DeltaTime);
-	}
-}
-
-void BaseEnemyActor::ServerUpdate(float _DeltaTime)
-{
-	/*Sever_Timeer += _DeltaTime;
-
-	float Ratio = (Sever_Timeer / NetworkManager::PacketFlushTime);
-	float4 NowPos = float4::LerpClamp(Server_PrePosition, Server_NextPosition, Ratio);
-	PhysXCapsule->SetWorldPosition(NowPos);*/
 }
 
 void BaseEnemyActor::SuperArmorOn()
@@ -178,34 +134,16 @@ void BaseEnemyActor::SuperArmorOff()
 	}
 }
 
-void BaseEnemyActor::ChasePlayer(float _DeltaTime)
+bool BaseEnemyActor::FloorCheck(float _Distance)
 {
-	////서버에서 Player가 vector로 담아져있음. 그 벡터를 돌면서 따라감
-	//for (BasePlayerActor* Players : BasePlayerActor::GetPlayers())
-	//{
-	//	float4 EnemyPosition = EnemyRenderer->GetTransform()->GetWorldPosition();
-	//	float4 PlayerPosition = Players->GetTransform()->GetWorldPosition();
-	//	PhysXCapsule->SetMove((PlayerPosition - EnemyPosition));
-	//	//자연스럽게 돌리기
-	//	ColValue = ForWardCollision->Collision(CollisionOrder::RN_Player, ColType::OBBBOX3D, ColType::OBBBOX3D);
-	//	if (nullptr == ColValue)
-	//	{
-	//		float4 EnemyForWardVector = EnemyRenderer->GetTransform()->GetWorldForwardVector();
-	//		EnemyForWardVector.y = 0;
-	//		EnemyForWardVector.Normalize();
+	float4 StartPosision = this->GetTransform()->GetWorldPosition();
+	float4 Direction = float4::DOWN;
+	float4 Results = float4::ZERO; // 레이가 닿은 결과값 궁금하면 이거 사용
+	float CheckDistance = _Distance;
 
-	//		float4 ToPlayerVector = (PlayerPosition - EnemyPosition);
-	//		ToPlayerVector.y = 0;
-	//		ToPlayerVector.Normalize();
+	bool IsResults = this->GetLevel()->RayCast(StartPosision, float4::DOWN, Results, _Distance);
 
-	//		float4 CrossVector = float4::Cross3DReturnNormal(EnemyForWardVector, ToPlayerVector);
-	//		if (CrossVector.y < 0){	RotationValue = -2;}
-	//		else{RotationValue = 2;}
-
-	//		EnemyRenderer->GetTransform()->AddLocalRotation({ 0,RotationValue,0 });
-	//		ForWardCollision->GetTransform()->AddLocalRotation({ 0,RotationValue,0 });
-	//	}
-	//}
+	return IsResults;
 }
 
 float4 BaseEnemyActor::CrossMonsterAndPlayer()

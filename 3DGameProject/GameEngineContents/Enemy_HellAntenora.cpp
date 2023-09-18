@@ -162,3 +162,7 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 //{
 //}
 
+void Enemy_HellAntenora::EnemyCreateFSM_Client()
+{
+
+}

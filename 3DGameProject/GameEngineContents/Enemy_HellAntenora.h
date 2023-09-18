@@ -22,6 +22,8 @@ protected:
 	void EnemyTypeLoad() override;
 	void EnemyAnimationLoad() override;
 	void EnemyCreateFSM() override;
+	void EnemyCreateFSM_Client() override;
+
 private:
 	bool CheckBool = false;
 

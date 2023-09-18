@@ -103,24 +103,19 @@ public:
 
 protected:
 	void Start() override;
-	void Update(float _DeltaTime) override;
 
 	void EnemyMeshLoad() override;
 	void EnemyTypeLoad() override;
 	void EnemyAnimationLoad() override;
 	void EnemyCreateFSM() override;
+	void EnemyCreateFSM_Client() override;
 
-	void DamageCollisionCheck() override;
+	void DamageCollisionCheck(float _DeltaTime) override;
 
 private:
-	bool CheckBool = false;
-	bool AttackCheck = false;
-
 	void PlayerChase(float _DeltaTime);
 	void ChangeState(int _StateValue);
-	void CollisionDelayTimeCheck(float _DeltaTime);
 
-	float FallDistance = 0.0f;
 	float WaitTime = 0.0f;
 	float WalkTime = 0.0f;
 	float RotationDelayTime = 0.0f;

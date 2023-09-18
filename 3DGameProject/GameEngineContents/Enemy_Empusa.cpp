@@ -18,7 +18,7 @@ Enemy_Empusa::~Enemy_Empusa()
 {
 }
 
-void Enemy_Empusa::DamageCollisionCheck()
+void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 {
 
 }
@@ -32,7 +32,7 @@ void Enemy_Empusa::Start()
 
 void Enemy_Empusa::Update(float _DeltaTime)
 {
-	BaseEnemyActor::Update(_DeltaTime);
+	//BaseEnemyActor::Update(_DeltaTime);
 	EnemyFSM.Update(_DeltaTime);
 }
 
@@ -269,4 +269,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 		});
 }
 
+void Enemy_Empusa::EnemyCreateFSM_Client()
+{
 
+}

@@ -34,3 +34,8 @@ void Enemy_GreenEmpusa::EnemyAnimationLoad()
 void Enemy_GreenEmpusa::EnemyCreateFSM()
 {
 }
+
+void Enemy_GreenEmpusa::EnemyCreateFSM_Client()
+{
+
+}
