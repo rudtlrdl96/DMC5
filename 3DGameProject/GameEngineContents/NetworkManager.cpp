@@ -15,6 +15,7 @@
 #include "PlayerActor_Nero.h"
 #include "PlayerActor_Vergil.h"
 #include "NetTestPlayer.h"
+#include "Enemy_HellCaina.h"
 
 const float NetworkManager::PacketFlushTime = 0.01f;
 
@@ -446,6 +447,9 @@ std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorTyp
 		break;
 	case Net_ActorType::Vergil:
 		NetObject = CurLevel->CreateActor<PlayerActor_Vergil>();
+		break;
+	case Net_ActorType::HellCaina:
+		NetObject = CurLevel->CreateActor<Enemy_HellCaina>();
 		break;
 	default:
 	{

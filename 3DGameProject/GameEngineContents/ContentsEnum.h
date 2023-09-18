@@ -44,6 +44,7 @@ enum class Net_ActorType
 
 	//∏ÛΩ∫≈Õ
 	Empusa,
+	HellCaina,
 
 
 

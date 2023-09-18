@@ -10,6 +10,7 @@
 #include "PlayerActor_Nero.h"
 #include "PlayerActor_Vergil.h"
 #include "Plane.h"
+#include "Enemy_HellCaina.h"
 
 NetworkTestLevel* NetworkTestLevel::Inst = nullptr;
 
@@ -50,6 +51,8 @@ void NetworkTestLevel::LevelChangeStart()
 	//요걸 호출시켜주시면 됩니다.
 	NetworkManager::LinkNetwork(Nero.get());
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
+
+	NetworkManager::CreateNetworkActor<Enemy_HellCaina>(Net_ActorType::Empusa);
 }
 
 void NetworkTestLevel::Update(float _DeltaTime)
