@@ -38,12 +38,17 @@ void GameEngineLight::Update(float _DeltaTime)
 
 void GameEngineLight::LightUpdate(GameEngineCamera* _Camera, float _DeltaTime)
 {
+
 	LightDataValue.LightPos = GetTransform()->GetWorldPosition();
 	LightDataValue.LightDir = GetTransform()->GetLocalForwardVector();
 	LightDataValue.ViewLightPos = LightDataValue.LightPos * _Camera->GetView();
 	LightDataValue.ViewLightDir = LightDataValue.LightDir * _Camera->GetView();
 	LightDataValue.ViewLightRevDir = -LightDataValue.ViewLightDir;
 	LightDataValue.CameraPosition = _Camera->GetTransform()->GetWorldPosition() * _Camera->GetView();
+	LightDataValue.CameraViewInverseMatrix = _Camera->GetView().InverseReturn();
+	LightDataValue.CameraWorldPosition = _Camera->GetTransform()->GetWorldPosition();	
+
+	_Camera->GetTransform()->SetCameraMatrix(_Camera->GetView(), _Camera->GetProjection());
 
 	LightDataValue.LightViewMatrix.LookToLH(
 		GetTransform()->GetWorldPosition(),

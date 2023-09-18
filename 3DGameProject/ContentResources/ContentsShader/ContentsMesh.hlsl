@@ -34,7 +34,7 @@ Output MeshTexture_VS(Input _Input)
     NewOutPut.POSITION = mul(InputPos, WorldViewProjectionMatrix);
     NewOutPut.TEXCOORD = _Input.TEXCOORD;
     
-    NewOutPut.WORLDPOSITION = mul(InputPos, WorldMatrix);
+    NewOutPut.WORLDPOSITION = InputPos;
     NewOutPut.VIEWPOSITION = mul(InputPos, WorldView);
     
     _Input.NORMAL.w = 0.0f;
@@ -76,6 +76,18 @@ float GGX_Distribution(float3 normal, float3 halfVector, float roughness)
     return a / (3.14f * denominator * denominator);
 }
 
+half3 GetOffSpecularPeakReflectionDir(half3 Normal, half3 ReflectionVector, half Roughness)
+{
+    half a = Roughness * Roughness;
+    return lerp(Normal, ReflectionVector, (1 - a) * (sqrt(1 - a) + a));
+}
+
+// float3 R = 2 * dot(V, N) * N - V;
+// float NoV = saturate(dot(N, V));
+
+// Point lobe in off-specular peak direction
+//R = GetOffSpecularPeakReflectionDir(N, R, GBuffer.Roughness);
+
 DeferredOutPut MeshTexture_PS(Output _Input)
 {
     DeferredOutPut Result = (DeferredOutPut)0;
@@ -99,39 +111,44 @@ DeferredOutPut MeshTexture_PS(Output _Input)
             
     if (0 != IsNormal)
     {
-        // WorldView Normal    
-        Result.NorTarget = NormalTexCalculate(NormalTexture, ENGINEBASE, _Input.TEXCOORD, _Input.TANGENT, _Input.BINORMAL, _Input.NORMAL);
+       Result.NorTarget = NormalTexCalculate(NormalTexture, ENGINEBASE, _Input.TEXCOORD, _Input.TANGENT, _Input.BINORMAL, _Input.NORMAL);
     }
     else
     {
         Result.NorTarget = _Input.NORMAL;
     }
-
-            
+    
     // 반사량 계산 공식 러프니스 값에 따라서 결정된다        
     float roughness = 1.0 - NrmrData.r; // smoothness는 러프니스 값입니다.
     float3 reflection = reflect(AllLight[0].LightRevDir.xyz, Result.NorTarget.xyz); // 빛의 반사 방향 계산
     float distribution = GGX_Distribution(Result.NorTarget.xyz, reflection, roughness); // 반사 분포 계산
                                
-    // Eye        
-    
+    // View.TranslatedWorldCameraOrigin    
     float3 CameraPos = AllLight[0].CameraPosition;
-    float3 RefViewPos = _Input.VIEWPOSITION.xyz;
-    float3 CameraView = normalize(CameraPos - RefViewPos);    
-        
+    // TranslatedWorldPosition
+    float3 RefViewPos = _Input.VIEWPOSITION.xyz;    
+    // CameraToPixel
+    float3 CameraView = normalize(CameraPos - RefViewPos);
+    
     // 반사벡터
     float3 refnormal = Result.NorTarget.xyz;
-    float3 refvector = normalize(2.0f * refnormal.xyz * dot(CameraView.xyz, refnormal.xyz) - CameraView.xyz);
-    refvector.y = -refvector.y;    
     
-    float4 ReflectionColor = ReflectionTexture.Sample(CUBEMAPSAMPLER, -refvector);
+    // ReflectionVector    
+    float3 refvector = mul(float4(reflect(CameraView, refnormal), 0.0f), AllLight[0].CameraViewInverseMatrix).xyz;
+    
+    // Y축이 뒤집혀 반전
+    refvector.xz = refvector.zx;
+    refvector.y = -refvector.y;
+        
+    float4 ReflectionColor = ReflectionTexture.Sample(ENGINEBASE, refvector);
+    //float4 ReflectionColor = ReflectionTexture.Sample(ENGINEBASE, refvector);
     
     // 계산된 메탈릭 값
     float metallic = saturate(AlbmData.a - distribution);
      
     // AlbmData -> metallicValue 값에 따라서 결정되어야 한다        
-    Result.DifTarget.rgb = lerp(AlbmData.rgb, float3(0, 0, 0), metallic);
-    Result.DifTarget.rgb += lerp(float3(0, 0, 0), ReflectionColor.rgb * 0.5f, metallic);
+    Result.DifTarget.rgb = lerp(AlbmData.rgb, AlbmData.rgb * 0.0f, metallic);
+    Result.DifTarget.rgb += lerp(float3(0, 0, 0), ReflectionColor.rgb * 1.0f, metallic);
     
     Result.DifTarget.a = 1.0f;
     Result.PosTarget.a = 1.0f;
