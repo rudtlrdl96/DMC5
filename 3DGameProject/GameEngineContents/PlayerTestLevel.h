@@ -26,5 +26,9 @@ private:
 	bool IsMessage = false;
 	std::shared_ptr<class AnimationToolWindow> AnimWindow = nullptr;
 	std::shared_ptr<class ObjectWindow> ObjWindow = nullptr;
+
+	std::shared_ptr<class PlayerActor_Vergil> Vergil;
+	std::shared_ptr<class GameEngineLight> Light;
+	std::shared_ptr<class Plane> Flat;
 };
 

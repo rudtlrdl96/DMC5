@@ -115,6 +115,7 @@ void PlayerCamera::WallCheck()
 {
 	float4 playerpos = GetTransform()->GetWorldPosition();
 	float4 playerposeye = CameraTarget->GetWorldPosition() - playerpos;
+	if (playerposeye == float4::ZERO) { return; }
 	float Distance = playerposeye.Size();
 	float4 Colleye = float4::ZERO;
 

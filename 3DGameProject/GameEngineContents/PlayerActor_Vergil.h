@@ -30,11 +30,14 @@ enum FSM_State_Vergil
 	Vergil_yamato_ComboC_2,
 	Vergil_yamato_ComboC_3,
 
+	pl0300_yamato_Sissonal_1,	// 대시공격
+	pl0300_yamato_Sissonal_2,	
+	pl0300_yamato_Sissonal_3,
+
 	Vergil_yamato_JudgementCutEnd_1,
 	Vergil_yamato_JudgementCutEnd_2,
-
-	Vergil_Demon_Start,
-	Vergil_Demon_End,
+	Vergil_DT_Start,
+	Vergil_DT_End,
 };
 
 class PlayerActor_Vergil : public BasePlayerActor
@@ -82,7 +85,7 @@ private:
 	bool DelayCheck = false;	// 다른 콤보로 연결되기 위한 딜레이 여부
 	bool IsDevilTrigger = false;
 
-	void ChangeState(FSM_State_Vergil _StateValue);
+	void ChangeState(int _StateValue);
 
 	// 검 버튼을 입력한 경우 True 리턴 및 State 변경
 	bool Input_SwordCheck(int AddState = 0);
