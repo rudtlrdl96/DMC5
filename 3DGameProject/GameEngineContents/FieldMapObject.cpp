@@ -1,7 +1,7 @@
 #include "PrecompileHeader.h"
 #include "FieldMapObject.h"
 
-#include "Fountain.h"
+#include "TestObj.h"
 
 FieldMapObject::FieldMapObject()
 {
@@ -24,7 +24,7 @@ std::shared_ptr<FieldMapObject> FieldMapObject::CreateFieldMapObj(GameEngineLeve
 		MsgAssert("FieldMapObjType이 Null입니다");
 		break;
 	case FieldMapObjType::Test0:
-		Result = _Level->CreateActor<Fountain>();
+		Result = _Level->CreateActor<TestObj>();
 			break;
 	case FieldMapObjType::Test1:
 		Result = _Level->CreateActor<FieldMapObject>();

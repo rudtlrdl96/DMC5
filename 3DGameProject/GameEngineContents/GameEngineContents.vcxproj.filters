@@ -391,7 +391,7 @@
     <ClInclude Include="FieldMapObject.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj</Filter>
     </ClInclude>
-    <ClInclude Include="Fountain.h">
+    <ClInclude Include="TestObj.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClInclude>
     <ClInclude Include="StaticFieldMapObject.h">
@@ -777,7 +777,7 @@
     <ClCompile Include="FieldMapObject.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj</Filter>
     </ClCompile>
-    <ClCompile Include="Fountain.cpp">
+    <ClCompile Include="TestObj.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClCompile>
     <ClCompile Include="StaticFieldMapObject.cpp">

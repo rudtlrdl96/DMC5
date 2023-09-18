@@ -219,7 +219,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="Fountain.h">
+    <ClInclude Include="TestObj.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -692,7 +692,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="Fountain.cpp">
+    <ClCompile Include="TestObj.cpp">
       <SubType>
       </SubType>
     </ClCompile>
