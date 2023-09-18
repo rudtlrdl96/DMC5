@@ -254,7 +254,6 @@ void BasePlayerActor::Update_ProcessPacket()
 
 void BasePlayerActor::Update(float _DeltaTime)
 {
-	DamageColCheck();
 	Update_Character(_DeltaTime);
 
 	if (NetControllType::NetControll == GameEngineNetObject::GetControllType())
@@ -262,6 +261,10 @@ void BasePlayerActor::Update(float _DeltaTime)
 		Server_Timer += _DeltaTime;
 		float Ratio = Server_Timer / NetworkManager::PacketFlushTime;
 		PhysXCapsule->SetWorldPosition(float4::LerpClamp(Server_PrevPos, Server_NextPos, Ratio));
+	}
+	else if (NetControllType::UserControll == GameEngineNetObject::GetControllType())
+	{
+		DamageColCheck();
 	}
 	Update_SendPacket(_DeltaTime);
 }
