@@ -347,6 +347,8 @@ void PlayerActor_Vergil::VergilLoad()
 		// Jump Fly
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Jump_Fly,
 			.Start = [=] {
+				PhysXCapsule->SetPush(float4::DOWN * 1700);
+				PhysXCapsule->TurnOnGravity();
 				Renderer->ChangeAnimation("pl0300_Jump_Vertical_Fly");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -360,6 +362,7 @@ void PlayerActor_Vergil::VergilLoad()
 				if (true == Input_SwordCheckFly()) { return; }
 				if (true == Input_GunCheckFly()) { return; }
 				if (true == Input_WarpCheckFly()) { return; }
+				PhysXCapsule->SetForce(Controller->GetMoveVector() * 3500);
 
 			},
 			.End = [=] {
@@ -763,11 +766,6 @@ void PlayerActor_Vergil::VergilLoad()
 				if (true == Input_SwordCheckFly()) { return; }
 				if (true == Input_GunCheckFly()) { return; }
 				if (true == Input_WarpCheckFly()) { return; }
-				if (true == FloorCheck())
-				{
-					ChangeState(FSM_State_Vergil::Vergil_Landing);
-					return;
-				}
 			},
 			.End = [=] {
 				YamatoOff();
@@ -905,6 +903,7 @@ void PlayerActor_Vergil::VergilLoad()
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_AirCombo_2");
 				InputCheck = false;
+				DelayCheck = false;
 			},
 			.Update = [=](float _DeltaTime) {
 				if (true == FloorCheck())
@@ -921,7 +920,11 @@ void PlayerActor_Vergil::VergilLoad()
 
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
-				if (true == Input_SwordCheckFly(2)) { return; }
+				if (true == DelayCheck)
+				{
+					if (true == Input_SwordCheckFly(3)) { return; }
+				}
+				else if (true == Input_SwordCheckFly(2)) { return; }
 				if (true == Input_GunCheckFly()) { return; }
 				if (true == Input_WarpCheckFly()) { return; }
 			},
@@ -938,6 +941,74 @@ void PlayerActor_Vergil::VergilLoad()
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_AirCombo_3");
+				InputCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (true == FloorCheck())
+				{
+					ChangeState(FSM_State_Vergil::Vergil_Landing);
+					return;
+				}
+				if (Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Vergil::Vergil_Jump_Fly);
+					return;
+				}
+				if (true == Input_SpecialCheckFly()) { return; }
+
+				if (InputCheck == false) { return; }
+				if (true == Input_JumpCheckFly()) { return; }
+				if (true == Input_SwordCheckFly()) { return; }
+				if (true == Input_GunCheckFly()) { return; }
+				if (true == Input_WarpCheckFly()) { return; }
+			},
+			.End = [=] {
+				YamatoOff();
+			}
+			});
+
+		// Air Combo B 1
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_ComboB_1,
+			.Start = [=] {
+				YamatoOn();
+				Col_Attack->SetAttackData(DamageType::Air, 50);
+				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->SetLinearVelocityZero();
+				Renderer->ChangeAnimation("pl0300_yamato_AirComboB_1");
+				InputCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (true == FloorCheck())
+				{
+					ChangeState(FSM_State_Vergil::Vergil_Landing);
+					return;
+				}
+				if (Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Vergil::Vergil_Jump_Fly);
+					return;
+				}
+				if (true == Input_SpecialCheckFly()) { return; }
+
+				if (InputCheck == false) { return; }
+				if (true == Input_JumpCheckFly()) { return; }
+				if (true == Input_SwordCheckFly(4)) { return; }
+				if (true == Input_GunCheckFly()) { return; }
+				if (true == Input_WarpCheckFly()) { return; }
+			},
+			.End = [=] {
+				YamatoOff();
+			}
+			});
+		
+		// Air Combo B 2
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_ComboB_2,
+			.Start = [=] {
+				YamatoOn();
+				Col_Attack->SetAttackData(DamageType::Slam, 50);
+				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->SetLinearVelocityZero();
+				Renderer->ChangeAnimation("pl0300_yamato_AirComboB_2");
 				InputCheck = false;
 			},
 			.Update = [=](float _DeltaTime) {
