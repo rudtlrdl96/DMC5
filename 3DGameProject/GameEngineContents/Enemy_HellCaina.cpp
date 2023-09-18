@@ -34,6 +34,7 @@ void Enemy_HellCaina::Start()
 
 	// 기본 세팅
 	FallDistance = 55.0f;
+	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
 
 	// 넷 오브젝트 타입 설정
 	SetNetObjectType(Net_ActorType::HellCaina);
@@ -78,8 +79,6 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 		return;
 	}
 
-	AttackDelayCheck = 0.0f;
-
 	if (nullptr == MonsterCollision)
 	{
 		return;
@@ -118,6 +117,8 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 	default:
 		break;
 	}
+
+	AttackDelayCheck = 0.0f;
 }
 
 void Enemy_HellCaina::ChangeState(int _StateValue)
