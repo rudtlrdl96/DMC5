@@ -395,7 +395,10 @@
       <Filter>Actor\Stage\FieldMap\FieldMapObj</Filter>
     </ClInclude>
     <ClInclude Include="Fountain.h">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj</Filter>
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticFieldMapObject.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -778,7 +781,10 @@
       <Filter>Actor\Stage\FieldMap\FieldMapObj</Filter>
     </ClCompile>
     <ClCompile Include="Fountain.cpp">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj</Filter>
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticFieldMapObject.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1021,6 +1027,12 @@
     </Filter>
     <Filter Include="Actor\Stage\FieldMap\FieldMapObj">
       <UniqueIdentifier>{6732de9b-d29c-432f-8839-50ec8a4679ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Stage\FieldMap\FieldMapObj\StaticObj">
+      <UniqueIdentifier>{64f1f191-e586-4085-9962-4c96e7324250}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Stage\FieldMap\FieldMapObj\EventZone">
+      <UniqueIdentifier>{26318846-c671-43a0-a6cb-f98239013a7a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

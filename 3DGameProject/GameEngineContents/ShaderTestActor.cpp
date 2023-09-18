@@ -32,15 +32,15 @@ void ShaderTestActor::Start()
 	TestRenderer = CreateComponent<GameEngineFBXRenderer>();
 	 	
 	//FBX파일경로를 찾아서 로드
-	if (nullptr == GameEngineFBXMesh::Find("SkyBox.FBX"))
-	{
-		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
-			{
-				"Map", "TestMap"
-			}, "SkyBox.FBX");
-	
-		GameEngineFBXMesh::Load(Path);
-	}
+	//if (nullptr == GameEngineFBXMesh::Find("SkyBox.FBX"))
+	//{
+	//	std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+	//		{
+	//			"Map", "TestMap"
+	//		}, "SkyBox.FBX");
+	//
+	//	GameEngineFBXMesh::Load(Path);
+	//}
 	
 	TestRenderer->SetFBXMesh("Box_350x250x300_Mesh.fbx", "FBX_Alpha");
 	TestRenderer->GetTransform()->SetLocalScale(float4(0.3f, 0.3f, 0.3f));

@@ -565,6 +565,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="StartStageLevel.h" />
+    <ClInclude Include="StaticFieldMapObject.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="testarea.h">
       <SubType>
       </SubType>
@@ -1005,6 +1009,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="StartStageLevel.cpp" />
+    <ClCompile Include="StaticFieldMapObject.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="testarea.cpp">
       <SubType>
       </SubType>

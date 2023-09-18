@@ -1,7 +1,7 @@
 #pragma once
-#include "FieldMapObject.h"
+#include "StaticFieldMapObject.h"
 
-class Fountain : public FieldMapObject
+class Fountain : public StaticFieldMapObject
 {
 public:
 	// construtor destructor
@@ -16,7 +16,6 @@ public:
 
 protected:
 	void Start() override;
-	void Update(float _DeltaTime) override;
 
 private:
 

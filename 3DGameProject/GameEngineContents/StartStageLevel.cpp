@@ -33,7 +33,7 @@ void StartStageLevel::Update(float _DeltaTime)
 void StartStageLevel::LevelChangeStart()
 {
 	StageBaseLevel::LevelChangeStart();
-	{
+	/*{
 		std::string Path = GameEnginePath::GetFileFullPath
 		(
 			"ContentResources",
@@ -70,7 +70,7 @@ void StartStageLevel::LevelChangeStart()
 		);
 
 		GameEngineFBXMesh::Load(Path);
-	}
+	}*/
 
 	SetCamera({ 0,0,-500 });
 
