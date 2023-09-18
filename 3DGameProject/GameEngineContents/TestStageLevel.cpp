@@ -36,7 +36,6 @@ TestStageLevel::~TestStageLevel()
 void TestStageLevel::Start()
 {
 	CreateActor<FreeCameraActor>();
-	CreateActor<ShaderTestActor>()->GetTransform()->SetLocalPosition({ 0, 100, 0 });
 
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
 
@@ -116,9 +115,15 @@ void TestStageLevel::LevelChangeStart()
 	Nero->SinglePlayLoad();
 	Nero->SetWorldPosition({ 0, 100, 0 });
 
+	// 테스트용 코드
+	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 5000, 0));
+	GetDirectionalLight()->GetTransform()->SetWorldRotation(float4(70, 0, 0));
+
+
 	GameEngineCoreWindow::Clear();
 	GameEngineCoreWindow::AddDebugRenderTarget(0, "AllRenderTarget", GetLevel()->GetMainCamera()->GetCamAllRenderTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(1, "LightRenderTarget", GetLevel()->GetMainCamera()->GetDeferredLightTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(2, "MainCameraForwardTarget", GetLevel()->GetMainCamera()->GetCamForwardTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(3, "DeferredTarget", GetLevel()->GetMainCamera()->GetCamDeferrdTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(4, "ShadowTarget", GetLevel()->GetDirectionalLight()->GetShadowTarget());
 }

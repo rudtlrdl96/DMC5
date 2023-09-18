@@ -19,6 +19,7 @@ struct Output
     float4 POSITION : SV_POSITION;
     float4 VIEWPOSITION : POSITION0;
     float4 WORLDPOSITION : POSITION1;
+    float4 WVPPOSITION : POSITION5;
     float4 TEXCOORD : TEXCOORD;
     float4 NORMAL : NORMAL;
     float4 TANGENT : TANGENT;
@@ -40,6 +41,7 @@ Output MeshAniTexture_VS(Input _Input)
     
     NewOutPut.POSITION = mul(InputPos, WorldViewProjectionMatrix);
     NewOutPut.TEXCOORD = _Input.TEXCOORD;
+    NewOutPut.WVPPOSITION = NewOutPut.POSITION;
     
     NewOutPut.WORLDPOSITION = mul(InputPos, WorldMatrix);
     NewOutPut.VIEWPOSITION = mul(InputPos, WorldView);

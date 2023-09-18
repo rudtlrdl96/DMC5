@@ -448,6 +448,34 @@ void GameEngineCore::CoreResourcesInit()
 		GameEngineBlend::Create("OneBlend", Desc);
 	}
 
+	{
+		// 블랜드
+		D3D11_BLEND_DESC Desc = { 0, };
+
+		// 자동으로 알파부분을 제거해서 출력해주는 건데
+		// 졸라느립니다.
+		// Desc.AlphaToCoverageEnable = false;
+
+		// 
+		Desc.AlphaToCoverageEnable = false;
+		// 블랜드를 여러개 넣을거냐
+		// TRUE면 블랜드를 여러개 넣습니다.
+		// false면 몇개의 랜더타겟이 있건 0번에 세팅된 걸로 전부다 블랜드.
+		Desc.IndependentBlendEnable = false;
+
+		Desc.RenderTarget[0].BlendEnable = true;
+		Desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+		Desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_MIN;
+		Desc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+		Desc.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
+
+		Desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_MAX;
+		Desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+		Desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
+
+		GameEngineBlend::Create("MinBlend", Desc);
+	}
+
 	// 뎁스 생성
 	{
 		D3D11_DEPTH_STENCIL_DESC Desc = { 0, };
@@ -664,11 +692,11 @@ void GameEngineCore::CoreResourcesInit()
 
 	{
 		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("Shadow");
-		//Pipe->SetVertexShader("DebugMeshRender.hlsl");
+		Pipe->SetVertexShader("Shadow.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
 		Pipe->SetPixelShader("Shadow.hlsl");
-		Pipe->SetBlendState("AlphaBlend");
-		Pipe->SetDepthState("AlwayDepth");
+		Pipe->SetBlendState("MinBlend");
+		Pipe->SetDepthState("EngineDepth");
 	}
 }
 
