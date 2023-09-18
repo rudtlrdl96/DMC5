@@ -95,22 +95,30 @@ void BaseEnemyActor::Start()
 
 void BaseEnemyActor::Update(float _DeltaTime)
 {
-	if (NetControllType::UserControll == GetControllType())
+	if (MonsterCollision->GetTransform()->GetWorldScale() == float4::ZERO)
+	{
+		MsgAssert("MonsterCollision의 크기를 설정해주지 않았습니다.");
+	}
+
+	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
 	{
 		EnemyFSM.Update(_DeltaTime);
 		DamageCollisionCheck(_DeltaTime);
 	}
-	else if (NetControllType::UserControll != GetControllType())
+	else
 	{
-		EnemyFSM_Client.Update(_DeltaTime);
-		Sever_Timer += _DeltaTime;
-		float Ratio = (Sever_Timer / NetworkManager::PacketFlushTime);
-		PhysXCapsule->SetWorldPosition(float4::LerpClamp(Server_PrePosition, Server_NextPosition, Ratio));
-	}
-
-	if (MonsterCollision->GetTransform()->GetWorldScale() == float4::ZERO)
-	{
-		MsgAssert("MonsterCollision의 크기를 설정해주지 않았습니다.");
+		if (NetControllType::UserControll == GetControllType())
+		{
+			EnemyFSM.Update(_DeltaTime);
+			DamageCollisionCheck(_DeltaTime);
+		}
+		else if (NetControllType::UserControll != GetControllType())
+		{
+			EnemyFSM_Client.Update(_DeltaTime);
+			Sever_Timer += _DeltaTime;
+			float Ratio = (Sever_Timer / NetworkManager::PacketFlushTime);
+			PhysXCapsule->SetWorldPosition(float4::LerpClamp(Server_PrePosition, Server_NextPosition, Ratio));
+		}
 	}
 }
 
