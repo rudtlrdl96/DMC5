@@ -5,6 +5,7 @@
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include "UIFBXRenderer.h"
 #include "UI_HPGaege.h"
+#include "UI_DTGauge.h"
 NeroHPUI::NeroHPUI() 
 {
 }
@@ -66,7 +67,9 @@ void NeroHPUI::Start()
 	NeroUI_Back->GetTransform()->SetLocalPosition({ -696.0f,334.0f,40.0f });
 
 	std::shared_ptr<UI_HPGaege> UI_HPGaegeBar = GetLevel()->CreateActor<UI_HPGaege>();
+	std::shared_ptr<UI_DTGauge> UI_DTGaugeBar = GetLevel()->CreateActor<UI_DTGauge>();
 
+	
 }
 
 void NeroHPUI::Update(float _DeltaTime)

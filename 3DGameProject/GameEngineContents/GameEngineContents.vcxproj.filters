@@ -400,6 +400,12 @@
     <ClInclude Include="UI_HPGaege.h">
       <Filter>UI\UI_Actor\PlayUI</Filter>
     </ClInclude>
+    <ClInclude Include="GaugeBaseActor.h">
+      <Filter>UI\UI_Base\Gauge</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_DTGauge.h">
+      <Filter>UI\UI_Actor\PlayUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -786,6 +792,12 @@
     <ClCompile Include="UI_HPGaege.cpp">
       <Filter>UI\UI_Actor\PlayUI</Filter>
     </ClCompile>
+    <ClCompile Include="GaugeBaseActor.cpp">
+      <Filter>UI\UI_Base\Gauge</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_DTGauge.cpp">
+      <Filter>UI\UI_Actor\PlayUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
@@ -1033,6 +1045,9 @@
     </Filter>
     <Filter Include="Actor\Stage\FieldMap\FieldMapObj\EventZone">
       <UniqueIdentifier>{26318846-c671-43a0-a6cb-f98239013a7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Base\Gauge">
+      <UniqueIdentifier>{22d8574b-3874-4e4b-8bde-6152f6653423}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
