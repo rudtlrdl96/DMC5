@@ -8,6 +8,7 @@
 #include "AttackCollision.h"
 #include "BasePlayerActor.h"
 #include "NetworkManager.h"
+#include "FsmChangePacket.h"
 
 BaseEnemyActor::BaseEnemyActor()
 {
@@ -46,7 +47,7 @@ void BaseEnemyActor::Update_ProcessPacket()
 		}
 		case PacketEnum::FsmChangePacket:
 		{
-			//std::shared_ptr<FsmChangePacket> FsmChange = PopFirstPacket<FsmChangePacket>();
+			std::shared_ptr<FsmChangePacket> FsmChange = PopFirstPacket<FsmChangePacket>();
 			//SetFSMStateValue(FsmChange->FsmState);
 			break;
 		}
