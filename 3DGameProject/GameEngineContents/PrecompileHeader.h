@@ -16,6 +16,7 @@
 #include <GameEngineCore/PhysicsActor.h>
 #include <GameEngineCore/GameEngineOption.h>
 
+#include "BaseEnemyActor.h"
 #include "ContentsEnum.h"
 #include "BaseLog.h"
 
