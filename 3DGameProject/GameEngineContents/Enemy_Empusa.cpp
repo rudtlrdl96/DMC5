@@ -8,6 +8,7 @@
 #include "AnimationEvent.h"
 #include "BasePlayerActor.h"
 #include "AttackCollision.h"
+#include "NetworkManager.h"
 
 Enemy_Empusa::Enemy_Empusa() 
 {
@@ -26,11 +27,44 @@ void Enemy_Empusa::Start()
 {
 	BaseEnemyActor::Start();
 	SetNetObjectType(Net_ActorType::Empusa);
+	ChangeState(FSM_State_Empusa::Empusa_Idle);
 }
 
 void Enemy_Empusa::Update(float _DeltaTime)
 {
 	BaseEnemyActor::Update(_DeltaTime);
+	EnemyFSM.Update(_DeltaTime);
+}
+
+void Enemy_Empusa::ChangeState(int _StateValue)
+{
+	EnemyFSM.ChangeState(_StateValue);
+	EnemyFSMValue = _StateValue;
+	NetworkManager::SendFsmChangePacket(this, _StateValue);
+}
+
+void Enemy_Empusa::PlayerChase(float _DeltaTime)
+{
+	switch (EnemyRotationValue)
+	{
+	case EnemyRotation::Forward:
+		ChangeState(FSM_State_Empusa::Empusa_Walk_Start);
+		break;
+	case EnemyRotation::Left:
+		ChangeState(FSM_State_Empusa::Empusa_Turn_Left);
+		break;
+	case EnemyRotation::Left_180:
+		ChangeState(FSM_State_Empusa::Empusa_Turn_Left_180);
+		break;
+	case EnemyRotation::Right:
+		ChangeState(FSM_State_Empusa::Empusa_Turn_Right);
+		break;
+	case EnemyRotation::Right_180:
+		ChangeState(FSM_State_Empusa::Empusa_Turn_Right_180);
+		break;
+	default:
+		break;
+	}
 }
 
 void Enemy_Empusa::EnemyMeshLoad()
@@ -80,11 +114,10 @@ void Enemy_Empusa::EnemyAnimationLoad()
 			.CallBacks_void = 
 			{
 				std::bind([=] {CheckBool = true; }),
-				//Functional사용할 함수들 적는곳
 			},
 			.CallBacks_int = {
 				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
-			}, //ChangeState,인자있음
+			},
 			.CallBacks_float4 = {
 			
 			}
@@ -100,4 +133,140 @@ void Enemy_Empusa::EnemyCreateFSM()
 	RN_MonsterCollision->SetColType(ColType::OBBBOX2D);
 	MonsterAttackRange->GetTransform()->SetWorldScale({300,300,300});
 	MonsterAttackRange->SetColType(ColType::SPHERE3D);
+
+	//Idle
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Idle,
+	.Start = [=] {
+	PhysXCapsule->SetLinearVelocityZero();
+	EnemyRenderer->ChangeAnimation("em0100_Idle_undetected");
+	},
+	.Update = [=](float _DeltaTime) {
+		CheckHeadingRotationValue();
+		PlayerChase(_DeltaTime);
+	},
+	.End = [=] {}
+	});
+
+	/////////////////아기 엠푸사 걷는다
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Walk_Start,
+	.Start = [=] {
+	PhysXCapsule->AddWorldRotation({ 0, RotationValue, 0 });
+	MoveDir = GetTransform()->GetWorldForwardVector().NormalizeReturn();
+	MoveDir.RotationYDeg(RotationValue);
+	EnemyRenderer->ChangeAnimation("em0100_biped_walk_start");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_Empusa::Empusa_Walk_Loop);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Walk_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0100_biped_walk_loop");
+	},
+	.Update = [=](float _DeltaTime) {
+	PhysXCapsule->SetMove(MoveDir * 150.0f);
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_Empusa::Empusa_Walk_Stop);
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Walk_Stop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0100_biped_walk_stop");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_Empusa::Empusa_Idle);
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	/////////////////////////////////////////////////////////////////////Turn/////////////////////////////////////////////////////////////////////
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Turn_Left,
+	.Start = [=] {
+	SlerpCalculation();
+	EnemyRenderer->ChangeAnimation("em0100_turn_90_left");
+	},
+	.Update = [=](float _DeltaTime) {
+	SlerpTurn(_DeltaTime);
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_Empusa::Empusa_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+		SlerpTime = 0.0f;
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Turn_Left_180,
+	.Start = [=] {
+	SlerpCalculation();
+	EnemyRenderer->ChangeAnimation("em0100_turn_180_left");
+	},
+	.Update = [=](float _DeltaTime) {
+	SlerpTurn(_DeltaTime);
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_Empusa::Empusa_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+		SlerpTime = 0.0f;
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Turn_Right,
+	.Start = [=] {
+	SlerpCalculation();
+	EnemyRenderer->ChangeAnimation("em0100_turn_90_right");
+	},
+	.Update = [=](float _DeltaTime) {
+	SlerpTurn(_DeltaTime);
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_Empusa::Empusa_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+		SlerpTime = 0.0f;
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Turn_Right_180,
+	.Start = [=] {
+	SlerpCalculation();
+	EnemyRenderer->ChangeAnimation("em0100_turn_180_right");
+	},
+	.Update = [=](float _DeltaTime) {
+	SlerpTurn(_DeltaTime);
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_Empusa::Empusa_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+		SlerpTime = 0.0f;
+	}
+		});
 }
+
+
