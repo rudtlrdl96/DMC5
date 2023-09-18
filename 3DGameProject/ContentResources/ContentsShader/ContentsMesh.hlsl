@@ -17,7 +17,6 @@ struct Output
 {
     float4 POSITION : SV_POSITION;
     float4 VIEWPOSITION : POSITION0;
-    float4 WORLDPOSITION : POSITION1;
     float4 TEXCOORD : TEXCOORD;
     float4 NORMAL : NORMAL;
     float4 TANGENT : TANGENT;
@@ -34,7 +33,6 @@ Output MeshTexture_VS(Input _Input)
     NewOutPut.POSITION = mul(InputPos, WorldViewProjectionMatrix);
     NewOutPut.TEXCOORD = _Input.TEXCOORD;
     
-    NewOutPut.WORLDPOSITION = InputPos;
     NewOutPut.VIEWPOSITION = mul(InputPos, WorldView);
     
     _Input.NORMAL.w = 0.0f;
@@ -133,22 +131,25 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     // 반사벡터
     float3 refnormal = Result.NorTarget.xyz;
     
+    // Point lobe in off-specular peak direction
+    refnormal = GetOffSpecularPeakReflectionDir(refnormal, CameraView, roughness);
+    
     // ReflectionVector    
-    float3 refvector = mul(float4(reflect(CameraView, refnormal), 0.0f), AllLight[0].CameraViewInverseMatrix).xyz;
+    float3 refvector = mul(float4(reflect(refnormal, CameraView), 0.0f), AllLight[0].CameraViewInverseMatrix).xyz;
     
     // Y축이 뒤집혀 반전
-    refvector.xz = refvector.zx;
-    refvector.y = -refvector.y;
+    refvector.xz = -refvector.xz;
+    //refvector.y = -refvector.y;
         
-    float4 ReflectionColor = ReflectionTexture.Sample(ENGINEBASE, refvector);
+    float4 ReflectionColor = ReflectionTexture.Sample(CUBEMAPSAMPLER, refvector);
     //float4 ReflectionColor = ReflectionTexture.Sample(ENGINEBASE, refvector);
     
     // 계산된 메탈릭 값
     float metallic = saturate(AlbmData.a - distribution);
      
     // AlbmData -> metallicValue 값에 따라서 결정되어야 한다        
-    Result.DifTarget.rgb = lerp(AlbmData.rgb, AlbmData.rgb * 0.0f, metallic);
-    Result.DifTarget.rgb += lerp(float3(0, 0, 0), ReflectionColor.rgb * 1.0f, metallic);
+    Result.DifTarget.rgb = lerp(AlbmData.rgb, AlbmData.rgb * 0.5f, metallic);
+    Result.DifTarget.rgb += lerp(float3(0, 0, 0), ReflectionColor.rgb * 0.5f, metallic);
     
     Result.DifTarget.a = 1.0f;
     Result.PosTarget.a = 1.0f;
