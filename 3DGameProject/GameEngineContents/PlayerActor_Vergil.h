@@ -30,10 +30,18 @@ enum FSM_State_Vergil
 	Vergil_yamato_ComboC_2,
 	Vergil_yamato_ComboC_3,
 
+	Vergil_yamato_Air_Combo_1,
+	Vergil_yamato_Air_Combo_2,
+	Vergil_yamato_Air_Combo_3,
+
 	pl0300_yamato_Sissonal_1,	// 대시공격
 	pl0300_yamato_Sissonal_2,	
 	pl0300_yamato_Sissonal_3,
 	pl0300_yamato_Sissonal_Up,
+
+	pl0300_yamato_Upper_1,
+	pl0300_yamato_Upper_2,	// 어퍼하면서 위로
+	pl0300_yamato_Upper_3,	// 지상에서 어퍼
 
 	Vergil_yamato_JudgementCutEnd_1,
 	Vergil_yamato_JudgementCutEnd_2,
