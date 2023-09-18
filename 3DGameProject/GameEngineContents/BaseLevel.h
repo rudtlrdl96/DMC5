@@ -42,6 +42,5 @@ private:
 
 	Net_LevelType NetLevelType = Net_LevelType::UNKNOWN;
 	float NetTimer = 0.f;
-	const float PacketFlushWaitTime = 0.01f;
 };
 

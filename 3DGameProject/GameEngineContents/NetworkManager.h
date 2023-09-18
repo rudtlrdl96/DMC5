@@ -23,6 +23,8 @@ struct UpdatePacketParameter
 class NetworkManager
 {
 public:
+	static const float PacketFlushTime;
+	
 	enum class NetworkState
 	{
 		None,

@@ -16,6 +16,7 @@
 #include "PlayerActor_Vergil.h"
 #include "NetTestPlayer.h"
 
+const float NetworkManager::PacketFlushTime = 0.01f;
 
 unsigned int NetworkManager::NetID = 0;
 
@@ -34,7 +35,6 @@ std::map<unsigned int, std::shared_ptr<ObjectUpdatePacket>> NetworkManager::AllU
 std::map<PacketEnum, std::vector<std::shared_ptr<GameEnginePacket>>> NetworkManager::AllPacket;
 std::map<PacketEnum, GameEngineSerializer> NetworkManager::ChunkPackets;
 GameEngineSerializer NetworkManager::ChunkBytes;
-
 
 
 

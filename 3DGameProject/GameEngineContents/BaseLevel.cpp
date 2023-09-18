@@ -82,9 +82,9 @@ void BaseLevel::NetworkUpdate(float _DeltaTime)
 	GameEngineNetObject::ReleaseNetObject();
 
 	NetTimer += _DeltaTime;
-	if (NetTimer < PacketFlushWaitTime)
+	if (NetTimer < NetworkManager::PacketFlushTime)
 		return;
 
 	NetworkManager::FlushPackets();
-	NetTimer -= PacketFlushWaitTime;
+	NetTimer -= NetworkManager::PacketFlushTime;
 }
