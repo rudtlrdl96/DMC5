@@ -542,5 +542,5 @@ void BaseEnemyActor::SlerpTurn(float _DeltaTime)
 {
 	SlerpTime += _DeltaTime;
 	RotValue = float4::SLerpQuaternion(CurRotation, GoalRotation, SlerpTime);
-	PhysXCapsule->SetWorldRotation(Value);
+	PhysXCapsule->SetWorldRotation(RotValue);
 }
