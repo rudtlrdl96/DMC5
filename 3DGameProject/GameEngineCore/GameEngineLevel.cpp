@@ -179,10 +179,12 @@ void GameEngineLevel::Render(float _DeltaTime)
 	for (std::shared_ptr<GameEngineLight> Light : AllLight)
 	{
 		std::shared_ptr<GameEngineRenderTarget> ShadowTarget = Light->GetShadowTarget();
+		std::shared_ptr<GameEngineRenderTarget> BakeTarget = Light->GetBakeTarget(Light->GetBakeTargetIndex());
 
 		if (nullptr != ShadowTarget)
 		{
 			ShadowTarget->Clear();
+			ShadowTarget->Merge(BakeTarget);
 		}
 	}
 

@@ -20,6 +20,7 @@ class GameEngineCamera : public GameEngineActor
 	friend class GameEngineLevel;
 	friend class GameEngineRenderer;
 	friend class GameEngineRenderUnit;
+	friend class GameEngineLight;
 
 public:
 	// constrcuter destructer
@@ -179,6 +180,6 @@ private:
 	void RenderTargetTextureRelease();
 
 	// 그림자를 Bake 합니다 Static 랜더 유닛만 Bake 됩니다
-	//void BakeShadow();
+	void BakeShadow(std::shared_ptr<GameEngineLight> _BakeLight, int _BakeIndex = 0);
 };
 

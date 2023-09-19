@@ -83,6 +83,11 @@ public:
         return ShadowTarget;
     }
 
+    std::shared_ptr<class GameEngineRenderTarget> GetBakeTarget(int _Index)
+    {
+        return BakeShadowTarget[_Index];
+    }
+
     bool IsDebugDraw = false;
 
     LightData LightDataValue;
@@ -97,13 +102,23 @@ public:
 
     void BakeShadow(std::shared_ptr<GameEngineCamera> _BakeCam, int _BakeIndex = 0);
 
+    inline int GetBakeTargetIndex() const
+    {
+        return TargetBake;
+    }
+
+    inline void SetBakeTarget(int _Index)
+    {
+        TargetBake = _Index;
+    }
+
 protected:
 
 private:
     std::shared_ptr<class GameEngineRenderTarget> ShadowTarget = nullptr;
 
     std::map<int, std::shared_ptr<class GameEngineRenderTarget>> BakeShadowTarget;
-    int TargetBake = -1;
+    int TargetBake = 0;
 
     bool IsShadowLight = false;
 

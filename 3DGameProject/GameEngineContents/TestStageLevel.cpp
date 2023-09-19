@@ -66,6 +66,7 @@ void TestStageLevel::Update(float _DeltaTime)
 
 		ReflectionTextureSetting(Reflect->GetReflectionCubeTexture(), TempActor->GetTransform()->GetWorldPosition(), float4(10000, 10000, 10000));
 
+		GetDirectionalLight()->BakeShadow(GetMainCamera());
 	}
 
 	//GameEngineCore::GetFrameRate();
@@ -118,7 +119,6 @@ void TestStageLevel::LevelChangeStart()
 	// 테스트용 코드
 	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 4000, 0));
 	GetDirectionalLight()->GetTransform()->SetWorldRotation(float4(90, 0, 0));
-
 
 	GameEngineCoreWindow::Clear();
 	GameEngineCoreWindow::AddDebugRenderTarget(0, "AllRenderTarget", GetLevel()->GetMainCamera()->GetCamAllRenderTarget());

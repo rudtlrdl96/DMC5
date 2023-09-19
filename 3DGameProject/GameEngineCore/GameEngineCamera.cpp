@@ -200,6 +200,69 @@ void GameEngineCamera::RenderTargetTextureRelease()
 	IsLoad = false;
 }
 
+void GameEngineCamera::BakeShadow(std::shared_ptr<GameEngineLight> _BakeLight, int _BakeIndex /*= 0*/)
+{	
+	std::shared_ptr<GameEngineRenderTarget> BakeTarget = _BakeLight->GetBakeTarget(_BakeIndex);
+
+	if (nullptr == BakeTarget)
+	{
+		MsgAssert("존재하지 않는 Shadow Bake Target을 Bake 하려 했습니다.")
+	}
+
+	BakeTarget->Clear();
+	BakeTarget->Setting();
+
+	for (std::pair<const RenderPath, std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>>& Path : Units)
+	{
+		std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>& UnitPath = Path.second;
+
+		std::map<int, std::list<std::shared_ptr<GameEngineRenderUnit>>>::iterator RenderGroupStartIter = UnitPath.begin();
+		std::map<int, std::list<std::shared_ptr<GameEngineRenderUnit>>>::iterator RenderGroupEndIter = UnitPath.end();
+
+		for (; RenderGroupStartIter != RenderGroupEndIter; ++RenderGroupStartIter)
+		{
+			std::list<std::shared_ptr<GameEngineRenderUnit>>& RenderGroup = RenderGroupStartIter->second;
+			std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator StartRenderer = RenderGroup.begin();
+			std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator EndRenderer = RenderGroup.end();
+
+			for (; StartRenderer != EndRenderer; ++StartRenderer)
+			{
+				std::shared_ptr<GameEngineRenderUnit>& Render = *StartRenderer;
+
+				if (false == Render->IsUpdate())
+				{
+					continue;
+				}
+
+				if (false == Render->GetRenderer()->IsUpdate())
+				{
+					continue;
+				}
+
+				if (false == Render->IsShadow)
+				{
+					continue;
+				}
+
+				if (false == Render->IsStatic)
+				{
+					continue;
+				}
+
+				Render->GetRenderer()->GetTransform()->SetCameraMatrix(_BakeLight->GetLightData().LightViewMatrix, _BakeLight->GetLightData().LightProjectionMatrix);
+				TransformData Data = Render->GetRenderer()->GetTransform()->GetTransDataRef();
+				Render->Setting();
+				std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Find("Shadow");
+				Pipe->VertexShader();
+				Pipe->Rasterizer();
+				Pipe->PixelShader();
+				Pipe->OutputMerger();
+				Render->Draw();
+			}
+		}
+	}
+}
+
 void GameEngineCamera::FreeCameraSwitch()
 {
 	if (GetLevel()->GetMainCamera().get() != this)

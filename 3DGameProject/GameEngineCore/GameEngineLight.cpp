@@ -24,6 +24,7 @@ void GameEngineLight::Start()
 
 	// 크기가 곧 그림자가 맺히는 범위와 디테일을 의미하게 됩니다.
 	ShadowTarget = GameEngineRenderTarget::Create();
+	BakeShadowTarget[0] = GameEngineRenderTarget::Create();
 }
 
 void GameEngineLight::Update(float _DeltaTime)
@@ -65,6 +66,7 @@ void GameEngineLight::ShadowTargetTextureLoad(const float4 _ShadowScale /*= floa
 			BakeTarget.second->AddNewTexture(DXGI_FORMAT_R16_FLOAT, { LightDataValue.ShadowTargetSizeX, LightDataValue.ShadowTargetSizeY }, float4::RED);
 			BakeTarget.second->CreateDepthTexture();
 			BakeTarget.second->SetName("Bake Target : " + std::to_string(BakeTarget.first));
+			BakeTarget.second->Clear();
 		}
 	}
 
@@ -102,8 +104,7 @@ void GameEngineLight::BakeShadow(std::shared_ptr<GameEngineCamera> _BakeCam, int
 		NewBakeTarget->SetName("Bake Target : " + std::to_string(_BakeIndex));
 	}
 
-	// Render Bake...
-	// _BakeCam
+	_BakeCam->BakeShadow(DynamicThis<GameEngineLight>(), _BakeIndex);
 
 	BakeShadowTarget[_BakeIndex] = NewBakeTarget;
 }
