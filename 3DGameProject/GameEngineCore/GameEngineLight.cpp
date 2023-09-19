@@ -57,6 +57,17 @@ void GameEngineLight::ShadowTargetTextureLoad(const float4 _ShadowScale /*= floa
 	ShadowTarget->AddNewTexture(DXGI_FORMAT_R16_FLOAT, { LightDataValue.ShadowTargetSizeX, LightDataValue.ShadowTargetSizeY }, float4::RED);
 	ShadowTarget->CreateDepthTexture();
 	ShadowTarget->SetName("Shadow Target");
+
+	for (std::pair<const int, std::shared_ptr<class GameEngineRenderTarget>>& BakeTarget : BakeShadowTarget)
+	{
+		if (nullptr != BakeTarget.second)
+		{
+			BakeTarget.second->AddNewTexture(DXGI_FORMAT_R16_FLOAT, { LightDataValue.ShadowTargetSizeX, LightDataValue.ShadowTargetSizeY }, float4::RED);
+			BakeTarget.second->CreateDepthTexture();
+			BakeTarget.second->SetName("Bake Target : " + std::to_string(BakeTarget.first));
+		}
+	}
+
 }
 
 void GameEngineLight::ShadowTargetTextureRelease()
@@ -65,6 +76,36 @@ void GameEngineLight::ShadowTargetTextureRelease()
 	{
 		ShadowTarget->ReleaseTextures();
 	}
+
+	for (std::pair<const int, std::shared_ptr<class GameEngineRenderTarget>>& BakeTarget : BakeShadowTarget)
+	{
+		if (nullptr != BakeTarget.second)
+		{
+			BakeTarget.second->ReleaseTextures();
+		}
+	}
+}
+
+void GameEngineLight::BakeShadow(std::shared_ptr<GameEngineCamera> _BakeCam, int _BakeIndex /*= 0*/)
+{
+	std::shared_ptr<GameEngineRenderTarget> NewBakeTarget = nullptr;
+
+	if (true == BakeShadowTarget.contains(_BakeIndex))
+	{
+		NewBakeTarget = BakeShadowTarget[_BakeIndex];
+	}
+
+	if (nullptr == NewBakeTarget)
+	{
+		NewBakeTarget->AddNewTexture(DXGI_FORMAT_R16_FLOAT, { LightDataValue.ShadowTargetSizeX, LightDataValue.ShadowTargetSizeY }, float4::RED);
+		NewBakeTarget->CreateDepthTexture();
+		NewBakeTarget->SetName("Bake Target : " + std::to_string(_BakeIndex));
+	}
+
+	// Render Bake...
+	// _BakeCam
+
+	BakeShadowTarget[_BakeIndex] = NewBakeTarget;
 }
 
 void GameEngineLight::LightUpdate(GameEngineCamera* _Camera, float _DeltaTime)

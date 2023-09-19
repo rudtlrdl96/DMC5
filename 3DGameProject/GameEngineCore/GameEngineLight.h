@@ -95,10 +95,15 @@ public:
         return IsShadowLight;
     }
 
+    void BakeShadow(std::shared_ptr<GameEngineCamera> _BakeCam, int _BakeIndex = 0);
+
 protected:
 
 private:
-    std::shared_ptr<class GameEngineRenderTarget> ShadowTarget;
+    std::shared_ptr<class GameEngineRenderTarget> ShadowTarget = nullptr;
+
+    std::map<int, std::shared_ptr<class GameEngineRenderTarget>> BakeShadowTarget;
+    int TargetBake = -1;
 
     bool IsShadowLight = false;
 
