@@ -2,6 +2,7 @@
 #include <string_view>
 #include "GameEngineRenderer.h"
 #include "GameEngineFont.h"
+#include "EngineContentRenderingStruct.h"
 
 // Ό³Έν :
 class GameEngineFontRenderer : public GameEngineRenderer
@@ -47,7 +48,10 @@ private:
 	float4 FontColor = float4::RED;
 	std::string Text;
 	std::shared_ptr<GameEngineFont> Font;
-
+	float4 AtlasData;
+	ColorOption ColorOptionValue;
+	float4 Clip = float4::ONE;
+	float4 Flip = float4::ZERO;
 	FW1_TEXT_FLAG FwTextFlag = FW1_TEXT_FLAG::FW1_TOP;
 };
 

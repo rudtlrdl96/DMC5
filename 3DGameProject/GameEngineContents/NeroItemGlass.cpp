@@ -1,12 +1,11 @@
 #include "PrecompileHeader.h"
 #include "NeroItemGlass.h"
-
+#include "Nero_ItemFont.h"
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
+#include <GameEngineCore/GameEngineFontRenderer.h>
 #include "UIFBXRenderer.h"
-#include "UI_HPGaege.h"
-#include "UI_DTGauge.h"
-#include "UI_BulletGauge.h"
+
 NeroItemGlass::NeroItemGlass()
 {
 }
@@ -41,7 +40,7 @@ void NeroItemGlass::Start()
 	NeroUI_ItemGlass->GetTransform()->SetLocalScale({ 0.6f,0.6f,0.6f });
 	NeroUI_ItemGlass->LightOff();
 
-
+	std::shared_ptr<Nero_ItemFont> Text888 = GetLevel()->CreateActor<Nero_ItemFont>();
 
 }
 

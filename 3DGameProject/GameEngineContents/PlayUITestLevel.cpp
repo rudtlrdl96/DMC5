@@ -3,6 +3,7 @@
 #include "NeroHPUI.h"
 #include "NeroItemGlass.h"
 #include <GameEngineCore/GameEngineFBXMesh.h>
+#include <GameEngineCore/GameEngineFont.h>
 
 PlayUITestLevel::PlayUITestLevel()
 {

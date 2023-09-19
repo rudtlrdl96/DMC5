@@ -1,8 +1,9 @@
 #pragma once
-#include "GaugeBaseActor.h"
 #include <GameEngineCore/GameEngineActor.h>
+#include <GameEngineCore/GameEngineFont.h>
+
 // Ό³Έν :
-class Nero_ItemFont : public GaugeBaseActor
+class Nero_ItemFont : public GameEngineActor
 {
 public:
 

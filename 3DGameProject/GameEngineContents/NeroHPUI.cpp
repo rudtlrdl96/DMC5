@@ -66,7 +66,6 @@ void NeroHPUI::Start()
 
 	std::shared_ptr<GameEngineUIRenderer> NeroUI_Back = CreateComponent<GameEngineUIRenderer>(0);
 	NeroUI_Back->SetTexture("HudBack.png");
-	NeroUI_Back->SetTexture("HudBack.png");
 	NeroUI_Back->GetTransform()->SetLocalScale({ 97.0f,131.0f,0.0f });
 	NeroUI_Back->GetTransform()->SetLocalPosition({ -696.0f,334.0f,40.0f });
 

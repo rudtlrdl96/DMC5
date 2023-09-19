@@ -1,7 +1,7 @@
 #include "PrecompileHeader.h"
 #include "GameEngineFontRenderer.h"
 #include "GameEngineFont.h"
-
+#include "GameEngineSpriteRenderer.h"
 GameEngineFontRenderer::GameEngineFontRenderer()
 {
 	SetName("GameEngineFontRenderer");
@@ -25,6 +25,19 @@ void GameEngineFontRenderer::Start()
 {
 	PushCameraRender(100);
 	Unit = CreateRenderUnit("Rect", "2DTexture");
+	AtlasData.x = 0.0f;
+	AtlasData.y = 0.0f;
+	AtlasData.z = 1.0f;
+	AtlasData.w = 1.0f;
+	float4 HBSCMin = { 0.0f, 0.5f, 0.5f, 0.5f };
+	ColorOptionValue.MulColor = float4::ONE;
+	ColorOptionValue.PlusColor = float4::ZERONULL;
+	ColorOptionValue.BSCColor = HBSCMin;
+
+	GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
+	GetShaderResHelper().SetConstantBufferLink("ColorOption", ColorOptionValue);
+	GetShaderResHelper().SetConstantBufferLink("ClipData", Clip);
+	GetShaderResHelper().SetConstantBufferLink("FlipData", Flip);
 
 	Unit->RenderFunction = std::bind(&GameEngineFontRenderer::Render, this, std::placeholders::_1);
 }
