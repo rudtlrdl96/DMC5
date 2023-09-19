@@ -64,26 +64,7 @@ public:
 	static void Update_PacketProcess(BaseLevel* _CurrentLevel);
 
 
-
-
 	//네트워크용 엑터를 생성합니다. 클라이언트의 경우엔 nullptr을 반환하니 꼭 nullptr를 해주세요
-	template <typename ActorPtr>
-	static std::shared_ptr<ActorPtr> CreateNetworkActor(Net_ActorType _NetActorType, class GameEngineLevel* _Level)
-	{
-		//플레이어를 제외한 모든 생성은 서버(호스트)에서만 이루어 집니다.
-		//그러니 서버가 아니면 nullptr가 리턴되는점 주의부탁드립니다.
-		if (false == IsServer())
-			return nullptr;
-
-		std::shared_ptr<GameEngineNetObject> NetObjPtr = nullptr;
-		NetObjPtr = CreateNetActor(_NetActorType, _Level);
-		NetObjPtr->SetUserControllType();
-
-		return std::dynamic_pointer_cast<ActorPtr>(NetObjPtr);
-	}
-
-	
-
 	template <typename ActorPtr, typename OrderType>
 	static std::shared_ptr<ActorPtr> CreateNetworkActor(class GameEngineLevel* _Level, OrderType _Order)
 	{
