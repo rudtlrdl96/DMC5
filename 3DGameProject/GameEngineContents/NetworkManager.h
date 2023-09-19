@@ -44,6 +44,11 @@ public:
 		return (NetworkState::Client == NowState);
 	}
 
+	static inline bool IsSingle()
+	{
+		return (NetworkState::None == NowState);
+	}
+
 	//서버를 오픈하거나 연결되었는지 여부
 	static inline bool IsNet()
 	{

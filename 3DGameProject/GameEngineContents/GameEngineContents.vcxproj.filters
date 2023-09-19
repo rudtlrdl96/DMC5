@@ -406,6 +406,9 @@
     <ClInclude Include="UI_DTGauge.h">
       <Filter>UI\UI_Actor\PlayUI</Filter>
     </ClInclude>
+    <ClInclude Include="NetworkObjectBase.h">
+      <Filter>Server\03.NetworkObjectBase</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -798,6 +801,9 @@
     <ClCompile Include="UI_DTGauge.cpp">
       <Filter>UI\UI_Actor\PlayUI</Filter>
     </ClCompile>
+    <ClCompile Include="NetworkObjectBase.cpp">
+      <Filter>Server\03.NetworkObjectBase</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
@@ -1048,6 +1054,9 @@
     </Filter>
     <Filter Include="UI\UI_Base\Gauge">
       <UniqueIdentifier>{22d8574b-3874-4e4b-8bde-6152f6653423}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\03.NetworkObjectBase">
+      <UniqueIdentifier>{4b8bf97b-98a1-4c9b-a9c7-b69298c7dfe2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
