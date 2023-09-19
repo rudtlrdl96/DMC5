@@ -266,7 +266,6 @@ void BasePlayerActor::Update(float _DeltaTime)
 	{
 		DamageColCheck();
 	}
-	Update_SendPacket(_DeltaTime);
 }
 
 void BasePlayerActor::Update_SendPacket(float _DeltaTime)

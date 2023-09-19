@@ -114,7 +114,7 @@ public:
 	// constrcuter destructer
 	PlayerActor_Nero()
 	{
-		SetControll(NetControllType::UserControll);
+		//SetControll(NetControllType::UserControll);
 	}
 	PlayerActor_Nero(NetControllType _ControllType)
 	{
