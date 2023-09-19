@@ -27,6 +27,9 @@ void NeroHPUI::Start()
 	NewDir.Move("ContentResources");
 	NewDir.Move("Mesh");
 	NewDir.Move("UIMesh");
+	NewDir.Move("NeroUIMesh");
+	NewDir.Move("NeroHPMesh");
+
 	if (nullptr == GameEngineFBXMesh::Find("NeroIden3.FBX"))
 	{
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".fbx" });

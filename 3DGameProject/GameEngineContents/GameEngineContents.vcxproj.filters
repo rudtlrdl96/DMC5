@@ -274,9 +274,6 @@
     <ClInclude Include="Menu_VirgilInfo.h">
       <Filter>UI\UI_Actor\MenuUI\VergilInfo</Filter>
     </ClInclude>
-    <ClInclude Include="NeroHPUI.h">
-      <Filter>UI\UI_Actor\PlayUI</Filter>
-    </ClInclude>
     <ClInclude Include="Nero_ShopTitleBar.h">
       <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
     </ClInclude>
@@ -397,20 +394,29 @@
     <ClInclude Include="StaticFieldMapObject.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClInclude>
-    <ClInclude Include="UI_HPGaege.h">
-      <Filter>UI\UI_Actor\PlayUI</Filter>
-    </ClInclude>
     <ClInclude Include="GaugeBaseActor.h">
       <Filter>UI\UI_Base\Gauge</Filter>
     </ClInclude>
-    <ClInclude Include="UI_DTGauge.h">
-      <Filter>UI\UI_Actor\PlayUI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI_BulletGauge.h">
-      <Filter>UI\UI_Actor\PlayUI</Filter>
-    </ClInclude>
     <ClInclude Include="NetworkObjectBase.h">
       <Filter>Server\03.NetworkObjectBase</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_HPGaege.h">
+      <Filter>UI\UI_Actor\PlayUI\NeroHPGlass</Filter>
+    </ClInclude>
+    <ClInclude Include="NeroHPUI.h">
+      <Filter>UI\UI_Actor\PlayUI\NeroHPGlass</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_BulletGauge.h">
+      <Filter>UI\UI_Actor\PlayUI\NeroHPGlass</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_DTGauge.h">
+      <Filter>UI\UI_Actor\PlayUI\NeroHPGlass</Filter>
+    </ClInclude>
+    <ClInclude Include="NeroItemGlass.h">
+      <Filter>UI\UI_Actor\PlayUI\NeroItemGlass\Glass</Filter>
+    </ClInclude>
+    <ClInclude Include="Nero_ItemFont.h">
+      <Filter>UI\UI_Actor\PlayUI\NeroItemGlass\ItemFont</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -678,9 +684,6 @@
     <ClCompile Include="Menu_VirgilInfo.cpp">
       <Filter>UI\UI_Actor\MenuUI\VergilInfo</Filter>
     </ClCompile>
-    <ClCompile Include="NeroHPUI.cpp">
-      <Filter>UI\UI_Actor\PlayUI</Filter>
-    </ClCompile>
     <ClCompile Include="Nero_ShopTitleBar.cpp">
       <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
     </ClCompile>
@@ -795,20 +798,29 @@
     <ClCompile Include="StaticFieldMapObject.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClCompile>
-    <ClCompile Include="UI_HPGaege.cpp">
-      <Filter>UI\UI_Actor\PlayUI</Filter>
-    </ClCompile>
     <ClCompile Include="GaugeBaseActor.cpp">
       <Filter>UI\UI_Base\Gauge</Filter>
     </ClCompile>
-    <ClCompile Include="UI_DTGauge.cpp">
-      <Filter>UI\UI_Actor\PlayUI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI_BulletGauge.cpp">
-      <Filter>UI\UI_Actor\PlayUI</Filter>
-    </ClCompile>
     <ClCompile Include="NetworkObjectBase.cpp">
       <Filter>Server\03.NetworkObjectBase</Filter>
+    </ClCompile>
+    <ClCompile Include="NeroHPUI.cpp">
+      <Filter>UI\UI_Actor\PlayUI\NeroHPGlass</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_BulletGauge.cpp">
+      <Filter>UI\UI_Actor\PlayUI\NeroHPGlass</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_DTGauge.cpp">
+      <Filter>UI\UI_Actor\PlayUI\NeroHPGlass</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_HPGaege.cpp">
+      <Filter>UI\UI_Actor\PlayUI\NeroHPGlass</Filter>
+    </ClCompile>
+    <ClCompile Include="NeroItemGlass.cpp">
+      <Filter>UI\UI_Actor\PlayUI\NeroItemGlass\Glass</Filter>
+    </ClCompile>
+    <ClCompile Include="Nero_ItemFont.cpp">
+      <Filter>UI\UI_Actor\PlayUI\NeroItemGlass\ItemFont</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1063,6 +1075,18 @@
     </Filter>
     <Filter Include="Server\03.NetworkObjectBase">
       <UniqueIdentifier>{4b8bf97b-98a1-4c9b-a9c7-b69298c7dfe2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\PlayUI\NeroHPGlass">
+      <UniqueIdentifier>{20445aa9-d6bf-4ce9-957d-7680ffdfc2d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\PlayUI\NeroItemGlass">
+      <UniqueIdentifier>{bd61c884-8ded-499e-b8bf-553022d642ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\PlayUI\NeroItemGlass\Glass">
+      <UniqueIdentifier>{4ed1ebd5-7a40-4d71-b0d2-a3ecf41b758b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\PlayUI\NeroItemGlass\ItemFont">
+      <UniqueIdentifier>{0d8d70d7-1945-463e-bf78-29027711b0d0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

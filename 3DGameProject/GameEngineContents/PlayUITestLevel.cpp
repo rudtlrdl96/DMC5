@@ -1,7 +1,7 @@
 #include "PrecompileHeader.h"
 #include "PlayUITestLevel.h"
 #include "NeroHPUI.h"
-
+#include "NeroItemGlass.h"
 #include <GameEngineCore/GameEngineFBXMesh.h>
 
 PlayUITestLevel::PlayUITestLevel()
@@ -21,7 +21,9 @@ void PlayUITestLevel::Start()
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
 	std::shared_ptr<NeroHPUI> NeroHPPtr = CreateActor<NeroHPUI>();
+	std::shared_ptr<NeroItemGlass> NeroItemGlassPtr = CreateActor<NeroItemGlass>();
 
+	
 }
 
 void PlayUITestLevel::Update(float _DeltaTime)
