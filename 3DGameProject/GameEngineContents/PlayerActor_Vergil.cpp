@@ -88,6 +88,7 @@ void PlayerActor_Vergil::VergilLoad()
 		// Idle
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Idle,
 			.Start = [=] {
+				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_Idle_Normal");
 			},
@@ -152,6 +153,8 @@ void PlayerActor_Vergil::VergilLoad()
 		// Walk
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Walk,
 			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
+				PhysXCapsule->TurnOffGravity();
 			},
 			.Update = [=](float _DeltaTime) {
 				if (false == FloorCheck())
@@ -207,6 +210,7 @@ void PlayerActor_Vergil::VergilLoad()
 		// Run Start
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_RunStart,
 			.Start = [=] {
+				PhysXCapsule->TurnOffGravity();
 				Renderer->ChangeAnimation("pl0300_Run_Start");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -314,7 +318,7 @@ void PlayerActor_Vergil::VergilLoad()
 			InputCheck = false;
 			MoveCheck = false;
 			YamatoOff();
-			Renderer->ChangeAnimation("pl0300_Jump_Vertical");
+			Renderer->ChangeAnimation("pl0300_Jump_Vertical", true);
 		},
 		.Update = [=](float _DeltaTime) {
 			if (Renderer->IsAnimationEnd())
@@ -1317,21 +1321,33 @@ void PlayerActor_Vergil::VergilLoad()
 			{
 				ChangeState(FSM_State_Vergil::Vergil_Idle);
 			}
+
+			if (true == FloorCheck())
+			{
+				if (true == Input_SpecialCheck()) { return; }
+
+				if (InputCheck == false) { return; }
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_WarpCheck()) { return; }
+			}
+			else
+			{
+				if (true == Input_SpecialCheckFly()) { return; }
+
+				if (InputCheck == false) { return; }
+				if (true == Input_JumpCheckFly()) { return; }
+				if (true == Input_SwordCheckFly()) { return; }
+				if (true == Input_GunCheckFly()) { return; }
+				if (true == Input_WarpCheckFly()) { return; }
+			}
+			if (MoveCheck == false) { return; }
 			if (false == FloorCheck())
 			{
 				ChangeState(FSM_State_Vergil::Vergil_Jump_Fly);
 				return;
 			}
-
-			if (true == Input_SpecialCheck()) { return; }
-
-			if (InputCheck == false) { return; }
-			if (true == Input_JumpCheck()) { return; }
-			if (true == Input_SwordCheck()) { return; }
-			if (true == Input_GunCheck()) { return; }
-			if (true == Input_WarpCheck()) { return; }
-
-			if (MoveCheck == false) { return; }
 			if (Controller->GetMoveVector() != float4::ZERO)
 			{
 				ChangeState(FSM_State_Vergil::Vergil_RunStart);
@@ -1488,9 +1504,34 @@ void PlayerActor_Vergil::VergilLoad()
 
 		} });
 
-		// Warp Down
+		// Warp Up
 		static float4 WarpPos;
-		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Down,
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_AirTrick,
+		.Start = [=] {
+			PhysXCapsule->TurnOffGravity();
+			PhysXCapsule->SetLinearVelocityZero();
+			WarpPos = float4::ZERO;
+			if (nullptr != LockOnEnemyTransform)
+			{
+				RotationToTarget();
+				WarpPos = LockOnEnemyTransform->GetWorldPosition();
+				WarpPos = WarpPos + (GetTransform()->GetWorldPosition() - LockOnEnemyTransform->GetWorldPosition()).NormalizeReturn() * 150;
+			}
+			Renderer->ChangeAnimation("pl0300_Warp_Up", true);
+			},
+		.Update = [=](float _DeltaTime) {
+			if (true == Renderer->IsAnimationEnd())
+			{
+				ChangeState(FSM_State_Vergil::Vergil_Warp_Front_2);
+			}
+		},
+		.End = [=] {
+			SetWorldPosition(WarpPos);
+		}
+		});
+
+		// Warp Down
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_TrickDown,
 		.Start = [=] {
 			PhysXCapsule->TurnOffGravity();
 			PhysXCapsule->SetLinearVelocityZero();
@@ -2116,15 +2157,39 @@ bool PlayerActor_Vergil::Input_SpecialCheck()
 		ChangeState(FSM_State_Vergil::Vergil_DT_End);
 		return true;
 	}
-
+	if (Controller->GetIsBackFrontSkill())
+	{
+		ChangeState(FSM_State_Vergil::Vergil_Warp_Back_1);
+		return true;
+	}
+	if (Controller->GetIsLockOnSkill())
+	{
+		ChangeState(FSM_State_Vergil::Vergil_Warp_AirTrick);
+		return true;
+	}
 	return false;
 }
 
 bool PlayerActor_Vergil::Input_SpecialCheckFly()
 {
+	if (Controller->GetIsAnyJump())
+	{
+		std::vector<std::shared_ptr<GameEngineCollision>> Cols;
+		if (true == Col_EnemyStepCheck->CollisionAll(CollisionOrder::Enemy, Cols))
+		{
+			ChangeState(FSM_State_Vergil::Vergil_Jump_Vertical);
+			return true;
+		}
+	}
 	if (Controller->GetIsBackFrontSkill())
 	{
-		ChangeState(FSM_State_Vergil::Vergil_Warp_Down);
+		ChangeState(FSM_State_Vergil::Vergil_Warp_TrickDown);
+		return true;
+	}
+	if (Controller->GetIsLockOnSkill())
+	{
+		ChangeState(FSM_State_Vergil::Vergil_Warp_AirTrick);
+		return true;
 	}
 	return false;
 }

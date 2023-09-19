@@ -32,8 +32,8 @@ enum FSM_State_Vergil
 	Vergil_Warp_Left_2,
 	Vergil_Warp_Right_1,
 	Vergil_Warp_Right_2,
-	Vergil_Warp_Up,
-	Vergil_Warp_Down,
+	Vergil_Warp_AirTrick,	// 상대방에게 날라가는 기술
+	Vergil_Warp_TrickDown,
 
 	// 야마토 기술
 	Vergil_yamato_Combo_1,
