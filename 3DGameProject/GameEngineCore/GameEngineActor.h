@@ -37,6 +37,22 @@ public:
 
 	void SetOrder(int _Order) override;
 
+	inline bool IsStatic() const
+	{
+		return IsStaticValue;
+	}
+
+	inline void SetStatic()
+	{
+		IsStaticValue = true;
+	}
+
+	inline void SetDynamic()
+	{
+		IsStaticValue = false;
+	}
+
+
 protected:
 	virtual void Start() {}
 	virtual void Update(float _DeltaTime) {}
@@ -44,4 +60,6 @@ protected:
 
 private:
 	void ComponentInit(std::shared_ptr<class GameEngineComponent> _Component, int _Order = 0);
+
+	bool IsStaticValue = false;
 };

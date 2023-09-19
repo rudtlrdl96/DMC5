@@ -112,21 +112,24 @@ LightOutPut DeferredCalLight_PS(Output _Input)
         float4 ShadowWorldViewPos = DeferredPosition;
         ShadowWorldViewPos.a = 1.0f;
             
-        float4 ShadowLightWorldPos = mul(ShadowWorldViewPos, AllLight[i].CameraViewInverseMatrix);
-        float4 ShadowLightPos = mul(ShadowLightWorldPos, AllLight[i].LightViewProjectionMatrix);
-        float3 ShadowLightProjection = ShadowLightPos.xyz / ShadowLightPos.w;
+        if(0 == i)
+        {
+            float4 ShadowLightWorldPos = mul(ShadowWorldViewPos, AllLight[i].CameraViewInverseMatrix);
+            float4 ShadowLightPos = mul(ShadowLightWorldPos, AllLight[i].LightViewProjectionMatrix);
+            float3 ShadowLightProjection = ShadowLightPos.xyz / ShadowLightPos.w;
                 
-        float2 ShadowUV = float2(ShadowLightProjection.x * 0.5f + 0.5f, ShadowLightProjection.y * -0.5f + 0.5f);
-        float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, ShadowUV.xy).r;
+            float2 ShadowUV = float2(ShadowLightProjection.x * 0.5f + 0.5f, ShadowLightProjection.y * -0.5f + 0.5f);
+            float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, ShadowUV.xy).r;
                         
-        if (0.001f < ShadowUV.x && 0.999f > ShadowUV.x &&
+            if (0.001f < ShadowUV.x && 0.999f > ShadowUV.x &&
             0.001f < ShadowUV.y && 0.999f > ShadowUV.y &&
             ShadowLightProjection.z >= (ShadowDepthValue + 0.001f))
-        {
-            CalLightValue.CurLightDiffuseRatio *= 0.01f;
-            CalLightValue.CurLightSpacularRatio *= 0.01f;
+            {
+                CalLightValue.CurLightDiffuseRatio *= 0.01f;
+                CalLightValue.CurLightSpacularRatio *= 0.01f;
+            }        
         }
-        
+
         DiffuseRatio.xyz += CalLightValue.CurLightDiffuseRatio.xyz;
         SpacularRatio.xyz += CalLightValue.CurLightSpacularRatio.xyz;
     }
