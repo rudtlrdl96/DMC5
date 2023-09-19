@@ -321,6 +321,12 @@ bool BasePlayerActor::FloorCheck()
 
 void BasePlayerActor::DamageColCheck()
 {
+	if (nullptr == Col_Player)
+	{
+		MsgAssert("경학님 여기 수정좀 해주세요. 클라이언트일때 계속 터져요");
+		return;
+	}
+
 	std::shared_ptr<GameEngineCollision> Col = Col_Player->Collision(CollisionOrder::EnemyAttack);
 	if (nullptr == Col) { return; }
 
