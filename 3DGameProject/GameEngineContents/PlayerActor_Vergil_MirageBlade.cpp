@@ -17,7 +17,7 @@ void PlayerActor_Vergil::CreateMirageBlade()
 	AllMirageBlades.resize(8);
 	for (int i = 0; i < 8; i++)
 	{
-		AllMirageBlades[i] = NetworkManager::CreateNetworkActor<Player_MirageBlade>(GetLevel(), ActorOrder::Player);
+		//AllMirageBlades[i] = NetworkManager::CreateNetworkActor<Player_MirageBlade>(GetLevel(), ActorOrder::Player);
 		if (nullptr == AllMirageBlades[i])
 		{
 			AllMirageBlades[i] = GetLevel()->CreateActor<Player_MirageBlade>(ActorOrder::Player);
