@@ -8,8 +8,8 @@ GameEngineLight::GameEngineLight()
 {
 	SetName("GameEngineLight");
 
-	LightDataValue.ShadowTargetSizeX = 8192;
-	LightDataValue.ShadowTargetSizeY = 8192;
+	LightDataValue.ShadowTargetSizeX = 1024;
+	LightDataValue.ShadowTargetSizeY = 1024;
 	LightDataValue.LightNear = 0.1f;
 	LightDataValue.LightFar = 5000.1f;
 }
@@ -35,21 +35,36 @@ void GameEngineLight::Update(float _DeltaTime)
 	}
 }
 
-void GameEngineLight::ShadowTargetTextureLoad()
+void GameEngineLight::ShadowTargetTextureLoad(const float4 _ShadowScale /*= float4::ZERO*/)
 {
 	if (nullptr == ShadowTarget)
 	{
 		return;
 	}
 
-	ShadowTarget->AddNewTexture(DXGI_FORMAT_R32_FLOAT, { LightDataValue.ShadowTargetSizeX, LightDataValue.ShadowTargetSizeY }, float4::RED);
+	if (false == IsShadowLight)
+	{
+		return;
+	}
+
+	if (_ShadowScale != float4::ZERO)
+	{
+		LightDataValue.ShadowTargetSizeX = _ShadowScale.x;
+		LightDataValue.ShadowTargetSizeY = _ShadowScale.y;
+	}
+
+
+	ShadowTarget->AddNewTexture(DXGI_FORMAT_R16_FLOAT, { LightDataValue.ShadowTargetSizeX, LightDataValue.ShadowTargetSizeY }, float4::RED);
 	ShadowTarget->CreateDepthTexture();
 	ShadowTarget->SetName("Shadow Target");
 }
 
 void GameEngineLight::ShadowTargetTextureRelease()
 {
-	ShadowTarget->ReleaseTextures();
+	if (nullptr != ShadowTarget)
+	{
+		ShadowTarget->ReleaseTextures();
+	}
 }
 
 void GameEngineLight::LightUpdate(GameEngineCamera* _Camera, float _DeltaTime)

@@ -87,13 +87,20 @@ public:
 
     LightData LightDataValue;
 
-    void ShadowTargetTextureLoad();
+    void ShadowTargetTextureLoad(const float4 _ShadowScale = float4::ZERO);
     void ShadowTargetTextureRelease();
+
+    inline bool IsShadow() const
+    {
+        return IsShadowLight;
+    }
 
 protected:
 
 private:
     std::shared_ptr<class GameEngineRenderTarget> ShadowTarget;
+
+    bool IsShadowLight = false;
 
     inline void SetLightType(LightType _Type)
     {
@@ -101,5 +108,6 @@ private:
     }
 
     void DrawEditor() override;
+
 };
 

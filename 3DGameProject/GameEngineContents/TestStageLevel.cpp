@@ -116,8 +116,8 @@ void TestStageLevel::LevelChangeStart()
 	Nero->SetWorldPosition({ 0, 100, 0 });
 
 	// 테스트용 코드
-	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 5000, 0));
-	GetDirectionalLight()->GetTransform()->SetWorldRotation(float4(70, 0, 0));
+	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 4000, 0));
+	GetDirectionalLight()->GetTransform()->SetWorldRotation(float4(90, 0, 0));
 
 
 	GameEngineCoreWindow::Clear();

@@ -4,24 +4,38 @@
 
 enum FSM_State_Vergil
 {
+	// 기본 움직임
 	Vergil_None,
+	// Idle
 	Vergil_Idle,
 	Vergil_IdleLockOn,
+	// 걷기 (락온 시 이동)
 	Vergil_Walk,
 	Vergil_WalkFront,
 	Vergil_WalkLeft,
 	Vergil_WalkBack,
 	Vergil_WalkRight,
+	// 달리기
 	Vergil_RunStart,
 	Vergil_Run,
 	Vergil_RunStop,
-	Vergil_Jump_Vertical,
-	Vergil_Jump_Fly,
-	Vergil_Landing,
+	// 점프
+	Vergil_Jump_Vertical,	// 점프시작
+	Vergil_Jump_Fly,		// 공중상태
+	Vergil_Landing,			// 착지
+	// 워프 기술
+	Vergil_Warp_Front_1,
+	Vergil_Warp_Front_2,
+	Vergil_Warp_Back_1,
+	Vergil_Warp_Back_2,
+	Vergil_Warp_Left_1,
+	Vergil_Warp_Left_2,
+	Vergil_Warp_Right_1,
+	Vergil_Warp_Right_2,
+	Vergil_Warp_Up,
+	Vergil_Warp_Down,
 
-	Vergil_Warp_Left,
-	Vergil_Warp_Right,
-
+	// 야마토 기술
 	Vergil_yamato_Combo_1,
 	Vergil_yamato_Combo_2,
 	Vergil_yamato_Combo_3,
@@ -59,6 +73,8 @@ enum FSM_State_Vergil
 
 	Vergil_yamato_JudgementCutEnd_1,
 	Vergil_yamato_JudgementCutEnd_2,
+
+	// 데빌트리거 기술
 	Vergil_DT_Start,
 	Vergil_DT_End,
 };

@@ -174,6 +174,7 @@ public:
 
 	bool GetIsSkill() { return IsSkill; }
 	bool GetIsLockOnSkill() { return IsLockOnSkill; }
+	bool GetIsBackFrontSkill() { return IsBackFrontSkill; }
 
 	bool GetIsLockOn() { return IsLockOn; }
 
