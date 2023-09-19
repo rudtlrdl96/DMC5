@@ -18,6 +18,7 @@ class GameEngineRenderUnit : public GameEngineObjectBase, public std::enable_sha
 {
 public:
 	bool IsShadow = true;
+	bool IsStatic = false;
 
 	GameEngineShaderResHelper ShaderResHelper;
 	std::shared_ptr<class GameEngineMaterial> Material;

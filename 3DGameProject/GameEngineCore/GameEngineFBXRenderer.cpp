@@ -614,3 +614,25 @@ void GameEngineFBXRenderer::SetAnimationStartEvent(const std::string_view& _Anim
 
 	FindInfo->second->StartEventFunction[_Frame] = _Event;
 }
+
+void GameEngineFBXRenderer::SetStatic()
+{
+	for (size_t i = 0; i < Unit.size(); i++)
+	{
+		for (size_t j = 0; j < Unit[i].size(); j++)
+		{
+			Unit[i][j]->IsStatic = true;
+		}
+	}
+}
+
+void GameEngineFBXRenderer::SetDynamic()
+{
+	for (size_t i = 0; i < Unit.size(); i++)
+	{
+		for (size_t j = 0; j < Unit[i].size(); j++)
+		{
+			Unit[i][j]->IsStatic = false;
+		}
+	}
+}

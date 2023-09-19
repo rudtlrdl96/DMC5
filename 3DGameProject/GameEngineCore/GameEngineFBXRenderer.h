@@ -242,6 +242,12 @@ public:
 		return CurAnimation->CurFrame;
 	}
 
+	// 모든 랜더 유닛을 Static 으로 설정합니다.
+	void SetStatic();
+
+	// 모든 랜더 유닛을 Dynamic 으로 설정합니다.
+	void SetDynamic();
+
 protected:
 	// void Render(float _DeltaTime) override;
 	
