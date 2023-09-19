@@ -31,7 +31,7 @@ Texture2D PositionTex : register(t0); //rgb = pos
 Texture2D NormalTex : register(t1); // rgb = normal
 Texture2D MatTex : register(t2); // r = metal, g = roughness
 Texture2D GleamTex : register(t3); // rgb = Gleam light
-Texture2DArray ShadowTex : register(t4);
+Texture2D ShadowTex : register(t4);
 
 SamplerState POINTSAMPLER : register(s0);
 
@@ -105,38 +105,35 @@ LightOutPut DeferredCalLight_PS(Output _Input)
     float4 SpacularRatio = (float4) 0.0f;
     float4 AmbientRatio = (float4) 0.0f;
       
-    for (int i = 0; i < LightCount; ++i)
-    {
-        ResultLight CalLightValue = CalLight(0, DeferredPosition, Normal, Mat.r);
+    ResultLight CalLightValue = CalLight(0, DeferredPosition, Normal, Mat.r);
                         
-        float4 ShadowWorldViewPos = DeferredPosition;
-        ShadowWorldViewPos.a = 1.0f;
+    float4 ShadowWorldViewPos = DeferredPosition;
+    ShadowWorldViewPos.a = 1.0f;
             
-        if(0 == i)
-        {
-            float4 ShadowLightWorldPos = mul(ShadowWorldViewPos, AllLight[i].CameraViewInverseMatrix);
-            float4 ShadowLightPos = mul(ShadowLightWorldPos, AllLight[i].LightViewProjectionMatrix);
-            float3 ShadowLightProjection = ShadowLightPos.xyz / ShadowLightPos.w;
+    float4 ShadowLightWorldPos = mul(ShadowWorldViewPos, AllLight[LightCount].CameraViewInverseMatrix);
+    float4 ShadowLightPos = mul(ShadowLightWorldPos, AllLight[LightCount].LightViewProjectionMatrix);
+    float3 ShadowLightProjection = ShadowLightPos.xyz / ShadowLightPos.w;
                 
-            float2 ShadowUV = float2(ShadowLightProjection.x * 0.5f + 0.5f, ShadowLightProjection.y * -0.5f + 0.5f);
-            float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, float3(ShadowUV.xy, i)).r;
+    float2 ShadowUV = float2(ShadowLightProjection.x * 0.5f + 0.5f, ShadowLightProjection.y * -0.5f + 0.5f);
+    float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, ShadowUV.xy).r;
                         
-            if (0.001f < ShadowUV.x && 0.999f > ShadowUV.x &&
+    if (0.001f < ShadowUV.x && 0.999f > ShadowUV.x &&
             0.001f < ShadowUV.y && 0.999f > ShadowUV.y &&
             ShadowLightProjection.z >= (ShadowDepthValue + 0.001f))
-            {
-                CalLightValue.CurLightDiffuseRatio *= 0.01f;
-                CalLightValue.CurLightSpacularRatio *= 0.01f;
-            }        
-        }
-
-        DiffuseRatio.xyz += CalLightValue.CurLightDiffuseRatio.xyz;
-        SpacularRatio.xyz += CalLightValue.CurLightSpacularRatio.xyz;
+    {
+        CalLightValue.CurLightDiffuseRatio *= 0.01f;
+        CalLightValue.CurLightSpacularRatio *= 0.01f;
     }
+
+    DiffuseRatio.xyz += CalLightValue.CurLightDiffuseRatio.xyz;
+    SpacularRatio.xyz += CalLightValue.CurLightSpacularRatio.xyz;
     
-    SpacularRatio += float4(Gleam.r, Gleam.g, Gleam.b, 0);    
-    AmbientRatio = AllLight[0].AmbientLight;
-    
+    if(0 == LightCount)
+    {
+        SpacularRatio += float4(Gleam.r, Gleam.g, Gleam.b, 0);
+        AmbientRatio = AllLight[LightCount].AmbientLight;
+    }
+        
     DiffuseRatio.a = 1.0f;
     SpacularRatio.a = 1.0f;
     AmbientRatio.a = 1.0f;

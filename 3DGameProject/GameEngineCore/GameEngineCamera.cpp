@@ -251,7 +251,7 @@ void GameEngineCamera::BakeShadow(std::shared_ptr<GameEngineLight> _BakeLight, i
 
 				Render->GetRenderer()->GetTransform()->SetCameraMatrix(_BakeLight->GetLightData().LightViewMatrix, _BakeLight->GetLightData().LightProjectionMatrix);
 				TransformData Data = Render->GetRenderer()->GetTransform()->GetTransDataRef();
-				Render->Setting();
+				Render->ShadowSetting();
 				std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Find("Shadow");
 				Pipe->VertexShader();
 				Pipe->Rasterizer();
@@ -518,7 +518,7 @@ void GameEngineCamera::Render(float _DeltaTime)
 
 						Render->GetRenderer()->GetTransform()->SetCameraMatrix(Light->GetLightData().LightViewMatrix, Light->GetLightData().LightProjectionMatrix);
 						TransformData Data = Render->GetRenderer()->GetTransform()->GetTransDataRef();
-						Render->Setting();
+						Render->ShadowSetting();
 						std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Find("Shadow");
 						Pipe->VertexShader();
 						Pipe->Rasterizer();
@@ -533,17 +533,24 @@ void GameEngineCamera::Render(float _DeltaTime)
 		GameEngineRenderTarget::Reset();
 
 		DeferredLightTarget->Setting();
+		GetLevel()->LightDataObject.LightCount = 0;
 
 		for (std::shared_ptr<GameEngineLight> Light : GetLevel()->AllLight)
 		{
 			if (false == Light->IsShadow())
 			{
-				continue;
+				CalLightUnit.ShaderResHelper.SetTexture("ShadowTex", GameEngineTexture::Find("EngineNullDepth.png"));
+			}
+			else
+			{
+				CalLightUnit.ShaderResHelper.SetTexture("ShadowTex", Light->GetShadowTarget()->GetTexture(0));
 			}
 
-			CalLightUnit.ShaderResHelper.SetTexture("ShadowTex", Light->GetShadowTarget()->GetTexture(0));
 			CalLightUnit.Render(_DeltaTime);
+			++GetLevel()->LightDataObject.LightCount;
 		}
+
+		CalLightUnit.ShaderResHelper.AllResourcesReset();
 				
 		DeferredLightTarget->Effect(_DeltaTime);
 

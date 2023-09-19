@@ -12,6 +12,8 @@ GameEngineLight::GameEngineLight()
 	LightDataValue.ShadowTargetSizeY = 1024;
 	LightDataValue.LightNear = 0.1f;
 	LightDataValue.LightFar = 5000.1f;
+	ShadowRange.x = 1024.0f;
+	ShadowRange.y = 1024.0f;
 }
 
 GameEngineLight::~GameEngineLight()
@@ -128,8 +130,8 @@ void GameEngineLight::LightUpdate(GameEngineCamera* _Camera, float _DeltaTime)
 		GetTransform()->GetWorldUpVector());
 
 	LightDataValue.LightProjectionMatrix.OrthographicLH(
-		LightDataValue.ShadowTargetSizeX,
-		LightDataValue.ShadowTargetSizeY,
+		ShadowRange.x,
+		ShadowRange.y,
 		LightDataValue.LightNear,
 		LightDataValue.LightFar);
 

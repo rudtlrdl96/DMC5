@@ -39,6 +39,8 @@ void PlayerActor_Vergil::VergilLoad()
 		Renderer = CreateComponent<GameEngineFBXRenderer>();
 		Renderer->GetTransform()->SetLocalRotation({ 0, 0, 0 });
 		Renderer->GetTransform()->SetLocalPosition({ 0, -75, 0 });
+		Renderer->ShadowOn();
+		Renderer->SetDynamic();
 
 		switch (GameEngineOption::GetOption("Shader"))
 		{

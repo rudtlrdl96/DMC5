@@ -99,6 +99,8 @@ void PlayerActor_Nero::PlayerLoad()
 		Renderer = CreateComponent<GameEngineFBXRenderer>();
 		Renderer->GetTransform()->SetLocalRotation({ 0, 0, 0 });
 		Renderer->GetTransform()->SetLocalPosition({ 0, -75, 0 });
+		Renderer->ShadowOn();
+		Renderer->SetDynamic();
 
 		//Renderer->SetBaseColor(float4(2, 0, 0));
 

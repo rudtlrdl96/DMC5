@@ -68,6 +68,8 @@ void BaseEnemyActor::Start()
 {
 	//Render생성
 	EnemyRenderer = CreateComponent<GameEngineFBXRenderer>();
+	EnemyRenderer->ShadowOn();
+	EnemyRenderer->SetDynamic();
 	//PhysX(충돌)
 	PhysXCapsule = CreateComponent<PhysXCapsuleComponent>();
 	PhysXCapsule->SetPhysxMaterial(0, 0, 0);

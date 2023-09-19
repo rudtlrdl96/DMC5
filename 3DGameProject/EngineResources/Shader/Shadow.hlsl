@@ -5,10 +5,6 @@
 struct Input
 {
     float4 POSITION : POSITION;
-    float4 TEXCOORD : TEXCOORD;
-    float4 NORMAL : NORMAL;
-    float4 TANGENT : TANGENT;
-    float4 BINORMAL : BINORMAL;
     float4 BLENDWEIGHT : BLENDWEIGHT;
     int4 BLENDINDICES : BLENDINDICES;
 };

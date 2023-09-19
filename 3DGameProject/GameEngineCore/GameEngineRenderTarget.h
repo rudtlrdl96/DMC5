@@ -116,6 +116,8 @@ public:
 
 	void ReleaseTextures();
 
+	void ChangeViewPort(float4 _Scale, int _Index = 0);
+
 protected:
 
 private:

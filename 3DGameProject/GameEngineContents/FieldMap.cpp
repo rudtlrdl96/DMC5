@@ -36,6 +36,7 @@ std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, cons
 			MapRenderersRef[i]->SetFBXMesh(_FBXNames[i].data(), "FBX");
 		}
 
+		MapRenderersRef[i]->ShadowOn();
 		MapRenderersRef[i]->SetStatic();
 		MapRenderersRef[i]->Off();
 	}

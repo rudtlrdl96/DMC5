@@ -17,13 +17,13 @@ enum class RenderPath
 class GameEngineRenderUnit : public GameEngineObjectBase, public std::enable_shared_from_this<GameEngineRenderUnit>
 {
 public:
-	bool IsShadow = true;
+	bool IsShadow = false;
 	bool IsStatic = false;
 
 	GameEngineShaderResHelper ShaderResHelper;
-	std::shared_ptr<class GameEngineMaterial> Material;
 
-	std::function<void(float)> RenderFunction;
+	std::shared_ptr<class GameEngineMaterial> Material = nullptr;
+	std::function<void(float)> RenderFunction = nullptr;
 
 	GameEngineRenderUnit();
 	void SetMesh(const std::string_view& _Name);
@@ -40,10 +40,15 @@ public:
 	void Setting();
 	void Draw();
 
+	void ShadowOn();
+
+	void ShadowSetting();
+
 private:
 	class GameEngineRenderer* ParentRenderer = nullptr;
-	std::shared_ptr<class GameEngineInputLayOut> InputLayOutPtr;
-	std::shared_ptr<class GameEngineMesh> Mesh;
+	std::shared_ptr<class GameEngineInputLayOut> InputLayOutPtr = nullptr;
+	std::shared_ptr<class GameEngineMesh> Mesh = nullptr;
+	std::shared_ptr<class GameEngineInputLayOut> ShadowInputLayOutPtr = nullptr;
 };
 
 
@@ -151,12 +156,12 @@ public:
 		{
 			for (size_t i = 0; i < Units.size(); i++)
 			{
-				Units[i]->IsShadow = true;
+				Units[i]->ShadowOn();
 			}
 			return;
 		}
 
-		Units[_UnitIndex]->IsShadow = true;
+		Units[_UnitIndex]->ShadowOn();
 	}
 
 	void ShadowOff(size_t _UnitIndex = -1)

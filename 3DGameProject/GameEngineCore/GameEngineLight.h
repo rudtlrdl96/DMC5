@@ -112,9 +112,22 @@ public:
         TargetBake = _Index;
     }
 
+    void SetShadowRange(const float4& _Value)
+    {
+        ShadowRange = _Value;
+    }
+
+    float4 GetShadowRange() const
+    {
+        return ShadowRange;
+    }
+
+
 protected:
 
 private:
+    float4 ShadowRange;
+
     std::shared_ptr<class GameEngineRenderTarget> ShadowTarget = nullptr;
 
     std::map<int, std::shared_ptr<class GameEngineRenderTarget>> BakeShadowTarget;
