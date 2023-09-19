@@ -40,6 +40,9 @@ void GameEngineLevel::RenderTargetTextureCreate()
 	{
 		Light->ShadowTargetTextureLoad();
 	}
+
+	LastTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	ScreenShootTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 }
 
 void GameEngineLevel::RenderTargetTextureRelease()
@@ -56,6 +59,9 @@ void GameEngineLevel::RenderTargetTextureRelease()
 	{
 		Light->ShadowTargetTextureRelease();
 	}
+
+	LastTarget->ReleaseTextures();
+	ScreenShootTarget->ReleaseTextures();
 }
 
 void GameEngineLevel::LevelCameraInit()
@@ -70,12 +76,10 @@ void GameEngineLevel::LevelCameraInit()
 	if (nullptr == LastTarget)
 	{
 		LastTarget = GameEngineRenderTarget::Create();
-		LastTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 	}
 	if (nullptr == ScreenShootTarget)
 	{
 		ScreenShootTarget = GameEngineRenderTarget::Create();
-		ScreenShootTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 	}
 }
 
@@ -87,33 +91,37 @@ void GameEngineLevel::LevelLightInit()
 		DirectionalLight->SetName("Directional Light");
 		DirectionalLight->SetLightType(LightType::Directional);
 		DirectionalLight->LightDataValue.LightPower = 1.0f;
+		DirectionalLight->IsShadowLight = true;
+		DirectionalLight->LightDataValue.ShadowTargetSizeX = 8192;
+		DirectionalLight->LightDataValue.ShadowTargetSizeY = 8192;
 	}
 }
 
 std::shared_ptr<GameEngineLight> GameEngineLevel::CreatePointLight(const float4& _Pos, float _Range)
 {
 	std::shared_ptr<GameEngineLight> NewLight = CreateActor<GameEngineLight>();
-	NewLight->ShadowTargetTextureLoad();
 
 	NewLight->GetTransform()->SetLocalPosition(_Pos);
 
 	NewLight->SetName("Point Light");
 	NewLight->SetLightType(LightType::Point);
+	NewLight->IsShadowLight = false;
 
 	NewLight->LightDataValue.LightRange = _Range;
 
 	return NewLight;
 }
 
-std::shared_ptr<GameEngineLight> GameEngineLevel::CreateSpotLight(const float4& _Pos, float _Range, float _Angle)
+std::shared_ptr<GameEngineLight> GameEngineLevel::CreateSpotLight(const float4& _Pos, const float4& _ShadowScale, float _Range, float _Angle)
 {
 	std::shared_ptr<GameEngineLight> NewLight = CreateActor<GameEngineLight>();
-	NewLight->ShadowTargetTextureLoad();
+	NewLight->ShadowTargetTextureLoad(_ShadowScale);
 
 	NewLight->GetTransform()->SetLocalPosition(_Pos);
 
 	NewLight->SetName("Spot Light");
 	NewLight->SetLightType(LightType::Spot);
+	NewLight->IsShadowLight = true;
 
 	NewLight->LightDataValue.LightRange = _Range;
 	NewLight->LightDataValue.LightAngle = _Angle;
@@ -170,7 +178,12 @@ void GameEngineLevel::Render(float _DeltaTime)
 
 	for (std::shared_ptr<GameEngineLight> Light : AllLight)
 	{
-		Light->GetShadowTarget()->Clear();
+		std::shared_ptr<GameEngineRenderTarget> ShadowTarget = Light->GetShadowTarget();
+
+		if (nullptr != ShadowTarget)
+		{
+			ShadowTarget->Clear();
+		}
 	}
 
 	for (std::pair<int, std::shared_ptr<GameEngineCamera>> Pair : Cameras)
