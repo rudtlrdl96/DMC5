@@ -105,7 +105,7 @@ LightOutPut DeferredCalLight_PS(Output _Input)
     float4 SpacularRatio = (float4) 0.0f;
     float4 AmbientRatio = (float4) 0.0f;
       
-    ResultLight CalLightValue = CalLight(0, DeferredPosition, Normal, Mat.r);
+    ResultLight CalLightValue = CalLight(LightCount, DeferredPosition, Normal, Mat.r);
                         
     float4 ShadowWorldViewPos = DeferredPosition;
     ShadowWorldViewPos.a = 1.0f;

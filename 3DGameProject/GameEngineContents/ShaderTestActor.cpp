@@ -32,28 +32,24 @@ void ShaderTestActor::Start()
 	TestRenderer = CreateComponent<GameEngineFBXRenderer>();
 	 	
 	//FBX파일경로를 찾아서 로드
-	//if (nullptr == GameEngineFBXMesh::Find("SkyBox.FBX"))
-	//{
-	//	std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
-	//		{
-	//			"Map", "TestMap"
-	//		}, "SkyBox.FBX");
-	//
-	//	GameEngineFBXMesh::Load(Path);
-	//}
+	if (nullptr == GameEngineFBXMesh::Find("SkyBox.FBX"))
+	{
+		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+			{
+				"Map", "TestMap"
+			}, "SkyBox.FBX");
 	
-	TestRenderer->SetFBXMesh("Box_350x250x300_Mesh.fbx", "FBX_Alpha");
-	TestRenderer->GetTransform()->SetLocalScale(float4(0.3f, 0.3f, 0.3f));
+		GameEngineFBXMesh::Load(Path);
+	}
+	
+	TestRenderer->SetFBXMesh("SkyBox.fbx", "FBX");
+	TestRenderer->GetTransform()->SetLocalScale(float4(0.0003f, 0.0003f, 0.0003f));
 
-	TestRenderer->SetBaseColor(float4(3, 0, 0));
+	//TestRenderer->SetBaseColor(float4(3, 0, 0));
+	TestRenderer->ShadowOn();
 	TestRenderer->NormalOff();
 
 	//TestRenderer = CreateComponent<EffectFBXRenderer>();
-
-	std::shared_ptr<GameEngineLight> PointLight = GetLevel()->CreateSpotLight(GetTransform()->GetWorldPosition(), float4(1024, 1024), 1000.0f, 10.0f);
-	PointLight->LightDataValue.LightColor = float4(1, 0, 0);
-	PointLight->GetTransform()->SetLocalRotation(float4(-90, 0, 0));
-	PointLight->GetTransform()->SetParent(GetTransform());
 
 	if (nullptr == GameEngineFBXMesh::Find("Effect_Mesh_01.FBX"))
 	{

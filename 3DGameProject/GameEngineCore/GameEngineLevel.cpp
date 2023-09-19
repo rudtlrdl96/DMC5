@@ -92,8 +92,11 @@ void GameEngineLevel::LevelLightInit()
 		DirectionalLight->SetLightType(LightType::Directional);
 		DirectionalLight->LightDataValue.LightPower = 1.0f;
 		DirectionalLight->IsShadowLight = true;
-		DirectionalLight->LightDataValue.ShadowTargetSizeX = 8192;
-		DirectionalLight->LightDataValue.ShadowTargetSizeY = 8192;
+		DirectionalLight->LightDataValue.ShadowTargetSizeX = 16384;
+		DirectionalLight->LightDataValue.ShadowTargetSizeY = 16384;
+		DirectionalLight->ShadowRange.x = 16384;
+		DirectionalLight->ShadowRange.y = 16384;
+		DirectionalLight->LightDataValue.LightColor = float4(0.5f, 0.5f, 0.5f);
 	}
 }
 
@@ -122,6 +125,12 @@ std::shared_ptr<GameEngineLight> GameEngineLevel::CreateSpotLight(const float4& 
 	NewLight->SetName("Spot Light");
 	NewLight->SetLightType(LightType::Spot);
 	NewLight->IsShadowLight = true;
+
+
+	NewLight->LightDataValue.ShadowTargetSizeX = _ShadowScale.x;
+	NewLight->LightDataValue.ShadowTargetSizeY = _ShadowScale.y;
+	NewLight->ShadowRange.x = _ShadowScale.x;
+	NewLight->ShadowRange.y = _ShadowScale.y;
 
 	NewLight->LightDataValue.LightRange = _Range;
 	NewLight->LightDataValue.LightAngle = _Angle;

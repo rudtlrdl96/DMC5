@@ -549,10 +549,9 @@ void GameEngineCamera::Render(float _DeltaTime)
 			CalLightUnit.Render(_DeltaTime);
 			++GetLevel()->LightDataObject.LightCount;
 		}
-
-		CalLightUnit.ShaderResHelper.AllResourcesReset();
-				
+						
 		DeferredLightTarget->Effect(_DeltaTime);
+		CalLightUnit.ShaderResHelper.AllResourcesReset();
 
 		CamDeferrdTarget->Clear();
 		CamDeferrdTarget->Setting();
