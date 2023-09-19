@@ -102,15 +102,15 @@ void BaseEnemyActor::Update(float _DeltaTime)
 
 	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
 	{
-		EnemyFSM.Update(_DeltaTime);
 		DamageCollisionCheck(_DeltaTime);
+		EnemyFSM.Update(_DeltaTime);
 	}
 	else
 	{
 		if (NetControllType::UserControll == GetControllType())
 		{
-			EnemyFSM.Update(_DeltaTime);
 			DamageCollisionCheck(_DeltaTime);
+			EnemyFSM.Update(_DeltaTime);
 		}
 		else if (NetControllType::UserControll != GetControllType())
 		{
@@ -259,13 +259,13 @@ void BaseEnemyActor::CheckHeadingRotationValue()
 		return;
 	}
 
-	if (0.0f <= DotProductResult && 15.0f >= DotProductResult)
+	if (0.0f <= DotProductResult && 20.0f >= DotProductResult)
 	{
 		EnemyRotationValue = EnemyRotation::Forward;
 	}
 	else if (CrossResult.y < 0)
 	{
-		if (-15.0f > DotProductResult && -165.0f <= DotProductResult)
+		if (-20.0f > DotProductResult && -165.0f <= DotProductResult)
 		{
 			EnemyRotationValue = EnemyRotation::Left;
 		}
@@ -276,7 +276,7 @@ void BaseEnemyActor::CheckHeadingRotationValue()
 	}
 	else if (CrossResult.y > 0)
 	{
-		if (15.0f < DotProductResult && 165.0f >= DotProductResult)
+		if (20.0f < DotProductResult && 165.0f >= DotProductResult)
 		{
 			EnemyRotationValue = EnemyRotation::Right;
 		}
@@ -290,7 +290,7 @@ void BaseEnemyActor::CheckHeadingRotationValue()
 		MsgAssert("회전의 내적과 외적이 몬가 잘못됨");
 	}
 
-	RotationValue = DotProductResult;
+	DotProductValue = DotProductResult;
 }
 
 void BaseEnemyActor::SlerpCalculation()
@@ -302,7 +302,7 @@ void BaseEnemyActor::SlerpCalculation()
 		CurRotation.y += 360.f;
 	}
 
-	float4 Value = float4{ 0.0f, RotationValue, 0.0f };
+	float4 Value = float4{ 0.0f, DotProductValue, 0.0f };
 
 	GoalRotation = CurRotation + Value;
 
@@ -321,6 +321,40 @@ void BaseEnemyActor::SlerpCalculation()
 void BaseEnemyActor::SlerpTurn(float _DeltaTime)
 {
 	SlerpTime += _DeltaTime;
-	RotValue = float4::SLerpQuaternion(CurRotation, GoalRotation, SlerpTime);
-	PhysXCapsule->SetWorldRotation(RotValue);
+	RotationValue = float4::SLerpQuaternion(CurRotation, GoalRotation, SlerpTime);
+	PhysXCapsule->SetWorldRotation(RotationValue);
+}
+
+void BaseEnemyActor::AllDirectSetting()
+{
+	PhysXCapsule->AddWorldRotation({ 0, DotProductValue, 0 });
+	
+	ForwardDirect = GetTransform()->GetWorldForwardVector().NormalizeReturn();
+	BackDirect = GetTransform()->GetWorldBackVector().NormalizeReturn();
+	RightDirect = GetTransform()->GetWorldRightVector().NormalizeReturn();
+	LeftDirect = GetTransform()->GetWorldLeftVector().NormalizeReturn();
+
+	// 한프레임 차이나서 꺾어줘야함
+	ForwardDirect.RotationYDeg(DotProductValue);
+	BackDirect.RotationYDeg(DotProductValue);
+	RightDirect.RotationYDeg(DotProductValue);
+	LeftDirect.RotationYDeg(DotProductValue);
+}
+
+void BaseEnemyActor::PushDirectSetting()
+{
+	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
+	BasePlayerActor* Player = Players[0];
+
+	if (nullptr == Player)
+	{
+		return;
+	}
+
+	PhysXCapsule->AddWorldRotation({ 0, DotProductValue, 0 });
+
+	PushDirect = Player->GetTransform()->GetWorldForwardVector().NormalizeReturn();
+
+	// 한프레임 차이나서 꺾어줘야함
+	PushDirect.RotationYDeg(DotProductValue);
 }
