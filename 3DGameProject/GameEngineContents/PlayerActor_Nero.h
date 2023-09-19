@@ -165,6 +165,10 @@ public:
 
 	void SinglePlayLoad();
 
+	std::stack<DevilBreaker>* GetBreakerStackPointer()
+	{
+		return &BreakerStack;
+	}
 protected:
 	void Start() override;
 	void PlayerLoad();
