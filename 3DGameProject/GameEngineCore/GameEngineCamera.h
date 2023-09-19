@@ -119,7 +119,7 @@ public:
 	}
 
 	void CaptureCubemap(const float4& _Pos, const float4& _Rot, const float4& _CaptureScale = float4(128, 128));
-
+	
 protected:
 	void Start() override;
 
@@ -177,5 +177,8 @@ private:
 
 	void RenderTargetTextureLoad();
 	void RenderTargetTextureRelease();
+
+	// 그림자를 Bake 합니다 Static 랜더 유닛만 Bake 됩니다
+	//void BakeShadow();
 };
 
