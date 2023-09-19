@@ -295,8 +295,9 @@ void PlayerController::ActionInput(float _DeltaTime)
 			{
 				IsSpecialMove = true;
 			}
-			else if (true == InputCheck_Dir('2'))
+			else if (true == InputCheck_BackFront())
 			{
+				IsBackFrontSkill = true;
 			}
 		}
 	}
