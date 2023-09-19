@@ -82,12 +82,20 @@ public:
 		return std::dynamic_pointer_cast<ActorPtr>(NetObjPtr);
 	}
 
+	
+
 	template <typename ActorPtr, typename OrderType>
 	static std::shared_ptr<ActorPtr> CreateNetworkActor(class GameEngineLevel* _Level, OrderType _Order)
 	{
+		return CreateNetworkActor(_Level, static_cast<int>(_Order));
+	}
+
+	template <typename ActorPtr>
+	static std::shared_ptr<ActorPtr> CreateNetworkActor(class GameEngineLevel* _Level, int _Order = 0)
+	{
 		//플레이어를 제외한 모든 생성은 서버(호스트)에서만 이루어 집니다.
 		//그러니 서버가 아니면 nullptr가 리턴되는점 주의부탁드립니다.
-		if (false == IsServer())
+		if (true == IsClient())
 			return nullptr;
 
 		std::shared_ptr<GameEngineNetObject> NetObjPtr = nullptr;
@@ -97,8 +105,6 @@ public:
 
 		return std::dynamic_pointer_cast<ActorPtr>(NetObjPtr);
 	}
-
-
 
 	static void PushChatPacket(const std::string_view& _Msg, const float4& _Color = float4::WHITE);
 
