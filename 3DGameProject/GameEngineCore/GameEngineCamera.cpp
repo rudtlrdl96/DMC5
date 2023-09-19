@@ -448,6 +448,11 @@ void GameEngineCamera::Render(float _DeltaTime)
 							continue;
 						}
 
+						if (true == Render->IsStatic)
+						{
+							continue;
+						}
+
 						Render->GetRenderer()->GetTransform()->SetCameraMatrix(Light->GetLightData().LightViewMatrix, Light->GetLightData().LightProjectionMatrix);
 						TransformData Data = Render->GetRenderer()->GetTransform()->GetTransDataRef();
 						Render->Setting();

@@ -20,6 +20,7 @@ std::shared_ptr<MapCollisionMesh> MapCollisionMesh::CreateMapCollisionMesh(GameE
 	Result->Renderer = Result->CreateComponent<GameEngineFBXRenderer>();
 	Result->Renderer->SetName("Renderer");
 	Result->Renderer->SetFBXMesh(_FBXName.data(), "FBX");
+	Result->Renderer->ShadowOff();
 	Result->Renderer->Off();
 
 	float Ratio = 1.f;
