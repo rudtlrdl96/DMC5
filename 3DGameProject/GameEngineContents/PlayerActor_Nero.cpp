@@ -3187,6 +3187,7 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen ComboA1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_1,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, 50);
 				Renderer->ChangeAnimation("pl0000_RQ_ComboA_1");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -3199,6 +3200,7 @@ void PlayerActor_Nero::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_2,
 			.Start = [=] {
 				RedQueenOn();
+				Col_Attack->SetAttackData(DamageType::Light, 50);
 				Renderer->ChangeAnimation("pl0000_RQ_ComboA_2");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -3211,6 +3213,7 @@ void PlayerActor_Nero::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_3,
 			.Start = [=] {
 				RedQueenOn();
+				Col_Attack->SetAttackData(DamageType::Light, 50);
 				Renderer->ChangeAnimation("pl0000_RQ_ComboA_3");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -3223,6 +3226,7 @@ void PlayerActor_Nero::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_4,
 			.Start = [=] {
 				RedQueenOn();
+				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				Renderer->ChangeAnimation("pl0000_RQ_ComboA_4");
 			},
 			.Update = [=](float _DeltaTime) {
