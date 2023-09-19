@@ -418,6 +418,9 @@
     <ClInclude Include="Nero_ItemFont.h">
       <Filter>UI\UI_Actor\PlayUI\NeroItemGlass\ItemFont</Filter>
     </ClInclude>
+    <ClInclude Include="Player_MirageBlade.h">
+      <Filter>Actor\Player\Weapon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -822,6 +825,12 @@
     <ClCompile Include="Nero_ItemFont.cpp">
       <Filter>UI\UI_Actor\PlayUI\NeroItemGlass\ItemFont</Filter>
     </ClCompile>
+    <ClCompile Include="Player_MirageBlade.cpp">
+      <Filter>Actor\Player\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerActor_Vergil_MirageBlade.cpp">
+      <Filter>Actor\Player\Character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
@@ -1087,6 +1096,9 @@
     </Filter>
     <Filter Include="UI\UI_Actor\PlayUI\NeroItemGlass\ItemFont">
       <UniqueIdentifier>{0d8d70d7-1945-463e-bf78-29027711b0d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Player\Weapon">
+      <UniqueIdentifier>{045eba55-1dc2-4e34-99fd-7aab7918a35e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

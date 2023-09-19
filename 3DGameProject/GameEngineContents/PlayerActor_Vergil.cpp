@@ -101,7 +101,6 @@ void PlayerActor_Vergil::VergilLoad()
 				if (true == Input_SpecialCheck()) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
-				if (true == Input_GunCheck()) { return; }
 				if (true == Input_WarpCheck()) { return; }
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
@@ -133,7 +132,6 @@ void PlayerActor_Vergil::VergilLoad()
 				if (true == Input_SpecialCheck()) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
-				if (true == Input_GunCheck()) { return; }
 				if (true == Input_WarpCheck()) { return; }
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
@@ -165,7 +163,6 @@ void PlayerActor_Vergil::VergilLoad()
 				if (true == Input_SpecialCheck()) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
-				if (true == Input_GunCheck()) { return; }
 				if (true == Input_WarpCheck()) { return; }
 				if (Controller->GetMoveVector() == float4::ZERO)
 				{
@@ -222,7 +219,6 @@ void PlayerActor_Vergil::VergilLoad()
 				if (true == Input_SpecialCheck()) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
-				if (true == Input_GunCheck()) { return; }
 				if (true == Input_WarpCheck()) { return; }
 				if (Controller->GetMoveVector() == float4::ZERO)
 				{
@@ -261,7 +257,6 @@ void PlayerActor_Vergil::VergilLoad()
 				if (true == Input_SpecialCheck()) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
-				if (true == Input_GunCheck()) { return; }
 				if (true == Input_WarpCheck()) { return; }
 				if (Controller->GetMoveVector() == float4::ZERO)
 				{
@@ -297,7 +292,6 @@ void PlayerActor_Vergil::VergilLoad()
 				if (true == Input_SpecialCheck()) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
-				if (true == Input_GunCheck()) { return; }
 				if (true == Input_WarpCheck()) { return; }
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
@@ -331,7 +325,7 @@ void PlayerActor_Vergil::VergilLoad()
 
 			if (true == Input_JumpCheckFly()) { return; }
 			if (true == Input_SwordCheckFly()) { return; }
-			if (true == Input_GunCheckFly()) { return; }
+			 
 			if (true == Input_WarpCheckFly()) { return; }
 
 			PhysXCapsule->SetForce(Controller->GetMoveVector() * 3500);
@@ -364,7 +358,7 @@ void PlayerActor_Vergil::VergilLoad()
 				if (true == Input_SpecialCheckFly()) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly()) { return; }
-				if (true == Input_GunCheckFly()) { return; }
+				 
 				if (true == Input_WarpCheckFly()) { return; }
 				PhysXCapsule->SetForce(Controller->GetMoveVector() * 3500);
 
@@ -387,7 +381,7 @@ void PlayerActor_Vergil::VergilLoad()
 				if (true == Input_SpecialCheck()) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
-				if (true == Input_GunCheck()) { return; }
+				 
 				if (true == Input_WarpCheck()) { return; }
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
@@ -430,7 +424,6 @@ void PlayerActor_Vergil::VergilLoad()
 				}
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck(1)) { return; }
-				if (true == Input_GunCheck()) { return; }
 				if (true == Input_WarpCheck()) { return; }
 
 				if (MoveCheck == false) { return; }
@@ -465,7 +458,7 @@ void PlayerActor_Vergil::VergilLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck(2)) { return; }
-				if (true == Input_GunCheck()) { return; }
+				 
 				if (true == Input_WarpCheck()) { return; }
 
 				if (MoveCheck == false) { return; }
@@ -505,7 +498,7 @@ void PlayerActor_Vergil::VergilLoad()
 					if (true == Input_SwordCheck(4)) { return; }
 				}
 				else if (true == Input_SwordCheck(3)) { return; }
-				if (true == Input_GunCheck()) { return; }
+				 
 				if (true == Input_WarpCheck()) { return; }
 
 				if (MoveCheck == false) { return; }
@@ -541,7 +534,7 @@ void PlayerActor_Vergil::VergilLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
-				if (true == Input_GunCheck()) { return; }
+				 
 				if (true == Input_WarpCheck()) { return; }
 
 				if (MoveCheck == false) { return; }
@@ -632,7 +625,7 @@ void PlayerActor_Vergil::VergilLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
-				if (true == Input_GunCheck()) { return; }
+				 
 				if (true == Input_WarpCheck()) { return; }
 
 				if (MoveCheck == false) { return; }
@@ -731,7 +724,7 @@ void PlayerActor_Vergil::VergilLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
-				if (true == Input_GunCheck()) { return; }
+				 
 				if (true == Input_WarpCheck()) { return; }
 
 				if (MoveCheck == false) { return; }
@@ -769,7 +762,7 @@ void PlayerActor_Vergil::VergilLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly()) { return; }
-				if (true == Input_GunCheckFly()) { return; }
+				 
 				if (true == Input_WarpCheckFly()) { return; }
 			},
 			.End = [=] {
@@ -822,7 +815,7 @@ void PlayerActor_Vergil::VergilLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly()) { return; }
-				if (true == Input_GunCheckFly()) { return; }
+				 
 				if (true == Input_WarpCheckFly()) { return; }
 			},
 			.End = [=] {
@@ -852,7 +845,7 @@ void PlayerActor_Vergil::VergilLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
-				if (true == Input_GunCheck()) { return; }
+				 
 				if (true == Input_WarpCheck()) { return; }
 
 				if (MoveCheck == false) { return; }
@@ -893,7 +886,7 @@ void PlayerActor_Vergil::VergilLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly(1)) { return; }
-				if (true == Input_GunCheckFly()) { return; }
+				 
 				if (true == Input_WarpCheckFly()) { return; }
 			},
 			.End = [=] {
@@ -931,7 +924,7 @@ void PlayerActor_Vergil::VergilLoad()
 					if (true == Input_SwordCheckFly(3)) { return; }
 				}
 				else if (true == Input_SwordCheckFly(2)) { return; }
-				if (true == Input_GunCheckFly()) { return; }
+				 
 				if (true == Input_WarpCheckFly()) { return; }
 			},
 			.End = [=] {
@@ -964,7 +957,7 @@ void PlayerActor_Vergil::VergilLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly()) { return; }
-				if (true == Input_GunCheckFly()) { return; }
+				 
 				if (true == Input_WarpCheckFly()) { return; }
 			},
 			.End = [=] {
@@ -997,7 +990,7 @@ void PlayerActor_Vergil::VergilLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly(4)) { return; }
-				if (true == Input_GunCheckFly()) { return; }
+				 
 				if (true == Input_WarpCheckFly()) { return; }
 			},
 			.End = [=] {
@@ -1030,7 +1023,7 @@ void PlayerActor_Vergil::VergilLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly()) { return; }
-				if (true == Input_GunCheckFly()) { return; }
+				 
 				if (true == Input_WarpCheckFly()) { return; }
 			},
 			.End = [=] {
@@ -1100,7 +1093,7 @@ void PlayerActor_Vergil::VergilLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
-				if (true == Input_GunCheck()) { return; }
+				 
 				if (true == Input_WarpCheck()) { return; }
 
 				if (MoveCheck == false) { return; }
@@ -1160,7 +1153,7 @@ void PlayerActor_Vergil::VergilLoad()
 
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
-				if (true == Input_GunCheck()) { return; }
+				 
 				if (true == Input_WarpCheck()) { return; }
 
 				if (MoveCheck == false) { return; }
@@ -1230,7 +1223,7 @@ void PlayerActor_Vergil::VergilLoad()
 
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly()) { return; }
-				if (true == Input_GunCheckFly()) { return; }
+				 
 				if (true == Input_WarpCheckFly()) { return; }
 
 			},
@@ -1329,7 +1322,6 @@ void PlayerActor_Vergil::VergilLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
-				if (true == Input_GunCheck()) { return; }
 				if (true == Input_WarpCheck()) { return; }
 			}
 			else
@@ -1339,7 +1331,6 @@ void PlayerActor_Vergil::VergilLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly()) { return; }
-				if (true == Input_GunCheckFly()) { return; }
 				if (true == Input_WarpCheckFly()) { return; }
 			}
 			if (MoveCheck == false) { return; }
@@ -1392,7 +1383,6 @@ void PlayerActor_Vergil::VergilLoad()
 			if (InputCheck == false) { return; }
 			if (true == Input_JumpCheck()) { return; }
 			if (true == Input_SwordCheck()) { return; }
-			if (true == Input_GunCheck()) { return; }
 			if (true == Input_WarpCheck()) { return; }
 
 			if (MoveCheck == false) { return; }
@@ -1441,7 +1431,6 @@ void PlayerActor_Vergil::VergilLoad()
 			if (InputCheck == false) { return; }
 			if (true == Input_JumpCheck()) { return; }
 			if (true == Input_SwordCheck()) { return; }
-			if (true == Input_GunCheck()) { return; }
 			if (true == Input_WarpCheck()) { return; }
 
 			if (MoveCheck == false) { return; }
@@ -1490,7 +1479,6 @@ void PlayerActor_Vergil::VergilLoad()
 			if (InputCheck == false) { return; }
 			if (true == Input_JumpCheck()) { return; }
 			if (true == Input_SwordCheck()) { return; }
-			if (true == Input_GunCheck()) { return; }
 			if (true == Input_WarpCheck()) { return; }
 
 			if (MoveCheck == false) { return; }
@@ -1569,6 +1557,7 @@ void PlayerActor_Vergil::VergilLoad()
 			});
 	}
 	/* µ¥ºô Æ®¸®°Å */
+	{}
 	{
 		// Demon Start
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_DT_Start,
@@ -1590,7 +1579,6 @@ void PlayerActor_Vergil::VergilLoad()
 			if (InputCheck == false) { return; }
 			if (true == Input_JumpCheck()) { return; }
 			if (true == Input_SwordCheck()) { return; }
-			if (true == Input_GunCheck()) { return; }
 			if (true == Input_WarpCheck()) { return; }
 
 			if (MoveCheck == false) { return; }
@@ -1624,7 +1612,6 @@ void PlayerActor_Vergil::VergilLoad()
 			if (InputCheck == false) { return; }
 			if (true == Input_JumpCheck()) { return; }
 			if (true == Input_SwordCheck()) { return; }
-			if (true == Input_GunCheck()) { return; }
 			if (true == Input_WarpCheck()) { return; }
 
 			if (MoveCheck == false) { return; }
@@ -1640,6 +1627,8 @@ void PlayerActor_Vergil::VergilLoad()
 			});
 	}
 	ChangeState(FSM_State_Vergil::Vergil_Idle);
+
+	CreateMirageBlade();
 }
 
 void PlayerActor_Vergil::NetLoad()
@@ -1986,6 +1975,7 @@ void PlayerActor_Vergil::NetLoad()
 void PlayerActor_Vergil::Update_Character(float _DeltaTime)
 {
 	FSM.Update(_DeltaTime);
+	FSM_MirageBlade.Update(_DeltaTime);
 }
 
 void PlayerActor_Vergil::ChangeState(int _StateValue)
@@ -2064,16 +2054,6 @@ bool PlayerActor_Vergil::Input_SwordCheckFly(int AddState)
 		ChangeState(AddState + FSM_State_Vergil::Vergil_yamato_Air_Combo_1);
 		return true;
 	}
-	return false;
-}
-
-bool PlayerActor_Vergil::Input_GunCheck()
-{
-	return false;
-}
-
-bool PlayerActor_Vergil::Input_GunCheckFly()
-{
 	return false;
 }
 

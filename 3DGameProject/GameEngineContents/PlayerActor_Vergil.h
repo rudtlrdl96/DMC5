@@ -79,6 +79,17 @@ enum FSM_State_Vergil
 	Vergil_DT_End,
 };
 
+enum FSM_State_MirageBlade
+{
+	MirageBlade_None,
+	MirageBlade_Idle,
+	MirageBlade_Shoot,
+	MirageBlade_Spiral,
+	MirageBlade_Storm,
+	MirageBlade_Blistering,
+	MirageBlade_HeavyRain,
+};
+
 class PlayerActor_Vergil : public BasePlayerActor
 {
 public:
@@ -114,7 +125,9 @@ protected:
 	void Update_Character(float _DeltaTime) override;
 
 private:
+	std::vector<std::shared_ptr<class Player_MirageBlade>> AllMirageBlades;
 	GameEngineFSM FSM;
+	GameEngineFSM FSM_MirageBlade;
 	float WalkSpeed = 300;
 	float RunSpeed = 550;
 	float JumpForce = 7000.0f;
@@ -125,6 +138,7 @@ private:
 	bool IsDevilTrigger = false;
 
 	void ChangeState(int _StateValue);
+	void CreateMirageBlade();
 
 	// 검 버튼을 입력한 경우 True 리턴 및 State 변경
 	bool Input_SwordCheck(int AddState = 0);
@@ -132,8 +146,6 @@ private:
 	bool Input_SwordCheckFly(int AddState = 0);
 	// 총 버튼을 입력한 경우 True 리턴 및 State 변경
 	bool Input_GunCheck();
-	// 총 버튼을 공중에서 입력한 경우 True 리턴 및 State 변경
-	bool Input_GunCheckFly();
 	// 점프 버튼을 입력한 경우 True 리턴 및 State 변경
 	bool Input_JumpCheck();
 	// 점프 버튼을 공중에서 입력한 경우 True 리턴 및 State 변경
