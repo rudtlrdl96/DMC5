@@ -124,5 +124,8 @@ private:
 
 	float4 MoveDir = float4::ZERO;
 	float4 PushDir = float4::ZERO;
+
+	int Right = 0;
+	int Left = 0;
 };
 

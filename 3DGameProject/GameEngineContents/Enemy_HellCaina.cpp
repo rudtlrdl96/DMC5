@@ -484,10 +484,17 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Start = [=] {
 	SlerpCalculation();
 	EnemyRenderer->ChangeAnimation("em0000_navi_turn_left_90");
+	EnemyRenderer->SetAnimationStartEvent("em0000_navi_turn_left_90", 50, [=] { ++Left; });
 	},
 	.Update = [=](float _DeltaTime) {
 	
 	SlerpTurn(_DeltaTime);
+
+	if (50 == EnemyRenderer->GetCurFrame())
+	{
+		Left;
+		int a = 0;
+	}
 
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
@@ -504,10 +511,17 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Start = [=] {
 	SlerpCalculation();
 	EnemyRenderer->ChangeAnimation("em0000_navi_turn_right_90");
+	EnemyRenderer->SetAnimationStartEvent("em0000_navi_turn_right_90", 50, [=] { ++Right; });
 	},
 	.Update = [=](float _DeltaTime) {
 
 	SlerpTurn(_DeltaTime);
+
+	if (50 == EnemyRenderer->GetCurFrame())
+	{
+		Right;
+		int a = 0;
+	}
 
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{

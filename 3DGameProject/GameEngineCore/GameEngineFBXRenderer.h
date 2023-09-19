@@ -2,7 +2,6 @@
 #include "GameEngineRenderer.h"
 #include "GameEngineFBXMesh.h"
 
-
 class FbxExAniData;
 class GameEngineFBXMesh;
 class GameEngineFBXAnimation;
@@ -41,6 +40,7 @@ public:
 	void Update(float _DeltaTime);
 
 	std::map<UINT, std::vector<std::function<void()>>> AnimationEvent;
+	std::map<size_t, std::function<void()>> StartEventFunction;
 
 public:
 	GameEngineFBXAnimationInfo()
@@ -233,6 +233,13 @@ public:
 	inline std::vector<float4x4> GetAnimationBoneMatrixs() const
 	{
 		return AnimationBoneMatrixs;
+	}
+
+	void SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
+
+	inline UINT GetCurFrame()
+	{
+		return CurAnimation->CurFrame;
 	}
 
 protected:

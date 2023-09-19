@@ -28,17 +28,14 @@ void GameEngineFBXAnimationInfo::Init(std::shared_ptr<GameEngineFBXMesh> _Mesh, 
 void GameEngineFBXAnimationInfo::Update(float _DeltaTime)
 {
 	_DeltaTime *= TimeScale;
-	// 0~24진행이죠?
+
 	if (false == ParentRenderer->Pause)
 	{
 		CurFrameTime += _DeltaTime;
 		PlayTime += _DeltaTime;
-		//                      0.1
-		// 1
+
 		while (CurFrameTime >= Inter)
 		{
-			// 여분의 시간이 남게되죠?
-			// 여분의 시간이 중요합니다.
 			CurFrameTime -= Inter;
 			++CurFrame;
 
@@ -56,7 +53,7 @@ void GameEngineFBXAnimationInfo::Update(float _DeltaTime)
 				bOnceEnd = false;
 			}
 
-			if (CurFrame == (Frames.size() - 1)
+			if ((Frames.size() - 1) == CurFrame
 				&& false == bOnceEnd)
 			{
 				bOnceEnd = true;
@@ -64,9 +61,10 @@ void GameEngineFBXAnimationInfo::Update(float _DeltaTime)
 				break;
 			}
 
-			if (CurFrame >= Frames.size() - 1)
+			if ((Frames.size() - 1) <= CurFrame)
 			{
 				IsEnd = true;
+
 				if (true == Loop)
 				{
 					CurFrame = Start;
@@ -74,6 +72,13 @@ void GameEngineFBXAnimationInfo::Update(float _DeltaTime)
 				else
 				{
 					CurFrame = static_cast<unsigned int>(Frames.size()) - 1;
+				}
+			}
+			else
+			{
+				if (StartEventFunction.end() != StartEventFunction.find(CurFrame))
+				{
+					StartEventFunction[CurFrame]();
 				}
 			}
 		}
@@ -457,38 +462,6 @@ void GameEngineFBXRenderer::PauseSwtich()
 	Pause = !Pause;
 }
 
-void GameEngineFBXRenderer::ChangeAnimation(const std::string& _AnimationName, bool _Force /*= false*/)
-{
-	std::string UpperName = GameEngineString::ToUpper(_AnimationName);
-
-	std::map<std::string, std::shared_ptr<GameEngineFBXAnimationInfo>>::iterator FindIter = Animations.find(UpperName);
-
-	if (Animations.end() == FindIter)
-	{
-		MsgAssert("존재하지 않는 애니메이션으로 체인지 하려고 했습니다.");
-		return;
-	}
-
-	if (false == _Force && CurAnimation == FindIter->second)
-	{
-		return;
-	}
-
-	CurAnimation = FindIter->second;
-
-	CurAnimation->CurFrame = 0;
-	CurAnimation->IsEnd = false;
-
-	if (CurAnimation->AnimationEvent.contains(0))
-	{
-		for (int i = 0; i < CurAnimation->AnimationEvent[0].size(); i++)
-		{
-			CurAnimation->AnimationEvent[0][i]();
-		}
-	}
-
-}
-
 bool GameEngineFBXRenderer::IsAnimationEnd()
 {
 	return CurAnimation->IsEnd;
@@ -581,4 +554,63 @@ void GameEngineFBXRenderer::Update(float _DeltaTime)
 	}
 
 	CurAnimation->Update(_DeltaTime);
+}
+
+void GameEngineFBXRenderer::ChangeAnimation(const std::string& _AnimationName, bool _Force /*= false*/)
+{
+	std::string UpperName = GameEngineString::ToUpper(_AnimationName);
+
+	std::map<std::string, std::shared_ptr<GameEngineFBXAnimationInfo>>::iterator FindIter = Animations.find(UpperName);
+
+	if (Animations.end() == FindIter)
+	{
+		MsgAssert("존재하지 않는 애니메이션으로 체인지 하려고 했습니다.");
+		return;
+	}
+
+	if (false == _Force && CurAnimation == FindIter->second)
+	{
+		return;
+	}
+
+	CurAnimation = FindIter->second;
+
+	CurAnimation->CurFrame = 0;
+	CurAnimation->IsEnd = false;
+
+	if (CurAnimation->AnimationEvent.contains(0))
+	{
+		for (int i = 0; i < CurAnimation->AnimationEvent[0].size(); i++)
+		{
+			CurAnimation->AnimationEvent[0][i]();
+		}
+	}
+
+	// 시작할때 Start 이벤트 체크 업데이트
+	if (CurAnimation->StartEventFunction.contains(0))
+	{
+		CurAnimation->StartEventFunction[0]();
+	}
+
+	//unsigned int CurFrameIndex = CurAnimation->Frames[0];
+
+	//if (CurAnimation->StartEventFunction.end() != CurAnimation->StartEventFunction.find(CurFrameIndex))
+	//{
+	//	
+	//}
+}
+
+void GameEngineFBXRenderer::SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event)
+{
+	std::string UpperName = GameEngineString::ToUpper(_AnimationName);
+
+	std::map<std::string, std::shared_ptr<GameEngineFBXAnimationInfo>>::iterator FindInfo = Animations.find(UpperName);
+
+	if (Animations.end() == FindInfo)
+	{
+		MsgAssert("존재하지 않는 애니메이션으로 체인지 하려고 했습니다.");
+		return;
+	}
+
+	FindInfo->second->StartEventFunction[_Frame] = _Event;
 }
