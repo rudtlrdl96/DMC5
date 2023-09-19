@@ -154,6 +154,16 @@ void BasePlayerActor::Start()
 	PhysXCapsule->IsMainPlayerCapsule();
 	PhysXCapsule->CreatePhysXActors({ 100, 100, 150 });
 	PhysXCapsule->GetDynamic()->setMass(5.0f);
+
+	// 플레이어 충돌체
+	Col_Player = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
+	Col_Player->GetTransform()->SetLocalPosition({ 0, 20, 0 });
+	Col_Player->GetTransform()->SetLocalScale({ 100, 200, 100 });
+	Col_Player->SetColType(ColType::AABBBOX3D);
+
+	Col_Attack = CreateComponent<AttackCollision>(CollisionOrder::PlayerAttack);
+	Col_Attack->Off();
+	Col_Attack->SetColType(ColType::AABBBOX3D);
 }
 
 void BasePlayerActor::NetControllLoad()
@@ -176,12 +186,6 @@ void BasePlayerActor::UserControllLoad()
 	Controller->CallBack_LockOnDown = std::bind(&BasePlayerActor::LockOn, this);
 	Controller->CallBack_LockOnUp = std::bind(&BasePlayerActor::LockOff, this);
 
-	// 플레이어 충돌체
-	Col_Player = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
-	Col_Player->GetTransform()->SetLocalPosition({ 0, 20, 0 });
-	Col_Player->GetTransform()->SetLocalScale({ 100, 200, 100 });
-	Col_Player->SetColType(ColType::AABBBOX3D);
-
 	Col_EnemyStepCheck = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
 	Col_EnemyStepCheck->GetTransform()->SetLocalPosition({ 0, -70, 0 });
 	Col_EnemyStepCheck->GetTransform()->SetLocalScale({ 200, 125, 200 });
@@ -193,10 +197,6 @@ void BasePlayerActor::UserControllLoad()
 	Col_LockOn->GetTransform()->SetLocalPosition({ 0, 0, 2500 });
 	Col_LockOn->SetColType(ColType::OBBBOX3D);
 	Col_LockOn->Off();
-
-	Col_Attack = CreateComponent<AttackCollision>(CollisionOrder::PlayerAttack);
-	Col_Attack->Off();
-	Col_Attack->SetColType(ColType::AABBBOX3D);
 }
 
 void BasePlayerActor::Update_ProcessPacket()
