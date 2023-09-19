@@ -178,6 +178,11 @@ void GameEngineLevel::Render(float _DeltaTime)
 
 	for (std::shared_ptr<GameEngineLight> Light : AllLight)
 	{
+		if (false == Light->IsShadow())
+		{
+			continue;
+		}
+
 		std::shared_ptr<GameEngineRenderTarget> ShadowTarget = Light->GetShadowTarget();
 		std::shared_ptr<GameEngineRenderTarget> BakeTarget = Light->GetBakeTarget(Light->GetBakeTargetIndex());
 

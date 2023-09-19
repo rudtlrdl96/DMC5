@@ -31,7 +31,7 @@ Texture2D PositionTex : register(t0); //rgb = pos
 Texture2D NormalTex : register(t1); // rgb = normal
 Texture2D MatTex : register(t2); // r = metal, g = roughness
 Texture2D GleamTex : register(t3); // rgb = Gleam light
-Texture2D ShadowTex : register(t4);
+Texture2DArray ShadowTex : register(t4);
 
 SamplerState POINTSAMPLER : register(s0);
 
@@ -119,7 +119,7 @@ LightOutPut DeferredCalLight_PS(Output _Input)
             float3 ShadowLightProjection = ShadowLightPos.xyz / ShadowLightPos.w;
                 
             float2 ShadowUV = float2(ShadowLightProjection.x * 0.5f + 0.5f, ShadowLightProjection.y * -0.5f + 0.5f);
-            float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, ShadowUV.xy).r;
+            float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, float3(ShadowUV.xy, i)).r;
                         
             if (0.001f < ShadowUV.x && 0.999f > ShadowUV.x &&
             0.001f < ShadowUV.y && 0.999f > ShadowUV.y &&
