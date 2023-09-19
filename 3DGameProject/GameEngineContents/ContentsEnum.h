@@ -41,6 +41,7 @@ enum class Net_ActorType
 	Nero,
 	Vergil,
 	TestPlayer,
+	MirageBlade,
 
 	//∏ÛΩ∫≈Õ
 	Empusa,
