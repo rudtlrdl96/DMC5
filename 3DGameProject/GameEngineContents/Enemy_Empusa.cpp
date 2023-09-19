@@ -150,9 +150,9 @@ void Enemy_Empusa::EnemyCreateFSM()
 	/////////////////¾Æ±â ¿¥Çª»ç °È´Â´Ù
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Walk_Start,
 	.Start = [=] {
-	PhysXCapsule->AddWorldRotation({ 0, RotationValue, 0 });
+	PhysXCapsule->AddWorldRotation({ 0, DotProductValue, 0 });
 	MoveDir = GetTransform()->GetWorldForwardVector().NormalizeReturn();
-	MoveDir.RotationYDeg(RotationValue);
+	MoveDir.RotationYDeg(DotProductValue);
 	EnemyRenderer->ChangeAnimation("em0100_biped_walk_start");
 	},
 	.Update = [=](float _DeltaTime) {

@@ -66,9 +66,16 @@ public:
 	BaseEnemyActor& operator=(const BaseEnemyActor& _Other) = delete;
 	BaseEnemyActor& operator=(BaseEnemyActor&& _Other) noexcept = delete;
 
+	// 몬스터 피직스 컴포넌트 리턴
 	std::shared_ptr<class PhysXCapsuleComponent> GetPhysXComponent()
 	{
 		return PhysXCapsule;
+	}
+
+	// 패킷으로 전송받은 FSM을 클라이언트 FSM에 적용
+	void SetFSMStateValue(int _StateValue)
+	{
+		EnemyFSM_Client.ChangeState(_StateValue);
 	}
 
 	// 현재 몬스터가 슈퍼아머 상태인지 반환합니다. 만약 슈퍼아머 상태라면 그랩, 잡기등의 공격에 면역이됩니다.
@@ -95,41 +102,33 @@ public:
 		return EnemySizeValue;
 	}
 
-	void SetFSMStateValue(int _StateValue)
-	{
-		EnemyFSM_Client.ChangeState(_StateValue);
-	}
-
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
-	// Enemy 모델링 메인 랜더러
-	std::shared_ptr<class GameEngineFBXRenderer> EnemyRenderer = nullptr;
+	virtual void EnemyMeshLoad() = 0;
+	virtual void EnemyTypeLoad() = 0;
+	virtual void EnemyAnimationLoad() = 0;
+	virtual void EnemyCreateFSM() = 0;
+	virtual void EnemyCreateFSM_Client() = 0;
+	virtual void DamageCollisionCheck(float _DeltaTime) = 0;
 
-	// 물리 컴포넌트
-	std::shared_ptr<PhysXCapsuleComponent> PhysXCapsule = nullptr;
+	std::shared_ptr<class GameEngineFBXRenderer> EnemyRenderer = nullptr;     // 랜더러
+	std::shared_ptr<PhysXCapsuleComponent> PhysXCapsule = nullptr;            // 피직스 컴포넌트
+	std::shared_ptr<class GameEngineCollision> MonsterCollision = nullptr;    // 몬스터 자체 콜리전
+	std::shared_ptr<class AttackCollision> MonsterAttackCollision = nullptr;  // 몬스터 공격 콜리전
+	std::shared_ptr<class GameEngineCollision> MonsterAttackRange = nullptr;  // 몬스터 공격 범위 콜리전
+	std::shared_ptr<class GameEngineCollision> RN_MonsterCollision = nullptr; // 몬스터 인식 범위 콜리전
 
-	// Monster의 Collision
-	//범위인식
-	std::shared_ptr<class GameEngineCollision> RN_MonsterCollision = nullptr;
-	//공격범위
-	std::shared_ptr<class GameEngineCollision> MonsterAttackRange = nullptr;
-	//자체Collision
-	std::shared_ptr<class GameEngineCollision> MonsterCollision = nullptr;
-
-	std::shared_ptr<class GameEngineCollision> ColValue = nullptr;
-
-	std::shared_ptr<class AttackCollision> MonsterAttackCollision = nullptr;
-
-	GameEngineFSM EnemyFSM;
-	GameEngineFSM EnemyFSM_Client;
+	GameEngineFSM EnemyFSM;        // 싱글, 서버용 FSM
+	GameEngineFSM EnemyFSM_Client; // 클라이언트용 FSM (패킷 전송 받아서 변경됨)
 
 	//하위에서 설정해줘야하는 Data들=====================================================
 	EnemyCode EnemyCodeValue = EnemyCode::None;
 	EnemyType EnemyTypeValue  = EnemyType::None;
 	EnemySize EnemySizeValue = EnemySize::None;
-	EnemyRotation EnemyRotationValue = EnemyRotation::Forward;
+	EnemyHitDir HitDir = EnemyHitDir::None;
+
 	//HP
 	float EnemyHP = 0.0f;
 	//Recognize(인식범위)
@@ -143,19 +142,28 @@ protected:
 	int EnemyFSMValue = -1;
 	//=================================================================================
 
+	void SuperArmorOn();
+	void SuperArmorOff();
 	bool IsSuperArmorValue = false;
-	//맞은방향
-	EnemyHitDir HitDir = EnemyHitDir::None;
 
 	std::function<void()> SuperArmorOn_Callback = nullptr;
 	std::function<void()> SuperArmorOff_Callback = nullptr;
-
-	float RotationValue = 0.0f;  // CheckHeadingRotationValue() 실행 후 내적 결과값
-	float FallDistance = 0.0f;   // FloorCheck() 시 필요, 각자의 몬스터 Start 부분에서 값 적용
-
-	void SuperArmorOn();
-	void SuperArmorOff();
+	
+	//====================================================
+	// 몬스터 바닥 체크 (RayCast)
 	bool FloorCheck(float _Distance);
+	float FallDistance = 0.0f;     // FloorCheck() 시 필요, 각자의 몬스터 Start 부분에서 값 적용
+	//====================================================
+
+	//====================================================
+	// Slerp 계산에 사용
+	EnemyRotation EnemyRotationValue = EnemyRotation::Forward;
+
+	float4 CurRotation = float4::ZERO;
+	float4 GoalRotation = float4::ZERO;
+	float4 RotationValue = float4::ZERO;     // Slerp 계산된 결과값
+	float SlerpTime = 0.0f;
+	float DotProductValue = 0.0f;            // CheckHeadingRotationValue() 실행 후 내적 결과값
 
 	float4 CrossMonsterAndPlayer();			 // 플레이어와 몬스터 외적
 	float DotProductMonsterAndPlayer();      // 플레이어와 몬스터 내적 (그냥 내적)
@@ -163,23 +171,48 @@ protected:
 	void CheckHeadingRotationValue();		 // 내적, 외적 후 어떤 식으로 회전할지 결정
 	void SlerpCalculation();				 // slerp 조건 계산
 	void SlerpTurn(float _DeltaTime);        // slerp로 턴
+	//====================================================
 
 	//====================================================
-	// Slerp 계산에 사용
-	float4 CurRotation = float4::ZERO;
-	float4 GoalRotation = float4::ZERO;
-	float4 RotValue = float4::ZERO;     // 계산된 결과값
-	float SlerpTime = 0.0f;
-	//====================================================
-	virtual void EnemyMeshLoad() = 0;
-	virtual void EnemyTypeLoad() = 0;
-	virtual void EnemyAnimationLoad() = 0;
-	virtual void EnemyCreateFSM() = 0;
-	virtual void EnemyCreateFSM_Client() = 0;
-	virtual void DamageCollisionCheck(float _DeltaTime) = 0;
+	// 방향 설정
+	float4 ForwardDirect = float4::ZERO;
+	float4 BackDirect = float4::ZERO;
+	float4 RightDirect = float4::ZERO;
+	float4 LeftDirect = float4::ZERO;
+	float4 PushDirect = float4::ZERO;
 
-	void Update_ProcessPacket() override;
-	void Update_SendPacket(float _DeltaTime) override;
+	void AllDirectSetting();
+	void PushDirectSetting();
+	void SetPush(float _Value)
+	{
+		PhysXCapsule->SetPush(PushDirect * _Value);
+	}
+
+	void SetAir(float _Value)
+	{
+		PhysXCapsule->SetAirState(_Value);
+	}
+
+	void SetForwardMove(float _Value)
+	{
+		PhysXCapsule->SetMove(ForwardDirect * _Value);
+	}
+
+	void SetRightMove(float _Value)
+	{
+		PhysXCapsule->SetMove(RightDirect * _Value);
+	}
+
+	void SetLeftMove(float _Value)
+	{
+		PhysXCapsule->SetMove(LeftDirect * _Value);
+	}
+
+	void SetMoveStop()
+	{
+		PhysXCapsule->SetLinearVelocityZero();
+	}
+	//====================================================
 
 	//====================================================
 	// 서버 패킷 관련
@@ -187,6 +220,9 @@ protected:
 	float4 Server_NextPosition = float4::ZERO;
 	float4 Server_Rotation = float4::ZERO;
 	float Sever_Timer = 0.0f;
+
+	void Update_ProcessPacket() override;
+	void Update_SendPacket(float _DeltaTime) override;
 	//====================================================
 
 private:

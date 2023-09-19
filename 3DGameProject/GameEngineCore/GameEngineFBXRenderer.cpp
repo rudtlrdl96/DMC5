@@ -587,17 +587,10 @@ void GameEngineFBXRenderer::ChangeAnimation(const std::string& _AnimationName, b
 	}
 
 	// 시작할때 Start 이벤트 체크 업데이트
-	if (CurAnimation->StartEventFunction.contains(0))
+	if (CurAnimation->StartEventFunction.end() != CurAnimation->StartEventFunction.find(0))
 	{
 		CurAnimation->StartEventFunction[0]();
 	}
-
-	//unsigned int CurFrameIndex = CurAnimation->Frames[0];
-
-	//if (CurAnimation->StartEventFunction.end() != CurAnimation->StartEventFunction.find(CurFrameIndex))
-	//{
-	//	
-	//}
 }
 
 void GameEngineFBXRenderer::SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event)
