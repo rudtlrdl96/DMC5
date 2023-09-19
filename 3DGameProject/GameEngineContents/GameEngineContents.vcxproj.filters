@@ -406,9 +406,6 @@
     <ClInclude Include="UI_DTGauge.h">
       <Filter>UI\UI_Actor\PlayUI</Filter>
     </ClInclude>
-    <ClInclude Include="NetworkObjectBase.h">
-      <Filter>Server\03.NetworkObjectBase</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -800,9 +797,6 @@
     </ClCompile>
     <ClCompile Include="UI_DTGauge.cpp">
       <Filter>UI\UI_Actor\PlayUI</Filter>
-    </ClCompile>
-    <ClCompile Include="NetworkObjectBase.cpp">
-      <Filter>Server\03.NetworkObjectBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

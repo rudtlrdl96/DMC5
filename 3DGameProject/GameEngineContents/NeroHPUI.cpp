@@ -6,6 +6,7 @@
 #include "UIFBXRenderer.h"
 #include "UI_HPGaege.h"
 #include "UI_DTGauge.h"
+#include "UI_BulletGauge.h"
 NeroHPUI::NeroHPUI() 
 {
 }
@@ -68,6 +69,7 @@ void NeroHPUI::Start()
 
 	std::shared_ptr<UI_HPGaege> UI_HPGaegeBar = GetLevel()->CreateActor<UI_HPGaege>();
 	std::shared_ptr<UI_DTGauge> UI_DTGaugeBar = GetLevel()->CreateActor<UI_DTGauge>();
+	std::shared_ptr<UI_BulletGauge> UI_BulletGaugeBar = GetLevel()->CreateActor<UI_BulletGauge>();
 
 	
 }
