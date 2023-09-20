@@ -420,10 +420,6 @@ void PlayerActor_Vergil::VergilLoad()
 				if (true == Input_SpecialCheck()) { return; }
 
 				if (InputCheck == false) {
-					if (Controller->GetIsSpecialMove())
-					{
-						ChangeState(FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_1);
-					}
 					return;
 				}
 				if (true == Input_JumpCheck()) { return; }
@@ -1237,6 +1233,7 @@ void PlayerActor_Vergil::VergilLoad()
 		// Vergil_yamato_JudgementCutEnd_1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_1,
 			.Start = [=] {
+				RotationToTarget();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCutEnd_1");
 			},
@@ -1253,27 +1250,24 @@ void PlayerActor_Vergil::VergilLoad()
 		// Vergil_yamato_JudgementCutEnd_2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_2,
 			.Start = [=] {
+				InputCheck = false;
+				MoveCheck = false;
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCutEnd_2");
 			},
 			.Update = [=](float _DeltaTime) {
-				if (InputCheck == false) { return; }
+				if (false == FloorCheck())
+				{
+					ChangeState(FSM_State_Vergil::Vergil_Jump_Fly);
+					return;
+				}
 
-				if (Controller->GetIsJump())
-				{
-					ChangeState(FSM_State_Vergil::Vergil_Jump_Vertical);
-					return;
-				}
-				if (Controller->GetIsLeftJump())
-				{
-					ChangeState(FSM_State_Vergil::Vergil_Warp_Left_1);
-					return;
-				}
-				if (Controller->GetIsRightJump())
-				{
-					ChangeState(FSM_State_Vergil::Vergil_Warp_Right_1);
-					return;
-				}
+
+				if (InputCheck == false) { return; }
+				if (true == Input_SpecialCheck()) { return; }
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_WarpCheck()) { return; }
 
 				if (MoveCheck == false) { return; }
 				if (Controller->GetMoveVector() != float4::ZERO)
@@ -2141,6 +2135,11 @@ bool PlayerActor_Vergil::Input_SpecialCheck()
 		}
 		IsDevilTrigger = false;
 		ChangeState(FSM_State_Vergil::Vergil_DT_End);
+		return true;
+	}
+	if (Controller->GetIsSpecialMove())
+	{
+		ChangeState(FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_1);
 		return true;
 	}
 	if (Controller->GetIsBackFrontSkill())

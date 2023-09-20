@@ -19,11 +19,7 @@ void PlayerActor_Vergil::CreateMirageBlade()
 	AllMirageBlades.resize(8);
 	for (int i = 0; i < 8; i++)
 	{
-		AllMirageBlades[i] = NetworkManager::CreateNetworkActor<Player_MirageBlade>(GetLevel());
-		if (nullptr == AllMirageBlades[i])
-		{
-			AllMirageBlades[i] = GetLevel()->CreateActor<Player_MirageBlade>(ActorOrder::Player);
-		}
+		AllMirageBlades[i] = GetLevel()->CreateActor<Player_MirageBlade>(ActorOrder::Player);
 		AllMirageBlades[i]->GetTransform()->SetParent(SpiralPivot);
 		AllMirageBlades[i]->Off();
 	}
