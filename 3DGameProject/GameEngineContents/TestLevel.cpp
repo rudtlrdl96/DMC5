@@ -50,6 +50,7 @@ void TestLevel::Update(float _DeltaTime)
 
 void TestLevel::LevelChangeStart()
 {
+	IsDebugSwitch();
 	SetLevelSceneGravity(2000);
 
 	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();

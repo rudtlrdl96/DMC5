@@ -25,8 +25,6 @@ enum FSM_State_HellCaina
 	// 회전
 	HellCaina_Navi_Turn_Left,  // em0000_navi_turn_left_90, 왼쪽 슬러프 회전
 	HellCaina_Navi_Turn_Right, // em0000_navi_turn_right_90, 오른쪽 슬러프 회전
-	HellCaina_Turn_Left_90,    // em0000_turn_left_90, 왼쪽 회전
-	HellCaina_Turn_Right_90,   // em0000_turn_right_90, 오른쪽 회전
 	HellCaina_Turn_Left_180,   // em0000_turn_left_180, 왼쪽 회전
 	HellCaina_Turn_Right_180,  // em0000_turn_right_180, 오른쪽 회전
 

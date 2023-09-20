@@ -66,6 +66,10 @@ void BaseEnemyActor::Update_SendPacket(float _DeltaTime)
 
 void BaseEnemyActor::Start()
 {
+	if (false == GameEngineInput::IsKey("MonsterTest"))
+	{
+		GameEngineInput::CreateKey("MonsterTest", 'M');
+	}
 	//Render생성
 	EnemyRenderer = CreateComponent<GameEngineFBXRenderer>();
 	EnemyRenderer->ShadowOn();
@@ -97,6 +101,11 @@ void BaseEnemyActor::Start()
 
 void BaseEnemyActor::Update(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("MonsterTest"))
+	{
+		Death();
+	}
+
 	if (MonsterCollision->GetTransform()->GetWorldScale() == float4::ZERO)
 	{
 		MsgAssert("MonsterCollision의 크기를 설정해주지 않았습니다.");
@@ -409,7 +418,6 @@ void BaseEnemyActor::AnimationSlerpTurn(float _DeltaTime)
 		return;
 	}
 	
-	AnimationTurnStart = true;
 	SlerpTime += _DeltaTime;
 	RotationValue = float4::SLerpQuaternion(CurRotation, GoalRotation, SlerpTime);
 }
