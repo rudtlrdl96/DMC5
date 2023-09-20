@@ -139,11 +139,10 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     // ReflectionVector    
     float3 refvector = mul(float4(reflect(refnormal, CameraView), 0.0f), AllLight[0].CameraViewInverseMatrix).xyz;
     
-    // Y축이 뒤집혀 반전
-    refvector.z = -refvector.z;
-    //refvector.y = -refvector.y;
+    // 축 반전
+    refvector.x = -refvector.x;
         
-    float4 ReflectionColor = ReflectionTexture.Sample(CUBEMAPSAMPLER, refvector);
+    float4 ReflectionColor = ReflectionTexture.Sample(ENGINEBASE, refvector);
     //float4 ReflectionColor = ReflectionTexture.Sample(ENGINEBASE, refvector);
     
     // 계산된 메탈릭 값
