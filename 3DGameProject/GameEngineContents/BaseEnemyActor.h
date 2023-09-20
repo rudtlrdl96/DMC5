@@ -107,6 +107,12 @@ public:
 		IsRenderShaking = true;
 	}
 
+	void StartMonsterSnatch()
+	{
+		SnatchCalculation();
+		IsSnatch = true;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -206,9 +212,15 @@ protected:
 	float4 RightDirect = float4::ZERO;
 	float4 LeftDirect = float4::ZERO;
 	float4 PushDirect = float4::ZERO;
+	float4 SnatchStartPosition = float4::ZERO;
+	float4 SnatchEndPosition = float4::ZERO;
+	float SnatchTime = 0.0f;
+	bool IsSnatch = false;
 
 	void AllDirectSetting();
 	void PushDirectSetting();
+	void SnatchCalculation();
+	void MonsterSnatch(float _DeltaTime);
 
 	void SetPush(float _Value)
 	{

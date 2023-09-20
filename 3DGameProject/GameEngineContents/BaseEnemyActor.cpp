@@ -66,6 +66,11 @@ void BaseEnemyActor::Update_SendPacket(float _DeltaTime)
 
 void BaseEnemyActor::Start()
 {
+	if (false == GameEngineInput::IsKey("MonsterTest"))
+	{
+		GameEngineInput::CreateKey("MonsterTest", 'M');
+	}
+
 	//Render생성
 	EnemyRenderer = CreateComponent<GameEngineFBXRenderer>();
 	EnemyRenderer->ShadowOn();
@@ -102,7 +107,18 @@ void BaseEnemyActor::Update(float _DeltaTime)
 		MsgAssert("MonsterCollision의 크기를 설정해주지 않았습니다.");
 	}
 
+	if (true == GameEngineInput::IsDown("MonsterTest"))
+	{
+		StartMonsterSnatch();
+	}
+
 	RenderShake(_DeltaTime);
+	MonsterSnatch(_DeltaTime);
+
+	if (true == IsSnatch)
+	{
+		return;
+	}
 
 	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
 	{
@@ -492,5 +508,35 @@ void BaseEnemyActor::RenderShake(float _DeltaTime)
 			++ShakingCount;
 			EnemyRenderer->GetTransform()->SetLocalPosition({ CurRenderPosition.x - 3 , CurRenderPosition.y, CurRenderPosition.z + 3 });
 		}
+	}
+}
+
+void BaseEnemyActor::SnatchCalculation()
+{
+	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
+	BasePlayerActor* Player = Players[0];
+
+	SnatchStartPosition = this->GetTransform()->GetWorldPosition();
+	float4 Forword = Player->GetTransform()->GetWorldForwardVector() * 120.0f;
+	SnatchEndPosition = Player->GetTransform()->GetWorldPosition() + Forword + float4{0.f, 20.f, 0.f};
+}
+
+void BaseEnemyActor::MonsterSnatch(float _DeltaTime)
+{
+	if (false == IsSnatch)
+	{
+		return;
+	}
+
+	SnatchTime += _DeltaTime * 3.0f;
+	float4 LerpPosition = float4::LerpClamp(SnatchStartPosition, SnatchEndPosition, SnatchTime);
+	//float4 LerpPosition = float4::SLerpQuaternion(SnatchStartPosition, SnatchEndPosition, SnatchTime);
+	PhysXCapsule->SetWorldPosition(LerpPosition);
+
+	if (1.0f <= SnatchTime)
+	{
+		SetMoveStop();
+		IsSnatch = false;
+		SnatchTime = 0.0f;
 	}
 }
