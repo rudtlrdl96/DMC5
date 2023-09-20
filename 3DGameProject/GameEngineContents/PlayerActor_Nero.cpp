@@ -14,13 +14,6 @@ PlayerActor_Nero::~PlayerActor_Nero()
 {
 }
 
-void PlayerActor_Nero::SinglePlayLoad()
-{
-	UserControllLoad();
-	PlayerLoad();
-	LoadCheck = true;
-}
-
 void PlayerActor_Nero::Start()
 {
 	BasePlayerActor::Start();

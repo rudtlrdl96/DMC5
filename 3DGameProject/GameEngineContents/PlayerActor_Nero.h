@@ -114,11 +114,6 @@ public:
 	// constrcuter destructer
 	PlayerActor_Nero()
 	{
-		//SetControll(NetControllType::UserControll);
-	}
-	PlayerActor_Nero(NetControllType _ControllType)
-	{
-		SetControll(_ControllType);
 	}
 	~PlayerActor_Nero();
 
@@ -162,8 +157,6 @@ public:
 			SetBusterArm();
 		}
 	}
-
-	void SinglePlayLoad();
 
 	std::stack<DevilBreaker>* GetBreakerStackPointer()
 	{

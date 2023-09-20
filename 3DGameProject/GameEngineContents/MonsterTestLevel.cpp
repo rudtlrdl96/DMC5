@@ -51,7 +51,7 @@ void MonsterTestLevel::LevelChangeStart()
 	SetLevelSceneGravity(2000);
 	TestPlayer = CreateActor<PlayerActor_Nero>();
 	TestPlayer->GetPhysXComponent()->SetWorldPosition({ 0, 100, 1000 });
-	TestPlayer->SinglePlayLoad();
+	TestPlayer->SetUserControllType();
 
 	TestMonster = CreateActor<Enemy_Empusa>();
 	

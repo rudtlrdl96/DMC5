@@ -54,7 +54,7 @@ void TestLevel::LevelChangeStart()
 
 	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
 	Nero->GetPhysXComponent()->SetWorldPosition({ -1200, 100, -1300 });
-	Nero->SinglePlayLoad();
+	Nero->SetUserControllType();
 
 	std::shared_ptr<Enemy_HellCaina> HellCaina = CreateActor<Enemy_HellCaina>();
 	HellCaina->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });

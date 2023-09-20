@@ -68,10 +68,10 @@ void PlayerTestLevel::LevelChangeStart()
 	GameEngineCoreWindow::AddDebugRenderTarget(1, "LightRenderTarget", GetMainCamera()->GetDeferredLightTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(2, "MainCameraForwardTarget", GetMainCamera()->GetCamForwardTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(3, "DeferredTarget", GetMainCamera()->GetCamDeferrdTarget());
-
-	Vergil = CreateActor<PlayerActor_Vergil>();
-	Vergil->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	Vergil->GetTransform()->SetWorldPosition({ 0, 100, 0 });
+	CreateActor<PlayerActor_Nero>()->SetUserControllType();
+	//Vergil = CreateActor<PlayerActor_Vergil>();
+	//Vergil->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//Vergil->GetTransform()->SetWorldPosition({ 0, 100, 0 });
 
 	if (nullptr == Light)
 	{
