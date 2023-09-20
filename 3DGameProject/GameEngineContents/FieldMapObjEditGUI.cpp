@@ -2,6 +2,7 @@
 #include "FieldMapObjEditGUI.h"
 #include "StageEditGUI.h"
 #include "StageEditLevel.h"
+#include "FieldMapObject.h"
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 
 FieldMapObjEditGUI::FieldMapObjEditGUI()

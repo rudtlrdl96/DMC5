@@ -15,8 +15,11 @@ public:
 	FieldMapObject& operator=(FieldMapObject&& _Other) noexcept = delete;
 	
 	static std::shared_ptr<FieldMapObject> CreateFieldMapObj(GameEngineLevel* _Level, FieldMapObjType _FieldMapObjType, const class ObjTransformData& _ObjTransform);
+	const std::shared_ptr<class GameEngineFBXRenderer> GetFBXMesh();
 
 protected:
+	std::shared_ptr<class GameEngineFBXRenderer> FBXMesh = nullptr;
+	std::shared_ptr<class PhysXBoxComponent> PhysXBox = nullptr;
 
 private:
 

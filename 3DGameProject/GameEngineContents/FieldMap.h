@@ -30,6 +30,8 @@ public:
 
 	void EraseFieldMap();
 
+	void ReflectionSetting();
+
 protected:
 	void DrawEditor() override;
 	void Update(float _DeltaTime) override;
@@ -39,7 +41,8 @@ private:
 	std::vector<std::shared_ptr<class GameEngineCollision>> FieldMapCullingCol;
 	std::vector<std::weak_ptr<FieldMap>> RenderOnNode;
 	std::vector<std::weak_ptr<FieldMap>> RenderOffNode;
-	std::vector<std::shared_ptr<GameEngineActor>> FieldMapObj;
+	std::vector<std::shared_ptr<class FieldMapObject>> FieldMapObj;
+	std::shared_ptr<class ReflectionSetter> Reflection = nullptr;
 	
 	void ClearFieldMapRenderer();
 	void ClearFieldMapCullingCol();

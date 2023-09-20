@@ -40,3 +40,8 @@ std::shared_ptr<FieldMapObject> FieldMapObject::CreateFieldMapObj(GameEngineLeve
 
 	return Result;
 }
+
+const std::shared_ptr<class GameEngineFBXRenderer> FieldMapObject::GetFBXMesh()
+{
+	return FBXMesh;
+}

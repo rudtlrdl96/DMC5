@@ -80,6 +80,7 @@ void StageBaseLevel::CreateStage(const StageData& _Data)
 	for (size_t i = 0; i < AcFieldMaps.size(); i++)
 	{
 		LinkNode(AcFieldMaps[i], _Data.MapDatas[i].NodeIndex);
+		AcFieldMaps[i]->ReflectionSetting();
 	}
 }
 

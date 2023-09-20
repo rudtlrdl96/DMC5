@@ -5,6 +5,8 @@
 #include <GameEngineCore/GameEngineMaterial.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include "FieldMapObject.h"
+#include "ReflectionSetter.h"
+#include "FieldMapObject.h"
 
 
 FieldMap::FieldMap()
@@ -38,7 +40,7 @@ std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, cons
 
 		MapRenderersRef[i]->ShadowOn();
 		MapRenderersRef[i]->SetStatic();
-		MapRenderersRef[i]->Off();
+		//MapRenderersRef[i]->Off();
 	}
 
 	std::vector<std::shared_ptr<GameEngineCollision>>& MapCullingColRef = Result->FieldMapCullingCol;
@@ -52,13 +54,16 @@ std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, cons
 		MapCullingColRef[i]->GetTransform()->SetLocalRotation(_CullingCols[i].Rot);
 	}
 
-	std::vector<std::shared_ptr<GameEngineActor>>& FieldMapObjRef = Result->FieldMapObj;
+	std::vector<std::shared_ptr<FieldMapObject>>& FieldMapObjRef = Result->FieldMapObj;
 	FieldMapObjRef.resize(_FieldMapObjs.size());
 	for (size_t i = 0; i < FieldMapObjRef.size(); i++)
 	{
 		FieldMapObjRef[i] = FieldMapObject::CreateFieldMapObj(_Level, _FieldMapObjs[i].Type, _FieldMapObjs[i].ObjTransform);
 		FieldMapObjRef[i]->Off();
 	}
+
+	Result->Reflection = _Level->CreateActor<ReflectionSetter>();
+	Result->Reflection->GetTransform()->SetLocalPosition(_CullingCols[0].Pos + float4{0,200,0,0});
 
 	return Result;
 }
@@ -75,6 +80,39 @@ void FieldMap::EraseFieldMap()
 	ClearFieldMapCullingCol();
 	ClearRenderNode();
 	ClearFieldMapObj();
+}
+
+void FieldMap::ReflectionSetting()
+{
+	if (Reflection == nullptr)
+	{
+		MsgAssert("Reflection Setter가 nullptr입니다");
+		return;
+	}
+
+	static int a = 0;
+
+	Reflection->Init("TestReflection" + std::to_string(a++), float4(256, 256));
+
+	if (FieldMapRenderer.empty())
+	{
+		MsgAssert("반사 텍스쳐 세팅을 할 맵 랜더러가 없습니다");
+		return;
+	}
+	
+	for (size_t i = 0; i < FieldMapRenderer.size(); i++)
+	{
+		FieldMapRenderer[i]->SetTexture("ReflectionTexture", Reflection->GetReflectionCubeTexture());
+	}
+
+	for (size_t i = 0; i < FieldMapObj.size(); i++)
+	{
+		if (FieldMapObj[i]->GetFBXMesh() == nullptr)
+		{
+			continue;
+		}
+		FieldMapObj[i]->GetFBXMesh()->SetTexture("ReflectionTexture", Reflection->GetReflectionCubeTexture());
+	}
 }
 
 void FieldMap::Update(float _DeltaTime)
