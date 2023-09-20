@@ -25,7 +25,7 @@ void NeroItemGlass::Start()
 	NewDir.Move("NeroUIMesh");
 	NewDir.Move("NeroItemMesh");
 
-	if (nullptr == GameEngineFBXMesh::Find("NeroIden123.FBX"))
+	if (nullptr == GameEngineFBXMesh::Find("NeroItemGlass.FBX"))
 	{
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".fbx" });
 		for (GameEngineFile File : Files)
@@ -35,9 +35,9 @@ void NeroItemGlass::Start()
 	}
 	NeroUI_ItemGlass = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 560.0f,-380.0f,172.0f }, { 0.6f,0.6f,0.6f }, { -90.0f,0.0f,0.0f }, "NeroItemGlass.FBX");
 
-	NeroUI_Overture = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 560.0f,-380.0f,172.0f }, {5.0f,5.0f,5.0f }, { 90.0f,0.0f,-180.0f }, "OvertureArmUI.FBX", "FBX_Low");
-	NeroUI_Gerbera = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 560.0f,-380.0f,172.0f }, {5.0f,5.0f,5.0f }, { 90.0f,0.0f,-180.0f }, "GerberaArmUI.FBX", "FBX");
-	NeroUI_BusterArm = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 560.0f,-380.0f,172.0f }, {5.0f,5.0f,5.0f }, { 90.0f,0.0f,-180.0f }, "BusterArmUI.FBX", "FBX");
+	NeroUI_Overture = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 730.0f,-300.0f,50.0f }, {5.0f,5.0f,5.0f }, { 89.0f,0.0f,179.0f }, "OvertureArmUI.FBX", "FBX");
+	NeroUI_Gerbera = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 730.0f,-300.0f,50.0f }, {4.0f,4.0f,4.0f }, { 160.0f,0.0f,211.0f }, "GerberaArmUI.FBX", "FBX");
+	NeroUI_BusterArm = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 730.0f,-300.0f,-50.0f }, {3.0f,3.0f,3.0f }, { 230.0f,0.0f,250.0f }, "BusterArmUI.FBX", "FBX");
 
 	SetItemText();
 }
@@ -72,7 +72,7 @@ void NeroItemGlass::SetItemText()
 	ItemText->SetFontFlag(FW1_CENTER);
 	ItemText->SetScale(36);
 	ItemText->SetColor(float4(0.701f, 0.772f, 0.788f, 1.0f));
-	ItemText->GetTransform()->SetLocalPosition({ 540.0f,-313.f,0.0f });
+	ItemText->GetTransform()->SetLocalPosition({ 540.0f,-340.f,0.0f });
 
 
 	CurCount = CreateComponent<GameEngineFontRenderer>(5);
@@ -80,7 +80,7 @@ void NeroItemGlass::SetItemText()
 	CurCount->SetFontFlag(FW1_CENTER);
 	CurCount->SetScale(50);
 	CurCount->SetColor(float4(0.701f, 0.772f, 0.788f, 1.0f));
-	CurCount->GetTransform()->SetLocalPosition({ 634.0f,-302.f,0.0f, });
+	CurCount->GetTransform()->SetLocalPosition({ 634.0f,-327.f,0.0f, });
 
 
 	SlashText = CreateComponent<GameEngineFontRenderer>(8);
@@ -88,7 +88,7 @@ void NeroItemGlass::SetItemText()
 	SlashText->SetFontFlag(FW1_CENTER);
 	SlashText->SetScale(36);
 	SlashText->SetColor(float4(0.656f, 0.668f, 0.665f, 1.0f));
-	SlashText->GetTransform()->SetLocalPosition({ 660.0f,-315.f,0.0f });
+	SlashText->GetTransform()->SetLocalPosition({ 660.0f,-340.f,0.0f });
 	SlashText->SetText("/");
 
 	MaxCount = CreateComponent<GameEngineFontRenderer>(8);
@@ -96,6 +96,6 @@ void NeroItemGlass::SetItemText()
 	MaxCount->SetFontFlag(FW1_CENTER);
 	MaxCount->SetScale(36);
 	MaxCount->SetColor(float4(0.656f, 0.668f, 0.665f, 1.0f));
-	MaxCount->GetTransform()->SetLocalPosition({ 680.0f,-315.f,0.0f });
+	MaxCount->GetTransform()->SetLocalPosition({ 680.0f,-340.f,0.0f });
 }
 
