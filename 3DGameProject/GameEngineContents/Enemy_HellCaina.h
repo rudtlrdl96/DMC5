@@ -115,10 +115,15 @@ private:
 	void ChangeState(int _StateValue);
 
 	float WaitTime = 0.0f;
-	float WalkTime = 0.0f;
 	float RotationDelayTime = 0.0f;
 	float FallCheckDelayTime = 0.0f;
 	float AttackDelayCheck = 0.0f;   // юс╫ц
 
+	short WalkCount = 0;
+
+	bool IsHeavyAttack = false;
+	bool IsAirAttack = false;
+	bool IsAirLanding = false;
+	bool IsSlamAttack = false;
 };
 

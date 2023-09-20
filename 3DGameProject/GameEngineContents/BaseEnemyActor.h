@@ -101,6 +101,12 @@ public:
 		return EnemySizeValue;
 	}
 
+	void StartRenderShaking(short _ShakingMaxCount)
+	{
+		ShakingMaxCount = _ShakingMaxCount;
+		IsRenderShaking = true;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -151,6 +157,18 @@ protected:
 	// 몬스터 바닥 체크 (RayCast)
 	bool FloorCheck(float _Distance);
 	float FallDistance = 0.0f;     // FloorCheck() 시 필요, 각자의 몬스터 Start 부분에서 값 적용
+	//====================================================
+
+	//====================================================
+	// 랜더 쉐이크
+	float4 CurRenderPosition = float4::ZERO;
+	bool IsRenderShaking = false;
+	float RenderShakeTime = 0.0f;
+	short ShakingCameraSetting = 0;
+	short ShakingCount = 0;
+	short ShakingMaxCount = 0;
+
+	void RenderShake(float _DeltaTime);
 	//====================================================
 
 	//====================================================

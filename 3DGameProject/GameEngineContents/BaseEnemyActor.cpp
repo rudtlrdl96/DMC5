@@ -66,10 +66,6 @@ void BaseEnemyActor::Update_SendPacket(float _DeltaTime)
 
 void BaseEnemyActor::Start()
 {
-	if (false == GameEngineInput::IsKey("MonsterTest"))
-	{
-		GameEngineInput::CreateKey("MonsterTest", 'M');
-	}
 	//Render생성
 	EnemyRenderer = CreateComponent<GameEngineFBXRenderer>();
 	EnemyRenderer->ShadowOn();
@@ -101,15 +97,12 @@ void BaseEnemyActor::Start()
 
 void BaseEnemyActor::Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsDown("MonsterTest"))
-	{
-		Death();
-	}
-
 	if (MonsterCollision->GetTransform()->GetWorldScale() == float4::ZERO)
 	{
 		MsgAssert("MonsterCollision의 크기를 설정해주지 않았습니다.");
 	}
+
+	RenderShake(_DeltaTime);
 
 	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
 	{
@@ -456,4 +449,48 @@ void BaseEnemyActor::PushDirectSetting()
 	}
 
 	PushDirect = Player->GetTransform()->GetWorldForwardVector().NormalizeReturn();
+}
+
+void BaseEnemyActor::RenderShake(float _DeltaTime)
+{
+	if (false == IsRenderShaking)
+	{
+		ShakingCameraSetting = 1;
+		return;
+	}
+
+	if (1 == ShakingCameraSetting)
+	{
+		RenderShakeTime = 0.0f;
+		ShakingCount = 0;
+		ShakingCameraSetting = 0;
+		CurRenderPosition = EnemyRenderer->GetTransform()->GetLocalPosition();
+		EnemyRenderer->GetTransform()->SetLocalPosition(CurRenderPosition);
+	}
+
+	RenderShakeTime += _DeltaTime;
+
+	if (0.025f <= RenderShakeTime)
+	{
+		RenderShakeTime = 0.0f;
+
+		if (ShakingMaxCount == ShakingCount)
+		{
+			ShakingCount = 0;
+			IsRenderShaking = false;
+			ShakingCameraSetting = 1;
+			RenderShakeTime = 0.0f;
+			EnemyRenderer->GetTransform()->SetLocalPosition(CurRenderPosition);
+		}
+		else if (0 == ShakingCount % 2)
+		{
+			++ShakingCount;
+			EnemyRenderer->GetTransform()->SetLocalPosition({ CurRenderPosition.x + 3 , CurRenderPosition.y, CurRenderPosition.z - 3 });
+		}
+		else if (1 == ShakingCount % 2)
+		{
+			++ShakingCount;
+			EnemyRenderer->GetTransform()->SetLocalPosition({ CurRenderPosition.x - 3 , CurRenderPosition.y, CurRenderPosition.z + 3 });
+		}
+	}
 }

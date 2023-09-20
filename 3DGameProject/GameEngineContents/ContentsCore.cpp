@@ -59,7 +59,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<StageEditLevel>();
 	GameEngineCore::CreateLevel<ShopLevel>();
 	
-	GameEngineCore::ChangeLevel("MainLevel");
+	GameEngineCore::ChangeLevel("TestLevel");
 }
 
 void ContentsCore::GameEnd() 
