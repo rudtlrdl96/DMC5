@@ -46,15 +46,20 @@ void TestStageLevel::Start()
 
 	StageBaseLevel::Start();
 
-	if (false == GameEngineInput::IsKey("RefTestKey"))
+	if (false == GameEngineInput::IsKey("BakeTestKey"))
 	{
-		GameEngineInput::CreateKey("RefTestKey", VK_SPACE);
+		GameEngineInput::CreateKey("BakeTestKey", VK_SPACE);
 	}
 }
 
 void TestStageLevel::Update(float _DeltaTime)
 {
 	StageBaseLevel::Update(_DeltaTime);
+
+	if (true == GameEngineInput::IsDown("BakeTestKey"))
+	{
+		GetDirectionalLight()->BakeShadow(GetMainCamera());
+	}
 }
 
 void TestStageLevel::LevelChangeStart()
@@ -111,4 +116,5 @@ void TestStageLevel::LevelChangeStart()
 	GameEngineCoreWindow::AddDebugRenderTarget(2, "MainCameraForwardTarget", GetLevel()->GetMainCamera()->GetCamForwardTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(3, "DeferredTarget", GetLevel()->GetMainCamera()->GetCamDeferrdTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(4, "ShadowTarget0", GetLevel()->GetDirectionalLight()->GetShadowTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(5, "ShadowTarget1", GetLevel()->GetDirectionalLight()->GetBakeTarget(0));
 }

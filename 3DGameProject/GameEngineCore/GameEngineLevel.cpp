@@ -92,8 +92,8 @@ void GameEngineLevel::LevelLightInit()
 		DirectionalLight->SetLightType(LightType::Directional);
 		DirectionalLight->LightDataValue.LightPower = 1.0f;
 		DirectionalLight->IsShadowLight = true;
-		DirectionalLight->LightDataValue.ShadowTargetSizeX = 2048;
-		DirectionalLight->LightDataValue.ShadowTargetSizeY = 2048;
+		DirectionalLight->LightDataValue.ShadowTargetSizeX = 8192;
+		DirectionalLight->LightDataValue.ShadowTargetSizeY = 8192;
 		DirectionalLight->ShadowRange.x = 8192;
 		DirectionalLight->ShadowRange.y = 8192;
 		DirectionalLight->LightDataValue.LightColor = float4(1.0f, 1.0f, 1.0f);
@@ -154,37 +154,6 @@ void GameEngineLevel::Update(float _DeltaTime)
 
 void GameEngineLevel::Render(float _DeltaTime)
 {
-	if (true == IsDebugRender)
-	{
-		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupStartIter = Collisions.begin();
-		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupEndIter = Collisions.end();
-
-		for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
-		{
-			std::list<std::shared_ptr<GameEngineCollision>>& ObjectList = GroupStartIter->second;
-
-			std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectStart = ObjectList.begin();
-			std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectEnd = ObjectList.end();
-
-			for (; ObjectStart != ObjectEnd; ++ObjectStart)
-			{
-				std::shared_ptr<GameEngineCollision> CollisionObject = (*ObjectStart);
-
-				if (nullptr == CollisionObject)
-				{
-					continue;
-				}
-
-				if (false == CollisionObject->IsUpdate())
-				{
-					continue;
-				}
-
-				CollisionObject->DebugRender(_DeltaTime);
-			}
-		}
-	}
-
 	for (std::shared_ptr<GameEngineLight> Light : AllLight)
 	{
 		if (false == Light->IsShadow())
@@ -201,6 +170,37 @@ void GameEngineLevel::Render(float _DeltaTime)
 			ShadowTarget->Merge(BakeTarget);
 		}
 	}
+
+	//if (true == IsDebugRender)
+	//{
+	//	std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupStartIter = Collisions.begin();
+	//	std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupEndIter = Collisions.end();
+	//
+	//	for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
+	//	{
+	//		std::list<std::shared_ptr<GameEngineCollision>>& ObjectList = GroupStartIter->second;
+	//
+	//		std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectStart = ObjectList.begin();
+	//		std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectEnd = ObjectList.end();
+	//
+	//		for (; ObjectStart != ObjectEnd; ++ObjectStart)
+	//		{
+	//			std::shared_ptr<GameEngineCollision> CollisionObject = (*ObjectStart);
+	//
+	//			if (nullptr == CollisionObject)
+	//			{
+	//				continue;
+	//			}
+	//
+	//			if (false == CollisionObject->IsUpdate())
+	//			{
+	//				continue;
+	//			}
+	//
+	//			CollisionObject->DebugRender(_DeltaTime);
+	//		}
+	//	}
+	//}
 
 	for (std::pair<int, std::shared_ptr<GameEngineCamera>> Pair : Cameras)
 	{

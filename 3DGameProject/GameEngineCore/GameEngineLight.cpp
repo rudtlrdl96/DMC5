@@ -58,7 +58,7 @@ void GameEngineLight::ShadowTargetTextureLoad(const float4 _ShadowScale /*= floa
 
 
 	ShadowTarget->AddNewTexture(DXGI_FORMAT_R16_FLOAT, { LightDataValue.ShadowTargetSizeX, LightDataValue.ShadowTargetSizeY }, float4::RED);
-	ShadowTarget->CreateDepthTexture();
+	//ShadowTarget->CreateDepthTexture();
 	ShadowTarget->SetName("Shadow Target");
 
 	for (std::pair<const int, std::shared_ptr<class GameEngineRenderTarget>>& BakeTarget : BakeShadowTarget)
@@ -102,7 +102,7 @@ void GameEngineLight::BakeShadow(std::shared_ptr<GameEngineCamera> _BakeCam, int
 	if (nullptr == NewBakeTarget)
 	{
 		NewBakeTarget->AddNewTexture(DXGI_FORMAT_R16_FLOAT, { LightDataValue.ShadowTargetSizeX, LightDataValue.ShadowTargetSizeY }, float4::RED);
-		NewBakeTarget->CreateDepthTexture();
+		//NewBakeTarget->CreateDepthTexture();
 		NewBakeTarget->SetName("Bake Target : " + std::to_string(_BakeIndex));
 	}
 

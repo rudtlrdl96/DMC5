@@ -93,8 +93,6 @@ void PlayerActor_Nero::PlayerLoad()
 		Renderer = CreateComponent<GameEngineFBXRenderer>();
 		Renderer->GetTransform()->SetLocalRotation({ 0, 0, 0 });
 		Renderer->GetTransform()->SetLocalPosition({ 0, -75, 0 });
-		Renderer->ShadowOn();
-		Renderer->SetDynamic();
 
 		//Renderer->SetBaseColor(float4(2, 0, 0));
 
@@ -113,6 +111,9 @@ void PlayerActor_Nero::PlayerLoad()
 		default:
 			break;
 		}
+
+		Renderer->ShadowOn();
+		Renderer->SetDynamic();
 
 		Renderer->SetSpecularTexture("pl0000_03_albm.texout.png", "pl0000_03_atos.texout.png");
 		Renderer->SetSpecularTexture("pl0010_03_albm.texout.png", "pl0010_03_atos.texout.png");
@@ -203,6 +204,9 @@ void PlayerActor_Nero::PlayerLoad()
 		default:
 			break;
 		}
+		Renderer_Overture->ShadowOn();
+		Renderer_Overture->SetDynamic();
+
 		NewDir.MoveParent();
 		NewDir.Move("Animation");
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".fbx" });
@@ -2930,6 +2934,9 @@ void PlayerActor_Nero::NetLoad()
 			break;
 		}
 
+		Renderer->ShadowOn();
+		Renderer->SetDynamic();
+
 		Renderer->SetSpecularTexture("pl0000_03_albm.texout.png", "pl0000_03_atos.texout.png");
 		Renderer->SetSpecularTexture("pl0010_03_albm.texout.png", "pl0010_03_atos.texout.png");
 
@@ -3010,6 +3017,10 @@ void PlayerActor_Nero::NetLoad()
 		default:
 			break;
 		}
+
+		Renderer_Overture->ShadowOn();
+		Renderer_Overture->SetDynamic();
+
 		NewDir.MoveParent();
 		NewDir.Move("Animation");
 

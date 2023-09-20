@@ -140,7 +140,7 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     float3 refvector = mul(float4(reflect(refnormal, CameraView), 0.0f), AllLight[0].CameraViewInverseMatrix).xyz;
     
     // Y축이 뒤집혀 반전
-    refvector.xz = -refvector.xz;
+    refvector.z = -refvector.z;
     //refvector.y = -refvector.y;
         
     float4 ReflectionColor = ReflectionTexture.Sample(CUBEMAPSAMPLER, refvector);

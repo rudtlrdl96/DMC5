@@ -39,8 +39,6 @@ void PlayerActor_Vergil::VergilLoad()
 		Renderer = CreateComponent<GameEngineFBXRenderer>();
 		Renderer->GetTransform()->SetLocalRotation({ 0, 0, 0 });
 		Renderer->GetTransform()->SetLocalPosition({ 0, -75, 0 });
-		Renderer->ShadowOn();
-		Renderer->SetDynamic();
 
 		switch (GameEngineOption::GetOption("Shader"))
 		{
@@ -57,6 +55,10 @@ void PlayerActor_Vergil::VergilLoad()
 		default:
 			break;
 		}
+		
+		Renderer->ShadowOn();
+		Renderer->SetDynamic();
+
 		Renderer->SetSpecularTexture("pl0300_03_albm.texout.png", "pl0300_03_atos.texout.png");
 
 		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer,
@@ -1655,6 +1657,8 @@ void PlayerActor_Vergil::NetLoad()
 		Renderer->GetTransform()->SetLocalRotation({ 0, 0, 0 });
 		Renderer->GetTransform()->SetLocalPosition({ 0, -75, 0 });
 		Renderer->SetFBXMesh("Vergil.FBX", "MeshAniTexture");
+		Renderer->ShadowOn();
+		Renderer->SetDynamic();
 		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer,
 			.Objects = { (GameEngineObject*)Col_Attack.get() },
 			.CallBacks_void = {
