@@ -421,6 +421,9 @@
     <ClInclude Include="Player_MirageBlade.h">
       <Filter>Actor\Player\Weapon</Filter>
     </ClInclude>
+    <ClInclude Include="ReflectionSetter.h">
+      <Filter>Actor\Stage\FieldMap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -830,6 +833,9 @@
     </ClCompile>
     <ClCompile Include="PlayerActor_Vergil_MirageBlade.cpp">
       <Filter>Actor\Player\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="ReflectionSetter.cpp">
+      <Filter>Actor\Stage\FieldMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

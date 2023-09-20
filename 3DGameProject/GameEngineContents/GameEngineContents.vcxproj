@@ -235,6 +235,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ReflectionSetter.h" />
     <ClInclude Include="TestObj.h">
       <SubType>
       </SubType>
@@ -740,6 +741,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ReflectionSetter.cpp" />
     <ClCompile Include="TestObj.cpp">
       <SubType>
       </SubType>
