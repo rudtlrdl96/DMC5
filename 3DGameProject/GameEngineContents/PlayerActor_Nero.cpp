@@ -10,6 +10,7 @@
 #include "NetworkManager.h"
 #include "AttackCollision.h"
 #include "BaseEnemyActor.h"
+#include "NeroItemGlass.h"
 std::stack<DevilBreaker> PlayerActor_Nero::BreakerStack;
 PlayerActor_Nero::~PlayerActor_Nero()
 {
@@ -41,6 +42,7 @@ void PlayerActor_Nero::Start()
 
 void PlayerActor_Nero::PlayerLoad()
 {
+	GetLevel()->CreateActor<NeroItemGlass>();
 	// Effect »ý¼º
 	{
 		GameEngineDirectory NewDir;
@@ -4084,7 +4086,7 @@ bool PlayerActor_Nero::Input_SwordCheckFly(int AddState /*= 0*/)
 
 bool PlayerActor_Nero::Input_GunCheck()
 {
-	if (Controller->GetGunUp())
+	if (Controller->GetIsGunUp())
 	{
 		ChangeState(FSM_State_Nero::Nero_BR_Shoot);
 		return true;
@@ -4094,7 +4096,7 @@ bool PlayerActor_Nero::Input_GunCheck()
 
 bool PlayerActor_Nero::Input_GunCheckFly()
 {
-	if (Controller->GetGunUp())
+	if (Controller->GetIsGunUp())
 	{
 		ChangeState(FSM_State_Nero::Nero_BR_AirShoot);
 		return true;

@@ -14,7 +14,7 @@ Player_MirageBlade::~Player_MirageBlade()
 void Player_MirageBlade::Reset()
 {
 	IsShoot = false;
-	ResetLiveTime();
+	TargetTransform = nullptr;
 }
 
 void Player_MirageBlade::SetTarget(GameEngineTransform* _Transform)
@@ -24,6 +24,7 @@ void Player_MirageBlade::SetTarget(GameEngineTransform* _Transform)
 
 void Player_MirageBlade::LookTarget()
 {
+	if (IsShoot == true) { return; }
 	if (nullptr != TargetTransform)
 	{
 		// y 축 회전
@@ -36,13 +37,16 @@ void Player_MirageBlade::LookTarget()
 		float Dot = float4::DotProduct3D(LocalForward, LookDir);
 		float Angle = acosf(Dot) * GameEngineMath::RadToDeg;
 		float4 Cross = float4::Cross3DReturnNormal(LocalForward, LookDir);
-		if (Cross.y < 0.0f)
+		if (false == std::isnan(Angle))
 		{
-			GetTransform()->AddWorldRotation({ 0, -Angle, 0 });
-		}
-		else
-		{
-			GetTransform()->AddWorldRotation({ 0, Angle, 0 });
+			if (Cross.y < 0.0f)
+			{
+				GetTransform()->AddWorldRotation({ 0, -Angle, 0 });
+			}
+			else
+			{
+				GetTransform()->AddWorldRotation({ 0, Angle, 0 });
+			}
 		}
 
 		// x 축 회전
@@ -58,13 +62,16 @@ void Player_MirageBlade::LookTarget()
 		{
 			Cross = -Cross;
 		}
-		if (Cross.x < 0.0f)
+		if (false == std::isnan(Angle))
 		{
-			GetTransform()->AddWorldRotation({ Angle, 0, 0 });
-		}
-		else
-		{
-			GetTransform()->AddWorldRotation({ -Angle, 0, 0 });
+			if (Cross.x < 0.0f)
+			{
+				GetTransform()->AddWorldRotation({ Angle, 0, 0 });
+			}
+			else
+			{
+				GetTransform()->AddWorldRotation({ -Angle, 0, 0 });
+			}
 		}
 	}
 }
@@ -72,6 +79,7 @@ void Player_MirageBlade::LookTarget()
 void Player_MirageBlade::Shoot()
 {
 	IsShoot = true;
+	ResetLiveTime();
 }
 
 void Player_MirageBlade::Start()

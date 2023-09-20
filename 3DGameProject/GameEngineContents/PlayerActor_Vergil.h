@@ -85,6 +85,7 @@ enum FSM_State_MirageBlade
 	MirageBlade_Idle,
 	MirageBlade_Shoot,
 	MirageBlade_Spiral,
+	MirageBlade_SpiralShoot,
 	MirageBlade_Storm,
 	MirageBlade_Blistering,
 	MirageBlade_HeavyRain,

@@ -164,6 +164,10 @@ void PlayerController::InputReset()
 	IsBackFrontGun = false;
 	IsFrontGun = false;
 	IsBackGun = false;
+	IsGunDown = false;
+	IsGunCharge = false;
+	IsGunUp = false;
+
 	// ½ºÅ³
 	IsBackFrontSkill = false;
 	IsFrontSkill = false;
@@ -299,6 +303,39 @@ void PlayerController::ActionInput(float _DeltaTime)
 			{
 				IsBackFrontSkill = true;
 			}
+		}
+	}
+	// Gun
+	if (GameEngineInput::IsDown("Player_Gun"))
+	{
+		IsGunDown = true;
+		GunChargeTimer = 0.0f;
+		if (IsLockOn == true)
+		{
+			if (true == InputCheck_BackFront())
+			{
+				IsBackFrontGun = true;
+			}
+			else if (true == InputCheck_Dir('8'))
+			{
+				IsFrontGun = true;
+			}
+			else if (true == InputCheck_Dir('2'))
+			{
+				IsBackGun = true;
+			}
+		}
+	}
+	if (GameEngineInput::IsPress("Player_Gun"))
+	{
+		GunChargeTimer += _DeltaTime;
+	}
+	if (GameEngineInput::IsUp("Player_Gun"))
+	{
+		IsGunUp = true;
+		if (ChargeTime < GunChargeTimer)
+		{
+			IsGunCharge = true;
 		}
 	}
 }

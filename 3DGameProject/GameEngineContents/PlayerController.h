@@ -130,6 +130,9 @@ private:
 	bool IsBackFrontGun = false;
 	bool IsFrontGun = false;
 	bool IsBackGun = false;
+	bool IsGunCharge = false;
+	bool IsGunDown = false;
+	bool IsGunUp = false;
 	// ½ºÅ³
 	bool IsBackFrontSkill = false;
 	bool IsFrontSkill = false;
@@ -149,8 +152,14 @@ public:
 
 	float ChargeTime = 0.55f;
 	float SwordChargeTimer = 0.0f;
+	float GunChargeTimer = 0.0f;
 
-	bool GetGunUp() { return GameEngineInput::IsUp("Player_Gun"); }
+	bool GetIsGunDown() { return IsGunDown; }
+	bool GetIsGunUp() { return IsGunUp; }
+	bool GetIsGunCharge() { return IsGunCharge; }
+	bool GetIsBackFrontGun() { return IsBackFrontGun; }
+	bool GetIsFrontGun() { return IsFrontGun; }
+	bool GetIsBackGun() { return IsBackGun; }
 	bool GetLockOnFree() { return GameEngineInput::IsFree("Player_LockOn"); }
 	//bool GetJumpDown() { return GameEngineInput::IsDown("Player_Jump"); }
 

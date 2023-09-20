@@ -171,36 +171,36 @@ void GameEngineLevel::Render(float _DeltaTime)
 		}
 	}
 
-	//if (true == IsDebugRender)
-	//{
-	//	std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupStartIter = Collisions.begin();
-	//	std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupEndIter = Collisions.end();
-	//
-	//	for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
-	//	{
-	//		std::list<std::shared_ptr<GameEngineCollision>>& ObjectList = GroupStartIter->second;
-	//
-	//		std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectStart = ObjectList.begin();
-	//		std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectEnd = ObjectList.end();
-	//
-	//		for (; ObjectStart != ObjectEnd; ++ObjectStart)
-	//		{
-	//			std::shared_ptr<GameEngineCollision> CollisionObject = (*ObjectStart);
-	//
-	//			if (nullptr == CollisionObject)
-	//			{
-	//				continue;
-	//			}
-	//
-	//			if (false == CollisionObject->IsUpdate())
-	//			{
-	//				continue;
-	//			}
-	//
-	//			CollisionObject->DebugRender(_DeltaTime);
-	//		}
-	//	}
-	//}
+	if (true == IsDebugRender)
+	{
+		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupStartIter = Collisions.begin();
+		std::map<int, std::list<std::shared_ptr<GameEngineCollision>>>::iterator GroupEndIter = Collisions.end();
+	
+		for (; GroupStartIter != GroupEndIter; ++GroupStartIter)
+		{
+			std::list<std::shared_ptr<GameEngineCollision>>& ObjectList = GroupStartIter->second;
+	
+			std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectStart = ObjectList.begin();
+			std::list<std::shared_ptr<GameEngineCollision>>::iterator ObjectEnd = ObjectList.end();
+	
+			for (; ObjectStart != ObjectEnd; ++ObjectStart)
+			{
+				std::shared_ptr<GameEngineCollision> CollisionObject = (*ObjectStart);
+	
+				if (nullptr == CollisionObject)
+				{
+					continue;
+				}
+	
+				if (false == CollisionObject->IsUpdate())
+				{
+					continue;
+				}
+	
+				CollisionObject->DebugRender(_DeltaTime);
+			}
+		}
+	}
 
 	for (std::pair<int, std::shared_ptr<GameEngineCamera>> Pair : Cameras)
 	{
