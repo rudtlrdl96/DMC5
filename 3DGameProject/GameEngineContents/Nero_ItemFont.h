@@ -1,7 +1,7 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
 #include <GameEngineCore/GameEngineFont.h>
-
+#include "ContentsEnum.h"
 // Ό³Έν :
 class Nero_ItemFont : public GameEngineActor
 {
@@ -25,7 +25,9 @@ protected:
 private:
 	std::shared_ptr<class GameEngineFontRenderer> ItemText = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> CurCount = nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> SlashText = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> MaxCount = nullptr;
+	DevilBreaker CurDevilBreaker = DevilBreaker::None;
 	int MaxItem = 4;
 };
 

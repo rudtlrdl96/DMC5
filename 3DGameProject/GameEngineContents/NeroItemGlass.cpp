@@ -40,7 +40,8 @@ void NeroItemGlass::Start()
 	NeroUI_ItemGlass->GetTransform()->SetLocalScale({ 0.6f,0.6f,0.6f });
 	NeroUI_ItemGlass->LightOff();
 
-	std::shared_ptr<Nero_ItemFont> Text888 = GetLevel()->CreateActor<Nero_ItemFont>();
+	std::shared_ptr<Nero_ItemFont> ItemText = GetLevel()->CreateActor<Nero_ItemFont>();
+	ItemText->GetTransform()->SetLocalPosition({ 0.0f,-40.0f,0.0f });
 
 }
 
