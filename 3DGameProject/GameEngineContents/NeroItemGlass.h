@@ -1,7 +1,9 @@
 #pragma once
-#include "BaseUIActor.h"
+#include "UIFBXActorBase.h"
+#include "ContentsEnum.h"
+
 // Ό³Έν :
-class NeroItemGlass : public BaseUIActor, public GameEngineNetObject
+class NeroItemGlass : public UIFBXActorBase, public GameEngineNetObject
 {
 public:
 
@@ -21,8 +23,19 @@ protected:
 	void Update(float _DeltaTime) override;
 
 private:
+	void SetItemText();
 	std::shared_ptr<class UIFBXRenderer> NeroUI_ItemGlass = nullptr;
 
+	std::shared_ptr<class UIFBXRenderer> NeroUI_Overture = nullptr;
+	std::shared_ptr<class UIFBXRenderer> NeroUI_Gerbera = nullptr;
+	std::shared_ptr<class UIFBXRenderer> NeroUI_BusterArm = nullptr;
+
+	std::shared_ptr<class GameEngineFontRenderer> ItemText = nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> CurCount = nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> SlashText = nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> MaxCount = nullptr;
+	DevilBreaker CurDevilBreaker = DevilBreaker::None;
+	int MaxItem = 4;
 
 
 };

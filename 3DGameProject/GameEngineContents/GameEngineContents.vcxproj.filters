@@ -394,7 +394,7 @@
     <ClInclude Include="StaticFieldMapObject.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClInclude>
-    <ClInclude Include="GaugeBaseActor.h">
+    <ClInclude Include="UIFBXActorBase.h">
       <Filter>UI\UI_Base\Gauge</Filter>
     </ClInclude>
     <ClInclude Include="NetworkObjectBase.h">
@@ -414,9 +414,6 @@
     </ClInclude>
     <ClInclude Include="NeroItemGlass.h">
       <Filter>UI\UI_Actor\PlayUI\NeroItemGlass\Glass</Filter>
-    </ClInclude>
-    <ClInclude Include="Nero_ItemFont.h">
-      <Filter>UI\UI_Actor\PlayUI\NeroItemGlass\ItemFont</Filter>
     </ClInclude>
     <ClInclude Include="Player_MirageBlade.h">
       <Filter>Actor\Player\Weapon</Filter>
@@ -804,7 +801,7 @@
     <ClCompile Include="StaticFieldMapObject.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClCompile>
-    <ClCompile Include="GaugeBaseActor.cpp">
+    <ClCompile Include="UIFBXActorBase.cpp">
       <Filter>UI\UI_Base\Gauge</Filter>
     </ClCompile>
     <ClCompile Include="NetworkObjectBase.cpp">
@@ -824,9 +821,6 @@
     </ClCompile>
     <ClCompile Include="NeroItemGlass.cpp">
       <Filter>UI\UI_Actor\PlayUI\NeroItemGlass\Glass</Filter>
-    </ClCompile>
-    <ClCompile Include="Nero_ItemFont.cpp">
-      <Filter>UI\UI_Actor\PlayUI\NeroItemGlass\ItemFont</Filter>
     </ClCompile>
     <ClCompile Include="Player_MirageBlade.cpp">
       <Filter>Actor\Player\Weapon</Filter>

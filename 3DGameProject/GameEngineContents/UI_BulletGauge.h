@@ -1,8 +1,8 @@
 #pragma once
-#include "GaugeBaseActor.h"
+#include "UIFBXActorBase.h"
 
 // Ό³Έν :
-class UI_BulletGauge : public GaugeBaseActor
+class UI_BulletGauge : public UIFBXActorBase
 {
 public:
 	// constrcuter destructer

@@ -223,10 +223,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="Nero_ItemFont.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="NetworkObjectBase.h">
       <SubType>
       </SubType>
@@ -267,7 +263,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="GaugeBaseActor.h">
+    <ClInclude Include="UIFBXActorBase.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -725,10 +721,6 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="Nero_ItemFont.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="NetworkObjectBase.cpp">
       <SubType>
       </SubType>
@@ -750,7 +742,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="GaugeBaseActor.cpp">
+    <ClCompile Include="UIFBXActorBase.cpp">
       <SubType>
       </SubType>
     </ClCompile>

@@ -1,8 +1,8 @@
 #pragma once
-#include "GaugeBaseActor.h"
+#include "UIFBXActorBase.h"
 #include <GameEngineCore/GameEngineActor.h>
 // Ό³Έν :
-class UI_HPGaege : public GaugeBaseActor
+class UI_HPGaege : public UIFBXActorBase
 {
 public:
 

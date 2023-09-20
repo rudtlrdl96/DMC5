@@ -14,11 +14,11 @@ void UI_DTGauge::Start()
 
 	for (int i = 0; i < 3; i++)
 	{
-		GaugeBaseActor::CreateGaugeBar({ -590.0f + i * 16.0f , 372.0f , 0.0f }, { 0.9f, 0.9f, 0.9f }, {-123.0f,0.0f,0.0f}, "DtGauge.FBX");
+		UIFBXActorBase::CreateGaugeBar({ -590.0f + i * 16.0f , 372.0f , 0.0f }, { 0.9f, 0.9f, 0.9f }, {-123.0f,0.0f,0.0f}, "DtGauge.FBX");
 	}
 	for (int i = 0; i < 7; i++)
 	{
-		GaugeBaseActor::CreateGaugeBar({ -541.0f + i * 13.0f , 375.0f , 0.0f }, { 0.7f, 0.7f, 0.7f }, { -123.0f,0.0f,0.0f }, "DtGauge.FBX");
+		UIFBXActorBase::CreateGaugeBar({ -541.0f + i * 13.0f , 375.0f , 0.0f }, { 0.7f, 0.7f, 0.7f }, { -123.0f,0.0f,0.0f }, "DtGauge.FBX");
 	}
 }
 
