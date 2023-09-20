@@ -17,7 +17,7 @@ void PlayerActor_Vergil::CreateMirageBlade()
 	AllMirageBlades.resize(8);
 	for (int i = 0; i < 8; i++)
 	{
-		//AllMirageBlades[i] = NetworkManager::CreateNetworkActor<Player_MirageBlade>(GetLevel(), ActorOrder::Player);
+		AllMirageBlades[i] = NetworkManager::CreateNetworkActor<Player_MirageBlade>(GetLevel());
 		if (nullptr == AllMirageBlades[i])
 		{
 			AllMirageBlades[i] = GetLevel()->CreateActor<Player_MirageBlade>(ActorOrder::Player);
@@ -71,75 +71,8 @@ void PlayerActor_Vergil::CreateMirageBlade()
 
 		if (nullptr != LockOnEnemyTransform)
 		{
-			float4 LocalForward = CurBlade->GetTransform()->GetWorldForwardVector();
-			LocalForward.y = 0;
-			LocalForward.Normalize();
-			float4 LookDir = LockOnEnemyTransform->GetWorldPosition() - CurBlade->GetTransform()->GetWorldPosition();
-			LookDir.y = 0;
-			LookDir.Normalize();
-			float Dot = float4::DotProduct3D(LocalForward, LookDir);
-			float Angle = acosf(Dot) * GameEngineMath::RadToDeg;
-			float4 Cross = float4::Cross3DReturnNormal(LocalForward, LookDir);
-			if (Cross.y < 0.0f)
-			{
-				CurBlade->GetTransform()->AddWorldRotation({ 0, -Angle, 0 });
-			}
-			else
-			{
- 				CurBlade->GetTransform()->AddWorldRotation({ 0, Angle, 0 });
-			}
-
-			LocalForward = CurBlade->GetTransform()->GetWorldForwardVector();
-			LocalForward.Normalize();
-			LookDir = LockOnEnemyTransform->GetWorldPosition() - CurBlade->GetTransform()->GetWorldPosition();
-			LookDir.y += 100;
-			LookDir.Normalize();
-
-			Dot = float4::DotProduct3D(LocalForward, LookDir);
-			Angle = acosf(Dot) * GameEngineMath::RadToDeg;
-			Cross = float4::Cross3DReturnNormal(LocalForward, LookDir);
-			if (Cross.y < 0.0f)
-			{
-				CurBlade->GetTransform()->AddWorldRotation({ Angle, 0, 0 });
-			}
-			else
-			{
-				CurBlade->GetTransform()->AddWorldRotation({ Angle, 0, 0 });
-			}
-
-			return;
-			/*float4 LocalForward = CurBlade->GetTransform()->GetWorldForwardVector().NormalizeReturn();
-			float4 LookDir = LockOnEnemyTransform->GetWorldPosition() - CurBlade->GetTransform()->GetWorldPosition();
-			LookDir.Normalize();
-			float Dot = float4::DotProduct3D(LocalForward, LookDir);
-			if (1.0f < Dot || LocalForward == LookDir)
-			{
-				return;
-			}
-			if (Dot < -1.0f)
-			{
-				CurBlade->GetTransform()->AddWorldRotation({180, 0, 0});
-				return;
-			}
-			float Angle = acosf(Dot) * GameEngineMath::RadToDeg;
-			float4 Cross = float4::Cross3DReturnNormal(LocalForward, LookDir);
-
-			if (std::isnan(Angle))
-			{
-				return;
-			}
-			CurBlade->GetTransform()->AddWorldRotation({ Angle, 0, 0 });
-			return;
-			if (Cross.x < 0.0f)
-			{
-				CurBlade->GetTransform()->AddWorldRotation({ Angle, 0, 0 });
-			}
-			else
-			{
-				CurBlade->GetTransform()->AddWorldRotation({ -Angle, 0, 0 });
-			}
-			return;*/
-
+			CurBlade->SetTarget(LockOnEnemyTransform);
+			CurBlade->LookTarget();
 		}
 
 

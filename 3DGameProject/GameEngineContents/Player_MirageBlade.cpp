@@ -17,6 +17,58 @@ void Player_MirageBlade::Reset()
 	ResetLiveTime();
 }
 
+void Player_MirageBlade::SetTarget(GameEngineTransform* _Transform)
+{
+	TargetTransform = _Transform;
+}
+
+void Player_MirageBlade::LookTarget()
+{
+	if (nullptr != TargetTransform)
+	{
+		// y 축 회전
+		float4 LocalForward = GetTransform()->GetWorldForwardVector();
+		LocalForward.y = 0;
+		LocalForward.Normalize();
+		float4 LookDir = TargetTransform->GetWorldPosition() - GetTransform()->GetWorldPosition();
+		LookDir.y = 0;
+		LookDir.Normalize();
+		float Dot = float4::DotProduct3D(LocalForward, LookDir);
+		float Angle = acosf(Dot) * GameEngineMath::RadToDeg;
+		float4 Cross = float4::Cross3DReturnNormal(LocalForward, LookDir);
+		if (Cross.y < 0.0f)
+		{
+			GetTransform()->AddWorldRotation({ 0, -Angle, 0 });
+		}
+		else
+		{
+			GetTransform()->AddWorldRotation({ 0, Angle, 0 });
+		}
+
+		// x 축 회전
+		LocalForward = GetTransform()->GetWorldForwardVector();
+		LocalForward.Normalize();
+		LookDir = TargetTransform->GetWorldPosition() + float4::UP * 100 - GetTransform()->GetWorldPosition();
+		LookDir.Normalize();
+
+		Dot = float4::DotProduct3D(LocalForward, LookDir);
+		Angle = acosf(Dot) * GameEngineMath::RadToDeg;
+		Cross = float4::Cross3DReturnNormal(LocalForward, LookDir);
+		if (GetTransform()->GetWorldPosition().z < TargetTransform->GetWorldPosition().z)
+		{
+			Cross = -Cross;
+		}
+		if (Cross.x < 0.0f)
+		{
+			GetTransform()->AddWorldRotation({ Angle, 0, 0 });
+		}
+		else
+		{
+			GetTransform()->AddWorldRotation({ -Angle, 0, 0 });
+		}
+	}
+}
+
 void Player_MirageBlade::Shoot()
 {
 	IsShoot = true;

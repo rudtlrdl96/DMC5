@@ -15,6 +15,8 @@ public:
 	Player_MirageBlade& operator=(Player_MirageBlade&& _Other) noexcept = delete;
 
 	void Reset();
+	void SetTarget(GameEngineTransform* _Transform);
+	void LookTarget();
 	void Shoot();
 
 protected:
@@ -24,6 +26,7 @@ protected:
 private:
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
 	std::shared_ptr<class AttackCollision> Collision = nullptr;
+	GameEngineTransform* TargetTransform = nullptr;
 	float ShootSpeed = 5000.0f;
 	bool IsShoot = false;
 

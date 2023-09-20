@@ -45,6 +45,11 @@ void PlayerTestLevel::Start()
 	CollisionActor->GetTransform()->SetLocalScale({ 100, 200, 100 });
 	CollisionActor->GetTransform()->SetLocalPosition({ 100, 100, 100 });
 	Collision->SetColType(ColType::OBBBOX3D);
+	std::shared_ptr<GameEngineActor> CollisionActor2 = CreateActor<GameEngineActor>();
+	std::shared_ptr<GameEngineCollision> Collision2 = CollisionActor2->CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
+	CollisionActor2->GetTransform()->SetLocalScale({ 100, 200, 100 });
+	CollisionActor2->GetTransform()->SetLocalPosition({ 1000, 500, 100 });
+	Collision2->SetColType(ColType::OBBBOX3D);
 }
 
 void PlayerTestLevel::Update(float _DeltaTime)
@@ -68,10 +73,10 @@ void PlayerTestLevel::LevelChangeStart()
 	GameEngineCoreWindow::AddDebugRenderTarget(1, "LightRenderTarget", GetMainCamera()->GetDeferredLightTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(2, "MainCameraForwardTarget", GetMainCamera()->GetCamForwardTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(3, "DeferredTarget", GetMainCamera()->GetCamDeferrdTarget());
-	CreateActor<PlayerActor_Nero>()->SetUserControllType();
-	//Vergil = CreateActor<PlayerActor_Vergil>();
-	//Vergil->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	//Vergil->GetTransform()->SetWorldPosition({ 0, 100, 0 });
+	//CreateActor<PlayerActor_Nero>()->SetUserControllType();
+	Vergil = CreateActor<PlayerActor_Vergil>();
+	Vergil->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	Vergil->GetTransform()->SetWorldPosition({ 0, 100, 0 });
 
 	if (nullptr == Light)
 	{
