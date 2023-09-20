@@ -35,8 +35,8 @@ void MainLevel::Start()
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -100.0f });
 
-	std::shared_ptr<ShaderTestActor> NewTestActor0 = CreateActor<ShaderTestActor>();
-	NewTestActor0->GetTransform()->SetLocalPosition({ 0, 10, 0 });
+	//std::shared_ptr<ShaderTestActor> NewTestActor0 = CreateActor<ShaderTestActor>();
+	//NewTestActor0->GetTransform()->SetLocalPosition({ 0, 10, 0 });
 	//NewTestActor0->InitTest(0);
 }
 

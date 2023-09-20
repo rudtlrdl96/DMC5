@@ -16,4 +16,5 @@ TestObj::~TestObj()
 void TestObj::Start()
 {
 	FBXFileName = "sealhellmini.fbx";
+	StaticFieldMapObject::Start();
 }

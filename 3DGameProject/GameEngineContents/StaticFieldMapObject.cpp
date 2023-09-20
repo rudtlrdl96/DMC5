@@ -14,29 +14,49 @@ StaticFieldMapObject::~StaticFieldMapObject()
 
 }
 
-void StaticFieldMapObject::Update(float _DeltaTime)
+void StaticFieldMapObject::Start()
 {
-	if (FBXMesh == nullptr)
-	{
-		MapObj_FBXMesh(FBXFileName, "FBX");
-	}
+	SetRenderer("FBX");
 }
 
-void StaticFieldMapObject::MapObj_FBXMesh(const std::string_view& _Name, const std::string_view& _Mat)
+void StaticFieldMapObject::Update(float _DeltaTime)
 {
+	if (PhysXBox == nullptr)
+	{
+		SetPhysX();
+	}
+	//MapObj_SetFBXMesh(FBXFileName, "FBX");
+}
+
+void StaticFieldMapObject::SetRenderer(const std::string_view& _Mat)
+{
+	if (FBXFileName == "")
+	{
+		MsgAssert("StaticFieldMapObject : 불러올 fbx파일이 정해지지 않았습니다.")
+	}
+
 	FBXMesh = CreateComponent<GameEngineFBXRenderer>();
 
 	if (GameEngineOption::GetOption("Shader") == GameEngineOptionValue::Low)
 	{
-		FBXMesh->SetFBXMesh(_Name.data(), _Mat.data() + std::string("_Low"));
+		FBXMesh->SetFBXMesh(FBXFileName.data(), _Mat.data() + std::string("_Low"));
 	}
 	else
 	{
-		FBXMesh->SetFBXMesh(_Name.data(), _Mat.data());
+		FBXMesh->SetFBXMesh(FBXFileName.data(), _Mat.data());
+	}
+}
+
+void StaticFieldMapObject::SetPhysX()
+{
+	if (FBXMesh == nullptr)
+	{
+		MsgAssert("StaticFieldMapObject : FBXMesh가 nullptr이어서 PhysXBox를 세팅할 수 없습니다")
 	}
 
 	PhysXBox = CreateComponent<PhysXBoxComponent>();
-	physx::PxVec3 PxScale = { FBXMesh->GetMeshScale().x, FBXMesh->GetMeshScale().y, FBXMesh->GetMeshScale().z };
+	const float4& MeshScale = FBXMesh->GetMeshScale();
+	physx::PxVec3 PxScale = { MeshScale.x, MeshScale.y, MeshScale.z };
 	PhysXBox->SetObstacleObject();
 	PhysXBox->CreatePhysXActors(PxScale);
 }

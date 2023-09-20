@@ -58,9 +58,9 @@ void PlayerActor_Nero::PlayerLoad()
 		}
 		NewDir.MoveParent();
 		NewDir.Move("Texture");
-		if (nullptr == GameEngineTexture::Find("Effect_Texture_01.png"))
+		if (nullptr == GameEngineTexture::Find("Effect_Texture_01.tga"))
 		{
-			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".png" });
+			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".tga" });
 			for (GameEngineFile File : Files)
 			{
 				GameEngineTexture::Load(File.GetFullPath());

@@ -90,9 +90,9 @@ void FieldMap::ReflectionSetting()
 		return;
 	}
 
-	static int a = 0;
+	static int n = 0;
 
-	Reflection->Init("TestReflection" + std::to_string(a++), float4(256, 256));
+	Reflection->Init("TestReflection" + std::to_string(n++), float4(256, 256));
 
 	if (FieldMapRenderer.empty())
 	{

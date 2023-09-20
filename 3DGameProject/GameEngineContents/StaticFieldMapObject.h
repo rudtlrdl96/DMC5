@@ -16,14 +16,14 @@ public:
 
 
 protected:
-	
+	void Start() override;
 	void Update(float _DeltaTime) override;
-
-	void MapObj_FBXMesh(const std::string_view& _Name, const std::string_view& _Mat);
 
 	std::string FBXFileName = "";
 
 private:
+	void SetRenderer(const std::string_view& _Mat);
+	void SetPhysX();
 
 };
 
