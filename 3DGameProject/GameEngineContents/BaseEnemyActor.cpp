@@ -156,7 +156,7 @@ bool BaseEnemyActor::FloorCheck(float _Distance)
 	return IsResults;
 }
 
-float4 BaseEnemyActor::CrossMonsterAndPlayer()
+float4 BaseEnemyActor::MonsterAndPlayerCross()
 {
 	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
 	BasePlayerActor* Player = Players[0];
@@ -182,7 +182,7 @@ float4 BaseEnemyActor::CrossMonsterAndPlayer()
 	return CrossResult;
 }
 
-float BaseEnemyActor::DotProductMonsterAndPlayer()
+float BaseEnemyActor::MonsterAndPlayerDotProduct()
 {
 	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
 	BasePlayerActor* Player = Players[0];
@@ -208,7 +208,7 @@ float BaseEnemyActor::DotProductMonsterAndPlayer()
 	return DotProductResult;
 }
 
-float BaseEnemyActor::RotationToPlayerValue()
+float BaseEnemyActor::MonsterAndPlayerDotProductDegree()
 {
 	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
 	BasePlayerActor* Player = Players[0];
@@ -231,7 +231,7 @@ float BaseEnemyActor::RotationToPlayerValue()
 	ToPlayerVector.y = 0;
 	ToPlayerVector.Normalize();
 
-	float4 CrossResult = CrossMonsterAndPlayer();
+	float4 CrossResult = MonsterAndPlayerCross();
 
 	float4 Direct = PlayerPosition - EnemyPosition;
 	float4 RotationDirectNormal = Direct.NormalizeReturn();
@@ -245,23 +245,23 @@ float BaseEnemyActor::RotationToPlayerValue()
 	return RotationValue;
 }
 
-void BaseEnemyActor::CheckHeadingRotationValue()
+void BaseEnemyActor::RotationCheck()
 {
-	float4 CrossResult = CrossMonsterAndPlayer();
+	float4 CrossResult = MonsterAndPlayerCross();
 
 	if (float4::ZERO == CrossResult)
 	{
 		return;
 	}
 
-	float DotProductResult = RotationToPlayerValue();
+	float DotProductResult = MonsterAndPlayerDotProductDegree();
 
 	if (0.0f == DotProductResult)
 	{
 		return;
 	}
 
-	if (0.0f <= DotProductResult && 20.0f >= DotProductResult)
+	if (-20.0f <= DotProductResult && 20.0f >= DotProductResult)
 	{
 		EnemyRotationValue = EnemyRotation::Forward;
 	}
@@ -287,12 +287,52 @@ void BaseEnemyActor::CheckHeadingRotationValue()
 			EnemyRotationValue = EnemyRotation::Right_180;
 		}
 	}
-	else
-	{
-		MsgAssert("회전의 내적과 외적이 몬가 잘못됨");
-	}
 
 	DotProductValue = DotProductResult;
+}
+
+void BaseEnemyActor::AttackDirectCheck()
+{
+	float4 CrossResult = MonsterAndPlayerCross();
+
+	if (float4::ZERO == CrossResult)
+	{
+		return;
+	}
+
+	float DotProductResult = MonsterAndPlayerDotProductDegree();
+
+	if (0.0f == DotProductResult)
+	{
+		return;
+	}
+
+	if (-50.0f <= DotProductResult && 50.0f >= DotProductResult)
+	{
+		EnemyHitDirValue = EnemyHitDirect::Forward;
+	}
+	else if (CrossResult.y < 0)
+	{
+		if (-50.0f > DotProductResult && -130.0f <= DotProductResult)
+		{
+			EnemyHitDirValue = EnemyHitDirect::Left;
+		}
+		else if (-130.0f > DotProductResult && -180.0f <= DotProductResult)
+		{
+			EnemyHitDirValue = EnemyHitDirect::Back;
+		}
+	}
+	else if (CrossResult.y > 0)
+	{
+		if (50.0f < DotProductResult && 130.0f >= DotProductResult)
+		{
+			EnemyHitDirValue = EnemyHitDirect::Right;
+		}
+		else if (130.0f < DotProductResult && 180.0f >= DotProductResult)
+		{
+			EnemyHitDirValue = EnemyHitDirect::Back;
+		}
+	}
 }
 
 void BaseEnemyActor::SlerpCalculation()
@@ -318,6 +358,60 @@ void BaseEnemyActor::SlerpCalculation()
 	CurRotation.z = 0.0f;
 	GoalRotation.x = 0.0f;
 	GoalRotation.z = 0.0f;
+}
+
+void BaseEnemyActor::AnimationSlerpCalculation()
+{
+	StartFrame = EnemyRenderer->GetCurFrame();
+	EndFrame = EnemyRenderer->GetEndFrame() -1;
+	CalFrame = static_cast<float>(EndFrame - StartFrame);
+	AnimationRotationTime = CalFrame * (1.f / 60.f);
+
+	CurRotation = GetTransform()->GetWorldRotation();
+
+	if (CurRotation.y <= 0.0f)
+	{
+		CurRotation.y += 360.f;
+	}
+
+	float4 Value = float4{ 0.0f, AnimationRotation, 0.0f };
+
+	GoalRotation = CurRotation + Value;
+
+	if (GoalRotation.y <= 0.0f)
+	{
+		CurRotation.y += 360.f;
+		GoalRotation = CurRotation + Value;
+	}
+
+	CurRotation.x = 0.0f;
+	CurRotation.z = 0.0f;
+	GoalRotation.x = 0.0f;
+	GoalRotation.z = 0.0f;
+}
+
+void BaseEnemyActor::AnimationSlerpTurn(float _DeltaTime)
+{
+	UINT Frmae = 0;
+
+	if (StartFrame <= 0)
+	{
+		return;
+	}
+
+	if (nullptr != EnemyRenderer)
+	{
+		Frmae = EnemyRenderer->GetCurFrame();
+	}
+
+	if (StartFrame < Frmae)
+	{
+		return;
+	}
+	
+	AnimationTurnStart = true;
+	SlerpTime += _DeltaTime;
+	RotationValue = float4::SLerpQuaternion(CurRotation, GoalRotation, SlerpTime);
 }
 
 void BaseEnemyActor::SlerpTurn(float _DeltaTime)
@@ -353,10 +447,5 @@ void BaseEnemyActor::PushDirectSetting()
 		return;
 	}
 
-	PhysXCapsule->AddWorldRotation({ 0, DotProductValue, 0 });
-
 	PushDirect = Player->GetTransform()->GetWorldForwardVector().NormalizeReturn();
-
-	// 한프레임 차이나서 꺾어줘야함
-	PushDirect.RotationYDeg(DotProductValue);
 }

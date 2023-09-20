@@ -34,9 +34,8 @@ enum class EnemySize
 	Large,
 };
 
-enum class EnemyHitDir
+enum class EnemyHitDirect
 {
-	None,
 	Forward,
 	Back,
 	Left,
@@ -127,7 +126,6 @@ protected:
 	EnemyCode EnemyCodeValue = EnemyCode::None;
 	EnemyType EnemyTypeValue  = EnemyType::None;
 	EnemySize EnemySizeValue = EnemySize::None;
-	EnemyHitDir HitDir = EnemyHitDir::None;
 
 	//HP
 	float EnemyHP = 0.0f;
@@ -158,19 +156,29 @@ protected:
 	//====================================================
 	// Slerp 계산에 사용
 	EnemyRotation EnemyRotationValue = EnemyRotation::Forward;
+	EnemyHitDirect EnemyHitDirValue = EnemyHitDirect::Forward;
 
 	float4 CurRotation = float4::ZERO;
 	float4 GoalRotation = float4::ZERO;
 	float4 RotationValue = float4::ZERO;     // Slerp 계산된 결과값
 	float SlerpTime = 0.0f;
 	float DotProductValue = 0.0f;            // CheckHeadingRotationValue() 실행 후 내적 결과값
+	float AnimationRotation = 0.0f;
+	float AnimationRotationTime = 0.0f;
+	float CalFrame = 0.0f;
+	UINT StartFrame = 0;
+	UINT EndFrame = 0;
+	bool AnimationTurnStart = false;
 
-	float4 CrossMonsterAndPlayer();			 // 플레이어와 몬스터 외적
-	float DotProductMonsterAndPlayer();      // 플레이어와 몬스터 내적 (그냥 내적)
-	float RotationToPlayerValue();			 // 플레이어와 몬스터 내적값 deg로 반환 (오른쪽 +, 왼쪽 -, 180도 까지)
-	void CheckHeadingRotationValue();		 // 내적, 외적 후 어떤 식으로 회전할지 결정
+	float4 MonsterAndPlayerCross();			 // 플레이어와 몬스터 외적
+	float MonsterAndPlayerDotProduct();      // 플레이어와 몬스터 내적 (그냥 내적)
+	float MonsterAndPlayerDotProductDegree();// 플레이어와 몬스터 내적값 deg로 반환 (오른쪽 +, 왼쪽 -, 180도 까지)
+	void RotationCheck();            		 // 내적, 외적 후 어떤 식으로 회전할지 결정
+	void AttackDirectCheck();                // 플레이어 공격 방향 체크
 	void SlerpCalculation();				 // slerp 조건 계산
 	void SlerpTurn(float _DeltaTime);        // slerp로 턴
+	void AnimationSlerpCalculation();
+	void AnimationSlerpTurn(float _DeltaTime);
 	//====================================================
 
 	//====================================================
@@ -183,6 +191,7 @@ protected:
 
 	void AllDirectSetting();
 	void PushDirectSetting();
+
 	void SetPush(float _Value)
 	{
 		PhysXCapsule->SetPush(PushDirect * _Value);

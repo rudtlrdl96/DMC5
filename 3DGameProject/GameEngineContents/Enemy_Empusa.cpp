@@ -141,7 +141,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0100_Idle_undetected");
 	},
 	.Update = [=](float _DeltaTime) {
-		CheckHeadingRotationValue();
+		RotationCheck();
 		PlayerChase(_DeltaTime);
 	},
 	.End = [=] {}

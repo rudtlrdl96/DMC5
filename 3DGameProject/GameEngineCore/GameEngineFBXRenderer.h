@@ -242,6 +242,11 @@ public:
 		return CurAnimation->CurFrame;
 	}
 
+	inline UINT GetEndFrame()
+	{
+		return CurAnimation->End;
+	}
+
 	// 모든 랜더 유닛을 Static 으로 설정합니다.
 	void SetStatic();
 

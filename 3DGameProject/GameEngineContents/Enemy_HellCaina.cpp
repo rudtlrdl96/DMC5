@@ -46,7 +46,7 @@ void Enemy_HellCaina::Start()
 
 void Enemy_HellCaina::PlayerChase(float _DeltaTime)
 {
-	CheckHeadingRotationValue();
+	RotationCheck();
 	AllDirectSetting();
 
 	switch (EnemyRotationValue)
@@ -93,17 +93,37 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 	std::shared_ptr<AttackCollision> AttackCol = std::dynamic_pointer_cast<AttackCollision>(Col);
 	if (nullptr == AttackCol) { return; }
 
-	CheckHeadingRotationValue();
+	AttackDirectCheck();
 	PushDirectSetting();
 
-	switch (AttackCol->GetDamageType())
+	DamageType Type = AttackCol->GetDamageType();
+
+	switch (Type)
 	{
 	case DamageType::None:
 		return;
 		break;
 	case DamageType::Light:
-		ChangeState(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Front);
+
+		switch (EnemyHitDirValue)
+		{
+		case EnemyHitDirect::Forward:
+			ChangeState(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Front);
+			break;
+		case EnemyHitDirect::Back:
+			ChangeState(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Back);
+			break;
+		case EnemyHitDirect::Left:
+			ChangeState(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Left);
+			break;
+		case EnemyHitDirect::Right:
+			ChangeState(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Right);
+			break;
+		default:
+			break;
+		}
 		break;
+
 	case DamageType::Medium:
 		break;
 	case DamageType::Heavy:
@@ -662,7 +682,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 정면 약공격 피격
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Front,
 	.Start = [=] {
-	SetPush(10000.0f);
+	SetPush(30000.0f);
 	EnemyRenderer->ChangeAnimation("em0000_standing_damage_weak_front_01", true);
 	},
 	.Update = [=](float _DeltaTime) {
@@ -675,12 +695,26 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.End = [=] {
 	}
 	});
+
+	{
+		EnemyRenderer->SetAnimationStartEvent("em0000_standing_damage_weak_back_01", 90, [=] {AnimationRotation = 180.0f; });
+		EnemyRenderer->SetAnimationStartEvent("em0000_standing_damage_weak_back_01", 91, std::bind(&Enemy_HellCaina::AnimationSlerpCalculation, this));
+		EnemyRenderer->SetAnimationStartEvent("em0000_standing_damage_weak_left_01", 90, [=] {AnimationRotation = -90.0f; });
+		EnemyRenderer->SetAnimationStartEvent("em0000_standing_damage_weak_left_01", 91, std::bind(&Enemy_HellCaina::AnimationSlerpCalculation, this));
+		EnemyRenderer->SetAnimationStartEvent("em0000_standing_damage_weak_right_01", 100, [=] {AnimationRotation = 90.0f; });
+		EnemyRenderer->SetAnimationStartEvent("em0000_standing_damage_weak_right_01", 101, std::bind(&Enemy_HellCaina::AnimationSlerpCalculation, this));
+	}
+
 	// 후면 약공격 피격 (뒤로돈다)
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Back,
 	.Start = [=] {
+	SetPush(30000.0f);
 	EnemyRenderer->ChangeAnimation("em0000_standing_damage_weak_back_01", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	
+	AnimationSlerpTurn(_DeltaTime);
+
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Idle);
@@ -688,14 +722,19 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	PhysXCapsule->SetWorldRotation(RotationValue);
 	}
 	});
 	// 좌측 약공격 피격
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Left,
 	.Start = [=] {
+	SetPush(30000.0f);
 	EnemyRenderer->ChangeAnimation("em0000_standing_damage_weak_left_01", true);
 	},
 	.Update = [=](float _DeltaTime) {
+
+	AnimationSlerpTurn(_DeltaTime);
+
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Idle);
@@ -703,14 +742,19 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	PhysXCapsule->SetWorldRotation(RotationValue);
 	}
 	});
 	// 우측 약공격 피격 
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Right,
 	.Start = [=] {
+	SetPush(30000.0f);
 	EnemyRenderer->ChangeAnimation("em0000_standing_damage_weak_right_01", true);
 	},
 	.Update = [=](float _DeltaTime) {
+
+	AnimationSlerpTurn(_DeltaTime);
+
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Idle);
@@ -718,6 +762,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	PhysXCapsule->SetWorldRotation(RotationValue);
 	}
 	});
 
