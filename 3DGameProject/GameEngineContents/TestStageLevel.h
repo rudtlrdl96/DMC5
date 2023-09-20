@@ -27,7 +27,5 @@ protected:
 
 private:
 	static TestStageLevel* Inst;
-
-	std::shared_ptr<GameEngineLight> TestLight = nullptr;
 };
 

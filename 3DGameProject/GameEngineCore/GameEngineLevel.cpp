@@ -92,11 +92,11 @@ void GameEngineLevel::LevelLightInit()
 		DirectionalLight->SetLightType(LightType::Directional);
 		DirectionalLight->LightDataValue.LightPower = 1.0f;
 		DirectionalLight->IsShadowLight = true;
-		DirectionalLight->LightDataValue.ShadowTargetSizeX = 16384;
-		DirectionalLight->LightDataValue.ShadowTargetSizeY = 16384;
-		DirectionalLight->ShadowRange.x = 16384;
-		DirectionalLight->ShadowRange.y = 16384;
-		DirectionalLight->LightDataValue.LightColor = float4(0.5f, 0.5f, 0.5f);
+		DirectionalLight->LightDataValue.ShadowTargetSizeX = 2048;
+		DirectionalLight->LightDataValue.ShadowTargetSizeY = 2048;
+		DirectionalLight->ShadowRange.x = 8192;
+		DirectionalLight->ShadowRange.y = 8192;
+		DirectionalLight->LightDataValue.LightColor = float4(1.0f, 1.0f, 1.0f);
 	}
 }
 

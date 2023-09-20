@@ -50,21 +50,6 @@ void TestStageLevel::Start()
 	{
 		GameEngineInput::CreateKey("RefTestKey", VK_SPACE);
 	}
-
-	TestLight = CreateActor<GameEngineLight>();
-	TestLight->SetName("Directional Light");
-	TestLight->SetLightType(LightType::Directional);
-	TestLight->LightDataValue.LightPower = 1.0f;
-	TestLight->IsShadowLight = true;
-	TestLight->LightDataValue.ShadowTargetSizeX = 16384;
-	TestLight->LightDataValue.ShadowTargetSizeY = 16384;
-	TestLight->ShadowRange.x = 16384;
-	TestLight->ShadowRange.y = 16384;
-	TestLight->GetTransform()->SetWorldPosition(float4(0, 4000, 0));
-	TestLight->GetTransform()->SetLocalRotation(float4(45, 0, 0));
-	TestLight->LightDataValue.LightColor = float4(0.5f, 0.5f, 0.5f);
-
-	float4 F = TestLight->GetTransform()->GetWorldForwardVector();
 }
 
 void TestStageLevel::Update(float _DeltaTime)
@@ -83,7 +68,6 @@ void TestStageLevel::Update(float _DeltaTime)
 		ReflectionTextureSetting(Reflect->GetReflectionCubeTexture(), TempActor->GetTransform()->GetWorldPosition(), float4(10000, 10000, 10000));
 
 		GetDirectionalLight()->BakeShadow(GetMainCamera());	
-		TestLight->BakeShadow(GetMainCamera());
 	}
 	//GameEngineCore::GetFrameRate();
 }
@@ -132,13 +116,6 @@ void TestStageLevel::LevelChangeStart()
 	Nero->SetUserControllType();
 	Nero->SetWorldPosition({ 0, 100, 0 });
 
-	{
-
-		std::shared_ptr<ShaderTestActor> Nero = CreateActor<ShaderTestActor>();
-		//Nero->SinglePlayLoad();
-		Nero->GetTransform()->SetWorldPosition({ 0, 100, 0 });
-	}
-
 	// 테스트용 코드
 	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 4000, 0));
 	GetDirectionalLight()->GetTransform()->SetWorldRotation(float4(45, 180, 0));
@@ -148,6 +125,5 @@ void TestStageLevel::LevelChangeStart()
 	GameEngineCoreWindow::AddDebugRenderTarget(1, "LightRenderTarget", GetLevel()->GetMainCamera()->GetDeferredLightTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(2, "MainCameraForwardTarget", GetLevel()->GetMainCamera()->GetCamForwardTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(3, "DeferredTarget", GetLevel()->GetMainCamera()->GetCamDeferrdTarget());
-	GameEngineCoreWindow::AddDebugRenderTarget(4, "ShadowTarget1", GetLevel()->GetDirectionalLight()->GetShadowTarget());
-	GameEngineCoreWindow::AddDebugRenderTarget(5, "ShadowTarget2", TestLight->GetShadowTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(4, "ShadowTarget0", GetLevel()->GetDirectionalLight()->GetShadowTarget());
 }

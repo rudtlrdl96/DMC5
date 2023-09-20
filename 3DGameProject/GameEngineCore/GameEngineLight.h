@@ -122,6 +122,9 @@ public:
         return ShadowRange;
     }
 
+protected:
+
+private:
     float4 ShadowRange;
 
     std::shared_ptr<class GameEngineRenderTarget> ShadowTarget = nullptr;
@@ -135,10 +138,6 @@ public:
     {
         LightDataValue.LightType = static_cast<int>(_Type);
     }
-protected:
-
-private:
-
 
     void DrawEditor() override;
 
