@@ -158,7 +158,7 @@ public:
 		}
 	}
 
-	std::stack<DevilBreaker>* GetBreakerStackPointer()
+	static std::stack<DevilBreaker>* GetBreakerStackPointer()
 	{
 		return &BreakerStack;
 	}
@@ -187,7 +187,7 @@ private:
 	bool UseDoubleJump = false;
 	bool IsDevilTrigger = false;
 	DevilBreaker CurDevilBreaker = DevilBreaker::Overture;
-	std::stack<DevilBreaker> BreakerStack;
+	static std::stack<DevilBreaker> BreakerStack;
 
 	// 검 버튼을 입력한 경우 실행
 	bool Input_SwordCheck(int AddState = 0);

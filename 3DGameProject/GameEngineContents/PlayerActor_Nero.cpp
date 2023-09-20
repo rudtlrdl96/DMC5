@@ -10,6 +10,7 @@
 #include "NetworkManager.h"
 #include "AttackCollision.h"
 #include "BaseEnemyActor.h"
+std::stack<DevilBreaker> PlayerActor_Nero::BreakerStack;
 PlayerActor_Nero::~PlayerActor_Nero()
 {
 }
