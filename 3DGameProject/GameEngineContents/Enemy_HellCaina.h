@@ -109,6 +109,7 @@ protected:
 	void EnemyCreateFSM_Client() override;
 
 	void DamageCollisionCheck(float _DeltaTime) override;
+	void RecognizeCollisionCheck(float _DeltaTime) override;
 
 private:
 	void PlayerChase(float _DeltaTime);
@@ -125,5 +126,6 @@ private:
 	bool IsAirAttack = false;
 	bool IsAirLanding = false;
 	bool IsSlamAttack = false;
+	bool IsRecognize = false;
 };
 

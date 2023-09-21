@@ -97,6 +97,8 @@ void Enemy_Empusa::EnemyTypeLoad()
 	MoveSpeed = 50.0f;
 }
 
+void Enemy_Empusa::RecognizeCollisionCheck(float _DeltaTime) {}
+
 void Enemy_Empusa::EnemyAnimationLoad()
 {
 	//Animation정보 경로를 찾아서 모든animation파일 로드
@@ -131,8 +133,8 @@ void Enemy_Empusa::EnemyCreateFSM()
 	MonsterCollision->SetColType(ColType::OBBBOX3D);
 	RN_MonsterCollision->GetTransform()->SetWorldScale({800,800,800});
 	RN_MonsterCollision->SetColType(ColType::OBBBOX2D);
-	MonsterAttackRange->GetTransform()->SetWorldScale({300,300,300});
-	MonsterAttackRange->SetColType(ColType::SPHERE3D);
+	//MonsterAttackRange->GetTransform()->SetWorldScale({300,300,300});
+	//MonsterAttackRange->SetColType(ColType::SPHERE3D);
 
 	//Idle
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Idle,

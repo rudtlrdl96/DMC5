@@ -81,17 +81,16 @@ void BaseEnemyActor::Start()
 	PhysXCapsule->CreatePhysXActors({ 90, 60, 90 });
 	PhysXCapsule->GetDynamic()->setMass(80.0f);
 	PhysXCapsule->SetWorldPosition({ 0, 100, 0 });
-
-	//공격 가능한 Enemy Collision
+	//Monster 자체 콜리전
 	MonsterCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
 	MonsterCollision->GetTransform()->SetWorldScale(float4::ZERO);
+	//Monster 공격 콜리전
 	MonsterAttackCollision = CreateComponent<AttackCollision>(CollisionOrder::EnemyAttack);
-	//주변 플레이어를 인식하는 Collision(1회용)
+	MonsterAttackCollision->GetTransform()->SetWorldScale(float4::ZERO);
+	//Monster 공격 범위 인식 콜리전
 	RN_MonsterCollision = CreateComponent<GameEngineCollision>(CollisionOrder::RN_Enemy);
 	RN_MonsterCollision->GetTransform()->SetWorldScale(float4::ZERO);
-	//몬스터의 공격범위 Collision
-	MonsterAttackRange = CreateComponent<GameEngineCollision>(CollisionOrder::RN_Enemy);
-	MonsterAttackRange->GetTransform()->SetWorldScale(float4::ZERO);
+	RN_MonsterCollision->SetColType(ColType::SPHERE3D);
 
 	EnemyMeshLoad();
 	EnemyTypeLoad();
@@ -102,15 +101,11 @@ void BaseEnemyActor::Start()
 
 void BaseEnemyActor::Update(float _DeltaTime)
 {
-	if (MonsterCollision->GetTransform()->GetWorldScale() == float4::ZERO)
-	{
-		MsgAssert("MonsterCollision의 크기를 설정해주지 않았습니다.");
-	}
-
-	if (true == GameEngineInput::IsDown("MonsterTest"))
-	{
-		StartMonsterSnatch();
-	}
+	//if (MonsterCollision->GetTransform()->GetWorldScale() == float4::ZERO
+	//	|| RN_MonsterCollision->GetTransform()->GetWorldScale() == float4::ZERO)
+	//{
+	//	MsgAssert("MonsterCollision의 크기를 설정해주지 않았습니다.");
+	//}
 
 	RenderShake(_DeltaTime);
 	MonsterSnatch(_DeltaTime);
@@ -122,6 +117,7 @@ void BaseEnemyActor::Update(float _DeltaTime)
 
 	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
 	{
+		RecognizeCollisionCheck(_DeltaTime);
 		DamageCollisionCheck(_DeltaTime);
 		EnemyFSM.Update(_DeltaTime);
 	}
@@ -129,6 +125,7 @@ void BaseEnemyActor::Update(float _DeltaTime)
 	{
 		if (NetControllType::ActiveControll == GetControllType())
 		{
+			RecognizeCollisionCheck(_DeltaTime);
 			DamageCollisionCheck(_DeltaTime);
 			EnemyFSM.Update(_DeltaTime);
 		}

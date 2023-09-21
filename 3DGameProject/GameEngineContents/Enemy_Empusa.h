@@ -48,6 +48,7 @@ protected:
 	void EnemyCreateFSM() override;
 	void EnemyCreateFSM_Client() override;
 	void DamageCollisionCheck(float _DeltaTime) override;
+	void RecognizeCollisionCheck(float _DeltaTime) override;
 
 private:
 	bool CheckBool = false;

@@ -27,10 +27,12 @@ void Enemy_HellCaina::Start()
 	
 	// 콜리전 옵션, 크기 설정
 	MonsterAttackCollision->SetAttackData(DamageType::Light, 0);
-	MonsterAttackCollision->SetColType(ColType::AABBBOX3D);
+	MonsterAttackCollision->SetColType(ColType::OBBBOX3D);
 	MonsterCollision->GetTransform()->SetLocalScale({ 80, 180, 70 });
 	MonsterCollision->GetTransform()->SetLocalPosition({ 0, 50, 0 });
-	MonsterCollision->SetColType(ColType::AABBBOX3D);
+	MonsterCollision->SetColType(ColType::OBBBOX3D);
+	RN_MonsterCollision->GetTransform()->SetLocalScale({ 700, 0, 0 });
+	RN_MonsterCollision->GetTransform()->SetLocalPosition({ 0, 80, 0 });
 
 	// 기본 세팅
 	FallDistance = 55.0f;
@@ -157,10 +159,10 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 		PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 		ChangeState(FSM_State_HellCaina::HellCaina_Blown_Up);
 		break;
-	case DamageType::Snatch:
+	case DamageType::Snatch:		
+		StartMonsterSnatch();
 		RotationCheck();
 		PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
-		StartMonsterSnatch();
 		ChangeState(FSM_State_HellCaina::HellCaina_Snatch);
 		break;
 	case DamageType::Slam:
@@ -174,6 +176,19 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 	}
 
 	AttackDelayCheck = 0.0f;
+}
+
+void Enemy_HellCaina::RecognizeCollisionCheck(float _DeltaTime)
+{
+	if (true == IsRecognize)
+	{
+		return;
+	}
+
+	std::shared_ptr<GameEngineCollision> Col = RN_MonsterCollision->Collision(CollisionOrder::Player);
+	if (nullptr == Col) { return; }
+
+	IsRecognize = true;
 }
 
 void Enemy_HellCaina::ChangeState(int _StateValue)

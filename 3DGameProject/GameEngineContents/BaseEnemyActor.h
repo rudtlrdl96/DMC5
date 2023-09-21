@@ -123,13 +123,13 @@ protected:
 	virtual void EnemyCreateFSM() = 0;
 	virtual void EnemyCreateFSM_Client() = 0;
 	virtual void DamageCollisionCheck(float _DeltaTime) = 0;
+	virtual void RecognizeCollisionCheck(float _DeltaTime) = 0;
 
 	std::shared_ptr<class GameEngineFBXRenderer> EnemyRenderer = nullptr;     // 랜더러
 	std::shared_ptr<PhysXCapsuleComponent> PhysXCapsule = nullptr;            // 피직스 컴포넌트
 	std::shared_ptr<class GameEngineCollision> MonsterCollision = nullptr;    // 몬스터 자체 콜리전
 	std::shared_ptr<class AttackCollision> MonsterAttackCollision = nullptr;  // 몬스터 공격 콜리전
-	std::shared_ptr<class GameEngineCollision> MonsterAttackRange = nullptr;  // 몬스터 공격 범위 콜리전
-	std::shared_ptr<class GameEngineCollision> RN_MonsterCollision = nullptr; // 몬스터 인식 범위 콜리전
+	std::shared_ptr<class GameEngineCollision> RN_MonsterCollision = nullptr; // 몬스터 공격 범위 인식 콜리전
 
 	GameEngineFSM EnemyFSM;        // 싱글, 서버용 FSM
 	GameEngineFSM EnemyFSM_Client; // 클라이언트용 FSM (패킷 전송 받아서 변경됨)
