@@ -11,7 +11,7 @@
 #include "AttackCollision.h"
 #include "BaseEnemyActor.h"
 #include "NeroItemGlass.h"
-std::stack<DevilBreaker> PlayerActor_Nero::BreakerStack;
+std::list<DevilBreaker> PlayerActor_Nero::BreakerList;
 PlayerActor_Nero::~PlayerActor_Nero()
 {
 }
@@ -19,7 +19,7 @@ PlayerActor_Nero::~PlayerActor_Nero()
 void PlayerActor_Nero::Start()
 {
 	BasePlayerActor::Start();
-	BreakerStack.push(DevilBreaker::None);
+	BreakerList.push_back(DevilBreaker::None);
 
 	SetNetObjectType(Net_ActorType::Nero);
 
@@ -71,7 +71,7 @@ void PlayerActor_Nero::PlayerLoad()
 		Renderer_EffectMesh = CreateComponent<EffectFBXRenderer>();
 		Renderer_EffectMesh->SetFBXMesh("Effect_Mesh_01.FBX", "Effect_2D");
 		Renderer_EffectMesh->SetTexture("DiffuseTexture", "Effect_Texture_02.png");
-		Renderer_EffectMesh->Off();
+		//Renderer_EffectMesh->Off();
 	}
 
 	// Renderer »ý¼º
@@ -4571,15 +4571,15 @@ void PlayerActor_Nero::AddBreaker(DevilBreaker _Breaker)
 	case DevilBreaker::None:
 		break;
 	case DevilBreaker::Overture:
-		BreakerStack.push(DevilBreaker::Overture);
+		BreakerList.push_back(DevilBreaker::Overture);
 		SetOverture();
 		break;
 	case DevilBreaker::Gerbera:
-		BreakerStack.push(DevilBreaker::Gerbera);
+		BreakerList.push_back(DevilBreaker::Gerbera);
 		SetGerbera();
 		break;
 	case DevilBreaker::BusterArm:
-		BreakerStack.push(DevilBreaker::BusterArm);
+		BreakerList.push_back(DevilBreaker::BusterArm);
 		SetBusterArm();
 		break;
 	default:
@@ -4589,9 +4589,10 @@ void PlayerActor_Nero::AddBreaker(DevilBreaker _Breaker)
 
 void PlayerActor_Nero::DestroyBreaker()
 {
-	if (BreakerStack.top() == DevilBreaker::None) { return; }
-	BreakerStack.pop();
-	CurDevilBreaker = BreakerStack.top();
+	if (BreakerList.back() == DevilBreaker::None) { return; }
+	BreakerList.pop_back();
+	CurDevilBreaker = BreakerList.back();
+
 	switch (CurDevilBreaker)
 	{
 	case DevilBreaker::None:

@@ -1,7 +1,6 @@
 #pragma once
 #include "BasePlayerActor.h"
 #include <GameEngineCore/GameEngineFSM.h>
-#include <stack>
 
 enum FSM_State_Nero
 {
@@ -158,9 +157,9 @@ public:
 		}
 	}
 
-	static std::stack<DevilBreaker>* GetBreakerStackPointer()
+	static std::list<DevilBreaker>* GetBreakerListPointer()
 	{
-		return &BreakerStack;
+		return &BreakerList;
 	}
 protected:
 	void Start() override;
@@ -187,7 +186,7 @@ private:
 	bool UseDoubleJump = false;
 	bool IsDevilTrigger = false;
 	DevilBreaker CurDevilBreaker = DevilBreaker::Overture;
-	static std::stack<DevilBreaker> BreakerStack;
+	static std::list<DevilBreaker> BreakerList;
 
 	// 검 버튼을 입력한 경우 실행
 	bool Input_SwordCheck(int AddState = 0);

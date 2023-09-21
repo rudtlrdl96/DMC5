@@ -45,7 +45,7 @@ void NeroItemGlass::Start()
 void NeroItemGlass::Update(float _DeltaTime)
 {
 	MaxCount->SetText(std::to_string(MaxItem));
-	CurCount->SetText(std::to_string(PlayerActor_Nero::GetBreakerStackPointer()->size()));
+	CurCount->SetText(std::to_string(PlayerActor_Nero::GetBreakerListPointer()->size()));
 	switch (CurDevilBreaker)
 	{
 	case DevilBreaker::None:
