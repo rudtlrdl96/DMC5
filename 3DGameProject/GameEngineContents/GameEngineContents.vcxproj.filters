@@ -418,7 +418,21 @@
     <ClInclude Include="EventZone.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
     </ClInclude>
-    <ClInclude Include="EffectRenderer.h" />
+    <ClInclude Include="FXData.h">
+      <Filter>Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="FXSystem.h">
+      <Filter>Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectRenderer.h">
+      <Filter>Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectToolLevel.h">
+      <Filter>Levels\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectToolWindow.h">
+      <Filter>Levels\Test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -826,7 +840,21 @@
     <ClCompile Include="TestEventZone.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
     </ClCompile>
-    <ClCompile Include="EffectRenderer.cpp" />
+    <ClCompile Include="FXData.cpp">
+      <Filter>Component\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="FXSystem.cpp">
+      <Filter>Component\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectRenderer.cpp">
+      <Filter>Component\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectToolLevel.cpp">
+      <Filter>Levels\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectToolWindow.cpp">
+      <Filter>Levels\Test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">

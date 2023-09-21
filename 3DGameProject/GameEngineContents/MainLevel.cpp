@@ -125,6 +125,11 @@ void MainLevel::Update(float _DeltaTime)
 		GameEngineCore::ChangeLevel("NetworkTestLevel");
 		return;
 	}
+	if (true == GameEngineInput::IsDown("SelectLevel_09"))
+	{
+		GameEngineCore::ChangeLevel("NetworkTestLevel");
+		return;
+	}
 }
 
 void MainLevel::LevelChangeStart()

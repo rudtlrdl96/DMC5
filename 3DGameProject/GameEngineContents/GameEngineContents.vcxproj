@@ -211,6 +211,8 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="EffectToolLevel.h" />
+    <ClInclude Include="EffectToolWindow.h" />
     <ClInclude Include="EventZone.h">
       <SubType>
       </SubType>
@@ -223,6 +225,8 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="FXData.h" />
+    <ClInclude Include="FXSystem.h" />
     <ClInclude Include="NeroItemGlass.h">
       <SubType>
       </SubType>
@@ -704,6 +708,8 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="EffectToolLevel.cpp" />
+    <ClCompile Include="EffectToolWindow.cpp" />
     <ClCompile Include="EnemyTestLevel.cpp">
       <SubType>
       </SubType>
@@ -721,6 +727,8 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="FXData.cpp" />
+    <ClCompile Include="FXSystem.cpp" />
     <ClCompile Include="NeroItemGlass.cpp">
       <SubType>
       </SubType>

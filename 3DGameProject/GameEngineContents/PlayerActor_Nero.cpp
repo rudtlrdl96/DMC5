@@ -2331,9 +2331,9 @@ void PlayerActor_Nero::PlayerLoad()
 					return;
 				}
 
+				if (true == Input_SpecialCheck()) { return; }
 				if (InputCheck == false) { return; }
 
-				if (true == Input_SpecialCheck()) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
 				if (true == Input_GunCheck()) { return; }
@@ -2455,9 +2455,9 @@ void PlayerActor_Nero::PlayerLoad()
 					return;
 				}
 
+				if (true == Input_SpecialCheckFly()) { return; }
 				if (InputCheck == false) { return; }
 
-				if (true == Input_SpecialCheckFly()) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly()) { return; }
 				if (true == Input_GunCheckFly()) { return; }
@@ -4593,7 +4593,6 @@ void PlayerActor_Nero::DestroyBreaker()
 	if (BreakerList.back() == DevilBreaker::None) { return; }
 	BreakerList.pop_back();
 	CurDevilBreaker = BreakerList.back();
-
 	switch (CurDevilBreaker)
 	{
 	case DevilBreaker::None:
