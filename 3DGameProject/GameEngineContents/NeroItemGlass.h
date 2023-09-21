@@ -35,8 +35,11 @@ private:
 	std::shared_ptr<class GameEngineFontRenderer> SlashText = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> MaxCount = nullptr;
 	DevilBreaker CurDevilBreaker = DevilBreaker::None;
+
 	int MaxItem = 4;
-
-
+	float Time = 0.0f;
+	bool first = false;
+	bool secound = false;
+	bool third = false;
 };
 

@@ -35,9 +35,9 @@ void NeroItemGlass::Start()
 	}
 	NeroUI_ItemGlass = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 560.0f,-380.0f,172.0f }, { 0.6f,0.6f,0.6f }, { -90.0f,0.0f,0.0f }, "NeroItemGlass.FBX");
 
-	NeroUI_Overture = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 730.0f,-300.0f,50.0f }, {5.0f,5.0f,5.0f }, { 89.0f,0.0f,179.0f }, "OvertureArmUI.FBX", "FBX");
-	NeroUI_Gerbera = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 730.0f,-300.0f,50.0f }, {4.0f,4.0f,4.0f }, { 160.0f,0.0f,211.0f }, "GerberaArmUI.FBX", "FBX");
-	NeroUI_BusterArm = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 730.0f,-300.0f,-50.0f }, {3.0f,3.0f,3.0f }, { 230.0f,0.0f,250.0f }, "BusterArmUI.FBX", "FBX");
+	NeroUI_Overture = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 730.0f,-300.0f,50.0f }, {5.0f,5.0f,5.0f }, { 90.0f,0.0f,180.0f }, "OvertureArmUI.FBX", "FBX");
+	//NeroUI_Gerbera = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 730.0f,-300.0f,50.0f }, {4.0f,4.0f,4.0f }, { 150.0f,30.0f,210.0f }, "GerberaArmUI.FBX", "FBX");
+	//NeroUI_BusterArm = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 730.0f,-300.0f,50.0f }, { 3.0f,3.0f,3.0f }, { 210.0f,00.0f,240.0f }, "BusterArmUI.FBX", "FBX");
 
 	SetItemText();
 }
@@ -62,6 +62,55 @@ void NeroItemGlass::Update(float _DeltaTime)
 		break;
 	default:
 		break;
+	}
+	//테스트용 코드
+	//데빌 브레이커를 주웠을 때 상황
+	// 1단계 0번 1번 2번 인덱스의 데빌브레이커가 스케일이 줄며 90도로 회전한다 
+	// 2단계 기울기를 조절한다.
+	// 3단계 기울기 + 크기를 키운다.
+	if (true == GameEngineInput::IsUp("UIDEBUGMODE"))
+	{
+		first = true;
+	}
+	if (first == true)
+	{
+		Time += _DeltaTime;
+		//NeroUI_Overture->GetTransform()->SetLocalPosition({ });
+		NeroUI_Overture->GetTransform()->SetLocalPosition(float4::LerpClamp({ 730.0f,-300.0f,50.0f }, { 635.0f,-300.0f,50.0f }, Time * 2.0f));
+		NeroUI_Overture->GetTransform()->SetLocalScale(float4::LerpClamp({ 5.0f,5.0f,5.0f }, { 3.0f,3.0f,3.0f }, Time*2.0f));
+		NeroUI_Overture->GetTransform()->SetLocalRotation(float4::LerpClamp({ 90.0f,0.0f,180.0f }, { 180.0f,0.0f,180.0f }, Time*2.0f));
+		if (first == true && Time>0.5f)
+		{
+			secound = true;
+			Time = 0.0f;
+			first = false;
+		}
+		
+	}
+	if (secound == true)
+	{
+		Time += _DeltaTime;
+		NeroUI_Overture->GetTransform()->SetLocalRotation(float4::LerpClamp({ 180.0f,0.0f,180.0f }, { 180.0f,0.0f,210.0f }, Time * 2.0f));
+		if (Time >= 0.8f)
+		{
+			secound = false;
+			third = true;
+			Time = 0.0f;
+
+		}
+	}
+	if (third == true)
+	{
+		Time += _DeltaTime;
+		NeroUI_Overture->GetTransform()->SetLocalPosition(float4::LerpClamp({ 635.0f, -300.0f, 50.0f}, { 730.0f,-300.0f,50.0f }, Time * 2.0f));
+		NeroUI_Overture->GetTransform()->SetLocalScale(float4::LerpClamp({ 3.0f,3.0f,3.0f }, { 4.0f,4.0f,4.0f }, Time * 2.0f));
+		NeroUI_Overture->GetTransform()->SetLocalRotation(float4::LerpClamp({ 180.0f,0.0f,210.0f }, { 150.0f,30.0f,210.0f }, Time * 2.0f));
+		if (Time >= 0.8f)
+		{
+			third = false;
+			Time = 0.0f;
+
+		}
 	}
 }
 
