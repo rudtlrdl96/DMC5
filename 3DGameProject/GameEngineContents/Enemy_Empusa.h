@@ -22,6 +22,20 @@ enum FSM_State_Empusa
 	Empusa_Turn_Right_90,   // em0100_turn_right_90, 오른쪽 회전
 	Empusa_Turn_Left_180,   // em0100_turn_left_180, 왼쪽 회전
 	Empusa_Turn_Right_180,  // em0100_turn_right_180, 오른쪽 회전
+
+	//피격
+	Empusa_Standing_Damage_Weak_Front, // em0100_standing_damage_weak_front_01, 정면 약공격 히트
+	Empusa_Standing_Damage_Weak_Back,  // em0100_standing_damage_weak_back_01, 후면 약공격 히트
+	Empusa_Standing_Damage_Weak_Left,  // em0100_standing_damage_weak_left_01, 좌측 약공격 히트
+	Empusa_Standing_Damage_Weak_Right, // em0100_standing_damage_weak_right_01, 우측 약공격 히트
+
+	//////////////공격
+	Empusa_attack_A,
+	Empusa_attack_B,
+	Empusa_attack_C,
+	Empusa_attack_D,
+	Empusa_attack_W,
+
 };
 class Enemy_Empusa : public BaseEnemyActor
 {
@@ -52,8 +66,13 @@ protected:
 
 private:
 	bool CheckBool = false;
+	float AttackDelayCheck = 0.0f;
 
-	float4 MoveDir = float4::ZERO;
-	float4 PushDir = float4::ZERO;
+	short WalkCount = 0;
+
+	bool IsHeavyAttack = false;
+	bool IsAirAttack = false;
+	bool IsAirLanding = false;
+	bool IsSlamAttack = false;
 };
 
