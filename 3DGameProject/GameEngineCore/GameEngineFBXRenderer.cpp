@@ -113,7 +113,10 @@ void GameEngineFBXAnimationInfo::Update(float _DeltaTime)
 			CurFrame = End - 1;
 		}
 	}
-	float CurRatio = CurFrameTime / Inter;
+	float AnimRatio = CurFrameTime / Inter;
+
+	ParentRenderer->CurBlendTime += _DeltaTime;
+	float BlendRatio = ParentRenderer->CurBlendTime / ParentRenderer->BlendTime;
 
 	// mesh      subset
 	std::vector<std::vector< std::shared_ptr<GameEngineRenderUnit>>>& Units = ParentRenderer->GetAllRenderUnit();
@@ -142,9 +145,16 @@ void GameEngineFBXAnimationInfo::Update(float _DeltaTime)
 
 		FbxExBoneFrameData& CurData = FBXAnimationData->AniFrameData[i].BoneMatData[CurFrame];
 		FbxExBoneFrameData& NextData = FBXAnimationData->AniFrameData[i].BoneMatData[NextFrame];
-		AnimationBoneData[i].Scale = float4::Lerp(CurData.S, NextData.S, CurRatio);
-		AnimationBoneData[i].RotQuaternion = float4::SLerpQuaternion(CurData.Q, NextData.Q, CurRatio);
-		AnimationBoneData[i].Pos = float4::Lerp(CurData.T, NextData.T, CurRatio);
+		AnimationBoneData[i].Scale = float4::Lerp(CurData.S, NextData.S, AnimRatio);
+		AnimationBoneData[i].RotQuaternion = float4::SLerpQuaternion(CurData.Q, NextData.Q, AnimRatio);
+		AnimationBoneData[i].Pos = float4::Lerp(CurData.T, NextData.T, AnimRatio);
+
+		if (ParentRenderer->CurBlendTime < ParentRenderer->BlendTime)
+		{
+			AnimationBoneData[i].Scale = float4::Lerp(ParentRenderer->PrevAnimationBoneDatas[i].Scale, AnimationBoneData[i].Scale, BlendRatio);
+			AnimationBoneData[i].RotQuaternion = float4::SLerpQuaternion(ParentRenderer->PrevAnimationBoneDatas[i].RotQuaternion, AnimationBoneData[i].RotQuaternion, BlendRatio);
+			AnimationBoneData[i].Pos = float4::Lerp(ParentRenderer->PrevAnimationBoneDatas[i].Pos, AnimationBoneData[i].Pos, BlendRatio);
+		}
 
 		size_t Size = sizeof(float4x4);
 
@@ -448,6 +458,8 @@ void GameEngineFBXRenderer::CreateFBXAnimation(const std::string& _AnimationName
 	NewAnimation->ParentRenderer = this;
 	NewAnimation->Inter = _Params.Inter;
 	NewAnimation->Loop = _Params.Loop;
+	NewAnimation->BlendIn = _Params.BlendIn;
+	NewAnimation->BlendOut = _Params.BlendOut;
 	NewAnimation->Reset();
 
 	BaseValue.IsAnimation = 1;
@@ -572,7 +584,22 @@ void GameEngineFBXRenderer::ChangeAnimation(const std::string& _AnimationName, b
 	{
 		return;
 	}
-
+	if (nullptr != CurAnimation)
+	{
+		PrevAnimationBoneDatas = AnimationBoneDatas;
+		float OutTime = CurAnimation->BlendOut;
+		float InTime = FindIter->second->BlendIn;
+		CurBlendTime = 0.0f;
+		if (OutTime < 0 || InTime < 0)
+		{
+			BlendTime = 0.0f;
+		}
+		else
+		{
+			BlendTime = (OutTime + InTime) * 0.5f;
+		}
+		BlendTime = 0.1f;
+	}
 	CurAnimation = FindIter->second;
 
 	CurAnimation->CurFrame = 0;
