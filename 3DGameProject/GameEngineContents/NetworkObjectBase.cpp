@@ -90,7 +90,7 @@ void NetworkObjectBase::Update_ProcessPacket()
 
 		if (false == PacketProcessFunctions.contains(Type))
 		{
-			MsgAssert("컨텐츠쪽에서 이 패킷을 처리하기 위한 콜백함수를 등록해주지 않았거나\n컨텐츠로 보내면 안되는 패킷을 컨텐츠 쪽으로 보냈습니다");
+			MsgAssert("컨텐츠쪽에서 이 패킷을 처리하기 위한 콜백함수를 등록해주지 않았거나 패킷 수신 허락을 허용하지 않았습니다");
 			return;
 		}
 
@@ -98,8 +98,14 @@ void NetworkObjectBase::Update_ProcessPacket()
 		PacketProcessFunctions[Type](Packet);
 	}
 }
-//
-//void NetworkObjectBase::Update_SendPacket(float _DeltaTime)
-//{
-//
-//}
+
+void NetworkObjectBase::Update_SendPacket(float _DeltaTime)
+{
+	NetworkManager::PushUpdatePacket
+	(
+		this, ActorTimeScale,
+		UpdatePacket_IntLinkDatas,
+		UpdatePacket_FloatLinkDatas,
+		UpdatePacket_BoolLinkDatas
+	);
+}

@@ -60,8 +60,6 @@ protected:
 	void Update(float _DeltaTime) override;
 	// BasePlayerActor를 상속받은 캐릭터가 이용할 Update
 	virtual void Update_Character(float _DeltaTime) {}
-	//업데이트 패킷을 전송하는 부분입니다. 모든 Update가 끝난 뒤에 실행됩니다
-	void Update_SendPacket(float _DeltaTime) override;
 
 	void LockOn();
 	void LockOff();
@@ -82,8 +80,8 @@ protected:
 	std::shared_ptr<class PhysXCapsuleComponent> PhysXCapsule = nullptr;
 	float4 Rot = float4::ZERO;
 	int FSMValue = -1;
-	unsigned int DTValue;
-	unsigned int ArmValue;
+	bool DTValue;
+	int ArmValue;
 private:
 	void DamageColCheck();
 

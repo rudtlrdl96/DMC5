@@ -171,14 +171,14 @@ void BasePlayerActor::Start()
 	BindPacketFunction<ObjectUpdatePacket>(PacketEnum::ObjectUpdatePacket, [this](std::shared_ptr<ObjectUpdatePacket> _Packet)
 	{
 		//패킷의 정보에 따라 자신의 값 수정
-		if (ArmValue != _Packet->ArmState)
+		if (ArmValue != _Packet->IntDatas[0])
 		{
-			ArmValue = _Packet->ArmState;
+			ArmValue = _Packet->IntDatas[0];
 			SetArm(ArmValue);
 		}
-		if (DTValue != _Packet->IsEvolve)
+		if (DTValue != _Packet->BoolDatas[0])
 		{
-			DTValue = _Packet->IsEvolve;
+			DTValue = _Packet->BoolDatas[0];
 			SetDT(DTValue);
 		}
 	});
@@ -188,6 +188,9 @@ void BasePlayerActor::Start()
 	{
 		SetFSMStateValue(_Packet->FsmState);
 	});
+
+	LinkData_UpdatePacket<int>(ArmValue);
+	LinkData_UpdatePacket<bool>(DTValue);
 }
 
 void BasePlayerActor::NetControllLoad()
@@ -239,10 +242,6 @@ void BasePlayerActor::Update(float _DeltaTime)
 	}
 }
 
-void BasePlayerActor::Update_SendPacket(float _DeltaTime)
-{
-	NetworkManager::PushUpdatePacket({ .ObjPtr = this, .TimeScale = 1.0f, .UnionData = {ArmValue, DTValue} });
-}
 
 void BasePlayerActor::LockOn()
 {

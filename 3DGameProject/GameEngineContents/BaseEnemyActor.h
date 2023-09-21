@@ -261,7 +261,6 @@ protected:
 	//====================================================
 	
 
-	void Update_SendPacket(float _DeltaTime) override;
 	//====================================================
 
 private:

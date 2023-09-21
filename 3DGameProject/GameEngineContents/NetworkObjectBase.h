@@ -33,7 +33,7 @@ protected:
 	void Update_NetworkTrans(float _DeltaTime);
 
 	void Update_ProcessPacket() final;
-	//void Update_SendPacket(float _DeltaTime) final;
+	void Update_SendPacket(float _DeltaTime) final;
 
 	template <typename PacketType>
 	void BindPacketFunction(PacketEnum _Type, std::function<void(std::shared_ptr<PacketType>)> _Callback = nullptr)
@@ -63,6 +63,28 @@ protected:
 		};
 	}
 
+	template <typename DataType>
+	void LinkData_UpdatePacket(DataType& Data)
+	{
+		if constexpr (std::is_same<DataType, int>::value)
+		{
+			UpdatePacket_IntLinkDatas.push_back(&Data);
+		}
+		else if constexpr (std::is_same<DataType, float>::value)
+		{
+			UpdatePacket_FloatLinkDatas.push_back(&Data);
+		}
+		else if constexpr (std::is_same<DataType, bool>::value)
+		{
+			UpdatePacket_BoolLinkDatas.push_back(&Data);
+		}
+		else
+		{
+			MsgAssert("업데이트 패킷에 넣을수 없는 템플릿 타입입니다");
+		}
+	}
+
+
 private:
 	static NetworkObjectBase* GetNetObj(unsigned int _ObjID);
 
@@ -78,7 +100,9 @@ private:
 	Net_ActorType NetActorType = Net_ActorType::UNKNOWN;
 
 	float ActorTimeScale = 1.f;
-
+	std::vector<int*> UpdatePacket_IntLinkDatas;
+	std::vector<bool*> UpdatePacket_BoolLinkDatas;
+	std::vector<float*> UpdatePacket_FloatLinkDatas;
 	
 	
 	std::map<PacketEnum, std::function<void(std::shared_ptr<GameEnginePacket> _Packet)>> PacketProcessFunctions;

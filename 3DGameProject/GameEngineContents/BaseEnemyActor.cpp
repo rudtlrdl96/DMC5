@@ -19,11 +19,6 @@ BaseEnemyActor::~BaseEnemyActor()
 }
 
 
-void BaseEnemyActor::Update_SendPacket(float _DeltaTime)
-{
-	NetworkManager::PushUpdatePacket({ .ObjPtr = this, .TimeScale = 1.0f, .UnionData = {0, } });
-}
-
 void BaseEnemyActor::Start()
 {
 	if (false == GameEngineInput::IsKey("MonsterTest"))

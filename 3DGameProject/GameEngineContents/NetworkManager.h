@@ -6,20 +6,8 @@
 
 class BaseLevel;
 class NetworkObjectBase;
-//class GameEngineNetObject;
 class GameEngineActor;
 enum class PacketEnum;
-
-struct UpdatePacketParameter
-{
-	NetworkObjectBase* ObjPtr = nullptr;
-	float TimeScale = 1.f;
-
-	//ObjectUpdatePacket의 Union값을 보고 직접 넣어주시면 됩니다.
-	unsigned int UnionData[NETWORK_UPDATEPACKET_UNION_DATA_SIZE] = { 0, };
-};
-
-
 
 class NetworkManager
 {
@@ -91,8 +79,13 @@ public:
 	static void PushChatPacket(const std::string_view& _Msg, const float4& _Color = float4::WHITE);
 
 	//Update패킷을 보낼때 이 인터페이스를 이용해서 보내주시면 됩니다.
-	static void PushUpdatePacket(const UpdatePacketParameter& _Param);
-
+	static void PushUpdatePacket(
+		NetworkObjectBase* _ObjPtr, 
+		float _TimeScale,
+		const std::vector<int*>& _IntDatas,
+		const std::vector<float*>& _FloatDatas,
+		const std::vector<bool*>& _BoolDatas);
+	
 	//Update패킷을 보낼때 이 인터페이스를 이용해서 보내주시면 됩니다.(얘는 패킷을 바로 보냅니다)
 	static void SendFsmChangePacket(NetworkObjectBase* _NetObjPtr, int _FsmState);
 
@@ -147,6 +140,21 @@ private:
 
 	//vector 형태의 패킷들을 _Ser인자에 직렬화 시킴
 	static void SerializePackets(const std::vector<std::shared_ptr<class GameEnginePacket>>& _Packets, GameEngineSerializer& _Ser);
+
+	template <typename DataType>
+	static void ArrDataCopy(std::vector<DataType>& _Left, const std::vector<DataType*>& _Right)
+	{
+		if (_Left.size() != _Right.size())
+		{
+			_Left.clear();
+			_Left.resize(_Right.size());
+		}
+
+		for (size_t i = 0; i < _Right.size(); ++i)
+		{
+			_Left[i] = *_Right[i];
+		}
+	}
 
 
 	NetworkManager(){}

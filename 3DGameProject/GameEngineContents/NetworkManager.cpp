@@ -118,16 +118,20 @@ void NetworkManager::PushChatPacket(const std::string_view& _Msg, const float4& 
 
 
 
-void NetworkManager::PushUpdatePacket(const UpdatePacketParameter& _Param)
+void NetworkManager::PushUpdatePacket(
+	NetworkObjectBase* _ObjPtr, 
+	float _TimeScale,
+	const std::vector<int*>& _IntDatas,
+	const std::vector<float*>& _FloatDatas,
+	const std::vector<bool*>& _BoolDatas)
 {
-	NetworkObjectBase* NetPtr = _Param.ObjPtr;
-	if (nullptr == NetPtr)
+	if (nullptr == _ObjPtr)
 	{
 		MsgAssert("업데이트 패킷을 전송할땐 파라미터 인자의 ObjPtr의 값은 반드시 넣어주어야 합니다.");
 		return;
 	}
 
-	GameEngineActor* ActorPtr = dynamic_cast<GameEngineActor*>(NetPtr);
+	GameEngineActor* ActorPtr = dynamic_cast<GameEngineActor*>(_ObjPtr);
 	if (nullptr == ActorPtr)
 	{
 		MsgAssert("Update패킷을 전송할때 인자로 받은 ObjPtr이 GameEngineActor를 상속받지 않았습니다");
@@ -144,7 +148,7 @@ void NetworkManager::PushUpdatePacket(const UpdatePacketParameter& _Param)
 		return;
 
 	//인자로 받은 오브젝트의 네트워크용 오브젝트 아이디
-	unsigned int ObjectID = NetPtr->GetNetObjectID();
+	unsigned int ObjectID = _ObjPtr->GetNetObjectID();
 	
 	//아직 Init처리되지 않은 경우
 	if (-1 == ObjectID)
@@ -182,7 +186,7 @@ void NetworkManager::PushUpdatePacket(const UpdatePacketParameter& _Param)
 	UpdatePacket->NetID = NetID;
 
 	//오브젝트 타입
-	UpdatePacket->ActorType = static_cast<unsigned int>(NetPtr->GetNetObjectType());
+	UpdatePacket->ActorType = static_cast<unsigned int>(_ObjPtr->GetNetObjectType());
 	if (-1 == UpdatePacket->ActorType)
 	{
 		MsgAssert("ObjectUpdate패킷을 보내려는 객체의 NetObjectType을 설정해주지 않았습니다");
@@ -213,17 +217,19 @@ void NetworkManager::PushUpdatePacket(const UpdatePacketParameter& _Param)
 	//위치
 	UpdatePacket->Position = TransPtr->GetWorldPosition();
 	//타임 크기
-	UpdatePacket->TimeScale = _Param.TimeScale;
+	UpdatePacket->TimeScale = _TimeScale;
 
 	//파괴 여부
 	UpdatePacket->IsDeath = ActorPtr->IsDeath();
 	if (true == UpdatePacket->IsDeath)
 	{
 		//이 NetObject는 이제부터 전송/수신을 받지 않음
-		NetPtr->NetDisconnect();
+		_ObjPtr->NetDisconnect();
 	}
 
-	UpdatePacket->CopyUnionData(_Param.UnionData);
+	ArrDataCopy(UpdatePacket->IntDatas, _IntDatas);
+	ArrDataCopy(UpdatePacket->FloatDatas, _FloatDatas);
+	ArrDataCopy(UpdatePacket->BoolDatas, _BoolDatas);
 }
 
 

@@ -5,11 +5,6 @@
 #include "PacketEnum.h"
 #include "ContentsEnum.h"
 
-enum
-{
-	NETWORK_UPDATEPACKET_UNION_DATA_SIZE = 2
-};
-
 class ObjectUpdatePacket : public GameEnginePacket
 {
 	friend class NetworkManager;
@@ -19,7 +14,6 @@ public:
 
 public:
 	ObjectUpdatePacket()
-		:UnionDatas{0,}
 	{
 		SetPacketID(Type);
 	}
@@ -29,26 +23,9 @@ public:
 
 	}
 
-	union 
-	{
-		unsigned int UnionDatas[NETWORK_UPDATEPACKET_UNION_DATA_SIZE];
-
-		//플레이어의 경우
-		struct 
-		{
-			unsigned int ArmState;
-			unsigned int IsEvolve;		//0일때 변신X, 1일때 변신
-		};
-
-		//몬스터의 경우
-		struct
-		{
-			unsigned int MONSTER_UNKNOWN1;
-			unsigned int MONSTER_UNKNOWN2;
-		};
-
-		//TODO
-	};
+	std::vector<int> IntDatas;
+	std::vector<float> FloatDatas;
+	std::vector<bool> BoolDatas;
 
 protected:
 	void Serialize(GameEngineSerializer& _Ser) override
@@ -63,14 +40,14 @@ protected:
 
 		_Ser << TimeScale;
 		_Ser << IsDeath;
+		_Ser << IsUpdate;
 
 		unsigned int Level = static_cast<int>(LevelType);
 		_Ser << Level;
 
-		for (size_t i = 0; i < NETWORK_UPDATEPACKET_UNION_DATA_SIZE; ++i)
-		{
-			_Ser << UnionDatas[i];
-		}
+		SerializeArr<int>(IntDatas, _Ser);
+		SerializeArr<float>(FloatDatas, _Ser);
+		SerializeArr<bool>(BoolDatas, _Ser);
 	}
 
 	void DeSeralize(GameEngineSerializer& _Ser) override
@@ -85,15 +62,15 @@ protected:
 
 		_Ser >> TimeScale;
 		_Ser >> IsDeath;
+		_Ser >> IsUpdate;
 
 		unsigned int Level = 0;
 		_Ser >> Level;
 		LevelType = static_cast<Net_LevelType>(Level);
 
-		for (size_t i = 0; i < NETWORK_UPDATEPACKET_UNION_DATA_SIZE; ++i)
-		{
-			_Ser >> UnionDatas[i];
-		}
+		DeSerializeArr<int>(IntDatas, _Ser);
+		DeSerializeArr<float>(FloatDatas, _Ser);
+		DeSerializeArr<bool>(BoolDatas, _Ser);
 	}
 
 private:
@@ -106,14 +83,44 @@ private:
 
 	Net_LevelType LevelType = Net_LevelType::UNKNOWN;
 	bool IsDeath = false;
-	//bool IsUpdate = true;
+	std::vector<bool> d;
+	bool IsUpdate = true;
 
 
 
-	void CopyUnionData(const void* const _UnionArrPtr)
+	template <typename DataType>
+	void SerializeArr(const std::vector<DataType>& _Datas, GameEngineSerializer& _Ser)
 	{
-		rsize_t Size = sizeof(unsigned int) * NETWORK_UPDATEPACKET_UNION_DATA_SIZE;
-		memcpy_s(&UnionDatas[0], Size, _UnionArrPtr, Size);
+		unsigned int Size = static_cast<unsigned int>(_Datas.size());
+		_Ser << (Size);
+
+		if (Size <= 0)
+			return;
+
+		for (DataType Data : _Datas)
+		{
+			_Ser << Data;
+		}
 	}
+
+	template <typename DataType>
+	void DeSerializeArr(std::vector<DataType>& _Datas, GameEngineSerializer& _Ser)
+	{
+		unsigned int Size = 0;
+		_Ser >> (Size);
+
+		if (Size <= 0)
+			return;
+
+		_Datas.resize(Size);
+
+		for (unsigned int i = 0; i < Size; i++)
+		{
+			DataType Data;
+			_Ser >> Data;
+			_Datas[i] = Data;
+		}
+	}
+
 };
 
