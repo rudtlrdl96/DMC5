@@ -2244,10 +2244,29 @@ void PlayerActor_Nero::PlayerLoad()
 	// 스내치
 	{}
 	{
+		static float4 SnatchStartPos;
+		static float4 SnatchEndPos;
+		static float SnatchTimer;
 		// Snatch Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Snatch_Shoot,
 			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
+				RotationToTarget();
 				WeaponIdle();
+				Col_Attack->On();
+				Col_Attack->SetAttackData(DamageType::Snatch, 0, std::bind(&PlayerActor_Nero::ChangeState, this, FSM_State_Nero::Nero_Snatch_Pull));
+				Col_Attack->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
+				Col_Attack->GetTransform()->SetLocalScale({100, 100, 100});
+				SnatchStartPos = Col_Attack->GetTransform()->GetWorldPosition();
+				if (nullptr == LockOnEnemyTransform)
+				{
+					SnatchEndPos = GetTransform()->GetWorldPosition() + GetTransform()->GetWorldForwardVector() * 1000;
+				}
+				else
+				{
+					SnatchEndPos = LockOnEnemyTransform->GetWorldPosition();
+				}
+				SnatchTimer = 0;
 				PhysXCapsule->SetLinearVelocityZero();
 				RotationToTarget();
 				Renderer->ChangeAnimation("pl0000_Snatch", true);
@@ -2255,16 +2274,12 @@ void PlayerActor_Nero::PlayerLoad()
 				MoveCheck = false;
 			},
 			.Update = [=](float _DeltaTime) {
+				SnatchTimer += _DeltaTime * 5;
+				Col_Attack->GetTransform()->SetWorldPosition(float4::LerpClamp(SnatchStartPos, SnatchEndPos, SnatchTimer));
+
 				if (false == FloorCheck())
 				{
 					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
-					return;
-				}
-
-				if (true == Controller->GetIsLockOnSkill())
-				{
-					// 임시용
-					ChangeState(FSM_State_Nero::Nero_Snatch_Pull);
 					return;
 				}
 
@@ -2285,6 +2300,7 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 			},
 			.End = [=] {
+				Col_Attack->Off();
 			}
 			});
 
@@ -2361,15 +2377,35 @@ void PlayerActor_Nero::PlayerLoad()
 		// Snatch Shoot Air
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Snatch_Shoot_Air,
 			.Start = [=] {
-				WeaponIdle();
 				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->SetLinearVelocityZero();
+				RotationToTarget();
+				WeaponIdle();
+				Col_Attack->On();
+				Col_Attack->SetAttackData(DamageType::Snatch, 0, std::bind(&PlayerActor_Nero::ChangeState, this, FSM_State_Nero::Nero_Snatch_Pull_Air));
+				Col_Attack->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
+				Col_Attack->GetTransform()->SetLocalScale({100, 100, 100});
+				SnatchStartPos = Col_Attack->GetTransform()->GetWorldPosition();
+				if (nullptr == LockOnEnemyTransform)
+				{
+					SnatchEndPos = GetTransform()->GetWorldPosition() + GetTransform()->GetWorldForwardVector() * 1000;
+				}
+				else
+				{
+					SnatchEndPos = LockOnEnemyTransform->GetWorldPosition();
+				}
+				SnatchTimer = 0;
 				PhysXCapsule->SetLinearVelocityZero();
 				RotationToTarget();
 				Renderer->ChangeAnimation("pl0000_Air_Snatch", true);
 				InputCheck = false;
 				MoveCheck = false;
+
 			},
 			.Update = [=](float _DeltaTime) {
+				SnatchTimer += _DeltaTime * 5;
+				Col_Attack->GetTransform()->SetWorldPosition(float4::LerpClamp(SnatchStartPos, SnatchEndPos, SnatchTimer));
+
 				if (Renderer->IsAnimationEnd())
 				{
 					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
@@ -2377,13 +2413,6 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == FloorCheck())
 				{
 					ChangeState(FSM_State_Nero::Nero_Landing);
-					return;
-				}
-
-				if (true == Controller->GetIsLockOnSkill())
-				{
-					// 임시용
-					ChangeState(FSM_State_Nero::Nero_Snatch_Repel_Air);
 					return;
 				}
 
@@ -2396,6 +2425,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_DevilBreakerCheckFly()) { return; }
 			},
 			.End = [=] {
+				Col_Attack->Off();
 			}
 			});
 
@@ -4578,7 +4608,7 @@ void PlayerActor_Nero::ShootBR()
 {
 	if (nullptr == LockOnEnemyTransform)
 	{
-		Col_Attack->GetTransform()->SetLocalPosition({0, 100, 1000});
+		Col_Attack->GetTransform()->SetLocalPosition({ 0, 100, 1000 });
 		Col_Attack->GetTransform()->SetLocalScale({ 50, 50, 2000 });
 	}
 	else

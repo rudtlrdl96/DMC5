@@ -158,6 +158,10 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 		ChangeState(FSM_State_HellCaina::HellCaina_Blown_Up);
 		break;
 	case DamageType::Snatch:
+		RotationCheck();
+		PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
+		StartMonsterSnatch();
+		ChangeState(FSM_State_HellCaina::HellCaina_Snatch);
 		break;
 	case DamageType::Slam:
 		break;
@@ -1003,7 +1007,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Blown_Back_Loop);
+		ChangeState(FSM_State_HellCaina::HellCaina_Blown_Back_Landing);
 		return;
 	}
 	},
