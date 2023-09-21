@@ -53,9 +53,9 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 	PushDirectSetting();
 	StartRenderShaking(10);
 
-	DamageType Type = AttackCol->GetDamageType();
+	DamageData Type = AttackCol->GetDamage();
 
-	switch (Type)
+	switch (Type.DamageTypeValue)
 	{
 	case DamageType::None:
 		return;
@@ -249,6 +249,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Idle,
 	.Start = [=] {
 	SetMoveStop();
+	IsRecognize = false;
 	EnemyRenderer->ChangeAnimation("em0100_Idle_undetected");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -282,7 +283,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	},
 	.Update = [=](float _DeltaTime) {
 	SetForwardMove(150.0f);
-	if (true == EnemyRenderer->IsAnimationEnd())
+	if (IsRecognize==true)
 	{
 		ChangeState(FSM_State_Empusa::Empusa_Walk_Stop);
 	}
