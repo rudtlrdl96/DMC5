@@ -1018,12 +1018,13 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// ½º³»Ä¡ start
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Snatch,
 	.Start = [=] {
+		IsAirAttack = true;
 	EnemyRenderer->ChangeAnimation("em0000_snatch");
 	},
 	.Update = [=](float _DeltaTime) {
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Snatch_End);
+		ChangeState(FSM_State_HellCaina::HellCaina_Air_Damage_Under);
 		return;
 	}
 	},
@@ -1038,7 +1039,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Blown_Back_Landing);
+		ChangeState(FSM_State_HellCaina::HellCaina_Air_Damage_Under);
 		return;
 	}
 	},
