@@ -448,8 +448,9 @@ void GameEngineCore::CoreResourcesInit()
 		Desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
 		Desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
 
-		GameEngineBlend::Create("AlphaBlend", Desc);
+		GameEngineBlend::Create("BaseBlend", Desc);
 	}
+
 	{
 		D3D11_BLEND_DESC Desc = { 0, };
 
@@ -554,6 +555,17 @@ void GameEngineCore::CoreResourcesInit()
 
 		GameEngineDepthState::Create("AlwayDepth", Desc);
 	}
+	{
+		D3D11_DEPTH_STENCIL_DESC Desc = { 0, };
+
+		Desc.DepthEnable = true;
+		Desc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS_EQUAL;
+		Desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ZERO;
+		Desc.StencilEnable = false;
+
+		GameEngineDepthState::Create("AlphaDepth", Desc);
+	}
+
 
 	// 쉐이더 컴파일
 	{
@@ -621,7 +633,7 @@ void GameEngineCore::CoreResourcesInit()
 		Pipe->SetVertexShader("TextureShader.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
 		Pipe->SetPixelShader("TextureShader.hlsl");
-		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetBlendState("BaseBlend");
 		Pipe->SetDepthState("EngineDepth");
 	}
 	{
@@ -630,7 +642,7 @@ void GameEngineCore::CoreResourcesInit()
 		Pipe->SetVertexShader("TileMapShader.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
 		Pipe->SetPixelShader("TileMapShader.hlsl");
-		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetBlendState("BaseBlend");
 		Pipe->SetDepthState("EngineDepth");
 	}
 	{
@@ -646,24 +658,12 @@ void GameEngineCore::CoreResourcesInit()
 	}
 
 	{
-		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("AlphaMerge");
-
-		Pipe->SetVertexShader("MergeShader.hlsl");
-		Pipe->SetRasterizer("Engine2DBase");
-		Pipe->SetPixelShader("MergeShader.hlsl");
-		Pipe->SetBlendState("MergeBlend");
-		Pipe->SetDepthState("EngineDepth");
-
-		GameEngineRenderTarget::RenderTargetUnitInit();
-	}
-
-	{
 		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("DebugMeshRender");
 
 		Pipe->SetVertexShader("DebugMeshRender.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
 		Pipe->SetPixelShader("DebugMeshRender.hlsl");
-		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetBlendState("BaseBlend");
 		Pipe->SetDepthState("AlwayDepth");
 	}
 	{
@@ -672,7 +672,7 @@ void GameEngineCore::CoreResourcesInit()
 		Pipe->SetVertexShader("MeshTexture.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
 		Pipe->SetPixelShader("MeshTexture.hlsl");
-		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetBlendState("BaseBlend");
 		Pipe->SetDepthState("EngineDepth");
 	}
 	{
@@ -681,7 +681,7 @@ void GameEngineCore::CoreResourcesInit()
 		Pipe->SetVertexShader("BlurShader.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
 		Pipe->SetPixelShader("BlurShader.hlsl");
-		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetBlendState("BaseBlend");
 		Pipe->SetDepthState("AlwayDepth");
 	}
 	{
@@ -708,7 +708,7 @@ void GameEngineCore::CoreResourcesInit()
 		Pipe->SetVertexShader("MeshAniTexture.hlsl");
 		Pipe->SetRasterizer("Engine3DBase");
 		Pipe->SetPixelShader("MeshAniTexture.hlsl");
-		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetBlendState("BaseBlend");
 		Pipe->SetDepthState("EngineDepth");
 	}
 	{
@@ -717,7 +717,7 @@ void GameEngineCore::CoreResourcesInit()
 		Pipe->SetVertexShader("MeshColor.hlsl");
 		Pipe->SetRasterizer("Engine3DBase");
 		Pipe->SetPixelShader("MeshColor.hlsl");
-		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetBlendState("BaseBlend");
 		Pipe->SetDepthState("EngineDepth");
 	}
 	{
@@ -726,7 +726,7 @@ void GameEngineCore::CoreResourcesInit()
 		Pipe->SetVertexShader("GridShader.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
 		Pipe->SetPixelShader("GridShader.hlsl");
-		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetBlendState("BaseBlend");
 		Pipe->SetDepthState("EngineDepth");
 	}
 	{
@@ -735,7 +735,7 @@ void GameEngineCore::CoreResourcesInit()
 		Pipe->SetVertexShader("MeshAniTextureDeferred.hlsl");
 		Pipe->SetRasterizer("Engine3DBase");
 		Pipe->SetPixelShader("MeshAniTextureDeferred.hlsl");
-		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetBlendState("BaseBlend");
 		Pipe->SetDepthState("EngineDepth");
 	}
 	{

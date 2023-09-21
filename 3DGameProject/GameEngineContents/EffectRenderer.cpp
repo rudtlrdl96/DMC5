@@ -114,6 +114,17 @@ void EffectRenderer::RectInit(const std::string_view& _MaterialName)
 	CustomOptionSetting();
 }
 
+void EffectRenderer::SphereInit(const std::string_view& _MaterialName)
+{
+	Unit.resize(1);
+	Unit[0].resize(1);
+
+	Unit[0][0] = CreateRenderUnit();
+	Unit[0][0]->SetMesh("DebugSphere");
+	Unit[0][0]->SetMaterial(_MaterialName);
+	CustomOptionSetting();
+}
+
 void EffectRenderer::SetFBXMesh(const std::string& _Name, std::string _Material)
 {
 	GameEngineFBXRenderer::SetFBXMesh(_Name, _Material);

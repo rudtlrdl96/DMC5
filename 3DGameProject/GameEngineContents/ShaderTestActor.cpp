@@ -29,24 +29,25 @@ void ShaderTestActor::Start()
 		GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_0_atos.png");
 	}
 	 
-	TestRenderer = CreateComponent<GameEngineFBXRenderer>();
+	TestRenderer = CreateComponent<EffectRenderer>();
 	 	
 	//FBX파일경로를 찾아서 로드
-	if (nullptr == GameEngineFBXMesh::Find("SkyBox.FBX"))
+	if (nullptr == GameEngineFBXMesh::Find("House1.FBX"))
 	{
 		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
 			{
 				"Map", "TestMap"
-			}, "SkyBox.FBX");
+			}, "House1.FBX");
 	
 		GameEngineFBXMesh::Load(Path);
 	}
 	
-	TestRenderer->SetFBXMesh("SkyBox.fbx", "FBX");
-	TestRenderer->GetTransform()->SetLocalScale(float4(0.0003f, 0.0003f, 0.0003f));
+	TestRenderer->SetFBXMesh("House1.fbx", "Effect_3D");
+	TestRenderer->GetTransform()->SetLocalScale(float4(0.5f, 0.5f, 0.5f));
+	TestRenderer->EffectOption.MulColor = float4(1, 1, 1, 0.5f);
 
 	//TestRenderer->SetBaseColor(float4(3, 0, 0));
-	TestRenderer->ShadowOn();
+	//TestRenderer->ShadowOn();
 	TestRenderer->NormalOff();
 
 	//TestRenderer = CreateComponent<EffectRenderer>();

@@ -68,6 +68,12 @@ public:
 		return AllRenderTarget;
 	}
 
+
+	std::shared_ptr<GameEngineRenderTarget> GetCamAlphaTarget()
+	{
+		return CamAlphaTarget;
+	}
+
 	inline float4x4 GetView()
 	{
 		return View;
@@ -164,6 +170,7 @@ private:
 	std::shared_ptr<class GameEngineRenderTarget> CamForwardTarget;
 	std::shared_ptr<class GameEngineRenderTarget> CamDeferrdTarget;
 	std::shared_ptr<class GameEngineRenderTarget> CamAlphaTarget;
+	
 	std::shared_ptr<class GameEngineRenderTarget> AllRenderTarget;
 	std::shared_ptr<class GameEngineRenderTarget> AlphaRenderTarget;
 
@@ -172,7 +179,6 @@ private:
 
 	GameEngineRenderUnit CalLightUnit;
 	GameEngineRenderUnit DefferdMergeUnit;
-	GameEngineRenderUnit AlphaMergeUnit;
 
 	void FreeCameraSwitch();
 

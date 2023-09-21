@@ -5,10 +5,12 @@
 class EffectData
 {
 public:
-	float ClipStartX = 0;
-	float ClipEndX = 1;
-	float ClipStartY = 0;
-	float ClipEndY = 1;
+	float ClipStartX = -100;
+	float ClipEndX = 100;
+	float ClipStartY = -100;
+	float ClipEndY = 100;
+	float4 MulColor = float4::ONE;
+	float4 PlusColor = float4::ZERONULL;
 };
 
 // 설명 : 해당 랜더러는 Effect 전용 렌더러 입니다 Effect_2D 또는 Effect_3D 머티리얼을 사용해야 합니다.
@@ -34,11 +36,12 @@ public:
 	EffectRenderer& operator=(const EffectRenderer& _Other) = delete;
 	EffectRenderer& operator=(EffectRenderer&& _Other) noexcept = delete;
 
-	// 상하좌우 기준으로 Clip 합니다.
+	// 이펙트 옵션을 설정합니다.
 	EffectData EffectOption = EffectData();
 
 	// Engine Rect 매쉬를 기준으로 초기화 합니다.
 	void RectInit(const std::string_view& _MaterialName);
+	void SphereInit(const std::string_view& _MaterialName);
 
 	// FBX 매쉬를 기준으로 초기화 합니다.
 	void SetFBXMesh(const std::string& _Name, std::string _Material) override;

@@ -50,6 +50,9 @@ void TestStageLevel::Start()
 	{
 		GameEngineInput::CreateKey("BakeTestKey", VK_SPACE);
 	}
+
+	CreateActor<ShaderTestActor>()->GetTransform()->SetWorldPosition(float4(0, 100, 0));
+
 }
 
 void TestStageLevel::Update(float _DeltaTime)
@@ -115,6 +118,7 @@ void TestStageLevel::LevelChangeStart()
 	GameEngineCoreWindow::AddDebugRenderTarget(1, "LightRenderTarget", GetLevel()->GetMainCamera()->GetDeferredLightTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(2, "MainCameraForwardTarget", GetLevel()->GetMainCamera()->GetCamForwardTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(3, "DeferredTarget", GetLevel()->GetMainCamera()->GetCamDeferrdTarget());
-	GameEngineCoreWindow::AddDebugRenderTarget(4, "ShadowTarget0", GetLevel()->GetDirectionalLight()->GetShadowTarget());
-	GameEngineCoreWindow::AddDebugRenderTarget(5, "ShadowTarget1", GetLevel()->GetDirectionalLight()->GetBakeTarget(0));
+	GameEngineCoreWindow::AddDebugRenderTarget(4, "AlphaTarget", GetLevel()->GetMainCamera()->GetCamAlphaTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(5, "BakeShadow", GetLevel()->GetDirectionalLight()->GetBakeTarget(0));
+	GameEngineCoreWindow::AddDebugRenderTarget(6, "LastShadow", GetLevel()->GetDirectionalLight()->GetShadowTarget());
 }
