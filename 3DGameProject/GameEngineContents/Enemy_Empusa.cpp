@@ -197,7 +197,18 @@ void Enemy_Empusa::EnemyTypeLoad()
 	MoveSpeed = 50.0f;
 }
 
-void Enemy_Empusa::RecognizeCollisionCheck(float _DeltaTime) {}
+void Enemy_Empusa::RecognizeCollisionCheck(float _DeltaTime) 
+{
+	if (true == IsRecognize)
+	{
+		return;
+	}
+
+	std::shared_ptr<GameEngineCollision> Col = RN_MonsterCollision->Collision(CollisionOrder::Player);
+	if (nullptr == Col) { return; }
+
+	IsRecognize = true;
+}
 
 void Enemy_Empusa::EnemyAnimationLoad()
 {

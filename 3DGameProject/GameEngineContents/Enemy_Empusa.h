@@ -74,5 +74,6 @@ private:
 	bool IsAirAttack = false;
 	bool IsAirLanding = false;
 	bool IsSlamAttack = false;
+	bool IsRecognize = false;
 };
 
