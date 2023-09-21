@@ -598,10 +598,20 @@ void GameEngineCore::CoreResourcesInit()
 
 		// 와이어 프레임은 선으로 표현하는 겁니다. 
 		// Desc.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
-		Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;
+		Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
 		Desc.FrontCounterClockwise = FALSE;
 
 		std::shared_ptr<GameEngineRasterizer> Res = GameEngineRasterizer::Create("Engine2DBase", Desc);
+	}
+
+	// 레스터라이저 세팅
+	{
+		D3D11_RASTERIZER_DESC Desc = {};
+
+		Desc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;
+		Desc.FrontCounterClockwise = FALSE;
+
+		std::shared_ptr<GameEngineRasterizer> Res = GameEngineRasterizer::Create("Engine3DBase", Desc);
 	}
 
 	// 파이프라인(머티리얼) 생성
@@ -696,7 +706,7 @@ void GameEngineCore::CoreResourcesInit()
 		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("MeshAniTexture");
 		
 		Pipe->SetVertexShader("MeshAniTexture.hlsl");
-		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetRasterizer("Engine3DBase");
 		Pipe->SetPixelShader("MeshAniTexture.hlsl");
 		Pipe->SetBlendState("AlphaBlend");
 		Pipe->SetDepthState("EngineDepth");
@@ -705,7 +715,7 @@ void GameEngineCore::CoreResourcesInit()
 		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("MeshColor");
 
 		Pipe->SetVertexShader("MeshColor.hlsl");
-		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetRasterizer("Engine3DBase");
 		Pipe->SetPixelShader("MeshColor.hlsl");
 		Pipe->SetBlendState("AlphaBlend");
 		Pipe->SetDepthState("EngineDepth");
@@ -723,7 +733,7 @@ void GameEngineCore::CoreResourcesInit()
 		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("MeshAniTextureDeferred");
 
 		Pipe->SetVertexShader("MeshAniTextureDeferred.hlsl");
-		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetRasterizer("Engine3DBase");
 		Pipe->SetPixelShader("MeshAniTextureDeferred.hlsl");
 		Pipe->SetBlendState("AlphaBlend");
 		Pipe->SetDepthState("EngineDepth");

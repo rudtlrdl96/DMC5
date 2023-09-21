@@ -1,7 +1,8 @@
 #pragma once
 #include <GameEngineCore/GameEngineFBXRenderer.h>
+#include <GameEngineCore/GameEngineSpriteRenderer.h>
 
-class ClipData
+class EffectData
 {
 public:
 	float ClipStartX = 0;
@@ -10,9 +11,18 @@ public:
 	float ClipEndY = 1;
 };
 
-// 설명 :
+// 설명 : 해당 랜더러는 Effect 전용 렌더러 입니다 Effect_2D 또는 Effect_3D 머티리얼을 사용해야 합니다.
 class EffectFBXRenderer : public GameEngineFBXRenderer
 {
+private:
+	class EffectVertextData
+	{
+	public:
+		float IsLockRotation = 0.0f;
+		float4 FramePos = float4(0, 0);
+		float4 FrameScale = float4(1, 1);
+		float4 Flip = float4::ZERO;
+	};
 public:
 	// constrcuter destructer
 	EffectFBXRenderer();
@@ -24,19 +34,87 @@ public:
 	EffectFBXRenderer& operator=(const EffectFBXRenderer& _Other) = delete;
 	EffectFBXRenderer& operator=(EffectFBXRenderer&& _Other) noexcept = delete;
 
-	ClipData Clip = ClipData();
+	// 상하좌우 기준으로 Clip 합니다.
+	EffectData EffectOption = EffectData();
 
+	// Engine Rect 매쉬를 기준으로 초기화 합니다.
+	void RectInit(const std::string_view& _MaterialName);
+
+	// FBX 매쉬를 기준으로 초기화 합니다.
 	void SetFBXMesh(const std::string& _Name, std::string _Material) override;
 	void SetFBXMesh(const std::string& _Name, const std::vector<std::vector<std::string>>& _Materials) override;
 
 	void SetFBXMesh(const std::string& _Name, std::string _Material, size_t MeshIndex)  override;
 	void SetFBXMesh(const std::string& _Name, std::vector<std::string> _Material, size_t MeshIndex) override;
 
+	// Animation
+	void SetScaleRatio(float _Ratio)
+	{
+		ScaleRatio = _Ratio;
+	}
+
+	void SetFlipX();
+	void SetFlipY();
+
+	std::shared_ptr<AnimationInfo> FindAnimation(const std::string_view& _Name);
+
+	std::shared_ptr<AnimationInfo> CreateAnimation(const AnimationParameter& _Paramter);
+
+	void ChangeAnimation(const std::string_view& _Name, bool _Force, size_t _Frame = -1)
+	{
+		ChangeAnimation(_Name, _Frame, _Force);
+	}
+
+	void ChangeAnimation(const std::string_view& _Name, size_t _Frame = -1, bool _Force = true);
+
+	bool IsAnimationEnd()
+	{
+		return CurAnimation->IsEnd();
+	}
+
+	size_t GetCurrentFrame()
+	{
+		return CurAnimation->FrameIndex[CurAnimation->CurFrame];
+	}
+
+	inline float GetScaleRatio() const
+	{
+		return ScaleRatio;
+	}
+
+	void SetSprite(const std::string_view& _SpriteName, size_t _Frame = 0);
+	void SetFrame(size_t _Frame);
+
+	void SetAnimPauseOn()
+	{
+		CurAnimation->PauseOn();
+	}
+
+	void SetAnimPauseOff()
+	{
+		CurAnimation->PauseOff();
+	}
+
+	void SetAnimationUpdateEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
+	void SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
+
 protected:
 	void Start() override;
+	void Update(float _DeltaTime) override;
 
 private:
-	void ClipSetting();	
+	EffectVertextData VertexOption = EffectVertextData();
+
+	std::map<std::string, std::shared_ptr<AnimationInfo>> Animations;
+	std::shared_ptr<AnimationInfo> CurAnimation;
+	std::shared_ptr<GameEngineSprite> Sprite = nullptr;
+	std::shared_ptr<GameEngineTexture> CurTexture;
+
+	size_t Frame = -1;
+	float ScaleRatio = 1.0f;
+
+	void CustomOptionSetting();
 	void DrawEditor() override;
+
 };
 

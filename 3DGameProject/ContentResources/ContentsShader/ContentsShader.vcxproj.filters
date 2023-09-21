@@ -52,7 +52,7 @@
     <FxCompile Include="ContentsAniMesh_LowOption.hlsl">
       <Filter>MeshShader</Filter>
     </FxCompile>
-    <FxCompile Include="ClipEffectMesh.hlsl">
+    <FxCompile Include="EffectMesh.hlsl">
       <Filter>Effect</Filter>
     </FxCompile>
     <FxCompile Include="CubemapMergeShader.hlsl">

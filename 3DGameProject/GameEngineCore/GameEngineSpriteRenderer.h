@@ -14,10 +14,24 @@ public:
 
 class AnimationInfo : public std::enable_shared_from_this<AnimationInfo>
 {
-	friend class GameEngineSpriteRenderer;
+public:
+	size_t CurFrame = 0;
+	size_t StartFrame = -1;
+	size_t EndFrame = -1;
+	float CurTime = 0.0f;
+	float Inter = 0.1f;
+	bool Loop = true;
+	bool ScaleToTexture = false;
+	bool IsPauseValue = false;
+	std::vector<size_t> FrameIndex = std::vector<size_t>();
+	std::vector<float> FrameTime = std::vector<float>();
 
-private:
-	GameEngineSpriteRenderer* Parent = nullptr;
+	std::map<size_t, std::function<void()>> UpdateEventFunction;
+	std::map<size_t, AnimationStartEvent> StartEventFunction;
+
+	bool IsEnd();
+
+	GameEngineRenderer* Parent = nullptr;
 
 	std::shared_ptr<GameEngineSprite> Sprite;
 
@@ -38,23 +52,6 @@ private:
 	{
 		IsPauseValue = false;
 	}
-
-public:
-	size_t CurFrame = 0;
-	size_t StartFrame = -1;
-	size_t EndFrame = -1;
-	float CurTime = 0.0f;
-	float Inter = 0.1f;
-	bool Loop = true;
-	bool ScaleToTexture = false;
-	bool IsPauseValue = false;
-	std::vector<size_t> FrameIndex = std::vector<size_t>();
-	std::vector<float> FrameTime = std::vector<float>();
-
-	std::map<size_t, std::function<void()>> UpdateEventFunction;
-	std::map<size_t, AnimationStartEvent> StartEventFunction;
-
-	bool IsEnd();
 };
 
 class AnimationParameter

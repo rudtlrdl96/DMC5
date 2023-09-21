@@ -69,7 +69,7 @@ void PlayerActor_Nero::PlayerLoad()
 			}
 		}
 		Renderer_EffectMesh = CreateComponent<EffectFBXRenderer>();
-		Renderer_EffectMesh->SetFBXMesh("Effect_Mesh_01.FBX", "ClipEffect");
+		Renderer_EffectMesh->SetFBXMesh("Effect_Mesh_01.FBX", "Effect_2D");
 		Renderer_EffectMesh->SetTexture("DiffuseTexture", "Effect_Texture_02.png");
 		Renderer_EffectMesh->Off();
 	}
@@ -2923,7 +2923,7 @@ void PlayerActor_Nero::NetLoad()
 			}
 		}
 		Renderer_EffectMesh = CreateComponent<EffectFBXRenderer>();
-		Renderer_EffectMesh->SetFBXMesh("Effect_Mesh_01.FBX", "ClipEffect");
+		Renderer_EffectMesh->SetFBXMesh("Effect_Mesh_01.FBX", "Effect_2D");
 		Renderer_EffectMesh->SetTexture("DiffuseTexture", "Effect_Texture_01.png");
 		Renderer_EffectMesh->Off();
 	}

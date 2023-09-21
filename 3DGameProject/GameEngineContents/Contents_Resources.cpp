@@ -296,7 +296,7 @@ void ContentsCore::ContentsResourcesCreate()
 		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("FBX");
 
 		Material->SetVertexShader("ContentsMesh.hlsl");				
-		Material->SetRasterizer("Engine2DBase");
+		Material->SetRasterizer("Engine3DBase");
 		Material->SetPixelShader("ContentsMesh.hlsl");
 		Material->SetBlendState("AlphaBlend");
 		Material->SetDepthState("EngineDepth");
@@ -306,7 +306,7 @@ void ContentsCore::ContentsResourcesCreate()
 		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("FBX_Alpha");
 
 		Material->SetVertexShader("ContentsMesh_Alpha.hlsl");
-		Material->SetRasterizer("Engine2DBase");
+		Material->SetRasterizer("Engine3DBase");
 		Material->SetPixelShader("ContentsMesh_Alpha.hlsl");
 		Material->SetBlendState("AlphaBlend");
 		Material->SetDepthState("AlwayDepth");
@@ -316,7 +316,7 @@ void ContentsCore::ContentsResourcesCreate()
 		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("FBX_Low");
 
 		Material->SetVertexShader("ContentsMesh_LowOption.hlsl");
-		Material->SetRasterizer("Engine2DBase");
+		Material->SetRasterizer("Engine3DBase");
 		Material->SetPixelShader("ContentsMesh_LowOption.hlsl");
 		Material->SetBlendState("AlphaBlend");
 		Material->SetDepthState("EngineDepth");
@@ -326,7 +326,7 @@ void ContentsCore::ContentsResourcesCreate()
 		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("AniFBX");
 
 		Material->SetVertexShader("ContentsAniMesh.hlsl");
-		Material->SetRasterizer("Engine2DBase");
+		Material->SetRasterizer("Engine3DBase");
 		Material->SetPixelShader("ContentsAniMesh.hlsl");
 		Material->SetBlendState("AlphaBlend");
 		Material->SetDepthState("EngineDepth");
@@ -336,7 +336,7 @@ void ContentsCore::ContentsResourcesCreate()
 		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("AniFBX_Alpha");
 
 		Material->SetVertexShader("ContentsAniMesh_Alpha.hlsl");
-		Material->SetRasterizer("Engine2DBase");
+		Material->SetRasterizer("Engine3DBase");
 		Material->SetPixelShader("ContentsAniMesh_Alpha.hlsl");
 		Material->SetBlendState("AlphaBlend");
 		Material->SetDepthState("AlwayDepth");
@@ -346,7 +346,7 @@ void ContentsCore::ContentsResourcesCreate()
 		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("AniFBX_Low");
 
 		Material->SetVertexShader("ContentsAniMesh_LowOption.hlsl");
-		Material->SetRasterizer("Engine2DBase");
+		Material->SetRasterizer("Engine3DBase");
 		Material->SetPixelShader("ContentsAniMesh_LowOption.hlsl");
 		Material->SetBlendState("AlphaBlend");
 		Material->SetDepthState("EngineDepth");
@@ -354,11 +354,21 @@ void ContentsCore::ContentsResourcesCreate()
 
 	// 3D Effect
 	{
-		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("ClipEffect");
+		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("Effect_2D");
 
-		Material->SetVertexShader("ClipEffectMesh.hlsl");
+		Material->SetVertexShader("EffectMesh.hlsl");
 		Material->SetRasterizer("Engine2DBase");
-		Material->SetPixelShader("ClipEffectMesh.hlsl");
+		Material->SetPixelShader("EffectMesh.hlsl");
+		Material->SetBlendState("AlphaBlend");
+		Material->SetDepthState("EngineDepth");
+	}
+
+	{
+		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("Effect_3D");
+
+		Material->SetVertexShader("EffectMesh.hlsl");
+		Material->SetRasterizer("Engine3DBase");
+		Material->SetPixelShader("EffectMesh.hlsl");
 		Material->SetBlendState("AlphaBlend");
 		Material->SetDepthState("EngineDepth");
 	}

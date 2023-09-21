@@ -32,6 +32,7 @@ Texture2D NormalTex : register(t1); // rgb = normal
 Texture2D MatTex : register(t2); // r = metal, g = roughness
 Texture2D GleamTex : register(t3); // rgb = Gleam light
 Texture2D ShadowTex : register(t4);
+Texture2D SSSTex : register(t5); // Subsurface scattering
 
 SamplerState POINTSAMPLER : register(s0);
 

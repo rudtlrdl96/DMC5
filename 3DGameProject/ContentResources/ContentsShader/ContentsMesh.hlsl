@@ -65,6 +65,7 @@ struct DeferredOutPut
     float4 NorTarget : SV_Target3;
     float4 MatTarget : SV_Target4;
     float4 GlamTarget : SV_Target5;
+    float4 SSSTarget : SV_Target6;
 };
 
 float GGX_Distribution(float3 normal, float3 halfVector, float roughness)
@@ -122,7 +123,7 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     float roughness = 1.0 - NrmrData.r; // smoothness는 러프니스 값입니다.
     float3 reflection = reflect(AllLight[0].LightRevDir.xyz, Result.NorTarget.xyz); // 빛의 반사 방향 계산
     float distribution = GGX_Distribution(Result.NorTarget.xyz, reflection, roughness); // 반사 분포 계산
-                               
+        
     // View.TranslatedWorldCameraOrigin    
     float3 CameraPos = AllLight[0].CameraPosition;
     // TranslatedWorldPosition
@@ -148,6 +149,8 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     // 계산된 메탈릭 값
     float metallic = saturate(AlbmData.a - distribution);
      
+    // sss (subsurface scattering)
+    
     // AlbmData -> metallicValue 값에 따라서 결정되어야 한다        
     Result.DifTarget.rgb = lerp(AlbmData.rgb, AlbmData.rgb * 0.5f, metallic);
     Result.DifTarget.rgb += lerp(float3(0, 0, 0), ReflectionColor.rgb * 0.5f, metallic);
@@ -159,6 +162,12 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     Result.MatTarget.r = metallic;
     Result.MatTarget.g = roughness;
     Result.MatTarget.a = 1.0f;
+    
+    
+    Result.SSSTarget.r = AtosData.r;
+    Result.SSSTarget.g = AtosData.g;
+    Result.SSSTarget.b = AtosData.b;
+    Result.SSSTarget.a = 1.0f;
     
     if(0 != BaseColor.r)
     {
