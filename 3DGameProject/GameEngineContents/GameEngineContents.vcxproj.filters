@@ -431,7 +431,7 @@
       <Filter>Levels\Test</Filter>
     </ClInclude>
     <ClInclude Include="EffectToolWindow.h">
-      <Filter>Levels\Test</Filter>
+      <Filter>GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -853,7 +853,7 @@
       <Filter>Levels\Test</Filter>
     </ClCompile>
     <ClCompile Include="EffectToolWindow.cpp">
-      <Filter>Levels\Test</Filter>
+      <Filter>GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

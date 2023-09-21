@@ -171,6 +171,15 @@ public:
 
 	void PauseSwtich();
 
+	void SetPlay()
+	{
+		Pause = false;
+	}
+	void SetPause()
+	{
+		Pause = true;
+	}
+
 	void ChangeAnimation(const std::string& _AnimationName, bool _Force = false);
 
 	bool IsAnimationEnd();
@@ -241,6 +250,10 @@ public:
 
 	void SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
 
+	inline void SetCurFrame(UINT _Frame)
+	{
+		CurAnimation->CurFrame = _Frame;
+	}
 	inline UINT GetCurFrame()
 	{
 		return CurAnimation->CurFrame;

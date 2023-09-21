@@ -60,9 +60,9 @@ void PlayerActor_Nero::PlayerLoad()
 		}
 		NewDir.MoveParent();
 		NewDir.Move("Texture");
-		if (nullptr == GameEngineTexture::Find("Effect_Texture_01.png"))
+		if (nullptr == GameEngineTexture::Find("Effect_Texture_01.tga"))
 		{
-			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".png" });
+			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".tga" });
 			for (GameEngineFile File : Files)
 			{
 				GameEngineTexture::Load(File.GetFullPath());
@@ -70,7 +70,7 @@ void PlayerActor_Nero::PlayerLoad()
 		}
 		Renderer_EffectMesh = CreateComponent<EffectRenderer>();
 		Renderer_EffectMesh->SetFBXMesh("Effect_Mesh_01.FBX", "Effect_2D");
-		Renderer_EffectMesh->SetTexture("DiffuseTexture", "Effect_Texture_02.png");
+		Renderer_EffectMesh->SetTexture("DiffuseTex", "Effect_Texture_02.tga");
 		Renderer_EffectMesh->Off();
 	}
 

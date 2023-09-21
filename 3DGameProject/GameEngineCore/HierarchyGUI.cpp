@@ -99,18 +99,30 @@ void HierarchyGUI::ShowTransformInfo()
 {
 	GameEngineTransform* Transform = SelectObject->GetTransform();
 	float4 Position = Transform->GetLocalPosition();
+	float4 PrevPosition = Position;
 	float4 Rotation = Transform->GetLocalRotation();
+	float4 PrevRotation = Rotation;
 	float4 Scale = Transform->GetLocalScale();
+	float4 PrevScale = Scale;
 
 	// TransData 표시 및 TransformUpdate를 위한 0위치이동 실행
 
-	ImGui::DragFloat4("Position", Position.Arr1D);
-	ImGui::DragFloat4("Rotation", Rotation.Arr1D);
-	ImGui::DragFloat4("Scale", Scale.Arr1D);
+	ImGui::DragFloat4("Position", Position.Arr1D, 0.1f);
+	ImGui::DragFloat4("Rotation", Rotation.Arr1D, 0.1f);
+	ImGui::DragFloat4("Scale", Scale.Arr1D, 0.1f);
 
-	Transform->SetLocalPosition(Position);
-	Transform->SetLocalRotation(Rotation);
-	Transform->SetLocalScale(Scale);
+	if (Position != PrevPosition)
+	{
+		Transform->SetLocalPosition(Position);
+	}
+	if (Rotation != PrevRotation)
+	{
+		Transform->SetLocalRotation(Rotation);
+	}
+	if (Scale != PrevScale)
+	{
+		Transform->SetLocalScale(Scale);
+	}
 
 	SelectObject->DrawEditor();
 }

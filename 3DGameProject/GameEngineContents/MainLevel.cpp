@@ -127,7 +127,7 @@ void MainLevel::Update(float _DeltaTime)
 	}
 	if (true == GameEngineInput::IsDown("SelectLevel_09"))
 	{
-		GameEngineCore::ChangeLevel("NetworkTestLevel");
+		GameEngineCore::ChangeLevel("EffectToolLevel");
 		return;
 	}
 }

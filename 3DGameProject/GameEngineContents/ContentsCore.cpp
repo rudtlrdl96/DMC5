@@ -24,6 +24,7 @@
 #include "StageEditLevel.h"
 #include "MonsterTestLevel.h"
 #include "AnimationToolLevel.h"
+#include "EffectToolLevel.h"
 
 ContentsCore::ContentsCore() 
 {
@@ -58,8 +59,9 @@ void ContentsCore::GameStart()
 	////
 	GameEngineCore::CreateLevel<StageEditLevel>();
 	GameEngineCore::CreateLevel<ShopLevel>();
+	GameEngineCore::CreateLevel<EffectToolLevel>();
 	
-	GameEngineCore::ChangeLevel("TestLevel");
+	GameEngineCore::ChangeLevel("MainLevel");
 }
 
 void ContentsCore::GameEnd() 

@@ -5,10 +5,10 @@
 class EffectData
 {
 public:
-	float ClipStartX = -100;
-	float ClipEndX = 100;
-	float ClipStartY = -100;
-	float ClipEndY = 100;
+	float ClipStartX = 0;
+	float ClipEndX = 1;
+	float ClipStartY = 0;
+	float ClipEndY = 1;
 	float4 MulColor = float4::ONE;
 	float4 PlusColor = float4::ZERONULL;
 };
