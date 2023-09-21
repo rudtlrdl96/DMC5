@@ -421,6 +421,12 @@
     <ClInclude Include="ReflectionSetter.h">
       <Filter>Actor\Stage\FieldMap</Filter>
     </ClInclude>
+    <ClInclude Include="TestEventZone.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
+    </ClInclude>
+    <ClInclude Include="EventZone.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -830,6 +836,12 @@
     </ClCompile>
     <ClCompile Include="ReflectionSetter.cpp">
       <Filter>Actor\Stage\FieldMap</Filter>
+    </ClCompile>
+    <ClCompile Include="EventZone.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
+    </ClCompile>
+    <ClCompile Include="TestEventZone.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

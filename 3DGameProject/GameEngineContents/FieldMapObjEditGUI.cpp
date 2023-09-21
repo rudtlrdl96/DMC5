@@ -67,9 +67,9 @@ void FieldMapObjEditGUI::CreateStage(StageData _Data)
 	Parent->CreateStage(_Data);
 	for (auto& i : Parent->AcFieldMaps)
 	{
-		for (auto& j : i->FieldMapRenderer)
+		for (auto& j : i.lock()->FieldMapRenderer)
 		{
-			j->On();
+			j.lock()->On();
 		}
 	}
 }
@@ -164,15 +164,15 @@ void FieldMapObjEditGUI::ObjCombo(std::vector<StageData>& _AllData, size_t& _Sta
 		ImGui::EndCombo();
 	}
 
-	ShowTransformInfo(Parent->AcFieldMaps[_FieldMap_current]->FieldMapObj[Obj_current]);
+	ShowTransformInfo(Parent->AcFieldMaps[_FieldMap_current].lock()->FieldMapObj[Obj_current].lock());
 
 	if (ImGui::Button("Input ObjTransform"))
 	{
 		_AllData[_Stage_current].MapDatas[_FieldMap_current].MapObjData[Obj_current].ObjTransform.Pos =
-			Parent->AcFieldMaps[_FieldMap_current]->FieldMapObj[Obj_current]->GetTransform()->GetLocalPosition();
+			Parent->AcFieldMaps[_FieldMap_current].lock()->FieldMapObj[Obj_current].lock()->GetTransform()->GetLocalPosition();
 		_AllData[_Stage_current].MapDatas[_FieldMap_current].MapObjData[Obj_current].ObjTransform.Scale =
-			Parent->AcFieldMaps[_FieldMap_current]->FieldMapObj[Obj_current]->GetTransform()->GetLocalScale();
+			Parent->AcFieldMaps[_FieldMap_current].lock()->FieldMapObj[Obj_current].lock()->GetTransform()->GetLocalScale();
 		_AllData[_Stage_current].MapDatas[_FieldMap_current].MapObjData[Obj_current].ObjTransform.Rot =
-			Parent->AcFieldMaps[_FieldMap_current]->FieldMapObj[Obj_current]->GetTransform()->GetLocalRotation();
+			Parent->AcFieldMaps[_FieldMap_current].lock()->FieldMapObj[Obj_current].lock()->GetTransform()->GetLocalRotation();
 	}
 }

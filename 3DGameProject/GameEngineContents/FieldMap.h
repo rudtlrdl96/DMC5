@@ -26,10 +26,8 @@ public:
 		const std::vector<FieldMapObjData>& _FieldMapObjs
 	);
 
-	void PushNode(const std::vector<std::shared_ptr<FieldMap>>& _RenderOn, const std::vector<std::shared_ptr<FieldMap>>& _RenderOff);
-
+	void PushNode(const std::vector<std::weak_ptr<FieldMap>>& _RenderOn, const std::vector<std::weak_ptr<FieldMap>>& _RenderOff);
 	void EraseFieldMap();
-
 	void ReflectionSetting();
 
 protected:
@@ -37,12 +35,12 @@ protected:
 	void Update(float _DeltaTime) override;
 
 private:
-	std::vector<std::shared_ptr<class GameEngineFBXRenderer>> FieldMapRenderer;
-	std::vector<std::shared_ptr<class GameEngineCollision>> FieldMapCullingCol;
+	std::vector<std::weak_ptr<class GameEngineFBXRenderer>> FieldMapRenderer;
+	std::vector<std::weak_ptr<class GameEngineCollision>> FieldMapCullingCol;
 	std::vector<std::weak_ptr<FieldMap>> RenderOnNode;
 	std::vector<std::weak_ptr<FieldMap>> RenderOffNode;
-	std::vector<std::shared_ptr<class FieldMapObject>> FieldMapObj;
-	std::shared_ptr<class ReflectionSetter> Reflection = nullptr;
+	std::vector<std::weak_ptr<class FieldMapObject>> FieldMapObj;
+	std::weak_ptr<class ReflectionSetter> Reflection;
 	
 	void ClearFieldMapRenderer();
 	void ClearFieldMapCullingCol();

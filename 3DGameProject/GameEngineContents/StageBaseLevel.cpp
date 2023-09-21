@@ -79,8 +79,8 @@ void StageBaseLevel::CreateStage(const StageData& _Data)
 
 	for (size_t i = 0; i < AcFieldMaps.size(); i++)
 	{
-		LinkNode(AcFieldMaps[i], _Data.MapDatas[i].NodeIndex);
-		AcFieldMaps[i]->ReflectionSetting();
+		LinkNode(AcFieldMaps[i].lock(), _Data.MapDatas[i].NodeIndex);
+		AcFieldMaps[i].lock()->ReflectionSetting();
 	}
 }
 
@@ -102,9 +102,9 @@ void StageBaseLevel::ReflectionTextureSetting(std::shared_ptr<GameEngineTexture>
 
 	for (size_t i = 0; i < AcFieldMaps.size(); i++)
 	{
-		for (size_t j = 0; j < AcFieldMaps[i]->FieldMapRenderer.size(); j++)
+		for (size_t j = 0; j < AcFieldMaps[i].lock()->FieldMapRenderer.size(); j++)
 		{
-			std::shared_ptr<GameEngineFBXRenderer> MapRenderer = AcFieldMaps[i]->FieldMapRenderer[j];
+			std::shared_ptr<GameEngineFBXRenderer> MapRenderer = AcFieldMaps[i].lock()->FieldMapRenderer[j].lock();
 
 			GameEngineTransform* MapRendererTrans = MapRenderer->GetTransform();
 
@@ -130,8 +130,9 @@ void StageBaseLevel::EraseStageFieldMap()
 
 	for (size_t i = 0; i < AcFieldMaps.size(); i++)
 	{
-		AcFieldMaps[i]->EraseFieldMap();
-		AcFieldMaps[i] = nullptr;
+		AcFieldMaps[i].lock()->EraseFieldMap();
+		AcFieldMaps[i].lock()->Death();
+		AcFieldMaps[i].lock() = nullptr;
 	}
 	AcFieldMaps.clear();
 }
@@ -162,12 +163,12 @@ void StageBaseLevel::CreateSkyBox(const std::string_view& _MeshFileName)
 
 void StageBaseLevel::EraseSkyBox()
 {
-	if (AcSkyBox == nullptr)
+	if (AcSkyBox.lock() == nullptr)
 	{
 		return;
 	}
-	AcSkyBox->Death();
-	AcSkyBox = nullptr;
+	AcSkyBox.lock()->Death();
+	AcSkyBox.lock() = nullptr;
 }
 
 void StageBaseLevel::CreateGroundCol(const std::string_view& _MeshFileName)
@@ -181,12 +182,12 @@ void StageBaseLevel::CreateGroundCol(const std::string_view& _MeshFileName)
 
 void StageBaseLevel::EraseGroundCol()
 {
-	if (AcGroundCol == nullptr)
+	if (AcGroundCol.lock() == nullptr)
 	{
 		return;
 	}
-	AcGroundCol->Death();
-	AcGroundCol = nullptr;
+	AcGroundCol.lock()->Death();
+	AcGroundCol.lock() = nullptr;
 }
 
 void StageBaseLevel::ClearStage()
@@ -213,12 +214,12 @@ void StageBaseLevel::CreateWallCol(const std::string_view& _MeshFileName)
 
 void StageBaseLevel::EraseWallCol()
 {
-	if (AcWallCol == nullptr)
+	if (AcWallCol.lock() == nullptr)
 	{
 		return;
 	}
-	AcWallCol->Death();
-	AcWallCol = nullptr;
+	AcWallCol.lock()->Death();
+	AcWallCol.lock() = nullptr;
 }
 
 void StageBaseLevel::LinkNode(std::shared_ptr<FieldMap> _FieldMap, const std::vector<int>& _NodeIndex)
@@ -226,8 +227,8 @@ void StageBaseLevel::LinkNode(std::shared_ptr<FieldMap> _FieldMap, const std::ve
 	//인덱스를 받는다
 	//필드맵 안에 필드맵 여러개를 넣어야하는 상황
 	//1. 필드맵의 주소를 받는 벡터를 하나 만든다.
-	std::vector<std::shared_ptr<FieldMap>> TempRenderOnNodes;
-	std::vector<std::shared_ptr<FieldMap>> TempRenderOffNodes;
+	std::vector<std::weak_ptr<FieldMap>> TempRenderOnNodes;
+	std::vector<std::weak_ptr<FieldMap>> TempRenderOffNodes;
 	std::vector<int> TempOffNodeIndex;
 
 	if (AcFieldMaps.empty())

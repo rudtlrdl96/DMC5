@@ -89,6 +89,8 @@ enum class CollisionOrder
 	RN_Player,
 	CullingCol,
 	GameEngineRenderer,
+	EventZone,
+
 };
 
 enum class DevilBreaker

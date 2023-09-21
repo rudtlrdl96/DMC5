@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseStageActor.h"
+#include "ContentsEnum.h"
 
 class FieldMapObject : public BaseStageActor
 {

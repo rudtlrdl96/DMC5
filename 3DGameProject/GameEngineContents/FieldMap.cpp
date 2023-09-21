@@ -7,6 +7,7 @@
 #include "FieldMapObject.h"
 #include "ReflectionSetter.h"
 #include "FieldMapObject.h"
+#include "StageBaseLevel.h"
 
 
 FieldMap::FieldMap()
@@ -24,51 +25,54 @@ std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, cons
 	std::shared_ptr<FieldMap> Result;
 	Result = _Level->CreateActor<FieldMap>();
 	Result->SetName("FieldMap");
-	std::vector<std::shared_ptr<GameEngineFBXRenderer>>& MapRenderersRef = Result->FieldMapRenderer;
+	std::vector<std::weak_ptr<GameEngineFBXRenderer>>& MapRenderersRef = Result->FieldMapRenderer;
 	MapRenderersRef.resize(_FBXNames.size());
 	for (size_t i = 0; i < MapRenderersRef.size(); i++)
 	{
 		MapRenderersRef[i] = Result->CreateComponent<GameEngineFBXRenderer>();
 		if (GameEngineOption::GetOption("Shader") == GameEngineOptionValue::Low)
 		{
-			MapRenderersRef[i]->SetFBXMesh(_FBXNames[i].data(), "FBX_Low");
+			MapRenderersRef[i].lock()->SetFBXMesh(_FBXNames[i].data(), "FBX_Low");
 		}
 		else
 		{
-			MapRenderersRef[i]->SetFBXMesh(_FBXNames[i].data(), "FBX");
+			MapRenderersRef[i].lock()->SetFBXMesh(_FBXNames[i].data(), "FBX");
 		}
 
-		MapRenderersRef[i]->ShadowOn();
-		MapRenderersRef[i]->SetStatic();
+		MapRenderersRef[i].lock()->ShadowOn();
+		MapRenderersRef[i].lock()->SetStatic();
 		//MapRenderersRef[i]->Off();
 	}
 
-	std::vector<std::shared_ptr<GameEngineCollision>>& MapCullingColRef = Result->FieldMapCullingCol;
+	std::vector<std::weak_ptr<GameEngineCollision>>& MapCullingColRef = Result->FieldMapCullingCol;
 	MapCullingColRef.resize(_CullingCols.size());
 	for (size_t i = 0; i < MapCullingColRef.size(); i++)
 	{
 		MapCullingColRef[i] = Result->CreateComponent<GameEngineCollision>(CollisionOrder::CullingCol);
-		MapCullingColRef[i]->SetColType(ColType::OBBBOX3D);
-		MapCullingColRef[i]->GetTransform()->SetLocalPosition(_CullingCols[i].Pos);
-		MapCullingColRef[i]->GetTransform()->SetLocalScale(_CullingCols[i].Scale);
-		MapCullingColRef[i]->GetTransform()->SetLocalRotation(_CullingCols[i].Rot);
+		MapCullingColRef[i].lock()->SetColType(ColType::OBBBOX3D);
+		MapCullingColRef[i].lock()->GetTransform()->SetLocalPosition(_CullingCols[i].Pos);
+		MapCullingColRef[i].lock()->GetTransform()->SetLocalScale(_CullingCols[i].Scale);
+		MapCullingColRef[i].lock()->GetTransform()->SetLocalRotation(_CullingCols[i].Rot);
 	}
 
-	std::vector<std::shared_ptr<FieldMapObject>>& FieldMapObjRef = Result->FieldMapObj;
+	std::vector<std::weak_ptr<FieldMapObject>>& FieldMapObjRef = Result->FieldMapObj;
 	FieldMapObjRef.resize(_FieldMapObjs.size());
 	for (size_t i = 0; i < FieldMapObjRef.size(); i++)
 	{
 		FieldMapObjRef[i] = FieldMapObject::CreateFieldMapObj(_Level, _FieldMapObjs[i].Type, _FieldMapObjs[i].ObjTransform);
-		FieldMapObjRef[i]->Off();
+		//FieldMapObjRef[i]->Off();
 	}
 
-	Result->Reflection = _Level->CreateActor<ReflectionSetter>();
-	Result->Reflection->GetTransform()->SetLocalPosition(_CullingCols[0].Pos + float4{0,200,0,0});
+	if (!_Level->DynamicThis<StageBaseLevel>()->IsEditLevel)
+	{
+		Result->Reflection = _Level->CreateActor<ReflectionSetter>();
+		Result->Reflection.lock()->GetTransform()->SetLocalPosition(_CullingCols[0].Pos + float4{0,200,0,0});
+	}
 
 	return Result;
 }
 
-void FieldMap::PushNode(const std::vector<std::shared_ptr<FieldMap>>& _RenderOn, const std::vector<std::shared_ptr<FieldMap>>& _RenderOff)
+void FieldMap::PushNode(const std::vector<std::weak_ptr<FieldMap>>& _RenderOn, const std::vector<std::weak_ptr<FieldMap>>& _RenderOff)
 {
 	std::copy(_RenderOn.begin(), _RenderOn.end(), std::back_inserter(RenderOnNode));
 	std::copy(_RenderOff.begin(), _RenderOff.end(), std::back_inserter(RenderOffNode));
@@ -84,7 +88,12 @@ void FieldMap::EraseFieldMap()
 
 void FieldMap::ReflectionSetting()
 {
-	if (Reflection == nullptr)
+	if (GetLevel()->DynamicThis<StageBaseLevel>()->IsEditLevel)
+	{
+		return;
+	}
+
+	if (Reflection.lock() == nullptr)
 	{
 		MsgAssert("Reflection Setter가 nullptr입니다");
 		return;
@@ -92,7 +101,7 @@ void FieldMap::ReflectionSetting()
 
 	static int n = 0;
 
-	Reflection->Init("TestReflection" + std::to_string(n++), float4(256, 256));
+	Reflection.lock()->Init("TestReflection" + std::to_string(n++), float4(256, 256));
 
 	if (FieldMapRenderer.empty())
 	{
@@ -102,16 +111,16 @@ void FieldMap::ReflectionSetting()
 	
 	for (size_t i = 0; i < FieldMapRenderer.size(); i++)
 	{
-		FieldMapRenderer[i]->SetTexture("ReflectionTexture", Reflection->GetReflectionCubeTexture());
+		FieldMapRenderer[i].lock()->SetTexture("ReflectionTexture", Reflection.lock()->GetReflectionCubeTexture());
 	}
 
 	for (size_t i = 0; i < FieldMapObj.size(); i++)
 	{
-		if (FieldMapObj[i]->GetFBXMesh() == nullptr)
+		if (FieldMapObj[i].lock()->GetFBXMesh() == nullptr)
 		{
 			continue;
 		}
-		FieldMapObj[i]->GetFBXMesh()->SetTexture("ReflectionTexture", Reflection->GetReflectionCubeTexture());
+		FieldMapObj[i].lock()->GetFBXMesh()->SetTexture("ReflectionTexture", Reflection.lock()->GetReflectionCubeTexture());
 	}
 }
 
@@ -132,8 +141,8 @@ void FieldMap::ClearFieldMapRenderer()
 
 	for (size_t i = 0; i < FieldMapRenderer.size(); i++)
 	{
-		FieldMapRenderer[i]->Death();
-		FieldMapRenderer[i] = nullptr;
+		FieldMapRenderer[i].lock()->Death();
+		FieldMapRenderer[i].lock() = nullptr;
 	}
 	FieldMapRenderer.clear();
 }
@@ -142,7 +151,7 @@ bool FieldMap::IsPlayerCollsionToCullingCol()
 {
 	for (size_t i = 0; i < FieldMapCullingCol.size(); i++)
 	{
-		if (nullptr != FieldMapCullingCol[i]->Collision(CollisionOrder::Player, ColType::OBBBOX3D, ColType::OBBBOX3D))
+		if (nullptr != FieldMapCullingCol[i].lock()->Collision(CollisionOrder::Player, ColType::OBBBOX3D, ColType::OBBBOX3D))
 		{
 			return true;
 		}
@@ -184,7 +193,7 @@ void FieldMap::FieldMapObjOn()
 {
 	for (size_t i = 0; i < FieldMapObj.size(); i++)
 	{
-		FieldMapObj[i]->On();
+		FieldMapObj[i].lock()->On();
 	}
 }
 
@@ -192,7 +201,7 @@ void FieldMap::FieldMapObjOff()
 {
 	for (size_t i = 0; i < FieldMapObj.size(); i++)
 	{
-		FieldMapObj[i]->Off();
+		FieldMapObj[i].lock()->Off();
 	}
 }
 
@@ -200,7 +209,7 @@ void FieldMap::FieldMapRendererOn()
 {
 	for (size_t i = 0; i < FieldMapRenderer.size(); i++)
 	{
-		FieldMapRenderer[i]->On();
+		FieldMapRenderer[i].lock()->On();
 	}
 }
 
@@ -208,7 +217,7 @@ void FieldMap::FieldMapRendererOff()
 {
 	for (size_t i = 0; i < FieldMapRenderer.size(); i++)
 	{
-		FieldMapRenderer[i]->Off();
+		FieldMapRenderer[i].lock()->Off();
 	}
 }
 
@@ -221,8 +230,8 @@ void FieldMap::ClearFieldMapCullingCol()
 
 	for (size_t i = 0; i < FieldMapCullingCol.size(); i++)
 	{
-		FieldMapCullingCol[i]->Death();
-		FieldMapCullingCol[i] = nullptr;
+		FieldMapCullingCol[i].lock()->Death();
+		FieldMapCullingCol[i].lock() = nullptr;
 	}
 	FieldMapCullingCol.clear();
 }
@@ -236,8 +245,8 @@ void FieldMap::ClearFieldMapObj()
 
 	for (size_t i = 0; i < FieldMapObj.size(); i++)
 	{
-		FieldMapObj[i]->Death();
-		FieldMapObj[i] = nullptr;
+		FieldMapObj[i].lock()->Death();
+		FieldMapObj[i].lock() = nullptr;
 	}
 	FieldMapObj.clear();
 }
@@ -251,14 +260,14 @@ void FieldMap::DrawEditor()
 	ImGui::Spacing();
 	ImGui::Spacing();
 
-	float4 Color = FieldMapRenderer[0]->GetBaseColor();
+	float4 Color = FieldMapRenderer[0].lock()->GetBaseColor();
 
 	float InputColor[4] = { Color.x, Color.y, Color.z, Color.w };
 	ImGui::DragFloat4("Color", InputColor, 0.01f, 0.0f, 1.0f);
 
 	for (size_t i = 0; i < FieldMapRenderer.size(); i++)
 	{
-		FieldMapRenderer[i]->SetBaseColor(float4(InputColor[0], InputColor[1], InputColor[2], InputColor[3]));
+		FieldMapRenderer[i].lock()->SetBaseColor(float4(InputColor[0], InputColor[1], InputColor[2], InputColor[3]));
 	}
 }
 

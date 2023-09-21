@@ -4,6 +4,8 @@
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/PhysXBoxComponent.h>
 
+#include "StageBaseLevel.h"
+
 StaticFieldMapObject::StaticFieldMapObject()
 {
 
@@ -21,11 +23,10 @@ void StaticFieldMapObject::Start()
 
 void StaticFieldMapObject::Update(float _DeltaTime)
 {
-	if (PhysXBox == nullptr)
+	if (PhysXBox == nullptr && !GetLevel()->DynamicThis<StageBaseLevel>()->IsEditLevel)
 	{
 		SetPhysX();
 	}
-	//MapObj_SetFBXMesh(FBXFileName, "FBX");
 }
 
 void StaticFieldMapObject::SetRenderer(const std::string_view& _Mat)

@@ -22,6 +22,7 @@ public:
 
 	//void FieldMapOn(int _Index = -1);
 	//void FieldMapOff(int _Index = -1);
+	bool IsEditLevel = false;
 	
 protected:
 	static std::vector<StageData> AllStageDatas;
@@ -35,10 +36,10 @@ protected:
 	void LevelChangeEnd() override;
 
 	std::string StageName = "";
-	std::vector<std::shared_ptr<class FieldMap>> AcFieldMaps;
-	std::shared_ptr<class SkyBox> AcSkyBox = nullptr;
-	std::shared_ptr<class MapCollisionMesh> AcGroundCol = nullptr;
-	std::shared_ptr<class MapCollisionMesh> AcWallCol = nullptr;
+	std::vector<std::weak_ptr<class FieldMap>> AcFieldMaps;
+	std::weak_ptr<class SkyBox> AcSkyBox;
+	std::weak_ptr<class MapCollisionMesh> AcGroundCol;
+	std::weak_ptr<class MapCollisionMesh> AcWallCol;
 
 	void CreateStage(const StageData& _Data); // 데이터 넣어주면 스테이지 생성
 

@@ -42,6 +42,7 @@ void StageEditLevel::Start()
 
 	Grid = CreateActor<EngineGrid>();
 	FreeCam = CreateActor<FreeCameraActor>();
+	IsEditLevel = true;
 
 }
 

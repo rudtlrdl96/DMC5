@@ -215,15 +215,15 @@ void StageEditGUI::InputSkyBox()
 	{
 		static bool check = true;
 		ImGui::Checkbox("Sky On/Off", &check);
-		if (Parent->AcSkyBox != nullptr)
+		if (Parent->AcSkyBox.lock() != nullptr)
 		{
-			if (check && !Parent->AcSkyBox->IsUpdate())
+			if (check && !Parent->AcSkyBox.lock()->IsUpdate())
 			{
-				Parent->AcSkyBox->On();
+				Parent->AcSkyBox.lock()->On();
 			}
-			else if (!check && Parent->AcSkyBox->IsUpdate())
+			else if (!check && Parent->AcSkyBox.lock()->IsUpdate())
 			{
-				Parent->AcSkyBox->Off();
+				Parent->AcSkyBox.lock()->Off();
 			}
 		}
 	}
@@ -247,15 +247,15 @@ void StageEditGUI::InputMapCol()
 	{
 		static bool check = true;
 		ImGui::Checkbox("Ground On/Off", &check);
-		if (Parent->AcGroundCol != nullptr)
+		if (Parent->AcGroundCol.lock() != nullptr)
 		{
-			if (check && !Parent->AcGroundCol->RenderIsUpdate())
+			if (check && !Parent->AcGroundCol.lock()->RenderIsUpdate())
 			{
-				Parent->AcGroundCol->RenderOn();
+				Parent->AcGroundCol.lock()->RenderOn();
 			}
-			else if (!check && Parent->AcGroundCol->RenderIsUpdate())
+			else if (!check && Parent->AcGroundCol.lock()->RenderIsUpdate())
 			{
-				Parent->AcGroundCol->RenderOff();
+				Parent->AcGroundCol.lock()->RenderOff();
 			}
 		}
 	}
@@ -276,15 +276,15 @@ void StageEditGUI::InputMapCol()
 	{
 		static bool check = true;
 		ImGui::Checkbox("Wall On/Off", &check);
-		if (Parent->AcWallCol != nullptr)
+		if (Parent->AcWallCol.lock() != nullptr)
 		{
-			if (check && !Parent->AcWallCol->RenderIsUpdate())
+			if (check && !Parent->AcWallCol.lock()->RenderIsUpdate())
 			{
-				Parent->AcWallCol->RenderOn();
+				Parent->AcWallCol.lock()->RenderOn();
 			}
-			else if (!check && Parent->AcWallCol->RenderIsUpdate())
+			else if (!check && Parent->AcWallCol.lock()->RenderIsUpdate())
 			{
-				Parent->AcWallCol->RenderOff();
+				Parent->AcWallCol.lock()->RenderOff();
 			}
 		}
 	}
@@ -442,15 +442,15 @@ void StageEditGUI::CullingColCombo()
 		ImGui::EndCombo();
 	}
 
-	ShowTransformInfo(Parent->AcFieldMaps[FieldMap_current]->FieldMapCullingCol[CullingCol_current]);
+	ShowTransformInfo(Parent->AcFieldMaps[FieldMap_current].lock()->FieldMapCullingCol[CullingCol_current].lock());
 	if (ImGui::Button("Input Transform"))
 	{
 		AllData[Stage_current].MapDatas[FieldMap_current].CullingColTransform[CullingCol_current].Pos 
-			= Parent->AcFieldMaps[FieldMap_current]->FieldMapCullingCol[CullingCol_current]->GetTransform()->GetLocalPosition();
+			= Parent->AcFieldMaps[FieldMap_current].lock()->FieldMapCullingCol[CullingCol_current].lock()->GetTransform()->GetLocalPosition();
 		AllData[Stage_current].MapDatas[FieldMap_current].CullingColTransform[CullingCol_current].Scale
-			= Parent->AcFieldMaps[FieldMap_current]->FieldMapCullingCol[CullingCol_current]->GetTransform()->GetLocalScale();
+			= Parent->AcFieldMaps[FieldMap_current].lock()->FieldMapCullingCol[CullingCol_current].lock()->GetTransform()->GetLocalScale();
 		AllData[Stage_current].MapDatas[FieldMap_current].CullingColTransform[CullingCol_current].Rot
-			= Parent->AcFieldMaps[FieldMap_current]->FieldMapCullingCol[CullingCol_current]->GetTransform()->GetLocalRotation();
+			= Parent->AcFieldMaps[FieldMap_current].lock()->FieldMapCullingCol[CullingCol_current].lock()->GetTransform()->GetLocalRotation();
 	}
 }
 
@@ -499,9 +499,9 @@ void StageEditGUI::CreateStage(StageData _Data)
 	Parent->CreateStage(_Data);
 	for (auto& i : Parent->AcFieldMaps)
 	{
-		for (auto& j : i->FieldMapRenderer)
+		for (auto& j : i.lock()->FieldMapRenderer)
 		{
-			j->On();
+			j.lock()->On();
 		}
 	}
 }
