@@ -79,7 +79,6 @@ void BaseEnemyActor::Update(float _DeltaTime)
 	//	MsgAssert("MonsterCollision의 크기를 설정해주지 않았습니다.");
 	//}
 
-	Update_NetworkTrans(_DeltaTime);
 	RenderShake(_DeltaTime);
 	MonsterSnatch(_DeltaTime);
 
@@ -105,6 +104,7 @@ void BaseEnemyActor::Update(float _DeltaTime)
 		else if (NetControllType::ActiveControll != GetControllType())
 		{
 			EnemyFSM_Client.Update(_DeltaTime);
+			Update_NetworkTrans(_DeltaTime);
 		}
 	}
 }

@@ -33,6 +33,7 @@ void Enemy_HellCaina::Start()
 	MonsterCollision->SetColType(ColType::OBBBOX3D);
 	RN_MonsterCollision->GetTransform()->SetLocalScale({ 700, 0, 0 });
 	RN_MonsterCollision->GetTransform()->SetLocalPosition({ 0, 80, 0 });
+	RN_MonsterCollision->Off();
 
 	// 기본 세팅
 	FallDistance = 55.0f;
@@ -180,12 +181,12 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 
 void Enemy_HellCaina::RecognizeCollisionCheck(float _DeltaTime)
 {
-	if (true == IsRecognize)
+	if (true == IsRecognize || false == RN_MonsterCollision->IsUpdate())
 	{
 		return;
 	}
 
-	std::shared_ptr<GameEngineCollision> Col = RN_MonsterCollision->Collision(CollisionOrder::Player);
+	std::shared_ptr<GameEngineCollision> Col = RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D);
 	if (nullptr == Col) { return; }
 
 	IsRecognize = true;
@@ -337,7 +338,9 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	WaitTime += _DeltaTime;
 	if (1.5f <= WaitTime)
 	{
-		PlayerChase(_DeltaTime);
+		//PlayerChase(_DeltaTime);
+		AllDirectSetting();
+		ChangeState(FSM_State_HellCaina::HellCaina_Attack_DownUp);
 		return;
 	}
 	},
@@ -650,17 +653,30 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	/////////////////////////////////     공 격     //////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
+	{
+		EnemyRenderer->SetAnimationStartEvent("em0000_attack_01", 62, [=] { SetMoveStop(); });
+		EnemyRenderer->SetAnimationStartEvent("em0000_attack_01", 63, [=] { SetAdvance(33000.0f); });
+	}
+
 	// 아래에서 위로 횡베기
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Attack_DownUp,
 	.Start = [=] {
-	SetMoveStop();
 	EnemyRenderer->ChangeAnimation("em0000_attack_01");
 	},
 	.Update = [=](float _DeltaTime) {
-	if (true == EnemyRenderer->IsAnimationEnd())
+	if (EnemyRenderer->GetCurFrame() && EnemyRenderer->GetCurFrame() <= 61)
 	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Idle);
-		return;
+		SetForwardMove(90.0f);
+	}
+	if (138 < EnemyRenderer->GetCurFrame() && EnemyRenderer->GetCurFrame() <= 178)
+	{
+		SetForwardMove(90.0f);
+	}
+
+	if (true == EnemyRenderer->IsAnimationEnd()) 
+	{ 
+		ChangeState(FSM_State_HellCaina::HellCaina_Idle); 
+		return; 
 	}
 	},
 	.End = [=] {
@@ -1067,7 +1083,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
 	///////////////////////////// 앞으로 넘어지는 종류
-	//앞으로 넘어짐
+	// 앞으로 넘어짐
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Prone_Down,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0000_prone_down");

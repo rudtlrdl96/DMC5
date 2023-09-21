@@ -221,6 +221,11 @@ protected:
 	void PushDirectSetting();
 	void SnatchCalculation();
 	void MonsterSnatch(float _DeltaTime);
+	
+	void SetAdvance(float _Value)
+	{
+		PhysXCapsule->SetPush(ForwardDirect * _Value);
+	}
 
 	void SetPush(float _Value)
 	{
