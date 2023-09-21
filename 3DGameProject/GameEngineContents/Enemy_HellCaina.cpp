@@ -107,10 +107,8 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 
 	PushDirectSetting();
 	StartRenderShaking(10);
-
-	DamageType Type = AttackCol->GetDamageType();
-
-	switch (Type)
+	DamageData Data = AttackCol->GetDamage();
+	switch (Data.DamageTypeValue)
 	{
 	case DamageType::None:
 		return;

@@ -2,6 +2,13 @@
 #include <GameEngineCore/GameEngineCollision.h>
 #include "ContentsEnum.h"
 
+class DamageData
+{
+public:
+	DamageType DamageTypeValue = DamageType::None;
+	int DamageValue = 0;
+};
+
 // Ό³Έν :
 class AttackCollision : public GameEngineCollision
 {
@@ -16,26 +23,30 @@ public:
 	AttackCollision& operator=(const AttackCollision& _Other) = delete;
 	AttackCollision& operator=(AttackCollision&& _Other) noexcept = delete;
 
-	DamageType GetDamageType()
+
+	const DamageData& GetDamage()
 	{
-		return DamageTypeValue;
+		if (nullptr != CallBack)
+		{
+			CallBack();
+		}
+		return Data;
 	}
 
-	int GetDamage()
+	void SetAttackData(DamageData _Data, std::function<void()> _CallBack = nullptr)
 	{
-		return DamageValue;
+		Data = _Data;
+		CallBack = _CallBack;
 	}
 
-	void SetAttackData(DamageType _DamageType, int _DamageValue)
+	void SetAttackData(DamageType _Type, int _DamageValue, std::function<void()> _CallBack = nullptr)
 	{
-		DamageTypeValue = _DamageType;
-		DamageValue = _DamageValue;
+		SetAttackData({ .DamageTypeValue = _Type, .DamageValue = _DamageValue }, _CallBack);
 	}
-
 protected:
 
 private:
-	DamageType DamageTypeValue = DamageType::None;
-	int DamageValue = 0;
+	DamageData Data;
+	std::function<void()> CallBack = nullptr;
 };
 

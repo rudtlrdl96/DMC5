@@ -331,8 +331,8 @@ void BasePlayerActor::DamageColCheck()
 
 	std::shared_ptr<AttackCollision> AttackCol = std::dynamic_pointer_cast<AttackCollision>(Col);
 	if (nullptr == AttackCol) { return; }
-
-	switch (AttackCol->GetDamageType())
+	DamageData Data = AttackCol->GetDamage();
+	switch (Data.DamageTypeValue)
 	{
 	case DamageType::None:
 		break;

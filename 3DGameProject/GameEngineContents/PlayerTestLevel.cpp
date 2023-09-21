@@ -73,10 +73,11 @@ void PlayerTestLevel::LevelChangeStart()
 	GameEngineCoreWindow::AddDebugRenderTarget(1, "LightRenderTarget", GetMainCamera()->GetDeferredLightTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(2, "MainCameraForwardTarget", GetMainCamera()->GetCamForwardTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(3, "DeferredTarget", GetMainCamera()->GetCamDeferrdTarget());
-	//CreateActor<PlayerActor_Nero>()->SetUserControllType();
-	Vergil = CreateActor<PlayerActor_Vergil>();
-	Vergil->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	Vergil->GetTransform()->SetWorldPosition({ 0, 100, 0 });
+	Nero = CreateActor<PlayerActor_Nero>();
+	Nero->SetUserControllType();
+	//Vergil = CreateActor<PlayerActor_Vergil>();
+	//Vergil->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//Vergil->GetTransform()->SetWorldPosition({ 0, 100, 0 });
 
 	if (nullptr == Light)
 	{
@@ -87,7 +88,15 @@ void PlayerTestLevel::LevelChangeStart()
 
 void PlayerTestLevel::LevelChangeEnd()
 {
-	Vergil->Death();
-	Vergil = nullptr;
+	if (nullptr != Nero)
+	{
+		Nero->Death();
+		Nero = nullptr;
+	}
+	if (nullptr != Vergil)
+	{
+		Vergil->Death();
+		Vergil = nullptr;
+	}
 	IsMessage = false;
 }
