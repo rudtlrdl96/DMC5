@@ -71,7 +71,7 @@ void NetTestEnemy::Update_ProcessPacket()
 void NetTestEnemy::Update(float _DeltaTime)
 {
 	//몬스터의 경우 UserControll 일때만 FSM이 동작되어야 합니다.
-	if (NetControllType::NetControll == GetControllType())
+	if (NetControllType::PassiveControll == GetControllType())
 		return;
 
 

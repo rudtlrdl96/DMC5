@@ -90,14 +90,14 @@ void TestObject::Update(float _DeltaTime)
 {
 	//NetControllType Type = GetControllType();
 
-	NetControllType Type = NetControllType::UserControll;
+	NetControllType Type = NetControllType::ActiveControll;
 
 	switch (Type)
 	{
-	case NetControllType::UserControll:
+	case NetControllType::ActiveControll:
 		UserUpdate(_DeltaTime);
 		break;
-	case NetControllType::NetControll:
+	case NetControllType::PassiveControll:
 		ServerUpdate(_DeltaTime);
 		break;
 	default:

@@ -15,7 +15,7 @@ NetworkObjectBase::~NetworkObjectBase()
 
 void NetworkObjectBase::SetNetwortTransData(const float4& _DestPos, const float4& _DestRot)
 {
-	if (NetControllType::UserControll == GetControllType())
+	if (NetControllType::ActiveControll == GetControllType())
 	{
 		MsgAssert("패킷을 받지 않는 NetControllType::UserControll타입의 엑터가 ObjectUpdatePacket을 받아 위치를 수정하려고 했습니다");
 		return;
@@ -33,7 +33,7 @@ void NetworkObjectBase::SetNetwortTransData(const float4& _DestPos, const float4
 void NetworkObjectBase::Update_NetworkTrans(float _DeltaTime)
 {
 	//서버로부터 패킷을 받는 타입의 객체만 아래를 실행
-	if (NetControllType::UserControll == GetControllType())
+	if (NetControllType::ActiveControll == GetControllType())
 		return;
 
 	//아래 코드들은 Lerp시키면서 부드럽게 이동/회전 시키는 코드

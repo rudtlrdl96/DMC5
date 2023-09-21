@@ -97,7 +97,7 @@ public:
 	// constrcuter destructer
 	PlayerActor_Vergil()
 	{
-		SetControll(NetControllType::UserControll);
+		SetControll(NetControllType::ActiveControll);
 	}
 	~PlayerActor_Vergil();
 	PlayerActor_Vergil(NetControllType _ControllType)

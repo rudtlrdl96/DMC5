@@ -3,8 +3,8 @@
 //해당 오브젝트를 이 클라이언트가 조종하는지 여부
 enum class NetControllType
 {
-	NetControll,		//서버로 부터 패킷을 받아 조종당하는 오브젝트
-	UserControll,		//내가 조종하는 오브젝트
+	PassiveControll,		//서버로 부터 패킷을 받아 조종당하는 오브젝트
+	ActiveControll,		//내가 조종하는 오브젝트
 };
 
 class GameEngineNet;
@@ -80,7 +80,7 @@ public:
 	//유저가 직접 조종하는 객체로 설정
 	inline void SetUserControllType()
 	{
-		SetControll(NetControllType::UserControll);
+		SetControll(NetControllType::ActiveControll);
 	}
 
 
@@ -165,7 +165,7 @@ private:
 	static std::map<int, GameEngineNetObject*> MainThreadNetObjects;
 
 	//유저가 이 오브젝트를 조종하는지 여부
-	NetControllType ControllType = NetControllType::NetControll;
+	NetControllType ControllType = NetControllType::PassiveControll;
 
 	//서버가 지정한 ID
 	int ObjectID = -1;

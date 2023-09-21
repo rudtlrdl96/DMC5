@@ -263,7 +263,7 @@ void NetworkManager::SendFsmChangePacket(GameEngineNetObject* _NetObjPtr, int _F
 		return;
 	}
 
-	if (NetControllType::NetControll == _NetObjPtr->GetControllType())
+	if (NetControllType::PassiveControll == _NetObjPtr->GetControllType())
 	{
 		MsgAssert("패킷을 받아 처리되는 오브젝트가 Fsm변경 패킷을 보낼려고 했습니다");
 		return;

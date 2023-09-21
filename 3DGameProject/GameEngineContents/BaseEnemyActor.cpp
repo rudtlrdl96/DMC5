@@ -127,12 +127,12 @@ void BaseEnemyActor::Update(float _DeltaTime)
 	}
 	else
 	{
-		if (NetControllType::UserControll == GetControllType())
+		if (NetControllType::ActiveControll == GetControllType())
 		{
 			DamageCollisionCheck(_DeltaTime);
 			EnemyFSM.Update(_DeltaTime);
 		}
-		else if (NetControllType::UserControll != GetControllType())
+		else if (NetControllType::ActiveControll != GetControllType())
 		{
 			EnemyFSM_Client.Update(_DeltaTime);
 			Sever_Timer += _DeltaTime;

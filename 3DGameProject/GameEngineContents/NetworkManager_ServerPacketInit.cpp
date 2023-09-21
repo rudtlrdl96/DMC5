@@ -55,7 +55,7 @@ void NetworkManager::ServerPacketInit()
 		{
 			std::shared_ptr<GameEngineNetObject> NewNetObj = nullptr;
 			NewNetObj = NetworkManager::CreateNetActor(_Packet->ActorType, nullptr, ObjID);
-			NewNetObj->SetControll(NetControllType::NetControll);
+			NewNetObj->SetControll(NetControllType::PassiveControll);
 
 			//어떤 유저로부터 어떤 타입의 엑터가 생성되었는지 GUI에 출력
 			NetworkGUI::GetInst()->PrintLog("Create Object From UpdatePacket", float4::GREEN);

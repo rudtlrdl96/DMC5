@@ -38,7 +38,7 @@ void GameEngineNetObject::Update_ProcessPackets()
 			continue;
 
 		//내가 조종하는 컨트롤 타입일 경우엔 패킷을 수신받지 않음
-		if (NetControllType::UserControll == Pair.second->ControllType)
+		if (NetControllType::ActiveControll == Pair.second->ControllType)
 			continue;
 
 		//처리할 패킷이 없는 경우
@@ -67,7 +67,7 @@ void GameEngineNetObject::Update_SendPackets(float _DeltaTime)
 			continue;
 
 		//패킷을 수신받아 조종당하는 패킷의 경우엔 패킷을 전송하지 않음
-		if (NetControllType::NetControll == Pair.second->ControllType)
+		if (NetControllType::PassiveControll == Pair.second->ControllType)
 			continue;
 
 		//연결이 끊긴 경우

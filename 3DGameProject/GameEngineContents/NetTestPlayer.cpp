@@ -80,7 +80,7 @@ void NetTestPlayer::Update_ProcessPacket()
 void NetTestPlayer::Update(float _DeltaTime) 
 {
 	//플레이어의 경우 UserControll일때만 FSM이 동작되어야 합니다.
-	if (NetControllType::UserControll != GameEngineNetObject::GetControllType())
+	if (NetControllType::ActiveControll != GameEngineNetObject::GetControllType())
 		return;
 
 

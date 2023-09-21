@@ -24,7 +24,7 @@ void PlayerActor_Nero::Start()
 	SetNetObjectType(Net_ActorType::Nero);
 
 	//NetControllType::NetControll으로 변경될 때 아래 콜백이 실행됩니다. 
-	SetControllCallBack(NetControllType::NetControll, [=]()
+	SetControllCallBack(NetControllType::PassiveControll, [=]()
 		{
 			NetControllLoad();
 			NetLoad();
@@ -32,7 +32,7 @@ void PlayerActor_Nero::Start()
 		});
 
 	//NetControllType::UserControll으로 변경될 때 아래 콜백이 실행됩니다.
-	SetControllCallBack(NetControllType::UserControll, [=]()
+	SetControllCallBack(NetControllType::ActiveControll, [=]()
 		{
 			UserControllLoad();
 			PlayerLoad();
@@ -3983,7 +3983,7 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 	if (LoadCheck == false) { return; }
 	FSM.Update(_DeltaTime);
 
-	if (NetControllType::UserControll == GameEngineNetObject::GetControllType())
+	if (NetControllType::ActiveControll == GameEngineNetObject::GetControllType())
 	{
 		if (GameEngineInput::IsDown("Escape"))
 		{
