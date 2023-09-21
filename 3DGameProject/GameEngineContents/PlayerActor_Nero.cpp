@@ -5,7 +5,7 @@
 #include <GameEngineCore/GameEngineFBXAnimation.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include "AnimationEvent.h"
-#include "EffectFBXRenderer.h"
+#include "EffectRenderer.h"
 #include "PlayerController.h"
 #include "NetworkManager.h"
 #include "AttackCollision.h"
@@ -68,10 +68,10 @@ void PlayerActor_Nero::PlayerLoad()
 				GameEngineTexture::Load(File.GetFullPath());
 			}
 		}
-		Renderer_EffectMesh = CreateComponent<EffectFBXRenderer>();
+		Renderer_EffectMesh = CreateComponent<EffectRenderer>();
 		Renderer_EffectMesh->SetFBXMesh("Effect_Mesh_01.FBX", "Effect_2D");
 		Renderer_EffectMesh->SetTexture("DiffuseTexture", "Effect_Texture_02.png");
-		//Renderer_EffectMesh->Off();
+		Renderer_EffectMesh->Off();
 	}
 
 	// Renderer »ý¼º
@@ -2929,7 +2929,8 @@ void PlayerActor_Nero::NetLoad()
 				GameEngineTexture::Load(File.GetFullPath());
 			}
 		}
-		Renderer_EffectMesh = CreateComponent<EffectFBXRenderer>();
+
+		Renderer_EffectMesh = CreateComponent<EffectRenderer>();
 		Renderer_EffectMesh->SetFBXMesh("Effect_Mesh_01.FBX", "Effect_2D");
 		Renderer_EffectMesh->SetTexture("DiffuseTexture", "Effect_Texture_01.png");
 		Renderer_EffectMesh->Off();

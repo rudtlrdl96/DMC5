@@ -49,7 +49,7 @@ void ShaderTestActor::Start()
 	TestRenderer->ShadowOn();
 	TestRenderer->NormalOff();
 
-	//TestRenderer = CreateComponent<EffectFBXRenderer>();
+	//TestRenderer = CreateComponent<EffectRenderer>();
 
 	if (nullptr == GameEngineFBXMesh::Find("Effect_Mesh_01.FBX"))
 	{

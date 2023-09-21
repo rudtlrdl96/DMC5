@@ -310,9 +310,6 @@
     <ClInclude Include="Nero_Inven.h">
       <Filter>UI\UI_Actor\MenuUI\NeroInfo\Nero_Inven</Filter>
     </ClInclude>
-    <ClInclude Include="EffectFBXRenderer.h">
-      <Filter>Component\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="IntroLevel.h">
       <Filter>UI\UI_Level\Intro</Filter>
     </ClInclude>
@@ -421,6 +418,7 @@
     <ClInclude Include="EventZone.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
     </ClInclude>
+    <ClInclude Include="EffectRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -717,9 +715,6 @@
     <ClCompile Include="Nero_Inven.cpp">
       <Filter>UI\UI_Actor\MenuUI\NeroInfo\Nero_Inven</Filter>
     </ClCompile>
-    <ClCompile Include="EffectFBXRenderer.cpp">
-      <Filter>Component\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="IntroLevel.cpp">
       <Filter>UI\UI_Level\Intro</Filter>
     </ClCompile>
@@ -831,6 +826,7 @@
     <ClCompile Include="TestEventZone.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
     </ClCompile>
+    <ClCompile Include="EffectRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">

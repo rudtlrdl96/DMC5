@@ -12,6 +12,8 @@
 #include "Enemy_HellCaina.h"
 #include "FreeCameraActor.h"
 
+#include "EffectRenderer.h"
+
 MainLevel* MainLevel::Inst = nullptr;
 
 MainLevel::MainLevel() 
@@ -38,6 +40,39 @@ void MainLevel::Start()
 	//std::shared_ptr<ShaderTestActor> NewTestActor0 = CreateActor<ShaderTestActor>();
 	//NewTestActor0->GetTransform()->SetLocalPosition({ 0, 10, 0 });
 	//NewTestActor0->InitTest(0);
+
+	
+	//std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+	//	{
+	//		"Texture", "ShaderDebug"
+	//	});
+	//
+	//GameEngineSprite::LoadSheet(Path + "\\BoneSkull_AttackB.png", 4, 1);
+	//GameEngineSprite::LoadFolder(Path + "\\DD_Move");
+	//
+	//{
+	//	std::shared_ptr<EffectRenderer> NewEffect = CreateActor<GameEngineActor>()->CreateComponent<EffectRenderer>();
+	//
+	//	NewEffect->RectInit("Effect_2D");
+	//	NewEffect->GetTransform()->SetWorldScale(float4(100, 100, 100));
+	//
+	//	NewEffect->CreateAnimation({ .AnimationName = "Test", .SpriteName = "BoneSkull_AttackB.png" });
+	//	NewEffect->ChangeAnimation("Test");
+	//}
+	//
+	//{
+	//	std::shared_ptr<EffectRenderer> NewEffect = CreateActor<GameEngineActor>()->CreateComponent<EffectRenderer>();
+	//
+	//	NewEffect->RectInit("Effect_2D");
+	//	NewEffect->GetTransform()->SetWorldPosition(float4(100, 0, 0));
+	//	NewEffect->GetTransform()->SetWorldScale(float4(100, 100, 100));
+	//
+	//	NewEffect->CreateAnimation({ .AnimationName = "Test", .SpriteName = "DD_Move" });
+	//	NewEffect->ChangeAnimation("Test");
+	//	NewEffect->LockRotation();
+	//}
+
+
 }
 
 void MainLevel::Update(float _DeltaTime)

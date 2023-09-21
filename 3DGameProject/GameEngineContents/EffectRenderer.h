@@ -12,7 +12,7 @@ public:
 };
 
 // 설명 : 해당 랜더러는 Effect 전용 렌더러 입니다 Effect_2D 또는 Effect_3D 머티리얼을 사용해야 합니다.
-class EffectFBXRenderer : public GameEngineFBXRenderer
+class EffectRenderer : public GameEngineFBXRenderer
 {
 private:
 	class EffectVertextData
@@ -25,14 +25,14 @@ private:
 	};
 public:
 	// constrcuter destructer
-	EffectFBXRenderer();
-	~EffectFBXRenderer();
+	EffectRenderer();
+	~EffectRenderer();
 
 	// delete Function
-	EffectFBXRenderer(const EffectFBXRenderer& _Other) = delete;
-	EffectFBXRenderer(EffectFBXRenderer&& _Other) noexcept = delete;
-	EffectFBXRenderer& operator=(const EffectFBXRenderer& _Other) = delete;
-	EffectFBXRenderer& operator=(EffectFBXRenderer&& _Other) noexcept = delete;
+	EffectRenderer(const EffectRenderer& _Other) = delete;
+	EffectRenderer(EffectRenderer&& _Other) noexcept = delete;
+	EffectRenderer& operator=(const EffectRenderer& _Other) = delete;
+	EffectRenderer& operator=(EffectRenderer&& _Other) noexcept = delete;
 
 	// 상하좌우 기준으로 Clip 합니다.
 	EffectData EffectOption = EffectData();
@@ -97,6 +97,19 @@ public:
 
 	void SetAnimationUpdateEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
 	void SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
+
+	// 이펙트가 카메라 정면을 바라보는 기능을 On합니다.
+	inline void LockRotation()
+	{
+		VertexOption.IsLockRotation = 1.0f;
+	}
+
+	// 이펙트가 카메라 정면을 바라보는 기능을 Off합니다.
+	inline void UnLockRotation()
+	{
+		VertexOption.IsLockRotation = 0.0f;
+	}
+
 
 protected:
 	void Start() override;

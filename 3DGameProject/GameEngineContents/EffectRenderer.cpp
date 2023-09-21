@@ -1,15 +1,15 @@
 #include "PrecompileHeader.h"
-#include "EffectFBXRenderer.h"
+#include "EffectRenderer.h"
 
-EffectFBXRenderer::EffectFBXRenderer() 
+EffectRenderer::EffectRenderer() 
 {
 }
 
-EffectFBXRenderer::~EffectFBXRenderer() 
+EffectRenderer::~EffectRenderer() 
 {
 }
 
-void EffectFBXRenderer::SetSprite(const std::string_view& _SpriteName, size_t _Frame)
+void EffectRenderer::SetSprite(const std::string_view& _SpriteName, size_t _Frame)
 {
 	Sprite = GameEngineSprite::Find(_SpriteName);
 	Frame = _Frame;
@@ -25,7 +25,7 @@ void EffectFBXRenderer::SetSprite(const std::string_view& _SpriteName, size_t _F
 	CurTexture = Info.Texture;
 }
 
-void EffectFBXRenderer::SetFrame(size_t _Frame)
+void EffectRenderer::SetFrame(size_t _Frame)
 {
 	Frame = _Frame;
 
@@ -40,7 +40,7 @@ void EffectFBXRenderer::SetFrame(size_t _Frame)
 	CurTexture = Info.Texture;
 }
 
-void EffectFBXRenderer::SetAnimationUpdateEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event)
+void EffectRenderer::SetAnimationUpdateEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event)
 {
 	std::shared_ptr<AnimationInfo>  Info = FindAnimation(_AnimationName);
 
@@ -52,7 +52,7 @@ void EffectFBXRenderer::SetAnimationUpdateEvent(const std::string_view& _Animati
 	Info->UpdateEventFunction[_Frame] = _Event;
 }
 
-void EffectFBXRenderer::SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event)
+void EffectRenderer::SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event)
 {
 	std::shared_ptr<AnimationInfo>  Info = FindAnimation(_AnimationName);
 
@@ -65,12 +65,12 @@ void EffectFBXRenderer::SetAnimationStartEvent(const std::string_view& _Animatio
 	Info->StartEventFunction[_Frame].Function = _Event;
 }
 
-void EffectFBXRenderer::Start()
+void EffectRenderer::Start()
 {
 	GameEngineFBXRenderer::Start();
 }
 
-void EffectFBXRenderer::Update(float _DeltaTime)
+void EffectRenderer::Update(float _DeltaTime)
 {
 	if (nullptr != CurAnimation)
 	{
@@ -82,7 +82,7 @@ void EffectFBXRenderer::Update(float _DeltaTime)
 
 		VertexOption.FramePos.x = Info.CutData.PosX;
 		VertexOption.FramePos.y = Info.CutData.PosY;
-		VertexOption.FrameScale.y = Info.CutData.SizeX;
+		VertexOption.FrameScale.x = Info.CutData.SizeX;
 		VertexOption.FrameScale.y = Info.CutData.SizeY;
 
 		if (true == CurAnimation->ScaleToTexture)
@@ -103,51 +103,52 @@ void EffectFBXRenderer::Update(float _DeltaTime)
 }
 
 
-void EffectFBXRenderer::RectInit(const std::string_view& _MaterialName)
+void EffectRenderer::RectInit(const std::string_view& _MaterialName)
 {
 	Unit.resize(1);
 	Unit[0].resize(1);
 
+	Unit[0][0] = CreateRenderUnit();
 	Unit[0][0]->SetMesh("Rect");
 	Unit[0][0]->SetMaterial(_MaterialName);
 	CustomOptionSetting();
 }
 
-void EffectFBXRenderer::SetFBXMesh(const std::string& _Name, std::string _Material)
+void EffectRenderer::SetFBXMesh(const std::string& _Name, std::string _Material)
 {
 	GameEngineFBXRenderer::SetFBXMesh(_Name, _Material);
 	CustomOptionSetting();
 }
 
-void EffectFBXRenderer::SetFBXMesh(const std::string& _Name, const std::vector<std::vector<std::string>>& _Materials)
+void EffectRenderer::SetFBXMesh(const std::string& _Name, const std::vector<std::vector<std::string>>& _Materials)
 {
 	GameEngineFBXRenderer::SetFBXMesh(_Name, _Materials);
 	CustomOptionSetting();
 }
 
-void EffectFBXRenderer::SetFBXMesh(const std::string& _Name, std::string _Material, size_t MeshIndex)
+void EffectRenderer::SetFBXMesh(const std::string& _Name, std::string _Material, size_t MeshIndex)
 {
 	GameEngineFBXRenderer::SetFBXMesh(_Name, _Material, MeshIndex);
 	CustomOptionSetting();
 }
 
-void EffectFBXRenderer::SetFBXMesh(const std::string& _Name, std::vector<std::string> _Material, size_t MeshIndex)
+void EffectRenderer::SetFBXMesh(const std::string& _Name, std::vector<std::string> _Material, size_t MeshIndex)
 {
 	GameEngineFBXRenderer::SetFBXMesh(_Name, _Material, MeshIndex);
 	CustomOptionSetting();
 }
 
-void EffectFBXRenderer::SetFlipX()
+void EffectRenderer::SetFlipX()
 {
 	VertexOption.Flip.x = (VertexOption.Flip.x != 0.0f ? 0.0f : 1.0f);
 }
 
-void EffectFBXRenderer::SetFlipY()
+void EffectRenderer::SetFlipY()
 {
 	VertexOption.Flip.y = (VertexOption.Flip.y != 0.0f ? 0.0f : 1.0f);
 }
 
-std::shared_ptr<AnimationInfo> EffectFBXRenderer::FindAnimation(const std::string_view& _Name)
+std::shared_ptr<AnimationInfo> EffectRenderer::FindAnimation(const std::string_view& _Name)
 {
 	std::map<std::string, std::shared_ptr<AnimationInfo>>::iterator FindIter = Animations.find(_Name.data());
 
@@ -159,7 +160,7 @@ std::shared_ptr<AnimationInfo> EffectFBXRenderer::FindAnimation(const std::strin
 	return FindIter->second;
 }
 
-std::shared_ptr<AnimationInfo> EffectFBXRenderer::CreateAnimation(const AnimationParameter& _Paramter)
+std::shared_ptr<AnimationInfo> EffectRenderer::CreateAnimation(const AnimationParameter& _Paramter)
 {	
 	
 	if (nullptr != FindAnimation(_Paramter.AnimationName))
@@ -250,7 +251,7 @@ std::shared_ptr<AnimationInfo> EffectFBXRenderer::CreateAnimation(const Animatio
 	return NewAnimation;
 }
 
-void EffectFBXRenderer::ChangeAnimation(const std::string_view& _Name, size_t _Frame, bool _Force)
+void EffectRenderer::ChangeAnimation(const std::string_view& _Name, size_t _Frame, bool _Force)
 {
 	std::shared_ptr<AnimationInfo> Find = FindAnimation(_Name);
 
@@ -274,7 +275,7 @@ void EffectFBXRenderer::ChangeAnimation(const std::string_view& _Name, size_t _F
 	}
 }
 
-void EffectFBXRenderer::CustomOptionSetting()
+void EffectRenderer::CustomOptionSetting()
 {
 	for (size_t i = 0; i < Unit.size(); i++)
 	{
@@ -288,7 +289,7 @@ void EffectFBXRenderer::CustomOptionSetting()
 
 #include <GameEngineCore/imgui.h>
 
-void EffectFBXRenderer::DrawEditor()
+void EffectRenderer::DrawEditor()
 {
 	ImGui::DragFloat("Clip Start X", &EffectOption.ClipStartX, 0.01f);
 	ImGui::DragFloat("Clip End X", &EffectOption.ClipEndX, 0.01f);

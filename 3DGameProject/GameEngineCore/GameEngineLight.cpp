@@ -136,6 +136,7 @@ void GameEngineLight::LightUpdate(GameEngineCamera* _Camera, float _DeltaTime)
 		LightDataValue.LightFar);
 
 	LightDataValue.CameraViewInverseMatrix = _Camera->GetView().InverseReturn();
+
 	LightDataValue.LightProjectionInverseMatrix = LightDataValue.LightProjectionMatrix.InverseReturn();
 	LightDataValue.LightViewProjectionMatrix = LightDataValue.LightViewMatrix * LightDataValue.LightProjectionMatrix;
 }

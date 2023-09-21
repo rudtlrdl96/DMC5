@@ -207,7 +207,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="EffectFBXRenderer.h">
+    <ClInclude Include="EffectRenderer.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -700,7 +700,7 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="C_ChoiceBG.cpp" />
-    <ClCompile Include="EffectFBXRenderer.cpp">
+    <ClCompile Include="EffectRenderer.cpp">
       <SubType>
       </SubType>
     </ClCompile>

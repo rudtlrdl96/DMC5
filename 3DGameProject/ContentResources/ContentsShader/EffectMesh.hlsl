@@ -40,13 +40,31 @@ Output MeshTexture_VS(Input _Input)
     float4 InputPos = _Input.POSITION;
     InputPos.w = 1.0f;
         
+    
     if (0 != IsLockRotation)
     {
-        // View 고정
+        NewOutPut.POSITION = mul(InputPos, WorldMatrix);            
+        
+        float4x4 InverseView = AllLight[0].CameraViewInverseMatrix;
+                
+        InverseView[3][0] = 0;
+        InverseView[3][1] = 0;
+        InverseView[3][2] = 0;
+        InverseView[3][3] = 1;
+        InverseView[0][3] = 0;
+        InverseView[1][3] = 0;
+        InverseView[2][3] = 0;
+        
+        NewOutPut.POSITION = mul(NewOutPut.POSITION, InverseView);
+        NewOutPut.POSITION = mul(NewOutPut.POSITION, View);        
+        
+        NewOutPut.POSITION = mul(NewOutPut.POSITION, Projection);        
     }
-    
-    NewOutPut.POSITION = mul(InputPos, WorldViewProjectionMatrix);
-    
+    else
+    {
+        NewOutPut.POSITION = mul(InputPos, WorldViewProjectionMatrix);
+    }
+        
     float4 VtxUV = _Input.TEXCOORD;
     
     if (Flip.x != 0)
@@ -77,7 +95,7 @@ Output MeshTexture_VS(Input _Input)
     return NewOutPut;
 }
 
-Texture2D DiffuseTexture : register(t0); // ALBM
+Texture2D DiffuseTex : register(t0); // ALBM
 //Texture2D NormalTexture : register(t1); // NRMR
 //Texture2D SpecularTexture : register(t2); // ATOS
 
@@ -114,15 +132,14 @@ PixelOutPut MeshTexture_PS(Output _Input)
         clip(-1);
     }
         
-    Result.Target = DiffuseTexture.Sample(ENGINEBASE, UV);
+    Result.Target = DiffuseTex.Sample(ENGINEBASE, UV);
     
     
     // 추후 반투명 처리 해야함
-    if (1.0f != Result.Target.a)
+    if (1.0f > Result.Target.a)
     {
         clip(-1);
     }
     
-    Result.Target.rgb *= BaseColor.rgb;
     return Result;
 }
