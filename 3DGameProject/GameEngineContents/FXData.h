@@ -1,21 +1,14 @@
 #pragma once
 #include <GameEngineCore/GameEngineSpriteRenderer.h>
-
-class EffectData
-{
-public:
-	float ClipStartX = 0;
-	float ClipEndX = 1;
-	float ClipStartY = 0;
-	float ClipEndY = 1;
-};
-
+#include "EffectRenderer.h"
 class FXUnitData
 {
 public:
 	std::string MeshName = "";
 	std::string TextureName = "";
 	AnimationParameter AnimData;
+	int CutX = -1;
+	int CutY = -1;
 };
 
 class FXKeyFrame
@@ -25,7 +18,7 @@ public:
 	float4 Position = float4::ZERONULL;
 	float4 Rotation = float4::ZERONULL;
 	float4 Scale = float4::ZERONULL;
-	EffectData EffectValue;
+	EffectData EffectOption;
 };
 
 // Ό³Έν :
@@ -42,9 +35,9 @@ public:
 	FXData& operator=(const FXData& _Other) = delete;
 	FXData& operator=(FXData&& _Other) noexcept = delete;
 
-	std::vector<FXUnitData>* GetUnitDatas()
+	std::vector<FXUnitData>& GetUnitDatas()
 	{
-		return &UnitDatas;
+		return UnitDatas;
 	}
 
 	std::vector<std::vector<FXKeyFrame>>& GetFrameData()

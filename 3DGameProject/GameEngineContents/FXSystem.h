@@ -31,8 +31,9 @@ protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
+	void FXSetting();
 private:
-	//std::vector<class EffectRenderer> Renderers;
+	std::vector<std::shared_ptr<class EffectRenderer>> FXRenders;
 	std::shared_ptr<class FXData> CurFX;
 
 };

@@ -113,6 +113,7 @@ void GameEngineFBXAnimationInfo::Update(float _DeltaTime)
 			CurFrame = End - 1;
 		}
 	}
+	float CurRatio = CurFrameTime / Inter;
 
 	// mesh      subset
 	std::vector<std::vector< std::shared_ptr<GameEngineRenderUnit>>>& Units = ParentRenderer->GetAllRenderUnit();
@@ -141,10 +142,9 @@ void GameEngineFBXAnimationInfo::Update(float _DeltaTime)
 
 		FbxExBoneFrameData& CurData = FBXAnimationData->AniFrameData[i].BoneMatData[CurFrame];
 		FbxExBoneFrameData& NextData = FBXAnimationData->AniFrameData[i].BoneMatData[NextFrame];
-
-		AnimationBoneData[i].Scale = float4::Lerp(CurData.S, NextData.S, CurFrameTime);
-		AnimationBoneData[i].RotQuaternion = float4::SLerpQuaternion(CurData.Q, NextData.Q, CurFrameTime);
-		AnimationBoneData[i].Pos = float4::Lerp(CurData.T, NextData.T, CurFrameTime);
+		AnimationBoneData[i].Scale = float4::Lerp(CurData.S, NextData.S, CurRatio);
+		AnimationBoneData[i].RotQuaternion = float4::SLerpQuaternion(CurData.Q, NextData.Q, CurRatio);
+		AnimationBoneData[i].Pos = float4::Lerp(CurData.T, NextData.T, CurRatio);
 
 		size_t Size = sizeof(float4x4);
 
