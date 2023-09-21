@@ -1733,8 +1733,18 @@ void PlayerActor_Nero::PlayerLoad()
 		// Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Shoot,
 			.Start = [=] {
-				Col_Attack->SetAttackData(DamageType::Light, 50);
-				ShootBR();
+				Col_Attack->SetAttackData(DamageType::Light, 50, std::bind(&GameEngineObjectBase::Off, Col_Attack));
+				if (nullptr == LockOnEnemyTransform)
+				{
+					Col_Attack->GetTransform()->SetLocalPosition({ 0, 100, 1000 });
+					Col_Attack->GetTransform()->SetLocalScale({ 50, 50, 2000 });
+				}
+				else
+				{
+					Col_Attack->GetTransform()->SetWorldPosition(LockOnEnemyTransform->GetWorldPosition());
+					Col_Attack->GetTransform()->SetLocalScale({ 50, 50, 50 });
+				}
+				Col_Attack->On();
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				RotationToTarget();
@@ -1777,8 +1787,18 @@ void PlayerActor_Nero::PlayerLoad()
 		// Air Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_AirShoot,
 			.Start = [=] {
-				Col_Attack->SetAttackData(DamageType::Light, 50);
-				ShootBR();
+				Col_Attack->SetAttackData(DamageType::Light, 50, std::bind(&GameEngineObjectBase::Off, Col_Attack));
+				if (nullptr == LockOnEnemyTransform)
+				{
+					Col_Attack->GetTransform()->SetLocalPosition({ 0, 100, 1000 });
+					Col_Attack->GetTransform()->SetLocalScale({ 50, 50, 2000 });
+				}
+				else
+				{
+					Col_Attack->GetTransform()->SetWorldPosition(LockOnEnemyTransform->GetWorldPosition());
+					Col_Attack->GetTransform()->SetLocalScale({ 50, 50, 50 });
+				}
+				Col_Attack->On();
 				BlueRoseOn();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -2244,9 +2264,8 @@ void PlayerActor_Nero::PlayerLoad()
 	// ½º³»Ä¡
 	{}
 	{
-		static float4 SnatchStartPos;
-		static float4 SnatchEndPos;
-		static float SnatchTimer;
+		static float4 SnatchDir;
+		const static float SnatchSpeed = 4000.0f;
 		// Snatch Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Snatch_Shoot,
 			.Start = [=] {
@@ -2257,25 +2276,21 @@ void PlayerActor_Nero::PlayerLoad()
 				Col_Attack->SetAttackData(DamageType::Snatch, 0, std::bind(&PlayerActor_Nero::ChangeState, this, FSM_State_Nero::Nero_Snatch_Pull));
 				Col_Attack->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
 				Col_Attack->GetTransform()->SetLocalScale({100, 100, 100});
-				SnatchStartPos = Col_Attack->GetTransform()->GetWorldPosition();
 				if (nullptr == LockOnEnemyTransform)
 				{
-					SnatchEndPos = GetTransform()->GetWorldPosition() + GetTransform()->GetWorldForwardVector() * 1000;
+					SnatchDir = GetTransform()->GetWorldForwardVector();
 				}
 				else
 				{
-					SnatchEndPos = LockOnEnemyTransform->GetWorldPosition();
+					SnatchDir = LockOnEnemyTransform->GetWorldPosition() - GetTransform()->GetWorldPosition();
+					SnatchDir.Normalize();
 				}
-				SnatchTimer = 0;
-				PhysXCapsule->SetLinearVelocityZero();
-				RotationToTarget();
 				Renderer->ChangeAnimation("pl0000_Snatch", true);
 				InputCheck = false;
 				MoveCheck = false;
 			},
 			.Update = [=](float _DeltaTime) {
-				SnatchTimer += _DeltaTime * 5;
-				Col_Attack->GetTransform()->SetWorldPosition(float4::LerpClamp(SnatchStartPos, SnatchEndPos, SnatchTimer));
+				Col_Attack->GetTransform()->AddWorldPosition(SnatchDir * _DeltaTime * SnatchSpeed);
 
 				if (false == FloorCheck())
 				{
@@ -2384,27 +2399,22 @@ void PlayerActor_Nero::PlayerLoad()
 				Col_Attack->On();
 				Col_Attack->SetAttackData(DamageType::Snatch, 0, std::bind(&PlayerActor_Nero::ChangeState, this, FSM_State_Nero::Nero_Snatch_Pull_Air));
 				Col_Attack->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
-				Col_Attack->GetTransform()->SetLocalScale({100, 100, 100});
-				SnatchStartPos = Col_Attack->GetTransform()->GetWorldPosition();
+				Col_Attack->GetTransform()->SetLocalScale({ 100, 100, 100 });
 				if (nullptr == LockOnEnemyTransform)
 				{
-					SnatchEndPos = GetTransform()->GetWorldPosition() + GetTransform()->GetWorldForwardVector() * 1000;
+					SnatchDir = GetTransform()->GetWorldForwardVector();
 				}
 				else
 				{
-					SnatchEndPos = LockOnEnemyTransform->GetWorldPosition();
+					SnatchDir = LockOnEnemyTransform->GetWorldPosition() - GetTransform()->GetWorldPosition();
+					SnatchDir.Normalize();
 				}
-				SnatchTimer = 0;
-				PhysXCapsule->SetLinearVelocityZero();
-				RotationToTarget();
 				Renderer->ChangeAnimation("pl0000_Air_Snatch", true);
 				InputCheck = false;
 				MoveCheck = false;
-
 			},
 			.Update = [=](float _DeltaTime) {
-				SnatchTimer += _DeltaTime * 5;
-				Col_Attack->GetTransform()->SetWorldPosition(float4::LerpClamp(SnatchStartPos, SnatchEndPos, SnatchTimer));
+				Col_Attack->GetTransform()->AddWorldPosition(SnatchDir * _DeltaTime * SnatchSpeed);
 
 				if (Renderer->IsAnimationEnd())
 				{
@@ -4602,64 +4612,6 @@ void PlayerActor_Nero::DestroyBreaker()
 	default:
 		break;
 	}
-}
-
-void PlayerActor_Nero::ShootBR()
-{
-	if (nullptr == LockOnEnemyTransform)
-	{
-		Col_Attack->GetTransform()->SetLocalPosition({ 0, 100, 1000 });
-		Col_Attack->GetTransform()->SetLocalScale({ 50, 50, 2000 });
-	}
-	else
-	{
-		Col_Attack->GetTransform()->SetWorldPosition(LockOnEnemyTransform->GetWorldPosition());
-		Col_Attack->GetTransform()->SetLocalScale({ 50, 50, 50 });
-	}
-	Col_Attack->On();
-	std::shared_ptr<GameEngineCollision> Col = Col_Attack->Collision(CollisionOrder::Enemy, ColType::OBBBOX3D, ColType::OBBBOX3D);
-	if (nullptr == Col)
-	{
-		return;
-	}
-	BaseEnemyActor* EnemyActor = dynamic_cast<BaseEnemyActor*>(Col->GetActor());
-	if (nullptr == EnemyActor)
-	{
-		return;
-	}
-	//Col_Attack->Off();
-	// 
-	//float4 Origin;
-	//float4 Dir;
-	//float4 Point;
-	//Origin = GetTransform()->GetWorldPosition();
-	//Origin += {25, 50, 0};
-	//if (nullptr == LockOnEnemyTransform)
-	//{
-	//	Dir = GetTransform()->GetWorldForwardVector();
-	//}
-	//else
-	//{
-	//	Dir = LockOnEnemyTransform->GetWorldPosition() - Origin;
-	//}
-	//Dir.Normalize();
-	//if (true == GetLevel()->RayCast(Origin, Dir, Point, 9999.0f))
-	//{
-	//	Col_Attack->GetTransform()->SetWorldPosition(Point);
-	//	Col_Attack->On();
-	//	std::shared_ptr<GameEngineCollision> Col = Col_Attack->Collision(CollisionOrder::Enemy);
-	//	if (nullptr == Col)
-	//	{
-	//		return;
-	//	}
-	//	BaseEnemyActor* EnemyActor = dynamic_cast<BaseEnemyActor*>(Col->GetActor());
-	//	if (nullptr == EnemyActor)
-	//	{
-	//		return;
-	//	}
-	//	EnemyActor->DamageCollisionCheck();
-	//	Col_Attack->Off();
-	//}
 }
 
 /*
