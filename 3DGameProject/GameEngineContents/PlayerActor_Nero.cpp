@@ -2043,6 +2043,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// BusterArm Catch
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Catch,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Buster, 50, std::bind(&PlayerActor_Nero::ChangeState, this, Nero_Buster_Strike));
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0000_Buster_Catch", true);
@@ -2057,13 +2058,6 @@ void PlayerActor_Nero::PlayerLoad()
 				if (false == FloorCheck())
 				{
 					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
-					return;
-				}
-
-				if (true == Controller->GetIsSkill())
-				{
-					// юс╫ц©К
-					ChangeState(FSM_State_Nero::Nero_Buster_Repelled);
 					return;
 				}
 
@@ -2084,6 +2078,7 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 			},
 			.End = [=] {
+				Col_Attack->Off();
 			}
 			});
 
@@ -2160,6 +2155,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// BusterArm Catch Air
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Catch_Air,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Buster, 50, std::bind(&PlayerActor_Nero::ChangeState, this, Nero_Buster_Strike_Air));
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -2198,6 +2194,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_DevilBreakerCheckFly()) { return; }
 			},
 			.End = [=] {
+				Col_Attack->Off();
 			}
 			});
 
