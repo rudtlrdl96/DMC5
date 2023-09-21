@@ -2,6 +2,8 @@
 #include "NetworkManager.h"
 
 #include "NetworkGUI.h"
+#include "NetworkObjectBase.h"
+
 #include "ContentsEnum.h"
 #include "PacketEnum.h"
 
@@ -66,12 +68,14 @@ void NetworkManager::ClientPacketInit()
 			NetworkGUI::GetInst()->PrintLog(NewMsg, float4::GREEN);
 		}
 
+
+		NetworkObjectBase* NetObject = nullptr;
+		NetObject = NetworkObjectBase::GetNetObj(ObjID);
+
 		//패킷이 Death처리 된 경우
 		if (true == _Packet->IsDeath)
 		{
 			//네트워크와 연결 끊기
-			GameEngineNetObject* NetObject = nullptr;
-			NetObject = GameEngineNetObject::GetNetObject(ObjID);
 			NetObject->NetDisconnect();
 
 			GameEngineActor* ActorPtr = dynamic_cast<GameEngineActor*>(NetObject);
@@ -86,6 +90,9 @@ void NetworkManager::ClientPacketInit()
 		//패킷이 Death처리 되지 않은 경우에만 엑터쪽에 패킷 전달
 		else
 		{
+			NetObject->SetNetwortTransData(_Packet->Position, _Packet->Rotation);
+			NetObject->ActorTimeScale = _Packet->TimeScale;
+
 			//Player가 스스로 처리할 수 있게 자료구조에 저장
 			GameEngineNetObject::PushNetObjectPacket(_Packet);
 		}

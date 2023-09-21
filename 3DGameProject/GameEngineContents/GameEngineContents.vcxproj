@@ -346,14 +346,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="NetTestEnemy.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="NetTestPlayer.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="NetworkTestLevel.h">
       <SubType>
       </SubType>
@@ -829,14 +821,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Nero_ShopTitleBar.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="NetTestEnemy.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="NetTestPlayer.cpp">
       <SubType>
       </SubType>
     </ClCompile>

@@ -1,9 +1,10 @@
 #pragma once
+#include "NetworkObjectBase.h"
 // Ό³Έν :
 
 
 
-class BasePlayerActor : public GameEngineActor, public GameEngineNetObject
+class BasePlayerActor : public GameEngineActor, public NetworkObjectBase
 {
 public:
 	static std::vector<BasePlayerActor*>& GetPlayers()
@@ -88,9 +89,5 @@ private:
 	void DamageColCheck();
 
 	static std::vector<BasePlayerActor*> Players;
-
-	float4 Server_NextPos;
-	float4 Server_PrevPos;
-	float Server_Timer = 0.0f;
 };
 

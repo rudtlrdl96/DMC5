@@ -35,13 +35,6 @@ void BaseEnemyActor::Update_ProcessPacket()
 			std::shared_ptr<ObjectUpdatePacket> ObjectUpdate = PopFirstPacket<ObjectUpdatePacket>();
 
 			//패킷의 정보에 따라 자신의 값 수정
-			Server_PrePosition = this->GetTransform()->GetWorldPosition();
-			Server_NextPosition = ObjectUpdate->Position;
-			Server_Rotation = ObjectUpdate->Rotation;
-			Sever_Timer = 0.0f;
-			float TimeScale = ObjectUpdate->TimeScale;
-			PhysXCapsule->SetWorldRotation(Server_Rotation);
-
 			break;
 		}
 		case PacketEnum::FsmChangePacket:
@@ -81,6 +74,9 @@ void BaseEnemyActor::Start()
 	PhysXCapsule->CreatePhysXActors({ 90, 60, 90 });
 	PhysXCapsule->GetDynamic()->setMass(80.0f);
 	PhysXCapsule->SetWorldPosition({ 0, 100, 0 });
+	BindPhysicsWithNet(PhysXCapsule);
+
+	//공격 가능한 Enemy Collision
 	//Monster 자체 콜리전
 	MonsterCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
 	MonsterCollision->GetTransform()->SetWorldScale(float4::ZERO);
@@ -107,6 +103,7 @@ void BaseEnemyActor::Update(float _DeltaTime)
 	//	MsgAssert("MonsterCollision의 크기를 설정해주지 않았습니다.");
 	//}
 
+	Update_NetworkTrans(_DeltaTime);
 	RenderShake(_DeltaTime);
 	MonsterSnatch(_DeltaTime);
 
@@ -132,9 +129,6 @@ void BaseEnemyActor::Update(float _DeltaTime)
 		else if (NetControllType::ActiveControll != GetControllType())
 		{
 			EnemyFSM_Client.Update(_DeltaTime);
-			Sever_Timer += _DeltaTime;
-			float Ratio = (Sever_Timer / NetworkManager::PacketFlushTime);
-			PhysXCapsule->SetWorldPosition(float4::LerpClamp(Server_PrePosition, Server_NextPosition, Ratio));
 		}
 	}
 }

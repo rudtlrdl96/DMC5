@@ -126,10 +126,10 @@ public:
 		return static_cast<EnumType>(Packets.front()->GetPacketID());
 	}
 
-	unsigned int GetNetObjectType() const
+	/*unsigned int GetNetObjectType() const
 	{
 		return ObjectType;
-	}
+	}*/
 
 	//이 오브젝트를 서버로 부터 끊습니다.(호출한 뒤로는 Update패킷 수신/전송이 안됩니다)
 	inline void NetDisconnect()
@@ -149,11 +149,11 @@ protected:
 	//서버로 패킷 전송 처리하는 부분입니다.(모든 업데이트 맨 마지막에 호출됩니다)
 	virtual void Update_SendPacket(float _DeltaTime) {}
 
-	template <typename EnumType>
+	/*template <typename EnumType>
 	inline void SetNetObjectType(EnumType _ActorType)
 	{
 		ObjectType = static_cast<unsigned int>(_ActorType);
-	}
+	}*/
 
 	
 
@@ -169,9 +169,6 @@ private:
 
 	//서버가 지정한 ID
 	int ObjectID = -1;
-
-	//어떤 클래스의 오브젝트인지 표현
-	unsigned int ObjectType = -1;
 
 	GameEngineNet* Net = nullptr;
 

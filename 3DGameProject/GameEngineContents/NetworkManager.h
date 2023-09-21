@@ -5,13 +5,14 @@
 #include "ObjectUpdatePacket.h"
 
 class BaseLevel;
-class GameEngineNetObject;
+class NetworkObjectBase;
+//class GameEngineNetObject;
 class GameEngineActor;
 enum class PacketEnum;
 
 struct UpdatePacketParameter
 {
-	GameEngineNetObject* ObjPtr = nullptr;
+	NetworkObjectBase* ObjPtr = nullptr;
 	float TimeScale = 1.f;
 
 	//ObjectUpdatePacket의 Union값을 보고 직접 넣어주시면 됩니다.
@@ -79,7 +80,7 @@ public:
 		if (true == IsClient())
 			return nullptr;
 
-		std::shared_ptr<GameEngineNetObject> NetObjPtr = nullptr;
+		std::shared_ptr<NetworkObjectBase> NetObjPtr = nullptr;
 		NetObjPtr = _Level->CreateActor<ActorPtr>(_Order);
 		NetObjPtr->InitNetObject(GameEngineNetObject::CreateServerID(), NetInst);
 		NetObjPtr->SetUserControllType();
@@ -93,11 +94,11 @@ public:
 	static void PushUpdatePacket(const UpdatePacketParameter& _Param);
 
 	//Update패킷을 보낼때 이 인터페이스를 이용해서 보내주시면 됩니다.(얘는 패킷을 바로 보냅니다)
-	static void SendFsmChangePacket(GameEngineNetObject* _NetObjPtr, int _FsmState);
+	static void SendFsmChangePacket(NetworkObjectBase* _NetObjPtr, int _FsmState);
 
 
 	//이미 생성되어 있는 오브젝트를 서버와 연동시킵니다.
-	static void LinkNetwork(GameEngineNetObject* _NetObjPtr);
+	static void LinkNetwork(NetworkObjectBase* _NetObjPtr);
 
 	//쌓여있던 모든 패킷을 전송하는 부분
 	static void FlushPackets();
@@ -135,13 +136,13 @@ private:
 	static std::function<void(unsigned int)> ConnectCallBack;
 
 	//엑터 생성
-	static std::shared_ptr<GameEngineNetObject> CreateNetActor(unsigned int _ActorType, class GameEngineLevel* _Level = nullptr, int _ObjectID = -1)
+	static std::shared_ptr<NetworkObjectBase> CreateNetActor(unsigned int _ActorType, class GameEngineLevel* _Level = nullptr, int _ObjectID = -1)
 	{
 		Net_ActorType ActorType = static_cast<Net_ActorType>(_ActorType);
 		return CreateNetActor(ActorType, _Level, _ObjectID);
 	}
 
-	static std::shared_ptr<GameEngineNetObject> CreateNetActor(Net_ActorType _ActorType, class GameEngineLevel* _Level = nullptr, int _ObjectID = -1);
+	static std::shared_ptr<NetworkObjectBase> CreateNetActor(Net_ActorType _ActorType, class GameEngineLevel* _Level = nullptr, int _ObjectID = -1);
 
 
 	//vector 형태의 패킷들을 _Ser인자에 직렬화 시킴

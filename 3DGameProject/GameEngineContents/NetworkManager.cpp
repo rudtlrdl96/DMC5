@@ -3,9 +3,11 @@
 
 #include <GameEngineCore/GameEngineActor.h>
 
-#include "NetworkGUI.h"
 #include "ContentsEnum.h"
+
+#include "NetworkGUI.h"
 #include "BaseLevel.h"
+#include "NetworkObjectBase.h"
 
 #include "PacketEnum.h"
 #include "MessageChatPacket.h"
@@ -14,7 +16,6 @@
 
 #include "PlayerActor_Nero.h"
 #include "PlayerActor_Vergil.h"
-#include "NetTestPlayer.h"
 #include "Enemy_HellCaina.h"
 
 const float NetworkManager::PacketFlushTime = 0.01f;
@@ -119,7 +120,7 @@ void NetworkManager::PushChatPacket(const std::string_view& _Msg, const float4& 
 
 void NetworkManager::PushUpdatePacket(const UpdatePacketParameter& _Param)
 {
-	GameEngineNetObject* NetPtr = _Param.ObjPtr;
+	NetworkObjectBase* NetPtr = _Param.ObjPtr;
 	if (nullptr == NetPtr)
 	{
 		MsgAssert("업데이트 패킷을 전송할땐 파라미터 인자의 ObjPtr의 값은 반드시 넣어주어야 합니다.");
@@ -181,7 +182,7 @@ void NetworkManager::PushUpdatePacket(const UpdatePacketParameter& _Param)
 	UpdatePacket->NetID = NetID;
 
 	//오브젝트 타입
-	UpdatePacket->ActorType = NetPtr->GetNetObjectType();
+	UpdatePacket->ActorType = static_cast<unsigned int>(NetPtr->GetNetObjectType());
 	if (-1 == UpdatePacket->ActorType)
 	{
 		MsgAssert("ObjectUpdate패킷을 보내려는 객체의 NetObjectType을 설정해주지 않았습니다");
@@ -226,7 +227,7 @@ void NetworkManager::PushUpdatePacket(const UpdatePacketParameter& _Param)
 }
 
 
-void NetworkManager::SendFsmChangePacket(GameEngineNetObject* _NetObjPtr, int _FsmState)
+void NetworkManager::SendFsmChangePacket(NetworkObjectBase* _NetObjPtr, int _FsmState)
 {
 	if (nullptr == _NetObjPtr)
 	{
@@ -302,7 +303,7 @@ void NetworkManager::SendFsmChangePacket(GameEngineNetObject* _NetObjPtr, int _F
 }
 
 
-void NetworkManager::LinkNetwork(GameEngineNetObject* _NetObjPtr)
+void NetworkManager::LinkNetwork(NetworkObjectBase* _NetObjPtr)
 {
 	//이미 서버와 연동된 경우에는 아래를 실행시키지 않음
 	if (-1 != _NetObjPtr->GetNetObjectID())
@@ -326,7 +327,7 @@ void NetworkManager::LinkNetwork(GameEngineNetObject* _NetObjPtr)
 	//클라인 경우엔 서버에 생성 요청 패킷을 생성
 	std::shared_ptr<LinkObjectPacket> LinkPacket = std::make_shared<LinkObjectPacket>();
 	LinkPacket->SetObjectID(NetID);
-	LinkPacket->ActorType = _NetObjPtr->GetNetObjectType();
+	LinkPacket->ActorType = static_cast<unsigned int>(_NetObjPtr->GetNetObjectType());
 	LinkPacket->Ptr = reinterpret_cast<unsigned __int64>(_NetObjPtr);
 
 	AllPacket[PacketEnum::LinkObjectPacket].push_back(LinkPacket);
@@ -429,7 +430,7 @@ void NetworkManager::SerializePackets(const std::vector<std::shared_ptr<GameEngi
 
 
 
-std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorType _ActorType, class GameEngineLevel* _Level /*= nullptr*/, int _ObjectID /*= -1*/)
+std::shared_ptr<NetworkObjectBase> NetworkManager::CreateNetActor(Net_ActorType _ActorType, class GameEngineLevel* _Level /*= nullptr*/, int _ObjectID /*= -1*/)
 {
 	if (nullptr == CurLevel)
 	{
@@ -442,12 +443,14 @@ std::shared_ptr<GameEngineNetObject> NetworkManager::CreateNetActor(Net_ActorTyp
 		CreateLevel = CurLevel;
 	}
 
-	std::shared_ptr<GameEngineNetObject> NetObject = nullptr;
+	std::shared_ptr<NetworkObjectBase> NetObject = nullptr;
 	switch (_ActorType)
 	{
-	case Net_ActorType::TestPlayer:
-		NetObject = CreateLevel->CreateActor<NetTestPlayer>();
+	case Net_ActorType::UNKNOWN:
+	{
+		MsgAssert("컨텐츠 쪽에서 Net_ActorType을 설정해주지 않아 객체를 만들수 없습니다.");
 		break;
+	}
 	case Net_ActorType::Nero:
 		NetObject = CreateLevel->CreateActor<PlayerActor_Nero>();
 		break;

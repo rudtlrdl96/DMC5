@@ -6,7 +6,6 @@
 #include "ContentsEnum.h"
 
 #include "NetworkManager.h"
-#include "NetTestPlayer.h"
 #include "PlayerActor_Nero.h"
 #include "PlayerActor_Vergil.h"
 #include "Plane.h"

@@ -27,7 +27,7 @@ Player::~Player()
 
 void Player::Start()
 {
-	SetNetObjectType(Net_ActorType::Nero);
+	//SetNetObjectType(Net_ActorType::Nero);
 
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
 	Renderer->SetFBXMesh("House1.FBX", "FBX");
@@ -53,8 +53,8 @@ void Player::Update_ProcessPacket()
 		case PacketEnum::ObjectUpdatePacket:
 		{
 			std::shared_ptr<ObjectUpdatePacket> ObjectUpdate = PopFirstPacket<ObjectUpdatePacket>();
-			GetTransform()->SetLocalPosition(ObjectUpdate->Position);
-			GetTransform()->SetLocalRotation(ObjectUpdate->Rotation);
+			//GetTransform()->SetLocalPosition(ObjectUpdate->Position);
+			//GetTransform()->SetLocalRotation(ObjectUpdate->Rotation);
 			break;
 		}
 		default:

@@ -154,6 +154,7 @@ void BasePlayerActor::Start()
 	PhysXCapsule->IsMainPlayerCapsule();
 	PhysXCapsule->CreatePhysXActors({ 100, 100, 150 });
 	PhysXCapsule->GetDynamic()->setMass(5.0f);
+	BindPhysicsWithNet(PhysXCapsule);
 
 	// 플레이어 충돌체
 	Col_Player = CreateComponent<GameEngineCollision>(CollisionOrder::Player);
@@ -216,13 +217,6 @@ void BasePlayerActor::Update_ProcessPacket()
 			std::shared_ptr<ObjectUpdatePacket> ObjectUpdate = PopFirstPacket<ObjectUpdatePacket>();
 
 			//패킷의 정보에 따라 자신의 값 수정
-			Server_PrevPos = GetTransform()->GetWorldPosition();
-			Server_NextPos = ObjectUpdate->Position;
-			Server_Timer = 0.0f;
-			PhysXCapsule->SetWorldRotation(ObjectUpdate->Rotation);
-			ObjectUpdate->TimeScale;
-
-			float TimeScale = ObjectUpdate->TimeScale;
 			if (ArmValue != ObjectUpdate->ArmState)
 			{
 				ArmValue = ObjectUpdate->ArmState;
@@ -255,12 +249,11 @@ void BasePlayerActor::Update_ProcessPacket()
 void BasePlayerActor::Update(float _DeltaTime)
 {
 	Update_Character(_DeltaTime);
+	Update_NetworkTrans(_DeltaTime);
 
 	if (NetControllType::PassiveControll == GameEngineNetObject::GetControllType())
 	{
-		Server_Timer += _DeltaTime;
-		float Ratio = Server_Timer / NetworkManager::PacketFlushTime;
-		PhysXCapsule->SetWorldPosition(float4::LerpClamp(Server_PrevPos, Server_NextPos, Ratio));
+		
 	}
 	else if (NetControllType::ActiveControll == GameEngineNetObject::GetControllType())
 	{

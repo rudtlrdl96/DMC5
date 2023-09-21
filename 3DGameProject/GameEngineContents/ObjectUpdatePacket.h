@@ -29,11 +29,6 @@ public:
 
 	}
 
-	float4 Rotation;
-	float4 Position;
-	float TimeScale = 1.f;
-
-
 	union 
 	{
 		unsigned int UnionDatas[NETWORK_UPDATEPACKET_UNION_DATA_SIZE];
@@ -104,8 +99,16 @@ protected:
 private:
 	unsigned int NetID = -1;
 	unsigned int ActorType = -1;
+
+	float4 Rotation;
+	float4 Position;
+	float TimeScale = 1.f;
+
 	Net_LevelType LevelType = Net_LevelType::UNKNOWN;
 	bool IsDeath = false;
+	//bool IsUpdate = true;
+
+
 
 	void CopyUnionData(const void* const _UnionArrPtr)
 	{

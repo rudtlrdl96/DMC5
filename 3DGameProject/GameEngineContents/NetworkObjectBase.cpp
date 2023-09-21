@@ -3,6 +3,24 @@
 
 #include "NetworkManager.h"
 
+
+NetworkObjectBase* NetworkObjectBase::GetNetObj(unsigned int _ObjID)
+{
+	GameEngineNetObject* GameNetObj = nullptr;
+	GameNetObj = GameEngineNetObject::GetNetObject(_ObjID);
+	if (nullptr == GameNetObj)
+		return nullptr;
+
+	NetworkObjectBase* NetObj = nullptr;
+	NetObj = dynamic_cast<NetworkObjectBase*>(GameNetObj);
+	if (nullptr == NetObj)
+	{
+		MsgAssert("NetworkObjectBase가 아닌 GameEngineNetObject를 상속받은 객체 발견");
+	}
+
+	return NetObj;
+}
+
 NetworkObjectBase::NetworkObjectBase()
 {
 
@@ -21,6 +39,12 @@ void NetworkObjectBase::SetNetwortTransData(const float4& _DestPos, const float4
 		return;
 	}
 
+	if (nullptr == PhysXCapsule)
+	{
+		MsgAssert("NetworkObjectBase에 Physics캡슐을 등록해주지 않아서 위치/회전값을 변경할 수 없습니다.");
+		return;
+	}
+
 	Net_PrevPos = PhysXCapsule->GetWorldPosition();
 	Net_DestPos = _DestPos;
 	//Net_PrevRot = PhysXCapsule->GetWorldRotation();
@@ -35,6 +59,12 @@ void NetworkObjectBase::Update_NetworkTrans(float _DeltaTime)
 	//서버로부터 패킷을 받는 타입의 객체만 아래를 실행
 	if (NetControllType::ActiveControll == GetControllType())
 		return;
+
+	if (nullptr == PhysXCapsule)
+	{
+		MsgAssert("NetworkObjectBase에 Physics캡슐을 등록해주지 않아서 위치/회전값을 변경할 수 없습니다.");
+		return;
+	}
 
 	//아래 코드들은 Lerp시키면서 부드럽게 이동/회전 시키는 코드
 	Net_LerpTimer += _DeltaTime;

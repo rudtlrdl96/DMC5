@@ -1,7 +1,7 @@
 #pragma once
 #include <GameEngineCore/GameEngineFSM.h>
 #include <GameEngineCore/PhysXCapsuleComponent.h>
-
+#include "NetworkObjectBase.h"
 
 enum class EnemyCode
 {
@@ -53,7 +53,7 @@ enum class EnemyRotation
 	Right_180,
 };
 
-class BaseEnemyActor : public GameEngineActor, public GameEngineNetObject
+class BaseEnemyActor : public GameEngineActor, public NetworkObjectBase
 {
 	friend class EnemySpawnArea;
 public:
@@ -254,11 +254,7 @@ protected:
 	//====================================================
 
 	//====================================================
-	// 서버 패킷 관련
-	float4 Server_PrePosition = float4::ZERO;
-	float4 Server_NextPosition = float4::ZERO;
-	float4 Server_Rotation = float4::ZERO;
-	float Sever_Timer = 0.0f;
+	
 
 	void Update_ProcessPacket() override;
 	void Update_SendPacket(float _DeltaTime) override;

@@ -37,21 +37,17 @@ enum class LogOrder
 
 enum class Net_ActorType
 {
+	UNKNOWN,
+
 	//플레이어
 	Nero,
 	Vergil,
-	TestPlayer,
 	MirageBlade,
 
 	//몬스터
 	Empusa,
 	HellCaina,
 
-
-
-	//이펙트?
-
-	COUNT,
 };
 
 enum class PlayerType
