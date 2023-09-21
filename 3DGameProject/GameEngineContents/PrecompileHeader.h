@@ -2,8 +2,6 @@
 
 #include <GameEngineCore/PrecompileHeader.h>
 
-#include <GameEngineBase/GameEngineNetObject.h>
-
 #include <GameEnginePlatform/GameEngineInput.h>
 
 #include <GameEngineCore/GameEngineGUI.h>

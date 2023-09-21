@@ -1,7 +1,7 @@
 #pragma once
 
 // Ό³Έν :
-class Player_MirageBlade : public GameEngineActor, public GameEngineNetObject
+class Player_MirageBlade : public GameEngineActor
 {
 public:
 	// constrcuter destructer

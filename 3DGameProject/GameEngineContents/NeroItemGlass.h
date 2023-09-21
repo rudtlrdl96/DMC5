@@ -3,7 +3,7 @@
 #include "ContentsEnum.h"
 
 // Ό³Έν :
-class NeroItemGlass : public UIFBXActorBase, public GameEngineNetObject
+class NeroItemGlass : public UIFBXActorBase
 {
 public:
 

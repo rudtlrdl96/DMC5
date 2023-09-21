@@ -32,18 +32,7 @@ void Wall::Start()
 
 void Wall::Update(float _DeltaTime)
 {
-	NetControllType Type = GetControllType();
-	switch (Type)
-	{
-	case NetControllType::ActiveControll:
-		UserUpdate(_DeltaTime);
-		break;
-	case NetControllType::PassiveControll:
-		ServerUpdate(_DeltaTime);
-		break;
-	default:
-		break;
-	}
+	
 }
 
 void Wall::UserUpdate(float _DeltaTime)

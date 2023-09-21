@@ -112,9 +112,16 @@ public:
 
 	//맨 앞쪽의 패킷을 꺼내고 Pop한다
 	template<typename PacketType>
-	std::shared_ptr<PacketType> PopFirstPacket()
+	std::shared_ptr<PacketType> PopFirstPacketAsCast()
 	{
 		std::shared_ptr<PacketType> PacketReturn = std::dynamic_pointer_cast<PacketType>(Packets.front());
+		Packets.pop_front();
+		return PacketReturn;
+	}
+
+	std::shared_ptr<GameEnginePacket> PopFirstPacket()
+	{
+		std::shared_ptr<GameEnginePacket> PacketReturn = Packets.front();
 		Packets.pop_front();
 		return PacketReturn;
 	}
@@ -144,10 +151,10 @@ public:
 
 protected:
 	//수신받은 패킷을 처리하는 부분입니다.(레벨 업데이트 맨 처음에 호출됩니다)
-	virtual void Update_ProcessPacket(){}
+	virtual void Update_ProcessPacket() = 0;
 
 	//서버로 패킷 전송 처리하는 부분입니다.(모든 업데이트 맨 마지막에 호출됩니다)
-	virtual void Update_SendPacket(float _DeltaTime) {}
+	virtual void Update_SendPacket(float _DeltaTime) = 0;
 
 	/*template <typename EnumType>
 	inline void SetNetObjectType(EnumType _ActorType)

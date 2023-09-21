@@ -78,3 +78,28 @@ void NetworkObjectBase::Update_NetworkTrans(float _DeltaTime)
 	//float4 NowRot = float4::SLerpQuaternion(Net_PrevRot, Net_DestRot, Ratio);
 	//PhysXCapsule->SetWorldRotation(NowRot);
 }
+
+
+void NetworkObjectBase::Update_ProcessPacket()
+{
+	//패킷을 다 처리할 때 까지
+	while (GameEngineNetObject::IsPacket())
+	{
+		//지금 처리할 패킷의 타입을 알아옵니다
+		PacketEnum Type = GameEngineNetObject::GetFirstPacketType<PacketEnum>();
+
+		if (false == PacketProcessFunctions.contains(Type))
+		{
+			MsgAssert("컨텐츠쪽에서 이 패킷을 처리하기 위한 콜백함수를 등록해주지 않았거나\n컨텐츠로 보내면 안되는 패킷을 컨텐츠 쪽으로 보냈습니다");
+			return;
+		}
+
+		std::shared_ptr<GameEnginePacket> Packet = PopFirstPacket();
+		PacketProcessFunctions[Type](Packet);
+	}
+}
+//
+//void NetworkObjectBase::Update_SendPacket(float _DeltaTime)
+//{
+//
+//}

@@ -165,6 +165,29 @@ void BasePlayerActor::Start()
 	Col_Attack = CreateComponent<AttackCollision>(CollisionOrder::PlayerAttack);
 	Col_Attack->Off();
 	Col_Attack->SetColType(ColType::AABBBOX3D);
+
+
+	//ObjectUpdatePacket이 왔을때 어떻게 처리할 것인지
+	BindPacketFunction<ObjectUpdatePacket>(PacketEnum::ObjectUpdatePacket, [this](std::shared_ptr<ObjectUpdatePacket> _Packet)
+	{
+		//패킷의 정보에 따라 자신의 값 수정
+		if (ArmValue != _Packet->ArmState)
+		{
+			ArmValue = _Packet->ArmState;
+			SetArm(ArmValue);
+		}
+		if (DTValue != _Packet->IsEvolve)
+		{
+			DTValue = _Packet->IsEvolve;
+			SetDT(DTValue);
+		}
+	});
+
+	//FsmChangePacket이 왔을때 어떻게 처리할 것인지
+	BindPacketFunction<FsmChangePacket>(PacketEnum::FsmChangePacket, [this](std::shared_ptr<FsmChangePacket> _Packet)
+	{
+		SetFSMStateValue(_Packet->FsmState);
+	});
 }
 
 void BasePlayerActor::NetControllLoad()
@@ -200,51 +223,6 @@ void BasePlayerActor::UserControllLoad()
 	Col_LockOn->Off();
 }
 
-void BasePlayerActor::Update_ProcessPacket()
-{
-	//패킷을 다 처리할 때 까지
-	while (GameEngineNetObject::IsPacket())
-	{
-		//지금 처리할 패킷의 타입을 알아옵니다
-		PacketEnum Type = GameEngineNetObject::GetFirstPacketType<PacketEnum>();
-
-		switch (Type)
-		{
-			//업데이트 패킷의 경우엔
-		case PacketEnum::ObjectUpdatePacket:
-		{
-			//패킷을 템플릿 포인터로 꺼내옵니다(Enum값과 포인터값을 맞게 해주셔야 하는 부분 유의부탁드려요)
-			std::shared_ptr<ObjectUpdatePacket> ObjectUpdate = PopFirstPacket<ObjectUpdatePacket>();
-
-			//패킷의 정보에 따라 자신의 값 수정
-			if (ArmValue != ObjectUpdate->ArmState)
-			{
-				ArmValue = ObjectUpdate->ArmState;
-				SetArm(ArmValue);
-			}
-			if (DTValue != ObjectUpdate->IsEvolve)
-			{
-				DTValue = ObjectUpdate->IsEvolve;
-				SetDT(DTValue);
-			}
-			//unsigned int FsmState = ObjectUpdate->FsmState;
-			//bool IsFsmForce = ObjectUpdate->IsFsmForce;
-			break;
-		}
-		case PacketEnum::FsmChangePacket:
-		{
-			std::shared_ptr<FsmChangePacket> FsmChange = PopFirstPacket<FsmChangePacket>();
-			SetFSMStateValue(FsmChange->FsmState);
-			break;
-		}
-		default:
-		{
-			MsgAssert("처리하지 못하는 패킷이 플레이어로 날아왔습니다.");
-			return;
-		}
-		}
-	}
-}
 
 void BasePlayerActor::Update(float _DeltaTime)
 {

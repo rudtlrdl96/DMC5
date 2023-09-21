@@ -44,26 +44,26 @@ void Player::Update_ProcessPacket()
 	if (false == NetworkManager::IsClient())
 		return;
 
-	while (GameEngineNetObject::IsPacket())
-	{
-		PacketEnum Type = GameEngineNetObject::GetFirstPacketType<PacketEnum>();
+	//while (GameEngineNetObject::IsPacket())
+	//{
+	//	PacketEnum Type = GameEngineNetObject::GetFirstPacketType<PacketEnum>();
 
-		switch (Type)
-		{
-		case PacketEnum::ObjectUpdatePacket:
-		{
-			std::shared_ptr<ObjectUpdatePacket> ObjectUpdate = PopFirstPacket<ObjectUpdatePacket>();
-			//GetTransform()->SetLocalPosition(ObjectUpdate->Position);
-			//GetTransform()->SetLocalRotation(ObjectUpdate->Rotation);
-			break;
-		}
-		default:
-		{
-			MsgAssert("처리하지 못하는 패킷이 플레이어로 날아왔습니다.");
-			return;
-		}
-		}
-	}
+	//	switch (Type)
+	//	{
+	//	case PacketEnum::ObjectUpdatePacket:
+	//	{
+	//		std::shared_ptr<ObjectUpdatePacket> ObjectUpdate = PopFirstPacket<ObjectUpdatePacket>();
+	//		//GetTransform()->SetLocalPosition(ObjectUpdate->Position);
+	//		//GetTransform()->SetLocalRotation(ObjectUpdate->Rotation);
+	//		break;
+	//	}
+	//	default:
+	//	{
+	//		MsgAssert("처리하지 못하는 패킷이 플레이어로 날아왔습니다.");
+	//		return;
+	//	}
+	//	}
+	//}
 }
 
 void Player::Update(float _DeltaTime)

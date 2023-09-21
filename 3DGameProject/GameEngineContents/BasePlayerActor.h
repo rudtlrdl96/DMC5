@@ -55,8 +55,7 @@ protected:
 	void NetControllLoad();
 	void UserControllLoad();
 
-	//패킷을 처리하는 부분입니다. 모든 레벨의 맨 처음에 실행됩니다.
-	void Update_ProcessPacket() override;
+	
 	// BasePlayerActor의 업데이트. 상속받은 Actor는 Update_Character를 오버라이드하여 사용하세요.
 	void Update(float _DeltaTime) override;
 	// BasePlayerActor를 상속받은 캐릭터가 이용할 Update

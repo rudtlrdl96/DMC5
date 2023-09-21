@@ -1,7 +1,7 @@
 #pragma once
 
 // Ό³Έν :
-class Wall : public GameEngineActor, public GameEngineNetObject
+class Wall : public GameEngineActor
 {
 public:
 	// constrcuter destructer

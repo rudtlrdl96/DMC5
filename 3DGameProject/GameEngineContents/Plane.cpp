@@ -33,18 +33,7 @@ void Plane::Start()
 
 void Plane::Update(float _DeltaTime)
 {
-	NetControllType Type = GetControllType();
-	switch (Type)
-	{
-	case NetControllType::ActiveControll:
-		UserUpdate(_DeltaTime);
-		break;
-	case NetControllType::PassiveControll:
-		ServerUpdate(_DeltaTime);
-		break;
-	default:
-		break;
-	}
+	
 }
 
 void Plane::UserUpdate(float _DeltaTime)
