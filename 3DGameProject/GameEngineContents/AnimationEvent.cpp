@@ -106,6 +106,8 @@ void AnimationEvent::LoadAll(const AnimLoadParameter& _Parameter)
 		std::shared_ptr<GameEngineFBXAnimationInfo> AnimInfo = _Parameter.Renderer->GetAnimation(Event.AnimationName);
 		AnimInfo->Loop = Event.Loop; // 루프 적용
 		AnimInfo->TimeScale = Event.Speed; // 속도 적용
+		AnimInfo->BlendIn = Event.BlendIn; // 블렌드 적용
+		AnimInfo->BlendOut = Event.BlendOut;
 
 		// 애니메이션 이벤트 구현
 		for (int i = 0; i < Event.Events.size(); i++)

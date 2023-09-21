@@ -339,7 +339,7 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh(const st
 
 		if (0 == AnimationBoneMatrixs.size())
 		{
-			return RenderUnit; 
+			return RenderUnit;
 		}
 
 		// 링크를 걸어준것.
@@ -590,15 +590,7 @@ void GameEngineFBXRenderer::ChangeAnimation(const std::string& _AnimationName, b
 		float OutTime = CurAnimation->BlendOut;
 		float InTime = FindIter->second->BlendIn;
 		CurBlendTime = 0.0f;
-		if (OutTime < 0 || InTime < 0)
-		{
-			BlendTime = 0.0f;
-		}
-		else
-		{
-			BlendTime = (OutTime + InTime) * 0.5f;
-		}
-		BlendTime = 0.1f;
+		BlendTime = (OutTime + InTime) * 0.5f;
 	}
 	CurAnimation = FindIter->second;
 

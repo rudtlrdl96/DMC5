@@ -74,6 +74,8 @@ public:
 		_File << Speed;
 		_File << Loop;
 		EventsWrite(_File);
+		_File << BlendIn;
+		_File << BlendOut;
 	}
 
 	void Read(GameEngineSerializer& _File) override
@@ -82,6 +84,11 @@ public:
 		_File >> Speed;
 		_File >> Loop;
 		EventsRead(_File);
+		if (8 <= _File.GetWriteOffSet() - _File.GetReadOffSet())
+		{
+			_File >> BlendIn;
+			_File >> BlendOut;
+		}
 	}
 
 	void EventsWrite(GameEngineSerializer& _File);
@@ -105,6 +112,8 @@ private:
 	std::string AnimationName;
 	float Speed = 1.0;
 	bool Loop = true;
+	float BlendIn = 0.0f;
+	float BlendOut = 0.0f;
 	std::map<size_t, std::vector<EventData>> Events;
 };
 
