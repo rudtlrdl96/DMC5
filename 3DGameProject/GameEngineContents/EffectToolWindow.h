@@ -22,8 +22,12 @@ protected:
 	void CharacterSetting(std::shared_ptr<GameEngineLevel> Level);
 	void CreateFXRender(std::shared_ptr<GameEngineLevel> Level);
 	void TimeLine();
+	void KeyFrame();
 	void AddKeyFrame();
 	void Save(std::shared_ptr<GameEngineLevel> Level);
+
+	void KeyFramePreview();
+	void KeyFrameLerp();
 private:
 	std::shared_ptr<GameEngineActor> Actor = nullptr;
 	std::shared_ptr<class GameEngineFBXRenderer> CharacterRender = nullptr;

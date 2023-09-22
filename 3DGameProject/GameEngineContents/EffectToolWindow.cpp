@@ -18,6 +18,7 @@ void EffectToolWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _Delt
 	CreateFXRender(Level);
 	TimeLine();
 	AddKeyFrame();
+	KeyFrame();
 	Save(Level);
 }
 
@@ -136,32 +137,33 @@ void EffectToolWindow::TimeLine()
 	ImGui::SameLine();
 	if (ImGui::Button("<<") && 0 < CurrentFrame)
 	{
-		//while (0 < --CurrentFrame)
-		//{
-		//	if (0 < AnimEvent.Events[CurrentFrame].size())
-		//	{
-		//		break;
-		//	}
-		//}
+		while (0 < CurrentFrame)
+		{
+			if (CurFrameData.contains(--CurrentFrame))
+			{
+				break;
+			}
+		}
 	}
 	ImGui::SameLine();
 	if (ImGui::Button(">>") && CurrentFrame < 9999)
 	{
-		//while (++CurrentFrame < FrameSize)
-		//{
-		//	if (0 < AnimEvent.Events[CurrentFrame].size())
-		//	{
-		//		break;
-		//	}
-		//}
+		while (CurrentFrame < 9999)
+		{
+			if (CurFrameData.contains(++CurrentFrame))
+			{
+				break;
+			}
+		}
 	}
 
-	if (IsPause)
+	if (IsPause && BeforeFrame != CurrentFrame)
 	{
 		if (CharacterRender != nullptr)
 		{
 			CharacterRender->SetCurFrame(CurrentFrame);
 		}
+		KeyFramePreview();
 	}
 
 	// 재생, 정지 버튼
@@ -224,7 +226,45 @@ void EffectToolWindow::TimeLine()
 		{
 			return;
 		}
+		for (std::shared_ptr<EffectRenderer> _Renderer : FXRenders)
+		{
+			_Renderer->On();
+		}
 		FXSys->Pause = true;
+		FXSys->Off();
+	}
+}
+
+void EffectToolWindow::KeyFrame()
+{
+	if (false == CurFrameData.contains(CurrentFrame)) { return; }
+
+	std::map<int, FXKeyFrame>::iterator StartIter = CurFrameData[CurrentFrame].begin();
+	std::map<int, FXKeyFrame>::iterator EndIter = CurFrameData[CurrentFrame].end();
+
+	for (; StartIter != EndIter; StartIter++)
+	{
+		
+		if (ImGui::TreeNode(std::to_string(StartIter->first).c_str()))
+		{
+			ImGui::DragFloat4("Position", StartIter->second.Position.Arr1D, 0.1f);
+			ImGui::DragFloat4("Rotation", StartIter->second.Rotation.Arr1D, 0.1f);
+			ImGui::DragFloat4("Scale", StartIter->second.Scale.Arr1D, 0.1f);
+
+			if (ImGui::Button("Delete"))
+			{
+				CurFrameData[CurrentFrame].erase(StartIter);
+				if (0 == CurFrameData[CurrentFrame].size())
+				{
+					CurFrameData.erase(CurrentFrame);
+				}
+				ImGui::TreePop();
+				return;
+			}
+
+			ImGui::TreePop();
+		}
+		
 	}
 }
 
@@ -242,7 +282,15 @@ void EffectToolWindow::AddKeyFrame()
 		NewKeyFrame.Position = FXRenders[UnitIndex]->GetTransform()->GetLocalPosition();
 		NewKeyFrame.Rotation = FXRenders[UnitIndex]->GetTransform()->GetLocalRotation();
 		NewKeyFrame.Scale = FXRenders[UnitIndex]->GetTransform()->GetLocalScale();
-		CurFrameData[CurrentFrame].insert(std::pair(UnitIndex, NewKeyFrame));
+
+		if (true == CurFrameData[CurrentFrame].contains(UnitIndex))
+		{
+			CurFrameData[CurrentFrame][UnitIndex] = NewKeyFrame;
+		}
+		else
+		{
+			CurFrameData[CurrentFrame].insert(std::pair(UnitIndex, NewKeyFrame));
+		}
 	}
 
 
@@ -358,6 +406,7 @@ void EffectToolWindow::Save(std::shared_ptr<GameEngineLevel> Level)
 				if (CurUnitDatas[i].MeshName != "")
 				{
 					FXRenders[i] = Actor->CreateComponent<EffectRenderer>();
+					FXRenders[i]->SetName(std::to_string(i));
 					FXRenders[i]->SetFBXMesh(CurUnitDatas[i].MeshName, "Effect_2D");
 					FXRenders[i]->SetTexture("DiffuseTex", CurUnitDatas[i].TextureName);
 					//FXRenders[i]->Off();
@@ -365,6 +414,7 @@ void EffectToolWindow::Save(std::shared_ptr<GameEngineLevel> Level)
 				else
 				{
 					FXRenders[i] = Actor->CreateComponent<EffectRenderer>();
+					FXRenders[i]->SetName(std::to_string(i));
 					FXRenders[i]->RectInit("Effect_2D");
 					FXRenders[i]->LockRotation();
 					if (CurUnitDatas[i].AnimData.AnimationName == "")
@@ -385,6 +435,98 @@ void EffectToolWindow::Save(std::shared_ptr<GameEngineLevel> Level)
 				}
 			}
 		}
+	}
+}
+
+void EffectToolWindow::KeyFramePreview()
+{
+	if (false == CurFrameData.contains(CurrentFrame))
+	{ 
+		KeyFrameLerp();
+		return; 
+	}
+
+	std::map<int, FXKeyFrame>& CurKeyFrame = CurFrameData[CurrentFrame];
+	std::map<int, FXKeyFrame>::iterator StartIter = CurKeyFrame.begin();
+	std::map<int, FXKeyFrame>::iterator EndIter = CurKeyFrame.end();
+
+	for (int i = 0; i < FXRenders.size(); i++)
+	{
+		if (false == CurKeyFrame.contains(i))
+		{
+			KeyFrameLerp();
+			return;
+		}
+
+		FXRenders[i]->GetTransform()->SetLocalPosition(CurKeyFrame[i].Position);
+		FXRenders[i]->GetTransform()->SetLocalRotation(CurKeyFrame[i].Rotation);
+		FXRenders[i]->GetTransform()->SetLocalScale(CurKeyFrame[i].Scale);
+		FXRenders[i]->EffectOption = CurKeyFrame[i].EffectOption;
+
+		if (ImGui::TreeNode(std::to_string(StartIter->first).c_str()))
+		{
+			ImGui::DragFloat4("Position", CurKeyFrame[i].Position.Arr1D, 0.1f);
+			ImGui::DragFloat4("Rotation", CurKeyFrame[i].Rotation.Arr1D, 0.1f);
+			ImGui::DragFloat4("Scale", CurKeyFrame[i].Scale.Arr1D, 0.1f);
+
+			if (ImGui::Button("Delete"))
+			{
+				CurFrameData[CurrentFrame].erase(StartIter);
+				if (0 == CurFrameData[CurrentFrame].size())
+				{
+					CurFrameData.erase(CurrentFrame);
+				}
+				ImGui::TreePop();
+				return;
+			}
+
+			ImGui::TreePop();
+		}
+	}
+
+}
+
+void EffectToolWindow::KeyFrameLerp()
+{
+	for (int i = 0; i < FXRenders.size(); i++)
+	{
+		FXKeyFrame PrevKey;
+		FXKeyFrame NextKey;
+		int PrevFrame = CurrentFrame;
+		int NextFrame = CurrentFrame;
+
+		bool Check = false;
+		while (0 < PrevFrame)
+		{
+			PrevFrame--;
+			if (true == CurFrameData.contains(PrevFrame) && true == CurFrameData[PrevFrame].contains(i))
+			{
+				Check = true;
+				PrevKey = CurFrameData[PrevFrame][i];
+				break;
+			}
+		}
+		if (false == Check) { return; }
+
+		Check = false;
+		while (NextFrame < 9999)
+		{
+			NextFrame++;
+			if (true == CurFrameData.contains(NextFrame) && true == CurFrameData[NextFrame].contains(i))
+			{
+				Check = true;
+				NextKey = CurFrameData[NextFrame][i];
+				break;
+			}
+		}
+		if (false == Check) { return; }
+
+		float Ratio = (float)(CurrentFrame - PrevFrame) / (NextFrame - PrevFrame);
+		FXKeyFrame CurKey = FXKeyFrame::Lerp(PrevKey, NextKey, Ratio);
+		FXRenders[i]->GetTransform()->SetLocalPosition(CurKey.Position);
+		FXRenders[i]->GetTransform()->SetLocalRotation(CurKey.Rotation);
+		FXRenders[i]->GetTransform()->SetLocalScale(CurKey.Scale);
+		FXRenders[i]->EffectOption = CurKey.EffectOption;
 	}
 }
 
