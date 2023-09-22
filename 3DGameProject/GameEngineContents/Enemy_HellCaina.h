@@ -127,8 +127,8 @@ private:
 
 	bool IsHeavyAttack = false;
 	bool IsAirAttack = false;
-	bool IsAirLanding = false;
 	bool IsSlamAttack = false;
+	bool IsCollapse = false;
 	bool IsRecognize = false;
 };
 
