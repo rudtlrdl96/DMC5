@@ -26,7 +26,10 @@ public:
 	NeroItemGlass(NeroItemGlass&& _Other) noexcept = delete;
 	NeroItemGlass& operator=(const NeroItemGlass& _Other) = delete;
 	NeroItemGlass& operator=(NeroItemGlass&& _Other) noexcept = delete;
-
+	static void AddItemUI(bool _Value)
+	{
+		AddItemValue = _Value;
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -37,12 +40,6 @@ private:
 	GameEngineFSM FSM;
 
 	std::shared_ptr<class UIFBXRenderer> NeroUI_ItemGlass = nullptr;
-
-	std::shared_ptr<class UIFBXRenderer> NeroUI_Overture0 = nullptr;
-	std::shared_ptr<class UIFBXRenderer> NeroUI_Overture = nullptr;
-	std::shared_ptr<class UIFBXRenderer> NeroUI_Gerbera = nullptr;
-	std::shared_ptr<class UIFBXRenderer> NeroUI_BusterArm = nullptr;
-
 	std::shared_ptr<class GameEngineFontRenderer> ItemText = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> CurCount = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> SlashText = nullptr;
@@ -57,6 +54,11 @@ private:
 	bool secound = false;
 	bool third = false;
 
+	static bool AddItemValue;
 	int i = 0;
+	// 손돌리기
+	void MoveBreaker(float _Delta);
+	std::vector<std::shared_ptr<class UIFBXRenderer>> Arms;
+	std::shared_ptr<class UIFBXRenderer> Render = nullptr;
 };
 

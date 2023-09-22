@@ -1,7 +1,7 @@
 #pragma once
 #include "UIFBXActorBase.h"
 // Ό³Έν :
-class NeroHPUI : public UIFBXActorBase, public GameEngineNetObject
+class NeroHPUI : public UIFBXActorBase
 {
 public:
 

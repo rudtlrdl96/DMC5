@@ -225,9 +225,9 @@ void PlayerActor_Nero::PlayerLoad()
 	}
 
 	SetHuman();
-	AddBreaker(DevilBreaker::BusterArm);
-	AddBreaker(DevilBreaker::Gerbera);
-	AddBreaker(DevilBreaker::Overture);
+	//AddBreaker(DevilBreaker::BusterArm);
+	//AddBreaker(DevilBreaker::Gerbera);
+	//AddBreaker(DevilBreaker::Overture);
 	WeaponIdle();
 
 	// 기본 움직임
@@ -4566,6 +4566,7 @@ void PlayerActor_Nero::OffDevilBraeker()
 
 void PlayerActor_Nero::AddBreaker(DevilBreaker _Breaker)
 {
+	NeroItemGlass::AddItemUI(true);
 	CurDevilBreaker = _Breaker;
 	switch (CurDevilBreaker)
 	{
