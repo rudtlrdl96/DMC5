@@ -1118,6 +1118,11 @@ void Enemy_HellCaina::EnemyCreateFSM()
 		});
 
 	/////////////////////////슬램
+	
+	{
+		EnemyRenderer->SetAnimationStartEvent("em0000_slam_damage", 1, [=] { SetAir(-75000.0f); });
+	}
+	
 	// 슬램 피격 start
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Slam_Damage,
 	.Start = [=] {
@@ -1260,6 +1265,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	IsRecognize = false;
 	IsCollapse = false;
 	}
 	});
@@ -1296,7 +1302,6 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
-	IsCollapse = false;
 	}
 	});
 
@@ -1324,6 +1329,8 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	IsRecognize = false;
+	IsCollapse = false;
 	}
 		});
 	// 뒤로 넘어진 상태에서 Death
