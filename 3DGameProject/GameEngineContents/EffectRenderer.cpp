@@ -114,6 +114,17 @@ void EffectRenderer::RectInit(const std::string_view& _MaterialName)
 	CustomOptionSetting();
 }
 
+void EffectRenderer::SphereInit(const std::string_view& _MaterialName)
+{
+	Unit.resize(1);
+	Unit[0].resize(1);
+
+	Unit[0][0] = CreateRenderUnit();
+	Unit[0][0]->SetMesh("DebugSphere");
+	Unit[0][0]->SetMaterial(_MaterialName);
+	CustomOptionSetting();
+}
+
 void EffectRenderer::SetFBXMesh(const std::string& _Name, std::string _Material)
 {
 	GameEngineFBXRenderer::SetFBXMesh(_Name, _Material);
@@ -291,11 +302,64 @@ void EffectRenderer::CustomOptionSetting()
 
 void EffectRenderer::DrawEditor()
 {
-	ImGui::DragFloat("Clip Start X", &EffectOption.ClipStartX, 0.01f);
-	ImGui::DragFloat("Clip End X", &EffectOption.ClipEndX, 0.01f);
+	ImGui::DragFloat("Clip Start X", &EffectOption.ClipStartX, 0.01f, 0, 1);
+	ImGui::DragFloat("Clip End X", &EffectOption.ClipEndX, 0.01f, 0, 1);
 
-	ImGui::DragFloat("Clip Start Y", &EffectOption.ClipStartY, 0.01f);
-	ImGui::DragFloat("Clip End Y", &EffectOption.ClipEndY, 0.01f);
+	ImGui::DragFloat("Clip Start Y", &EffectOption.ClipStartY, 0.01f, 0, 1);
+	ImGui::DragFloat("Clip End Y", &EffectOption.ClipEndY, 0.01f, 0, 1);
+	
+	ImGui::ColorEdit4("MulColor", EffectOption.MulColor.Arr1D);
+	ImGui::ColorEdit4("PlusColor", EffectOption.PlusColor.Arr1D);
+
+	if (ImGui::Button("Set Mesh FBX"))
+	{
+		OPENFILENAME OFN;
+		TCHAR lpstrFile[200] = L"";
+		static TCHAR filter[] = L".fbx 메쉬 파일\0*.fbx";
+
+		memset(&OFN, 0, sizeof(OPENFILENAME));
+		OFN.lStructSize = sizeof(OPENFILENAME);
+		OFN.hwndOwner = GameEngineWindow::GetHWnd();
+		OFN.lpstrFilter = filter;
+		OFN.lpstrFile = lpstrFile;
+		OFN.nMaxFile = 200;
+		OFN.lpstrInitialDir = L".";
+
+		if (GetOpenFileName(&OFN) != 0) {
+			GameEnginePath Path = GameEngineString::UniCodeToAnsi(OFN.lpstrFile);
+			std::string FileName = Path.GetFileName();
+			if (nullptr == GameEngineFBXMesh::Find(FileName))
+			{
+				GameEngineFBXMesh::Load(Path.GetFullPath());
+			}
+			SetFBXMesh(FileName, "Effect_2D");
+		}
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Set Texture"))
+	{
+		OPENFILENAME OFN;
+		TCHAR lpstrFile[200] = L"";
+		static TCHAR filter[] = L"텍스쳐 파일\0*.tga;*.png";
+
+		memset(&OFN, 0, sizeof(OPENFILENAME));
+		OFN.lStructSize = sizeof(OPENFILENAME);
+		OFN.hwndOwner = GameEngineWindow::GetHWnd();
+		OFN.lpstrFilter = filter;
+		OFN.lpstrFile = lpstrFile;
+		OFN.nMaxFile = 200;
+		OFN.lpstrInitialDir = L".";
+
+		if (GetOpenFileName(&OFN) != 0) {
+			GameEnginePath Path = GameEngineString::UniCodeToAnsi(OFN.lpstrFile);
+			std::string FileName = Path.GetFileName();
+			if (nullptr == GameEngineTexture::Find(FileName))
+			{
+				GameEngineTexture::Load(Path.GetFullPath());
+			}
+			SetTexture("DiffuseTex", FileName);
+		}
+	}
 
 	ImGui::Spacing();
 

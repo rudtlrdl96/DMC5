@@ -149,7 +149,7 @@ void GameEngineCamera::RenderTargetTextureLoad()
 	CamDeferrdTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 
 	CamAlphaTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	CamAlphaTarget->CreateDepthTexture();
+	CamAlphaTarget->SetDepthTexture(AllRenderTarget->GetDepthTexture());
 
 	//CubeRenderTarget->CreateCubeTexture();
 	//CubeRenderTarget->CreateCubeDepth();
@@ -171,10 +171,6 @@ void GameEngineCamera::RenderTargetTextureLoad()
 	DefferdMergeUnit.ShaderResHelper.SetTexture("SpcLight", DeferredLightTarget->GetTexture(1));
 	DefferdMergeUnit.ShaderResHelper.SetTexture("AmbLight", DeferredLightTarget->GetTexture(2));
 
-	AlphaMergeUnit.SetMesh("FullRect");
-	AlphaMergeUnit.SetMaterial("AlphaMerge");
-	AlphaMergeUnit.ShaderResHelper.SetTexture("DiffuseTex", CamAlphaTarget->GetTexture(0));
-
 	IsLoad = true;
 }
 
@@ -185,7 +181,6 @@ void GameEngineCamera::RenderTargetTextureRelease()
 		return;
 	}
 
-	AlphaMergeUnit.ShaderResHelper.AllResourcesRelease();
 	CalLightUnit.ShaderResHelper.AllResourcesRelease();
 	DefferdMergeUnit.ShaderResHelper.AllResourcesRelease();
 
@@ -564,10 +559,7 @@ void GameEngineCamera::Render(float _DeltaTime)
 		CamTarget->Clear();
 		CamTarget->Merge(CamForwardTarget);
 		CamTarget->Merge(CamDeferrdTarget);
-
-		CamTarget->Setting();
-		AlphaMergeUnit.Render(0.0f);
-		AlphaMergeUnit.ShaderResHelper.AllResourcesReset();
+		CamTarget->Merge(CamAlphaTarget);
 
 		CamTarget->Effect(_DeltaTime);
 	}

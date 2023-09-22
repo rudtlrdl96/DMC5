@@ -227,6 +227,9 @@ void NetworkManager::PushUpdatePacket(
 		_ObjPtr->NetDisconnect();
 	}
 
+	//On/Off ¿©ºÎ
+	UpdatePacket->IsUpdate = ActorPtr->IsUpdate();
+
 	ArrDataCopy(UpdatePacket->IntDatas, _IntDatas);
 	ArrDataCopy(UpdatePacket->FloatDatas, _FloatDatas);
 	ArrDataCopy(UpdatePacket->BoolDatas, _BoolDatas);

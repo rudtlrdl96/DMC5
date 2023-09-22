@@ -206,7 +206,7 @@ void ContentsCore::ContentsResourcesCreate()
 		Pipe->SetVertexShader("MyShader.fx");
 		Pipe->SetRasterizer("Engine2DBase");
 		Pipe->SetPixelShader("MyShader.fx");
-		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetBlendState("BaseBlend");
 		Pipe->SetDepthState("EngineDepth");
 	}
 
@@ -217,7 +217,7 @@ void ContentsCore::ContentsResourcesCreate()
 		Pipe->SetVertexShader("FadeShader.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
 		Pipe->SetPixelShader("FadeShader.hlsl");
-		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetBlendState("BaseBlend");
 		Pipe->SetDepthState("EngineDepth");
 	}
 
@@ -287,7 +287,7 @@ void ContentsCore::ContentsResourcesCreate()
 		Pipe->SetVertexShader("DebugMeshRender.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
 		Pipe->SetPixelShader("DebugMeshRender.hlsl");
-		Pipe->SetBlendState("AlphaBlend");
+		Pipe->SetBlendState("BaseBlend");
 		Pipe->SetDepthState("EngineDepth");
 	}
 
@@ -298,7 +298,7 @@ void ContentsCore::ContentsResourcesCreate()
 		Material->SetVertexShader("ContentsMesh.hlsl");				
 		Material->SetRasterizer("Engine3DBase");
 		Material->SetPixelShader("ContentsMesh.hlsl");
-		Material->SetBlendState("AlphaBlend");
+		Material->SetBlendState("BaseBlend");
 		Material->SetDepthState("EngineDepth");
 	}
 
@@ -308,8 +308,8 @@ void ContentsCore::ContentsResourcesCreate()
 		Material->SetVertexShader("ContentsMesh_Alpha.hlsl");
 		Material->SetRasterizer("Engine3DBase");
 		Material->SetPixelShader("ContentsMesh_Alpha.hlsl");
-		Material->SetBlendState("AlphaBlend");
-		Material->SetDepthState("AlwayDepth");
+		Material->SetBlendState("BaseBlend");
+		Material->SetDepthState("AlphaDepth");
 	}
 
 	{
@@ -318,7 +318,7 @@ void ContentsCore::ContentsResourcesCreate()
 		Material->SetVertexShader("ContentsMesh_LowOption.hlsl");
 		Material->SetRasterizer("Engine3DBase");
 		Material->SetPixelShader("ContentsMesh_LowOption.hlsl");
-		Material->SetBlendState("AlphaBlend");
+		Material->SetBlendState("BaseBlend");
 		Material->SetDepthState("EngineDepth");
 	}
 
@@ -328,7 +328,7 @@ void ContentsCore::ContentsResourcesCreate()
 		Material->SetVertexShader("ContentsAniMesh.hlsl");
 		Material->SetRasterizer("Engine3DBase");
 		Material->SetPixelShader("ContentsAniMesh.hlsl");
-		Material->SetBlendState("AlphaBlend");
+		Material->SetBlendState("BaseBlend");
 		Material->SetDepthState("EngineDepth");
 	}	
 	
@@ -338,8 +338,8 @@ void ContentsCore::ContentsResourcesCreate()
 		Material->SetVertexShader("ContentsAniMesh_Alpha.hlsl");
 		Material->SetRasterizer("Engine3DBase");
 		Material->SetPixelShader("ContentsAniMesh_Alpha.hlsl");
-		Material->SetBlendState("AlphaBlend");
-		Material->SetDepthState("AlwayDepth");
+		Material->SetBlendState("BaseBlend");
+		Material->SetDepthState("AlphaDepth");
 	}
 
 	{
@@ -348,7 +348,7 @@ void ContentsCore::ContentsResourcesCreate()
 		Material->SetVertexShader("ContentsAniMesh_LowOption.hlsl");
 		Material->SetRasterizer("Engine3DBase");
 		Material->SetPixelShader("ContentsAniMesh_LowOption.hlsl");
-		Material->SetBlendState("AlphaBlend");
+		Material->SetBlendState("BaseBlend");
 		Material->SetDepthState("EngineDepth");
 	}	
 
@@ -359,8 +359,8 @@ void ContentsCore::ContentsResourcesCreate()
 		Material->SetVertexShader("EffectMesh.hlsl");
 		Material->SetRasterizer("Engine2DBase");
 		Material->SetPixelShader("EffectMesh.hlsl");
-		Material->SetBlendState("AlphaBlend");
-		Material->SetDepthState("EngineDepth");
+		Material->SetBlendState("BaseBlend");
+		Material->SetDepthState("AlphaDepth");
 	}
 
 	{
@@ -369,8 +369,8 @@ void ContentsCore::ContentsResourcesCreate()
 		Material->SetVertexShader("EffectMesh.hlsl");
 		Material->SetRasterizer("Engine3DBase");
 		Material->SetPixelShader("EffectMesh.hlsl");
-		Material->SetBlendState("AlphaBlend");
-		Material->SetDepthState("EngineDepth");
+		Material->SetBlendState("BaseBlend");
+		Material->SetDepthState("AlphaDepth");
 	}
 }
 

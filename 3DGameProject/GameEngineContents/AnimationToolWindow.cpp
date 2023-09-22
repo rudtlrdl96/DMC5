@@ -234,6 +234,8 @@ void AnimationToolWindow::AnimationTimeLine()
 
 	// 애니메이션 속도 조절
 	ImGui::DragFloat("Speed", &AnimEvent.Speed, 0.1f, 0.0f, 20.0f);
+	ImGui::DragFloat("Blend In", &AnimEvent.BlendIn, 0.1f, 0.0f, 20.0f);
+	ImGui::DragFloat("Blend Out", &AnimEvent.BlendOut, 0.1f, 0.0f, 20.0f);
 	ImGui::Checkbox("Loop", &AnimEvent.Loop);
 	if (IsStop)
 	{

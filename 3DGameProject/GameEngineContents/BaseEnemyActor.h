@@ -227,6 +227,11 @@ protected:
 		PhysXCapsule->SetPush(ForwardDirect * _Value);
 	}
 
+	void SetThrowback(float _Value)
+	{
+		PhysXCapsule->SetPush(BackDirect * _Value);
+	}
+
 	void SetPush(float _Value)
 	{
 		PhysXCapsule->SetPush(PushDirect * _Value);
@@ -240,6 +245,11 @@ protected:
 	void SetForwardMove(float _Value)
 	{
 		PhysXCapsule->SetMove(ForwardDirect * _Value);
+	}
+
+	void SetBackMove(float _Value)
+	{
+		PhysXCapsule->SetMove(BackDirect * _Value);
 	}
 
 	void SetRightMove(float _Value)

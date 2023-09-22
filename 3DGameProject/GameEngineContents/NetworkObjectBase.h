@@ -100,6 +100,7 @@ private:
 	Net_ActorType NetActorType = Net_ActorType::UNKNOWN;
 
 	float ActorTimeScale = 1.f;
+	bool IsUpdateValue = true;
 	std::vector<int*> UpdatePacket_IntLinkDatas;
 	std::vector<bool*> UpdatePacket_BoolLinkDatas;
 	std::vector<float*> UpdatePacket_FloatLinkDatas;
@@ -113,5 +114,7 @@ private:
 	}
 
 	void SetNetwortTransData(const float4& _DestPos, const float4& _DestRot);
+
+	void SetUpdateState(bool _IsOn);
 };
 

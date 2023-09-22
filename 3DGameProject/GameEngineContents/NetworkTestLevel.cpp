@@ -34,6 +34,7 @@ void NetworkTestLevel::Start()
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 
 	GameEngineInput::CreateKey("Test_BackMainLevel", VK_ESCAPE);
+	GameEngineInput::CreateKey("Test_EnemyOnOffSwitch", 'C');
 }
 
 void NetworkTestLevel::LevelChangeStart()
@@ -51,7 +52,7 @@ void NetworkTestLevel::LevelChangeStart()
 	NetworkManager::LinkNetwork(Nero.get());
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
 
-	NetworkManager::CreateNetworkActor<Enemy_HellCaina>(this);
+	Enemy = NetworkManager::CreateNetworkActor<Enemy_HellCaina>(this);
 }
 
 void NetworkTestLevel::Update(float _DeltaTime)
@@ -63,6 +64,18 @@ void NetworkTestLevel::Update(float _DeltaTime)
 	{
 		GameEngineCore::ChangeLevel("MainLevel");
 		return;
+	}
+
+	if (nullptr != Enemy && GameEngineInput::IsDown("Test_EnemyOnOffSwitch"))
+	{
+		if (true == Enemy->IsUpdate())
+		{
+			Enemy->Off();
+		}
+		else
+		{
+			Enemy->On();
+		}
 	}
 }
 

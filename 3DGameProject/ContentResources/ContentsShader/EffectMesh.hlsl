@@ -101,9 +101,9 @@ Texture2D DiffuseTex : register(t0); // ALBM
 
 SamplerState ENGINEBASE : register(s0);
 
-struct PixelOutPut
+struct AlphaOutPut
 {
-    float4 Target : SV_Target0;
+    float4 ResultColor : SV_Target0;
 };
 
 cbuffer EffectData : register(b2)
@@ -112,13 +112,14 @@ cbuffer EffectData : register(b2)
     float ClipEndX;    
     float ClipStartY;
     float ClipEndY;    
+    float4 MulColor;
+    float4 PlusColor;
 };
 
-PixelOutPut MeshTexture_PS(Output _Input)
+AlphaOutPut MeshTexture_PS(Output _Input)
 {
-    PixelOutPut Result = (PixelOutPut) 0;
-    
-    
+    AlphaOutPut Result = (AlphaOutPut) 0;
+        
     float2 UV = _Input.TEXCOORD.xy;
     float2 ClipUV = _Input.ClipUV.xy;
     
@@ -132,14 +133,10 @@ PixelOutPut MeshTexture_PS(Output _Input)
         clip(-1);
     }
         
-    Result.Target = DiffuseTex.Sample(ENGINEBASE, UV);
-    
-    
-    // 추후 반투명 처리 해야함
-    if (1.0f > Result.Target.a)
-    {
-        clip(-1);
-    }
+    Result.ResultColor = DiffuseTex.Sample(ENGINEBASE, UV);
+        
+    Result.ResultColor += PlusColor;
+    Result.ResultColor *= MulColor;
     
     return Result;
 }

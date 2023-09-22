@@ -22,6 +22,8 @@ public:
 	float CurFrameTime = 0.0f;
 	float Inter = 0.1f;
 	float TimeScale = 1.0f;
+	float BlendIn = -1.0f;
+	float BlendOut = -1.0f;
 
 	std::vector<unsigned int> Frames;
 	UINT CurFrame = 0;
@@ -61,6 +63,8 @@ class AnimationCreateParams
 {
 public:
 	float Inter = 0.0f;
+	float BlendIn = -1.0f;
+	float BlendOut = -1.0f;
 	bool Loop = true;
 };
 
@@ -167,6 +171,15 @@ public:
 
 	void PauseSwtich();
 
+	void SetPlay()
+	{
+		Pause = false;
+	}
+	void SetPause()
+	{
+		Pause = true;
+	}
+
 	void ChangeAnimation(const std::string& _AnimationName, bool _Force = false);
 
 	bool IsAnimationEnd();
@@ -237,6 +250,10 @@ public:
 
 	void SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
 
+	inline void SetCurFrame(UINT _Frame)
+	{
+		CurAnimation->CurFrame = _Frame;
+	}
 	inline UINT GetCurFrame()
 	{
 		return CurAnimation->CurFrame;
@@ -267,7 +284,7 @@ private:
 	std::shared_ptr<GameEngineFBXMesh> FBXMesh = nullptr;
 
 	std::map<std::string, std::shared_ptr<GameEngineFBXAnimationInfo>> Animations;
-	std::shared_ptr<GameEngineFBXAnimationInfo> CurAnimation;
+	std::shared_ptr<GameEngineFBXAnimationInfo> CurAnimation = nullptr;
 
 	// 처음에는 그냥 들고만 있다가
 	// 애니메이션이 되는순간
@@ -280,5 +297,9 @@ private:
 
 
 	std::vector<AnimationBoneData> AnimationBoneDatas;
+	// 이전 애니메이션 정보. 블렌드 기능에 사용
+	std::vector<AnimationBoneData> PrevAnimationBoneDatas;
+	float CurBlendTime = 0.0f;
+	float BlendTime = 0.0f;
 };
 

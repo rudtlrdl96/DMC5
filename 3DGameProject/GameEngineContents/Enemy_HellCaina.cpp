@@ -340,7 +340,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	{
 		//PlayerChase(_DeltaTime);
 		AllDirectSetting();
-		ChangeState(FSM_State_HellCaina::HellCaina_Attack_DownUp);
+		ChangeState(FSM_State_HellCaina::HellCaina_Attack_Dash);
 		return;
 	}
 	},
@@ -656,6 +656,12 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	{
 		EnemyRenderer->SetAnimationStartEvent("em0000_attack_01", 62, [=] { SetMoveStop(); });
 		EnemyRenderer->SetAnimationStartEvent("em0000_attack_01", 63, [=] { SetAdvance(33000.0f); });
+		EnemyRenderer->SetAnimationStartEvent("em0000_attack_02", 57, [=] { SetMoveStop(); });
+		EnemyRenderer->SetAnimationStartEvent("em0000_attack_02", 58, [=] { SetAdvance(33000.0f); });
+		EnemyRenderer->SetAnimationStartEvent("em0000_attack_01_turn", 70, [=] { SetMoveStop(); });
+		EnemyRenderer->SetAnimationStartEvent("em0000_attack_01_turn", 71, [=] { SetThrowback(33000.0f); });
+		EnemyRenderer->SetAnimationStartEvent("em0000_attack_atackhard", 116, [=] { SetMoveStop(); });
+		EnemyRenderer->SetAnimationStartEvent("em0000_attack_atackhard", 117, [=] { SetAdvance(34000.0f); });
 	}
 
 	// 아래에서 위로 횡베기
@@ -664,7 +670,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0000_attack_01");
 	},
 	.Update = [=](float _DeltaTime) {
-	if (EnemyRenderer->GetCurFrame() && EnemyRenderer->GetCurFrame() <= 61)
+	if (EnemyRenderer->GetCurFrame() <= 61)
 	{
 		SetForwardMove(90.0f);
 	}
@@ -672,7 +678,6 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	{
 		SetForwardMove(90.0f);
 	}
-
 	if (true == EnemyRenderer->IsAnimationEnd()) 
 	{ 
 		ChangeState(FSM_State_HellCaina::HellCaina_Idle); 
@@ -689,6 +694,14 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0000_attack_02");
 	},
 	.Update = [=](float _DeltaTime) {
+	if (5 < EnemyRenderer->GetCurFrame() && EnemyRenderer->GetCurFrame() <= 55)
+	{
+		SetForwardMove(80.0f);
+	}
+	if (138 < EnemyRenderer->GetCurFrame() && EnemyRenderer->GetCurFrame() <= 160)
+	{
+		SetForwardMove(90.0f);
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Idle);
@@ -705,8 +718,22 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0000_attack_01_turn");
 	},
 	.Update = [=](float _DeltaTime) {
+	if (20 <= EnemyRenderer->GetCurFrame())
+	{
+		AnimationTurnStart = true;
+	}
+	if (10 < EnemyRenderer->GetCurFrame() && EnemyRenderer->GetCurFrame() <= 65)
+	{
+		SetForwardMove(-80.0f);
+	}
+	if (138 < EnemyRenderer->GetCurFrame() && EnemyRenderer->GetCurFrame() <= 160)
+	{
+		SetForwardMove(-90.0f);
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
+		AnimationTurnStart = false;
+		PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
 		ChangeState(FSM_State_HellCaina::HellCaina_Idle);
 		return;
 	}
@@ -721,6 +748,14 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0000_attack_atackhard");
 	},
 	.Update = [=](float _DeltaTime) {
+	if (10 < EnemyRenderer->GetCurFrame() && EnemyRenderer->GetCurFrame() <= 115)
+	{
+		SetForwardMove(400.0f);
+	}
+	if (345 < EnemyRenderer->GetCurFrame() && EnemyRenderer->GetCurFrame() <= 390)
+	{
+		SetForwardMove(60.0f);
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Idle);

@@ -24,6 +24,7 @@
 #include "StageEditLevel.h"
 #include "MonsterTestLevel.h"
 #include "AnimationToolLevel.h"
+#include "EffectToolLevel.h"
 
 ContentsCore::ContentsCore() 
 {
@@ -58,13 +59,14 @@ void ContentsCore::GameStart()
 	////
 	GameEngineCore::CreateLevel<StageEditLevel>();
 	GameEngineCore::CreateLevel<ShopLevel>();
+	GameEngineCore::CreateLevel<EffectToolLevel>();
 	
 	GameEngineCore::ChangeLevel("MainLevel");
 }
 
 void ContentsCore::GameEnd() 
 {
-	// FontUpRelease();
+	FontUpRelease();
 }
 
 // 폰트 로드
@@ -87,10 +89,11 @@ void ContentsCore::FontUpload()
 void ContentsCore::FontUpRelease()
 {
 	GameEngineDirectory NewDir;
-	NewDir.MoveParentToDirectory("CupHead_Resource");
-	NewDir.Move("CupHead_Resource");
+	NewDir.MoveParentToDirectory("ContentResources");
+	NewDir.Move("ContentResources");
+	NewDir.Move("Font");
 
-	if (0 == RemoveFontResourceA(NewDir.GetPlusFileName("CupheadFelix-Regular-merged.ttf").GetFullPath().data()))
+	if (0 == RemoveFontResourceA(NewDir.GetPlusFileName("DMC5Font.otf").GetFullPath().data()))
 	{
 		MsgAssert("폰트 삭제에 실패했습니다.");
 		return;
