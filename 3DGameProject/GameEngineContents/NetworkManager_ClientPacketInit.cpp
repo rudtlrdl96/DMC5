@@ -49,6 +49,12 @@ void NetworkManager::ClientPacketInit()
 	NetInst->Dispatcher.AddHandler<ObjectUpdatePacket>(
 		[=](std::shared_ptr<ObjectUpdatePacket> _Packet)
 	{
+		if (Net_LevelType::UNKNOWN == _Packet->LevelType)
+		{
+			MsgAssert("수신된 UpdatePacket의 레벨 타입이 UNKNOWN입니다.");
+			return;
+		}
+
 		//서버로 부터 받은 패킷이 현재 레벨과 다른 경우
 		if (CurLevelType != _Packet->LevelType)
 			return;
