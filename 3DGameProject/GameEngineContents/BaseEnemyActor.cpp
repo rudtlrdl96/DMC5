@@ -61,15 +61,6 @@ void BaseEnemyActor::Start()
 
 void BaseEnemyActor::Update(float _DeltaTime)
 {
-	//if (MonsterCollision->GetTransform()->GetWorldScale() == float4::ZERO
-	//	|| RN_MonsterCollision->GetTransform()->GetWorldScale() == float4::ZERO)
-	//{
-	//	MsgAssert("MonsterCollision의 크기를 설정해주지 않았습니다.");
-	//}
-
-	RenderShake(_DeltaTime);
-	MonsterSnatch(_DeltaTime);
-
 	if (true == IsSnatch)
 	{
 		return;
@@ -77,6 +68,8 @@ void BaseEnemyActor::Update(float _DeltaTime)
 
 	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
 	{
+		RenderShake(_DeltaTime);
+		MonsterSnatch(_DeltaTime);
 		RecognizeCollisionCheck(_DeltaTime);
 		DamageCollisionCheck(_DeltaTime);
 		EnemyFSM.Update(_DeltaTime);
@@ -85,6 +78,8 @@ void BaseEnemyActor::Update(float _DeltaTime)
 	{
 		if (NetControllType::ActiveControll == GetControllType())
 		{
+			RenderShake(_DeltaTime);
+			MonsterSnatch(_DeltaTime);
 			RecognizeCollisionCheck(_DeltaTime);
 			DamageCollisionCheck(_DeltaTime);
 			EnemyFSM.Update(_DeltaTime);

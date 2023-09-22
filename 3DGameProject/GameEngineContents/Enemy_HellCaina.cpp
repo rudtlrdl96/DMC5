@@ -4,6 +4,7 @@
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/GameEngineFBXAnimation.h>
 #include <GameEngineCore/GameEngineCollision.h>
+#include <GameEngineBase/GameEngineRandom.h>
 
 #include "NetworkManager.h"
 #include "AnimationEvent.h"
@@ -33,7 +34,7 @@ void Enemy_HellCaina::Start()
 	MonsterCollision->SetColType(ColType::OBBBOX3D);
 	RN_MonsterCollision->GetTransform()->SetLocalScale({ 700, 0, 0 });
 	RN_MonsterCollision->GetTransform()->SetLocalPosition({ 0, 80, 0 });
-	RN_MonsterCollision->Off();
+	//RN_MonsterCollision->Off();
 
 	// 기본 세팅
 	FallDistance = 55.0f;
@@ -73,6 +74,40 @@ void Enemy_HellCaina::PlayerChase(float _DeltaTime)
 		break;
 	default:
 		break;
+	}
+}
+
+void Enemy_HellCaina::PlayerAttack(float _DeltaTime)
+{
+	RotationCheck();
+	AllDirectSetting();
+	IsRecognize = false;
+
+	if (EnemyRotation::Left == EnemyRotationValue)
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Right_Start);
+	}
+	else if (EnemyRotation::Right == EnemyRotationValue)
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Left_Start);
+	}
+	else if (EnemyRotation::Left_180 == EnemyRotationValue || EnemyRotation::Right_180 == EnemyRotationValue)
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Attack_Turn);
+	}
+}
+
+void Enemy_HellCaina::RandomAttack()
+{
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+
+	if (0 == RandC)
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Attack_DownUp);
+	}
+	else
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Attack_UpDown);
 	}
 }
 
@@ -336,11 +371,16 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	},
 	.Update = [=](float _DeltaTime) {
 	WaitTime += _DeltaTime;
-	if (1.5f <= WaitTime)
+	if (1.0f <= WaitTime)
 	{
-		//PlayerChase(_DeltaTime);
-		AllDirectSetting();
-		ChangeState(FSM_State_HellCaina::HellCaina_Attack_Dash);
+		if (false == IsRecognize)
+		{
+			PlayerChase(_DeltaTime);
+		}
+		else
+		{
+			PlayerAttack(_DeltaTime);
+		}
 		return;
 	}
 	},
@@ -373,7 +413,9 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Idle);
+		RotationCheck();
+		AllDirectSetting();
+		ChangeState(FSM_State_HellCaina::HellCaina_Attack_Dash);
 		return;
 	}
 	},
@@ -397,7 +439,16 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Loop);
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 4);
+
+		if (0 == RandC)
+		{
+			ChangeState(FSM_State_HellCaina::HellCaina_Menace_Up);
+		}
+		else
+		{
+			ChangeState(FSM_State_HellCaina::HellCaina_Walk_Loop);
+		}
 		return;
 	}
 	},
@@ -418,6 +469,14 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	},
 	.Update = [=](float _DeltaTime) {
 	SetForwardMove(110.0f);
+
+	if (0.0f >= MonsterAndPlayerDotProduct() || true == IsRecognize)
+	{
+		IsRecognize = false;
+		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Stop);
+		return;
+	}
+
 	if (1 == WalkCount)
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Stop);
@@ -474,13 +533,19 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	},
 	.Update = [=](float _DeltaTime) {
 	SetRightMove(70.0f);
-	if (1 == WalkCount)
+	AttackDelayTime += _DeltaTime;
+	if (true == IsRecognize && 1.5f <= AttackDelayTime)
+	{
+		RandomAttack();
+	}
+	else if (1 == WalkCount && false == IsRecognize)
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Right_Stop);
 		return;
 	}
 	},
 	.End = [=] {
+	AttackDelayTime = 0.0f;
 	WalkCount = 0;
 	}
 		});
@@ -530,13 +595,19 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	},
 	.Update = [=](float _DeltaTime) {
 	SetLeftMove(70.0f);
-	if (1 == WalkCount)
+	AttackDelayTime += _DeltaTime;
+	if (true == IsRecognize && 1.5f <= AttackDelayTime)
+	{
+		RandomAttack();
+	}
+	else if (1 == WalkCount && false == IsRecognize)
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Left_Stop);
 		return;
 	}
 	},
 	.End = [=] {
+	AttackDelayTime = 0.0f;
 	WalkCount = 0;
 	}
 		});

@@ -113,12 +113,15 @@ protected:
 
 private:
 	void PlayerChase(float _DeltaTime);
+	void PlayerAttack(float _DeltaTime);
+	void RandomAttack();
 	void ChangeState(int _StateValue);
 
 	float WaitTime = 0.0f;
 	float RotationDelayTime = 0.0f;
 	float FallCheckDelayTime = 0.0f;
-	float AttackDelayCheck = 0.0f;   // юс╫ц
+	float AttackDelayCheck = 0.0f;
+	float AttackDelayTime = 0.0f;
 
 	short WalkCount = 0;
 
