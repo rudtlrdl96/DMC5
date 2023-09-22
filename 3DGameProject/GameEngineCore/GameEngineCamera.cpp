@@ -35,10 +35,13 @@ void GameEngineCamera::CaptureCubemap(const float4& _Pos, const float4& _Rot, co
 
 	CamTarget->Clear();
 	CamForwardTarget->Clear();
-	CamDeferrdTarget->Clear();
+
+	if (nullptr != CamDeferrdTarget)
+	{
+		CamDeferrdTarget->Clear();
+	}
+
 	CamAlphaTarget->Clear();
-	AllRenderTarget->Clear();
-	AlphaRenderTarget->Clear();
 
 	CameraTransformUpdate();
 	ViewPortSetting();
@@ -52,13 +55,21 @@ void GameEngineCamera::CaptureCubemap(const float4& _Pos, const float4& _Rot, co
 		++GetLevel()->LightDataObject.LightCount;
 	}
 
-	AllRenderTarget->Setting();
 	Render(0.0f);
 
 	Width = CurWidth;
 	Height = CurHeight;
 	
 	GetTransform()->SetTransformData(CurTransData);
+}
+
+void GameEngineCamera::CreateCamDeferrdTarget()
+{
+	if (nullptr == CamDeferrdTarget)
+	{
+		CamDeferrdTarget = GameEngineRenderTarget::Create();
+		DeferredLightTarget = GameEngineRenderTarget::Create();
+	}
 }
 
 void GameEngineCamera::Start()
@@ -107,12 +118,9 @@ void GameEngineCamera::Start()
 	Width = ViewPortData.Width;
 	Height = ViewPortData.Height;
 
-	AllRenderTarget = GameEngineRenderTarget::Create();
-	AlphaRenderTarget = GameEngineRenderTarget::Create();
 	CamTarget = GameEngineRenderTarget::Create();
-	DeferredLightTarget = GameEngineRenderTarget::Create();
 	CamForwardTarget = GameEngineRenderTarget::Create();
-	CamDeferrdTarget = GameEngineRenderTarget::Create();
+
 	CamAlphaTarget = GameEngineRenderTarget::Create();
 
 	//CubeRenderTarget = GameEngineRenderTarget::Create();
@@ -125,51 +133,52 @@ void GameEngineCamera::RenderTargetTextureLoad()
 		return;
 	}
 
-	AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	AllRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	AllRenderTarget->CreateDepthTexture();
-
-	AlphaRenderTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	
 	CamTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-
-	DeferredLightTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 원래것, 디퓨즈 라이트
-	DeferredLightTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 스펙큘러 라이트
-	DeferredLightTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 앰비언트 라이트를 담는다.
-	DeferredLightTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 블룸
+	CamTarget->CreateDepthTexture();
 
 	CamForwardTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	CamForwardTarget->SetDepthTexture(CamTarget->GetDepthTexture());
 
-	CamDeferrdTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	if (nullptr != CamDeferrdTarget)
+	{
+		CamDeferrdTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+		CamDeferrdTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+		CamDeferrdTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+		CamDeferrdTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+		CamDeferrdTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+		CamDeferrdTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+		CamDeferrdTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+		CamDeferrdTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+		CamDeferrdTarget->SetDepthTexture(CamTarget->GetDepthTexture());
+	}
+
+	if (nullptr != DeferredLightTarget)
+	{
+		DeferredLightTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 원래것, 디퓨즈 라이트
+		DeferredLightTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 스펙큘러 라이트
+		DeferredLightTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 앰비언트 라이트를 담는다.
+		DeferredLightTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // 블룸
+
+		CalLightUnit.SetMesh("FullRect");
+		CalLightUnit.SetMaterial("DeferredCalLight");
+
+		LightDatas& Data = GetLevel()->LightDataObject;
+		CalLightUnit.ShaderResHelper.SetConstantBufferLink("LightDatas", Data);
+		CalLightUnit.ShaderResHelper.SetTexture("PositionTex", CamDeferrdTarget->GetTexture(1));
+		CalLightUnit.ShaderResHelper.SetTexture("NormalTex", CamDeferrdTarget->GetTexture(2));
+		CalLightUnit.ShaderResHelper.SetTexture("MatTex", CamDeferrdTarget->GetTexture(3));
+		CalLightUnit.ShaderResHelper.SetTexture("GleamTex", CamDeferrdTarget->GetTexture(4));
+
+		DefferdMergeUnit.SetMesh("FullRect");
+		DefferdMergeUnit.SetMaterial("DeferredMerge");
+		DefferdMergeUnit.ShaderResHelper.SetTexture("DifColor", CamDeferrdTarget->GetTexture(0));
+		DefferdMergeUnit.ShaderResHelper.SetTexture("DifLight", DeferredLightTarget->GetTexture(0));
+		DefferdMergeUnit.ShaderResHelper.SetTexture("SpcLight", DeferredLightTarget->GetTexture(1));
+		DefferdMergeUnit.ShaderResHelper.SetTexture("AmbLight", DeferredLightTarget->GetTexture(2));
+	}
 
 	CamAlphaTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	CamAlphaTarget->SetDepthTexture(AllRenderTarget->GetDepthTexture());
-
-	//CubeRenderTarget->CreateCubeTexture();
-	//CubeRenderTarget->CreateCubeDepth();
-
-	CalLightUnit.SetMesh("FullRect");
-	CalLightUnit.SetMaterial("DeferredCalLight");
-
-	LightDatas& Data = GetLevel()->LightDataObject;
-	CalLightUnit.ShaderResHelper.SetConstantBufferLink("LightDatas", Data);
-	CalLightUnit.ShaderResHelper.SetTexture("PositionTex", AllRenderTarget->GetTexture(2));
-	CalLightUnit.ShaderResHelper.SetTexture("NormalTex", AllRenderTarget->GetTexture(3));
-	CalLightUnit.ShaderResHelper.SetTexture("MatTex", AllRenderTarget->GetTexture(4));
-	CalLightUnit.ShaderResHelper.SetTexture("GleamTex", AllRenderTarget->GetTexture(5));
-
-	DefferdMergeUnit.SetMesh("FullRect");
-	DefferdMergeUnit.SetMaterial("DeferredMerge");
-	DefferdMergeUnit.ShaderResHelper.SetTexture("DifColor", AllRenderTarget->GetTexture(1));
-	DefferdMergeUnit.ShaderResHelper.SetTexture("DifLight", DeferredLightTarget->GetTexture(0));
-	DefferdMergeUnit.ShaderResHelper.SetTexture("SpcLight", DeferredLightTarget->GetTexture(1));
-	DefferdMergeUnit.ShaderResHelper.SetTexture("AmbLight", DeferredLightTarget->GetTexture(2));
+	CamAlphaTarget->SetDepthTexture(CamTarget->GetDepthTexture());
 
 	IsLoad = true;
 }
@@ -184,14 +193,16 @@ void GameEngineCamera::RenderTargetTextureRelease()
 	CalLightUnit.ShaderResHelper.AllResourcesRelease();
 	DefferdMergeUnit.ShaderResHelper.AllResourcesRelease();
 
-	AllRenderTarget->ReleaseTextures();
 	CamTarget->ReleaseTextures();
 	CamForwardTarget->ReleaseTextures();
-	CamDeferrdTarget->ReleaseTextures();
-	CamAlphaTarget->ReleaseTextures();
-	DeferredLightTarget->ReleaseTextures();
-	AlphaRenderTarget->ReleaseTextures();
 
+	if (nullptr != CamDeferrdTarget)
+	{
+		CamDeferrdTarget->ReleaseTextures();
+		DeferredLightTarget->ReleaseTextures();
+	}
+
+	CamAlphaTarget->ReleaseTextures();
 	IsLoad = false;
 }
 
@@ -357,8 +368,15 @@ void GameEngineCamera::Setting()
 
 void GameEngineCamera::Render(float _DeltaTime)
 {
-	AllRenderTarget->Clear();
-	AllRenderTarget->Setting();
+	CamForwardTarget->Clear();
+
+	if (nullptr != CamDeferrdTarget)
+	{
+		CamDeferrdTarget->Clear();
+		DeferredLightTarget->Clear();
+	}
+
+	CamAlphaTarget->Clear();
 
 	{
 		std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>>::iterator RenderGroupStartIter = Renderers.begin();
@@ -412,19 +430,33 @@ void GameEngineCamera::Render(float _DeltaTime)
 		}
 	}
 
-	DeferredLightTarget->Clear();
-	CamAlphaTarget->Clear();
-
 	{
 		for (std::pair<const RenderPath, std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>>& Path : Units)
 		{
-			if (Path.first == RenderPath::Alpha)
+			switch (Path.first)
+			{
+			case RenderPath::Forward:
+			{
+				CamForwardTarget->Setting();
+			}
+				break;
+			case RenderPath::Deferred:
+			{
+				if (nullptr == CamDeferrdTarget)
+				{
+					continue;
+				}
+
+				CamDeferrdTarget->Setting();
+			}
+				break;
+			case RenderPath::Alpha:
 			{
 				CamAlphaTarget->Setting();
 			}
-			else
-			{
-				AllRenderTarget->Setting();
+				break;
+			default:
+				continue;
 			}
 
 			std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>& UnitPath = Path.second;
@@ -527,40 +559,44 @@ void GameEngineCamera::Render(float _DeltaTime)
 
 		GameEngineRenderTarget::Reset();
 
-		DeferredLightTarget->Setting();
-		GetLevel()->LightDataObject.LightCount = 0;
 
-		for (std::shared_ptr<GameEngineLight> Light : GetLevel()->AllLight)
-		{
-			if (false == Light->IsShadow())
-			{
-				CalLightUnit.ShaderResHelper.SetTexture("ShadowTex", GameEngineTexture::Find("EngineNullDepth.png"));
-			}
-			else
-			{
-				CalLightUnit.ShaderResHelper.SetTexture("ShadowTex", Light->GetShadowTarget()->GetTexture(0));
-			}
-
-			CalLightUnit.Render(_DeltaTime);
-			++GetLevel()->LightDataObject.LightCount;
-		}
 						
-		DeferredLightTarget->Effect(_DeltaTime);
-		CalLightUnit.ShaderResHelper.AllResourcesReset();
+		if (nullptr != CamDeferrdTarget)
+		{
+			DeferredLightTarget->Setting();
+			GetLevel()->LightDataObject.LightCount = 0;
 
-		CamDeferrdTarget->Clear();
-		CamDeferrdTarget->Setting();
-		DefferdMergeUnit.Render(_DeltaTime);
-		DefferdMergeUnit.ShaderResHelper.AllResourcesReset();
+			for (std::shared_ptr<GameEngineLight> Light : GetLevel()->AllLight)
+			{
+				if (false == Light->IsShadow())
+				{
+					CalLightUnit.ShaderResHelper.SetTexture("ShadowTex", GameEngineTexture::Find("EngineNullDepth.png"));
+				}
+				else
+				{
+					CalLightUnit.ShaderResHelper.SetTexture("ShadowTex", Light->GetShadowTarget()->GetTexture(0));
+				}
 
-		CamForwardTarget->Clear();
-		CamForwardTarget->Merge(AllRenderTarget);
+				CalLightUnit.Render(_DeltaTime);
+				++GetLevel()->LightDataObject.LightCount;
+			}
+
+			DeferredLightTarget->Effect(_DeltaTime);
+			CalLightUnit.ShaderResHelper.AllResourcesReset();
+		}
 
 		CamTarget->Clear();
 		CamTarget->Merge(CamForwardTarget);
-		CamTarget->Merge(CamDeferrdTarget);
-		CamTarget->Merge(CamAlphaTarget);
 
+		if (nullptr != CamDeferrdTarget)
+		{
+			CamTarget->Setting();
+
+			DefferdMergeUnit.Render(_DeltaTime);
+			DefferdMergeUnit.ShaderResHelper.AllResourcesReset();
+		}
+
+		CamTarget->Merge(CamAlphaTarget);
 		CamTarget->Effect(_DeltaTime);
 	}
 }

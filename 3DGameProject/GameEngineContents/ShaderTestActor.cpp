@@ -11,6 +11,8 @@ ShaderTestActor::~ShaderTestActor()
 
 void ShaderTestActor::Start()
 {
+	return;
+
 	if (nullptr == GameEngineTexture::Find("ShaderTest_Case_0_albm.png"))
 	{
 		std::string DirectoryPath = GameEnginePath::GetFileFullPath("ContentResources",

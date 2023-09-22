@@ -8,10 +8,6 @@ enum class RenderPath
 	Forward,
 	Deferred,
 	Alpha,
-	Coustom01,
-	Coustom02,
-	Coustom03,
-	Debug,
 };
 
 class GameEngineRenderUnit : public GameEngineObjectBase, public std::enable_shared_from_this<GameEngineRenderUnit>

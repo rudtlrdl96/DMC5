@@ -114,11 +114,11 @@ void TestStageLevel::LevelChangeStart()
 	GetDirectionalLight()->GetTransform()->SetWorldRotation(float4(45, 180, 0));
 
 	GameEngineCoreWindow::Clear();
-	GameEngineCoreWindow::AddDebugRenderTarget(0, "AllRenderTarget", GetLevel()->GetMainCamera()->GetCamAllRenderTarget());
-	GameEngineCoreWindow::AddDebugRenderTarget(1, "LightRenderTarget", GetLevel()->GetMainCamera()->GetDeferredLightTarget());
-	GameEngineCoreWindow::AddDebugRenderTarget(2, "MainCameraForwardTarget", GetLevel()->GetMainCamera()->GetCamForwardTarget());
-	GameEngineCoreWindow::AddDebugRenderTarget(3, "DeferredTarget", GetLevel()->GetMainCamera()->GetCamDeferrdTarget());
-	GameEngineCoreWindow::AddDebugRenderTarget(4, "AlphaTarget", GetLevel()->GetMainCamera()->GetCamAlphaTarget());
-	GameEngineCoreWindow::AddDebugRenderTarget(5, "BakeShadow", GetLevel()->GetDirectionalLight()->GetBakeTarget(0));
-	GameEngineCoreWindow::AddDebugRenderTarget(6, "LastShadow", GetLevel()->GetDirectionalLight()->GetShadowTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(0, "Forward Target", GetMainCamera()->GetCamForwardTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(1, "Deferred Target", GetMainCamera()->GetCamDeferrdTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(2, "Light Target", GetMainCamera()->GetDeferredLightTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(3, "Alpha Target", GetMainCamera()->GetCamAlphaTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(4, "Last Target", GetMainCamera()->GetCamTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(5, "Bake Shadow", GetLevel()->GetDirectionalLight()->GetBakeTarget(0));
+	GameEngineCoreWindow::AddDebugRenderTarget(6, "Last Shadow", GetLevel()->GetDirectionalLight()->GetShadowTarget());
 }

@@ -68,6 +68,7 @@ void GameEngineLevel::LevelCameraInit()
 {
 	MainCamera = CreateNewCamera(0);
 	MainCamera->SetName("Main Camera");
+	MainCamera->CreateCamDeferrdTarget();
 
 	std::shared_ptr<GameEngineCamera> UICamera = CreateNewCamera(100);
 	UICamera->SetProjectionType(CameraType::Orthogonal);

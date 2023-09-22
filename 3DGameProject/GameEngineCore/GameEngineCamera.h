@@ -63,12 +63,6 @@ public:
 		return DeferredLightTarget;
 	}
 
-	std::shared_ptr<GameEngineRenderTarget> GetCamAllRenderTarget()
-	{
-		return AllRenderTarget;
-	}
-
-
 	std::shared_ptr<GameEngineRenderTarget> GetCamAlphaTarget()
 	{
 		return CamAlphaTarget;
@@ -126,6 +120,7 @@ public:
 	}
 
 	void CaptureCubemap(const float4& _Pos, const float4& _Rot, const float4& _CaptureScale = float4(128, 128));
+	void CreateCamDeferrdTarget();
 	
 protected:
 	void Start() override;
@@ -166,14 +161,11 @@ private:
 
 	void Release();
 
-	std::shared_ptr<class GameEngineRenderTarget> CamTarget;
-	std::shared_ptr<class GameEngineRenderTarget> CamForwardTarget;
-	std::shared_ptr<class GameEngineRenderTarget> CamDeferrdTarget;
-	std::shared_ptr<class GameEngineRenderTarget> CamAlphaTarget;
+	std::shared_ptr<class GameEngineRenderTarget> CamTarget = nullptr;
+	std::shared_ptr<class GameEngineRenderTarget> CamForwardTarget = nullptr;
+	std::shared_ptr<class GameEngineRenderTarget> CamDeferrdTarget = nullptr;
+	std::shared_ptr<class GameEngineRenderTarget> CamAlphaTarget = nullptr;
 	
-	std::shared_ptr<class GameEngineRenderTarget> AllRenderTarget;
-	std::shared_ptr<class GameEngineRenderTarget> AlphaRenderTarget;
-
 	// 빛계산의 결과물을 받기 위한 타겟.
 	std::shared_ptr<class GameEngineRenderTarget> DeferredLightTarget;
 

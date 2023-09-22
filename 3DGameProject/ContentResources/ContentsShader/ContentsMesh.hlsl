@@ -60,12 +60,12 @@ SamplerState CUBEMAPSAMPLER : register(s1);
 
 struct DeferredOutPut
 {
-    float4 DifTarget : SV_Target1;
-    float4 PosTarget : SV_Target2;
-    float4 NorTarget : SV_Target3;
-    float4 MatTarget : SV_Target4;
-    float4 GlamTarget : SV_Target5;
-    float4 SSSTarget : SV_Target6;
+    float4 DifTarget : SV_Target0;
+    float4 PosTarget : SV_Target1;
+    float4 NorTarget : SV_Target2;
+    float4 MatTarget : SV_Target3;
+    float4 GlamTarget : SV_Target4;
+    float4 SSSTarget : SV_Target5;
 };
 
 float GGX_Distribution(float3 normal, float3 halfVector, float roughness)

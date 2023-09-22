@@ -80,9 +80,9 @@ SamplerState ENGINEBASE : register(s0);
 struct DeferredOutPut
 {
     // float4 CamForwardTarget : SV_Target0;
-    float4 DifTarget : SV_Target1;
-    float4 PosTarget : SV_Target2;
-    float4 NorTarget : SV_Target3;
+    float4 DifTarget : SV_Target0;
+    float4 PosTarget : SV_Target1;
+    float4 NorTarget : SV_Target2;
 };
 
 DeferredOutPut MeshAniTextureDeferred_PS(Output _Input)
