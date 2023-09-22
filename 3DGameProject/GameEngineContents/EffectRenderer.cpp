@@ -65,6 +65,15 @@ void EffectRenderer::SetAnimationStartEvent(const std::string_view& _AnimationNa
 	Info->StartEventFunction[_Frame].Function = _Event;
 }
 
+void EffectRenderer::Reset()
+{
+	if (nullptr != CurAnimation)
+	{
+		CurAnimation->CurFrame = 0;
+	}
+	Off();
+}
+
 void EffectRenderer::Start()
 {
 	GameEngineFBXRenderer::Start();
@@ -77,7 +86,7 @@ void EffectRenderer::Update(float _DeltaTime)
 		CurAnimation->Update(_DeltaTime);
 
 		const SpriteInfo& Info = CurAnimation->CurSpriteInfo();
-
+		
 		GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
 
 		VertexOption.FramePos.x = Info.CutData.PosX;
@@ -105,6 +114,7 @@ void EffectRenderer::Update(float _DeltaTime)
 
 void EffectRenderer::RectInit(const std::string_view& _MaterialName)
 {
+	GetTransform()->SetLocalScale({ 100, 100, 100 });
 	Unit.resize(1);
 	Unit[0].resize(1);
 
@@ -357,8 +367,53 @@ void EffectRenderer::DrawEditor()
 			{
 				GameEngineTexture::Load(Path.GetFullPath());
 			}
+
+			if (0 == Unit.size())
+			{
+				RectInit("Effect_2D");
+				LockRotation();
+			}
 			SetTexture("DiffuseTex", FileName);
 		}
+	}
+
+	static int Cut[] = {0, 0};
+	ImGui::InputInt2("Sprite Slice", Cut);
+	if (ImGui::Button("Set Sprite"))
+	{
+		OPENFILENAME OFN;
+		TCHAR lpstrFile[200] = L"";
+		static TCHAR filter[] = L"텍스쳐 파일\0*.tga;*.png";
+
+		memset(&OFN, 0, sizeof(OPENFILENAME));
+		OFN.lStructSize = sizeof(OPENFILENAME);
+		OFN.hwndOwner = GameEngineWindow::GetHWnd();
+		OFN.lpstrFilter = filter;
+		OFN.lpstrFile = lpstrFile;
+		OFN.nMaxFile = 200;
+		OFN.lpstrInitialDir = L".";
+
+		if (GetOpenFileName(&OFN) != 0) {
+			RectInit("Effect_2D");
+			LockRotation();
+
+			GameEnginePath Path = GameEngineString::UniCodeToAnsi(OFN.lpstrFile);
+			std::string FileName = Path.GetFileName();
+			if (nullptr == GameEngineSprite::Find(FileName))
+			{
+				GameEngineSprite::LoadSheet(Path.GetFullPath(), Cut[0], Cut[1]);
+			}
+			if (nullptr == FindAnimation(FileName))
+			{
+				CreateAnimation({ .AnimationName = FileName, .SpriteName = FileName, .FrameInter = 0.0166f, .Loop = false });
+			}
+			ChangeAnimation(FileName);
+		}
+	}
+
+	if (ImGui::Button("Death"))
+	{
+		Death();
 	}
 
 	ImGui::Spacing();

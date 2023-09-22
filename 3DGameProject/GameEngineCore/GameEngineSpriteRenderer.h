@@ -66,6 +66,32 @@ public:
 	bool ScaleToTexture = false;
 	std::vector<size_t> FrameIndex = std::vector<size_t>();
 	std::vector<float> FrameTime = std::vector<float>();
+
+	void Write(GameEngineSerializer& _File)
+	{
+		_File << AnimationName;
+		_File << SpriteName;
+		_File << Start;
+		_File << End;
+		_File << FrameInter;
+		_File << Loop;
+		_File << ScaleToTexture;
+		_File << FrameIndex;
+		_File << FrameTime;
+	}
+
+	void Read(GameEngineSerializer& _File)
+	{
+		_File >> AnimationName;
+		_File >> SpriteName;
+		_File >> Start;
+		_File >> End;
+		_File >> FrameInter;
+		_File >> Loop;
+		_File >> ScaleToTexture;
+		_File >> FrameIndex;
+		_File >> FrameTime;
+	}
 };
 
 enum class ClipXDir

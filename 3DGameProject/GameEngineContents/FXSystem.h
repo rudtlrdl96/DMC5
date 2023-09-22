@@ -14,10 +14,18 @@ public:
 	FXSystem& operator=(const FXSystem & _Other) = delete;
 	FXSystem& operator=(FXSystem && _Other) noexcept = delete;
 
+	void SetFX(std::shared_ptr<class FXData> _FX);
 	void SetFX(const std::string_view& _Name);
 
+	std::shared_ptr<class FXData> GetFX()
+	{
+		return CurFX;
+	}
+
+	void Play();
+
 	float CurFrameTime = 0.0f;
-	float Inter = 0.1f;
+	float Inter = 0.0166f;
 	float TimeScale = 1.0f;
 
 	int CurFrame = 0;
@@ -33,8 +41,8 @@ protected:
 
 	void FXSetting();
 private:
-	std::vector<std::shared_ptr<class EffectRenderer>> FXRenders;
-	std::shared_ptr<class FXData> CurFX;
+	std::map<std::string , std::shared_ptr<class EffectRenderer>> FXRenders;
+	std::shared_ptr<class FXData> CurFX = nullptr;
 
 };
 

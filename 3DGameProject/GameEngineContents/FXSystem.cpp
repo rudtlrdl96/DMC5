@@ -5,22 +5,37 @@
 
 FXSystem::FXSystem()
 {
+	Off();
 }
 
 FXSystem::~FXSystem()
 {
 }
 
-void FXSystem::SetFX(const std::string_view& _Name)
+void FXSystem::SetFX(std::shared_ptr<FXData> _FX)
 {
-	std::shared_ptr<FXData> _FX = FXData::Find(_Name);
 	if (nullptr == _FX)
 	{
-		MsgAssert("해당 FX는 로드되지 않았습니다." + std::string(_Name));
+		MsgAssert("존재하지 않는 FX입니다");
 		return;
 	}
 	CurFX = _FX;
+	StartFrame = 0;
+	EndFrame = static_cast<int>(CurFX->GetFrameData().size()) - 1;
 	FXSetting();
+}
+
+void FXSystem::SetFX(const std::string_view& _Name)
+{
+	SetFX(FXData::Find(_Name));
+}
+
+void FXSystem::Play()
+{
+	On();
+	Pause = false;
+	CurFrame = 0;
+	CurFrameTime = 0;
 }
 
 void FXSystem::Start()
@@ -55,7 +70,7 @@ void FXSystem::Update(float _DeltaTime)
 			}
 		}
 	}
-	
+
 	int NextFrame = CurFrame + 1;
 
 	if (EndFrame < NextFrame)
@@ -69,65 +84,86 @@ void FXSystem::Update(float _DeltaTime)
 		return;
 	}
 
-	std::vector<std::vector<FXKeyFrame>>& FrameData = CurFX->GetFrameData();
-	std::vector<FXKeyFrame>& CurFrameData = FrameData[CurFrame];
-	std::vector<FXKeyFrame>& NextFrameData = FrameData[NextFrame];
+	std::vector<std::map<std::string, FXKeyFrame>>& FrameData = CurFX->GetFrameData();
+	std::map<std::string, FXKeyFrame>& CurFrameData = FrameData[CurFrame];
+	std::map<std::string, FXKeyFrame>& NextFrameData = FrameData[NextFrame];
+
+	std::map<std::string, FXKeyFrame>::iterator StartIter = CurFrameData.begin();
+	std::map<std::string, FXKeyFrame>::iterator EndIter = CurFrameData.end();
 
 	float CurRatio = CurFrameTime / Inter;
-	for (int i = 0; i < CurFrameData.size(); i++)
+	for (; StartIter != EndIter; StartIter++)
 	{
-		if (true == CurFrameData[i].IsUpdate)
+		std::string Name = StartIter->first;
+		std::shared_ptr<EffectRenderer> CurRender = FXRenders[Name];
+		FXKeyFrame& CurKeyFrame = CurFrameData[Name];
+		FXKeyFrame& NextKeyFrame = NextFrameData[Name];
+
+		if (false == CurKeyFrame.IsVaild || false == NextKeyFrame.IsVaild)
 		{
-			FXRenders[i]->On();
+			continue;
+		}
+
+		if (true == CurFrameData[Name].IsUpdate)
+		{
+			CurRender->On();
 		}
 		else
 		{
-			FXRenders[i]->Off();
+			CurRender->Off();
 			continue;
 		}
-		FXRenders[i]->GetTransform()->SetLocalPosition(float4::Lerp(CurFrameData[i].Position, NextFrameData[i].Position, CurRatio));
-		FXRenders[i]->GetTransform()->SetLocalRotation(float4::SLerpQuaternion(CurFrameData[i].Rotation, NextFrameData[i].Rotation, CurRatio));
-		FXRenders[i]->GetTransform()->SetLocalScale(float4::Lerp(CurFrameData[i].Scale, NextFrameData[i].Scale, CurRatio));
+		CurRender->GetTransform()->SetLocalPosition(float4::Lerp(CurKeyFrame.Position, NextKeyFrame.Position, CurRatio));
+		CurRender->GetTransform()->SetLocalRotation(float4::SLerpQuaternion(CurKeyFrame.Rotation, NextKeyFrame.Rotation, CurRatio));
+		CurRender->GetTransform()->SetLocalScale(float4::Lerp(CurKeyFrame.Scale, NextKeyFrame.Scale, CurRatio));
 
-		FXRenders[i]->EffectOption.ClipEndX = std::lerp(CurFrameData[i].EffectOption.ClipEndX, NextFrameData[i].EffectOption.ClipEndX, CurRatio);
-		FXRenders[i]->EffectOption.ClipEndY = std::lerp(CurFrameData[i].EffectOption.ClipEndY, NextFrameData[i].EffectOption.ClipEndY, CurRatio);
-		FXRenders[i]->EffectOption.ClipStartX = std::lerp(CurFrameData[i].EffectOption.ClipStartX, NextFrameData[i].EffectOption.ClipStartX, CurRatio);
-		FXRenders[i]->EffectOption.ClipStartY = std::lerp(CurFrameData[i].EffectOption.ClipStartY, NextFrameData[i].EffectOption.ClipStartY, CurRatio);
+		CurRender->EffectOption = EffectData::Lerp(CurKeyFrame.EffectOption, NextKeyFrame.EffectOption, CurRatio);
 	}
 }
 
 void FXSystem::FXSetting()
 {
 	std::vector<FXUnitData>& UnitDatas = CurFX->GetUnitDatas();
+	int SpriteIndex = 0;
 	for (int i = 0; i < UnitDatas.size(); i++)
 	{
-		if (i <= FXRenders.size())
-		{
-			MsgAssert("FX에 미리 생성된 Renderer의 갯수를 초과했습니다");
-			return;
-		}
-
 		if (UnitDatas[i].MeshName != "")
 		{
-			// 메쉬의 경우
-			FXRenders[i]->SetFBXMesh(UnitDatas[i].MeshName, "Effect_2D");
-			FXRenders[i]->SetTexture("DiffuseTexture", UnitDatas[i].TextureName);
+			if (false == FXRenders.contains(UnitDatas[i].MeshName))
+			{
+				// 해당 매쉬가 존재하지 않는경우
+				FXRenders[UnitDatas[i].MeshName] = GetActor()->CreateComponent<EffectRenderer>();
+				FXRenders[UnitDatas[i].MeshName]->SetFBXMesh(UnitDatas[i].MeshName, "Effect_2D");
+			}
+			FXRenders[UnitDatas[i].MeshName]->SetTexture("DiffuseTex", UnitDatas[i].TextureName);
+			FXRenders[UnitDatas[i].MeshName]->Off();
 		}
 		else
 		{
-			// Sprite의 경우
+			std::string Key = "Sprite" + std::to_string(SpriteIndex++);
+			if (false == FXRenders.contains(Key))
+			{
+				// 렌더러가 부족한 경우
+				FXRenders[Key] = GetActor()->CreateComponent<EffectRenderer>();
+				FXRenders[Key]->RectInit("Effect_2D");
+				FXRenders[Key]->LockRotation();
+			}
 			if (UnitDatas[i].AnimData.AnimationName == "")
 			{
 				// 애니메이션이 아닌 경우
-				FXRenders[i]->SetSprite(UnitDatas[i].AnimData.SpriteName);
+				FXRenders[Key]->SetTexture("DiffuseTex", UnitDatas[i].TextureName);
 			}
-			if (nullptr == FXRenders[i]->FindAnimation(UnitDatas[i].AnimData.AnimationName))
+			else
 			{
-				FXRenders[i]->CreateAnimation(UnitDatas[i].AnimData);
+				if (nullptr == FXRenders[Key]->FindAnimation(UnitDatas[i].AnimData.AnimationName))
+				{
+					// 애니메이션이 없는 경우
+					FXRenders[Key]->CreateAnimation(UnitDatas[i].AnimData);
+				}
+				FXRenders[Key]->ChangeAnimation(UnitDatas[i].AnimData.AnimationName);
 			}
-			FXRenders[i]->ChangeAnimation(UnitDatas[i].AnimData.AnimationName);
+			FXRenders[Key]->Off();
 		}
-		FXRenders[i]->Off();
 	}
 }
 

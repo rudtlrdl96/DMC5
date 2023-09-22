@@ -11,6 +11,38 @@ public:
 	float ClipEndY = 1;
 	float4 MulColor = float4::ONE;
 	float4 PlusColor = float4::ZERONULL;
+
+	static EffectData Lerp(const EffectData& Start, const EffectData& End, float Ratio)
+	{
+		EffectData Result;
+		Result.ClipStartX = GameEngineMath::Lerp(Start.ClipStartX, End.ClipStartX, Ratio);
+		Result.ClipEndX = GameEngineMath::Lerp(Start.ClipEndX, End.ClipEndX, Ratio);
+		Result.ClipStartY = GameEngineMath::Lerp(Start.ClipStartY, End.ClipStartY, Ratio);
+		Result.ClipEndY = GameEngineMath::Lerp(Start.ClipEndY, End.ClipEndY, Ratio);
+		Result.MulColor = float4::Lerp(Start.MulColor, End.MulColor, Ratio);
+		Result.PlusColor = float4::Lerp(Start.PlusColor, End.PlusColor, Ratio);
+		return Result;
+	}
+
+	void Write(GameEngineSerializer& _File)
+	{
+		_File << ClipStartX;
+		_File << ClipEndX;
+		_File << ClipStartY;
+		_File << ClipEndY;
+		_File << MulColor;
+		_File << PlusColor;
+	}
+
+	void Read(GameEngineSerializer& _File)
+	{
+		_File >> ClipStartX;
+		_File >> ClipEndX;
+		_File >> ClipStartY;
+		_File >> ClipEndY;
+		_File >> MulColor;
+		_File >> PlusColor;
+	}
 };
 
 // 설명 : 해당 랜더러는 Effect 전용 렌더러 입니다 Effect_2D 또는 Effect_3D 머티리얼을 사용해야 합니다.
@@ -69,6 +101,11 @@ public:
 	}
 
 	void ChangeAnimation(const std::string_view& _Name, size_t _Frame = -1, bool _Force = true);
+	
+	std::shared_ptr<AnimationInfo> GetCurAnimation()
+	{
+		return CurAnimation;
+	}
 
 	bool IsAnimationEnd()
 	{
@@ -113,6 +150,7 @@ public:
 		VertexOption.IsLockRotation = 0.0f;
 	}
 
+	void Reset();
 
 protected:
 	void Start() override;

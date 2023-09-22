@@ -252,6 +252,7 @@ public:
 
 	inline void SetCurFrame(UINT _Frame)
 	{
+		if (nullptr == CurAnimation) { return; }
 		CurAnimation->CurFrame = _Frame;
 	}
 	inline UINT GetCurFrame()
