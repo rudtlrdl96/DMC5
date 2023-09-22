@@ -133,6 +133,7 @@ void FXSystem::FXSetting()
 			{
 				// 해당 매쉬가 존재하지 않는경우
 				FXRenders[UnitDatas[i].MeshName] = GetActor()->CreateComponent<EffectRenderer>();
+				FXRenders[UnitDatas[i].MeshName]->GetTransform()->SetParent(GetTransform());
 				FXRenders[UnitDatas[i].MeshName]->SetFBXMesh(UnitDatas[i].MeshName, "Effect_2D");
 			}
 			FXRenders[UnitDatas[i].MeshName]->SetTexture("DiffuseTex", UnitDatas[i].TextureName);
@@ -145,6 +146,7 @@ void FXSystem::FXSetting()
 			{
 				// 렌더러가 부족한 경우
 				FXRenders[Key] = GetActor()->CreateComponent<EffectRenderer>();
+				FXRenders[Key]->GetTransform()->SetParent(GetTransform());
 				FXRenders[Key]->RectInit("Effect_2D");
 				FXRenders[Key]->LockRotation();
 			}

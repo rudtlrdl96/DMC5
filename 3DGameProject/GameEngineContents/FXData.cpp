@@ -79,6 +79,7 @@ std::shared_ptr<FXData> FXData::CreateData(std::vector<FXUnitData>& _UnitDatas, 
 					NewData->FrameData[f][Name] = FXKeyFrame::Lerp(CurFrame, NextFrame, Ratio);
 					NewData->FrameData[f][Name].IsVaild = true;
 				}
+				break;
 			}
 
 		}
