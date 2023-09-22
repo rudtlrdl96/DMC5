@@ -109,3 +109,28 @@ void NetworkObjectBase::Update_SendPacket(float _DeltaTime)
 		UpdatePacket_BoolLinkDatas
 	);
 }
+
+
+void NetworkObjectBase::SetUpdateState(bool _IsOn)
+{
+	if (_IsOn == IsUpdateValue)
+		return;
+
+	GameEngineActor* ActorPtr = nullptr;
+	ActorPtr  = dynamic_cast<GameEngineActor*>(this);
+	if (nullptr == ActorPtr)
+	{
+		MsgAssert("NetworkObjectBase를 GameEngineActor로 캐스팅하는데 실패하였습니다.");
+		return;
+	}
+
+	IsUpdateValue = _IsOn;
+	if (true == IsUpdateValue)
+	{
+		ActorPtr->On();
+	}
+	else
+	{
+		ActorPtr->Off();
+	}
+}

@@ -27,5 +27,6 @@ private:
 	static NetworkTestLevel* Inst;
 
 	bool IsConnect = false;
+	std::shared_ptr<class Enemy_HellCaina> Enemy = nullptr;
 };
 

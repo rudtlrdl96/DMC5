@@ -86,6 +86,7 @@ void NetworkManager::ServerPacketInit()
 		{
 			NetObject->SetNetwortTransData(_Packet->Position, _Packet->Rotation);
 			NetObject->ActorTimeScale = _Packet->TimeScale;
+			NetObject->SetUpdateState(_Packet->IsUpdate);
 
 			//Player가 스스로 처리할 수 있게 자료구조에 저장
 			GameEngineNetObject::PushNetObjectPacket(_Packet);
