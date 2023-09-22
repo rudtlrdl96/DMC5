@@ -36,8 +36,10 @@ protected:
 	void Update_SendPacket(float _DeltaTime) final;
 
 	template <typename PacketType>
-	void BindPacketFunction(PacketEnum _Type, std::function<void(std::shared_ptr<PacketType>)> _Callback = nullptr)
+	void BindPacketCallBack(PacketEnum _Type, std::function<void(std::shared_ptr<PacketType>)> _Callback = nullptr)
 	{
+		//생각해보니까 플레이어는 ActiveControll 되는 시점이 Start이후여서
+		//ActiveControll던 Passive든 등록될듯, 근데 크게 상관 없을지도
 		if (NetControllType::ActiveControll == GetControllType())
 			return;
 
@@ -64,7 +66,7 @@ protected:
 	}
 
 	template <typename DataType>
-	void LinkData_UpdatePacket(DataType& Data)
+	void LinkData_UpdatePacket(DataType& Data, std::function<void(DataType _BeforeData)> _DifferentCallBack = nullptr)
 	{
 		if constexpr (std::is_same<DataType, int>::value)
 		{
@@ -81,7 +83,24 @@ protected:
 		else
 		{
 			MsgAssert("업데이트 패킷에 넣을수 없는 템플릿 타입입니다");
+			return;
 		}
+
+		if (nullptr == _DifferentCallBack)
+			return;
+
+		void* Ptr = &Data;
+		if (true == LinkDifferentCallBacks.contains(Ptr))
+		{
+			MsgAssert("해당 데이터에는 이미 DifferentCallBack이 존재합니다");
+			return;
+		}
+		
+		LinkDifferentCallBacks[Ptr] = [=](void* _BeforeData)
+		{
+			DataType* BeforePtr = reinterpret_cast<DataType*>(_BeforeData);
+			_DifferentCallBack(*BeforePtr);
+		};
 	}
 
 
@@ -104,9 +123,11 @@ private:
 	std::vector<int*> UpdatePacket_IntLinkDatas;
 	std::vector<bool*> UpdatePacket_BoolLinkDatas;
 	std::vector<float*> UpdatePacket_FloatLinkDatas;
+	std::map<void*, std::function<void(void* _BeforeData)>> LinkDifferentCallBacks;
 	
 	
 	std::map<PacketEnum, std::function<void(std::shared_ptr<GameEnginePacket> _Packet)>> PacketProcessFunctions;
+
 
 	inline Net_ActorType GetNetObjectType() const
 	{
@@ -116,5 +137,38 @@ private:
 	void SetNetwortTransData(const float4& _DestPos, const float4& _DestRot);
 
 	void SetUpdateState(bool _IsOn);
+
+	void SetUpdateArrData(std::shared_ptr<class ObjectUpdatePacket> _Packet);
+
+	template <typename DataType>
+	void CopyUpdatePacketArrDatas(const std::vector<DataType*>& _ArrDest, const std::vector<DataType>& _ArrSource)
+	{
+		if (_ArrDest.size() != _ArrSource.size())
+		{
+			MsgAssert("전송측과 수신측의 업데이트 패킷 Arr데이터가 맞지 않습니다");
+			return;
+		}
+
+		for (size_t i = 0; i < _ArrSource.size(); ++i)
+		{
+			DataType& Dest = (*_ArrDest[i]);
+			const DataType& Source = _ArrSource[i];
+
+			if (Dest == Source)
+				continue;
+
+			//이전 값 저장해두고 값 바꾸기
+			DataType BeforeData = Source;
+			Dest = Source;
+
+			//콜백함수가 존재한 경우에만
+			void* DataPtr = &Dest;
+			if (false == LinkDifferentCallBacks.contains(DataPtr))
+				continue;
+
+			//이전, 이후의 값으로 넣어서 콜백 실행
+			LinkDifferentCallBacks[DataPtr](&BeforeData);
+		}
+	}
 };
 

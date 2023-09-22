@@ -2,6 +2,7 @@
 #include "NetworkObjectBase.h"
 
 #include "NetworkManager.h"
+#include "ObjectUpdatePacket.h"
 
 
 NetworkObjectBase* NetworkObjectBase::GetNetObj(unsigned int _ObjID)
@@ -51,6 +52,17 @@ void NetworkObjectBase::SetNetwortTransData(const float4& _DestPos, const float4
 	//Net_DestRot = _DestRot;
 	PhysXCapsule->SetWorldRotation(_DestRot);
 	Net_LerpTimer = 0.f;
+}
+
+void NetworkObjectBase::SetUpdateArrData(std::shared_ptr<ObjectUpdatePacket> _Packet)
+{
+	const std::vector<int>& IntDatas = _Packet->GetIntDatas();
+	const std::vector<float>& FloatDatas = _Packet->GetFloatDatas();
+	const std::vector<bool>& BoolDatas = _Packet->GetBoolDatas();
+	
+	CopyUpdatePacketArrDatas<int>(UpdatePacket_IntLinkDatas, IntDatas);
+	CopyUpdatePacketArrDatas<float>(UpdatePacket_FloatLinkDatas, FloatDatas);
+	CopyUpdatePacketArrDatas<bool>(UpdatePacket_BoolLinkDatas, BoolDatas);
 }
 
 

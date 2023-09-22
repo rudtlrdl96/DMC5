@@ -166,31 +166,21 @@ void BasePlayerActor::Start()
 	Col_Attack->Off();
 	Col_Attack->SetColType(ColType::AABBBOX3D);
 
-
-	//ObjectUpdatePacket이 왔을때 어떻게 처리할 것인지
-	BindPacketFunction<ObjectUpdatePacket>(PacketEnum::ObjectUpdatePacket, [this](std::shared_ptr<ObjectUpdatePacket> _Packet)
-	{
-		//패킷의 정보에 따라 자신의 값 수정
-		if (ArmValue != _Packet->IntDatas[0])
-		{
-			ArmValue = _Packet->IntDatas[0];
-			SetArm(ArmValue);
-		}
-		if (DTValue != _Packet->BoolDatas[0])
-		{
-			DTValue = _Packet->BoolDatas[0];
-			SetDT(DTValue);
-		}
-	});
-
 	//FsmChangePacket이 왔을때 어떻게 처리할 것인지
-	BindPacketFunction<FsmChangePacket>(PacketEnum::FsmChangePacket, [this](std::shared_ptr<FsmChangePacket> _Packet)
+	BindPacketCallBack<FsmChangePacket>(PacketEnum::FsmChangePacket, [this](std::shared_ptr<FsmChangePacket> _Packet)
 	{
 		SetFSMStateValue(_Packet->FsmState);
 	});
 
-	LinkData_UpdatePacket<int>(ArmValue);
-	LinkData_UpdatePacket<bool>(DTValue);
+	LinkData_UpdatePacket<int>(ArmValue, [this](int _BeforeData)
+	{
+		SetArm(ArmValue);
+	});
+
+	LinkData_UpdatePacket<bool>(DTValue, [this](bool _BeforeData)
+	{
+		SetDT(DTValue);
+	});
 }
 
 void BasePlayerActor::NetControllLoad()

@@ -56,11 +56,8 @@ void BaseEnemyActor::Start()
 	EnemyCreateFSM();
 	EnemyCreateFSM_Client();
 
-	//ObjectUpdatePacket를 수신하겠다는 것을 의미
-	BindPacketFunction<ObjectUpdatePacket>(PacketEnum::ObjectUpdatePacket);
-
 	//FsmChangePacket이 왔을때 어떻게 처리할 것인지
-	BindPacketFunction<FsmChangePacket>(PacketEnum::FsmChangePacket, [this](std::shared_ptr<FsmChangePacket> _Packet)
+	BindPacketCallBack<FsmChangePacket>(PacketEnum::FsmChangePacket, [this](std::shared_ptr<FsmChangePacket> _Packet)
 	{
 		SetFSMStateValue(_Packet->FsmState);
 	});

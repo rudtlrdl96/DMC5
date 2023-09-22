@@ -23,9 +23,20 @@ public:
 
 	}
 
-	std::vector<int> IntDatas;
-	std::vector<float> FloatDatas;
-	std::vector<bool> BoolDatas;
+	inline const std::vector<int>& GetIntDatas() const
+	{
+		return IntDatas;
+	}
+
+	inline const std::vector<float>& GetFloatDatas() const
+	{
+		return FloatDatas;
+	}
+
+	inline const std::vector<bool>& GetBoolDatas() const
+	{
+		return BoolDatas;
+	}
 
 protected:
 	void Serialize(GameEngineSerializer& _Ser) override
@@ -86,6 +97,9 @@ private:
 	std::vector<bool> d;
 	bool IsUpdate = true;
 
+	std::vector<int> IntDatas;
+	std::vector<float> FloatDatas;
+	std::vector<bool> BoolDatas;
 
 
 	template <typename DataType>
