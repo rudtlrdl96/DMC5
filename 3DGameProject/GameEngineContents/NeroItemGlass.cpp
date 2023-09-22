@@ -55,7 +55,7 @@ void NeroItemGlass::Update(float _DeltaTime)
 		case DevilBreaker::Overture:
 			ItemText->SetText("Overture");
 			Render = CreateComponent<UIFBXRenderer>(3);
-			Render->SetFBXMesh("OvertureArmUI.FBX", "FBX");
+			Render->SetFBXMesh("OvertureArmUI.FBX", "FBX_Low");
 			Arms.insert(Arms.begin(), Render);
 			AddItemValue = false;
 			first = true;
@@ -63,7 +63,7 @@ void NeroItemGlass::Update(float _DeltaTime)
 		case DevilBreaker::Gerbera:
 			ItemText->SetText("Gerbera");
 			Render = CreateComponent<UIFBXRenderer>(3);
-			Render->SetFBXMesh("GerberaArmUI.FBX", "FBX");
+			Render->SetFBXMesh("GerberaArmUI.FBX", "FBX_Low");
 			Arms.insert(Arms.begin(), Render);
 			AddItemValue = false;
 			first = true;
@@ -71,7 +71,7 @@ void NeroItemGlass::Update(float _DeltaTime)
 		case DevilBreaker::BusterArm:
 			ItemText->SetText("BusterArm");
 			Render = CreateComponent<UIFBXRenderer>(3);
-			Render->SetFBXMesh("BusterArmUI.FBX", "FBX");
+			Render->SetFBXMesh("BusterArmUI.FBX", "FBX_Low");
 			Arms.insert(Arms.begin(), Render);
 			AddItemValue = false;
 			first = true;
@@ -122,7 +122,7 @@ void NeroItemGlass::SetItemText()
 
 void NeroItemGlass::MoveBreaker(float _Delta)
 {
-	
+
 	if (first == true)
 	{
 		Time += _Delta;
