@@ -3,6 +3,8 @@
 
 #include "NetworkManager.h"
 #include "ObjectUpdatePacket.h"
+#include "FsmChangePacket.h"
+
 
 
 NetworkObjectBase* NetworkObjectBase::GetNetObj(unsigned int _ObjID)
@@ -65,6 +67,15 @@ void NetworkObjectBase::SetUpdateArrData(std::shared_ptr<ObjectUpdatePacket> _Pa
 	CopyUpdatePacketArrDatas<bool>(UpdatePacket_BoolLinkDatas, BoolDatas);
 }
 
+void NetworkObjectBase::SetFsmPacketCallBack(std::function<void(int _State)> _CallBack)
+{
+	BindPacketCallBack<FsmChangePacket>(PacketEnum::FsmChangePacket, [=](std::shared_ptr<FsmChangePacket> _Packet)
+	{
+		_CallBack(_Packet->FsmState);
+	});
+}
+
+
 
 void NetworkObjectBase::Update_NetworkTrans(float _DeltaTime)
 {
@@ -102,7 +113,7 @@ void NetworkObjectBase::Update_ProcessPacket()
 
 		if (false == PacketProcessFunctions.contains(Type))
 		{
-			MsgAssert("컨텐츠쪽에서 이 패킷을 처리하기 위한 콜백함수를 등록해주지 않았거나 패킷 수신 허락을 허용하지 않았습니다");
+			MsgAssert("이 패킷을 처리하기 위한 콜백함수를 등록해주지 않았습니다.");
 			return;
 		}
 

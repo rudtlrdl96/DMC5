@@ -166,12 +166,6 @@ void BasePlayerActor::Start()
 	Col_Attack->Off();
 	Col_Attack->SetColType(ColType::AABBBOX3D);
 
-	//FsmChangePacket이 왔을때 어떻게 처리할 것인지
-	BindPacketCallBack<FsmChangePacket>(PacketEnum::FsmChangePacket, [this](std::shared_ptr<FsmChangePacket> _Packet)
-	{
-		SetFSMStateValue(_Packet->FsmState);
-	});
-
 	LinkData_UpdatePacket<int>(ArmValue, [this](int _BeforeData)
 	{
 		SetArm(ArmValue);
@@ -181,6 +175,8 @@ void BasePlayerActor::Start()
 	{
 		SetDT(DTValue);
 	});
+
+	SetFsmPacketCallBack(std::bind(&BasePlayerActor::SetFSMStateValue, this, std::placeholders::_1));
 }
 
 void BasePlayerActor::NetControllLoad()

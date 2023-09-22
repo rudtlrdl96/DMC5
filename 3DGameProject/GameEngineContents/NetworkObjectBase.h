@@ -35,36 +35,6 @@ protected:
 	void Update_ProcessPacket() final;
 	void Update_SendPacket(float _DeltaTime) final;
 
-	template <typename PacketType>
-	void BindPacketCallBack(PacketEnum _Type, std::function<void(std::shared_ptr<PacketType>)> _Callback = nullptr)
-	{
-		//생각해보니까 플레이어는 ActiveControll 되는 시점이 Start이후여서
-		//ActiveControll던 Passive든 등록될듯, 근데 크게 상관 없을지도
-		if (NetControllType::ActiveControll == GetControllType())
-			return;
-
-		if (true == PacketProcessFunctions.contains(_Type))
-		{
-			MsgAssert("해당 패킷의 처리 함수는 이미 등록하였습니다");
-			return;
-		}
-
-		PacketProcessFunctions[_Type] = [=](std::shared_ptr<GameEnginePacket> _Packet)
-		{
-			//템플릿을 이용해 다운캐스팅
-			std::shared_ptr<PacketType> ConvertPacket = std::dynamic_pointer_cast<PacketType>(_Packet);
-			if (nullptr == ConvertPacket)
-			{
-				MsgAssert("패킷 타입 변환에 실패했습니다.");
-			}
-
-			if (nullptr == _Callback)
-				return;
-
-			_Callback(ConvertPacket);
-		};
-	}
-
 	template <typename DataType>
 	void LinkData_UpdatePacket(DataType& Data, std::function<void(DataType _BeforeData)> _DifferentCallBack = nullptr)
 	{
@@ -102,6 +72,8 @@ protected:
 			_DifferentCallBack(*BeforePtr);
 		};
 	}
+
+	void SetFsmPacketCallBack(std::function<void(int _State)> _CallBack);
 
 
 private:
@@ -170,5 +142,34 @@ private:
 			LinkDifferentCallBacks[DataPtr](&BeforeData);
 		}
 	}
+
+	template <typename PacketType>
+	void BindPacketCallBack(PacketEnum _Type, std::function<void(std::shared_ptr<PacketType>)> _Callback = nullptr)
+	{
+		if (NetControllType::ActiveControll == GetControllType())
+			return;
+
+		if (true == PacketProcessFunctions.contains(_Type))
+		{
+			MsgAssert("해당 패킷의 처리 함수는 이미 등록하였습니다");
+			return;
+		}
+
+		PacketProcessFunctions[_Type] = [=](std::shared_ptr<GameEnginePacket> _Packet)
+		{
+			//템플릿을 이용해 다운캐스팅
+			std::shared_ptr<PacketType> ConvertPacket = std::dynamic_pointer_cast<PacketType>(_Packet);
+			if (nullptr == ConvertPacket)
+			{
+				MsgAssert("패킷 타입 변환에 실패했습니다.");
+			}
+
+			if (nullptr == _Callback)
+				return;
+
+			_Callback(ConvertPacket);
+		};
+	}
+
 };
 

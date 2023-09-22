@@ -56,11 +56,7 @@ void BaseEnemyActor::Start()
 	EnemyCreateFSM();
 	EnemyCreateFSM_Client();
 
-	//FsmChangePacket이 왔을때 어떻게 처리할 것인지
-	BindPacketCallBack<FsmChangePacket>(PacketEnum::FsmChangePacket, [this](std::shared_ptr<FsmChangePacket> _Packet)
-	{
-		SetFSMStateValue(_Packet->FsmState);
-	});
+	SetFsmPacketCallBack(std::bind(&BaseEnemyActor::SetFSMStateValue, this, std::placeholders::_1));
 }
 
 void BaseEnemyActor::Update(float _DeltaTime)
