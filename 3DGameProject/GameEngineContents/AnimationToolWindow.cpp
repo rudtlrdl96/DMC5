@@ -189,7 +189,12 @@ void AnimationToolWindow::FileLoad(std::shared_ptr<GameEngineLevel> _Level)
 void AnimationToolWindow::AnimationTimeLine()
 {
 	// 애니메이션의 프레임을 확인하기 위한 Drag와 Button을 지원합니다
-	if (Renderer == nullptr) { return; }
+	if (Renderer == nullptr) { 
+		ImGui::InputFloat("Speed", &AnimEvent.Speed, 0.05f);
+		ImGui::InputFloat("Blend In", &AnimEvent.BlendIn, 0.05f);
+		ImGui::InputFloat("Blend Out", &AnimEvent.BlendOut, 0.05f);
+		ImGui::Checkbox("Loop", &AnimEvent.Loop);
+		return; }
 	if (Renderer->CurAnimation == nullptr) { return; }
 
 	// 프레임 이동기능
@@ -233,9 +238,9 @@ void AnimationToolWindow::AnimationTimeLine()
 
 
 	// 애니메이션 속도 조절
-	ImGui::DragFloat("Speed", &AnimEvent.Speed, 0.1f, 0.0f, 20.0f);
-	ImGui::DragFloat("Blend In", &AnimEvent.BlendIn, 0.1f, 0.0f, 20.0f);
-	ImGui::DragFloat("Blend Out", &AnimEvent.BlendOut, 0.1f, 0.0f, 20.0f);
+	ImGui::InputFloat("Speed", &AnimEvent.Speed, 0.05f);
+	ImGui::InputFloat("Blend In", &AnimEvent.BlendIn, 0.05f);
+	ImGui::InputFloat("Blend Out", &AnimEvent.BlendOut, 0.05f);
 	ImGui::Checkbox("Loop", &AnimEvent.Loop);
 	if (IsStop)
 	{
@@ -425,7 +430,7 @@ void AnimationToolWindow::CallEvent(EventData& _Data)
 void AnimationToolWindow::FileSave()
 {
 	// 완성된 애니메이션 이벤트를 저장합니다
-	if (AnimationName != "" && ImGui::Button("Save Animation"))
+	if (ImGui::Button("Save Animation"))
 	{
 		GameEngineSerializer Ser;
 		AnimEvent.Write(Ser);

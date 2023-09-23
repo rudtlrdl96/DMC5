@@ -32,7 +32,7 @@ public:
 	int StartFrame = -1;
 	int EndFrame = -1;
 
-	bool Loop = true;
+	bool Loop = false;
 	bool Pause = false;
 
 protected:

@@ -89,6 +89,11 @@ public:
 			_File >> BlendIn;
 			_File >> BlendOut;
 		}
+		else
+		{
+			BlendIn = 0.0f;
+			BlendOut = 0.0f;
+		}
 	}
 
 	void EventsWrite(GameEngineSerializer& _File);

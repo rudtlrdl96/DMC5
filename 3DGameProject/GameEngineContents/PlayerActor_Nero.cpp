@@ -546,6 +546,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Landing
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Landing,
 			.Start = [=] {
+				MoveCheck = false;
 				PhysXCapsule->TurnOnGravity();
 				UseDoubleJump = false;
 				PhysXCapsule->SetLinearVelocityZero();
@@ -563,6 +564,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_SwordCheck()) { return; }
 				if (true == Input_GunCheck()) { return; }
 				if (true == Input_DevilBreakerCheck()) { return; }
+				if (false == MoveCheck) { return; }
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
 					ChangeState(FSM_State_Nero::Nero_RunStart);
@@ -672,15 +674,15 @@ void PlayerActor_Nero::PlayerLoad()
 					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
 					return;
 				}
+				if (true == InputCheck)
+				{
+					if (true == Input_SpecialCheckFly()) { return; }
+				}
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly()) { return; }
 				if (true == Input_GunCheckFly()) { return; }
 				if (true == Input_DevilBreakerCheckFly()) { return; }
 
-				if (true == InputCheck)
-				{
-					if (true == Input_SpecialCheckFly()) { return; }
-				}
 				PhysXCapsule->SetForce(Controller->GetMoveVector() * 3500);
 
 				if (false == MoveCheck) { return; }
