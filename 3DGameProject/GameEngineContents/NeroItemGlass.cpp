@@ -33,7 +33,7 @@ void NeroItemGlass::Start()
 			GameEngineFBXMesh::Load(File.GetFullPath());
 		}
 	}
-	NeroUI_ItemGlass = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 560.0f,-380.0f,172.0f }, { 0.6f,0.6f,0.6f }, { -90.0f,0.0f,0.0f }, "NeroItemGlass.FBX");
+	NeroUI_ItemGlass = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 560.0f,-380.0f,172.0f }, { 0.6f,0.6f,0.6f }, { -90.0f,0.0f,0.0f }, "NeroItemGlass.FBX","FBX_Alpha");
 	ArmList = PlayerActor_Nero::GetBreakerListPointer();
 	SetItemText();
 }
