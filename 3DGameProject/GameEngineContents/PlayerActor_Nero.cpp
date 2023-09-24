@@ -83,8 +83,8 @@ void PlayerActor_Nero::PlayerLoad()
 			}
 		}
 
-		EffectSystem->ChangeFX("a.effect");
-		EffectSystem->Play();
+		//EffectSystem->ChangeFX("RQ_ComboA1.effect");
+		//EffectSystem->Play();
 	}
 
 	// Renderer »ý¼º
@@ -715,6 +715,8 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboA1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_1,
 			.Start = [=] {
+				EffectSystem->ChangeFX("RQ_ComboA1.effect");
+				EffectSystem->Play();
 				PhysXCapsule->TurnOffGravity();
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();

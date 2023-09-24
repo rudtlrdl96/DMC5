@@ -73,11 +73,6 @@ void FXSystem::ChangeFX(std::shared_ptr<class FXData> _FX)
 		return;
 	}
 
-	On();
-	Pause = false;
-	CurFrame = 0;
-	CurFrameTime = 0;
-
 	CurFX = _FX;
 	StartFrame = 0;
 	EndFrame = static_cast<int>(CurFX->GetFrameData().size()) - 1;
