@@ -57,7 +57,6 @@ TextureCube ReflectionTexture : register(t3); // Reflection Cubemap
 SamplerState ENGINEBASE : register(s0);
 SamplerState CUBEMAPSAMPLER : register(s1);
 
-
 struct DeferredOutPut
 {
     float4 DifTarget : SV_Target0;
@@ -142,8 +141,8 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     
     // 축 반전
     refvector.x = -refvector.x;
-        
-    float4 ReflectionColor = ReflectionTexture.Sample(ENGINEBASE, refvector);
+    
+    float4 ReflectionColor = ReflectionTexture.Sample(CUBEMAPSAMPLER, refvector);
     //float4 ReflectionColor = ReflectionTexture.Sample(ENGINEBASE, refvector);
     
     // 계산된 메탈릭 값

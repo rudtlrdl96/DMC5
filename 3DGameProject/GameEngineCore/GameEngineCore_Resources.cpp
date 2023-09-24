@@ -139,12 +139,12 @@ void GameEngineCore::CoreResourcesInit()
 		SamperData.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_MIRROR;
 		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_MIRROR;
-		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_MIRROR;
+		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
 		SamperData.MipLODBias = 0.0f;
 		SamperData.MaxAnisotropy = 1;
 		SamperData.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-		SamperData.MinLOD = -FLT_MAX;
-		SamperData.MaxLOD = FLT_MAX;
+		SamperData.MinLOD = 0.0f;
+		SamperData.MaxLOD = 0.0f;
 
 		GameEngineSampler::Create("CUBEMAPSAMPLER", SamperData);
 	}

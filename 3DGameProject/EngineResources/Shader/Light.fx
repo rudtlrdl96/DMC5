@@ -66,7 +66,6 @@ float4 CalSpacularLight(float4 _Pos, float4 _Normal, LightData _Data)
     float4 SpacularLight = (float4) 0.0f;
     
     _Normal.xyz = normalize(_Normal.xyz); // N
-    _Data.ViewLightRevDir.xyz = normalize(_Data.ViewLightRevDir.xyz); // L
     
     float4 LightRevDir = (float4) 0;
     

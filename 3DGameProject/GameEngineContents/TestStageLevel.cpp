@@ -111,7 +111,7 @@ void TestStageLevel::LevelChangeStart()
 
 	// 테스트용 코드
 	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 4000, 0));
-	GetDirectionalLight()->GetTransform()->SetWorldRotation(float4(45, 180, 0));
+	GetDirectionalLight()->GetTransform()->SetWorldRotation(float4(90, 0, 0));
 
 	GameEngineCoreWindow::Clear();
 	GameEngineCoreWindow::AddDebugRenderTarget(0, "Forward Target", GetMainCamera()->GetCamForwardTarget());

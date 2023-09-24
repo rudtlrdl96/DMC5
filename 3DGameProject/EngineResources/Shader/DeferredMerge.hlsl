@@ -39,6 +39,7 @@ Texture2D DifColor : register(t0);
 Texture2D DifLight : register(t1);
 Texture2D SpcLight : register(t2);
 Texture2D AmbLight : register(t3);
+//Texture2D BackLight : register(t4);
 SamplerState POINTWRAP : register(s0);
 
 OutPutColor DeferredMerge_PS(Output _Input) : SV_Target0
@@ -56,8 +57,10 @@ OutPutColor DeferredMerge_PS(Output _Input) : SV_Target0
     float4 DiffuseRatio = DifLight.Sample(POINTWRAP, _Input.TEXCOORD.xy);
     float4 SpacularRatio = SpcLight.Sample(POINTWRAP, _Input.TEXCOORD.xy);
     float4 AmbientRatio = AmbLight.Sample(POINTWRAP, _Input.TEXCOORD.xy);
+    //float4 BackRatio = BackLight.Sample(POINTWRAP, _Input.TEXCOORD.xy);
     
     NewOutPut.Result.rgb = Color.rgb * (DiffuseRatio.rgb + SpacularRatio.rgb + AmbientRatio.rgb);
+    //NewOutPut.Result.rgb = Color.rgb * (DiffuseRatio.rgb + SpacularRatio.rgb + AmbientRatio.rgb + BackRatio.rgb);
     NewOutPut.Result.a = Color.a;
     
     NewOutPut.Result = saturate(NewOutPut.Result);

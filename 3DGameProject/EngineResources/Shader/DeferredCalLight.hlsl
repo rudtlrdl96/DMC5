@@ -25,6 +25,7 @@ struct LightOutPut
     float4 DifLight : SV_Target0;
     float4 SpcLight : SV_Target1;
     float4 AmbLight : SV_Target2;
+    float4 BackLight : SV_Target3;
 };
 
 Texture2D PositionTex : register(t0); //rgb = pos
@@ -32,7 +33,7 @@ Texture2D NormalTex : register(t1); // rgb = normal
 Texture2D MatTex : register(t2); // r = metal, g = roughness
 Texture2D GleamTex : register(t3); // rgb = Gleam light
 Texture2D ShadowTex : register(t4);
-Texture2D SSSTex : register(t5); // Subsurface scattering
+//Texture2D SSSTex : register(t5); // Subsurface scattering
 
 SamplerState POINTSAMPLER : register(s0);
 
@@ -49,6 +50,7 @@ struct ResultLight
 {
     float3 CurLightDiffuseRatio;
     float3 CurLightSpacularRatio;
+    float3 CurLightAmbientRatio;
 };
 
 ResultLight CalLight(int _LightIndex, float4 _Position, float4 _Normal, float _Metal)
@@ -82,11 +84,37 @@ ResultLight CalLight(int _LightIndex, float4 _Position, float4 _Normal, float _M
     {
         Result.CurLightDiffuseRatio = AllLight[_LightIndex].LightColor.xyz * CalDiffuseLight(_Position, _Normal, AllLight[_LightIndex]).xyz * LightPower;
         Result.CurLightSpacularRatio = AllLight[_LightIndex].LightColor.xyz * CalSpacularLight(_Position, _Normal, AllLight[_LightIndex]).xyz * (1.0f - _Metal) * LightPower * 0.5f;
+        Result.CurLightAmbientRatio = AllLight[_LightIndex].LightColor.xyz * CalAmbientLight(AllLight[_LightIndex]).xyz;
     }
     
     return Result;
 }
 
+//float3 CalBackLight(float4 _SSSData, float3 _Ambient, float3 _Pos, int _LightIndex, float4 _Normal)
+//{
+//    float3 Result = (float3)0;
+//        
+//    _Normal.xyz = normalize(_Normal.xyz); // N
+//    
+//    float4 CalLightDir = (float4)0;
+//    
+//    if (0 == AllLight[_LightIndex].LightType)
+//    {
+//        CalLightDir.xyz = normalize(AllLight[_LightIndex].ViewLightDir.xyz); // L
+//    }
+//    else
+//    {
+//        CalLightDir.xyz = normalize(_Pos.xyz - AllLight[_LightIndex].ViewLightPos.xyz); // L
+//    }
+//    
+//    float3 CameraView = _Pos - AllLight[0].CameraPosition.xyz;
+//    
+//    float3 H = normalize(CalLightDir + _Normal * _SSSData.b);
+//    float vDotH = pow(saturate(dot(CameraView.xyz, -H)), 1.0f + 0.000001f) * 1.0f;
+//    Result = _SSSData.r * (vDotH + _Ambient) * _SSSData.g * AllLight[_LightIndex].LightColor.xyz;
+//    
+//    return Result;
+//}
 
 LightOutPut DeferredCalLight_PS(Output _Input)
 {
@@ -96,6 +124,7 @@ LightOutPut DeferredCalLight_PS(Output _Input)
     float4 Normal = NormalTex.Sample(POINTSAMPLER, _Input.TEXCOORD.xy);
     float4 Mat = MatTex.Sample(POINTSAMPLER, _Input.TEXCOORD.xy);
     float4 Gleam = GleamTex.Sample(POINTSAMPLER, _Input.TEXCOORD.xy);
+    //float4 SSSData = SSSTex.Sample(POINTSAMPLER, _Input.TEXCOORD.xy);
             
     if (0 == DeferredPosition.z)
     {
@@ -105,6 +134,7 @@ LightOutPut DeferredCalLight_PS(Output _Input)
     float4 DiffuseRatio = (float4) 0.0f;
     float4 SpacularRatio = (float4) 0.0f;
     float4 AmbientRatio = (float4) 0.0f;
+    //float4 BackRatio = (float4) 0.0f;
       
     ResultLight CalLightValue = CalLight(LightCount, DeferredPosition, Normal, Mat.r);
                         
@@ -128,20 +158,24 @@ LightOutPut DeferredCalLight_PS(Output _Input)
 
     DiffuseRatio.xyz += CalLightValue.CurLightDiffuseRatio.xyz;
     SpacularRatio.xyz += CalLightValue.CurLightSpacularRatio.xyz;
+    AmbientRatio.xyz += CalLightValue.CurLightAmbientRatio.xyz;
+    
+    //BackRatio.xyz = CalBackLight(SSSData, AmbientRatio.xyz, DeferredPosition.xyz, LightCount, Normal);
     
     if(0 == LightCount)
     {
         SpacularRatio += float4(Gleam.r, Gleam.g, Gleam.b, 0);
-        AmbientRatio = AllLight[LightCount].AmbientLight;
     }
         
     DiffuseRatio.a = 1.0f;
     SpacularRatio.a = 1.0f;
     AmbientRatio.a = 1.0f;
+    //BackRatio.a = 1.0f;
     
     NewOutPut.DifLight = DiffuseRatio;
     NewOutPut.SpcLight = SpacularRatio;
     NewOutPut.AmbLight = AmbientRatio;
+    //NewOutPut.BackLight = BackRatio;
     
     return NewOutPut;
 }

@@ -158,6 +158,7 @@ void GameEngineCamera::RenderTargetTextureLoad()
 		DeferredLightTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // ½ºÆåÅ§·¯ ¶óÀÌÆ®
 		DeferredLightTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // ¾Úºñ¾ðÆ® ¶óÀÌÆ®¸¦ ´ã´Â´Ù.
 		DeferredLightTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // ºí·ë
+		//DeferredLightTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL); // SSS BackLight
 
 		CalLightUnit.SetMesh("FullRect");
 		CalLightUnit.SetMaterial("DeferredCalLight");
@@ -168,6 +169,7 @@ void GameEngineCamera::RenderTargetTextureLoad()
 		CalLightUnit.ShaderResHelper.SetTexture("NormalTex", CamDeferrdTarget->GetTexture(2));
 		CalLightUnit.ShaderResHelper.SetTexture("MatTex", CamDeferrdTarget->GetTexture(3));
 		CalLightUnit.ShaderResHelper.SetTexture("GleamTex", CamDeferrdTarget->GetTexture(4));
+		//CalLightUnit.ShaderResHelper.SetTexture("SSSTex", CamDeferrdTarget->GetTexture(5));
 
 		DefferdMergeUnit.SetMesh("FullRect");
 		DefferdMergeUnit.SetMaterial("DeferredMerge");
@@ -175,6 +177,7 @@ void GameEngineCamera::RenderTargetTextureLoad()
 		DefferdMergeUnit.ShaderResHelper.SetTexture("DifLight", DeferredLightTarget->GetTexture(0));
 		DefferdMergeUnit.ShaderResHelper.SetTexture("SpcLight", DeferredLightTarget->GetTexture(1));
 		DefferdMergeUnit.ShaderResHelper.SetTexture("AmbLight", DeferredLightTarget->GetTexture(2));
+		//DefferdMergeUnit.ShaderResHelper.SetTexture("BackLight", DeferredLightTarget->GetTexture(3));
 	}
 
 	CamAlphaTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
