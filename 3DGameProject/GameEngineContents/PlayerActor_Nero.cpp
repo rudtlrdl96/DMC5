@@ -11,6 +11,7 @@
 #include "AttackCollision.h"
 #include "BaseEnemyActor.h"
 #include "NeroItemGlass.h"
+#include "FXSystem.h"
 std::list<DevilBreaker> PlayerActor_Nero::BreakerList;
 PlayerActor_Nero::~PlayerActor_Nero()
 {
@@ -45,6 +46,8 @@ void PlayerActor_Nero::PlayerLoad()
 	GetLevel()->CreateActor<NeroItemGlass>();
 	// Effect 持失
 	{
+		EffectSystem = CreateComponent<FXSystem>();
+
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
 		NewDir.Move("ContentResources");
@@ -68,10 +71,20 @@ void PlayerActor_Nero::PlayerLoad()
 				GameEngineTexture::Load(File.GetFullPath());
 			}
 		}
-		Renderer_EffectMesh = CreateComponent<EffectRenderer>();
-		Renderer_EffectMesh->SetFBXMesh("Effect_Mesh_01.FBX", "Effect_2D");
-		Renderer_EffectMesh->SetTexture("DiffuseTex", "Effect_Texture_02.tga");
-		Renderer_EffectMesh->Off();
+
+		NewDir.MoveParent();
+		NewDir.Move("Nero");
+		if (nullptr == FXData::Find("a.effect"))
+		{
+			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".effect" });
+			for (GameEngineFile File : Files)
+			{
+				EffectSystem->CreateFX(FXData::Load(File.GetFullPath()));
+			}
+		}
+
+		EffectSystem->ChangeFX("a.effect");
+		EffectSystem->Play();
 	}
 
 	// Renderer 持失
@@ -2931,11 +2944,6 @@ void PlayerActor_Nero::NetLoad()
 				GameEngineTexture::Load(File.GetFullPath());
 			}
 		}
-
-		Renderer_EffectMesh = CreateComponent<EffectRenderer>();
-		Renderer_EffectMesh->SetFBXMesh("Effect_Mesh_01.FBX", "Effect_2D");
-		Renderer_EffectMesh->SetTexture("DiffuseTexture", "Effect_Texture_01.png");
-		Renderer_EffectMesh->Off();
 	}
 
 	// Renderer 持失

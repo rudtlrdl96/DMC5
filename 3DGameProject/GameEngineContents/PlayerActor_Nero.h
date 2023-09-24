@@ -169,8 +169,8 @@ protected:
 
 	void LightDamage() override;
 private:
-	std::shared_ptr<class EffectRenderer> Renderer_EffectMesh = nullptr;
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer_Overture = nullptr;
+	std::shared_ptr<class FXSystem> EffectSystem = nullptr;
 
 	GameEngineFSM FSM;
 	float WalkSpeed = 300;

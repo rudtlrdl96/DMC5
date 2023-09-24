@@ -86,6 +86,25 @@ public:
 	FXData& operator=(const FXData& _Other) = delete;
 	FXData& operator=(FXData&& _Other) noexcept = delete;
 
+	static std::shared_ptr<FXData> Load(const std::string_view& _Path)
+	{
+		return Load(_Path, GameEnginePath::GetFileName(_Path));
+	}
+
+	static std::shared_ptr<FXData> Load(const std::string_view& _Path, const std::string_view& _Name)
+	{
+		std::shared_ptr<FXData> NewFX = GameEngineResource::Create(_Name);
+		//NewFX
+		GameEngineFile File;
+		GameEngineSerializer Ser;
+		File.SetPath(_Path);
+		File.LoadBin(Ser);
+
+		NewFX->Read(Ser);
+
+		return NewFX;
+	}
+
 	std::vector<FXUnitData>& GetUnitDatas()
 	{
 		return UnitDatas;
@@ -119,7 +138,7 @@ public:
 			_File << MapSize;
 			if (MapSize <= 0)
 			{
-				return;
+				continue;
 			}
 			for (std::pair <std::string, FXKeyFrame> Pair : FrameData[i])
 			{
@@ -152,7 +171,7 @@ public:
 
 			if (MapSize <= 0)
 			{
-				return;
+				continue;
 			}
 
 			for (unsigned int j = 0; j < MapSize; ++j)

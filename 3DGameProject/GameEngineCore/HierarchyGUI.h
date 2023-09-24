@@ -22,6 +22,7 @@ protected:
 	void ShowObjectInfo();
 	void ShowTransformInfo();
 
+	void TransformControll(std::shared_ptr<GameEngineLevel> Level);
 private:
 	int ObjectIndex = -1;
 	int ObjectSize = 0;

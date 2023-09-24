@@ -1,6 +1,5 @@
 #include "PrecompileHeader.h"
 #include "FXSystem.h"
-#include "FXData.h"
 #include "EffectRenderer.h"
 
 FXSystem::FXSystem()
@@ -28,6 +27,86 @@ void FXSystem::SetFX(std::shared_ptr<FXData> _FX)
 void FXSystem::SetFX(const std::string_view& _Name)
 {
 	SetFX(FXData::Find(_Name));
+}
+
+void FXSystem::CreateFX(std::shared_ptr<class FXData> _FX)
+{
+	std::vector<FXUnitData>& UnitDatas = _FX->GetUnitDatas();
+	int SpriteIndex = 0;
+	for (int i = 0; i < UnitDatas.size(); i++)
+	{
+		if (UnitDatas[i].MeshName != "")
+		{
+			if (false == FXRenders.contains(UnitDatas[i].MeshName))
+			{
+				// 해당 매쉬가 존재하지 않는경우
+				FXRenders[UnitDatas[i].MeshName] = GetActor()->CreateComponent<EffectRenderer>();
+				FXRenders[UnitDatas[i].MeshName]->GetTransform()->SetParent(GetTransform());
+				FXRenders[UnitDatas[i].MeshName]->SetFBXMesh(UnitDatas[i].MeshName, "Effect_2D");
+			}
+		}
+		else
+		{
+			std::string Key = "Sprite" + std::to_string(SpriteIndex++);
+			if (false == FXRenders.contains(Key))
+			{
+				// 렌더러가 부족한 경우
+				FXRenders[Key] = GetActor()->CreateComponent<EffectRenderer>();
+				FXRenders[Key]->GetTransform()->SetParent(GetTransform());
+				FXRenders[Key]->RectInit("Effect_2D");
+				FXRenders[Key]->LockRotation();
+			}
+		}
+	}
+}
+
+void FXSystem::ChangeFX(const std::string_view& _Name)
+{
+	ChangeFX(FXData::Find(_Name));
+}
+
+void FXSystem::ChangeFX(std::shared_ptr<class FXData> _FX)
+{
+	if (nullptr == _FX)
+	{
+		MsgAssert("존재하지 않는 FX입니다");
+		return;
+	}
+
+	On();
+	Pause = false;
+	CurFrame = 0;
+	CurFrameTime = 0;
+
+	CurFX = _FX;
+	StartFrame = 0;
+	EndFrame = static_cast<int>(CurFX->GetFrameData().size()) - 1;
+
+	std::vector<FXUnitData>& UnitDatas = CurFX->GetUnitDatas();
+	int SpriteIndex = 0;
+	for (int i = 0; i < UnitDatas.size(); i++)
+	{
+		if (UnitDatas[i].MeshName != "")
+		{
+			FXRenders[UnitDatas[i].MeshName]->SetTexture("DiffuseTex", UnitDatas[i].TextureName);
+			FXRenders[UnitDatas[i].MeshName]->Off();
+		}
+		else
+		{
+			std::string Key = "Sprite" + std::to_string(SpriteIndex++);
+
+			if (UnitDatas[i].AnimData.AnimationName == "")
+			{
+				// 애니메이션이 아닌 경우
+				FXRenders[Key]->SetTexture("DiffuseTex", UnitDatas[i].TextureName);
+			}
+			else
+			{
+				FXRenders[Key]->ChangeAnimation(UnitDatas[i].AnimData.AnimationName);
+			}
+			FXRenders[Key]->Off();
+		}
+	}
 }
 
 void FXSystem::Play()

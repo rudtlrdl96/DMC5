@@ -1,5 +1,5 @@
 #pragma once
-
+#include "FXData.h"
 // Ό³Έν :
 class FXSystem : public GameEngineComponent
 {
@@ -17,6 +17,10 @@ public:
 	void SetFX(std::shared_ptr<class FXData> _FX);
 	void SetFX(const std::string_view& _Name);
 
+	void CreateFX(std::shared_ptr<class FXData> _FX);
+	void ChangeFX(const std::string_view& _Name);
+	void ChangeFX(std::shared_ptr<class FXData> _FX);
+
 	std::shared_ptr<class FXData> GetFX()
 	{
 		return CurFX;
@@ -32,7 +36,7 @@ public:
 	int StartFrame = -1;
 	int EndFrame = -1;
 
-	bool Loop = false;
+	bool Loop = true;
 	bool Pause = false;
 
 protected:
@@ -42,7 +46,7 @@ protected:
 	void FXSetting();
 private:
 	std::map<std::string , std::shared_ptr<class EffectRenderer>> FXRenders;
-	std::shared_ptr<class FXData> CurFX = nullptr;
+	std::shared_ptr<FXData> CurFX = nullptr;
 
 };
 

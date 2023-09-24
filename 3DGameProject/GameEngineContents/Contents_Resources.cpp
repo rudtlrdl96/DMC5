@@ -404,7 +404,7 @@ void ContentsCore::CreateContentsKey()
 	}
 	if (false == GameEngineInput::IsKey("Player_Up"))
 	{
-		GameEngineInput::CreateKey("Escape", VK_F10);
+		GameEngineInput::CreateKey("Escape", VK_ESCAPE);
 		GameEngineInput::CreateKey("Player_Up", 'W');
 		GameEngineInput::CreateKey("Player_Left", 'A');
 		GameEngineInput::CreateKey("Player_Down", 'S');
@@ -436,6 +436,13 @@ void ContentsCore::CreateContentsKey()
 		GameEngineInput::CreateKey("FreeCam_LookDown", VK_NUMPAD2);
 		GameEngineInput::CreateKey("FreeCam_LookBack", VK_NUMPAD5);
 		GameEngineInput::CreateKey("FreeCam_LookFront", VK_NUMPAD0);
+	}
+
+	if (GameEngineInput::IsKey("Hierarchy_Position") == false)
+	{
+		GameEngineInput::CreateKey("Hierarchy_Position", 'G');
+		GameEngineInput::CreateKey("Hierarchy_Rotation", 'R');
+		GameEngineInput::CreateKey("Hierarchy_Scale", 'F');
 	}
 }
 
