@@ -317,6 +317,9 @@ void EffectRenderer::DrawEditor()
 
 	ImGui::DragFloat("Clip Start Y", &EffectOption.ClipStartY, 0.01f, 0, 1);
 	ImGui::DragFloat("Clip End Y", &EffectOption.ClipEndY, 0.01f, 0, 1);
+
+	ImGui::DragFloat("UV X", &EffectOption.UVX, 0.01f, -1, 1);
+	ImGui::DragFloat("UV Y", &EffectOption.UVY, 0.01f, -1, 1);
 	
 	ImGui::ColorEdit4("MulColor", EffectOption.MulColor.Arr1D);
 	ImGui::ColorEdit4("PlusColor", EffectOption.PlusColor.Arr1D);
@@ -370,7 +373,7 @@ void EffectRenderer::DrawEditor()
 
 			if (0 == Unit.size())
 			{
-				RectInit("Effect_2D");
+				RectInit("Effect_3D");
 				LockRotation();
 			}
 			SetTexture("DiffuseTex", FileName);

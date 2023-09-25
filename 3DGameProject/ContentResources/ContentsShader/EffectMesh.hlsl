@@ -81,7 +81,6 @@ Output MeshTexture_VS(Input _Input)
     NewOutPut.TEXCOORD.y = (VtxUV.y * FrameScale.y) + FramePos.y;
     
     NewOutPut.ClipUV = _Input.TEXCOORD.xy;
-    
     //NewOutPut.WORLDPOSITION = mul(InputPos, WorldMatrix);
     //NewOutPut.VIEWPOSITION = mul(InputPos, WorldView);
     
@@ -112,6 +111,8 @@ cbuffer EffectData : register(b2)
     float ClipEndX;    
     float ClipStartY;
     float ClipEndY;    
+    float UVX;    
+    float UVY;    
     float4 MulColor;
     float4 PlusColor;
 };
@@ -121,7 +122,9 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     AlphaOutPut Result = (AlphaOutPut) 0;
         
     float2 UV = _Input.TEXCOORD.xy;
+    UV.xy += float2(UVX, UVY);
     float2 ClipUV = _Input.ClipUV.xy;
+    ClipUV.xy += float2(UVX, UVY);
     
     if (ClipStartX > ClipUV.x || ClipEndX < ClipUV.x)
     {

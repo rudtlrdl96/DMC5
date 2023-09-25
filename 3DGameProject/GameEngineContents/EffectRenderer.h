@@ -9,6 +9,8 @@ public:
 	float ClipEndX = 1;
 	float ClipStartY = 0;
 	float ClipEndY = 1;
+	float UVX = 0;
+	float UVY = 0;
 	float4 MulColor = float4::ONE;
 	float4 PlusColor = float4::ZERONULL;
 
@@ -19,6 +21,8 @@ public:
 		Result.ClipEndX = GameEngineMath::Lerp(Start.ClipEndX, End.ClipEndX, Ratio);
 		Result.ClipStartY = GameEngineMath::Lerp(Start.ClipStartY, End.ClipStartY, Ratio);
 		Result.ClipEndY = GameEngineMath::Lerp(Start.ClipEndY, End.ClipEndY, Ratio);
+		Result.UVX = GameEngineMath::Lerp(Start.UVX, End.UVX, Ratio);
+		Result.UVY = GameEngineMath::Lerp(Start.UVY, End.UVY, Ratio);
 		Result.MulColor = float4::Lerp(Start.MulColor, End.MulColor, Ratio);
 		Result.PlusColor = float4::Lerp(Start.PlusColor, End.PlusColor, Ratio);
 		return Result;
@@ -30,6 +34,8 @@ public:
 		_File << ClipEndX;
 		_File << ClipStartY;
 		_File << ClipEndY;
+		_File << UVX;
+		_File << UVY;
 		_File << MulColor;
 		_File << PlusColor;
 	}
@@ -40,6 +46,8 @@ public:
 		_File >> ClipEndX;
 		_File >> ClipStartY;
 		_File >> ClipEndY;
+		_File >> UVX;
+		_File >> UVY;
 		_File >> MulColor;
 		_File >> PlusColor;
 	}

@@ -74,7 +74,7 @@ void PlayerActor_Nero::PlayerLoad()
 
 		NewDir.MoveParent();
 		NewDir.Move("Nero");
-		if (nullptr == FXData::Find("a.effect"))
+		if (nullptr == FXData::Find("RQ_ComboA1.effect"))
 		{
 			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".effect" });
 			for (GameEngineFile File : Files)
@@ -189,6 +189,7 @@ void PlayerActor_Nero::PlayerLoad()
 	}
 
 	// OvertureRenderer »ý¼º
+	{}
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
@@ -757,6 +758,8 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboA2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_2,
 			.Start = [=] {
+				EffectSystem->ChangeFX("RQ_ComboA2.effect");
+				EffectSystem->Play();
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
@@ -801,6 +804,8 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboA3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_3,
 			.Start = [=] {
+				EffectSystem->ChangeFX("RQ_ComboA3.effect");
+				EffectSystem->Play();
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
@@ -839,6 +844,8 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboA4
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_4,
 			.Start = [=] {
+				EffectSystem->ChangeFX("RQ_ComboA4.effect");
+				EffectSystem->Play();
 				Col_Attack->SetAttackData(DamageType::Heavy, 100);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
