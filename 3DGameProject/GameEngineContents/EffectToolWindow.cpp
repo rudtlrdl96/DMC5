@@ -187,7 +187,7 @@ void EffectToolWindow::TimeLine()
 			if (Mesh != nullptr && Mesh->GetName() != "Rect")
 			{
 				CurUnitDatas[i].MeshName = Mesh->GetName();
-				CurUnitDatas[i].TextureName = FXRenders[i]->GetShaderResHelper(0).GetTextureSetter("DiffuseTex")->Res->GetName();
+				CurUnitDatas[i].TextureName = FXRenders[i]->GetShaderResHelper(0).GetTextureSetter("DiffuseTexture")->Res->GetName();
 			}
 			else
 			{
@@ -198,7 +198,7 @@ void EffectToolWindow::TimeLine()
 				}
 				else
 				{
-					CurUnitDatas[i].TextureName = FXRenders[i]->GetShaderResHelper(0).GetTextureSetter("DiffuseTex")->Res->GetName();
+					CurUnitDatas[i].TextureName = FXRenders[i]->GetShaderResHelper(0).GetTextureSetter("DiffuseTexture")->Res->GetName();
 				}
 			}
 		}
