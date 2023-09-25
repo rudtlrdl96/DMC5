@@ -198,6 +198,8 @@ protected:
 
 	std::vector<FbxExAniData> AnimationDatas;
 
+	void Release();
+
 private:
 	bool CheckAnimation();
 

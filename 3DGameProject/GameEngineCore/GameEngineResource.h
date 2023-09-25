@@ -56,6 +56,20 @@ public:
 		return NamedResources[UpperName];
 	}
 
+	static void Remove(const std::string_view& _Name)
+	{
+		std::string UpperName = GameEngineString::ToUpper(_Name);
+
+		if (NamedResources.end() == NamedResources.find(UpperName.c_str()))
+		{
+			return;
+		}
+
+		NamedResources.erase(NamedResources.find(UpperName.c_str()));
+
+		return;
+	}
+
 	virtual void Setting() {}
 
 	static void ResourcesClear()

@@ -193,9 +193,6 @@ void Enemy_Empusa::EnemyTypeLoad()
 	EnemyTypeValue = EnemyType::Normal;
 	EnemySizeValue = EnemySize::Middle;
 	EnemyHP = 100.0f;
-	RN_Range = float4::ZERO;
-	RN_Player = false;
-	MoveSpeed = 50.0f;
 }
 
 void Enemy_Empusa::RecognizeCollisionCheck(float _DeltaTime) 

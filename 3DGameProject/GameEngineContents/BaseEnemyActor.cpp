@@ -92,26 +92,6 @@ void BaseEnemyActor::Update(float _DeltaTime)
 	}
 }
 
-void BaseEnemyActor::SuperArmorOn()
-{
-	IsSuperArmorValue = true;
-
-	if (nullptr != SuperArmorOn_Callback) 
-	{
-		SuperArmorOn_Callback();
-	}
-}
-
-void BaseEnemyActor::SuperArmorOff()
-{
-	IsSuperArmorValue = false;
-
-	if (nullptr != SuperArmorOff_Callback)
-	{
-		SuperArmorOff_Callback();
-	}
-}
-
 bool BaseEnemyActor::FloorCheck(float _Distance)
 {
 	float4 StartPosision = this->GetTransform()->GetWorldPosition();
@@ -328,6 +308,7 @@ void BaseEnemyActor::SlerpCalculation()
 	GoalRotation.z = 0.0f;
 }
 
+// 실패작 (아직 안씀)
 void BaseEnemyActor::AnimationSlerpCalculation()
 {
 	StartFrame = EnemyRenderer->GetCurFrame();
@@ -358,6 +339,7 @@ void BaseEnemyActor::AnimationSlerpCalculation()
 	GoalRotation.z = 0.0f;
 }
 
+// 실패작 (아직 안씀)
 void BaseEnemyActor::AnimationSlerpTurn(float _DeltaTime)
 {
 	UINT Frmae = 0;

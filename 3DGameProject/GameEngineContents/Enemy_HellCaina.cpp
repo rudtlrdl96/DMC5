@@ -299,9 +299,6 @@ void Enemy_HellCaina::EnemyTypeLoad()
 	EnemySizeValue = EnemySize::Small;
 
 	EnemyHP = 0;
-	RN_Range = float4::ZERO;
-	RN_Player = false;
-	MoveSpeed = 50.0f;
 }
 
 void Enemy_HellCaina::EnemyAnimationLoad()
@@ -393,6 +390,15 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	WaitTime += _DeltaTime;
 	if (0.7f <= WaitTime)
 	{
+		if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
+		{
+			IsRecognize = true;
+		}
+		else
+		{
+			IsRecognize = false;
+		}
+
 		if (false == IsRecognize)
 		{
 			PlayerChase(_DeltaTime);

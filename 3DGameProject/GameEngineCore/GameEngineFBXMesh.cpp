@@ -9,8 +9,8 @@ GameEngineFBXMesh::GameEngineFBXMesh()
 
 GameEngineFBXMesh::~GameEngineFBXMesh()
 {
+	Release();
 }
-
 
 std::shared_ptr<GameEngineFBXMesh> GameEngineFBXMesh::Load(const std::string& _Path, const std::string& _Name)
 {
@@ -18,6 +18,26 @@ std::shared_ptr<GameEngineFBXMesh> GameEngineFBXMesh::Load(const std::string& _P
 	Res->SetPath(_Path);
 	Res->LoadMesh(_Path, _Name);
 	return Res;
+}
+
+void GameEngineFBXMesh::UnLoad(const std::string& _Name)
+{
+	GameEngineResource::Remove(_Name);
+	return;
+}
+
+void GameEngineFBXMesh::Release()
+{
+	MeshInfos.clear();
+	MeshInfos.shrink_to_fit();
+	AllBones.clear();
+	AllBones.shrink_to_fit();
+	RenderUnitInfos.clear();
+	RenderUnitInfos.shrink_to_fit();
+	AllBoneStructuredBuffers = nullptr; // 본정보체
+	AllFindMap.clear();
+	ClusterData.clear();
+	ClusterData.shrink_to_fit();
 }
 
 //

@@ -77,12 +77,6 @@ public:
 		EnemyFSM_Client.ChangeState(_StateValue);
 	}
 
-	// 현재 몬스터가 슈퍼아머 상태인지 반환합니다. 만약 슈퍼아머 상태라면 그랩, 잡기등의 공격에 면역이됩니다.
-	inline bool IsSuperArmor() const
-	{
-		return IsSuperArmorValue;
-	}
-
 	// 몬스터의 종류를 반환합니다.
 	inline EnemyCode GetEnemyCode() const
 	{
@@ -126,7 +120,7 @@ protected:
 	virtual void RecognizeCollisionCheck(float _DeltaTime) = 0;
 
 	std::shared_ptr<class GameEngineFBXRenderer> EnemyRenderer = nullptr;     // 랜더러
-	std::shared_ptr<PhysXCapsuleComponent> PhysXCapsule = nullptr;            // 피직스 컴포넌트
+	std::shared_ptr<class PhysXCapsuleComponent> PhysXCapsule = nullptr;      // 피직스 컴포넌트
 	std::shared_ptr<class GameEngineCollision> MonsterCollision = nullptr;    // 몬스터 자체 콜리전
 	std::shared_ptr<class AttackCollision> MonsterAttackCollision = nullptr;  // 몬스터 공격 콜리전
 	std::shared_ptr<class GameEngineCollision> RN_MonsterCollision = nullptr; // 몬스터 공격 범위 인식 콜리전
@@ -138,27 +132,12 @@ protected:
 	EnemyCode EnemyCodeValue = EnemyCode::None;
 	EnemyType EnemyTypeValue  = EnemyType::None;
 	EnemySize EnemySizeValue = EnemySize::None;
-
 	//HP
 	float EnemyHP = 0.0f;
-	//Recognize(인식범위)
-	float4 RN_Range = float4::ZERO;
-	bool RN_Player = false;
-	//공격범위
-	float4 AttackRange = float4::ZERO;
-	float MoveSpeed = 0.0f;
-
 	// FSM 밸류
 	int EnemyFSMValue = -1;
 	//=================================================================================
 
-	void SuperArmorOn();
-	void SuperArmorOff();
-	bool IsSuperArmorValue = false;
-
-	std::function<void()> SuperArmorOn_Callback = nullptr;
-	std::function<void()> SuperArmorOff_Callback = nullptr;
-	
 	//====================================================
 	// 몬스터 바닥 체크 (RayCast)
 	bool FloorCheck(float _Distance);

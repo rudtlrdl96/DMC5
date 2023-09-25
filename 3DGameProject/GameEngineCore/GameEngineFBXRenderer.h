@@ -78,6 +78,12 @@ public:
 	float4 RotEuler;
 };
 
+struct AttachTransformInfo
+{
+	int Index = -1;
+	GameEngineTransform* Transform;
+};
+
 // 설명 :
 class GameEngineFBXRenderer : public GameEngineRenderer
 {
@@ -183,6 +189,17 @@ public:
 	void ChangeAnimation(const std::string& _AnimationName, bool _Force = false);
 
 	bool IsAnimationEnd();
+
+	AnimationBoneData GetBoneData(std::string _Name);
+
+	AnimationBoneData GetBoneData(int _Index)
+	{
+		return AnimationBoneDatas[_Index];
+	}
+
+	void SetAttachTransform(std::string_view _Name, GameEngineTransform* _Transform);
+
+	void SetAttachTransform(int Index, GameEngineTransform* _Transform);
 
 	inline void NormalOn()
 	{
@@ -298,6 +315,8 @@ private:
 
 
 	std::vector<AnimationBoneData> AnimationBoneDatas;
+
+	std::vector<AttachTransformInfo> AttachTransformValue;
 	// 이전 애니메이션 정보. 블렌드 기능에 사용
 	std::vector<AnimationBoneData> PrevAnimationBoneDatas;
 	float CurBlendTime = 0.0f;

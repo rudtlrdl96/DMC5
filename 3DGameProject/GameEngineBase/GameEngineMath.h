@@ -310,8 +310,8 @@ public:
 	float4 DegreeRotationToQuaternionReturn() const;
 	class float4x4 QuaternionToRotationMatrix();
 
-	float4 QuaternionToEulerDeg();
-	float4 QuaternionToEulerRad();
+	float4 QuaternionToEulerDeg() const;
+	float4 QuaternionToEulerRad() const;
 
 	float XYDistance(float4 _Value);
 	float XYZDistance(float4 _Value);

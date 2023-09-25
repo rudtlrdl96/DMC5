@@ -185,7 +185,6 @@ public:
 
 	std::vector<FbxExMaterialSettingData> MaterialData;
 
-
 	std::shared_ptr<GameEngineVertexBuffer> VertexBuffer;
 	std::vector< std::shared_ptr<GameEngineIndexBuffer>> IndexBuffers;
 
@@ -618,6 +617,7 @@ public:
 
 	static std::shared_ptr<GameEngineFBXMesh> Load(const std::string& _Path, const std::string& _Name);
 
+	static void UnLoad(const std::string& _Name);
 
 	std::shared_ptr<GameEngineMesh> GetGameEngineMesh(size_t _MeshIndex, size_t _SubIndex);
 
@@ -663,12 +663,16 @@ public:
 
 	void Initialize();
 
+	void Release();
+
+	const std::vector<Bone>& GetAllBone()
+	{
+		return AllBones;
+	}
 
 	//void UserLoad(const std::string_view& _Path/*GameEngineFile& _File*/);
 	//void UserSave(const std::string_view& _Path/*GameEngineFile& _File*/);
-
 	//void UserSave(const std::string_view& _Path, size_t Index);
-
 	//void UserSave(const std::string_view& _Path, std::vector<size_t> _Indexs);
 
 protected:
