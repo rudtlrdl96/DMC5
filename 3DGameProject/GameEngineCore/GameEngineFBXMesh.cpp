@@ -386,7 +386,7 @@ void GameEngineFBXMesh::FbxRenderUnitInfoMaterialSetting(fbxsdk::FbxNode* _Node,
 
 			MatData.DifTexturePath = MaterialTex(pMtrl, "DiffuseColor");
 			MatData.NorTexturePath = MaterialTex(pMtrl, "NormalMap");
-			MatData.SpcTexturePath = MaterialTex(pMtrl, "SpecularColor");
+			MatData.SpcTexturePath = MaterialTex(pMtrl, fbxsdk::FbxSurfaceMaterial::sEmissive);
 
 			MatData.DifTextureName = GameEnginePath::GetFileName(MatData.DifTexturePath);
 			MatData.NorTextureName = GameEnginePath::GetFileName(MatData.NorTexturePath);
@@ -1197,6 +1197,53 @@ std::shared_ptr<GameEngineMesh> GameEngineFBXMesh::GetGameEngineMesh(size_t _Mes
 		}
 	}
 
+	if (
+		false == Unit.MaterialData[_SubIndex].SpcTextureName.empty()
+		&& "" != Unit.MaterialData[_SubIndex].SpcTextureName
+		)
+	{
+		std::shared_ptr<GameEngineTexture> Texture = GameEngineTexture::Find(Unit.MaterialData[_SubIndex].SpcTextureName);
+
+		if (nullptr == Texture)
+		{
+			Path = GameEnginePath::GetFolderPath(GetPath());
+			std::string LoadPath = "";
+			std::string PlusOption = "";
+			std::string Directory = Unit.MaterialData[_SubIndex].SpcTextureName;
+
+			if (GameEngineOptionValue::Low == GameEngineOption::GetOption("Texture"))
+			{
+				PlusOption = "Low\\";
+			}
+			else if (GameEngineOptionValue::High == GameEngineOption::GetOption("Texture"))
+			{
+				PlusOption = "High\\";
+			}
+
+			std::string CheckPath_Plus = Path + PlusOption + Directory;
+			std::string CheckPath = Path + Directory;
+			GameEnginePath Path_Plus = CheckPath_Plus;
+			GameEnginePath Path = CheckPath;
+
+			if (false == Path_Plus.IsExists())
+			{
+				if (false == Path.IsExists())
+				{
+					// 문제없음
+				}
+				else
+				{
+					MsgTextBox("폴더가 분류되어 있지 않습니다. 기존 폴더 내에서 로드합니다.");
+					GameEngineTexture::Load(CheckPath);
+				}
+
+			}
+			else
+			{
+				GameEngineTexture::Load(CheckPath_Plus);
+			}
+		}
+	}
 
 	return Unit.Meshs[_SubIndex];
 }

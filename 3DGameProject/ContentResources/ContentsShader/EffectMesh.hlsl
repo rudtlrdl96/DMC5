@@ -94,7 +94,7 @@ Output MeshTexture_VS(Input _Input)
     return NewOutPut;
 }
 
-Texture2D DiffuseTex : register(t0); // ALBM
+Texture2D DiffuseTexture : register(t0); // ALBM
 //Texture2D NormalTexture : register(t1); // NRMR
 //Texture2D SpecularTexture : register(t2); // ATOS
 
@@ -136,7 +136,7 @@ AlphaOutPut MeshTexture_PS(Output _Input)
         clip(-1);
     }
         
-    Result.ResultColor = DiffuseTex.Sample(ENGINEBASE, UV);
+    Result.ResultColor = DiffuseTexture.Sample(ENGINEBASE, UV);
         
     Result.ResultColor += PlusColor;
     Result.ResultColor *= MulColor;

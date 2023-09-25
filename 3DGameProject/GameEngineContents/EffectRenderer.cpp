@@ -376,7 +376,7 @@ void EffectRenderer::DrawEditor()
 				RectInit("Effect_3D");
 				LockRotation();
 			}
-			SetTexture("DiffuseTex", FileName);
+			SetTexture("DiffuseTexture", FileName);
 		}
 	}
 

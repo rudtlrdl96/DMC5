@@ -81,12 +81,12 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     
     // r = Alpha, gba = sss (subsurface scattering)
     float4 AtosData = SpecularTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
-                   
+    
     if (0.0f >= AtosData.r)
     {
         clip(-1);
     }
-    
+        
     Result.ResultColor.rgb = AlbmData.rgb;
         
     float4 Normal = _Input.NORMAL;
@@ -106,7 +106,7 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     float metallic = saturate(AlbmData.a - distribution);
      
     // AlbmData -> metallicValue 값에 따라서 결정되어야 한다        
-    Result.ResultColor.rgb = lerp(AlbmData.rgb, float3(0, 0, 0), metallic);
+    //Result.ResultColor.rgb = lerp(AlbmData.rgb, float3(0, 0, 0), metallic);
     
     float4 DiffuseRatio = (float4) 0.0f;
     float4 SpacularRatio = (float4) 0.0f;
@@ -156,6 +156,6 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     
     Result.ResultColor.rgb = Result.ResultColor.rgb * (DiffuseRatio.rgb + SpacularRatio.rgb + AmbientRatio.rgb);
     Result.ResultColor.a = AtosData.r;
-        
+      
     return Result;
 }

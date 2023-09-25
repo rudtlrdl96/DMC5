@@ -83,7 +83,7 @@ void FXSystem::ChangeFX(std::shared_ptr<class FXData> _FX)
 	{
 		if (UnitDatas[i].MeshName != "")
 		{
-			FXRenders[UnitDatas[i].MeshName]->SetTexture("DiffuseTex", UnitDatas[i].TextureName);
+			FXRenders[UnitDatas[i].MeshName]->SetTexture("DiffuseTexture", UnitDatas[i].TextureName);
 			FXRenders[UnitDatas[i].MeshName]->Off();
 		}
 		else
@@ -93,7 +93,7 @@ void FXSystem::ChangeFX(std::shared_ptr<class FXData> _FX)
 			if (UnitDatas[i].AnimData.AnimationName == "")
 			{
 				// 애니메이션이 아닌 경우
-				FXRenders[Key]->SetTexture("DiffuseTex", UnitDatas[i].TextureName);
+				FXRenders[Key]->SetTexture("DiffuseTexture", UnitDatas[i].TextureName);
 			}
 			else
 			{
@@ -210,7 +210,7 @@ void FXSystem::FXSetting()
 				FXRenders[UnitDatas[i].MeshName]->GetTransform()->SetParent(GetTransform());
 				FXRenders[UnitDatas[i].MeshName]->SetFBXMesh(UnitDatas[i].MeshName, "Effect_2D");
 			}
-			FXRenders[UnitDatas[i].MeshName]->SetTexture("DiffuseTex", UnitDatas[i].TextureName);
+			FXRenders[UnitDatas[i].MeshName]->SetTexture("DiffuseTexture", UnitDatas[i].TextureName);
 			FXRenders[UnitDatas[i].MeshName]->Off();
 		}
 		else
@@ -227,7 +227,7 @@ void FXSystem::FXSetting()
 			if (UnitDatas[i].AnimData.AnimationName == "")
 			{
 				// 애니메이션이 아닌 경우
-				FXRenders[Key]->SetTexture("DiffuseTex", UnitDatas[i].TextureName);
+				FXRenders[Key]->SetTexture("DiffuseTexture", UnitDatas[i].TextureName);
 			}
 			else
 			{

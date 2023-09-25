@@ -408,7 +408,7 @@ void EffectToolWindow::Save(std::shared_ptr<GameEngineLevel> Level)
 					FXRenders[i] = Actor->CreateComponent<EffectRenderer>();
 					FXRenders[i]->SetName(std::to_string(i));
 					FXRenders[i]->SetFBXMesh(CurUnitDatas[i].MeshName, "Effect_2D");
-					FXRenders[i]->SetTexture("DiffuseTex", CurUnitDatas[i].TextureName);
+					FXRenders[i]->SetTexture("DiffuseTexture", CurUnitDatas[i].TextureName);
 					//FXRenders[i]->Off();
 				}
 				else
@@ -420,7 +420,7 @@ void EffectToolWindow::Save(std::shared_ptr<GameEngineLevel> Level)
 					if (CurUnitDatas[i].AnimData.AnimationName == "")
 					{
 						// 애니메이션이 아닌 경우
-						FXRenders[i]->SetTexture("DiffuseTex", CurUnitDatas[i].TextureName);
+						FXRenders[i]->SetTexture("DiffuseTexture", CurUnitDatas[i].TextureName);
 					}
 					else
 					{
