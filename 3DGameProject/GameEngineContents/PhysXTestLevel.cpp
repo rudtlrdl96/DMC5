@@ -25,11 +25,6 @@ void PhysXTestLevel::Start()
 
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 50.0f, -100.0f });
-
-	if (false == GameEngineInput::IsKey("TestObj"))
-	{
-		GameEngineInput::CreateKey("TestObj", 'M');
-	}
 }
 
 void PhysXTestLevel::Update(float _DeltaTime)
@@ -37,11 +32,6 @@ void PhysXTestLevel::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsDown("ReturnToMainLevel"))
 	{
 		GameEngineCore::ChangeLevel("MainLevel");
-	}
-
-	if (true == GameEngineInput::IsDown("TestObj"))
-	{
-		Death();
 	}
 }
 

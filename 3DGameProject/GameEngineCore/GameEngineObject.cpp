@@ -132,13 +132,12 @@ void GameEngineObject::AllDestroy()
 {
 	if (true == IsDeath())
 	{
-		std::shared_ptr<PhysicsActor> pPhysXActor = this->DynamicThis<PhysicsActor>();
+		std::shared_ptr<PhysicsActor> m_pPhysicsActor = this->DynamicThis<PhysicsActor>();
 
-		if (nullptr != pPhysXActor)
+		if (nullptr != m_pPhysicsActor)
 		{
-			pPhysXActor->GetShape()->userData = nullptr;
-			pPhysXActor->Release();
-			pPhysXActor = nullptr;
+			m_pPhysicsActor->Release();
+			m_pPhysicsActor = nullptr;
 		}
 
 		Destroy();

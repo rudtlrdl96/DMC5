@@ -52,9 +52,7 @@ private:
 	// Phys액터 생성에 필요한 정보
 	physx::PxPhysics* m_pPhysics = nullptr;
 	physx::PxScene* m_pScene = nullptr;
-
 	physx::PxMaterial* m_pMaterial = nullptr;
-	physx::PxShape* m_pShape = nullptr;
 
 	bool PositionSetFromParentFlag = false;
 

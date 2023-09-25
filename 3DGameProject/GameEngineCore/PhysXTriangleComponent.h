@@ -57,7 +57,6 @@ private:
 	physx::PxCooking* m_pCooking = nullptr;
 	physx::PxMaterial* m_pMaterial = nullptr;
 	physx::PxShape* m_pTriggershape = nullptr;
-
 	physx::PxConvexMesh* m_pConvexMesh = nullptr;
 
 	std::vector<std::vector<physx::PxVec3>> VertexVec;

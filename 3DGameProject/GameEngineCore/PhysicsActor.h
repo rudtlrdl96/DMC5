@@ -19,6 +19,8 @@ public:
 
 	void ReleaseRigid()
 	{
+		UserDataRelease();
+
 		if (m_pStatic != nullptr && m_pStatic->isReleasable())
 		{
 			m_pStatic->release();

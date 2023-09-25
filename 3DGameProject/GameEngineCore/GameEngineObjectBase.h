@@ -17,7 +17,6 @@ public:
 	GameEngineObjectBase& operator=(const GameEngineObjectBase& _Other) = delete;
 	GameEngineObjectBase& operator=(GameEngineObjectBase&& _Other) noexcept = delete;
 
-
 	int GetOrder()
 	{
 		return Order;

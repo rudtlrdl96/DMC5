@@ -31,6 +31,11 @@ void Box200::Start()
 	default:
 		break;
 	}
+
+	if (false == GameEngineInput::IsKey("TestObj"))
+	{
+		GameEngineInput::CreateKey("TestObj", 'M');
+	}
 	
 	Renderer->GetTransform()->SetLocalScale({ 0.5f, 0.5f, 0.5f });
 	//Renderer->LightOff();
@@ -44,10 +49,16 @@ void Box200::Start()
 	//Component->SetPositionSetFromParentFlag(true);
 	Component->SetObstacleObject();
 	Component->CreatePhysXActors(GeoMetryScale * 0.5f);
+
+	Component->GetShape()->userData = nullptr;
 }
 
 void Box200::Update(float _DeltaTime)
 {
-
+	if (true == GameEngineInput::IsDown("TestObj"))
+	{
+		Death();
+		
+	}
 }
 
