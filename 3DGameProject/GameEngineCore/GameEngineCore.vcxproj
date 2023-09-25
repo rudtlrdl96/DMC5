@@ -403,10 +403,6 @@
     <ClInclude Include="PhysicsActor.h" />
     <ClInclude Include="PhysicsLevel.h" />
     <ClInclude Include="PhysXBoxComponent.h" />
-    <ClInclude Include="PhysXConvexComponent.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="PhysXDefault.h" />
     <ClInclude Include="PhysXCapsuleComponent.h">
       <SubType>
@@ -878,10 +874,6 @@
     <ClCompile Include="PhysicsActor.cpp" />
     <ClCompile Include="PhysicsLevel.cpp" />
     <ClCompile Include="PhysXBoxComponent.cpp" />
-    <ClCompile Include="PhysXConvexComponent.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="PhysXDefault.cpp" />
     <ClCompile Include="PhysXCapsuleComponent.cpp">
       <SubType>

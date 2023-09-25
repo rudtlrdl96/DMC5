@@ -2,6 +2,7 @@
 #include "PhysXBoxComponent.h"
 
 #include <GameEngineCore/GameEngineActor.h>
+#include "GameEngineActor.h"
 #include "GameEngineLevel.h"
 
 PhysXBoxComponent::PhysXBoxComponent()
@@ -127,6 +128,8 @@ void PhysXBoxComponent::CreatePhysXActors(physx::PxVec3 _GeoMetryScale, float4 _
 
 	PhysicsComponent = DynamicThis<PhysXBoxComponent>();
 	m_pShape->userData = GetActor();
+
+	GetActor()->SetPhysicsActor();
 
 	// Scene에 액터 추가
 	if (true == IsAggregateObject)

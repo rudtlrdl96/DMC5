@@ -25,16 +25,6 @@ public:
 		return m_pDynamic;
 	}
 
-	void SetclearForce()
-	{
-		m_pDynamic->clearForce();
-	}
-
-	void SetWorldPosition(float4 _Value);
-	void AddWorldPosition(float4 _Value);
-	void SetWorldRotation(float4 _Value);
-	void AddWorldRotation(float4 _Value);
-
 	inline float4 GetWorldPosition()
 	{
 		return float4(m_pDynamic->getGlobalPose().p.x, m_pDynamic->getGlobalPose().p.y, m_pDynamic->getGlobalPose().p.z);
@@ -43,6 +33,16 @@ public:
 	inline float4 GetWorldRotation()
 	{
 		return float4(m_pDynamic->getGlobalPose().q.x, m_pDynamic->getGlobalPose().q.y, m_pDynamic->getGlobalPose().q.z);
+	}
+
+	void SetWorldPosition(float4 _Value);
+	void AddWorldPosition(float4 _Value);
+	void SetWorldRotation(float4 _Value);
+	void AddWorldRotation(float4 _Value);
+
+	void SetclearForce()
+	{
+		m_pDynamic->clearForce();
 	}
 
 	void SetJump(float _JumpPower);

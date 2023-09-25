@@ -135,6 +135,8 @@ void PhysXCapsuleComponent::CreatePhysXActors(physx::PxVec3 _GeoMetryScale, floa
 	PhysicsComponent = DynamicThis<PhysXCapsuleComponent>();
 	m_pShape->userData = GetActor();
 
+	GetActor()->SetPhysicsActor();
+
 	// Scene에 액터 추가
 	m_pScene->addActor(*m_pDynamic);
 }

@@ -87,7 +87,6 @@ void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, boo
 		//shape_->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
 
 		//충돌할때 필요한 필터 데이터
-			//충돌할때 필요한 필터 데이터
 		if (true == IsObstacle)
 		{
 			m_pShape->setSimulationFilterData
@@ -147,21 +146,6 @@ void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, boo
 		}
 	}
 
-	//// 충돌체의 종류
-	//dynamic_ = _physics->createRigidDynamic(localTm);
-	//dynamic_->attachShape(*shape_);
-	//// 중력이 적용되지 않도록
-	//// TODO::RigidStatic으로 변경해야
-	//dynamic_->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, true);
-
-	//// RigidDynamic의 밀도를 설정
-	//physx::PxRigidBodyExt::updateMassAndInertia(*dynamic_, 10.0f);
-
-	//// Scene에 액터 추가
-	//_Scene->addActor(*dynamic_);
-
-	//rigidStatic_->attachShape(*shape_);
-
 	if (m_pScene == nullptr)
 	{
 		std::string LevelName = GetLevel()->GetName().data();
@@ -170,6 +154,8 @@ void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, boo
 
 	PhysicsComponent = DynamicThis<PhysXTriangleComponent>();
 	m_pShape->userData = GetActor();
+
+	GetActor()->SetPhysicsActor();
 
 	// Scene에 액터 추가
 	if (true == IsAggregateObject)
@@ -210,7 +196,6 @@ void PhysXTriangleComponent::Update(float _DeltaTime)
 
 		// 부모의 Transform정보를 바탕으로 PhysX Actor의 트랜스폼을 갱신
 		m_pStatic->setGlobalPose(tmpPxTransform);
-		// TODO::회전도 처리해야함. DegreeToQuat
 	}
 }
 
@@ -267,4 +252,55 @@ void PhysXTriangleComponent::CustomFBXLoad(const std::string& _MeshName, float _
 		VertexVec.push_back(InstVertVec);
 		IndexVec.push_back(InstIndexVec);
 	}
+}
+
+void PhysXTriangleComponent::SetWorldPosition(float4 _Value)
+{
+	physx::PxTransform CurTansform = m_pStatic->getGlobalPose();
+
+	float ValueX = _Value.x;
+	float ValueY = _Value.y;
+	float ValueZ = _Value.z;
+
+	CurTansform.p = { _Value.x, _Value.y, _Value.z };
+
+	m_pStatic->setGlobalPose(CurTansform);
+}
+
+void PhysXTriangleComponent::AddWorldPosition(float4 _Value)
+{
+	physx::PxTransform CurTansform = m_pStatic->getGlobalPose();
+
+	float ValueX = _Value.x;
+	float ValueY = _Value.y;
+	float ValueZ = _Value.z;
+
+	CurTansform.p += { _Value.x, _Value.y, _Value.z };
+
+	m_pStatic->setGlobalPose(CurTansform);
+}
+
+void PhysXTriangleComponent::SetWorldRotation(float4 _Value)
+{
+	float4 tmpQuat = _Value.DegreeRotationToQuaternionReturn();
+
+	const physx::PxQuat tmpPxQuat(tmpQuat.x, tmpQuat.y, tmpQuat.z, tmpQuat.w);
+	const physx::PxTransform tmpTansform(m_pStatic->getGlobalPose().p, tmpPxQuat);
+
+	m_pStatic->setGlobalPose(tmpTansform);
+}
+
+void PhysXTriangleComponent::AddWorldRotation(float4 _Value)
+{
+	float4 AddRptation = _Value;
+	physx::PxQuat CurQuat = m_pStatic->getGlobalPose().q;
+	float4 CurQuatToFloat4 = { CurQuat.x , CurQuat.y, CurQuat.z, CurQuat.w };
+	float4 CurRotation = CurQuatToFloat4.QuaternionToEulerDeg();
+	float4 ResultRotation = { CurRotation.x + AddRptation.x, CurRotation.y + AddRptation.y, CurRotation.z + AddRptation.z, CurRotation.w + AddRptation.w };
+
+	float4 ResultsQuat = ResultRotation.DegreeRotationToQuaternionReturn();
+	const physx::PxQuat tmpPxQuat(ResultsQuat.x, ResultsQuat.y, ResultsQuat.z, ResultsQuat.w);
+	const physx::PxTransform tmpTansform(m_pStatic->getGlobalPose().p, tmpPxQuat);
+
+	m_pStatic->setGlobalPose(tmpTansform);
 }

@@ -110,6 +110,8 @@ void PhysXSphereComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPh
 	PhysicsComponent = DynamicThis<PhysXSphereComponent>();
 	m_pShape->userData = GetActor();
 
+	GetActor()->SetPhysicsActor();
+
 	// Scene에 액터 추가
 	m_pScene->addActor(*m_pDynamic);
 }

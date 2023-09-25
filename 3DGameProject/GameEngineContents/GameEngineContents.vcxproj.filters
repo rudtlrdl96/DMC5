@@ -433,6 +433,9 @@
     <ClInclude Include="EffectToolWindow.h">
       <Filter>GUI</Filter>
     </ClInclude>
+    <ClInclude Include="PhysXTestLevel.h">
+      <Filter>Levels\Test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -854,6 +857,9 @@
     </ClCompile>
     <ClCompile Include="EffectToolWindow.cpp">
       <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysXTestLevel.cpp">
+      <Filter>Levels\Test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

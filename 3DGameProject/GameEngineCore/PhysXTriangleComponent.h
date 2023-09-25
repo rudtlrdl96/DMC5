@@ -19,6 +19,26 @@ public:
 	
 	void CreatePhysXActors(const std::string& _MeshName, bool _InverseIndex = true, float _Ratio = 1.f, float4 _GeoMetryRot = { 0.0f, 0.0f });
 
+	physx::PxRigidStatic* GetStatic()
+	{
+		return m_pStatic;
+	}
+
+	inline float4 GetWorldPosition()
+	{
+		return float4(m_pStatic->getGlobalPose().p.x, m_pStatic->getGlobalPose().p.y, m_pStatic->getGlobalPose().p.z);
+	}
+
+	inline float4 GetWorldRotation()
+	{
+		return float4(m_pStatic->getGlobalPose().q.x, m_pStatic->getGlobalPose().q.y, m_pStatic->getGlobalPose().q.z);
+	}
+
+	void SetWorldPosition(float4 _Value);
+	void AddWorldPosition(float4 _Value);
+	void SetWorldRotation(float4 _Value);
+	void AddWorldRotation(float4 _Value);
+
 	inline void SetPositionSetFromParentFlag(bool _Flag)
 	{
 		PositionSetFromParentFlag = _Flag;

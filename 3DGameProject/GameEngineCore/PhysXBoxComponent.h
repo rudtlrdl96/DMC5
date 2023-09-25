@@ -19,13 +19,9 @@ public:
 
 	void CreatePhysXActors(physx::PxVec3 _GeoMetryScale = physx::PxVec3(2.0f), float4 _GeoMetryRot = float4::ZERO);
 
-	inline void ReleasePhysX()
+	physx::PxRigidStatic* GetStatic()
 	{
-		if (true == m_pDynamic->isReleasable())
-		{
-			m_pDynamic->release();
-			ParentActor.lock()->Death();
-		}
+		return m_pStatic;
 	}
 
 	inline void SetPositionSetFromParentFlag(bool _Flag)

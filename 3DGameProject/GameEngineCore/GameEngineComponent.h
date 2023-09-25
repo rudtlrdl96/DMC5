@@ -23,10 +23,13 @@ public:
 	}
 
 protected:
+	void SetPhysicsActor() 
+	{
+		Actor->SetPhysicsActor();
+	}
 
 private:
 	class GameEngineActor* Actor;
-
 	void SetActor(class GameEngineActor* _Actor);
 
 };

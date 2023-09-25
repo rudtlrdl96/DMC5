@@ -37,6 +37,16 @@ public:
 
 	void SetOrder(int _Order) override;
 
+	bool IsPhysicsActor()
+	{
+		return PhysicsActor;
+	}
+
+	// 서버 확인용, 사용 X
+	bool SetPhysicsActor()
+	{
+		PhysicsActor = true;
+	}
 
 protected:
 	virtual void Start() {}
@@ -45,4 +55,5 @@ protected:
 
 private:
 	void ComponentInit(std::shared_ptr<class GameEngineComponent> _Component, int _Order = 0);
+	bool PhysicsActor = false;
 };

@@ -778,9 +778,6 @@
     <ClInclude Include="PhysXTriangleComponent.h">
       <Filter>Physics\Component</Filter>
     </ClInclude>
-    <ClInclude Include="PhysXConvexComponent.h">
-      <Filter>Physics\Component</Filter>
-    </ClInclude>
     <ClInclude Include="PhysXSphereComponent.h">
       <Filter>Physics\Component</Filter>
     </ClInclude>
@@ -1071,9 +1068,6 @@
       <Filter>Physics\Component</Filter>
     </ClCompile>
     <ClCompile Include="PhysXTriangleComponent.cpp">
-      <Filter>Physics\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysXConvexComponent.cpp">
       <Filter>Physics\Component</Filter>
     </ClCompile>
     <ClCompile Include="PhysXSphereComponent.cpp">
