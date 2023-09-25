@@ -46,7 +46,7 @@ public:
 	void SetPhysicsActor()
 	{
 		PhysicsActor = true;
-		return false;
+		//return false;
 	}
 
 protected:

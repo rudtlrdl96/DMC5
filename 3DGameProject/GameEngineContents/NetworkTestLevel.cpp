@@ -37,23 +37,23 @@ void NetworkTestLevel::Start()
 	GameEngineInput::CreateKey("Test_EnemyOnOffSwitch", 'C');
 }
 
+#include "Player_MirageBlade.h"
+
 void NetworkTestLevel::LevelChangeStart()
 {
 	BaseLevel::LevelChangeStart();
 
-	//예시코드
-	//std::shared_ptr<NetTestPlayer> Player = nullptr;
-	//Player = CreateActor<NetTestPlayer>();
-
-	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>(ActorOrder::Player);
+	std::shared_ptr<PlayerActor_Vergil> Nero = CreateActor<PlayerActor_Vergil>(ActorOrder::Player);
 	Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
 
-	//요걸 호출시켜주시면 됩니다.
 	NetworkManager::LinkNetwork(Nero.get());
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
 
 	Enemy = NetworkManager::CreateNetworkActor<Enemy_HellCaina>(this);
+
+	//NetworkManager::LinkNetwork(CreateActor<Player_MirageBlade>().get());
 }
+
 
 void NetworkTestLevel::Update(float _DeltaTime)
 {

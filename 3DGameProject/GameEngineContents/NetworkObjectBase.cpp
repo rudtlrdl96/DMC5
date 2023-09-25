@@ -112,9 +112,20 @@ void NetworkObjectBase::Update_NetworkTrans(float _DeltaTime)
 
 	if (nullptr == PhysXCapsule)
 	{
-		//MsgAssert("NetworkObjectBase에 Physics캡슐을 등록해주지 않아서 위치/회전값을 변경할 수 없습니다.");
+		if (nullptr == ActorTrans)
+		{
+			GameEngineActor* ActorPtr = dynamic_cast<GameEngineActor*>(this);
+			if (nullptr == ActorPtr)
+			{
+				MsgAssert("NetworkObjectBase를 GameEngineActor로 변환하는데 실패하였습니다");
+				return;
+			}
+
+			ActorTrans = ActorPtr->GetTransform();
+		}
 
 		ActorTrans->SetWorldPosition(NowPos);
+		//MsgAssert("NetworkObjectBase에 Physics캡슐을 등록해주지 않아서 위치/회전값을 변경할 수 없습니다.");
 		return;
 	}
 

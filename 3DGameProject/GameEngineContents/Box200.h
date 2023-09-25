@@ -1,7 +1,7 @@
 #pragma once
 
 // Ό³Έν :
-class Box200 : public GameEngineActor, public GameEngineNetObject
+class Box200 : public GameEngineActor//, public GameEngineNetObject
 {
 public:
 	// constrcuter destructer
