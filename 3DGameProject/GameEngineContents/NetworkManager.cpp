@@ -36,8 +36,7 @@ Net_LevelType NetworkManager::CurLevelType = Net_LevelType::UNKNOWN;
 std::map<unsigned int, std::shared_ptr<ObjectUpdatePacket>> NetworkManager::AllUpdatePacket;
 
 std::map<PacketEnum, std::vector<std::shared_ptr<GameEnginePacket>>> NetworkManager::AllPacket;
-std::map<PacketEnum, GameEngineSerializer> NetworkManager::ChunkPackets;
-GameEngineSerializer NetworkManager::ChunkBytes;
+GameEngineSerializer NetworkManager::ChunkPacketBytes;
 
 
 
@@ -362,17 +361,13 @@ void NetworkManager::FlushPackets()
 	//업데이트 패킷 직렬화
 	if (false == AllUpdatePacket.empty())
 	{
-		std::vector <std::shared_ptr<GameEnginePacket>>& UpdataPackets = AllPacket[PacketEnum::ObjectUpdatePacket];
-		UpdataPackets.reserve(AllUpdatePacket.size());
-
 		for (const std::pair<unsigned int, std::shared_ptr<ObjectUpdatePacket>>& Pair : AllUpdatePacket)
 		{
-			UpdataPackets.push_back(Pair.second);
+			std::shared_ptr<ObjectUpdatePacket> UpdatePacket = Pair.second;
+			UpdatePacket->SerializePacket(ChunkPacketBytes);
 		}
 
-		SerializePackets(UpdataPackets, ChunkPackets[PacketEnum::ObjectUpdatePacket]);
 		AllUpdatePacket.clear();
-		UpdataPackets.clear();
 	}
 
 
@@ -386,63 +381,26 @@ void NetworkManager::FlushPackets()
 
 		if (false == Packets.empty())
 		{
-			SerializePackets(Packets, ChunkPackets[Type]);
+			for (std::shared_ptr<GameEnginePacket> Packet : Packets)
+			{
+				Packet->SerializePacket(ChunkPacketBytes);
+			}
 			Packets.clear();
 		}
 
 		++PacketGroupStartIter;
 	}
 
-
 	
-	//각 패킷의 직렬화 결과인 ChunkPackets들을 하나의 바이트인 ChunkBytes에 옮긴다
-	auto PacketByteStartIter = ChunkPackets.begin();
-	auto PacketByteEndIter = ChunkPackets.end();
-	while (PacketByteStartIter != PacketByteEndIter)
-	{
-		GameEngineSerializer& Ser = PacketByteStartIter->second;
-		if (0 < Ser.GetWriteOffSet())
-		{
-			ChunkBytes << Ser;
-			Ser.Reset();
-		}
-
-		++PacketByteStartIter;
-	}
-
-
-	if (0 == ChunkBytes.GetWriteOffSet())
+	if (0 == ChunkPacketBytes.GetWriteOffSet())
 		return;
 
-	NetInst->Send(ChunkBytes.GetConstCharPtr(), ChunkBytes.GetWriteOffSet());
-	ChunkBytes.Reset();
+	NetInst->Send(ChunkPacketBytes.GetConstCharPtr(), ChunkPacketBytes.GetWriteOffSet());
+	ChunkPacketBytes.Reset();
 }
 
 
 
-void NetworkManager::SerializePackets(const std::vector<std::shared_ptr<GameEnginePacket>>& _Packets, GameEngineSerializer& _Ser)
-{
-	_Ser.Reset();
-	int PacketSize = 0;
-
-	for (size_t i = 0; i < _Packets.size(); ++i)
-	{
-		_Packets[i]->SerializePacket(_Ser);
-
-		//처음으로 패킷 사이즈를 찾을때
-		if (0 == PacketSize)
-		{
-			unsigned char* Ptr = _Ser.GetDataPtr();
-			memcpy_s(&PacketSize, sizeof(int), &Ptr[4], sizeof(int));
-			continue;
-		}
-
-		//패킷을 직렬화 할 때 마다 Size위치의 값을 수정
-		unsigned char* SizePtr = _Ser.GetDataPtr();
-		size_t SizePos = (static_cast<size_t>(PacketSize) * i) + 4;
-		memcpy_s(&SizePtr[SizePos], sizeof(int), &PacketSize, sizeof(int));
-	}
-}
 
 
 

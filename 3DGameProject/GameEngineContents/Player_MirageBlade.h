@@ -30,8 +30,5 @@ private:
 	GameEngineTransform* TargetTransform = nullptr;
 	float ShootSpeed = 3000.0f;
 	bool IsShoot = false;
-
-	bool TestBool = false;
-	int TestInt = 0;
 };
 

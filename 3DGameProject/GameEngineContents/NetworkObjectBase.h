@@ -135,6 +135,7 @@ private:
 			DataType& Dest = (*_ArrDest[i]);
 			const DataType& Source = _ArrSource[i];
 
+			//float일땐 실수 비교가 어려워서 항상 통과될듯
 			if (Dest == Source)
 				continue;
 

@@ -108,9 +108,6 @@ void Player_MirageBlade::Start()
 	Collision->SetAttackData(DamageType::Light, 10);
 	//Collision->Off();
 	SetNetObjectType(Net_ActorType::MirageBlade);
-
-	//LinkData_UpdatePacket<bool>(TestBool);
-	//LinkData_UpdatePacket<int>(TestInt);
 }
 
 void Player_MirageBlade::Update(float _DeltaTime)

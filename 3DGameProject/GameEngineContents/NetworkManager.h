@@ -117,10 +117,8 @@ private:
 
 	//업데이트 패킷을 보낼때 중복을 피하기 위한 맵 <오브젝트 아이디, 오브젝트 업데이트 패킷 포인터>
 	static std::map<unsigned int, std::shared_ptr<class ObjectUpdatePacket>> AllUpdatePacket;
-
 	static std::map<PacketEnum, std::vector<std::shared_ptr<class GameEnginePacket>>> AllPacket;
-	static std::map<PacketEnum, GameEngineSerializer> ChunkPackets;
-	static GameEngineSerializer ChunkBytes;
+	static GameEngineSerializer ChunkPacketBytes;
 
 
 	static BaseLevel* CurLevel;
@@ -137,9 +135,6 @@ private:
 
 	static std::shared_ptr<NetworkObjectBase> CreateNetActor(Net_ActorType _ActorType, class GameEngineLevel* _Level = nullptr, int _ObjectID = -1);
 
-
-	//vector 형태의 패킷들을 _Ser인자에 직렬화 시킴
-	static void SerializePackets(const std::vector<std::shared_ptr<class GameEnginePacket>>& _Packets, GameEngineSerializer& _Ser);
 
 	template <typename DataType>
 	static void ArrDataCopy(std::vector<DataType>& _Left, const std::vector<DataType*>& _Right)

@@ -28,10 +28,13 @@ public:
 
 	void SerializePacket(GameEngineSerializer& _Ser)
 	{
+		//패킷을 버퍼에 직렬화하기 전 위치
+		unsigned int WriteStartPos = _Ser.GetWriteOffSet();
+
 		//이 패킷의 멤버변수 직렬화
 		Serialize(_Ser);
 		//패킷 사이즈 설정
-		SerializeEnd(_Ser);
+		SerializeEnd(_Ser, WriteStartPos);
 	}
 
 	void DeSerializePacket(GameEngineSerializer& _Ser)
@@ -81,7 +84,7 @@ private:
 	unsigned int ObjectID = -1; 
 
 	//패킷의 크기는 모든 맴버변수를 GameEngineSerializer에 집어 넣고 결정된다. 직렬화가 끝난 이후 이 패킷의 총 크기를 알기위한 함수
-	void SerializeEnd(GameEngineSerializer& _Ser)
+	void SerializeEnd(GameEngineSerializer& _Ser, unsigned int _PacketStartPos)
 	{
 		Size = _Ser.GetWriteOffSet();
 		if (Size <= 0)
@@ -91,7 +94,7 @@ private:
 
 		// 이녀석의 4바이트 번째의 데이터를 size로 교체한다.
 		unsigned char* Ptr = _Ser.GetDataPtr();
-		memcpy_s(&Ptr[4], sizeof(int), &Size, sizeof(int));
+		memcpy_s(&Ptr[_PacketStartPos + 4], sizeof(int), &Size, sizeof(int));
 	}
 };
 
