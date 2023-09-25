@@ -6,7 +6,7 @@ class FXUnitData : public GameEngineSerializObject
 public:
 	std::string MeshName = "";
 	std::string TextureName = "";
-	AnimationParameter AnimData;
+	std::string AnimationName = "";
 	int CutX = -1;
 	int CutY = -1;
 
@@ -14,7 +14,7 @@ public:
 	{
 		_File << MeshName;
 		_File << TextureName;
-		AnimData.Write(_File);
+		_File << AnimationName;
 		_File << CutX;
 		_File << CutY;
 	}
@@ -23,7 +23,7 @@ public:
 	{
 		_File >> MeshName;
 		_File >> TextureName;
-		AnimData.Read(_File);
+		_File >> AnimationName;
 		_File >> CutX;
 		_File >> CutY;
 	}
@@ -123,8 +123,13 @@ public:
 
 	void Write(GameEngineSerializer& _File) override
 	{
-		_File << UnitDatas;
-		unsigned int Size = static_cast<unsigned int>(FrameData.size());
+		unsigned int Size = static_cast<unsigned int>(UnitDatas.size());
+		_File << Size;
+		for (size_t i = 0; i < UnitDatas.size(); i++)
+		{
+			UnitDatas[i].Write(_File);
+		}
+		Size = static_cast<unsigned int>(FrameData.size());
 		_File << Size;
 
 		if (Size <= 0)
@@ -152,9 +157,14 @@ public:
 
 	void Read(GameEngineSerializer& _File) override
 	{
-		_File >> UnitDatas;
+		unsigned int Size = static_cast<unsigned int>(UnitDatas.size());
+		_File >> Size;
+		UnitDatas.resize(Size);
+		for (size_t i = 0; i < UnitDatas.size(); i++)
+		{
+			 UnitDatas[i].Read(_File);
+		}
 
-		unsigned int Size = 0;
 		_File >> Size;
 
 		if (Size <= 0)

@@ -1,7 +1,6 @@
 #include "PrecompileHeader.h"
 #include "FXSystem.h"
 #include "EffectRenderer.h"
-
 FXSystem::FXSystem()
 {
 	Off();
@@ -56,6 +55,11 @@ void FXSystem::CreateFX(std::shared_ptr<class FXData> _FX)
 				FXRenders[Key]->RectInit("Effect_2D");
 				FXRenders[Key]->LockRotation();
 			}
+
+			if (UnitDatas[i].AnimationName != "")
+			{
+				FXRenders[Key]->CreateAnimation({ .AnimationName = UnitDatas[i].AnimationName, .SpriteName = UnitDatas[i].AnimationName, .FrameInter = 0.0166f, .Loop = false });
+			}
 		}
 	}
 }
@@ -90,14 +94,14 @@ void FXSystem::ChangeFX(std::shared_ptr<class FXData> _FX)
 		{
 			std::string Key = "Sprite" + std::to_string(SpriteIndex++);
 
-			if (UnitDatas[i].AnimData.AnimationName == "")
+			if (UnitDatas[i].AnimationName == "")
 			{
 				// 애니메이션이 아닌 경우
 				FXRenders[Key]->SetTexture("DiffuseTexture", UnitDatas[i].TextureName);
 			}
 			else
 			{
-				FXRenders[Key]->ChangeAnimation(UnitDatas[i].AnimData.AnimationName);
+				FXRenders[Key]->ChangeAnimation(UnitDatas[i].AnimationName);
 			}
 			FXRenders[Key]->Off();
 		}
@@ -224,19 +228,19 @@ void FXSystem::FXSetting()
 				FXRenders[Key]->RectInit("Effect_2D");
 				FXRenders[Key]->LockRotation();
 			}
-			if (UnitDatas[i].AnimData.AnimationName == "")
+			if (UnitDatas[i].AnimationName == "")
 			{
 				// 애니메이션이 아닌 경우
 				FXRenders[Key]->SetTexture("DiffuseTexture", UnitDatas[i].TextureName);
 			}
 			else
 			{
-				if (nullptr == FXRenders[Key]->FindAnimation(UnitDatas[i].AnimData.AnimationName))
+				if (nullptr == FXRenders[Key]->FindAnimation(UnitDatas[i].AnimationName))
 				{
 					// 애니메이션이 없는 경우
-					FXRenders[Key]->CreateAnimation(UnitDatas[i].AnimData);
+					FXRenders[Key]->CreateAnimation({ .AnimationName = UnitDatas[i].AnimationName, .SpriteName = UnitDatas[i].AnimationName, .FrameInter = 0.0166f, .Loop = false });
 				}
-				FXRenders[Key]->ChangeAnimation(UnitDatas[i].AnimData.AnimationName);
+				FXRenders[Key]->ChangeAnimation(UnitDatas[i].AnimationName);
 			}
 			FXRenders[Key]->Off();
 		}

@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 #include "EffectToolLevel.h"
+#include <GameEngineCore/EngineGrid.h>
 #include "EffectToolWindow.h"
 #include "FreeCameraActor.h"
 EffectToolLevel::EffectToolLevel() 
@@ -32,6 +33,7 @@ void EffectToolLevel::LevelChangeStart()
 	{
 		ToolWindow = std::dynamic_pointer_cast<EffectToolWindow>(GameEngineGUI::GUIWindowCreate<EffectToolWindow>("AnimationToolWindow"));
 		CreateActor<FreeCameraActor>();
+		CreateActor<EngineGrid>();
 	}
 
 	GameEngineDirectory NewDir;
@@ -53,6 +55,12 @@ void EffectToolLevel::LevelChangeStart()
 		{
 			GameEngineTexture::Load(File.GetFullPath());
 		}
+	}
+
+	NewDir.Move("Texture");
+	if (nullptr == GameEngineSprite::Find("Effect_Impact.tga"))
+	{
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Impact.tga").GetFullPath(), 8, 8);
 	}
 }
 

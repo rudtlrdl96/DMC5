@@ -194,12 +194,7 @@ void EffectToolWindow::TimeLine()
 				std::shared_ptr<AnimationInfo> Anim = FXRenders[i]->GetCurAnimation();
 				if (nullptr != Anim)
 				{
-					CurUnitDatas[i].AnimData.AnimationName = Anim->Sprite->GetName();
-					CurUnitDatas[i].AnimData.SpriteName = Anim->Sprite->GetName();
-					CurUnitDatas[i].AnimData.Start = Anim->StartFrame;
-					CurUnitDatas[i].AnimData.End = Anim->EndFrame;
-					CurUnitDatas[i].AnimData.Loop = Anim->Loop;
-					CurUnitDatas[i].AnimData.FrameInter = Anim->FrameTime[0];
+					CurUnitDatas[i].AnimationName = Anim->Sprite->GetName();
 				}
 				else
 				{
@@ -375,7 +370,7 @@ void EffectToolWindow::Save(std::shared_ptr<GameEngineLevel> Level)
 			{
 				return;
 			}
-
+			CurFrameData.clear();
 			for (unsigned int i = 0; i < Size; ++i)
 			{
 				std::pair<int, std::map<int, FXKeyFrame>> Pair;
@@ -417,19 +412,19 @@ void EffectToolWindow::Save(std::shared_ptr<GameEngineLevel> Level)
 					FXRenders[i]->SetName(std::to_string(i));
 					FXRenders[i]->RectInit("Effect_2D");
 					FXRenders[i]->LockRotation();
-					if (CurUnitDatas[i].AnimData.AnimationName == "")
+					if (CurUnitDatas[i].AnimationName == "")
 					{
 						// 애니메이션이 아닌 경우
 						FXRenders[i]->SetTexture("DiffuseTexture", CurUnitDatas[i].TextureName);
 					}
 					else
 					{
-						if (nullptr == FXRenders[i]->FindAnimation(CurUnitDatas[i].AnimData.AnimationName))
+						if (nullptr == FXRenders[i]->FindAnimation(CurUnitDatas[i].AnimationName))
 						{
 							// 애니메이션이 없는 경우
-							FXRenders[i]->CreateAnimation(CurUnitDatas[i].AnimData);
+							FXRenders[i]->CreateAnimation({.AnimationName = CurUnitDatas[i].AnimationName, .SpriteName = CurUnitDatas[i].AnimationName , .FrameInter = 0.0166f});
 						}
-						FXRenders[i]->ChangeAnimation(CurUnitDatas[i].AnimData.AnimationName);
+						FXRenders[i]->ChangeAnimation(CurUnitDatas[i].AnimationName);
 					}
 					//FXRenders[i]->Off();
 				}

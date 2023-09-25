@@ -72,15 +72,21 @@ void PlayerActor_Nero::PlayerLoad()
 			}
 		}
 
+		// ¿Ã∆Â∆Æ Sprite ∑ŒµÂ
+		{
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Impact.tga").GetFullPath(), 8, 8);
+		}
 		NewDir.MoveParent();
 		NewDir.Move("Nero");
-		if (nullptr == FXData::Find("RQ_ComboA1.effect"))
+
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".effect" });
+		for (GameEngineFile File : Files)
 		{
-			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".effect" });
-			for (GameEngineFile File : Files)
+			if (nullptr == FXData::Find(File.GetFileName()))
 			{
-				EffectSystem->CreateFX(FXData::Load(File.GetFullPath()));
+				FXData::Load(File.GetFullPath());
 			}
+			EffectSystem->CreateFX(FXData::Find(File.GetFileName()));
 		}
 
 		//EffectSystem->ChangeFX("RQ_ComboA1.effect");

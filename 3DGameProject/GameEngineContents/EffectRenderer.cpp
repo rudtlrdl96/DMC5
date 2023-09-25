@@ -15,7 +15,7 @@ void EffectRenderer::SetSprite(const std::string_view& _SpriteName, size_t _Fram
 	Frame = _Frame;
 
 	const SpriteInfo& Info = Sprite->GetSpriteInfo(Frame);
-	GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
+	GetShaderResHelper().SetTexture("DiffuseTexture", Info.Texture);
 
 	VertexOption.FramePos.x = Info.CutData.PosX;
 	VertexOption.FramePos.y = Info.CutData.PosY;
@@ -30,7 +30,7 @@ void EffectRenderer::SetFrame(size_t _Frame)
 	Frame = _Frame;
 
 	const SpriteInfo& Info = Sprite->GetSpriteInfo(Frame);
-	GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
+	GetShaderResHelper().SetTexture("DiffuseTexture", Info.Texture);
 
 	VertexOption.FramePos.x = Info.CutData.PosX;
 	VertexOption.FramePos.y = Info.CutData.PosY;
@@ -87,7 +87,7 @@ void EffectRenderer::Update(float _DeltaTime)
 
 		const SpriteInfo& Info = CurAnimation->CurSpriteInfo();
 		
-		GetShaderResHelper().SetTexture("DiffuseTex", Info.Texture);
+		GetShaderResHelper().SetTexture("DiffuseTexture", Info.Texture);
 
 		VertexOption.FramePos.x = Info.CutData.PosX;
 		VertexOption.FramePos.y = Info.CutData.PosY;
@@ -408,7 +408,7 @@ void EffectRenderer::DrawEditor()
 			}
 			if (nullptr == FindAnimation(FileName))
 			{
-				CreateAnimation({ .AnimationName = FileName, .SpriteName = FileName, .FrameInter = 0.0166f, .Loop = false });
+				CreateAnimation({ .AnimationName = FileName, .SpriteName = FileName, .FrameInter = 0.0166f, .Loop = true });
 			}
 			ChangeAnimation(FileName);
 		}
