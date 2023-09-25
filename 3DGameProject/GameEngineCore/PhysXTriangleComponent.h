@@ -64,7 +64,7 @@ private:
 	std::vector<std::vector<physx::PxU32>> IndexVec;
 	std::shared_ptr<class GameEngineFBXMesh> Mesh = nullptr;
 
-	bool PositionSetFromParentFlag;
+	bool PositionSetFromParentFlag = false;
 
 };
 

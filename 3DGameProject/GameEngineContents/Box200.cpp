@@ -32,31 +32,9 @@ void Box200::Start()
 	//GameEngineInput::CreateKey("Select_01", 'Y');
 	//GameEngineInput::CreateKey("Select_02", 'U');
 }
+
 void Box200::Update(float _DeltaTime)
 {
-	NetControllType Type = NetControllType::ActiveControll;
-
-	switch (Type)
-	{
-	case NetControllType::ActiveControll:
-		UserUpdate(_DeltaTime);
-		break;
-	case NetControllType::PassiveControll:
-		ServerUpdate(_DeltaTime);
-		break;
-	default:
-		break;
-	}
-}
-
-void Box200::UserUpdate(float _DeltaTime)
-{
-	if (true == GameEngineInput::IsDown("Select_01"))
-	{
-		Death();
-	}
-}
-void Box200::ServerUpdate(float _DeltaTime)
-{
 
 }
+

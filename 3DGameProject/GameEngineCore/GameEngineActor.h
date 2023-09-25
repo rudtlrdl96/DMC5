@@ -43,7 +43,7 @@ public:
 	}
 
 	// 서버 확인용, 사용 X
-	bool SetPhysicsActor()
+	void SetPhysicsActor()
 	{
 		PhysicsActor = true;
 		return false;

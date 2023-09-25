@@ -24,6 +24,21 @@ public:
 		return m_pStatic;
 	}
 
+	inline float4 GetWorldPosition()
+	{
+		return float4(m_pStatic->getGlobalPose().p.x, m_pStatic->getGlobalPose().p.y, m_pStatic->getGlobalPose().p.z);
+	}
+
+	inline float4 GetWorldRotation()
+	{
+		return float4(m_pStatic->getGlobalPose().q.x, m_pStatic->getGlobalPose().q.y, m_pStatic->getGlobalPose().q.z);
+	}
+
+	void SetWorldPosition(float4 _Value);
+	void AddWorldPosition(float4 _Value);
+	void SetWorldRotation(float4 _Value);
+	void AddWorldRotation(float4 _Value);
+
 	inline void SetPositionSetFromParentFlag(bool _Flag)
 	{
 		PositionSetFromParentFlag = _Flag;
@@ -41,7 +56,7 @@ private:
 	physx::PxMaterial* m_pMaterial = nullptr;
 	physx::PxShape* m_pShape = nullptr;
 
-	bool PositionSetFromParentFlag = true;
+	bool PositionSetFromParentFlag = false;
 
 };
 

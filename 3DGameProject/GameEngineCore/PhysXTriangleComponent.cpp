@@ -12,8 +12,47 @@ PhysXTriangleComponent::~PhysXTriangleComponent()
 {
 }
 
-//_MeshName(불러올 매시의 이름), _Scene, _Physics, _Cooking (InitPhysics 에서 불러온 값), _InverseIndex(Index를 역순으로 할지에 대한 bool값), 
-// _GeoMetryScale(스케일값), _GeoMetryRot(로테이션값)
+void PhysXTriangleComponent::Start()
+{
+	// 부모의 정보의 저장
+	ParentActor = GetActor()->DynamicThis<GameEngineActor>();
+}
+
+void PhysXTriangleComponent::Update(float _DeltaTime)
+{
+	if (true == PositionSetFromParentFlag)
+	{
+		// 부모의 Transform정보를 바탕으로 PhysX Actor의 트랜스폼을 갱신
+		float4 tmpQuat = ParentActor.lock()->GetTransform()->GetWorldRotation().DegreeRotationToQuaternionReturn();
+
+		physx::PxTransform tmpPxTransform
+		(
+			ParentActor.lock()->GetTransform()->GetWorldPosition().x,
+			ParentActor.lock()->GetTransform()->GetWorldPosition().y,
+			ParentActor.lock()->GetTransform()->GetWorldPosition().z,
+			physx::PxQuat(tmpQuat.x, tmpQuat.y, tmpQuat.z, tmpQuat.w)
+		);
+
+		// 부모의 Transform정보를 바탕으로 PhysX Actor의 트랜스폼을 갱신
+		m_pStatic->setGlobalPose(tmpPxTransform);
+	}
+	else
+	{
+		// PhysX Actor의 상태에 맞춰서 부모의 Transform정보를 갱신
+		float4 tmpWorldPos =
+		{
+			m_pStatic->getGlobalPose().p.x,
+			m_pStatic->getGlobalPose().p.y,
+			m_pStatic->getGlobalPose().p.z
+		};
+
+		float4 EulerRot = PhysXDefault::GetQuaternionEulerAngles(m_pStatic->getGlobalPose().q) * GameEngineMath::RadToDeg;
+
+		ParentActor.lock()->GetTransform()->SetWorldRotation(float4{ EulerRot.x, EulerRot.y, EulerRot.z });
+		ParentActor.lock()->GetTransform()->SetWorldPosition(tmpWorldPos);
+	}
+}
+
 void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, bool _InverseIndex, float _Ratio /*= 1.f*/, float4 _GeoMetryRot /*= { 0.0f, 0.0f }*/)
 {
 	CustomFBXLoad(_MeshName, _Ratio, _InverseIndex);
@@ -165,37 +204,6 @@ void PhysXTriangleComponent::CreatePhysXActors(const std::string& _MeshName, boo
 	else
 	{
 		m_pScene->addActor(*m_pStatic);
-	}
-}
-
-void PhysXTriangleComponent::Start()
-{
-	// 부모의 정보의 저장
-	ParentActor = GetActor()->DynamicThis<GameEngineActor>();
-}
-
-void PhysXTriangleComponent::Update(float _DeltaTime)
-{
-	if (true == PositionSetFromParentFlag)
-	{
-		float4 tmpQuat = ParentActor.lock()->GetTransform()->GetWorldRotation().DegreeRotationToQuaternionReturn();
-
-		physx::PxTransform tmpPxTransform
-		(
-			ParentActor.lock()->GetTransform()->GetWorldPosition().x,
-			ParentActor.lock()->GetTransform()->GetWorldPosition().y,
-			ParentActor.lock()->GetTransform()->GetWorldPosition().z,
-			physx::PxQuat
-			(
-				tmpQuat.x,
-				tmpQuat.y,
-				tmpQuat.z,
-				tmpQuat.w
-			)
-		);
-
-		// 부모의 Transform정보를 바탕으로 PhysX Actor의 트랜스폼을 갱신
-		m_pStatic->setGlobalPose(tmpPxTransform);
 	}
 }
 
