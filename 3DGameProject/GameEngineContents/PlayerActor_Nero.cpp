@@ -254,6 +254,8 @@ void PlayerActor_Nero::PlayerLoad()
 				Renderer->ChangeAnimation("pl0000_Idle_Normal");
 			},
 			.Update = [=](float _DeltaTime) {
+				PhysXCapsule->SetLinearVelocityZero();
+
 				if (false == FloorCheck())
 				{
 					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
