@@ -42,36 +42,21 @@ void NetworkObjectBase::SetNetwortTransData(const float4& _DestPos, const float4
 		return;
 	}
 
+	//Physics를 사용하지 않는 물체일 때
 	if (nullptr == PhysXCapsule)
 	{
-		//MsgAssert("NetworkObjectBase에 Physics캡슐을 등록해주지 않아서 위치/회전값을 변경할 수 없습니다.");
-
-		if(nullptr == ActorTrans)
-		{
-			GameEngineActor* ActorPtr = dynamic_cast<GameEngineActor*>(this);
-			if (nullptr == ActorPtr)
-			{
-				MsgAssert("NetworkObjectBase를 GameEngineActor로 변환하는데 실패하였습니다");
-				return;
-			}
-
-			ActorTrans = ActorPtr->GetTransform();
-		}
+		SetActorTrans();
 		
 		Net_PrevPos = ActorTrans->GetWorldPosition();
 		Net_DestPos = _DestPos;
-		//Net_PrevRot = PhysXCapsule->GetWorldRotation();
-		//Net_DestRot = _DestRot;
 		ActorTrans->SetWorldRotation(_DestRot);
 		Net_LerpTimer = 0.f;
-
 		return;
 	}
 
+	//Physics를 사용하는 물체일 때
 	Net_PrevPos = PhysXCapsule->GetWorldPosition();
 	Net_DestPos = _DestPos;
-	//Net_PrevRot = PhysXCapsule->GetWorldRotation();
-	//Net_DestRot = _DestRot;
 	PhysXCapsule->SetWorldRotation(_DestRot);
 	Net_LerpTimer = 0.f;
 }
@@ -103,38 +88,19 @@ void NetworkObjectBase::Update_NetworkTrans(float _DeltaTime)
 	if (NetControllType::ActiveControll == GetControllType())
 		return;
 
-	//아래 코드들은 Lerp시키면서 부드럽게 이동/회전 시키는 코드
+	//아래 코드들은 Lerp시키면서 부드럽게 이동/회전 시키는 코드(Lerp이동)
 	Net_LerpTimer += _DeltaTime;
 	float Ratio = (Net_LerpTimer / NetworkManager::PacketFlushTime);
-
-	//Lerp이동
 	float4 NowPos = float4::LerpClamp(Net_PrevPos, Net_DestPos, Ratio);
 
 	if (nullptr == PhysXCapsule)
 	{
-		if (nullptr == ActorTrans)
-		{
-			GameEngineActor* ActorPtr = dynamic_cast<GameEngineActor*>(this);
-			if (nullptr == ActorPtr)
-			{
-				MsgAssert("NetworkObjectBase를 GameEngineActor로 변환하는데 실패하였습니다");
-				return;
-			}
-
-			ActorTrans = ActorPtr->GetTransform();
-		}
-
+		SetActorTrans();
 		ActorTrans->SetWorldPosition(NowPos);
-		//MsgAssert("NetworkObjectBase에 Physics캡슐을 등록해주지 않아서 위치/회전값을 변경할 수 없습니다.");
 		return;
 	}
 
-	
 	PhysXCapsule->SetWorldPosition(NowPos);
-
-	//Slerp회전
-	//float4 NowRot = float4::SLerpQuaternion(Net_PrevRot, Net_DestRot, Ratio);
-	//PhysXCapsule->SetWorldRotation(NowRot);
 }
 
 
@@ -169,9 +135,9 @@ void NetworkObjectBase::Update_SendPacket(float _DeltaTime)
 }
 
 
-void NetworkObjectBase::SetUpdateState(bool _IsOn)
+void NetworkObjectBase::SetOnOffState(bool _IsOn)
 {
-	if (_IsOn == IsUpdateValue)
+	if (_IsOn == OnOffValue)
 		return;
 
 	GameEngineActor* ActorPtr = nullptr;
@@ -182,8 +148,8 @@ void NetworkObjectBase::SetUpdateState(bool _IsOn)
 		return;
 	}
 
-	IsUpdateValue = _IsOn;
-	if (true == IsUpdateValue)
+	OnOffValue = _IsOn;
+	if (true == OnOffValue)
 	{
 		ActorPtr->On();
 	}
@@ -191,4 +157,27 @@ void NetworkObjectBase::SetUpdateState(bool _IsOn)
 	{
 		ActorPtr->Off();
 	}
+}
+
+
+
+void NetworkObjectBase::SetActorTrans()
+{
+	if (nullptr != ActorTrans)
+		return;
+
+	GameEngineActor* ActorPtr = dynamic_cast<GameEngineActor*>(this);
+	if (nullptr == ActorPtr)
+	{
+		MsgAssert("NetworkObjectBase를 GameEngineActor로 변환하는데 실패하였습니다");
+		return;
+	}
+
+	if (true == ActorPtr->IsPhysicsActor())
+	{
+		MsgAssert("서버의 UpdatePacket을 처리할 때 Physics를 사용하는 물체를 Transform을 이용하여 처리하려고 했습니다");
+		return;
+	}
+
+	ActorTrans = ActorPtr->GetTransform();
 }

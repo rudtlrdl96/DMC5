@@ -98,7 +98,7 @@ void NetworkManager::ClientPacketInit()
 		{
 			NetObject->SetNetwortTransData(_Packet->Position, _Packet->Rotation);
 			NetObject->ActorTimeScale = _Packet->TimeScale;
-			NetObject->SetUpdateState(_Packet->IsUpdate);
+			NetObject->SetOnOffState(_Packet->IsUpdate);
 			NetObject->SetUpdateArrData(_Packet);
 
 			//Player가 스스로 처리할 수 있게 자료구조에 저장

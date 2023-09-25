@@ -91,14 +91,12 @@ private:
 
 	float4 Net_PrevPos = float4::ZERO;
 	float4 Net_DestPos = float4::ZERO;
-	//float4 Net_PrevRot = float4::ZERO;
-	//float4 Net_DestRot = float4::ZERO;
 	float Net_LerpTimer = 0.f;
 
 	Net_ActorType NetActorType = Net_ActorType::UNKNOWN;
 
 	float ActorTimeScale = 1.f;
-	bool IsUpdateValue = true;
+	bool OnOffValue = true;
 	std::vector<int*> UpdatePacket_IntLinkDatas;
 	std::vector<bool*> UpdatePacket_BoolLinkDatas;
 	std::vector<float*> UpdatePacket_FloatLinkDatas;
@@ -117,7 +115,7 @@ private:
 
 	void SetNetwortTransData(const float4& _DestPos, const float4& _DestRot);
 
-	void SetUpdateState(bool _IsOn);
+	void SetOnOffState(bool _IsOn);
 
 	void SetUpdateArrData(std::shared_ptr<class ObjectUpdatePacket> _Packet);
 
@@ -181,5 +179,6 @@ private:
 		};
 	}
 
+	void SetActorTrans();
 };
 
