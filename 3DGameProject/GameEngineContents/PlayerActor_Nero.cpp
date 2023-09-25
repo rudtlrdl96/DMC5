@@ -4622,6 +4622,7 @@ void PlayerActor_Nero::DestroyBreaker()
 	if (BreakerList.back() == DevilBreaker::None) { return; }
 	BreakerList.pop_back();
 	CurDevilBreaker = BreakerList.back();
+	NeroItemGlass::DestroyItemUI(true);
 	switch (CurDevilBreaker)
 	{
 	case DevilBreaker::None:

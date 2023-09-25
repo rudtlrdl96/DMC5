@@ -7,6 +7,8 @@
 #include "PlayerActor_Nero.h"
 #include <GameEngineCore/GameEngineFontRenderer.h>
 bool NeroItemGlass::AddItemValue = false;
+bool NeroItemGlass::DestroyItemValue = false;
+
 NeroItemGlass::NeroItemGlass()
 {
 }
@@ -33,7 +35,7 @@ void NeroItemGlass::Start()
 			GameEngineFBXMesh::Load(File.GetFullPath());
 		}
 	}
-	NeroUI_ItemGlass = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 560.0f,-380.0f,172.0f }, { 0.6f,0.6f,0.6f }, { -90.0f,0.0f,0.0f }, "NeroItemGlass.FBX","FBX_Alpha");
+	NeroUI_ItemGlass = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 560.0f,-380.0f,172.0f }, { 0.6f,0.6f,0.6f }, { -90.0f,0.0f,0.0f }, "NeroItemGlass.FBX");
 	ArmList = PlayerActor_Nero::GetBreakerListPointer();
 	SetItemText();
 }
@@ -41,7 +43,7 @@ void NeroItemGlass::Start()
 void NeroItemGlass::Update(float _DeltaTime)
 {
 	MaxCount->SetText(std::to_string(MaxItem));
-	CurCount->SetText(std::to_string(Arms.size()));
+	CurCount->SetText(std::to_string(ArmList->size()-1));
 	CurDevilBreaker = ArmList->back();
 	if (AddItemValue == true)
 	{
@@ -50,7 +52,7 @@ void NeroItemGlass::Update(float _DeltaTime)
 		case DevilBreaker::None:
 			ItemText->SetText("Donthave");
 			AddItemValue = false;
-			first = true;
+			AddFirst  = true;
 			break;
 		case DevilBreaker::Overture:
 			ItemText->SetText("Overture");
@@ -58,7 +60,7 @@ void NeroItemGlass::Update(float _DeltaTime)
 			Render->SetFBXMesh("OvertureArmUI.FBX", "FBX_Low");
 			Arms.insert(Arms.begin(), Render);
 			AddItemValue = false;
-			first = true;
+			AddFirst  = true;
 			break;
 		case DevilBreaker::Gerbera:
 			ItemText->SetText("Gerbera");
@@ -66,7 +68,7 @@ void NeroItemGlass::Update(float _DeltaTime)
 			Render->SetFBXMesh("GerberaArmUI.FBX", "FBX_Low");
 			Arms.insert(Arms.begin(), Render);
 			AddItemValue = false;
-			first = true;
+			AddFirst  = true;
 			break;
 		case DevilBreaker::BusterArm:
 			ItemText->SetText("BusterArm");
@@ -74,14 +76,42 @@ void NeroItemGlass::Update(float _DeltaTime)
 			Render->SetFBXMesh("BusterArmUI.FBX", "FBX_Low");
 			Arms.insert(Arms.begin(), Render);
 			AddItemValue = false;
-			first = true;
+			AddFirst  = true;
 			break;
 		default:
 			break;
 		}
 	}
-	
-	MoveBreaker(_DeltaTime);
+	if (DestroyItemValue == true)
+	{
+		switch (CurDevilBreaker)
+		{
+		case DevilBreaker::None:
+			ItemText->SetText("Donthave");
+			DestroyItemValue = false;
+			DestroyFirst = true;
+			break;
+		case DevilBreaker::Overture:
+			ItemText->SetText("Overture");
+			DestroyItemValue = false;
+			DestroyFirst = true;
+			break;
+		case DevilBreaker::Gerbera:
+			ItemText->SetText("Gerbera");
+			DestroyItemValue = false;
+			DestroyFirst = true;
+			break;
+		case DevilBreaker::BusterArm:
+			ItemText->SetText("BusterArm");
+			DestroyItemValue = false;
+			DestroyFirst = true;
+			break;
+		default:
+			break;
+		}
+	}
+	AddMoveBreaker(_DeltaTime);
+	DestroyMoveBreaker(_DeltaTime);
 }
 
 void NeroItemGlass::SetItemText()
@@ -120,64 +150,72 @@ void NeroItemGlass::SetItemText()
 }
 
 
-void NeroItemGlass::MoveBreaker(float _Delta)
+float4 NeroItemGlass::BezierTransform(const float4& _Start, const float4& _Height, const float4& _End, float _Ratio)
+{
+	float4 M0 = float4::LerpClamp(_Start, _Height, _Ratio);
+	float4 M1 = float4::LerpClamp(_Height, _End, _Ratio);
+	float4 Pos = float4::LerpClamp(M0, M1, _Ratio);
+
+	return Pos;
+}
+void NeroItemGlass::AddMoveBreaker(float _Delta)
 {
 
-	if (first == true)
+	if (AddFirst  == true)
 	{
 		Time += _Delta;
 		Arms[0]->On();
-		Arms[0]->GetTransform()->SetLocalScale({ 3.0f,3.0f,3.0f });
+		Arms[0]->GetTransform()->SetLocalScale(ThirdScale);
 		Arms[0]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 180.0f,0.0f,120.0f }, { 180.0f,0.0f,150.0f }, Time * 2.0f));
 		Arms[0]->GetTransform()->SetLocalPosition({ 635.0f,-300.0f,50.0f });
 		if (Arms.size() >= 2)
 		{
 			Arms[1]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 730.0f,-300.0f,50.0f }, { 635.0f,-300.0f,50.0f }, Time * 2.0f));
-			Arms[1]->GetTransform()->SetLocalScale(float4::LerpClamp({ 5.0f,5.0f,5.0f }, { 3.0f,3.0f,3.0f }, Time * 2.0f));
+			Arms[1]->GetTransform()->SetLocalScale(float4::LerpClamp(FirstScale, ThirdScale, Time * 2.0f));
 			Arms[1]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 90.0f,0.0f,180.0f }, { 180.0f,0.0f,180.0f }, Time * 2.0f));
 			if (Arms.size() >= 3)
 			{
 				Arms[2]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 730.0f,-300.0f,50.0f }, { 635.0f,-300.0f,50.0f }, Time * 2.0f));
-				Arms[2]->GetTransform()->SetLocalScale(float4::LerpClamp({ 4.0f,4.0f,4.0f }, { 3.0f,3.0f,3.0f }, Time * 2.0f));
+				Arms[2]->GetTransform()->SetLocalScale(float4::LerpClamp(SecondScale, ThirdScale, Time * 2.0f));
 				Arms[2]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 150.0f,00.0f,210.0f }, { 180.0f,00.0f,210.0f }, Time * 2.0f));
 				if (Arms.size() >= 4)
 				{
 					Arms[3]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 730.0f,-300.0f,50.0f }, { 635.0f,-300.0f,50.0f }, Time * 2.0f));
-					Arms[3]->GetTransform()->SetLocalScale(float4::LerpClamp({ 3.0f,3.0f,3.0f }, { 3.0f,3.0f,3.0f }, Time * 2.0f));
+					Arms[3]->GetTransform()->SetLocalScale(float4::LerpClamp(ThirdScale, ThirdScale, Time * 2.0f));
 					Arms[3]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 210.0f,00.0f,240.0f }, { 210.0f,00.0f,255.0f }, Time * 2.0f));
 
 				}
 			}
 		}
 
-		if (first == true && Time > 0.5f)
+		if (AddFirst  == true && Time > 0.5f)
 		{
-			third = true;
+			AddSecound  = true;
 			Time = 0.0f;
-			first = false;
+			AddFirst  = false;
 		}
 	}
-	if (third == true)
+	if (AddSecound  == true)
 	{
 
 		Time += _Delta;
 		Arms[0]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 635.0f, -300.0f, 50.0f }, { 730.0f,-300.0f,50.0f }, Time * 2.0f));
-		Arms[0]->GetTransform()->SetLocalScale(float4::LerpClamp({ 3.0f,3.0f,3.0f }, { 5.0f,5.0f,5.0f }, Time * 2.0f));
+		Arms[0]->GetTransform()->SetLocalScale(float4::LerpClamp(ThirdScale, FirstScale, Time * 2.0f));
 		Arms[0]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 180.0f,0.0f,150.0f }, { 90.0f,0.0f,180.0f }, Time * 2.0f));
 		if (Arms.size() >= 2)
 		{
 			Arms[1]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 635.0f, -300.0f, 50.0f }, { 730.0f,-300.0f,50.0f }, Time * 2.0f));
-			Arms[1]->GetTransform()->SetLocalScale(float4::LerpClamp({ 3.0f,3.0f,3.0f }, { 4.0f,4.0f,4.0f }, Time * 2.0f));
+			Arms[1]->GetTransform()->SetLocalScale(float4::LerpClamp(ThirdScale, SecondScale, Time * 2.0f));
 			Arms[1]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 180.0f,0.0f,180.0f }, { 150.0f,00.0f,210.0f }, Time * 2.0f));
 			if (Arms.size() >= 3)
 			{
 				Arms[2]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 635.0f, -300.0f, 50.0f }, { 730.0f,-300.0f,50.0f }, Time * 2.0f));
-				Arms[2]->GetTransform()->SetLocalScale(float4::LerpClamp({ 3.0f,3.0f,3.0f }, { 3.0f,3.0f,3.0f }, Time * 2.0f));
+				Arms[2]->GetTransform()->SetLocalScale(float4::LerpClamp(ThirdScale, ThirdScale, Time * 2.0f));
 				Arms[2]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 180.0f,00.0f,210.0f }, { 210.0f,00.0f,240.0f }, Time * 2.0f));
 				if (Arms.size() >= 4)
 				{
 					Arms[3]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 635.0f,-300.0f,50.0f }, { 741.0f,-270.0f,50.0f }, Time * 2.0f));
-					Arms[3]->GetTransform()->SetLocalScale(float4::LerpClamp({ 3.0f,3.0f,3.0f }, { 3.0f,3.0f,3.0f }, Time * 2.0f));
+					Arms[3]->GetTransform()->SetLocalScale(float4::LerpClamp(ThirdScale, ThirdScale, Time * 2.0f));
 					Arms[3]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 210.0f,00.0f,255.0f }, { 210.0f,00.0f,320.0f }, Time * 2.0f));
 
 				}
@@ -185,9 +223,79 @@ void NeroItemGlass::MoveBreaker(float _Delta)
 		}
 		if (Time >= 0.8f)
 		{
-			third = false;
+			AddSecound  = false;
 			Time = 0.0f;
 		}
 	}
 	
+}
+
+void NeroItemGlass::DestroyMoveBreaker(float _Delta)
+{
+	//»Ñ¼ÅÁö´Â È¿°ú ÈÄ 
+	if (DestroyFirst == true)
+	{
+		Time += _Delta;
+		Arms[0]->GetTransform()->SetLocalScale(FirstScale);
+		Arms[0]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 90.0f,0.0f,180.0f }, { 90.0f,0.0f,180.0f }, Time * 2.0f));
+		Arms[0]->GetTransform()->SetLocalPosition(BezierTransform({ 730.0f,-300.0f,50.0f }, { 640.0f,-300.0f,50.0f }, { 640.0f,-350.0f,50.0f }, Time * 2.0f));
+		if (Arms.size() >= 2)
+		{
+			Arms[1]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 730.0f,-300.0f,50.0f }, { 635.0f,-300.0f,50.0f }, Time * 2.0f));
+			Arms[1]->GetTransform()->SetLocalScale(float4::LerpClamp(SecondScale, SecondScale, Time * 2.0f));
+			Arms[1]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 150.0f,00.0f,210.0f }, { 180.0f,00.0f,180.0f }, Time * 2.0f));
+			if (Arms.size() >= 3)
+			{
+				Arms[2]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 730.0f,-300.0f,50.0f }, { 635.0f,-300.0f,50.0f }, Time * 2.0f));
+				Arms[2]->GetTransform()->SetLocalScale(float4::LerpClamp(ThirdScale, ThirdScale, Time * 2.0f));
+				Arms[2]->GetTransform()->SetLocalRotation(float4::LerpClamp( { 210.0f,00.0f,240.0f }, { 180.0f,00.0f,210.0f }, Time * 2.0f));
+				if (Arms.size() >= 4)
+				{
+					Arms[3]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 730.0f,-300.0f,50.0f }, { 635.0f,-300.0f,50.0f }, Time * 2.0f));
+					Arms[3]->GetTransform()->SetLocalScale(float4::LerpClamp(ThirdScale, ThirdScale, Time * 2.0f));
+					Arms[3]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 210.0f,00.0f,320.0f }, { 210.0f,00.0f,255.0f }, Time * 2.0f));
+				
+				}
+			}
+		}
+
+		if (DestroyFirst == true && Time > 0.5f)
+		{
+			DestroyFirst = false;
+			DestroySecond = true;
+			Time = 0.0f;
+		}
+	}
+	if (DestroySecond == true)
+	{
+
+		Time += _Delta;
+		Arms[0]->Death();
+		if (Arms.size() >= 2)
+		{
+			Arms[1]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 635.0f, -300.0f, 50.0f }, { 730.0f,-300.0f,50.0f }, Time * 2.0f));
+			Arms[1]->GetTransform()->SetLocalScale(float4::LerpClamp(SecondScale, FirstScale, Time * 2.0f));
+			Arms[1]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 180.0f,00.0f,180.0f }, { 90.0f,0.0f,180.0f }, Time * 2.0f));
+			if (Arms.size() >= 3)
+			{
+				Arms[2]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 635.0f, -300.0f, 50.0f }, { 730.0f,-300.0f,50.0f }, Time * 2.0f));
+				Arms[2]->GetTransform()->SetLocalScale(float4::LerpClamp(ThirdScale, SecondScale, Time * 2.0f));
+				Arms[2]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 180.0f,00.0f,210.0f }, { 150.0f,00.0f,210.0f }, Time * 2.0f));
+				if (Arms.size() >= 4)
+				{
+					Arms[3]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 635.0f,-300.0f,50.0f }, { 730.0f,-300.0f,50.0f }, Time * 2.0f));
+					Arms[3]->GetTransform()->SetLocalScale(float4::LerpClamp(ThirdScale, ThirdScale, Time * 2.0f));
+					Arms[3]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 210.0f,00.0f,255.0f }, { 210.0f,00.0f,240.0f }, Time * 2.0f));
+				
+				}
+			}
+		}
+		if (Time >= 0.8f)
+		{
+			DestroySecond = false;
+			Arms.erase(Arms.begin());
+			Time = 0.0f;
+		}
+	}
+
 }

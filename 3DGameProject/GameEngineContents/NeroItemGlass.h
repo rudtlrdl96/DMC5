@@ -30,34 +30,43 @@ public:
 	{
 		AddItemValue = _Value;
 	}
+	static void DestroyItemUI(bool _Value)
+	{
+		DestroyItemValue = _Value;
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
 private:
 	void SetItemText();
-	void MoveItem(float _Delta);
-	GameEngineFSM FSM;
-
+	float4 BezierTransform(const float4& _Start, const float4& _Height, const float4& _End, float _Ratio);
 	std::shared_ptr<class UIFBXRenderer> NeroUI_ItemGlass = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> ItemText = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> CurCount = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> SlashText = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> MaxCount = nullptr;
 	DevilBreaker CurDevilBreaker = DevilBreaker::None;
-	DevilBreaker RecentDevilBreaker = DevilBreaker::None;
 
 	std::list<DevilBreaker>* ArmList;
 	int MaxItem = 4;
 	float Time = 0.0f;
-	bool first = false;
-	bool secound = false;
-	bool third = false;
 
-	static bool AddItemValue;
+	//µ¥ºô ºê·¹ÀÌÄ¿ Æ®·»½ºÆû
+	float4 FirstScale = { 5.0f,5.0f,5.0f };
+	float4 SecondScale = { 4.0f,4.0f,4.0f };
+	float4 ThirdScale = { 3.0f,3.0f,3.0f };
+
 	int i = 0;
 	// ¼Õµ¹¸®±â
-	void MoveBreaker(float _Delta);
+	bool AddFirst = false;
+	bool AddSecound = false;
+	bool DestroyFirst = false;
+	bool DestroySecond = false;
+	static bool AddItemValue;
+	static bool DestroyItemValue;
+	void AddMoveBreaker(float _Delta);
+	void DestroyMoveBreaker(float _Delta);
 	std::vector<std::shared_ptr<class UIFBXRenderer>> Arms;
 	std::shared_ptr<class UIFBXRenderer> Render = nullptr;
 };
