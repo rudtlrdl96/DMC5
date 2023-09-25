@@ -5,6 +5,7 @@
 #include "AnimationEvent.h"
 #include "PlayerController.h"
 #include "AttackCollision.h"
+#include "NetworkManager.h"
 PlayerActor_Vergil::~PlayerActor_Vergil()
 {
 }
@@ -2322,8 +2323,7 @@ void PlayerActor_Vergil::NetLoad()
 		}
 			});
 	}
-	ChangeState(FSM_State_Vergil::Vergil_Idle);
-
+	FSM.ChangeState(FSM_State_Vergil::Vergil_Idle);
 }
 
 void PlayerActor_Vergil::Update_Character(float _DeltaTime)
@@ -2337,6 +2337,7 @@ void PlayerActor_Vergil::ChangeState(int _StateValue)
 {
 	FSM.ChangeState(_StateValue);
 	FSMValue = _StateValue;
+	NetworkManager::SendFsmChangePacket(this, _StateValue);
 }
 
 bool PlayerActor_Vergil::Input_SwordCheck(int AddState)
