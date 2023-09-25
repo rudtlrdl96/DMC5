@@ -1,7 +1,8 @@
 #pragma once
+#include "NetworkObjectBase.h"
 
 // Ό³Έν :
-class Player_MirageBlade : public GameEngineActor
+class Player_MirageBlade : public GameEngineActor, public NetworkObjectBase
 {
 public:
 	// constrcuter destructer

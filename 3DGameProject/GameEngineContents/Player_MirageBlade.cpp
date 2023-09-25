@@ -107,11 +107,12 @@ void Player_MirageBlade::Start()
 	Collision->GetTransform()->SetLocalScale({ 25, 25, 150 });
 	Collision->SetAttackData(DamageType::Light, 10);
 	//Collision->Off();
-
+	SetNetObjectType(Net_ActorType::MirageBlade);
 }
 
 void Player_MirageBlade::Update(float _DeltaTime)
 {
+	Update_NetworkTrans(_DeltaTime);
 	if (true == IsShoot)
 	{
 		GetTransform()->AddWorldPosition(GetTransform()->GetWorldForwardVector() * _DeltaTime * ShootSpeed);
