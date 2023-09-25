@@ -13,8 +13,22 @@ void PlayerActor_Vergil::Start()
 {
 	BasePlayerActor::Start();
 	SetNetObjectType(Net_ActorType::Vergil);
-	UserControllLoad();
-	VergilLoad();
+
+	//NetControllType::NetControll으로 변경될 때 아래 콜백이 실행됩니다. 
+	SetControllCallBack(NetControllType::PassiveControll, [=]()
+		{
+			NetControllLoad();
+			NetLoad();
+			LoadCheck = true;
+		});
+
+	//NetControllType::UserControll으로 변경될 때 아래 콜백이 실행됩니다.
+	SetControllCallBack(NetControllType::ActiveControll, [=]()
+		{
+			UserControllLoad();
+			VergilLoad();
+			LoadCheck = true;
+		});
 }
 
 void PlayerActor_Vergil::VergilLoad()
@@ -2314,6 +2328,7 @@ void PlayerActor_Vergil::NetLoad()
 
 void PlayerActor_Vergil::Update_Character(float _DeltaTime)
 {
+	if (LoadCheck == false) { return; }
 	FSM.Update(_DeltaTime);
 	FSM_MirageBlade.Update(_DeltaTime);
 }

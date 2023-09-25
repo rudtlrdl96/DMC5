@@ -137,6 +137,7 @@ private:
 	bool MoveCheck = false;		// 애니메이션 재생중 이동 입력을 받아 FSM변경이 가능한지 여부
 	bool DelayCheck = false;	// 다른 콤보로 연결되기 위한 딜레이 여부
 	bool IsDevilTrigger = false;
+	bool LoadCheck = false;		// FBX 로드가 완료되었는지
 
 	void ChangeState(int _StateValue);
 	void CreateMirageBlade();
