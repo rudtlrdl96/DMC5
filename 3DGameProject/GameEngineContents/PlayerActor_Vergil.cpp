@@ -1658,6 +1658,7 @@ void PlayerActor_Vergil::NetLoad()
 		if (nullptr == GameEngineFBXMesh::Find("Vergil.FBX"))
 		{
 			GameEngineFBXMesh::Load(NewDir.GetPlusFileName("Vergil.fbx").GetFullPath());
+			GameEngineTexture::Load(NewDir.GetPlusFileName("pl0300_03_atos.texout.png").GetFullPath());
 		}
 		NewDir.MoveParent();
 		NewDir.Move("Animation");
@@ -1665,24 +1666,52 @@ void PlayerActor_Vergil::NetLoad()
 		Renderer = CreateComponent<GameEngineFBXRenderer>();
 		Renderer->GetTransform()->SetLocalRotation({ 0, 0, 0 });
 		Renderer->GetTransform()->SetLocalPosition({ 0, -75, 0 });
-		Renderer->SetFBXMesh("Vergil.FBX", "MeshAniTexture");
+
+		switch (GameEngineOption::GetOption("Shader"))
+		{
+		case GameEngineOptionValue::Low:
+		{
+			Renderer->SetFBXMesh("Vergil.FBX", "AniFBX_Low");
+		}
+		break;
+		case GameEngineOptionValue::High:
+		{
+			Renderer->SetFBXMesh("Vergil.FBX", "AniFBX");
+		}
+		break;
+		default:
+			break;
+		}
+
 		Renderer->ShadowOn();
 		Renderer->SetDynamic();
+
+		Renderer->SetSpecularTexture("pl0300_03_albm.texout.png", "pl0300_03_atos.texout.png");
+
 		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer,
 			.Objects = { (GameEngineObject*)Col_Attack.get() },
 			.CallBacks_void = {
-				nullptr,
+				std::bind([=] {InputCheck = true; }),			// 0
 				std::bind(&PlayerActor_Vergil::YamatoOn, this),
 				std::bind(&PlayerActor_Vergil::YamatoOff, this),
 				std::bind(&PlayerActor_Vergil::SetHuman, this),
 				std::bind(&PlayerActor_Vergil::SetMajin, this),
+				std::bind(&PhysXCapsuleComponent::SetLinearVelocityZero, PhysXCapsule),		// 5
+				std::bind([=] {MoveCheck = true; }),
+				std::bind([=] {DelayCheck = true; }),
+				std::bind(&PhysXCapsuleComponent::TurnOnGravity, PhysXCapsule),		// 8 
 			},
 			.CallBacks_int = {
 				std::bind(&GameEngineFSM::ChangeState, &FSM, std::placeholders::_1)
+			},
+			.CallBacks_float4 = {
+				std::bind(&BasePlayerActor::SetForce, this, std::placeholders::_1),
+				std::bind(&BasePlayerActor::SetPush, this, std::placeholders::_1),
+				std::bind(&BasePlayerActor::SetMove, this, std::placeholders::_1)
 			}
 			});
-
 		SetHuman();
+		YamatoOff();
 	}
 
 	/* 기본 움직임 */
