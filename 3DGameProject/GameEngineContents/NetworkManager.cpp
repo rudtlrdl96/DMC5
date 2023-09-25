@@ -17,6 +17,7 @@
 #include "PlayerActor_Nero.h"
 #include "PlayerActor_Vergil.h"
 #include "Enemy_HellCaina.h"
+#include "Player_MirageBlade.h"
 
 const float NetworkManager::PacketFlushTime = 0.01f;
 
@@ -186,12 +187,15 @@ void NetworkManager::PushUpdatePacket(
 	UpdatePacket->NetID = NetID;
 
 	//오브젝트 타입
-	UpdatePacket->ActorType = static_cast<unsigned int>(_ObjPtr->GetNetObjectType());
-	if (-1 == UpdatePacket->ActorType)
+	Net_ActorType NetType = _ObjPtr->GetNetObjectType();
+	if (Net_ActorType::UNKNOWN == NetType)
 	{
 		MsgAssert("ObjectUpdate패킷을 보내려는 객체의 NetObjectType을 설정해주지 않았습니다");
 		return;
 	}
+
+	UpdatePacket->ActorType = static_cast<unsigned int>(NetType);
+	
 
 	//레벨 타입
 	BaseLevel* Level = dynamic_cast<BaseLevel*>(ActorPtr->GetLevel());
@@ -336,7 +340,14 @@ void NetworkManager::LinkNetwork(NetworkObjectBase* _NetObjPtr)
 	//클라인 경우엔 서버에 생성 요청 패킷을 생성
 	std::shared_ptr<LinkObjectPacket> LinkPacket = std::make_shared<LinkObjectPacket>();
 	LinkPacket->SetObjectID(NetID);
-	LinkPacket->ActorType = static_cast<unsigned int>(_NetObjPtr->GetNetObjectType());
+	Net_ActorType NetType =  _NetObjPtr->GetNetObjectType();
+	if (Net_ActorType::UNKNOWN == NetType)
+	{
+		MsgAssert("Net_ActorType를 설정해주지 않아서 네트워크와 연동할 수 없습니다");
+		return;
+	}
+
+	LinkPacket->ActorType = static_cast<unsigned int>(NetType);
 	LinkPacket->Ptr = reinterpret_cast<unsigned __int64>(_NetObjPtr);
 
 	AllPacket[PacketEnum::LinkObjectPacket].push_back(LinkPacket);
@@ -465,6 +476,9 @@ std::shared_ptr<NetworkObjectBase> NetworkManager::CreateNetActor(Net_ActorType 
 		break;
 	case Net_ActorType::Vergil:
 		NetObject = CreateLevel->CreateActor<PlayerActor_Vergil>();
+		break;
+	case Net_ActorType::MirageBlade:
+		NetObject = CreateLevel->CreateActor<Player_MirageBlade>();
 		break;
 	case Net_ActorType::HellCaina:
 		NetObject = CreateLevel->CreateActor<Enemy_HellCaina>();

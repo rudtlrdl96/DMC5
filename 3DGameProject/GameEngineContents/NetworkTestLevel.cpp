@@ -43,15 +43,29 @@ void NetworkTestLevel::LevelChangeStart()
 {
 	BaseLevel::LevelChangeStart();
 
-	std::shared_ptr<PlayerActor_Vergil> Nero = CreateActor<PlayerActor_Vergil>(ActorOrder::Player);
-	Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	if (/*네로만*/false)
+	{
+		std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>(ActorOrder::Player);
+		Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+		NetworkManager::LinkNetwork(Nero.get());
+	}
 
-	NetworkManager::LinkNetwork(Nero.get());
+	if (/*버질*/true)
+	{
+		std::shared_ptr<PlayerActor_Vergil> Nero = CreateActor<PlayerActor_Vergil>(ActorOrder::Player);
+		Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+		NetworkManager::LinkNetwork(Nero.get());
+	}
+
+	if (/*미라지 블레이드*/false)
+	{
+		std::shared_ptr<Player_MirageBlade> Blade = nullptr;
+		Blade = CreateActor<Player_MirageBlade>();
+		NetworkManager::LinkNetwork(Blade.get());
+	}
+
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
-
-	Enemy = NetworkManager::CreateNetworkActor<Enemy_HellCaina>(this);
-
-	//NetworkManager::LinkNetwork(CreateActor<Player_MirageBlade>().get());
+	//Enemy = NetworkManager::CreateNetworkActor<Enemy_HellCaina>(this);
 }
 
 

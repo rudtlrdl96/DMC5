@@ -19,6 +19,12 @@ public:
 	NetworkObjectBase& operator=(const NetworkObjectBase& _Other) = delete;
 	NetworkObjectBase& operator=(const NetworkObjectBase&& _Other) noexcept = delete;
 
+	inline void NetDebugOn()
+	{
+		NetDebugValue = true;
+	}
+
+
 protected:
 	inline void SetNetObjectType(Net_ActorType _ActorType)
 	{
@@ -100,6 +106,8 @@ private:
 	
 	
 	std::map<PacketEnum, std::function<void(std::shared_ptr<GameEnginePacket> _Packet)>> PacketProcessFunctions;
+
+	bool NetDebugValue = false;
 
 
 	inline Net_ActorType GetNetObjectType() const

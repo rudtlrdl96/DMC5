@@ -6,7 +6,7 @@ class GameEnginePacket : public std::enable_shared_from_this<GameEnginePacket>
 {
 public:
 	GameEnginePacket();
-	virtual ~GameEnginePacket();
+	virtual ~GameEnginePacket() = 0;
 
 	GameEnginePacket(const GameEnginePacket& _Other) = delete;
 	GameEnginePacket(GameEnginePacket&& _Other) noexcept = delete;
