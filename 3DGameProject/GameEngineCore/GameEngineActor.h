@@ -46,6 +46,7 @@ public:
 	bool SetPhysicsActor()
 	{
 		PhysicsActor = true;
+		return false;
 	}
 
 protected:
