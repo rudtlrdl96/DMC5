@@ -73,6 +73,7 @@ void PlayerActor_Nero::PlayerLoad()
 		}
 
 		// ¿Ã∆Â∆Æ Sprite ∑ŒµÂ
+		if (nullptr == GameEngineSprite::Find("Effect_Impact.tga"))
 		{
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Impact.tga").GetFullPath(), 8, 8);
 		}

@@ -97,13 +97,8 @@ public:
 	// constrcuter destructer
 	PlayerActor_Vergil()
 	{
-		SetControll(NetControllType::ActiveControll);
 	}
 	~PlayerActor_Vergil();
-	PlayerActor_Vergil(NetControllType _ControllType)
-	{
-		SetControll(_ControllType);
-	}
 
 	// delete Function
 	PlayerActor_Vergil(const PlayerActor_Vergil& _Other) = delete;
@@ -117,11 +112,22 @@ public:
 	}
 	void SetDT(unsigned int _DTValue) override
 	{
-
+		if (_DTValue == 1)
+		{
+			SetDemon();
+		}
+		else
+		{
+			SetHuman();
+		}
+	}
+	void SetArm(unsigned int _ArmValue) override
+	{
+		return;
 	}
 protected:
 	void Start() override;
-	void VergilLoad();
+	void PlayerLoad();
 	void NetLoad();
 	void Update_Character(float _DeltaTime) override;
 
@@ -162,7 +168,7 @@ private:
 	bool Input_SpecialCheckFly();
 
 	void SetHuman();
-	void SetMajin();
+	void SetDemon();
 	void YamatoOff();
 	void YamatoOn();
 

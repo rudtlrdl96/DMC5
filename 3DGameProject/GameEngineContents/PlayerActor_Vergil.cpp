@@ -27,12 +27,12 @@ void PlayerActor_Vergil::Start()
 	SetControllCallBack(NetControllType::ActiveControll, [=]()
 		{
 			UserControllLoad();
-			VergilLoad();
+			PlayerLoad();
 			LoadCheck = true;
 		});
 }
 
-void PlayerActor_Vergil::VergilLoad()
+void PlayerActor_Vergil::PlayerLoad()
 {
 	// Renderer »ý¼º
 	{
@@ -83,7 +83,7 @@ void PlayerActor_Vergil::VergilLoad()
 				std::bind(&PlayerActor_Vergil::YamatoOn, this),
 				std::bind(&PlayerActor_Vergil::YamatoOff, this),
 				std::bind(&PlayerActor_Vergil::SetHuman, this),
-				std::bind(&PlayerActor_Vergil::SetMajin, this),
+				std::bind(&PlayerActor_Vergil::SetDemon, this),
 				std::bind(&PhysXCapsuleComponent::SetLinearVelocityZero, PhysXCapsule),		// 5
 				std::bind([=] {MoveCheck = true; }),
 				std::bind([=] {DelayCheck = true; }),
@@ -1695,7 +1695,7 @@ void PlayerActor_Vergil::NetLoad()
 				std::bind(&PlayerActor_Vergil::YamatoOn, this),
 				std::bind(&PlayerActor_Vergil::YamatoOff, this),
 				std::bind(&PlayerActor_Vergil::SetHuman, this),
-				std::bind(&PlayerActor_Vergil::SetMajin, this),
+				std::bind(&PlayerActor_Vergil::SetDemon, this),
 				std::bind(&PhysXCapsuleComponent::SetLinearVelocityZero, PhysXCapsule),		// 5
 				std::bind([=] {MoveCheck = true; }),
 				std::bind([=] {DelayCheck = true; }),
@@ -2362,6 +2362,12 @@ void PlayerActor_Vergil::Update_Character(float _DeltaTime)
 	if (NetControllType::ActiveControll == GameEngineNetObject::GetControllType())
 	{
 		FSM_MirageBlade.Update(_DeltaTime);
+		if (GameEngineInput::IsDown("Escape"))
+		{
+			SetWorldPosition({ 0, 100, 0 });
+			PhysXCapsule->SetWorldRotation({ 0, 0, 0 });
+			ChangeState(FSM_State_Vergil::Vergil_Idle);
+		}
 	}
 }
 
@@ -2580,7 +2586,7 @@ void PlayerActor_Vergil::SetHuman()
 	}
 }
 
-void PlayerActor_Vergil::SetMajin()
+void PlayerActor_Vergil::SetDemon()
 {
 	for (int i = 9; i <= 21; i++)
 	{
