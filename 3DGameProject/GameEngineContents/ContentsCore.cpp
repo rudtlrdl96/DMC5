@@ -63,7 +63,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<ShopLevel>();
 	GameEngineCore::CreateLevel<EffectToolLevel>();
 	
-	GameEngineCore::ChangeLevel("PhysXTestLevel");
+	GameEngineCore::ChangeLevel("MainLevel");
 }
 
 void ContentsCore::GameEnd() 

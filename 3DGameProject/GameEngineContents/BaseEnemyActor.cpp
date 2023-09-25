@@ -35,7 +35,7 @@ void BaseEnemyActor::Start()
 	PhysXCapsule->SetPhysxMaterial(0, 0, 0);
 	PhysXCapsule->CreatePhysXActors({ 90, 60, 90 });
 	PhysXCapsule->GetDynamic()->setMass(80.0f);
-	PhysXCapsule->SetWorldPosition({ 0, 100, 0 });
+	//PhysXCapsule->SetWorldPosition({ 0, 100, 0 });
 	BindPhysicsWithNet(PhysXCapsule);
 
 	//공격 가능한 Enemy Collision

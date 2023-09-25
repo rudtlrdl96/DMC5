@@ -10,6 +10,7 @@
 #include "Plane.h"
 #include "Wall.h"
 #include "Box200.h"
+#include "TestObject.h"
 
 PhysXTestLevel::PhysXTestLevel() 
 {
@@ -49,7 +50,11 @@ void PhysXTestLevel::LevelChangeStart()
 	std::shared_ptr<GameEngineLight> Light = CreatePointLight(float4(0, 50, 0), 1000);
 
 	std::shared_ptr<Box200> Box = CreateActor<Box200>();
-	Box->GetPhysicXComponent()->SetWorldPosition({-200.0f, 100.0f, 200.0f});
+	Box->GetPhysXComponent()->SetWorldPosition({-200.0f, 100.0f, 200.0f});
+
+	std::shared_ptr<TestObject> Obj = CreateActor<TestObject>();
+	Obj->GetPhysXComponent()->SetWorldPosition({ 100.0f, 200.0f, -200.0f });
+	//TestObject
 }
 
 void PhysXTestLevel::LevelChangeEnd()

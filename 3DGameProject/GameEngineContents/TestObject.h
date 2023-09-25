@@ -16,18 +16,21 @@ public:
 	TestObject& operator=(const TestObject& _Other) = delete;
 	TestObject& operator=(TestObject&& _Other) noexcept = delete;
 
+	std::shared_ptr<class PhysXCapsuleComponent> GetPhysXComponent()
+	{
+		return Component;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
-	void UserUpdate(float _DeltaTime);
-	void ServerUpdate(float _DeltaTime);
+	void Update_ProcessPacket() {};
+	void Update_SendPacket(float _DeltaTime) {};
 
 private:
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
 	std::shared_ptr<class PhysXCapsuleComponent> Component = nullptr;
-	std::shared_ptr<class PhysXTriangleComponent> TriCom = nullptr;
-	std::shared_ptr<class GameEngineFBXRenderer> Renderer2 = nullptr;
 	float4 Velocity = float4::ZERO;
 	float4 Rot = float4::ZERO;
 };

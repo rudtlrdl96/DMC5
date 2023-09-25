@@ -14,7 +14,7 @@ public:
 	Box200& operator=(const Box200& _Other) = delete;
 	Box200& operator=(Box200&& _Other) noexcept = delete;
 
-	std::shared_ptr<class PhysXBoxComponent> GetPhysicXComponent()
+	std::shared_ptr<class PhysXBoxComponent> GetPhysXComponent()
 	{
 		return Component;
 	}
