@@ -2330,7 +2330,10 @@ void PlayerActor_Vergil::Update_Character(float _DeltaTime)
 {
 	if (LoadCheck == false) { return; }
 	FSM.Update(_DeltaTime);
-	FSM_MirageBlade.Update(_DeltaTime);
+	if (NetControllType::ActiveControll == GameEngineNetObject::GetControllType())
+	{
+		FSM_MirageBlade.Update(_DeltaTime);
+	}
 }
 
 void PlayerActor_Vergil::ChangeState(int _StateValue)
