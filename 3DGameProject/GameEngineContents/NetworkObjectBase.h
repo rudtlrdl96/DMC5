@@ -81,6 +81,7 @@ private:
 
 
 	std::shared_ptr<PhysXCapsuleComponent> PhysXCapsule = nullptr;
+	class GameEngineTransform* ActorTrans = nullptr;
 
 	float4 Net_PrevPos = float4::ZERO;
 	float4 Net_DestPos = float4::ZERO;
