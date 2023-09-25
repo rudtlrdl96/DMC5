@@ -40,11 +40,8 @@ Output MeshTexture_VS(Input _Input)
     float4 InputPos = _Input.POSITION;
     InputPos.w = 1.0f;
         
-    
     if (0 != IsLockRotation)
     {
-        NewOutPut.POSITION = mul(InputPos, WorldMatrix);            
-        
         float4x4 InverseView = AllLight[0].CameraViewInverseMatrix;
                 
         InverseView[3][0] = 0;
@@ -54,16 +51,11 @@ Output MeshTexture_VS(Input _Input)
         InverseView[0][3] = 0;
         InverseView[1][3] = 0;
         InverseView[2][3] = 0;
-        
-        NewOutPut.POSITION = mul(NewOutPut.POSITION, InverseView);
-        NewOutPut.POSITION = mul(NewOutPut.POSITION, View);        
-        
-        NewOutPut.POSITION = mul(NewOutPut.POSITION, Projection);        
+                
+        InputPos = mul(InputPos, InverseView);
     }
-    else
-    {
-        NewOutPut.POSITION = mul(InputPos, WorldViewProjectionMatrix);
-    }
+    
+    NewOutPut.POSITION = mul(InputPos, WorldViewProjectionMatrix);
         
     float4 VtxUV = _Input.TEXCOORD;
     
