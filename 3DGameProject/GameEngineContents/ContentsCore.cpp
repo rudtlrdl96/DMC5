@@ -25,6 +25,7 @@
 #include "MonsterTestLevel.h"
 #include "AnimationToolLevel.h"
 #include "EffectToolLevel.h"
+#include "PhysXTestLevel.h"
 
 ContentsCore::ContentsCore() 
 {
@@ -56,6 +57,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<NetworkTestLevel>();
 	GameEngineCore::CreateLevel<MonsterTestLevel>();
 	GameEngineCore::CreateLevel<PlayUITestLevel>();
+	GameEngineCore::CreateLevel<PhysXTestLevel>();
 	////
 	GameEngineCore::CreateLevel<StageEditLevel>();
 	GameEngineCore::CreateLevel<ShopLevel>();

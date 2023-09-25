@@ -25,6 +25,11 @@ void PhysXTestLevel::Start()
 
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 50.0f, -100.0f });
+
+	if (false == GameEngineInput::IsKey("TestObj"))
+	{
+		GameEngineInput::CreateKey("TestObj", 'M');
+	}
 }
 
 void PhysXTestLevel::Update(float _DeltaTime)
@@ -32,6 +37,11 @@ void PhysXTestLevel::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsDown("ReturnToMainLevel"))
 	{
 		GameEngineCore::ChangeLevel("MainLevel");
+	}
+
+	if (true == GameEngineInput::IsDown("TestObj"))
+	{
+		Death();
 	}
 }
 
@@ -49,7 +59,7 @@ void PhysXTestLevel::LevelChangeStart()
 	std::shared_ptr<GameEngineLight> Light = CreatePointLight(float4(0, 50, 0), 1000);
 
 	std::shared_ptr<Box200> Box = CreateActor<Box200>();
-	//Box->GetPhy
+	Box->GetPhysicXComponent()->SetWorldPosition({-200.0f, 100.0f, 200.0f});
 }
 
 void PhysXTestLevel::LevelChangeEnd()

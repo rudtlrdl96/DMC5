@@ -15,7 +15,23 @@ Box200::~Box200()
 void Box200::Start()
 {
 	std::shared_ptr<GameEngineFBXRenderer> Renderer = CreateComponent<GameEngineFBXRenderer>();
-	Renderer->SetFBXMesh("Box_350x250x200_Mesh.FBX", "FBX_Low");
+
+	switch (GameEngineOption::GetOption("Shader"))
+	{
+	case GameEngineOptionValue::Low:
+	{
+		Renderer->SetFBXMesh("Box_350x250x200_Mesh.fbx", "FBX_Low");
+	}
+	break;
+	case GameEngineOptionValue::High:
+	{
+		Renderer->SetFBXMesh("Box_350x250x200_Mesh.fbx", "FBX");
+	}
+	break;
+	default:
+		break;
+	}
+	
 	Renderer->GetTransform()->SetLocalScale({ 0.5f, 0.5f, 0.5f });
 	//Renderer->LightOff();
 
@@ -25,12 +41,9 @@ void Box200::Start()
 
 	Component = CreateComponent<PhysXBoxComponent>();
 	Component->SetPhysxMaterial(1.0f, 1.0f, 0.0f);
-	Component->SetPositionSetFromParentFlag(true);
+	//Component->SetPositionSetFromParentFlag(true);
 	Component->SetObstacleObject();
 	Component->CreatePhysXActors(GeoMetryScale * 0.5f);
-
-	//GameEngineInput::CreateKey("Select_01", 'Y');
-	//GameEngineInput::CreateKey("Select_02", 'U');
 }
 
 void Box200::Update(float _DeltaTime)

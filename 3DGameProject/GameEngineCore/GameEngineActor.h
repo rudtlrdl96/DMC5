@@ -37,6 +37,7 @@ public:
 
 	void SetOrder(int _Order) override;
 
+	// 서버 확인용, 사용 X
 	bool IsPhysicsActor()
 	{
 		return PhysicsActor;
@@ -46,7 +47,6 @@ public:
 	void SetPhysicsActor()
 	{
 		PhysicsActor = true;
-		//return false;
 	}
 
 protected:
