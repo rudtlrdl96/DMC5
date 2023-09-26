@@ -229,6 +229,7 @@ void NetworkManager::PushUpdatePacket(
 	{
 		//이 NetObject는 이제부터 전송/수신을 받지 않음
 		_ObjPtr->NetDisconnect();
+		NetworkGUI::GetInst()->PrintLog("Disconnect Actor With Network", float4::GREEN);
 	}
 
 	//On/Off 여부
@@ -505,16 +506,3 @@ const std::vector<BasePlayerActor*>& NetworkManager::GetPlayers(GameEngineLevel*
 }
 
 
-//-----------------------------------------------------------------------------------------------------
-//For Debug
-//-----------------------------------------------------------------------------------------------------
-
-Net_ActorType NetworkManager::UpdatePacketCreateCheckType = Net_ActorType::UNKNOWN;
-
-void NetworkManager::UpdatePacketCreateCheck_ForDebug(std::shared_ptr<NetworkObjectBase> _Obj)
-{
-	if (UpdatePacketCreateCheckType != _Obj->GetNetObjectType())
-		return;
-
-	NetworkObjectBase::DebugTarget = _Obj.get();
-}

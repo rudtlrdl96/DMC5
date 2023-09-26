@@ -173,14 +173,5 @@ private:
 	NetworkManager(NetworkManager&& _Other) noexcept = delete;
 	NetworkManager& operator=(const NetworkManager& _Other) = delete;
 	NetworkManager& operator=(const NetworkManager&& _Other) noexcept = delete;
-
-	//-----------------------------------------------------------------------------------------------------
-	//For Debug
-	//-----------------------------------------------------------------------------------------------------
-
-private:
-	static Net_ActorType UpdatePacketCreateCheckType;
-
-	static void UpdatePacketCreateCheck_ForDebug(std::shared_ptr<NetworkObjectBase> _Obj);
 };
 

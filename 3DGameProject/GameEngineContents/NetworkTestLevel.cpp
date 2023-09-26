@@ -83,18 +83,10 @@ void NetworkTestLevel::Update(float _DeltaTime)
 		}
 		else
 		{
-			Enemy->NetDisconnect();
 			Enemy->Death();
 			Enemy = nullptr;
 		}
 	}
-
-	/*if (nullptr != Enemy && true == GameEngineInput::IsDown("Test_EnemyDeath"))
-	{
-		Enemy->NetDisconnect();
-		Enemy->Death();
-		Enemy = nullptr;
-	}*/
 
 }
 

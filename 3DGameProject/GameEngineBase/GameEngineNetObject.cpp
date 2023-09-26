@@ -100,8 +100,6 @@ GameEngineNetObject* GameEngineNetObject::GetNetObject(int _ID)
 
 void GameEngineNetObject::ReleaseNetObject()
 {
-	//근데 이렇게 크게 Lock을 잡으면서 까지 릴리즈를 할 필요가 있을까?
-
 	ObjectLock.lock();
 
 	std::map<int, GameEngineNetObject*>::iterator ReleaseStartIter = AllNetObjects.begin();
