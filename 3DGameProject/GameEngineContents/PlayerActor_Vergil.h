@@ -137,7 +137,8 @@ private:
 	GameEngineFSM FSM_MirageBlade;
 	float WalkSpeed = 300;
 	float RunSpeed = 550;
-	float JumpForce = 7000.0f;
+	float JumpMoveForce = 7000.0f;
+	float FlyDownForce = 2400.0f;
 
 	bool InputCheck = false;	// 애니메이션 재생중 다른 입력을 받아 FSM변경이 가능한지 여부
 	bool MoveCheck = false;		// 애니메이션 재생중 이동 입력을 받아 FSM변경이 가능한지 여부

@@ -21,8 +21,8 @@ protected:
 	void FileLoad(std::shared_ptr<GameEngineLevel> Level);
 	void AnimationTimeLine();
 
-	void FrameEvent();
-	void ObjUpdateEvent(EventData& _Data);
+	void FrameEvent(std::shared_ptr<GameEngineLevel> Level);
+	void ObjUpdateEvent(std::shared_ptr<GameEngineLevel> Level, EventData& _Data);
 	void CallEvent(EventData& _Data);
 
 	void FileSave();

@@ -77,12 +77,12 @@ void PlayerTestLevel::LevelChangeStart()
 	GameEngineCoreWindow::AddDebugRenderTarget(5, "Bake Shadow", GetLevel()->GetDirectionalLight()->GetBakeTarget(0));
 	GameEngineCoreWindow::AddDebugRenderTarget(6, "Last Shadow", GetLevel()->GetDirectionalLight()->GetShadowTarget());
 
-	if (true)
+	if (false)
 	{
 		Nero = CreateActor<PlayerActor_Nero>();
 		Nero->SetUserControllType();
 	}
-	if (false)
+	if (true)
 	{
 		Vergil = CreateActor<PlayerActor_Vergil>();
 		Vergil->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });

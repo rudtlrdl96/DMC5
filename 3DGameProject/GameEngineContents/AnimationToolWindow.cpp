@@ -21,7 +21,7 @@ void AnimationToolWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _D
 {
 	FileLoad(Level);
 	AnimationTimeLine();
-	FrameEvent();
+	FrameEvent(Level);
 	PreviewObject();
 	FileSave();
 	Release();
@@ -278,7 +278,7 @@ void AnimationToolWindow::AnimationTimeLine()
 	}
 }
 
-void AnimationToolWindow::FrameEvent()
+void AnimationToolWindow::FrameEvent(std::shared_ptr<GameEngineLevel> Level)
 {
 	if (Renderer == nullptr) { return; }
 	if (Renderer->CurAnimation == nullptr) { return; }
@@ -331,7 +331,7 @@ void AnimationToolWindow::FrameEvent()
 			ImGui::InputInt("Index", &CurData.Index);
 			if (CurData.Type == EventType::ObjectUpdate)
 			{
-				ObjUpdateEvent(CurData);
+				ObjUpdateEvent(Level, CurData);
 			}
 			else
 			{
@@ -350,11 +350,25 @@ void AnimationToolWindow::FrameEvent()
 	}
 }
 
-void AnimationToolWindow::ObjUpdateEvent(EventData& _Data)
+void AnimationToolWindow::ObjUpdateEvent(std::shared_ptr<GameEngineLevel> Level, EventData& _Data)
 {
 	ImGui::DragFloat4("Position", _Data.Position.Arr1D);
 	ImGui::DragFloat4("Rotation", _Data.Rotation.Arr1D);
 	ImGui::DragFloat4("Scale", _Data.Scale.Arr1D);
+
+	GameEngineTransform* CameraTransform = Level->GetMainCamera()->GetTransform();
+
+	static float Distance = 0;
+	if (true == GameEngineInput::IsDown("Hierarchy_Position"))
+	{
+		Distance = (_Data.Position - CameraTransform->GetWorldPosition()).Size();
+	}
+	if (true == GameEngineInput::IsPress("Hierarchy_Position"))
+	{
+		float4 MouseDir = GameEngineInput::GetMouseDirection();
+		float4 MoveDir = CameraTransform->GetWorldRightVector() * MouseDir.x + CameraTransform->GetWorldUpVector() * -MouseDir.y;
+		_Data.Position += MoveDir * Distance * 0.002f;
+	}
 
 	std::shared_ptr<GameEngineRenderer> Renderer = nullptr;
 	if (0 <= _Data.Index && _Data.Index < PreviewRenderer.size())

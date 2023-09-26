@@ -11,6 +11,7 @@ enum class DamageType
 	Slam,	// 공중에서 찍는 공격
 	Buster,	// 네로 잡기 공격
 	Stun,	// 경직
+	VergilLight,	// 버질 약공 (경직이 매우 약함)
 };
 
 enum class MonsterDamageType

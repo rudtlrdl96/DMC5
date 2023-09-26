@@ -7,6 +7,7 @@
 
 #include "NetworkManager.h"
 #include "PlayerActor_Nero.h"
+#include "PlayerActor_Vergil.h"
 #include "Enemy_HellCaina.h"
 #include "Plane.h"
 #include "Wall.h"
@@ -15,12 +16,12 @@
 
 TestLevel* TestLevel::TestLevelPtr = nullptr;
 
-TestLevel::TestLevel() 
+TestLevel::TestLevel()
 {
 	TestLevelPtr = this;
 }
 
-TestLevel::~TestLevel() 
+TestLevel::~TestLevel()
 {
 
 }
@@ -54,10 +55,20 @@ void TestLevel::LevelChangeStart()
 	IsDebugSwitch();
 	SetLevelSceneGravity(2000);
 
-	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
-	Nero->GetPhysXComponent()->SetWorldPosition({ -1200, 100, -1300 });
-	Nero->SetUserControllType();
-	NetworkManager::LinkNetwork(Nero.get(), this);
+	if (false)
+	{
+		std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
+		Nero->GetPhysXComponent()->SetWorldPosition({ -1200, 100, -1300 });
+		Nero->SetUserControllType();
+		NetworkManager::LinkNetwork(Nero.get(), this);
+	}
+	else
+	{
+		std::shared_ptr<PlayerActor_Vergil> Vergil = CreateActor<PlayerActor_Vergil>();
+		Vergil->GetPhysXComponent()->SetWorldPosition({ -1200, 100, -1300 });
+		Vergil->SetUserControllType();
+		NetworkManager::LinkNetwork(Vergil.get(), this);
+	}
 
 	std::shared_ptr<Enemy_HellCaina> HellCaina = CreateActor<Enemy_HellCaina>();
 	HellCaina->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });

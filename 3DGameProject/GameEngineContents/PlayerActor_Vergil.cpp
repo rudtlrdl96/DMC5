@@ -91,6 +91,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			},
 			.CallBacks_int = {
 				std::bind(&GameEngineFSM::ChangeState, &FSM, std::placeholders::_1)
+				//std::bind(&AttackCollision::SetAttackData, &FSM, std::placeholders::_1)
 			},
 			.CallBacks_float4 = {
 				std::bind(&BasePlayerActor::SetForce, this, std::placeholders::_1),
@@ -348,7 +349,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			 
 			if (true == Input_WarpCheckFly()) { return; }
 
-			PhysXCapsule->SetForce(Controller->GetMoveVector() * 3500);
+			PhysXCapsule->SetForce(Controller->GetMoveVector() * JumpMoveForce);
 
 			if (false == MoveCheck) { return; }
 			if (true == FloorCheck())
@@ -365,7 +366,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Jump Fly
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Jump_Fly,
 			.Start = [=] {
-				PhysXCapsule->SetPush(float4::DOWN * 1700);
+				PhysXCapsule->SetPush(float4::DOWN * FlyDownForce);
 				PhysXCapsule->TurnOnGravity();
 				Renderer->ChangeAnimation("pl0300_Jump_Vertical_Fly");
 			},
@@ -380,7 +381,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (true == Input_SwordCheckFly()) { return; }
 				 
 				if (true == Input_WarpCheckFly()) { return; }
-				PhysXCapsule->SetForce(Controller->GetMoveVector() * 3500);
+				PhysXCapsule->SetForce(Controller->GetMoveVector() * JumpMoveForce);
 
 			},
 			.End = [=] {
@@ -391,6 +392,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Landing,
 			.Start = [=] {
 				Renderer->ChangeAnimation("pl0300_Jump_Vertical_Landing");
+				MoveCheck = false;
 			},
 			.Update = [=](float _DeltaTime) {
 				if (false == FloorCheck())
@@ -403,6 +405,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (true == Input_SwordCheck()) { return; }
 				 
 				if (true == Input_WarpCheck()) { return; }
+				if (false == MoveCheck) { return; }
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
 					ChangeState(FSM_State_Vergil::Vergil_RunStart);
@@ -420,6 +423,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Combo1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Combo_1,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_Combo_1");
 				RotationToTarget();
@@ -456,6 +460,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Combo2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Combo_2,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_Combo_2");
 				RotationToTarget(30.0f);
@@ -491,6 +496,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Combo3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Combo_3,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, 100);
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_Combo_3");
 				RotationToTarget(30.0f);
@@ -531,6 +537,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Combo4
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Combo_4,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Heavy, 200);
 				YamatoOn();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_Combo_4");
@@ -586,6 +593,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// ComboC2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_ComboC_2,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_ComboC_2_Loop");
 				RotationToTarget(30.0f);
@@ -623,6 +631,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// ComboC3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_ComboC_3,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Heavy, 200);
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_ComboC_3");
 				RotationToTarget(30.0f);
@@ -683,6 +692,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Sissonal2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Sissonal_2,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Heavy, 20);
 				SissonalTimer = 0;
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_Sissonal_2_loop");
@@ -951,7 +961,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_Combo_3,
 			.Start = [=] {
 				YamatoOn();
-				Col_Attack->SetAttackData(DamageType::Light, 50);
+				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_AirCombo_3");
@@ -1070,6 +1080,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		static float4 RaidTargetPos;
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Raid2,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Slam, 50);
 				YamatoOn();
 				Renderer->ChangeAnimation("pl0300_yamato_Raid2_Loop");
 				GetLevel()->RayCast(GetTransform()->GetWorldPosition(), float4::DOWN, RaidTargetPos, 9999.0f);

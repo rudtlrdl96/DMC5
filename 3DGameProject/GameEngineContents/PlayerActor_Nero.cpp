@@ -2221,13 +2221,6 @@ void PlayerActor_Nero::PlayerLoad()
 					return;
 				}
 
-				if (true == Controller->GetIsSkill())
-				{
-					// юс╫ц©К
-					ChangeState(FSM_State_Nero::Nero_Buster_Strike_Air);
-					return;
-				}
-
 				if (true == Input_SpecialCheckFly()) { return; }
 				if (InputCheck == false) { return; }
 

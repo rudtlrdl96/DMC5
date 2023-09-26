@@ -43,6 +43,10 @@ public:
 	{
 		SetAttackData({ .DamageTypeValue = _Type, .DamageValue = _DamageValue }, _CallBack);
 	}
+	void SetAttackType(int _DamageType)
+	{
+		Data.DamageTypeValue = (DamageType)_DamageType;
+	}
 protected:
 
 private:
