@@ -254,9 +254,10 @@ void Enemy_HellCaina::RecognizeCollisionCheck(float _DeltaTime)
 		return;
 	}
 
-	std::shared_ptr<GameEngineCollision> Col = RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D);
-	if (nullptr == Col) { return; }
+	std::shared_ptr<GameEngineCollision> Collision = RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D);
+	if (nullptr == Collision) { return; }
 
+	PlayerCheck(Collision.get());
 	IsRecognize = true;
 }
 
