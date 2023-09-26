@@ -40,7 +40,7 @@ void Enemy_HellCaina::Start()
 	FallDistance = 55.0f;
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
 
-	EnemyRenderer->Off();
+	//EnemyRenderer->Off();
 	MonsterCollision->Off();
 	RN_MonsterCollision->Off();
 

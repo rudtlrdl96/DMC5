@@ -562,6 +562,9 @@ public:
 		return Lerp(Start, End, Ratio);
 	}
 
+	//(x,y,z)값을 string으로 변환시키는 함수입니다. 쌩 string을 많이 만들어서 부담이 가는 함수입니다.
+	std::string ConvertString();
+
 	operator DirectX::FXMVECTOR() const
 	{
 		return DirectVector;

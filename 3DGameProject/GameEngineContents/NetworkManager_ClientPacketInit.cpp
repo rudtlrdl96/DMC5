@@ -57,16 +57,20 @@ void NetworkManager::ClientPacketInit()
 
 		//서버로 부터 받은 패킷이 현재 레벨과 다른 경우
 		if (CurLevelType != _Packet->LevelType)
+		{
+			NetworkGUI::GetInst()->PrintLog("UpdatePacket Receive To Other Level", float4::RED);
 			return;
+		}
 
 		unsigned int ObjID = _Packet->GetObjectID();
 
 		//해당 NetObejctID의 객체가 존재하지 않다면 만든다면 여기서 만들어버리기
 		if (false == GameEngineNetObject::IsNetObject(ObjID))
 		{
-			std::shared_ptr<GameEngineNetObject> NewNetObj = nullptr;
+			std::shared_ptr<NetworkObjectBase> NewNetObj = nullptr;
 			NewNetObj = NetworkManager::CreateNetActor(_Packet->ActorType, nullptr, ObjID);
 			NewNetObj->SetControll(NetControllType::PassiveControll);
+			UpdatePacketCreateCheck_ForDebug(NewNetObj);
 
 			//어떤 타입의 엑터가 생성되었는지 GUI에 출력
 			NetworkGUI::GetInst()->PrintLog("Create Object From UpdatePacket", float4::GREEN);

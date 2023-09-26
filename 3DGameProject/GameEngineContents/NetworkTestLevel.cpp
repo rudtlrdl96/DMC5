@@ -36,10 +36,9 @@ void NetworkTestLevel::Start()
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 
 	GameEngineInput::CreateKey("Test_BackMainLevel", VK_ESCAPE);
-	GameEngineInput::CreateKey("Test_EnemyOnOffSwitch", 'C');
+	GameEngineInput::CreateKey("Test_EnemyDeath", 'C');
 }
 
-#include "Player_MirageBlade.h"
 
 void NetworkTestLevel::LevelChangeStart()
 {
@@ -60,15 +59,7 @@ void NetworkTestLevel::LevelChangeStart()
 		NetworkManager::LinkNetwork(Nero.get(), this);
 	}
 
-	if (/*미라지 블레이드*/false)
-	{
-		std::shared_ptr<Player_MirageBlade> Blade = nullptr;
-		Blade = CreateActor<Player_MirageBlade>();
-		NetworkManager::LinkNetwork(Blade.get(), this);
-	}
-
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
-	Enemy = NetworkManager::CreateNetworkActor<Enemy_HellCaina>(this);
 }
 
 
@@ -83,20 +74,28 @@ void NetworkTestLevel::Update(float _DeltaTime)
 		return;
 	}
 
-	if (nullptr != Enemy && GameEngineInput::IsDown("Test_EnemyOnOffSwitch"))
+
+	if (true == GameEngineInput::IsDown("Test_EnemyDeath"))
 	{
-		if (true == Enemy->IsUpdate())
+		if (nullptr == Enemy)
 		{
-			Enemy->Off();
+			Enemy = NetworkManager::CreateNetworkActor<Enemy_HellCaina>(this);
 		}
 		else
 		{
-			Enemy->On();
+			Enemy->NetDisconnect();
+			Enemy->Death();
+			Enemy = nullptr;
 		}
 	}
 
-	//const std::vector<BasePlayerActor*>& Players = NetworkManager::GetPlayers(this);
-	//NetworkGUI::GetInst()->PrintLog("Current Player Count : " + GameEngineString::ToString(Players.size()), float4{0.f, 1.f, 1.f, 1.f});
+	/*if (nullptr != Enemy && true == GameEngineInput::IsDown("Test_EnemyDeath"))
+	{
+		Enemy->NetDisconnect();
+		Enemy->Death();
+		Enemy = nullptr;
+	}*/
+
 }
 
 

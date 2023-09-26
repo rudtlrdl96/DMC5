@@ -503,3 +503,18 @@ const std::vector<BasePlayerActor*>& NetworkManager::GetPlayers(GameEngineLevel*
 
 	return AllPlayerActors[Level];
 }
+
+
+//-----------------------------------------------------------------------------------------------------
+//For Debug
+//-----------------------------------------------------------------------------------------------------
+
+Net_ActorType NetworkManager::UpdatePacketCreateCheckType = Net_ActorType::UNKNOWN;
+
+void NetworkManager::UpdatePacketCreateCheck_ForDebug(std::shared_ptr<NetworkObjectBase> _Obj)
+{
+	if (UpdatePacketCreateCheckType != _Obj->GetNetObjectType())
+		return;
+
+	NetworkObjectBase::DebugTarget = _Obj.get();
+}

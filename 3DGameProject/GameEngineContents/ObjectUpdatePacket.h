@@ -94,7 +94,6 @@ private:
 
 	Net_LevelType LevelType = Net_LevelType::UNKNOWN;
 	bool IsDeath = false;
-	std::vector<bool> d;
 	bool IsUpdate = true;
 
 	std::vector<int> IntDatas;

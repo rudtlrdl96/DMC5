@@ -100,7 +100,7 @@ public:
 
 	//해당 레벨의 플레이어 그룹을 반환합니다.(LevelChangeStart시점에서 사용하실땐 Level 인자를 넣어주세요)
 	static const std::vector<BasePlayerActor*>& GetPlayers(GameEngineLevel* _Level = nullptr);
-	
+	//이거 나중까지 안 쓰면 코드 정리를 위해 지우자
 
 
 protected:
@@ -173,5 +173,14 @@ private:
 	NetworkManager(NetworkManager&& _Other) noexcept = delete;
 	NetworkManager& operator=(const NetworkManager& _Other) = delete;
 	NetworkManager& operator=(const NetworkManager&& _Other) noexcept = delete;
+
+	//-----------------------------------------------------------------------------------------------------
+	//For Debug
+	//-----------------------------------------------------------------------------------------------------
+
+private:
+	static Net_ActorType UpdatePacketCreateCheckType;
+
+	static void UpdatePacketCreateCheck_ForDebug(std::shared_ptr<NetworkObjectBase> _Obj);
 };
 

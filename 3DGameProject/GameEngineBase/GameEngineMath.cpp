@@ -192,6 +192,19 @@ float4 float4::MatrixToQuaternion(const class float4x4& M)
 	return Return;
 }
 
+
+std::string float4::ConvertString()
+{
+	std::string Result;
+
+	Result += ("X : " + GameEngineString::ToString(ix()) + "\t");
+	Result += ("Y : " + GameEngineString::ToString(iy()) + "\t");
+	Result += ("Z : " + GameEngineString::ToString(iz()));
+
+	return Result;
+}
+
+
 std::vector<unsigned int> GameEngineMath::GetDigits(int _Value)
 {
 	std::vector<unsigned int> ResultValue = std::vector<unsigned int>();

@@ -11,6 +11,11 @@ class NetworkObjectBase : public GameEngineNetObject
 	friend class NetworkManager;
 
 public:
+	static inline NetworkObjectBase* GetDebugTarget()
+	{
+		return DebugTarget;
+	}
+
 	NetworkObjectBase();
 	~NetworkObjectBase();
 
@@ -18,12 +23,6 @@ public:
 	NetworkObjectBase(NetworkObjectBase&& _Other) noexcept = delete;
 	NetworkObjectBase& operator=(const NetworkObjectBase& _Other) = delete;
 	NetworkObjectBase& operator=(const NetworkObjectBase&& _Other) noexcept = delete;
-
-	inline void NetDebugOn()
-	{
-		NetDebugValue = true;
-	}
-
 
 protected:
 	inline void SetNetObjectType(Net_ActorType _ActorType)
@@ -83,6 +82,8 @@ protected:
 
 
 private:
+	static NetworkObjectBase* DebugTarget;
+
 	static NetworkObjectBase* GetNetObj(unsigned int _ObjID);
 
 
@@ -105,20 +106,23 @@ private:
 	
 	std::map<PacketEnum, std::function<void(std::shared_ptr<GameEnginePacket> _Packet)>> PacketProcessFunctions;
 
-	bool NetDebugValue = false;
-
-
 	inline Net_ActorType GetNetObjectType() const
 	{
 		return NetActorType;
 	}
 
+	//NetworkManager에서 UpdatePacket을 수신할 때 호출됨
 	void SetNetwortTransData(const float4& _DestPos, const float4& _DestRot);
 
+	//NetworkManager에서 UpdatePacket을 수신할 때 호출됨
 	void SetOnOffState(bool _IsOn);
 
+
+	//NetworkManager에서 UpdatePacket을 수신할 때 호출됨
 	void SetUpdateArrData(std::shared_ptr<class ObjectUpdatePacket> _Packet);
 
+
+	//ObejctUpdate패킷을 수신받았을 때 배열 데이터들의 값을 수정 및 사전에 등록했던 콜백 호출
 	template <typename DataType>
 	void CopyUpdatePacketArrDatas(const std::vector<DataType*>& _ArrDest, const std::vector<DataType>& _ArrSource)
 	{
@@ -151,6 +155,8 @@ private:
 		}
 	}
 
+
+	//해당 패킷을 수신받았을때 처리할 콜백을 등록
 	template <typename PacketType>
 	void BindPacketCallBack(PacketEnum _Type, std::function<void(std::shared_ptr<PacketType>)> _Callback = nullptr)
 	{
@@ -180,5 +186,6 @@ private:
 	}
 
 	void SetActorTrans();
+
 };
 

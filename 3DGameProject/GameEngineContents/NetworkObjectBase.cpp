@@ -1,11 +1,14 @@
 #include "PrecompileHeader.h"
 #include "NetworkObjectBase.h"
 
+#include "NetworkGUI.h"
+
 #include "NetworkManager.h"
 #include "ObjectUpdatePacket.h"
 #include "FsmChangePacket.h"
 
 
+NetworkObjectBase* NetworkObjectBase::DebugTarget = nullptr;
 
 NetworkObjectBase* NetworkObjectBase::GetNetObj(unsigned int _ObjID)
 {
@@ -24,6 +27,7 @@ NetworkObjectBase* NetworkObjectBase::GetNetObj(unsigned int _ObjID)
 	return NetObj;
 }
 
+
 NetworkObjectBase::NetworkObjectBase()
 {
 
@@ -33,6 +37,11 @@ NetworkObjectBase::~NetworkObjectBase()
 {
 
 }
+
+
+
+
+
 
 void NetworkObjectBase::SetNetwortTransData(const float4& _DestPos, const float4& _DestRot)
 {
@@ -51,14 +60,27 @@ void NetworkObjectBase::SetNetwortTransData(const float4& _DestPos, const float4
 		Net_DestPos = _DestPos;
 		ActorTrans->SetWorldRotation(_DestRot);
 		Net_LerpTimer = 0.f;
-		return;
 	}
 
 	//Physics를 사용하는 물체일 때
-	Net_PrevPos = PhysXCapsule->GetWorldPosition();
-	Net_DestPos = _DestPos;
-	PhysXCapsule->SetWorldRotation(_DestRot);
-	Net_LerpTimer = 0.f;
+	else
+	{
+		Net_PrevPos = PhysXCapsule->GetWorldPosition();
+		Net_DestPos = _DestPos;
+		PhysXCapsule->SetWorldRotation(_DestRot);
+		Net_LerpTimer = 0.f;
+	}
+
+	if (DebugTarget != this)
+		return;
+
+	const std::string& PrevPos = Net_PrevPos.ConvertString();
+	const std::string& NextPos = Net_DestPos.ConvertString();
+
+	NetworkGUI::GetInst()->PrintLog("[UpdatePacket Setting PrevPos]", float4{ 0.f, 1.f, 1.f, 1.f });
+	NetworkGUI::GetInst()->PrintLog(PrevPos);
+	NetworkGUI::GetInst()->PrintLog("[UpdatePacket Setting NextPos]", float4{ 0.f, 1.f, 1.f, 1.f });
+	NetworkGUI::GetInst()->PrintLog(NextPos);
 }
 
 void NetworkObjectBase::SetUpdateArrData(std::shared_ptr<ObjectUpdatePacket> _Packet)
