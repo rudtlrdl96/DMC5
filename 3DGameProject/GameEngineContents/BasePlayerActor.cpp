@@ -291,8 +291,6 @@ void BasePlayerActor::DamageColCheck()
 	case DamageType::Light:
 		LightDamage();
 		break;
-	case DamageType::Medium:
-		break;
 	case DamageType::Heavy:
 		break;
 	case DamageType::Air:

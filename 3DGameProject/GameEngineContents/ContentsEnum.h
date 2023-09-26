@@ -3,30 +3,14 @@
 enum class DamageType
 {
 	None,
+	VergilLight,	// 버질 약공 (경직이 매우 약함)
 	Light,	// 약 공격
-	Medium,	// 중 공격
 	Heavy,	// 강 공격	(날리는 공격, Blown)
 	Air,	// 뛰우는 공격
 	Snatch,	// 그랩 공격
 	Slam,	// 공중에서 찍는 공격
 	Buster,	// 네로 잡기 공격
 	Stun,	// 경직
-	VergilLight,	// 버질 약공 (경직이 매우 약함)
-};
-
-enum class MonsterDamageType
-{
-	None,
-	AngleDamage,
-	Air,
-	Snatch,
-	Blown,
-	Drilling,
-	Launching,
-	Slam,
-	Downward,
-	Stun,
-	Hold
 };
 
 enum class LogOrder

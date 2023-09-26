@@ -193,8 +193,6 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 		}
 		break;
 
-	case DamageType::Medium:
-		break;
 	case DamageType::Heavy:
 		IsCollapse = false;
 		IsHeavyAttack = true;

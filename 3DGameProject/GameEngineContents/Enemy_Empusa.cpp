@@ -91,8 +91,6 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 		}
 		break;
 
-	case DamageType::Medium:
-		break;
 	case DamageType::Heavy:
 		RotationCheck();
 		PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
