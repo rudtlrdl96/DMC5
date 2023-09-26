@@ -54,6 +54,7 @@ void FXSystem::CreateFX(std::shared_ptr<class FXData> _FX)
 				FXRenders[Key]->GetTransform()->SetParent(GetTransform());
 				FXRenders[Key]->RectInit("Effect_2D");
 				FXRenders[Key]->LockRotation();
+				FXRenders[Key]->GetTransform()->SetWorldRotation(float4::ZERO);
 			}
 
 			if (UnitDatas[i].AnimationName != "")
@@ -192,7 +193,10 @@ void FXSystem::Update(float _DeltaTime)
 			continue;
 		}
 		CurRender->GetTransform()->SetLocalPosition(float4::Lerp(CurKeyFrame.Position, NextKeyFrame.Position, CurRatio));
-		CurRender->GetTransform()->SetLocalRotation(float4::SLerpQuaternion(CurKeyFrame.Rotation, NextKeyFrame.Rotation, CurRatio));
+		if (false == CurRender->IsLockRotation())
+		{
+			CurRender->GetTransform()->SetLocalRotation(float4::SLerpQuaternion(CurKeyFrame.Rotation, NextKeyFrame.Rotation, CurRatio));
+		}
 		CurRender->GetTransform()->SetLocalScale(float4::Lerp(CurKeyFrame.Scale, NextKeyFrame.Scale, CurRatio));
 
 		CurRender->EffectOption = EffectData::Lerp(CurKeyFrame.EffectOption, NextKeyFrame.EffectOption, CurRatio);
@@ -227,6 +231,7 @@ void FXSystem::FXSetting()
 				FXRenders[Key]->GetTransform()->SetParent(GetTransform());
 				FXRenders[Key]->RectInit("Effect_2D");
 				FXRenders[Key]->LockRotation();
+				FXRenders[Key]->GetTransform()->SetWorldRotation(float4::ZERO);
 			}
 			if (UnitDatas[i].AnimationName == "")
 			{

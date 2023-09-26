@@ -160,7 +160,7 @@ public:
 
 	inline bool IsLockRotation() const
 	{
-		return 0.0f == VertexOption.IsLockRotation;
+		return 0.0f != VertexOption.IsLockRotation;
 	}
 
 	void Reset();

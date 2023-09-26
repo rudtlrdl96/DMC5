@@ -57,6 +57,7 @@ void BasePlayerActor::LookDir(const float4& _LookDir)
 		Rot.y += Angle;
 	}
 	PhysXCapsule->SetWorldRotation(Rot);
+	PhysXCapsule->GetDynamic()->setLinearDamping(2.0f);
 	return;
 }
 
