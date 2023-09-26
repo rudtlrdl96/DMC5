@@ -141,6 +141,14 @@ protected:
 	//=================================================================================
 
 	//====================================================
+	// 플레이어 세팅
+	class BasePlayerActor* Player = nullptr;
+	void PlayerCheckInit();
+	void PlayerCheck(GameEngineCollision* _Collision);
+	//====================================================
+	
+
+	//====================================================
 	// 몬스터 바닥 체크 (RayCast)
 	bool FloorCheck(float _Distance);
 	float FallDistance = 0.0f;     // FloorCheck() 시 필요, 각자의 몬스터 Start 부분에서 값 적용

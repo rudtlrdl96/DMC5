@@ -136,6 +136,8 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 	std::shared_ptr<AttackCollision> AttackCol = std::dynamic_pointer_cast<AttackCollision>(Col);
 	if (nullptr == AttackCol) { return; }
 
+	PlayerCheck(AttackCol.get());
+
 	AttackDirectCheck();
 
 	if (true == AnimationTurnStart)

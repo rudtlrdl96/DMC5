@@ -55,6 +55,7 @@ void BaseEnemyActor::Start()
 	EnemyAnimationLoad();
 	EnemyCreateFSM();
 	EnemyCreateFSM_Client();
+	PlayerCheckInit();
 
 	SetFsmPacketCallBack(std::bind(&BaseEnemyActor::SetFSMStateValue, this, std::placeholders::_1));
 }
@@ -106,19 +107,39 @@ bool BaseEnemyActor::FloorCheck(float _Distance)
 	return IsResults;
 }
 
+void BaseEnemyActor::PlayerCheckInit()
+{
+	// 기본적으로는 서버 플레이어
+	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
+	Player = Players[0];
+
+	if (nullptr == Player)
+	{
+		MsgAssert("Player 세팅이 몬가 잘못됨");
+	}
+}
+
+void BaseEnemyActor::PlayerCheck(GameEngineCollision* _Collision)
+{
+	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
+	size_t Playersize = Players.size();
+
+	GameEngineCollision* CheckCollision = _Collision;
+	BasePlayerActor* PActor = dynamic_cast<BasePlayerActor*>(CheckCollision->GetActor());
+
+	bool IsSame = false;
+
+	for (size_t i = 0; i < Playersize; i++)
+	{
+		if (PActor == Players[i])
+		{
+			IsSame = true;
+		}
+	}
+}
+
 float4 BaseEnemyActor::MonsterAndPlayerCross()
 {
-	//const std::vector<BasePlayerActor*>& imimni = NetworkManager::GetPlayers(GetLevel());
-	//BasePlayerActor* Player = nullptr;
-
-	//for (size_t i = 0; i < imimni.size(); i++)
-	//{
-	//	Player = imimni[i];
-	//}
-
-	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
-	BasePlayerActor* Player = Players[0];
-
 	if (nullptr == Player)
 	{
 		return float4::ZERO;
@@ -142,9 +163,6 @@ float4 BaseEnemyActor::MonsterAndPlayerCross()
 
 float BaseEnemyActor::MonsterAndPlayerDotProduct()
 {
-	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
-	BasePlayerActor* Player = Players[0];
-
 	if (nullptr == Player)
 	{
 		return 0.0f;
@@ -168,9 +186,6 @@ float BaseEnemyActor::MonsterAndPlayerDotProduct()
 
 float BaseEnemyActor::MonsterAndPlayerDotProductDegree()
 {
-	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
-	BasePlayerActor* Player = Players[0];
-
 	float RotationValue = 0.0f;
 
 	if (nullptr == Player)
@@ -398,9 +413,6 @@ void BaseEnemyActor::AllDirectSetting()
 
 void BaseEnemyActor::PushDirectSetting()
 {
-	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
-	BasePlayerActor* Player = Players[0];
-
 	if (nullptr == Player)
 	{
 		return;
@@ -455,8 +467,10 @@ void BaseEnemyActor::RenderShake(float _DeltaTime)
 
 void BaseEnemyActor::BusterCalculation()
 {
-	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
-	BasePlayerActor* Player = Players[0];
+	if (nullptr == Player)
+	{
+		return;
+	}
 
 	CurRenderPosition = EnemyRenderer->GetTransform()->GetLocalPosition();
 
@@ -469,8 +483,10 @@ void BaseEnemyActor::BusterCalculation()
 
 void BaseEnemyActor::BusterEnd()
 {
-	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
-	BasePlayerActor* Player = Players[0];
+	if (nullptr == Player)
+	{
+		return;
+	}
 
 	Player->GetPlayerRenderer()->SetDettachTransform();
 	EnemyRenderer->GetTransform()->SetLocalPosition(CurRenderPosition);
@@ -478,8 +494,10 @@ void BaseEnemyActor::BusterEnd()
 
 void BaseEnemyActor::SnatchCalculation()
 {
-	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
-	BasePlayerActor* Player = Players[0];
+	if (nullptr == Player)
+	{
+		return;
+	}
 
 	SnatchStartPosition = this->GetTransform()->GetWorldPosition();
 	float4 Forword = Player->GetTransform()->GetWorldForwardVector() * 120.0f;
