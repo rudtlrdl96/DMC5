@@ -1045,7 +1045,12 @@ void Enemy_HellCaina::EnemyCreateFSM()
 		});
 
 	{
-		EnemyRenderer->SetAnimationStartEvent("em0000_air_damage_under", 1, [=] { SetAir(30000.0f); });
+		EnemyRenderer->SetAnimationStartEvent("em0000_air_damage_under", 1, [=] { 
+			if (true == IsVergilLight)
+				SetAir(10000.0f);
+			else
+				SetAir(30000.0f);
+			});
 	}
 
 	// 에어 상태에서 약공격 맞을때
@@ -1120,7 +1125,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	/////////////////////////슬램
 	
 	{
-		EnemyRenderer->SetAnimationStartEvent("em0000_slam_damage", 1, [=] { SetAir(-75000.0f); });
+		EnemyRenderer->SetAnimationStartEvent("em0000_slam_damage", 1, [=] { SetAir(-100000.0f); });
 	}
 	
 	// 슬램 피격 start
