@@ -98,8 +98,8 @@ enum FSM_State_Nero
 	Nero_Provocation_Air,
 	Nero_EnemyStep,
 
-	Nero_Damage_Common,
-	Nero_Damage_Combo,
+	Nero_Damage_Light,
+	Nero_Damage_Heavy,
 
 	Nero_Damage_Fly,
 	Nero_Damage_Fall,
@@ -168,6 +168,7 @@ protected:
 	void Update_Character(float _DeltaTime) override;
 
 	void LightDamage() override;
+	void HeavyDamage() override;
 private:
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer_Overture = nullptr;
 	std::shared_ptr<class FXSystem> EffectSystem = nullptr;

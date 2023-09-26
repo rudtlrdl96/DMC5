@@ -70,6 +70,7 @@ protected:
 	bool FloorCheck();
 
 	virtual void LightDamage() {}
+	virtual void HeavyDamage() {}
 
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
 	std::shared_ptr<class PlayerController> Controller = nullptr;
@@ -82,6 +83,8 @@ protected:
 
 	std::shared_ptr<class PhysXCapsuleComponent> PhysXCapsule = nullptr;
 	float4 Rot = float4::ZERO;
+
+	int HP = 10000;
 	int FSMValue = -1;
 	bool DTValue;
 	int ArmValue;

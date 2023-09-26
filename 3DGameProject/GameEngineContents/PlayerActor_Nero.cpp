@@ -2763,8 +2763,8 @@ void PlayerActor_Nero::PlayerLoad()
 	// ´ë¹ÌÁö
 	{}
 	{
-		// Damage Common
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Common,
+		// Damage Light
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Light,
 			.Start = [=] {
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -2796,32 +2796,25 @@ void PlayerActor_Nero::PlayerLoad()
 			}
 			});
 
-		// Damage Combo
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Combo,
+		// Damage Heavy
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Heavy,
 			.Start = [=] {
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
-				Renderer->ChangeAnimation("pl0000_Damage_Combo", true);
+				Renderer->ChangeAnimation("pl0000_Damage_Away_Fly", true);
 				InputCheck = false;
 			},
 			.Update = [=](float _DeltaTime) {
-				if (false == FloorCheck())
+				if (true == Renderer->IsAnimationEnd())
 				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+					ChangeState(FSM_State_Nero::Nero_Damage_Fall);
 					return;
 				}
-
-				if (true == Input_SpecialCheck()) { return; }
-				if (InputCheck == false) { return; }
-
-				if (true == Input_JumpCheck()) { return; }
-				if (true == Input_SwordCheck()) { return; }
-				if (true == Input_GunCheck()) { return; }
-				if (true == Input_DevilBreakerCheck()) { return; }
-				if (Controller->GetMoveVector() != float4::ZERO)
+				return;
+				if (true == FloorCheck())
 				{
-					ChangeState(FSM_State_Nero::Nero_RunStart);
+					ChangeState(FSM_State_Nero::Nero_Damage_Ground);
 					return;
 				}
 			},
@@ -4017,7 +4010,7 @@ void PlayerActor_Nero::NetLoad()
 	{}
 	{
 		// Damage Common
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Common,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Light,
 			.Start = [=] {
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Damage_Common", true);
@@ -4029,7 +4022,7 @@ void PlayerActor_Nero::NetLoad()
 			});
 
 		// Damage Combo
-		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Combo,
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Heavy,
 			.Start = [=] {
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Damage_Combo", true);
@@ -4077,14 +4070,24 @@ void PlayerActor_Nero::LightDamage()
 {
 	if (true == FloorCheck())
 	{
-		ChangeState(FSM_State_Nero::Nero_Damage_Common);
+		ChangeState(FSM_State_Nero::Nero_Damage_Light);
 	}
 	else
 	{
 		ChangeState(FSM_State_Nero::Nero_Damage_Fly);
 	}
 }
-
+void PlayerActor_Nero::HeavyDamage()
+{
+	if (true == FloorCheck())
+	{
+		ChangeState(FSM_State_Nero::Nero_Damage_Heavy);
+	}
+	else
+	{
+		ChangeState(FSM_State_Nero::Nero_Damage_Fly);
+	}
+}
 bool PlayerActor_Nero::Input_SwordCheck(int AddState /*= 0*/)
 {
 	if (false == Controller->GetIsLockOn())
