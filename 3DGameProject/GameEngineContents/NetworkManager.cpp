@@ -38,7 +38,7 @@ std::map<unsigned int, std::shared_ptr<ObjectUpdatePacket>> NetworkManager::AllU
 std::map<PacketEnum, std::vector<std::shared_ptr<GameEnginePacket>>> NetworkManager::AllPacket;
 GameEngineSerializer NetworkManager::ChunkPacketBytes;
 
-std::map<Net_LevelType, std::vector<BasePlayerActor*>> NetworkManager::AllPlayerActors;
+std::map<GameEngineLevel*, std::vector<BasePlayerActor*>> NetworkManager::AllPlayerActors;
 
 
 unsigned int NetworkManager::ServerOpen(int _Port)
@@ -467,14 +467,8 @@ std::shared_ptr<NetworkObjectBase> NetworkManager::CreateNetActor(Net_ActorType 
 	return NetObject;
 }
 
-const std::vector<BasePlayerActor*>& NetworkManager::GetPlayers(BaseLevel* _Level)
-{
-	Net_LevelType LevelType = _Level->GetNetLevelType();
-	return AllPlayerActors[LevelType];
-}
 
-
-void NetworkManager::RegistPlayer(NetworkObjectBase* _NetObjPtr, BaseLevel* _Level)
+void NetworkManager::RegistPlayer(NetworkObjectBase* _NetObjPtr, GameEngineLevel* _Level)
 {
 	BasePlayerActor* PlayerPtr = dynamic_cast<BasePlayerActor*>(_NetObjPtr);
 	if (nullptr == PlayerPtr)
@@ -486,8 +480,7 @@ void NetworkManager::RegistPlayer(NetworkObjectBase* _NetObjPtr, BaseLevel* _Lev
 		return;
 	}
 
-	Net_LevelType LevelType = _Level->GetNetLevelType();
-	std::vector<BasePlayerActor*>& PlayerGroup = AllPlayerActors[LevelType];
+	std::vector<BasePlayerActor*>& PlayerGroup = AllPlayerActors[_Level];
 	std::vector<BasePlayerActor*>::iterator FindIter;
 
 	FindIter = std::find(PlayerGroup.begin(), PlayerGroup.end(), PlayerPtr);
@@ -498,4 +491,15 @@ void NetworkManager::RegistPlayer(NetworkObjectBase* _NetObjPtr, BaseLevel* _Lev
 	}
 
 	PlayerGroup.push_back(PlayerPtr);
+}
+
+const std::vector<BasePlayerActor*>& NetworkManager::GetPlayers(GameEngineLevel* _Level /*= nullptr*/)
+{
+	GameEngineLevel* Level = _Level;
+	if (nullptr == Level)
+	{
+		Level = CurLevel;
+	}
+
+	return AllPlayerActors[Level];
 }

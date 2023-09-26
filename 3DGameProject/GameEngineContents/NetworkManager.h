@@ -7,6 +7,7 @@
 class BaseLevel;
 class NetworkObjectBase;
 class GameEngineActor;
+class GameEngineLevel;
 enum class PacketEnum;
 class BasePlayerActor;
 
@@ -97,8 +98,9 @@ public:
 	//쌓여있던 모든 패킷을 전송하는 부분
 	static void FlushPackets();
 
-	//해당 레벨의 플레이어 그룹을 반환합니다.
-	static const std::vector<BasePlayerActor*>& GetPlayers(BaseLevel* _Level);
+	//해당 레벨의 플레이어 그룹을 반환합니다.(LevelChangeStart시점에서 사용하실땐 Level 인자를 넣어주세요)
+	static const std::vector<BasePlayerActor*>& GetPlayers(GameEngineLevel* _Level = nullptr);
+	
 
 
 protected:
@@ -132,7 +134,7 @@ private:
 	static std::function<void(unsigned int)> ConnectCallBack;
 
 	//PlayerActor만을 담아놓는 자료구조
-	static std::map<Net_LevelType, std::vector<BasePlayerActor*>> AllPlayerActors;
+	static std::map<GameEngineLevel*, std::vector<BasePlayerActor*>> AllPlayerActors;
 
 
 	//엑터 생성
@@ -161,7 +163,7 @@ private:
 	}
 
 	//Actor를 생성할 때 플레이어라면 별도의 자료구조에 저장
-	static void RegistPlayer(NetworkObjectBase* _NetObjPtr, BaseLevel*  _Level);
+	static void RegistPlayer(NetworkObjectBase* _NetObjPtr, GameEngineLevel*  _Level);
 
 
 	NetworkManager(){}
