@@ -61,11 +61,6 @@ void BaseEnemyActor::Start()
 
 void BaseEnemyActor::Update(float _DeltaTime)
 {
-	if (true == IsSnatch)
-	{
-		return;
-	}
-
 	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
 	{
 		RenderShake(_DeltaTime);
@@ -462,7 +457,6 @@ void BaseEnemyActor::MonsterSnatch(float _DeltaTime)
 
 	SnatchTime += _DeltaTime * 3.0f;
 	float4 LerpPosition = float4::LerpClamp(SnatchStartPosition, SnatchEndPosition, SnatchTime);
-	//float4 LerpPosition = float4::SLerpQuaternion(SnatchStartPosition, SnatchEndPosition, SnatchTime);
 	PhysXCapsule->SetWorldPosition(LerpPosition);
 
 	if (1.0f <= SnatchTime)
