@@ -63,7 +63,7 @@ ResultLight CalLight(int _LightIndex, float4 _Position, float4 _Normal, float _M
     
     float LightPower = AllLight[_LightIndex].LightPower;
         
-    if (0 != AllLight[_LightIndex].LightType)
+    if (1 == AllLight[_LightIndex].LightType)
     {
         float Distance = length(AllLight[_LightIndex].ViewLightPos.xyz - _Position.xyz);
             
@@ -75,7 +75,7 @@ ResultLight CalLight(int _LightIndex, float4 _Position, float4 _Normal, float _M
         
     if (2 == AllLight[_LightIndex].LightType)
     {
-        float3 LightVec = normalize(AllLight[_LightIndex].ViewLightPos.xyz - _Position.xyz);
+        float3 LightVec = normalize(_Position.xyz - AllLight[_LightIndex].ViewLightPos.xyz);
         float SpotCone = pow(saturate(dot(LightVec, normalize(AllLight[_LightIndex].ViewLightDir.xyz))), AllLight[_LightIndex].LightAngle);
             
         LightPower *= SpotCone;
@@ -85,7 +85,7 @@ ResultLight CalLight(int _LightIndex, float4 _Position, float4 _Normal, float _M
     {
         Result.CurLightDiffuseRatio = AllLight[_LightIndex].LightColor.xyz * CalDiffuseLight(_Position, _Normal, AllLight[_LightIndex]).xyz * LightPower;
         Result.CurLightSpacularRatio = AllLight[_LightIndex].LightColor.xyz * CalSpacularLight(_Position, _Normal, AllLight[_LightIndex]).xyz * (1.0f - _Metal) * LightPower * 0.5f;
-        Result.CurLightAmbientRatio = AllLight[_LightIndex].LightColor.xyz * CalAmbientLight(AllLight[_LightIndex]).xyz;
+        Result.CurLightAmbientRatio = AllLight[_LightIndex].LightColor.xyz * CalAmbientLight(AllLight[_LightIndex]).xyz * LightPower;
     }
     
     return Result;
