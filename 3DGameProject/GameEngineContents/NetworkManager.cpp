@@ -38,6 +38,7 @@ std::map<unsigned int, std::shared_ptr<ObjectUpdatePacket>> NetworkManager::AllU
 std::map<PacketEnum, std::vector<std::shared_ptr<GameEnginePacket>>> NetworkManager::AllPacket;
 GameEngineSerializer NetworkManager::ChunkPacketBytes;
 
+std::map<Net_LevelType, std::vector<BasePlayerActor*>> NetworkManager::AllPlayerActors;
 
 
 unsigned int NetworkManager::ServerOpen(int _Port)
@@ -315,11 +316,14 @@ void NetworkManager::SendFsmChangePacket(NetworkObjectBase* _NetObjPtr, int _Fsm
 }
 
 
-void NetworkManager::LinkNetwork(NetworkObjectBase* _NetObjPtr)
+void NetworkManager::LinkNetwork(NetworkObjectBase* _NetObjPtr, BaseLevel* _Level /*= nullptr*/)
 {
 	//이미 서버와 연동된 경우에는 아래를 실행시키지 않음
 	if (-1 != _NetObjPtr->GetNetObjectID())
 		return;
+
+	//연결시키려는 객체가 플레이어라면 자료구조에 보관
+	RegistPlayer(_NetObjPtr, _Level);
 
 	//싱글모드 일때
 	if (nullptr == NetInst)
@@ -408,14 +412,14 @@ void NetworkManager::FlushPackets()
 
 
 
-std::shared_ptr<NetworkObjectBase> NetworkManager::CreateNetActor(Net_ActorType _ActorType, class GameEngineLevel* _Level /*= nullptr*/, int _ObjectID /*= -1*/)
+std::shared_ptr<NetworkObjectBase> NetworkManager::CreateNetActor(Net_ActorType _ActorType, BaseLevel* _Level /*= nullptr*/, int _ObjectID /*= -1*/)
 {
 	if (nullptr == CurLevel)
 	{
 		MsgAssert("NetwortManager의 CurLevel 포인터가 nullptr입니다");
 	}
 
-	GameEngineLevel* CreateLevel = _Level;
+	BaseLevel* CreateLevel = _Level;
 	if (nullptr == CreateLevel)
 	{
 		CreateLevel = CurLevel;
@@ -448,6 +452,8 @@ std::shared_ptr<NetworkObjectBase> NetworkManager::CreateNetActor(Net_ActorType 
 	}
 	}
 
+	//생성한 객체가 플레이어라면 자료구조에 저장
+	RegistPlayer(NetObject.get(), CreateLevel);
 
 	if (-1 == _ObjectID)
 	{
@@ -459,4 +465,37 @@ std::shared_ptr<NetworkObjectBase> NetworkManager::CreateNetActor(Net_ActorType 
 	}
 
 	return NetObject;
+}
+
+const std::vector<BasePlayerActor*>& NetworkManager::GetPlayers(BaseLevel* _Level)
+{
+	Net_LevelType LevelType = _Level->GetNetLevelType();
+	return AllPlayerActors[LevelType];
+}
+
+
+void NetworkManager::RegistPlayer(NetworkObjectBase* _NetObjPtr, BaseLevel* _Level)
+{
+	BasePlayerActor* PlayerPtr = dynamic_cast<BasePlayerActor*>(_NetObjPtr);
+	if (nullptr == PlayerPtr)
+		return;
+
+	if (nullptr == _Level)
+	{
+		MsgAssert("[서버 오류] : Player를 알 수 없는 레벨에 생성하려고 했습니다");
+		return;
+	}
+
+	Net_LevelType LevelType = _Level->GetNetLevelType();
+	std::vector<BasePlayerActor*>& PlayerGroup = AllPlayerActors[LevelType];
+	std::vector<BasePlayerActor*>::iterator FindIter;
+
+	FindIter = std::find(PlayerGroup.begin(), PlayerGroup.end(), PlayerPtr);
+	if (PlayerGroup.end() != FindIter)
+	{
+		MsgAssert("[서버오류] : 해당 그룹에 이미 존재하는 플레이어를 또 넣으려고 했습니다");
+		return;
+	}
+
+	PlayerGroup.push_back(PlayerPtr);
 }

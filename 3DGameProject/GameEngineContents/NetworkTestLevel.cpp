@@ -6,6 +6,8 @@
 #include "ContentsEnum.h"
 
 #include "NetworkManager.h"
+#include "NetworkGUI.h"
+
 #include "PlayerActor_Nero.h"
 #include "PlayerActor_Vergil.h"
 #include "Plane.h"
@@ -48,25 +50,25 @@ void NetworkTestLevel::LevelChangeStart()
 	{
 		std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>(ActorOrder::Player);
 		Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-		NetworkManager::LinkNetwork(Nero.get());
+		NetworkManager::LinkNetwork(Nero.get(), this);
 	}
 
 	if (/*버질*//*true*/NetworkManager::IsClient())
 	{
 		std::shared_ptr<PlayerActor_Vergil> Nero = CreateActor<PlayerActor_Vergil>(ActorOrder::Player);
 		Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-		NetworkManager::LinkNetwork(Nero.get());
+		NetworkManager::LinkNetwork(Nero.get(), this);
 	}
 
 	if (/*미라지 블레이드*/false)
 	{
 		std::shared_ptr<Player_MirageBlade> Blade = nullptr;
 		Blade = CreateActor<Player_MirageBlade>();
-		NetworkManager::LinkNetwork(Blade.get());
+		NetworkManager::LinkNetwork(Blade.get(), this);
 	}
 
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
-	//Enemy = NetworkManager::CreateNetworkActor<Enemy_HellCaina>(this);
+	Enemy = NetworkManager::CreateNetworkActor<Enemy_HellCaina>(this);
 }
 
 
@@ -92,6 +94,9 @@ void NetworkTestLevel::Update(float _DeltaTime)
 			Enemy->On();
 		}
 	}
+
+	//const std::vector<BasePlayerActor*>& Players = NetworkManager::GetPlayers(this);
+	//NetworkGUI::GetInst()->PrintLog("Current Player Count : " + GameEngineString::ToString(Players.size()), float4{0.f, 1.f, 1.f, 1.f});
 }
 
 

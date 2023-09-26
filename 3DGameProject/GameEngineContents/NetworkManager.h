@@ -8,6 +8,7 @@ class BaseLevel;
 class NetworkObjectBase;
 class GameEngineActor;
 enum class PacketEnum;
+class BasePlayerActor;
 
 class NetworkManager
 {
@@ -91,10 +92,14 @@ public:
 
 
 	//이미 생성되어 있는 오브젝트를 서버와 연동시킵니다.
-	static void LinkNetwork(NetworkObjectBase* _NetObjPtr);
+	static void LinkNetwork(NetworkObjectBase* _NetObjPtr, BaseLevel* _Level = nullptr);
 
 	//쌓여있던 모든 패킷을 전송하는 부분
 	static void FlushPackets();
+
+	//해당 레벨의 플레이어 그룹을 반환합니다.
+	static const std::vector<BasePlayerActor*>& GetPlayers(BaseLevel* _Level);
+
 
 protected:
 	static GameEngineNet* NetInst;
@@ -126,14 +131,18 @@ private:
 
 	static std::function<void(unsigned int)> ConnectCallBack;
 
+	//PlayerActor만을 담아놓는 자료구조
+	static std::map<Net_LevelType, std::vector<BasePlayerActor*>> AllPlayerActors;
+
+
 	//엑터 생성
-	static std::shared_ptr<NetworkObjectBase> CreateNetActor(unsigned int _ActorType, class GameEngineLevel* _Level = nullptr, int _ObjectID = -1)
+	static std::shared_ptr<NetworkObjectBase> CreateNetActor(unsigned int _ActorType, BaseLevel* _Level = nullptr, int _ObjectID = -1)
 	{
 		Net_ActorType ActorType = static_cast<Net_ActorType>(_ActorType);
 		return CreateNetActor(ActorType, _Level, _ObjectID);
 	}
 
-	static std::shared_ptr<NetworkObjectBase> CreateNetActor(Net_ActorType _ActorType, class GameEngineLevel* _Level = nullptr, int _ObjectID = -1);
+	static std::shared_ptr<NetworkObjectBase> CreateNetActor(Net_ActorType _ActorType, BaseLevel* _Level = nullptr, int _ObjectID = -1);
 
 
 	template <typename DataType>
@@ -150,6 +159,9 @@ private:
 			_Left[i] = *_Right[i];
 		}
 	}
+
+	//Actor를 생성할 때 플레이어라면 별도의 자료구조에 저장
+	static void RegistPlayer(NetworkObjectBase* _NetObjPtr, BaseLevel*  _Level);
 
 
 	NetworkManager(){}
