@@ -1,9 +1,10 @@
 #pragma once
 
 #include <GameEngineCore/PhysicsLevel.h>
+#include "BaseLevel.h"
 
 // Ό³Έν :
-class TestLevel : public GameEngineLevel
+class TestLevel : public BaseLevel
 {
 public:
 	static TestLevel* TestLevelPtr;

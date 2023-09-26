@@ -108,6 +108,14 @@ bool BaseEnemyActor::FloorCheck(float _Distance)
 
 float4 BaseEnemyActor::MonsterAndPlayerCross()
 {
+	//const std::vector<BasePlayerActor*>& imimni = NetworkManager::GetPlayers(GetLevel());
+	//BasePlayerActor* Player = nullptr;
+
+	//for (size_t i = 0; i < imimni.size(); i++)
+	//{
+	//	Player = imimni[i];
+	//}
+
 	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
 	BasePlayerActor* Player = Players[0];
 
@@ -443,6 +451,29 @@ void BaseEnemyActor::RenderShake(float _DeltaTime)
 			EnemyRenderer->GetTransform()->SetLocalPosition({ CurRenderPosition.x - 3 , CurRenderPosition.y, CurRenderPosition.z + 3 });
 		}
 	}
+}
+
+void BaseEnemyActor::BusterCalculation()
+{
+	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
+	BasePlayerActor* Player = Players[0];
+
+	CurRenderPosition = EnemyRenderer->GetTransform()->GetLocalPosition();
+
+	float4 Forword = Player->GetTransform()->GetWorldForwardVector() * 120.0f;
+	float4 BusterPosition = Player->GetTransform()->GetWorldPosition() + Forword + float4{0.f, 20.f, 0.f};
+	
+	PhysXCapsule->SetWorldPosition(BusterPosition);
+	Player->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer->GetTransform());
+}
+
+void BaseEnemyActor::BusterEnd()
+{
+	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
+	BasePlayerActor* Player = Players[0];
+
+	Player->GetPlayerRenderer()->SetDettachTransform();
+	EnemyRenderer->GetTransform()->SetLocalPosition(CurRenderPosition);
 }
 
 void BaseEnemyActor::SnatchCalculation()

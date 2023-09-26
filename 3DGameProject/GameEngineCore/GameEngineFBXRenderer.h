@@ -201,6 +201,8 @@ public:
 
 	void SetAttachTransform(int Index, GameEngineTransform* _Transform);
 
+	void SetDettachTransform();
+
 	inline void NormalOn()
 	{
 		BaseValue.IsNormal = true;

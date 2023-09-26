@@ -35,6 +35,11 @@ public:
 		return PhysXCapsule;
 	}
 
+	std::shared_ptr<class GameEngineFBXRenderer> GetPlayerRenderer()
+	{
+		return Renderer;
+	}
+
 	void SetForce(float4 _Value);
 	void SetPush(float4 _Value);
 	void SetMove(float4 _Value);

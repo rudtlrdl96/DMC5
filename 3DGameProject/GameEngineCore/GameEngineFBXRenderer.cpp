@@ -716,3 +716,8 @@ void GameEngineFBXRenderer::SetAttachTransform(int Index, GameEngineTransform* _
 {
 	AttachTransformValue.push_back({ Index, _Transform });
 }
+
+void GameEngineFBXRenderer::SetDettachTransform()
+{
+	AttachTransformValue.clear();
+}

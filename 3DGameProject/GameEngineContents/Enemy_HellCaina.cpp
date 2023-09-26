@@ -225,9 +225,10 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 	case DamageType::Buster:
 		IsCollapse = false;
 		IsBusterAttack = true;
+		BusterCalculation();
 		RotationCheck();
 		PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
-		ChangeState(FSM_State_HellCaina::HellCaina_Buster);
+		ChangeState(FSM_State_HellCaina::HellCaina_Buster_Start);
 		break;
 	case DamageType::Stun:
 		break;
@@ -1375,16 +1376,21 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// em0000_Buster, 버스트 연속동작 (히트부터 다운까지)
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Buster,
 	.Start = [=] {
+	IsHeavyAttack = false;
+	IsAirAttack = false;
+	IsSlamAttack = false;
+	IsCollapse = true;
 	EnemyRenderer->ChangeAnimation("em0000_Buster");
 	},
 	.Update = [=](float _DeltaTime) {
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Prone_Getup);
+		ChangeState(FSM_State_HellCaina::HellCaina_Lie_Getup);
 		return;
 	}
 	},
 	.End = [=] {
+	IsBusterAttack = false;
 	}
 		});
 	// em0000_Buster_Start, 버스트 히트 시작
@@ -1393,28 +1399,36 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0000_Buster_Start");
 	},
 	.Update = [=](float _DeltaTime) {
+
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Prone_Getup);
+		BusterEnd();
+		ChangeState(FSM_State_HellCaina::HellCaina_Buster_Finish);
 		return;
 	}
 	},
 	.End = [=] {
 	}
-		});
+	});
 	// em0000_Buster_Finish, 버스트 히트 땅에 떨어짐
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Buster_Finish,
 	.Start = [=] {
+	IsHeavyAttack = false;
+	IsAirAttack = false;
+	IsSlamAttack = false;
+	IsCollapse = true;
 	EnemyRenderer->ChangeAnimation("em0000_Buster_Finish");
 	},
 	.Update = [=](float _DeltaTime) {
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
+		PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
 		ChangeState(FSM_State_HellCaina::HellCaina_Prone_Getup);
 		return;
 	}
 	},
 	.End = [=] {
+
 	}
 	});
 

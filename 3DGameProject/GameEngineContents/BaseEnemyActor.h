@@ -201,6 +201,8 @@ protected:
 	void AllDirectSetting();
 	void PushDirectSetting();
 	void SnatchCalculation();
+	void BusterCalculation();
+	void BusterEnd();
 	void MonsterSnatch(float _DeltaTime);
 	
 	void SetAdvance(float _Value)
