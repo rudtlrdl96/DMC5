@@ -1125,7 +1125,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	/////////////////////////슬램
 	
 	{
-		EnemyRenderer->SetAnimationStartEvent("em0000_slam_damage", 1, [=] { SetAir(-100000.0f); });
+		EnemyRenderer->SetAnimationStartEvent("em0000_slam_damage", 1, [=] { SetAir(-120000.0f); });
 	}
 	
 	// 슬램 피격 start
