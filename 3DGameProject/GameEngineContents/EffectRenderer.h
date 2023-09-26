@@ -158,6 +158,11 @@ public:
 		VertexOption.IsLockRotation = 0.0f;
 	}
 
+	inline bool IsLockRotation() const
+	{
+		return 0.0f == VertexOption.IsLockRotation;
+	}
+
 	void Reset();
 
 protected:
