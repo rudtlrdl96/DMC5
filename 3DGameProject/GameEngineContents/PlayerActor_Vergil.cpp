@@ -2317,10 +2317,6 @@ void PlayerActor_Vergil::NetLoad()
 			Renderer->ChangeAnimation("pl0300_Warp_Down", true);
 			},
 		.Update = [=](float _DeltaTime) {
-			if (true == Renderer->IsAnimationEnd())
-			{
-				ChangeState(FSM_State_Vergil::Vergil_Warp_Back_2);
-			}
 		},
 		.End = [=] {
 		}
