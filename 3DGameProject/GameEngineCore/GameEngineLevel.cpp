@@ -116,6 +116,8 @@ std::shared_ptr<GameEngineLight> GameEngineLevel::CreatePointLight(const float4&
 	NewLight->ShadowRange.x = _ShadowScale.x;
 	NewLight->ShadowRange.y = _ShadowScale.y;
 
+	NewLight->LightDataValue.LightNear = 0.1f;
+	NewLight->LightDataValue.LightFar = _Range;
 	NewLight->LightDataValue.LightRange = _Range;
 
 	NewLight->ShadowTargetTextureLoad(_ShadowScale);
@@ -136,6 +138,9 @@ std::shared_ptr<GameEngineLight> GameEngineLevel::CreateSpotLight(const float4& 
 	NewLight->LightDataValue.ShadowTargetSizeY = _ShadowScale.y;
 	NewLight->ShadowRange.x = _ShadowScale.x;
 	NewLight->ShadowRange.y = _ShadowScale.y;
+
+	NewLight->LightDataValue.LightNear = 0.1f;
+	NewLight->LightDataValue.LightFar = _Range;
 
 	NewLight->LightDataValue.LightRange = _Range;
 	NewLight->LightDataValue.LightAngle = _Angle;
