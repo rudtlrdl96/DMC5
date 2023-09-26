@@ -54,6 +54,9 @@ float4 MeshColor_PS(Output _Input) : SV_Target0
 {
     float4 Color = BaseColor;
     
+    Color += AddColor;
+    Color *= MulColor;
+    
     // 디퓨즈 라이트
     
     if (Color.a <= 0.0f)

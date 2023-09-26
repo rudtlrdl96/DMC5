@@ -117,6 +117,55 @@ ResultLight CalLight(int _LightIndex, float4 _Position, float4 _Normal, float _M
 //    return Result;
 //}
 
+float CalShadow(float4 _WorldPos, int _LightType)
+{
+    _WorldPos.a = 1.0f;
+            
+    if(0 == _LightType) // Directinal Light
+    {
+        float4 ShadowLightWorldPos = mul(_WorldPos, AllLight[LightCount].CameraViewInverseMatrix);
+        float4 ShadowLightPos = mul(ShadowLightWorldPos, AllLight[LightCount].LightViewProjectionMatrix);
+        float3 ShadowLightProjection = ShadowLightPos.xyz / ShadowLightPos.w;
+                
+        float2 ShadowUV = float2(ShadowLightProjection.x * 0.5f + 0.5f, ShadowLightProjection.y * -0.5f + 0.5f);
+    
+        float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, ShadowUV.xy).r;
+                        
+        if (0.001f < ShadowUV.x && 0.999f > ShadowUV.x &&
+            0.001f < ShadowUV.y && 0.999f > ShadowUV.y &&
+            ShadowLightProjection.z >= (ShadowDepthValue + 0.001f))
+        {
+            return 0.01f;
+        }
+    }
+    else if (1 == _LightType) // Point Light
+    {
+        
+    }
+    else // SpotLight
+    {
+        float4 TargetShadowViewPos = mul(_WorldPos, AllLight[LightCount].CameraViewInverseMatrix);
+        float4 TargetShadowProjectionPos = mul(TargetShadowViewPos, AllLight[LightCount].LightViewProjectionMatrix);                
+        float3 ShadowLightProjection = TargetShadowProjectionPos.xyz / AllLight[LightCount].LightFar;
+                
+        float2 ShadowUV = float2(ShadowLightProjection.x * 0.5f + 0.5f, ShadowLightProjection.y * -0.5f + 0.5f);
+    
+        float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, ShadowUV.xy).r;
+                        
+        if (0.001f < ShadowUV.x && 0.999f > ShadowUV.x &&
+            0.001f < ShadowUV.y && 0.999f > ShadowUV.y &&
+            ShadowLightProjection.z >= (ShadowDepthValue + 0.001f))
+        {
+            return 0.01f;
+        }
+    
+        //float3 LightDir = AllLight[LightCount].LightViewProjectionMatrix
+        
+    }
+    
+    return 1.0f;
+}
+
 LightOutPut DeferredCalLight_PS(Output _Input)
 {
     LightOutPut NewOutPut = (LightOutPut) 0;
@@ -139,24 +188,11 @@ LightOutPut DeferredCalLight_PS(Output _Input)
       
     ResultLight CalLightValue = CalLight(LightCount, DeferredPosition, Normal, Mat.r);
                         
-    float4 ShadowWorldViewPos = DeferredPosition;
-    ShadowWorldViewPos.a = 1.0f;
-            
-    float4 ShadowLightWorldPos = mul(ShadowWorldViewPos, AllLight[LightCount].CameraViewInverseMatrix);
-    float4 ShadowLightPos = mul(ShadowLightWorldPos, AllLight[LightCount].LightViewProjectionMatrix);
-    float3 ShadowLightProjection = ShadowLightPos.xyz / ShadowLightPos.w;
-                
-    float2 ShadowUV = float2(ShadowLightProjection.x * 0.5f + 0.5f, ShadowLightProjection.y * -0.5f + 0.5f);
-    float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, ShadowUV.xy).r;
-                        
-    if (0.001f < ShadowUV.x && 0.999f > ShadowUV.x &&
-            0.001f < ShadowUV.y && 0.999f > ShadowUV.y &&
-            ShadowLightProjection.z >= (ShadowDepthValue + 0.001f))
-    {
-        CalLightValue.CurLightDiffuseRatio *= 0.01f;
-        CalLightValue.CurLightSpacularRatio *= 0.01f;
-    }
-
+    float ShadowValue = CalShadow(DeferredPosition, AllLight[LightCount].LightType);
+        
+    CalLightValue.CurLightDiffuseRatio *= ShadowValue;
+    CalLightValue.CurLightSpacularRatio *= ShadowValue;
+    
     DiffuseRatio.xyz += CalLightValue.CurLightDiffuseRatio.xyz;
     SpacularRatio.xyz += CalLightValue.CurLightSpacularRatio.xyz;
     AmbientRatio.xyz += CalLightValue.CurLightAmbientRatio.xyz;

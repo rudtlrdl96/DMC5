@@ -1,4 +1,5 @@
 #include "Transform.fx"
+#include "RenderBaseValue.fx"
 
 struct Input
 {
@@ -64,5 +65,11 @@ float4 MeshTexture_PS(Output _Input) : SV_Target0
         clip(-1);
     }
     
-    return float4(AlbmData.rgb, AtosData.a) + NrmrData * 0.000001f;
+    float4 Color = float4(AlbmData.rgb, AtosData.a);
+    
+    Color += AddColor;
+    Color *= MulColor;
+    
+    
+    return Color + (NrmrData * 0.000001f);
 }

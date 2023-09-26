@@ -105,8 +105,8 @@ cbuffer EffectData : register(b2)
     float ClipEndY;    
     float UVX;    
     float UVY;    
-    float4 MulColor;
-    float4 PlusColor;
+    float4 EffectMulColor;
+    float4 EffectPlusColor;
 };
 
 AlphaOutPut MeshTexture_PS(Output _Input)
@@ -130,8 +130,8 @@ AlphaOutPut MeshTexture_PS(Output _Input)
         
     Result.ResultColor = DiffuseTexture.Sample(ENGINEBASE, UV);
         
-    Result.ResultColor += PlusColor;
-    Result.ResultColor *= MulColor;
+    Result.ResultColor += EffectPlusColor;
+    Result.ResultColor *= EffectMulColor;
     
     return Result;
 }

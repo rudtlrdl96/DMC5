@@ -52,6 +52,8 @@ class RenderBaseValue
 {
 public:
 	float4 BaseColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float4 AddColor = { 0.0f, 0.0f, 0.0f, 0.0f };
+	float4 MulColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 	float DeltaTime = 0.0f;
 	float SumDeltaTime = 0.0f;
 	int IsAnimation = 0;
@@ -183,6 +185,28 @@ public:
 	{
 		BaseValue.BaseColor = _Color;
 	}
+
+	inline void SetAddColor(const float4& _Color)
+	{
+		BaseValue.AddColor = _Color;
+	}
+
+	inline float4 GetAddColor() const
+	{
+		return BaseValue.AddColor;
+	}
+
+	inline void SetMulColor(const float4& _Color)
+	{
+		BaseValue.MulColor = _Color;
+	}
+
+	inline float4 GetMulColor() const
+	{
+		return BaseValue.MulColor;
+	}
+
+
 
 protected:
 	void Start();

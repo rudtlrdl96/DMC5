@@ -128,19 +128,19 @@ void GameEngineLight::LightUpdate(GameEngineCamera* _Camera, float _DeltaTime)
 		GetTransform()->GetWorldUpVector());
 
 
-	if (LightDataValue.LightType == static_cast<int>(LightType::Directional))
+	if (LightDataValue.LightType == static_cast<int>(LightType::Point))
 	{
-		LightDataValue.LightProjectionMatrix.OrthographicLH(
-			ShadowRange.x,
-			ShadowRange.y,
+		LightDataValue.LightProjectionMatrix.PerspectiveFovLH(
+			90.0f,
+			ShadowRange.x / ShadowRange.y,
 			LightDataValue.LightNear,
 			LightDataValue.LightFar);
 	}
 	else
 	{
-		LightDataValue.LightProjectionMatrix.PerspectiveFovLH(
-			90.0f,
-			ShadowRange.x / ShadowRange.y,
+		LightDataValue.LightProjectionMatrix.OrthographicLH(
+			ShadowRange.x,
+			ShadowRange.y,
 			LightDataValue.LightNear,
 			LightDataValue.LightFar);
 	}
