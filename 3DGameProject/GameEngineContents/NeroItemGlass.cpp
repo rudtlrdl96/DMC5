@@ -35,9 +35,9 @@ void NeroItemGlass::Start()
 			GameEngineFBXMesh::Load(File.GetFullPath());
 		}
 	}
-	NeroUI_ItemGlass = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 560.0f,-380.0f,172.0f }, { 0.6f,0.6f,0.6f }, { -90.0f,0.0f,0.0f }, "NeroItemGlass.FBX");
-	ArmList = PlayerActor_Nero::GetBreakerListPointer();
 	SetItemText();
+	//NeroUI_ItemGlass = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 560.0f,-380.0f,172.0f }, { 0.6f,0.6f,0.6f }, { -90.0f,0.0f,0.0f }, "NeroItemGlass.FBX","FBX_Alpha");
+	ArmList = PlayerActor_Nero::GetBreakerListPointer();
 }
 
 void NeroItemGlass::Update(float _DeltaTime)
@@ -45,6 +45,53 @@ void NeroItemGlass::Update(float _DeltaTime)
 	MaxCount->SetText(std::to_string(MaxItem));
 	CurCount->SetText(std::to_string(ArmList->size()-1));
 	CurDevilBreaker = ArmList->back();
+	AddDestroyValue();
+	AddMoveBreaker(_DeltaTime);
+	DestroyMoveBreaker(_DeltaTime);
+	if (true == GameEngineInput::IsPress("UI_Tab"))
+	{
+
+		NeroUI_ItemGlass->GetTransform()->AddLocalPosition({ 0.f,0.f,10.0f });
+	}
+}
+
+void NeroItemGlass::SetItemText()
+{
+	ItemText = CreateComponent<GameEngineFontRenderer>(999);
+	ItemText->SetFont("DMC5Font");
+	ItemText->SetFontFlag(FW1_CENTER);
+	ItemText->SetScale(36);
+	ItemText->SetColor(float4(0.701f, 0.772f, 0.788f, 1.0f));
+	ItemText->GetTransform()->SetLocalPosition({ 540.0f,-340.f,0.0f });
+
+
+	CurCount = CreateComponent<GameEngineFontRenderer>(5);
+	CurCount->SetFont("DMC5Font");
+	CurCount->SetFontFlag(FW1_CENTER);
+	CurCount->SetScale(50);
+	CurCount->SetColor(float4(0.701f, 0.772f, 0.788f, 1.0f));
+	CurCount->GetTransform()->SetLocalPosition({ 634.0f,-327.f,0.0f, });
+
+
+	SlashText = CreateComponent<GameEngineFontRenderer>(8);
+	SlashText->SetFont("DMC5Font");
+	SlashText->SetFontFlag(FW1_CENTER);
+	SlashText->SetScale(36);
+	SlashText->SetColor(float4(0.656f, 0.668f, 0.665f, 1.0f));
+	SlashText->GetTransform()->SetLocalPosition({ 660.0f,-340.f,0.0f });
+	SlashText->SetText("/");
+
+	MaxCount = CreateComponent<GameEngineFontRenderer>(8);
+	MaxCount->SetFont("DMC5Font");
+	MaxCount->SetFontFlag(FW1_CENTER);
+	MaxCount->SetScale(36);
+	MaxCount->SetColor(float4(0.656f, 0.668f, 0.665f, 1.0f));
+	MaxCount->GetTransform()->SetLocalPosition({ 680.0f,-340.f,0.0f });
+
+}
+
+void NeroItemGlass::AddDestroyValue()
+{
 	if (AddItemValue == true)
 	{
 		switch (CurDevilBreaker)
@@ -52,7 +99,7 @@ void NeroItemGlass::Update(float _DeltaTime)
 		case DevilBreaker::None:
 			ItemText->SetText("Donthave");
 			AddItemValue = false;
-			AddFirst  = true;
+			AddFirst = true;
 			break;
 		case DevilBreaker::Overture:
 			ItemText->SetText("Overture");
@@ -60,7 +107,7 @@ void NeroItemGlass::Update(float _DeltaTime)
 			Render->SetFBXMesh("OvertureArmUI.FBX", "FBX_Low");
 			Arms.insert(Arms.begin(), Render);
 			AddItemValue = false;
-			AddFirst  = true;
+			AddFirst = true;
 			break;
 		case DevilBreaker::Gerbera:
 			ItemText->SetText("Gerbera");
@@ -68,7 +115,7 @@ void NeroItemGlass::Update(float _DeltaTime)
 			Render->SetFBXMesh("GerberaArmUI.FBX", "FBX_Low");
 			Arms.insert(Arms.begin(), Render);
 			AddItemValue = false;
-			AddFirst  = true;
+			AddFirst = true;
 			break;
 		case DevilBreaker::BusterArm:
 			ItemText->SetText("BusterArm");
@@ -76,7 +123,7 @@ void NeroItemGlass::Update(float _DeltaTime)
 			Render->SetFBXMesh("BusterArmUI.FBX", "FBX_Low");
 			Arms.insert(Arms.begin(), Render);
 			AddItemValue = false;
-			AddFirst  = true;
+			AddFirst = true;
 			break;
 		default:
 			break;
@@ -110,43 +157,6 @@ void NeroItemGlass::Update(float _DeltaTime)
 			break;
 		}
 	}
-	AddMoveBreaker(_DeltaTime);
-	DestroyMoveBreaker(_DeltaTime);
-}
-
-void NeroItemGlass::SetItemText()
-{
-	ItemText = CreateComponent<GameEngineFontRenderer>(5);
-	ItemText->SetFont("DMC5Font");
-	ItemText->SetFontFlag(FW1_CENTER);
-	ItemText->SetScale(36);
-	ItemText->SetColor(float4(0.701f, 0.772f, 0.788f, 1.0f));
-	ItemText->GetTransform()->SetLocalPosition({ 540.0f,-340.f,0.0f });
-
-
-	CurCount = CreateComponent<GameEngineFontRenderer>(5);
-	CurCount->SetFont("DMC5Font");
-	CurCount->SetFontFlag(FW1_CENTER);
-	CurCount->SetScale(50);
-	CurCount->SetColor(float4(0.701f, 0.772f, 0.788f, 1.0f));
-	CurCount->GetTransform()->SetLocalPosition({ 634.0f,-327.f,0.0f, });
-
-
-	SlashText = CreateComponent<GameEngineFontRenderer>(8);
-	SlashText->SetFont("DMC5Font");
-	SlashText->SetFontFlag(FW1_CENTER);
-	SlashText->SetScale(36);
-	SlashText->SetColor(float4(0.656f, 0.668f, 0.665f, 1.0f));
-	SlashText->GetTransform()->SetLocalPosition({ 660.0f,-340.f,0.0f });
-	SlashText->SetText("/");
-
-	MaxCount = CreateComponent<GameEngineFontRenderer>(8);
-	MaxCount->SetFont("DMC5Font");
-	MaxCount->SetFontFlag(FW1_CENTER);
-	MaxCount->SetScale(36);
-	MaxCount->SetColor(float4(0.656f, 0.668f, 0.665f, 1.0f));
-	MaxCount->GetTransform()->SetLocalPosition({ 680.0f,-340.f,0.0f });
-
 }
 
 
@@ -170,17 +180,17 @@ void NeroItemGlass::AddMoveBreaker(float _Delta)
 		Arms[0]->GetTransform()->SetLocalPosition({ 635.0f,-300.0f,50.0f });
 		if (Arms.size() >= 2)
 		{
-			Arms[1]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 730.0f,-300.0f,50.0f }, { 635.0f,-300.0f,50.0f }, Time * 2.0f));
+			Arms[1]->GetTransform()->SetLocalPosition(float4::LerpClamp(StartPos, { 635.0f,-300.0f,50.0f }, Time * 2.0f));
 			Arms[1]->GetTransform()->SetLocalScale(float4::LerpClamp(FirstScale, ThirdScale, Time * 2.0f));
 			Arms[1]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 90.0f,0.0f,180.0f }, { 180.0f,0.0f,180.0f }, Time * 2.0f));
 			if (Arms.size() >= 3)
 			{
-				Arms[2]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 730.0f,-300.0f,50.0f }, { 635.0f,-300.0f,50.0f }, Time * 2.0f));
+				Arms[2]->GetTransform()->SetLocalPosition(float4::LerpClamp(StartPos, { 635.0f,-300.0f,50.0f }, Time * 2.0f));
 				Arms[2]->GetTransform()->SetLocalScale(float4::LerpClamp(SecondScale, ThirdScale, Time * 2.0f));
 				Arms[2]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 150.0f,00.0f,210.0f }, { 180.0f,00.0f,210.0f }, Time * 2.0f));
 				if (Arms.size() >= 4)
 				{
-					Arms[3]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 730.0f,-300.0f,50.0f }, { 635.0f,-300.0f,50.0f }, Time * 2.0f));
+					Arms[3]->GetTransform()->SetLocalPosition(float4::LerpClamp(StartPos, { 635.0f,-300.0f,50.0f }, Time * 2.0f));
 					Arms[3]->GetTransform()->SetLocalScale(float4::LerpClamp(ThirdScale, ThirdScale, Time * 2.0f));
 					Arms[3]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 210.0f,00.0f,240.0f }, { 210.0f,00.0f,255.0f }, Time * 2.0f));
 
@@ -199,17 +209,17 @@ void NeroItemGlass::AddMoveBreaker(float _Delta)
 	{
 
 		Time += _Delta;
-		Arms[0]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 635.0f, -300.0f, 50.0f }, { 730.0f,-300.0f,50.0f }, Time * 2.0f));
+		Arms[0]->GetTransform()->SetLocalPosition(float4::LerpClamp(EndPos, StartPos, Time * 2.0f));
 		Arms[0]->GetTransform()->SetLocalScale(float4::LerpClamp(ThirdScale, FirstScale, Time * 2.0f));
 		Arms[0]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 180.0f,0.0f,150.0f }, { 90.0f,0.0f,180.0f }, Time * 2.0f));
 		if (Arms.size() >= 2)
 		{
-			Arms[1]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 635.0f, -300.0f, 50.0f }, { 730.0f,-300.0f,50.0f }, Time * 2.0f));
+			Arms[1]->GetTransform()->SetLocalPosition(float4::LerpClamp(EndPos, StartPos, Time * 2.0f));
 			Arms[1]->GetTransform()->SetLocalScale(float4::LerpClamp(ThirdScale, SecondScale, Time * 2.0f));
 			Arms[1]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 180.0f,0.0f,180.0f }, { 150.0f,00.0f,210.0f }, Time * 2.0f));
 			if (Arms.size() >= 3)
 			{
-				Arms[2]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 635.0f, -300.0f, 50.0f }, { 730.0f,-300.0f,50.0f }, Time * 2.0f));
+				Arms[2]->GetTransform()->SetLocalPosition(float4::LerpClamp(EndPos, StartPos, Time * 2.0f));
 				Arms[2]->GetTransform()->SetLocalScale(float4::LerpClamp(ThirdScale, ThirdScale, Time * 2.0f));
 				Arms[2]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 180.0f,00.0f,210.0f }, { 210.0f,00.0f,240.0f }, Time * 2.0f));
 				if (Arms.size() >= 4)
@@ -238,20 +248,20 @@ void NeroItemGlass::DestroyMoveBreaker(float _Delta)
 		Time += _Delta;
 		Arms[0]->GetTransform()->SetLocalScale(FirstScale);
 		Arms[0]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 90.0f,0.0f,180.0f }, { 90.0f,0.0f,180.0f }, Time * 2.0f));
-		Arms[0]->GetTransform()->SetLocalPosition(BezierTransform({ 730.0f,-300.0f,50.0f }, { 640.0f,-300.0f,50.0f }, { 640.0f,-350.0f,50.0f }, Time * 2.0f));
+		Arms[0]->GetTransform()->SetLocalPosition(BezierTransform(StartPos, { 640.0f,-300.0f,50.0f }, { 640.0f,-350.0f,50.0f }, Time * 2.0f));
 		if (Arms.size() >= 2)
 		{
-			Arms[1]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 730.0f,-300.0f,50.0f }, { 635.0f,-300.0f,50.0f }, Time * 2.0f));
+			Arms[1]->GetTransform()->SetLocalPosition(float4::LerpClamp(StartPos, { 635.0f,-300.0f,50.0f }, Time * 2.0f));
 			Arms[1]->GetTransform()->SetLocalScale(float4::LerpClamp(SecondScale, SecondScale, Time * 2.0f));
 			Arms[1]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 150.0f,00.0f,210.0f }, { 180.0f,00.0f,180.0f }, Time * 2.0f));
 			if (Arms.size() >= 3)
 			{
-				Arms[2]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 730.0f,-300.0f,50.0f }, { 635.0f,-300.0f,50.0f }, Time * 2.0f));
+				Arms[2]->GetTransform()->SetLocalPosition(float4::LerpClamp(StartPos, { 635.0f,-300.0f,50.0f }, Time * 2.0f));
 				Arms[2]->GetTransform()->SetLocalScale(float4::LerpClamp(ThirdScale, ThirdScale, Time * 2.0f));
 				Arms[2]->GetTransform()->SetLocalRotation(float4::LerpClamp( { 210.0f,00.0f,240.0f }, { 180.0f,00.0f,210.0f }, Time * 2.0f));
 				if (Arms.size() >= 4)
 				{
-					Arms[3]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 730.0f,-300.0f,50.0f }, { 635.0f,-300.0f,50.0f }, Time * 2.0f));
+					Arms[3]->GetTransform()->SetLocalPosition(float4::LerpClamp(StartPos, { 635.0f,-300.0f,50.0f }, Time * 2.0f));
 					Arms[3]->GetTransform()->SetLocalScale(float4::LerpClamp(ThirdScale, ThirdScale, Time * 2.0f));
 					Arms[3]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 210.0f,00.0f,320.0f }, { 210.0f,00.0f,255.0f }, Time * 2.0f));
 				
@@ -273,17 +283,17 @@ void NeroItemGlass::DestroyMoveBreaker(float _Delta)
 		Arms[0]->Death();
 		if (Arms.size() >= 2)
 		{
-			Arms[1]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 635.0f, -300.0f, 50.0f }, { 730.0f,-300.0f,50.0f }, Time * 2.0f));
+			Arms[1]->GetTransform()->SetLocalPosition(float4::LerpClamp(EndPos, StartPos, Time * 2.0f));
 			Arms[1]->GetTransform()->SetLocalScale(float4::LerpClamp(SecondScale, FirstScale, Time * 2.0f));
 			Arms[1]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 180.0f,00.0f,180.0f }, { 90.0f,0.0f,180.0f }, Time * 2.0f));
 			if (Arms.size() >= 3)
 			{
-				Arms[2]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 635.0f, -300.0f, 50.0f }, { 730.0f,-300.0f,50.0f }, Time * 2.0f));
+				Arms[2]->GetTransform()->SetLocalPosition(float4::LerpClamp(EndPos, StartPos, Time * 2.0f));
 				Arms[2]->GetTransform()->SetLocalScale(float4::LerpClamp(ThirdScale, SecondScale, Time * 2.0f));
 				Arms[2]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 180.0f,00.0f,210.0f }, { 150.0f,00.0f,210.0f }, Time * 2.0f));
 				if (Arms.size() >= 4)
 				{
-					Arms[3]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 635.0f,-300.0f,50.0f }, { 730.0f,-300.0f,50.0f }, Time * 2.0f));
+					Arms[3]->GetTransform()->SetLocalPosition(float4::LerpClamp({ 635.0f,-300.0f,50.0f }, StartPos, Time * 2.0f));
 					Arms[3]->GetTransform()->SetLocalScale(float4::LerpClamp(ThirdScale, ThirdScale, Time * 2.0f));
 					Arms[3]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 210.0f,00.0f,255.0f }, { 210.0f,00.0f,240.0f }, Time * 2.0f));
 				

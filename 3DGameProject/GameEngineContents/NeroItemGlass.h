@@ -40,6 +40,7 @@ protected:
 
 private:
 	void SetItemText();
+	void AddDestroyValue();
 	float4 BezierTransform(const float4& _Start, const float4& _Height, const float4& _End, float _Ratio);
 	std::shared_ptr<class UIFBXRenderer> NeroUI_ItemGlass = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> ItemText = nullptr;
@@ -56,7 +57,8 @@ private:
 	float4 FirstScale = { 5.0f,5.0f,5.0f };
 	float4 SecondScale = { 4.0f,4.0f,4.0f };
 	float4 ThirdScale = { 3.0f,3.0f,3.0f };
-
+	float4 StartPos = { 730.0f,-300.0f,100.0f };
+	float4 EndPos = { 635.0f,-300.0f,100.0f };
 	int i = 0;
 	// 손돌리기
 	bool AddFirst = false;

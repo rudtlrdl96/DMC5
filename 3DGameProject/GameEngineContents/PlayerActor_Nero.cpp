@@ -11,6 +11,7 @@
 #include "AttackCollision.h"
 #include "BaseEnemyActor.h"
 #include "NeroItemGlass.h"
+#include "NeroHPUI.h"
 #include "FXSystem.h"
 std::list<DevilBreaker> PlayerActor_Nero::BreakerList;
 PlayerActor_Nero::~PlayerActor_Nero()
@@ -49,6 +50,8 @@ void PlayerActor_Nero::Start()
 void PlayerActor_Nero::PlayerLoad()
 {
 	GetLevel()->CreateActor<NeroItemGlass>();
+	GetLevel()->CreateActor<NeroHPUI>();
+
 	// Effect »ý¼º
 	{
 		EffectSystem = CreateComponent<FXSystem>();
