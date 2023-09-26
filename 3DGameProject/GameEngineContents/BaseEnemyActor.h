@@ -144,7 +144,10 @@ protected:
 	// 플레이어 세팅
 	class BasePlayerActor* Player = nullptr;
 	void PlayerCheckInit();
-	void PlayerCheck(GameEngineCollision* _Collision);
+	void PlayerContactCheck(float _DeltaTime, GameEngineCollision* _Collision);
+	void PlayerAttackCheck(GameEngineCollision* _Collision);
+
+	float ContactDelayTime = 0.0f;
 	//====================================================
 	
 

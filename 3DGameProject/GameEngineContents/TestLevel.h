@@ -32,5 +32,6 @@ private:
 	std::shared_ptr<class AnimationToolWindow> AnimWindow = nullptr;
 	std::shared_ptr<class ObjectWindow> ObjWindow = nullptr;
 	std::shared_ptr<class Enemy_HellCaina> HellCaina = nullptr;
+	std::shared_ptr<class Plane> Flat = nullptr;
 };
 

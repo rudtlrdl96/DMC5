@@ -119,23 +119,35 @@ void BaseEnemyActor::PlayerCheckInit()
 	}
 }
 
-void BaseEnemyActor::PlayerCheck(GameEngineCollision* _Collision)
+void BaseEnemyActor::PlayerContactCheck(float _DeltaTimem, GameEngineCollision* _Collision)
+{
+	ContactDelayTime += _DeltaTimem;
+
+	if (10.0f >= ContactDelayTime)
+	{
+		return;
+	}
+
+	ContactDelayTime = 0.0f;
+
+	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
+	size_t Playersize = Players.size();
+
+	GameEngineCollision* CheckCollision = _Collision;
+	BasePlayerActor* ContactPlayer = dynamic_cast<BasePlayerActor*>(CheckCollision->GetActor());
+
+	Player = ContactPlayer;
+}
+
+void BaseEnemyActor::PlayerAttackCheck(GameEngineCollision* _Collision)
 {
 	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
 	size_t Playersize = Players.size();
 
 	GameEngineCollision* CheckCollision = _Collision;
-	BasePlayerActor* PActor = dynamic_cast<BasePlayerActor*>(CheckCollision->GetActor());
+	BasePlayerActor* ContactPlayer = dynamic_cast<BasePlayerActor*>(CheckCollision->GetActor());
 
-	bool IsSame = false;
-
-	for (size_t i = 0; i < Playersize; i++)
-	{
-		if (PActor == Players[i])
-		{
-			IsSame = true;
-		}
-	}
+	Player = ContactPlayer;
 }
 
 float4 BaseEnemyActor::MonsterAndPlayerCross()

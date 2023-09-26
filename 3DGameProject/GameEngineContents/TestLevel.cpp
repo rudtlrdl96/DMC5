@@ -76,11 +76,17 @@ void TestLevel::LevelChangeStart()
 		NetworkManager::LinkNetwork(Vergil.get(), this);
 	}
 
-	HellCaina = CreateActor<Enemy_HellCaina>();
-	HellCaina->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	if (nullptr == HellCaina)
+	{
+		HellCaina = CreateActor<Enemy_HellCaina>();
+		HellCaina->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+		HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	}
 
-	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
+	if (nullptr == Flat)
+	{
+		Flat = CreateActor<Plane>();
+	}
 
 	GameEngineCoreWindow::Clear();
 	GameEngineCoreWindow::AddDebugRenderTarget(0, "Forward Target", GetCamera(100)->GetCamForwardTarget());

@@ -136,7 +136,7 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 	std::shared_ptr<AttackCollision> AttackCol = std::dynamic_pointer_cast<AttackCollision>(Col);
 	if (nullptr == AttackCol) { return; }
 
-	PlayerCheck(AttackCol.get());
+	PlayerAttackCheck(AttackCol.get());
 
 	AttackDirectCheck();
 
@@ -257,7 +257,7 @@ void Enemy_HellCaina::RecognizeCollisionCheck(float _DeltaTime)
 	std::shared_ptr<GameEngineCollision> Collision = RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D);
 	if (nullptr == Collision) { return; }
 
-	PlayerCheck(Collision.get());
+	PlayerContactCheck(_DeltaTime, Collision.get());
 	IsRecognize = true;
 }
 
