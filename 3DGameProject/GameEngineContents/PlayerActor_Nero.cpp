@@ -39,6 +39,11 @@ void PlayerActor_Nero::Start()
 			PlayerLoad();
 			LoadCheck = true;
 		});
+
+	LinkData_UpdatePacket<int>(ArmValue, [this](int _BeforeData)
+		{
+			SetArm(ArmValue);
+		});
 }
 
 void PlayerActor_Nero::PlayerLoad()

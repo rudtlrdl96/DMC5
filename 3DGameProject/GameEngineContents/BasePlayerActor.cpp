@@ -167,10 +167,7 @@ void BasePlayerActor::Start()
 	Col_Attack->Off();
 	Col_Attack->SetColType(ColType::AABBBOX3D);
 
-	LinkData_UpdatePacket<int>(ArmValue, [this](int _BeforeData)
-	{
-		SetArm(ArmValue);
-	});
+
 
 	LinkData_UpdatePacket<bool>(DTValue, [this](bool _BeforeData)
 	{
