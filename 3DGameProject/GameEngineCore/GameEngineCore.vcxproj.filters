@@ -883,6 +883,9 @@
     <ClInclude Include="ThirdParty\NvCloth\inc\ps\PsAllocator.h">
       <Filter>ThirdParty\NvCloth\Header\ps</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineGeometryShader.h">
+      <Filter>Resources\Shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -1103,6 +1106,9 @@
     <ClCompile Include="GameEngineCore_Resources.cpp" />
     <ClCompile Include="BloomEffect.cpp">
       <Filter>Content\PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineGeometryShader.cpp">
+      <Filter>Resources\Shader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

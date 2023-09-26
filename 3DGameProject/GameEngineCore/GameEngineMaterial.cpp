@@ -4,6 +4,7 @@
 #include "GameEngineVertexBuffer.h"
 #include "GameEngineIndexBuffer.h"
 #include "GameEngineVertexShader.h"
+#include "GameEngineGeometryShader.h"
 #include "GameEngineRasterizer.h"
 #include "GameEnginePixelShader.h"
 #include "GameEngineBlend.h"
@@ -41,9 +42,14 @@ void GameEngineMaterial::DomainShader()
 {
 
 }
-void GameEngineMaterial::GeometryShaeder()
+void GameEngineMaterial::GeometryShader()
 {
+	if (nullptr == GeometryShaderPtr)
+	{
+		return;
+	}
 
+	GeometryShaderPtr->Setting();
 }
 
 void GameEngineMaterial::Rasterizer()
@@ -158,7 +164,7 @@ void GameEngineMaterial::Setting()
 	HullShader();
 	Tessellator();
 	DomainShader();
-	GeometryShaeder();
+	GeometryShader();
 	Rasterizer();
 	PixelShader();
 	OutputMerger();

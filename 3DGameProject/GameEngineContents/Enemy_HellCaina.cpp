@@ -1418,6 +1418,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	IsHeavyAttack = false;
 	IsAirAttack = false;
 	IsSlamAttack = false;
+	IsBusterAttack = false;
 	IsCollapse = true;
 	EnemyRenderer->ChangeAnimation("em0000_Buster_Finish");
 	},

@@ -163,6 +163,7 @@
     <FxCompile Include="FadeShader.hlsl" />
     <FxCompile Include="JudgementCutShader.hlsl" />
     <FxCompile Include="Light.fx" />
+    <FxCompile Include="Rain.hlsl" />
     <FxCompile Include="Reflection.fx" />
     <FxCompile Include="MyShader.fx" />
     <FxCompile Include="ContentsMesh.hlsl" />

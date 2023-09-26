@@ -4,6 +4,7 @@ enum class ShaderType
 {
 	None,
 	Vertex,
+	Geometry,
 	Pixel,
 };
 
