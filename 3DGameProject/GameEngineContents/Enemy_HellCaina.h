@@ -130,6 +130,7 @@ private:
 	bool IsAirAttack = false;     // 에어공격 히트
 	bool IsSlamAttack = false;    // 슬램공격 히트
 	bool IsBusterAttack = false;  // 버스터 히트
+	bool IsVergilLight = false;
 	bool IsCollapse = false;      // 쓰러져있는 상태
 	bool IsRecognize = false;
 	

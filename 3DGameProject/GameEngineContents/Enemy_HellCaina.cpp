@@ -149,6 +149,12 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 	PushDirectSetting();
 	DamageData Data = AttackCol->GetDamage();
 
+	if (DamageType::VergilLight == Data.DamageTypeValue)
+	{
+		IsVergilLight = true;
+		Data.DamageTypeValue = DamageType::Light;
+	}
+
 	switch (Data.DamageTypeValue)
 	{
 	case DamageType::None:
@@ -234,6 +240,7 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 		break;
 	}
 
+	IsVergilLight = false;
 	AttackDelayCheck = 0.0f;
 }
 
@@ -885,7 +892,15 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 정면 약공격 피격
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Front,
 	.Start = [=] {
-	SetPush(26000.0f);
+	if (true == IsVergilLight)
+	{
+		SetPush(10000.0f);
+	}
+	else
+	{
+		SetPush(26000.0f);
+	}
+	
 	EnemyRenderer->ChangeAnimation("em0000_standing_damage_weak_front_01", true);
 	},
 	.Update = [=](float _DeltaTime) {
@@ -902,7 +917,14 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 후면 약공격 피격 (뒤로돈다)
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Back,
 	.Start = [=] {
-	SetPush(26000.0f);
+	if (true == IsVergilLight)
+	{
+		SetPush(10000.0f);
+	}
+	else
+	{
+		SetPush(26000.0f);
+	}
 	EnemyRenderer->ChangeAnimation("em0000_standing_damage_weak_back_01", true);
 	},
 	.Update = [=](float _DeltaTime) {
@@ -924,7 +946,14 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 좌측 약공격 피격
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Left,
 	.Start = [=] {
-	SetPush(26000.0f);
+	if (true == IsVergilLight)
+	{
+		SetPush(10000.0f);
+	}
+	else
+	{
+		SetPush(26000.0f);
+	}
 	EnemyRenderer->ChangeAnimation("em0000_standing_damage_weak_left_01", true);
 	},
 	.Update = [=](float _DeltaTime) {
@@ -946,7 +975,14 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 우측 약공격 피격 
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Right,
 	.Start = [=] {
-	SetPush(26000.0f);
+	if (true == IsVergilLight)
+	{
+		SetPush(10000.0f);
+	}
+	else
+	{
+		SetPush(26000.0f);
+	}
 	EnemyRenderer->ChangeAnimation("em0000_standing_damage_weak_right_01", true);
 	},
 	.Update = [=](float _DeltaTime) {
