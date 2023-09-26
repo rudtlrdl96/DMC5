@@ -4,6 +4,7 @@
 class ThreadLoadingLevel : public BaseLevel
 {
 public:
+	//이 함수를 통해 로딩 레벨을 활성화 시킵니다
 	static void ChangeLevel(const std::string_view& _NextLevelName)
 	{
 		NextLevelName = _NextLevelName;
