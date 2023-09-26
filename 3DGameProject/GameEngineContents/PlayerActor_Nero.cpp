@@ -585,6 +585,7 @@ void PlayerActor_Nero::PlayerLoad()
 				Renderer->ChangeAnimation("pl0000_Jump_Landing");
 			},
 			.Update = [=](float _DeltaTime) {
+				PhysXCapsule->SetLinearVelocityZero();
 				if (false == FloorCheck())
 				{
 					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
@@ -2610,25 +2611,21 @@ void PlayerActor_Nero::PlayerLoad()
 			PhysXCapsule->SetLinearVelocityZero();
 			Renderer->ChangeAnimation("pl0000_GT_Bomb", true);
 			InputCheck = false;
-			MoveCheck = false;
 		},
 		.Update = [=](float _DeltaTime) {
-			if (InputCheck == false) { return; }
-			if (true == Input_SpecialCheck()) { return; }
 			if (false == FloorCheck())
 			{
 				ChangeState(FSM_State_Nero::Nero_Jump_Fly);
 				return;
 			}
+			if (InputCheck == false) { return; }
+			if (true == Input_SpecialCheck()) { return; }
 
 
 			if (true == Input_JumpCheck()) { return; }
 			if (true == Input_SwordCheck()) { return; }
 			if (true == Input_GunCheck()) { return; }
 			if (true == Input_DevilBreakerCheck()) { return; }
-
-			if (MoveCheck == false) { return; }
-
 			if (Controller->GetMoveVector() != float4::ZERO)
 			{
 				ChangeState(FSM_State_Nero::Nero_RunStart);
@@ -2652,14 +2649,14 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
 				}
-
-				if (InputCheck == false) { return; }
-				if (true == Input_SpecialCheckFly()) { return; }
 				if (true == FloorCheck())
 				{
 					ChangeState(FSM_State_Nero::Nero_Landing);
 					return;
 				}
+
+				if (InputCheck == false) { return; }
+				if (true == Input_SpecialCheckFly()) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly()) { return; }
 				if (true == Input_GunCheckFly()) { return; }

@@ -191,13 +191,13 @@ void PlayerActor_Vergil::CreateMirageBlade()
 		}
 	},
 	.Update = [=](float _DeltaTime) {
-		if (true == IsDelay)
-		{
-			return;
-		}
 		if (nullptr != LockOnEnemyTransform)
 		{
 			SpiralPivot->SetWorldPosition(LockOnEnemyTransform->GetWorldPosition());
+		}
+		if (true == IsDelay)
+		{
+			return;
 		}
 		SpiralPivot->AddWorldRotation(float4::UP * 360 * _DeltaTime);
 		if (Controller->GetIsGunUp())

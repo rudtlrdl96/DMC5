@@ -72,7 +72,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		default:
 			break;
 		}
-		
+
 		Renderer->ShadowOn();
 		Renderer->SetDynamic();
 
@@ -114,6 +114,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				Renderer->ChangeAnimation("pl0300_Idle_Normal");
 			},
 			.Update = [=](float _DeltaTime) {
+				PhysXCapsule->SetLinearVelocityZero();
 				if (false == FloorCheck())
 				{
 					ChangeState(FSM_State_Vergil::Vergil_Jump_Fly);
@@ -347,7 +348,7 @@ void PlayerActor_Vergil::PlayerLoad()
 
 			if (true == Input_JumpCheckFly()) { return; }
 			if (true == Input_SwordCheckFly()) { return; }
-			 
+
 			if (true == Input_WarpCheckFly()) { return; }
 
 			PhysXCapsule->SetForce(Controller->GetMoveVector() * JumpMoveForce);
@@ -380,7 +381,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (true == Input_SpecialCheckFly()) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly()) { return; }
-				 
+
 				if (true == Input_WarpCheckFly()) { return; }
 				PhysXCapsule->SetForce(Controller->GetMoveVector() * JumpMoveForce);
 
@@ -396,6 +397,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				MoveCheck = false;
 			},
 			.Update = [=](float _DeltaTime) {
+				PhysXCapsule->SetLinearVelocityZero();
 				if (false == FloorCheck())
 				{
 					ChangeState(FSM_State_Vergil::Vergil_Jump_Fly);
@@ -404,7 +406,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (true == Input_SpecialCheck()) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
-				 
+
 				if (true == Input_WarpCheck()) { return; }
 				if (false == MoveCheck) { return; }
 				if (Controller->GetMoveVector() != float4::ZERO)
@@ -455,7 +457,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 			},
 			.End = [=] {
-
+				YamatoOff();
 			}
 			});
 		// Combo2
@@ -480,7 +482,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck(2)) { return; }
-				 
+
 				if (true == Input_WarpCheck()) { return; }
 
 				if (MoveCheck == false) { return; }
@@ -491,7 +493,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 			},
 			.End = [=] {
-
+				YamatoOff();
 			}
 			});
 		// Combo3
@@ -521,7 +523,7 @@ void PlayerActor_Vergil::PlayerLoad()
 					if (true == Input_SwordCheck(4)) { return; }
 				}
 				else if (true == Input_SwordCheck(3)) { return; }
-				 
+
 				if (true == Input_WarpCheck()) { return; }
 
 				if (MoveCheck == false) { return; }
@@ -558,7 +560,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
-				 
+
 				if (true == Input_WarpCheck()) { return; }
 
 				if (MoveCheck == false) { return; }
@@ -651,7 +653,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
-				 
+
 				if (true == Input_WarpCheck()) { return; }
 
 				if (MoveCheck == false) { return; }
@@ -668,6 +670,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Sissonal1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Sissonal_1,
 			.Start = [=] {
+				RotationToTarget();
 				PhysXCapsule->SetLinearVelocityZero();
 				RotationToTarget();
 				Renderer->ChangeAnimation("pl0300_yamato_Sissonal_1");
@@ -693,7 +696,6 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Sissonal2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Sissonal_2,
 			.Start = [=] {
-				Col_Attack->SetAttackData(DamageType::Heavy, 20);
 				SissonalTimer = 0;
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_Sissonal_2_loop");
@@ -751,7 +753,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
-				 
+
 				if (true == Input_WarpCheck()) { return; }
 
 				if (MoveCheck == false) { return; }
@@ -771,6 +773,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Sissonal Up
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Sissonal_Up,
 			.Start = [=] {
+				RotationToTarget();
 				Col_Attack->SetAttackData(DamageType::Air, 50);
 				TimeEvent.AddEvent(0.5f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
@@ -793,7 +796,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly()) { return; }
-				 
+
 				if (true == Input_WarpCheckFly()) { return; }
 			},
 			.End = [=] {
@@ -803,6 +806,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Upper 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Upper_1,
 			.Start = [=] {
+				RotationToTarget();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_AttackUp_1");
 				RotationToTarget(30.0f);
@@ -846,7 +850,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly()) { return; }
-				 
+
 				if (true == Input_WarpCheckFly()) { return; }
 			},
 			.End = [=] {
@@ -876,7 +880,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
-				 
+
 				if (true == Input_WarpCheck()) { return; }
 
 				if (MoveCheck == false) { return; }
@@ -917,7 +921,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly(1)) { return; }
-				 
+
 				if (true == Input_WarpCheckFly()) { return; }
 			},
 			.End = [=] {
@@ -955,7 +959,7 @@ void PlayerActor_Vergil::PlayerLoad()
 					if (true == Input_SwordCheckFly(3)) { return; }
 				}
 				else if (true == Input_SwordCheckFly(2)) { return; }
-				 
+
 				if (true == Input_WarpCheckFly()) { return; }
 			},
 			.End = [=] {
@@ -988,7 +992,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly()) { return; }
-				 
+
 				if (true == Input_WarpCheckFly()) { return; }
 			},
 			.End = [=] {
@@ -998,6 +1002,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Air Combo B 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_ComboB_1,
 			.Start = [=] {
+				RotationToTarget();
 				YamatoOn();
 				Col_Attack->SetAttackData(DamageType::Air, 50);
 				PhysXCapsule->TurnOffGravity();
@@ -1021,7 +1026,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly(4)) { return; }
-				 
+
 				if (true == Input_WarpCheckFly()) { return; }
 			},
 			.End = [=] {
@@ -1054,7 +1059,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly()) { return; }
-				 
+
 				if (true == Input_WarpCheckFly()) { return; }
 			},
 			.End = [=] {
@@ -1064,6 +1069,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Raid1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Raid1,
 			.Start = [=] {
+				RotationToTarget();
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				RotationToTarget();
@@ -1125,7 +1131,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
-				 
+
 				if (true == Input_WarpCheck()) { return; }
 
 				if (MoveCheck == false) { return; }
@@ -1143,6 +1149,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Vergil_yamato_JudgementCut_1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCut_1,
 			.Start = [=] {
+				RotationToTarget();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCut_1");
 			},
@@ -1185,7 +1192,7 @@ void PlayerActor_Vergil::PlayerLoad()
 
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
-				 
+
 				if (true == Input_WarpCheck()) { return; }
 
 				if (MoveCheck == false) { return; }
@@ -1201,6 +1208,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Vergil_yamato_JudgementCutAir_1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCutAir_1,
 			.Start = [=] {
+				RotationToTarget();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
 				Renderer->ChangeAnimation("pl0300_yamato_Air_JudgementCut_1");
@@ -1255,7 +1263,7 @@ void PlayerActor_Vergil::PlayerLoad()
 
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly()) { return; }
-				 
+
 				if (true == Input_WarpCheckFly()) { return; }
 
 			},
@@ -1441,7 +1449,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		.End = [=] {
 
 		}
-		});
+			});
 		// Warp Left 2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Left_2,
 		.Start = [=] {
@@ -1489,7 +1497,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		.End = [=] {
 
 		}
-		});
+			});
 		// Warp Right 2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Right_2,
 		.Start = [=] {
@@ -1533,7 +1541,14 @@ void PlayerActor_Vergil::PlayerLoad()
 			{
 				RotationToTarget();
 				WarpPos = LockOnEnemyTransform->GetWorldPosition();
-				WarpPos = WarpPos + (GetTransform()->GetWorldPosition() - LockOnEnemyTransform->GetWorldPosition()).NormalizeReturn() * 150;
+				WarpPos.y += 150;
+				float4 _Dir = GetTransform()->GetWorldPosition() - LockOnEnemyTransform->GetWorldPosition();
+				_Dir.y = 0;
+				WarpPos = WarpPos + _Dir.NormalizeReturn() * 150;
+			}
+			else
+			{
+				WarpPos = GetTransform()->GetWorldPosition() + float4::UP * 500;
 			}
 			Renderer->ChangeAnimation("pl0300_Warp_Up", true);
 			},
@@ -1545,8 +1560,9 @@ void PlayerActor_Vergil::PlayerLoad()
 		},
 		.End = [=] {
 			SetWorldPosition(WarpPos);
-		}
-		});
+			PhysXCapsule->TurnOnGravity();
+			}
+			});
 
 		// Warp Down
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_TrickDown,
@@ -2619,6 +2635,11 @@ void PlayerActor_Vergil::YamatoOff()
 	Renderer->GetAllRenderUnit()[0][6]->On();
 	Renderer->GetAllRenderUnit()[0][7]->On();
 	Renderer->GetAllRenderUnit()[0][8]->On();
+
+	if (nullptr != Col_Attack)
+	{
+		Col_Attack->Off();
+	}
 }
 
 void PlayerActor_Vergil::YamatoOn()
