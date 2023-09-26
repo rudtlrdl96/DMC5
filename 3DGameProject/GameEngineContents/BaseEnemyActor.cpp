@@ -61,6 +61,13 @@ void BaseEnemyActor::Start()
 
 void BaseEnemyActor::Update(float _DeltaTime)
 {
+	AppearDelayTime += _DeltaTime;
+
+	if (AppearDelayTime <= 1.0f)
+	{
+		return;
+	}
+
 	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
 	{
 		RenderShake(_DeltaTime);

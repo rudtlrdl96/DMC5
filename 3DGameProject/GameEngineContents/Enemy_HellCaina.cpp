@@ -40,6 +40,10 @@ void Enemy_HellCaina::Start()
 	FallDistance = 55.0f;
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
 
+	EnemyRenderer->Off();
+	MonsterCollision->Off();
+	RN_MonsterCollision->Off();
+
 	// 넷 오브젝트 타입 설정
 	SetNetObjectType(Net_ActorType::HellCaina);
 }
@@ -126,11 +130,6 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 		return;
 	}
 
-	if (nullptr == MonsterCollision)
-	{
-		return;
-	}
-
 	std::shared_ptr<GameEngineCollision> Col = MonsterCollision->Collision(CollisionOrder::PlayerAttack);
 	if (nullptr == Col) { return; }
 
@@ -157,7 +156,7 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 		break;
 	case DamageType::Light:
 
-		if (true == IsHeavyAttack || true == IsSlamAttack)
+		if (true == IsHeavyAttack || true == IsSlamAttack || true == IsBusterAttack)
 		{
 			return;
 		}
@@ -224,6 +223,11 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 		ChangeState(FSM_State_HellCaina::HellCaina_Slam_Damage);
 		break;
 	case DamageType::Buster:
+		IsCollapse = false;
+		IsBusterAttack = true;
+		RotationCheck();
+		PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
+		ChangeState(FSM_State_HellCaina::HellCaina_Buster);
 		break;
 	case DamageType::Stun:
 		break;
@@ -350,6 +354,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0000_appear_02");
 	},
 	.Update = [=](float _DeltaTime) {
+	EnemyRenderer->On();
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Idle);
@@ -357,24 +362,10 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	MonsterCollision->On();
+	RN_MonsterCollision->On();
 	}
-		});
-	// 최초 등장_10, 이건 랜더 직접 옮겨야함
-	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Appear_10,
-	.Start = [=] {
-	PhysXCapsule->SetLinearVelocityZero();
-	EnemyRenderer->ChangeAnimation("em0000_appear_10");
-	},
-	.Update = [=](float _DeltaTime) {
-	if (true == EnemyRenderer->IsAnimationEnd())
-	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Idle);
-		return;
-	}
-	},
-	.End = [=] {
-	}
-		});
+	});
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////     Idle     //////////////////////////////////////////
@@ -1076,6 +1067,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	IsHeavyAttack = false;
 	IsAirAttack = false;
 	IsSlamAttack = false;
+	IsBusterAttack = false;
 	IsCollapse = true;
 	EnemyRenderer->ChangeAnimation("em0000_blown_back_landing");
 	},
@@ -1165,6 +1157,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	IsHeavyAttack = false;
 	IsAirAttack = false;
 	IsSlamAttack = false;
+	IsBusterAttack = false;
 	IsCollapse = true;
 	EnemyRenderer->ChangeAnimation("em0000_slam_damage_landing");
 	},
@@ -1375,7 +1368,57 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	}
 		});
 
-	EnemyFSM.ChangeState(FSM_State_HellCaina::HellCaina_Idle);
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////      버스트      //////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	// em0000_Buster, 버스트 연속동작 (히트부터 다운까지)
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Buster,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0000_Buster");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Prone_Getup);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+	// em0000_Buster_Start, 버스트 히트 시작
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Buster_Start,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0000_Buster_Start");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Prone_Getup);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+	// em0000_Buster_Finish, 버스트 히트 땅에 떨어짐
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Buster_Finish,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0000_Buster_Finish");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Prone_Getup);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+	});
+
+	EnemyFSM.ChangeState(FSM_State_HellCaina::HellCaina_Appear_02);
 }
 
 void Enemy_HellCaina::EnemyCreateFSM_Client()
@@ -1383,15 +1426,6 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Appear_02,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0000_appear_02");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Appear_10,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0000_appear_10");
 	},
 	.Update = [=](float _DeltaTime) {
 	},
@@ -1841,5 +1875,5 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	}
 		});
 
-	EnemyFSM_Client.ChangeState(FSM_State_HellCaina::HellCaina_Idle);
+	EnemyFSM_Client.ChangeState(FSM_State_HellCaina::HellCaina_Appear_02);
 }

@@ -128,6 +128,8 @@ protected:
 	GameEngineFSM EnemyFSM;        // 싱글, 서버용 FSM
 	GameEngineFSM EnemyFSM_Client; // 클라이언트용 FSM (패킷 전송 받아서 변경됨)
 
+	float AppearDelayTime = 0.0f;
+
 	//하위에서 설정해줘야하는 Data들=====================================================
 	EnemyCode EnemyCodeValue = EnemyCode::None;
 	EnemyType EnemyTypeValue  = EnemyType::None;
