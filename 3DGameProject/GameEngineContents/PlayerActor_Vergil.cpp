@@ -216,6 +216,7 @@ void PlayerActor_Vergil::PlayerLoad()
 					FSMValue = FSM_State_Vergil::Vergil_WalkRight;
 					break;
 				}
+				NetworkManager::SendFsmChangePacket(this, FSMValue);
 				PhysXCapsule->SetMove(Controller->GetMoveVector() * WalkSpeed);
 
 			},

@@ -35,6 +35,5 @@ void PlayerWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTim
 		}
 	}
 	if (_Nero == nullptr) { return; }
-
 }
 

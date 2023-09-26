@@ -500,7 +500,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_GunCheckFly()) { return; }
 				if (true == Input_DevilBreakerCheckFly()) { return; }
 
-				PhysXCapsule->SetForce(Controller->GetMoveVector() * 3500);
+				PhysXCapsule->SetForce(Controller->GetMoveVector() * JumpMoveForce);
 
 				if (false == MoveCheck) { return; }
 				if (true == FloorCheck())
@@ -535,7 +535,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_GunCheckFly()) { return; }
 				if (true == Input_DevilBreakerCheckFly()) { return; }
 
-				PhysXCapsule->SetForce(Controller->GetMoveVector() * 3500);
+				PhysXCapsule->SetForce(Controller->GetMoveVector() * JumpMoveForce);
 
 				if (false == MoveCheck) { return; }
 				if (true == FloorCheck())
@@ -550,7 +550,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Jump Fly
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Jump_Fly,
 			.Start = [=] {
-				PhysXCapsule->SetPush(float4::DOWN * 1700);
+				PhysXCapsule->SetPush(float4::DOWN * FlyDownForce);
 				PhysXCapsule->TurnOnGravity();
 				Renderer->ChangeAnimation("pl0000_Jump_Fly_loop");
 			},
@@ -565,7 +565,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_SwordCheckFly()) { return; }
 				if (true == Input_GunCheckFly()) { return; }
 				if (true == Input_DevilBreakerCheckFly()) { return; }
-				PhysXCapsule->SetForce(Controller->GetMoveVector() * 3500);
+				PhysXCapsule->SetForce(Controller->GetMoveVector() * JumpMoveForce);
 			},
 			.End = [=] {
 				PhysXCapsule->TurnOffGravity();
@@ -634,7 +634,7 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					if (true == Input_SpecialCheckFly()) { return; }
 				}
-				PhysXCapsule->SetForce(Controller->GetMoveVector() * 3500);
+				PhysXCapsule->SetForce(Controller->GetMoveVector() * JumpMoveForce);
 
 				if (false == MoveCheck) { return; }
 				if (true == FloorCheck())
@@ -672,7 +672,7 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					if (true == Input_SpecialCheckFly()) { return; }
 				}
-				PhysXCapsule->SetForce(Controller->GetMoveVector() * 3500);
+				PhysXCapsule->SetForce(Controller->GetMoveVector() * JumpMoveForce);
 
 				if (false == MoveCheck) { return; }
 				if (true == FloorCheck())
@@ -711,7 +711,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_GunCheckFly()) { return; }
 				if (true == Input_DevilBreakerCheckFly()) { return; }
 
-				PhysXCapsule->SetForce(Controller->GetMoveVector() * 3500);
+				PhysXCapsule->SetForce(Controller->GetMoveVector() * JumpMoveForce);
 
 				if (false == MoveCheck) { return; }
 				if (true == FloorCheck())
@@ -1689,6 +1689,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Evade
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Evade_Left,
 			.Start = [=] {
+				RotationToTarget();
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				BlueRoseOn();
@@ -1730,6 +1731,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Evade
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Evade_Right,
 			.Start = [=] {
+				RotationToTarget();
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				BlueRoseOn();
@@ -2861,7 +2863,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Damage Fall
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Fall,
 			.Start = [=] {
-				PhysXCapsule->SetPush({ 0, -1000, 0 });
+				PhysXCapsule->SetPush(float4::DOWN * FlyDownForce);
 				PhysXCapsule->TurnOnGravity();
 				Renderer->ChangeAnimation("pl0000_Damage_Supine_Fall_Loop");
 			},

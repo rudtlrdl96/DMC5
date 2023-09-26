@@ -76,16 +76,26 @@ void PlayerTestLevel::LevelChangeStart()
 	GameEngineCoreWindow::AddDebugRenderTarget(4, "Last Target", GetMainCamera()->GetCamTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(5, "Bake Shadow", GetLevel()->GetDirectionalLight()->GetBakeTarget(0));
 	GameEngineCoreWindow::AddDebugRenderTarget(6, "Last Shadow", GetLevel()->GetDirectionalLight()->GetShadowTarget());
-	//Nero = CreateActor<PlayerActor_Nero>();
-	//Nero->SetUserControllType();
-	Vergil = CreateActor<PlayerActor_Vergil>();
-	Vergil->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	Vergil->GetTransform()->SetWorldPosition({ 0, 100, 0 });
+
+	if (true)
+	{
+		Nero = CreateActor<PlayerActor_Nero>();
+		Nero->SetUserControllType();
+	}
+	if (false)
+	{
+		Vergil = CreateActor<PlayerActor_Vergil>();
+		Vergil->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+		Vergil->GetTransform()->SetWorldPosition({ 0, 100, 0 });
+		Vergil->SetUserControllType();
+	}
 
 	if (nullptr == Light)
 	{
 		Light = CreatePointLight(float4(0, 50, 0), float4(256, 256), 1000);
 		Flat = CreateActor<Plane>();
+		GameEngineGUI::GUIWindowCreate<PlayerWindow>("PlayerWindow");
+		PlayerWindow::_Nero = Nero.get();
 	}
 }
 

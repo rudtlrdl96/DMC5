@@ -46,9 +46,7 @@ public:
 	virtual void SetDT(unsigned int _DTValue) = 0;
 	// Arm 상태 변환
 	virtual void SetArm(unsigned int _ArmValue) {}
-
-
-
+	
 protected:
 	void Start() override;
 

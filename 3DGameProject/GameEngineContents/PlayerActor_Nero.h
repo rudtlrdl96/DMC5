@@ -177,7 +177,8 @@ private:
 	float RunSpeed = 550;
 	float DashSpeed = 700;
 	float DashTimer = 0;
-	float JumpForce = 7000.0f;
+	float JumpMoveForce = 7000.0f;
+	float FlyDownForce = 2400.0f;
 
 	bool InputCheck = false;	// 애니메이션 재생중 다른 입력을 받아 FSM변경이 가능한지 여부
 	bool MoveCheck = false;		// 애니메이션 재생중 이동 입력을 받아 FSM변경이 가능한지 여부

@@ -460,9 +460,11 @@ void AnimationToolWindow::MeshCreate(std::shared_ptr<GameEngineLevel> _Level)
 	{
 		Actor = _Level->CreateActor<GameEngineActor>();
 		PhysXCapsule  = Actor->CreateComponent<PhysXCapsuleComponent>();
-		PhysXCapsule->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
-		PhysXCapsule->CreatePhysXActors({ 150, 100, 150 });
+		PhysXCapsule->SetPhysxMaterial(0.1f, 0.1f, 0.0f);
+		PhysXCapsule->IsMainPlayerCapsule();
+		PhysXCapsule->CreatePhysXActors({ 100, 100, 150 });
 		PhysXCapsule->GetDynamic()->setMass(5.0f);
+		PhysXCapsule->GetDynamic()->setLinearDamping(2.0f);
 	}
 
 	Renderer = Actor->CreateComponent<GameEngineFBXRenderer>();

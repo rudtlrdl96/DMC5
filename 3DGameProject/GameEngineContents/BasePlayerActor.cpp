@@ -57,7 +57,6 @@ void BasePlayerActor::LookDir(const float4& _LookDir)
 		Rot.y += Angle;
 	}
 	PhysXCapsule->SetWorldRotation(Rot);
-	PhysXCapsule->GetDynamic()->setLinearDamping(2.0f);
 	return;
 }
 
@@ -155,6 +154,7 @@ void BasePlayerActor::Start()
 	PhysXCapsule->IsMainPlayerCapsule();
 	PhysXCapsule->CreatePhysXActors({ 100, 100, 150 });
 	PhysXCapsule->GetDynamic()->setMass(5.0f);
+	PhysXCapsule->GetDynamic()->setLinearDamping(2.0f);
 	BindPhysicsWithNet(PhysXCapsule);
 
 	// 플레이어 충돌체
@@ -165,9 +165,7 @@ void BasePlayerActor::Start()
 
 	Col_Attack = CreateComponent<AttackCollision>(CollisionOrder::PlayerAttack);
 	Col_Attack->Off();
-	Col_Attack->SetColType(ColType::AABBBOX3D);
-
-
+	Col_Attack->SetColType(ColType::OBBBOX3D);
 
 	LinkData_UpdatePacket<bool>(DTValue, [this](bool _BeforeData)
 	{
