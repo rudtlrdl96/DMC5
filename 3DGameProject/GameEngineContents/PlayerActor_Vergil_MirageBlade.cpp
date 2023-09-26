@@ -3,6 +3,7 @@
 #include "NetworkManager.h"
 #include "Player_MirageBlade.h"
 #include "PlayerController.h"
+#include "AttackCollision.h"
 bool PlayerActor_Vergil::Input_GunCheck()
 {
 	if (Controller->GetIsGunUp())
@@ -25,8 +26,6 @@ void PlayerActor_Vergil::CreateMirageBlade()
 		NetworkManager::LinkNetwork(AllMirageBlades[i].get());
 	}
 	static int BladesIndex = 0;
-	static GameEngineTimeEvent TimeEvent;
-
 
 	// Idle
 	FSM_MirageBlade.CreateState({ .StateValue = FSM_State_MirageBlade::MirageBlade_Idle,
@@ -59,7 +58,6 @@ void PlayerActor_Vergil::CreateMirageBlade()
 			FSM_MirageBlade.ChangeState(FSM_State_MirageBlade::MirageBlade_Shoot);
 			return;
 		}
-		TimeEvent.Update(_DeltaTime);
 	},
 	.End = [=] {
 
@@ -110,7 +108,6 @@ void PlayerActor_Vergil::CreateMirageBlade()
 
 	},
 	.Update = [=](float _DeltaTime) {
-		TimeEvent.Update(_DeltaTime);
 		if (false == IsDelay)
 		{
 			FSM_MirageBlade.ChangeState(FSM_State_MirageBlade::MirageBlade_Idle);
@@ -155,7 +152,6 @@ void PlayerActor_Vergil::CreateMirageBlade()
 	.Update = [=](float _DeltaTime) {
 		if (true == IsDelay)
 		{
-			TimeEvent.Update(_DeltaTime);
 			return;
 		}
 		if (Controller->GetIsGunUp())
@@ -197,7 +193,6 @@ void PlayerActor_Vergil::CreateMirageBlade()
 	.Update = [=](float _DeltaTime) {
 		if (true == IsDelay)
 		{
-			TimeEvent.Update(_DeltaTime);
 			return;
 		}
 		if (nullptr != LockOnEnemyTransform)
@@ -213,12 +208,17 @@ void PlayerActor_Vergil::CreateMirageBlade()
 					{
 						AllMirageBlades[i]->GetTransform()->SetWorldPosition(AllMirageBlades[i]->GetTransform()->GetWorldPosition());
 						AllMirageBlades[i]->GetTransform()->SetWorldRotation(AllMirageBlades[i]->GetTransform()->GetWorldRotation());
+						AllMirageBlades[i]->Collision->SetAttackData(DamageType::Air, 10);
 						AllMirageBlades[i]->Shoot();
 					});
 			}
 			TimeEvent.AddEvent(1.0f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
 					FSM_MirageBlade.ChangeState(FSM_State_MirageBlade::MirageBlade_Idle);
+					for (int i = 0; i < 8; i++)
+					{
+						AllMirageBlades[i]->Collision->SetAttackData(DamageType::VergilLight, 10);
+					}
 				});
 			IsDelay = true;
 		}
@@ -261,7 +261,6 @@ void PlayerActor_Vergil::CreateMirageBlade()
 			{
 				AllMirageBlades[i]->LookTarget();
 			}
-			TimeEvent.Update(_DeltaTime);
 			return;
 		}
 		if (LockOnEnemyTransform != nullptr)
@@ -352,7 +351,6 @@ void PlayerActor_Vergil::CreateMirageBlade()
 	.Update = [=](float _DeltaTime) {
 		if (true == IsDelay)
 		{
-			TimeEvent.Update(_DeltaTime);
 			return;
 		}
 		if (Controller->GetIsGunUp())

@@ -20,13 +20,13 @@ public:
 	void LookTarget();
 	void Shoot();
 
+	std::shared_ptr<class AttackCollision> Collision = nullptr;
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
 private:
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
-	std::shared_ptr<class AttackCollision> Collision = nullptr;
 	GameEngineTransform* TargetTransform = nullptr;
 	float ShootSpeed = 3000.0f;
 	bool IsShoot = false;

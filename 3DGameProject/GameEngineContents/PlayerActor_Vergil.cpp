@@ -6,6 +6,8 @@
 #include "PlayerController.h"
 #include "AttackCollision.h"
 #include "NetworkManager.h"
+GameEngineTimeEvent PlayerActor_Vergil::TimeEvent;
+
 PlayerActor_Vergil::~PlayerActor_Vergil()
 {
 }
@@ -90,8 +92,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				std::bind(&PhysXCapsuleComponent::TurnOnGravity, PhysXCapsule),		// 8 
 			},
 			.CallBacks_int = {
-				std::bind(&GameEngineFSM::ChangeState, &FSM, std::placeholders::_1)
-				//std::bind(&AttackCollision::SetAttackData, &FSM, std::placeholders::_1)
+				std::bind(&GameEngineFSM::ChangeState, &FSM, std::placeholders::_1),
 			},
 			.CallBacks_float4 = {
 				std::bind(&BasePlayerActor::SetForce, this, std::placeholders::_1),
@@ -496,7 +497,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Combo3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Combo_3,
 			.Start = [=] {
-				Col_Attack->SetAttackData(DamageType::Light, 100);
+				Col_Attack->SetAttackData(DamageType::VergilLight, 100);
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_Combo_3");
 				RotationToTarget(30.0f);
@@ -593,7 +594,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// ComboC2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_ComboC_2,
 			.Start = [=] {
-				Col_Attack->SetAttackData(DamageType::Light, 50);
+				Col_Attack->SetAttackData(DamageType::VergilLight, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_ComboC_2_Loop");
 				RotationToTarget(30.0f);
@@ -771,6 +772,10 @@ void PlayerActor_Vergil::PlayerLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Sissonal_Up,
 			.Start = [=] {
 				Col_Attack->SetAttackData(DamageType::Air, 50);
+				TimeEvent.AddEvent(0.5f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Col_Attack->SetAttackData(DamageType::Light, 50);
+				});
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_Sissonal_Up");
@@ -2366,6 +2371,7 @@ void PlayerActor_Vergil::NetLoad()
 void PlayerActor_Vergil::Update_Character(float _DeltaTime)
 {
 	if (LoadCheck == false) { return; }
+	TimeEvent.Update(_DeltaTime);
 	FSM.Update(_DeltaTime);
 	if (NetControllType::ActiveControll == GameEngineNetObject::GetControllType())
 	{
