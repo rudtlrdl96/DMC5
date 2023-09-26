@@ -217,6 +217,7 @@ protected:
 
 	void SetPush(float _Value)
 	{
+		SetMoveStop();
 		PhysXCapsule->SetPush(PushDirect * _Value);
 	}
 
