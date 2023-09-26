@@ -43,14 +43,15 @@ void NetworkTestLevel::LevelChangeStart()
 {
 	BaseLevel::LevelChangeStart();
 
-	if (/*네로만*/false)
+	
+	if (/*네로만*//*false*/NetworkManager::IsServer())
 	{
 		std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>(ActorOrder::Player);
 		Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
 		NetworkManager::LinkNetwork(Nero.get());
 	}
 
-	if (/*버질*/true)
+	if (/*버질*//*true*/NetworkManager::IsClient())
 	{
 		std::shared_ptr<PlayerActor_Vergil> Nero = CreateActor<PlayerActor_Vergil>(ActorOrder::Player);
 		Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
