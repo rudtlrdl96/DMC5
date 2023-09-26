@@ -113,6 +113,9 @@ void TestStageLevel::LevelChangeStart()
 	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 4000, 0));
 	GetDirectionalLight()->GetTransform()->SetWorldRotation(float4(90, 0, 0));
 
+	std::shared_ptr<GameEngineLight> Light = CreateSpotLight(float4(0, 500, 0), float4(512, 512), 1000, 10);
+	Light->GetTransform()->SetLocalRotation(float4(180, 0, 0));
+
 	GameEngineCoreWindow::Clear();
 	GameEngineCoreWindow::AddDebugRenderTarget(0, "Forward Target", GetMainCamera()->GetCamForwardTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(1, "Deferred Target", GetMainCamera()->GetCamDeferrdTarget());

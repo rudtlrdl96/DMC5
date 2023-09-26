@@ -59,6 +59,7 @@ ResultLight CalLight(int _LightIndex, float4 _Position, float4 _Normal, float _M
     
     Result.CurLightDiffuseRatio = float3(0, 0, 0);
     Result.CurLightSpacularRatio = float3(0, 0, 0);
+    Result.CurLightAmbientRatio = float3(0, 0, 0);
     
     float LightPower = AllLight[_LightIndex].LightPower;
         

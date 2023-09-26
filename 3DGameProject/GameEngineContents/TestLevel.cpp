@@ -62,8 +62,6 @@ void TestLevel::LevelChangeStart()
 	HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
-	std::shared_ptr<GameEngineLight> Light = CreateSpotLight(float4(0, 500, 0), float4(512, 512), 1000, 10);
-	Light->GetTransform()->SetLocalRotation(float4(90, 0, 0));
 
 	GameEngineCoreWindow::Clear();
 	GameEngineCoreWindow::AddDebugRenderTarget(0, "Forward Target", GetCamera(100)->GetCamForwardTarget());
