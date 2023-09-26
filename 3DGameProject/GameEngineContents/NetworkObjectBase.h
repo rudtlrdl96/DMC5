@@ -16,6 +16,11 @@ public:
 		return DebugTarget;
 	}
 
+	static inline void SetDebugTarget(NetworkObjectBase* _Target)
+	{
+		DebugTarget = _Target;
+	}
+
 	NetworkObjectBase();
 	~NetworkObjectBase();
 
@@ -25,6 +30,7 @@ public:
 	NetworkObjectBase& operator=(const NetworkObjectBase&& _Other) noexcept = delete;
 
 protected:
+
 	inline void SetNetObjectType(Net_ActorType _ActorType)
 	{
 		NetActorType = _ActorType;
@@ -83,6 +89,7 @@ protected:
 
 private:
 	static NetworkObjectBase* DebugTarget;
+	static Net_ActorType DebugType;
 
 	static NetworkObjectBase* GetNetObj(unsigned int _ObjID);
 
@@ -186,6 +193,5 @@ private:
 	}
 
 	void SetActorTrans();
-
 };
 

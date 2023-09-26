@@ -38,7 +38,7 @@ void NetworkManager::ClientPacketInit()
 		//연결 성공 메세지 보내기
 		const std::string& ClientName = NetworkGUI::GetInst()->GetNickName();
 		std::string ChatMsg = ClientName + " Connect Server";
-		PushChatPacket(ChatMsg, float4::BLUE);
+		PushChatPacket(ChatMsg, float4::GREEN);
 	});
 
 
@@ -70,12 +70,16 @@ void NetworkManager::ClientPacketInit()
 			std::shared_ptr<NetworkObjectBase> NewNetObj = nullptr;
 			NewNetObj = NetworkManager::CreateNetActor(_Packet->ActorType, nullptr, ObjID);
 			NewNetObj->SetControll(NetControllType::PassiveControll);
-			UpdatePacketCreateCheck_ForDebug(NewNetObj);
+
+			//디버그용 타겟 설정
+			if (NetworkObjectBase::DebugType == NewNetObj->GetNetObjectType())
+			{
+				NetworkObjectBase::DebugTarget = NewNetObj.get();
+			}
+
 
 			//어떤 타입의 엑터가 생성되었는지 GUI에 출력
 			NetworkGUI::GetInst()->PrintLog("Create Object From UpdatePacket", float4::GREEN);
-			std::string NewMsg = "ActorType : " + std::to_string(_Packet->ActorType);
-			NetworkGUI::GetInst()->PrintLog(NewMsg, float4::GREEN);
 		}
 
 
@@ -95,6 +99,7 @@ void NetworkManager::ClientPacketInit()
 				return;
 			}
 			ActorPtr->Death();
+			NetworkGUI::GetInst()->PrintLog("Destroy Actor From UpdatePacket", float4::GREEN);
 		}
 
 		//패킷이 Death처리 되지 않은 경우에만 엑터쪽에 패킷 전달
