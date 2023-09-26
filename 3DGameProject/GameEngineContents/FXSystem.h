@@ -44,6 +44,7 @@ protected:
 	void Update(float _DeltaTime) override;
 
 	void FXSetting();
+	void RenderOff();
 private:
 	std::map<std::string , std::shared_ptr<class EffectRenderer>> FXRenders;
 	std::shared_ptr<FXData> CurFX = nullptr;

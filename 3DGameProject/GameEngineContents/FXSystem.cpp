@@ -82,6 +82,7 @@ void FXSystem::ChangeFX(std::shared_ptr<class FXData> _FX)
 	StartFrame = 0;
 	EndFrame = static_cast<int>(CurFX->GetFrameData().size()) - 1;
 
+	RenderOff();
 	std::vector<FXUnitData>& UnitDatas = CurFX->GetUnitDatas();
 	int SpriteIndex = 0;
 	for (int i = 0; i < UnitDatas.size(); i++)
@@ -249,6 +250,14 @@ void FXSystem::FXSetting()
 			}
 			FXRenders[Key]->Off();
 		}
+	}
+}
+
+void FXSystem::RenderOff()
+{
+	for (std::pair<std::string, std::shared_ptr<class EffectRenderer>> _Pair : FXRenders)
+	{
+		_Pair.second->Off();
 	}
 }
 
