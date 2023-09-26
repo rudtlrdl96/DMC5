@@ -79,6 +79,7 @@ enum FSM_State_HellCaina
 	HellCaina_Air_Buster,         // em0000_Air-Buster, 공중에서 버스트 히트
 	HellCaina_Buster,             // em0000_Buster, 버스트 연속동작 (히트부터 다운까지)
 	HellCaina_Buster_Start,       // em0000_Buster_Start, 버스트 히트 시작
+	HellCaina_Buster_Loop,        // 버스트 히트 루프
 	HellCaina_Buster_Finish,      // em0000_Buster_Finish, 버스트 히트 땅에 떨어짐
 	HellCaina_Gun_Buster,         // em0000_Gun_Buster, 총 버스트 히트, 뒤로 돌아서 무릎꿇음
 	HellCaina_Gun_Buster_Start,   // em0000_Gun_Buster_shoot, 총 버스트 히트 스타트(?)

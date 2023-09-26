@@ -461,10 +461,10 @@ void BaseEnemyActor::BusterCalculation()
 	CurRenderPosition = EnemyRenderer->GetTransform()->GetLocalPosition();
 
 	float4 Forword = Player->GetTransform()->GetWorldForwardVector() * 120.0f;
-	float4 BusterPosition = Player->GetTransform()->GetWorldPosition() + Forword + float4{0.f, 20.f, 0.f};
+	float4 BusterPosition = Player->GetTransform()->GetWorldPosition() + Forword + float4{0.f, 40.f, 0.f};
 	
 	PhysXCapsule->SetWorldPosition(BusterPosition);
-	Player->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer->GetTransform());
+	Player->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer->GetTransform(), float4{0.0f, -120.0f, 0.0f}/*, float4(0.0f, 0.0f, 0.0f)*/);
 }
 
 void BaseEnemyActor::BusterEnd()

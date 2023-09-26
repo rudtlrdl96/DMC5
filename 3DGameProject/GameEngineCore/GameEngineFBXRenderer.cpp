@@ -139,10 +139,6 @@ void GameEngineFBXAnimationInfo::Update(float _DeltaTime)
 			return;
 		}
 
-		// 애니메이션 블랜드 등은 하나도 안들어가 있다.
-
-		// CurFrame + 1
-
 		FbxExBoneFrameData& CurData = FBXAnimationData->AniFrameData[i].BoneMatData[CurFrame];
 		FbxExBoneFrameData& NextData = FBXAnimationData->AniFrameData[i].BoneMatData[NextFrame];
 		AnimationBoneData[i].Scale = float4::Lerp(CurData.S, NextData.S, AnimRatio);
@@ -160,6 +156,10 @@ void GameEngineFBXAnimationInfo::Update(float _DeltaTime)
 
 		float4x4 Mat = float4x4::Affine(AnimationBoneData[i].Scale, AnimationBoneData[i].RotQuaternion, AnimationBoneData[i].Pos);
 
+		// 오프셋을 곱하지 않은 본행렬의 부모가 진짜 우리가 생각하는 월드이고
+		ParentRenderer->AnimationBoneMatrixsNotOffset[i] = Mat;
+
+		// 오프셋을 곱해주는 녀석은 버텍스에 곱해지기 위한 녀석이 된다.
 		AnimationBoneMatrix[i] = BoneData->BonePos.Offset * Mat;
 	}
 }
@@ -279,10 +279,13 @@ void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Name, std::vector<std
 }
 
 // SetFbxMesh를 해서 만들어진 랜더 유니트를 사용하게 하기 위해서 리턴해준다.
-std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh(const std::string& _Name,
+std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh
+(
+	const std::string& _Name,
 	std::string _Material,
 	size_t _MeshIndex,
-	size_t _SubSetIndex /*= 0*/)
+	size_t _SubSetIndex /*= 0*/
+)
 {
 	std::shared_ptr<GameEngineFBXMesh> FindFBXMesh = GameEngineFBXMesh::Find(_Name);
 
@@ -337,6 +340,7 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh(const st
 		}
 
 		AnimationBoneMatrixs.resize(Count);
+		AnimationBoneMatrixsNotOffset.resize(Count);
 		AnimationBoneDatas.resize(Count);
 	}
 
@@ -583,16 +587,28 @@ void GameEngineFBXRenderer::Update(float _DeltaTime)
 
 	CurAnimation->Update(_DeltaTime);
 
+
 	const TransformData& TransFormData = GetTransform()->GetTransDataRef();
 
 	for (size_t i = 0; i < AttachTransformValue.size(); i++)
 	{
 		AttachTransformInfo& Data = AttachTransformValue[i];
 
-		AnimationBoneData& Info = AnimationBoneDatas[Data.Index];
+		// 오프셋이 곱해지지 않은 행렬이 실제 본의 위치를 담고 있는 행렬이다.
+		// 버텍스는 오프셋을 기반으로 만들어져있기 때문이다.
+		float4x4 Mat = AnimationBoneMatrixsNotOffset[Data.Index];
+		Mat *= TransFormData.WorldMatrix;
 
-		Data.Transform->SetLocalPosition(Info.Pos + TransFormData.LocalPosition);
-		Data.Transform->SetLocalRotation(Info.RotEuler/* + TransFormData.LocalQuaternion.QuaternionToEulerDeg()*/);
+		float4 Scale;
+		float4 Rot;
+		float4 Pos;
+
+		Mat.Decompose(Scale, Rot, Pos);
+
+		// 세팅할때 월드로 해줘야 한다. 
+		// 정말 너무 다양한 상황이 있을수 있기 때문에 월드로 변경해서 넣어줘야 한다.
+		//Data.Transform->SetWorldRotation(Rot.QuaternionToEulerDeg() + Data.OffsetRot);
+		Data.Transform->SetWorldPosition(Pos + Data.OffsetPos);
 	}
 }
 
@@ -699,7 +715,7 @@ AnimationBoneData GameEngineFBXRenderer::GetBoneData(std::string _Name)
 	return Data;
 }
 
-void GameEngineFBXRenderer::SetAttachTransform(std::string_view _Name, GameEngineTransform* _Transform)
+void GameEngineFBXRenderer::SetAttachTransform(std::string_view _Name, GameEngineTransform* _Transform, float4 _OffsetPos, float4 _OffsetRot)
 {
 	Bone* BoneData = FBXMesh->FindBone(_Name.data());
 
@@ -709,12 +725,18 @@ void GameEngineFBXRenderer::SetAttachTransform(std::string_view _Name, GameEngin
 		return;
 	}
 
-	SetAttachTransform(BoneData->Index, _Transform);
+	SetAttachTransform(BoneData->Index, _Transform, _OffsetPos, _OffsetRot);
 }
 
-void GameEngineFBXRenderer::SetAttachTransform(int Index, GameEngineTransform* _Transform)
+void GameEngineFBXRenderer::SetAttachTransform(int Index, GameEngineTransform* _Transform, float4 _OffsetPos, float4 _OffsetRot)
 {
-	AttachTransformValue.push_back({ Index, _Transform });
+	float4x4 Rot;
+	float4x4 Pos;
+
+	Rot.RotationDeg(_OffsetRot);
+	Pos.Pos(_OffsetPos);
+
+	AttachTransformValue.push_back({ Index, _Transform, _OffsetPos, _OffsetRot, Rot * Pos });
 }
 
 void GameEngineFBXRenderer::SetDettachTransform()

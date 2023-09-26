@@ -61,7 +61,7 @@ void TestLevel::LevelChangeStart()
 	IsDebugSwitch();
 	SetLevelSceneGravity(2000);
 
-	if (false)
+	if (true)
 	{
 		std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
 		Nero->GetPhysXComponent()->SetWorldPosition({ -1200, 100, -1300 });

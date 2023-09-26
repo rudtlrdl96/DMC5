@@ -38,6 +38,7 @@ void GameEngineFBXMesh::Release()
 	AllFindMap.clear();
 	ClusterData.clear();
 	ClusterData.shrink_to_fit();
+	IsInit = false;
 }
 
 //

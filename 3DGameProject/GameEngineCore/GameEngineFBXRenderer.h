@@ -82,6 +82,9 @@ struct AttachTransformInfo
 {
 	int Index = -1;
 	GameEngineTransform* Transform;
+	float4 OffsetPos = float4(0.0f, 0.0f, 0.0f, 1.0f);
+	float4 OffsetRot = float4(0.0f, 0.0f, 0.0f, 0.0f);
+	float4x4 OffsetMat;
 };
 
 // 설명 :
@@ -197,9 +200,9 @@ public:
 		return AnimationBoneDatas[_Index];
 	}
 
-	void SetAttachTransform(std::string_view _Name, GameEngineTransform* _Transform);
+	void SetAttachTransform(std::string_view _Name, GameEngineTransform* _Transform, float4 _OffsetPos = float4(0.0f, 0.0f, 0.0f, 1.0f), float4 _OffsetRot = float4(0.0f, 0.0f, 0.0f, 0.0f));
 
-	void SetAttachTransform(int Index, GameEngineTransform* _Transform);
+	void SetAttachTransform(int Index, GameEngineTransform* _Transform, float4 _OffsetPos = float4(0.0f, 0.0f, 0.0f, 1.0f), float4 _OffsetRot = float4(0.0f, 0.0f, 0.0f, 0.0f));
 
 	void SetDettachTransform();
 
@@ -315,6 +318,7 @@ private:
 	// 스트럭처드 버퍼랑 링크가 되는 녀석.
 	std::vector<float4x4> AnimationBoneMatrixs;
 
+	std::vector<float4x4> AnimationBoneMatrixsNotOffset;
 
 	std::vector<AnimationBoneData> AnimationBoneDatas;
 

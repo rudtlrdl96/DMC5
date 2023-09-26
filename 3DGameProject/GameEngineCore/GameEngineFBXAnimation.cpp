@@ -14,6 +14,7 @@ void GameEngineFBXAnimation::Release()
 {
 	AnimationDatas.clear();
 	AnimationDatas.shrink_to_fit();
+	IsInit = false;
 }
 
 std::shared_ptr<GameEngineFBXAnimation> GameEngineFBXAnimation::Load(const std::string& _Path, const std::string& _Name)
