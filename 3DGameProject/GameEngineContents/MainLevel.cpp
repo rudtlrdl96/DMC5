@@ -14,6 +14,8 @@
 
 #include "EffectRenderer.h"
 
+#include "ThreadLoadingLevel.h"
+
 MainLevel* MainLevel::Inst = nullptr;
 
 MainLevel::MainLevel() 
@@ -122,7 +124,8 @@ void MainLevel::Update(float _DeltaTime)
 	}
 	if (true == GameEngineInput::IsDown("SelectLevel_08"))
 	{
-		GameEngineCore::ChangeLevel("NetworkTestLevel");
+		//GameEngineCore::ChangeLevel("NetworkTestLevel");
+		ThreadLoadingLevel::ChangeLevel("NetworkTestLevel");
 		return;
 	}
 	if (true == GameEngineInput::IsDown("SelectLevel_09"))

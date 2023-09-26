@@ -7,6 +7,7 @@
 #include "PlayerTestLevel.h"
 #include "ShaderTestLevel.h"
 #include "NetworkTestLevel.h"
+#include "ThreadLoadingLevel.h"
 
 //UI
 #include "MainLevel.h"
@@ -58,6 +59,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<MonsterTestLevel>();
 	GameEngineCore::CreateLevel<PlayUITestLevel>();
 	GameEngineCore::CreateLevel<PhysXTestLevel>();
+	GameEngineCore::CreateLevel<ThreadLoadingLevel>();
 	////
 	GameEngineCore::CreateLevel<StageEditLevel>();
 	GameEngineCore::CreateLevel<ShopLevel>();

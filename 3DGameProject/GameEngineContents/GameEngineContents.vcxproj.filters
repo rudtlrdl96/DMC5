@@ -436,6 +436,9 @@
     <ClInclude Include="PhysXTestLevel.h">
       <Filter>Levels\Test</Filter>
     </ClInclude>
+    <ClInclude Include="ThreadLoadingLevel.h">
+      <Filter>Levels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -860,6 +863,9 @@
     </ClCompile>
     <ClCompile Include="PhysXTestLevel.cpp">
       <Filter>Levels\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadLoadingLevel.cpp">
+      <Filter>Levels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
