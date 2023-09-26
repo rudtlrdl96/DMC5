@@ -56,17 +56,14 @@ void GameEngineLight::ShadowTargetTextureLoad(const float4 _ShadowScale /*= floa
 		LightDataValue.ShadowTargetSizeY = _ShadowScale.y;
 	}
 
-
-	ShadowTarget->AddNewTexture(DXGI_FORMAT_R16_FLOAT, { LightDataValue.ShadowTargetSizeX, LightDataValue.ShadowTargetSizeY }, float4::RED);
-	//ShadowTarget->CreateDepthTexture();
+	CreateShadowTarget(ShadowTarget, static_cast<LightType>(LightDataValue.LightType));
 	ShadowTarget->SetName("Shadow Target");
 
 	for (std::pair<const int, std::shared_ptr<class GameEngineRenderTarget>>& BakeTarget : BakeShadowTarget)
 	{
 		if (nullptr != BakeTarget.second)
 		{
-			BakeTarget.second->AddNewTexture(DXGI_FORMAT_R16_FLOAT, { LightDataValue.ShadowTargetSizeX, LightDataValue.ShadowTargetSizeY }, float4::RED);
-			BakeTarget.second->CreateDepthTexture();
+			CreateShadowTarget(BakeTarget.second, static_cast<LightType>(LightDataValue.LightType));
 			BakeTarget.second->SetName("Bake Target : " + std::to_string(BakeTarget.first));
 			BakeTarget.second->Clear();
 		}
@@ -124,22 +121,53 @@ void GameEngineLight::LightUpdate(GameEngineCamera* _Camera, float _DeltaTime)
 
 	_Camera->GetTransform()->SetCameraMatrix(_Camera->GetView(), _Camera->GetProjection());
 
+
 	LightDataValue.LightViewMatrix.LookToLH(
 		GetTransform()->GetWorldPosition(),
 		GetTransform()->GetWorldForwardVector(),
 		GetTransform()->GetWorldUpVector());
 
-	LightDataValue.LightProjectionMatrix.OrthographicLH(
-		ShadowRange.x,
-		ShadowRange.y,
-		LightDataValue.LightNear,
-		LightDataValue.LightFar);
+
+	if (LightDataValue.LightType == static_cast<int>(LightType::Directional))
+	{
+		LightDataValue.LightProjectionMatrix.OrthographicLH(
+			ShadowRange.x,
+			ShadowRange.y,
+			LightDataValue.LightNear,
+			LightDataValue.LightFar);
+	}
+	else
+	{
+		LightDataValue.LightProjectionMatrix.PerspectiveFovLH(
+			90.0f,
+			ShadowRange.x / ShadowRange.y,
+			LightDataValue.LightNear,
+			LightDataValue.LightFar);
+	}
 
 	LightDataValue.CameraView = _Camera->GetView();
 	LightDataValue.CameraViewInverseMatrix = _Camera->GetView().InverseReturn();
 
 	LightDataValue.LightProjectionInverseMatrix = LightDataValue.LightProjectionMatrix.InverseReturn();
 	LightDataValue.LightViewProjectionMatrix = LightDataValue.LightViewMatrix * LightDataValue.LightProjectionMatrix;
+}
+
+
+void GameEngineLight::CreateShadowTarget(std::shared_ptr<class GameEngineRenderTarget> _Target, LightType _Type)
+{
+	switch (_Type)
+	{
+	case LightType::Point:
+	{
+		_Target->AddNewCubeTexture(DXGI_FORMAT_R16_FLOAT, { LightDataValue.ShadowTargetSizeX, LightDataValue.ShadowTargetSizeY }, float4::RED);
+	}
+	break;
+	default:
+	{
+		_Target->AddNewTexture(DXGI_FORMAT_R16_FLOAT, { LightDataValue.ShadowTargetSizeX, LightDataValue.ShadowTargetSizeY }, float4::RED);
+	}
+	break;
+	}
 }
 
 #include <GameEngineCore/imgui.h>

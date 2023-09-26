@@ -91,6 +91,39 @@ void GameEngineRenderTarget::ResCreate(DXGI_FORMAT _Format, float4 _Scale, float
 	RTVs.push_back(Tex->GetRTV());
 }
 
+void GameEngineRenderTarget::ResCubemapCreate(DXGI_FORMAT _Format, float4 _Scale, float4 _Color)
+{
+	Color.push_back(_Color);
+	D3D11_TEXTURE2D_DESC Desc = { 0 };
+
+	Desc.ArraySize = 6;
+	Desc.Width = _Scale.uix();
+	Desc.Height = _Scale.uiy();
+	Desc.Format = _Format;
+	Desc.SampleDesc.Count = 1;
+	Desc.SampleDesc.Quality = 0;
+	Desc.MipLevels = 1;
+	Desc.Usage = D3D11_USAGE_DEFAULT;
+	Desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE;
+
+	std::shared_ptr<GameEngineTexture> Tex = GameEngineTexture::Create(Desc);
+
+	D3D11_VIEWPORT ViewPortData;
+
+	ViewPortData.TopLeftX = 0;
+	ViewPortData.TopLeftY = 0;
+	ViewPortData.Width = _Scale.x;
+	ViewPortData.Height = _Scale.y;
+	ViewPortData.MinDepth = 0.0f;
+	ViewPortData.MaxDepth = 1.0f;
+
+	ViewPortDatas.push_back(ViewPortData);
+
+	Textures.push_back(Tex);
+	SRVs.push_back(Tex->GetSRV());
+	RTVs.push_back(Tex->GetRTV());
+}
+
 void GameEngineRenderTarget::CreateDepthTexture(int _Index)
 {
 	D3D11_TEXTURE2D_DESC Desc = { 0, };

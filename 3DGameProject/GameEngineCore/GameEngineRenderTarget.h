@@ -116,6 +116,11 @@ public:
 		ResCreate(_Format, _Scale, _Color);
 	}
 
+	void AddNewCubeTexture(DXGI_FORMAT _Format, float4 _Scale, float4 _Color)
+	{
+		ResCubemapCreate(_Format, _Scale, _Color);
+	}
+
 	void ReleaseTextures();
 
 	void ChangeViewPort(float4 _Scale, int _Index = 0);
@@ -139,6 +144,7 @@ private:
 
 	void ResCreate(std::shared_ptr<GameEngineTexture> _Texture, float4 _Color);
 	void ResCreate(DXGI_FORMAT _Format, float4 _Scale, float4 _Color);
+	void ResCubemapCreate(DXGI_FORMAT _Format, float4 _Scale, float4 _Color);
 
 	void EffectInit(std::shared_ptr<GameEnginePostProcess> _PostProcess);
 

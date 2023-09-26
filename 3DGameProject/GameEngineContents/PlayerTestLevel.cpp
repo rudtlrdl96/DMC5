@@ -84,7 +84,7 @@ void PlayerTestLevel::LevelChangeStart()
 
 	if (nullptr == Light)
 	{
-		Light = CreatePointLight(float4(0, 50, 0), 1000);
+		Light = CreatePointLight(float4(0, 50, 0), float4(256, 256), 1000);
 		Flat = CreateActor<Plane>();
 	}
 }

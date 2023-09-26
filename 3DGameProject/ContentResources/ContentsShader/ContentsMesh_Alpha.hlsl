@@ -157,5 +157,7 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     Result.ResultColor.rgb = Result.ResultColor.rgb * (DiffuseRatio.rgb + SpacularRatio.rgb + AmbientRatio.rgb);
     Result.ResultColor.a = AtosData.r;
       
+    Result.ResultColor *= BaseColor;
+    
     return Result;
 }

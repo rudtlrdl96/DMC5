@@ -15,7 +15,6 @@ void EffectToolLevel::Start()
 {
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -500 });
-	CreateActor<GameEngineLight>();
 	GetDirectionalLight()->GetTransform()->SetLocalRotation({ 0, 180, 0 });
 }
 

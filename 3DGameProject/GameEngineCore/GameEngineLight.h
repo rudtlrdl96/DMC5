@@ -140,6 +140,8 @@ private:
         LightDataValue.LightType = static_cast<int>(_Type);
     }
 
+    void CreateShadowTarget(std::shared_ptr<class GameEngineRenderTarget> _Target, LightType _Type);
+
     void DrawEditor() override;
 
 };
