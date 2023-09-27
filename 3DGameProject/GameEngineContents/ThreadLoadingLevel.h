@@ -11,6 +11,17 @@ public:
 		GameEngineCore::ChangeLevel("ThreadLoadingLevel");
 	}
 
+	//이 함수를 통해 로딩 레벨을 활성화 시킵니다
+	template <typename LevelType>
+	static void ChangeLevel()
+	{
+		const type_info& Info = typeid(LevelType);
+		std::string LevelName = Info.name();
+		LevelName.replace(0, 6, "");
+
+		ChangeLevel(LevelName);
+	}
+
 
 
 	ThreadLoadingLevel();
@@ -34,6 +45,7 @@ private:
 	size_t LoadWorkCount = 0;
 	std::atomic<size_t> ExcuteWorkCount = 0;
 	float LoadingPercent = 0.f;
+	std::shared_ptr<class GameEngineActor> ThreadTestActor = nullptr;
 
 	
 	/// <summary>

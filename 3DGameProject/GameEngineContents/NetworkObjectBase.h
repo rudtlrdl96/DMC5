@@ -5,6 +5,7 @@
 #include "PacketEnum.h"
 
 class PhysXCapsuleComponent;
+class GameEngineTransform;
 
 class NetworkObjectBase : public GameEngineNetObject
 {
@@ -30,7 +31,6 @@ public:
 	NetworkObjectBase& operator=(const NetworkObjectBase&& _Other) noexcept = delete;
 
 protected:
-
 	inline void SetNetObjectType(Net_ActorType _ActorType)
 	{
 		NetActorType = _ActorType;
@@ -46,6 +46,8 @@ protected:
 	void Update_ProcessPacket() final;
 	void Update_SendPacket(float _DeltaTime) final;
 
+
+	//업데이트 패킷의 int/float/bool를 추가로 연결합니다
 	template <typename DataType>
 	void LinkData_UpdatePacket(DataType& Data, std::function<void(DataType _BeforeData)> _DifferentCallBack = nullptr)
 	{
@@ -84,10 +86,22 @@ protected:
 		};
 	}
 
+
+	//업데이트 패킷에 자식 GameEngineTransform을 추가로 연결합니다
+	void LinkChild_UpdatePacket(GameEngineTransform* _Child);
+
+
+
 	void SetFsmPacketCallBack(std::function<void(int _State)> _CallBack);
 
 
 private:
+	struct ChildData
+	{
+		float4 Rotation = float4::ZERO;
+		float4 Position = float4::ZERO;
+	};
+
 	static NetworkObjectBase* DebugTarget;
 	static Net_ActorType DebugType;
 
@@ -108,6 +122,8 @@ private:
 	std::vector<int*> UpdatePacket_IntLinkDatas;
 	std::vector<bool*> UpdatePacket_BoolLinkDatas;
 	std::vector<float*> UpdatePacket_FloatLinkDatas;
+	std::map<GameEngineTransform*, ChildData> Children;
+
 	std::map<void*, std::function<void(void* _BeforeData)>> LinkDifferentCallBacks;
 	
 	

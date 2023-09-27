@@ -3,6 +3,7 @@
 
 #include <GameEngineCore/GameEngineFBXMesh.h>
 #include <GameEngineCore/GameEngineTexture.h>
+#include <GameEngineCore/GameEngineRenderer.h>
 
 #include "NetworkTestLevel.h"
 
@@ -24,13 +25,22 @@ void ThreadLoadingLevel::Start()
 	BaseLevel::Start();
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 
+	//스레드 로딩이 잘 작동되는지 확인하려는 임시 엑터입니다. 나중에 삭제할 예정이에요
+	ThreadTestActor = CreateActor<GameEngineActor>();
+	std::shared_ptr<GameEngineRenderer> TestRenderer = nullptr;
+	TestRenderer = ThreadTestActor->CreateComponent<GameEngineRenderer>();
+	TestRenderer->CreateRenderUnit("sphere", "MeshTexture");
+	TestRenderer->GetTransform()->SetLocalScale({ 100.0f, 100.0f, 100.0f });
+	ThreadTestActor->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 100.0f });
+	TestRenderer->GetRenderBaseValueRef().IsNormal = 1;
+
+
 	//NetworkTestLevel
 	PushLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Character\\Player\\Nero\\Mesh\\Nero.fbx");
 	PushLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character\\Player\\Nero\\Mesh\\pl0010_03_atos.texout.png");
 	PushLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character\\Player\\Nero\\Mesh\\pl0000_03_atos.texout.png");
 	//PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Character", {".fbx"});
-	//PushAllLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character", {".png"});
-
+	//PushAllLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character", { ".png" });
 }
 
 #include "NetworkGUI.h"
@@ -39,14 +49,17 @@ void ThreadLoadingLevel::Update(float _DeltaTime)
 {
 	BaseLevel::Update(_DeltaTime);
 
+	//모든 로딩이 완료된 순간
 	if (LoadWorkCount == ExcuteWorkCount)
 	{
 		GameEngineCore::ChangeLevel(NextLevelName);
+		NetworkGUI::GetInst()->PrintLog("Thread Load Done", float4{ 0.f, 1.f, 1.f, 1.f });
 		return;
 	}
 
-	//TODO
 	NetworkGUI::GetInst()->PrintLog("Thread Load Percent : " + std::to_string(LoadingPercent), float4{ 0.f, 1.f, 1.f, 1.f });
+	ThreadTestActor->GetTransform()->AddLocalRotation(float4::FORWARD * 360.f * _DeltaTime);
+	//TODO
 }
 
 
