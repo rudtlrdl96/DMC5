@@ -104,7 +104,7 @@ void GameEngineLevel::LevelLightInit()
 std::shared_ptr<GameEngineLight> GameEngineLevel::CreatePointLight(const float4& _Pos, const float4& _ShadowScale, float _Range)
 {
 	std::shared_ptr<GameEngineLight> NewLight = CreateActor<GameEngineLight>();
-	NewLight->IsShadowLight = true;
+	NewLight->IsShadowLight = false;
 
 	NewLight->GetTransform()->SetLocalPosition(_Pos);
 	NewLight->SetName("Point Light");

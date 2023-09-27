@@ -75,7 +75,7 @@ ResultLight CalLight(int _LightIndex, float4 _Position, float4 _Normal, float _M
         
     if (2 == AllLight[_LightIndex].LightType)
     {
-        float3 LightVec = normalize(_Position.xyz - AllLight[_LightIndex].ViewLightPos.xyz);
+        float3 LightVec = normalize(_Position.xyz - AllLight[_LightIndex].ViewLightPos.xyz);     
         float SpotCone = pow(saturate(dot(LightVec, normalize(AllLight[_LightIndex].ViewLightDir.xyz))), AllLight[_LightIndex].LightAngle);
             
         LightPower *= SpotCone;

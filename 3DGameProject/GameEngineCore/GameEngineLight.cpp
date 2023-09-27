@@ -136,11 +136,26 @@ void GameEngineLight::LightUpdate(GameEngineCamera* _Camera, float _DeltaTime)
 			LightDataValue.LightNear,
 			LightDataValue.LightFar);
 	}
-	else
+	else if (LightDataValue.LightType == static_cast<int>(LightType::Point))
 	{
 		LightDataValue.LightProjectionMatrix.PerspectiveFovLH(
 			90.0f,
-			ShadowRange.x / ShadowRange.y,
+			1.0f,
+			LightDataValue.LightNear,
+			LightDataValue.LightFar);
+	}
+	else // Spot
+	{
+		float LightAngle = LightDataValue.LightAngle;
+
+		if (1 > LightAngle)
+		{
+			LightAngle = 1;
+		}
+
+		LightDataValue.LightProjectionMatrix.PerspectiveFovLH(
+			LightAngle,
+			1.0f,
 			LightDataValue.LightNear,
 			LightDataValue.LightFar);
 	}
