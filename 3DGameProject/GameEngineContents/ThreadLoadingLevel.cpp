@@ -64,6 +64,13 @@ void ThreadLoadingLevel::ThreadLoadStart()
 	ExcuteWorkCount = 0;
 	LoadingPercent = 0.f;
 
+	//이 부분 일단은 터뜨릴께요. 나중에 보고 주석처리 할 지 판단하죠
+	if (true == CallBacks.empty())
+	{
+		MsgAssert(NextLevelName + "레벨에 스레드 로딩을 등록해준 리소스가 존재하지 않습니다");
+		return;
+	}
+
 	for (const std::function<void()>& CallBack : CallBacks)
 	{
 		GameEngineCore::JobQueue.Work([this, CallBack](GameEngineThread*)
