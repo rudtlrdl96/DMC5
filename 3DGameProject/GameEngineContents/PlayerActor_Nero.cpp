@@ -1369,6 +1369,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Split_1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Split_1,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_Split_1.effect");
 				Col_Attack->SetAttackData(DamageType::Slam, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -1390,6 +1391,7 @@ void PlayerActor_Nero::PlayerLoad()
 		static float4 SplitTargetPos;
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Split_2,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_Split_2.effect");
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Split_2_Loop");
 				GetLevel()->RayCast(GetTransform()->GetWorldPosition(), float4::DOWN, SplitTargetPos, 9999.0f);
 				SplitTargetPos += float4::UP * 100;
@@ -1416,7 +1418,9 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Split_3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Split_3,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_Split_3.effect");
 				Col_Attack->SetAttackData(DamageType::Heavy, 50);
+				UseDoubleJump = false;
 				InputCheck = false;
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
