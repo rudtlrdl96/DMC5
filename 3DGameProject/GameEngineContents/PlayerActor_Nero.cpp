@@ -734,8 +734,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboA1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_1,
 			.Start = [=] {
-				EffectSystem->ChangeFX("RQ_ComboA1.effect");
-				EffectSystem->Play();
+				EffectSystem->PlayFX("RQ_ComboA1.effect");
 				PhysXCapsule->TurnOffGravity();
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
@@ -774,8 +773,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboA2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_2,
 			.Start = [=] {
-				EffectSystem->ChangeFX("RQ_ComboA2.effect");
-				EffectSystem->Play();
+				EffectSystem->PlayFX("RQ_ComboA2.effect");
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
@@ -820,8 +818,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboA3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_3,
 			.Start = [=] {
-				EffectSystem->ChangeFX("RQ_ComboA3.effect");
-				EffectSystem->Play();
+				EffectSystem->PlayFX("RQ_ComboA3.effect");
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
@@ -860,8 +857,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboA4
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_4,
 			.Start = [=] {
-				EffectSystem->ChangeFX("RQ_ComboA4.effect");
-				EffectSystem->Play();
+				EffectSystem->PlayFX("RQ_ComboA4.effect");
 				Col_Attack->SetAttackData(DamageType::Heavy, 100);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
@@ -899,6 +895,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboD1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboD_1,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_ComboD1.effect");
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
@@ -937,6 +934,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboD2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboD_2,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_ComboD2.effect");
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
@@ -975,6 +973,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboD3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboD_3,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_ComboD3.effect");
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
@@ -1013,6 +1012,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboD4
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboD_4,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_ComboD4.effect");
 				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
@@ -4541,10 +4541,16 @@ void PlayerActor_Nero::WeaponIdle()
 	Renderer->GetAllRenderUnit()[0][24]->On();	// 등 레드퀸
 	Renderer->GetAllRenderUnit()[0][16]->Off();	// 블루로즈
 	Renderer_Overture->Off();
+
 	if (nullptr != Col_Attack)
 	{
 		Col_Attack->Off();
 	}
+	if (nullptr != EffectSystem)
+	{
+		EffectSystem->Off();
+	}
+
 	if (true == IsDevilTrigger)
 	{
 		return;

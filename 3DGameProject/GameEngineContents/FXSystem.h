@@ -21,6 +21,12 @@ public:
 	void ChangeFX(const std::string_view& _Name);
 	void ChangeFX(std::shared_ptr<class FXData> _FX);
 
+	void PlayFX(const std::string_view& _Name)
+	{
+		ChangeFX(_Name);
+		Play();
+	}
+
 	std::shared_ptr<class FXData> GetFX()
 	{
 		return CurFX;
