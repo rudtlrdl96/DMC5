@@ -1051,6 +1051,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen HR
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_HR,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_HR.effect");
 				Col_Attack->SetAttackData(DamageType::Air, 50);
 				PhysXCapsule->TurnOnGravity();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -1122,6 +1123,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Stleak1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Stleak1,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_Stleak_1.effect");
 				PhysXCapsule->SetLinearVelocityZero();
 				RotationToTarget();
 				RedQueenOn();
@@ -1180,6 +1182,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Stleak3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Stleak3,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_Stleak_3.effect");
 				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();

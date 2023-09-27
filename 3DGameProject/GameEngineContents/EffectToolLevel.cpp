@@ -3,6 +3,7 @@
 #include <GameEngineCore/EngineGrid.h>
 #include "EffectToolWindow.h"
 #include "FreeCameraActor.h"
+#include "SkyBox.h"
 EffectToolLevel::EffectToolLevel() 
 {
 }
@@ -33,6 +34,21 @@ void EffectToolLevel::LevelChangeStart()
 		ToolWindow = std::dynamic_pointer_cast<EffectToolWindow>(GameEngineGUI::GUIWindowCreate<EffectToolWindow>("AnimationToolWindow"));
 		CreateActor<FreeCameraActor>();
 		CreateActor<EngineGrid>();
+
+		GameEngineDirectory Dir = GameEnginePath::GetFileFullPath
+		(
+			"ContentResources",
+			{
+				"Map", "TestMap"
+			}
+		);
+		if (nullptr == GameEngineFBXMesh::Find("SkyBox.fbx"))
+		{
+			GameEngineFBXMesh::Load(Dir.GetPlusFileName("SkyBox.fbx").GetFullPath());
+		}
+
+		std::shared_ptr<SkyBox> Sky = CreateActor<SkyBox>();
+		Sky->CreateSkyBox(this, "SkyBox.fbx");
 	}
 
 	GameEngineDirectory NewDir;
