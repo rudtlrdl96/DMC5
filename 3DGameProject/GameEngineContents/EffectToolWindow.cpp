@@ -239,7 +239,7 @@ void EffectToolWindow::KeyFrame()
 
 	for (; StartIter != EndIter; StartIter++)
 	{
-		
+
 		if (ImGui::TreeNode(std::to_string(StartIter->first).c_str()))
 		{
 			ImGui::DragFloat4("Position", StartIter->second.Position.Arr1D, 0.1f);
@@ -259,7 +259,7 @@ void EffectToolWindow::KeyFrame()
 
 			ImGui::TreePop();
 		}
-		
+
 	}
 }
 
@@ -422,7 +422,7 @@ void EffectToolWindow::Save(std::shared_ptr<GameEngineLevel> Level)
 						if (nullptr == FXRenders[i]->FindAnimation(CurUnitDatas[i].AnimationName))
 						{
 							// 애니메이션이 없는 경우
-							FXRenders[i]->CreateAnimation({.AnimationName = CurUnitDatas[i].AnimationName, .SpriteName = CurUnitDatas[i].AnimationName , .FrameInter = 0.0166f});
+							FXRenders[i]->CreateAnimation({ .AnimationName = CurUnitDatas[i].AnimationName, .SpriteName = CurUnitDatas[i].AnimationName , .FrameInter = 0.0166f });
 						}
 						FXRenders[i]->ChangeAnimation(CurUnitDatas[i].AnimationName);
 					}
@@ -436,9 +436,9 @@ void EffectToolWindow::Save(std::shared_ptr<GameEngineLevel> Level)
 void EffectToolWindow::KeyFramePreview()
 {
 	if (false == CurFrameData.contains(CurrentFrame))
-	{ 
+	{
 		KeyFrameLerp();
-		return; 
+		return;
 	}
 
 	std::map<int, FXKeyFrame>& CurKeyFrame = CurFrameData[CurrentFrame];
@@ -449,8 +449,8 @@ void EffectToolWindow::KeyFramePreview()
 	{
 		if (false == CurKeyFrame.contains(i))
 		{
-			KeyFrameLerp();
-			return;
+			KeyFrameLerp(i);
+			continue;
 		}
 
 		FXRenders[i]->GetTransform()->SetLocalPosition(CurKeyFrame[i].Position);
@@ -496,12 +496,15 @@ void EffectToolWindow::KeyFrameLerp()
 			PrevFrame--;
 			if (true == CurFrameData.contains(PrevFrame) && true == CurFrameData[PrevFrame].contains(i))
 			{
-				Check = true;
-				PrevKey = CurFrameData[PrevFrame][i];
-				break;
+				if (true == CurFrameData[PrevFrame].contains(i))
+				{
+					Check = true;
+					PrevKey = CurFrameData[PrevFrame][i];
+					break;
+				}
 			}
 		}
-		if (false == Check) { return; }
+		if (false == Check) { continue; }
 
 		Check = false;
 		while (NextFrame < 9999)
@@ -509,12 +512,15 @@ void EffectToolWindow::KeyFrameLerp()
 			NextFrame++;
 			if (true == CurFrameData.contains(NextFrame) && true == CurFrameData[NextFrame].contains(i))
 			{
-				Check = true;
-				NextKey = CurFrameData[NextFrame][i];
-				break;
+				if (true == CurFrameData[NextFrame].contains(i))
+				{
+					Check = true;
+					NextKey = CurFrameData[NextFrame][i];
+					break;
+				}
 			}
 		}
-		if (false == Check) { return; }
+		if (false == Check) { continue; }
 
 		float Ratio = (float)(CurrentFrame - PrevFrame) / (NextFrame - PrevFrame);
 		FXKeyFrame CurKey = FXKeyFrame::Lerp(PrevKey, NextKey, Ratio);
@@ -523,5 +529,52 @@ void EffectToolWindow::KeyFrameLerp()
 		FXRenders[i]->GetTransform()->SetLocalScale(CurKey.Scale);
 		FXRenders[i]->EffectOption = CurKey.EffectOption;
 	}
+}
+
+void EffectToolWindow::KeyFrameLerp(int i)
+{
+	FXKeyFrame PrevKey;
+	FXKeyFrame NextKey;
+	int PrevFrame = CurrentFrame;
+	int NextFrame = CurrentFrame;
+
+	bool Check = false;
+	while (0 < PrevFrame)
+	{
+		PrevFrame--;
+		if (true == CurFrameData.contains(PrevFrame) && true == CurFrameData[PrevFrame].contains(i))
+		{
+			if (true == CurFrameData[PrevFrame].contains(i))
+			{
+				Check = true;
+				PrevKey = CurFrameData[PrevFrame][i];
+				break;
+			}
+		}
+	}
+	if (false == Check) { return; }
+
+	Check = false;
+	while (NextFrame < 9999)
+	{
+		NextFrame++;
+		if (true == CurFrameData.contains(NextFrame) && true == CurFrameData[NextFrame].contains(i))
+		{
+			if (true == CurFrameData[NextFrame].contains(i))
+			{
+				Check = true;
+				NextKey = CurFrameData[NextFrame][i];
+				break;
+			}
+		}
+	}
+	if (false == Check) { return; }
+
+	float Ratio = (float)(CurrentFrame - PrevFrame) / (NextFrame - PrevFrame);
+	FXKeyFrame CurKey = FXKeyFrame::Lerp(PrevKey, NextKey, Ratio);
+	FXRenders[i]->GetTransform()->SetLocalPosition(CurKey.Position);
+	FXRenders[i]->GetTransform()->SetLocalRotation(CurKey.Rotation);
+	FXRenders[i]->GetTransform()->SetLocalScale(CurKey.Scale);
+	FXRenders[i]->EffectOption = CurKey.EffectOption;
 }
 

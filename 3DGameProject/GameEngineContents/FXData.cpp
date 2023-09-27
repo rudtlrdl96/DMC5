@@ -36,11 +36,12 @@ std::shared_ptr<FXData> FXData::CreateData(std::vector<FXUnitData>& _UnitDatas, 
 	{						  
 		if (false == _Data.contains(i)) { continue; }
 
-		std::map<int, FXKeyFrame>::iterator StartIter = _Data[i].begin();
-		std::map<int, FXKeyFrame>::iterator EndIter = _Data[i].end();
-
-		for (int j = 0; j < _Data[i].size(); j++)
+		for (int j = 0; j < _UnitDatas.size(); j++)
 		{
+			if (false == _Data[i].contains(j))
+			{
+				continue;
+			}
 			NewData->FrameData[i][Names[j]] = _Data[i][j];
 			NewData->FrameData[i][Names[j]].IsVaild = true;
 		}

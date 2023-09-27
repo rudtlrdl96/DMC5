@@ -28,6 +28,7 @@ protected:
 
 	void KeyFramePreview();
 	void KeyFrameLerp();
+	void KeyFrameLerp(int i);
 private:
 	std::shared_ptr<GameEngineActor> Actor = nullptr;
 	std::shared_ptr<class GameEngineFBXRenderer> CharacterRender = nullptr;
