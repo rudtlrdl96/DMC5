@@ -611,7 +611,6 @@ public:
 	static std::shared_ptr<GameEngineFBXMesh> Load(const std::string& _Path)
 	{
 		GameEnginePath FilePath(_Path);
-
 		return Load(_Path, FilePath.GetFileName());
 	}
 
@@ -654,7 +653,6 @@ public:
 		return AllBones.size();
 	}
 
-
 	// Bone 찾아주는 함수
 	Bone* FindBone(size_t _BoneIndex);
 	Bone* FindBone(std::string _Name);
@@ -670,35 +668,20 @@ public:
 		return AllBones;
 	}
 
-	//void UserLoad(const std::string_view& _Path/*GameEngineFile& _File*/);
-	//void UserSave(const std::string_view& _Path/*GameEngineFile& _File*/);
-	//void UserSave(const std::string_view& _Path, size_t Index);
-	//void UserSave(const std::string_view& _Path, std::vector<size_t> _Indexs);
-
 protected:
-	// 매쉬가 있어
-
 	std::string FBXMeshName;
-
 	std::vector<FbxExMeshInfo> MeshInfos;
 	std::vector<Bone> AllBones;
-
-
 	std::vector<FbxRenderUnitInfo> RenderUnitInfos;
-
 	std::shared_ptr<GameEngineStructuredBuffer> AllBoneStructuredBuffers; // 본정보체
-
 	std::map<std::string, Bone*> AllFindMap;
 	std::vector<std::vector<FbxClusterData>> ClusterData;
 
 private:
-	void LoadMesh(const std::string& _Path, const std::string& _Name);
-
 	bool IsInit = false;
 
 	void MeshLoad();
 	void CreateGameEngineStructuredBuffer();
-
 
 	// 매쉬 정보 획득
 	void MeshNodeCheck();
@@ -736,5 +719,6 @@ private:
 	void LoadAnimationVertexData(FbxRenderUnitInfo* _DrawData, const std::vector<FbxClusterData>& vecClusterData);
 	void DrawSetWeightAndIndexSetting(FbxRenderUnitInfo* _DrawSet, fbxsdk::FbxMesh* _Mesh, fbxsdk::FbxCluster* _Cluster, int _BoneIndex);
 	void CalAnimationVertexData(FbxRenderUnitInfo& _DrawSet);
+
 };
 

@@ -77,8 +77,6 @@ void GameEngineStructuredBuffer::CreateResize(size_t _DataSize, size_t Count, vo
 		StartDataPtr = &StartData;
 	}
 
-
-
 	if (S_OK != GameEngineDevice::GetDevice()->CreateBuffer(&BufferInfo, StartDataPtr, &Buffer))
 	{
 		MsgAssert("스트럭처드 버퍼 생성에 실패했습니다.");
@@ -99,7 +97,6 @@ void GameEngineStructuredBuffer::CreateResize(size_t _DataSize, size_t Count, vo
 		MsgAssert("FAIL (S_OK != GameEngineDevice::GetDevice()->CreateShaderResourceView(GetBuffer(), &tSRVDesc, &m_pSRV))");
 	}
 }
-
 
 void GameEngineStructuredBuffer::ChangeData(const void* _Data, size_t _Size)
 {
