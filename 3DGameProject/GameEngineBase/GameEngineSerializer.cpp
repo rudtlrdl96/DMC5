@@ -31,7 +31,12 @@ void GameEngineSerializer::Read(void* _Data, unsigned int _Size)
 
 void GameEngineSerializer::Write(const void* _Data, unsigned int _Size)
 {
-	if (WriteOffset + _Size >= Data.size())
+	/*if (WriteOffset + _Size >= Data.size())
+	{
+		Data.resize(Data.capacity() * 2);
+	}*/
+
+	while (Data.size() <= (WriteOffset + _Size))
 	{
 		Data.resize(Data.capacity() * 2);
 	}
