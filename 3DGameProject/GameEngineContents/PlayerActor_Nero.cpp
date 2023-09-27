@@ -1455,6 +1455,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Caliber_1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Caliber_1,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_Calibur_1.effect");
 				RedQueenOn();
 				RotationToTarget();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -1480,6 +1481,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Caliber_2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Caliber_2,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_Calibur_2.effect");
 				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Caliber_2");
 				InputCheck = false;
