@@ -1081,6 +1081,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Shuffle
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Shuffle,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_Shuffle.effect");
 				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				InputCheck = false;
 				DelayCheck = false;
