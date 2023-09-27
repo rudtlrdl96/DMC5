@@ -650,6 +650,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="WallLight_On.h" />
     <ClInclude Include="ZoomEffect.h">
       <SubType>
       </SubType>
@@ -1131,6 +1132,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="WallLight_On.cpp" />
     <ClCompile Include="ZoomEffect.cpp">
       <SubType>
       </SubType>

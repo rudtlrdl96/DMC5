@@ -439,6 +439,9 @@
     <ClInclude Include="ThreadLoadingLevel.h">
       <Filter>Levels</Filter>
     </ClInclude>
+    <ClInclude Include="WallLight_On.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -866,6 +869,9 @@
     </ClCompile>
     <ClCompile Include="ThreadLoadingLevel.cpp">
       <Filter>Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="WallLight_On.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

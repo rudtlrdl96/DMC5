@@ -3,6 +3,7 @@
 
 #include "TestObj.h"
 #include "TestEventZone.h"
+#include "WallLight_On.h"
 
 FieldMapObject::FieldMapObject()
 {
@@ -24,8 +25,8 @@ std::shared_ptr<FieldMapObject> FieldMapObject::CreateFieldMapObj(GameEngineLeve
 	case FieldMapObjType::Null:
 		MsgAssert("FieldMapObjType이 Null입니다");
 		break;
-	case FieldMapObjType::Test0:
-		Result = _Level->CreateActor<TestObj>();
+	case FieldMapObjType::WallLight_On:
+		Result = _Level->CreateActor<WallLight_On>();
 		break;
 	case FieldMapObjType::Test1:
 		Result = _Level->CreateActor<TestEventZone>();

@@ -43,7 +43,6 @@ void StageEditLevel::Start()
 	Grid = CreateActor<EngineGrid>();
 	FreeCam = CreateActor<FreeCameraActor>();
 	IsEditLevel = true;
-
 }
 
 void StageEditLevel::Update(float _DeltaTime)
@@ -92,6 +91,22 @@ void StageEditLevel::LevelChangeStart()
 				"ContentResources",
 				{
 					"Map", "TestObj"
+				}
+			);
+			std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".fbx" });
+			for (GameEngineFile& File : FBXFiles)
+			{
+				GameEngineFBXMesh::Load(File.GetFullPath());
+			}
+		}
+
+		{
+			IsResourceLoaded = true;
+			GameEngineDirectory Dir = GameEnginePath::GetFileFullPath
+			(
+				"ContentResources",
+				{
+					"Map", "Location2"
 				}
 			);
 			std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".fbx" });

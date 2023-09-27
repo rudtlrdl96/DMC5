@@ -46,6 +46,7 @@ void StaticFieldMapObject::SetRenderer(const std::string_view& _Mat)
 	{
 		FBXMesh->SetFBXMesh(FBXFileName.data(), _Mat.data());
 	}
+	FBXMesh->SetStatic();
 }
 
 void StaticFieldMapObject::SetPhysX()

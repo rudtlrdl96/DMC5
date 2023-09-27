@@ -31,8 +31,9 @@ private:
 	void FieldMapCombo(std::vector<StageData>& _AllData, size_t& _Stage_current, size_t& _FieldMap_current);
 	
 	int ObjType_current = 0;
-	const char* ObjType_items[2] = { "Test0", "Test1" };
 	void ObjTypeSelectCombo();
+	const char* ObjType_items[2] = 
+	{ "WallLight_On", "Test1" };
 
 	void InputObject(std::vector<StageData>& _AllData, size_t& _Stage_current, size_t& _FieldMap_current);
 

@@ -29,14 +29,29 @@ std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, cons
 	MapRenderersRef.resize(_FBXNames.size());
 	for (size_t i = 0; i < MapRenderersRef.size(); i++)
 	{
-		MapRenderersRef[i] = Result->CreateComponent<GameEngineFBXRenderer>();
-		if (GameEngineOption::GetOption("Shader") == GameEngineOptionValue::Low)
+		if (alphaCheck(_FBXNames[i]))
 		{
-			MapRenderersRef[i].lock()->SetFBXMesh(_FBXNames[i].data(), "FBX_Low");
+			MapRenderersRef[i] = Result->CreateComponent<GameEngineFBXRenderer>();
+			if (GameEngineOption::GetOption("Shader") == GameEngineOptionValue::Low)
+			{
+				MapRenderersRef[i].lock()->SetFBXMesh(_FBXNames[i].data(), "FBX_Alpha");
+			}
+			else
+			{
+				MapRenderersRef[i].lock()->SetFBXMesh(_FBXNames[i].data(), "FBX_Alpha");
+			}
 		}
 		else
 		{
-			MapRenderersRef[i].lock()->SetFBXMesh(_FBXNames[i].data(), "FBX");
+			MapRenderersRef[i] = Result->CreateComponent<GameEngineFBXRenderer>();
+			if (GameEngineOption::GetOption("Shader") == GameEngineOptionValue::Low)
+			{
+				MapRenderersRef[i].lock()->SetFBXMesh(_FBXNames[i].data(), "FBX_Low");
+			}
+			else
+			{
+				MapRenderersRef[i].lock()->SetFBXMesh(_FBXNames[i].data(), "FBX");
+			}
 		}
 
 		MapRenderersRef[i].lock()->ShadowOn();

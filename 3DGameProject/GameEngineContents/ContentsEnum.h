@@ -85,6 +85,6 @@ enum class DevilBreaker
 enum class FieldMapObjType
 {
 	Null = -1,
-	Test0,
+	WallLight_On,
 	Test1,
 };

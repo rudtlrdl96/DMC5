@@ -16,7 +16,7 @@ public:
 	BaseStageActor& operator=(BaseStageActor&& _Other) noexcept = delete;
 
 protected:
-
+	static bool alphaCheck(const std::string_view& _FBXName);
 
 private:
 
