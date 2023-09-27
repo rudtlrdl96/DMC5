@@ -80,6 +80,36 @@ void EffectToolWindow::CharacterSetting(std::shared_ptr<GameEngineLevel> Level)
 		}
 	}
 	ImGui::SameLine();
+	if (ImGui::Button("Nero Mesh FBX"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Character");
+		NewDir.Move("Player");
+		NewDir.Move("Nero");
+		NewDir.Move("Mesh");
+		if (nullptr == GameEngineFBXMesh::Find("Nero.FBX"))
+		{
+			GameEngineFBXMesh::Load(NewDir.GetPlusFileName("Nero.fbx").GetFullPath());
+			GameEngineTexture::Load(NewDir.GetPlusFileName("pl0010_03_atos.texout.png").GetFullPath());
+			GameEngineTexture::Load(NewDir.GetPlusFileName("pl0000_03_atos.texout.png").GetFullPath());
+		}
+
+		if (nullptr == Actor)
+		{
+			Actor = Level->CreateActor<GameEngineActor>();
+			FXSys = Actor->CreateComponent<FXSystem>();
+		}
+		if (nullptr != CharacterRender)
+		{
+			CharacterRender->Death();
+		}
+		CharacterRender = Actor->CreateComponent<GameEngineFBXRenderer>();
+		CharacterRender->SetFBXMesh("Nero.FBX", "AniFBX");
+		CharacterRender->GetTransform()->SetLocalPosition({ 0, -75, 0 });
+	}
+	ImGui::SameLine();
 	if (ImGui::Button("Open Animation FBX"))
 	{
 		OPENFILENAME OFN;

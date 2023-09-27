@@ -1220,6 +1220,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen AirComboA1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_1,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_AirComboA1.effect");
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -1253,6 +1254,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen AirComboA2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_2,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_AirComboA2.effect");
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -1294,6 +1296,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen AirComboA3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_3,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_AirComboA3.effect");
 				Col_Attack->SetAttackData(DamageType::Slam, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -1327,6 +1330,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen AirComboB
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboB,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_AirComboB.effect");
 				Col_Attack->SetAttackData(DamageType::Air, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
