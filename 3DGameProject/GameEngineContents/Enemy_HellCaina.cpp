@@ -1878,11 +1878,13 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 		});
 	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Buster_Start,
 	.Start = [=] {
+	BusterCalculation();
 	EnemyRenderer->ChangeAnimation("em0000_Buster_Start");
 	},
 	.Update = [=](float _DeltaTime) {
 	},
 	.End = [=] {
+	BusterEnd();
 	}
 		});
 	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Buster_Loop,
