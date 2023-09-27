@@ -159,6 +159,6 @@ void HierarchyGUI::TransformControll(std::shared_ptr<GameEngineLevel> Level)
 	{
 		float4 MouseDir = GameEngineInput::GetMouseDirection();
 		MouseDir.y = -MouseDir.y;
-		Transform->AddLocalScale(float4::ONE * (MouseDir.x + MouseDir.y));
+		Transform->AddLocalScale(float4::ONE * (MouseDir.x + MouseDir.y) * 0.1f);
 	}
 }
