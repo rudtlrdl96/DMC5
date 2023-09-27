@@ -121,17 +121,11 @@ float CalShadow(float4 _WorldPos, int _LightType)
 {
     _WorldPos.a = 1.0f;
             
-    if (1 == _LightType) // Point Light
-    {
-
-    }
-    
-    float4 ShadowLightWorldPos = mul(_WorldPos, AllLight[LightCount].LightViewInverseMatrix);
+    float4 ShadowLightWorldPos = mul(_WorldPos, AllLight[LightCount].CameraViewInverseMatrix);
     float4 ShadowLightPos = mul(ShadowLightWorldPos, AllLight[LightCount].LightViewProjectionMatrix);
     float3 ShadowLightProjection = ShadowLightPos.xyz / ShadowLightPos.w;
                 
     float2 ShadowUV = float2(ShadowLightProjection.x * 0.5f + 0.5f, ShadowLightProjection.y * -0.5f + 0.5f);
-    
     float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, ShadowUV.xy).r;
                         
     if (0.001f < ShadowUV.x && 0.999f > ShadowUV.x &&
@@ -164,8 +158,7 @@ LightOutPut DeferredCalLight_PS(Output _Input)
     float4 AmbientRatio = (float4) 0.0f;
     //float4 BackRatio = (float4) 0.0f;
       
-    ResultLight CalLightValue = CalLight(LightCount, DeferredPosition, Normal, Mat.r);
-                        
+    ResultLight CalLightValue = CalLight(LightCount, DeferredPosition, Normal, Mat.r);                        
     float ShadowValue = CalShadow(DeferredPosition, AllLight[LightCount].LightType);
         
     CalLightValue.CurLightDiffuseRatio *= ShadowValue;

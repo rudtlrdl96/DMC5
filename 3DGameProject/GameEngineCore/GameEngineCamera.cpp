@@ -221,6 +221,24 @@ void GameEngineCamera::BakeShadow(std::shared_ptr<GameEngineLight> _BakeLight, i
 	BakeTarget->Clear();
 	BakeTarget->Setting();
 
+
+	std::shared_ptr<GameEngineMaterial> Pipe = nullptr;
+
+	switch (_BakeLight->GetLightData().LightType)
+	{
+	case 1:
+	case 2:
+	{
+		Pipe = GameEngineMaterial::Find("PShadow");
+	}
+		break;
+	default:
+	{
+		Pipe = GameEngineMaterial::Find("OShadow");
+	}
+		break;
+	}
+
 	for (std::pair<const RenderPath, std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>>& Path : Units)
 	{
 		std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>& UnitPath = Path.second;
@@ -261,7 +279,6 @@ void GameEngineCamera::BakeShadow(std::shared_ptr<GameEngineLight> _BakeLight, i
 				Render->GetRenderer()->GetTransform()->SetCameraMatrix(_BakeLight->GetLightData().LightViewMatrix, _BakeLight->GetLightData().LightProjectionMatrix);
 				TransformData Data = Render->GetRenderer()->GetTransform()->GetTransDataRef();
 				Render->ShadowSetting();
-				std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Find("Shadow");
 				Pipe->VertexShader();
 				Pipe->Rasterizer();
 				Pipe->PixelShader();
@@ -505,6 +522,23 @@ void GameEngineCamera::Render(float _DeltaTime)
 				continue;
 			}
 
+			std::shared_ptr<GameEngineMaterial> Pipe = nullptr;
+
+			switch (Light->GetLightData().LightType)
+			{
+			case 1:
+			case 2:
+			{
+				Pipe = GameEngineMaterial::Find("PShadow");
+			}
+			break;
+			default:
+			{
+				Pipe = GameEngineMaterial::Find("OShadow");
+			}
+			break;
+			}
+
 			Light->GetShadowTarget()->Setting();
 
 			for (std::pair<const RenderPath, std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>>& Path : Units)
@@ -549,7 +583,6 @@ void GameEngineCamera::Render(float _DeltaTime)
 						Render->GetRenderer()->GetTransform()->SetCameraMatrix(Light->GetLightData().LightViewMatrix, Light->GetLightData().LightProjectionMatrix);
 						TransformData Data = Render->GetRenderer()->GetTransform()->GetTransDataRef();
 						Render->ShadowSetting();
-						std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Find("Shadow");
 						Pipe->VertexShader();
 						Pipe->Rasterizer();
 						Pipe->PixelShader();

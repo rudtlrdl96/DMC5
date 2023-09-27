@@ -144,7 +144,7 @@ void GameEngineRenderUnit::ShadowOn()
 {
 	IsShadow = true;
 
-	std::shared_ptr<GameEngineVertexShader> ShadowPtr = GameEngineVertexShader::Find("Shadow.hlsl");
+	std::shared_ptr<GameEngineVertexShader> ShadowPtr = GameEngineVertexShader::Find("OrthogonalShadow.hlsl");
 	if (nullptr == ShadowInputLayOutPtr)
 	{
 		ShadowInputLayOutPtr = std::make_shared<GameEngineInputLayOut>();

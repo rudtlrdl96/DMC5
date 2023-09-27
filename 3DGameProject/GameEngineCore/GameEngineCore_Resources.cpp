@@ -758,12 +758,21 @@ void GameEngineCore::CoreResourcesInit()
 	}
 
 	{
-		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("Shadow");
-		Pipe->SetVertexShader("Shadow.hlsl");
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("OShadow");
+		Pipe->SetVertexShader("OrthogonalShadow.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
-		Pipe->SetPixelShader("Shadow.hlsl");
+		Pipe->SetPixelShader("OrthogonalShadow.hlsl");
 		Pipe->SetBlendState("MinBlend");
-		Pipe->SetDepthState("EngineDepth");
+		Pipe->SetDepthState("AlwayDepth");
+	}
+
+	{
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("PShadow");
+		Pipe->SetVertexShader("ProjectionShadow.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("ProjectionShadow.hlsl");
+		Pipe->SetBlendState("MinBlend");
+		Pipe->SetDepthState("AlwayDepth");
 	}
 }
 
