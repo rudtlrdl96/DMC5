@@ -50,7 +50,8 @@ void NetworkObjectBase::Update_ProcessPacket()
 
 		if (false == PacketProcessFunctions.contains(Type))
 		{
-			//MsgAssert("이 패킷을 처리하기 위한 콜백함수를 등록해주지 않았습니다.");
+			//이거 반드시 터뜨려야 함, 안 터뜨리면 패킷 쌓여서 다른 패킷이 처리되지 않음
+			MsgAssert("이 패킷을 처리하기 위한 콜백함수를 등록해주지 않았습니다.");
 			return;
 		}
 
