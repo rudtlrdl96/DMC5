@@ -74,6 +74,10 @@ public:
     void Update(float _DeltaTime) override;
     void LightUpdate(GameEngineCamera* _Camera, float _DeltaTime);
 
+    bool IsDebugDraw = false;
+
+    LightData LightDataValue;
+
     const LightData& GetLightData()
     {
         return LightDataValue;
@@ -88,10 +92,6 @@ public:
     {
         return BakeShadowTarget[_Index];
     }
-
-    bool IsDebugDraw = false;
-
-    LightData LightDataValue;
 
     void ShadowTargetTextureLoad(const float4 _ShadowScale = float4::ZERO);
     void ShadowTargetTextureRelease();

@@ -63,7 +63,7 @@ ResultLight CalLight(int _LightIndex, float4 _Position, float4 _Normal, float _M
     
     float LightPower = AllLight[_LightIndex].LightPower;
         
-    if (1 == AllLight[_LightIndex].LightType)
+    if (0 != AllLight[_LightIndex].LightType)
     {
         float Distance = length(AllLight[_LightIndex].ViewLightPos.xyz - _Position.xyz);
             
@@ -121,46 +121,24 @@ float CalShadow(float4 _WorldPos, int _LightType)
 {
     _WorldPos.a = 1.0f;
             
-    if(0 == _LightType) // Directinal Light
+    if (1 == _LightType) // Point Light
     {
-        float4 ShadowLightWorldPos = mul(_WorldPos, AllLight[LightCount].CameraViewInverseMatrix);
-        float4 ShadowLightPos = mul(ShadowLightWorldPos, AllLight[LightCount].LightViewProjectionMatrix);
-        float3 ShadowLightProjection = ShadowLightPos.xyz / ShadowLightPos.w;
-                
-        float2 ShadowUV = float2(ShadowLightProjection.x * 0.5f + 0.5f, ShadowLightProjection.y * -0.5f + 0.5f);
+
+    }
     
-        float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, ShadowUV.xy).r;
+    float4 ShadowLightWorldPos = mul(_WorldPos, AllLight[LightCount].LightViewInverseMatrix);
+    float4 ShadowLightPos = mul(ShadowLightWorldPos, AllLight[LightCount].LightViewProjectionMatrix);
+    float3 ShadowLightProjection = ShadowLightPos.xyz / ShadowLightPos.w;
+                
+    float2 ShadowUV = float2(ShadowLightProjection.x * 0.5f + 0.5f, ShadowLightProjection.y * -0.5f + 0.5f);
+    
+    float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, ShadowUV.xy).r;
                         
-        if (0.001f < ShadowUV.x && 0.999f > ShadowUV.x &&
+    if (0.001f < ShadowUV.x && 0.999f > ShadowUV.x &&
             0.001f < ShadowUV.y && 0.999f > ShadowUV.y &&
             ShadowLightProjection.z >= (ShadowDepthValue + 0.001f))
-        {
-            return 0.01f;
-        }
-    }
-    else if (1 == _LightType) // Point Light
     {
-        
-    }
-    else // SpotLight
-    {
-        float4 TargetShadowViewPos = mul(_WorldPos, AllLight[LightCount].CameraViewInverseMatrix);
-        float4 TargetShadowProjectionPos = mul(TargetShadowViewPos, AllLight[LightCount].LightViewProjectionMatrix);                
-        float3 ShadowLightProjection = TargetShadowProjectionPos.xyz / AllLight[LightCount].LightFar;
-                
-        float2 ShadowUV = float2(ShadowLightProjection.x * 0.5f + 0.5f, ShadowLightProjection.y * -0.5f + 0.5f);
-    
-        float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, ShadowUV.xy).r;
-                        
-        if (0.001f < ShadowUV.x && 0.999f > ShadowUV.x &&
-            0.001f < ShadowUV.y && 0.999f > ShadowUV.y &&
-            ShadowLightProjection.z >= (ShadowDepthValue + 0.001f))
-        {
-            return 0.01f;
-        }
-    
-        //float3 LightDir = AllLight[LightCount].LightViewProjectionMatrix
-        
+        return 0.01f;
     }
     
     return 1.0f;
