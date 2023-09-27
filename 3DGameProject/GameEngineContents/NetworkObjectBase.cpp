@@ -113,36 +113,36 @@ void NetworkObjectBase::SetUpdateArrData(std::shared_ptr<ObjectUpdatePacket> _Pa
 }
 
 
-void NetworkObjectBase::LinkChild_UpdatePacket(GameEngineTransform* _Child)
-{
-	float4 Rotation = _Child->GetLocalRotation();
-	float4 Position = _Child->GetLocalPosition();
-	
-	ChildData& LinkData = Children[_Child];
-	LinkData.Rotation = Rotation;
-	LinkData.Position = Position;
-
-	for (size_t i = 0; i < 3; ++i)
-	{
-		float& LinkDataRot = LinkData.Rotation.Arr1D[i];
-		float& LinkDataPos = LinkData.Position.Arr1D[i];
-
-		LinkData_UpdatePacket<float>(LinkDataRot);
-		LinkData_UpdatePacket<float>(LinkDataPos);
-	}
-
-	BindPacketCallBack<ObjectUpdatePacket>(PacketEnum::ObjectUpdatePacket, [this](std::shared_ptr<ObjectUpdatePacket> _Packet)
-	{
-		for (const std::pair<GameEngineTransform*, ChildData>& Pair : Children)
-		{
-			GameEngineTransform* Child = Pair.first;
-			const ChildData& Data = Pair.second;
-			
-			Child->SetLocalRotation(Data.Rotation);
-			Child->SetLocalPosition(Data.Position);
-		}
-	});
-}
+//void NetworkObjectBase::LinkChild_UpdatePacket(GameEngineTransform* _Child)
+//{
+//	float4 Rotation = _Child->GetLocalRotation();
+//	float4 Position = _Child->GetLocalPosition();
+//	
+//	ChildData& LinkData = Children[_Child];
+//	LinkData.Rotation = Rotation;
+//	LinkData.Position = Position;
+//
+//	for (size_t i = 0; i < 3; ++i)
+//	{
+//		float& LinkDataRot = LinkData.Rotation.Arr1D[i];
+//		float& LinkDataPos = LinkData.Position.Arr1D[i];
+//
+//		LinkData_UpdatePacket<float>(LinkDataRot);
+//		LinkData_UpdatePacket<float>(LinkDataPos);
+//	}
+//
+//	BindPacketCallBack<ObjectUpdatePacket>(PacketEnum::ObjectUpdatePacket, [this](std::shared_ptr<ObjectUpdatePacket> _Packet)
+//	{
+//		for (const std::pair<GameEngineTransform*, ChildData>& Pair : Children)
+//		{
+//			GameEngineTransform* Child = Pair.first;
+//			const ChildData& Data = Pair.second;
+//			
+//			Child->SetLocalRotation(Data.Rotation);
+//			Child->SetLocalPosition(Data.Position);
+//		}
+//	});
+//}
 
 
 void NetworkObjectBase::SetFsmPacketCallBack(std::function<void(int _State)> _CallBack)
