@@ -84,6 +84,7 @@ void PlayerActor_Nero::PlayerLoad()
 		if (nullptr == GameEngineSprite::Find("Effect_Impact.tga"))
 		{
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Impact.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Muzzle_03.tga").GetFullPath(), 2, 1);
 		}
 		NewDir.MoveParent();
 		NewDir.Move("Nero");
@@ -1785,6 +1786,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Shoot,
 			.Start = [=] {
+				EffectSystem->PlayFX("BR_Shoot.effect");
 				Col_Attack->SetAttackData(DamageType::Light, 50, std::bind(&GameEngineObjectBase::Off, Col_Attack));
 				if (nullptr == LockOnEnemyTransform)
 				{
@@ -1839,6 +1841,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Air Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_AirShoot,
 			.Start = [=] {
+				EffectSystem->PlayFX("BR_Shoot.effect");
 				Col_Attack->SetAttackData(DamageType::Light, 50, std::bind(&GameEngineObjectBase::Off, Col_Attack));
 				if (nullptr == LockOnEnemyTransform)
 				{
