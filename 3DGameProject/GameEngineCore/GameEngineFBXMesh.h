@@ -8,16 +8,12 @@
 #include "GameEngineMesh.h"
 #include <GameEngineBase/GameEnginePath.h>
 
-// fbx는 오토데스크
-
-// 지금설명하기 힘듬.
 class FbxExIW
 {
 public:
 	int Index;
 	double Weight;
 };
-
 
 class FbxExMaterialSettingData : public GameEngineSerializObject
 {
@@ -31,6 +27,7 @@ public:
 	float			 SpecularPower;		// 빛의 강도
 	float			 TransparencyFactor;	// 빛의 강도
 	float			 Shininess;			// 빛의 강도
+
 	std::string DifTexturePath;	// 텍스처경로 
 	std::string NorTexturePath; // 텍스처경로
 	std::string SpcTexturePath; // 텍스처경로
@@ -74,7 +71,6 @@ public:
 		_File >> SpcTextureName; // 텍스처
 	}
 
-
 public:
 	FbxExMaterialSettingData() {}
 	~FbxExMaterialSettingData() {}
@@ -84,7 +80,6 @@ struct FbxExMeshInfo : public GameEngineSerializObject
 {
 	// 지오메트리 정보
 	fbxsdk::FbxMesh* Mesh;
-	// 이 매쉬를 가진 핵심 노드의 이름이 뭔가.
 	std::string Name;
 	bool bTriangulated;
 	unsigned __int64 UniqueId;
@@ -153,8 +148,7 @@ struct FbxExMeshInfo : public GameEngineSerializObject
 	}
 };
 
-// 사람
-// 대검
+// 머리, 팔, 몸통, 다리
 struct FbxRenderUnitInfo : public GameEngineSerializObject
 {
 public:
@@ -173,21 +167,12 @@ public:
 	//       얻어온 점들에 대한 모든 정보이고.
 	//       만약 필요하다면 더 얻어야 할수도 있다.
 	std::map<FbxMesh*, std::vector<GameEngineVertex>*> FbxVertexMap;
-
-	//       애니메이션이 있다면 채워져 있을겁니다.
-	std::map<FbxMesh*, std::map<int, std::vector<FbxExIW>>> MapWI;
-
-	// 버텍스 정보는 무조건 
+	std::map<FbxMesh*, std::map<int, std::vector<FbxExIW>>> MapWI;   // 애니메이션이 있다면 채워져 있을겁니다.
 	std::vector<GameEngineVertex> Vertexs;
-
-	// 머리
 	std::vector<std::vector<unsigned int>> Indexs;
-
 	std::vector<FbxExMaterialSettingData> MaterialData;
-
 	std::shared_ptr<GameEngineVertexBuffer> VertexBuffer;
 	std::vector< std::shared_ptr<GameEngineIndexBuffer>> IndexBuffers;
-
 	std::vector<std::shared_ptr<class GameEngineMesh>> Meshs;
 
 	FbxRenderUnitInfo() :
@@ -199,30 +184,6 @@ public:
 
 	~FbxRenderUnitInfo()
 	{
-		//for (size_t i = 0; i < GameEngineVertexBuffers.size(); i++)
-		//{
-		//	if (nullptr == GameEngineVertexBuffers[i])
-		//	{
-		//		continue;
-		//	}
-		//	delete GameEngineVertexBuffers[i];
-		//	GameEngineVertexBuffers[i] = nullptr;
-		//}
-
-		//// 서브셋 때문에
-		//for (size_t i = 0; i < GameEngineIndexBuffers.size(); i++)
-		//{
-		//	for (size_t j = 0; j < GameEngineIndexBuffers[i].size(); j++)
-		//	{
-		//		if (nullptr == GameEngineIndexBuffers[i][j])
-		//		{
-		//			continue;
-		//		}
-		//		delete GameEngineIndexBuffers[i][j];
-		//		GameEngineIndexBuffers[i][j] = nullptr;
-		//	}
-		//}
-
 	}
 
 	void Write(GameEngineSerializer& _File) override
@@ -253,8 +214,6 @@ public:
 
 	}
 };
-
-
 
 struct JointPos
 {
@@ -529,7 +488,6 @@ struct JointPos
 	}
 };
 
-
 class FbxClusterData
 {
 public:
@@ -546,8 +504,6 @@ public:
 
 	}
 };
-
-
 
 struct Bone : public GameEngineSerializObject
 {
@@ -590,9 +546,6 @@ struct Bone : public GameEngineSerializObject
 	}
 };
 
-
-// 버텍스 버퍼 만드는 용도
-// 설명 :
 class GameEngineFBXMesh : public GameEngineFBX, public GameEngineResource<GameEngineFBXMesh>
 {
 	friend class GameEngineFBXAnimation;
@@ -607,6 +560,8 @@ public:
 	GameEngineFBXMesh(GameEngineFBXMesh&& _Other) noexcept = delete;
 	GameEngineFBXMesh& operator=(const GameEngineFBXMesh& _Other) = delete;
 	GameEngineFBXMesh& operator=(GameEngineFBXMesh&& _Other) noexcept = delete;
+
+	void Initialize();
 
 	static std::shared_ptr<GameEngineFBXMesh> Load(const std::string& _Path)
 	{
@@ -657,16 +612,17 @@ public:
 	Bone* FindBone(size_t _BoneIndex);
 	Bone* FindBone(std::string _Name);
 
-	std::shared_ptr<GameEngineStructuredBuffer> GetAnimationStructuredBuffer();
-
-	void Initialize();
-
-	void Release();
-
 	const std::vector<Bone>& GetAllBone()
 	{
 		return AllBones;
 	}
+
+	std::shared_ptr<GameEngineStructuredBuffer> GetAnimationStructuredBuffer()
+	{
+		return AllBoneStructuredBuffers;
+	}
+
+	void Release();
 
 protected:
 	std::string FBXMeshName;

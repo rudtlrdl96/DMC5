@@ -111,6 +111,13 @@ void BaseEnemyActor::PlayerCheckInit()
 {
 	// 기본적으로는 서버 플레이어
 	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
+
+	if (0 == Players.size())
+	{
+		Player = nullptr;
+		return;
+	}
+
 	Player = Players[0];
 
 	if (nullptr == Player)
