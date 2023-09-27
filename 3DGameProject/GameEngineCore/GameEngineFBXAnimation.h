@@ -1,8 +1,6 @@
 #pragma once
 #include "GameEngineFBXMesh.h"
 
-
-
 class FbxExBoneFrameData : public GameEngineSerializObject
 {
 public:
@@ -119,7 +117,6 @@ public:
 		_File >> AniFrameData;
 	}
 
-
 public:
 	float FrameTime(int _Frame)
 	{
@@ -144,13 +141,11 @@ public:
 		return static_cast<float>(fbxsdk::FbxGetFrameRate(TimeMode));
 	}
 
-
 public:
 	FbxExAniData() : AniName(""), StartTime(0), EndTime(0), TimeStartCount(0), TimeEndCount(0), FrameCount(0), FbxModeCount(0), FbxModeRate(0.0), TimeMode()
 	{}
 	~FbxExAniData() {}
 };
-
 
 // Ό³Έν :
 class GameEngineFBXAnimation : public GameEngineFBX, public GameEngineResource<GameEngineFBXAnimation>
@@ -202,7 +197,7 @@ protected:
 
 private:
 	bool CheckAnimation();
-
 	bool IsInit = false;
+
 };
 

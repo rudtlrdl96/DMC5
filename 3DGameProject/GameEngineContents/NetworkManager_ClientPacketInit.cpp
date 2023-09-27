@@ -111,7 +111,7 @@ void NetworkManager::ClientPacketInit()
 			NetObject->SetUpdateArrData(_Packet);
 
 			//Player가 스스로 처리할 수 있게 자료구조에 저장
-			GameEngineNetObject::PushNetObjectPacket(_Packet);
+			//GameEngineNetObject::PushNetObjectPacket(_Packet);
 		}
 	});
 
