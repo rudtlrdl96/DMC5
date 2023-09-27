@@ -14,6 +14,10 @@ NeroHPUI::NeroHPUI()
 NeroHPUI::~NeroHPUI() 
 {
 }
+void NeroHPUI::SetPlayerHP(float _Delta, int _HP)
+{
+	UI_HPGaegeBar->UpdateHPBar(_Delta, _HP);
+}
 /*
 후드,후드불
 HP바 1줄
@@ -48,9 +52,9 @@ void NeroHPUI::Start()
 	NeroUI_Back->GetTransform()->SetLocalScale({ 97.0f,131.0f,0.0f });
 	NeroUI_Back->GetTransform()->SetLocalPosition({ -696.0f,334.0f,40.0f });
 
-	std::shared_ptr<UI_HPGaege> UI_HPGaegeBar = GetLevel()->CreateActor<UI_HPGaege>();
-	std::shared_ptr<UI_DTGauge> UI_DTGaugeBar = GetLevel()->CreateActor<UI_DTGauge>();
-	std::shared_ptr<UI_BulletGauge> UI_BulletGaugeBar = GetLevel()->CreateActor<UI_BulletGauge>();
+	UI_HPGaegeBar = GetLevel()->CreateActor<UI_HPGaege>();
+	UI_DTGaugeBar = GetLevel()->CreateActor<UI_DTGauge>();
+	UI_BulletGaugeBar = GetLevel()->CreateActor<UI_BulletGauge>();
 	UI_BulletGaugeBar->GetTransform()->SetParent(GetTransform());
 
 	
@@ -58,6 +62,7 @@ void NeroHPUI::Start()
 
 void NeroHPUI::Update(float _DeltaTime)
 {
-	
+	PlayerCurHp;
+	int a = 0;
 }
 

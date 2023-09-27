@@ -48,11 +48,6 @@ void NeroItemGlass::Update(float _DeltaTime)
 	AddDestroyValue();
 	AddMoveBreaker(_DeltaTime);
 	DestroyMoveBreaker(_DeltaTime);
-	if (true == GameEngineInput::IsPress("UI_Tab"))
-	{
-
-		NeroUI_ItemGlass->GetTransform()->AddLocalPosition({ 0.f,0.f,10.0f });
-	}
 }
 
 void NeroItemGlass::SetItemText()

@@ -34,6 +34,9 @@ void TestLevel::Start()
 
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 50.0f, -100.0f });
+	//GetCamera(100)->SetSortType(0, SortType::ZSort);
+	GetCamera(100)->GetCamTarget()->DepthSettingOff();
+
 }
 
 void TestLevel::Update(float _DeltaTime)

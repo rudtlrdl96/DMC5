@@ -236,5 +236,7 @@ private:
 	void AddBreaker(DevilBreaker _Breaker);
 	void DestroyBreaker();
 
+	std::shared_ptr<class NeroHPUI> HPRender = nullptr;
+
 };
 

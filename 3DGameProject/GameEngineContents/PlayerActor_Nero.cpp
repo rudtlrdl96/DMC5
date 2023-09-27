@@ -50,7 +50,7 @@ void PlayerActor_Nero::Start()
 void PlayerActor_Nero::PlayerLoad()
 {
 	GetLevel()->CreateActor<NeroItemGlass>();
-	GetLevel()->CreateActor<NeroHPUI>();
+	HPRender = GetLevel()->CreateActor<NeroHPUI>();
 
 	// Effect »ý¼º
 	{
@@ -4107,6 +4107,7 @@ void PlayerActor_Nero::NetLoad()
 
 void PlayerActor_Nero::Update_Character(float _DeltaTime)
 {
+	HPRender->SetPlayerHP(_DeltaTime ,HP);
 	if (LoadCheck == false) { return; }
 	FSM.Update(_DeltaTime);
 
@@ -4132,12 +4133,12 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 		}
 		if (GameEngineInput::IsDown("SelectLevel_04"))
 		{
-			HP -= 100;
+			HP -= 500;
 			LightDamage();
 		}
 		if (GameEngineInput::IsDown("SelectLevel_05"))
 		{
-			HP -= 100;
+			HP -= 500;
 			HeavyDamage();
 		}
 

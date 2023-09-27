@@ -39,10 +39,7 @@ public:
 	{
 		return Renderer;
 	}
-	int GetPlayerHP()
-	{
-		return HP;
-	}
+
 	void SetForce(float4 _Value);
 	void SetPush(float4 _Value);
 	void SetMove(float4 _Value);
