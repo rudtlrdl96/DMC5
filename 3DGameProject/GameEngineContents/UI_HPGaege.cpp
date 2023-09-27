@@ -23,7 +23,7 @@ void UI_HPGaege::UpdateHPBar(float _Delta, int CurHP)
 	if (CurHP != RedHp)
 	{
 		Ratio += _Delta;
-		RedHp = GameEngineMath::LerpLimit(PrevHp, CurHP, _Delta * Ratio * 30.0f);
+		RedHp = static_cast<int>(GameEngineMath::LerpLimit(static_cast<float>(PrevHp), static_cast<float>(CurHP), _Delta * Ratio * 30.0f));
 		NeroHPUI_Back->ImageClippingX(static_cast<float>(RedHp) / static_cast<float>(MaxHP), ClipXDir::Left);
 	}
 	else
