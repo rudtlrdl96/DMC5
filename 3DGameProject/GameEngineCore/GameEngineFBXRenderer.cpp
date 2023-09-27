@@ -1,15 +1,14 @@
 #include "PrecompileHeader.h"
 #include "GameEngineFBXRenderer.h"
+
 #include "GameEngineFBXAnimation.h"
 #include "GameEngineMaterial.h"
-
 
 void GameEngineFBXAnimationInfo::Init(std::shared_ptr<GameEngineFBXMesh> _Mesh, std::shared_ptr<GameEngineFBXAnimation> _Animation, const std::string_view& _Name, int _Index)
 {
 	// GameENgineFBXAnimation의 행렬 정보가 완전해지는것은 
 	// CalFbxExBoneFrameTransMatrix가 호출되고 난 후입니다.
 	// 애니메이션의 행렬이 계산되는겁니다.
-
 	_Animation->AnimationMatrixLoad(_Mesh, _Name, _Index);
 	Aniamtion = _Animation;
 	FBXAnimationData = Aniamtion->GetAnimationData(_Index);
@@ -18,13 +17,11 @@ void GameEngineFBXAnimationInfo::Init(std::shared_ptr<GameEngineFBXMesh> _Mesh, 
 	Mesh = _Mesh;
 	Aniamtion = _Animation;
 
-
 	Start = 0;
 	End = static_cast<unsigned int>(FBXAnimationData->TimeEndCount);
 }
 
-
-// 이걸 통해서 애니메이션을 진행시키고.
+// 이걸 통해서 애니메이션을 진행
 void GameEngineFBXAnimationInfo::Update(float _DeltaTime)
 {
 	_DeltaTime *= TimeScale;
@@ -113,6 +110,7 @@ void GameEngineFBXAnimationInfo::Update(float _DeltaTime)
 			CurFrame = End - 1;
 		}
 	}
+
 	float AnimRatio = CurFrameTime / Inter;
 
 	ParentRenderer->CurBlendTime += _DeltaTime;
@@ -121,7 +119,6 @@ void GameEngineFBXAnimationInfo::Update(float _DeltaTime)
 	// mesh      subset
 	std::vector<std::vector< std::shared_ptr<GameEngineRenderUnit>>>& Units = ParentRenderer->GetAllRenderUnit();
 	std::vector<float4x4>& AnimationBoneMatrix = ParentRenderer->AnimationBoneMatrixs;
-
 	std::vector<AnimationBoneData>& AnimationBoneData = ParentRenderer->AnimationBoneDatas;
 
 	for (int i = 0; i < AnimationBoneMatrix.size(); i++)
@@ -169,7 +166,6 @@ void GameEngineFBXAnimationInfo::Reset()
 	CurFrameTime = 0.0f;
 	CurFrame = 0;
 	PlayTime = 0.0f;
-	// Start = 0;
 }
 
 GameEngineFBXRenderer::GameEngineFBXRenderer()
@@ -179,6 +175,40 @@ GameEngineFBXRenderer::GameEngineFBXRenderer()
 
 GameEngineFBXRenderer::~GameEngineFBXRenderer()
 {
+}
+
+void GameEngineFBXRenderer::Update(float _DeltaTime)
+{
+	if (nullptr == CurAnimation)
+	{
+		return;
+	}
+
+	CurAnimation->Update(_DeltaTime);
+
+
+	const TransformData& TransFormData = GetTransform()->GetTransDataRef();
+
+	for (size_t i = 0; i < AttachTransformValue.size(); i++)
+	{
+		AttachTransformInfo& Data = AttachTransformValue[i];
+
+		// 오프셋이 곱해지지 않은 행렬이 실제 본의 위치를 담고 있는 행렬이다.
+		// 버텍스는 오프셋을 기반으로 만들어져있기 때문이다.
+		float4x4 Mat = AnimationBoneMatrixsNotOffset[Data.Index];
+		Mat *= TransFormData.WorldMatrix;
+
+		float4 Scale;
+		float4 Rot;
+		float4 Pos;
+
+		Mat.Decompose(Scale, Rot, Pos);
+
+		// 세팅할때 월드로 해줘야 한다. 
+		// 정말 너무 다양한 상황이 있을수 있기 때문에 월드로 변경해서 넣어줘야 한다.
+		//Data.Transform->SetWorldRotation(Rot.QuaternionToEulerDeg() + Data.OffsetRot);
+		Data.Transform->SetWorldPosition(Pos + Data.OffsetPos);
+	}
 }
 
 void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Name, std::string _Material)
@@ -278,7 +308,7 @@ void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Name, std::vector<std
 	}
 }
 
-// SetFbxMesh를 해서 만들어진 랜더 유니트를 사용하게 하기 위해서 리턴해준다.
+// SetFbxMesh를 해서 만들어진 랜더 유니트를 사용하게 하기 위해서 리턴
 std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh
 (
 	const std::string& _Name,
@@ -295,19 +325,16 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh
 		return nullptr;
 	}
 
-
 	if (nullptr == FBXMesh && nullptr != FindFBXMesh)
 	{
 		FBXMesh = FindFBXMesh;
 	}
 	else if (nullptr != FBXMesh && FBXMesh != FindFBXMesh)
 	{
-		// 지금까지 만든거 다 날립니다.
+		int a = 0;
 	}
 
 	FindFBXMesh->Initialize();
-
-	// return nullptr;
 
 	if (Unit.empty())
 	{
@@ -344,7 +371,6 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh
 		AnimationBoneDatas.resize(Count);
 	}
 
-
 	if (RenderUnit->ShaderResHelper.IsStructuredBuffer("ArrAniMationMatrix"))
 	{
 		GameEngineStructuredBufferSetter* AnimationBuffer = RenderUnit->ShaderResHelper.GetStructuredBufferSetter("ArrAniMationMatrix");
@@ -368,7 +394,6 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh
 		AnimationBuffer->Count = AnimationBoneMatrixs.size();
 	}
 
-
 	if (RenderUnit->ShaderResHelper.IsTexture("DiffuseTexture"))
 	{
 		const FbxExMaterialSettingData& MatData = FBXMesh->GetMaterialSettingData(_MeshIndex, _SubSetIndex);
@@ -378,7 +403,6 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh
 			RenderUnit->ShaderResHelper.SetTexture("DiffuseTexture", MatData.DifTextureName);
 		}
 	}
-
 
 	if (RenderUnit->ShaderResHelper.IsTexture("NormalTexture"))
 	{
@@ -412,93 +436,6 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh
 
 	return RenderUnit;
 }
-
-//void GameEngineFBXRenderer::Render(float _DeltaTime)
-//{
-	// GameEngineRenderer::Render(_DeltaTime);
-
-	//for (size_t UnitIndex = 0; UnitIndex < Unit.size(); UnitIndex++)
-	//{
-	//	for (size_t SubSetIndex = 0; SubSetIndex < Unit[UnitIndex].size(); SubSetIndex++)
-	//	{
-	//		if (nullptr == Unit[UnitIndex][SubSetIndex]->Pipe)
-	//		{
-	//			continue;
-	//		}
-
-	//		//if (nullptr == Unit[UnitIndex][SubSetIndex].GetMaterial()->GetPixelShader()->GetIsDeffered())
-	//		//{
-	//		//	continue;
-	//		//}
-
-	//		Unit[UnitIndex][SubSetIndex]->Render(_DeltaTime);
-	//	}
-	//}
-//}
-
-void GameEngineFBXRenderer::CreateFBXAnimation(const std::string& _AnimationName, const std::string& _AnimationFBXName, const AnimationCreateParams& _Params, int _Index)
-{
-	// 애니메이션 방식은 무조건 1개일것이라고 보고.
-	std::string UpperName = GameEngineString::ToUpper(_AnimationName);
-
-	// 본을 가진 fbx가 세팅되어 있는지 검사한다.
-	if (nullptr == GetFBXMesh())
-	{
-		MsgAssert("골격 FBX가 세팅되어 있지 않습니다.");
-		return;
-	}
-
-	// 여기있는 함수를 외부에서 호출하면 됩니다.
-
-	if (Animations.end() != Animations.find(UpperName))
-	{
-		MsgAssert("이미 존재하는 이름의 애니메이션입니다." + UpperName);
-		return;
-	}
-
-	std::shared_ptr<GameEngineFBXAnimation> Animation = GameEngineFBXAnimation::Find(_AnimationFBXName);
-
-	if (nullptr == Animation)
-	{
-		MsgAssert("GameEngineFBXAnimation이 존재하지 않습니다. " + std::string(_AnimationFBXName));
-		return;
-	}
-
-	//GameEngineFile File;
-	//File.SetPath(Animation->GetPath());
-	//File.ChangeExtension(".AnimationFBX");
-
-	//if (false == File.IsExists())
-	//{
-	//	Animation->Initialize();
-	//}
-
-	std::shared_ptr<GameEngineFBXAnimationInfo> NewAnimation = std::make_shared<GameEngineFBXAnimationInfo>();
-	NewAnimation->Init(FBXMesh, Animation, _AnimationName, _Index);
-	NewAnimation->ParentRenderer = this;
-	NewAnimation->Inter = _Params.Inter;
-	NewAnimation->Loop = _Params.Loop;
-	NewAnimation->BlendIn = _Params.BlendIn;
-	NewAnimation->BlendOut = _Params.BlendOut;
-	NewAnimation->Reset();
-
-	BaseValue.IsAnimation = 1;
-	Animations.insert(std::make_pair(UpperName, NewAnimation));
-
-	Animation;
-}
-
-
-void GameEngineFBXRenderer::PauseSwtich()
-{
-	Pause = !Pause;
-}
-
-bool GameEngineFBXRenderer::IsAnimationEnd()
-{
-	return CurAnimation->IsEnd;
-}
-
 
 void GameEngineFBXRenderer::SetTexture(const std::string_view& _SettingName, std::shared_ptr<GameEngineTexture> _Texture)
 {
@@ -578,38 +515,47 @@ void GameEngineFBXRenderer::SetSpecularTexture(const std::string_view& _DiffuseT
 	}
 }
 
-void GameEngineFBXRenderer::Update(float _DeltaTime)
+void GameEngineFBXRenderer::CreateFBXAnimation(const std::string& _AnimationName, const std::string& _AnimationFBXName, const AnimationCreateParams& _Params, int _Index)
 {
-	if (nullptr == CurAnimation)
+	// 애니메이션 방식은 무조건 1개일것이라고 보고.
+	std::string UpperName = GameEngineString::ToUpper(_AnimationName);
+
+	// 본을 가진 fbx가 세팅되어 있는지 검사한다.
+	if (nullptr == GetFBXMesh())
 	{
+		MsgAssert("골격 FBX가 세팅되어 있지 않습니다.");
 		return;
 	}
 
-	CurAnimation->Update(_DeltaTime);
+	// 여기있는 함수를 외부에서 호출하면 됩니다.
 
-
-	const TransformData& TransFormData = GetTransform()->GetTransDataRef();
-
-	for (size_t i = 0; i < AttachTransformValue.size(); i++)
+	if (Animations.end() != Animations.find(UpperName))
 	{
-		AttachTransformInfo& Data = AttachTransformValue[i];
-
-		// 오프셋이 곱해지지 않은 행렬이 실제 본의 위치를 담고 있는 행렬이다.
-		// 버텍스는 오프셋을 기반으로 만들어져있기 때문이다.
-		float4x4 Mat = AnimationBoneMatrixsNotOffset[Data.Index];
-		Mat *= TransFormData.WorldMatrix;
-
-		float4 Scale;
-		float4 Rot;
-		float4 Pos;
-
-		Mat.Decompose(Scale, Rot, Pos);
-
-		// 세팅할때 월드로 해줘야 한다. 
-		// 정말 너무 다양한 상황이 있을수 있기 때문에 월드로 변경해서 넣어줘야 한다.
-		//Data.Transform->SetWorldRotation(Rot.QuaternionToEulerDeg() + Data.OffsetRot);
-		Data.Transform->SetWorldPosition(Pos + Data.OffsetPos);
+		MsgAssert("이미 존재하는 이름의 애니메이션입니다." + UpperName);
+		return;
 	}
+
+	std::shared_ptr<GameEngineFBXAnimation> Animation = GameEngineFBXAnimation::Find(_AnimationFBXName);
+
+	if (nullptr == Animation)
+	{
+		MsgAssert("GameEngineFBXAnimation이 존재하지 않습니다. " + std::string(_AnimationFBXName));
+		return;
+	}
+
+	std::shared_ptr<GameEngineFBXAnimationInfo> NewAnimation = std::make_shared<GameEngineFBXAnimationInfo>();
+	NewAnimation->Init(FBXMesh, Animation, _AnimationName, _Index);
+	NewAnimation->ParentRenderer = this;
+	NewAnimation->Inter = _Params.Inter;
+	NewAnimation->Loop = _Params.Loop;
+	NewAnimation->BlendIn = _Params.BlendIn;
+	NewAnimation->BlendOut = _Params.BlendOut;
+	NewAnimation->Reset();
+
+	BaseValue.IsAnimation = 1;
+	Animations.insert(std::make_pair(UpperName, NewAnimation));
+
+	Animation;
 }
 
 void GameEngineFBXRenderer::ChangeAnimation(const std::string& _AnimationName, bool _Force /*= false*/)
@@ -704,8 +650,7 @@ AnimationBoneData GameEngineFBXRenderer::GetBoneData(std::string _Name)
 		MsgAssert(std::string(_Name) + "존재하지 않는 본의 데이터를 찾으려고 했습니다.");
 		return Data;
 	}
-
-
+	
 	Data = GetBoneData(BoneData->Index);
 
 	const TransformData& TransFormData = GetTransform()->GetTransDataRef();

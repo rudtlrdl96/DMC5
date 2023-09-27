@@ -74,7 +74,7 @@ void MainLevel::Start()
 	//	NewEffect->LockRotation();
 	//}
 
-
+	//CreateScene(GetName());
 }
 
 void MainLevel::Update(float _DeltaTime)
@@ -138,6 +138,8 @@ void MainLevel::Update(float _DeltaTime)
 void MainLevel::LevelChangeStart()
 {
 	GameEngineLevel::LevelChangeStart();
+
+	//std::shared_ptr<class Enemy_HellCaina> HellCaina = CreateActor<Enemy_HellCaina>();
 
 	GameEngineCoreWindow::Clear();
 	GameEngineCoreWindow::AddDebugRenderTarget(0, "Forward Target", GetMainCamera()->GetCamForwardTarget());

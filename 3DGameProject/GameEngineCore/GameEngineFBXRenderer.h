@@ -104,12 +104,12 @@ public:
 	GameEngineFBXRenderer& operator=(const GameEngineFBXRenderer& _Other) = delete;
 	GameEngineFBXRenderer& operator=(GameEngineFBXRenderer&& _Other) noexcept = delete;
 
+	void Update(float _DeltaTime) override;
+
 	virtual void SetFBXMesh(const std::string& _Name, std::string _Material);
 	virtual void SetFBXMesh(const std::string& _Name, const std::vector<std::vector<std::string>>& _Materials);
-
 	virtual void SetFBXMesh(const std::string& _Name, std::string _Material, size_t MeshIndex);
 	virtual void SetFBXMesh(const std::string& _Name, std::vector<std::string> _Material, size_t MeshIndex);
-
 
 	virtual std::shared_ptr<GameEngineRenderUnit> SetFBXMesh(const std::string& _Name, std::string _Material, size_t MeshIndex, size_t _SubSetIndex);
 
@@ -118,25 +118,22 @@ public:
 		return FBXMesh;
 	}
 
-	std::shared_ptr<GameEngineFBXAnimationInfo> GetAnimation(std::string _Name)
+	inline std::shared_ptr<GameEngineFBXMesh> GetFBXMesh() const
 	{
-		std::string UpperName = GameEngineString::ToUpper(_Name);
-		return Animations[UpperName];
+		return FBXMesh;
 	}
 
-	std::shared_ptr<GameEngineFBXAnimationInfo> FindAnimation(std::string _Name)
+	AnimationBoneData GetBoneData(std::string _Name);
+
+	AnimationBoneData GetBoneData(int _Index)
 	{
-		std::string UpperName = GameEngineString::ToUpper(_Name);
-		if (false == Animations.contains(UpperName)) { return nullptr; }
-		return Animations.find(UpperName)->second;
+		return AnimationBoneDatas[_Index];
 	}
 
-	void CreateFBXAnimation(const std::string& _AnimationFBXName, const AnimationCreateParams& _Params, int _Index = 0)
+	inline std::vector<float4x4> GetAnimationBoneMatrixs() const
 	{
-		CreateFBXAnimation(_AnimationFBXName, _AnimationFBXName, _Params, _Index);
+		return AnimationBoneMatrixs;
 	}
-
-	void CreateFBXAnimation(const std::string& _AnimationName, const std::string& _AnimationFBXName, const AnimationCreateParams& _Params, int _Index = 0);
 
 	std::vector<std::shared_ptr<GameEngineRenderUnit>>* GetRenderUnit(size_t _MeshIndex)
 	{
@@ -183,36 +180,6 @@ public:
 	// 반드시 DiffuseTexture가 먼저 세팅되어야 합니다.
 	void SetSpecularTexture(const std::string_view& _DiffuseTexture, const std::string_view& _SpecularTexture);
 
-	void Update(float _DeltaTime) override;
-
-	void PauseSwtich();
-
-	void SetPlay()
-	{
-		Pause = false;
-	}
-	void SetPause()
-	{
-		Pause = true;
-	}
-
-	void ChangeAnimation(const std::string& _AnimationName, bool _Force = false);
-
-	bool IsAnimationEnd();
-
-	AnimationBoneData GetBoneData(std::string _Name);
-
-	AnimationBoneData GetBoneData(int _Index)
-	{
-		return AnimationBoneDatas[_Index];
-	}
-
-	void SetAttachTransform(std::string_view _Name, GameEngineTransform* _Transform, float4 _OffsetPos = float4(0.0f, 0.0f, 0.0f, 1.0f), float4 _OffsetRot = float4(0.0f, 0.0f, 0.0f, 0.0f));
-
-	void SetAttachTransform(int Index, GameEngineTransform* _Transform, float4 _OffsetPos = float4(0.0f, 0.0f, 0.0f, 1.0f), float4 _OffsetRot = float4(0.0f, 0.0f, 0.0f, 0.0f));
-
-	void SetDettachTransform();
-
 	inline void NormalOn()
 	{
 		BaseValue.IsNormal = true;
@@ -222,6 +189,78 @@ public:
 	{
 		BaseValue.IsNormal = false;
 	}
+
+	// 모든 랜더 유닛을 Static 으로 설정합니다.
+	void SetStatic();
+
+	// 모든 랜더 유닛을 Dynamic 으로 설정합니다.
+	void SetDynamic();
+
+	std::shared_ptr<GameEngineFBXAnimationInfo> GetAnimation(std::string _Name)
+	{
+		std::string UpperName = GameEngineString::ToUpper(_Name);
+		return Animations[UpperName];
+	}
+
+	std::shared_ptr<GameEngineFBXAnimationInfo> FindAnimation(std::string _Name)
+	{
+		std::string UpperName = GameEngineString::ToUpper(_Name);
+		if (false == Animations.contains(UpperName)) { return nullptr; }
+		return Animations.find(UpperName)->second;
+	}
+
+	void CreateFBXAnimation(const std::string& _AnimationFBXName, const AnimationCreateParams& _Params, int _Index = 0)
+	{
+		CreateFBXAnimation(_AnimationFBXName, _AnimationFBXName, _Params, _Index);
+	}
+
+	void CreateFBXAnimation(const std::string& _AnimationName, const std::string& _AnimationFBXName, const AnimationCreateParams& _Params, int _Index = 0);
+
+	void ChangeAnimation(const std::string& _AnimationName, bool _Force = false);
+
+	void SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
+
+	void PauseSwtich()
+	{
+		Pause = !Pause;
+	}
+
+	void SetPlay()
+	{
+		Pause = false;
+	}
+
+	void SetPause()
+	{
+		Pause = true;
+	}
+
+	bool IsAnimationEnd()
+	{
+		return CurAnimation->IsEnd;
+	}
+
+	inline void SetCurFrame(UINT _Frame)
+	{
+		if (nullptr == CurAnimation) { return; }
+		CurAnimation->CurFrame = _Frame;
+	}
+
+	inline UINT GetCurFrame()
+	{
+		return CurAnimation->CurFrame;
+	}
+
+	inline UINT GetEndFrame()
+	{
+		return CurAnimation->End;
+	}
+
+	void SetAttachTransform(std::string_view _Name, GameEngineTransform* _Transform, float4 _OffsetPos = float4(0.0f, 0.0f, 0.0f, 1.0f), float4 _OffsetRot = float4(0.0f, 0.0f, 0.0f, 0.0f));
+
+	void SetAttachTransform(int Index, GameEngineTransform* _Transform, float4 _OffsetPos = float4(0.0f, 0.0f, 0.0f, 1.0f), float4 _OffsetRot = float4(0.0f, 0.0f, 0.0f, 0.0f));
+
+	void SetDettachTransform();
 
 	float4 GetMeshScale()
 	{
@@ -267,71 +306,22 @@ public:
 		return ResultBox;
 	}
 
-	inline std::shared_ptr<GameEngineFBXMesh> GetFBXMesh() const
-	{
-		return FBXMesh;
-	}
-
-	inline std::vector<float4x4> GetAnimationBoneMatrixs() const
-	{
-		return AnimationBoneMatrixs;
-	}
-
-	void SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
-
-	inline void SetCurFrame(UINT _Frame)
-	{
-		if (nullptr == CurAnimation) { return; }
-		CurAnimation->CurFrame = _Frame;
-	}
-	inline UINT GetCurFrame()
-	{
-		return CurAnimation->CurFrame;
-	}
-
-	inline UINT GetEndFrame()
-	{
-		return CurAnimation->End;
-	}
-
-	// 모든 랜더 유닛을 Static 으로 설정합니다.
-	void SetStatic();
-
-	// 모든 랜더 유닛을 Dynamic 으로 설정합니다.
-	void SetDynamic();
-
 protected:
-	// void Render(float _DeltaTime) override;
-	
 	// vertexbuffer1       indexbuffer          
 	// 0번매쉬의            0번째 서브셋
 	std::vector<         std::vector<std::shared_ptr<GameEngineRenderUnit>>> Unit;
 private:
 	bool Pause = false;
 
-	// 그게 불가능하다.
-	// 맨처음 세팅해준 메인 매쉬와완전히 연관되어 있는 매쉬여야만 가능하다.
 	std::shared_ptr<GameEngineFBXMesh> FBXMesh = nullptr;
-
 	std::map<std::string, std::shared_ptr<GameEngineFBXAnimationInfo>> Animations;
 	std::shared_ptr<GameEngineFBXAnimationInfo> CurAnimation = nullptr;
-
-	// 처음에는 그냥 들고만 있다가
-	// 애니메이션이 되는순간
-	// 확장되어야 한다.
-	// 본개수 만큼
-	// 앞쪽에 키는 매쉬 개수 x 본개수의 뜻을 가지게 된다.
-
-	// 스트럭처드 버퍼랑 링크가 되는 녀석.
-	std::vector<float4x4> AnimationBoneMatrixs;
-
+	std::vector<float4x4> AnimationBoneMatrixs;		        // 스트럭처드 버퍼랑 링크
 	std::vector<float4x4> AnimationBoneMatrixsNotOffset;
-
 	std::vector<AnimationBoneData> AnimationBoneDatas;
-
 	std::vector<AttachTransformInfo> AttachTransformValue;
-	// 이전 애니메이션 정보. 블렌드 기능에 사용
-	std::vector<AnimationBoneData> PrevAnimationBoneDatas;
+	std::vector<AnimationBoneData> PrevAnimationBoneDatas;  // 이전 애니메이션 정보. 블렌드 기능에 사용
+	
 	float CurBlendTime = 0.0f;
 	float BlendTime = 0.0f;
 };

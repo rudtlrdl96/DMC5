@@ -22,7 +22,8 @@ public:
 		ChangeLevel(LevelName);
 	}
 
-
+	//지울예정
+	std::shared_ptr<class GameEngineActor> ThreadTestActor = nullptr;
 
 	ThreadLoadingLevel();
 	~ThreadLoadingLevel();
@@ -45,7 +46,8 @@ private:
 	size_t LoadWorkCount = 0;
 	std::atomic<size_t> ExcuteWorkCount = 0;
 	float LoadingPercent = 0.f;
-	std::shared_ptr<class GameEngineActor> ThreadTestActor = nullptr;
+	
+	std::map<std::string, std::mutex> AllResMutex;
 
 	
 	/// <summary>
@@ -62,26 +64,29 @@ private:
 		std::string LevelName = Info.name();
 		LevelName.replace(0, 6, "");
 
+		
+		GameEnginePath FilePath(_Path);
+		const std::string& FileName = FilePath.GetFileName();
+		AllResMutex[FileName];
+
 		//콜백 저장
-		const std::string& Path = _Path.data();
-		AllLoadCallBack[LevelName].push_back([Path]()
+		AllLoadCallBack[LevelName].push_back([FilePath, this]()
 		{
-			GameEnginePath FilePath(Path);
-			std::string FileName = FilePath.GetFileName();
-			if (nullptr != ResourceType::Find(FileName))
-				return;
+			const std::string& FileName = FilePath.GetFileName();
 
 			GameEngineDirectory StartDir;
 			StartDir.MoveParentToDirectory("ContentResources");
 			StartDir.Move("ContentResources");
-			FileName = StartDir.GetFullPath() + "\\" + FilePath.GetFullPath();
-
-			GameEngineDirectory CheckDir(FileName);
+			GameEngineDirectory CheckDir(StartDir.GetFullPath() + "\\" + FilePath.GetFullPath());
 			if (false == CheckDir.IsExists())
 			{
 				MsgAssert("ThreadLoadingLevel에서 유효하지 않은 경로로 이동하였습니다.\n" + FileName);
-				return;	
+				return;
 			}
+
+			std::lock_guard<std::mutex> Lock(AllResMutex[FileName]);
+			if (nullptr != ResourceType::Find(FileName))
+				return;
 			
 			ResourceType::Load(CheckDir.GetFullPath());
 		});

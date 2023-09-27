@@ -88,7 +88,7 @@ protected:
 
 
 	//업데이트 패킷에 자식 GameEngineTransform을 추가로 연결합니다
-	void LinkChild_UpdatePacket(GameEngineTransform* _Child);
+	//void LinkChild_UpdatePacket(GameEngineTransform* _Child);
 
 
 

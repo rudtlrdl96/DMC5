@@ -16,7 +16,6 @@ std::shared_ptr<GameEngineFBXMesh> GameEngineFBXMesh::Load(const std::string& _P
 {
 	std::shared_ptr<GameEngineFBXMesh> Res = GameEngineResource::Create(_Name);
 	Res->SetPath(_Path);
-	Res->LoadMesh(_Path, _Name);
 	return Res;
 }
 
@@ -41,122 +40,6 @@ void GameEngineFBXMesh::Release()
 	IsInit = false;
 }
 
-//
-//void GameEngineFBXMesh::UserLoad(const std::string_view& _Path)
-//{
-//	GameEngineFile File = _Path.data();
-//	File.Open(OpenMode::Read, FileMode::Binary);
-//
-//	File.Read(FBXMeshName);
-//	File.Read(MeshInfos);
-//	File.Read(RenderUnitInfos);
-//	File.Read(AllBones);
-//
-//	for (size_t i = 0; i < AllBones.size(); i++)
-//	{
-//		std::map<std::string, Bone*>& Map = AllFindMap.emplace_back();
-//
-//		for (size_t boneindex = 0; boneindex < AllBones[i].size(); boneindex++)
-//		{
-//			Map.insert(std::make_pair(AllBones[i][boneindex].Name, &AllBones[i][boneindex]));
-//		}
-//	}
-//
-//}
-//
-//void GameEngineFBXMesh::UserSave(const std::string_view& _Path)
-//{
-//	GameEngineFile File = _Path.data();
-//	File.Open(OpenMode::Write, FileMode::Binary);
-//
-//	File.Write(FBXMeshName);
-//	File.Write(MeshInfos);
-//	File.Write(RenderUnitInfos);
-//	File.Write(AllBones);
-//}
-//
-//void GameEngineFBXMesh::UserSave(const std::string_view& _Path, size_t Index)
-//{
-//	GameEngineFile File = _Path.data();
-//	File.Open(OpenMode::Write, FileMode::Binary);
-//
-//	//std::vector<FbxExMeshInfo> MeshInfos;
-//	//std::vector<FbxRenderUnitInfo> RenderUnitInfos;
-//	//std::vector<std::vector<Bone>> AllBones;
-//
-//	std::vector<FbxExMeshInfo> SaveMeshInfos;
-//	std::vector<FbxRenderUnitInfo> SaveRenderUnitInfos;
-//
-//	SaveMeshInfos.push_back(MeshInfos[Index]);
-//	SaveRenderUnitInfos.push_back(RenderUnitInfos[Index]);
-//
-//	File.Write(FBXMeshName);
-//	File.Write(SaveMeshInfos);
-//	File.Write(SaveRenderUnitInfos);
-//	File.Write(AllBones);
-//}
-//
-//void GameEngineFBXMesh::UserSave(const std::string_view& _Path, std::vector<size_t> _Indexs)
-//{
-//	GameEngineFile File = _Path.data();
-//	File.Open(OpenMode::Write, FileMode::Binary);
-//
-//	std::vector<FbxExMeshInfo> SaveMeshInfos;
-//	std::vector<FbxRenderUnitInfo> SaveRenderUnitInfos;
-//
-//	for (size_t i = 0; i < _Indexs.size(); i++)
-//	{
-//		SaveMeshInfos.push_back(MeshInfos[_Indexs[i]]);
-//		SaveRenderUnitInfos.push_back(RenderUnitInfos[_Indexs[i]]);
-//	}
-//
-//	File.Write(FBXMeshName);
-//	File.Write(SaveMeshInfos);
-//	File.Write(SaveRenderUnitInfos);
-//	File.Write(AllBones);
-//}
-
-void GameEngineFBXMesh::LoadMesh(const std::string& _Path, const std::string& _Name)
-{
-	//GameEngineFile SaveFile = GameEngineFile(_Path.c_str());
-	//SaveFile.ChangeExtension(".MeshFBX");
-	//SaveFile.GetExtension();
-
-	//GameEngineFile FBXFile = GameEngineFile(_Path.c_str());
-	//FBXFile.ChangeExtension(".FBX");
-	//FBXFile.GetExtension();
-
-	//if (SaveFile.IsExits())
-	//{
-	//	GameEngineDirectory Dir = SaveFile.GetDirectory();
-	//	UserLoad(SaveFile.GetFullPath());
-	//	FBXInit(Dir.PlusFilePath(FBXMeshName));
-	//	CreateGameEngineStructuredBuffer();
-	//	return;
-	//}
-
-
-	// FBXMeshName = FBXFile.GetFileName();
-	// 이 fbx로 애니메이션을 로드하려면 필요하다.
-	// 이유 => 우리는 스켈레탈을 따로 빼지 않았다.
-	// 버텍스 정보를 가진 노드를 조사한다.
-	// FBXInit(FBXFile.GetFullPath());
-
-	// FBXInit(_Path);
-	// MeshLoad();
-
-	// 이쪽에서 본이 있는지 확인하고
-	// 본이 있다면 애니메이션을 할 가능성이 있다고 생각하기 때문에
-	// 여기서 본에 맞는 스트럭처드 버퍼를 만들어 낸다.
-	// CreateGameEngineStructuredBuffer();
-	// Bone을 조사한다.
-
-	//if (false == SaveFile.IsExits())
-	//{
-	//	UserSave(SaveFile.GetFullPath());
-	//}
-}
-
 void GameEngineFBXMesh::Initialize()
 {
 	if (true == IsInit)
@@ -166,10 +49,7 @@ void GameEngineFBXMesh::Initialize()
 
 	GameEngineFile File;
 	File.SetPath(GetPath());
-
 	FBXMeshName = File.GetFileName();
-
-
 	File.ChangeExtension(".MeshFBX");
 
 	if (true == File.IsExists())
