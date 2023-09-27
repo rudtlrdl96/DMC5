@@ -14,6 +14,20 @@ EffectToolWindow::~EffectToolWindow()
 
 void EffectToolWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
 {
+	for (int i = 0; i < FXRenders.size(); i++)
+	{
+		if (FXRenders[i]->IsDeath())
+		{
+			FXRenders[i] = nullptr;
+			FXRenders.erase(FXRenders.begin() + i);
+
+			for (int j = 0; j < FXRenders.size(); j++)
+			{
+				FXRenders[j]->SetName(std::to_string(j));
+			}
+		}
+	}
+
 	CharacterSetting(Level);
 	CreateFXRender(Level);
 	TimeLine();
@@ -92,6 +106,9 @@ void EffectToolWindow::CharacterSetting(std::shared_ptr<GameEngineLevel> Level)
 			if (nullptr == GameEngineFBXAnimation::Find(FileName))
 			{
 				GameEngineFBXAnimation::Load(Path.GetFullPath());
+			}
+			if (nullptr == CharacterRender->FindAnimation(FileName))
+			{
 				CharacterRender->CreateFBXAnimation(FileName, FileName, { .Inter = 0.01666f, .Loop = false });
 			}
 			CharacterRender->ChangeAnimation(FileName);
@@ -112,8 +129,7 @@ void EffectToolWindow::CreateFXRender(std::shared_ptr<GameEngineLevel> Level)
 		std::shared_ptr<EffectRenderer> NewFX = Actor->CreateComponent<EffectRenderer>();
 		FXRenders.push_back(NewFX);
 
-		static int FXIndex = 0;
-		NewFX->SetName(std::to_string(FXIndex++));
+		NewFX->SetName(std::to_string(FXRenders.size() - 1));
 	}
 }
 

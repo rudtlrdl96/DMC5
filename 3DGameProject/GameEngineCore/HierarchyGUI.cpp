@@ -126,6 +126,10 @@ void HierarchyGUI::ShowTransformInfo()
 	}
 
 	SelectObject->DrawEditor();
+	if (SelectObject->IsDeath())
+	{
+		SelectObject = nullptr;
+	}
 }
 
 void HierarchyGUI::TransformControll(std::shared_ptr<GameEngineLevel> Level)
@@ -155,6 +159,6 @@ void HierarchyGUI::TransformControll(std::shared_ptr<GameEngineLevel> Level)
 	{
 		float4 MouseDir = GameEngineInput::GetMouseDirection();
 		MouseDir.y = -MouseDir.y;
-		Transform->AddLocalScale(float4::ONE * (MouseDir.x + MouseDir.y) * 0.005f);
+		Transform->AddLocalScale(float4::ONE * (MouseDir.x + MouseDir.y));
 	}
 }

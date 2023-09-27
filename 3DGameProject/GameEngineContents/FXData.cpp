@@ -30,6 +30,7 @@ std::shared_ptr<FXData> FXData::CreateData(std::vector<FXUnitData>& _UnitDatas, 
 		}
 	}
 	// 프레임 데이터 복사
+
 	NewData->FrameData.clear();
 	NewData->FrameData.resize((--_Data.end())->first + 1);
 	for (int i = 0; i < NewData->FrameData.size(); i++)

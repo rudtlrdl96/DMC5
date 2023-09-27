@@ -124,6 +124,13 @@ public:
 		return Animations[UpperName];
 	}
 
+	std::shared_ptr<GameEngineFBXAnimationInfo> FindAnimation(std::string _Name)
+	{
+		std::string UpperName = GameEngineString::ToUpper(_Name);
+		if (false == Animations.contains(UpperName)) { return nullptr; }
+		return Animations.find(UpperName)->second;
+	}
+
 	void CreateFBXAnimation(const std::string& _AnimationFBXName, const AnimationCreateParams& _Params, int _Index = 0)
 	{
 		CreateFBXAnimation(_AnimationFBXName, _AnimationFBXName, _Params, _Index);
