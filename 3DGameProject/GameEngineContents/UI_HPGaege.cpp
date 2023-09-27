@@ -13,25 +13,6 @@ UI_HPGaege::~UI_HPGaege()
 }
 
 
-void UI_HPGaege::UpdateHPBar(float _Delta, int CurHP)
-{
-
-	NeroHPUI_Front->ImageClippingX(static_cast<float>(CurHP) / static_cast<float>(MaxHP), ClipXDir::Left);
-	float Cal = static_cast<float>(CurHP) / static_cast<float>(MaxHP);
-	float XPos = -104.0f - 492.0f *(1.0f-Cal);
-	NeroHpAni->GetTransform()->SetLocalPosition({ XPos,HPAniPos.y,0.0f});
-	if (CurHP != RedHp)
-	{
-		Ratio += _Delta;
-		RedHp = static_cast<int>(GameEngineMath::LerpLimit(static_cast<float>(PrevHp), static_cast<float>(CurHP), _Delta * Ratio * 30.0f));
-		NeroHPUI_Back->ImageClippingX(static_cast<float>(RedHp) / static_cast<float>(MaxHP), ClipXDir::Left);
-	}
-	else
-	{
-		PrevHp = CurHP;
-		Ratio = 0.0f;
-	}
-}
 
 void UI_HPGaege::Start()
 {
@@ -72,5 +53,25 @@ void UI_HPGaege::Start()
 
 void UI_HPGaege::Update(float _DeltaTime)
 {
+	ClipHPBar(_DeltaTime);
+}
+
+void UI_HPGaege::ClipHPBar(float _Delta)
+{
+	NeroHPUI_Front->ImageClippingX(static_cast<float>(CurHp) / static_cast<float>(MaxHP), ClipXDir::Left);
+	float Cal = static_cast<float>(CurHp) / static_cast<float>(MaxHP);
+	float XPos = -104.0f - 492.0f * (1.0f - Cal);
+	NeroHpAni->GetTransform()->SetLocalPosition({ XPos,HPAniPos.y,0.0f });
+	if (CurHp != RedHp)
+	{
+		Ratio += _Delta;
+		RedHp = static_cast<int>(GameEngineMath::LerpLimit(static_cast<float>(PrevHp), static_cast<float>(CurHp), _Delta * Ratio * 30.0f));
+		NeroHPUI_Back->ImageClippingX(static_cast<float>(RedHp) / static_cast<float>(MaxHP), ClipXDir::Left);
+	}
+	else
+	{
+		PrevHp = CurHp;
+		Ratio = 0.0f;
+	}
 }
 

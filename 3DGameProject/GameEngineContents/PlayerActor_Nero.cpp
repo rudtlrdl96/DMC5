@@ -1369,6 +1369,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Split_1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Split_1,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_Split_1.effect");
 				Col_Attack->SetAttackData(DamageType::Slam, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -1390,6 +1391,7 @@ void PlayerActor_Nero::PlayerLoad()
 		static float4 SplitTargetPos;
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Split_2,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_Split_2.effect");
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Split_2_Loop");
 				GetLevel()->RayCast(GetTransform()->GetWorldPosition(), float4::DOWN, SplitTargetPos, 9999.0f);
 				SplitTargetPos += float4::UP * 100;
@@ -1416,7 +1418,9 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Split_3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Split_3,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_Split_3.effect");
 				Col_Attack->SetAttackData(DamageType::Heavy, 50);
+				UseDoubleJump = false;
 				InputCheck = false;
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -1451,6 +1455,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Caliber_1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Caliber_1,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_Calibur_1.effect");
 				RedQueenOn();
 				RotationToTarget();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -1476,6 +1481,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Caliber_2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Caliber_2,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_Calibur_2.effect");
 				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Caliber_2");
 				InputCheck = false;
@@ -4110,7 +4116,6 @@ void PlayerActor_Nero::NetLoad()
 
 void PlayerActor_Nero::Update_Character(float _DeltaTime)
 {
-	HPRender->SetPlayerHP(_DeltaTime ,HP);
 	if (LoadCheck == false) { return; }
 	FSM.Update(_DeltaTime);
 
@@ -4137,11 +4142,13 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 		if (GameEngineInput::IsDown("SelectLevel_04"))
 		{
 			HP -= 500;
+			HPRender->SetPlayerHP(HP);
 			LightDamage();
 		}
 		if (GameEngineInput::IsDown("SelectLevel_05"))
 		{
 			HP -= 500;
+			HPRender->SetPlayerHP(HP);
 			HeavyDamage();
 		}
 

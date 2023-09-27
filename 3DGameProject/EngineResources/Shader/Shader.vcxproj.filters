@@ -27,7 +27,10 @@
     <FxCompile Include="DeferredMerge.hlsl" />
     <FxCompile Include="BloomShader.hlsl" />
     <FxCompile Include="BloomBlur.hlsl" />
-    <FxCompile Include="Shadow.hlsl">
+    <FxCompile Include="OrthogonalShadow.hlsl">
+      <Filter>Shadow</Filter>
+    </FxCompile>
+    <FxCompile Include="ProjectionShadow.hlsl">
       <Filter>Shadow</Filter>
     </FxCompile>
   </ItemGroup>

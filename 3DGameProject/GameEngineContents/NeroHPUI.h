@@ -15,7 +15,7 @@ public:
 	NeroHPUI(NeroHPUI&& _Other) noexcept = delete;
 	NeroHPUI& operator=(const NeroHPUI& _Other) = delete;
 	NeroHPUI& operator=(NeroHPUI&& _Other) noexcept = delete;
-	void SetPlayerHP(float _Delta, int _HP);
+	void SetPlayerHP(int _HP);
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

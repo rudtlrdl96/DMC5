@@ -14,9 +14,9 @@ NeroHPUI::NeroHPUI()
 NeroHPUI::~NeroHPUI() 
 {
 }
-void NeroHPUI::SetPlayerHP(float _Delta, int _HP)
+void NeroHPUI::SetPlayerHP(int _HP)
 {
-	UI_HPGaegeBar->UpdateHPBar(_Delta, _HP);
+	UI_HPGaegeBar->UpdateHPBar(_HP);
 }
 /*
 후드,후드불
