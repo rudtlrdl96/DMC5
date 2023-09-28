@@ -1,4 +1,5 @@
 #include "Light.fx"
+#include "RenderBaseValue.fx"
 
 struct Input
 {
@@ -63,7 +64,7 @@ ResultLight CalLight(int _LightIndex, float4 _Position, float4 _Normal, float _M
     
     float LightPower = AllLight[_LightIndex].LightPower;
         
-    if (0 != AllLight[_LightIndex].LightType)
+    if (1 == AllLight[_LightIndex].LightType)
     {
         float Distance = length(AllLight[_LightIndex].ViewLightPos.xyz - _Position.xyz);
             
@@ -75,10 +76,16 @@ ResultLight CalLight(int _LightIndex, float4 _Position, float4 _Normal, float _M
         
     if (2 == AllLight[_LightIndex].LightType)
     {
-        float3 LightVec = normalize(_Position.xyz - AllLight[_LightIndex].ViewLightPos.xyz);     
-        float SpotCone = pow(saturate(dot(LightVec, normalize(AllLight[_LightIndex].ViewLightDir.xyz))), AllLight[_LightIndex].LightAngle);
-            
-        LightPower *= SpotCone;
+        // ToLight
+        float3 LightVec = normalize(_Position.xyz - AllLight[_LightIndex].ViewLightPos.xyz);
+        float3 SpotDirToLight = normalize(AllLight[_LightIndex].ViewLightDir.xyz);
+       
+        float CosAng = acos(dot(SpotDirToLight, LightVec)) * RadToDeg;
+        float LightAng = AllLight[_LightIndex].LightAngle * 0.5f;
+        
+        float ConAtt = saturate((LightAng - CosAng) / LightAng);
+        
+        LightPower *= (ConAtt * ConAtt); 
     }
         
     if (0.0f < LightPower)
