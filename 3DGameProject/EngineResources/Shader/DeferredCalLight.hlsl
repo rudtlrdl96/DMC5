@@ -64,7 +64,7 @@ ResultLight CalLight(int _LightIndex, float4 _Position, float4 _Normal, float _M
     
     float LightPower = AllLight[_LightIndex].LightPower;
         
-    if (1 == AllLight[_LightIndex].LightType)
+    if (0 != AllLight[_LightIndex].LightType)
     {
         float Distance = length(AllLight[_LightIndex].ViewLightPos.xyz - _Position.xyz);
             
