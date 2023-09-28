@@ -938,7 +938,15 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboD1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboD_1,
 			.Start = [=] {
-				EffectSystem->PlayFX("RQ_ComboD1.effect");
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_ComboD1_EX.effect");
+					ExceedLevel--;
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_ComboD1.effect");
+				}
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
@@ -977,7 +985,15 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboD2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboD_2,
 			.Start = [=] {
-				EffectSystem->PlayFX("RQ_ComboD2.effect");
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_ComboD2_EX.effect");
+					ExceedLevel--;
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_ComboD2.effect");
+				}
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
@@ -1016,7 +1032,15 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboD3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboD_3,
 			.Start = [=] {
-				EffectSystem->PlayFX("RQ_ComboD3.effect");
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_ComboD3_EX.effect");
+					ExceedLevel--;
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_ComboD3.effect");
+				}
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
@@ -1055,7 +1079,15 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboD4
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboD_4,
 			.Start = [=] {
-				EffectSystem->PlayFX("RQ_ComboD4.effect");
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_ComboD4_EX.effect");
+					ExceedLevel--;
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_ComboD4.effect");
+				}
 				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
@@ -1097,7 +1129,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_HR_EX.effect");
-					ExceedLevel--;
+					ExceedLevel -= 3;
 				}
 				else
 				{
@@ -1135,7 +1167,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_Shuffle_EX.effect");
-					ExceedLevel--;
+					ExceedLevel -= 3;
 				}
 				else
 				{
@@ -1245,7 +1277,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_Stleak_3_EX.effect");
-					ExceedLevel--;
+					ExceedLevel -= 3;
 				}
 				else
 				{
@@ -1291,7 +1323,15 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen AirComboA1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_1,
 			.Start = [=] {
-				EffectSystem->PlayFX("RQ_AirComboA1.effect");
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_AirComboA1_EX.effect");
+					ExceedLevel--;
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_AirComboA1.effect");
+				}
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -1325,7 +1365,15 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen AirComboA2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_2,
 			.Start = [=] {
-				EffectSystem->PlayFX("RQ_AirComboA2.effect");
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_AirComboA2_EX.effect");
+					ExceedLevel--;
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_AirComboA2.effect");
+				}
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -1367,7 +1415,15 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen AirComboA3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_3,
 			.Start = [=] {
-				EffectSystem->PlayFX("RQ_AirComboA3.effect");
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_AirComboA3_EX.effect");
+					ExceedLevel--;
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_AirComboA3.effect");
+				}
 				Col_Attack->SetAttackData(DamageType::Slam, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -1401,7 +1457,15 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen AirComboB
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboB,
 			.Start = [=] {
-				EffectSystem->PlayFX("RQ_AirComboB.effect");
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_AirComboB_EX.effect");
+					ExceedLevel--;
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_AirComboB.effect");
+				}
 				Col_Attack->SetAttackData(DamageType::Air, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -1503,7 +1567,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_Split_3_EX.effect");
-					ExceedLevel--;
+					ExceedLevel -= 3;
 				}
 				else
 				{
@@ -1575,7 +1639,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_Calibur_2_EX.effect");
-					ExceedLevel--;
+					ExceedLevel -= 3;
 				}
 				else
 				{
