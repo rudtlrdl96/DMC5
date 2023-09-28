@@ -196,8 +196,8 @@ void BasePlayerActor::UserControllLoad()
 	Controller->CallBack_LockOnUp = std::bind(&BasePlayerActor::LockOff, this);
 
 	Col_EnemyStepCheck = CreateComponent<GameEngineCollision>(CollisionOrder::Null);
-	Col_EnemyStepCheck->GetTransform()->SetLocalPosition({ 0, -70, 0 });
-	Col_EnemyStepCheck->GetTransform()->SetLocalScale({ 200, 125, 200 });
+	Col_EnemyStepCheck->GetTransform()->SetLocalPosition({ 0, -20, 0 });
+	Col_EnemyStepCheck->GetTransform()->SetLocalScale({ 200, 175, 200 });
 	Col_EnemyStepCheck->SetColType(ColType::AABBBOX3D);
 	// 록온 용 충돌체
 	Col_LockOn = CreateComponent<GameEngineCollision>(CollisionOrder::PlayerLockOn);

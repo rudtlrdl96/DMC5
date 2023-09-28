@@ -11,6 +11,7 @@ EffectToolWindow::EffectToolWindow()
 EffectToolWindow::~EffectToolWindow()
 {
 }
+static int UnitIndex = 0;
 
 void EffectToolWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
 {
@@ -187,7 +188,10 @@ void EffectToolWindow::TimeLine()
 		{
 			if (CurFrameData.contains(--CurrentFrame))
 			{
-				break;
+				if (CurFrameData[CurrentFrame].contains(UnitIndex))
+				{
+					break;
+				}
 			}
 		}
 	}
@@ -198,7 +202,10 @@ void EffectToolWindow::TimeLine()
 		{
 			if (CurFrameData.contains(++CurrentFrame))
 			{
-				break;
+				if (CurFrameData[CurrentFrame].contains(UnitIndex))
+				{
+					break;
+				}
 			}
 		}
 	}
@@ -311,7 +318,6 @@ void EffectToolWindow::KeyFrame()
 
 void EffectToolWindow::AddKeyFrame()
 {
-	static int UnitIndex = 0;
 	ImGui::InputInt("Index", &UnitIndex);
 	ImGui::SameLine();
 

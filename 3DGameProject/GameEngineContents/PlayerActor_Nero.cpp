@@ -85,6 +85,7 @@ void PlayerActor_Nero::PlayerLoad()
 		{
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Impact.tga").GetFullPath(), 8, 8);
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Muzzle_03.tga").GetFullPath(), 2, 1);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Spark_02.tga").GetFullPath(), 8, 8);
 		}
 		NewDir.MoveParent();
 		NewDir.Move("Nero");
@@ -1899,6 +1900,8 @@ void PlayerActor_Nero::PlayerLoad()
 				WeaponIdle();
 				SetOvertureAnimation();
 				PhysXCapsule->SetLinearVelocityZero();
+				Col_Attack->SetAttackData(DamageType::Heavy, 50);
+				EffectSystem->PlayFX("Overture_Shoot.effect");
 				Renderer->ChangeAnimation("pl0000_Overture_Shoot", true);
 				Renderer_Overture->ChangeAnimation("wp00_010_Shoot.fbx", true);
 				if (Controller->GetMoveVector() != float4::ZERO)
@@ -1943,6 +1946,8 @@ void PlayerActor_Nero::PlayerLoad()
 				SetOvertureAnimation();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
+				Col_Attack->SetAttackData(DamageType::Heavy, 50);
+				EffectSystem->PlayFX("Overture_Shoot.effect");
 				Renderer->ChangeAnimation("pl0000_Overture_Air_Shoot", true);
 				Renderer_Overture->ChangeAnimation("wp00_010_Air_Shoot.fbx", true);
 				if (Controller->GetMoveVector() != float4::ZERO)
