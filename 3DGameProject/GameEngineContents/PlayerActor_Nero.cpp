@@ -92,6 +92,8 @@ void PlayerActor_Nero::PlayerLoad()
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_03.tga").GetFullPath(), 8, 4);
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_04.tga").GetFullPath(), 8, 8);
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_05.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Explosion_01.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Explosion_02.tga").GetFullPath(), 8, 8);
 		}
 		NewDir.MoveParent();
 		NewDir.Move("Nero");
@@ -1393,7 +1395,14 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Split_1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Split_1,
 			.Start = [=] {
-				EffectSystem->PlayFX("RQ_Split_1.effect");
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_Split_1_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_Split_1.effect");
+				}
 				Col_Attack->SetAttackData(DamageType::Slam, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -1415,7 +1424,15 @@ void PlayerActor_Nero::PlayerLoad()
 		static float4 SplitTargetPos;
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Split_2,
 			.Start = [=] {
-				EffectSystem->PlayFX("RQ_Split_2.effect");
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_Split_2_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_Split_2.effect");
+				}
+				EffectSystem->Loop = true;
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Split_2_Loop");
 				GetLevel()->RayCast(GetTransform()->GetWorldPosition(), float4::DOWN, SplitTargetPos, 9999.0f);
 				SplitTargetPos += float4::UP * 100;
@@ -1437,12 +1454,21 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 			},
 			.End = [=] {
+				EffectSystem->Loop = false;
 			}
 			});
 		// RedQueen Split_3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Split_3,
 			.Start = [=] {
-				EffectSystem->PlayFX("RQ_Split_3.effect");
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_Split_3_EX.effect");
+					ExceedLevel--;
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_Split_3.effect");
+				}
 				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				UseDoubleJump = false;
 				InputCheck = false;
@@ -1474,6 +1500,7 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 			},
 			.End = [=] {
+				WeaponIdle();
 			}
 			});
 		// RedQueen Caliber_1
