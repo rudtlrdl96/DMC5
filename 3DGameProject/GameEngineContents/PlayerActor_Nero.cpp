@@ -86,6 +86,7 @@ void PlayerActor_Nero::PlayerLoad()
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Impact.tga").GetFullPath(), 8, 8);
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Muzzle_03.tga").GetFullPath(), 2, 1);
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Spark_02.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Magic_01.tga").GetFullPath(), 8, 8);
 		}
 		NewDir.MoveParent();
 		NewDir.Move("Nero");
@@ -2122,6 +2123,7 @@ void PlayerActor_Nero::PlayerLoad()
 				Col_Attack->SetAttackData(DamageType::Buster, 50, std::bind(&PlayerActor_Nero::ChangeState, this, Nero_Buster_Strike));
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
+				EffectSystem->PlayFX("Buster_Catch.effect");
 				Renderer->ChangeAnimation("pl0000_Buster_Catch", true);
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
@@ -2161,6 +2163,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// BusterArm Strike
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Strike,
 			.Start = [=] {
+				EffectSystem->PlayFX("Buster_Strike.effect");
 				Renderer->ChangeAnimation("pl0000_Buster_Strike_Common");
 				InputCheck = false;
 				MoveCheck = false;
@@ -2235,6 +2238,7 @@ void PlayerActor_Nero::PlayerLoad()
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
+				EffectSystem->PlayFX("Buster_Catch.effect");
 				Renderer->ChangeAnimation("pl0000_Buster_Air_Catch", true);
 				if (Controller->GetMoveVector() != float4::ZERO)
 				{
@@ -2270,6 +2274,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// BusterArm Strike Air
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Strike_Air,
 			.Start = [=] {
+				EffectSystem->PlayFX("Buster_Strike.effect");
 				Renderer->ChangeAnimation("pl0000_Buster_Air_Strike_Common");
 				InputCheck = false;
 				MoveCheck = false;
