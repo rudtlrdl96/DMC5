@@ -1210,7 +1210,15 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Stleak3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Stleak3,
 			.Start = [=] {
-				EffectSystem->PlayFX("RQ_Stleak_3.effect");
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_Stleak_3_EX.effect");
+					ExceedLevel--;
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_Stleak_3.effect");
+				}
 				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -1532,7 +1540,15 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Caliber_2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Caliber_2,
 			.Start = [=] {
-				EffectSystem->PlayFX("RQ_Calibur_2.effect");
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_Calibur_2_EX.effect");
+					ExceedLevel--;
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_Calibur_2.effect");
+				}
 				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Caliber_2");
 				InputCheck = false;
