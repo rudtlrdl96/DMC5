@@ -2741,6 +2741,7 @@ void PlayerActor_Nero::PlayerLoad()
 		.Start = [=] {
 			WeaponIdle();
 			PhysXCapsule->SetLinearVelocityZero();
+			EffectSystem->PlayFX("Nero_DT_On.effect");
 			Renderer->ChangeAnimation("pl0000_DT_Start", true);
 			InputCheck = false;
 			MoveCheck = false;
@@ -2778,6 +2779,7 @@ void PlayerActor_Nero::PlayerLoad()
 				InputCheck = false;
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
+				EffectSystem->PlayFX("Nero_DT_On.effect");
 				Renderer->ChangeAnimation("pl0000_DT_AirStart", true);
 			},
 			.Update = [=](float _DeltaTime) {
