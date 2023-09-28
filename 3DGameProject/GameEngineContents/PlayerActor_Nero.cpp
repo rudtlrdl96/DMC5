@@ -87,6 +87,11 @@ void PlayerActor_Nero::PlayerLoad()
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Muzzle_03.tga").GetFullPath(), 2, 1);
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Spark_02.tga").GetFullPath(), 8, 8);
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Magic_01.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_01.tga").GetFullPath(), 8, 4);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_02.tga").GetFullPath(), 8, 4);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_03.tga").GetFullPath(), 8, 4);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_04.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_05.tga").GetFullPath(), 8, 8);
 		}
 		NewDir.MoveParent();
 		NewDir.Move("Nero");
@@ -1054,7 +1059,14 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen HR
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_HR,
 			.Start = [=] {
-				EffectSystem->PlayFX("RQ_HR.effect");
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_HR_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_HR.effect");
+				}
 				Col_Attack->SetAttackData(DamageType::Air, 50);
 				PhysXCapsule->TurnOnGravity();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -1084,7 +1096,14 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Shuffle
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Shuffle,
 			.Start = [=] {
-				EffectSystem->PlayFX("RQ_Shuffle.effect");
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_Shuffle_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_Shuffle.effect");
+				}
 				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				InputCheck = false;
 				DelayCheck = false;
@@ -4171,6 +4190,11 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 			HPRender->SetPlayerHP(HP);
 			HeavyDamage();
 		}
+		if (GameEngineInput::IsDown("Player_Exceed"))
+		{
+			ExceedLevel++;
+		}
+		
 
 	}
 }

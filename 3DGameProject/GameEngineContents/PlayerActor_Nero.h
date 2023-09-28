@@ -179,6 +179,7 @@ private:
 	std::shared_ptr<class FXSystem> EffectSystem = nullptr;
 
 	GameEngineFSM FSM;
+	int ExceedLevel = 0;	// 익시드 단계
 	float WalkSpeed = 300;
 	float RunSpeed = 550;
 	float DashSpeed = 700;

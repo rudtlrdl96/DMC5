@@ -57,7 +57,7 @@ void FXSystem::CreateFX(std::shared_ptr<class FXData> _FX)
 				FXRenders[Key]->GetTransform()->SetWorldRotation(float4::ZERO);
 			}
 
-			if (UnitDatas[i].AnimationName != "")
+			if (UnitDatas[i].AnimationName != "" && nullptr == FXRenders[Key]->FindAnimation(UnitDatas[i].AnimationName))
 			{
 				FXRenders[Key]->CreateAnimation({ .AnimationName = UnitDatas[i].AnimationName, .SpriteName = UnitDatas[i].AnimationName, .FrameInter = 0.0166f, .Loop = false });
 			}
