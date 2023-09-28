@@ -132,7 +132,6 @@ protected:
 	void Update_Character(float _DeltaTime) override;
 
 private:
-	static GameEngineTimeEvent TimeEvent;
 
 	std::vector<std::shared_ptr<class Player_MirageBlade>> AllMirageBlades;
 	GameEngineFSM FSM;

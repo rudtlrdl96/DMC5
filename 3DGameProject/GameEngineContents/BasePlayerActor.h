@@ -72,6 +72,8 @@ protected:
 	virtual void LightDamage() {}
 	virtual void HeavyDamage() {}
 
+	GameEngineTimeEvent TimeEvent;
+
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
 	std::shared_ptr<class PlayerController> Controller = nullptr;
 	std::shared_ptr<class PlayerCamera> Camera = nullptr;

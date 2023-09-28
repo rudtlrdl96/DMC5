@@ -211,6 +211,7 @@ void BasePlayerActor::UserControllLoad()
 
 void BasePlayerActor::Update(float _DeltaTime)
 {
+	TimeEvent.Update(_DeltaTime);
 	Update_Character(_DeltaTime);
 	Update_NetworkTrans(_DeltaTime);
 

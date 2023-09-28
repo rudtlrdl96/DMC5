@@ -172,6 +172,7 @@ void PlayerActor_Nero::PlayerLoad()
 				std::bind(&PlayerActor_Nero::SetHuman, this),
 				std::bind(&PlayerActor_Nero::SetDemon, this),
 				std::bind(&PlayerActor_Nero::DestroyBreaker, this),
+				std::bind(&PlayerActor_Nero::SetExActTiming, this), //13
 			},
 			.CallBacks_int = {
 				std::bind(&PlayerActor_Nero::ChangeState, this, std::placeholders::_1)
@@ -1062,6 +1063,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_HR_EX.effect");
+					ExceedLevel--;
 				}
 				else
 				{
@@ -1099,6 +1101,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_Shuffle_EX.effect");
+					ExceedLevel--;
 				}
 				else
 				{
@@ -4190,12 +4193,6 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 			HPRender->SetPlayerHP(HP);
 			HeavyDamage();
 		}
-		if (GameEngineInput::IsDown("Player_Exceed"))
-		{
-			ExceedLevel++;
-		}
-		
-
 	}
 }
 
@@ -4495,6 +4492,14 @@ bool PlayerActor_Nero::Input_DevilBreakerCheckFly()
 
 bool PlayerActor_Nero::Input_SpecialCheck()
 {
+	// 익시드 체크
+	if (true == IsExActTiming && GameEngineInput::IsDown("Player_Exceed"))
+	{
+		ExceedLevel = std::clamp(ExceedLevel + 1, 1, 3);
+		IsExActTiming = false;
+	}
+
+
 	if (Controller->GetIsDevilTrigger())
 	{
 		if (false == IsDevilTrigger)
@@ -4519,6 +4524,13 @@ bool PlayerActor_Nero::Input_SpecialCheck()
 
 bool PlayerActor_Nero::Input_SpecialCheckFly()
 {
+	// 익시드 체크
+	if (true == IsExActTiming && GameEngineInput::IsDown("Player_Exceed"))
+	{
+		ExceedLevel = std::clamp(ExceedLevel + 1 , 1, 3);
+		IsExActTiming = false;
+	}
+
 	if (Controller->GetIsAnyJump())
 	{
 		std::vector<std::shared_ptr<GameEngineCollision>> Cols;
@@ -4795,6 +4807,14 @@ void PlayerActor_Nero::DestroyBreaker()
 	}
 }
 
+void PlayerActor_Nero::SetExActTiming()
+{
+	IsExActTiming = true;
+	TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+	{
+		IsExActTiming = false;
+	});
+}
 /*
 네로 렌더 유닛
 
@@ -4824,4 +4844,5 @@ void PlayerActor_Nero::DestroyBreaker()
 22 DT 헤어
 23 DT 날개
 24 등 레드퀸
+
 */

@@ -6,7 +6,6 @@
 #include "PlayerController.h"
 #include "AttackCollision.h"
 #include "NetworkManager.h"
-GameEngineTimeEvent PlayerActor_Vergil::TimeEvent;
 
 PlayerActor_Vergil::~PlayerActor_Vergil()
 {
@@ -2387,7 +2386,6 @@ void PlayerActor_Vergil::NetLoad()
 void PlayerActor_Vergil::Update_Character(float _DeltaTime)
 {
 	if (LoadCheck == false) { return; }
-	TimeEvent.Update(_DeltaTime);
 	FSM.Update(_DeltaTime);
 	if (NetControllType::ActiveControll == GameEngineNetObject::GetControllType())
 	{

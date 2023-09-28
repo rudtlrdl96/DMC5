@@ -193,6 +193,7 @@ private:
 	bool LoadCheck = false;		// FBX 로드가 완료되었는지
 	bool UseDoubleJump = false;
 	bool IsDevilTrigger = false;
+	bool IsExActTiming = false;	// 익시드 타이밍 여부
 	DevilBreaker CurDevilBreaker = DevilBreaker::Overture;
 	static std::list<DevilBreaker> BreakerList;
 
@@ -236,6 +237,8 @@ private:
 
 	void AddBreaker(DevilBreaker _Breaker);
 	void DestroyBreaker();
+
+	void SetExActTiming();
 
 	std::shared_ptr<class NeroHPUI> HPRender = nullptr;
 
