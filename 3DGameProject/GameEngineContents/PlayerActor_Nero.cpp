@@ -745,7 +745,15 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboA1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_1,
 			.Start = [=] {
-				EffectSystem->PlayFX("RQ_ComboA1.effect");
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_ComboA1_EX.effect");
+					ExceedLevel--;
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_ComboA1.effect");
+				}
 				PhysXCapsule->TurnOffGravity();
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
@@ -784,7 +792,15 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboA2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_2,
 			.Start = [=] {
-				EffectSystem->PlayFX("RQ_ComboA2.effect");
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_ComboA2_EX.effect");
+					ExceedLevel--;
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_ComboA2.effect");
+				}
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
@@ -829,7 +845,15 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboA3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_3,
 			.Start = [=] {
-				EffectSystem->PlayFX("RQ_ComboA3.effect");
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_ComboA3_EX.effect");
+					ExceedLevel--;
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_ComboA3.effect");
+				}
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
@@ -868,7 +892,15 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboA4
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_4,
 			.Start = [=] {
-				EffectSystem->PlayFX("RQ_ComboA4.effect");
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_ComboA4_EX.effect");
+					ExceedLevel--;
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_ComboA4.effect");
+				}
 				Col_Attack->SetAttackData(DamageType::Heavy, 100);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
@@ -4536,9 +4568,17 @@ bool PlayerActor_Nero::Input_DevilBreakerCheckFly()
 bool PlayerActor_Nero::Input_SpecialCheck()
 {
 	// 익시드 체크
-	if (true == IsExActTiming && GameEngineInput::IsDown("Player_Exceed"))
+	if (GameEngineInput::IsDown("Player_Exceed"))
 	{
-		ExceedLevel = std::clamp(ExceedLevel + 1, 1, 3);
+		if (true == IsMaxActTiming)
+		{
+			ExceedLevel = false;
+		}
+		else if (true == IsExActTiming)
+		{
+			ExceedLevel = std::clamp(ExceedLevel + 1, 1, 3);
+		}
+		IsMaxActTiming = false;
 		IsExActTiming = false;
 	}
 
@@ -4568,9 +4608,17 @@ bool PlayerActor_Nero::Input_SpecialCheck()
 bool PlayerActor_Nero::Input_SpecialCheckFly()
 {
 	// 익시드 체크
-	if (true == IsExActTiming && GameEngineInput::IsDown("Player_Exceed"))
+	if (GameEngineInput::IsDown("Player_Exceed"))
 	{
-		ExceedLevel = std::clamp(ExceedLevel + 1 , 1, 3);
+		if (true == IsMaxActTiming)
+		{
+			ExceedLevel = false;
+		}
+		else if (true == IsExActTiming)
+		{
+			ExceedLevel = std::clamp(ExceedLevel + 1, 1, 3);
+		}
+		IsMaxActTiming = false;
 		IsExActTiming = false;
 	}
 
@@ -4853,6 +4901,11 @@ void PlayerActor_Nero::DestroyBreaker()
 void PlayerActor_Nero::SetExActTiming()
 {
 	IsExActTiming = true;
+	TimeEvent.AddEvent(0.08f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+	{
+		IsMaxActTiming = false;
+	});
+	
 	TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 	{
 		IsExActTiming = false;
