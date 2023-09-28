@@ -1986,10 +1986,11 @@ void PlayerActor_Nero::PlayerLoad()
 		// Nero_Gerbera_Back
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Gerbera_Back,
 			.Start = [=] {
+				WeaponIdle();
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
-				WeaponIdle();
+				EffectSystem->PlayFX("Gerbera_Jump_Back.effect");
 				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Back", true);
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2020,6 +2021,8 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
 				WeaponIdle();
+				EffectSystem->PlayFX("Gerbera_Jump_Back.effect");
+				EffectSystem->GetTransform()->SetLocalRotation({ 0, 180, 0 });
 				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Front", true);
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2040,6 +2043,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_DevilBreakerCheckFly()) { return; }
 			},
 			.End = [=] {
+				EffectSystem->GetTransform()->SetLocalRotation(float4::ZERO);
 			}
 			});
 
@@ -2050,6 +2054,8 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
 				WeaponIdle();
+				EffectSystem->PlayFX("Gerbera_Jump_Back.effect");
+				EffectSystem->GetTransform()->SetLocalRotation({ 0, 90, 0 });
 				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Left", true);
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2070,6 +2076,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_DevilBreakerCheckFly()) { return; }
 			},
 			.End = [=] {
+				EffectSystem->GetTransform()->SetLocalRotation(float4::ZERO);
 			}
 			});
 
@@ -2080,6 +2087,8 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
 				WeaponIdle();
+				EffectSystem->PlayFX("Gerbera_Jump_Back.effect");
+				EffectSystem->GetTransform()->SetLocalRotation({ 0, -90, 0 });
 				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Right", true);
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2100,6 +2109,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_DevilBreakerCheckFly()) { return; }
 			},
 			.End = [=] {
+				EffectSystem->GetTransform()->SetLocalRotation(float4::ZERO);
 			}
 			});
 	}

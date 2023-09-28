@@ -103,6 +103,13 @@ public:
 
 	std::shared_ptr<AnimationInfo> CreateAnimation(const AnimationParameter& _Paramter);
 
+	void AnimationClear()
+	{
+		CurAnimation = nullptr;
+		VertexOption.FramePos = float4(0, 0);
+		VertexOption.FrameScale = float4(1, 1);
+	}
+
 	void ChangeAnimation(const std::string_view& _Name, bool _Force, size_t _Frame = -1)
 	{
 		ChangeAnimation(_Name, _Frame, _Force);

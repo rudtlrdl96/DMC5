@@ -100,6 +100,7 @@ void FXSystem::ChangeFX(std::shared_ptr<class FXData> _FX)
 			{
 				// 애니메이션이 아닌 경우
 				FXRenders[Key]->SetTexture("DiffuseTexture", UnitDatas[i].TextureName);
+				FXRenders[Key]->AnimationClear();
 			}
 			else
 			{
