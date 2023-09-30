@@ -4,19 +4,7 @@
 
 class ReflectionProbe : public GameEngineComponent
 {
-private:
-	class CubeCaptureData
-	{
-	public:
-		float CutStartX;
-		float CutEndX;
-		float CutStartY;
-		float CutEndY;
-	};	
-	
-	static bool RenderTargetInit;
-	static GameEngineRenderUnit CubemapMergeTarget;
-	static CubeCaptureData CutData;
+private:	
 	static std::shared_ptr<GameEngineRenderTarget> CaptureTarget;
 
 public:
@@ -45,9 +33,5 @@ protected:
 	
 private:
 	std::shared_ptr<GameEngineTexture> ReflectionCubeTexture = nullptr;
-	bool IsInitCheck = false;
-
-	void CubemapMerge(const CubeCaptureData& _Cut, std::shared_ptr<GameEngineRenderTarget> _Target, std::shared_ptr<GameEngineRenderTarget> _Merge);
-
 };
 

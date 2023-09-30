@@ -40,16 +40,35 @@ void GameEngineCore::CoreResourcesInit()
 		}
 	}
 
-	std::shared_ptr<GameEngineTexture> BaseCubeTexture = GameEngineTexture::Find("EngineBaseCubemap.png");
-	std::vector<std::shared_ptr<GameEngineTexture>> CubemapRes;
+	{
+		std::shared_ptr<GameEngineTexture> BaseCubeTexture = GameEngineTexture::Find("EngineBaseCubemap.png");
+		std::vector<std::shared_ptr<GameEngineTexture>> CubemapRes;
 
-	CubemapRes.reserve(6);
-	CubemapRes.push_back(BaseCubeTexture);
-	CubemapRes.push_back(BaseCubeTexture);
-	CubemapRes.push_back(BaseCubeTexture);
-	CubemapRes.push_back(BaseCubeTexture);
-	CubemapRes.push_back(BaseCubeTexture);
-	CubemapRes.push_back(BaseCubeTexture);
+		CubemapRes.reserve(6);
+		CubemapRes.push_back(BaseCubeTexture);
+		CubemapRes.push_back(BaseCubeTexture);
+		CubemapRes.push_back(BaseCubeTexture);
+		CubemapRes.push_back(BaseCubeTexture);
+		CubemapRes.push_back(BaseCubeTexture);
+		CubemapRes.push_back(BaseCubeTexture);
+
+		GameEngineTexture::Create("BaseCubemap", CubemapRes);
+	}
+
+	{
+		std::shared_ptr<GameEngineTexture> BaseCubeTexture = GameEngineTexture::Find("EngineBaseCubeShadow.png");
+		std::vector<std::shared_ptr<GameEngineTexture>> CubemapRes;
+
+		CubemapRes.reserve(6);
+		CubemapRes.push_back(BaseCubeTexture);
+		CubemapRes.push_back(BaseCubeTexture);
+		CubemapRes.push_back(BaseCubeTexture);
+		CubemapRes.push_back(BaseCubeTexture);
+		CubemapRes.push_back(BaseCubeTexture);
+		CubemapRes.push_back(BaseCubeTexture);
+
+		GameEngineTexture::Create("BaseShadowCubemap", CubemapRes);
+	}
 
 	//static std::shared_ptr<GameEngineTexture> Create(
 	//	const std::string_view & _Name,
@@ -59,7 +78,6 @@ void GameEngineCore::CoreResourcesInit()
 	//	const D3D11_SHADER_RESOURCE_VIEW_DESC & _SRV
 	//);
 
-	GameEngineTexture::Create("BaseCubemap", CubemapRes);
 
 	// GameEngineInputLayOutInfo에 SemanticName, Format 결정
 	GameEngineVertex::LayOut.AddInputLayOut("POSITION", DXGI_FORMAT_R32G32B32A32_FLOAT);
@@ -199,6 +217,7 @@ void GameEngineCore::CoreResourcesInit()
 		GameEngineIndexBuffer::Create("GridRect", ArrIndex);
 		GameEngineMesh::Create("GridRect");
 	}
+
 	// Box
 	{
 		std::vector<GameEngineVertex> Vertex;
@@ -241,6 +260,51 @@ void GameEngineCore::CoreResourcesInit()
 
 		GameEngineVertexBuffer::Create("Box", Vertex);
 	}
+
+	// Full Box
+	{
+		std::vector<GameEngineVertex> Vertex;
+		Vertex.resize(24);
+		
+		// 오른쪽
+		Vertex[0] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, 1.0f, 1.0f).RotationYDegReturn(90) };
+		Vertex[1] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, 1.0f, 1.0f).RotationYDegReturn(90)  };
+		Vertex[2] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, -1.0f, 1.0f).RotationYDegReturn(90) };
+		Vertex[3] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, -1.0f, 1.0f).RotationYDegReturn(90)};
+
+		// 왼쪽
+		Vertex[4] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, 1.0f, 1.0f).RotationYDegReturn(-90) };
+		Vertex[5] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, 1.0f, 1.0f).RotationYDegReturn(-90)  };
+		Vertex[6] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, -1.0f, 1.0f).RotationYDegReturn(-90) };
+		Vertex[7] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, -1.0f, 1.0f).RotationYDegReturn(-90)};
+
+		// 위
+		Vertex[8] =  {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, 1.0f, 1.0f).RotationXDegReturn(-90) };
+		Vertex[9] =  {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, 1.0f, 1.0f).RotationXDegReturn(-90)  };
+		Vertex[10] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, -1.0f, 1.0f).RotationXDegReturn(-90) };
+		Vertex[11] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, -1.0f, 1.0f).RotationXDegReturn(-90)};
+
+		// 아래
+		Vertex[12] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, 1.0f, 1.0f).RotationXDegReturn(90) };
+		Vertex[13] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, 1.0f, 1.0f).RotationXDegReturn(90)  };
+		Vertex[14] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, -1.0f, 1.0f).RotationXDegReturn(90) };
+		Vertex[15] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, -1.0f, 1.0f).RotationXDegReturn(90)};
+
+		// 앞면
+		Vertex[16] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, 1.0f, 1.0f) };
+		Vertex[17] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, 1.0f, 1.0f)  };
+		Vertex[18] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, -1.0f, 1.0f) };
+		Vertex[19] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, -1.0f, 1.0f)};
+
+		// 뒷면
+		Vertex[20] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, 1.0f, 1.0f).RotationXDegReturn(180) };
+		Vertex[21] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, 1.0f, 1.0f).RotationXDegReturn(180)  };
+		Vertex[22] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, -1.0f, 1.0f).RotationXDegReturn(180) };
+		Vertex[23] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, -1.0f, 1.0f).RotationXDegReturn(180)};
+
+		GameEngineVertexBuffer::Create("FullBox", Vertex);
+	}
+
 	// DebugBox
 	{
 		std::vector<int> Index;
@@ -283,6 +347,7 @@ void GameEngineCore::CoreResourcesInit()
 
 		GameEngineIndexBuffer::Create("DebugBox", Index);
 	}
+
 	// TriAngleBox
 	{
 		std::vector<int> Index;
@@ -308,7 +373,12 @@ void GameEngineCore::CoreResourcesInit()
 
 	{
 		std::shared_ptr<GameEngineMesh> Mesh = GameEngineMesh::Create("Box", "Box", "TriAngleBox");
-		Mesh->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		Mesh->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);		
+	}	
+	
+	{
+		std::shared_ptr<GameEngineMesh> Mesh = GameEngineMesh::Create("FullBox", "FullBox", "TriAngleBox");
+		Mesh->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);		
 	}
 
 	// Sphere
@@ -645,14 +715,27 @@ void GameEngineCore::CoreResourcesInit()
 		Pipe->SetBlendState("BaseBlend");
 		Pipe->SetDepthState("EngineDepth");
 	}
-	{
-		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("Merge");
 
-		Pipe->SetVertexShader("MergeShader.hlsl");
-		Pipe->SetRasterizer("Engine2DBase");
-		Pipe->SetPixelShader("MergeShader.hlsl");
-		Pipe->SetBlendState("MergeBlend");
-		Pipe->SetDepthState("AlwayDepth");
+	{
+		{
+			std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("Merge");
+
+			Pipe->SetVertexShader("MergeShader.hlsl");
+			Pipe->SetRasterizer("Engine2DBase");
+			Pipe->SetPixelShader("MergeShader.hlsl");
+			Pipe->SetBlendState("MergeBlend");
+			Pipe->SetDepthState("AlwayDepth");
+		}
+
+		{
+			std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("CubemapMerge");
+
+			Pipe->SetVertexShader("CubemapMergeShader.hlsl");
+			Pipe->SetRasterizer("Engine2DBase");
+			Pipe->SetPixelShader("CubemapMergeShader.hlsl");
+			Pipe->SetBlendState("MergeBlend");
+			Pipe->SetDepthState("AlwayDepth");
+		}
 
 		GameEngineRenderTarget::RenderTargetUnitInit();
 	}

@@ -158,6 +158,12 @@ void GameEngineRenderUnit::Draw()
 	GameEngineDevice::GetContext()->DrawIndexed(IndexCount, 0, 0);
 }
 
+void GameEngineRenderUnit::Draw(UINT _IndexCount, UINT _IndexStart)
+{
+	UINT IndexCount = Mesh->IndexBufferPtr->GetIndexCount();
+	GameEngineDevice::GetContext()->DrawIndexed(_IndexCount, _IndexStart, 0);
+}
+
 void GameEngineRenderUnit::Render(float _DeltaTime)
 {
 	if (nullptr != RenderFunction)

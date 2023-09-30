@@ -19,6 +19,7 @@ class GameEngineCamera : public GameEngineActor
 {
 	friend class GameEngineLevel;
 	friend class GameEngineRenderer;
+	friend class GameEngineFBXRenderer;
 	friend class GameEngineRenderUnit;
 	friend class GameEngineLight;
 
@@ -128,6 +129,9 @@ protected:
 private:
 	std::map<RenderPath, std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>> Units;
 
+	std::list<std::shared_ptr<class GameEngineRenderUnit>> StaticUnits;
+	std::list<std::shared_ptr<class GameEngineRenderUnit>> DynamicUnits;
+
 	std::map<int, std::list<std::shared_ptr<GameEngineRenderer>>> Renderers;
 	std::map<int, SortType> SortValues;
 
@@ -178,6 +182,12 @@ private:
 	void RenderTargetTextureRelease();
 
 	// 그림자를 Bake 합니다 Static 랜더 유닛만 Bake 됩니다
-	void BakeShadow(std::shared_ptr<GameEngineLight> _BakeLight, int _BakeIndex = 0);
+	void BakeShadow(std::shared_ptr<class GameEngineLight> _BakeLight, int _BakeIndex = 0);
+
+	void PushStaticUnit(std::shared_ptr<GameEngineRenderUnit> _Unit);
+	void PopStaticUnit(std::shared_ptr<GameEngineRenderUnit> _Unit);
+
+	void PushDynamicUnit(std::shared_ptr<GameEngineRenderUnit> _Unit);
+	void PopDynamicUnit(std::shared_ptr<GameEngineRenderUnit> _Unit);
 };
 

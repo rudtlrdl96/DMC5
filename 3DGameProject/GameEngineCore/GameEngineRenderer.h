@@ -35,9 +35,9 @@ public:
 
 	void Setting();
 	void Draw();
+	void Draw(UINT _IndexCount, UINT _IndexStart);
 
 	void ShadowOn();
-
 	void ShadowSetting();
 
 private:
@@ -148,7 +148,7 @@ public:
 		return Units[_Index];
 	}
 
-	void ShadowOn(size_t _UnitIndex = -1)
+	virtual void ShadowOn(size_t _UnitIndex = -1)
 	{
 		if (_UnitIndex == -1)
 		{
@@ -162,7 +162,7 @@ public:
 		Units[_UnitIndex]->ShadowOn();
 	}
 
-	void ShadowOff(size_t _UnitIndex = -1)
+	virtual void ShadowOff(size_t _UnitIndex = -1)
 	{
 		if (_UnitIndex == -1)
 		{

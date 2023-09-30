@@ -156,7 +156,6 @@
     <FxCompile Include="ContentsAniMesh_LowOption.hlsl" />
     <FxCompile Include="ContentsMesh_Alpha.hlsl" />
     <FxCompile Include="ContentsMesh_LowOption.hlsl" />
-    <FxCompile Include="CubemapMergeShader.hlsl" />
     <FxCompile Include="FXAA.hlsl" />
     <FxCompile Include="Animation.fx" />
     <FxCompile Include="ColorEffectShader.hlsl" />

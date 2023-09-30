@@ -219,8 +219,6 @@ void GameEngineCamera::BakeShadow(std::shared_ptr<GameEngineLight> _BakeLight, i
 	}
 
 	BakeTarget->Clear();
-	BakeTarget->Setting();
-
 
 	std::shared_ptr<GameEngineMaterial> Pipe = nullptr;
 
@@ -239,55 +237,99 @@ void GameEngineCamera::BakeShadow(std::shared_ptr<GameEngineLight> _BakeLight, i
 		break;
 	}
 
-	for (std::pair<const RenderPath, std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>>& Path : Units)
+	for (size_t i = 0; i < _BakeLight->ViewDatas.size(); i++)
 	{
-		std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>& UnitPath = Path.second;
+		_BakeLight->LightViewSetting(i);
+		_BakeLight->GetShadowTarget()->Setting(i);
 
-		std::map<int, std::list<std::shared_ptr<GameEngineRenderUnit>>>::iterator RenderGroupStartIter = UnitPath.begin();
-		std::map<int, std::list<std::shared_ptr<GameEngineRenderUnit>>>::iterator RenderGroupEndIter = UnitPath.end();
+		std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator LoopIter = StaticUnits.begin();
+		std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator EndIter = StaticUnits.end();
 
-		for (; RenderGroupStartIter != RenderGroupEndIter; ++RenderGroupStartIter)
+		for (; LoopIter != EndIter; ++LoopIter)
 		{
-			std::list<std::shared_ptr<GameEngineRenderUnit>>& RenderGroup = RenderGroupStartIter->second;
-			std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator StartRenderer = RenderGroup.begin();
-			std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator EndRenderer = RenderGroup.end();
+			std::shared_ptr<GameEngineRenderUnit> Unit = (*LoopIter);
 
-			for (; StartRenderer != EndRenderer; ++StartRenderer)
+			if (false == Unit->IsUpdate())
 			{
-				std::shared_ptr<GameEngineRenderUnit>& Render = *StartRenderer;
-
-				if (false == Render->IsUpdate())
-				{
-					continue;
-				}
-
-				if (false == Render->GetRenderer()->IsUpdate())
-				{
-					continue;
-				}
-
-				if (false == Render->IsShadow)
-				{
-					continue;
-				}
-
-				if (false == Render->IsStatic)
-				{
-					continue;
-				}
-
-				Render->GetRenderer()->GetTransform()->SetCameraMatrix(_BakeLight->GetLightData().LightViewMatrix, _BakeLight->GetLightData().LightProjectionMatrix);
-				TransformData Data = Render->GetRenderer()->GetTransform()->GetTransDataRef();
-				Render->ShadowSetting();
-				Pipe->VertexShader();
-				Pipe->Rasterizer();
-				Pipe->PixelShader();
-				Pipe->OutputMerger();
-				Render->Draw();
+				continue;
 			}
+
+			if (nullptr == Unit->GetRenderer())
+			{
+				continue;
+			}
+
+			if (false == Unit->GetRenderer()->IsUpdate())
+			{
+				continue;
+			}
+
+			if (false == Unit->IsShadow)
+			{
+				continue;
+			}
+
+			if (false == Unit->IsStatic)
+			{
+				continue;
+			}
+
+			Unit->GetRenderer()->GetTransform()->SetCameraMatrix(_BakeLight->GetLightData().LightViewMatrix, _BakeLight->GetLightData().LightProjectionMatrix);
+			TransformData Data = Unit->GetRenderer()->GetTransform()->GetTransDataRef();
+			Unit->ShadowSetting();
+			Pipe->VertexShader();
+			Pipe->Rasterizer();
+			Pipe->PixelShader();
+			Pipe->OutputMerger();
+			Unit->Draw();
 		}
 	}
 }
+
+void GameEngineCamera::PushStaticUnit(std::shared_ptr<GameEngineRenderUnit> _Unit)
+{
+	std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator EndIter = StaticUnits.end();
+	std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator FindIter = std::find(StaticUnits.begin(), EndIter, _Unit);
+
+	if (FindIter == EndIter)
+	{
+		StaticUnits.push_back(_Unit);
+	}
+}
+
+void GameEngineCamera::PopStaticUnit(std::shared_ptr<GameEngineRenderUnit> _Unit)
+{
+	std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator EndIter = StaticUnits.end();
+	std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator FindIter = std::find(StaticUnits.begin(), EndIter, _Unit);
+
+	if (FindIter != EndIter)
+	{
+		StaticUnits.erase(FindIter);
+	}
+}
+
+void GameEngineCamera::PushDynamicUnit(std::shared_ptr<GameEngineRenderUnit> _Unit)
+{
+	std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator EndIter = DynamicUnits.end();
+	std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator FindIter = std::find(DynamicUnits.begin(), EndIter, _Unit);
+
+	if (FindIter == EndIter)
+	{
+		DynamicUnits.push_back(_Unit);
+	}
+}
+
+void GameEngineCamera::PopDynamicUnit(std::shared_ptr<GameEngineRenderUnit> _Unit)
+{
+	std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator EndIter = DynamicUnits.end();
+	std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator FindIter = std::find(DynamicUnits.begin(), EndIter, _Unit);
+
+	if (FindIter != EndIter)
+	{
+		DynamicUnits.erase(FindIter);
+	}
+}
+
 
 void GameEngineCamera::FreeCameraSwitch()
 {
@@ -330,7 +372,6 @@ void GameEngineCamera::Update(float _DeltaTime)
 	if (true == FreeCamera)
 	{
 		float RotSpeed = 180.0f;
-
 		float Speed = 200.0f;
 
 		if (true == GameEngineInput::IsPress("SpeedBoost"))
@@ -539,64 +580,64 @@ void GameEngineCamera::Render(float _DeltaTime)
 			break;
 			}
 
-			Light->GetShadowTarget()->Setting();
-
-			for (std::pair<const RenderPath, std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>>& Path : Units)
+			for (size_t i = 0; i < Light->ViewDatas.size(); i++)
 			{
-				std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>& UnitPath = Path.second;
+				Light->LightViewSetting(i);
+				Light->GetShadowTarget()->Setting(i);
 
-				std::map<int, std::list<std::shared_ptr<GameEngineRenderUnit>>>::iterator RenderGroupStartIter = UnitPath.begin();
-				std::map<int, std::list<std::shared_ptr<GameEngineRenderUnit>>>::iterator RenderGroupEndIter = UnitPath.end();
+				std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator LoopIter = DynamicUnits.begin();
+				std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator EndIter = DynamicUnits.end();
 
-				for (; RenderGroupStartIter != RenderGroupEndIter; ++RenderGroupStartIter)
+				for (; LoopIter != EndIter; ++LoopIter)
 				{
-					std::list<std::shared_ptr<GameEngineRenderUnit>>& RenderGroup = RenderGroupStartIter->second;
-					std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator StartRenderer = RenderGroup.begin();
-					std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator EndRenderer = RenderGroup.end();
+					std::shared_ptr<GameEngineRenderUnit> Unit = (*LoopIter);
 
-					float ScaleTime = _DeltaTime * GameEngineTime::GlobalTime.GetRenderOrderTimeScale(RenderGroupStartIter->first);
-
-					for (; StartRenderer != EndRenderer; ++StartRenderer)
+					if (false == Unit->IsUpdate())
 					{
-						std::shared_ptr<GameEngineRenderUnit>& Render = *StartRenderer;
-
-						if (false == Render->IsUpdate())
-						{
-							continue;
-						}
-
-						if (false == Render->GetRenderer()->IsUpdate())
-						{
-							continue;
-						}
-
-						if (false == Render->IsShadow)
-						{
-							continue;
-						}
-
-						if (true == Render->IsStatic)
-						{
-							continue;
-						}
-
-						Render->GetRenderer()->GetTransform()->SetCameraMatrix(Light->GetLightData().LightViewMatrix, Light->GetLightData().LightProjectionMatrix);
-						TransformData Data = Render->GetRenderer()->GetTransform()->GetTransDataRef();
-						Render->ShadowSetting();
-						Pipe->VertexShader();
-						Pipe->Rasterizer();
-						Pipe->PixelShader();
-						Pipe->OutputMerger();
-						Render->Draw();
+						continue;
 					}
+
+					if (nullptr == Unit->GetRenderer())
+					{
+						continue;
+					}
+
+					if (false == Unit->GetRenderer()->IsUpdate())
+					{
+						continue;
+					}
+
+					if (false == Unit->IsShadow)
+					{
+						continue;
+					}
+
+					if (true == Unit->IsStatic)
+					{
+						continue;
+					}
+
+					Unit->GetRenderer()->GetTransform()->SetCameraMatrix(Light->ViewDatas[i].LightViewMatrix, Light->ViewDatas[i].LightProjectionMatrix);
+					TransformData Data = Unit->GetRenderer()->GetTransform()->GetTransDataRef();
+					Unit->ShadowSetting();
+					Pipe->VertexShader();
+					Pipe->Rasterizer();
+					Pipe->PixelShader();
+					Pipe->OutputMerger();
+					Unit->Draw();
+
+					float4 Result = Data.LocalPosition * Data.WorldViewProjectionMatrix;
+
+					float z = Result.z / Result.w;
+
+					int a = 0;
+
 				}
 			}
 		}
 
 		GameEngineRenderTarget::Reset();
 
-
-						
 		if (nullptr != CamDeferrdTarget)
 		{
 			DeferredLightTarget->Setting();
@@ -607,10 +648,20 @@ void GameEngineCamera::Render(float _DeltaTime)
 				if (false == Light->IsShadow())
 				{
 					CalLightUnit.ShaderResHelper.SetTexture("ShadowTex", GameEngineTexture::Find("EngineNullDepth.png"));
+					CalLightUnit.ShaderResHelper.SetTexture("PointShadowTex", GameEngineTexture::Find("BaseShadowCubemap"));
 				}
 				else
 				{
-					CalLightUnit.ShaderResHelper.SetTexture("ShadowTex", Light->GetShadowTarget()->GetTexture(0));
+					if (Light->GetLightData().LightType == static_cast<int>(LightType::Point))
+					{
+						CalLightUnit.ShaderResHelper.SetTexture("PointShadowTex", Light->GetShadowTarget()->GetTexture(0));
+						CalLightUnit.ShaderResHelper.SetTexture("ShadowTex", GameEngineTexture::Find("EngineNullDepth.png"));
+					}
+					else
+					{
+						CalLightUnit.ShaderResHelper.SetTexture("PointShadowTex", GameEngineTexture::Find("BaseShadowCubemap"));
+						CalLightUnit.ShaderResHelper.SetTexture("ShadowTex", Light->GetShadowTarget()->GetTexture(0));
+					}
 				}
 
 				CalLightUnit.Render(_DeltaTime);
@@ -704,6 +755,15 @@ void GameEngineCamera::PushRenderUnit(std::shared_ptr<GameEngineRenderUnit> _Uni
 	}
 
 	Units[Path][Order].push_back(_Unit);
+
+	if (true == _Unit->IsStatic)
+	{
+		PushStaticUnit(_Unit);
+	}
+	else
+	{
+		PushDynamicUnit(_Unit);
+	}
 }
 
 void GameEngineCamera::PopRenderUnit(std::shared_ptr<GameEngineRenderUnit> _Unit, RenderPath _Path)
@@ -721,6 +781,15 @@ void GameEngineCamera::PopRenderUnit(std::shared_ptr<GameEngineRenderUnit> _Unit
 	if (_Path != RenderPath::None)
 	{
 		Path = _Path;
+	}
+
+	if (true == _Unit->IsStatic)
+	{
+		PopStaticUnit(_Unit);
+	}
+	else
+	{
+		PopDynamicUnit(_Unit);
 	}
 
 	Units[Path][Order].remove(_Unit);
@@ -763,6 +832,36 @@ bool GameEngineCamera::IsView(const TransformData& _TransData)
 void GameEngineCamera::Release()
 {
 	{
+		std::list<std::shared_ptr<class GameEngineRenderUnit>>::iterator StaticLoopIter = StaticUnits.begin();
+		std::list<std::shared_ptr<class GameEngineRenderUnit>>::iterator StaticEndIter = StaticUnits.end();
+
+		for (; StaticLoopIter != StaticEndIter; )
+		{
+			if (true == (*StaticLoopIter)->GetRenderer()->IsDeath())
+			{
+				StaticLoopIter = StaticUnits.erase(StaticLoopIter);
+			}
+			else
+			{
+				++StaticLoopIter;
+			}
+		}
+
+		std::list<std::shared_ptr<class GameEngineRenderUnit>>::iterator DynamicLoopIter = DynamicUnits.begin();
+		std::list<std::shared_ptr<class GameEngineRenderUnit>>::iterator DynamicEndIter = DynamicUnits.end();
+
+		for (; DynamicLoopIter != DynamicEndIter; )
+		{
+			if (true == (*DynamicLoopIter)->GetRenderer()->IsDeath())
+			{
+				DynamicLoopIter = DynamicUnits.erase(DynamicLoopIter);
+			}
+			else
+			{
+				++DynamicLoopIter;
+			}
+		}
+
 		for (std::pair<const RenderPath, std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>>& Path : Units)
 		{
 			std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>& UnitPath = Path.second;

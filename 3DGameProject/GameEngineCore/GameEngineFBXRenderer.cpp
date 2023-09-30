@@ -623,7 +623,13 @@ void GameEngineFBXRenderer::SetStatic()
 	{
 		for (size_t j = 0; j < Unit[i].size(); j++)
 		{
+			if (false == Unit[i][j]->IsStatic)
+			{
+				GetCamera()->PopDynamicUnit(Unit[i][j]);
+			}
+
 			Unit[i][j]->IsStatic = true;
+			GetCamera()->PushStaticUnit(Unit[i][j]);
 		}
 	}
 }
@@ -634,7 +640,13 @@ void GameEngineFBXRenderer::SetDynamic()
 	{
 		for (size_t j = 0; j < Unit[i].size(); j++)
 		{
+			if (true == Unit[i][j]->IsStatic)
+			{
+				GetCamera()->PopStaticUnit(Unit[i][j]);
+			}
+
 			Unit[i][j]->IsStatic = false;
+			GetCamera()->PushDynamicUnit(Unit[i][j]);
 		}
 	}
 }

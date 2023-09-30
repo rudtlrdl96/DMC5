@@ -112,11 +112,13 @@ void TestStageLevel::LevelChangeStart()
 	// 테스트용 코드
 	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 4000, 0));
 	GetDirectionalLight()->GetTransform()->SetWorldRotation(float4(90, 0, 0));
-	GetDirectionalLight()->LightDataValue.LightColor = float4(0.0f, 0.0f, 0.0f);
+	GetDirectionalLight()->LightDataValue.LightColor = float4(0.3f, 0.3f, 0.3f);
 
+	//std::shared_ptr<GameEngineLight> Light = CreateSpotLight(float4(0, 500, 0), float4(256, 256), 1000, 90);
+	//Light->GetTransform()->SetLocalRotation(float4(90, 0, 0));
+	//Light->LightDataValue.LightPower = 2.0f;
 
-	std::shared_ptr<GameEngineLight> Light = CreateSpotLight(float4(0, 500, 0), float4(512, 512), 1000, 10);
-	Light->GetTransform()->SetLocalRotation(float4(90, 0, 0));
+	std::shared_ptr<GameEngineLight> Light = CreatePointLight(float4(0, 400, 0), float4(512, 512), 1024);
 	Light->LightDataValue.LightPower = 2.0f;
 
 	GameEngineCoreWindow::Clear();

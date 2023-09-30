@@ -4,6 +4,16 @@
 
 // 쉐이더에서 Light.fx를 이용하는 경우 이녀석은 빛을 사용하는 녀석이다
 
+const float4 GameEngineLight::PointViewDatas[6][2] = {
+	{{1, 0, 0},  {0, 1, 0}},	// Right
+	{{-1, 0, 0}, {0, 1, 0}},	// Left
+	{{0, 1, 0},  {0, 0, -1}},	// Top
+	{{0, -1, 0}, {0, 0, 1}},	// Bot
+	{{0, 0, 1},  {0, 1, 0}},	// Forward
+	{{0, 0, -1}, {0, 1, 0}},	// Back
+};
+/// 0 == EyeDIr, 1 == UpDIr
+
 GameEngineLight::GameEngineLight()
 {
 	SetName("GameEngineLight");
@@ -98,8 +108,8 @@ void GameEngineLight::BakeShadow(std::shared_ptr<GameEngineCamera> _BakeCam, int
 
 	if (nullptr == NewBakeTarget)
 	{
-		NewBakeTarget->AddNewTexture(DXGI_FORMAT_R16_FLOAT, { LightDataValue.ShadowTargetSizeX, LightDataValue.ShadowTargetSizeY }, float4::RED);
-		//NewBakeTarget->CreateDepthTexture();
+		NewBakeTarget = GameEngineRenderTarget::Create();
+		CreateShadowTarget(NewBakeTarget, static_cast<LightType>(LightDataValue.LightType));
 		NewBakeTarget->SetName("Bake Target : " + std::to_string(_BakeIndex));
 	}
 
@@ -110,7 +120,6 @@ void GameEngineLight::BakeShadow(std::shared_ptr<GameEngineCamera> _BakeCam, int
 
 void GameEngineLight::LightUpdate(GameEngineCamera* _Camera, float _DeltaTime)
 {
-
 	LightDataValue.LightPos = GetTransform()->GetWorldPosition();
 	LightDataValue.LightDir = GetTransform()->GetLocalForwardVector();
 	LightDataValue.ViewLightPos = LightDataValue.LightPos * _Camera->GetView();
@@ -121,31 +130,69 @@ void GameEngineLight::LightUpdate(GameEngineCamera* _Camera, float _DeltaTime)
 
 	_Camera->GetTransform()->SetCameraMatrix(_Camera->GetView(), _Camera->GetProjection());
 
-
-	LightDataValue.LightViewMatrix.LookToLH(
-		GetTransform()->GetWorldPosition(),
-		GetTransform()->GetWorldForwardVector(),
-		GetTransform()->GetWorldUpVector());
-
-
 	if (LightDataValue.LightType == static_cast<int>(LightType::Directional))
 	{
-		LightDataValue.LightProjectionMatrix.OrthographicLH(
+		if (1 != ViewDatas.size())
+		{
+			ViewDatas.resize(1);
+		}
+
+		ViewDatas[0].LightViewMatrix.LookToLH(
+			GetTransform()->GetWorldPosition(),
+			GetTransform()->GetWorldForwardVector(),
+			GetTransform()->GetWorldUpVector());
+
+		ViewDatas[0].LightViewInverseMatrix = ViewDatas[0].LightViewMatrix.InverseReturn();
+
+		ViewDatas[0].LightProjectionMatrix.OrthographicLH(
 			ShadowRange.x,
 			ShadowRange.y,
 			LightDataValue.LightNear,
 			LightDataValue.LightFar);
+
+		ViewDatas[0].LightProjectionInverseMatrix = ViewDatas[0].LightProjectionMatrix.InverseReturn();
+
+		ViewDatas[0].LightViewProjectionMatrix = ViewDatas[0].LightViewMatrix * ViewDatas[0].LightProjectionMatrix;
 	}
 	else if (LightDataValue.LightType == static_cast<int>(LightType::Point))
 	{
-		LightDataValue.LightProjectionMatrix.PerspectiveFovLH(
-			90.0f,
-			1.0f,
-			LightDataValue.LightNear,
-			LightDataValue.LightFar);
+		if (6 != ViewDatas.size())
+		{
+			ViewDatas.resize(6);
+		}
+
+		for (size_t i = 0; i < 6; i++)
+		{
+			float4 WorldPos = GetTransform()->GetWorldPosition();
+			float4 EyeDir = PointViewDatas[i][0];
+			float4 UpDir = PointViewDatas[i][1];
+
+
+			ViewDatas[i].LightViewMatrix.LookToLH(
+				WorldPos,
+				EyeDir,
+				UpDir);
+
+			ViewDatas[i].LightViewInverseMatrix = ViewDatas[i].LightViewMatrix.InverseReturn();
+
+			ViewDatas[i].LightProjectionMatrix.PerspectiveFovLH(
+				90.0f,
+				1.0f,
+				LightDataValue.LightNear,
+				LightDataValue.LightFar);
+
+			ViewDatas[i].LightProjectionInverseMatrix = ViewDatas[i].LightProjectionMatrix.InverseReturn();
+
+			ViewDatas[i].LightViewProjectionMatrix = ViewDatas[i].LightViewMatrix * ViewDatas[i].LightProjectionMatrix;
+		}
 	}
 	else // Spot
 	{
+		if (1 != ViewDatas.size())
+		{
+			ViewDatas.resize(1);
+		}
+
 		float LightAngle = LightDataValue.LightAngle;
 
 		if (1 > LightAngle)
@@ -153,20 +200,50 @@ void GameEngineLight::LightUpdate(GameEngineCamera* _Camera, float _DeltaTime)
 			LightAngle = 1;
 		}
 
-		LightDataValue.LightProjectionMatrix.PerspectiveFovLH(
+		if (1 == ViewDatas.size())
+		{
+			ViewDatas.resize(1);
+		}
+
+		ViewDatas[0].LightViewMatrix.LookToLH(
+			GetTransform()->GetWorldPosition(),
+			GetTransform()->GetWorldForwardVector(),
+			GetTransform()->GetWorldUpVector());
+
+		ViewDatas[0].LightViewInverseMatrix = ViewDatas[0].LightViewMatrix.InverseReturn();
+
+		ViewDatas[0].LightProjectionMatrix.PerspectiveFovLH(
 			LightAngle,
 			1.0f,
 			LightDataValue.LightNear,
 			LightDataValue.LightFar);
+
+		ViewDatas[0].LightProjectionInverseMatrix = ViewDatas[0].LightProjectionMatrix.InverseReturn();
+
+		ViewDatas[0].LightViewProjectionMatrix = ViewDatas[0].LightViewMatrix * ViewDatas[0].LightProjectionMatrix;
 	}
+
+	LightViewSetting(0);
 
 	LightDataValue.CameraView = _Camera->GetView();
 	LightDataValue.CameraViewInverseMatrix = _Camera->GetView().InverseReturn();
-
-	LightDataValue.LightProjectionInverseMatrix = LightDataValue.LightProjectionMatrix.InverseReturn();
-	LightDataValue.LightViewProjectionMatrix = LightDataValue.LightViewMatrix * LightDataValue.LightProjectionMatrix;
 }
 
+
+void GameEngineLight::LightViewSetting(size_t _Index)
+{
+	if (ViewDatas.size() <= _Index)
+	{
+		MsgAssert("Light View Data를 초과해 세팅하려 했습니다");
+		_Index = 0;
+	}
+
+	LightDataValue.LightViewMatrix = ViewDatas[_Index].LightViewMatrix;
+	LightDataValue.LightViewInverseMatrix = ViewDatas[_Index].LightViewInverseMatrix;
+	LightDataValue.LightProjectionMatrix = ViewDatas[_Index].LightProjectionMatrix;
+	LightDataValue.LightProjectionInverseMatrix = ViewDatas[_Index].LightProjectionInverseMatrix;
+	LightDataValue.LightViewProjectionMatrix = ViewDatas[_Index].LightViewProjectionMatrix;
+}
 
 void GameEngineLight::CreateShadowTarget(std::shared_ptr<class GameEngineRenderTarget> _Target, LightType _Type)
 {

@@ -3,20 +3,10 @@
 #include <GameEngineCore/GameEngineScreenShoot.h>
 #include <GameEngineCore/GameEngineCoreWindow.h>
 
-bool ReflectionProbe::RenderTargetInit = false;
-GameEngineRenderUnit ReflectionProbe::CubemapMergeTarget;
-ReflectionProbe::CubeCaptureData ReflectionProbe::CutData; 
 std::shared_ptr<GameEngineRenderTarget> ReflectionProbe::CaptureTarget = nullptr;
 
 ReflectionProbe::ReflectionProbe()
 {
-	if (false == RenderTargetInit)
-	{
-		CubemapMergeTarget.SetMesh("FullRect");
-		CubemapMergeTarget.SetMaterial("CubemapMerge");
-		CubemapMergeTarget.ShaderResHelper.SetConstantBufferLink("CutData", CutData);
-		RenderTargetInit = true;
-	}
 }
 
 ReflectionProbe::~ReflectionProbe()
@@ -83,12 +73,12 @@ void ReflectionProbe::Init(const std::string_view& _CaptureTextureName, const fl
 		GameEngineScreenShoot::RenderTargetShoot_DxTex(CaptureTarget, Path, _CaptureTextureName.data() + std::string("_BOT.PNG"));
 		CaptureTarget->Clear();
 
-		GameEngineTexture::Load(Path + "\\" + _CaptureTextureName.data() + "_FORWARD.PNG");
 		GameEngineTexture::Load(Path + "\\" + _CaptureTextureName.data() + "_RIGHT.PNG");
 		GameEngineTexture::Load(Path + "\\" + _CaptureTextureName.data() + "_LEFT.PNG");
-		GameEngineTexture::Load(Path + "\\" + _CaptureTextureName.data() + "_BACK.PNG");
 		GameEngineTexture::Load(Path + "\\" + _CaptureTextureName.data() + "_TOP.PNG");
 		GameEngineTexture::Load(Path + "\\" + _CaptureTextureName.data() + "_BOT.PNG");
+		GameEngineTexture::Load(Path + "\\" + _CaptureTextureName.data() + "_FORWARD.PNG");
+		GameEngineTexture::Load(Path + "\\" + _CaptureTextureName.data() + "_BACK.PNG");
 	}
 
 	ReflectionCubeTexture = GameEngineTexture::Find(_CaptureTextureName);
@@ -107,34 +97,12 @@ void ReflectionProbe::Init(const std::string_view& _CaptureTextureName, const fl
 
 		ReflectionCubeTexture = GameEngineTexture::Create(_CaptureTextureName, CubeTextures);
 	}
-
-	IsInitCheck = true;
 }
 
 void ReflectionProbe::Start()
 {
-	// ..ContentResources//Texture//ReflectionTexture//
-
-
 }
 
 void ReflectionProbe::Update(float _DeltaTime)
 {
-	if (false == IsInitCheck)
-	{
-		MsgAssert("ReflectionProbe 컴포넌트의 Init 함수가 호출되지 않았습니다.");
-	}
-}
-
-void ReflectionProbe::CubemapMerge(const CubeCaptureData& _Cut, std::shared_ptr<GameEngineRenderTarget> _Target, std::shared_ptr<GameEngineRenderTarget> _Merge)
-{
-	CutData = _Cut;
-
-	_Target->Setting();
-	CubemapMergeTarget.ShaderResHelper.SetTexture("DiffuseTex", _Merge->GetTexture(0));
-	CubemapMergeTarget.Render(0.0f);
-	CubemapMergeTarget.ShaderResHelper.AllResourcesReset();
-	_Target->Reset();
-
-	_Merge->Clear();
 }

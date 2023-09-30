@@ -34,6 +34,8 @@ Texture2D NormalTex : register(t1); // rgb = normal
 Texture2D MatTex : register(t2); // r = metal, g = roughness
 Texture2D GleamTex : register(t3); // rgb = Gleam light
 Texture2D ShadowTex : register(t4);
+TextureCube PointShadowTex : register(t5); // Box ShadowMap
+
 //Texture2D SSSTex : register(t5); // Subsurface scattering
 
 SamplerState POINTSAMPLER : register(s0);
@@ -128,20 +130,35 @@ float CalShadow(float4 _WorldPos, int _LightType)
 {
     _WorldPos.a = 1.0f;
             
-    float4 ShadowLightWorldPos = mul(_WorldPos, AllLight[LightCount].CameraViewInverseMatrix);
-    float4 ShadowLightPos = mul(ShadowLightWorldPos, AllLight[LightCount].LightViewProjectionMatrix);
-    float3 ShadowLightProjection = ShadowLightPos.xyz / ShadowLightPos.w;
+    float4 ShadowWorldPos = mul(_WorldPos, AllLight[LightCount].CameraViewInverseMatrix);
+    float4 ShadowWorldViewProjectionPos = mul(ShadowWorldPos, AllLight[LightCount].LightViewProjectionMatrix);
+    float3 ShadowWorldProjection = ShadowWorldViewProjectionPos.xyz / ShadowWorldViewProjectionPos.w;
+                    
+    if(1 == AllLight[LightCount].LightType)
+    {        
+        float4 ShadowLightPos = AllLight[LightCount].LightPos;
+        float3 LightUV = ShadowWorldPos.xyz - ShadowLightPos.xyz;
                 
-    float2 ShadowUV = float2(ShadowLightProjection.x * 0.5f + 0.5f, ShadowLightProjection.y * -0.5f + 0.5f);
-    float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, ShadowUV.xy).r;
-                        
-    if (0.001f < ShadowUV.x && 0.999f > ShadowUV.x &&
-            0.001f < ShadowUV.y && 0.999f > ShadowUV.y &&
-            ShadowLightProjection.z >= (ShadowDepthValue + 0.001f))
-    {
-        return 0.01f;
+        float ShadowDepthValue = PointShadowTex.Sample(POINTSAMPLER, normalize(LightUV)).r;        
+        
+        if (ShadowWorldProjection.z >= (ShadowDepthValue + 0.05f))
+        {
+            return 0.01f;
+        }        
     }
-    
+    else
+    {
+        float2 ShadowUV = float2(ShadowWorldProjection.x * 0.5f + 0.5f, ShadowWorldProjection.y * -0.5f + 0.5f);
+        float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, ShadowUV.xy).r;
+        
+        if (0.001f < ShadowUV.x && 0.999f > ShadowUV.x &&
+            0.001f < ShadowUV.y && 0.999f > ShadowUV.y &&
+            ShadowWorldProjection.z >= (ShadowDepthValue + 0.001f))
+        {
+            return 0.01f;
+        }
+    }
+        
     return 1.0f;
 }
 
@@ -154,17 +171,17 @@ LightOutPut DeferredCalLight_PS(Output _Input)
     float4 Mat = MatTex.Sample(POINTSAMPLER, _Input.TEXCOORD.xy);
     float4 Gleam = GleamTex.Sample(POINTSAMPLER, _Input.TEXCOORD.xy);
     //float4 SSSData = SSSTex.Sample(POINTSAMPLER, _Input.TEXCOORD.xy);
-            
-    if (0 == DeferredPosition.z)
-    {
-        clip(-1);
-    }
     
     float4 DiffuseRatio = (float4) 0.0f;
     float4 SpacularRatio = (float4) 0.0f;
     float4 AmbientRatio = (float4) 0.0f;
     //float4 BackRatio = (float4) 0.0f;
       
+    if (0 == DeferredPosition.z)
+    {
+        clip(-1);
+    }
+    
     ResultLight CalLightValue = CalLight(LightCount, DeferredPosition, Normal, Mat.r);                        
     float ShadowValue = CalShadow(DeferredPosition, AllLight[LightCount].LightType);
         

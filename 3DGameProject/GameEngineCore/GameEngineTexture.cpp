@@ -40,11 +40,16 @@ void GameEngineTexture::Release()
 		SRV = nullptr;
 	}
 
-	if (nullptr != RTV)
+	for (size_t i = 0; i < RTVs.size(); i++)
 	{
-		RTV->Release();
-		RTV = nullptr;
+		if (nullptr != RTVs[i])
+		{
+			RTVs[i]->Release();
+			RTVs[i] = nullptr;
+		}
 	}
+
+	RTVs.clear();
 
 	if (nullptr != Texture2D)
 	{
@@ -109,6 +114,44 @@ void GameEngineTexture::ResCreate(const D3D11_TEXTURE2D_DESC& _Value)
 	}
 }
 
+void GameEngineTexture::ResCreateCubemap(const D3D11_TEXTURE2D_DESC& _Value, const D3D11_SHADER_RESOURCE_VIEW_DESC& _SRV)
+{
+	Desc = _Value;
+
+	GameEngineDevice::GetDevice()->CreateTexture2D(&Desc, nullptr, &Texture2D);
+
+	if (D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET & Desc.BindFlags)
+	{
+		D3D11_RENDER_TARGET_VIEW_DESC RTV;
+		RTV.Format = Desc.Format;
+		RTV.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
+		RTV.Texture2DArray.ArraySize = 1;
+		RTV.Texture2DArray.FirstArraySlice = 0;
+		RTV.Texture2DArray.MipSlice = 0;
+
+		for (UINT i = 0; i < 6; i++)
+		{
+			RTV.Texture2DArray.FirstArraySlice = i;
+			CreateRenderTargetView(RTV);
+		}
+	}
+
+	if (D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE & Desc.BindFlags)
+	{
+		CreateShaderResourcesView(_SRV);
+	}
+
+	if (D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL & Desc.BindFlags)
+	{
+		CreateDepthStencilView();
+	}
+
+	if (nullptr == Texture2D)
+	{
+		MsgAssert("텍스처 생성에 실패했습니다.");
+	}
+}
+
 void GameEngineTexture::ResCreate(std::vector<std::shared_ptr<GameEngineTexture>>& _Textures, const D3D11_TEXTURE2D_DESC& _Value, const D3D11_RENDER_TARGET_VIEW_DESC& _RTV, const D3D11_SHADER_RESOURCE_VIEW_DESC& _SRV)
 {
 	Desc = _Value;
@@ -136,8 +179,10 @@ void GameEngineTexture::ResCreate(std::vector<std::shared_ptr<GameEngineTexture>
 
 	//HRESULT RTVResult = GameEngineDevice::GetDevice()->CreateRenderTargetView(Texture2D, nullptr, &RTV);
 
-	HRESULT RTVResult = GameEngineDevice::GetDevice()->CreateRenderTargetView(Texture2D, &DescRTV, &RTV);
-	
+	ID3D11RenderTargetView* NewRTV = nullptr;
+	HRESULT RTVResult = GameEngineDevice::GetDevice()->CreateRenderTargetView(Texture2D, &DescRTV, &NewRTV);	
+	RTVs.push_back(NewRTV);
+
 	if (S_OK != RTVResult)
 	{
 		MsgAssert("큐브 랜더타겟 뷰 생성에 실패했습니다.");
@@ -163,13 +208,38 @@ void GameEngineTexture::CreateRenderTargetView()
 		return;
 	}
 
-	HRESULT Result = GameEngineDevice::GetDevice()->CreateRenderTargetView(Texture2D, nullptr, &RTV);
+	ID3D11RenderTargetView* NewRTV = nullptr;
+
+	HRESULT Result = GameEngineDevice::GetDevice()->CreateRenderTargetView(Texture2D, nullptr, &NewRTV);
 
 	if (S_OK != Result)
 	{
 		MsgAssert("랜더타겟 뷰 생성에 실패했습니다.");
 		return;
 	}
+
+	RTVs.push_back(NewRTV);
+}
+
+void GameEngineTexture::CreateRenderTargetView(const D3D11_RENDER_TARGET_VIEW_DESC& _RTVDesc)
+{
+	if (nullptr == Texture2D)
+	{
+		MsgAssert("텍스처가 존재하지 않는 랜더타겟뷰을 만들 수는 없습니다.");
+		return;
+	}
+
+	ID3D11RenderTargetView* NewRTV = nullptr;
+
+	HRESULT Result = GameEngineDevice::GetDevice()->CreateRenderTargetView(Texture2D, &_RTVDesc, &NewRTV);
+
+	if (S_OK != Result)
+	{
+		MsgAssert("랜더타겟 뷰 생성에 실패했습니다.");
+		return;
+	}
+
+	RTVs.push_back(NewRTV);
 }
 
 // 쉐이더리소스뷰(SRV) 생성, CreateShaderResourceView()
@@ -182,6 +252,23 @@ void GameEngineTexture::CreateShaderResourcesView()
 	}
 
 	HRESULT Result = GameEngineDevice::GetDevice()->CreateShaderResourceView(Texture2D, nullptr, &SRV);
+
+	if (S_OK != Result)
+	{
+		MsgAssert("쉐이더 리소스 뷰 생성에 실패했습니다.");
+		return;
+	}
+}
+
+void GameEngineTexture::CreateShaderResourcesView(const D3D11_SHADER_RESOURCE_VIEW_DESC& _SRVDesc)
+{
+	if (nullptr == Texture2D)
+	{
+		MsgAssert("텍스처가 존재하지 않는 쉐이더 리소스 뷰를 만들 수는 없습니다.");
+		return;
+	}
+
+	HRESULT Result = GameEngineDevice::GetDevice()->CreateShaderResourceView(Texture2D, &_SRVDesc, &SRV);
 
 	if (S_OK != Result)
 	{

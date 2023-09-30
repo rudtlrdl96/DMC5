@@ -1,13 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <FxCompile Include="TextureShader.hlsl" />
-    <FxCompile Include="MergeShader.hlsl" />
-    <FxCompile Include="DebugMeshRender.hlsl" />
-    <FxCompile Include="TileMapShader.hlsl" />
-    <FxCompile Include="BlurShader.hlsl" />
-    <FxCompile Include="MeshTexture.hlsl" />
-    <FxCompile Include="MeshAniTexture.hlsl" />
     <FxCompile Include="Animation.fx">
       <Filter>Header</Filter>
     </FxCompile>
@@ -17,21 +10,59 @@
     <FxCompile Include="Transform.fx">
       <Filter>Header</Filter>
     </FxCompile>
-    <FxCompile Include="MeshColor.hlsl" />
     <FxCompile Include="RenderBaseValue.fx">
       <Filter>Header</Filter>
     </FxCompile>
-    <FxCompile Include="GridShader.hlsl" />
-    <FxCompile Include="MeshAniTextureDeferred.hlsl" />
-    <FxCompile Include="DeferredCalLight.hlsl" />
-    <FxCompile Include="DeferredMerge.hlsl" />
-    <FxCompile Include="BloomShader.hlsl" />
-    <FxCompile Include="BloomBlur.hlsl" />
     <FxCompile Include="OrthogonalShadow.hlsl">
       <Filter>Shadow</Filter>
     </FxCompile>
     <FxCompile Include="ProjectionShadow.hlsl">
       <Filter>Shadow</Filter>
+    </FxCompile>
+    <FxCompile Include="CubemapMergeShader.hlsl">
+      <Filter>Merge</Filter>
+    </FxCompile>
+    <FxCompile Include="MergeShader.hlsl">
+      <Filter>Merge</Filter>
+    </FxCompile>
+    <FxCompile Include="DebugMeshRender.hlsl">
+      <Filter>Debug</Filter>
+    </FxCompile>
+    <FxCompile Include="DeferredCalLight.hlsl">
+      <Filter>Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="DeferredMerge.hlsl">
+      <Filter>Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="MeshTexture.hlsl">
+      <Filter>Mesh</Filter>
+    </FxCompile>
+    <FxCompile Include="MeshAniTexture.hlsl">
+      <Filter>Mesh</Filter>
+    </FxCompile>
+    <FxCompile Include="MeshAniTextureDeferred.hlsl">
+      <Filter>Mesh</Filter>
+    </FxCompile>
+    <FxCompile Include="MeshColor.hlsl">
+      <Filter>Mesh</Filter>
+    </FxCompile>
+    <FxCompile Include="TextureShader.hlsl">
+      <Filter>2D</Filter>
+    </FxCompile>
+    <FxCompile Include="TileMapShader.hlsl">
+      <Filter>2D</Filter>
+    </FxCompile>
+    <FxCompile Include="GridShader.hlsl">
+      <Filter>Debug</Filter>
+    </FxCompile>
+    <FxCompile Include="BlurShader.hlsl">
+      <Filter>PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="BloomBlur.hlsl">
+      <Filter>PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="BloomShader.hlsl">
+      <Filter>PostEffect</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
@@ -40,6 +71,24 @@
     </Filter>
     <Filter Include="Shadow">
       <UniqueIdentifier>{f94647ce-8ba1-4311-ace0-5eea15205eca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Merge">
+      <UniqueIdentifier>{40b3ee63-872b-4f60-8ea9-cd722d77211c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{2df16289-5520-4912-97db-dac1a168e6cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Deferred">
+      <UniqueIdentifier>{03adc774-4744-4144-8f58-ab8f52822a6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh">
+      <UniqueIdentifier>{0269c391-b5a1-422c-a298-406faf293997}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2D">
+      <UniqueIdentifier>{6bcaaa64-757f-4427-a474-fd4298551488}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PostEffect">
+      <UniqueIdentifier>{29f8d5fb-e0c5-4e5a-8451-120f15ac84c4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

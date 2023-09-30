@@ -94,6 +94,14 @@ public:
 		return NewTexture;
 	}
 
+	static std::shared_ptr<GameEngineTexture> CreateCubemap(const D3D11_TEXTURE2D_DESC& _Value, const D3D11_SHADER_RESOURCE_VIEW_DESC& _SRV)
+	{
+		std::shared_ptr<GameEngineTexture> NewTexture = GameEngineResource::CreateUnNamed();
+		NewTexture->ResCreateCubemap(_Value, _SRV);
+
+		return NewTexture;
+	}
+
 	static std::shared_ptr<GameEngineTexture> Create(const std::string_view& _Name, std::vector<std::shared_ptr<GameEngineTexture>>& _Textures);
 
 	static std::shared_ptr<GameEngineTexture> UnLoad(const std::string_view& _Name)
@@ -136,9 +144,14 @@ public:
 		return SRV;
 	}
 
-	ID3D11RenderTargetView* GetRTV() 
+	ID3D11RenderTargetView* GetRTV(size_t _Index = 0) 
 	{
-		return RTV;
+		return RTVs[_Index];
+	}
+
+	inline size_t GetRTVSize() const
+	{
+		return RTVs.size();
 	}
 
 	ID3D11DepthStencilView* GetDSV()
@@ -180,7 +193,7 @@ protected:
 
 private:
 	ID3D11Texture2D* Texture2D = nullptr;
-	ID3D11RenderTargetView* RTV = nullptr;
+	std::vector<ID3D11RenderTargetView*> RTVs;
 	ID3D11DepthStencilView* DSV = nullptr;
 	ID3D11ShaderResourceView* SRV = nullptr;
 
@@ -194,8 +207,12 @@ private:
 	void ResCreate(const D3D11_TEXTURE2D_DESC& _Value);
 	void ResCreate(std::vector<std::shared_ptr<GameEngineTexture>>& _Textures, const D3D11_TEXTURE2D_DESC& _Value, const D3D11_RENDER_TARGET_VIEW_DESC& _RTV, const D3D11_SHADER_RESOURCE_VIEW_DESC& _SRV);
 
+	void ResCreateCubemap(const D3D11_TEXTURE2D_DESC& _Value, const D3D11_SHADER_RESOURCE_VIEW_DESC& _SRV);
+
 	void CreateRenderTargetView();
+	void CreateRenderTargetView(const D3D11_RENDER_TARGET_VIEW_DESC& _RTVDesc);
 	void CreateShaderResourcesView();
+	void CreateShaderResourcesView(const D3D11_SHADER_RESOURCE_VIEW_DESC& _SRVDesc);
 	void CreateDepthStencilView();
 
 	void VSSetting(UINT _Slot);

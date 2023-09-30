@@ -12,6 +12,15 @@ enum class LightType
     Spot
 };
 
+struct LightViewData
+{
+    float4x4 LightViewMatrix;
+    float4x4 LightViewInverseMatrix;
+    float4x4 LightProjectionMatrix;
+    float4x4 LightProjectionInverseMatrix;
+    float4x4 LightViewProjectionMatrix;
+};
+
 struct LightData
 {
     friend class GameEngineLight;
@@ -57,8 +66,11 @@ struct LightDatas
 // Ό³Έν :
 class GameEngineLight : public GameEngineActor
 {
+    static const float4 PointViewDatas[6][2];
+
 public:
     friend class GameEngineLevel;
+    friend class GameEngineCamera;
 
     // constrcuter destructer
     GameEngineLight();
@@ -123,12 +135,16 @@ public:
         return ShadowRange;
     }
 
+    void LightViewSetting(size_t _Index);
+
 protected:
 
 private:
     float4 ShadowRange;
 
     std::shared_ptr<class GameEngineRenderTarget> ShadowTarget = nullptr;
+    std::vector<LightViewData> ViewDatas;
+
 
     std::map<int, std::shared_ptr<class GameEngineRenderTarget>> BakeShadowTarget;
     int TargetBake = 0;

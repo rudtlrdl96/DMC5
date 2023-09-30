@@ -65,13 +65,14 @@ public:
 	void DepthClear();
 
 	void Setting() override;
+	void Setting(size_t _Index);
 
 	static void Reset();
 	void CreateDepthTexture(int _Index = 0);
-	void CreateDepthCubemapTexture(int _Index = 0);
 
 	void Merge(std::shared_ptr<GameEngineRenderTarget> _Other, size_t _Index = 0);
 	void Merge(GameEngineRenderTarget* _Other, size_t _Index = 0);
+	void MergeCubemap(std::shared_ptr<GameEngineRenderTarget> _Other);
 
 	std::shared_ptr<GameEngineTexture> GetDepthTexture()
 	{
@@ -130,6 +131,7 @@ protected:
 private:
 	static void RenderTargetUnitInit();
 	static GameEngineRenderUnit MergeUnit;
+	static GameEngineRenderUnit CubemapMergeUnit;
 
 	bool DepthSetting = true;
 

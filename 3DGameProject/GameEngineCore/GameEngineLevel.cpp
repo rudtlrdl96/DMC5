@@ -104,7 +104,7 @@ void GameEngineLevel::LevelLightInit()
 std::shared_ptr<GameEngineLight> GameEngineLevel::CreatePointLight(const float4& _Pos, const float4& _ShadowScale, float _Range)
 {
 	std::shared_ptr<GameEngineLight> NewLight = CreateActor<GameEngineLight>();
-	NewLight->IsShadowLight = false;
+	NewLight->IsShadowLight = true;
 
 	NewLight->GetTransform()->SetLocalPosition(_Pos);
 	NewLight->SetName("Point Light");
@@ -119,6 +119,8 @@ std::shared_ptr<GameEngineLight> GameEngineLevel::CreatePointLight(const float4&
 	NewLight->LightDataValue.LightNear = 0.1f;
 	NewLight->LightDataValue.LightFar = _Range;
 	NewLight->LightDataValue.LightRange = _Range;
+
+	NewLight->LightDataValue.LightAngle = 360;
 
 	NewLight->ShadowTargetTextureLoad(_ShadowScale);
 
@@ -136,13 +138,14 @@ std::shared_ptr<GameEngineLight> GameEngineLevel::CreateSpotLight(const float4& 
 
 	NewLight->LightDataValue.ShadowTargetSizeX = _ShadowScale.x;
 	NewLight->LightDataValue.ShadowTargetSizeY = _ShadowScale.y;
+
 	NewLight->ShadowRange.x = _ShadowScale.x;
 	NewLight->ShadowRange.y = _ShadowScale.y;
 
 	NewLight->LightDataValue.LightNear = 0.1f;
 	NewLight->LightDataValue.LightFar = _Range;
-
 	NewLight->LightDataValue.LightRange = _Range;
+
 	NewLight->LightDataValue.LightAngle = _Angle;
 
 	NewLight->ShadowTargetTextureLoad(_ShadowScale);
@@ -179,7 +182,15 @@ void GameEngineLevel::Render(float _DeltaTime)
 		if (nullptr != ShadowTarget)
 		{
 			ShadowTarget->Clear();
-			ShadowTarget->Merge(BakeTarget);
+
+			if (Light->GetLightData().LightType == static_cast<int>(LightType::Point))
+			{
+				ShadowTarget->MergeCubemap(BakeTarget);
+			}
+			else
+			{
+				ShadowTarget->Merge(BakeTarget);
+			}
 		}
 	}
 
@@ -247,7 +258,6 @@ void GameEngineLevel::Render(float _DeltaTime)
 	{
 		std::shared_ptr<GameEngineCamera> Camera = Pair.second;
 		std::shared_ptr<GameEngineRenderTarget> Target = Camera->CamTarget;
-		//std::shared_ptr<GameEngineRenderTarget> CubeTarget = Camera->CubeRenderTarget;
 
 		LastTarget->Merge(Target);
 
@@ -255,12 +265,7 @@ void GameEngineLevel::Render(float _DeltaTime)
 		{
 			ScreenShootTarget->Clear();
 			ScreenShootTarget->Merge(Target);
-			//ScreenShootTarget->Setting();
 		}
-
-		//CubeTarget->Clear();
-		//CubeTarget->Merge(Target);
-		//CubeTarget->Setting();
 	}
 
 	LastTarget->Effect(_DeltaTime);

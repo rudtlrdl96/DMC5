@@ -75,7 +75,7 @@ std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, cons
 	for (size_t i = 0; i < FieldMapObjRef.size(); i++)
 	{
 		FieldMapObjRef[i] = FieldMapObject::CreateFieldMapObj(_Level, _FieldMapObjs[i].Type, _FieldMapObjs[i].ObjTransform);
-		//FieldMapObjRef[i]->Off();
+		FieldMapObjRef[i].lock()->Off();
 	}
 
 	if (!_Level->DynamicThis<StageBaseLevel>()->IsEditLevel)

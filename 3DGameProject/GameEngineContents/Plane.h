@@ -14,6 +14,7 @@ public:
 	Plane& operator=(const Plane& _Other) = delete;
 	Plane& operator=(Plane&& _Other) noexcept = delete;
 
+	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
 	std::shared_ptr<class PhysXBoxComponent> Component = nullptr;
 protected:
 	void Start() override;

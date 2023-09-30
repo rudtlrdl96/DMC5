@@ -2,11 +2,15 @@
 #include "GameEngineRenderTarget.h"
 
 GameEngineRenderUnit GameEngineRenderTarget::MergeUnit;
+GameEngineRenderUnit GameEngineRenderTarget::CubemapMergeUnit;
 
 void GameEngineRenderTarget::RenderTargetUnitInit()
 {
 	MergeUnit.SetMesh("FullRect");
 	MergeUnit.SetMaterial("Merge");
+
+	CubemapMergeUnit.SetMesh("FullBox");
+	CubemapMergeUnit.SetMaterial("CubemapMerge");
 }
 
 GameEngineRenderTarget::GameEngineRenderTarget()
@@ -104,9 +108,17 @@ void GameEngineRenderTarget::ResCubemapCreate(DXGI_FORMAT _Format, float4 _Scale
 	Desc.SampleDesc.Quality = 0;
 	Desc.MipLevels = 1;
 	Desc.Usage = D3D11_USAGE_DEFAULT;
+	Desc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
 	Desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE;
 
-	std::shared_ptr<GameEngineTexture> Tex = GameEngineTexture::Create(Desc);
+	D3D11_SHADER_RESOURCE_VIEW_DESC STV;
+
+	STV.Format = Desc.Format;
+	STV.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+	STV.TextureCube.MipLevels = 1;
+	STV.TextureCube.MostDetailedMip = 0;
+
+	std::shared_ptr<GameEngineTexture> Tex = GameEngineTexture::CreateCubemap(Desc, STV);
 
 	D3D11_VIEWPORT ViewPortData;
 
@@ -121,7 +133,11 @@ void GameEngineRenderTarget::ResCubemapCreate(DXGI_FORMAT _Format, float4 _Scale
 
 	Textures.push_back(Tex);
 	SRVs.push_back(Tex->GetSRV());
-	RTVs.push_back(Tex->GetRTV());
+
+	for (size_t i = 0; i < Tex->GetRTVSize(); i++)
+	{
+		RTVs.push_back(Tex->GetRTV(i));
+	}
 }
 
 void GameEngineRenderTarget::CreateDepthTexture(int _Index)
@@ -129,23 +145,6 @@ void GameEngineRenderTarget::CreateDepthTexture(int _Index)
 	D3D11_TEXTURE2D_DESC Desc = { 0, };
 
 	Desc.ArraySize = 1;
-	Desc.Width = Textures[_Index]->GetWidth();
-	Desc.Height = Textures[_Index]->GetHeight();
-	Desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;    // 4바이트중 3바이트는 0 ~ 1.0f 표현하는데 사용하고, 나머지 1바이트는 스텐실 값으로 사용할 수 있게 해주는 포멧
-	Desc.SampleDesc.Count = 1;
-	Desc.SampleDesc.Quality = 0;
-	Desc.MipLevels = 1;
-	Desc.Usage = D3D11_USAGE_DEFAULT;
-	Desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL;
-
-	DepthTexture = GameEngineTexture::Create(Desc); // 뎁스스텐실뷰 생성
-}
-
-void GameEngineRenderTarget::CreateDepthCubemapTexture(int _Index /*= 0*/)
-{
-	D3D11_TEXTURE2D_DESC Desc = { 0, };
-
-	Desc.ArraySize = 6;
 	Desc.Width = Textures[_Index]->GetWidth();
 	Desc.Height = Textures[_Index]->GetHeight();
 	Desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;    // 4바이트중 3바이트는 0 ~ 1.0f 표현하는데 사용하고, 나머지 1바이트는 스텐실 값으로 사용할 수 있게 해주는 포멧
@@ -168,15 +167,18 @@ void GameEngineRenderTarget::TextureClear()
 {
 	for (size_t i = 0; i < Textures.size(); i++)
 	{
-		ID3D11RenderTargetView* RTV = Textures[i]->GetRTV();
-
-		if (nullptr == RTV)
+		for (size_t j = 0; j < Textures[i]->GetRTVSize(); j++)
 		{
-			MsgAssert("랜더타겟 뷰가 존재하지 않아서 클리어가 불가능합니다.");
-			return;
-		}
+			ID3D11RenderTargetView* RTV = Textures[i]->GetRTV(j);
 
-		GameEngineDevice::GetContext()->ClearRenderTargetView(RTV, Color[i].Arr1D);
+			if (nullptr == RTV)
+			{
+				MsgAssert("랜더타겟 뷰가 존재하지 않아서 클리어가 불가능합니다.");
+				return;
+			}
+
+			GameEngineDevice::GetContext()->ClearRenderTargetView(RTV, Color[i].Arr1D);
+		}
 	}
 }
 
@@ -212,11 +214,29 @@ void GameEngineRenderTarget::Setting()
 	GameEngineDevice::GetContext()->RSSetViewports(static_cast<UINT>(ViewPortDatas.size()), &ViewPortDatas[0]);
 }
 
+void GameEngineRenderTarget::Setting(size_t _Index)
+{
+	ID3D11RenderTargetView** RTV = &RTVs[_Index];
+
+	if (nullptr == RTV)
+	{
+		MsgAssert("랜더타겟 뷰가 존재하지 않아서 클리어가 불가능합니다.");
+	}
+
+	ID3D11DepthStencilView* DSV = DepthTexture != nullptr ? DepthTexture->GetDSV() : nullptr;
+
+	if (false == DepthSetting)
+	{
+		DSV = nullptr;
+	}
+
+	GameEngineDevice::GetContext()->OMSetRenderTargets(1, RTV, DSV);
+	GameEngineDevice::GetContext()->RSSetViewports(static_cast<UINT>(ViewPortDatas.size()), &ViewPortDatas[0]);
+}
+
 void GameEngineRenderTarget::Reset()
 {
-	ID3D11RenderTargetView* RTV[8] = { nullptr };
-
-	GameEngineDevice::GetContext()->OMSetRenderTargets(8, RTV, nullptr);
+	GameEngineDevice::GetContext()->OMSetRenderTargets(0, nullptr, nullptr);
 }
 
 void GameEngineRenderTarget::Merge(std::shared_ptr<GameEngineRenderTarget> _Other, size_t _Index)
@@ -235,6 +255,20 @@ void GameEngineRenderTarget::Merge(GameEngineRenderTarget* _Other, size_t _Index
 	MergeUnit.ShaderResHelper.SetTexture("DiffuseTex", _Other->Textures[_Index]);
 	MergeUnit.Render(0.0f);
 	MergeUnit.ShaderResHelper.AllResourcesReset();
+}
+
+void GameEngineRenderTarget::MergeCubemap(std::shared_ptr<GameEngineRenderTarget> _Other)
+{
+	CubemapMergeUnit.ShaderResHelper.SetTexture("CubemapTex", _Other->Textures[0]);
+
+	for (UINT i = 0; i < 6; i++)
+	{
+		Setting(i);
+		CubemapMergeUnit.Setting();
+		CubemapMergeUnit.Draw(6, i * 6);
+	}
+
+	CubemapMergeUnit.ShaderResHelper.AllResourcesReset();
 }
 
 void GameEngineRenderTarget::ReleaseEffect(std::shared_ptr<GameEnginePostProcess> _Effect)

@@ -12,7 +12,7 @@ struct Input
 struct Output
 {
     float4 POSITION : SV_POSITION;
-    float4 Pos5 : POSITION5;
+    float3 ShadowPos : POSITION;
 };
 
 Output Shadow_VS(Input _Value)
@@ -28,14 +28,12 @@ Output Shadow_VS(Input _Value)
     }
     
     NewOutPut.POSITION = mul(InputPos, WorldViewProjectionMatrix);
-    NewOutPut.Pos5 = NewOutPut.POSITION;
-    //NewOutPut.Pos5.w = 1.0f;
+    NewOutPut.ShadowPos = NewOutPut.POSITION.xyz / NewOutPut.POSITION.w;
     
     return NewOutPut;
 }
 
 float4 Shadow_PS(Output _Value) : SV_Target0
 {
-    // 깊이값이 완성된
-    return float4(max(0, (_Value.Pos5.z * 0.5f) / _Value.Pos5.w), 0.0f, 0.0f, 1.0f);
+    return float4(max(0, _Value.ShadowPos.z * 0.5f), 0.0f, 0.0f, 1.0f);
 }
