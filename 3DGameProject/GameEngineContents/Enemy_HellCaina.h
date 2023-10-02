@@ -75,7 +75,6 @@ enum FSM_State_HellCaina
 	HellCaina_Prone_Down,				  // em0000_prone_down, 앞으로 넘어짐
 	HellCaina_Prone_Getup,				  // em0000_prone_getup, 앞으로 넘어진 상태에서 일어남
 
-	// 버스트류는 잘 몰?루
 	HellCaina_Air_Buster,         // em0000_Air-Buster, 공중에서 버스트 히트
 	HellCaina_Buster,             // em0000_Buster, 버스트 연속동작 (히트부터 다운까지)
 	HellCaina_Buster_Start,       // em0000_Buster_Start, 버스트 히트 시작
@@ -109,7 +108,6 @@ protected:
 	void EnemyAnimationLoad() override;
 	void EnemyCreateFSM() override;
 	void EnemyCreateFSM_Client() override;
-
 	void DamageCollisionCheck(float _DeltaTime) override;
 	void RecognizeCollisionCheck(float _DeltaTime) override;
 
