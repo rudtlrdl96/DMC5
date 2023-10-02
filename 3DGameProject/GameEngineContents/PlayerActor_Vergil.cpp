@@ -658,6 +658,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			.Start = [=] {
 				Col_Attack->SetAttackData(DamageType::VergilLight, 50);
 				PhysXCapsule->SetLinearVelocityZero();
+				EffectSystem->PlayFX("Yamato_Combo_C_2.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_ComboC_2_Loop");
 				RotationToTarget(30.0f);
 				InputCheck = false;
@@ -679,6 +680,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				{
 					if (InputCheck == true)
 					{
+						EffectSystem->PlayFX("Yamato_Combo_C_2.effect");
 						Renderer->ChangeAnimation("pl0300_yamato_ComboC_2_Loop", true);
 						InputCheck = false;
 						return;
@@ -696,6 +698,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			.Start = [=] {
 				Col_Attack->SetAttackData(DamageType::Heavy, 200);
 				PhysXCapsule->SetLinearVelocityZero();
+				EffectSystem->PlayFX("Yamato_Combo_C_3.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_ComboC_3");
 				RotationToTarget(30.0f);
 				InputCheck = false;
