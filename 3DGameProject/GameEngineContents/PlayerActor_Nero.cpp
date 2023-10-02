@@ -2809,6 +2809,7 @@ void PlayerActor_Nero::PlayerLoad()
 		.Start = [=] {
 			WeaponIdle();
 			PhysXCapsule->SetLinearVelocityZero();
+			EffectSystem->PlayFX("GT_Bomb.effect");
 			Renderer->ChangeAnimation("pl0000_GT_Bomb", true);
 			InputCheck = false;
 		},
@@ -2842,6 +2843,7 @@ void PlayerActor_Nero::PlayerLoad()
 				InputCheck = false;
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
+				EffectSystem->PlayFX("GT_Bomb.effect");
 				Renderer->ChangeAnimation("pl0000_GT_AirBomb", true);
 			},
 			.Update = [=](float _DeltaTime) {
@@ -4638,7 +4640,7 @@ bool PlayerActor_Nero::Input_SpecialCheck()
 	{
 		if (true == IsMaxActTiming)
 		{
-			ExceedLevel = false;
+			ExceedLevel = 3;
 		}
 		else if (true == IsExActTiming)
 		{
@@ -4678,7 +4680,7 @@ bool PlayerActor_Nero::Input_SpecialCheckFly()
 	{
 		if (true == IsMaxActTiming)
 		{
-			ExceedLevel = false;
+			ExceedLevel = 3;
 		}
 		else if (true == IsExActTiming)
 		{
@@ -4966,6 +4968,7 @@ void PlayerActor_Nero::DestroyBreaker()
 
 void PlayerActor_Nero::SetExActTiming()
 {
+	IsMaxActTiming = true;
 	IsExActTiming = true;
 	TimeEvent.AddEvent(0.08f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 	{
