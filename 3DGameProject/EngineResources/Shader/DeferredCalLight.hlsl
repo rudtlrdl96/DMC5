@@ -134,26 +134,40 @@ float CalShadow(float4 _WorldPos, int _LightType)
     float4 ShadowWorldViewProjectionPos = mul(ShadowWorldPos, AllLight[LightCount].LightViewProjectionMatrix);
     float3 ShadowWorldProjection = ShadowWorldViewProjectionPos.xyz / ShadowWorldViewProjectionPos.w;
                     
-    if(1 == AllLight[LightCount].LightType)
+    if(0 == AllLight[LightCount].LightType) // Dir
     {        
-        float4 ShadowLightPos = AllLight[LightCount].LightPos;
-        float3 LightUV = ShadowWorldPos.xyz - ShadowLightPos.xyz;
-                
-        float ShadowDepthValue = PointShadowTex.Sample(POINTSAMPLER, normalize(LightUV)).r;        
-        
-        if (ShadowWorldProjection.z >= (ShadowDepthValue + 0.05f))
-        {
-            return 0.01f;
-        }        
-    }
-    else
-    {
         float2 ShadowUV = float2(ShadowWorldProjection.x * 0.5f + 0.5f, ShadowWorldProjection.y * -0.5f + 0.5f);
         float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, ShadowUV.xy).r;
         
         if (0.001f < ShadowUV.x && 0.999f > ShadowUV.x &&
             0.001f < ShadowUV.y && 0.999f > ShadowUV.y &&
             ShadowWorldProjection.z >= (ShadowDepthValue + 0.001f))
+        {
+            return 0.01f;
+        }
+    }
+    else if (1 == AllLight[LightCount].LightType) // Point
+    {
+        float4 ShadowLightPos = AllLight[LightCount].LightPos;
+        float3 LightUV = ShadowWorldPos.xyz - ShadowLightPos.xyz;
+        
+        float ShadowDepthValue = PointShadowTex.Sample(POINTSAMPLER, normalize(LightUV)).r;
+        float CurDepthValue = length(LightUV);
+        
+        if (CurDepthValue >= (ShadowDepthValue + 0.15f))
+        {
+            return 0.01f;
+        }
+    }
+    else if (2 == AllLight[LightCount].LightType) // Spot
+    {
+        float4 ShadowLightPos = AllLight[LightCount].LightPos;
+        float2 ShadowUV = float2(ShadowWorldProjection.x * 0.5f + 0.5f, ShadowWorldProjection.y * -0.5f + 0.5f);
+        float CurDepthValue = length(ShadowWorldPos.xyz - ShadowLightPos.xyz);
+        
+        float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, ShadowUV).r;
+        
+        if (CurDepthValue >= (ShadowDepthValue + 0.15f))
         {
             return 0.01f;
         }

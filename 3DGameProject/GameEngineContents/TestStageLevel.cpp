@@ -114,12 +114,12 @@ void TestStageLevel::LevelChangeStart()
 	GetDirectionalLight()->GetTransform()->SetWorldRotation(float4(90, 0, 0));
 	GetDirectionalLight()->LightDataValue.LightColor = float4(0.3f, 0.3f, 0.3f);
 
-	//std::shared_ptr<GameEngineLight> Light = CreateSpotLight(float4(0, 500, 0), float4(256, 256), 1000, 90);
-	//Light->GetTransform()->SetLocalRotation(float4(90, 0, 0));
-	//Light->LightDataValue.LightPower = 2.0f;
+	std::shared_ptr<GameEngineLight> Light = CreateSpotLight(float4(0, 500, 0), float4(256, 256), 1000, 90);
+	Light->GetTransform()->SetLocalRotation(float4(90, 0, 0));
+	Light->LightDataValue.LightPower = 1.0f;
 
-	std::shared_ptr<GameEngineLight> Light = CreatePointLight(float4(0, 400, 0), float4(512, 512), 1024);
-	Light->LightDataValue.LightPower = 2.0f;
+	//std::shared_ptr<GameEngineLight> Light = CreatePointLight(float4(0, 400, 0), float4(512, 512), 1024);
+	//Light->LightDataValue.LightPower = 1.0f;
 
 	GameEngineCoreWindow::Clear();
 	GameEngineCoreWindow::AddDebugRenderTarget(0, "Forward Target", GetMainCamera()->GetCamForwardTarget());
@@ -127,6 +127,6 @@ void TestStageLevel::LevelChangeStart()
 	GameEngineCoreWindow::AddDebugRenderTarget(2, "Light Target", GetMainCamera()->GetDeferredLightTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(3, "Alpha Target", GetMainCamera()->GetCamAlphaTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(4, "Last Target", GetMainCamera()->GetCamTarget());
-	GameEngineCoreWindow::AddDebugRenderTarget(5, "Bake Shadow", Light->GetBakeTarget(0));
-	GameEngineCoreWindow::AddDebugRenderTarget(6, "Last Shadow", Light->GetShadowTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(5, "Bake Shadow", GetDirectionalLight()->GetBakeTarget(0));
+	GameEngineCoreWindow::AddDebugRenderTarget(6, "Last Shadow", GetDirectionalLight()->GetShadowTarget());
 }

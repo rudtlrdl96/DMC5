@@ -851,9 +851,9 @@ void GameEngineCore::CoreResourcesInit()
 
 	{
 		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("PShadow");
-		Pipe->SetVertexShader("ProjectionShadow.hlsl");
+		Pipe->SetVertexShader("PerspectiveShadow.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
-		Pipe->SetPixelShader("ProjectionShadow.hlsl");
+		Pipe->SetPixelShader("PerspectiveShadow.hlsl");
 		Pipe->SetBlendState("MinBlend");
 		Pipe->SetDepthState("AlwayDepth");
 	}

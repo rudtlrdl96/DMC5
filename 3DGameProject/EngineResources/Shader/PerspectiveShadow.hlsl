@@ -12,7 +12,7 @@ struct Input
 struct Output
 {
     float4 POSITION : SV_POSITION;
-    float3 ShadowPos : POSITION;
+    float4 ShadowPos : POSITION;
 };
 
 Output Shadow_VS(Input _Value)
@@ -27,13 +27,13 @@ Output Shadow_VS(Input _Value)
         InputPos.w = 1.0f;
     }
     
+    NewOutPut.ShadowPos = mul(InputPos, WorldView);
     NewOutPut.POSITION = mul(InputPos, WorldViewProjectionMatrix);
-    NewOutPut.ShadowPos = NewOutPut.POSITION.xyz / NewOutPut.POSITION.w;
     
     return NewOutPut;
 }
 
 float4 Shadow_PS(Output _Value) : SV_Target0
 {
-    return float4(max(0, _Value.ShadowPos.z * 0.5f), 0.0f, 0.0f, 1.0f);
+    return float4(max(0.0f, length(_Value.ShadowPos.xyz)), 0.0f, 0.0f, 1.0f);
 }

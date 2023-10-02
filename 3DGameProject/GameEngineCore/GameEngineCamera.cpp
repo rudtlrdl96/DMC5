@@ -240,7 +240,7 @@ void GameEngineCamera::BakeShadow(std::shared_ptr<GameEngineLight> _BakeLight, i
 	for (size_t i = 0; i < _BakeLight->ViewDatas.size(); i++)
 	{
 		_BakeLight->LightViewSetting(i);
-		_BakeLight->GetShadowTarget()->Setting(i);
+		BakeTarget->Setting(i);
 
 		std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator LoopIter = StaticUnits.begin();
 		std::list<std::shared_ptr<GameEngineRenderUnit>>::iterator EndIter = StaticUnits.end();
@@ -265,11 +265,6 @@ void GameEngineCamera::BakeShadow(std::shared_ptr<GameEngineLight> _BakeLight, i
 			}
 
 			if (false == Unit->IsShadow)
-			{
-				continue;
-			}
-
-			if (false == Unit->IsStatic)
 			{
 				continue;
 			}
@@ -612,11 +607,6 @@ void GameEngineCamera::Render(float _DeltaTime)
 						continue;
 					}
 
-					if (true == Unit->IsStatic)
-					{
-						continue;
-					}
-
 					Unit->GetRenderer()->GetTransform()->SetCameraMatrix(Light->ViewDatas[i].LightViewMatrix, Light->ViewDatas[i].LightProjectionMatrix);
 					TransformData Data = Unit->GetRenderer()->GetTransform()->GetTransDataRef();
 					Unit->ShadowSetting();
@@ -625,13 +615,6 @@ void GameEngineCamera::Render(float _DeltaTime)
 					Pipe->PixelShader();
 					Pipe->OutputMerger();
 					Unit->Draw();
-
-					float4 Result = Data.LocalPosition * Data.WorldViewProjectionMatrix;
-
-					float z = Result.z / Result.w;
-
-					int a = 0;
-
 				}
 			}
 		}

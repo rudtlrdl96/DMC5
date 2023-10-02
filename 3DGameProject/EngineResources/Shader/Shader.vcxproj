@@ -159,7 +159,7 @@
     <FxCompile Include="MeshColor.hlsl" />
     <FxCompile Include="MeshTexture.hlsl" />
     <FxCompile Include="OrthogonalShadow.hlsl" />
-    <FxCompile Include="ProjectionShadow.hlsl" />
+    <FxCompile Include="PerspectiveShadow.hlsl" />
     <FxCompile Include="RenderBaseValue.fx" />
     <FxCompile Include="TextureShader.hlsl" />
     <FxCompile Include="TileMapShader.hlsl" />

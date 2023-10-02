@@ -182,7 +182,6 @@ void GameEngineLight::LightUpdate(GameEngineCamera* _Camera, float _DeltaTime)
 				LightDataValue.LightFar);
 
 			ViewDatas[i].LightProjectionInverseMatrix = ViewDatas[i].LightProjectionMatrix.InverseReturn();
-
 			ViewDatas[i].LightViewProjectionMatrix = ViewDatas[i].LightViewMatrix * ViewDatas[i].LightProjectionMatrix;
 		}
 	}
@@ -251,9 +250,16 @@ void GameEngineLight::CreateShadowTarget(std::shared_ptr<class GameEngineRenderT
 	{
 	case LightType::Point:
 	{
-		_Target->AddNewCubeTexture(DXGI_FORMAT_R16_FLOAT, { LightDataValue.ShadowTargetSizeX, LightDataValue.ShadowTargetSizeY }, float4::RED);
+		_Target->AddNewCubeTexture(DXGI_FORMAT_R16_FLOAT, { LightDataValue.ShadowTargetSizeX, LightDataValue.ShadowTargetSizeY }, float4(100000, 0, 0, 1.0f));
 	}
 	break;
+
+	case LightType::Spot:
+	{
+		_Target->AddNewTexture(DXGI_FORMAT_R16_FLOAT, { LightDataValue.ShadowTargetSizeX, LightDataValue.ShadowTargetSizeY }, float4(100000, 0, 0, 1.0f));	
+	}
+		break;
+
 	default:
 	{
 		_Target->AddNewTexture(DXGI_FORMAT_R16_FLOAT, { LightDataValue.ShadowTargetSizeX, LightDataValue.ShadowTargetSizeY }, float4::RED);

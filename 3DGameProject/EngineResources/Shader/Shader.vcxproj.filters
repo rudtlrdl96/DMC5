@@ -16,7 +16,7 @@
     <FxCompile Include="OrthogonalShadow.hlsl">
       <Filter>Shadow</Filter>
     </FxCompile>
-    <FxCompile Include="ProjectionShadow.hlsl">
+    <FxCompile Include="PerspectiveShadow.hlsl">
       <Filter>Shadow</Filter>
     </FxCompile>
     <FxCompile Include="CubemapMergeShader.hlsl">
