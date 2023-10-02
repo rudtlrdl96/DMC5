@@ -390,7 +390,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	},
 	.Update = [=](float _DeltaTime) {
 	WaitTime += _DeltaTime;
-	if (0.7f <= WaitTime)
+	if (0.5f <= WaitTime)
 	{
 		if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
 		{
@@ -1200,21 +1200,6 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.End = [=] {
 	}
 		});
-	// 스내치 end
-	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Snatch_End,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0000_snatch_end");
-	},
-	.Update = [=](float _DeltaTime) {
-	if (true == EnemyRenderer->IsAnimationEnd())
-	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Air_Damage_Under);
-		return;
-	}
-	},
-	.End = [=] {
-	}
-		});
 
 	/////////////////////////스턴
 	// 스턴 start
@@ -1315,66 +1300,12 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.End = [=] {
 	}
 	});
-
-	///////////////////////////// 뒤로 넘어지는 종류
-	//뒤로 넘어짐
-	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Lie_Down,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0000_lie_down");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
-	// 뒤로 넘어졌을 때 일어나는 모션
-	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Lie_Getup,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0000_lie_getup");
-	},
-	.Update = [=](float _DeltaTime) {
-	if (true == EnemyRenderer->IsAnimationEnd())
-	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Idle);
-		return;
-	}
-	},
-	.End = [=] {
-	IsRecognize = false;
-	IsCollapse = false;
-	}
-		});
-	// 뒤로 넘어진 상태에서 Death
-	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Lie_Death,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0000_lie_death");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
 	// 뒤로 쓰러지면서 죽음
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Death_Front,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0000_death_front");
 	},
 	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
-	// 뒤로 누워있는 상태에서 약공격 맞음
-	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Lie_Damage_Gun,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0000_lie_damage_gun", true);
-	},
-	.Update = [=](float _DeltaTime) {
-	if (true == EnemyRenderer->IsAnimationEnd())
-	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Prone_Getup);
-		return;
-	}
 	},
 	.End = [=] {
 	}
@@ -1760,15 +1691,6 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Snatch_End,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0000_snatch_end");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
 	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Stun,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0000_stun");
@@ -1832,45 +1754,9 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Lie_Down,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0000_lie_down");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Lie_Getup,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0000_lie_getup");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Lie_Death,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0000_lie_death");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
 	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Death_Front,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0000_death_front");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Lie_Damage_Gun,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0000_lie_damage_gun", true);
 	},
 	.Update = [=](float _DeltaTime) {
 	},

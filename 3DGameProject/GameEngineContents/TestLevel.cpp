@@ -9,6 +9,7 @@
 #include "PlayerActor_Nero.h"
 #include "PlayerActor_Vergil.h"
 #include "Enemy_HellCaina.h"
+#include "Enemy_Empusa.h"
 #include "Plane.h"
 #include "Wall.h"
 
@@ -52,10 +53,22 @@ void TestLevel::Update(float _DeltaTime)
 		GameEngineCore::ChangeLevel("MainLevel");
 	}
 
-	if (-100.0f >= HellCaina->GetTransform()->GetWorldPosition().y)
+	if (nullptr != HellCaina)
 	{
-		HellCaina->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-		HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+		if (-100.0f >= HellCaina->GetTransform()->GetWorldPosition().y)
+		{
+			HellCaina->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+			HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+		}
+	}
+
+	if (nullptr != Empusa)
+	{
+		if (-100.0f >= Empusa->GetTransform()->GetWorldPosition().y)
+		{
+			Empusa->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+			Empusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+		}
 	}
 }
 
@@ -79,11 +92,18 @@ void TestLevel::LevelChangeStart()
 		NetworkManager::LinkNetwork(Vergil.get(), this);
 	}
 
-	if (nullptr == HellCaina)
+	//if (nullptr == HellCaina)
+	//{
+	//	HellCaina = CreateActor<Enemy_HellCaina>();
+	//	HellCaina->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//	HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	//}
+
+	if (nullptr == Empusa)
 	{
-		HellCaina = CreateActor<Enemy_HellCaina>();
-		HellCaina->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-		HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+		Empusa = CreateActor<Enemy_Empusa>();
+		Empusa->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+		Empusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	}
 
 	if (nullptr == Flat)

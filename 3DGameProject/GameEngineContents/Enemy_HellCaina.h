@@ -4,7 +4,6 @@ enum FSM_State_HellCaina
 {
 	// 등장
 	HellCaina_Appear_02,      // em0000_appear_02, 등장
-	HellCaina_Appear_10,      // em0000_appear_10, 등장
 
 	// 기본
 	HellCaina_Idle,           // em0000_Idle_01, 그냥 서있음
@@ -40,11 +39,7 @@ enum FSM_State_HellCaina
 	HellCaina_Standing_Damage_Weak_Left,  // em0000_standing_damage_weak_left_01, 좌측 약공격 히트
 	HellCaina_Standing_Damage_Weak_Right, // em0000_standing_damage_weak_right_01, 우측 약공격 히트
 
-	HellCaina_Transdamage_Front,		  // em0000_transdamage_front, 중공격 히트 
-	HellCaina_Transdamage_Back,			  // em0000_transdamage_back, 뒤에서 중공격 맞고 돌아봄
-
 	HellCaina_Blown_Up,					  // em0000_blown_up, 띄우기 피격 start
-	HellCaina_Air_Damage,				  // em0000_air_damage, 띄우기 피격 후 최고점에서 꺾이면서 내려올 때 애니메이션
 	HellCaina_Air_Damage_Under,			  // em0000_air_damage_under, 띄우기 피격 후 약공 맞을 때 모션
 
 	HellCaina_Blown_Back,				  // em0000_blown_back, 강공격 피격 시 날아가기 start
@@ -59,31 +54,21 @@ enum FSM_State_HellCaina
 	HellCaina_Slam_Damage_Landing,		  // em0000_slam_damage_landing, 슬램 피격 후 땅에 부딫힘
 
 	HellCaina_Snatch,					  // em0000_snatch, 스내치 start
-	HellCaina_Snatch_End,				  // em0000_snatch_end, 스내치 end
 
 	HellCaina_Stun,						  // em0000_stun, 스턴 start
 	HellCaina_Stun_Revive,				  // em0000_stun_revive, 스턴 상태에서 회복
 
 	HellCaina_Death_Front,				  // em0000_death_front, 뒤로 쓰러지면서 죽음
-	HellCaina_Lie_Damage_Gun,			  // em0000_lie_damage_gun, 뒤로 누워있는 상태에서 약공 맞을때
-	HellCaina_Lie_Death,				  // em0000_lie_death, 뒤로 넘어진 상태에서 Death
-	HellCaina_Lie_Down,					  // em0000_lie_down, 뒤로 넘어짐
-	HellCaina_Lie_Getup,				  // em0000_lie_getup, 뒤로 넘어진 상태에서 일어남
 	HellCaina_Death_Back,				  // em0000_death_back, 앞으로 쓰러지면서 죽음
+
 	HellCaina_Prone_Damage_Gun,			  // em0000_prone_damage_gun, 앞으로 누워있는 상태에서 약공 맞을때
 	HellCaina_Prone_Death,				  // em0000_prone_death, 앞으로 누워있는 상태에서 Death
 	HellCaina_Prone_Down,				  // em0000_prone_down, 앞으로 넘어짐
 	HellCaina_Prone_Getup,				  // em0000_prone_getup, 앞으로 넘어진 상태에서 일어남
 
-	HellCaina_Air_Buster,         // em0000_Air-Buster, 공중에서 버스트 히트
-	HellCaina_Buster,             // em0000_Buster, 버스트 연속동작 (히트부터 다운까지)
 	HellCaina_Buster_Start,       // em0000_Buster_Start, 버스트 히트 시작
 	HellCaina_Buster_Loop,        // 버스트 히트 루프
 	HellCaina_Buster_Finish,      // em0000_Buster_Finish, 버스트 히트 땅에 떨어짐
-	HellCaina_Gun_Buster,         // em0000_Gun_Buster, 총 버스트 히트, 뒤로 돌아서 무릎꿇음
-	HellCaina_Gun_Buster_Start,   // em0000_Gun_Buster_shoot, 총 버스트 히트 스타트(?)
-	HellCaina_Gun_Buster_Finish,  // em0000_Gun_Buster_end, 총 버스트 엔드
-	HellCaina_M_Buster,           // em0000_M-Buster, ?
 };
 
 // 설명 :
