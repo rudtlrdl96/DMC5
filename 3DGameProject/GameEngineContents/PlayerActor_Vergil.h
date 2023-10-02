@@ -172,6 +172,7 @@ private:
 
 	void SetHuman();
 	void SetDemon();
+	void WeaponIdle();
 	void YamatoOff();
 	void YamatoOn();
 

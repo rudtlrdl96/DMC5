@@ -157,7 +157,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			}
 			});
 		SetHuman();
-		YamatoOff();
+		WeaponIdle();
 	}
 
 	/* 기본 움직임 */
@@ -390,7 +390,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			PhysXCapsule->SetMove(Controller->GetMoveVector() * 500);
 			InputCheck = false;
 			MoveCheck = false;
-			YamatoOff();
+			WeaponIdle();
 			Renderer->ChangeAnimation("pl0300_Jump_Vertical", true);
 		},
 		.Update = [=](float _DeltaTime) {
@@ -514,7 +514,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Combo2
@@ -551,7 +551,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Combo3
@@ -593,7 +593,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Combo4
@@ -602,6 +602,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				Col_Attack->SetAttackData(DamageType::Heavy, 200);
 				YamatoOn();
 				PhysXCapsule->SetLinearVelocityZero();
+				EffectSystem->PlayFX("Yamato_Combo_4.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Combo_4");
 				RotationToTarget(30.0f);
 				InputCheck = false;
@@ -630,7 +631,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// ComboC1
@@ -723,7 +724,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Sissonal1
@@ -823,7 +824,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 				Rot.y += 180.0f;
 				PhysXCapsule->AddWorldRotation({ 0, 180, 0 });
 				GetTransform()->AddWorldRotation({ 0, 180, 0 });
@@ -859,7 +860,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (true == Input_WarpCheckFly()) { return; }
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Upper 1
@@ -913,7 +914,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (true == Input_WarpCheckFly()) { return; }
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Upper3
@@ -950,7 +951,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 
@@ -984,7 +985,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (true == Input_WarpCheckFly()) { return; }
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Air Combo 2
@@ -1022,7 +1023,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (true == Input_WarpCheckFly()) { return; }
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Air Combo 3
@@ -1055,7 +1056,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (true == Input_WarpCheckFly()) { return; }
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Air Combo B 1
@@ -1089,7 +1090,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (true == Input_WarpCheckFly()) { return; }
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Air Combo B 2
@@ -1122,7 +1123,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (true == Input_WarpCheckFly()) { return; }
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Raid1
@@ -1143,7 +1144,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Raid2
@@ -1173,7 +1174,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Raid3
@@ -1201,7 +1202,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 
@@ -1236,13 +1237,13 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Vergil_yamato_JudgementCut_3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCut_3,
 			.Start = [=] {
-				YamatoOff();
+				WeaponIdle();
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCut_3");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -1298,13 +1299,13 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Vergil_yamato_JudgementCutAir_3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCutAir_3,
 			.Start = [=] {
-				YamatoOff();
+				WeaponIdle();
 				Renderer->ChangeAnimation("pl0300_yamato_Air_JudgementCut_3");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -1376,7 +1377,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 	}
@@ -1803,7 +1804,7 @@ void PlayerActor_Vergil::NetLoad()
 			}
 			});
 		SetHuman();
-		YamatoOff();
+		WeaponIdle();
 	}
 
 	/* 기본 움직임 */
@@ -1984,7 +1985,7 @@ void PlayerActor_Vergil::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Combo4
@@ -1996,7 +1997,7 @@ void PlayerActor_Vergil::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// ComboC1
@@ -2029,7 +2030,7 @@ void PlayerActor_Vergil::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Sissonal1
@@ -2062,7 +2063,7 @@ void PlayerActor_Vergil::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Sissonal Up
@@ -2074,7 +2075,7 @@ void PlayerActor_Vergil::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Upper 1
@@ -2097,7 +2098,7 @@ void PlayerActor_Vergil::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Upper3
@@ -2110,7 +2111,7 @@ void PlayerActor_Vergil::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 
@@ -2123,7 +2124,7 @@ void PlayerActor_Vergil::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Air Combo 2
@@ -2136,7 +2137,7 @@ void PlayerActor_Vergil::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Air Combo 3
@@ -2149,7 +2150,7 @@ void PlayerActor_Vergil::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Air Combo B 1
@@ -2162,7 +2163,7 @@ void PlayerActor_Vergil::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Air Combo B 2
@@ -2174,7 +2175,7 @@ void PlayerActor_Vergil::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Raid1
@@ -2185,7 +2186,7 @@ void PlayerActor_Vergil::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Raid2
@@ -2197,7 +2198,7 @@ void PlayerActor_Vergil::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Raid3
@@ -2209,7 +2210,7 @@ void PlayerActor_Vergil::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 
@@ -2232,13 +2233,13 @@ void PlayerActor_Vergil::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Vergil_yamato_JudgementCut_3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCut_3,
 			.Start = [=] {
-				YamatoOff();
+				WeaponIdle();
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCut_3");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2265,13 +2266,13 @@ void PlayerActor_Vergil::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 		// Vergil_yamato_JudgementCutAir_3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCutAir_3,
 			.Start = [=] {
-				YamatoOff();
+				WeaponIdle();
 				Renderer->ChangeAnimation("pl0300_yamato_Air_JudgementCut_3");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2298,7 +2299,7 @@ void PlayerActor_Vergil::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				YamatoOff();
+				WeaponIdle();
 			}
 			});
 	}
@@ -2686,7 +2687,7 @@ void PlayerActor_Vergil::SetDemon()
 	}
 }
 
-void PlayerActor_Vergil::YamatoOff()
+void PlayerActor_Vergil::WeaponIdle()
 {
 	Renderer->GetAllRenderUnit()[0][0]->Off();
 	Renderer->GetAllRenderUnit()[0][1]->Off();
@@ -2702,6 +2703,15 @@ void PlayerActor_Vergil::YamatoOff()
 	{
 		EffectSystem->Off();
 	}
+}
+
+void PlayerActor_Vergil::YamatoOff()
+{
+	Renderer->GetAllRenderUnit()[0][0]->Off();
+	Renderer->GetAllRenderUnit()[0][1]->Off();
+	Renderer->GetAllRenderUnit()[0][6]->On();
+	Renderer->GetAllRenderUnit()[0][7]->On();
+	Renderer->GetAllRenderUnit()[0][8]->On();
 }
 
 void PlayerActor_Vergil::YamatoOn()
