@@ -7,6 +7,7 @@
 #include <GameEngineCore/PhysXCapsuleComponent.h>
 #include "AnimationEvent.h"
 #include "BaseLog.h"
+#include "PlayerActor_Nero.h"
 AnimationToolWindow::AnimationToolWindow()
 {
 	PreviewRenderer.reserve(10);
@@ -583,15 +584,13 @@ void AnimationToolWindow::Release()
 {
 	if (ImGui::Button("Set Nero Human"))
 	{
-		for (int i = 0; i <= 14; i++)
-		{
-			Renderer->GetAllRenderUnit()[0][i]->On();
-		}
-
-		for (int i = 17; i <= 23; i++)
-		{
-			Renderer->GetAllRenderUnit()[0][i]->Off();
-		}
+		Renderer->GetAllRenderUnit()[0][NeroRenderUnit_DT0]->Off();
+		Renderer->GetAllRenderUnit()[0][NeroRenderUnit_DT1]->Off();
+		Renderer->GetAllRenderUnit()[0][NeroRenderUnit_DT2]->Off();
+		Renderer->GetAllRenderUnit()[0][NeroRenderUnit_DT3]->Off();
+		Renderer->GetAllRenderUnit()[0][NeroRenderUnit_DT4]->Off();
+		Renderer->GetAllRenderUnit()[0][NeroRenderUnit_DT5]->Off();
+		Renderer->GetAllRenderUnit()[0][NeroRenderUnit_DT6]->Off();
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Set Vergil Human"))

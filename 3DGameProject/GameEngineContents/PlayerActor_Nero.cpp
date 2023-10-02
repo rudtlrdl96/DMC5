@@ -4741,39 +4741,31 @@ void PlayerActor_Nero::ChangeState(int _StateValue)
 	NetworkManager::SendFsmChangePacket(this, _StateValue);
 }
 
-/*
-0 12~13 버스트 암
-0 14 오버추어
-0 15~16 거베라
-0 17 손 레드퀸
-0 18 등 레드퀸
-0 19 손 블루 로즈
-*/
 void PlayerActor_Nero::RedQueenOn()
 {
-	Renderer->GetAllRenderUnit()[0][15]->On();	// 손 레드퀸
-	Renderer->GetAllRenderUnit()[0][24]->Off();	// 등 레드퀸
-	Renderer->GetAllRenderUnit()[0][16]->Off();	// 블루로즈
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_RQHand]->On();	// 손 레드퀸
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_RQBack]->Off();	// 등 레드퀸
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_BR]->Off();	// 블루로즈
 }
 
 void PlayerActor_Nero::RedQueenOff()
 {
-	Renderer->GetAllRenderUnit()[0][15]->Off();	// 손 레드퀸
-	Renderer->GetAllRenderUnit()[0][24]->On();	// 등 레드퀸
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_RQHand]->Off();	// 손 레드퀸
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_RQBack]->On();	// 등 레드퀸
 }
 
 void PlayerActor_Nero::BlueRoseOn()
 {
-	Renderer->GetAllRenderUnit()[0][15]->Off();	// 손 레드퀸
-	Renderer->GetAllRenderUnit()[0][24]->On();	// 등 레드퀸
-	Renderer->GetAllRenderUnit()[0][16]->On();	// 블루로즈
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_RQHand]->Off();	// 손 레드퀸
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_RQBack]->On();	// 등 레드퀸
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_BR]->On();	// 블루로즈
 }
 
 void PlayerActor_Nero::WeaponIdle()
 {
-	Renderer->GetAllRenderUnit()[0][15]->Off();	// 손 레드퀸
-	Renderer->GetAllRenderUnit()[0][24]->On();	// 등 레드퀸
-	Renderer->GetAllRenderUnit()[0][16]->Off();	// 블루로즈
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_RQHand]->Off();	// 손 레드퀸
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_RQBack]->On();	// 등 레드퀸
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_BR]->Off();	// 블루로즈
 	Renderer_Overture->Off();
 
 	if (nullptr != Col_Attack)
@@ -4795,36 +4787,55 @@ void PlayerActor_Nero::WeaponIdle()
 void PlayerActor_Nero::SetHuman()
 {
 	DTValue = 0;
-	for (int i = 0; i <= 14; i++)
-	{
-		Renderer->GetAllRenderUnit()[0][i]->On();
-	}
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Human0]->On();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Human1]->On();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Human2]->On();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Human3]->On();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Human4]->On();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Human5]->On();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Human6]->On();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Human7]->On();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Human8]->On();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Human9]->On();
 
-	for (int i = 17; i <= 23; i++)
-	{
-		Renderer->GetAllRenderUnit()[0][i]->Off();
-	}
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_DT0]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_DT1]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_DT2]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_DT3]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_DT4]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_DT5]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_DT6]->Off();
 }
 
 void PlayerActor_Nero::SetDemon()
 {
 	DTValue = 1;
 	ArmValue = 0;
-	for (int i = 0; i <= 8; i++)
-	{
-		Renderer->GetAllRenderUnit()[0][i]->Off();
-	}
-	Renderer->GetAllRenderUnit()[0][14]->Off();
 
-	for (int i = 17; i <= 23; i++)
-	{
-		Renderer->GetAllRenderUnit()[0][i]->On();
-	}
-	Renderer->GetAllRenderUnit()[0][13]->Off();
-	Renderer->GetAllRenderUnit()[0][12]->Off();
-	Renderer->GetAllRenderUnit()[0][11]->Off();
-	Renderer->GetAllRenderUnit()[0][10]->Off();
-	Renderer->GetAllRenderUnit()[0][9]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Human0]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Human1]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Human2]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Human3]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Human4]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Human5]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Human6]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Human7]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Human8]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Human9]->Off();
+
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_DT0]->On();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_DT1]->On();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_DT2]->On();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_DT3]->On();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_DT4]->On();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_DT5]->On();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_DT6]->On();
+
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_BusterArm0]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_BusterArm1]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Gerbera0]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Gerbera1]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Overture]->Off();
 }
 
 void PlayerActor_Nero::SetOverture()
@@ -4834,11 +4845,11 @@ void PlayerActor_Nero::SetOverture()
 		return;
 	}
 	ArmValue = 1;
-	Renderer->GetAllRenderUnit()[0][13]->On();
-	Renderer->GetAllRenderUnit()[0][12]->Off();
-	Renderer->GetAllRenderUnit()[0][11]->Off();
-	Renderer->GetAllRenderUnit()[0][10]->Off();
-	Renderer->GetAllRenderUnit()[0][9]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_BusterArm0]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_BusterArm1]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Gerbera0]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Gerbera1]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Overture]->On();
 	Renderer_Overture->Off();
 }
 
@@ -4849,11 +4860,11 @@ void PlayerActor_Nero::SetGerbera()
 		return;
 	}
 	ArmValue = 2;
-	Renderer->GetAllRenderUnit()[0][13]->Off();
-	Renderer->GetAllRenderUnit()[0][12]->On();
-	Renderer->GetAllRenderUnit()[0][11]->On();
-	Renderer->GetAllRenderUnit()[0][10]->Off();
-	Renderer->GetAllRenderUnit()[0][9]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_BusterArm0]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_BusterArm1]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Gerbera0]->On();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Gerbera1]->On();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Overture]->Off();
 	Renderer_Overture->Off();
 }
 
@@ -4864,11 +4875,11 @@ void PlayerActor_Nero::SetBusterArm()
 		return;
 	}
 	ArmValue = 3;
-	Renderer->GetAllRenderUnit()[0][13]->Off();
-	Renderer->GetAllRenderUnit()[0][12]->Off();
-	Renderer->GetAllRenderUnit()[0][11]->Off();
-	Renderer->GetAllRenderUnit()[0][10]->On();
-	Renderer->GetAllRenderUnit()[0][9]->On();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_BusterArm0]->On();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_BusterArm1]->On();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Gerbera0]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Gerbera1]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Overture]->Off();
 	Renderer_Overture->Off();
 }
 
@@ -4878,11 +4889,11 @@ void PlayerActor_Nero::SetOvertureAnimation()
 	{
 		return;
 	}
-	Renderer->GetAllRenderUnit()[0][13]->Off();
-	Renderer->GetAllRenderUnit()[0][12]->Off();
-	Renderer->GetAllRenderUnit()[0][11]->Off();
-	Renderer->GetAllRenderUnit()[0][10]->Off();
-	Renderer->GetAllRenderUnit()[0][9]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_BusterArm0]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_BusterArm1]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Gerbera0]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Gerbera1]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Overture]->Off();
 	Renderer_Overture->On();
 }
 
@@ -4909,11 +4920,11 @@ void PlayerActor_Nero::OnDevilBraeker()
 void PlayerActor_Nero::OffDevilBraeker()
 {
 	ArmValue = 0;
-	Renderer->GetAllRenderUnit()[0][13]->Off();
-	Renderer->GetAllRenderUnit()[0][12]->Off();
-	Renderer->GetAllRenderUnit()[0][11]->Off();
-	Renderer->GetAllRenderUnit()[0][10]->Off();
-	Renderer->GetAllRenderUnit()[0][9]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_BusterArm0]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_BusterArm1]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Gerbera0]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Gerbera1]->Off();
+	Renderer->GetAllRenderUnit()[0][NeroRenderUnit_Overture]->Off();
 }
 
 void PlayerActor_Nero::AddBreaker(DevilBreaker _Breaker)
@@ -4980,34 +4991,32 @@ void PlayerActor_Nero::SetExActTiming()
 		IsExActTiming = false;
 	});
 }
-/*
-네로 렌더 유닛
 
-0 인간팔
-1 인간옷
-2 인간옷
-3 인간옷
-4 인간 눈썹
-5 인간 눈
-6 인간 속눈썹
-7 인간머리
-8 인간헤어
-9 버스터암
-10 버스터암
-11 거베라
-12 거베라
-13 오버추어
-14 인간 기계팔
-15 손 레드퀸
-16 손 블루로즈
+//네로 렌더 유닛
 
-17 DT 얼굴
-18 DT 몸
-19 DT 손발
-20 DT 눈
-21 DT 헤어
-22 DT 헤어
-23 DT 날개
-24 등 레드퀸
 
-*/
+//0 인간옷
+//1 인간옷
+//2 인간눈	
+//3 버스터
+//4 버스터
+//5 손 레드퀸
+//6 DT 손
+//7 DT 날개
+//8 인간 옷
+//9 인간 속눈썹
+//10 거베라
+//11 거베라
+//12 블루로즈
+//13 인간머리
+//14 오버추어
+//15 DT 머리
+//16 DT 눈
+//17 등 레드퀸
+//18 인간 팔
+//19 인간 눈썹
+//20 인간 머리카락
+//21 인간 팔
+//22 DT 몸
+//23 DT 헤어
+//24 DT 헤어

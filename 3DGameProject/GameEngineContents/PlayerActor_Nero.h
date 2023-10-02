@@ -111,7 +111,34 @@ enum FSM_State_Nero
 	Nero_Damage_Fly_Death,
 
 };
-
+enum NeroRenderUnits
+{
+	NeroRenderUnit_Human0,
+	NeroRenderUnit_Human1,
+	NeroRenderUnit_Human2,
+	NeroRenderUnit_BusterArm0,
+	NeroRenderUnit_BusterArm1,
+	NeroRenderUnit_RQHand,
+	NeroRenderUnit_DT0,
+	NeroRenderUnit_DT1,
+	NeroRenderUnit_Human3,
+	NeroRenderUnit_Human4,
+	NeroRenderUnit_Gerbera0,
+	NeroRenderUnit_Gerbera1,
+	NeroRenderUnit_BR,
+	NeroRenderUnit_Human5,
+	NeroRenderUnit_Overture,
+	NeroRenderUnit_DT2,
+	NeroRenderUnit_DT3,
+	NeroRenderUnit_RQBack,
+	NeroRenderUnit_Human6,
+	NeroRenderUnit_Human7,
+	NeroRenderUnit_Human8,
+	NeroRenderUnit_Human9,
+	NeroRenderUnit_DT4,
+	NeroRenderUnit_DT5,
+	NeroRenderUnit_DT6,
+};
 class PlayerActor_Nero : public BasePlayerActor
 {
 public:
