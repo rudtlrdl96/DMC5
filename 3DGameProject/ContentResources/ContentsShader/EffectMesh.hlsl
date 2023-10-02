@@ -130,8 +130,10 @@ AlphaOutPut MeshTexture_PS(Output _Input)
         
     Result.ResultColor = DiffuseTexture.Sample(ENGINEBASE, UV);
         
-    Result.ResultColor += EffectPlusColor;
     Result.ResultColor *= EffectMulColor;
+    Result.ResultColor += EffectPlusColor;
+
+    Result.ResultColor.a = clamp(Result.ResultColor.a, 0, 1);
     
     return Result;
 }

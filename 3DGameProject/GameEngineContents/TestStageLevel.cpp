@@ -12,6 +12,7 @@
 #include "Plane.h"
 #include "TestObject.h"
 #include "PlayerActor_Nero.h"
+#include "PlayerActor_Vergil.h"
 
 #include "ShaderTestActor.h"
 #include "FreeCameraActor.h"
@@ -101,13 +102,22 @@ void TestStageLevel::LevelChangeStart()
 			GameEngineFBXMesh::Load(File.GetFullPath());
 		}
 	}
-	
+
 	SetCamera({ 0,0,-500 });
 	CreateStage(AllStageDatas[0]);
 
-	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
-	Nero->SetUserControllType();
-	Nero->SetWorldPosition({ 0, 100, 0 });
+	if (true)
+	{
+		std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
+		Nero->SetUserControllType();
+		Nero->SetWorldPosition({ 0, 100, 0 });
+	}
+	else
+	{
+		std::shared_ptr<PlayerActor_Vergil> Vergil = CreateActor<PlayerActor_Vergil>();
+		Vergil->SetUserControllType();
+		Vergil->SetWorldPosition({ 0, 100, 0 });
+	}
 
 	// 테스트용 코드
 	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 4000, 0));

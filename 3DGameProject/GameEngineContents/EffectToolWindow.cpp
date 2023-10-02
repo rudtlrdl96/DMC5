@@ -81,20 +81,19 @@ void EffectToolWindow::CharacterSetting(std::shared_ptr<GameEngineLevel> Level)
 		}
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Nero Mesh FBX"))
+	if (ImGui::Button("Vergil Mesh FBX"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
 		NewDir.Move("ContentResources");
 		NewDir.Move("Character");
 		NewDir.Move("Player");
-		NewDir.Move("Nero");
+		NewDir.Move("Vergil");
 		NewDir.Move("Mesh");
-		if (nullptr == GameEngineFBXMesh::Find("Nero.FBX"))
+		if (nullptr == GameEngineFBXMesh::Find("Vergil.FBX"))
 		{
-			GameEngineFBXMesh::Load(NewDir.GetPlusFileName("Nero.fbx").GetFullPath());
-			GameEngineTexture::Load(NewDir.GetPlusFileName("pl0010_03_atos.texout.png").GetFullPath());
-			GameEngineTexture::Load(NewDir.GetPlusFileName("pl0000_03_atos.texout.png").GetFullPath());
+			GameEngineFBXMesh::Load(NewDir.GetPlusFileName("Vergil.fbx").GetFullPath());
+			GameEngineTexture::Load(NewDir.GetPlusFileName("pl0300_03_atos.texout.png").GetFullPath());
 		}
 
 		if (nullptr == Actor)
@@ -107,8 +106,17 @@ void EffectToolWindow::CharacterSetting(std::shared_ptr<GameEngineLevel> Level)
 			CharacterRender->Death();
 		}
 		CharacterRender = Actor->CreateComponent<GameEngineFBXRenderer>();
-		CharacterRender->SetFBXMesh("Nero.FBX", "AniFBX");
+		CharacterRender->SetFBXMesh("Vergil.FBX", "AniFBX");
 		CharacterRender->GetTransform()->SetLocalPosition({ 0, -75, 0 });
+
+		for (int i = 9; i <= 21; i++)
+		{
+			CharacterRender->GetAllRenderUnit()[0][i]->On();
+		}
+		for (int i = 2; i <= 4; i++)
+		{
+			CharacterRender->GetAllRenderUnit()[0][i]->Off();
+		}
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Open Animation FBX"))

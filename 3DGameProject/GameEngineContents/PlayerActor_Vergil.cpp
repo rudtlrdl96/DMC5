@@ -6,6 +6,7 @@
 #include "PlayerController.h"
 #include "AttackCollision.h"
 #include "NetworkManager.h"
+#include "FXSystem.h"
 
 PlayerActor_Vergil::~PlayerActor_Vergil()
 {
@@ -35,6 +36,62 @@ void PlayerActor_Vergil::Start()
 
 void PlayerActor_Vergil::PlayerLoad()
 {
+	// Effect 생성
+	{
+		EffectSystem = CreateComponent<FXSystem>();
+
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Effect");
+		NewDir.Move("Mesh");
+		if (nullptr == GameEngineFBXMesh::Find("Effect_Mesh_01.FBX"))
+		{
+			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".fbx" });
+			for (GameEngineFile File : Files)
+			{
+				GameEngineFBXMesh::Load(File.GetFullPath());
+			}
+		}
+		NewDir.MoveParent();
+		NewDir.Move("Texture");
+		if (nullptr == GameEngineTexture::Find("Effect_Texture_01.tga"))
+		{
+			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".tga" });
+			for (GameEngineFile File : Files)
+			{
+				GameEngineTexture::Load(File.GetFullPath());
+			}
+		}
+
+		// 이펙트 Sprite 로드
+		if (nullptr == GameEngineSprite::Find("Effect_Impact.tga"))
+		{
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Impact.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Muzzle_03.tga").GetFullPath(), 2, 1);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Spark_02.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Magic_01.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_01.tga").GetFullPath(), 8, 4);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_02.tga").GetFullPath(), 8, 4);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_03.tga").GetFullPath(), 8, 4);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_04.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_05.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Explosion_01.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Explosion_02.tga").GetFullPath(), 8, 8);
+		}
+		NewDir.MoveParent();
+		NewDir.Move("Vergil");
+
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".effect" });
+		for (GameEngineFile File : Files)
+		{
+			if (nullptr == FXData::Find(File.GetFileName()))
+			{
+				FXData::Load(File.GetFullPath());
+			}
+			EffectSystem->CreateFX(FXData::Find(File.GetFileName()));
+		}
+	}
 	// Renderer 생성
 	{
 		GameEngineDirectory NewDir;
@@ -427,8 +484,9 @@ void PlayerActor_Vergil::PlayerLoad()
 			.Start = [=] {
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
-				Renderer->ChangeAnimation("pl0300_yamato_Combo_1");
 				RotationToTarget();
+				EffectSystem->PlayFX("Yamato_Combo_1.effect");
+				Renderer->ChangeAnimation("pl0300_yamato_Combo_1");
 				InputCheck = false;
 				MoveCheck = false;
 			},
@@ -464,6 +522,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			.Start = [=] {
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
+				EffectSystem->PlayFX("Yamato_Combo_2.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Combo_2");
 				RotationToTarget(30.0f);
 				InputCheck = false;
@@ -500,6 +559,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			.Start = [=] {
 				Col_Attack->SetAttackData(DamageType::VergilLight, 100);
 				PhysXCapsule->SetLinearVelocityZero();
+				EffectSystem->PlayFX("Yamato_Combo_3.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Combo_3");
 				RotationToTarget(30.0f);
 				InputCheck = false;
@@ -2637,6 +2697,10 @@ void PlayerActor_Vergil::YamatoOff()
 	if (nullptr != Col_Attack)
 	{
 		Col_Attack->Off();
+	}
+	if (nullptr != EffectSystem)
+	{
+		EffectSystem->Off();
 	}
 }
 
