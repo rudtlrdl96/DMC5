@@ -65,7 +65,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<ShopLevel>();
 	GameEngineCore::CreateLevel<EffectToolLevel>();
 	
-	GameEngineCore::ChangeLevel("TestLevel");
+	GameEngineCore::ChangeLevel("MainLevel");
 }
 
 void ContentsCore::GameEnd() 
