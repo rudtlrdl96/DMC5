@@ -154,7 +154,7 @@ float CalShadow(float4 _WorldPos, int _LightType)
         float ShadowDepthValue = PointShadowTex.Sample(POINTSAMPLER, normalize(LightUV)).r;
         float CurDepthValue = length(LightUV);
         
-        if (CurDepthValue >= (ShadowDepthValue + 0.15f))
+        if (CurDepthValue >= (ShadowDepthValue + 5.0f))
         {
             return 0.01f;
         }
@@ -167,7 +167,7 @@ float CalShadow(float4 _WorldPos, int _LightType)
         
         float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, ShadowUV).r;
         
-        if (CurDepthValue >= (ShadowDepthValue + 0.15f))
+        if (CurDepthValue >= (ShadowDepthValue + 5.0f))
         {
             return 0.01f;
         }
