@@ -68,6 +68,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		if (nullptr == GameEngineSprite::Find("Effect_Impact.tga"))
 		{
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Impact.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Impact_01.tga").GetFullPath(), 8, 4);
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Muzzle_03.tga").GetFullPath(), 2, 1);
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Spark_02.tga").GetFullPath(), 8, 8);
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Magic_01.tga").GetFullPath(), 8, 8);
@@ -134,7 +135,7 @@ void PlayerActor_Vergil::PlayerLoad()
 
 		Renderer->SetSpecularTexture("pl0300_03_albm.texout.png", "pl0300_03_atos.texout.png");
 
-		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer,
+		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer, .RendererLocalPos = {0, -75, 0},
 			.Objects = { (GameEngineObject*)Col_Attack.get() },
 			.CallBacks_void = {
 				std::bind([=] {InputCheck = true; }),			// 0
@@ -149,6 +150,10 @@ void PlayerActor_Vergil::PlayerLoad()
 			},
 			.CallBacks_int = {
 				std::bind(&GameEngineFSM::ChangeState, &FSM, std::placeholders::_1),
+			},
+			.CallBacks_float = {
+				std::bind(&BasePlayerActor::RotationToTarget, this, std::placeholders::_1),
+				std::bind(&BasePlayerActor::RotationToMoveVector, this, std::placeholders::_1)
 			},
 			.CallBacks_float4 = {
 				std::bind(&BasePlayerActor::SetForce, this, std::placeholders::_1),
@@ -449,6 +454,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Landing
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Landing,
 			.Start = [=] {
+				PhysXCapsule->TurnOnGravity();
 				Renderer->ChangeAnimation("pl0300_Jump_Vertical_Landing");
 				MoveCheck = false;
 			},
@@ -1195,6 +1201,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			.Start = [=] {
 				Controller->SwordChargeTimer = 0.0f;
 				YamatoOn();
+				EffectSystem->PlayFX("Yamato_Raid_3.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Raid3");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -1399,17 +1406,30 @@ void PlayerActor_Vergil::PlayerLoad()
 	{}
 	/* ฟ๖วม */
 	{
+		static float4 WarpPos;
+
 		// Warp Front 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Front_1,
 		.Start = [=] {
 			RotationToTarget();
 			Renderer->ChangeAnimation("pl0300_Warp_Front_1", true);
+			EffectSystem->PlayFX("Vergil_Warp_1.effect");
+			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Renderer->Off();
+					EffectSystem->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
+				});
+			TimeEvent.AddEvent(0.3f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					EffectSystem->GetTransform()->SetLocalPosition(float4::ZERO);
+					ChangeState(FSM_State_Vergil::Vergil_Warp_Front_2);
+				});
+			TimeEvent.AddEvent(0.35f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Renderer->On();
+				});
 			},
 		.Update = [=](float _DeltaTime) {
-			if (true == Renderer->IsAnimationEnd())
-			{
-				ChangeState(FSM_State_Vergil::Vergil_Warp_Front_2);
-			}
 		},
 		.End = [=] {
 
@@ -1418,6 +1438,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Warp Front 2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Front_2,
 		.Start = [=] {
+			EffectSystem->PlayFX("Vergil_Warp_2.effect");
 			Renderer->ChangeAnimation("pl0300_Warp_Front_2");
 			InputCheck = false;
 			MoveCheck = false;
@@ -1466,12 +1487,23 @@ void PlayerActor_Vergil::PlayerLoad()
 		.Start = [=] {
 			RotationToTarget();
 			Renderer->ChangeAnimation("pl0300_Warp_Back_1");
+			EffectSystem->PlayFX("Vergil_Warp_1.effect");
+			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Renderer->Off();
+					EffectSystem->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
+				});
+			TimeEvent.AddEvent(0.3f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					EffectSystem->GetTransform()->SetLocalPosition(float4::ZERO);
+					ChangeState(FSM_State_Vergil::Vergil_Warp_Back_2);
+				});
+			TimeEvent.AddEvent(0.35f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Renderer->On();
+				});
 		},
 		.Update = [=](float _DeltaTime) {
-			if (true == Renderer->IsAnimationEnd())
-			{
-				ChangeState(FSM_State_Vergil::Vergil_Warp_Back_2);
-			}
 		},
 		.End = [=] {
 
@@ -1480,7 +1512,9 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Warp Back 2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Back_2,
 		.Start = [=] {
+			PhysXCapsule->TurnOnGravity();
 			Renderer->ChangeAnimation("pl0300_Warp_Back_2");
+			EffectSystem->PlayFX("Vergil_Warp_2.effect");
 			InputCheck = false;
 			MoveCheck = false;
 		},
@@ -1514,12 +1548,23 @@ void PlayerActor_Vergil::PlayerLoad()
 		.Start = [=] {
 			RotationToTarget();
 			Renderer->ChangeAnimation("pl0300_Warp_Left_1");
+			EffectSystem->PlayFX("Vergil_Warp_1.effect");
+			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Renderer->Off();
+					EffectSystem->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
+				});
+			TimeEvent.AddEvent(0.3f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					EffectSystem->GetTransform()->SetLocalPosition(float4::ZERO);
+					ChangeState(FSM_State_Vergil::Vergil_Warp_Left_2);
+				});
+			TimeEvent.AddEvent(0.35f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Renderer->On();
+				});
 		},
 		.Update = [=](float _DeltaTime) {
-			if (true == Renderer->IsAnimationEnd())
-			{
-				ChangeState(FSM_State_Vergil::Vergil_Warp_Left_2);
-			}
 		},
 		.End = [=] {
 
@@ -1528,7 +1573,9 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Warp Left 2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Left_2,
 		.Start = [=] {
+			RotationToTarget();
 			Renderer->ChangeAnimation("pl0300_Warp_Left_2");
+			EffectSystem->PlayFX("Vergil_Warp_2.effect");
 			InputCheck = false;
 			MoveCheck = false;
 		},
@@ -1562,12 +1609,24 @@ void PlayerActor_Vergil::PlayerLoad()
 		.Start = [=] {
 			RotationToTarget();
 			Renderer->ChangeAnimation("pl0300_Warp_Right_1", true);
+			EffectSystem->PlayFX("Vergil_Warp_1.effect");
+			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Renderer->Off();
+					EffectSystem->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
+				});
+			TimeEvent.AddEvent(0.3f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					EffectSystem->GetTransform()->SetLocalPosition(float4::ZERO);
+					ChangeState(FSM_State_Vergil::Vergil_Warp_Right_2);
+				});
+			TimeEvent.AddEvent(0.35f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Renderer->On();
+				});
+
 			},
 		.Update = [=](float _DeltaTime) {
-			if (true == Renderer->IsAnimationEnd())
-			{
-				ChangeState(FSM_State_Vergil::Vergil_Warp_Right_2);
-			}
 		},
 		.End = [=] {
 
@@ -1576,7 +1635,9 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Warp Right 2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Right_2,
 		.Start = [=] {
+			RotationToTarget();
 			Renderer->ChangeAnimation("pl0300_Warp_Right_2");
+			EffectSystem->PlayFX("Vergil_Warp_2.effect");
 			InputCheck = false;
 			MoveCheck = false;
 		},
@@ -1606,7 +1667,8 @@ void PlayerActor_Vergil::PlayerLoad()
 		} });
 
 		// Warp Up
-		static float4 WarpPos;
+		static float4 BeforePos;
+		static GameEngineTransform* WarpTarget;
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_AirTrick,
 		.Start = [=] {
 			PhysXCapsule->TurnOffGravity();
@@ -1614,30 +1676,49 @@ void PlayerActor_Vergil::PlayerLoad()
 			WarpPos = float4::ZERO;
 			if (nullptr != LockOnEnemyTransform)
 			{
+				WarpTarget = LockOnEnemyTransform;
 				RotationToTarget();
 				WarpPos = LockOnEnemyTransform->GetWorldPosition();
-				WarpPos.y += 150;
+				BeforePos = WarpPos;
 				float4 _Dir = GetTransform()->GetWorldPosition() - LockOnEnemyTransform->GetWorldPosition();
 				_Dir.y = 0;
 				WarpPos = WarpPos + _Dir.NormalizeReturn() * 150;
 			}
 			else
 			{
+				WarpTarget = nullptr;
 				WarpPos = GetTransform()->GetWorldPosition() + float4::UP * 500;
 			}
 			Renderer->ChangeAnimation("pl0300_Warp_Up", true);
+
+			EffectSystem->PlayFX("Vergil_Warp_1.effect");
+			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+			{
+				Renderer->Off();
+				EffectSystem->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
+				if (nullptr != WarpTarget)
+				{
+					WarpPos += (WarpTarget->GetWorldPosition() - BeforePos) * 1.5f;
+				}
+				SetWorldPosition(WarpPos);
+			});
+			TimeEvent.AddEvent(0.3f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+			{
+				EffectSystem->GetTransform()->SetLocalPosition(float4::ZERO);
+				ChangeState(FSM_State_Vergil::Vergil_Warp_Front_2);
+			});
+			TimeEvent.AddEvent(0.35f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+			{
+				Renderer->On();
+			});
+
 			},
 		.Update = [=](float _DeltaTime) {
-			if (true == Renderer->IsAnimationEnd())
-			{
-				ChangeState(FSM_State_Vergil::Vergil_Warp_Front_2);
-			}
 		},
 		.End = [=] {
-			SetWorldPosition(WarpPos);
 			PhysXCapsule->TurnOnGravity();
-			}
-			});
+		}
+		});
 
 		// Warp Down
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_TrickDown,
@@ -1658,19 +1739,29 @@ void PlayerActor_Vergil::PlayerLoad()
 			}
 			if (true == GetLevel()->RayCast(GetTransform()->GetWorldPosition(), Dir.NormalizeReturn(), WarpPos, 9999.0f))
 			{
-				WarpPos.y += 100;
+				WarpPos.y += 75;
 			}
 			else
 			{
 				WarpPos = GetTransform()->GetWorldPosition();
 			}
 			Renderer->ChangeAnimation("pl0300_Warp_Down", true);
+			EffectSystem->PlayFX("Vergil_Warp_1.effect");
+			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Renderer->Off();
+					SetWorldPosition(WarpPos);
+				});
+			TimeEvent.AddEvent(0.3f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					ChangeState(FSM_State_Vergil::Vergil_Warp_Back_2);
+				});
+			TimeEvent.AddEvent(0.35f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Renderer->On();
+				});
 			},
 		.Update = [=](float _DeltaTime) {
-			if (true == Renderer->IsAnimationEnd())
-			{
-				ChangeState(FSM_State_Vergil::Vergil_Warp_Back_2);
-			}
 		},
 		.End = [=] {
 			SetWorldPosition(WarpPos);
