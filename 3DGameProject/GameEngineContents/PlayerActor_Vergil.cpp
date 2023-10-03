@@ -1360,12 +1360,13 @@ void PlayerActor_Vergil::PlayerLoad()
 				RotationToTarget();
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
+				EffectSystem->PlayFX("Yamato_JudgementCut_End_1.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCutEnd_1");
 				TimeEvent.AddEvent(1.58f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
 					Renderer->Off();
 				});
-				TimeEvent.AddEvent(2.1f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				TimeEvent.AddEvent(1.83f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
 					JCEffect->JudgementCutOn();
 				});

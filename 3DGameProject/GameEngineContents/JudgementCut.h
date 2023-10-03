@@ -69,7 +69,7 @@ private:
 
 	bool IsEffectOn = false;
 
-	float Speed = 25.0f;
+	float Speed = 50.0f;
 	float MaxCut = 5.0f;
 
 	void LevelChangeStart() override
