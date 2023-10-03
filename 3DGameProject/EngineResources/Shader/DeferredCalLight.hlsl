@@ -15,7 +15,7 @@ struct Output
 
 Output DeferredCalLight_VS(Input _Input)
 {
-    Output NewOutPut = (Output)0;
+    Output NewOutPut = (Output) 0;
     NewOutPut.POSITION = _Input.POSITION;
     NewOutPut.TEXCOORD = _Input.TEXCOORD;
     return NewOutPut;
@@ -70,7 +70,7 @@ ResultLight CalLight(int _LightIndex, float4 _Position, float4 _Normal, float _M
     {
         float Distance = length(AllLight[_LightIndex].ViewLightPos.xyz - _Position.xyz);
             
-        float FallOffStart = AllLight[_LightIndex].LightRange * 0.2f;            
+        float FallOffStart = AllLight[_LightIndex].LightRange * 0.2f;
         float FallOffEnd = AllLight[_LightIndex].LightRange;
                         
         LightPower *= saturate((FallOffEnd - Distance) / (FallOffEnd - FallOffStart));
@@ -87,7 +87,7 @@ ResultLight CalLight(int _LightIndex, float4 _Position, float4 _Normal, float _M
         
         float ConAtt = saturate((LightAng - CosAng) / LightAng);
         
-        LightPower *= (ConAtt * ConAtt); 
+        LightPower *= (ConAtt * ConAtt);
     }
         
     if (0.0f < LightPower)
@@ -126,31 +126,60 @@ ResultLight CalLight(int _LightIndex, float4 _Position, float4 _Normal, float _M
 //    return Result;
 //}
 
+#define SAMPLES_COUNT 32 
+#define INV_SAMPLES_COUNT (1.0f / SAMPLES_COUNT)
+
+float2 VogelDiskSample(int sampleIndex, int samplesCount, float phi)
+{
+    float GoldenAngle = 2.4f;
+
+    float r = sqrt(sampleIndex + 0.5f) / sqrt(samplesCount);
+    float theta = sampleIndex * GoldenAngle + phi;
+
+    float sine, cosine;
+    sincos(theta, sine, cosine);
+  
+    return float2(r * cosine, r * sine);
+}
+
 float CalShadow(float4 _WorldPos, int _LightType)
 {
     _WorldPos.a = 1.0f;
-            
+                
     float4 ShadowWorldPos = mul(_WorldPos, AllLight[LightCount].CameraViewInverseMatrix);
     float4 ShadowWorldViewProjectionPos = mul(ShadowWorldPos, AllLight[LightCount].LightViewProjectionMatrix);
     float3 ShadowWorldProjection = ShadowWorldViewProjectionPos.xyz / ShadowWorldViewProjectionPos.w;
                     
-    if(0 == AllLight[LightCount].LightType) // Dir
-    {        
+    if (0 == AllLight[LightCount].LightType) // Dir
+    {
         float2 ShadowUV = float2(ShadowWorldProjection.x * 0.5f + 0.5f, ShadowWorldProjection.y * -0.5f + 0.5f);
-        float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, ShadowUV.xy).r;
+        float ShadowValue = 0.0f;
         
-        if (0.001f < ShadowUV.x && 0.999f > ShadowUV.x &&
+        for (int i = 0; i < SAMPLES_COUNT; ++i)
+        {
+            float2 VegelPos = VogelDiskSample(i, SAMPLES_COUNT, 20.0f);
+            
+            VegelPos.x /= AllLight[LightCount].ShadowTargetSizeX;
+            VegelPos.y /= AllLight[LightCount].ShadowTargetSizeY;
+            
+            float2 CalPos = ShadowUV + VegelPos;
+            float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, CalPos.xy).r;
+            
+            if (0.001f < ShadowUV.x && 0.999f > ShadowUV.x &&
             0.001f < ShadowUV.y && 0.999f > ShadowUV.y &&
             ShadowWorldProjection.z >= (ShadowDepthValue + 0.001f))
-        {
-            return 0.01f;
+            {
+                ShadowValue += INV_SAMPLES_COUNT;
+            }
         }
+                
+        return max(0.01f, 1.0f - ShadowValue);
     }
     else if (1 == AllLight[LightCount].LightType) // Point
     {
         float4 ShadowLightPos = AllLight[LightCount].LightPos;
         float3 LightUV = ShadowWorldPos.xyz - ShadowLightPos.xyz;
-        
+               
         float ShadowDepthValue = PointShadowTex.Sample(POINTSAMPLER, normalize(LightUV)).r;
         float CurDepthValue = length(LightUV);
         
@@ -164,13 +193,24 @@ float CalShadow(float4 _WorldPos, int _LightType)
         float4 ShadowLightPos = AllLight[LightCount].LightPos;
         float2 ShadowUV = float2(ShadowWorldProjection.x * 0.5f + 0.5f, ShadowWorldProjection.y * -0.5f + 0.5f);
         float CurDepthValue = length(ShadowWorldPos.xyz - ShadowLightPos.xyz);
+        float ShadowValue = 0.0f;
         
-        float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, ShadowUV).r;
-        
-        if (CurDepthValue >= (ShadowDepthValue + 5.0f))
-        {
-            return 0.01f;
-        }
+        for (int i = 0; i < SAMPLES_COUNT; ++i)
+        {  
+            float2 VegelPos = VogelDiskSample(i, SAMPLES_COUNT, 20.0f);
+            
+            VegelPos.x /= AllLight[LightCount].ShadowTargetSizeX;
+            VegelPos.y /= AllLight[LightCount].ShadowTargetSizeY;
+            
+            float2 CalPos = ShadowUV + VegelPos;
+            float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, CalPos.xy).r;
+            
+            if (CurDepthValue >= (ShadowDepthValue + 5.0f))
+            {
+                ShadowValue += INV_SAMPLES_COUNT;
+            }
+        }        
+        return max(0.01f, 1.0f - ShadowValue);
     }
         
     return 1.0f;
@@ -196,7 +236,7 @@ LightOutPut DeferredCalLight_PS(Output _Input)
         clip(-1);
     }
     
-    ResultLight CalLightValue = CalLight(LightCount, DeferredPosition, Normal, Mat.r);                        
+    ResultLight CalLightValue = CalLight(LightCount, DeferredPosition, Normal, Mat.r);
     float ShadowValue = CalShadow(DeferredPosition, AllLight[LightCount].LightType);
         
     CalLightValue.CurLightDiffuseRatio *= ShadowValue;
@@ -208,7 +248,7 @@ LightOutPut DeferredCalLight_PS(Output _Input)
     
     //BackRatio.xyz = CalBackLight(SSSData, AmbientRatio.xyz, DeferredPosition.xyz, LightCount, Normal);
     
-    if(0 == LightCount)
+    if (0 == LightCount)
     {
         SpacularRatio += float4(Gleam.r, Gleam.g, Gleam.b, 0);
     }

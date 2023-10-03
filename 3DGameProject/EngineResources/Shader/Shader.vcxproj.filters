@@ -28,9 +28,6 @@
     <FxCompile Include="DebugMeshRender.hlsl">
       <Filter>Debug</Filter>
     </FxCompile>
-    <FxCompile Include="DeferredCalLight.hlsl">
-      <Filter>Deferred</Filter>
-    </FxCompile>
     <FxCompile Include="DeferredMerge.hlsl">
       <Filter>Deferred</Filter>
     </FxCompile>
@@ -63,6 +60,9 @@
     </FxCompile>
     <FxCompile Include="BloomShader.hlsl">
       <Filter>PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="DeferredCalLight.hlsl">
+      <Filter>Deferred</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
