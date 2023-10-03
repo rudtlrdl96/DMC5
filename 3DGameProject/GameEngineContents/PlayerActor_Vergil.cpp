@@ -736,6 +736,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				RotationToTarget();
 				PhysXCapsule->SetLinearVelocityZero();
 				RotationToTarget();
+				EffectSystem->PlayFX("Yamato_Sissonal_1.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Sissonal_1");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -782,7 +783,7 @@ void PlayerActor_Vergil::PlayerLoad()
 					return;
 				}
 				SissonalTimer += _DeltaTime;
-				if (0.5f < SissonalTimer)
+				if (0.2f < SissonalTimer)
 				{
 					ChangeState(FSM_State_Vergil::pl0300_yamato_Sissonal_3);
 					return;
@@ -800,6 +801,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
+				EffectSystem->PlayFX("Yamato_Sissonal_3.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Sissonal_3");
 				InputCheck = false;
 				MoveCheck = false;
@@ -844,6 +846,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				});
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
+				EffectSystem->PlayFX("Yamato_Sissonal_Up.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Sissonal_Up");
 				InputCheck = false;
 				MoveCheck = false;
