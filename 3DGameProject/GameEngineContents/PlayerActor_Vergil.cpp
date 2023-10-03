@@ -7,7 +7,7 @@
 #include "AttackCollision.h"
 #include "NetworkManager.h"
 #include "FXSystem.h"
-
+#include "JudgementCut.h"
 PlayerActor_Vergil::~PlayerActor_Vergil()
 {
 }
@@ -16,6 +16,8 @@ void PlayerActor_Vergil::Start()
 {
 	BasePlayerActor::Start();
 	SetNetObjectType(Net_ActorType::Vergil);
+
+	JCEffect = GetLevel()->GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
 
 	//NetControllType::NetControll으로 변경될 때 아래 콜백이 실행됩니다. 
 	SetControllCallBack(NetControllType::PassiveControll, [=]()
@@ -1356,14 +1358,24 @@ void PlayerActor_Vergil::PlayerLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_1,
 			.Start = [=] {
 				RotationToTarget();
+				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCutEnd_1");
-			},
-			.Update = [=](float _DeltaTime) {
-				if (true == Renderer->IsAnimationEnd())
+				TimeEvent.AddEvent(1.58f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Renderer->Off();
+				});
+				TimeEvent.AddEvent(2.1f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					JCEffect->JudgementCutOn();
+				});
+				TimeEvent.AddEvent(2.6f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
 					ChangeState(FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_2);
-				}
+				});
+			},
+			.Update = [=](float _DeltaTime) {
+				PhysXCapsule->SetLinearVelocityZero();
 			},
 			.End = [=] {
 
@@ -1375,15 +1387,15 @@ void PlayerActor_Vergil::PlayerLoad()
 				InputCheck = false;
 				MoveCheck = false;
 				PhysXCapsule->SetLinearVelocityZero();
+				Renderer->On();
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCutEnd_2");
+				TimeEvent.AddEvent(1.82f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					JCEffect->JudgementCutOff();
+				});
 			},
 			.Update = [=](float _DeltaTime) {
-				if (false == FloorCheck())
-				{
-					ChangeState(FSM_State_Vergil::Vergil_Jump_Fly);
-					return;
-				}
-
+				PhysXCapsule->SetLinearVelocityZero();
 
 				if (InputCheck == false) { return; }
 				if (true == Input_SpecialCheck()) { return; }
@@ -1718,7 +1730,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		.End = [=] {
 			PhysXCapsule->TurnOnGravity();
 		}
-		});
+			});
 
 		// Warp Down
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_TrickDown,

@@ -4,6 +4,7 @@
 #include "EffectToolWindow.h"
 #include "FreeCameraActor.h"
 #include "SkyBox.h"
+#include "JudgementCut.h"
 EffectToolLevel::EffectToolLevel() 
 {
 }
@@ -34,7 +35,7 @@ void EffectToolLevel::LevelChangeStart()
 		ToolWindow = std::dynamic_pointer_cast<EffectToolWindow>(GameEngineGUI::GUIWindowCreate<EffectToolWindow>("AnimationToolWindow"));
 		CreateActor<FreeCameraActor>();
 		CreateActor<EngineGrid>();
-
+		GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
 		GameEngineDirectory Dir = GameEnginePath::GetFileFullPath
 		(
 			"ContentResources",
