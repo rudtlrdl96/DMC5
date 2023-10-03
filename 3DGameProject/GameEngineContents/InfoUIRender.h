@@ -10,7 +10,6 @@ public:
 	std::string _SeletText = "";
 	std::string _ExplaneText = "";
 	std::string _ExplaneText2 = "";
-
 	int Index = 0;
 
 };
@@ -55,6 +54,10 @@ public:
 	std::shared_ptr<class GameEngineFontRenderer> GetExplaneText()
 	{
 		return ExplaneText;
+	}
+	std::shared_ptr<class GameEngineFontRenderer> GetSecoundExplaneText()
+	{
+		return ExplaneText_2;
 	}
 	void SetUIText(const UIInfoParameter& _Paramter);
 

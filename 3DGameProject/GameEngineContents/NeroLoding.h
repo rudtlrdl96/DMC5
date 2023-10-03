@@ -18,9 +18,18 @@ protected:
 	void Start() override;
 	void Update(float _Delta) override;
 private:
+	void TextStart();
 	std::shared_ptr<class GameEngineUIRenderer> LodingBackRender = nullptr;
 	std::shared_ptr<class GameEngineUIRenderer> LodingFrontRender = nullptr;
 	std::shared_ptr<class GameEngineUIRenderer> LodingNeroRender = nullptr;
+	std::shared_ptr<class InvenUIButton> ArrowLeftPtr = nullptr;
+	std::shared_ptr<class InvenUIButton> ArrowRightPtr = nullptr;
+	std::shared_ptr<class InfoUIRender> ExplanePtr = nullptr;
 
+	std::shared_ptr<class GameEngineFontRenderer> FirstLine = nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> SecoundLine = nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> ThirdLine = nullptr;
+
+	int Index = 0;
 };
 

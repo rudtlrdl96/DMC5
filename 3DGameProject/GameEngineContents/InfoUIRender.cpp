@@ -98,6 +98,7 @@ void InfoUIRender::FontCreate()
 	ExplaneText_2->SetColor(float4(0.656f, 0.668f, 0.665f,1.0f));
 	ExplaneText_2->GetTransform()->SetLocalPosition({ 705.0f,36.f,0.0f });
 
+
 }
 
 
@@ -107,6 +108,7 @@ void InfoUIRender::SetUIText(const UIInfoParameter& _Paramter)
 	SeletText->SetText(_Paramter._SeletText);
 	ExplaneText->SetText(_Paramter._ExplaneText);
 	ExplaneText_2->SetText(_Paramter._ExplaneText2);
+
 }
 
 
