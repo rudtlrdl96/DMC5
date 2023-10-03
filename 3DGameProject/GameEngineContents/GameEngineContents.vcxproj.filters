@@ -445,6 +445,9 @@
     <ClInclude Include="WallLight_Off.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClInclude>
+    <ClInclude Include="NeroLoding.h">
+      <Filter>UI\UI_Actor\LodingUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -879,6 +882,9 @@
     <ClCompile Include="WallLight_Off.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClCompile>
+    <ClCompile Include="NeroLoding.cpp">
+      <Filter>UI\UI_Actor\LodingUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
@@ -1144,6 +1150,9 @@
     </Filter>
     <Filter Include="Actor\Player\Weapon">
       <UniqueIdentifier>{045eba55-1dc2-4e34-99fd-7aab7918a35e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\LodingUI">
+      <UniqueIdentifier>{c9ed4d53-41a7-45b8-9ae9-7deec8f2c8e1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

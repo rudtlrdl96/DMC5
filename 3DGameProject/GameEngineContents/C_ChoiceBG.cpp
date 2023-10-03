@@ -12,14 +12,9 @@ C_ChoiceBG::~C_ChoiceBG()
 void C_ChoiceBG::Start()
 {
 
-
 	C_ChoiceBGRender = CreateComponent<GameEngineUIRenderer>(0);
 	C_ChoiceBGRender->GetTransform()->SetLocalScale(Scale);
 	C_ChoiceBGRender->SetTexture("CharChoise_Base.png");
-
-
-	
-
 }
 
 
