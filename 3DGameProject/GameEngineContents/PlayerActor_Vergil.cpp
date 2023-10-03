@@ -898,6 +898,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				Col_Attack->SetAttackData(DamageType::Air, 50);
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
+				EffectSystem->PlayFX("Yamato_AttackUp_2.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_AttackUp_2");
 				InputCheck = false;
 				MoveCheck = false;
@@ -927,6 +928,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				Col_Attack->SetAttackData(DamageType::Air, 50);
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
+				EffectSystem->PlayFX("Yamato_AttackUp_3.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_AttackUp_3");
 				InputCheck = false;
 				MoveCheck = false;
@@ -965,6 +967,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
+				EffectSystem->PlayFX("Yamato_Air_Combo_1.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_AirCombo_1");
 				InputCheck = false;
 			},
@@ -998,6 +1001,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
+				EffectSystem->PlayFX("Yamato_Air_Combo_2.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_AirCombo_2");
 				InputCheck = false;
 				DelayCheck = false;
@@ -1036,6 +1040,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
+				EffectSystem->PlayFX("Yamato_Air_Combo_3.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_AirCombo_3");
 				InputCheck = false;
 			},
@@ -1070,6 +1075,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				Col_Attack->SetAttackData(DamageType::Air, 50);
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
+				EffectSystem->PlayFX("Yamato_Air_ComboB_1.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_AirComboB_1");
 				InputCheck = false;
 			},
@@ -1103,6 +1109,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				Col_Attack->SetAttackData(DamageType::Slam, 50);
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
+				EffectSystem->PlayFX("Yamato_Air_Combo_3.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_AirComboB_2");
 				InputCheck = false;
 			},
@@ -1230,6 +1237,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Vergil_yamato_JudgementCut_2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCut_2,
 			.Start = [=] {
+				EffectSystem->PlayFX("Yamato_JudgementCut.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCut_2_Loop");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -1292,6 +1300,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			.Start = [=] {
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
+				EffectSystem->PlayFX("Yamato_JudgementCut_Air.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Air_JudgementCut_2_Loop");
 			},
 			.Update = [=](float _DeltaTime) {
