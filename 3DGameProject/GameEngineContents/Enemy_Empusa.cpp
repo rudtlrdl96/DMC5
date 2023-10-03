@@ -91,34 +91,32 @@ void Enemy_Empusa::PlayerAttack(float _DeltaTime)
 	RotationCheck();
 	AllDirectSetting();
 
-	ChangeState(FSM_State_Empusa::Empusa_Attack_A);
-
-	//switch (EnemyRotationValue)
-	//{
-	//case EnemyRotation::Forward:
-	//	RandomAttack();
-	//	break;
-	//case EnemyRotation::Left:
-	//	ChangeState(FSM_State_Empusa::Empusa_Attack_C);
-	//	break;
-	//case EnemyRotation::Left_90:
-	//	ChangeState(FSM_State_Empusa::Empusa_Attack_C);
-	//	break;
-	//case EnemyRotation::Left_180:
-	//	ChangeState(FSM_State_Empusa::Empusa_Attack_C);
-	//	break;
-	//case EnemyRotation::Right:
-	//	ChangeState(FSM_State_Empusa::Empusa_Attack_D);
-	//	break;
-	//case EnemyRotation::Right_90:
-	//	ChangeState(FSM_State_Empusa::Empusa_Attack_D);
-	//	break;
-	//case EnemyRotation::Right_180:
-	//	ChangeState(FSM_State_Empusa::Empusa_Attack_D);
-	//	break;
-	//default:
-	//	break;
-	//}
+	switch (EnemyRotationValue)
+	{
+	case EnemyRotation::Forward:
+		RandomAttack();
+		break;
+	case EnemyRotation::Left:
+		ChangeState(FSM_State_Empusa::Empusa_Attack_C);
+		break;
+	case EnemyRotation::Left_90:
+		ChangeState(FSM_State_Empusa::Empusa_Attack_C);
+		break;
+	case EnemyRotation::Left_180:
+		ChangeState(FSM_State_Empusa::Empusa_Attack_C);
+		break;
+	case EnemyRotation::Right:
+		ChangeState(FSM_State_Empusa::Empusa_Attack_D);
+		break;
+	case EnemyRotation::Right_90:
+		ChangeState(FSM_State_Empusa::Empusa_Attack_D);
+		break;
+	case EnemyRotation::Right_180:
+		ChangeState(FSM_State_Empusa::Empusa_Attack_D);
+		break;
+	default:
+		break;
+	}
 }
 
 void Enemy_Empusa::RandomAttack()
@@ -814,14 +812,16 @@ void Enemy_Empusa::EnemyCreateFSM()
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
 	{
-		EnemyRenderer->SetAnimationStartEvent("em0100_attack_A", 62, [=] { SetMoveStop(); });
-		EnemyRenderer->SetAnimationStartEvent("em0100_attack_A", 63, [=] { SetAdvance(33000.0f); });
-		//EnemyRenderer->SetAnimationStartEvent("em0100_attack_02", 57, [=] { SetMoveStop(); });
-		//EnemyRenderer->SetAnimationStartEvent("em0100_attack_02", 58, [=] { SetAdvance(33000.0f); });
-		//EnemyRenderer->SetAnimationStartEvent("em0100_attack_01_turn", 70, [=] { SetMoveStop(); });
-		//EnemyRenderer->SetAnimationStartEvent("em0100_attack_01_turn", 71, [=] { SetThrowback(-33000.0f); });
-		//EnemyRenderer->SetAnimationStartEvent("em0100_attack_atackhard", 116, [=] { SetMoveStop(); });
-		//EnemyRenderer->SetAnimationStartEvent("em0100_attack_atackhard", 117, [=] { SetAdvance(34000.0f); });
+		EnemyRenderer->SetAnimationStartEvent("em0100_attack_A", 135, [=] { SetMoveStop(); });
+		EnemyRenderer->SetAnimationStartEvent("em0100_attack_A", 136, [=] { SetAdvance(29000.0f); });
+		EnemyRenderer->SetAnimationStartEvent("em0100_attack_B", 67, [=] { SetMoveStop(); });
+		EnemyRenderer->SetAnimationStartEvent("em0100_attack_B", 68, [=] { SetAdvance(29000.0f); });
+		EnemyRenderer->SetAnimationStartEvent("em0100_attack_W", 135, [=] { SetMoveStop(); });
+		EnemyRenderer->SetAnimationStartEvent("em0100_attack_W", 136, [=] { SetAdvance(29000.0f); });
+		EnemyRenderer->SetAnimationStartEvent("em0100_attack_C", 87, [=] { SetMoveStop(); });
+		EnemyRenderer->SetAnimationStartEvent("em0100_attack_C", 88, [=] { SetAdvance(24000.0f); });
+		EnemyRenderer->SetAnimationStartEvent("em0100_attack_D", 87, [=] { SetMoveStop(); });
+		EnemyRenderer->SetAnimationStartEvent("em0100_attack_D", 88, [=] { SetAdvance(24000.0f); });
 	}
 
 	// 오른손 위에서 아래로 베기
@@ -830,13 +830,9 @@ void Enemy_Empusa::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0100_attack_A");
 	},
 	.Update = [=](float _DeltaTime) {
-	if (EnemyRenderer->GetCurFrame() <= 61)
+	if (85 < EnemyRenderer->GetCurFrame() && EnemyRenderer->GetCurFrame() <= 118)
 	{
-		SetForwardMove(90.0f);
-	}
-	if (138 < EnemyRenderer->GetCurFrame() && EnemyRenderer->GetCurFrame() <= 178)
-	{
-		SetForwardMove(90.0f);
+		SetForwardMove(70.0f);
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
@@ -853,6 +849,29 @@ void Enemy_Empusa::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0100_attack_B");
 	},
 	.Update = [=](float _DeltaTime) {
+	if (30 < EnemyRenderer->GetCurFrame() && EnemyRenderer->GetCurFrame() <= 57)
+	{
+		SetForwardMove(70.0f);
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_Empusa::Empusa_Biped_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+	// 양손 내려찍기
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Attack_W,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0100_attack_W");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (285 < EnemyRenderer->GetCurFrame() && EnemyRenderer->GetCurFrame() <= 320)
+	{
+		SetForwardMove(90.0f);
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_Empusa::Empusa_Biped_Idle);
@@ -896,21 +915,6 @@ void Enemy_Empusa::EnemyCreateFSM()
 	},
 	.End = [=] {
 	SlerpTime = 0.0f;
-	}
-		});
-	// 양손 내려찍기
-	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Attack_W,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_attack_W");
-	},
-	.Update = [=](float _DeltaTime) {
-	if (true == EnemyRenderer->IsAnimationEnd())
-	{
-		ChangeState(FSM_State_Empusa::Empusa_Biped_Idle);
-		return;
-	}
-	},
-	.End = [=] {
 	}
 		});
 
