@@ -407,14 +407,55 @@ void GameEngineLevel::PostProcessLevelChangeStart()
 
 	while (CameraLoop != CameraEnd)
 	{
-		std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamEffectLoop = CameraLoop->second->CamTarget->Effects.begin();
-		std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamEffectEnd = CameraLoop->second->CamTarget->Effects.end();
+		std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamLastLoop = CameraLoop->second->CamTarget->Effects.begin();
+		std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamLastEnd = CameraLoop->second->CamTarget->Effects.end();
 
-		while (CamEffectLoop != CamEffectEnd)
+		while (CamLastLoop != CamLastEnd)
 		{
-			(*CamEffectLoop)->LevelChangeStart();
+			(*CamLastLoop)->LevelChangeStart();
+			++CamLastLoop;
+		}
 
-			++CamEffectLoop;
+		std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamForwardLoop = CameraLoop->second->CamForwardTarget->Effects.begin();
+		std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamForwardEnd = CameraLoop->second->CamForwardTarget->Effects.end();
+
+		while (CamForwardLoop != CamForwardEnd)
+		{
+			(*CamForwardLoop)->LevelChangeStart();
+			++CamForwardLoop;
+		}
+
+		if (nullptr != CameraLoop->second->CamDeferrdTarget)
+		{
+			std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamDeferrdLoop = CameraLoop->second->CamDeferrdTarget->Effects.begin();
+			std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamDeferrdEnd = CameraLoop->second->CamDeferrdTarget->Effects.end();
+
+			while (CamDeferrdLoop != CamDeferrdEnd)
+			{
+				(*CamDeferrdLoop)->LevelChangeStart();
+				++CamDeferrdLoop;
+			}
+		}
+
+		std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamAlphaLoop = CameraLoop->second->CamAlphaTarget->Effects.begin();
+		std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamAlphaEnd = CameraLoop->second->CamAlphaTarget->Effects.end();
+
+		while (CamAlphaLoop != CamAlphaEnd)
+		{
+			(*CamAlphaLoop)->LevelChangeStart();
+			++CamAlphaLoop;
+		}		
+		
+		if (nullptr != CameraLoop->second->DeferredLightTarget)
+		{
+			std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamDeferredLightLoop = CameraLoop->second->DeferredLightTarget->Effects.begin();
+			std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamDeferredLightEnd = CameraLoop->second->DeferredLightTarget->Effects.end();
+
+			while (CamDeferredLightLoop != CamDeferredLightEnd)
+			{
+				(*CamDeferredLightLoop)->LevelChangeStart();
+				++CamDeferredLightLoop;
+			}
 		}
 
 		++CameraLoop;
@@ -435,13 +476,55 @@ void GameEngineLevel::PostProcessLevelChangeEnd()
 
 	while (CameraLoop != CameraEnd)
 	{
-		std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamEffectLoop = CameraLoop->second->CamTarget->Effects.begin();
-		std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamEffectEnd = CameraLoop->second->CamTarget->Effects.end();
+		std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamLastLoop = CameraLoop->second->CamTarget->Effects.begin();
+		std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamLastEnd = CameraLoop->second->CamTarget->Effects.end();
 
-		while (CamEffectLoop != CamEffectEnd)
+		while (CamLastLoop != CamLastEnd)
 		{
-			(*CamEffectLoop)->LevelChangeEnd();
-			++CamEffectLoop;
+			(*CamLastLoop)->LevelChangeEnd();
+			++CamLastLoop;
+		}
+
+		std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamForwardLoop = CameraLoop->second->CamForwardTarget->Effects.begin();
+		std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamForwardEnd = CameraLoop->second->CamForwardTarget->Effects.end();
+
+		while (CamForwardLoop != CamForwardEnd)
+		{
+			(*CamForwardLoop)->LevelChangeEnd();
+			++CamForwardLoop;
+		}
+
+		if (nullptr != CameraLoop->second->CamDeferrdTarget)
+		{
+			std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamDeferrdLoop = CameraLoop->second->CamDeferrdTarget->Effects.begin();
+			std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamDeferrdEnd = CameraLoop->second->CamDeferrdTarget->Effects.end();
+
+			while (CamDeferrdLoop != CamDeferrdEnd)
+			{
+				(*CamDeferrdLoop)->LevelChangeEnd();
+				++CamDeferrdLoop;
+			}
+		}
+
+		std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamAlphaLoop = CameraLoop->second->CamAlphaTarget->Effects.begin();
+		std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamAlphaEnd = CameraLoop->second->CamAlphaTarget->Effects.end();
+
+		while (CamAlphaLoop != CamAlphaEnd)
+		{
+			(*CamAlphaLoop)->LevelChangeEnd();
+			++CamAlphaLoop;
+		}
+
+		if (nullptr != CameraLoop->second->DeferredLightTarget)
+		{
+			std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamDeferredLightLoop = CameraLoop->second->DeferredLightTarget->Effects.begin();
+			std::vector<std::shared_ptr<GameEnginePostProcess>>::iterator CamDeferredLightEnd = CameraLoop->second->DeferredLightTarget->Effects.end();
+
+			while (CamDeferredLightLoop != CamDeferredLightEnd)
+			{
+				(*CamDeferredLightLoop)->LevelChangeEnd();
+				++CamDeferredLightLoop;
+			}
 		}
 
 		++CameraLoop;
