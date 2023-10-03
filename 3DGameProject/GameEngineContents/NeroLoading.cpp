@@ -1,28 +1,39 @@
 #include "PrecompileHeader.h"
-#include "NeroLoding.h"
+#include "NeroLoading.h"
 #include "InvenUIButton.h"
 #include "InfoUIRender.h"
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
 
-NeroLoding::NeroLoding() 
+NeroLoading::NeroLoading() 
 {
 }
 
-NeroLoding::~NeroLoding() 
+NeroLoading::~NeroLoading() 
 {
 }
 
-void NeroLoding::Start()
+void NeroLoading::Start()
 {
 	LodingBackRender = CreateComponent<GameEngineUIRenderer>(0);
-	LodingBackRender->SetTexture("LodingTexture.png");
+	LodingBackRender->SetTexture("LoadingTexture.png");
 	LodingBackRender->GetTransform()->SetLocalScale({ 1920.0f,1080.0f,0.0f });
 	LodingBackRender->GetTransform()->SetLocalPosition({ 155.0f,0.0f,0.0f });
 
+	GaugeBackRender = CreateComponent<GameEngineUIRenderer>(2);
+	GaugeBackRender->SetTexture("LoadingGaugeBar.png");
+	GaugeBackRender->GetTransform()->SetLocalPosition({ 0.0f,-400.0f,0.0f });
+	GaugeBackRender->GetTransform()->SetLocalScale({ 1090.0f,15.0f,0.0f });
+
+	GaugeFrontRender = CreateComponent<GameEngineUIRenderer>(2);
+	GaugeFrontRender->SetTexture("LoadingGaugeFrontBar.png");
+	GaugeFrontRender->GetTransform()->SetLocalPosition({ 0.0f,-400.0f,0.0f });
+	GaugeFrontRender->GetTransform()->SetLocalScale({ 1090.0f,15.0f,0.0f });
+	GaugeFrontRender->ImageClippingX(0.0f, ClipXDir::Left);
+	
 	ExplanePtr = GetLevel()->CreateActor<InfoUIRender>();
 	ExplanePtr->GetRender()->SetTexture("NullTexture.png");
-	ExplanePtr->GetRender_Bar()->SetTexture("LodingExplaneBar.png");
+	ExplanePtr->GetRender_Bar()->SetTexture("LoadingExplaneBar.png");
 	ExplanePtr->GetRender_Bar()->GetTransform()->SetLocalPosition({ 392.0f,96.0f,0.0f });
 	ExplanePtr->GetRender_Bar()->GetTransform()->SetLocalScale({ -546.0f,4.0f,0.0f });
 	ExplanePtr->GetRender_Base()->SetTexture("NullTexture.png");
@@ -32,7 +43,7 @@ void NeroLoding::Start()
 	ExplanePtr->SetUIText({ ._Text = "TIPS" });
 	
 	ArrowLeftPtr = GetLevel()->CreateActor<InvenUIButton>();
-	ArrowLeftPtr->GetRender()->SetTexture("LodingArrow.png");
+	ArrowLeftPtr->GetRender()->SetTexture("LoadingArrow.png");
 	ArrowLeftPtr->GetRender()->GetTransform()->SetLocalScale({ 18.0f,19.0f,0.0f });
 	ArrowLeftPtr->SetLerpValue(float4(90.f, 0.f, 0.0f), float4(80.f, 0.f, 0.0f));
 	ArrowLeftPtr->SetEvent([this]()
@@ -43,12 +54,13 @@ void NeroLoding::Start()
 			}
 			else
 			{
+				CurLoading += 10;
 				Index++;
 			}
 
 		});
 	ArrowRightPtr = GetLevel()->CreateActor<InvenUIButton>();
-	ArrowRightPtr->GetRender()->SetTexture("LodingArrow.png");
+	ArrowRightPtr->GetRender()->SetTexture("LoadingArrow.png");
 	ArrowRightPtr->GetRender()->GetTransform()->SetLocalScale({ -18.0f,19.0f,0.0f });
 	ArrowRightPtr->SetLerpValue(float4(685.f, 0.f, 0.0f), float4(695.f, 0.f, 0.0f));
 	ArrowRightPtr->SetEvent([this]()
@@ -59,29 +71,22 @@ void NeroLoding::Start()
 			}
 			else
 			{
+				CurLoading -= 10;
 				Index--;
 			}
 		});
 	TextStart();
 }
 
-void NeroLoding::Update(float _Delta)
+void NeroLoading::Update(float _Delta)
 {
-	if (Index == 0)
-	{
-		FirstLine->SetText("무슨 말을 적는게 좋을까요?");
-		SecoundLine->SetText("아! 하고 싶은 말이 있어요");
-		ThirdLine->SetText("옆에 화살표를 눌러주시겠어요?");
-	}
-	else
-	{
-		FirstLine->SetText("우리팀 사랑해요");
-		SecoundLine->SetText("우리 모두 힘내봐여");
-		ThirdLine->SetText("더 열심히 할게요");
-	}
+	// 쓰레드 진행률 = CurLoading
+	GaugeFrontRender->ImageClippingX(static_cast<float>(CurLoading) / static_cast<float>(MaxLoading), ClipXDir::Left);
+	TextSetting();
+
 }
 
-void NeroLoding::TextStart()
+void NeroLoading::TextStart()
 {
 	FirstLine = CreateComponent<GameEngineFontRenderer>(5);
 	FirstLine->SetFont("나눔바른고딕 옛한글");
@@ -103,5 +108,21 @@ void NeroLoding::TextStart()
 	ThirdLine->SetColor(float4(0.48f, 0.556f, 0.623f));
 	ThirdLine->GetTransform()->SetLocalPosition({ 141.0f,15.0f,0.0f });
 
+}
+
+void NeroLoading::TextSetting()
+{
+	if (Index == 0)
+	{
+		FirstLine->SetText("무슨 말을 적는게 좋을까요?");
+		SecoundLine->SetText("아! 하고 싶은 말이 있어요");
+		ThirdLine->SetText("옆에 화살표를 눌러주시겠어요?");
+	}
+	else
+	{
+		FirstLine->SetText("우리팀 사랑해요");
+		SecoundLine->SetText("우리 모두 힘내봐여");
+		ThirdLine->SetText("더 열심히 할게요");
+	}
 }
 

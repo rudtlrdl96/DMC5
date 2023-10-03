@@ -231,7 +231,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="NeroLoding.h">
+    <ClInclude Include="NeroLoading.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -750,7 +750,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="NeroLoding.cpp">
+    <ClCompile Include="NeroLoading.cpp">
       <SubType>
       </SubType>
     </ClCompile>

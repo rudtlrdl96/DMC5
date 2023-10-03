@@ -1,27 +1,28 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
 // Ό³Έν :
-class NeroLoding : public GameEngineActor
+class NeroLoading : public GameEngineActor
 {
 public:
 	// constrcuter destructer
-	NeroLoding();
-	~NeroLoding();
+	NeroLoading();
+	~NeroLoading();
 
 	// delete Function
-	NeroLoding(const NeroLoding& _Other) = delete;
-	NeroLoding(NeroLoding&& _Other) noexcept = delete;
-	NeroLoding& operator=(const NeroLoding& _Other) = delete;
-	NeroLoding& operator=(NeroLoding&& _Other) noexcept = delete;
+	NeroLoading(const NeroLoading& _Other) = delete;
+	NeroLoading(NeroLoading&& _Other) noexcept = delete;
+	NeroLoading& operator=(const NeroLoading& _Other) = delete;
+	NeroLoading& operator=(NeroLoading&& _Other) noexcept = delete;
 
 protected:
 	void Start() override;
 	void Update(float _Delta) override;
 private:
 	void TextStart();
+	void TextSetting();
 	std::shared_ptr<class GameEngineUIRenderer> LodingBackRender = nullptr;
-	std::shared_ptr<class GameEngineUIRenderer> LodingFrontRender = nullptr;
-	std::shared_ptr<class GameEngineUIRenderer> LodingNeroRender = nullptr;
+	std::shared_ptr<class GameEngineUIRenderer> GaugeBackRender = nullptr;
+	std::shared_ptr<class GameEngineUIRenderer> GaugeFrontRender = nullptr;
 	std::shared_ptr<class InvenUIButton> ArrowLeftPtr = nullptr;
 	std::shared_ptr<class InvenUIButton> ArrowRightPtr = nullptr;
 	std::shared_ptr<class InfoUIRender> ExplanePtr = nullptr;
@@ -31,5 +32,9 @@ private:
 	std::shared_ptr<class GameEngineFontRenderer> ThirdLine = nullptr;
 
 	int Index = 0;
+	float fillTime = 0.0f;
+	int MaxLoading = 100;
+	int CurLoading = 0;
+
 };
 

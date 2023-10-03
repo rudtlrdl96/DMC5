@@ -4,7 +4,7 @@
 #include "NeroItemGlass.h"
 #include <GameEngineCore/GameEngineFBXMesh.h>
 #include <GameEngineCore/GameEngineFont.h>
-#include "NeroLoding.h"
+#include "NeroLoading.h"
 PlayUITestLevel::PlayUITestLevel()
 {
 }
@@ -21,7 +21,7 @@ void PlayUITestLevel::Start()
 
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
-	std::shared_ptr<NeroLoding> NeroHPUIPtr = CreateActor<NeroLoding>();
+	std::shared_ptr<NeroLoading> NeroHPUIPtr = CreateActor<NeroLoading>();
 	//std::shared_ptr<NeroItemGlass> NeroItemGlassPtr = CreateActor<NeroItemGlass>();
    
 	
