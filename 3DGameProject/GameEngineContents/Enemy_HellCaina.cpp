@@ -67,10 +67,18 @@ void Enemy_HellCaina::PlayerChase(float _DeltaTime)
 		AllDirectSetting();
 		ChangeState(FSM_State_HellCaina::HellCaina_Navi_Turn_Left);
 		break;
+	case EnemyRotation::Left_90:
+		AllDirectSetting();
+		ChangeState(FSM_State_HellCaina::HellCaina_Navi_Turn_Left);
+		break;
 	case EnemyRotation::Left_180:
 		ChangeState(FSM_State_HellCaina::HellCaina_Turn_Left_180);
 		break;
 	case EnemyRotation::Right:
+		AllDirectSetting();
+		ChangeState(FSM_State_HellCaina::HellCaina_Navi_Turn_Right);
+		break;
+	case EnemyRotation::Right_90:
 		AllDirectSetting();
 		ChangeState(FSM_State_HellCaina::HellCaina_Navi_Turn_Right);
 		break;

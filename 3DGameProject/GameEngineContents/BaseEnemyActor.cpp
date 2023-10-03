@@ -33,9 +33,8 @@ void BaseEnemyActor::Start()
 	//PhysX(충돌)
 	PhysXCapsule = CreateComponent<PhysXCapsuleComponent>();
 	PhysXCapsule->SetPhysxMaterial(0, 0, 0);
-	PhysXCapsule->CreatePhysXActors({ 90, 60, 90 });
+	PhysXCapsule->CreatePhysXActors({ 90, 90, 90 });
 	PhysXCapsule->GetDynamic()->setMass(80.0f);
-	//PhysXCapsule->SetWorldPosition({ 0, 100, 0 });
 	BindPhysicsWithNet(PhysXCapsule);
 
 	//공격 가능한 Enemy Collision
@@ -259,9 +258,13 @@ void BaseEnemyActor::RotationCheck()
 	}
 	else if (CrossResult.y < 0)
 	{
-		if (-20.0f > DotProductResult && -165.0f <= DotProductResult)
+		if (-20.0f > DotProductResult && -75.0f <= DotProductResult)
 		{
 			EnemyRotationValue = EnemyRotation::Left;
+		}
+		else if (-75.0f > DotProductResult && -165.0f <= DotProductResult)
+		{
+			EnemyRotationValue = EnemyRotation::Left_90;
 		}
 		else if (-165.0f > DotProductResult && -180.0f <= DotProductResult)
 		{
@@ -270,9 +273,13 @@ void BaseEnemyActor::RotationCheck()
 	}
 	else if (CrossResult.y > 0)
 	{
-		if (20.0f < DotProductResult && 165.0f >= DotProductResult)
+		if (20.0f < DotProductResult && 75.0f >= DotProductResult)
 		{
 			EnemyRotationValue = EnemyRotation::Right;
+		}
+		else if (75.0f < DotProductResult && 165.0f >= DotProductResult)
+		{
+			EnemyRotationValue = EnemyRotation::Right_90;
 		}
 		else if (165.0f < DotProductResult && 180.0f >= DotProductResult)
 		{
