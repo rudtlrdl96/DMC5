@@ -88,8 +88,9 @@ public:
 		const std::vector<float*>& _FloatDatas,
 		const std::vector<bool*>& _BoolDatas);
 	
-	//Update패킷을 보낼때 이 인터페이스를 이용해서 보내주시면 됩니다.(얘는 패킷을 바로 보냅니다)
-	static void SendFsmChangePacket(NetworkObjectBase* _NetObjPtr, int _FsmState);
+	//FsmChange패킷을 보낼때 이 인터페이스를 이용해서 보내주시면 됩니다.(얘는 패킷을 바로 보냅니다)
+	static void SendFsmChangePacket(NetworkObjectBase* _NetObjPtr, int _FsmState, bool _IsPassiveRequest = false);
+
 
 
 	//이미 생성되어 있는 오브젝트를 서버와 연동시킵니다.
