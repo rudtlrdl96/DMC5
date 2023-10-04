@@ -146,7 +146,7 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 	if (nullptr == AttackCol) { return; }
 
 	PlayerAttackCheck(AttackCol.get());
-
+	MonsterAttackCollision->Off();
 	AttackDirectCheck();
 
 	if (true == AnimationTurnStart)

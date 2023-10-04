@@ -58,26 +58,32 @@ void Enemy_Empusa::PlayerChase(float _DeltaTime)
 	switch (EnemyRotationValue)
 	{
 	case EnemyRotation::Forward:
+	{
 		AllDirectSetting();
-		if (true)
-		{
-			ChangeState(FSM_State_Empusa::Empusa_Biped_Run_Start);
-		}
-		else
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+		if (0 == RandC)
 		{
 			ChangeState(FSM_State_Empusa::Empusa_Biped_Walk_Start);
 		}
+		else
+		{
+			ChangeState(FSM_State_Empusa::Empusa_Biped_Run_Start);
+		}
+	}
 		break;
 	case EnemyRotation::Left:
+	{
 		AllDirectSetting();
-		if (true)
-		{
-			ChangeState(FSM_State_Empusa::Empusa_Biped_Run_Start);
-		}
-		else
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+		if (0 == RandC)
 		{
 			ChangeState(FSM_State_Empusa::Empusa_Biped_Walk_Start);
 		}
+		else
+		{
+			ChangeState(FSM_State_Empusa::Empusa_Biped_Run_Start);
+		}
+	}
 		break;
 	case EnemyRotation::Left_90:
 		ChangeState(FSM_State_Empusa::Empusa_Turn_Left_90);
@@ -86,15 +92,18 @@ void Enemy_Empusa::PlayerChase(float _DeltaTime)
 		ChangeState(FSM_State_Empusa::Empusa_Turn_Left_180);
 		break;
 	case EnemyRotation::Right:
+	{
 		AllDirectSetting();
-		if (true)
-		{
-			ChangeState(FSM_State_Empusa::Empusa_Biped_Run_Start);
-		}
-		else
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+		if (0 == RandC)
 		{
 			ChangeState(FSM_State_Empusa::Empusa_Biped_Walk_Start);
 		}
+		else
+		{
+			ChangeState(FSM_State_Empusa::Empusa_Biped_Run_Start);
+		}
+	}
 		break;
 	case EnemyRotation::Right_90:
 		ChangeState(FSM_State_Empusa::Empusa_Turn_Right_90);
@@ -184,7 +193,7 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 	if (nullptr == AttackCol) { return; }
 
 	PlayerAttackCheck(AttackCol.get());
-
+	MonsterAttackCollision->Off();
 	AttackDirectCheck();
 
 	if (true == AnimationTurnStart)
@@ -447,7 +456,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	/////////////////////////////////     Idle     //////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
-	// Idle
+	// ¹Ì¾îÄ¹ Idle
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Idle,
 	.Start = [=] {
 	SetMoveStop();
@@ -481,11 +490,64 @@ void Enemy_Empusa::EnemyCreateFSM()
 	.End = [=] {
 	WaitTime = 0.0f;
 	}
+	});
+
+	// µ¹°Ý Idle
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Quadruped_Idle,
+	.Start = [=] {
+	SetMoveStop();
+	EnemyRenderer->ChangeAnimation("em0100_quadruped_idle");
+	},
+	.Update = [=](float _DeltaTime) {
+	WaitTime += _DeltaTime;
+	if (0.4f <= WaitTime)
+	{
+		ChangeState(FSM_State_Empusa::Empusa_Quadruped_To_Biped);
+		return;
+	}
+	},
+	.End = [=] {
+	WaitTime = 0.0f;
+	}
+		});
+
+	// µ¹°Ý -> ¹Ì¾îÄ¹ Idle
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Quadruped_To_Biped,
+	.Start = [=] {
+	SetMoveStop();
+	EnemyRenderer->ChangeAnimation("em0100_quadruped_to_biped");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_Empusa::Empusa_Biped_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
 		});
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////      Move      //////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	// ¹é½ºÅÜ
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Step_Back,
+	.Start = [=] {
+	SetPush(45000.0f);
+	EnemyRenderer->ChangeAnimation("em0100_step_back");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_Empusa::Empusa_Quadruped_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
 
 	// ¾ÕÀ¸·Î °È±â ½ÃÀÛ
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Walk_Start,
@@ -745,7 +807,18 @@ void Enemy_Empusa::EnemyCreateFSM()
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		ChangeState(FSM_State_Empusa::Empusa_Biped_Idle);
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+		if (0 == RandC)
+		{
+			ChangeState(FSM_State_Empusa::Empusa_Quadruped_To_Biped);
+		}
+		else
+		{
+			PushDirectSetting();
+			RotationCheck();
+			PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
+			ChangeState(FSM_State_Empusa::Empusa_Step_Back);
+		}
 		return;
 	}
 	},
@@ -764,7 +837,18 @@ void Enemy_Empusa::EnemyCreateFSM()
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		ChangeState(FSM_State_Empusa::Empusa_Biped_Idle);
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+		if (0 == RandC)
+		{
+			ChangeState(FSM_State_Empusa::Empusa_Quadruped_To_Biped);
+		}
+		else
+		{
+			PushDirectSetting();
+			RotationCheck();
+			PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
+			ChangeState(FSM_State_Empusa::Empusa_Step_Back);
+		}
 		return;
 	}
 	},
@@ -783,7 +867,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		ChangeState(FSM_State_Empusa::Empusa_Biped_Idle);
+		ChangeState(FSM_State_Empusa::Empusa_Quadruped_To_Biped);
 		return;
 	}
 	},
@@ -800,7 +884,18 @@ void Enemy_Empusa::EnemyCreateFSM()
 	SlerpTurn(_DeltaTime);
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		ChangeState(FSM_State_Empusa::Empusa_Biped_Idle);
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+		if (0 == RandC)
+		{
+			ChangeState(FSM_State_Empusa::Empusa_Quadruped_To_Biped);
+		}
+		else
+		{
+			PushDirectSetting();
+			RotationCheck();
+			PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
+			ChangeState(FSM_State_Empusa::Empusa_Step_Back);
+		}
 		return;
 	}
 	},
@@ -818,7 +913,18 @@ void Enemy_Empusa::EnemyCreateFSM()
 	SlerpTurn(_DeltaTime);
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		ChangeState(FSM_State_Empusa::Empusa_Biped_Idle);
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+		if (0 == RandC)
+		{
+			ChangeState(FSM_State_Empusa::Empusa_Quadruped_To_Biped);
+		}
+		else
+		{
+			PushDirectSetting();
+			RotationCheck();
+			PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
+			ChangeState(FSM_State_Empusa::Empusa_Step_Back);
+		}
 		return;
 	}
 	},
@@ -1359,6 +1465,33 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Idle,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_biped_idle");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Quadruped_Idle,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0100_quadruped_idle");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Quadruped_To_Biped,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0100_quadruped_to_biped");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Step_Back,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0100_step_back");
 	},
 	.Update = [=](float _DeltaTime) {
 	},

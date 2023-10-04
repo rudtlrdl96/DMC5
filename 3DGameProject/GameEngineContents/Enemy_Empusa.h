@@ -9,32 +9,19 @@ enum FSM_State_Empusa
 	// 기본 (자세가 3개임 // biped == 미어캣 자세 // orb == 오브 흡수 자세 (오브자세, 땅에 머리박고 있음) // quadruped == 돌격 자세)
 	// 미어캣 자세
 	Empusa_Biped_Idle, // em0100_biped_idle, 미어캣처럼 서있음
-	Empusa_Biped_Detected, // em0100_biped_detected, 미어캣처럼 서있다가 적발견
-	Empusa_Biped_Search, // em0100_biped_search, 미어캣처럼 서있으면서 고개 돌리면서 서치
 	Empusa_Biped_To_Quadruped, // em0100_biped_to_quadruped, 미어캣->돌격자세 변경
-	Empusa_Idle_Undetected, // em0100_Idle_undetected, 미어캣처럼 서있음
-	Empusa_Idle_Variation_A, // em0100_Idle_variation_A, 미어캣 휴식자세 A 
-	Empusa_Idle_Variation_B, // em0100_Idle_variation_B, 미어캣 휴식자세 B
-
-	// 오브 자세
-	Empusa_Orb_Absorb_Stay, // em0100_orb_absorb_stay, 오브 흡수 자세
-	Empusa_Orb_Absorb_Walk_Start, // em0100_orb_absorb_walk_start, 오브자세 움직임 시작
-	Empusa_Orb_Absorb_Walk_Loop, // em0100_orb_absorb_walk_loop, 오브자세 움직임 루프
-	Empusa_Orb_Absorb_Walk_Stop, // em0100_orb_absorb_walk_stop, 오브자세 움직임 종료
-	Empusa_Setting_D, // em0100_setting_D, 오브자세 휴식
-	Empusa_Sonicwave_Start, // em0100_sonicwave_start, 미어캣자세->오브자세
-	Empusa_Sonicwave_Loop, // em0100_sonicwave_loop, 오브자세 루프
-	Empusa_Sonicwave_End, // em0100_sonicwave_end, 오브자세->미어캣 자세
 
 	// 돌격 자세
 	Empusa_Quadruped_Idle, // em0100_quadruped_idle : 돌격자세
-	Empusa_Quadruped_Detected, // em0100_quadruped_detected : 돌격자세 적발견
-	Empusa_Quadruped_Menace, // em0100_quadruped_menace : 돌격자세 위협
-	Empusa_Quadruped_Search, // em0100_quadruped_search : 돌격자세 고개 돌리면서 서치
 	Empusa_Quadruped_To_Biped, // em0100_quadruped_to_biped : 돌격자세->미어캣자세 변경
+
+	// 휴식
+	Empusa_Idle_Variation_A, // em0100_Idle_variation_A, 미어캣 휴식자세 A 
+	Empusa_Idle_Variation_B, // em0100_Idle_variation_B, 미어캣 휴식자세 B
 	Empusa_Idle_Variation_C, // em0100_Idle_variation_C : 휴식자세 C / 돌격자세
 	Empusa_Idle_Variation_D, // em0100_Idle_variation_D : 휴식자세 D / 돌격자세
 	Empusa_Setting_C, // em0100_setting_C : 돌격자세 휴식
+	Empusa_Setting_D, // em0100_setting_D, 오브자세 휴식
 
 	// 움직임
 	Empusa_Biped_Run_Start, // em0100_biped_run_start : 미어캣자세->돌격자세 변경되면서 움직임 시작
@@ -43,10 +30,7 @@ enum FSM_State_Empusa
 	Empusa_Biped_Walk_Start, // em0100_biped_walk_start : 미어캣 자세 움직임 시작
 	Empusa_Biped_Walk_Loop, // em0100_biped_walk_loop : 미어캣 자세 움직임 루프
 	Empusa_Biped_Walk_Stop, // em0100_biped_walk_stop : 미어캣 자세 움직임 끝
-	Empusa_Step_Front, // em0100_step_front : 돌격자세 앞으로 한번 전진
 	Empusa_Step_Back, // em0100_step_back : 돌격자세 뒤로 한번 전진
-	Empusa_Step_Left, // em0100_step_left : 돌격자세 왼쪽으로 한번 전진
-	Empusa_Step_Right, // em0100_step_right : 돌격자세 오른쪽으로 한번 전진
 
 	// 회전
 	Empusa_Turn_Left_90, // em0100_turn_90_left : 미어캣 자세 왼쪽 90도 턴
