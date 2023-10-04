@@ -278,9 +278,15 @@ void NetworkManager::SendFsmChangePacket(NetworkObjectBase* _NetObjPtr, int _Fsm
 		return;
 	}
 
-	if ((false == _IsPassiveRequest) && (NetControllType::PassiveControll == _NetObjPtr->GetControllType()))
+	NetControllType NetCtrlType = _NetObjPtr->GetControllType();
+	if ((false == _IsPassiveRequest) && (NetControllType::PassiveControll == NetCtrlType))
 	{
 		MsgAssert("패킷을 받아 처리되는 오브젝트가 Fsm변경 패킷을 보낼려고 했습니다");
+		return;
+	}
+	else if ((true == _IsPassiveRequest) && (NetControllType::ActiveControll == NetCtrlType))
+	{
+		MsgAssert("Fsm을 직접 변경하는 객체가 FSM 변경 요청 패킷을 보낼려고 했습니다");
 		return;
 	}
 
