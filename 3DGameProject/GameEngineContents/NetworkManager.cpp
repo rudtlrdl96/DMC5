@@ -241,7 +241,7 @@ void NetworkManager::PushUpdatePacket(
 }
 
 
-void NetworkManager::SendFsmChangePacket(NetworkObjectBase* _NetObjPtr, int _FsmState)
+void NetworkManager::SendFsmChangePacket(NetworkObjectBase* _NetObjPtr, int _FsmState, bool _IsPassiveRequest/*= false*/)
 {
 	if (nullptr == _NetObjPtr)
 	{
@@ -278,7 +278,7 @@ void NetworkManager::SendFsmChangePacket(NetworkObjectBase* _NetObjPtr, int _Fsm
 		return;
 	}
 
-	if (NetControllType::PassiveControll == _NetObjPtr->GetControllType())
+	if ((false == _IsPassiveRequest) && (NetControllType::PassiveControll == _NetObjPtr->GetControllType()))
 	{
 		MsgAssert("패킷을 받아 처리되는 오브젝트가 Fsm변경 패킷을 보낼려고 했습니다");
 		return;
