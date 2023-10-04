@@ -52,7 +52,7 @@ void TestStageLevel::Start()
 		GameEngineInput::CreateKey("BakeTestKey", VK_SPACE);
 	}
 
-	CreateActor<ShaderTestActor>()->GetTransform()->SetWorldPosition(float4(0, 100, 0));
+	//CreateActor<ShaderTestActor>()->GetTransform()->SetWorldPosition(float4(0, 100, 0));
 
 }
 
@@ -106,7 +106,7 @@ void TestStageLevel::LevelChangeStart()
 	SetCamera({ 0,0,-500 });
 	CreateStage(AllStageDatas[0]);
 
-	if (false)
+	if (true)
 	{
 		std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
 		Nero->SetUserControllType();
@@ -128,7 +128,7 @@ void TestStageLevel::LevelChangeStart()
 	Light->GetTransform()->SetLocalRotation(float4(90, 0, 0));
 	Light->LightDataValue.LightPower = 3.0f;
 
-	CreateActor<ShaderTestActor>()->GetTransform()->SetLocalPosition(float4(0, 200, 0));
+	//CreateActor<ShaderTestActor>()->GetTransform()->SetLocalPosition(float4(0, 200, 0));
 
 	//std::shared_ptr<GameEngineLight> Light = CreatePointLight(float4(0, 400, 0), float4(512, 512), 1024);
 	//Light->LightDataValue.LightPower = 1.0f;

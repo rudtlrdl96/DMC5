@@ -156,8 +156,15 @@ void PlayerActor_Nero::PlayerLoad()
 		Renderer->ShadowOn();
 		Renderer->SetDynamic();
 
-		Renderer->SetSpecularTexture("pl0000_03_albm.texout.png", "pl0000_03_atos.texout.png");
-		Renderer->SetSpecularTexture("pl0010_03_albm.texout.png", "pl0010_03_atos.texout.png");
+		//Renderer->SetSpecularTexture("pl0000_03_albm.texout.png", "pl0000_03_atos.texout.png");
+		//Renderer->SetSpecularTexture("pl0010_03_albm.texout.png", "pl0010_03_atos.texout.png");
+
+		Renderer->SetMaterial("pl0000_03_albm.texout.png", "AniFBX_Alpha", nullptr);
+
+		// 해당 이름으로 DeffuseTexture를 사용하고 있는 랜더 유닛의 머티리얼을 변경합니다.
+		//void SetMaterial(const std::string_view& _DeffuseTextureName,
+		//	const std::string_view& _MaterialName,
+		//	std::function<void(std::shared_ptr<GameEngineRenderUnit>)> _Setting);
 
 		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer, .RendererLocalPos = {0, -75, 0},
 			.Objects = { (GameEngineObject*)Col_Attack.get() },
@@ -3266,6 +3273,8 @@ void PlayerActor_Nero::NetLoad()
 		default:
 			break;
 		}
+
+		Renderer->SetMaterial("pl0000_03_albm.texout.png", "AniFBX_Alpha", nullptr);
 
 		Renderer->ShadowOn();
 		Renderer->SetDynamic();

@@ -69,6 +69,58 @@ float GGX_Distribution(float3 normal, float3 halfVector, float roughness)
     return a / (3.14f * denominator * denominator);
 }
 
+
+struct ResultLight
+{
+    float3 CurLightDiffuseRatio;
+    float3 CurLightSpacularRatio;
+    float3 CurLightAmbientRatio;
+};
+
+ResultLight CalLight(int _LightIndex, float4 _Position, float4 _Normal, float _Metal)
+{
+    ResultLight Result;
+    
+    Result.CurLightDiffuseRatio = float3(0, 0, 0);
+    Result.CurLightSpacularRatio = float3(0, 0, 0);
+    Result.CurLightAmbientRatio = float3(0, 0, 0);
+    
+    float LightPower = AllLight[_LightIndex].LightPower;
+        
+    if (0 != AllLight[_LightIndex].LightType)
+    {
+        float Distance = length(AllLight[_LightIndex].ViewLightPos.xyz - _Position.xyz);
+            
+        float FallOffStart = AllLight[_LightIndex].LightRange * 0.2f;
+        float FallOffEnd = AllLight[_LightIndex].LightRange;
+                        
+        LightPower *= saturate((FallOffEnd - Distance) / (FallOffEnd - FallOffStart));
+    }
+        
+    if (2 == AllLight[_LightIndex].LightType)
+    {
+        // ToLight
+        float3 LightVec = normalize(_Position.xyz - AllLight[_LightIndex].ViewLightPos.xyz);
+        float3 SpotDirToLight = normalize(AllLight[_LightIndex].ViewLightDir.xyz);
+       
+        float CosAng = acos(dot(SpotDirToLight, LightVec)) * RadToDeg;
+        float LightAng = AllLight[_LightIndex].LightAngle * 0.5f;
+        
+        float ConAtt = saturate((LightAng - CosAng) / LightAng);
+        
+        LightPower *= (ConAtt * ConAtt);
+    }
+        
+    if (0.0f < LightPower)
+    {
+        Result.CurLightDiffuseRatio = AllLight[_LightIndex].LightColor.xyz * CalDiffuseLight(_Position, _Normal, AllLight[_LightIndex]).xyz * LightPower;
+        Result.CurLightSpacularRatio = AllLight[_LightIndex].LightColor.xyz * CalSpacularLight(_Position, _Normal, AllLight[_LightIndex]).xyz * (1.0f - _Metal) * LightPower * 0.5f;
+        Result.CurLightAmbientRatio = AllLight[_LightIndex].LightColor.xyz * CalAmbientLight(AllLight[_LightIndex]).xyz * LightPower;
+    }
+    
+    return Result;
+}
+
 AlphaOutPut MeshTexture_PS(Output _Input)
 {
     AlphaOutPut Result = (AlphaOutPut)0;
@@ -108,55 +160,22 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     // AlbmData -> metallicValue 값에 따라서 결정되어야 한다        
     //Result.ResultColor.rgb = lerp(AlbmData.rgb, float3(0, 0, 0), metallic);
     
-    float4 DiffuseRatio = (float4) 0.0f;
-    float4 SpacularRatio = (float4) 0.0f;
-    float4 AmbientRatio = (float4) 0.0f;
+    
+    float3 DiffuseRatio = (float3) 0.0f;
+    float3 SpacularRatio = (float3) 0.0f;
+    float3 AmbientRatio = (float3) 0.0f;
     
     for (int i = 0; i < LightCount; ++i)
     {
-        float LightPower = AllLight[i].LightPower;
+        ResultLight CalLightData = CalLight(i, _Input.VIEWPOSITION, _Input.NORMAL, metallic);
         
-        if (0 != AllLight[i].LightType)
-        {
-            float Distance = length(AllLight[i].ViewLightPos.xyz - _Input.VIEWPOSITION.xyz);
-            
-            // 200
-            float FallOffStart = AllLight[i].LightRange * 0.2f;
-            
-            // 1000
-            float FallOffEnd = AllLight[i].LightRange;
-            
-            if (Distance > FallOffEnd)
-            {
-                continue;
-            }
-            
-            LightPower *= saturate((FallOffEnd - Distance) / (FallOffEnd - FallOffStart));
-        }
-        
-        if (2 == AllLight[i].LightType)
-        {
-            float3 LightVec = normalize(AllLight[i].ViewLightPos.xyz - _Input.VIEWPOSITION.xyz);
-            float3 SpotCone = pow(saturate(dot(LightVec, normalize(AllLight[i].ViewLightDir.xyz))), AllLight[i].LightAngle);
-            
-            LightPower *= SpotCone;
-        }
-        
-        if (0.0f < LightPower)
-        {
-            // Diffuse Light 계산
-            DiffuseRatio.xyz += AllLight[i].LightColor.xyz * CalDiffuseLight(_Input.VIEWPOSITION, Normal, AllLight[i]).xyz * LightPower;
-        
-            // Spacular Light 계산
-            SpacularRatio.xyz += AllLight[i].LightColor.xyz * CalSpacularLight(_Input.VIEWPOSITION, Normal, AllLight[i]).xyz * (1.0f - metallic) * LightPower;
-        }
+        DiffuseRatio += CalLightData.CurLightDiffuseRatio;
+        SpacularRatio += CalLightData.CurLightSpacularRatio;
+        AmbientRatio += CalLightData.CurLightAmbientRatio;
     }
     
-    AmbientRatio = AllLight[0].AmbientLight;
-    
-    Result.ResultColor.rgb = Result.ResultColor.rgb * (DiffuseRatio.rgb + SpacularRatio.rgb + AmbientRatio.rgb);
+    Result.ResultColor.rgb = Result.ResultColor.rgb * (DiffuseRatio + SpacularRatio + AmbientRatio);
     Result.ResultColor.a = AtosData.r;
-      
     Result.ResultColor += AddColor;
     Result.ResultColor *= MulColor;
     
