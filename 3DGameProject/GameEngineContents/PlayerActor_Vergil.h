@@ -77,6 +77,16 @@ enum FSM_State_Vergil
 	// 데빌트리거 기술
 	Vergil_DT_Start,
 	Vergil_DT_End,
+
+	Vergil_Damage_Light,
+	Vergil_Damage_Heavy,
+
+	Vergil_Damage_Fly,
+	Vergil_Damage_Fall,
+	Vergil_Damage_Ground,
+
+	Vergil_Damage_Death,
+	Vergil_Damage_Fly_Death,
 };
 
 enum FSM_State_MirageBlade
@@ -131,6 +141,8 @@ protected:
 	void NetLoad();
 	void Update_Character(float _DeltaTime) override;
 
+	void LightDamage() override;
+	void HeavyDamage() override;
 private:
 
 	std::vector<std::shared_ptr<class Player_MirageBlade>> AllMirageBlades;

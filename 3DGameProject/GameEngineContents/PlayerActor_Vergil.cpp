@@ -1864,6 +1864,189 @@ void PlayerActor_Vergil::PlayerLoad()
 		}
 			});
 	}
+	/* ´ë¹ÌÁö */
+	{
+		// Damage Light
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Light,
+			.Start = [=] {
+				WeaponIdle();
+				PhysXCapsule->SetLinearVelocityZero();
+				PhysXCapsule->TurnOffGravity();
+				Renderer->ChangeAnimation("pl0300_Damage_Common", true);
+				InputCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (true == Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Vergil::Vergil_Idle);
+					return;
+				}
+				if (false == FloorCheck())
+				{
+					ChangeState(FSM_State_Vergil::Vergil_Jump_Fly);
+					return;
+				}
+
+				if (true == Input_SpecialCheck()) { return; }
+				if (InputCheck == false) { return; }
+
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_WarpCheck()) { return; }
+
+				if (Controller->GetMoveVector() != float4::ZERO)
+				{
+					ChangeState(FSM_State_Vergil::Vergil_RunStart);
+					return;
+				}
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage Heavy
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Heavy,
+			.Start = [=] {
+				WeaponIdle();
+				PhysXCapsule->SetLinearVelocityZero();
+				PhysXCapsule->TurnOffGravity();
+				Renderer->ChangeAnimation("pl0300_damage_Away", true);
+				InputCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (true == Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Vergil::Vergil_Damage_Fall);
+					return;
+				}
+				if (InputCheck == false) { return; }
+				if (true == FloorCheck())
+				{
+					ChangeState(FSM_State_Vergil::Vergil_Damage_Ground);
+					return;
+				}
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage Fly
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Fly,
+			.Start = [=] {
+				WeaponIdle();
+				PhysXCapsule->SetLinearVelocityZero();
+				PhysXCapsule->TurnOffGravity();
+				Renderer->ChangeAnimation("pl0300_Damage_Air", true);
+			},
+			.Update = [=](float _DeltaTime) {
+				if (true == Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Vergil::Vergil_Damage_Fall);
+					return;
+				}
+				if (true == FloorCheck())
+				{
+					if (HP <= 0)
+					{
+						ChangeState(FSM_State_Vergil::Vergil_Damage_Fly_Death);
+						return;
+					}
+					ChangeState(FSM_State_Vergil::Vergil_Damage_Ground);
+					return;
+				}
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage Fall
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Fall,
+			.Start = [=] {
+				PhysXCapsule->SetPush(float4::DOWN * FlyDownForce);
+				PhysXCapsule->TurnOnGravity();
+				Renderer->ChangeAnimation("pl0300_Damage_Away_Loop");
+			},
+			.Update = [=](float _DeltaTime) {
+				if (true == FloorCheck())
+				{
+					if (HP <= 0)
+					{
+						ChangeState(FSM_State_Vergil::Vergil_Damage_Fly_Death);
+						return;
+					}
+					ChangeState(FSM_State_Vergil::Vergil_Damage_Ground);
+					return;
+				}
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage Ground
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Ground,
+			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
+				PhysXCapsule->TurnOffGravity();
+				Renderer->ChangeAnimation("pl0300_Damage_Away_Bound");
+				InputCheck = false;
+			},
+			.Update = [=](float _DeltaTime) {
+				if (true == Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Vergil::Vergil_Idle);
+					return;
+				}
+				if (false == FloorCheck())
+				{
+					ChangeState(FSM_State_Vergil::Vergil_Jump_Fly);
+					return;
+				}
+
+				if (true == Input_SpecialCheck()) { return; }
+				if (InputCheck == false) { return; }
+
+				if (true == Input_JumpCheck()) { return; }
+				if (true == Input_SwordCheck()) { return; }
+				if (true == Input_GunCheck()) { return; }
+				if (true == Input_WarpCheck()) { return; }
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage Death
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Death,
+			.Start = [=] {
+				WeaponIdle();
+				PhysXCapsule->SetLinearVelocityZero();
+				PhysXCapsule->TurnOffGravity();
+				Renderer->ChangeAnimation("pl0300_damage_Death", true);
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage Fly Death
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Fly_Death,
+			.Start = [=] {
+				WeaponIdle();
+				Renderer->GetAllRenderUnit()[0][5]->Off();
+				Renderer->GetAllRenderUnit()[0][6]->Off();
+				Renderer->GetAllRenderUnit()[0][7]->Off();
+				Renderer->GetAllRenderUnit()[0][8]->Off();
+				Renderer->ChangeAnimation("pl0300_damage_Away_Death", true);
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+				Renderer->GetAllRenderUnit()[0][5]->On();
+			}
+			});
+	}
+
 	ChangeState(FSM_State_Vergil::Vergil_Idle);
 
 	CreateMirageBlade();
@@ -2589,6 +2772,52 @@ void PlayerActor_Vergil::Update_Character(float _DeltaTime)
 			PhysXCapsule->SetWorldRotation({ 0, 0, 0 });
 			ChangeState(FSM_State_Vergil::Vergil_Idle);
 		}
+	}
+
+	if (GameEngineInput::IsDown("SelectLevel_04"))
+	{
+		HP -= 2000;
+		LightDamage();
+	}
+	if (GameEngineInput::IsDown("SelectLevel_05"))
+	{
+		HP -= 2000;
+		HeavyDamage();
+	}
+}
+
+void PlayerActor_Vergil::LightDamage()
+{
+	if (true == FloorCheck())
+	{
+		if (HP <= 0)
+		{
+			ChangeState(FSM_State_Vergil::Vergil_Damage_Death);
+			return;
+		}
+		ChangeState(FSM_State_Vergil::Vergil_Damage_Light);
+		return;
+	}
+	else
+	{
+		ChangeState(FSM_State_Vergil::Vergil_Damage_Fly);
+	}
+}
+
+void PlayerActor_Vergil::HeavyDamage()
+{
+	if (true == FloorCheck())
+	{
+		if (HP <= 0)
+		{
+			ChangeState(FSM_State_Vergil::Vergil_Damage_Death);
+			return;
+		}
+		ChangeState(FSM_State_Vergil::Vergil_Damage_Heavy);
+	}
+	else
+	{
+		ChangeState(FSM_State_Vergil::Vergil_Damage_Fly);
 	}
 }
 

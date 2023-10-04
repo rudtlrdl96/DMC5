@@ -69,11 +69,6 @@ void JudgementCut::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 	{
 		if (0.0f >= BaseValue.SumDeltaTime)
 		{
-			if (true == GameEngineInput::IsDown("Debug_JudgementCutSwitch"))
-			{
-				JudgementCutOn();
-			}
-
 			return;
 		}
 
@@ -82,11 +77,6 @@ void JudgementCut::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 	else
 	{
 		BaseValue.SumDeltaTime += _DeltaTime * Speed;
-
-		if (true == GameEngineInput::IsDown("Debug_JudgementCutSwitch"))
-		{
-			JudgementCutOff();
-		}
 	}
 
 	if (0.0f >= BaseValue.SumDeltaTime)
