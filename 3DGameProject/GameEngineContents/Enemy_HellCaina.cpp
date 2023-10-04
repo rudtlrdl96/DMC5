@@ -464,6 +464,19 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	/////////////////////////////////      Move      //////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
+	{
+		EnemyRenderer->SetAnimationStartEvent("em0000_walk_start", 1, [=] { 
+			
+			int RandC = GameEngineRandom::MainRandom.RandomInt(0, 3);
+
+			if (0 == RandC)
+			{
+				ChangeState(FSM_State_HellCaina::HellCaina_Menace_Up);
+			}
+
+			; });
+	}
+
 	// 앞으로 걷기 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Walk_Start,
 	.Start = [=] {
@@ -476,16 +489,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 4);
-
-		if (0 == RandC)
-		{
-			ChangeState(FSM_State_HellCaina::HellCaina_Menace_Up);
-		}
-		else
-		{
-			ChangeState(FSM_State_HellCaina::HellCaina_Walk_Loop);
-		}
+		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Loop);
 		return;
 	}
 	},
@@ -568,7 +572,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 	SetRightMove(70.0f);
 	AttackDelayTime += _DeltaTime;
-	if (true == IsRecognize && 1.2f <= AttackDelayTime)
+	if (true == IsRecognize && 1.7f <= AttackDelayTime)
 	{
 		IsRecognize = false;
 
@@ -585,7 +589,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 			RandomAttack();
 		}
 	}
-	else if (false == IsRecognize && 1.8f <= AttackDelayTime)
+	else if (false == IsRecognize && 2.3f <= AttackDelayTime)
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Right_Stop);
 		return;
@@ -643,7 +647,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 	SetLeftMove(70.0f);
 	AttackDelayTime += _DeltaTime;
-	if (true == IsRecognize && 1.2f <= AttackDelayTime)
+	if (true == IsRecognize && 1.7f <= AttackDelayTime)
 	{
 		IsRecognize = false;
 
@@ -660,7 +664,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 			RandomAttack();
 		}
 	}
-	else if (false == IsRecognize && 1.8f <= AttackDelayTime)
+	else if (false == IsRecognize && 2.3f <= AttackDelayTime)
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Left_Stop);
 		return;
