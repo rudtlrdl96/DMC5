@@ -11,27 +11,25 @@ ShaderTestActor::~ShaderTestActor()
 
 void ShaderTestActor::Start()
 {
-	return;
-
-	if (nullptr == GameEngineTexture::Find("ShaderTest_Case_0_albm.png"))
-	{
-		std::string DirectoryPath = GameEnginePath::GetFileFullPath("ContentResources",
-			{
-				"Texture", "ShaderDebug"
-			});
-	
-		GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_0_albm.png");
-		GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_1_albm.png");
-		GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_2_albm.png");
-	
-		GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_0_nrmr.png");
-		GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_1_nrmr.png");
-		GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_2_nrmr.png");
-	
-		GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_0_atos.png");
-	}
+	//if (nullptr == GameEngineTexture::Find("ShaderTest_Case_0_albm.png"))
+	//{
+	//	std::string DirectoryPath = GameEnginePath::GetFileFullPath("ContentResources",
+	//		{
+	//			"Texture", "ShaderDebug"
+	//		});
+	//
+	//	GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_0_albm.png");
+	//	GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_1_albm.png");
+	//	GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_2_albm.png");
+	//
+	//	GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_0_nrmr.png");
+	//	GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_1_nrmr.png");
+	//	GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_2_nrmr.png");
+	//
+	//	GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_0_atos.png");
+	//}
 	 
-	TestRenderer = CreateComponent<EffectRenderer>();
+	TestRenderer = CreateComponent<GameEngineFBXRenderer>();
 	 	
 	//FBX파일경로를 찾아서 로드
 	if (nullptr == GameEngineFBXMesh::Find("House1.FBX"))
@@ -44,37 +42,38 @@ void ShaderTestActor::Start()
 		GameEngineFBXMesh::Load(Path);
 	}
 	
-	TestRenderer->SetFBXMesh("House1.fbx", "Effect_3D");
+	TestRenderer->SetShadowFBXMesh("House1.fbx", false);
 	TestRenderer->GetTransform()->SetLocalScale(float4(0.5f, 0.5f, 0.5f));
-	TestRenderer->EffectOption.MulColor = float4(1, 1, 1, 0.5f);
+
+	//TestRenderer->EffectOption.MulColor = float4(1, 1, 1, 0.5f);
 
 	//TestRenderer->SetBaseColor(float4(3, 0, 0));
 	//TestRenderer->ShadowOn();
-	TestRenderer->NormalOff();
+	//TestRenderer->NormalOff();
 
 	//TestRenderer = CreateComponent<EffectRenderer>();
 
-	if (nullptr == GameEngineFBXMesh::Find("Effect_Mesh_01.FBX"))
-	{
-		std::string MeshPath = GameEnginePath::GetFileFullPath("ContentResources",
-			{
-				"Effect", "Mesh"
-			});		
-		
-		std::string TexturePath = GameEnginePath::GetFileFullPath("ContentResources",
-			{
-				"Effect", "Texture"
-			});
-	
-		GameEngineTexture::Load(TexturePath + "\\Effect_Texture_01.tga");
-		GameEngineTexture::Load(TexturePath + "\\Effect_Texture_02.tga");
-		GameEngineTexture::Load(TexturePath + "\\Effect_Texture_03.tga");
-		GameEngineTexture::Load(TexturePath + "\\Effect_Texture_04.tga");
-	
-		GameEngineFBXMesh::Load(MeshPath + "\\Effect_Mesh_01.FBX");
-	}
+	//if (nullptr == GameEngineFBXMesh::Find("Effect_Mesh_01.FBX"))
+	//{
+	//	std::string MeshPath = GameEnginePath::GetFileFullPath("ContentResources",
+	//		{
+	//			"Effect", "Mesh"
+	//		});		
+	//	
+	//	std::string TexturePath = GameEnginePath::GetFileFullPath("ContentResources",
+	//		{
+	//			"Effect", "Texture"
+	//		});
+	//
+	//	GameEngineTexture::Load(TexturePath + "\\Effect_Texture_01.tga");
+	//	GameEngineTexture::Load(TexturePath + "\\Effect_Texture_02.tga");
+	//	GameEngineTexture::Load(TexturePath + "\\Effect_Texture_03.tga");
+	//	GameEngineTexture::Load(TexturePath + "\\Effect_Texture_04.tga");
+	//
+	//	GameEngineFBXMesh::Load(MeshPath + "\\Effect_Mesh_01.FBX");
+	//}
 
-	InitTest(0);
+	//InitTest(0);
 }
 
 void ShaderTestActor::InitTest(int _Index)

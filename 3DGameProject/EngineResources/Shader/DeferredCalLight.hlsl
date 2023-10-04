@@ -138,7 +138,7 @@ float2 VogelDiskSample(int sampleIndex, int samplesCount, float phi)
 
     float sine, cosine;
     sincos(theta, sine, cosine);
-  
+      
     return float2(r * cosine, r * sine);
 }
 
@@ -157,10 +157,10 @@ float CalShadow(float4 _WorldPos, int _LightType)
         
         for (int i = 0; i < SAMPLES_COUNT; ++i)
         {
-            float2 VegelPos = VogelDiskSample(i, SAMPLES_COUNT, 20.0f);
+            float2 VegelPos = VogelDiskSample(i, SAMPLES_COUNT, 1.0f);
             
-            VegelPos.x /= AllLight[LightCount].ShadowTargetSizeX;
-            VegelPos.y /= AllLight[LightCount].ShadowTargetSizeY;
+            VegelPos.x /= (AllLight[LightCount].ShadowTargetSizeX * 0.5f);
+            VegelPos.y /= (AllLight[LightCount].ShadowTargetSizeY * 0.5f);
             
             float2 CalPos = ShadowUV + VegelPos;
             float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, CalPos.xy).r;
@@ -178,15 +178,26 @@ float CalShadow(float4 _WorldPos, int _LightType)
     else if (1 == AllLight[LightCount].LightType) // Point
     {
         float4 ShadowLightPos = AllLight[LightCount].LightPos;
-        float3 LightUV = ShadowWorldPos.xyz - ShadowLightPos.xyz;
-               
-        float ShadowDepthValue = PointShadowTex.Sample(POINTSAMPLER, normalize(LightUV)).r;
+        float3 LightUV = (ShadowWorldPos.xyz - ShadowLightPos.xyz);
         float CurDepthValue = length(LightUV);
+        float ShadowValue = 0.0f;
         
-        if (CurDepthValue >= (ShadowDepthValue + 5.0f))
+        for (int i = 0; i < SAMPLES_COUNT; ++i)
         {
-            return 0.01f;
+            float3 VegelPos = VogelDiskSample(i, SAMPLES_COUNT, 1.0f).xyy;
+            VegelPos.xyz /= (AllLight[LightCount].ShadowTargetSizeX * 0.5f);
+            
+            float3 CalPos = normalize(LightUV) + VegelPos;
+            
+            float ShadowDepthValue = PointShadowTex.Sample(POINTSAMPLER, normalize(CalPos)).r;
+        
+            if (CurDepthValue >= (ShadowDepthValue + 5.0f))
+            {
+                ShadowValue += INV_SAMPLES_COUNT;
+            }        
         }
+                
+        return max(0.01f, 1.0f - ShadowValue);
     }
     else if (2 == AllLight[LightCount].LightType) // Spot
     {
@@ -196,11 +207,11 @@ float CalShadow(float4 _WorldPos, int _LightType)
         float ShadowValue = 0.0f;
         
         for (int i = 0; i < SAMPLES_COUNT; ++i)
-        {  
-            float2 VegelPos = VogelDiskSample(i, SAMPLES_COUNT, 20.0f);
+        {
+            float2 VegelPos = VogelDiskSample(i, SAMPLES_COUNT, 1.0f);
             
-            VegelPos.x /= AllLight[LightCount].ShadowTargetSizeX;
-            VegelPos.y /= AllLight[LightCount].ShadowTargetSizeY;
+            VegelPos.x /= (AllLight[LightCount].ShadowTargetSizeX * 0.5f);
+            VegelPos.y /= (AllLight[LightCount].ShadowTargetSizeY * 0.5f);
             
             float2 CalPos = ShadowUV + VegelPos;
             float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, CalPos.xy).r;
@@ -210,6 +221,7 @@ float CalShadow(float4 _WorldPos, int _LightType)
                 ShadowValue += INV_SAMPLES_COUNT;
             }
         }        
+        
         return max(0.01f, 1.0f - ShadowValue);
     }
         

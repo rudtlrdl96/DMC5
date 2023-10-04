@@ -106,12 +106,16 @@ public:
 
 	void Update(float _DeltaTime) override;
 
-	virtual void SetFBXMesh(const std::string& _Name, std::string _Material);
-	virtual void SetFBXMesh(const std::string& _Name, const std::vector<std::vector<std::string>>& _Materials);
-	virtual void SetFBXMesh(const std::string& _Name, std::string _Material, size_t MeshIndex);
-	virtual void SetFBXMesh(const std::string& _Name, std::vector<std::string> _Material, size_t MeshIndex);
+	virtual void SetFBXMesh(const std::string_view& _Name, const std::string_view& _Material);
+	virtual void SetFBXMesh(const std::string_view& _Name, const std::vector<std::vector<std::string>>& _Materials);
+	virtual void SetFBXMesh(const std::string_view& _Name, const std::string_view& _Material, size_t MeshIndex);
+	virtual void SetFBXMesh(const std::string_view& _Name, std::vector<std::string> _Material, size_t MeshIndex);
 
-	virtual std::shared_ptr<GameEngineRenderUnit> SetFBXMesh(const std::string& _Name, std::string _Material, size_t MeshIndex, size_t _SubSetIndex);
+	void SetShadowFBXMesh(const std::string_view& _Name, bool _IsStatic);
+
+	virtual std::shared_ptr<GameEngineRenderUnit> SetFBXMesh(const std::string_view& _Name, const std::string_view& _Material, size_t MeshIndex, size_t _SubSetIndex);
+
+	std::shared_ptr<GameEngineRenderUnit> SetShadowFBXMesh(const std::string_view& _Name, size_t _MeshIndex, size_t _SubSetIndex = 0);
 
 	inline std::shared_ptr<GameEngineFBXMesh> GetFBXMesh()
 	{

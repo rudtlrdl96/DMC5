@@ -135,25 +135,25 @@ void EffectRenderer::SphereInit(const std::string_view& _MaterialName)
 	CustomOptionSetting();
 }
 
-void EffectRenderer::SetFBXMesh(const std::string& _Name, std::string _Material)
+void EffectRenderer::SetFBXMesh(const std::string_view& _Name, const std::string_view& _Material)
 {
 	GameEngineFBXRenderer::SetFBXMesh(_Name, _Material);
 	CustomOptionSetting();
 }
 
-void EffectRenderer::SetFBXMesh(const std::string& _Name, const std::vector<std::vector<std::string>>& _Materials)
+void EffectRenderer::SetFBXMesh(const std::string_view& _Name, const std::vector<std::vector<std::string>>& _Materials)
 {
 	GameEngineFBXRenderer::SetFBXMesh(_Name, _Materials);
 	CustomOptionSetting();
 }
 
-void EffectRenderer::SetFBXMesh(const std::string& _Name, std::string _Material, size_t MeshIndex)
+void EffectRenderer::SetFBXMesh(const std::string_view& _Name, const std::string_view& _Material, size_t MeshIndex)
 {
 	GameEngineFBXRenderer::SetFBXMesh(_Name, _Material, MeshIndex);
 	CustomOptionSetting();
 }
 
-void EffectRenderer::SetFBXMesh(const std::string& _Name, std::vector<std::string> _Material, size_t MeshIndex)
+void EffectRenderer::SetFBXMesh(const std::string_view& _Name, std::vector<std::string> _Material, size_t MeshIndex)
 {
 	GameEngineFBXRenderer::SetFBXMesh(_Name, _Material, MeshIndex);
 	CustomOptionSetting();

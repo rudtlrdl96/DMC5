@@ -132,8 +132,12 @@ public:
 
 	void Setting();
 
+	void StructuredBufferRelease(const std::string_view& _SettingName);
+
 	void AllResourcesReset();
 
 	void AllResourcesRelease();
+
+
 
 };

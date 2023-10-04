@@ -84,11 +84,11 @@ public:
 	void SphereInit(const std::string_view& _MaterialName);
 
 	// FBX 매쉬를 기준으로 초기화 합니다.
-	void SetFBXMesh(const std::string& _Name, std::string _Material) override;
-	void SetFBXMesh(const std::string& _Name, const std::vector<std::vector<std::string>>& _Materials) override;
+	void SetFBXMesh(const std::string_view& _Name, const std::string_view& _Material) override;
+	void SetFBXMesh(const std::string_view& _Name, const std::vector<std::vector<std::string>>& _Materials) override;
 
-	void SetFBXMesh(const std::string& _Name, std::string _Material, size_t MeshIndex)  override;
-	void SetFBXMesh(const std::string& _Name, std::vector<std::string> _Material, size_t MeshIndex) override;
+	void SetFBXMesh(const std::string_view& _Name, const std::string_view& _Material, size_t MeshIndex)  override;
+	void SetFBXMesh(const std::string_view& _Name, std::vector<std::string> _Material, size_t MeshIndex) override;
 
 	// Animation
 	void SetScaleRatio(float _Ratio)

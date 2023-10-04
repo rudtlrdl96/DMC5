@@ -216,6 +216,20 @@ void GameEngineShaderResHelper::Setting()
 
 }
 
+void GameEngineShaderResHelper::StructuredBufferRelease(const std::string_view& _SettingName)
+{
+	std::string UpperName = GameEngineString::ToUpper(_SettingName);
+
+	std::multimap<std::string, GameEngineStructuredBufferSetter>::iterator FindIter = StructuredBufferSetters.find(UpperName);
+
+	if (StructuredBufferSetters.end() == FindIter)
+	{
+		return;
+	}
+
+	StructuredBufferSetters.erase(UpperName);
+}
+
 void GameEngineShaderResHelper::SetConstantBufferLink(const std::string_view& _Name, const void* _Data, UINT _Size)
 {
 	std::string UpperName = GameEngineString::ToUpper(_Name);

@@ -46,7 +46,7 @@ void GameEngineRenderUnit::SetMesh(std::shared_ptr<GameEngineMesh> _Mesh)
 	}
 }
 
-void GameEngineRenderUnit::SetMaterial(const std::string_view& _Name, RenderPath _Path /*= RenderPath::None*/)
+void GameEngineRenderUnit::SetMaterial(const std::string_view& _Name, RenderPath _Path /*= RenderPath::None*/, bool _IsRender /*= true*/)
 {
 	if (nullptr != GetRenderer() && nullptr != Material)
 	{
@@ -95,12 +95,11 @@ void GameEngineRenderUnit::SetMaterial(const std::string_view& _Name, RenderPath
 		ShaderResHelper.SetConstantBufferLink("LightDatas", Data);
 	}
 
-	if (nullptr != GetRenderer())
+	if (true == _IsRender && nullptr != GetRenderer())
 	{
 		GetRenderer()->GetCamera()->PushRenderUnit(shared_from_this(), _Path);
 	}
 }
-
 
 void GameEngineRenderUnit::Setting()
 {

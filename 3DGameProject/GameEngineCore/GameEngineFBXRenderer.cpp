@@ -211,7 +211,7 @@ void GameEngineFBXRenderer::Update(float _DeltaTime)
 	}
 }
 
-void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Name, std::string _Material)
+void GameEngineFBXRenderer::SetFBXMesh(const std::string_view& _Name, const std::string_view& _Material)
 {
 	std::shared_ptr<GameEngineFBXMesh> FindFBXMesh = GameEngineFBXMesh::Find(_Name);
 
@@ -245,7 +245,7 @@ void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Name, std::string _Ma
 	}
 }
 
-void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Name, const std::vector<std::vector<std::string>>& _Materials)
+void GameEngineFBXRenderer::SetFBXMesh(const std::string_view& _Name, const std::vector<std::vector<std::string>>& _Materials)
 {
 	std::shared_ptr<GameEngineFBXMesh> FindFBXMesh = GameEngineFBXMesh::Find(_Name);
 
@@ -274,7 +274,7 @@ void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Name, const std::vect
 	}
 }
 
-void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Name, std::string _Material, size_t MeshIndex)
+void GameEngineFBXRenderer::SetFBXMesh(const std::string_view& _Name, const std::string_view& _Material, size_t MeshIndex)
 {
 	std::shared_ptr<GameEngineFBXMesh> FindFBXMesh = GameEngineFBXMesh::Find(_Name);
 
@@ -286,7 +286,7 @@ void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Name, std::string _Ma
 	}
 }
 
-void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Name, std::vector<std::string> _Material, size_t MeshIndex)
+void GameEngineFBXRenderer::SetFBXMesh(const std::string_view& _Name, std::vector<std::string> _Material, size_t MeshIndex)
 {
 	if (0 == _Material.size())
 	{
@@ -308,11 +308,61 @@ void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Name, std::vector<std
 	}
 }
 
+void GameEngineFBXRenderer::SetShadowFBXMesh(const std::string_view& _Name, bool _IsStatic)
+{
+	std::shared_ptr<GameEngineFBXMesh> FindFBXMesh = GameEngineFBXMesh::Find(_Name);
+
+	if (nullptr == FindFBXMesh)
+	{
+		MsgAssert("로드하지 않은 FBX 매쉬를 사용하려고 했습니다.");
+	}
+
+	FindFBXMesh->Initialize();
+
+	const std::vector<Bone>& Bones = FindFBXMesh->GetAllBone();
+
+	if (Bones.size() != AnimationBoneDatas.size())
+	{
+		AnimationBoneDatas.resize(Bones.size());
+
+		for (size_t i = 0; i < Bones.size(); i++)
+		{
+			float4x4 Offset = Bones[i].BonePos.Offset;
+
+			Offset.Decompose(AnimationBoneDatas[i].Scale, AnimationBoneDatas[i].RotQuaternion, AnimationBoneDatas[i].Pos);
+
+			AnimationBoneDatas[i].RotEuler = AnimationBoneDatas[i].RotQuaternion.QuaternionToEulerDeg();
+		}
+	}
+
+	size_t a = FindFBXMesh->GetRenderUnitCount();
+
+	// 너 몇개 가지고 있어.
+	for (size_t UnitCount = 0; UnitCount < FindFBXMesh->GetRenderUnitCount(); UnitCount++)
+	{
+		for (size_t SubSetIndex = 0; SubSetIndex < FindFBXMesh->GetSubSetCount(UnitCount); SubSetIndex++)
+		{
+			SetShadowFBXMesh(_Name, UnitCount, SubSetIndex);
+		}
+	}
+
+	ShadowOn();
+
+	if (true == _IsStatic)
+	{
+		SetStatic();
+	}
+	else
+	{
+		SetDynamic();
+	}
+}
+
 // SetFbxMesh를 해서 만들어진 랜더 유니트를 사용하게 하기 위해서 리턴
 std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh
 (
-	const std::string& _Name,
-	std::string _Material,
+	const std::string_view& _Name,
+	const std::string_view& _Material,
 	size_t _MeshIndex,
 	size_t _SubSetIndex /*= 0*/
 )
@@ -432,6 +482,88 @@ std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetFBXMesh
 		{
 			RenderUnit->ShaderResHelper.SetTexture("SpecularTexture", "EngineBaseSpecular.tga");
 		}
+	}
+
+	return RenderUnit;
+}
+
+std::shared_ptr<GameEngineRenderUnit> GameEngineFBXRenderer::SetShadowFBXMesh(const std::string_view& _Name, size_t _MeshIndex, size_t _SubSetIndex /*= 0*/)
+{
+	std::shared_ptr<GameEngineFBXMesh> FindFBXMesh = GameEngineFBXMesh::Find(_Name);
+
+	if (nullptr == FindFBXMesh)
+	{
+		MsgAssert("존재하지 않는 FBXMesh를 세팅했습니다.");
+		return nullptr;
+	}
+
+	if (nullptr == FBXMesh && nullptr != FindFBXMesh)
+	{
+		FBXMesh = FindFBXMesh;
+	}
+	else if (nullptr != FBXMesh && FBXMesh != FindFBXMesh)
+	{
+		int a = 0;
+	}
+
+	FindFBXMesh->Initialize();
+
+	if (Unit.empty())
+	{
+		Unit.resize(FBXMesh->GetRenderUnitCount());
+
+		for (size_t i = 0; i < Unit.size(); i++)
+		{
+			size_t Count = FBXMesh->GetSubSetCount(i);
+
+			Unit[i].resize(Count);
+			for (size_t j = 0; j < Count; j++)
+			{
+				Unit[i][j] = CreateRenderUnit();
+			}
+		}
+	}
+
+	std::shared_ptr<GameEngineRenderUnit> RenderUnit = Unit[_MeshIndex][_SubSetIndex];
+	std::shared_ptr <GameEngineMesh> GetFBXMesh = FBXMesh->GetGameEngineMesh(_MeshIndex, _SubSetIndex);
+
+	RenderUnit->SetMesh(GetFBXMesh);
+	RenderUnit->SetMaterial("OShadow", RenderPath::None, false);
+
+	if (0 == AnimationBoneMatrixs.size())
+	{
+		size_t Count = FBXMesh->GetBoneCount();
+
+		if (nullptr == FBXMesh)
+		{
+			MsgAssert("본이 존재하지 않는 매쉬에 애니메이션을 넣으려고 했습니다.");
+		}
+
+		AnimationBoneMatrixs.resize(Count);
+		AnimationBoneMatrixsNotOffset.resize(Count);
+		AnimationBoneDatas.resize(Count);
+	}
+
+
+	if (0 == AnimationBoneMatrixs.size())
+	{
+		RenderUnit->ShaderResHelper.StructuredBufferRelease("ArrAniMationMatrix");
+	}
+	else
+	{
+		GameEngineStructuredBufferSetter* AnimationBuffer = RenderUnit->ShaderResHelper.GetStructuredBufferSetter("ArrAniMationMatrix");
+		AnimationBuffer->Res = FBXMesh->GetAnimationStructuredBuffer();
+
+		if (nullptr == AnimationBuffer->Res)
+		{
+			MsgAssert("애니메이션용 스트럭처드 버퍼가 존재하지 않습니다.");
+			return RenderUnit;
+		}
+
+		// 링크를 걸어준것.
+		AnimationBuffer->SetData = &AnimationBoneMatrixs[0];
+		AnimationBuffer->Size = sizeof(float4x4);
+		AnimationBuffer->Count = AnimationBoneMatrixs.size();
 	}
 
 	return RenderUnit;

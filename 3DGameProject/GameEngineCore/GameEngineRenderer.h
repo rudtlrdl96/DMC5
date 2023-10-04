@@ -24,7 +24,8 @@ public:
 	GameEngineRenderUnit();
 	void SetMesh(const std::string_view& _Name);
 	void SetMesh(std::shared_ptr<class GameEngineMesh> _Mesh);
-	void SetMaterial(const std::string_view& _Name, RenderPath _Path = RenderPath::None);
+	void SetMaterial(const std::string_view& _Name, RenderPath _Path = RenderPath::None, bool _IsRender = true);
+
 	void Render(float _DeltaTime);
 	void SetRenderer(class GameEngineRenderer* _Renderer);
 
