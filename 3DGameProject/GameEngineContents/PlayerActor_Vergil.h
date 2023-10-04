@@ -135,7 +135,8 @@ private:
 
 	std::vector<std::shared_ptr<class Player_MirageBlade>> AllMirageBlades;
 	std::shared_ptr<class FXSystem> EffectSystem = nullptr;
-	std::shared_ptr<class JudgementCut> JCEffect = nullptr;
+	std::shared_ptr<class JudgementCut> Effect_JC = nullptr;
+	std::shared_ptr<class ColorEffect> Effect_Color = nullptr;
 	GameEngineFSM FSM;
 	GameEngineFSM FSM_MirageBlade;
 	float WalkSpeed = 300;

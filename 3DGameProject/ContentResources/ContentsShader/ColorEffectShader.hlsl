@@ -34,7 +34,7 @@ float4 ColorEffect_PS(OutPut _Value) : SV_Target0
     float4 ResultColor = DiffuseTex.Sample(WRAPSAMPLER, _Value.UV.xy); 
     
     float CurA = ResultColor.a;
-    ResultColor += saturate(lerp(ColorStart, ColorEnd, ColorTime));
+    ResultColor += lerp(ColorStart, ColorEnd, ColorTime);
     ResultColor.a = CurA;
 
     return ResultColor;

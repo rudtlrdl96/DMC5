@@ -8,6 +8,7 @@
 #include "NetworkManager.h"
 #include "FXSystem.h"
 #include "JudgementCut.h"
+#include "ColorEffect.h"
 PlayerActor_Vergil::~PlayerActor_Vergil()
 {
 }
@@ -17,8 +18,8 @@ void PlayerActor_Vergil::Start()
 	BasePlayerActor::Start();
 	SetNetObjectType(Net_ActorType::Vergil);
 
-	JCEffect = GetLevel()->GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
-
+	Effect_JC = GetLevel()->GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
+	Effect_Color = GetLevel()->GetCamera(0)->GetCamTarget()->CreateEffect<ColorEffect>();
 	//NetControllType::NetControll으로 변경될 때 아래 콜백이 실행됩니다. 
 	SetControllCallBack(NetControllType::PassiveControll, [=]()
 		{
@@ -1228,7 +1229,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			}
 			});
 
-		// Vergil_yamato_JudgementCut_1
+		// JudgementCut 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCut_1,
 			.Start = [=] {
 				RotationToTarget();
@@ -1354,7 +1355,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			.End = [=] {
 			}
 			});
-		// Vergil_yamato_JudgementCutEnd_1
+		// JudgementCutEnd 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_1,
 			.Start = [=] {
 				RotationToTarget();
@@ -1365,13 +1366,20 @@ void PlayerActor_Vergil::PlayerLoad()
 				TimeEvent.AddEvent(1.58f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
 					Renderer->Off();
+					Effect_Color->SetStartColor(float4::ZERO);
+					Effect_Color->SetEndColor({-0.15f, -0.15f, -0.11f});
+					Effect_Color->SetSpeed({ 10.0f, 10.0f, 10.0f });
+					Effect_Color->ColorEffectOn();
 				});
 				TimeEvent.AddEvent(1.83f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
-					JCEffect->JudgementCutOn();
+					Effect_JC->JudgementCutOn();
 				});
-				TimeEvent.AddEvent(2.6f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				TimeEvent.AddEvent(2.8f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
+					Rot.y += 180.0f;
+					PhysXCapsule->AddWorldRotation({ 0, 180, 0 });
+					GetTransform()->AddWorldRotation({ 0, 180, 0 });
 					ChangeState(FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_2);
 				});
 			},
@@ -1389,10 +1397,15 @@ void PlayerActor_Vergil::PlayerLoad()
 				MoveCheck = false;
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->On();
+				EffectSystem->PlayFX("Yamato_JudgementCut_End_2.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCutEnd_2");
 				TimeEvent.AddEvent(1.82f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
-					JCEffect->JudgementCutOff();
+					Effect_JC->JudgementCutOff();
+					Effect_Color->SetStartColor(float4::ONE * 0.3f);
+					Effect_Color->SetEndColor(float4::ZERO);
+					Effect_Color->SetSpeed({ 10.0f, 10.0f, 10.0f });
+					Effect_Color->ColorEffectOn();
 				});
 			},
 			.Update = [=](float _DeltaTime) {
