@@ -487,6 +487,8 @@ void GameEngineCamera::Render(float _DeltaTime)
 	}
 
 	{
+		GetLevel()->LightDataObject.LightCount = static_cast<int>(GetLevel()->AllLight.size());
+
 		for (std::pair<const RenderPath, std::map<int, std::list<std::shared_ptr<class GameEngineRenderUnit>>>>& Path : Units)
 		{
 			switch (Path.first)

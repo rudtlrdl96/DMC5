@@ -603,7 +603,68 @@ void GameEngineFBXRenderer::SetMaterial(const std::string_view& _DeffuseTextureN
 			if (UpperName == DiffuseTextureName)
 			{
 				Unit[i][j]->SetMaterial(_MaterialName);
-				_Setting(Unit[i][j]);
+
+				if (Unit[i][j]->ShaderResHelper.IsStructuredBuffer("ArrAniMationMatrix"))
+				{
+					GameEngineStructuredBufferSetter* AnimationBuffer = Unit[i][j]->ShaderResHelper.GetStructuredBufferSetter("ArrAniMationMatrix");
+
+					AnimationBuffer->Res = FBXMesh->GetAnimationStructuredBuffer();
+
+					if (nullptr == AnimationBuffer->Res)
+					{
+						MsgAssert("애니메이션용 스트럭처드 버퍼가 존재하지 않습니다.");
+					}
+
+					// 링크를 걸어준것.
+					AnimationBuffer->SetData = &AnimationBoneMatrixs[0];
+					AnimationBuffer->Size = sizeof(float4x4);
+					AnimationBuffer->Count = AnimationBoneMatrixs.size();
+				}
+
+				if (Unit[i][j]->ShaderResHelper.IsTexture("DiffuseTexture"))
+				{
+					const FbxExMaterialSettingData& MatData = FBXMesh->GetMaterialSettingData(i, j);
+
+					if (nullptr != GameEngineTexture::Find(MatData.DifTextureName))
+					{
+						Unit[i][j]->ShaderResHelper.SetTexture("DiffuseTexture", MatData.DifTextureName);
+					}
+				}
+
+				if (Unit[i][j]->ShaderResHelper.IsTexture("NormalTexture"))
+				{
+					const FbxExMaterialSettingData& MatData = FBXMesh->GetMaterialSettingData(i, j);
+
+					if (nullptr != GameEngineTexture::Find(MatData.NorTextureName))
+					{
+						Unit[i][j]->ShaderResHelper.SetTexture("NormalTexture", MatData.NorTextureName);
+						BaseValue.IsNormal = 1;
+					}
+					else
+					{
+						Unit[i][j]->ShaderResHelper.SetTexture("NormalTexture", "EngineBaseNormal.tga");
+					}
+				}
+
+				if (Unit[i][j]->ShaderResHelper.IsTexture("SpecularTexture"))
+				{
+					const FbxExMaterialSettingData& MatData = FBXMesh->GetMaterialSettingData(i, j);
+
+					if (nullptr != GameEngineTexture::Find(MatData.SpcTextureName))
+					{
+						Unit[i][j]->ShaderResHelper.SetTexture("SpecularTexture", MatData.SpcTextureName);
+						BaseValue.IsSpecular = 1;
+					}
+					else
+					{
+						Unit[i][j]->ShaderResHelper.SetTexture("SpecularTexture", "EngineBaseSpecular.tga");
+					}
+				}
+
+				if (nullptr != _Setting)
+				{
+					_Setting(Unit[i][j]);
+				}
 			}
 		}
 	}
