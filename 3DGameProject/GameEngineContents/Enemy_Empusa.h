@@ -10,7 +10,6 @@ enum FSM_State_Empusa
 	// 미어캣 자세
 	Empusa_Biped_Idle, // em0100_biped_idle, 미어캣처럼 서있음
 	Empusa_Biped_Detected, // em0100_biped_detected, 미어캣처럼 서있다가 적발견
-	Empusa_Biped_Menace, // em0100_biped_menace, 미어캣처럼 서있다가 위협
 	Empusa_Biped_Search, // em0100_biped_search, 미어캣처럼 서있으면서 고개 돌리면서 서치
 	Empusa_Biped_To_Quadruped, // em0100_biped_to_quadruped, 미어캣->돌격자세 변경
 	Empusa_Idle_Undetected, // em0100_Idle_undetected, 미어캣처럼 서있음
@@ -38,9 +37,6 @@ enum FSM_State_Empusa
 	Empusa_Setting_C, // em0100_setting_C : 돌격자세 휴식
 
 	// 움직임
-	Empusa_Biped_Move_Back_Start, // em0100_biped_move_back_start : 미어캣 자세 뒤로 움직임 시작
-	Empusa_Biped_Move_Back_Loop, // em0100_biped_move_back_loop : 미어캣 자세 뒤로 움직임 루프
-	Empusa_Biped_Move_Back_Stop, // em0100_biped_move_back_stop : 미어캣 자세 뒤로 움직임 끝
 	Empusa_Biped_Run_Start, // em0100_biped_run_start : 미어캣자세->돌격자세 변경되면서 움직임 시작
 	Empusa_Biped_Run_Loop, // em0100_biped_run_loop : 미어캣자세->돌격자세 변경된 후 움직임 루프
 	Empusa_Biped_Run_Stop, // em0100_biped_run_stop : 돌격자세->미어캣자세 변경되면서 움직임 종료
@@ -51,13 +47,6 @@ enum FSM_State_Empusa
 	Empusa_Step_Back, // em0100_step_back : 돌격자세 뒤로 한번 전진
 	Empusa_Step_Left, // em0100_step_left : 돌격자세 왼쪽으로 한번 전진
 	Empusa_Step_Right, // em0100_step_right : 돌격자세 오른쪽으로 한번 전진
-
-	Empusa_Walk_Left_Start, // em0100_walk_left_start : 미어캣 자세 왼쪽 움직임 시작
-	Empusa_Walk_Left_Loop, // em0100_walk_left_loop : 미어캣 자세 왼쪽 움직임 루프
-	Empusa_Walk_Left_Stop, // em0100_walk_left_stop : 미어캣 자세 왼쪽 움직임 끝
-	Empusa_Walk_Right_Start, // em0100_walk_right_start : 미어캣 자세 오른쪽 움직임 시작
-	Empusa_Walk_Right_Loop, // em0100_walk_right_loop : 미어캣 자세 오른쪽 움직임 루프
-	Empusa_Walk_Right_Stop, // em0100_walk_right_stop : 미어캣 자세 오른쪽 움직임 끝
 
 	// 회전
 	Empusa_Turn_Left_90, // em0100_turn_90_left : 미어캣 자세 왼쪽 90도 턴
@@ -141,6 +130,7 @@ private:
 	void ChangeState(int _StateValue);
 
 	float WaitTime = 0.0f;
+	float RunTime = 0.0f;
 	float RotationDelayTime = 0.0f;
 	float FallCheckDelayTime = 0.0f;
 	float AttackDelayCheck = 0.0f;
@@ -155,5 +145,6 @@ private:
 	bool IsVergilLight = false;
 	bool IsCollapse = false;      // 쓰러져있는 상태
 	bool IsRecognize = false;
+	bool IsAppearA = false;
 };
 

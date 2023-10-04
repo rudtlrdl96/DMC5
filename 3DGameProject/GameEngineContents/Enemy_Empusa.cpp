@@ -59,11 +59,25 @@ void Enemy_Empusa::PlayerChase(float _DeltaTime)
 	{
 	case EnemyRotation::Forward:
 		AllDirectSetting();
-		ChangeState(FSM_State_Empusa::Empusa_Biped_Walk_Start);
+		if (true)
+		{
+			ChangeState(FSM_State_Empusa::Empusa_Biped_Run_Start);
+		}
+		else
+		{
+			ChangeState(FSM_State_Empusa::Empusa_Biped_Walk_Start);
+		}
 		break;
 	case EnemyRotation::Left:
 		AllDirectSetting();
-		ChangeState(FSM_State_Empusa::Empusa_Biped_Walk_Start);
+		if (true)
+		{
+			ChangeState(FSM_State_Empusa::Empusa_Biped_Run_Start);
+		}
+		else
+		{
+			ChangeState(FSM_State_Empusa::Empusa_Biped_Walk_Start);
+		}
 		break;
 	case EnemyRotation::Left_90:
 		ChangeState(FSM_State_Empusa::Empusa_Turn_Left_90);
@@ -73,7 +87,14 @@ void Enemy_Empusa::PlayerChase(float _DeltaTime)
 		break;
 	case EnemyRotation::Right:
 		AllDirectSetting();
-		ChangeState(FSM_State_Empusa::Empusa_Biped_Walk_Start);
+		if (true)
+		{
+			ChangeState(FSM_State_Empusa::Empusa_Biped_Run_Start);
+		}
+		else
+		{
+			ChangeState(FSM_State_Empusa::Empusa_Biped_Walk_Start);
+		}
 		break;
 	case EnemyRotation::Right_90:
 		ChangeState(FSM_State_Empusa::Empusa_Turn_Right_90);
@@ -90,6 +111,14 @@ void Enemy_Empusa::PlayerAttack(float _DeltaTime)
 {
 	RotationCheck();
 	AllDirectSetting();
+
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 3);
+
+	if (0 == RandC)
+	{
+		ChangeState(FSM_State_Empusa::Empusa_Continuation_Attack);
+		return;
+	}
 
 	switch (EnemyRotationValue)
 	{
@@ -428,47 +457,29 @@ void Enemy_Empusa::EnemyCreateFSM()
 	WaitTime += _DeltaTime;
 	if (0.5f <= WaitTime)
 	{
-		//if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
-		//{
-		//	IsRecognize = true;
-		//}
-		//else
-		//{
-		//	IsRecognize = false;
-		//}
+		if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
+		{
+			IsRecognize = true;
+		}
+		else
+		{
+			IsRecognize = false;
+		}
 
-		//if (false == IsRecognize)
-		//{
-		//	PlayerChase(_DeltaTime);
-		//}
-		//else
-		//{
-		//	IsRecognize = false;
-		//	PlayerAttack(_DeltaTime);
-		//}
-		//return;
-
-		PlayerAttack(_DeltaTime);
-	}
-	},
-	.End = [=] {
-	WaitTime = 0.0f;
-	}
-		});
-	// 앞으로 함성 위협
-	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Menace,
-	.Start = [=] {
-	SetMoveStop();
-	EnemyRenderer->ChangeAnimation("em0100_biped_menace");
-	},
-	.Update = [=](float _DeltaTime) {
-	if (true == EnemyRenderer->IsAnimationEnd())
-	{
-		ChangeState(FSM_State_Empusa::Empusa_Biped_Idle);
+		if (false == IsRecognize)
+		{
+			PlayerChase(_DeltaTime);
+		}
+		else
+		{
+			IsRecognize = false;
+			PlayerAttack(_DeltaTime);
+		}
 		return;
 	}
 	},
 	.End = [=] {
+	WaitTime = 0.0f;
 	}
 		});
 
@@ -488,28 +499,19 @@ void Enemy_Empusa::EnemyCreateFSM()
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 4);
-
-		if (0 == RandC)
-		{
-			ChangeState(FSM_State_Empusa::Empusa_Biped_Menace);
-		}
-		else
-		{
-			ChangeState(FSM_State_Empusa::Empusa_Biped_Walk_Loop);
-		}
+		ChangeState(FSM_State_Empusa::Empusa_Biped_Walk_Loop);
 		return;
 	}
 	},
 	.End = [=] {
 	}
 		});
-	// 앞으로 걷기 Loop
 
 	{
 		EnemyRenderer->SetAnimationStartEvent("em0100_biped_walk_stop", 208, [=] { ++WalkCount; });
 	}
 
+	// 앞으로 걷기 Loop
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Walk_Loop,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_biped_walk_loop");
@@ -553,153 +555,59 @@ void Enemy_Empusa::EnemyCreateFSM()
 	}
 		});
 
-	// 오른쪽 걷기 시작
-	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Walk_Right_Start,
+	// 앞으로 뛰기 시작
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Run_Start,
 	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_walk_right_start");
+	EnemyRenderer->ChangeAnimation("em0100_biped_run_start");
 	},
 	.Update = [=](float _DeltaTime) {
-	if (5 < EnemyRenderer->GetCurFrame())
+	if (8 < EnemyRenderer->GetCurFrame())
 	{
-		SetRightMove(35.0f);
+		SetForwardMove(140.0f);
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		ChangeState(FSM_State_Empusa::Empusa_Walk_Right_Loop);
+		ChangeState(FSM_State_Empusa::Empusa_Biped_Run_Loop);
 		return;
 	}
 	},
 	.End = [=] {
 	}
 		});
-	// 오른쪽 걷기 Loop
-	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Walk_Right_Loop,
+	// 앞으로 뛰기 Loop
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Run_Loop,
 	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_walk_right_loop");
+	EnemyRenderer->ChangeAnimation("em0100_biped_run_loop");
 	},
 	.Update = [=](float _DeltaTime) {
-	SetRightMove(70.0f);
-	AttackDelayTime += _DeltaTime;
-	if (true == IsRecognize && 1.2f <= AttackDelayTime)
+	RunTime += _DeltaTime;
+	SetForwardMove(200.0f);
+	if (0.5f >= MonsterAndPlayerDotProduct() || true == IsRecognize)
 	{
 		IsRecognize = false;
-
-		//if (EnemyRotation::Left_180 == EnemyRotationValue || EnemyRotation::Right_180 == EnemyRotationValue)
-		//{
-		//	RotationCheck();
-		//	AllDirectSetting();
-		//	ChangeState(FSM_State_Empusa::Empusa_Attack_Turn);
-		//}
-		//else
-		//{
-		//	RotationCheck();
-		//	AllDirectSetting();
-		//	RandomAttack();
-		//}
-
-		RotationCheck();
-		AllDirectSetting();
-		RandomAttack();
+		ChangeState(FSM_State_Empusa::Empusa_Biped_Run_Stop);
+		return;
 	}
-	else if (false == IsRecognize && 1.8f <= AttackDelayTime)
+
+	if (2.0f <= RunTime)
 	{
-		ChangeState(FSM_State_Empusa::Empusa_Walk_Right_Stop);
+		ChangeState(FSM_State_Empusa::Empusa_Biped_Run_Stop);
 		return;
 	}
 	},
 	.End = [=] {
-	AttackDelayTime = 0.0f;
-	WalkCount = 0;
+	RunTime = 0.0f;
 	}
 		});
-	// 오른쪽 걷기 끝
-	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Walk_Right_Stop,
+	// 앞으로 뛰기 끝
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Run_Stop,
 	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_walk_right_stop");
+	EnemyRenderer->ChangeAnimation("em0100_biped_run_stop");
 	},
 	.Update = [=](float _DeltaTime) {
-	if (30 > EnemyRenderer->GetCurFrame())
+	if (48 > EnemyRenderer->GetCurFrame())
 	{
-		SetRightMove(20.0f);
-	}
-	if (true == EnemyRenderer->IsAnimationEnd())
-	{
-		ChangeState(FSM_State_Empusa::Empusa_Biped_Idle);
-		return;
-	}
-	},
-	.End = [=] {
-	}
-		});
-
-	// 왼쪽 걷기 시작
-	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Walk_Left_Start,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_walk_left_start");
-	},
-	.Update = [=](float _DeltaTime) {
-	if (5 < EnemyRenderer->GetCurFrame())
-	{
-		SetLeftMove(35.0f);
-	}
-	if (true == EnemyRenderer->IsAnimationEnd())
-	{
-		ChangeState(FSM_State_Empusa::Empusa_Walk_Left_Loop);
-		return;
-	}
-	},
-	.End = [=] {
-	}
-		});
-	// 왼쪽 걷기 Loop
-	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Walk_Left_Loop,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_walk_left_loop");
-	},
-	.Update = [=](float _DeltaTime) {
-	SetLeftMove(70.0f);
-	AttackDelayTime += _DeltaTime;
-	if (true == IsRecognize && 1.2f <= AttackDelayTime)
-	{
-		IsRecognize = false;
-
-		//if (EnemyRotation::Left_180 == EnemyRotationValue || EnemyRotation::Right_180 == EnemyRotationValue)
-		//{
-		//	RotationCheck();
-		//	AllDirectSetting();
-		//	ChangeState(FSM_State_Empusa::Empusa_Attack_Turn);
-		//}
-		//else
-		//{
-		//	RotationCheck();
-		//	AllDirectSetting();
-		//	RandomAttack();
-		//}
-
-		RotationCheck();
-		AllDirectSetting();
-		RandomAttack();
-	}
-	else if (false == IsRecognize && 1.8f <= AttackDelayTime)
-	{
-		ChangeState(FSM_State_Empusa::Empusa_Walk_Left_Stop);
-		return;
-	}
-	},
-	.End = [=] {
-	AttackDelayTime = 0.0f;
-	WalkCount = 0;
-	}
-		});
-	// 왼쪽 걷기 끝
-	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Walk_Left_Stop,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_walk_left_stop");
-	},
-	.Update = [=](float _DeltaTime) {
-	if (30 > EnemyRenderer->GetCurFrame())
-	{
-		SetLeftMove(20.0f);
+		SetForwardMove(110.0f);
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
@@ -822,6 +730,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 		EnemyRenderer->SetAnimationStartEvent("em0100_attack_C", 88, [=] { SetAdvance(24000.0f); });
 		EnemyRenderer->SetAnimationStartEvent("em0100_attack_D", 87, [=] { SetMoveStop(); });
 		EnemyRenderer->SetAnimationStartEvent("em0100_attack_D", 88, [=] { SetAdvance(24000.0f); });
+		EnemyRenderer->SetAnimationStartEvent("em0100_continuation_attack", 100, [=] { 	RotationCheck(); AllDirectSetting(); });
 	}
 
 	// 오른손 위에서 아래로 베기
@@ -921,10 +830,13 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 돌진공격
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Continuation_Attack,
 	.Start = [=] {
-	SetMoveStop();
 	EnemyRenderer->ChangeAnimation("em0100_continuation_attack");
 	},
 	.Update = [=](float _DeltaTime) {
+	if (100 < EnemyRenderer->GetCurFrame() && EnemyRenderer->GetCurFrame() <= 300)
+	{
+		SetForwardMove(150.0f);
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_Empusa::Empusa_Biped_Idle);
@@ -1415,10 +1327,12 @@ void Enemy_Empusa::EnemyCreateFSM()
 	if (0 == RandC)
 	{
 		EnemyFSM.ChangeState(FSM_State_Empusa::Empusa_Appear_A);
+		IsAppearA = true;
 	}
 	else
 	{
 		EnemyFSM.ChangeState(FSM_State_Empusa::Empusa_Appear_B);
+		IsAppearA = false;
 	}
 }
 
@@ -1445,15 +1359,6 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Idle,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_biped_idle");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Menace,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_biped_menace");
 	},
 	.Update = [=](float _DeltaTime) {
 	},
@@ -1487,54 +1392,27 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Walk_Right_Start,
+	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Run_Start,
 	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_walk_right_start");
+	EnemyRenderer->ChangeAnimation("em0100_biped_run_start");
 	},
 	.Update = [=](float _DeltaTime) {
 	},
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Walk_Right_Loop,
+	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Run_Loop,
 	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_walk_right_loop");
+	EnemyRenderer->ChangeAnimation("em0100_biped_run_loop");
 	},
 	.Update = [=](float _DeltaTime) {
 	},
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Walk_Right_Stop,
+	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Run_Stop,
 	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_walk_right_stop");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Walk_Left_Start,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_walk_left_start");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Walk_Left_Loop,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_walk_left_loop");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Walk_Left_Stop,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_walk_left_stop");
+	EnemyRenderer->ChangeAnimation("em0100_biped_run_stop");
 	},
 	.Update = [=](float _DeltaTime) {
 	},
@@ -1866,9 +1744,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	}
 		});
 
-	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
-
-	if (0 == RandC)
+	if (IsAppearA == true)
 	{
 		EnemyFSM.ChangeState(FSM_State_Empusa::Empusa_Appear_A);
 	}
