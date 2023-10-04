@@ -268,6 +268,7 @@ private:
 
 	void SetExActTiming();
 
+	int DamageCalculate(int _Damage, bool _IsSkill = false);
 	std::shared_ptr<class NeroHPUI> HPRender = nullptr;
 
 };

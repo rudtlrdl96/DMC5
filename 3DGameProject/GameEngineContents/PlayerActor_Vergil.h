@@ -190,5 +190,6 @@ private:
 	void YamatoOff();
 	void YamatoOn();
 
+	int DamageCalculate(int _Damage);
 };
 

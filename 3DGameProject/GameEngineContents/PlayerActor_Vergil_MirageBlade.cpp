@@ -208,7 +208,7 @@ void PlayerActor_Vergil::CreateMirageBlade()
 					{
 						AllMirageBlades[i]->GetTransform()->SetWorldPosition(AllMirageBlades[i]->GetTransform()->GetWorldPosition());
 						AllMirageBlades[i]->GetTransform()->SetWorldRotation(AllMirageBlades[i]->GetTransform()->GetWorldRotation());
-						AllMirageBlades[i]->Collision->SetAttackData(DamageType::Air, 10);
+						AllMirageBlades[i]->Collision->SetAttackData(DamageType::Air, 450);
 						AllMirageBlades[i]->Shoot();
 					});
 			}
@@ -217,7 +217,7 @@ void PlayerActor_Vergil::CreateMirageBlade()
 					FSM_MirageBlade.ChangeState(FSM_State_MirageBlade::MirageBlade_Idle);
 					for (int i = 0; i < 8; i++)
 					{
-						AllMirageBlades[i]->Collision->SetAttackData(DamageType::VergilLight, 10);
+						AllMirageBlades[i]->Collision->SetAttackData(DamageType::VergilLight, 9);
 					}
 				});
 			IsDelay = true;
@@ -308,12 +308,17 @@ void PlayerActor_Vergil::CreateMirageBlade()
 				{
 					AllMirageBlades[i]->GetTransform()->SetWorldPosition(AllMirageBlades[i]->GetTransform()->GetWorldPosition());
 					AllMirageBlades[i]->GetTransform()->SetWorldRotation(AllMirageBlades[i]->GetTransform()->GetWorldRotation());
+					AllMirageBlades[i]->Collision->SetAttackData(DamageType::VergilLight, 94);
 					AllMirageBlades[i]->Shoot();
 				});
 
 			}
 			TimeEvent.AddEvent(1.5f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
+					for (int i = 0; i < 8; i++)
+					{
+						AllMirageBlades[i]->Collision->SetAttackData(DamageType::VergilLight, 9);
+					}
 					FSM_MirageBlade.ChangeState(FSM_State_MirageBlade::MirageBlade_Idle);
 				});
 			IsDelay = true;
@@ -361,6 +366,7 @@ void PlayerActor_Vergil::CreateMirageBlade()
 				{
 					AllMirageBlades[i]->GetTransform()->SetWorldPosition(AllMirageBlades[i]->GetTransform()->GetWorldPosition());
 					AllMirageBlades[i]->GetTransform()->SetWorldRotation(AllMirageBlades[i]->GetTransform()->GetWorldRotation());
+					AllMirageBlades[i]->Collision->SetAttackData(DamageType::Stun, 390);
 					AllMirageBlades[i]->Shoot();
 				});
 			}

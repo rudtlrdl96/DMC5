@@ -746,6 +746,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboA1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_1,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(120));
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboA1_EX.effect");
@@ -756,7 +757,6 @@ void PlayerActor_Nero::PlayerLoad()
 					EffectSystem->PlayFX("RQ_ComboA1.effect");
 				}
 				PhysXCapsule->TurnOffGravity();
-				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0000_RQ_ComboA_1");
 				RotationToTarget(30.0f);
@@ -793,6 +793,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboA2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_2,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(90));
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboA2_EX.effect");
@@ -802,7 +803,6 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					EffectSystem->PlayFX("RQ_ComboA2.effect");
 				}
-				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_ComboA_2");
@@ -846,6 +846,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboA3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_3,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(60));
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboA3_EX.effect");
@@ -855,7 +856,6 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					EffectSystem->PlayFX("RQ_ComboA3.effect");
 				}
-				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_ComboA_3");
@@ -893,6 +893,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboA4
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_4,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(150));
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboA4_EX.effect");
@@ -902,7 +903,6 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					EffectSystem->PlayFX("RQ_ComboA4.effect");
 				}
-				Col_Attack->SetAttackData(DamageType::Heavy, 100);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_ComboA_4");
@@ -939,6 +939,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboD1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboD_1,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(60));
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboD1_EX.effect");
@@ -948,7 +949,6 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					EffectSystem->PlayFX("RQ_ComboD1.effect");
 				}
-				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_ComboD_1");
@@ -986,6 +986,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboD2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboD_2,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(90));
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboD2_EX.effect");
@@ -995,7 +996,6 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					EffectSystem->PlayFX("RQ_ComboD2.effect");
 				}
-				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_ComboD_2");
@@ -1033,6 +1033,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboD3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboD_3,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(60));
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboD3_EX.effect");
@@ -1042,7 +1043,6 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					EffectSystem->PlayFX("RQ_ComboD3.effect");
 				}
-				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_ComboD_3");
@@ -1080,6 +1080,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboD4
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboD_4,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(150));
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboD4_EX.effect");
@@ -1089,7 +1090,6 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					EffectSystem->PlayFX("RQ_ComboD4.effect");
 				}
-				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_ComboD_4");
@@ -1127,6 +1127,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen HR
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_HR,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Air, DamageCalculate(135, true));
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_HR_EX.effect");
@@ -1136,7 +1137,6 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					EffectSystem->PlayFX("RQ_HR.effect");
 				}
-				Col_Attack->SetAttackData(DamageType::Air, 50);
 				PhysXCapsule->TurnOnGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				RedQueenOn();
@@ -1165,6 +1165,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Shuffle
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Shuffle,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(180, true));
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_Shuffle_EX.effect");
@@ -1174,7 +1175,6 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					EffectSystem->PlayFX("RQ_Shuffle.effect");
 				}
-				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				InputCheck = false;
 				DelayCheck = false;
 				PhysXCapsule->SetLinearVelocityZero();
@@ -1275,6 +1275,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Stleak3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Stleak3,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(180, true));
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_Stleak_3_EX.effect");
@@ -1284,7 +1285,6 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					EffectSystem->PlayFX("RQ_Stleak_3.effect");
 				}
-				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
@@ -1324,6 +1324,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen AirComboA1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_1,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(150));
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_AirComboA1_EX.effect");
@@ -1333,7 +1334,6 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					EffectSystem->PlayFX("RQ_AirComboA1.effect");
 				}
-				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
 				Renderer->ChangeAnimation("pl0000_RQ_AT-Jump_1");
@@ -1366,6 +1366,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen AirComboA2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_2,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(120));
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_AirComboA2_EX.effect");
@@ -1375,7 +1376,6 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					EffectSystem->PlayFX("RQ_AirComboA2.effect");
 				}
-				Col_Attack->SetAttackData(DamageType::Light, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
 				RedQueenOn();
@@ -1416,6 +1416,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen AirComboA3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_3,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Slam, DamageCalculate(180));
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_AirComboA3_EX.effect");
@@ -1425,7 +1426,6 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					EffectSystem->PlayFX("RQ_AirComboA3.effect");
 				}
-				Col_Attack->SetAttackData(DamageType::Slam, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
 				RedQueenOn();
@@ -1458,6 +1458,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen AirComboB
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboB,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Air, DamageCalculate(405));
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_AirComboB_EX.effect");
@@ -1467,7 +1468,6 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					EffectSystem->PlayFX("RQ_AirComboB.effect");
 				}
-				Col_Attack->SetAttackData(DamageType::Air, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
 				RedQueenOn();
@@ -1500,6 +1500,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Split_1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Split_1,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Slam, DamageCalculate(22, true));
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_Split_1_EX.effect");
@@ -1508,7 +1509,6 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					EffectSystem->PlayFX("RQ_Split_1.effect");
 				}
-				Col_Attack->SetAttackData(DamageType::Slam, 50);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
 				RotationToTarget();
@@ -1565,6 +1565,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Split_3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Split_3,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(90, true));
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_Split_3_EX.effect");
@@ -1574,7 +1575,6 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					EffectSystem->PlayFX("RQ_Split_3.effect");
 				}
-				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				UseDoubleJump = false;
 				InputCheck = false;
 				PhysXCapsule->SetLinearVelocityZero();
@@ -1637,6 +1637,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen Caliber_2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Caliber_2,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(180, true));
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_Calibur_2_EX.effect");
@@ -1646,7 +1647,6 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					EffectSystem->PlayFX("RQ_Calibur_2.effect");
 				}
-				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Caliber_2");
 				InputCheck = false;
 			},
@@ -1957,7 +1957,7 @@ void PlayerActor_Nero::PlayerLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Shoot,
 			.Start = [=] {
 				EffectSystem->PlayFX("BR_Shoot.effect");
-				Col_Attack->SetAttackData(DamageType::Light, 50, std::bind(&GameEngineObjectBase::Off, Col_Attack));
+				Col_Attack->SetAttackData(DamageType::Light, 54, std::bind(&GameEngineObjectBase::Off, Col_Attack));
 				if (nullptr == LockOnEnemyTransform)
 				{
 					Col_Attack->GetTransform()->SetLocalPosition({ 0, 100, 1000 });
@@ -2012,7 +2012,7 @@ void PlayerActor_Nero::PlayerLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_AirShoot,
 			.Start = [=] {
 				EffectSystem->PlayFX("BR_Shoot.effect");
-				Col_Attack->SetAttackData(DamageType::Light, 50, std::bind(&GameEngineObjectBase::Off, Col_Attack));
+				Col_Attack->SetAttackData(DamageType::Light, 54, std::bind(&GameEngineObjectBase::Off, Col_Attack));
 				if (nullptr == LockOnEnemyTransform)
 				{
 					Col_Attack->GetTransform()->SetLocalPosition({ 0, 100, 1000 });
@@ -2063,7 +2063,7 @@ void PlayerActor_Nero::PlayerLoad()
 				WeaponIdle();
 				SetOvertureAnimation();
 				PhysXCapsule->SetLinearVelocityZero();
-				Col_Attack->SetAttackData(DamageType::Heavy, 50);
+				Col_Attack->SetAttackData(DamageType::Heavy, 420);
 				EffectSystem->PlayFX("Overture_Shoot.effect");
 				Renderer->ChangeAnimation("pl0000_Overture_Shoot", true);
 				Renderer_Overture->ChangeAnimation("wp00_010_Shoot.fbx", true);
@@ -2109,7 +2109,7 @@ void PlayerActor_Nero::PlayerLoad()
 				SetOvertureAnimation();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
-				Col_Attack->SetAttackData(DamageType::Heavy, 50);
+				Col_Attack->SetAttackData(DamageType::Heavy, 420);
 				EffectSystem->PlayFX("Overture_Shoot.effect");
 				Renderer->ChangeAnimation("pl0000_Overture_Air_Shoot", true);
 				Renderer_Overture->ChangeAnimation("wp00_010_Air_Shoot.fbx", true);
@@ -2153,6 +2153,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
+				Col_Attack->SetAttackData(DamageType::Heavy, 75);
 				EffectSystem->PlayFX("Gerbera_Jump_Back.effect");
 				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Back", true);
 			},
@@ -2184,6 +2185,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
 				WeaponIdle();
+				Col_Attack->SetAttackData(DamageType::Heavy, 75);
 				EffectSystem->PlayFX("Gerbera_Jump_Back.effect");
 				EffectSystem->GetTransform()->SetLocalRotation({ 0, 180, 0 });
 				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Front", true);
@@ -2217,6 +2219,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
 				WeaponIdle();
+				Col_Attack->SetAttackData(DamageType::Heavy, 75);
 				EffectSystem->PlayFX("Gerbera_Jump_Back.effect");
 				EffectSystem->GetTransform()->SetLocalRotation({ 0, 90, 0 });
 				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Left", true);
@@ -2250,6 +2253,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
 				WeaponIdle();
+				Col_Attack->SetAttackData(DamageType::Heavy, 75);
 				EffectSystem->PlayFX("Gerbera_Jump_Back.effect");
 				EffectSystem->GetTransform()->SetLocalRotation({ 0, -90, 0 });
 				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Right", true);
@@ -2282,7 +2286,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// BusterArm Catch
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Catch,
 			.Start = [=] {
-				Col_Attack->SetAttackData(DamageType::Buster, 50, std::bind(&PlayerActor_Nero::ChangeState, this, Nero_Buster_Strike));
+				Col_Attack->SetAttackData(DamageType::Buster, 0, std::bind(&PlayerActor_Nero::ChangeState, this, Nero_Buster_Strike));
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
 				EffectSystem->PlayFX("Buster_Catch.effect");
@@ -2742,6 +2746,7 @@ void PlayerActor_Nero::PlayerLoad()
 		.Start = [=] {
 			WeaponIdle();
 			PhysXCapsule->SetLinearVelocityZero();
+			Col_Attack->SetAttackData(DamageType::Air, 150);
 			EffectSystem->PlayFX("Nero_DT_On.effect");
 			Renderer->ChangeAnimation("pl0000_DT_Start", true);
 			InputCheck = false;
@@ -2780,6 +2785,7 @@ void PlayerActor_Nero::PlayerLoad()
 				InputCheck = false;
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
+				Col_Attack->SetAttackData(DamageType::Air, 150);
 				EffectSystem->PlayFX("Nero_DT_On.effect");
 				Renderer->ChangeAnimation("pl0000_DT_AirStart", true);
 			},
@@ -2810,6 +2816,7 @@ void PlayerActor_Nero::PlayerLoad()
 		.Start = [=] {
 			WeaponIdle();
 			PhysXCapsule->SetLinearVelocityZero();
+			Col_Attack->SetAttackData(DamageType::Heavy, 150);
 			EffectSystem->PlayFX("GT_Bomb.effect");
 			Renderer->ChangeAnimation("pl0000_GT_Bomb", true);
 			InputCheck = false;
@@ -2844,6 +2851,7 @@ void PlayerActor_Nero::PlayerLoad()
 				InputCheck = false;
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
+				Col_Attack->SetAttackData(DamageType::Heavy, 150);
 				EffectSystem->PlayFX("GT_Bomb.effect");
 				Renderer->ChangeAnimation("pl0000_GT_AirBomb", true);
 			},
@@ -4992,6 +5000,33 @@ void PlayerActor_Nero::SetExActTiming()
 	{
 		IsExActTiming = false;
 	});
+}
+
+int PlayerActor_Nero::DamageCalculate(int _Damage, bool _IsSkill /* = false */)
+{
+	float Mul = 1.0f;
+
+	if (false == _IsSkill)
+	{
+		if (0 < ExceedLevel) { Mul += 0.2f; }
+		if (true == IsDevilTrigger) { Mul *= 1.3f; }
+		return static_cast<int>(_Damage * Mul);
+	}
+
+	switch (ExceedLevel)
+	{
+	case 1:
+		Mul += 0.2f;
+		break;
+	case 2:
+		Mul += 0.8f;
+		break;
+	case 3:
+		Mul += 1.3f;
+		break;
+	}
+	if (true == IsDevilTrigger) { Mul *= 1.3f; }
+	return static_cast<int>(_Damage * Mul);
 }
 
 //³×·Î ·»´õ À¯´Ö

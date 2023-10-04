@@ -105,7 +105,7 @@ void Player_MirageBlade::Start()
 	Collision->SetColType(ColType::OBBBOX3D);
 	Collision->GetTransform()->SetLocalPosition({ 0, 0, -50 });
 	Collision->GetTransform()->SetLocalScale({ 25, 25, 150 });
-	Collision->SetAttackData(DamageType::VergilLight, 10);
+	Collision->SetAttackData(DamageType::VergilLight, 9);
 	//Collision->Off();
 	SetNetObjectType(Net_ActorType::MirageBlade);
 }

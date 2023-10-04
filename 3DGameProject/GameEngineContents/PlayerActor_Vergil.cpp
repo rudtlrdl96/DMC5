@@ -491,7 +491,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Combo1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Combo_1,
 			.Start = [=] {
-				Col_Attack->SetAttackData(DamageType::Light, 50);
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(75));
 				PhysXCapsule->SetLinearVelocityZero();
 				RotationToTarget();
 				EffectSystem->PlayFX("Yamato_Combo_1.effect");
@@ -529,7 +529,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Combo2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Combo_2,
 			.Start = [=] {
-				Col_Attack->SetAttackData(DamageType::Light, 50);
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(93));
 				PhysXCapsule->SetLinearVelocityZero();
 				EffectSystem->PlayFX("Yamato_Combo_2.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Combo_2");
@@ -566,7 +566,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Combo3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Combo_3,
 			.Start = [=] {
-				Col_Attack->SetAttackData(DamageType::VergilLight, 100);
+				Col_Attack->SetAttackData(DamageType::VergilLight, DamageCalculate(103));
 				PhysXCapsule->SetLinearVelocityZero();
 				EffectSystem->PlayFX("Yamato_Combo_3.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Combo_3");
@@ -608,7 +608,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Combo4
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Combo_4,
 			.Start = [=] {
-				Col_Attack->SetAttackData(DamageType::Heavy, 200);
+				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(187));
 				YamatoOn();
 				PhysXCapsule->SetLinearVelocityZero();
 				EffectSystem->PlayFX("Yamato_Combo_4.effect");
@@ -665,7 +665,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// ComboC2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_ComboC_2,
 			.Start = [=] {
-				Col_Attack->SetAttackData(DamageType::VergilLight, 50);
+				Col_Attack->SetAttackData(DamageType::VergilLight, DamageCalculate(28));
 				PhysXCapsule->SetLinearVelocityZero();
 				EffectSystem->PlayFX("Yamato_Combo_C_2.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_ComboC_2_Loop");
@@ -705,7 +705,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// ComboC3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_ComboC_3,
 			.Start = [=] {
-				Col_Attack->SetAttackData(DamageType::Heavy, 200);
+				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(300));
 				PhysXCapsule->SetLinearVelocityZero();
 				EffectSystem->PlayFX("Yamato_Combo_C_3.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_ComboC_3");
@@ -807,7 +807,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Sissonal3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Sissonal_3,
 			.Start = [=] {
-				Col_Attack->SetAttackData(DamageType::Heavy, 50);
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(600));
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				EffectSystem->PlayFX("Yamato_Sissonal_3.effect");
@@ -848,10 +848,10 @@ void PlayerActor_Vergil::PlayerLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Sissonal_Up,
 			.Start = [=] {
 				RotationToTarget();
-				Col_Attack->SetAttackData(DamageType::Air, 50);
+				Col_Attack->SetAttackData(DamageType::Air, DamageCalculate(150));
 				TimeEvent.AddEvent(0.5f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
-					Col_Attack->SetAttackData(DamageType::Light, 50);
+					Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(131));
 				});
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -907,7 +907,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Upper_2,
 			.Start = [=] {
 				YamatoOn();
-				Col_Attack->SetAttackData(DamageType::Air, 50);
+				Col_Attack->SetAttackData(DamageType::Air, DamageCalculate(168));
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				EffectSystem->PlayFX("Yamato_AttackUp_2.effect");
@@ -937,7 +937,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Upper_3,
 			.Start = [=] {
 				YamatoOn();
-				Col_Attack->SetAttackData(DamageType::Air, 50);
+				Col_Attack->SetAttackData(DamageType::Air, DamageCalculate(168));
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				EffectSystem->PlayFX("Yamato_AttackUp_3.effect");
@@ -976,7 +976,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_Combo_1,
 			.Start = [=] {
 				RotationToTarget();
-				Col_Attack->SetAttackData(DamageType::Light, 50);
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(93));
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				EffectSystem->PlayFX("Yamato_Air_Combo_1.effect");
@@ -1010,7 +1010,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_Combo_2,
 			.Start = [=] {
 				YamatoOn();
-				Col_Attack->SetAttackData(DamageType::Light, 50);
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(112));
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				EffectSystem->PlayFX("Yamato_Air_Combo_2.effect");
@@ -1049,7 +1049,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_Combo_3,
 			.Start = [=] {
 				YamatoOn();
-				Col_Attack->SetAttackData(DamageType::Heavy, 50);
+				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(225));
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				EffectSystem->PlayFX("Yamato_Air_Combo_3.effect");
@@ -1084,7 +1084,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			.Start = [=] {
 				RotationToTarget();
 				YamatoOn();
-				Col_Attack->SetAttackData(DamageType::Air, 50);
+				Col_Attack->SetAttackData(DamageType::Air, DamageCalculate(375));
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				EffectSystem->PlayFX("Yamato_Air_ComboB_1.effect");
@@ -1118,7 +1118,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_ComboB_2,
 			.Start = [=] {
 				YamatoOn();
-				Col_Attack->SetAttackData(DamageType::Slam, 50);
+				Col_Attack->SetAttackData(DamageType::Slam, DamageCalculate(187));
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				EffectSystem->PlayFX("Yamato_Air_Combo_3.effect");
@@ -1173,7 +1173,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		static float4 RaidTargetPos;
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Raid2,
 			.Start = [=] {
-				Col_Attack->SetAttackData(DamageType::Slam, 50);
+				Col_Attack->SetAttackData(DamageType::Slam, DamageCalculate(525));
 				YamatoOn();
 				Renderer->ChangeAnimation("pl0300_yamato_Raid2_Loop");
 				GetLevel()->RayCast(GetTransform()->GetWorldPosition(), float4::DOWN, RaidTargetPos, 9999.0f);
@@ -1250,6 +1250,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Vergil_yamato_JudgementCut_2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCut_2,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(450));
 				EffectSystem->PlayFX("Yamato_JudgementCut.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCut_2_Loop");
 			},
@@ -1313,6 +1314,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			.Start = [=] {
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(450));
 				EffectSystem->PlayFX("Yamato_JudgementCut_Air.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Air_JudgementCut_2_Loop");
 			},
@@ -3083,6 +3085,18 @@ void PlayerActor_Vergil::YamatoOn()
 	Renderer->GetAllRenderUnit()[0][6]->Off();
 	Renderer->GetAllRenderUnit()[0][7]->Off();
 	Renderer->GetAllRenderUnit()[0][8]->Off();
+}
+
+int PlayerActor_Vergil::DamageCalculate(int _Damage)
+{
+	if (true == IsDevilTrigger)
+	{
+		return static_cast<int>(_Damage * 1.3f);
+	}
+	else
+	{
+		return _Damage;
+	}
 }
 
 
