@@ -1,6 +1,8 @@
 #include "PrecompileHeader.h"
 #include "NetworkObjectBase.h"
 
+#include <GameEngineCore/GameEngineActor.h>
+
 #include "NetworkGUI.h"
 
 #include "NetworkManager.h"
@@ -183,11 +185,41 @@ void NetworkObjectBase::Update_NetworkTrans(float _DeltaTime)
 
 void NetworkObjectBase::Update_SendPacket(float _DeltaTime)
 {
-	//TODO : Off된 객체 UpdatePacket 전송 방지 부분
+	GameEngineActor* ActorPtr = dynamic_cast<GameEngineActor*>(this);
+	if (nullptr == ActorPtr)
+	{
+		MsgAssert("Update패킷을 전송할때 인자로 받은 ObjPtr이 GameEngineActor를 상속받지 않았습니다");
+		return;
+	}
+
+#pragma region 업데이트 패킷 전송 타이밍
+	/*
+	1. 그냥 On일때 -> 전송됨
+		OnOffValue : true -> true
+		IsActorOn : true
+
+	2. 처음 Off일때 -> 전송됨
+		OnOffValue : true -> false
+		IsActorOn : false
+
+	3. 계속 Off 일때 -> 전송안됨
+		OnOffValue : false -> false
+		IsActorOn : false
+
+	3. 다시 On일때 -> 전송됨
+		OnOffValue : false -> true
+		IsActorOn : true
+	*/
+#pragma endregion
+	bool IsActorOn = ActorPtr->IsUpdate();
+	if (false == OnOffValue && false == IsActorOn)
+		return;
+
+	OnOffValue = IsActorOn;
 
 	NetworkManager::PushUpdatePacket
 	(
-		this, ActorTimeScale,
+		this, ActorPtr, ActorTimeScale,
 		UpdatePacket_IntLinkDatas,
 		UpdatePacket_FloatLinkDatas,
 		UpdatePacket_BoolLinkDatas

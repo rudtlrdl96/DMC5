@@ -37,6 +37,7 @@ void NetworkTestLevel::Start()
 
 	GameEngineInput::CreateKey("Test_BackMainLevel", VK_ESCAPE);
 	GameEngineInput::CreateKey("Test_EnemyDeath", 'C');
+	GameEngineInput::CreateKey("Test_EnemyOnOff", 'V');
 }
 
 
@@ -85,6 +86,18 @@ void NetworkTestLevel::Update(float _DeltaTime)
 		{
 			Enemy->Death();
 			Enemy = nullptr;
+		}
+	}
+
+	if (true == GameEngineInput::IsDown("Test_EnemyOnOff") && nullptr != Enemy)
+	{
+		if (Enemy->IsUpdate())
+		{
+			Enemy->Off();
+		}
+		else
+		{
+			Enemy->On();
 		}
 	}
 

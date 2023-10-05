@@ -22,6 +22,11 @@ public:
 		DebugTarget = _Target;
 	}
 
+	static Net_ActorType GetDebugType()
+	{
+		return DebugType;
+	}
+
 	NetworkObjectBase();
 	~NetworkObjectBase();
 
@@ -86,22 +91,10 @@ protected:
 		};
 	}
 
-
-	//업데이트 패킷에 자식 GameEngineTransform을 추가로 연결합니다
-	//void LinkChild_UpdatePacket(GameEngineTransform* _Child);
-
-
-
 	void SetFsmPacketCallBack(std::function<void(int _State)> _CallBack);
 
 
 private:
-	struct ChildData
-	{
-		float4 Rotation = float4::ZERO;
-		float4 Position = float4::ZERO;
-	};
-
 	static NetworkObjectBase* DebugTarget;
 	static Net_ActorType DebugType;
 
@@ -122,7 +115,6 @@ private:
 	std::vector<int*> UpdatePacket_IntLinkDatas;
 	std::vector<bool*> UpdatePacket_BoolLinkDatas;
 	std::vector<float*> UpdatePacket_FloatLinkDatas;
-	std::map<GameEngineTransform*, ChildData> Children;
 
 	std::map<void*, std::function<void(void* _BeforeData)>> LinkDifferentCallBacks;
 	

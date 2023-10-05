@@ -121,6 +121,7 @@ void NetworkManager::PushChatPacket(const std::string_view& _Msg, const float4& 
 
 void NetworkManager::PushUpdatePacket(
 	NetworkObjectBase* _ObjPtr, 
+	GameEngineActor* _ActorPtr,
 	float _TimeScale,
 	const std::vector<int*>& _IntDatas,
 	const std::vector<float*>& _FloatDatas,
@@ -132,10 +133,9 @@ void NetworkManager::PushUpdatePacket(
 		return;
 	}
 
-	GameEngineActor* ActorPtr = dynamic_cast<GameEngineActor*>(_ObjPtr);
-	if (nullptr == ActorPtr)
+	if (nullptr == _ActorPtr)
 	{
-		MsgAssert("Update패킷을 전송할때 인자로 받은 ObjPtr이 GameEngineActor를 상속받지 않았습니다");
+		MsgAssert("Update패킷을 전송할때 _ActorPtr인자가 nullptr입니다");
 		return;
 	}
 
@@ -145,7 +145,7 @@ void NetworkManager::PushUpdatePacket(
 
 	
 	//현재 진행중인 레벨의 엑터들만 실행
-	if (ActorPtr->GetLevel() != CurLevel)
+	if (_ActorPtr->GetLevel() != CurLevel)
 		return;
 
 	//인자로 받은 오브젝트의 네트워크용 오브젝트 아이디
@@ -198,7 +198,7 @@ void NetworkManager::PushUpdatePacket(
 	
 
 	//레벨 타입
-	BaseLevel* Level = dynamic_cast<BaseLevel*>(ActorPtr->GetLevel());
+	BaseLevel* Level = dynamic_cast<BaseLevel*>(_ActorPtr->GetLevel());
 	if (nullptr == Level)
 	{
 		MsgAssert("ObjectUpdate패킷을 전송하려는 Actor가 BaseLevel을 상속받은 레벨에 존재하지 않습니다");
@@ -214,7 +214,7 @@ void NetworkManager::PushUpdatePacket(
 
 	UpdatePacket->LevelType = LevelType;
 
-	GameEngineTransform* TransPtr = ActorPtr->GetTransform();
+	GameEngineTransform* TransPtr = _ActorPtr->GetTransform();
 
 	//위치
 	UpdatePacket->Rotation = TransPtr->GetWorldRotation();
@@ -224,7 +224,7 @@ void NetworkManager::PushUpdatePacket(
 	UpdatePacket->TimeScale = _TimeScale;
 
 	//파괴 여부
-	UpdatePacket->IsDeath = ActorPtr->IsDeath();
+	UpdatePacket->IsDeath = _ActorPtr->IsDeath();
 	if (true == UpdatePacket->IsDeath)
 	{
 		//이 NetObject는 이제부터 전송/수신을 받지 않음
@@ -233,7 +233,7 @@ void NetworkManager::PushUpdatePacket(
 	}
 
 	//On/Off 여부
-	UpdatePacket->IsUpdate = ActorPtr->IsUpdate();
+	UpdatePacket->IsUpdate = _ActorPtr->IsUpdate();
 
 	ArrDataCopy(UpdatePacket->IntDatas, _IntDatas);
 	ArrDataCopy(UpdatePacket->FloatDatas, _FloatDatas);

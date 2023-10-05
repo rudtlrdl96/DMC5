@@ -113,6 +113,11 @@ void NetworkManager::ClientPacketInit()
 			//Player가 스스로 처리할 수 있게 자료구조에 저장
 			//GameEngineNetObject::PushNetObjectPacket(_Packet);
 		}
+
+		if (NetworkObjectBase::GetDebugType() == static_cast<Net_ActorType>(_Packet->ActorType))
+		{
+			NetworkGUI::GetInst()->PrintLog("Object with selected DebugType has successfully received UpdatePacket", float4::GREEN);
+		}
 	});
 
 

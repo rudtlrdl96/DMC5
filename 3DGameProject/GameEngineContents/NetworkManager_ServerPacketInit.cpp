@@ -108,6 +108,11 @@ void NetworkManager::ServerPacketInit()
 			//GameEngineNetObject::PushNetObjectPacket(_Packet);
 		}
 
+		if (NetworkObjectBase::GetDebugType() == static_cast<Net_ActorType>(_Packet->ActorType))
+		{
+			NetworkGUI::GetInst()->PrintLog("Object with selected DebugType has successfully received UpdatePacket", float4::GREEN);
+		}
+
 		//서버의 경우엔 수신받은 특정 오브젝트의 패킷을 다른 클라에 다 뿌려야 한다
 		NetInst->SendPacket(_Packet, _Packet->NetID);
 	});

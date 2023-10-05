@@ -83,6 +83,7 @@ public:
 	//Update패킷을 보낼때 이 인터페이스를 이용해서 보내주시면 됩니다.
 	static void PushUpdatePacket(
 		NetworkObjectBase* _ObjPtr, 
+		GameEngineActor* _ActorPtr,
 		float _TimeScale,
 		const std::vector<int*>& _IntDatas,
 		const std::vector<float*>& _FloatDatas,
