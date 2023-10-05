@@ -4,14 +4,6 @@
 #include "Player_MirageBlade.h"
 #include "PlayerController.h"
 #include "AttackCollision.h"
-bool PlayerActor_Vergil::Input_GunCheck()
-{
-	if (Controller->GetIsGunUp())
-	{
-		FSM_MirageBlade.ChangeState(FSM_State_MirageBlade::MirageBlade_Shoot);
-	}
-	return false;
-}
 
 void PlayerActor_Vergil::CreateMirageBlade()
 {

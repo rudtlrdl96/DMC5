@@ -184,7 +184,8 @@ void PlayerActor_Nero::PlayerLoad()
 			},
 			.CallBacks_float = {
 				std::bind(&BasePlayerActor::RotationToTarget, this, std::placeholders::_1),
-				std::bind(&BasePlayerActor::RotationToMoveVector, this, std::placeholders::_1)
+				std::bind(&BasePlayerActor::RotationToMoveVector, this, std::placeholders::_1),
+				std::bind(&BasePlayerActor::SetInvincibility, this, std::placeholders::_1)
 			},
 			.CallBacks_float4 = {
 				std::bind(&BasePlayerActor::SetForce, this, std::placeholders::_1),
@@ -501,6 +502,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->SetMove(Controller->GetMoveVector() * 500);
 				InputCheck = false;
 				MoveCheck = false;
+				SetInvincibility(0.5f);
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Jump_Vertical");
 			},
@@ -537,6 +539,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->SetMove(Controller->GetMoveVector() * 500);
 				InputCheck = false;
 				MoveCheck = false;
+				SetInvincibility(0.5f);
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Jump_Back");
 			},
@@ -634,6 +637,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->TurnOnGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->SetMove(Controller->GetMoveVector() * 250);
+				SetInvincibility(0.5f);
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Jump_2ndJump", true);
 			},
@@ -672,6 +676,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->TurnOnGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->SetMove(Controller->GetMoveVector() * 250);
+				SetInvincibility(0.5f);
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Jump_Back_2ndJump", true);
 			},
@@ -1181,6 +1186,7 @@ void PlayerActor_Nero::PlayerLoad()
 				DelayCheck = false;
 				PhysXCapsule->SetLinearVelocityZero();
 				RotationToTarget();
+				SetInvincibility(0.5f);
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Shuffle", true);
 			},
@@ -1877,9 +1883,10 @@ void PlayerActor_Nero::PlayerLoad()
 				RotationToTarget();
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
-				BlueRoseOn();
 				InputCheck = false;
 				MoveCheck = false;
+				BlueRoseOn();
+				SetInvincibility(0.5f);
 				Renderer->ChangeAnimation("pl0000_Evade_Left", true);
 			},
 			.Update = [=](float _DeltaTime) {
@@ -1919,9 +1926,10 @@ void PlayerActor_Nero::PlayerLoad()
 				RotationToTarget();
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
-				BlueRoseOn();
 				InputCheck = false;
 				MoveCheck = false;
+				BlueRoseOn();
+				SetInvincibility(0.5f);
 				Renderer->ChangeAnimation("pl0000_Evade_Right", true);
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2155,6 +2163,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
+				SetInvincibility(0.5f);
 				Col_Attack->SetAttackData(DamageType::Heavy, 75);
 				EffectSystem->PlayFX("Gerbera_Jump_Back.effect");
 				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Back", true);
@@ -2187,6 +2196,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
 				WeaponIdle();
+				SetInvincibility(0.5f);
 				Col_Attack->SetAttackData(DamageType::Heavy, 75);
 				EffectSystem->PlayFX("Gerbera_Jump_Back.effect");
 				EffectSystem->GetTransform()->SetLocalRotation({ 0, 180, 0 });
@@ -2221,6 +2231,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
 				WeaponIdle();
+				SetInvincibility(0.5f);
 				Col_Attack->SetAttackData(DamageType::Heavy, 75);
 				EffectSystem->PlayFX("Gerbera_Jump_Back.effect");
 				EffectSystem->GetTransform()->SetLocalRotation({ 0, 90, 0 });
@@ -2255,6 +2266,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
 				WeaponIdle();
+				SetInvincibility(0.5f);
 				Col_Attack->SetAttackData(DamageType::Heavy, 75);
 				EffectSystem->PlayFX("Gerbera_Jump_Back.effect");
 				EffectSystem->GetTransform()->SetLocalRotation({ 0, -90, 0 });
@@ -2748,6 +2760,7 @@ void PlayerActor_Nero::PlayerLoad()
 		.Start = [=] {
 			WeaponIdle();
 			PhysXCapsule->SetLinearVelocityZero();
+			SetInvincibility(0.5f);
 			Col_Attack->SetAttackData(DamageType::Air, 150);
 			EffectSystem->PlayFX("Nero_DT_On.effect");
 			Renderer->ChangeAnimation("pl0000_DT_Start", true);
@@ -2787,6 +2800,7 @@ void PlayerActor_Nero::PlayerLoad()
 				InputCheck = false;
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
+				SetInvincibility(0.5f);
 				Col_Attack->SetAttackData(DamageType::Air, 150);
 				EffectSystem->PlayFX("Nero_DT_On.effect");
 				Renderer->ChangeAnimation("pl0000_DT_AirStart", true);
@@ -2818,6 +2832,7 @@ void PlayerActor_Nero::PlayerLoad()
 		.Start = [=] {
 			WeaponIdle();
 			PhysXCapsule->SetLinearVelocityZero();
+			SetInvincibility(0.5f);
 			Col_Attack->SetAttackData(DamageType::Heavy, 150);
 			EffectSystem->PlayFX("GT_Bomb.effect");
 			Renderer->ChangeAnimation("pl0000_GT_Bomb", true);
@@ -2853,6 +2868,7 @@ void PlayerActor_Nero::PlayerLoad()
 				InputCheck = false;
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
+				SetInvincibility(0.5f);
 				Col_Attack->SetAttackData(DamageType::Heavy, 150);
 				EffectSystem->PlayFX("GT_Bomb.effect");
 				Renderer->ChangeAnimation("pl0000_GT_AirBomb", true);
@@ -2886,6 +2902,7 @@ void PlayerActor_Nero::PlayerLoad()
 				UseDoubleJump = false;
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
+				SetInvincibility(0.5f);
 				Renderer->ChangeAnimation("pl0000_EnemyStep", true);
 			},
 			.Update = [=](float _DeltaTime) {

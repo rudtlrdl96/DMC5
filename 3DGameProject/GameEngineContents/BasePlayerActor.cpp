@@ -146,6 +146,11 @@ void BasePlayerActor::RotationToMoveVector(float _MaxValue)
 	RotationToDir(MoveVector, _MaxValue);
 }
 
+void BasePlayerActor::SetInvincibility(float _Time)
+{
+	InvincibilityTime = _Time;
+}
+
 void BasePlayerActor::Start()
 {
 	// PhysX 콜리전
@@ -221,6 +226,7 @@ void BasePlayerActor::Update(float _DeltaTime)
 	}
 	else if (NetControllType::ActiveControll == GameEngineNetObject::GetControllType())
 	{
+		InvincibilityTime -= _DeltaTime;
 		DamageColCheck();
 	}
 }
@@ -273,6 +279,8 @@ bool BasePlayerActor::FloorCheck()
 
 void BasePlayerActor::DamageColCheck()
 {
+	// 무적시간 체크
+	if (0 < InvincibilityTime) { return; }
 	std::shared_ptr<GameEngineCollision> Col = Col_Player->Collision(CollisionOrder::EnemyAttack);
 	if (nullptr == Col) { return; }
 

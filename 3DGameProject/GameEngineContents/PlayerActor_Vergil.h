@@ -85,6 +85,8 @@ enum FSM_State_Vergil
 	Vergil_Damage_Fall,
 	Vergil_Damage_Ground,
 
+	Vergil_Provocation,
+
 	Vergil_Damage_Death,
 	Vergil_Damage_Fly_Death,
 };
@@ -169,8 +171,6 @@ private:
 	bool Input_SwordCheck(int AddState = 0);
 	// 검 버튼을 공중에서 입력한 경우 True 리턴 및 State 변경
 	bool Input_SwordCheckFly(int AddState = 0);
-	// 총 버튼을 입력한 경우 True 리턴 및 State 변경
-	bool Input_GunCheck();
 	// 점프 버튼을 입력한 경우 True 리턴 및 State 변경
 	bool Input_JumpCheck();
 	// 점프 버튼을 공중에서 입력한 경우 True 리턴 및 State 변경

@@ -51,7 +51,8 @@ public:
 	virtual void SetDT(unsigned int _DTValue) = 0;
 	// Arm 상태 변환
 	virtual void SetArm(unsigned int _ArmValue) {}
-	
+	void SetInvincibility(float _Time);
+
 protected:
 	void Start() override;
 
@@ -88,11 +89,12 @@ protected:
 
 	int HP = 10000;
 	int FSMValue = -1;
-	bool DTValue;
 	int ArmValue;
+	bool DTValue;
 private:
 	void DamageColCheck();
 
 	static std::vector<BasePlayerActor*> Players;
+	float InvincibilityTime = 0.0f; // 무적 프레임
 };
 
