@@ -69,8 +69,26 @@ float GGX_Distribution(float3 normal, float3 halfVector, float roughness)
     return a / (3.14f * denominator * denominator);
 }
 
+cbuffer ClipData : register(b2)
+{
+    float ClipStartX;
+    float ClipEndX;
+    float ClipStartY;
+    float ClipEndY;
+};
+
 AlphaOutPut MeshTexture_PS(Output _Input)
 {
+    if (ClipStartX > _Input.TEXCOORD.x || ClipEndX < _Input.TEXCOORD.x)
+    {
+        clip(-1);
+    }
+    
+    if (ClipStartY > _Input.TEXCOORD.y || ClipEndY < _Input.TEXCOORD.y)
+    {
+        clip(-1);
+    }
+    
     AlphaOutPut Result = (AlphaOutPut)0;
     
     // rgb = »ö»ó, a = metallicValue 

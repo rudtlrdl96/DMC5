@@ -40,6 +40,13 @@ cbuffer LightDatas : register(b12)
     LightData AllLight[64];
 };
 
+#define PIE 3.141592653589793238462643383279502884197169399375105820974944f
+#define PIE2 (PIE * 2.0f)
+#define DegToRad (PIE / 180)
+#define RadToDeg (180 / PIE)
+
+
+
 float4 CalDiffuseLight(float4 _Pos, float4 _Normal, LightData _Data)
 {
     float4 ResultRatio = (float4) 0.0f;
@@ -125,3 +132,57 @@ float4 NormalTexCalculate(Texture2D NormalTex, SamplerState Smp, float4 UV, floa
 
 }
 
+struct ResultLight
+{
+    float3 CurLightDiffuseRatio;
+    float3 CurLightSpacularRatio;
+    float3 CurLightAmbientRatio;
+};
+
+ResultLight CalLight(int _LightIndex, float4 _Position, float4 _Normal, float _Metal)
+{
+    ResultLight Result;
+    
+    Result.CurLightDiffuseRatio = float3(0, 0, 0);
+    Result.CurLightSpacularRatio = float3(0, 0, 0);
+    Result.CurLightAmbientRatio = float3(0, 0, 0);
+    
+    float LightPower = AllLight[_LightIndex].LightPower;
+        
+    if (0 != AllLight[_LightIndex].LightType)
+    {
+        float Distance = length(AllLight[_LightIndex].ViewLightPos.xyz - _Position.xyz);
+            
+        float FallOffStart = AllLight[_LightIndex].LightRange * 0.2f;
+        float FallOffEnd = AllLight[_LightIndex].LightRange;
+                        
+        LightPower *= saturate((FallOffEnd - Distance) / (FallOffEnd - FallOffStart));
+    }
+        
+    if (2 == AllLight[_LightIndex].LightType)
+    {
+        // ToLight
+        float3 LightVec = normalize(_Position.xyz - AllLight[_LightIndex].ViewLightPos.xyz);
+        float3 SpotDirToLight = normalize(AllLight[_LightIndex].ViewLightDir.xyz);
+       
+        float CosAng = acos(dot(SpotDirToLight, LightVec)) * RadToDeg;
+        float LightAng = AllLight[_LightIndex].LightAngle * 0.5f;
+        
+        float ConAtt = saturate((LightAng - CosAng) / LightAng);
+        
+        LightPower *= (ConAtt * ConAtt);
+    }
+        
+    if (0.0f < LightPower)
+    {
+        Result.CurLightDiffuseRatio = CalDiffuseLight(_Position, _Normal, AllLight[_LightIndex]).xyz;
+        Result.CurLightSpacularRatio = CalSpacularLight(_Position, _Normal, AllLight[_LightIndex]).xyz * (1.0f - _Metal) * 0.5f;
+        Result.CurLightAmbientRatio = CalAmbientLight(AllLight[_LightIndex]).xyz;
+        
+        Result.CurLightDiffuseRatio *= AllLight[_LightIndex].LightColor.xyz * LightPower * AllLight[_LightIndex].DifLightPower;
+        Result.CurLightSpacularRatio *= AllLight[_LightIndex].LightColor.xyz * LightPower * AllLight[_LightIndex].SpcLightPower;
+        Result.CurLightAmbientRatio *= AllLight[_LightIndex].LightColor.xyz * LightPower * AllLight[_LightIndex].AmbLightPower;
+    }
+    
+    return Result;
+}

@@ -64,6 +64,9 @@
     <FxCompile Include="Rain.hlsl">
       <Filter>Effect</Filter>
     </FxCompile>
+    <FxCompile Include="ContentsMesh_ClipAlpha.hlsl">
+      <Filter>MeshShader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">

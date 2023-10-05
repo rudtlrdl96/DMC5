@@ -75,60 +75,6 @@ float GGX_Distribution(float3 normal, float3 halfVector, float roughness)
     float denominator = (NdotH * NdotH * (a - 1.0f) + 1.0f);
     return a / (3.14f * denominator * denominator);
 }
-struct ResultLight
-{
-    float3 CurLightDiffuseRatio;
-    float3 CurLightSpacularRatio;
-    float3 CurLightAmbientRatio;
-};
-
-ResultLight CalLight(int _LightIndex, float4 _Position, float4 _Normal, float _Metal)
-{
-    ResultLight Result;
-    
-    Result.CurLightDiffuseRatio = float3(0, 0, 0);
-    Result.CurLightSpacularRatio = float3(0, 0, 0);
-    Result.CurLightAmbientRatio = float3(0, 0, 0);
-    
-    float LightPower = AllLight[_LightIndex].LightPower;
-        
-    if (0 != AllLight[_LightIndex].LightType)
-    {
-        float Distance = length(AllLight[_LightIndex].ViewLightPos.xyz - _Position.xyz);
-            
-        float FallOffStart = AllLight[_LightIndex].LightRange * 0.2f;
-        float FallOffEnd = AllLight[_LightIndex].LightRange;
-                        
-        LightPower *= saturate((FallOffEnd - Distance) / (FallOffEnd - FallOffStart));
-    }
-        
-    if (2 == AllLight[_LightIndex].LightType)
-    {
-        // ToLight
-        float3 LightVec = normalize(_Position.xyz - AllLight[_LightIndex].ViewLightPos.xyz);
-        float3 SpotDirToLight = normalize(AllLight[_LightIndex].ViewLightDir.xyz);
-       
-        float CosAng = acos(dot(SpotDirToLight, LightVec)) * RadToDeg;
-        float LightAng = AllLight[_LightIndex].LightAngle * 0.5f;
-        
-        float ConAtt = saturate((LightAng - CosAng) / LightAng);
-        
-        LightPower *= (ConAtt * ConAtt);
-    }
-        
-    if (0.0f < LightPower)
-    {
-        Result.CurLightDiffuseRatio = CalDiffuseLight(_Position, _Normal, AllLight[_LightIndex]).xyz;
-        Result.CurLightSpacularRatio = CalSpacularLight(_Position, _Normal, AllLight[_LightIndex]).xyz * (1.0f - _Metal) * 0.5f;
-        Result.CurLightAmbientRatio = CalAmbientLight(AllLight[_LightIndex]).xyz;
-        
-        Result.CurLightDiffuseRatio *= AllLight[_LightIndex].LightColor.xyz * LightPower * AllLight[_LightIndex].DifLightPower;
-        Result.CurLightSpacularRatio *= AllLight[_LightIndex].LightColor.xyz * LightPower * AllLight[_LightIndex].SpcLightPower;
-        Result.CurLightAmbientRatio *= AllLight[_LightIndex].LightColor.xyz * LightPower * AllLight[_LightIndex].AmbLightPower;
-    }
-    
-    return Result;
-}
 
 AlphaOutPut MeshTexture_PS(Output _Input)
 {

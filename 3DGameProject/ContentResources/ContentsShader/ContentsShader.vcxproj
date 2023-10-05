@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <FxCompile Include="ContentsMesh_ClipAlpha.hlsl" />
     <FxCompile Include="EffectMesh.hlsl" />
     <FxCompile Include="ContentsAniMesh_Alpha.hlsl" />
     <FxCompile Include="ContentsAniMesh_LowOption.hlsl" />
