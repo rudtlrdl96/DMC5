@@ -55,10 +55,12 @@ void PlayerCamera::CameraControll(float _DeltaTime)
 {
 	if (GameEngineInput::IsDown("Escape"))
 	{
+		IsMouseControll = false;
 		GameEngineInput::ShowMouseCursor(true);
 	}
 	if (1.0f < GameEngineInput::GetPressTime("EngineMouseLeft"))
 	{
+		IsMouseControll = true;
 		GameEngineInput::ShowMouseCursor(false);
 	}
 	// 회전 입력받기
@@ -111,10 +113,14 @@ void PlayerCamera::CameraControll(float _DeltaTime)
 
 	// 회전
 	GetTransform()->AddWorldRotation({ 0, CameraRot.y * CameraRotYSpeed * _DeltaTime });
-	GetTransform()->AddWorldRotation({ 0, MouseRot.x * MouseSensitivity, 0 });
 	float4 ArmRot = CameraArm->GetLocalRotation();
 	ArmRot.x += CameraRot.x * CameraRotXSpeed * _DeltaTime;
-	ArmRot.x += MouseRot.y * MouseSensitivity;
+
+	if (true == IsMouseControll)
+	{
+		GetTransform()->AddWorldRotation({ 0, MouseRot.x * MouseSensitivity, 0 });
+		ArmRot.x += MouseRot.y * MouseSensitivity;
+	}
 	ArmRot.x = std::clamp(ArmRot.x, -20.0f, 60.0f);
 	CameraArm->SetLocalRotation(ArmRot);
 

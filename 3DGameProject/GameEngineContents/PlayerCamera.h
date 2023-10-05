@@ -45,7 +45,7 @@ private:
 	float4 CameraFarDistance = { 0, 0, -500 };
 	float4 CameraRot;
 	float4 BeforeMouseRot;
-
+	
 	float MouseAcceleration = 0.8f;	// 마우스 가속도
 	float MouseSensitivity = 0.25f;		// 마우스 감도
 	float CameraRotBraking = 0.3f;		// 카메라 제동력
@@ -59,5 +59,7 @@ private:
 
 	float FastTrackingDistance = 400.0f;
 	float FastTrackingSpeed = 20.0f;
+
+	bool IsMouseControll = false;
 };
 

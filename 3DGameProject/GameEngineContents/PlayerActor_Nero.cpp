@@ -42,9 +42,9 @@ void PlayerActor_Nero::Start()
 		});
 
 	LinkData_UpdatePacket<int>(ArmValue, [this](int _BeforeData)
-		{
-			SetArm(ArmValue);
-		});
+	{
+		SetArm(ArmValue);
+	});
 	LinkData_UpdatePacket<int>(ExceedLevel);
 }
 
@@ -178,7 +178,7 @@ void PlayerActor_Nero::PlayerLoad()
 				std::bind(&PlayerActor_Nero::SetExActTiming, this), //13
 			},
 			.CallBacks_int = {
-				std::bind(&PlayerActor_Nero::ChangeState, this, std::placeholders::_1)
+				std::bind(&PlayerActor_Nero::ChangeState, this, std::placeholders::_1),
 			},
 			.CallBacks_float = {
 				std::bind(&BasePlayerActor::RotationToTarget, this, std::placeholders::_1),
@@ -752,7 +752,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboA1_EX.effect");
-					ExceedLevel--;
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
 				}
 				else
 				{
@@ -799,7 +799,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboA2_EX.effect");
-					ExceedLevel--;
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
 				}
 				else
 				{
@@ -852,7 +852,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboA3_EX.effect");
-					ExceedLevel--;
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
 				}
 				else
 				{
@@ -899,7 +899,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboA4_EX.effect");
-					ExceedLevel--;
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
 				}
 				else
 				{
@@ -945,7 +945,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboD1_EX.effect");
-					ExceedLevel--;
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
 				}
 				else
 				{
@@ -992,7 +992,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboD2_EX.effect");
-					ExceedLevel--;
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
 				}
 				else
 				{
@@ -1039,7 +1039,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboD3_EX.effect");
-					ExceedLevel--;
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
 				}
 				else
 				{
@@ -1086,7 +1086,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboD4_EX.effect");
-					ExceedLevel--;
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
 				}
 				else
 				{
@@ -1133,7 +1133,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_HR_EX.effect");
-					ExceedLevel -= 3;
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel -= 3; });
 				}
 				else
 				{
@@ -1171,7 +1171,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_Shuffle_EX.effect");
-					ExceedLevel -= 3;
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel -= 3; });
 				}
 				else
 				{
@@ -1282,7 +1282,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_Stleak_3_EX.effect");
-					ExceedLevel -= 3;
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel -= 3; });
 				}
 				else
 				{
@@ -1331,7 +1331,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_AirComboA1_EX.effect");
-					ExceedLevel--;
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
 				}
 				else
 				{
@@ -1373,7 +1373,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_AirComboA2_EX.effect");
-					ExceedLevel--;
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
 				}
 				else
 				{
@@ -1423,7 +1423,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_AirComboA3_EX.effect");
-					ExceedLevel--;
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
 				}
 				else
 				{
@@ -1465,7 +1465,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_AirComboB_EX.effect");
-					ExceedLevel--;
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
 				}
 				else
 				{
@@ -1572,7 +1572,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_Split_3_EX.effect");
-					ExceedLevel -= 3;
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel -= 3; });
 				}
 				else
 				{
@@ -1644,7 +1644,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_Calibur_2_EX.effect");
-					ExceedLevel -= 3;
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel -= 3; });
 				}
 				else
 				{
