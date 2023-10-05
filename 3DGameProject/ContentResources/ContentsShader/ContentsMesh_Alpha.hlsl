@@ -113,9 +113,13 @@ ResultLight CalLight(int _LightIndex, float4 _Position, float4 _Normal, float _M
         
     if (0.0f < LightPower)
     {
-        Result.CurLightDiffuseRatio = AllLight[_LightIndex].LightColor.xyz * CalDiffuseLight(_Position, _Normal, AllLight[_LightIndex]).xyz * LightPower;
-        Result.CurLightSpacularRatio = AllLight[_LightIndex].LightColor.xyz * CalSpacularLight(_Position, _Normal, AllLight[_LightIndex]).xyz * (1.0f - _Metal) * LightPower * 0.5f;
-        Result.CurLightAmbientRatio = AllLight[_LightIndex].LightColor.xyz * CalAmbientLight(AllLight[_LightIndex]).xyz * LightPower;
+        Result.CurLightDiffuseRatio = CalDiffuseLight(_Position, _Normal, AllLight[_LightIndex]).xyz;
+        Result.CurLightSpacularRatio = CalSpacularLight(_Position, _Normal, AllLight[_LightIndex]).xyz * (1.0f - _Metal) * 0.5f;
+        Result.CurLightAmbientRatio = CalAmbientLight(AllLight[_LightIndex]).xyz;
+        
+        Result.CurLightDiffuseRatio *= AllLight[_LightIndex].LightColor.xyz * LightPower * AllLight[_LightIndex].DifLightPower;
+        Result.CurLightSpacularRatio *= AllLight[_LightIndex].LightColor.xyz * LightPower * AllLight[_LightIndex].SpcLightPower;
+        Result.CurLightAmbientRatio *= AllLight[_LightIndex].LightColor.xyz * LightPower * AllLight[_LightIndex].AmbLightPower;
     }
     
     return Result;

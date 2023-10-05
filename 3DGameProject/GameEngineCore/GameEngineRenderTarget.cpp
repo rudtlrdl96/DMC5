@@ -40,6 +40,8 @@ void GameEngineRenderTarget::ReleaseTextures()
 	Textures.clear();
 	RTVs.clear();
 	SRVs.clear();
+	Color.clear();
+	ViewPortDatas.clear();
 }
 
 // 랜더타겟 생성

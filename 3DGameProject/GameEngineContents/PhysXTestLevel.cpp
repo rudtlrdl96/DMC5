@@ -47,7 +47,7 @@ void PhysXTestLevel::LevelChangeStart()
 	//HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
-	std::shared_ptr<GameEngineLight> Light = CreatePointLight(float4(0, 50, 0), float4(256, 256), 1000);
+	std::shared_ptr<GameEngineLight> Light = CreatePointLight(float4(0, 50, 0), ShadowTextureScale::S_512, 1000);
 
 	std::shared_ptr<Box200> Box = CreateActor<Box200>();
 	Box->GetPhysXComponent()->SetWorldPosition({-200.0f, 100.0f, 200.0f});

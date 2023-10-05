@@ -14,6 +14,31 @@ const float4 GameEngineLight::PointViewDatas[6][2] = {
 };
 /// 0 == EyeDIr, 1 == UpDIr
 
+
+const float4 GameEngineLight::ShadowTextureScales[8] =
+{
+	{64, 64},
+	{128, 128},
+	{256, 256},
+	{512, 512},
+	{1024, 1024},
+	{2048, 2048},
+	{4096, 4096},
+	{8192, 8192}
+};
+
+const std::string GameEngineLight::ShadowTextureEnums[8] =
+{
+	"64",
+	"128",
+	"256",
+	"512",
+	"1024",
+	"2048",
+	"4096",
+	"8192",
+};
+
 GameEngineLight::GameEngineLight()
 {
 	SetName("GameEngineLight");
@@ -48,7 +73,7 @@ void GameEngineLight::Update(float _DeltaTime)
 	}
 }
 
-void GameEngineLight::ShadowTargetTextureLoad(const float4 _ShadowScale /*= float4::ZERO*/)
+void GameEngineLight::ShadowTargetTextureLoad(ShadowTextureScale _Scale /*= ShadowTextureScale::S_256*/)
 {
 	if (nullptr == ShadowTarget)
 	{
@@ -60,11 +85,10 @@ void GameEngineLight::ShadowTargetTextureLoad(const float4 _ShadowScale /*= floa
 		return;
 	}
 
-	if (_ShadowScale != float4::ZERO)
-	{
-		LightDataValue.ShadowTargetSizeX = _ShadowScale.x;
-		LightDataValue.ShadowTargetSizeY = _ShadowScale.y;
-	}
+	ShadowTextureScaleValue = _Scale;
+
+	LightDataValue.ShadowTargetSizeX = ShadowTextureScales[static_cast<int>(_Scale)].x;
+	LightDataValue.ShadowTargetSizeY = ShadowTextureScales[static_cast<int>(_Scale)].y;
 
 	CreateShadowTarget(ShadowTarget, static_cast<LightType>(LightDataValue.LightType));
 	ShadowTarget->SetName("Shadow Target");
@@ -116,6 +140,19 @@ void GameEngineLight::BakeShadow(std::shared_ptr<GameEngineCamera> _BakeCam, int
 	_BakeCam->BakeShadow(DynamicThis<GameEngineLight>(), _BakeIndex);
 
 	BakeShadowTarget[_BakeIndex] = NewBakeTarget;
+}
+
+void GameEngineLight::SetShadowTextureScale(ShadowTextureScale _Scale)
+{
+	ShadowTargetTextureRelease();
+	ShadowTargetTextureLoad(_Scale);
+}
+
+void GameEngineLight::SetLightRange(float _Range)
+{
+	LightDataValue.LightNear = 0.1f;
+	LightDataValue.LightFar = _Range;
+	LightDataValue.LightRange = _Range;
 }
 
 void GameEngineLight::LightUpdate(GameEngineCamera* _Camera, float _DeltaTime)
@@ -274,6 +311,54 @@ void GameEngineLight::DrawEditor()
 {
 	ImGui::Spacing();
 	ImGui::Spacing();
+	
+	if (true == ImGui::BeginCombo("Shaodw Texture Scale", "Change Scale", 0))
+	{
+		ShadowTextureScale CurScale = ShadowTextureScaleValue;
+
+		if (ImGui::Selectable("64"))
+		{
+			ShadowTextureScaleValue = ShadowTextureScale::S_64;
+		}
+		if (ImGui::Selectable("128"))
+		{
+			ShadowTextureScaleValue = ShadowTextureScale::S_128;
+		}
+		if (ImGui::Selectable("256"))
+		{
+			ShadowTextureScaleValue = ShadowTextureScale::S_256;
+		}
+		if (ImGui::Selectable("512"))
+		{
+			ShadowTextureScaleValue = ShadowTextureScale::S_512;
+		}
+		if (ImGui::Selectable("1024"))
+		{
+			ShadowTextureScaleValue = ShadowTextureScale::S_1024;
+		}
+		if (ImGui::Selectable("2048"))
+		{
+			ShadowTextureScaleValue = ShadowTextureScale::S_2048;
+		}
+		if (ImGui::Selectable("4096"))
+		{
+			ShadowTextureScaleValue = ShadowTextureScale::S_4096;
+		}
+		if (ImGui::Selectable("8192"))
+		{
+			ShadowTextureScaleValue = ShadowTextureScale::S_8192;
+		}
+
+		if (CurScale != ShadowTextureScaleValue)
+		{
+			SetShadowTextureScale(ShadowTextureScaleValue);
+		}
+
+		ImGui::EndCombo();
+	}
+
+	ImGui::Spacing();
+	ImGui::Spacing();
 
 	float LightColor[3] = { LightDataValue.LightColor.x, LightDataValue.LightColor.y, LightDataValue.LightColor.z };
 
@@ -282,6 +367,12 @@ void GameEngineLight::DrawEditor()
 	LightDataValue.LightColor.x = LightColor[0];
 	LightDataValue.LightColor.y = LightColor[1];
 	LightDataValue.LightColor.z = LightColor[2];
+
+	{
+		float InputRange = LightDataValue.LightRange;
+		ImGui::DragFloat("Light Range", &InputRange);
+		SetLightRange(InputRange);
+	}
 
 	switch (LightDataValue.LightType)
 	{
@@ -292,17 +383,38 @@ void GameEngineLight::DrawEditor()
 
 	case 1: // Point
 	{
-		ImGui::DragFloat("Light Range", &LightDataValue.LightRange, 1.0f);	
 	}
 		break;
 
 	case 2: // Spot
 	{
-		ImGui::DragFloat("Light Range", &LightDataValue.LightRange, 1.0f);
-		ImGui::DragFloat("Light Angle", &LightDataValue.LightAngle, 0.1f);
+		float InputAngle = LightDataValue.LightAngle;
+		ImGui::DragFloat("Light Angle", &InputAngle);
+		SetLightAngle(InputAngle);
 	}
 		break;
 	default:
 		break;
+	}
+
+	ImGui::Spacing();
+	ImGui::Spacing();
+
+	{
+		float InputLightPower = LightDataValue.LightPower;
+		ImGui::DragFloat("Light Power", &InputLightPower);
+		SetLightPower(InputLightPower);
+
+		float InputDifLightPower = LightDataValue.DifLightPower;
+		ImGui::DragFloat("Diffuse Light Power", &InputDifLightPower);
+		SetDifLightPower(InputDifLightPower);
+
+		float InputSpcLightPower = LightDataValue.SpcLightPower;
+		ImGui::DragFloat("Spacular Light Power", &InputSpcLightPower);
+		SetSpcLightPower(InputSpcLightPower);
+
+		float InputAmbLightPower = LightDataValue.AmbLightPower;
+		ImGui::DragFloat("Ambient Light Power", &InputAmbLightPower);
+		SetAmbLightPower(InputAmbLightPower);
 	}
 }

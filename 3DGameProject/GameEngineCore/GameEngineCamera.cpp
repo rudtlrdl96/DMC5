@@ -560,6 +560,11 @@ void GameEngineCamera::Render(float _DeltaTime)
 				continue;
 			}
 
+			if (false == Light->IsDynamicLight)
+			{
+				continue;
+			}
+
 			std::shared_ptr<GameEngineMaterial> Pipe = nullptr;
 
 			switch (Light->GetLightData().LightType)

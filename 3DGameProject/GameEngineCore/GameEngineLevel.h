@@ -128,10 +128,10 @@ public:
 	}
 
 	// Point Ligh를 생성합니다
-	std::shared_ptr<GameEngineLight> CreatePointLight(const float4& _Pos, const float4& _ShadowScale, float _Range);
+	std::shared_ptr<GameEngineLight> CreatePointLight(const float4& _Pos, ShadowTextureScale _ShadowScale, float _Range);
 
 	// Spot Light를 생성합니다.
-	std::shared_ptr<GameEngineLight> CreateSpotLight(const float4& _Pos, const float4& _ShadowScale, float _Range, float _Angle);
+	std::shared_ptr<GameEngineLight> CreateSpotLight(const float4& _Pos, ShadowTextureScale _ShadowScale, float _Range, float _Angle);
 
 protected:
 	// 레벨이 바뀌어서 시작할때

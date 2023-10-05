@@ -38,7 +38,7 @@ void GameEngineLevel::RenderTargetTextureCreate()
 	}
 	for (std::shared_ptr<GameEngineLight> Light : AllLight)
 	{
-		Light->ShadowTargetTextureLoad();
+		Light->ShadowTargetTextureLoad(Light->ShadowTextureScaleValue);
 	}
 
 	LastTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
@@ -93,15 +93,17 @@ void GameEngineLevel::LevelLightInit()
 		DirectionalLight->SetLightType(LightType::Directional);
 		DirectionalLight->LightDataValue.LightPower = 1.0f;
 		DirectionalLight->IsShadowLight = true;
+		DirectionalLight->ShadowTextureScaleValue = ShadowTextureScale::S_8192;
 		DirectionalLight->LightDataValue.ShadowTargetSizeX = 8192;
 		DirectionalLight->LightDataValue.ShadowTargetSizeY = 8192;
 		DirectionalLight->ShadowRange.x = 8192 * 2;
 		DirectionalLight->ShadowRange.y = 8192 * 2;
 		DirectionalLight->LightDataValue.LightColor = float4(1.0f, 1.0f, 1.0f);
+		DirectionalLight->SetLightRange(5000.0f);
 	}
 }
 
-std::shared_ptr<GameEngineLight> GameEngineLevel::CreatePointLight(const float4& _Pos, const float4& _ShadowScale, float _Range)
+std::shared_ptr<GameEngineLight> GameEngineLevel::CreatePointLight(const float4& _Pos, ShadowTextureScale _ShadowScale, float _Range)
 {
 	std::shared_ptr<GameEngineLight> NewLight = CreateActor<GameEngineLight>();
 	NewLight->IsShadowLight = true;
@@ -110,24 +112,15 @@ std::shared_ptr<GameEngineLight> GameEngineLevel::CreatePointLight(const float4&
 	NewLight->SetName("Point Light");
 	NewLight->SetLightType(LightType::Point);
 
-	NewLight->LightDataValue.ShadowTargetSizeX = _ShadowScale.x;
-	NewLight->LightDataValue.ShadowTargetSizeY = _ShadowScale.y;
-
-	NewLight->ShadowRange.x = _ShadowScale.x;
-	NewLight->ShadowRange.y = _ShadowScale.y;
-
-	NewLight->LightDataValue.LightNear = 0.1f;
-	NewLight->LightDataValue.LightFar = _Range;
-	NewLight->LightDataValue.LightRange = _Range;
-
-	NewLight->LightDataValue.LightAngle = 360;
+	NewLight->SetLightRange(_Range);
+	NewLight->SetLightAngle(360);
 
 	NewLight->ShadowTargetTextureLoad(_ShadowScale);
 
 	return NewLight;
 }
 
-std::shared_ptr<GameEngineLight> GameEngineLevel::CreateSpotLight(const float4& _Pos, const float4& _ShadowScale, float _Range, float _Angle)
+std::shared_ptr<GameEngineLight> GameEngineLevel::CreateSpotLight(const float4& _Pos, ShadowTextureScale _ShadowScale, float _Range, float _Angle)
 {
 	std::shared_ptr<GameEngineLight> NewLight = CreateActor<GameEngineLight>();
 	NewLight->IsShadowLight = true;
@@ -136,20 +129,11 @@ std::shared_ptr<GameEngineLight> GameEngineLevel::CreateSpotLight(const float4& 
 	NewLight->SetName("Spot Light");
 	NewLight->SetLightType(LightType::Spot);
 
-	NewLight->LightDataValue.ShadowTargetSizeX = _ShadowScale.x;
-	NewLight->LightDataValue.ShadowTargetSizeY = _ShadowScale.y;
-
-	NewLight->ShadowRange.x = _ShadowScale.x;
-	NewLight->ShadowRange.y = _ShadowScale.y;
-
-	NewLight->LightDataValue.LightNear = 0.1f;
-	NewLight->LightDataValue.LightFar = _Range;
-	NewLight->LightDataValue.LightRange = _Range;
-
-	NewLight->LightDataValue.LightAngle = _Angle;
+	NewLight->SetLightRange(_Range);
+	NewLight->SetLightAngle(_Angle);
 
 	NewLight->ShadowTargetTextureLoad(_ShadowScale);
-
+	 
 	return NewLight;
 }
 
