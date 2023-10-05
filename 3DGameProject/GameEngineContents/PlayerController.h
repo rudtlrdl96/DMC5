@@ -168,7 +168,7 @@ public:
 	bool GetIsBackSword() { return IsBackSword; }
 	bool GetIsFrontSword() { return IsFrontSword; }
 	bool GetIsBackFrontSword() { return IsBackFrontSword; }
-	bool GetIsSwordPress() { return GameEngineInput::IsPress("Player_Sword"); }
+	bool GetIsSwordPress() { return GameEngineInput::IsPress("Player_Sword") || GameEngineInput::IsPress("EngineMouseLeft"); }
 	bool GetIsSwordChargeUp() { return IsSwordChargeUp; }
 
 	bool GetIsAnyJump() { return IsJump || IsLeftJump || IsRightJump; }

@@ -60,7 +60,7 @@ public:
 
 	static void AllReset();
 
-	static void MouseCursorOff();
+	static void ShowMouseCursor(bool _Value);
 
 	static bool IsAnyKey() 
 	{
@@ -101,10 +101,11 @@ private:
 	static std::map<std::string, GameEngineKey> Keys;
 	static bool IsAnyKeyValue;
 	static bool IsFocus;
-
+	static bool IsShowCursor;
 	static float4 MousePos;
 	static float4 PrevMousePos;
 	static float4 MouseDirection;
+	static float4 CenterPos;
 
 	static void IsFocusOn()
 	{

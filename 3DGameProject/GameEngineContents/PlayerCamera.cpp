@@ -21,58 +21,17 @@ void PlayerCamera::Start()
 	CameraTarget->SetParent(CameraArm);
 	CameraTarget->SetLocalPosition(CameraDistance);
 	CameraTransform = GetLevel()->GetMainCamera()->GetTransform();
+
+	GameEngineInput::ShowMouseCursor(false);
 }
 
 void PlayerCamera::Update(float _DeltaTime)
 {
+
+
 	// 락온한 적 여부에 따라 계산
 	TargetCheck(_DeltaTime);
-
-	// X축 회전은 제한값을 두기 위해 값을 받아둠.
-	float x = CameraArm->GetWorldRotation().x;
-
-	if (GameEngineInput::IsPress("EngineMouseLeft"))
-	{
-		GetTransform()->AddWorldRotation({ 0, GameEngineInput::GetMouseDirection().x, 0 });
-		x += GameEngineInput::GetMouseDirection().y;
-	}
-	if (GameEngineInput::IsPress("Player_CameraLeft"))
-	{
-		GetTransform()->AddWorldRotation({ 0, -CameraRotYSpeed * _DeltaTime, 0 });
-	}
-	if (GameEngineInput::IsPress("Player_CameraRight"))
-	{
-		GetTransform()->AddWorldRotation({ 0, CameraRotYSpeed * _DeltaTime, 0 });
-	}
-	if (GameEngineInput::IsPress("Player_CameraUp"))
-	{
-		x += -CameraRotXSpeed * _DeltaTime;
-	}
-	if (GameEngineInput::IsPress("Player_CameraDown"))
-	{
-		x += CameraRotXSpeed * _DeltaTime;
-	}
-	if (GameEngineInput::IsPress("UI_UP"))
-	{
-		CameraDistance += float4::FORWARD * 100.0f * _DeltaTime;
-	}
-	if (GameEngineInput::IsPress("UI_Down"))
-	{
-		CameraDistance += float4::BACK * 100.0f * _DeltaTime;
-	}
-
-	x = std::clamp(x, -20.0f, 60.0f);
-
-	//// X축 회전값 제한
-	//if (x < 180.0f)
-	//{
-	//	x = std::clamp(x, -1.0f, 40.0f);
-	//}
-	//else
-	//{
-	//	x = std::clamp(x, 10.0f, 21.0f);
-	//}
-	CameraArm->SetLocalRotation({ x, 0, 0 });
+	CameraControll(_DeltaTime);
 
 	// 락온 여부에 따라 카메라 추적 속도 조절
 	if (TargetTransform == nullptr)
@@ -90,6 +49,84 @@ void PlayerCamera::Update(float _DeltaTime)
 	// 카메라 이동
 	CameraTransform->SetWorldPosition(CameraTargetPos);
 	CameraTransform->SetWorldRotation(CameraTarget->GetWorldRotation());
+}
+
+void PlayerCamera::CameraControll(float _DeltaTime)
+{
+	if (GameEngineInput::IsDown("Escape"))
+	{
+		GameEngineInput::ShowMouseCursor(true);
+	}
+	if (1.0f < GameEngineInput::GetPressTime("EngineMouseLeft"))
+	{
+		GameEngineInput::ShowMouseCursor(false);
+	}
+	// 회전 입력받기
+	// 마우스
+	float4 MouseRot = GameEngineInput::GetMouseDirection();
+	MouseRot = float4::Lerp(BeforeMouseRot, MouseRot, MouseAcceleration);
+	BeforeMouseRot = MouseRot;
+
+	// 키보드
+	// Y 축
+	if ((GameEngineInput::IsFree("Player_CameraLeft") && GameEngineInput::IsFree("Player_CameraRight")) ||
+		(GameEngineInput::IsPress("Player_CameraLeft") && GameEngineInput::IsPress("Player_CameraRight")))
+	{
+		// 좌우를 둘다 누르거나 둘다 때고 있을때
+		CameraRot.y = std::lerp(CameraRot.y, 0.0f, CameraRotBraking);
+	}
+	else
+	{
+		if (GameEngineInput::IsPress("Player_CameraLeft"))
+		{
+			CameraRot.y -= CameraRotAcceleration * _DeltaTime;
+		}
+		if (GameEngineInput::IsPress("Player_CameraRight"))
+		{
+			CameraRot.y += CameraRotAcceleration * _DeltaTime;
+		}
+	}
+	CameraRot.y = std::clamp(CameraRot.y, -1.0f, 1.0f);
+
+	// X 축
+	if ((GameEngineInput::IsFree("Player_CameraUp") && GameEngineInput::IsFree("Player_CameraDown")) ||
+		(GameEngineInput::IsPress("Player_CameraUp") && GameEngineInput::IsPress("Player_CameraDown")))
+	{
+		// 위아래를 둘다 누르거나 둘다 때고 있을때
+		CameraRot.x = std::lerp(CameraRot.x, 0.0f, CameraRotBraking);
+	}
+	else
+	{
+		if (GameEngineInput::IsPress("Player_CameraUp"))
+		{
+			CameraRot.x -= CameraRotAcceleration * _DeltaTime;
+		}
+		if (GameEngineInput::IsPress("Player_CameraDown"))
+		{
+			CameraRot.x += CameraRotAcceleration * _DeltaTime;
+		}
+	}
+	CameraRot.x = std::clamp(CameraRot.x, -1.0f, 1.0f);
+
+
+	// 회전
+	GetTransform()->AddWorldRotation({ 0, CameraRot.y * CameraRotYSpeed * _DeltaTime });
+	GetTransform()->AddWorldRotation({ 0, MouseRot.x * MouseSensitivity, 0 });
+	float4 ArmRot = CameraArm->GetLocalRotation();
+	ArmRot.x += CameraRot.x * CameraRotXSpeed * _DeltaTime;
+	ArmRot.x += MouseRot.y * MouseSensitivity;
+	ArmRot.x = std::clamp(ArmRot.x, -20.0f, 60.0f);
+	CameraArm->SetLocalRotation(ArmRot);
+
+	// 거리조절
+	if (GameEngineInput::IsPress("UI_UP"))
+	{
+		CameraDistance += float4::FORWARD * 100.0f * _DeltaTime;
+	}
+	if (GameEngineInput::IsPress("UI_Down"))
+	{
+		CameraDistance += float4::BACK * 100.0f * _DeltaTime;
+	}
 }
 
 void PlayerCamera::TargetCheck(float _DeltaTime)

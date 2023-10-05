@@ -4337,12 +4337,6 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 
 	if (NetControllType::ActiveControll == GameEngineNetObject::GetControllType())
 	{
-		if (GameEngineInput::IsDown("Escape"))
-		{
-			SetWorldPosition({ 0, 100, 0 });
-			PhysXCapsule->SetWorldRotation({ 0, 0, 0 });
-			ChangeState(Nero_Idle);
-		}
 		if (GameEngineInput::IsDown("SelectLevel_01"))
 		{
 			AddBreaker(DevilBreaker::Overture);

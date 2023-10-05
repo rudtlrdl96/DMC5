@@ -2844,12 +2844,6 @@ void PlayerActor_Vergil::Update_Character(float _DeltaTime)
 	if (NetControllType::ActiveControll == GameEngineNetObject::GetControllType())
 	{
 		FSM_MirageBlade.Update(_DeltaTime);
-		if (GameEngineInput::IsDown("Escape"))
-		{
-			SetWorldPosition({ 0, 100, 0 });
-			PhysXCapsule->SetWorldRotation({ 0, 0, 0 });
-			ChangeState(FSM_State_Vergil::Vergil_Idle);
-		}
 	}
 
 	if (GameEngineInput::IsDown("SelectLevel_04"))

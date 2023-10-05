@@ -401,7 +401,9 @@ void ContentsCore::CreateContentsKey()
 		GameEngineInput::CreateKey("Player_Sword", 'I');
 		GameEngineInput::CreateKey("Player_Gun", 'J');
 		GameEngineInput::CreateKey("Player_Jump", 'K');
+		GameEngineInput::CreateKey("Player_Jump2", VK_CONTROL);
 		GameEngineInput::CreateKey("Player_Skill", 'L');
+		GameEngineInput::CreateKey("Player_Skill2", VK_XBUTTON1);
 		GameEngineInput::CreateKey("Player_Exceed", 'Q');
 		GameEngineInput::CreateKey("Player_GT_Bomb", 'E');
 		GameEngineInput::CreateKey("Player_Provocation", 'R');

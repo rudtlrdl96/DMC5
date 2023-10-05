@@ -9,10 +9,12 @@ std::set<std::string> GameEngineInput::IgnoreKeys;
 std::map<std::string, GameEngineInput::GameEngineKey> GameEngineInput::Keys;
 bool GameEngineInput::IsAnyKeyValue = false;
 bool GameEngineInput::IsFocus = true;
+bool GameEngineInput::IsShowCursor = true;
 
 float4 GameEngineInput::MousePos;
 float4 GameEngineInput::PrevMousePos;
 float4 GameEngineInput::MouseDirection;
+float4 GameEngineInput::CenterPos;
 
 
 void GameEngineInput::GameEngineKey::Update(float _DeltaTime)
@@ -55,7 +57,7 @@ void GameEngineInput::GameEngineKey::Update(float _DeltaTime)
 	}
 }
 
-bool GameEngineInput::IsDown(const std::string_view& _Name) 
+bool GameEngineInput::IsDown(const std::string_view& _Name)
 {
 	std::string UpperName = GameEngineString::ToUpper(_Name);
 
@@ -67,7 +69,7 @@ bool GameEngineInput::IsDown(const std::string_view& _Name)
 
 	return Keys[UpperName].Down;
 }
-bool GameEngineInput::IsUp(const std::string_view& _Name) 
+bool GameEngineInput::IsUp(const std::string_view& _Name)
 {
 	std::string UpperName = GameEngineString::ToUpper(_Name);
 
@@ -79,7 +81,7 @@ bool GameEngineInput::IsUp(const std::string_view& _Name)
 
 	return Keys[UpperName].Up;
 }
-bool GameEngineInput::IsPress(const std::string_view& _Name) 
+bool GameEngineInput::IsPress(const std::string_view& _Name)
 {
 	std::string UpperName = GameEngineString::ToUpper(_Name);
 
@@ -91,7 +93,7 @@ bool GameEngineInput::IsPress(const std::string_view& _Name)
 
 	return Keys[UpperName].Press;
 }
-bool GameEngineInput::IsFree(const std::string_view& _Name) 
+bool GameEngineInput::IsFree(const std::string_view& _Name)
 {
 	std::string UpperName = GameEngineString::ToUpper(_Name);
 
@@ -146,11 +148,15 @@ GameEngineInput::~GameEngineInput()
 void GameEngineInput::Update(float _DeltaTime)
 {
 	MousePos = GameEngineWindow::GetMousePosition();
-
 	MouseDirection.w = 0.0f;
 	MouseDirection = MousePos - PrevMousePos;
-
 	PrevMousePos = MousePos;
+
+	if (false == IsShowCursor)
+	{
+		SetCursorPos(CenterPos.ix(), CenterPos.iy());
+		PrevMousePos = GameEngineWindow::GetMousePosition();
+	}
 
 	if (false == IsFocus)
 	{
@@ -174,11 +180,6 @@ void GameEngineInput::Update(float _DeltaTime)
 	}
 }
 
-void GameEngineInput::MouseCursorOff()
-{
-	ShowCursor(FALSE);
-}
-
 void GameEngineInput::AllReset()
 {
 	std::map<std::string, GameEngineKey>::iterator StartKeyIter = Keys.begin();
@@ -193,4 +194,20 @@ void GameEngineInput::AllReset()
 
 		StartKeyIter->second.Reset();
 	}
+}
+
+void GameEngineInput::ShowMouseCursor(bool _Value)
+{
+	if (IsShowCursor == _Value)
+	{
+		return;
+	}
+	if (false == _Value)
+	{
+		CenterPos = GameEngineWindow::GetScreenSize().half();
+		SetCursorPos(CenterPos.ix(), CenterPos.iy());
+	}
+	PrevMousePos = GameEngineWindow::GetMousePosition();
+	IsShowCursor = _Value;
+	ShowCursor(_Value);
 }
