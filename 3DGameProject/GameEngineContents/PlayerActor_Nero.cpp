@@ -45,6 +45,7 @@ void PlayerActor_Nero::Start()
 		{
 			SetArm(ArmValue);
 		});
+	LinkData_UpdatePacket<int>(ExceedLevel);
 }
 
 void PlayerActor_Nero::PlayerLoad()
@@ -108,9 +109,6 @@ void PlayerActor_Nero::PlayerLoad()
 			}
 			EffectSystem->CreateFX(FXData::Find(File.GetFileName()));
 		}
-
-		//EffectSystem->ChangeFX("RQ_ComboA1.effect");
-		//EffectSystem->Play();
 	}
 
 	// Renderer 생성
@@ -269,9 +267,6 @@ void PlayerActor_Nero::PlayerLoad()
 	}
 
 	SetHuman();
-	//AddBreaker(DevilBreaker::BusterArm);
-	//AddBreaker(DevilBreaker::Gerbera);
-	//AddBreaker(DevilBreaker::Overture);
 	WeaponIdle();
 
 	// 기본 움직임
@@ -3223,6 +3218,8 @@ void PlayerActor_Nero::NetLoad()
 {
 	// Effect 생성
 	{
+		EffectSystem = CreateComponent<FXSystem>();
+
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
 		NewDir.Move("ContentResources");
@@ -3238,13 +3235,42 @@ void PlayerActor_Nero::NetLoad()
 		}
 		NewDir.MoveParent();
 		NewDir.Move("Texture");
-		if (nullptr == GameEngineTexture::Find("Effect_Texture_01.png"))
+		if (nullptr == GameEngineTexture::Find("Effect_Texture_01.tga"))
 		{
-			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".png" });
+			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".tga" });
 			for (GameEngineFile File : Files)
 			{
 				GameEngineTexture::Load(File.GetFullPath());
 			}
+		}
+
+		// 이펙트 Sprite 로드
+		if (nullptr == GameEngineSprite::Find("Effect_Impact.tga"))
+		{
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Impact.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Impact_01.tga").GetFullPath(), 8, 4);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Muzzle_03.tga").GetFullPath(), 2, 1);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Spark_02.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Magic_01.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_01.tga").GetFullPath(), 8, 4);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_02.tga").GetFullPath(), 8, 4);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_03.tga").GetFullPath(), 8, 4);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_04.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_05.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Explosion_01.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Explosion_02.tga").GetFullPath(), 8, 8);
+		}
+		NewDir.MoveParent();
+		NewDir.Move("Nero");
+
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".effect" });
+		for (GameEngineFile File : Files)
+		{
+			if (nullptr == FXData::Find(File.GetFileName()))
+			{
+				FXData::Load(File.GetFullPath());
+			}
+			EffectSystem->CreateFX(FXData::Find(File.GetFileName()));
 		}
 	}
 
@@ -3392,9 +3418,6 @@ void PlayerActor_Nero::NetLoad()
 	}
 
 	SetHuman();
-	AddBreaker(DevilBreaker::BusterArm);
-	AddBreaker(DevilBreaker::Gerbera);
-	AddBreaker(DevilBreaker::Overture);
 	WeaponIdle();
 
 	// 기본 움직임
@@ -3548,7 +3571,15 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen ComboA1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_1,
 			.Start = [=] {
-				Col_Attack->SetAttackData(DamageType::Light, 50);
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(120));
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_ComboA1_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_ComboA1.effect");
+				}
 				Renderer->ChangeAnimation("pl0000_RQ_ComboA_1");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -3560,8 +3591,16 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen ComboA2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_2,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(90));
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_ComboA2_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_ComboA2.effect");
+				}
 				RedQueenOn();
-				Col_Attack->SetAttackData(DamageType::Light, 50);
 				Renderer->ChangeAnimation("pl0000_RQ_ComboA_2");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -3573,8 +3612,16 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen ComboA3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_3,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(60));
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_ComboA3_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_ComboA3.effect");
+				}
 				RedQueenOn();
-				Col_Attack->SetAttackData(DamageType::Light, 50);
 				Renderer->ChangeAnimation("pl0000_RQ_ComboA_3");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -3586,8 +3633,16 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen ComboA4
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_4,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(150));
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_ComboA4_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_ComboA4.effect");
+				}
 				RedQueenOn();
-				Col_Attack->SetAttackData(DamageType::Heavy, 50);
 				Renderer->ChangeAnimation("pl0000_RQ_ComboA_4");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -3599,6 +3654,15 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen ComboD1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboD_1,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(60));
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_ComboD1_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_ComboD1.effect");
+				}
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_ComboD_1");
 			},
@@ -3611,6 +3675,15 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen ComboD2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboD_2,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(90));
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_ComboD2_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_ComboD2.effect");
+				}
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_ComboD_2");
 			},
@@ -3623,6 +3696,15 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen ComboD3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboD_3,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(60));
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_ComboD3_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_ComboD3.effect");
+				}
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_ComboD_3");
 			},
@@ -3635,6 +3717,15 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen ComboD4
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboD_4,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(150));
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_ComboD4_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_ComboD4.effect");
+				}
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_ComboD_4");
 			},
@@ -3647,6 +3738,15 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen HR
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_HR,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Air, DamageCalculate(135, true));
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_HR_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_HR.effect");
+				}
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_HR-EX");
 			},
@@ -3660,6 +3760,15 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen Shuffle
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Shuffle,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(180, true));
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_Shuffle_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_Shuffle.effect");
+				}
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Shuffle", true);
 			},
@@ -3672,6 +3781,7 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen Stleak1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Stleak1,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_Stleak_1.effect");
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Stleak_1");
 			},
@@ -3696,6 +3806,15 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen Stleak3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Stleak3,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(180, true));
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_Stleak_3_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_Stleak_3.effect");
+				}
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Stleak_3");
 			},
@@ -3708,6 +3827,15 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen AirComboA1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_1,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(150));
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_AirComboA1_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_AirComboA1.effect");
+				}
 				Renderer->ChangeAnimation("pl0000_RQ_AT-Jump_1");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -3719,6 +3847,15 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen AirComboA2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_2,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(120));
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_AirComboA2_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_AirComboA2.effect");
+				}
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_AT-Jump_2");
 			},
@@ -3731,6 +3868,15 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen AirComboA3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_3,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Slam, DamageCalculate(180));
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_AirComboA3_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_AirComboA3.effect");
+				}
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_AT-Jump_3");
 			},
@@ -3743,6 +3889,15 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen AirComboB
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboB,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Air, DamageCalculate(405));
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_AirComboB_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_AirComboB.effect");
+				}
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_AirComboB");
 			},
@@ -3755,6 +3910,15 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen Split_1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Split_1,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Slam, DamageCalculate(22, true));
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_Split_1_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_Split_1.effect");
+				}
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Split_1");
 			},
@@ -3764,29 +3928,49 @@ void PlayerActor_Nero::NetLoad()
 			}
 			});
 		// RedQueen Split_2
-		static float4 SplitTargetPos;
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Split_2,
 			.Start = [=] {
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_Split_2_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_Split_2.effect");
+				}
+				EffectSystem->Loop = true;
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Split_2_Loop");
 			},
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
+				EffectSystem->Loop = false;
 			}
 			});
 		// RedQueen Split_3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Split_3,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(90, true));
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_Split_3_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_Split_3.effect");
+				}
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Split_3");
 			},
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
+				WeaponIdle();
 			}
 			});
 		// RedQueen Caliber_1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Caliber_1,
 			.Start = [=] {
+				EffectSystem->PlayFX("RQ_Calibur_1.effect");
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Caliber_1");
 			},
@@ -3798,6 +3982,15 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen Caliber_2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Caliber_2,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(180, true));
+				if (0 < ExceedLevel)
+				{
+					EffectSystem->PlayFX("RQ_Calibur_2_EX.effect");
+				}
+				else
+				{
+					EffectSystem->PlayFX("RQ_Calibur_2.effect");
+				}
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Caliber_2");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -3818,7 +4011,6 @@ void PlayerActor_Nero::NetLoad()
 				Renderer->ChangeAnimation("pl0000_BR_Switch_Idle_to_Lockon");
 			},
 			.Update = [=](float _DeltaTime) {
-				LookTarget();
 			},
 			.End = [=] {
 
@@ -3840,6 +4032,7 @@ void PlayerActor_Nero::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Strafe,
 			.Start = [=] {
 				BlueRoseOn();
+				Renderer->ChangeAnimation("pl0000_Strafe_F_Loop");
 			},
 			.Update = [=](float _DeltaTime) {
 			},
@@ -3962,6 +4155,12 @@ void PlayerActor_Nero::NetLoad()
 		// Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Shoot,
 			.Start = [=] {
+				// 아직 미완성
+				EffectSystem->PlayFX("BR_Shoot.effect");
+				Col_Attack->SetAttackData(DamageType::Light, 54, std::bind(&GameEngineObjectBase::Off, Col_Attack));
+				Col_Attack->GetTransform()->SetLocalPosition({ 0, 100, 1000 });
+				Col_Attack->GetTransform()->SetLocalScale({ 50, 50, 2000 });
+				Col_Attack->On();
 				BlueRoseOn();
 				Renderer->ChangeAnimation("pl0000_BR_Shoot", true);
 			},
@@ -3974,6 +4173,12 @@ void PlayerActor_Nero::NetLoad()
 		// Air Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_AirShoot,
 			.Start = [=] {
+				// 아직 미완성
+				EffectSystem->PlayFX("BR_Shoot.effect");
+				Col_Attack->SetAttackData(DamageType::Light, 54, std::bind(&GameEngineObjectBase::Off, Col_Attack));
+				Col_Attack->GetTransform()->SetLocalPosition({ 0, 100, 1000 });
+				Col_Attack->GetTransform()->SetLocalScale({ 50, 50, 2000 });
+				Col_Attack->On();
 				BlueRoseOn();
 				Renderer->ChangeAnimation("pl0000_BR_Air_Shoot", true);
 			},
@@ -3992,6 +4197,8 @@ void PlayerActor_Nero::NetLoad()
 			.Start = [=] {
 				WeaponIdle();
 				SetOvertureAnimation();
+				Col_Attack->SetAttackData(DamageType::Heavy, 420);
+				EffectSystem->PlayFX("Overture_Shoot.effect");
 				Renderer->ChangeAnimation("pl0000_Overture_Shoot", true);
 				Renderer_Overture->ChangeAnimation("wp00_010_Shoot.fbx", true);
 			},
@@ -4007,6 +4214,8 @@ void PlayerActor_Nero::NetLoad()
 			.Start = [=] {
 				WeaponIdle();
 				SetOvertureAnimation();
+				Col_Attack->SetAttackData(DamageType::Heavy, 420);
+				EffectSystem->PlayFX("Overture_Shoot.effect");
 				Renderer->ChangeAnimation("pl0000_Overture_Air_Shoot", true);
 				Renderer_Overture->ChangeAnimation("wp00_010_Air_Shoot.fbx", true);
 			},
@@ -4025,6 +4234,8 @@ void PlayerActor_Nero::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Gerbera_Back,
 			.Start = [=] {
 				WeaponIdle();
+				Col_Attack->SetAttackData(DamageType::Heavy, 75);
+				EffectSystem->PlayFX("Gerbera_Jump_Back.effect");
 				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Back", true);
 			},
 			.Update = [=](float _DeltaTime) {
@@ -4037,11 +4248,15 @@ void PlayerActor_Nero::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Gerbera_Front,
 			.Start = [=] {
 				WeaponIdle();
+				Col_Attack->SetAttackData(DamageType::Heavy, 75);
+				EffectSystem->PlayFX("Gerbera_Jump_Back.effect");
+				EffectSystem->GetTransform()->SetLocalRotation({ 0, 180, 0 });
 				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Front", true);
 			},
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
+				EffectSystem->GetTransform()->SetLocalRotation(float4::ZERO);
 			}
 			});
 
@@ -4049,11 +4264,15 @@ void PlayerActor_Nero::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Gerbera_Left,
 			.Start = [=] {
 				WeaponIdle();
+				Col_Attack->SetAttackData(DamageType::Heavy, 75);
+				EffectSystem->PlayFX("Gerbera_Jump_Back.effect");
+				EffectSystem->GetTransform()->SetLocalRotation({ 0, 90, 0 });
 				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Left", true);
 			},
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
+				EffectSystem->GetTransform()->SetLocalRotation(float4::ZERO);
 			}
 			});
 
@@ -4061,11 +4280,15 @@ void PlayerActor_Nero::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Gerbera_Right,
 			.Start = [=] {
 				WeaponIdle();
+				Col_Attack->SetAttackData(DamageType::Heavy, 75);
+				EffectSystem->PlayFX("Gerbera_Jump_Back.effect");
+				EffectSystem->GetTransform()->SetLocalRotation({ 0, -90, 0 });
 				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Right", true);
 			},
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
+				EffectSystem->GetTransform()->SetLocalRotation(float4::ZERO);
 			}
 			});
 	}
@@ -4075,18 +4298,23 @@ void PlayerActor_Nero::NetLoad()
 		// BusterArm Catch
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Catch,
 			.Start = [=] {
+				// 아직 미완성
+				Col_Attack->SetAttackData(DamageType::Buster, 0);
 				WeaponIdle();
+				EffectSystem->PlayFX("Buster_Catch.effect");
 				Renderer->ChangeAnimation("pl0000_Buster_Catch", true);
 			},
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
+				Col_Attack->Off();
 			}
 			});
 
 		// BusterArm Strike
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Strike,
 			.Start = [=] {
+				EffectSystem->PlayFX("Buster_Strike.effect");
 				Renderer->ChangeAnimation("pl0000_Buster_Strike_Common");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -4109,18 +4337,22 @@ void PlayerActor_Nero::NetLoad()
 		// BusterArm Catch Air
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Catch_Air,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Buster, 50);
 				WeaponIdle();
+				EffectSystem->PlayFX("Buster_Catch.effect");
 				Renderer->ChangeAnimation("pl0000_Buster_Air_Catch", true);
 			},
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
+				Col_Attack->Off();
 			}
 			});
 
 		// BusterArm Strike Air
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Strike_Air,
 			.Start = [=] {
+				EffectSystem->PlayFX("Buster_Strike.effect");
 				Renderer->ChangeAnimation("pl0000_Buster_Air_Strike_Common");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -4143,15 +4375,25 @@ void PlayerActor_Nero::NetLoad()
 	// 스내치
 	{}
 	{
+		static float4 SnatchDir;
+		const static float SnatchSpeed = 4000.0f;
 		// Snatch Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Snatch_Shoot,
 			.Start = [=] {
+				// 아직 미완성
 				WeaponIdle();
+				Col_Attack->On();
+				Col_Attack->SetAttackData(DamageType::Snatch, 0);
+				Col_Attack->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
+				Col_Attack->GetTransform()->SetLocalScale({100, 100, 100});
+				SnatchDir = GetTransform()->GetWorldForwardVector();
 				Renderer->ChangeAnimation("pl0000_Snatch", true);
 			},
 			.Update = [=](float _DeltaTime) {
+				Col_Attack->GetTransform()->AddWorldPosition(SnatchDir * _DeltaTime * SnatchSpeed);
 			},
 			.End = [=] {
+				Col_Attack->Off();
 			}
 			});
 
@@ -4180,12 +4422,20 @@ void PlayerActor_Nero::NetLoad()
 		// Snatch Shoot Air
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Snatch_Shoot_Air,
 			.Start = [=] {
+				// 아직 미완성
 				WeaponIdle();
+				Col_Attack->On();
+				Col_Attack->SetAttackData(DamageType::Snatch, 0);
+				Col_Attack->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
+				Col_Attack->GetTransform()->SetLocalScale({ 100, 100, 100 });
+				SnatchDir = GetTransform()->GetWorldForwardVector();
 				Renderer->ChangeAnimation("pl0000_Air_Snatch", true);
 			},
 			.Update = [=](float _DeltaTime) {
+				Col_Attack->GetTransform()->AddWorldPosition(SnatchDir * _DeltaTime * SnatchSpeed);
 			},
 			.End = [=] {
+				Col_Attack->Off();
 			}
 			});
 
@@ -4218,6 +4468,8 @@ void PlayerActor_Nero::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_DT_Start,
 		.Start = [=] {
 			WeaponIdle();
+			Col_Attack->SetAttackData(DamageType::Air, 150);
+			EffectSystem->PlayFX("Nero_DT_On.effect");
 			Renderer->ChangeAnimation("pl0000_DT_Start", true);
 		},
 		.Update = [=](float _DeltaTime) {
@@ -4229,6 +4481,8 @@ void PlayerActor_Nero::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_DT_AirStart,
 			.Start = [=] {
 				WeaponIdle();
+				Col_Attack->SetAttackData(DamageType::Air, 150);
+				EffectSystem->PlayFX("Nero_DT_On.effect");
 				Renderer->ChangeAnimation("pl0000_DT_AirStart", true);
 			},
 			.Update = [=](float _DeltaTime) {
@@ -4241,6 +4495,8 @@ void PlayerActor_Nero::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_GT_Bomb,
 		.Start = [=] {
 			WeaponIdle();
+			Col_Attack->SetAttackData(DamageType::Heavy, 150);
+			EffectSystem->PlayFX("GT_Bomb.effect");
 			Renderer->ChangeAnimation("pl0000_GT_Bomb", true);
 		},
 		.Update = [=](float _DeltaTime) {
@@ -4252,6 +4508,8 @@ void PlayerActor_Nero::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_GT_AirBomb,
 			.Start = [=] {
 				WeaponIdle();
+				Col_Attack->SetAttackData(DamageType::Heavy, 150);
+				EffectSystem->PlayFX("GT_Bomb.effect");
 				Renderer->ChangeAnimation("pl0000_GT_AirBomb", true);
 			},
 			.Update = [=](float _DeltaTime) {
@@ -4298,11 +4556,10 @@ void PlayerActor_Nero::NetLoad()
 			});
 
 	}
-
 	// 대미지
 	{}
 	{
-		// Damage Common
+		// Damage Light
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Light,
 			.Start = [=] {
 				WeaponIdle();
@@ -4314,11 +4571,90 @@ void PlayerActor_Nero::NetLoad()
 			}
 			});
 
-		// Damage Combo
+		// Damage Heavy
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Heavy,
 			.Start = [=] {
 				WeaponIdle();
-				Renderer->ChangeAnimation("pl0000_Damage_Combo", true);
+				Renderer->ChangeAnimation("pl0000_Damage_Away_Fly", true);
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage Fly
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Fly,
+			.Start = [=] {
+				WeaponIdle();
+				Renderer->ChangeAnimation("pl0000_Damage_AirCombo_Fly", true);
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage Fall
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Fall,
+			.Start = [=] {
+				Renderer->ChangeAnimation("pl0000_Damage_Supine_Fall_Loop");
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage Ground
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Ground,
+			.Start = [=] {
+				Renderer->ChangeAnimation("pl0000_Damage_Away_Ground");
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage GetUp
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_GetUp,
+			.Start = [=] {
+				Renderer->ChangeAnimation("pl0000_Damage_Away_GetUp");
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage Death1
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Death_1,
+			.Start = [=] {
+				WeaponIdle();
+				Renderer->ChangeAnimation("pl0000_Damage_Kneel_Down_1", true);
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage Death2
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Death_2,
+			.Start = [=] {
+				Renderer->ChangeAnimation("pl0000_Damage_Kneel_Down_GameOver", true);
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage Fly Death
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Fly_Death,
+			.Start = [=] {
+				Renderer->ChangeAnimation("pl0000_Damage_Away_Death_Ground", true);
 			},
 			.Update = [=](float _DeltaTime) {
 			},
@@ -5007,14 +5343,14 @@ void PlayerActor_Nero::SetExActTiming()
 	IsMaxActTiming = true;
 	IsExActTiming = true;
 	TimeEvent.AddEvent(0.08f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
-	{
-		IsMaxActTiming = false;
-	});
-	
+		{
+			IsMaxActTiming = false;
+		});
+
 	TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
-	{
-		IsExActTiming = false;
-	});
+		{
+			IsExActTiming = false;
+		});
 }
 
 int PlayerActor_Nero::DamageCalculate(int _Damage, bool _IsSkill /* = false */)

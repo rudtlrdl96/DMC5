@@ -22,7 +22,7 @@ void PlayerCamera::Start()
 	CameraTarget->SetLocalPosition(CameraDistance);
 	CameraTransform = GetLevel()->GetMainCamera()->GetTransform();
 
-	GameEngineInput::ShowMouseCursor(false);
+	//GameEngineInput::ShowMouseCursor(false);
 }
 
 void PlayerCamera::Update(float _DeltaTime)
