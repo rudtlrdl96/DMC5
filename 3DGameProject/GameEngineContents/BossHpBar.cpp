@@ -15,8 +15,9 @@ BossHpBar::~BossHpBar()
 void BossHpBar::Start()
 {
 
-	BossFrontGaege = UIFBXActorBase::CreateGaugeBar({ 0.0f , 0.3f , 0.0f , 0.0f }, { 7.4f,9.7f,0.6f }, { 0.0f,0.0f,0.0f }, "BossHPBar.FBX", "FBX_Alpha");
+	BossFrontGaege = UIFBXActorBase::CreateGaugeBar({ 0.0f , 0.3f , 0.0f , 0.0f }, { 7.4f,9.7f,0.6f }, { 0.0f,0.0f,0.0f }, "BossHPBar.FBX", "FBX_ClipAlpha");
 	BossFrontGaege->SetMulColor(float4(0.27f, 0.27f, 0.7f, 0.8f));
+	BossFrontGaege->SetClipData(float4(0.0f, 0.5f, 0.0f, 1.0f));
 
 	BossHpAni = CreateComponent<GameEngineUIRenderer>(4);
 	BossHpAni->SetTexture("HPGaugeAni.png");
