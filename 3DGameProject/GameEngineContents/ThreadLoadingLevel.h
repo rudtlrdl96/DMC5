@@ -20,10 +20,8 @@ public:
 	template <typename LevelType>
 	static void ChangeLevel()
 	{
-		const type_info& Info = typeid(LevelType);
-		std::string LevelName = Info.name();
-		LevelName.replace(0, 6, "");
-
+		//LevelType 템플릿 인자의 클래스 명 구하기
+		const std::string& LevelName = GetLevelName<LevelType>();
 		ChangeLevel(LevelName);
 	}
 
@@ -53,8 +51,9 @@ private:
 	static ThreadLoadingLevel* Inst;
 	static std::string NextLevelName;
 
-	//<Level이름, 콜백>
-	std::map<std::string, std::vector<std::function<void()>>> AllLoadCallBack;
+	//<Level이름, 콜백> : 멀티스레드를 사용하는 콜백
+	std::map<std::string, std::vector<std::function<void()>>> AllThreadLoadCallBack;
+
 	size_t LoadWorkCount = 0;
 	std::atomic<size_t> ExcuteWorkCount = 0;
 	float LoadingPercent = 0.f;
@@ -62,6 +61,18 @@ private:
 	std::map<std::string, std::mutex> AllResMutex;
 
 	
+	//LevelType 템플릿 인자의 클래스 명 구하기
+	template <typename LevelType>
+	std::string GetLevelName()
+	{
+		const type_info& Info = typeid(LevelType);
+		std::string LevelName = Info.name();
+		LevelName.replace(0, 6, "");
+
+		return LevelName;
+	}
+
+
 	/// <summary>
 	/// 특정 레벨로 전환될 때 리소스 1개를 스레드 로딩시키는 함수입니다.
 	/// </summary>
@@ -72,17 +83,14 @@ private:
 	void PushLoadCallBack(const std::string_view& _Path)
 	{
 		//LevelType 템플릿 인자의 클래스 명 구하기
-		const type_info& Info = typeid(LevelType);
-		std::string LevelName = Info.name();
-		LevelName.replace(0, 6, "");
-
+		const std::string& LevelName = GetLevelName<LevelType>();
 		
 		GameEnginePath FilePath(_Path);
 		const std::string& FileName = FilePath.GetFileName();
 		AllResMutex[FileName];
 
 		//콜백 저장
-		AllLoadCallBack[LevelName].push_back([FilePath, this]()
+		AllThreadLoadCallBack[LevelName].push_back([FilePath, this]()
 		{
 			const std::string& FileName = FilePath.GetFileName();
 
@@ -141,6 +149,7 @@ private:
 			PushLoadCallBack<LevelType, ResourceType>(RelativePath);
 		}
 	}
+
 
 	void ThreadLoadStart();
 };

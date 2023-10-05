@@ -37,11 +37,16 @@ void ThreadLoadingLevel::Start()
 
 
 	//NetworkTestLevel
-	PushLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Character\\Player\\Nero\\Mesh\\Nero.fbx");
-	PushLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character\\Player\\Nero\\Mesh\\pl0010_03_atos.texout.png");
-	PushLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character\\Player\\Nero\\Mesh\\pl0000_03_atos.texout.png");
-	//PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Character", {".fbx"});
-	//PushAllLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character", { ".png" });
+	PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Effect", { ".png", ".fbx" });
+	PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Character", { ".png", ".FBX" ,".effect" ,".tga" });
+
+	//PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Effect\\Mesh", { ".fbx" });
+	//PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Effect\\Texture", { ".png" });
+	//PushLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Character\\Player\\Nero\\Mesh\\Nero.fbx");
+	//PushLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character\\Player\\Nero\\Mesh\\pl0010_03_atos.texout.png");
+	//PushLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character\\Player\\Nero\\Mesh\\pl0000_03_atos.texout.png");
+
+
 }
 
 #include "NetworkGUI.h"
@@ -73,7 +78,7 @@ void ThreadLoadingLevel::LevelChangeStart()
 
 void ThreadLoadingLevel::ThreadLoadStart()
 {
-	const std::vector<std::function<void()>>& CallBacks = AllLoadCallBack[NextLevelName];
+	const std::vector<std::function<void()>>& CallBacks = AllThreadLoadCallBack[NextLevelName];
 	LoadWorkCount = CallBacks.size();
 	ExcuteWorkCount = 0;
 	LoadingPercent = 0.f;
