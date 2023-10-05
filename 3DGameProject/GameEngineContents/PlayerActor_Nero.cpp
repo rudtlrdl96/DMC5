@@ -2470,9 +2470,9 @@ void PlayerActor_Nero::PlayerLoad()
 					return;
 				}
 
-				if (true == Input_SpecialCheckFly()) { return; }
 				if (InputCheck == false) { return; }
 
+				if (true == Input_SpecialCheckFly()) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly()) { return; }
 				if (true == Input_GunCheckFly()) { return; }

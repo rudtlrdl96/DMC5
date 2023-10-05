@@ -42,6 +42,7 @@ void PlayerActor_Vergil::PlayerLoad()
 	// Effect 持失
 	{
 		EffectSystem = CreateComponent<FXSystem>();
+		EffectSystem_Target = CreateComponent<FXSystem>();
 
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
@@ -95,6 +96,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			}
 			EffectSystem->CreateFX(FXData::Find(File.GetFileName()));
 		}
+		EffectSystem_Target->CreateFX(FXData::Find("Yamato_JC_Effect.effect"));
 	}
 	// Renderer 持失
 	{
@@ -1254,6 +1256,24 @@ void PlayerActor_Vergil::PlayerLoad()
 			.Start = [=] {
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(450));
 				EffectSystem->PlayFX("Yamato_JudgementCut.effect");
+
+				if (nullptr != LockOnEnemyTransform)
+				{
+					EffectSystem_Target->GetTransform()->SetWorldPosition(LockOnEnemyTransform->GetWorldPosition());
+					Col_Attack->GetTransform()->SetWorldPosition(LockOnEnemyTransform->GetWorldPosition());
+				}
+				else
+				{
+					EffectSystem_Target->GetTransform()->SetLocalPosition({0, 0, 200});
+					Col_Attack->GetTransform()->SetLocalPosition({ 0, 0, 200 });
+				}
+				Col_Attack->GetTransform()->SetLocalScale({300, 300, 300});
+				Col_Attack->On();
+				TimeEvent.AddEvent(0.08f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Col_Attack->Off();
+				});
+				EffectSystem_Target->PlayFX("Yamato_JC_Effect.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCut_2_Loop");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -1272,6 +1292,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			.Start = [=] {
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCut_3");
+				MoveCheck = false;
 			},
 			.Update = [=](float _DeltaTime) {
 
@@ -1317,6 +1338,23 @@ void PlayerActor_Vergil::PlayerLoad()
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(450));
+				if (nullptr != LockOnEnemyTransform)
+				{
+					EffectSystem_Target->GetTransform()->SetWorldPosition(LockOnEnemyTransform->GetWorldPosition());
+					Col_Attack->GetTransform()->SetWorldPosition(LockOnEnemyTransform->GetWorldPosition());
+				}
+				else
+				{
+					EffectSystem_Target->GetTransform()->SetLocalPosition({ 0, 0, 200 });
+					Col_Attack->GetTransform()->SetLocalPosition({ 0, 0, 200 });
+				}
+				Col_Attack->GetTransform()->SetLocalScale({ 300, 300, 300 });
+				Col_Attack->On();
+				TimeEvent.AddEvent(0.08f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+					{
+						Col_Attack->Off();
+					});
+				EffectSystem_Target->PlayFX("Yamato_JC_Effect.effect");
 				EffectSystem->PlayFX("Yamato_JudgementCut_Air.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Air_JudgementCut_2_Loop");
 			},
