@@ -446,6 +446,9 @@
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClInclude>
     <ClInclude Include="NeroLoading.h" />
+    <ClInclude Include="BossHpBar.h">
+      <Filter>UI\UI_Actor\PlayUI\BossHpBar</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -881,6 +884,9 @@
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClCompile>
     <ClCompile Include="NeroLoading.cpp" />
+    <ClCompile Include="BossHpBar.cpp">
+      <Filter>UI\UI_Actor\PlayUI\BossHpBar</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
@@ -1149,6 +1155,9 @@
     </Filter>
     <Filter Include="UI\UI_Actor\LodingUI">
       <UniqueIdentifier>{c9ed4d53-41a7-45b8-9ae9-7deec8f2c8e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\PlayUI\BossHpBar">
+      <UniqueIdentifier>{3dec81e5-686e-4cf5-bc5e-aa19e3d7d4fc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

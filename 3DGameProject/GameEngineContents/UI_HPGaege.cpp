@@ -16,16 +16,16 @@ UI_HPGaege::~UI_HPGaege()
 
 void UI_HPGaege::Start()
 {
-	GameEngineDirectory NewDir;
-	NewDir.MoveParentToDirectory("ContentResources");
-	NewDir.Move("ContentResources");
-	NewDir.Move("Texture");
-	NewDir.Move("UI");
-	NewDir.Move("PlayLevelUI");
-	if (nullptr == GameEngineSprite::Find("HPGaugeAni.png"))
-	{
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("HPGaugeAni.png").GetFullPath(), 4, 4);
-	}
+	//GameEngineDirectory NewDir;
+	//NewDir.MoveParentToDirectory("ContentResources");
+	//NewDir.Move("ContentResources");
+	//NewDir.Move("Texture");
+	//NewDir.Move("UI");
+	//NewDir.Move("PlayLevelUI");
+	//if (nullptr == GameEngineSprite::Find("HPGaugeAni.png"))
+	//{
+	//	GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("HPGaugeAni.png").GetFullPath(), 4, 4);
+	//}
 
 	NeroHpAni = CreateComponent<GameEngineUIRenderer>(3);
 	NeroHpAni->SetTexture("HPGaugeAni.png");
@@ -53,7 +53,7 @@ void UI_HPGaege::Start()
 
 void UI_HPGaege::Update(float _DeltaTime)
 {
-	ClipHPBar(_DeltaTime);
+	//ClipHPBar(_DeltaTime);
 }
 
 void UI_HPGaege::ClipHPBar(float _Delta)
