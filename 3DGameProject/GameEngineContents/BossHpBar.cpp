@@ -16,11 +16,11 @@ void BossHpBar::Start()
 {
 
 	BossFrontGaege = UIFBXActorBase::CreateGaugeBar({ 0.0f , 0.3f , 0.0f , 0.0f }, { 7.4f,9.7f,0.6f }, { 0.0f,0.0f,0.0f }, "BossHPBar.FBX", "FBX_Alpha");
-	BossFrontGaege->SetMulColor(float4(0.27f, 0.27f, 0.9f, 0.8f));
+	BossFrontGaege->SetMulColor(float4(0.27f, 0.27f, 0.7f, 0.8f));
 
 	BossHpAni = CreateComponent<GameEngineUIRenderer>(4);
 	BossHpAni->SetTexture("HPGaugeAni.png");
-	BossHpAni->CreateAnimation({ .AnimationName = "BossHPANI", .SpriteName = "HPGaugeAni.png", .Start = 5, .End = 6, .Loop = true, .FrameTime = {.15f, .15f,.15f, .15f,.15f, .15f,.15f, .15f} });
+	BossHpAni->CreateAnimation({ .AnimationName = "BossHPANI", .SpriteName = "HPGaugeAni.png", .Start = 5, .End = 7, .Loop = true, .FrameTime = {.15f, .15f,.15f, .15f,.15f, .15f,.15f, .15f} });
 	BossHpAni->GetTransform()->SetLocalScale({ 46.0f,170.0f,0.0f });
 	BossHpAni->GetTransform()->SetLocalPosition({ 350.0f,3.0f,0.0f });
 	BossHpAni->GetTransform()->SetLocalRotation({ 0.0f,0.0f,90.0f });
