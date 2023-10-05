@@ -28,7 +28,7 @@ protected:
 private:
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
 	GameEngineTransform* TargetTransform = nullptr;
-	float ShootSpeed = 3000.0f;
+	float ShootSpeed = 5000.0f;
 	bool IsShoot = false;
 };
 

@@ -222,11 +222,11 @@ void PlayerController::ActionInput(float _DeltaTime)
 		}
 		else if (true == InputCheck_Dir('8'))
 		{
-			if (GameEngineInput::IsPress("Player_Skill") && GameEngineInput::GetPressTime("Player_Skill") < 0.05f)
+			if (GameEngineInput::IsPress("Player_Skill") && GameEngineInput::GetPressTime("Player_Skill") < 0.1f)
 			{
 				IsSpecialMove = true;
 			}
-			else if (GameEngineInput::IsPress("Player_Skill2") && GameEngineInput::GetPressTime("Player_Skill2") < 0.05f)
+			else if (GameEngineInput::IsPress("Player_Skill2") && GameEngineInput::GetPressTime("Player_Skill2") < 0.1f)
 			{
 				IsSpecialMove = true;
 			}
@@ -299,11 +299,11 @@ void PlayerController::ActionInput(float _DeltaTime)
 		else
 		{
 			IsLockOnSkill = true;
-			if (true == InputCheck_Dir('8') && GameEngineInput::IsPress("Player_Sword") && GameEngineInput::GetPressTime("Player_Sword") < 0.05f)
+			if (true == InputCheck_Dir('8') && GameEngineInput::IsPress("Player_Sword") && GameEngineInput::GetPressTime("Player_Sword") < 0.1f)
 			{
 				IsSpecialMove = true;
 			}
-			if (true == InputCheck_Dir('8') && GameEngineInput::IsPress("EngineMouseLeft") && GameEngineInput::GetPressTime("EngineMouseLeft") < 0.05f)
+			if (true == InputCheck_Dir('8') && GameEngineInput::IsPress("EngineMouseLeft") && GameEngineInput::GetPressTime("EngineMouseLeft") < 0.1f)
 			{
 				IsSpecialMove = true;
 			}
@@ -318,13 +318,20 @@ void PlayerController::ActionInput(float _DeltaTime)
 	{
 		IsGunDown = true;
 		GunChargeTimer = 0.0f;
+
 		if (IsLockOn == true)
 		{
 			if (true == InputCheck_BackFront())
 			{
 				IsBackFrontGun = true;
 			}
-			else if (true == InputCheck_Dir('8'))
+		}
+	}
+	if (0.15f < GameEngineInput::GetPressTime("Player_Gun") || 0.15f < GameEngineInput::GetPressTime("EngineMouseRight"))
+	{
+		if (IsLockOn == true)
+		{
+			if (true == InputCheck_Dir('8'))
 			{
 				IsFrontGun = true;
 			}
@@ -332,6 +339,14 @@ void PlayerController::ActionInput(float _DeltaTime)
 			{
 				IsBackGun = true;
 			}
+			else
+			{
+				IsGunCharge = true;
+			}
+		}
+		else
+		{
+			IsGunCharge = true;
 		}
 	}
 	if (GameEngineInput::IsPress("Player_Gun") || GameEngineInput::IsPress("EngineMouseRight"))
@@ -343,7 +358,7 @@ void PlayerController::ActionInput(float _DeltaTime)
 		IsGunUp = true;
 		if (ChargeTime < GunChargeTimer)
 		{
-			IsGunCharge = true;
+			//IsGunCharge = true;
 		}
 	}
 }
