@@ -24,7 +24,6 @@ void NeroItemGlass::Start()
 	NewDir.Move("ContentResources");
 	NewDir.Move("Mesh");
 	NewDir.Move("UIMesh");
-	NewDir.Move("NeroUIMesh");
 	NewDir.Move("NeroItemMesh");
 
 	if (nullptr == GameEngineFBXMesh::Find("NeroItemGlass.FBX"))

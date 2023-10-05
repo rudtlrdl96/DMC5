@@ -31,7 +31,6 @@ void NeroHPUI::Start()
 	NewDir.Move("ContentResources");
 	NewDir.Move("Mesh");
 	NewDir.Move("UIMesh");
-	NewDir.Move("NeroUIMesh");
 	NewDir.Move("NeroHPMesh");
 
 	if (nullptr == GameEngineFBXMesh::Find("DtGauge.FBX"))

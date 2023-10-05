@@ -20,7 +20,7 @@ void BossHpBar::Start()
 
 	BossHpAni = CreateComponent<GameEngineUIRenderer>(4);
 	BossHpAni->SetTexture("HPGaugeAni.png");
-	BossHpAni->CreateAnimation({ .AnimationName = "BossHPANI", .SpriteName = "HPGaugeAni.png", .Start = 3, .End = 5, .Loop = true, .FrameTime = {.2f, .2f,.2f, .2f,.2f, .2f,.2f, .2f} });
+	BossHpAni->CreateAnimation({ .AnimationName = "BossHPANI", .SpriteName = "HPGaugeAni.png", .Start = 5, .End = 6, .Loop = true, .FrameTime = {.15f, .15f,.15f, .15f,.15f, .15f,.15f, .15f} });
 	BossHpAni->GetTransform()->SetLocalScale({ 46.0f,170.0f,0.0f });
 	BossHpAni->GetTransform()->SetLocalPosition({ 350.0f,3.0f,0.0f });
 	BossHpAni->GetTransform()->SetLocalRotation({ 0.0f,0.0f,90.0f });
