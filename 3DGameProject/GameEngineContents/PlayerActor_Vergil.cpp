@@ -154,7 +154,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				std::bind(&PhysXCapsuleComponent::TurnOnGravity, PhysXCapsule),		// 8 
 			},
 			.CallBacks_int = {
-				std::bind(&GameEngineFSM::ChangeState, &FSM, std::placeholders::_1),
+				std::bind(&PlayerActor_Vergil::ChangeState, this, std::placeholders::_1),
 			},
 			.CallBacks_float = {
 				std::bind(&BasePlayerActor::RotationToTarget, this, std::placeholders::_1),
@@ -647,6 +647,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				WeaponIdle();
 			}
 			});
+		static int ComboLoopCount = 0;
 		// ComboC1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_ComboC_1,
 			.Start = [=] {
@@ -654,6 +655,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_ComboC_1");
 				RotationToTarget(30.0f);
+				ComboLoopCount = 0;
 			},
 			.Update = [=](float _DeltaTime) {
 				if (true == Input_SpecialCheck()) { return; }
@@ -672,8 +674,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				Col_Attack->SetAttackData(DamageType::VergilLight, DamageCalculate(28));
 				PhysXCapsule->SetLinearVelocityZero();
 				EffectSystem->PlayFX("Yamato_Combo_C_2.effect");
-				Renderer->ChangeAnimation("pl0300_yamato_ComboC_2_Loop");
-				RotationToTarget(30.0f);
+				Renderer->ChangeAnimation("pl0300_yamato_ComboC_2_Loop", true);
 				InputCheck = false;
 			},
 			.Update = [=](float _DeltaTime) {
@@ -691,11 +692,10 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 				if (Renderer->IsAnimationEnd())
 				{
-					if (InputCheck == true)
+					if (InputCheck == true && ComboLoopCount < 3)
 					{
-						EffectSystem->PlayFX("Yamato_Combo_C_2.effect");
-						Renderer->ChangeAnimation("pl0300_yamato_ComboC_2_Loop", true);
-						InputCheck = false;
+						ComboLoopCount++;
+						ChangeState(FSM_State_Vergil::Vergil_yamato_ComboC_2);
 						return;
 					}
 					ChangeState(FSM_State_Vergil::Vergil_yamato_ComboC_3);
@@ -703,7 +703,6 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 			},
 			.End = [=] {
-
 			}
 			});
 		// ComboC3
@@ -1850,7 +1849,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_DT_Start,
 		.Start = [=] {
 			SetInvincibility(0.5f);
-			IsDevilTrigger = true;
+			PhysXCapsule->SetLinearVelocityZero();
 			Renderer->ChangeAnimation("pl0300_Demon_Start", true);
 			InputCheck = false;
 			MoveCheck = false;
@@ -1883,7 +1882,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Demon End
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_DT_End,
 		.Start = [=] {
-			IsDevilTrigger = false;
+			PhysXCapsule->SetLinearVelocityZero();
 			Renderer->ChangeAnimation("pl0300_Demon_End", true);
 			InputCheck = false;
 			MoveCheck = false;
@@ -2131,6 +2130,66 @@ void PlayerActor_Vergil::PlayerLoad()
 
 void PlayerActor_Vergil::NetLoad()
 {
+	// Effect 생성
+	{
+		EffectSystem = CreateComponent<FXSystem>();
+		EffectSystem_Target = CreateComponent<FXSystem>();
+
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Effect");
+		NewDir.Move("Mesh");
+		if (nullptr == GameEngineFBXMesh::Find("Effect_Mesh_01.FBX"))
+		{
+			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".fbx" });
+			for (GameEngineFile File : Files)
+			{
+				GameEngineFBXMesh::Load(File.GetFullPath());
+			}
+		}
+		NewDir.MoveParent();
+		NewDir.Move("Texture");
+		if (nullptr == GameEngineTexture::Find("Effect_Texture_01.tga"))
+		{
+			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".tga" });
+			for (GameEngineFile File : Files)
+			{
+				GameEngineTexture::Load(File.GetFullPath());
+			}
+		}
+
+		// 이펙트 Sprite 로드
+		if (nullptr == GameEngineSprite::Find("Effect_Impact.tga"))
+		{
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Impact.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Impact_01.tga").GetFullPath(), 8, 4);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Muzzle_03.tga").GetFullPath(), 2, 1);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Spark_02.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Magic_01.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_01.tga").GetFullPath(), 8, 4);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_02.tga").GetFullPath(), 8, 4);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_03.tga").GetFullPath(), 8, 4);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_04.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_05.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Explosion_01.tga").GetFullPath(), 8, 8);
+			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Explosion_02.tga").GetFullPath(), 8, 8);
+		}
+		NewDir.MoveParent();
+		NewDir.Move("Vergil");
+
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".effect" });
+		for (GameEngineFile File : Files)
+		{
+			if (nullptr == FXData::Find(File.GetFileName()))
+			{
+				FXData::Load(File.GetFullPath());
+			}
+			EffectSystem->CreateFX(FXData::Find(File.GetFileName()));
+		}
+		EffectSystem_Target->CreateFX(FXData::Find("Yamato_JC_Effect.effect"));
+	}
+
 	// Renderer 생성
 	{
 		GameEngineDirectory NewDir;
@@ -2173,27 +2232,18 @@ void PlayerActor_Vergil::NetLoad()
 
 		Renderer->SetSpecularTexture("pl0300_03_albm.texout.png", "pl0300_03_atos.texout.png");
 
-		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer,
+		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer, .RendererLocalPos = {0, -75, 0},
 			.Objects = { (GameEngineObject*)Col_Attack.get() },
 			.CallBacks_void = {
-				std::bind([=] {InputCheck = true; }),			// 0
+				nullptr,			// 0
 				std::bind(&PlayerActor_Vergil::YamatoOn, this),
 				std::bind(&PlayerActor_Vergil::YamatoOff, this),
 				std::bind(&PlayerActor_Vergil::SetHuman, this),
-				std::bind(&PlayerActor_Vergil::SetDemon, this),
-				std::bind(&PhysXCapsuleComponent::SetLinearVelocityZero, PhysXCapsule),		// 5
-				std::bind([=] {MoveCheck = true; }),
-				std::bind([=] {DelayCheck = true; }),
-				std::bind(&PhysXCapsuleComponent::TurnOnGravity, PhysXCapsule),		// 8 
+				std::bind(&PlayerActor_Vergil::SetDemon, this)
 			},
 			.CallBacks_int = {
-				std::bind(&GameEngineFSM::ChangeState, &FSM, std::placeholders::_1)
+				std::bind(&GameEngineFSM::ChangeState, &FSM, std::placeholders::_1),
 			},
-			.CallBacks_float4 = {
-				std::bind(&BasePlayerActor::SetForce, this, std::placeholders::_1),
-				std::bind(&BasePlayerActor::SetPush, this, std::placeholders::_1),
-				std::bind(&BasePlayerActor::SetMove, this, std::placeholders::_1)
-			}
 			});
 		SetHuman();
 		WeaponIdle();
@@ -2350,29 +2400,34 @@ void PlayerActor_Vergil::NetLoad()
 		// Combo1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Combo_1,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(75));
+				EffectSystem->PlayFX("Yamato_Combo_1.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Combo_1");
 			},
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-
+				WeaponIdle();
 			}
 			});
 		// Combo2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Combo_2,
 			.Start = [=] {
-
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(93));
+				EffectSystem->PlayFX("Yamato_Combo_2.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Combo_2");
 			},
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-
+				WeaponIdle();
 			}
 			});
 		// Combo3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Combo_3,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::VergilLight, DamageCalculate(103));
+				EffectSystem->PlayFX("Yamato_Combo_3.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Combo_3");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2384,7 +2439,9 @@ void PlayerActor_Vergil::NetLoad()
 		// Combo4
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Combo_4,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(187));
 				YamatoOn();
+				EffectSystem->PlayFX("Yamato_Combo_4.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Combo_4");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2407,7 +2464,9 @@ void PlayerActor_Vergil::NetLoad()
 		// ComboC2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_ComboC_2,
 			.Start = [=] {
-				Renderer->ChangeAnimation("pl0300_yamato_ComboC_2_Loop");
+				Col_Attack->SetAttackData(DamageType::VergilLight, DamageCalculate(28));
+				EffectSystem->PlayFX("Yamato_Combo_C_2.effect");
+				Renderer->ChangeAnimation("pl0300_yamato_ComboC_2_Loop", true);
 			},
 			.Update = [=](float _DeltaTime) {
 			},
@@ -2418,6 +2477,8 @@ void PlayerActor_Vergil::NetLoad()
 		// ComboC3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_ComboC_3,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(300));
+				EffectSystem->PlayFX("Yamato_Combo_C_3.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_ComboC_3");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2429,6 +2490,8 @@ void PlayerActor_Vergil::NetLoad()
 		// Sissonal1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Sissonal_1,
 			.Start = [=] {
+				RotationToTarget();
+				EffectSystem->PlayFX("Yamato_Sissonal_1.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Sissonal_1");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2450,7 +2513,8 @@ void PlayerActor_Vergil::NetLoad()
 		// Sissonal3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Sissonal_3,
 			.Start = [=] {
-				Col_Attack->SetAttackData(DamageType::Heavy, 50);
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(600));
+				EffectSystem->PlayFX("Yamato_Sissonal_3.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Sissonal_3");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2462,7 +2526,12 @@ void PlayerActor_Vergil::NetLoad()
 		// Sissonal Up
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Sissonal_Up,
 			.Start = [=] {
-				Col_Attack->SetAttackData(DamageType::Air, 50);
+				Col_Attack->SetAttackData(DamageType::Air, DamageCalculate(150));
+				TimeEvent.AddEvent(0.5f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(131));
+				});
+				EffectSystem->PlayFX("Yamato_Sissonal_Up.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Sissonal_Up");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2485,7 +2554,8 @@ void PlayerActor_Vergil::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Upper_2,
 			.Start = [=] {
 				YamatoOn();
-				Col_Attack->SetAttackData(DamageType::Air, 50);
+				Col_Attack->SetAttackData(DamageType::Air, DamageCalculate(168));
+				EffectSystem->PlayFX("Yamato_AttackUp_2.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_AttackUp_2");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2498,7 +2568,8 @@ void PlayerActor_Vergil::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Upper_3,
 			.Start = [=] {
 				YamatoOn();
-				Col_Attack->SetAttackData(DamageType::Air, 50);
+				Col_Attack->SetAttackData(DamageType::Air, DamageCalculate(168));
+				EffectSystem->PlayFX("Yamato_AttackUp_3.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_AttackUp_3");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2511,7 +2582,8 @@ void PlayerActor_Vergil::NetLoad()
 		// Air Combo 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_Combo_1,
 			.Start = [=] {
-				Col_Attack->SetAttackData(DamageType::Light, 50);
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(93));
+				EffectSystem->PlayFX("Yamato_Air_Combo_1.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_AirCombo_1");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2524,7 +2596,8 @@ void PlayerActor_Vergil::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_Combo_2,
 			.Start = [=] {
 				YamatoOn();
-				Col_Attack->SetAttackData(DamageType::Light, 50);
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(112));
+				EffectSystem->PlayFX("Yamato_Air_Combo_2.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_AirCombo_2");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2537,7 +2610,8 @@ void PlayerActor_Vergil::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_Combo_3,
 			.Start = [=] {
 				YamatoOn();
-				Col_Attack->SetAttackData(DamageType::Light, 50);
+				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(225));
+				EffectSystem->PlayFX("Yamato_Air_Combo_3.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_AirCombo_3");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2550,7 +2624,8 @@ void PlayerActor_Vergil::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_ComboB_1,
 			.Start = [=] {
 				YamatoOn();
-				Col_Attack->SetAttackData(DamageType::Air, 50);
+				Col_Attack->SetAttackData(DamageType::Air, DamageCalculate(375));
+				EffectSystem->PlayFX("Yamato_Air_ComboB_1.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_AirComboB_1");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2563,6 +2638,8 @@ void PlayerActor_Vergil::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_ComboB_2,
 			.Start = [=] {
 				YamatoOn();
+				Col_Attack->SetAttackData(DamageType::Slam, DamageCalculate(187));
+				EffectSystem->PlayFX("Yamato_Air_Combo_3.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_AirComboB_2");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2574,6 +2651,8 @@ void PlayerActor_Vergil::NetLoad()
 		// Raid1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Raid1,
 			.Start = [=] {
+				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_Raid1");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2585,6 +2664,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Raid2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Raid2,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Slam, DamageCalculate(525));
 				YamatoOn();
 				Renderer->ChangeAnimation("pl0300_yamato_Raid2_Loop");
 			},
@@ -2598,6 +2678,7 @@ void PlayerActor_Vergil::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Raid3,
 			.Start = [=] {
 				YamatoOn();
+				EffectSystem->PlayFX("Yamato_Raid_3.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Raid3");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2607,7 +2688,7 @@ void PlayerActor_Vergil::NetLoad()
 			}
 			});
 
-		// Vergil_yamato_JudgementCut_1
+		// JudgementCut 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCut_1,
 			.Start = [=] {
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCut_1");
@@ -2621,6 +2702,18 @@ void PlayerActor_Vergil::NetLoad()
 		// Vergil_yamato_JudgementCut_2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCut_2,
 			.Start = [=] {
+				// 아직 미완성
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(450));
+				EffectSystem->PlayFX("Yamato_JudgementCut.effect");
+				EffectSystem_Target->GetTransform()->SetLocalPosition({0, 0, 200});
+				Col_Attack->GetTransform()->SetLocalPosition({ 0, 0, 200 });
+				Col_Attack->GetTransform()->SetLocalScale({300, 300, 300});
+				Col_Attack->On();
+				TimeEvent.AddEvent(0.08f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Col_Attack->Off();
+				});
+				EffectSystem_Target->PlayFX("Yamato_JC_Effect.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCut_2_Loop");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2654,6 +2747,17 @@ void PlayerActor_Vergil::NetLoad()
 		// Vergil_yamato_JudgementCutAir_2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCutAir_2,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(450));
+				EffectSystem_Target->GetTransform()->SetLocalPosition({ 0, 0, 200 });
+				Col_Attack->GetTransform()->SetLocalPosition({ 0, 0, 200 });
+				Col_Attack->GetTransform()->SetLocalScale({ 300, 300, 300 });
+				Col_Attack->On();
+				TimeEvent.AddEvent(0.08f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+					{
+						Col_Attack->Off();
+					});
+				EffectSystem_Target->PlayFX("Yamato_JC_Effect.effect");
+				EffectSystem->PlayFX("Yamato_JudgementCut_Air.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Air_JudgementCut_2_Loop");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2673,10 +2777,23 @@ void PlayerActor_Vergil::NetLoad()
 			.End = [=] {
 			}
 			});
-		// Vergil_yamato_JudgementCutEnd_1
+		// JudgementCutEnd 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_1,
 			.Start = [=] {
+				EffectSystem->PlayFX("Yamato_JudgementCut_End_1.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCutEnd_1");
+				TimeEvent.AddEvent(1.58f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Renderer->Off();
+					Effect_Color->SetStartColor(float4::ZERO);
+					Effect_Color->SetEndColor({-0.15f, -0.15f, -0.11f});
+					Effect_Color->SetSpeed({ 10.0f, 10.0f, 10.0f });
+					Effect_Color->ColorEffectOn();
+				});
+				TimeEvent.AddEvent(1.83f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Effect_JC->JudgementCutOn();
+				});
 			},
 			.Update = [=](float _DeltaTime) {
 			},
@@ -2687,7 +2804,17 @@ void PlayerActor_Vergil::NetLoad()
 		// Vergil_yamato_JudgementCutEnd_2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_2,
 			.Start = [=] {
+				Renderer->On();
+				EffectSystem->PlayFX("Yamato_JudgementCut_End_2.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCutEnd_2");
+				TimeEvent.AddEvent(1.82f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Effect_JC->JudgementCutOff();
+					Effect_Color->SetStartColor(float4::ONE * 0.3f);
+					Effect_Color->SetEndColor(float4::ZERO);
+					Effect_Color->SetSpeed({ 10.0f, 10.0f, 10.0f });
+					Effect_Color->ColorEffectOn();
+				});
 			},
 			.Update = [=](float _DeltaTime) {
 			},
@@ -2699,10 +2826,26 @@ void PlayerActor_Vergil::NetLoad()
 	{}
 	/* 워프 */
 	{
+		static float4 WarpPos;
+
 		// Warp Front 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Front_1,
 		.Start = [=] {
 			Renderer->ChangeAnimation("pl0300_Warp_Front_1", true);
+			EffectSystem->PlayFX("Vergil_Warp_1.effect");
+			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+			{
+				Renderer->Off();
+				EffectSystem->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
+			});
+			TimeEvent.AddEvent(0.3f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+			{
+				EffectSystem->GetTransform()->SetLocalPosition(float4::ZERO);
+			});
+			TimeEvent.AddEvent(0.35f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+			{
+				Renderer->On();
+			});
 			},
 		.Update = [=](float _DeltaTime) {
 		},
@@ -2713,6 +2856,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Warp Front 2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Front_2,
 		.Start = [=] {
+			EffectSystem->PlayFX("Vergil_Warp_2.effect");
 			Renderer->ChangeAnimation("pl0300_Warp_Front_2");
 		},
 		.Update = [=](float _DeltaTime) {
@@ -2724,6 +2868,20 @@ void PlayerActor_Vergil::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Back_1,
 		.Start = [=] {
 			Renderer->ChangeAnimation("pl0300_Warp_Back_1");
+			EffectSystem->PlayFX("Vergil_Warp_1.effect");
+			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Renderer->Off();
+					EffectSystem->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
+				});
+			TimeEvent.AddEvent(0.3f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					EffectSystem->GetTransform()->SetLocalPosition(float4::ZERO);
+				});
+			TimeEvent.AddEvent(0.35f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Renderer->On();
+				});
 		},
 		.Update = [=](float _DeltaTime) {
 		},
@@ -2735,6 +2893,7 @@ void PlayerActor_Vergil::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Back_2,
 		.Start = [=] {
 			Renderer->ChangeAnimation("pl0300_Warp_Back_2");
+			EffectSystem->PlayFX("Vergil_Warp_2.effect");
 		},
 		.Update = [=](float _DeltaTime) {
 		},
@@ -2746,6 +2905,20 @@ void PlayerActor_Vergil::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Left_1,
 		.Start = [=] {
 			Renderer->ChangeAnimation("pl0300_Warp_Left_1");
+			EffectSystem->PlayFX("Vergil_Warp_1.effect");
+			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Renderer->Off();
+					EffectSystem->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
+				});
+			TimeEvent.AddEvent(0.3f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					EffectSystem->GetTransform()->SetLocalPosition(float4::ZERO);
+				});
+			TimeEvent.AddEvent(0.35f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Renderer->On();
+				});
 		},
 		.Update = [=](float _DeltaTime) {
 		},
@@ -2757,6 +2930,7 @@ void PlayerActor_Vergil::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Left_2,
 		.Start = [=] {
 			Renderer->ChangeAnimation("pl0300_Warp_Left_2");
+			EffectSystem->PlayFX("Vergil_Warp_2.effect");
 		},
 		.Update = [=](float _DeltaTime) {
 		},
@@ -2768,6 +2942,21 @@ void PlayerActor_Vergil::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Right_1,
 		.Start = [=] {
 			Renderer->ChangeAnimation("pl0300_Warp_Right_1", true);
+			EffectSystem->PlayFX("Vergil_Warp_1.effect");
+			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Renderer->Off();
+					EffectSystem->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
+				});
+			TimeEvent.AddEvent(0.3f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					EffectSystem->GetTransform()->SetLocalPosition(float4::ZERO);
+				});
+			TimeEvent.AddEvent(0.35f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Renderer->On();
+				});
+
 			},
 		.Update = [=](float _DeltaTime) {
 		},
@@ -2779,6 +2968,7 @@ void PlayerActor_Vergil::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Right_2,
 		.Start = [=] {
 			Renderer->ChangeAnimation("pl0300_Warp_Right_2");
+			EffectSystem->PlayFX("Vergil_Warp_2.effect");
 		},
 		.Update = [=](float _DeltaTime) {
 		},
@@ -2790,6 +2980,21 @@ void PlayerActor_Vergil::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_AirTrick,
 		.Start = [=] {
 			Renderer->ChangeAnimation("pl0300_Warp_Up", true);
+			EffectSystem->PlayFX("Vergil_Warp_1.effect");
+			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+			{
+				Renderer->Off();
+				EffectSystem->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
+			});
+			TimeEvent.AddEvent(0.3f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+			{
+				EffectSystem->GetTransform()->SetLocalPosition(float4::ZERO);
+			});
+			TimeEvent.AddEvent(0.35f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+			{
+				Renderer->On();
+			});
+
 			},
 		.Update = [=](float _DeltaTime) {
 		},
@@ -2801,6 +3006,15 @@ void PlayerActor_Vergil::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_TrickDown,
 		.Start = [=] {
 			Renderer->ChangeAnimation("pl0300_Warp_Down", true);
+			EffectSystem->PlayFX("Vergil_Warp_1.effect");
+			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Renderer->Off();
+				});
+			TimeEvent.AddEvent(0.35f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Renderer->On();
+				});
 			},
 		.Update = [=](float _DeltaTime) {
 		},
@@ -2834,6 +3048,108 @@ void PlayerActor_Vergil::NetLoad()
 		}
 			});
 	}
+	/* 대미지 */
+	{
+		// Damage Light
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Light,
+			.Start = [=] {
+				WeaponIdle();
+				Renderer->ChangeAnimation("pl0300_Damage_Common", true);
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage Heavy
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Heavy,
+			.Start = [=] {
+				WeaponIdle();
+				Renderer->ChangeAnimation("pl0300_damage_Away", true);
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage Fly
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Fly,
+			.Start = [=] {
+				WeaponIdle();
+				Renderer->ChangeAnimation("pl0300_Damage_Air", true);
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage Fall
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Fall,
+			.Start = [=] {
+				Renderer->ChangeAnimation("pl0300_Damage_Away_Loop");
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage Ground
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Ground,
+			.Start = [=] {
+				Renderer->ChangeAnimation("pl0300_Damage_Away_Bound");
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage Death
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Death,
+			.Start = [=] {
+				WeaponIdle();
+				Renderer->ChangeAnimation("pl0300_damage_Death", true);
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+			}
+			});
+
+		// Damage Fly Death
+		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Fly_Death,
+			.Start = [=] {
+				WeaponIdle();
+				Renderer->GetAllRenderUnit()[0][5]->Off();
+				Renderer->GetAllRenderUnit()[0][6]->Off();
+				Renderer->GetAllRenderUnit()[0][7]->Off();
+				Renderer->GetAllRenderUnit()[0][8]->Off();
+				Renderer->ChangeAnimation("pl0300_damage_Away_Death", true);
+			},
+			.Update = [=](float _DeltaTime) {
+			},
+			.End = [=] {
+				Renderer->GetAllRenderUnit()[0][5]->On();
+			}
+			});
+	}
+
+	// Provocation
+	FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Provocation,
+		.Start = [=] {
+			WeaponIdle();
+			Renderer->ChangeAnimation("pl0300_Provocation", true);
+		},
+		.Update = [=](float _DeltaTime) {
+		},
+		.End = [=] {
+		}
+		});
+
 	FSM.ChangeState(FSM_State_Vergil::Vergil_Idle);
 }
 
@@ -3049,13 +3365,11 @@ bool PlayerActor_Vergil::Input_SpecialCheck()
 {
 	if (Controller->GetIsDevilTrigger())
 	{
-		if (false == IsDevilTrigger)
+		if (false == DTValue)
 		{
-			IsDevilTrigger = true;
 			ChangeState(FSM_State_Vergil::Vergil_DT_Start);
 			return true;
 		}
-		IsDevilTrigger = false;
 		ChangeState(FSM_State_Vergil::Vergil_DT_End);
 		return true;
 	}
@@ -3103,7 +3417,7 @@ bool PlayerActor_Vergil::Input_SpecialCheckFly()
 
 void PlayerActor_Vergil::SetHuman()
 {
-
+	DTValue = 0;
 	for (int i = 9; i <= 21; i++)
 	{
 		Renderer->GetAllRenderUnit()[0][i]->On();
@@ -3116,6 +3430,7 @@ void PlayerActor_Vergil::SetHuman()
 
 void PlayerActor_Vergil::SetDemon()
 {
+	DTValue = 1;
 	for (int i = 9; i <= 21; i++)
 	{
 		Renderer->GetAllRenderUnit()[0][i]->Off();
@@ -3165,7 +3480,7 @@ void PlayerActor_Vergil::YamatoOn()
 
 int PlayerActor_Vergil::DamageCalculate(int _Damage)
 {
-	if (true == IsDevilTrigger)
+	if (true == DTValue)
 	{
 		return static_cast<int>(_Damage * 1.3f);
 	}

@@ -5014,13 +5014,13 @@ bool PlayerActor_Nero::Input_SpecialCheck()
 
 	if (Controller->GetIsDevilTrigger())
 	{
-		if (false == IsDevilTrigger)
+		if (false == DTValue)
 		{
-			IsDevilTrigger = true;
+			DTValue = true;
 			ChangeState(FSM_State_Nero::Nero_DT_Start);
 			return true;
 		}
-		IsDevilTrigger = false;
+		DTValue = false;
 		SetHuman();
 		SetOverture();
 		return true;
@@ -5068,13 +5068,13 @@ bool PlayerActor_Nero::Input_SpecialCheckFly()
 	}
 	if (Controller->GetIsDevilTrigger())
 	{
-		if (false == IsDevilTrigger)
+		if (false == DTValue)
 		{
-			IsDevilTrigger = true;
+			DTValue = true;
 			ChangeState(FSM_State_Nero::Nero_DT_AirStart);
 			return true;
 		}
-		IsDevilTrigger = false;
+		DTValue = false;
 		SetHuman();
 		SetOverture();
 		return true;
@@ -5138,7 +5138,7 @@ void PlayerActor_Nero::WeaponIdle()
 		EffectSystem->Off();
 	}
 
-	if (true == IsDevilTrigger)
+	if (true == DTValue)
 	{
 		return;
 	}
@@ -5201,7 +5201,7 @@ void PlayerActor_Nero::SetDemon()
 
 void PlayerActor_Nero::SetOverture()
 {
-	if (true == IsDevilTrigger)
+	if (true == DTValue)
 	{
 		return;
 	}
@@ -5216,7 +5216,7 @@ void PlayerActor_Nero::SetOverture()
 
 void PlayerActor_Nero::SetGerbera()
 {
-	if (true == IsDevilTrigger)
+	if (true == DTValue)
 	{
 		return;
 	}
@@ -5231,7 +5231,7 @@ void PlayerActor_Nero::SetGerbera()
 
 void PlayerActor_Nero::SetBusterArm()
 {
-	if (true == IsDevilTrigger)
+	if (true == DTValue)
 	{
 		return;
 	}
@@ -5246,7 +5246,7 @@ void PlayerActor_Nero::SetBusterArm()
 
 void PlayerActor_Nero::SetOvertureAnimation()
 {
-	if (true == IsDevilTrigger)
+	if (true == DTValue)
 	{
 		return;
 	}
@@ -5360,7 +5360,7 @@ int PlayerActor_Nero::DamageCalculate(int _Damage, bool _IsSkill /* = false */)
 	if (false == _IsSkill)
 	{
 		if (0 < ExceedLevel) { Mul += 0.2f; }
-		if (true == IsDevilTrigger) { Mul *= 1.3f; }
+		if (true == DTValue) { Mul *= 1.3f; }
 		return static_cast<int>(_Damage * Mul);
 	}
 
@@ -5376,7 +5376,7 @@ int PlayerActor_Nero::DamageCalculate(int _Damage, bool _IsSkill /* = false */)
 		Mul += 1.3f;
 		break;
 	}
-	if (true == IsDevilTrigger) { Mul *= 1.3f; }
+	if (true == DTValue) { Mul *= 1.3f; }
 	return static_cast<int>(_Damage * Mul);
 }
 

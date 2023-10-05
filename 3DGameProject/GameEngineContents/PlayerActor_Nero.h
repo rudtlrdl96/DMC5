@@ -219,7 +219,6 @@ private:
 	bool DelayCheck = false;	// 다른 콤보로 연결되기 위한 딜레이 여부
 	bool LoadCheck = false;		// FBX 로드가 완료되었는지
 	bool UseDoubleJump = false;
-	bool IsDevilTrigger = false;
 	bool IsExActTiming = false;	// 익시드 타이밍 여부
 	bool IsMaxActTiming = false;	// 멕스 엑트 타이밍 여부
 	DevilBreaker CurDevilBreaker = DevilBreaker::Overture;

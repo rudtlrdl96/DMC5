@@ -90,7 +90,7 @@ protected:
 	int HP = 10000;
 	int FSMValue = -1;
 	int ArmValue;
-	bool DTValue;
+	bool DTValue = false;
 private:
 	void DamageColCheck();
 
