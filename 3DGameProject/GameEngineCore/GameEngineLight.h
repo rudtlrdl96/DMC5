@@ -151,13 +151,13 @@ public:
         float4(LightDataValue.ShadowTargetSizeX, LightDataValue.ShadowTargetSizeY);
     }
 
-    // 그림자 적용 범위를 설정합니다. [Diffuse Light에서만 동작합니다.]
+    // 그림자 적용 범위를 설정합니다. [Directinal Light에서만 동작합니다.]
     inline void SetShadowScale(const float4& _Scale)
     {
         ShadowRange = _Scale;
     }
     
-    // 현재 그림자 적용 범위를 반환합니다. [Diffuse Light에서만 동작합니다.]
+    // 현재 그림자 적용 범위를 반환합니다. [Directinal Light에서만 동작합니다.]
     float4 GetShadowScale() const
     {
         return ShadowRange;
