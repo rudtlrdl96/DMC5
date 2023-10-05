@@ -4,6 +4,11 @@
 class ThreadLoadingLevel : public BaseLevel
 {
 public:
+	static ThreadLoadingLevel* GetInst()
+	{
+		return Inst;
+	}
+
 	//이 함수를 통해 로딩 레벨을 활성화 시킵니다
 	static void ChangeLevel(const std::string_view& _NextLevelName)
 	{
@@ -33,12 +38,19 @@ public:
 	ThreadLoadingLevel& operator=(const ThreadLoadingLevel& _Other) = delete;
 	ThreadLoadingLevel& operator=(const ThreadLoadingLevel&& _Other) noexcept = delete;
 
+	//현재 로딩 퍼센트를 알려줍니다
+	inline float GetLoadingPercent() const
+	{
+		return LoadingPercent;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	void LevelChangeStart() override;
 
 private:
+	static ThreadLoadingLevel* Inst;
 	static std::string NextLevelName;
 
 	//<Level이름, 콜백>

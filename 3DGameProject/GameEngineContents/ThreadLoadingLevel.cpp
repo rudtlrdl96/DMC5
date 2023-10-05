@@ -7,16 +7,17 @@
 
 #include "NetworkTestLevel.h"
 
+ThreadLoadingLevel* ThreadLoadingLevel::Inst = nullptr;
 std::string ThreadLoadingLevel::NextLevelName;
 
 ThreadLoadingLevel::ThreadLoadingLevel()
 {
-
+	Inst = this;
 }
 
 ThreadLoadingLevel::~ThreadLoadingLevel()
 {
-
+	Inst = nullptr;
 }
 
 
