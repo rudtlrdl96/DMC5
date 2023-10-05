@@ -251,6 +251,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Poolable.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ReflectionSetter.h" />
     <ClInclude Include="TestEventZone.h">
       <SubType>
@@ -775,6 +779,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Player_MirageBlade.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Poolable.cpp">
       <SubType>
       </SubType>
     </ClCompile>
