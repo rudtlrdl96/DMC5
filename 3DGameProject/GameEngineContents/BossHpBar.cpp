@@ -15,9 +15,8 @@ BossHpBar::~BossHpBar()
 void BossHpBar::Start()
 {
 
-	BossFrontGaege = UIFBXActorBase::CreateGaugeBar({ 0.0f , 0.3f , 0.0f , 0.0f }, { 7.4f,9.7f,0.6f }, { 0.0f,0.0f,0.0f }, "BossHPBar.FBX", "FBX_ClipAlpha");
-	BossFrontGaege->SetMulColor(float4(0.27f, 0.27f, 0.7f, 0.8f));
-	BossFrontGaege->SetClipData(float4(0.0f, 0.5f, 0.0f, 1.0f));
+	//BossFrontGaege->SetMulColor(float4(0.27f, 0.27f, 0.8f, 1.0f));
+	//BossFrontGaege->SetClipData(float4(0.0f, 1.0f, 0.0f, 1.0f));
 
 	BossHpAni = CreateComponent<GameEngineUIRenderer>(4);
 	BossHpAni->SetTexture("HPGaugeAni.png");
@@ -32,10 +31,12 @@ void BossHpBar::Start()
 	BossHPUI_Front->GetTransform()->SetLocalScale({ 720.0f,720.0f,0.0f });
 	BossHPUI_Front->GetTransform()->SetLocalPosition({ 0.0f,0.8f,0.0f });
 	BossHPUI_Front = CreateComponent<GameEngineUIRenderer>(2);
-	//BossHPUI_Back = CreateComponent<GameEngineUIRenderer>(3);
-	//BossHPUI_Back->SetTexture("hpHitbar.png");
-	//BossHPUI_Back->GetTransform()->SetLocalScale({ 492.0f,8.0f,0.0f });
-	//BossHPUI_Back->GetTransform()->SetLocalPosition({ 0.0f,0.8f,0.0f });
+	BossHPUI_Back = CreateComponent<GameEngineUIRenderer>(0);
+	BossHPUI_Back->SetTexture("BossHitGauge.png");
+	BossHPUI_Back->GetTransform()->SetLocalScale({701.0f,31.0f,0.0f });
+	BossHPUI_Back->GetTransform()->SetLocalPosition({ 0.0f,0.8f,0.0f });
+	BossFrontGaege = UIFBXActorBase::CreateGaugeBar({ 0.0f , 0.3f , 0.0f , 0.0f }, { 7.4f,9.7f,5.0f }, { 0.0f,0.0f,0.0f }, "BossHPBar.FBX", "FBX_ClipAlpha");
+
 }
 
 void BossHpBar::Update(float _Delta)
