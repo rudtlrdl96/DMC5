@@ -10,6 +10,7 @@
 
 #include "PlayerActor_Nero.h"
 #include "PlayerActor_Vergil.h"
+#include "Player_MirageBlade.h"
 #include "Plane.h"
 #include "Enemy_HellCaina.h"
 
@@ -45,19 +46,37 @@ void NetworkTestLevel::LevelChangeStart()
 {
 	BaseLevel::LevelChangeStart();
 
-	
+	//Poolable<PlayerActor_Nero>::CreatePool(this, static_cast<int>(ActorOrder::Player));
+	//Poolable<PlayerActor_Vergil>::CreatePool(this, static_cast<int>(ActorOrder::Player));
+
 	if (/*네로만*//*false*/NetworkManager::IsServer())
 	{
+		//std::shared_ptr<PlayerActor_Nero> Nero = Poolable<PlayerActor_Nero>::PopFromPool(this);
 		std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>(ActorOrder::Player);
 		Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
 		NetworkManager::LinkNetwork(Nero.get(), this);
+
+		Poolable<PlayerActor_Vergil>::CreatePool(this, static_cast<int>(ActorOrder::Player), 1,
+			[](std::shared_ptr<PlayerActor_Vergil> _ActorPtr)
+		{
+			_ActorPtr->SetControll(NetControllType::PassiveControll);
+		});
+
+		Poolable<Player_MirageBlade>::CreatePool(this, static_cast<int>(ActorOrder::Player), 8);
 	}
 
 	if (/*버질*//*true*/NetworkManager::IsClient())
 	{
+		//std::shared_ptr<PlayerActor_Vergil> Nero = Poolable<PlayerActor_Vergil>::PopFromPool(this);
 		std::shared_ptr<PlayerActor_Vergil> Nero = CreateActor<PlayerActor_Vergil>(ActorOrder::Player);
 		Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
 		NetworkManager::LinkNetwork(Nero.get(), this);
+
+		Poolable<PlayerActor_Nero>::CreatePool(this, static_cast<int>(ActorOrder::Player), 1,
+			[](std::shared_ptr<PlayerActor_Nero> _ActorPtr)
+		{
+			_ActorPtr->SetControll(NetControllType::PassiveControll);
+		});
 	}
 
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();

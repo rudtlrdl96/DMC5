@@ -1,6 +1,7 @@
 #pragma once
 #include "BasePlayerActor.h"
 #include <GameEngineCore/GameEngineFSM.h>
+#include "Poolable.h"
 
 enum FSM_State_Vergil
 {
@@ -103,7 +104,7 @@ enum FSM_State_MirageBlade
 	MirageBlade_HeavyRain,
 };
 
-class PlayerActor_Vergil : public BasePlayerActor
+class PlayerActor_Vergil : public BasePlayerActor, public Poolable<PlayerActor_Vergil>
 {
 public:
 	// constrcuter destructer

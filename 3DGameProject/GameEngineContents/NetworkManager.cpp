@@ -441,13 +441,16 @@ std::shared_ptr<NetworkObjectBase> NetworkManager::CreateNetActor(Net_ActorType 
 		break;
 	}
 	case Net_ActorType::Nero:
-		NetObject = CreateLevel->CreateActor<PlayerActor_Nero>();
+		//NetObject = CreateLevel->CreateActor<PlayerActor_Nero>();
+		NetObject = Poolable<PlayerActor_Nero>::PopFromPool(CreateLevel, static_cast<int>(ActorOrder::Player));
 		break;
 	case Net_ActorType::Vergil:
-		NetObject = CreateLevel->CreateActor<PlayerActor_Vergil>();
+		//NetObject = CreateLevel->CreateActor<PlayerActor_Vergil>();
+		NetObject = Poolable<PlayerActor_Vergil>::PopFromPool(CreateLevel, static_cast<int>(ActorOrder::Player));
 		break;
 	case Net_ActorType::MirageBlade:
-		NetObject = CreateLevel->CreateActor<Player_MirageBlade>();
+		//NetObject = CreateLevel->CreateActor<Player_MirageBlade>();
+		NetObject = Poolable<Player_MirageBlade>::PopFromPool(CreateLevel, static_cast<int>(ActorOrder::Player));
 		break;
 	case Net_ActorType::HellCaina:
 		NetObject = CreateLevel->CreateActor<Enemy_HellCaina>();
@@ -459,8 +462,8 @@ std::shared_ptr<NetworkObjectBase> NetworkManager::CreateNetActor(Net_ActorType 
 	}
 	}
 
-	//생성한 객체가 플레이어라면 자료구조에 저장
-	RegistPlayer(NetObject.get(), CreateLevel);
+	//생성한 객체가 플레이어라면 자료구조에 저장(이거 아마 지금 사용 안함)
+	//RegistPlayer(NetObject.get(), CreateLevel);
 
 	if (-1 == _ObjectID)
 	{

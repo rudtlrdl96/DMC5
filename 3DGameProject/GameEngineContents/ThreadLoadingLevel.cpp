@@ -36,15 +36,30 @@ void ThreadLoadingLevel::Start()
 	TestRenderer->GetRenderBaseValueRef().IsNormal = 1;
 
 
-	//NetworkTestLevel
-	PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Effect", { ".png", ".fbx" });
-	PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Character", { ".png", ".FBX" ,".effect" ,".tga" });
+	//===============================================사용법 & 예시=================================================
+	
+	// 해당 위치의 지정된 확장자파일들을 모두 로딩합니다
+		//PushAllLoadCallBack<어떤 레벨로 넘어갈 때, 어떤 타입의 리소스인지>("위치", { "확장자" });
+	// 예시
+		//PushAllLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character", { ".png", ".tga" });
 
-	//PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Effect\\Mesh", { ".fbx" });
-	//PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Effect\\Texture", { ".png" });
-	//PushLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Character\\Player\\Nero\\Mesh\\Nero.fbx");
-	//PushLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character\\Player\\Nero\\Mesh\\pl0010_03_atos.texout.png");
-	//PushLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character\\Player\\Nero\\Mesh\\pl0000_03_atos.texout.png");
+	//해당 경로의 리소스를 로딩합니다
+		//PushLoadCallBack<어떤 레벨로 넘어갈 때, 어떤 타입의 리소스인지>("경로");	
+	// 예시
+		//PushLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Character\\Player\\Nero\\Mesh\\Nero.fbx");
+
+	//===========================================================================================================
+
+
+
+	//NetwortTestLevel(레벨별로 구분시켜주세요)
+	{
+		//PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Effect\\Mesh", { ".fbx" });
+		//PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Effect\\Texture", { ".png" });
+		//PushLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Character\\Player\\Nero\\Mesh\\Nero.fbx");
+		//PushLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character\\Player\\Nero\\Mesh\\pl0010_03_atos.texout.png");
+		//PushLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character\\Player\\Nero\\Mesh\\pl0000_03_atos.texout.png");
+	}
 
 
 }
@@ -83,10 +98,11 @@ void ThreadLoadingLevel::ThreadLoadStart()
 	ExcuteWorkCount = 0;
 	LoadingPercent = 0.f;
 
-	//이 부분 일단은 터뜨릴께요. 나중에 보고 주석처리 할 지 판단하죠
 	if (true == CallBacks.empty())
 	{
-		MsgAssert(NextLevelName + "레벨에 스레드 로딩을 등록해준 리소스가 존재하지 않습니다");
+		LoadWorkCount = 1;
+		ExcuteWorkCount = 1;
+		LoadingPercent = 1.f;
 		return;
 	}
 

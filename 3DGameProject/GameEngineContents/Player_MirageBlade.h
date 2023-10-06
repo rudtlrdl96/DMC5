@@ -1,8 +1,9 @@
 #pragma once
 #include "NetworkObjectBase.h"
+#include "Poolable.h"
 
 // Ό³Έν :
-class Player_MirageBlade : public GameEngineActor, public NetworkObjectBase
+class Player_MirageBlade : public GameEngineActor, public NetworkObjectBase, public Poolable<Player_MirageBlade>
 {
 public:
 	// constrcuter destructer

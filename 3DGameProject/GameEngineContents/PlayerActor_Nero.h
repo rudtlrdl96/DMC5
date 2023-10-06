@@ -1,6 +1,7 @@
 #pragma once
 #include "BasePlayerActor.h"
 #include <GameEngineCore/GameEngineFSM.h>
+#include "Poolable.h"
 
 enum FSM_State_Nero
 {
@@ -139,7 +140,7 @@ enum NeroRenderUnits
 	NeroRenderUnit_DT5,
 	NeroRenderUnit_DT6,
 };
-class PlayerActor_Nero : public BasePlayerActor
+class PlayerActor_Nero : public BasePlayerActor, public Poolable<PlayerActor_Nero>
 {
 public:
 	// constrcuter destructer

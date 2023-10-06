@@ -28,6 +28,8 @@
 #include "EffectToolLevel.h"
 #include "PhysXTestLevel.h"
 
+std::vector<std::function<void()>> ContentsCore::GameEndCallBacks;
+
 ContentsCore::ContentsCore() 
 {
 }
@@ -71,6 +73,12 @@ void ContentsCore::GameStart()
 void ContentsCore::GameEnd() 
 {
 	FontUpRelease();
+
+	for (std::function<void()> CallBack : GameEndCallBacks)
+	{
+		CallBack();
+	}
+	GameEndCallBacks.clear();
 }
 
 // 폰트 로드
