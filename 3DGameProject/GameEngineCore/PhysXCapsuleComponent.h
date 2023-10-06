@@ -31,6 +31,7 @@ public:
 	{
 		GameEngineObjectBase::Off();
 		m_pShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
+		m_pDynamic->setLinearVelocity({ 0.0f, 0.0f, 0.0f });
 		m_pDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, true);
 	}
 

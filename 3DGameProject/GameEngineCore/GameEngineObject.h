@@ -102,6 +102,8 @@ private:
 
 	const int ActorID;
 
+	bool PhysicsUpdate = false;
+
 	/////////////////////  Gui ÇÔ¼ö /////////////////////
 
 	GameEngineObject* DrawGUI();

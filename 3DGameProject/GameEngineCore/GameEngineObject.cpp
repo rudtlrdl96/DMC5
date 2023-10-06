@@ -62,7 +62,40 @@ void GameEngineObject::AllUpdate(float _DeltaTime)
 {
 	if (false == IsUpdate())
 	{
+		std::shared_ptr<GameEngineActor> Actor = this->DynamicThis<GameEngineActor>();
+
+		if (nullptr != Actor && true == Actor->PhysicsUpdate)
+		{
+			for (std::shared_ptr<GameEngineObject> Object : Childs)
+			{
+				std::shared_ptr<PhysXCapsuleComponent> PhysXComponent = Object->DynamicThis<PhysXCapsuleComponent>();
+
+				if (nullptr != PhysXComponent)
+				{
+					PhysXComponent->Off();
+					Actor->PhysicsUpdate = false;
+				}
+			}
+		}
 		return;
+	}
+	else
+	{
+		std::shared_ptr<GameEngineActor> Actor = this->DynamicThis<GameEngineActor>();
+
+		if (nullptr != Actor && false == Actor->PhysicsUpdate)
+		{
+			for (std::shared_ptr<GameEngineObject> Object : Childs)
+			{
+				std::shared_ptr<PhysXCapsuleComponent> PhysXComponent = Object->DynamicThis<PhysXCapsuleComponent>();
+
+				if (nullptr != PhysXComponent)
+				{
+					PhysXComponent->On();
+					Actor->PhysicsUpdate = true;
+				}
+			}
+		}
 	}
 
 	Update(_DeltaTime);
