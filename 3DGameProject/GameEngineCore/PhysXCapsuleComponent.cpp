@@ -79,10 +79,6 @@ void PhysXCapsuleComponent::CreatePhysXActors(physx::PxVec3 _GeoMetryScale, floa
 		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z
 	);
 
-	// TODO::점프속력에 영향을 미침. 스테이지 작성후 자세한 수치는 나중에 조절
-	// 플레이어 최대 속력
-	// dynamic_->setMaxLinearVelocity(PLAYER_MAX_SPEED);
-
 	float ScaledRadius = tmpGeoMetryScale.z;
 	float ScaledHeight = tmpGeoMetryScale.y;
 

@@ -18,20 +18,22 @@ public:
 
 	void CreatePhysXActors(physx::PxScene* _Scene, physx::PxPhysics* _physics, physx::PxVec3 _GeoMetryScale = physx::PxVec3(2.0f), float4 _GeoMetryRotation = { 0.0f , 0.0f });
 
-	void PushImpulse(float4 _ImpulsePower);
-	void PushImpulseAtLocalPos(float4 _ImpulsePower, float4 _Pos);
-
-	//중력끄기
-	void TurnOffGravity()
+	void On() override
 	{
+		GameEngineObjectBase::On();
+		m_pShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
+		m_pDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, false);
+	}
+
+	void Off() override
+	{
+		GameEngineObjectBase::Off();
+		m_pShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
 		m_pDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, true);
 	}
 
-	//중력키기
-	void TurnOnGravity()
-	{
-		m_pDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, false);
-	}
+	void PushImpulse(float4 _ImpulsePower);
+	void PushImpulseAtLocalPos(float4 _ImpulsePower, float4 _Pos);
 
 	//Reset 함수
 	void ResetDynamic();

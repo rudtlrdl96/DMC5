@@ -20,6 +20,20 @@ public:
 	// Component 생성
 	void CreatePhysXActors(physx::PxVec3 _GeoMetryScale = physx::PxVec3(2.0f), float4 _GeoMetryRotation = { 0.0f , 0.0f });
 
+	void On() override
+	{
+		GameEngineObjectBase::On();
+		m_pShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
+		m_pDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, false);
+	}
+
+	void Off() override
+	{
+		GameEngineObjectBase::Off();
+		m_pShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
+		m_pDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, true);
+	}
+
 	physx::PxRigidDynamic* GetDynamic()
 	{
 		return m_pDynamic;
@@ -39,18 +53,17 @@ public:
 	void AddWorldPosition(float4 _Value);
 	void SetWorldRotation(float4 _Value);
 	void AddWorldRotation(float4 _Value);
+	
+	void SetJump(float _JumpPower);
+	void SetMove(float4 _MoveSpeed);
+	void SetForce(float4 _MoveSpeed);
+	void SetPush(float4 _Push);
+	void SetAirState(float _Power); // 몬스터용
 
 	void SetclearForce()
 	{
 		m_pDynamic->clearForce();
 	}
-
-	void SetJump(float _JumpPower);
-	void SetMove(float4 _MoveSpeed);
-	void SetForce(float4 _MoveSpeed);
-	void SetPush(float4 _Push);
-
-	void SetAirState(float _Power); // 몬스터용
 
 	float4 GetLinearVelocity()
 	{
@@ -82,18 +95,6 @@ public:
 	void SetPlayerStartPos(float4 _Pos);
 	
 	void PushImpulseAtLocalPos(float4 _ImpulsePower, float4 _Pos);
-
-	//중력끄기
-	void TurnOffGravity()
-	{
-		m_pDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, true);
-	}
-
-	//중력키기
-	void TurnOnGravity()
-	{
-		m_pDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, false);
-	}
 
 	void SetMainPlayerFlags()
 	{

@@ -13,6 +13,7 @@
 #include "Plane.h"
 #include "Wall.h"
 #include "CavaliereAngelo.h"
+#include "TestObject.h"
 
 #include "FXAA_Effect.h"
 
@@ -93,6 +94,11 @@ void TestLevel::LevelChangeStart()
 		NetworkManager::LinkNetwork(Vergil.get(), this);
 	}
 
+	TestObj = CreateActor<TestObject>();
+	TestObj->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	TestObj->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	
+
 	//if (nullptr == HellCaina)
 	//{
 	//	HellCaina = CreateActor<Enemy_HellCaina>();
@@ -107,12 +113,12 @@ void TestLevel::LevelChangeStart()
 	//	Empusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
 
-	if (nullptr == Cavaliere)
-	{
-		Cavaliere = CreateActor<CavaliereAngelo>();
-		Cavaliere->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-		Cavaliere->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	}
+	//if (nullptr == Cavaliere)
+	//{
+	//	Cavaliere = CreateActor<CavaliereAngelo>();
+	//	Cavaliere->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//	Cavaliere->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	//}
 
 	if (nullptr == Flat)
 	{

@@ -74,6 +74,18 @@ public:
 		return m_pDynamic->isSleeping();
 	}
 
+	//중력끄기
+	void TurnOffGravity()
+	{
+		m_pDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, true);
+	}
+
+	//중력키기
+	void TurnOnGravity()
+	{
+		m_pDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, false);
+	}
+
 protected:
 	std::weak_ptr<class GameEngineActor> ParentActor;
 	std::weak_ptr<class PhysicsActor> PhysicsComponent;

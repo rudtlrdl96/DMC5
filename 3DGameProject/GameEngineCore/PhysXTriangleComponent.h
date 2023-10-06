@@ -19,6 +19,18 @@ public:
 	
 	void CreatePhysXActors(const std::string& _MeshName, bool _InverseIndex = true, float _Ratio = 1.f, float4 _GeoMetryRot = { 0.0f, 0.0f });
 
+	void On() override
+	{
+		GameEngineObjectBase::On();
+		m_pShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
+	}
+
+	void Off() override
+	{
+		GameEngineObjectBase::Off();
+		m_pShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
+	}
+
 	physx::PxRigidStatic* GetStatic()
 	{
 		return m_pStatic;

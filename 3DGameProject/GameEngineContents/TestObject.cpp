@@ -19,13 +19,18 @@ TestObject::~TestObject()
 
 void TestObject::Start()
 {
+	if (false == GameEngineInput::IsKey("MonTest"))
+	{
+		GameEngineInput::CreateKey("MonTest", 'M');
+	}
+
 	if (nullptr == GameEngineFBXMesh::Find("em0100.FBX"))
 	{
 		std::string Path = GameEnginePath::GetFileFullPath
 		(
 			"ContentResources",
 			{
-				"Character", "Enemy", "em0100", "mesh"
+				"Character", "Enemy", "Empusa", "mesh"
 			},
 			"em0100.FBX"
 		);
@@ -33,7 +38,7 @@ void TestObject::Start()
 	}
 
 	Renderer = CreateComponent<GameEngineFBXRenderer>();
-	Renderer->SetFBXMesh("em0100.fbx", "FBX");
+	Renderer->SetFBXMesh("em0100.fbx", "AniFBX_Low");
 	//Renderer->GetTransform()->SetLocalScale({ 0.1f , 0.1f, 0.1f });
 	Renderer->LightOff();
 
@@ -52,11 +57,28 @@ void TestObject::Start()
 
 	Component->GetDynamic()->setMass(80.f);
 	Component->GetDynamic()->setGlobalPose({0.0f, 200.0f, 0.0f});
-	//Component->GetDynamic()->setMaxAngularVelocity(physx::PxReal(10.0f));
-	//Component->GetDynamic()->setAngularDamping(physx::PxReal(0.01f));
 }
+
+int TestCount = 0;
 
 void TestObject::Update(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("MonTest"))
+	{
+		Disable = !Disable;
+		TestCount = 1;
+	}
 
+	if (1 == TestCount)
+	{
+		TestCount = 0;
+		if (true == Disable)
+		{
+			Component->Off();
+		}
+		else
+		{
+			Component->On();
+		}
+	}
 }

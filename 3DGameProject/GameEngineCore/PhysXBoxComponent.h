@@ -19,6 +19,18 @@ public:
 
 	void CreatePhysXActors(physx::PxVec3 _GeoMetryScale = physx::PxVec3(2.0f), float4 _GeoMetryRot = float4::ZERO);
 
+	void On() override
+	{
+		GameEngineObjectBase::On();
+		m_pShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
+	}
+
+	void Off() override
+	{
+		GameEngineObjectBase::Off();
+		m_pShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
+	}
+
 	physx::PxRigidStatic* GetStatic()
 	{
 		return m_pStatic;
