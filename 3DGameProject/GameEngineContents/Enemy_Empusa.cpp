@@ -24,6 +24,13 @@ void Enemy_Empusa::Start()
 {
 	BaseEnemyActor::Start();
 
+	//PhysX(충돌)
+	PhysXCapsule = CreateComponent<PhysXCapsuleComponent>();
+	PhysXCapsule->SetPhysxMaterial(0, 0, 0);
+	PhysXCapsule->CreatePhysXActors({ 90, 90, 90 });
+	PhysXCapsule->GetDynamic()->setMass(80.0f);
+	BindPhysicsWithNet(PhysXCapsule);
+
 	// 랜더러 크기 설정
 	EnemyRenderer->GetTransform()->AddLocalPosition({ 0.0f, -50.0f, 0.0f });
 

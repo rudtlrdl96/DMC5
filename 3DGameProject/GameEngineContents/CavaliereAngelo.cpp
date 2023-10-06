@@ -24,6 +24,13 @@ void CavaliereAngelo::Start()
 {
 	BaseEnemyActor::Start();
 
+	//PhysX(충돌)
+	PhysXCapsule = CreateComponent<PhysXCapsuleComponent>();
+	PhysXCapsule->SetPhysxMaterial(0, 0, 0);
+	PhysXCapsule->CreatePhysXActors({ 100, 200, 100 });
+	PhysXCapsule->GetDynamic()->setMass(200.0f);
+	BindPhysicsWithNet(PhysXCapsule);
+
 	// 랜더러 크기 설정
 	EnemyRenderer->GetTransform()->AddLocalPosition({ 0.0f, -45.0f, 0.0f });
 

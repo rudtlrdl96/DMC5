@@ -30,12 +30,6 @@ void BaseEnemyActor::Start()
 	EnemyRenderer = CreateComponent<GameEngineFBXRenderer>();
 	EnemyRenderer->ShadowOn();
 	EnemyRenderer->SetDynamic();
-	//PhysX(충돌)
-	PhysXCapsule = CreateComponent<PhysXCapsuleComponent>();
-	PhysXCapsule->SetPhysxMaterial(0, 0, 0);
-	PhysXCapsule->CreatePhysXActors({ 90, 90, 90 });
-	PhysXCapsule->GetDynamic()->setMass(80.0f);
-	BindPhysicsWithNet(PhysXCapsule);
 
 	//공격 가능한 Enemy Collision
 	//Monster 자체 콜리전
