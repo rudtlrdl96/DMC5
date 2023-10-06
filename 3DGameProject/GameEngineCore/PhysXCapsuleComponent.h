@@ -25,12 +25,14 @@ public:
 		GameEngineObjectBase::On();
 		m_pShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
 		m_pDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, false);
+		SetMove(VelocityStack);
 	}
 
 	void Off() override
 	{
 		GameEngineObjectBase::Off();
 		m_pShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
+		VelocityStack = GetLinearVelocity();
 		m_pDynamic->setLinearVelocity({ 0.0f, 0.0f, 0.0f });
 		m_pDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, true);
 	}
@@ -77,26 +79,6 @@ public:
 		m_pDynamic->setLinearVelocity({ 0.0f, 0.0f, 0.0f });
 	}
 
-	//Reset 함수
-	void ResetDynamic();
-
-	inline void SetlockAxis()
-	{
-		m_pDynamic->setRigidDynamicLockFlags(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X | physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y | physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z);
-	}
-
-	inline void SetUnlockAxis()
-	{
-		// 고정된 축을 해제
-		m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, false);
-		m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, false);
-		m_pDynamic->addForce(physx::PxVec3(0.0f, 0.01f, 0.0f), physx::PxForceMode::eIMPULSE);
-	}
-
-	void SetPlayerStartPos(float4 _Pos);
-	
-	void PushImpulseAtLocalPos(float4 _ImpulsePower, float4 _Pos);
-
 	void SetMainPlayerFlags()
 	{
 		m_pShape->setSimulationFilterData
@@ -109,13 +91,6 @@ public:
 				0
 			)
 		);
-	}
-
-	void SetMainPlayer();
-
-	void IsMainPlayerCapsule()
-	{
-		MainPlayerCapsule = true;
 	}
 
 	inline bool GetIsPlayerGroundTouch()
@@ -138,6 +113,16 @@ public:
 		IsWallTouch = _Is;
 	}
 
+	void SetMainPlayer();
+
+	void IsMainPlayerCapsule()
+	{
+		MainPlayerCapsule = true;
+	}
+
+	//Reset 함수
+	void ResetDynamic();
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -146,15 +131,9 @@ private:
 	// Phys액터 생성에 필요한 정보
 	physx::PxScene* m_pScene = nullptr;
 	physx::PxPhysics* m_pPhysics = nullptr;
-	physx::PxControllerManager* m_pCtrManager = nullptr;
 	physx::PxMaterial* m_pMaterial = nullptr;
 
 	physx::PxVec3 GeoMetryScale;
-
-	//속도제한 함수
-	//void SpeedLimit();
-
-	//float SpeedLimitValue = 150.0f;
 
 	float StandUpTargetYAxisAngle = 0.0f;
 	float StandUpStartYAxisAngle = 0.0f;
@@ -167,5 +146,7 @@ private:
 	bool IsGroundTouch = false;
 	bool IsWallTouch = false;
 	bool MainPlayerCapsule = false;
+
+	float4 VelocityStack = float4::ZERO;
 };
 

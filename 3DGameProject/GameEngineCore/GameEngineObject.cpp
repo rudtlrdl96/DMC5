@@ -4,7 +4,10 @@
 #include "imgui.h"
 #include "GameEngineLevel.h"
 #include "PhysicsActor.h"
+#include "PhysXBoxComponent.h"
+#include "PhysXSphereComponent.h"
 #include "PhysXCapsuleComponent.h"
+#include "PhysXTriangleComponent.h"
 
 int GameEngineObject::NextActorID = 0;
 int GameEngineObject::GUI_SelectActorIndex = -1;
@@ -62,17 +65,35 @@ void GameEngineObject::AllUpdate(float _DeltaTime)
 {
 	if (false == IsUpdate())
 	{
-		std::shared_ptr<GameEngineActor> Actor = this->DynamicThis<GameEngineActor>();
+		GameEngineActor* Actor = this->DynamicThis<GameEngineActor>().get();
 
 		if (nullptr != Actor && true == Actor->PhysicsUpdate)
 		{
 			for (std::shared_ptr<GameEngineObject> Object : Childs)
 			{
-				std::shared_ptr<PhysXCapsuleComponent> PhysXComponent = Object->DynamicThis<PhysXCapsuleComponent>();
+				PhysXBoxComponent* BoxComponent = Object->DynamicThis<PhysXBoxComponent>().get();
+				PhysXSphereComponent* SphereComponent = Object->DynamicThis<PhysXSphereComponent>().get();
+				PhysXCapsuleComponent* CapsuleComponent = Object->DynamicThis<PhysXCapsuleComponent>().get();
+				PhysXTriangleComponent* TriangleComponent = Object->DynamicThis<PhysXTriangleComponent>().get();
 
-				if (nullptr != PhysXComponent)
+				if (nullptr != BoxComponent)
 				{
-					PhysXComponent->Off();
+					BoxComponent->Off();
+					Actor->PhysicsUpdate = false;
+				}
+				if (nullptr != SphereComponent)
+				{
+					SphereComponent->Off();
+					Actor->PhysicsUpdate = false;
+				}
+				if (nullptr != CapsuleComponent)
+				{
+					CapsuleComponent->Off();
+					Actor->PhysicsUpdate = false;
+				}
+				if (nullptr != TriangleComponent)
+				{
+					TriangleComponent->Off();
 					Actor->PhysicsUpdate = false;
 				}
 			}
@@ -87,11 +108,29 @@ void GameEngineObject::AllUpdate(float _DeltaTime)
 		{
 			for (std::shared_ptr<GameEngineObject> Object : Childs)
 			{
-				std::shared_ptr<PhysXCapsuleComponent> PhysXComponent = Object->DynamicThis<PhysXCapsuleComponent>();
+				PhysXBoxComponent* BoxComponent = Object->DynamicThis<PhysXBoxComponent>().get();
+				PhysXSphereComponent* SphereComponent = Object->DynamicThis<PhysXSphereComponent>().get();
+				PhysXCapsuleComponent* CapsuleComponent = Object->DynamicThis<PhysXCapsuleComponent>().get();
+				PhysXTriangleComponent* TriangleComponent = Object->DynamicThis<PhysXTriangleComponent>().get();
 
-				if (nullptr != PhysXComponent)
+				if (nullptr != BoxComponent)
 				{
-					PhysXComponent->On();
+					BoxComponent->On();
+					Actor->PhysicsUpdate = true;
+				}
+				if (nullptr != SphereComponent)
+				{
+					SphereComponent->Off();
+					Actor->PhysicsUpdate = false;
+				}
+				if (nullptr != CapsuleComponent)
+				{
+					CapsuleComponent->On();
+					Actor->PhysicsUpdate = true;
+				}
+				if (nullptr != TriangleComponent)
+				{
+					TriangleComponent->On();
 					Actor->PhysicsUpdate = true;
 				}
 			}

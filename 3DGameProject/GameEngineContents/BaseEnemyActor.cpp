@@ -20,10 +20,10 @@ BaseEnemyActor::~BaseEnemyActor()
 
 void BaseEnemyActor::Start()
 {
-	//if (false == GameEngineInput::IsKey("MonsterTest"))
-	//{
-	//	GameEngineInput::CreateKey("MonsterTest", 'M');
-	//}
+	if (false == GameEngineInput::IsKey("MonsterTest"))
+	{
+		GameEngineInput::CreateKey("MonsterTest", 'M');
+	}
 
 	//Render»ý¼º
 	EnemyRenderer = CreateComponent<GameEngineFBXRenderer>();
@@ -52,8 +52,30 @@ void BaseEnemyActor::Start()
 	SetFsmPacketCallBack(std::bind(&BaseEnemyActor::SetFSMStateValue, this, std::placeholders::_1));
 }
 
+bool Disable = false;
+int TestCount = 0;
+
 void BaseEnemyActor::Update(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("MonsterTest"))
+	{
+		Disable = !Disable;
+		TestCount = 1;
+	}
+
+	if (1 == TestCount)
+	{
+		TestCount = 0;
+		if (true == Disable)
+		{
+			PhysXCapsule->Off();
+		}
+		else
+		{
+			PhysXCapsule->On();
+		}
+	}
+
 	AppearDelayTime += _DeltaTime;
 
 	if (AppearDelayTime <= 1.0f)

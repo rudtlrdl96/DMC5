@@ -46,30 +46,8 @@ void TestLevel::Start()
 	GetCamera(100)->GetCamTarget()->DepthSettingOff();
 }
 
-bool Disable = false;
-int TestCount = 0;
-
 void TestLevel::Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsDown("MonsterTest"))
-	{
-		Disable = !Disable;
-		TestCount = 1;
-	}
-
-	if (1 == TestCount)
-	{
-		TestCount = 0;
-		if (true == Disable)
-		{
-			Empusa->Off();
-		}
-		else
-		{
-			Empusa->On();
-		}
-	}
-
 	if (false == IsMessage)
 	{
 		IsMessage = true;

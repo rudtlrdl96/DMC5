@@ -218,37 +218,6 @@ void PhysXCapsuleComponent::SetPush(float4 _Push)
 	m_pDynamic->addForce(physx::PxVec3(_Push.x, _Push.y, _Push.z), physx::PxForceMode::eIMPULSE);
 }
 
-void PhysXCapsuleComponent::PushImpulseAtLocalPos(float4 _ImpulsePower, float4 _Pos)
-{
-	physx::PxRigidBodyExt::addForceAtPos
-	(
-		*m_pDynamic, 
-		physx::PxVec3
-		(
-			_Pos.x, 
-			_Pos.y * 0.9f,
-			_Pos.z
-		),
-		physx::PxVec3
-		(
-			_ImpulsePower.x, 
-			_ImpulsePower.y, 
-			_ImpulsePower.z
-		), 
-		physx::PxForceMode::eIMPULSE, 
-		true
-	);
-}
-
-void PhysXCapsuleComponent::SetPlayerStartPos(float4 _Pos)
-{
-	physx::PxTransform tmpPxTransform(_Pos.x, _Pos.y, _Pos.z);
-
-	// 부모의 Transform정보를 바탕으로 PhysX Actor의 트랜스폼을 갱신
-	m_pDynamic->setGlobalPose(tmpPxTransform);
-	RecentTransform = tmpPxTransform;
-}
-
 void PhysXCapsuleComponent::ResetDynamic()
 {
 	float4 tmpQuat = float4{ 0.0f,0.0f,0.0f }.DegreeRotationToQuaternionReturn();

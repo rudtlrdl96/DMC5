@@ -116,17 +116,6 @@ void PhysXSphereComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPh
 	m_pScene->addActor(*m_pDynamic);
 }
 
-void PhysXSphereComponent::SetDynamicIdle()
-{
-	// 고정된 축을 해제
-	m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, false);
-	m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, false);
-	m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, false);
-
-	// Kinematic을 사용했을 경우, RigidDynamic으로 돌아갈 수 있도록 Flag해제
-	//dynamic_->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, false);
-}
-
 void PhysXSphereComponent::Start()
 {
 	// 부모의 정보의 저장
@@ -147,58 +136,6 @@ void PhysXSphereComponent::Update(float _DeltaTime)
 
 	ParentActor.lock()->GetTransform()->SetWorldRotation(float4{ EulerRot.x, EulerRot.y, EulerRot.z });
 	ParentActor.lock()->GetTransform()->SetWorldPosition(tmpWorldPos);
-
-	if (m_bSpeedLimit == true)
-	{
-		SpeedLimit();
-	}
-}
-
-void PhysXSphereComponent::PushImpulse(float4 _ImpulsePower)
-{
-	// 고정된 축을 해제
-	m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, false);
-	m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, false);
-	m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, false);
-
-	m_pDynamic->addForce(physx::PxVec3(_ImpulsePower.x, _ImpulsePower.y, _ImpulsePower.z), physx::PxForceMode::eIMPULSE);
-}
-
-void PhysXSphereComponent::PushImpulseAtLocalPos(float4 _ImpulsePower, float4 _Pos)
-{
-	// 고정된 축을 해제
-	m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, false);
-	m_pDynamic->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, false);
-
-	physx::PxRigidBodyExt::addForceAtPos(*m_pDynamic, physx::PxVec3(_Pos.x, _Pos.y * 0.9f, _Pos.z),
-		physx::PxVec3(_ImpulsePower.x, _ImpulsePower.y, _ImpulsePower.z), physx::PxForceMode::eIMPULSE, true);
-}
-
-void PhysXSphereComponent::SpeedLimit()
-{
-	physx::PxVec3 Velo = m_pDynamic->getLinearVelocity();
-	physx::PxVec2 Velo2D(Velo.x, Velo.z);
-
-	if (Velo2D.magnitude() > PLAYER_MAX_SPEED)
-	{
-		Velo2D.normalize();
-		Velo2D *= PLAYER_MAX_SPEED;
-		Velo.x = Velo2D.x;
-		Velo.z = Velo2D.y;
-
-		m_pDynamic->setLinearVelocity(Velo);
-	}
-}
-
-void PhysXSphereComponent::SetChangedRot(float4 _Rot)
-{
-	//dynamic_->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, false);
-
-	float4 tmpQuat = _Rot.EulerDegToQuaternion();
-	const physx::PxQuat tmpPxQuat(tmpQuat.x, tmpQuat.y, tmpQuat.z, tmpQuat.w);
-	const physx::PxTransform tmpTansform(m_pDynamic->getGlobalPose().p, tmpPxQuat);
-
-	m_pDynamic->setGlobalPose(tmpTansform);
 }
 
 void PhysXSphereComponent::ResetDynamic()

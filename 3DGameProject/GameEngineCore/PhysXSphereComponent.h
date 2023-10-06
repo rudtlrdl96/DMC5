@@ -32,32 +32,18 @@ public:
 		m_pDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, true);
 	}
 
-	void PushImpulse(float4 _ImpulsePower);
-	void PushImpulseAtLocalPos(float4 _ImpulsePower, float4 _Pos);
-
 	//Reset 함수
 	void ResetDynamic();
-
-	// RigidDynamic을 CCT에서 해제하는 함수
-	void SetDynamicIdle();
-
-	//회전 움직임 함수
-	void SetChangedRot(float4 _Rot);
 
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
-	//void Render() override {}
 
 private:
 	// Phys액터 생성에 필요한 정보
 	physx::PxScene* m_pScene = nullptr;
 	physx::PxPhysics* m_pPhysics = nullptr;
-	physx::PxControllerManager* m_pCtrManager = nullptr;
 	physx::PxMaterial* m_pMaterial = nullptr;
-
-	//속도제한 함수
-	void SpeedLimit();
 
 	physx::PxVec3 GeoMetryScale;
 	physx::PxVec3 InitVec3;
