@@ -12,6 +12,7 @@
 #include "Enemy_Empusa.h"
 #include "Plane.h"
 #include "Wall.h"
+#include "CavaliereAngelo.h"
 
 #include "FXAA_Effect.h"
 
@@ -99,11 +100,18 @@ void TestLevel::LevelChangeStart()
 	//	HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
 
-	if (nullptr == Empusa)
+	//if (nullptr == Empusa)
+	//{
+	//	Empusa = CreateActor<Enemy_Empusa>();
+	//	Empusa->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//	Empusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	//}
+
+	if (nullptr == Cavaliere)
 	{
-		Empusa = CreateActor<Enemy_Empusa>();
-		Empusa->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-		Empusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+		Cavaliere = CreateActor<CavaliereAngelo>();
+		Cavaliere->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+		Cavaliere->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	}
 
 	if (nullptr == Flat)

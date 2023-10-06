@@ -1,8 +1,13 @@
 #pragma once
-#include "EnemyActor_Boss.h"
+
+enum FSM_State_CavaliereAngelo
+{
+	// 등장
+	CavaliereAngelo_Idle,
+};
 
 // 설명 :
-class CavaliereAngelo : public EnemyActor_Boss
+class CavaliereAngelo : public BaseEnemyActor
 {
 public:
 	// constrcuter destructer
@@ -16,50 +21,36 @@ public:
 	CavaliereAngelo& operator=(CavaliereAngelo&& _Other) noexcept = delete;
 
 protected:
-
-private:
+	void Start() override;
 	void EnemyMeshLoad() override;
 	void EnemyTypeLoad() override;
 	void EnemyAnimationLoad() override;
 	void EnemyCreateFSM() override;
+	void EnemyCreateFSM_Client() override;
+	void DamageCollisionCheck(float _DeltaTime) override;
+	void RecognizeCollisionCheck(float _DeltaTime) override;
+
+private:
+	void PlayerChase(float _DeltaTime);
+	void PlayerAttack(float _DeltaTime);
+	void ChangeState(int _StateValue);
+
+	float WaitTime = 0.0f;
+	float RotationDelayTime = 0.0f;
+	float FallCheckDelayTime = 0.0f;
+	float AttackDelayCheck = 0.0f;
+	float AttackDelayTime = 0.0f;
+
+	short WalkCount = 0;
+
+	bool IsHeavyAttack = false;   // 강공격 히트
+	bool IsAirAttack = false;     // 에어공격 히트
+	bool IsSlamAttack = false;    // 슬램공격 히트
+	bool IsBusterAttack = false;  // 버스터 히트
+	bool IsVergilLight = false;
+	bool IsCollapse = false;      // 쓰러져있는 상태
+	bool IsRecognize = false;
 
 	bool IsPowerUpValue = false;
 
-	/*//////////////////////////////////
-			일반 상태 패턴
-	//////////////////////////////////*/
-
-	void SwordAttack_Enter();
-	void SwordAttack_Update(float _DeltaTime);
-	void SwordAttack_Exit();
-
-	void Staggering_Enter();
-	void Staggering_Update(float _DeltaTime);
-	void Staggering_Exit();
-
-	void Death_Enter();
-	void Death_Update(float _DeltaTime);
-	void Death_Exit();
-
-	/*//////////////////////////////////
-				강화 차징 패턴
-	//////////////////////////////////*/
-
-	void PowerUP_Enter();
-	void PowerUP_Update(float _DeltaTime);
-	void PowerUP_Eixt();
-
-	/*//////////////////////////////////
-				강화 상태 패턴
-	//////////////////////////////////*/
-
-	// 강화상태 걸어가며 투사체 공격을 하는 패턴
-	void WalkRangeAttack_Enter();
-	void WalkRangeAttack_Update(float _DeltaTime);
-	void WalkRangeAttack_Exit();
-
-	// 강화상태 칼을 휘두르는 패턴
-	void ComboSwordAttack_Enter();
-	void ComboSwordAttack_Update(float _DeltaTime);
-	void ComboSwordAttack_Exit();
 };

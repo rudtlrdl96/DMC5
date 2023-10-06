@@ -87,7 +87,6 @@ public:
 
 protected:
 	void Start() override;
-
 	void EnemyMeshLoad() override;
 	void EnemyTypeLoad() override;
 	void EnemyAnimationLoad() override;
