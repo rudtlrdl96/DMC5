@@ -31,6 +31,11 @@ TestLevel::~TestLevel()
 
 void TestLevel::Start()
 {
+	if (false == GameEngineInput::IsKey("MonsterTest"))
+	{
+		GameEngineInput::CreateKey("MonsterTest", 'M');
+	}
+
 	CreateScene(GetName());
 
 	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
@@ -39,11 +44,32 @@ void TestLevel::Start()
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 50.0f, -100.0f });
 	//GetCamera(100)->SetSortType(0, SortType::ZSort);
 	GetCamera(100)->GetCamTarget()->DepthSettingOff();
-
 }
+
+bool Disable = false;
+int TestCount = 0;
 
 void TestLevel::Update(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("MonsterTest"))
+	{
+		Disable = !Disable;
+		TestCount = 1;
+	}
+
+	if (1 == TestCount)
+	{
+		TestCount = 0;
+		if (true == Disable)
+		{
+			Empusa->Off();
+		}
+		else
+		{
+			Empusa->On();
+		}
+	}
+
 	if (false == IsMessage)
 	{
 		IsMessage = true;
@@ -94,10 +120,12 @@ void TestLevel::LevelChangeStart()
 		NetworkManager::LinkNetwork(Vergil.get(), this);
 	}
 
-	TestObj = CreateActor<TestObject>();
-	TestObj->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	TestObj->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	
+	//if (nullptr == TestObj)
+	//{
+	//	TestObj = CreateActor<TestObject>();
+	//	TestObj->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//	TestObj->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	//}
 
 	//if (nullptr == HellCaina)
 	//{
@@ -106,12 +134,12 @@ void TestLevel::LevelChangeStart()
 	//	HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
 
-	//if (nullptr == Empusa)
-	//{
-	//	Empusa = CreateActor<Enemy_Empusa>();
-	//	Empusa->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	//	Empusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	//}
+	if (nullptr == Empusa)
+	{
+		Empusa = CreateActor<Enemy_Empusa>();
+		Empusa->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+		Empusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	}
 
 	//if (nullptr == Cavaliere)
 	//{

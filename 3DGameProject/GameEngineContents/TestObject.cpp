@@ -59,26 +59,24 @@ void TestObject::Start()
 	Component->GetDynamic()->setGlobalPose({0.0f, 200.0f, 0.0f});
 }
 
-int TestCount = 0;
-
 void TestObject::Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsDown("MonTest"))
-	{
-		Disable = !Disable;
-		TestCount = 1;
-	}
+	//if (true == GameEngineInput::IsDown("MonTest"))
+	//{
+	//	Disable = !Disable;
+	//	TestCount = 1;
+	//}
 
-	if (1 == TestCount)
-	{
-		TestCount = 0;
-		if (true == Disable)
-		{
-			Component->Off();
-		}
-		else
-		{
-			Component->On();
-		}
-	}
+	//if (1 == TestCount)
+	//{
+	//	TestCount = 0;
+	//	if (true == Disable)
+	//	{
+	//		Component->Off();
+	//	}
+	//	else
+	//	{
+	//		Component->On();
+	//	}
+	//}
 }

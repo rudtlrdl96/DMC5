@@ -376,7 +376,6 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 최초 등장_02
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Appear_02,
 	.Start = [=] {
-	PhysXCapsule->SetLinearVelocityZero();
 	EnemyRenderer->ChangeAnimation("em0000_appear_02");
 	},
 	.Update = [=](float _DeltaTime) {

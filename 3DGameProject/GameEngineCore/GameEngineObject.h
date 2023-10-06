@@ -117,5 +117,4 @@ private:
 	void AllRelease();
 	void AllLevelChangeStart();
 	void AllLevelChangeEnd();
-
 };

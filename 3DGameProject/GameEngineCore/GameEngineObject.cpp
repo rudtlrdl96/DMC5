@@ -1,8 +1,10 @@
 #include "PrecompileHeader.h"
 #include "GameEngineObject.h"
+
 #include "imgui.h"
 #include "GameEngineLevel.h"
 #include "PhysicsActor.h"
+#include "PhysXCapsuleComponent.h"
 
 int GameEngineObject::NextActorID = 0;
 int GameEngineObject::GUI_SelectActorIndex = -1;

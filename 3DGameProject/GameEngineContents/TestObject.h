@@ -35,5 +35,6 @@ private:
 	float4 Rot = float4::ZERO;
 
 	bool Disable = false;
+	int TestCount = 0;
 };
 

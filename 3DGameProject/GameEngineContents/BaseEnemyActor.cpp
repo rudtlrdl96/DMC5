@@ -18,13 +18,12 @@ BaseEnemyActor::~BaseEnemyActor()
 {
 }
 
-
 void BaseEnemyActor::Start()
 {
-	if (false == GameEngineInput::IsKey("MonsterTest"))
-	{
-		GameEngineInput::CreateKey("MonsterTest", 'M');
-	}
+	//if (false == GameEngineInput::IsKey("MonsterTest"))
+	//{
+	//	GameEngineInput::CreateKey("MonsterTest", 'M');
+	//}
 
 	//Render»ý¼º
 	EnemyRenderer = CreateComponent<GameEngineFBXRenderer>();

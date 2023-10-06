@@ -423,7 +423,6 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 최초 등장_A
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Appear_A,
 	.Start = [=] {
-	PhysXCapsule->SetLinearVelocityZero();
 	EnemyRenderer->ChangeAnimation("em0100_enter_ground_A");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -442,7 +441,6 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 최초 등장_B
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Appear_B,
 	.Start = [=] {
-	PhysXCapsule->SetLinearVelocityZero();
 	EnemyRenderer->ChangeAnimation("em0100_enter_ground_B");
 	},
 	.Update = [=](float _DeltaTime) {
