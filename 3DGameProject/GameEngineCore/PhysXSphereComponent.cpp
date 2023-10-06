@@ -33,14 +33,6 @@ void PhysXSphereComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPh
 	// Staticfriction : 정적마찰 // Dynamicfriction : 동적마찰 // Resitution : 탄성계수
 	m_pMaterial = m_pPhysics->createMaterial(Staticfriction, Dynamicfriction, Resitution);
 
-	// TODO::배율을 적용할 경우 이쪽 코드를 사용
-	//float4 tmpMagnification = { SIZE_MAGNIFICATION_RATIO };
-	//physx::PxVec3 tmpGeoMetryScale(_GeoMetryScale.x * tmpMagnification.x * 0.5f, 
-	//							   _GeoMetryScale.y * tmpMagnification.y * 0.5f, 
-	//							   _GeoMetryScale.z * tmpMagnification.z * 0.5f);
-
-	//GeoMetryScale = _GeoMetryScale;
-
 	physx::PxVec3 tmpGeoMetryScale
 	(
 		_GeoMetryScale.x * 0.5f,
@@ -59,26 +51,23 @@ void PhysXSphereComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPh
 		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z
 	);
 
-	// TODO::점프속력에 영향을 미침. 스테이지 작성후 자세한 수치는 나중에 조절
-	// 플레이어 최대 속력
-	// dynamic_->setMaxLinearVelocity(PLAYER_MAX_SPEED);
-
 	float ScaledRadius = tmpGeoMetryScale.z;
 	float ScaledHeight = tmpGeoMetryScale.y;
 
 	// 충돌체의 형태
 	// 충돌체의 크기는 절반의 크기를 설정하므로 실제 Renderer의 스케일은 충돌체의 2배로 설정되어야 함
 	// TODO::부모 액터의 RenderUnit으로부터 Mesh의 Scale 과 WorldScale의 연산의 결과를 지오메트리의 Scale로 세팅해야함.
-	m_pShape = physx::PxRigidActorExt::createExclusiveShape(*m_pDynamic, physx::PxSphereGeometry(physx::PxReal(_GeoMetryScale.y * 0.5f)), *m_pMaterial);
+	m_pShape = physx::PxRigidActorExt::createExclusiveShape(*m_pDynamic, physx::PxSphereGeometry(physx::PxReal(tmpGeoMetryScale.y * 0.5f)), *m_pMaterial);
 
 	// RigidDynamic의 밀도를 설정
-	//physx::PxRigidBodyExt::updateMassAndInertia(*m_pDynamic, 0.01f);
+	physx::PxRigidBodyExt::updateMassAndInertia(*m_pDynamic, 0.01f);
 
 	//피벗 설정
 	float CapsuleHeight = ScaledHeight * 1.f;
-	physx::PxVec3 DynamicCenter = physx::PxVec3{ 0.0f, CapsuleHeight, 0.0f };
+	physx::PxVec3 DynamicCenter = physx::PxVec3{ 0.0f, tmpGeoMetryScale.y, 0.0f };
 	physx::PxTransform relativePose(physx::PxQuat(physx::PxHalfPi, physx::PxVec3(0, 0, 1)));
 	relativePose.p = DynamicCenter;
+
 	m_pShape->setLocalPose(relativePose);
 
 	//충돌할때 필요한 필터 데이터
@@ -96,11 +85,6 @@ void PhysXSphereComponent::CreatePhysXActors(physx::PxScene* _Scene, physx::PxPh
 
 	m_pShape->setContactOffset(0.2f);
 	
-	// 제동?
-	//m_pDynamic->setLinearDamping(physx::PxReal(0.01f));
-	//m_pDynamic->setMaxAngularVelocity(physx::PxReal(20.0f));
-	//m_pDynamic->setAngularDamping(physx::PxReal(2.0f));
-
 	if (m_pScene == nullptr)
 	{
 		std::string LevelName = GetLevel()->GetName().data();
@@ -138,17 +122,98 @@ void PhysXSphereComponent::Update(float _DeltaTime)
 	ParentActor.lock()->GetTransform()->SetWorldPosition(tmpWorldPos);
 }
 
-void PhysXSphereComponent::ResetDynamic()
+void PhysXSphereComponent::SetWorldPosition(float4 _Value)
 {
-	float4 tmpQuat = float4{ 0.0f,0.0f,0.0f }.EulerDegToQuaternion();
+	physx::PxTransform CurTansform = m_pDynamic->getGlobalPose();
+
+	float ValueX = _Value.x;
+	float ValueY = _Value.y;
+	float ValueZ = _Value.z;
+
+	CurTansform.p = { _Value.x, _Value.y, _Value.z };
+
+	m_pDynamic->setGlobalPose(CurTansform);
+}
+
+void PhysXSphereComponent::AddWorldPosition(float4 _Value)
+{
+	physx::PxTransform CurTansform = m_pDynamic->getGlobalPose();
+
+	float ValueX = _Value.x;
+	float ValueY = _Value.y;
+	float ValueZ = _Value.z;
+
+	CurTansform.p += { _Value.x, _Value.y, _Value.z };
+
+	m_pDynamic->setGlobalPose(CurTansform);
+}
+
+void PhysXSphereComponent::SetWorldRotation(float4 _Value)
+{
+	float4 tmpQuat = _Value.DegreeRotationToQuaternionReturn();
+
 	const physx::PxQuat tmpPxQuat(tmpQuat.x, tmpQuat.y, tmpQuat.z, tmpQuat.w);
 	const physx::PxTransform tmpTansform(m_pDynamic->getGlobalPose().p, tmpPxQuat);
 
 	m_pDynamic->setGlobalPose(tmpTansform);
-	m_pDynamic->setRigidDynamicLockFlags(
-		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X |
-		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y |
-		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z);
 }
 
+void PhysXSphereComponent::AddWorldRotation(float4 _Value)
+{
+	float4 AddRptation = _Value;
+	physx::PxQuat CurQuat = m_pDynamic->getGlobalPose().q;
+	float4 CurQuatToFloat4 = { CurQuat.x , CurQuat.y, CurQuat.z, CurQuat.w };
+	float4 CurRotation = CurQuatToFloat4.QuaternionToEulerDeg();
+	float4 ResultRotation = { CurRotation.x + AddRptation.x, CurRotation.y + AddRptation.y, CurRotation.z + AddRptation.z, CurRotation.w + AddRptation.w };
 
+	float4 ResultsQuat = ResultRotation.DegreeRotationToQuaternionReturn();
+	const physx::PxQuat tmpPxQuat(ResultsQuat.x, ResultsQuat.y, ResultsQuat.z, ResultsQuat.w);
+	const physx::PxTransform tmpTansform(m_pDynamic->getGlobalPose().p, tmpPxQuat);
+
+	m_pDynamic->setGlobalPose(tmpTansform);
+}
+
+void PhysXSphereComponent::SetAirState(float _Power)
+{
+	m_pDynamic->setLinearVelocity({ 0,0,0 });
+	m_pDynamic->addForce(physx::PxVec3(0.0f, _Power, 0.0f), physx::PxForceMode::eIMPULSE);
+}
+
+void PhysXSphereComponent::SetJump(float _JumpPower)
+{
+	m_pDynamic->addForce(physx::PxVec3(0.0f, _JumpPower, 0.0f), physx::PxForceMode::eIMPULSE);
+}
+
+void PhysXSphereComponent::SetMove(float4 _MoveSpeed)
+{
+	//Y축은 중력에 의해 가속도를 받지만 X,Z는 가속도를 없애서 정속 이동을 하게끔 함
+	m_pDynamic->setLinearVelocity({ 0,GetLinearVelocity().y,0 });
+
+	// 캐릭터의 방향을 힘으로 조절
+	m_pDynamic->addForce(physx::PxVec3(_MoveSpeed.x, _MoveSpeed.y, _MoveSpeed.z), physx::PxForceMode::eVELOCITY_CHANGE);
+}
+
+void PhysXSphereComponent::SetForce(float4 _MoveSpeed)
+{
+	m_pDynamic->addForce(physx::PxVec3(_MoveSpeed.x, _MoveSpeed.y, _MoveSpeed.z), physx::PxForceMode::eFORCE);
+}
+
+void PhysXSphereComponent::SetPush(float4 _Push)
+{
+	m_pDynamic->addForce(physx::PxVec3(_Push.x, _Push.y, _Push.z), physx::PxForceMode::eIMPULSE);
+}
+
+void PhysXSphereComponent::ResetDynamic()
+{
+	float4 tmpQuat = float4{ 0.0f,0.0f,0.0f }.DegreeRotationToQuaternionReturn();
+	const physx::PxQuat tmpPxQuat(tmpQuat.x, tmpQuat.y, tmpQuat.z, tmpQuat.w);
+	const physx::PxTransform tmpTansform(m_pDynamic->getGlobalPose().p, tmpPxQuat);
+
+	m_pDynamic->setGlobalPose(tmpTansform);
+	m_pDynamic->setRigidDynamicLockFlags
+	(
+		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X |
+		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y |
+		physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z
+	);
+}

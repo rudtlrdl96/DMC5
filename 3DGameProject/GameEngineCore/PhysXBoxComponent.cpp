@@ -84,19 +84,10 @@ void PhysXBoxComponent::CreatePhysXActors(physx::PxVec3 _GeoMetryScale, float4 _
 	);
 
 	// 충돌체의 종류
-	//m_pDynamic = _physics->createRigidDynamic(localTm);
 	m_pStatic = m_pPhysics->createRigidStatic(localTm);
-
-	// 중력이 적용되지 않도록
-	// TODO::RigidStatic으로 변경해야
-	//m_pDynamic->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, true);
-	//m_pDynamic->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, true);
 
 	// 충돌체의 형태
 	m_pShape = physx::PxRigidActorExt::createExclusiveShape(*m_pStatic, physx::PxBoxGeometry(tmpGeoMetryScale), *m_pMaterial);
-
-	// RigidDynamic의 밀도를 설정
-	//physx::PxRigidBodyExt::updateMassAndInertia(*m_pDynamic, 0.1f);
 
 	//피벗 설정
 	physx::PxVec3 Pivot(DynamicPivot.x, tmpGeoMetryScale.y, DynamicPivot.z);

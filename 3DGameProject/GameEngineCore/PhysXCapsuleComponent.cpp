@@ -95,8 +95,8 @@ void PhysXCapsuleComponent::CreatePhysXActors(physx::PxVec3 _GeoMetryScale, floa
 	physx::PxVec3 DynamicCenter = physx::PxVec3{ 0.0f, CapsuleHeight, 0.0f };
 	physx::PxTransform relativePose(physx::PxQuat(physx::PxHalfPi, physx::PxVec3(0, 0, 1)));
 	relativePose.p = DynamicCenter;
-	m_pShape->setLocalPose(relativePose);
 
+	m_pShape->setLocalPose(relativePose);
 	m_pShape->setContactOffset(0.2f);
 
 	if (true == MainPlayerCapsule)
@@ -117,11 +117,6 @@ void PhysXCapsuleComponent::CreatePhysXActors(physx::PxVec3 _GeoMetryScale, floa
 	//RayCastTarget False;
 	m_pShape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, false);
 
-	// Á¦µ¿?
-	//m_pDynamic->setLinearDamping(physx::PxReal(10.0f));
-	//m_pDynamic->setMaxAngularVelocity(physx::PxReal(20.0f));
-	//m_pDynamic->setAngularDamping(physx::PxReal(2.0f));
-	
 	if (m_pScene == nullptr)
 	{
 		std::string LevelName = GetLevel()->GetName().data();
