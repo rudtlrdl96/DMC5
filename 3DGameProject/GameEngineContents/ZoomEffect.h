@@ -66,10 +66,12 @@ private:
 	void LevelChangeStart() override
 	{
 		CurLevelZoomEffect = this;
+		ResultTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 	}
 
 	void LevelChangeEnd() override
 	{
 		CurLevelZoomEffect = nullptr;
+		ResultTarget->ReleaseTextures();
 	}
 };

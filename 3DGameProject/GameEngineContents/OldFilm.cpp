@@ -31,7 +31,7 @@ void OldFilm::Start(GameEngineRenderTarget* _Target)
 	OldUnit->ShaderResHelper.SetConstantBufferLink("OldFilmData", OldData);
 
 
-	ResultTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	ResultTarget = GameEngineRenderTarget::Create();
 }
 
 void OldFilm::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)

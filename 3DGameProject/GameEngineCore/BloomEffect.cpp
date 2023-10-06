@@ -24,7 +24,7 @@ void BloomEffect::Start(GameEngineRenderTarget* _Target)
 	Data.ScreenSize = GameEngineWindow::GetScreenSize();
 	Data.ScreenRatio.x = 0.5f;
 
-	ResultTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize() * Data.ScreenRatio.x, float4::ZERONULL);
+	ResultTarget = GameEngineRenderTarget::Create();
 }
 
 void BloomEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)

@@ -174,6 +174,12 @@
     <FxCompile Include="Transform.fx" />
     <FxCompile Include="ZoomEffectShader.hlsl" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DistortionEffectShader.hlsl">
+      <SubType>
+      </SubType>
+    </ClInclude>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

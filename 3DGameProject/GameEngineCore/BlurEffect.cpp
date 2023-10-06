@@ -15,8 +15,7 @@ void BlurEffect::Start(GameEngineRenderTarget* _Target)
 	BlurUnit->SetMesh("FullRect");
 	BlurUnit->SetMaterial("Blur");
 
-	ResultTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-
+	ResultTarget = GameEngineRenderTarget::Create();
 }
 
 void BlurEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)

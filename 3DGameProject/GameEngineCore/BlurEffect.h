@@ -21,5 +21,15 @@ protected:
 
 private:
 	std::shared_ptr<GameEngineRenderUnit> BlurUnit;
+
+	void LevelChangeStart() override
+	{
+		ResultTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	}
+
+	void LevelChangeEnd() override
+	{
+		ResultTarget->ReleaseTextures();
+	}
 };
 

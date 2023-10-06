@@ -65,5 +65,15 @@ private:
 	bool IsEffectOn = false;
 
 	float4 Speed = float4(1.0f, 1.0f, 1.0f, 1.0f);
+
+	void LevelChangeStart() override
+	{
+		ResultTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	}
+
+	void LevelChangeEnd() override
+	{
+		ResultTarget->ReleaseTextures();
+	}
 };
 

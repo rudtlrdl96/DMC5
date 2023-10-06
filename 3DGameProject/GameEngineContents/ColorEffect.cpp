@@ -22,7 +22,7 @@ void ColorEffect::Start(GameEngineRenderTarget* _Target)
 
 	ColorUnit->ShaderResHelper.SetConstantBufferLink("ColorEffectBuffer", ShaderBuffer);
 
-	ResultTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	ResultTarget = GameEngineRenderTarget::Create();
 
 	SetStartColor(float4(0.0f, 0.0f, 0.0f));
 	SetEndColor(float4(0.0f, 0.0f, 0.1f));

@@ -82,4 +82,9 @@
       <UniqueIdentifier>{d3f088ad-72bf-4607-bc38-e6765577e202}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DistortionEffectShader.hlsl">
+      <Filter>PostEffect</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

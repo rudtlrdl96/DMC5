@@ -45,7 +45,7 @@ void JudgementCut::Start(GameEngineRenderTarget* _Target)
 	JudgementUnit->ShaderResHelper.SetConstantBufferLink("RenderBaseValue", BaseValue);
 	JudgementUnit->ShaderResHelper.SetConstantBufferLink("JudgementCutValue", ShaderBuffer);
 
-	ResultTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	ResultTarget = GameEngineRenderTarget::Create();
 
 	AddLine(float4(0.0f, 0.55f, 1.0f, 0.56f));
 	AddLine(float4(0.0f, 0.3f , 1.0f, 0.9f));

@@ -17,9 +17,9 @@ void ZoomEffect::Start(GameEngineRenderTarget* _Target)
 	ZoomUnit->SetMesh("FullRect");
 	ZoomUnit->SetMaterial("ZoomEffect");
 
-	ZoomUnit->ShaderResHelper.SetConstantBufferLink("ZoomEffectBuffer", ShaderBuffer);
+	ResultTarget = GameEngineRenderTarget::Create();
 
-	ResultTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	ZoomUnit->ShaderResHelper.SetConstantBufferLink("ZoomEffectBuffer", ShaderBuffer);
 
 	if (false == GameEngineInput::IsKey("Debug_JudgementCutSwitch"))
 	{

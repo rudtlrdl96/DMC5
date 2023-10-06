@@ -17,7 +17,7 @@ void FadeEffect::Start(GameEngineRenderTarget* _Target)
 
 	FadeUnit->ShaderResHelper.SetConstantBufferLink("FADEDATA", FadeData);
 	// 
-	ResultTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	ResultTarget = GameEngineRenderTarget::Create();
 }
 
 void FadeIn()

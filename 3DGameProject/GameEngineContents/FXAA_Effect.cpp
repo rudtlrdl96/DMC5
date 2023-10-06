@@ -19,7 +19,7 @@ void FXAA_Effect::Start(GameEngineRenderTarget* _Target)
 
 	BaseValue.ScreenScale = GameEngineWindow::GetScreenSize();
 
-	ResultTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	ResultTarget = GameEngineRenderTarget::Create();
 }
 
 void FXAA_Effect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
