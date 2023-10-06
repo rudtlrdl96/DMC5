@@ -99,7 +99,7 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     
     // r = Alpha, gba = sss (subsurface scattering)
     float4 AtosData = SpecularTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
-    
+
     if (0.0f >= AtosData.r)
     {
         clip(-1);
