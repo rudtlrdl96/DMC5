@@ -126,7 +126,14 @@ void NetworkManager::ServerPacketInit()
 	NetInst->Dispatcher.AddHandler<MessageChatPacket>(
 		[=](std::shared_ptr<MessageChatPacket> _Packet)
 	{
-		NetworkGUI::GetInst()->PrintLog(_Packet->Message, _Packet->Color);
+		const std::string& Msg = _Packet->Message;
+		NetGUI_MsgType MsgType = NetGUI_MsgType::Chat;
+		if (SystemChatCheck.size() < Msg.size() && SystemChatCheck == Msg.substr(0, SystemChatCheck.size()))
+		{
+			MsgType = NetGUI_MsgType::System;
+		}
+
+		NetworkGUI::GetInst()->PrintLog(_Packet->Message, _Packet->Color, MsgType);
 
 		//서버의 경우엔 수신받은 특정 오브젝트의 패킷을 다른 클라에 다 뿌려야 한다
 		NetInst->SendPacket(_Packet, _Packet->GetObjectID());

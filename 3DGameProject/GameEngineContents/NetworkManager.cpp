@@ -40,6 +40,8 @@ GameEngineSerializer NetworkManager::ChunkPacketBytes;
 
 std::map<GameEngineLevel*, std::vector<BasePlayerActor*>> NetworkManager::AllPlayerActors;
 
+const std::string NetworkManager::SystemChatCheck = "[System] : ";
+
 
 unsigned int NetworkManager::ServerOpen(int _Port)
 {

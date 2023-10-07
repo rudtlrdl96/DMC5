@@ -4,6 +4,14 @@
 class GameEngineLevel;
 enum class PlayerType;
 
+enum class NetGUI_MsgType
+{
+	Chat,
+	System,
+
+	COUNT
+};
+
 class NetworkGUI : public GameEngineGUIWindow
 {
 	//friend class NetworkManager;
@@ -22,7 +30,8 @@ public:
 	NetworkGUI& operator=(const NetworkGUI& _Other) = delete;
 	NetworkGUI& operator=(const NetworkGUI&& _Other) noexcept = delete;
 
-	void PrintLog(const std::string_view& _LogText, const float4&  _Color = float4::WHITE);
+
+	void PrintLog(const std::string_view& _LogText, const float4& _Color = float4::WHITE, NetGUI_MsgType _Type = NetGUI_MsgType::System);
 
 	//타이틀 화면에서 GUI버튼을 눌렀을때 처리할 함수포인터를 입력받습니다.
 	inline void SetEntryCallBack(std::function<void()> _EntryCallBack)
@@ -46,6 +55,7 @@ protected:
 
 private:
 	static NetworkGUI* Inst;
+	static const char* LogNames[static_cast<size_t>(NetGUI_MsgType::COUNT)];
 
 	enum class State
 	{
@@ -66,8 +76,9 @@ private:
 	std::string NickName;
 	std::string LocalPrintNickName;
 	
+	int CurLogType = static_cast<int>(NetGUI_MsgType::System);
 	std::string Message;
-	std::list<std::pair<std::string, float4>> AllLog;
+	std::vector<std::list<std::pair<std::string, float4>>> AllLog;
 
 	void Update_SelectWait();
 	void Update_Chat();

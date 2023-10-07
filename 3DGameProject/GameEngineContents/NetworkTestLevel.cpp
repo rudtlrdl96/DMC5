@@ -53,7 +53,7 @@ void NetworkTestLevel::LevelChangeStart()
 	{
 		//std::shared_ptr<PlayerActor_Nero> Nero = Poolable<PlayerActor_Nero>::PopFromPool(this);
 		std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>(ActorOrder::Player);
-		Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+		Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 100 });
 		NetworkManager::LinkNetwork(Nero.get(), this);
 
 		Poolable<PlayerActor_Vergil>::CreatePool(this, static_cast<int>(ActorOrder::Player), 1,
@@ -69,7 +69,7 @@ void NetworkTestLevel::LevelChangeStart()
 	{
 		//std::shared_ptr<PlayerActor_Vergil> Nero = Poolable<PlayerActor_Vergil>::PopFromPool(this);
 		std::shared_ptr<PlayerActor_Vergil> Nero = CreateActor<PlayerActor_Vergil>(ActorOrder::Player);
-		Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+		Nero->GetPhysXComponent()->SetWorldPosition({ 0, 100, 100 });
 		NetworkManager::LinkNetwork(Nero.get(), this);
 
 		Poolable<PlayerActor_Nero>::CreatePool(this, static_cast<int>(ActorOrder::Player), 1,

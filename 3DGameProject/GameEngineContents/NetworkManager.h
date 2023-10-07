@@ -138,6 +138,8 @@ private:
 	//PlayerActor만을 담아놓는 자료구조
 	static std::map<GameEngineLevel*, std::vector<BasePlayerActor*>> AllPlayerActors;
 
+	//채팅 메세지가 올때 앞쪽에 이 글자가 들어있으면 System메세지이다
+	static const std::string SystemChatCheck;
 
 	//엑터 생성
 	static std::shared_ptr<NetworkObjectBase> CreateNetActor(unsigned int _ActorType, BaseLevel* _Level = nullptr, int _ObjectID = -1)

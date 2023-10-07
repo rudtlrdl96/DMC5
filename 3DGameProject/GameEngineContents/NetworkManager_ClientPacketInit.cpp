@@ -37,7 +37,7 @@ void NetworkManager::ClientPacketInit()
 		
 		//연결 성공 메세지 보내기
 		const std::string& ClientName = NetworkGUI::GetInst()->GetNickName();
-		std::string ChatMsg = ClientName + " Connect Server";
+		std::string ChatMsg = SystemChatCheck + ClientName + " Connect Server";
 		PushChatPacket(ChatMsg, float4::GREEN);
 	});
 
@@ -128,7 +128,14 @@ void NetworkManager::ClientPacketInit()
 	NetInst->Dispatcher.AddHandler<MessageChatPacket>(
 		[](std::shared_ptr<MessageChatPacket> _Packet)
 	{
-		NetworkGUI::GetInst()->PrintLog(_Packet->Message, _Packet->Color);
+		const std::string& Msg = _Packet->Message;
+		NetGUI_MsgType MsgType = NetGUI_MsgType::Chat;
+		if (SystemChatCheck.size() < Msg.size() && SystemChatCheck == Msg.substr(0, SystemChatCheck.size()))
+		{
+			MsgType = NetGUI_MsgType::System;
+		}
+
+		NetworkGUI::GetInst()->PrintLog(_Packet->Message, _Packet->Color, MsgType);
 	});
 	
 

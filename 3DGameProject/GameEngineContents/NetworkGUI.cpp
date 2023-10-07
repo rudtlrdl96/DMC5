@@ -2,10 +2,15 @@
 #include "NetworkGUI.h"
 
 #include "NetworkManager.h"
-#include "BaseLog.h"
 #include "ContentsEnum.h"
 
 NetworkGUI* NetworkGUI::Inst = nullptr;
+
+const char* NetworkGUI::LogNames[static_cast<size_t>(NetGUI_MsgType::COUNT)] =
+{
+	"Chat",
+	"System"
+};
 
 NetworkGUI::NetworkGUI()
 {
@@ -17,6 +22,11 @@ NetworkGUI::~NetworkGUI()
 	
 }
 
+enum
+{
+	LOG_INIT_SIZE = 20
+};
+
 void NetworkGUI::Start()
 {
 	AllStateFunc.resize(static_cast<size_t>(State::COUNT), nullptr);
@@ -26,12 +36,13 @@ void NetworkGUI::Start()
 	NickName.resize(16, 0);
 	Message.resize(32, 0);
 
-	/*for (size_t i = 0; i < 20; ++i)
+	AllLog.resize(static_cast<size_t>(NetGUI_MsgType::COUNT));
+	for (size_t i = 0; i < AllLog.size(); ++i)
 	{
-		BaseLog::PushLog(LogOrder::Network, " ");
-	}*/
+		AllLog[i].resize(LOG_INIT_SIZE, { " ", float4::WHITE });
+	}
 
-	AllLog.resize(20, { " ", float4::WHITE });
+
 }
 
 
@@ -126,13 +137,10 @@ void NetworkGUI::Update_Chat()
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), Title.c_str());
 	ImGui::Text(LocalPrintNickName.c_str());
 
-	/*const std::vector<std::string>& AllLog = BaseLog::GetLog(LogOrder::Network);
-	for (const std::string& Log : AllLog)
-	{
-		ImGui::Text(Log.c_str());
-	}*/
+	ImGui::Combo("Log Type", &CurLogType, LogNames, static_cast<int>(NetGUI_MsgType::COUNT));
 
-	for (const std::pair<std::string, float4>& Log : AllLog)
+	const std::list<std::pair<std::string, float4>>& CurLog = AllLog[CurLogType];
+	for (const std::pair<std::string, float4>& Log : CurLog)
 	{
 		const std::string& LogValue = Log.first;
 		const float4& LogColor = Log.second;
@@ -147,6 +155,8 @@ void NetworkGUI::Update_Chat()
 		}
 	}
 
+	if (NetGUI_MsgType::Chat != static_cast<NetGUI_MsgType>(CurLogType))
+		return;
 
 	ImGui::InputText("Message", &Message[0], Message.size());
 	if (ImGui::Button("SendMessage"))
@@ -155,7 +165,7 @@ void NetworkGUI::Update_Chat()
 			return;
 
 		std::string Msg = NickName + " : " + Message;
-		PrintLog(Msg);
+		PrintLog(Msg, float4::WHITE, NetGUI_MsgType::Chat);
 		NetworkManager::PushChatPacket(Msg);
 		for (char& C : Message)
 			C = 0;
@@ -163,10 +173,12 @@ void NetworkGUI::Update_Chat()
 }
 
 
-void NetworkGUI::PrintLog(const std::string_view& _LogText, const float4& _Color /*= float4::WHITE*/)
+void NetworkGUI::PrintLog(
+	const std::string_view& _LogText, 
+	const float4& _Color /*= float4::WHITE*/,
+	NetGUI_MsgType _Type /*= NetGUI_MsgType::Chat*/)
 {
-	BaseLog::PushLog(LogOrder::Network, _LogText.data());
-
-	AllLog.pop_front();
-	AllLog.push_back(std::make_pair(_LogText.data(), _Color));
+	std::list<std::pair<std::string, float4>>& SelectLog = AllLog[static_cast<size_t>(_Type)];
+	SelectLog.pop_front();
+	SelectLog.push_back(std::make_pair(_LogText.data(), _Color));
 }
