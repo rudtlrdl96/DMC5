@@ -452,6 +452,9 @@
     <ClInclude Include="Poolable.h">
       <Filter>Server\04.Poolable</Filter>
     </ClInclude>
+    <ClInclude Include="DistortionEffect.h">
+      <Filter>PostEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -892,6 +895,9 @@
     </ClCompile>
     <ClCompile Include="Poolable.cpp">
       <Filter>Server\04.Poolable</Filter>
+    </ClCompile>
+    <ClCompile Include="DistortionEffect.cpp">
+      <Filter>PostEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

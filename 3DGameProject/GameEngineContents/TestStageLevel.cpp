@@ -8,6 +8,7 @@
 #include "ColorEffect.h"
 #include "FXAA_Effect.h"
 #include "ZoomEffect.h"
+#include "DistortionEffect.h"
 
 #include "Plane.h"
 #include "TestObject.h"
@@ -44,6 +45,12 @@ void TestStageLevel::Start()
 
 	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
+
+	{
+		std::shared_ptr<DistortionEffect> Distortion = GetCamera(0)->GetCamTarget()->CreateEffect<DistortionEffect>();
+		Distortion->SetMaskTexture(GetCamera(0)->GetCamAlphaTarget(), 1);	
+		Distortion->SetDistortionValue(8, 4.5);
+	}
 
 	StageBaseLevel::Start();
 
@@ -129,6 +136,15 @@ void TestStageLevel::LevelChangeStart()
 	SpotLight->GetTransform()->SetLocalRotation(float4(90, 0, 0));
 	SpotLight->SetLightPower(3.0f);
 	SpotLight->DynamicShadowOn();
+
+
+	std::shared_ptr<EffectRenderer> NewEffect = CreateActor<GameEngineActor>()->CreateComponent<EffectRenderer>();
+	NewEffect->GetTransform()->SetLocalPosition(float4(0, 300, 0));
+	NewEffect->GetTransform()->SetLocalScale(float4(300, 300, 100));
+
+	NewEffect->RectInit("Effect_2D");
+	NewEffect->SetTexture("DiffuseTexture", "Effect_Texture_03.tga");
+	NewEffect->SetDistortionTexture();
 
 	//CreateActor<ShaderTestActor>()->GetTransform()->SetLocalPosition(float4(0, 200, 0));
 

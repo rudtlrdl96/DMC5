@@ -19,23 +19,28 @@ OutPut DistortionEffect_VS(Input _Value)
 	return OutPutValue;
 }
     
-cbuffer ColorEffectBuffer : register(b0)
-{
-	float4 ColorStart;
-	float4 ColorEnd;
-	float4 ColorTime;
-}
-
 Texture2D DiffuseTex : register(t0);
+Texture2D MaskTex : register(t1);
 SamplerState WRAPSAMPLER : register(s0);
+
+cbuffer DistortionOption : register(b2)
+{
+    float4 ScreenSize;
+    float4 DistortionValue;
+};
 
 float4 DistortionEffect_PS(OutPut _Value) : SV_Target0
 {
-	float4 ResultColor = DiffuseTex.Sample(WRAPSAMPLER, _Value.UV.xy);
-    
-	float CurA = ResultColor.a;
-	ResultColor += lerp(ColorStart, ColorEnd, ColorTime);
-	ResultColor.a = CurA;
-
+    float2 UV = _Value.UV.xy;
+    float4 MaskColor = MaskTex.Sample(WRAPSAMPLER, UV);
+	
+    if (0 != MaskColor.a)
+    {
+        UV.x += sin(MaskColor.a) / ScreenSize.x * DistortionValue.x;
+        UV.y += cos(MaskColor.a) / ScreenSize.y * DistortionValue.y;
+    }
+	
+    float4 ResultColor = DiffuseTex.Sample(WRAPSAMPLER, UV);
+    	
 	return ResultColor;
 }

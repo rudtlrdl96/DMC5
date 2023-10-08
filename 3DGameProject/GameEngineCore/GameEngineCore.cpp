@@ -128,8 +128,8 @@ void GameEngineCore::EngineUpdate()
 
 		if (nullptr != MainLevel)
 		{
-			MainLevel->LevelChangeEnd();
 			MainLevel->ActorLevelChangeEnd();
+			MainLevel->LevelChangeEnd();
 			MainLevel->PostProcessLevelChangeEnd();
 			MainLevel->RenderTargetTextureRelease();
 		}
@@ -140,10 +140,10 @@ void GameEngineCore::EngineUpdate()
 		{
 			CurLoadLevel = MainLevel;
 			MainLevel->RenderTargetTextureCreate();
+			MainLevel->PostProcessLevelChangeStart();
 			GameEnginePhysics::ChangeScene(MainLevel->GetName());
  			MainLevel->LevelChangeStart();
 			MainLevel->ActorLevelChangeStart();
-			MainLevel->PostProcessLevelChangeStart();
 		}
 
 		NextLevel = nullptr;

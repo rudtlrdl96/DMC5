@@ -73,28 +73,19 @@ Output MeshTexture_VS(Input _Input)
     NewOutPut.TEXCOORD.y = (VtxUV.y * FrameScale.y) + FramePos.y;
     
     NewOutPut.ClipUV = _Input.TEXCOORD.xy;
-    //NewOutPut.WORLDPOSITION = mul(InputPos, WorldMatrix);
-    //NewOutPut.VIEWPOSITION = mul(InputPos, WorldView);
     
-    //_Input.NORMAL.w = 0.0f;
-    //NewOutPut.NORMAL = mul(_Input.NORMAL, WorldView);    
-    //_Input.TANGENT.w = 0.0f;
-    //NewOutPut.TANGENT = mul(_Input.TANGENT, WorldView);    
-    //_Input.BINORMAL.w = 0.0f;
-    //NewOutPut.BINORMAL = mul(_Input.BINORMAL, WorldView);
-
     return NewOutPut;
 }
 
-Texture2D DiffuseTexture : register(t0); // ALBM
-//Texture2D NormalTexture : register(t1); // NRMR
-//Texture2D SpecularTexture : register(t2); // ATOS
+Texture2D DiffuseTexture : register(t0);
+Texture2D MaskTexture : register(t1); // DistortionTexture
 
 SamplerState ENGINEBASE : register(s0);
 
 struct AlphaOutPut
 {
     float4 ResultColor : SV_Target0;
+    float4 DistortionColor : SV_Target1;
 };
 
 cbuffer EffectData : register(b2)
@@ -107,6 +98,11 @@ cbuffer EffectData : register(b2)
     float UVY;    
     float4 EffectMulColor;
     float4 EffectPlusColor;
+};
+
+cbuffer DistortionData : register(b3)
+{
+    float4 IsDistortion;
 };
 
 AlphaOutPut MeshTexture_PS(Output _Input)
@@ -129,6 +125,16 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     }
         
     Result.ResultColor = DiffuseTexture.Sample(ENGINEBASE, UV);
+    
+    if (0 == IsDistortion.x)
+    {
+        Result.DistortionColor = (float4)0;
+    }
+    else
+    {
+        Result.DistortionColor = MaskTexture.Sample(ENGINEBASE, UV);
+    }
+    
         
     Result.ResultColor *= EffectMulColor;
     Result.ResultColor += EffectPlusColor;

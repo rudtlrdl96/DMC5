@@ -181,6 +181,7 @@ void GameEngineCamera::RenderTargetTextureLoad()
 	}
 
 	CamAlphaTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	CamAlphaTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 	CamAlphaTarget->SetDepthTexture(CamTarget->GetDepthTexture());
 
 	IsLoad = true;

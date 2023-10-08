@@ -9,6 +9,26 @@ EffectRenderer::~EffectRenderer()
 {
 }
 
+void EffectRenderer::SetDistortionTexture(const std::string_view& _TextureName)
+{
+	for (size_t i = 0; i < Unit.size(); i++)
+	{
+		for (size_t j = 0; j < Unit[i].size(); j++)
+		{
+			if ("" == _TextureName)
+			{
+				Unit[i][j]->ShaderResHelper.SetTexture("MaskTexture", Unit[i][j]->ShaderResHelper.GetTextureSetter("DiffuseTexture")->Res->GetName());
+			}
+			else
+			{
+				Unit[i][j]->ShaderResHelper.SetTexture("MaskTexture", _TextureName);
+			}
+		}
+	}
+
+	DistortionOption.IsDistortion = float4(1, 0, 0, 0);
+}
+
 void EffectRenderer::SetSprite(const std::string_view& _SpriteName, size_t _Frame)
 {
 	Sprite = GameEngineSprite::Find(_SpriteName);
@@ -304,6 +324,7 @@ void EffectRenderer::CustomOptionSetting()
 		{
 			Unit[i][j]->ShaderResHelper.SetConstantBufferLink("EffectData", EffectOption);
 			Unit[i][j]->ShaderResHelper.SetConstantBufferLink("EffectVertextData", VertexOption);
+			Unit[i][j]->ShaderResHelper.SetConstantBufferLink("DistortionData", DistortionOption);
 		}
 	}
 }

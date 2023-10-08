@@ -280,6 +280,16 @@ void ContentsCore::ContentsResourcesCreate()
 		Pipe->SetDepthState("EngineDepth");
 	}
 
+	{
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("Distortion");
+
+		Pipe->SetVertexShader("DistortionEffectShader.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("DistortionEffectShader.hlsl");
+		Pipe->SetBlendState("MergeBlend");
+		Pipe->SetDepthState("EngineDepth");
+	}
+
 	// FBX
 	{
 		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("FBX");

@@ -53,6 +53,12 @@ public:
 	}
 };
 
+class DistortionData
+{
+public:
+	float4 IsDistortion = float4::ZERONULL;
+};
+
 // 설명 : 해당 랜더러는 Effect 전용 렌더러 입니다 Effect_2D 또는 Effect_3D 머티리얼을 사용해야 합니다.
 class EffectRenderer : public GameEngineFBXRenderer
 {
@@ -137,6 +143,8 @@ public:
 		return ScaleRatio;
 	}
 
+	void SetDistortionTexture(const std::string_view& _TextureName = "");
+
 	void SetSprite(const std::string_view& _SpriteName, size_t _Frame = 0);
 	void SetFrame(size_t _Frame);
 
@@ -178,6 +186,7 @@ protected:
 
 private:
 	EffectVertextData VertexOption = EffectVertextData();
+	DistortionData DistortionOption = DistortionData();
 
 	std::map<std::string, std::shared_ptr<AnimationInfo>> Animations;
 	std::shared_ptr<AnimationInfo> CurAnimation;
