@@ -455,6 +455,9 @@
     <ClInclude Include="DistortionEffect.h">
       <Filter>PostEffect</Filter>
     </ClInclude>
+    <ClInclude Include="RankUI.h">
+      <Filter>UI\UI_Actor\PlayUI\RankUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -899,6 +902,9 @@
     <ClCompile Include="DistortionEffect.cpp">
       <Filter>PostEffect</Filter>
     </ClCompile>
+    <ClCompile Include="RankUI.cpp">
+      <Filter>UI\UI_Actor\PlayUI\RankUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
@@ -1173,6 +1179,9 @@
     </Filter>
     <Filter Include="Server\04.Poolable">
       <UniqueIdentifier>{b00816ea-3aa6-4d6b-ac61-f3a1151dd372}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\PlayUI\RankUI">
+      <UniqueIdentifier>{8a97f163-1d84-4c77-913b-2e1de7481972}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
