@@ -7,6 +7,16 @@ enum RankState
 	Spin_RankD,
 	Appear_RankC,
 	Spin_RankC,
+	Appear_RankB,
+	Spin_RankB,
+	Appear_RankA,
+	Spin_RankA,
+	Appear_RankS,
+	Spin_RankS,
+	Appear_RankSS,
+	Spin_RankSS,
+	Appear_RankSSS,
+	Spin_RankSSS,
 };
 class RankUI :public UIFBXActorBase
 {
@@ -32,7 +42,18 @@ private:
 	std::shared_ptr<class UIFBXRenderer> RankD_Inside = nullptr;
 	std::shared_ptr<class UIFBXRenderer> RankC_Frame = nullptr;
 	std::shared_ptr<class UIFBXRenderer> RankC_Inside = nullptr;
+	std::shared_ptr<class UIFBXRenderer> RankB_Frame = nullptr;
+	std::shared_ptr<class UIFBXRenderer> RankB_Inside = nullptr;
+	std::shared_ptr<class UIFBXRenderer> RankA_Frame = nullptr;
+	std::shared_ptr<class UIFBXRenderer> RankA_Inside = nullptr;
+	std::shared_ptr<class UIFBXRenderer> RankS_Frame = nullptr;
+	std::shared_ptr<class UIFBXRenderer> RankS_Inside = nullptr;
+	std::shared_ptr<class UIFBXRenderer> RankSS_Frame = nullptr;
+	std::shared_ptr<class UIFBXRenderer> RankSS_Inside = nullptr;
+	std::shared_ptr<class UIFBXRenderer> RankSSS_Frame = nullptr;
+	std::shared_ptr<class UIFBXRenderer> RankSSS_Inside = nullptr;
 	float Ratio = 0.0f;
+
 	
 	bool CreateRank = false;
 	bool ShakeRank = false;
@@ -48,9 +69,14 @@ private:
 	
 	void StateInit_RankD();
 	void StateInit_RankC();
+	void StateInit_RankB();
+	void StateInit_RankA();
+	void StateInit_RankS();
+	void StateInit_RankSS();
+	void StateInit_RankSSS();
 
 
 	//fsm Å×½ºÆ®
-	bool FullGauge = false;
+	int TestRankGauge = 0;
 };
 

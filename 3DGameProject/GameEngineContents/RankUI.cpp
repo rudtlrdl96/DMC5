@@ -17,14 +17,36 @@ RankUI::~RankUI()
 */
 void RankUI::Start()
 {
-	RankD_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 8.0f,8.0f,8.0f }, { -89.0f,0.0f,0.0f }, "RankDFrame.FBX");
+	RankD_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 9.0f,9.0f,9.0f }, { -89.0f,0.0f,0.0f }, "RankDFrame.FBX");
 //	RankD_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankDInside.FBX");
 	RankD_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankC_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 8.0f,8.0f,8.0f }, { -89.0f,0.0f,0.0f }, "RankCFrame.FBX");
+	RankC_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 9.0f,9.0f,9.0f }, { -89.0f,0.0f,0.0f }, "RankCFrame.FBX");
 	//RankC_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankDInside.FBX");
 	RankC_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
+	RankB_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 9.0f,9.0f,9.0f }, { -89.0f,0.0f,0.0f }, "RankBFrame.FBX");
+	//RankB_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankDInside.FBX");
+	RankB_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
+	RankA_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 9.0f,9.0f,9.0f }, { -89.0f,0.0f,0.0f }, "RankAFrame.FBX");
+	//RankA_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankDInside.FBX");
+	RankA_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
+	RankS_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 9.0f,9.0f,9.0f }, { -89.0f,0.0f,0.0f }, "RankSFrame.FBX");
+	//RankS_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankDInside.FBX");
+	RankS_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
+	RankSS_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 9.0f,9.0f,9.0f }, { -89.0f,0.0f,0.0f }, "RankSSFrame.FBX");
+	//RankSS_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankDInside.FBX");
+	RankSS_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
+	RankSSS_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 9.0f,9.0f,9.0f }, { -89.0f,0.0f,0.0f }, "RankSSSFrame.FBX");
+	//RankSSS_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankDInside.FBX");
+	RankSSS_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
+
 	StateInit_RankD();
 	StateInit_RankC();
+	StateInit_RankB();
+	StateInit_RankA();
+	StateInit_RankS();
+	StateInit_RankSS();
+	StateInit_RankSSS();
+
 	RankFSM.ChangeState(RankState::Appear_RankD);
 
 }
@@ -34,7 +56,7 @@ void RankUI::Update(float _DeltaTime)
 	RankFSM.Update(_DeltaTime);
 	if (true == GameEngineInput::IsUp("UIDEBUGMODE"))
 	{
-		FullGauge = true;
+		TestRankGauge += 100;
 	}
 
 }
@@ -125,15 +147,16 @@ void RankUI::RankOut(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render)
 	Ratio += _Delta;
 	if (OutRank == false)
 	{
-		_Render->GetTransform()->SetLocalPosition(float4::LerpClamp({ 660.0f,90.0f,0.0f,-150.0f }, { 1060.0f,90.0f,0.0f,-150.0f }, Ratio * 0.5f));
+		_Render->GetTransform()->SetLocalPosition(float4::LerpClamp({ 660.0f,90.0f,0.0f,-150.0f }, { 1060.0f,90.0f,0.0f,-150.0f }, Ratio * 1.0f));
 	}
 	if (_Render->GetTransform()->GetLocalPosition().x == 1060.0f)
 	{
 		//다시 기본값으로 셋팅
 		_Render->GetTransform()->SetLocalPosition({ {  1060.0f, 90.0f, 0.0f, -150.0f } });
 		_Render->GetTransform()->SetLocalRotation({ -90.0f,0.0f,0.0f });
-		_Render->GetTransform()->SetLocalScale({ 8.0f,8.0f,8.0f });
+		_Render->GetTransform()->SetLocalScale({ 9.0f,9.0f,9.0f });
 		OutRank = true;
+		Ratio = 0.0f;
 	}
 	if (Ratio + 0.5f <= 1.0f)
 	{
