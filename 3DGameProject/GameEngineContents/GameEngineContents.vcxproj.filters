@@ -905,6 +905,9 @@
     <ClCompile Include="RankUI.cpp">
       <Filter>UI\UI_Actor\PlayUI\RankUI</Filter>
     </ClCompile>
+    <ClCompile Include="RankUI_State.cpp">
+      <Filter>UI\UI_Actor\PlayUI\RankUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">

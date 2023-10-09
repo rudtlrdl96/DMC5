@@ -1,7 +1,10 @@
 #include "PrecompileHeader.h"
 #include "RankUI.h"
 #include "UIFBXRenderer.h"
-
+enum RankState
+{
+	
+};
 RankUI::RankUI() 
 {
 }
@@ -24,11 +27,12 @@ void RankUI::Start()
 
 void RankUI::Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsUp("UIDEBUGMODE"))
-	{
-		CreateRank = true;
-	}
-	TestMove(_DeltaTime);
+	//if (true == GameEngineInput::IsUp("UIDEBUGMODE"))
+	//{
+	//	CreateRank = true;
+	//}
+	//TestMove(_DeltaTime);
+	//OutMove(_DeltaTime);
 }
 
 void RankUI::TestMove(float _Delta)
@@ -88,6 +92,7 @@ void RankUI::TestMove(float _Delta)
 			{
 				TurnValue = true;
 				Ratio = 0.0f;
+				OutRank = true;
 				TurnIndex++;
 			}
 		}
@@ -112,6 +117,25 @@ void RankUI::TestMove(float _Delta)
 
 
 	}
+
+}
+
+void RankUI::OutMove(float _Delta)
+{
+	if (OutRank == true)
+	{
+		Ratio += _Delta;
+		RankD_Frame->GetTransform()->SetLocalPosition(float4::LerpClamp({ 660.0f,90.0f,0.0f,-150.0f }, { 1060.0f,90.0f,0.0f,-150.0f }, Ratio * 2.0f));
+		if (RankD_Frame->GetTransform()->GetLocalPosition() == float4{ 1060.0f, 90.0f, 0.0f, -150.0f })
+		{
+			//다시 기본값으로 셋팅
+			RankD_Frame->GetTransform()->SetLocalPosition({ { 660.0f,90.0f,0.0f,-150.0f } });
+			RankD_Frame->GetTransform()->SetLocalRotation({ -90.0f,0.0f,0.0f });
+			RankD_Frame->GetTransform()->SetLocalScale({ 8.0f,8.0f,8.0f });
+			int a = 0;
+		}
+	}
+
 
 }
 

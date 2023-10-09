@@ -802,6 +802,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="RankUI_State.cpp" />
     <ClCompile Include="ReflectionSetter.cpp" />
     <ClCompile Include="TestEventZone.cpp">
       <SubType>

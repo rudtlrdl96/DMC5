@@ -1,6 +1,7 @@
 #pragma once
 #include "UIFBXActorBase.h"
-// Ό³Έν :
+#include <GameEngineCore/GameEngineFSM.h>
+
 class RankUI :public UIFBXActorBase
 {
 public:
@@ -19,6 +20,7 @@ protected:
 	void Update(float _DeltaTime) override;
 private:
 	void TestMove(float _Delta);
+	void OutMove(float _Delta);
 	std::shared_ptr<class UIFBXRenderer> RankD_Frame = nullptr;
 	std::shared_ptr<class UIFBXRenderer> RankD_Inside = nullptr;
 	float Ratio = 0.0f;
@@ -29,5 +31,12 @@ private:
 
 	bool TurnValue = false;
 	int TurnIndex = 0;
+
+	bool OutRank = false;
+
+	//fsm
+	GameEngineFSM RankRSM = GameEngineFSM();
+
+	void StateInit_RankD();
 };
 
