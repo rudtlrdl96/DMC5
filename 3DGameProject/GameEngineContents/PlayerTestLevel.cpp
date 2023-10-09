@@ -77,7 +77,7 @@ void PlayerTestLevel::LevelChangeStart()
 	GameEngineCoreWindow::AddDebugRenderTarget(5, "Bake Shadow", GetLevel()->GetDirectionalLight()->GetBakeTarget(0));
 	GameEngineCoreWindow::AddDebugRenderTarget(6, "Last Shadow", GetLevel()->GetDirectionalLight()->GetShadowTarget());
 
-	if (false)
+	if (true)
 	{
 		Nero = CreateActor<PlayerActor_Nero>();
 		Nero->SetUserControllType();
@@ -94,6 +94,7 @@ void PlayerTestLevel::LevelChangeStart()
 	{
 		Light = CreatePointLight(float4(0, 50, 0), ShadowTextureScale::S_512, 1000);
 		Flat = CreateActor<Plane>();
+		GameEngineGUI::GUIWindowCreate<PlayerWindow>("PlayerWindow");
 	}
 }
 

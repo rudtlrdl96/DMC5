@@ -1,6 +1,6 @@
 #include "PrecompileHeader.h"
+#include <GameEngineBase/GameEngineRandom.h>
 #include "PlayerCamera.h"
-
 PlayerCamera::PlayerCamera()
 {
 	SetName("PlayerCamera");
@@ -8,6 +8,22 @@ PlayerCamera::PlayerCamera()
 
 PlayerCamera::~PlayerCamera()
 {
+}
+
+static bool IsShake = false;
+static float ShakePower = 0.0f;
+static float ShakeTimer = 0.0f;
+static float ShakeTime = 0.0f;
+static float ShakeFadeIn = 0.0f;
+static float ShakeFadeOut = 0.0f;
+void PlayerCamera::Shake(float _Power, float _Time, float _FadeIn, float _FadeOut)
+{
+	IsShake = true;
+	ShakePower = _Power;
+	ShakeTimer = 0;
+	ShakeTime = _Time;
+	ShakeFadeIn = _FadeIn;
+	ShakeFadeOut = _FadeOut;
 }
 
 void PlayerCamera::Start()
@@ -49,6 +65,8 @@ void PlayerCamera::Update(float _DeltaTime)
 	// 카메라 이동
 	CameraTransform->SetWorldPosition(CameraTargetPos);
 	CameraTransform->SetWorldRotation(CameraTarget->GetWorldRotation());
+
+	ShakeUpdate(_DeltaTime);
 }
 
 void PlayerCamera::CameraControll(float _DeltaTime)
@@ -171,5 +189,36 @@ void PlayerCamera::WallCheck()
 	{
 		CameraTargetPos = CameraTarget->GetWorldPosition();
 	}
+}
+
+void PlayerCamera::ShakeUpdate(float _DeltaTime)
+{
+	if (false == IsShake) { return; }
+
+	float Ratio = 1.0f;
+	ShakeTimer += _DeltaTime;
+
+	if (ShakeTime < ShakeTimer)
+	{
+		// 입력된 진동 지속시간이 지난 경우 리턴
+		IsShake = false;
+		return;
+	}
+	else if (ShakeTime - ShakeFadeOut < ShakeTimer)
+	{
+		// 페이드 아웃 시간일 떄
+		Ratio = (ShakeTime - ShakeTimer) / ShakeFadeOut;
+	}
+	else if (ShakeTimer < ShakeFadeIn)
+	{
+		// 페이드 인 시간일 때
+		Ratio = ShakeTimer / ShakeFadeIn;
+	}
+
+	float x = GameEngineRandom::MainRandom.RandomFloat(-1, 1) * ShakePower * Ratio;
+	float y = GameEngineRandom::MainRandom.RandomFloat(-1, 1) * ShakePower * Ratio;
+	float z = GameEngineRandom::MainRandom.RandomFloat(-1, 1) * ShakePower * Ratio;
+
+	CameraTransform->AddWorldPosition({ x, y, z });
 }
 

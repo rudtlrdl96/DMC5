@@ -14,6 +14,20 @@ public:
 	PlayerCamera& operator=(const PlayerCamera& _Other) = delete;
 	PlayerCamera& operator=(PlayerCamera&& _Other) noexcept = delete;
 
+	static void Shake(float _Power, float _Time, float _FadeIn = 0.0f, float _FadeOut = 0.0f);
+	static void ShakeLight()
+	{
+		Shake(2.5f, 0.3f, 0.0f, 0.2f);
+	}
+	static void ShakeMiddle()
+	{
+		Shake(3.0f, 0.4f, 0.1f, 0.2f);
+	}
+	static void ShakeHeavy()
+	{
+		Shake(5.0f, 0.8f, 0.1f, 0.5f);
+	}
+
 	void SetPlayerTranform(GameEngineTransform* _Transform)
 	{
 		PlayerTransform = _Transform;
@@ -33,8 +47,10 @@ protected:
 	void CameraControll(float _DeltaTime);
 	void TargetCheck(float _DeltaTime);
 	void WallCheck();
+	void ShakeUpdate(float _DeltaTime);
 	
 private:
+
 	GameEngineTransform* PlayerTransform = nullptr;
 	GameEngineTransform* TargetTransform = nullptr;
 	GameEngineTransform* CameraArm = nullptr;
@@ -61,5 +77,8 @@ private:
 	float FastTrackingSpeed = 20.0f;
 
 	bool IsMouseControll = false;
+
+
+
 };
 

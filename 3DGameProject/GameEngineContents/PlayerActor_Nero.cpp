@@ -13,6 +13,7 @@
 #include "NeroItemGlass.h"
 #include "NeroHPUI.h"
 #include "FXSystem.h"
+#include "PlayerCamera.h"
 std::list<DevilBreaker> PlayerActor_Nero::BreakerList;
 PlayerActor_Nero::~PlayerActor_Nero()
 {
@@ -176,6 +177,9 @@ void PlayerActor_Nero::PlayerLoad()
 				std::bind(&PlayerActor_Nero::SetDemon, this),
 				std::bind(&PlayerActor_Nero::DestroyBreaker, this),
 				std::bind(&PlayerActor_Nero::SetExActTiming, this), //13
+				std::bind(&PlayerCamera::ShakeLight),	//14
+				std::bind(&PlayerCamera::ShakeMiddle),	//15
+				std::bind(&PlayerCamera::ShakeHeavy),	//16
 			},
 			.CallBacks_int = {
 				std::bind(&PlayerActor_Nero::ChangeState, this, std::placeholders::_1),
