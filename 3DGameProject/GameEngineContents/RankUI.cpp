@@ -26,15 +26,15 @@ void RankUI::Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsUp("UIDEBUGMODE"))
 	{
-		TestValue = true;
+		CreateRank = true;
 	}
 	TestMove(_DeltaTime);
 }
 
 void RankUI::TestMove(float _Delta)
 {
-	//FSM UPDATE
-	if (TestValue == true)
+	//FSM 등장하기
+	if (CreateRank == true)
 	{
 		Ratio += _Delta;
 		RankD_Frame->GetTransform()->SetLocalPosition(
@@ -47,12 +47,13 @@ void RankUI::TestMove(float _Delta)
 		}
 		if (RankD_Frame->GetTransform()->GetLocalPosition() == float4{ 660.0f, 90.0f, 0.0f, -150.0f })
 		{
-			TestValue = false;
+			CreateRank = false;
 			//CHANGE STATE
-			TestValue1 = true;
+			ShakeRank = true;
 		}
 	}
-	if (TestValue1 == true)
+	//FSM 흔들기
+	if (ShakeRank == true)
 	{
 		Ratio += _Delta;
 		if (Ratio < 0.6f)
@@ -62,15 +63,55 @@ void RankUI::TestMove(float _Delta)
 		else
 		{
 			RankD_Frame->GetTransform()->SetLocalPosition({ 660.0f,90.0f,0.0f,-150.0f });
+			ShakeRank = false;
+			TurnRank = true;
+			Ratio = 0.0f;
 		}
 		//Inside도 같이 돌리기
-		//if (RankD_Frame->GetTransform()->GetLocalRotation().z < 30.0f)
-		//{
-		//	RankD_Frame->GetTransform()->SetLocalRotation(float4::LerpClamp({ -90.0f,0.0f,0.0f }, { -90.0f,0.0f,30.0f }, Ratio * 0.2f));
-		//}
+		
 
 	}
+	if (TurnRank == true)
+	{
+		if (TurnValue == false)
+		{
+			Ratio += _Delta;
+			if (TurnIndex % 2 == 0)
+			{
+				RankD_Frame->GetTransform()->SetLocalRotation(float4::LerpClamp({ -90.0f,0.0f,0.0f }, { -90.0f,0.0f,30.0f }, Ratio * 0.2f));
+			}
+			else
+			{
+				RankD_Frame->GetTransform()->SetLocalRotation(float4::LerpClamp({ -90.0f,0.0f,0.0f }, { -90.0f,0.0f,-30.0f }, Ratio * 0.2f));
+			}
+			if (Ratio>5.0f)
+			{
+				TurnValue = true;
+				Ratio = 0.0f;
+				TurnIndex++;
+			}
+		}
+		else
+		{
+			Ratio += _Delta;
+			if (TurnIndex % 2 == 0)
+			{
+				RankD_Frame->GetTransform()->SetLocalRotation(float4::LerpClamp({ -90.0f,0.0f,-30.0f }, { -90.0f,0.0f,0.0f }, Ratio * 0.2f));
+			}
+			else
+			{
+				RankD_Frame->GetTransform()->SetLocalRotation(float4::LerpClamp({ -90.0f,0.0f,30.0f }, { -90.0f,0.0f,0.0f }, Ratio * 0.2f));
+			}
+			if (Ratio > 5.0f)
+			{
+				TurnValue = false;
+				Ratio = 0.0f;
+			}
+		}
 	
+
+
+	}
 
 }
 

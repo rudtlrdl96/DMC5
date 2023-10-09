@@ -23,8 +23,11 @@ private:
 	std::shared_ptr<class UIFBXRenderer> RankD_Inside = nullptr;
 	float Ratio = 0.0f;
 	
-	bool TestValue = false;
-	bool TestValue1 = false;
+	bool CreateRank = false;
+	bool ShakeRank = false;
+	bool TurnRank = false;
 
+	bool TurnValue = false;
+	int TurnIndex = 0;
 };
 
