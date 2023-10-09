@@ -1,7 +1,13 @@
 #pragma once
 #include "UIFBXActorBase.h"
 #include <GameEngineCore/GameEngineFSM.h>
-
+enum RankState
+{
+	Appear_RankD,
+	Spin_RankD,
+	Appear_RankC,
+	Spin_RankC,
+};
 class RankUI :public UIFBXActorBase
 {
 public:
@@ -19,10 +25,13 @@ protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 private:
-	void TestMove(float _Delta);
-	void OutMove(float _Delta);
+	void RankSpin(float _Delta , std::shared_ptr<class UIFBXRenderer> _Render);
+	void RankApper(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render , RankState _State, bool _Value, std::shared_ptr<class UIFBXRenderer> _PrevRender);
+	void RankOut(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render);
 	std::shared_ptr<class UIFBXRenderer> RankD_Frame = nullptr;
 	std::shared_ptr<class UIFBXRenderer> RankD_Inside = nullptr;
+	std::shared_ptr<class UIFBXRenderer> RankC_Frame = nullptr;
+	std::shared_ptr<class UIFBXRenderer> RankC_Inside = nullptr;
 	float Ratio = 0.0f;
 	
 	bool CreateRank = false;
@@ -35,8 +44,13 @@ private:
 	bool OutRank = false;
 
 	//fsm
-	GameEngineFSM RankRSM = GameEngineFSM();
-
+	GameEngineFSM RankFSM = GameEngineFSM();
+	
 	void StateInit_RankD();
+	void StateInit_RankC();
+
+
+	//fsm Å×½ºÆ®
+	bool FullGauge = false;
 };
 

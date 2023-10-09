@@ -1,10 +1,7 @@
 #include "PrecompileHeader.h"
 #include "RankUI.h"
 #include "UIFBXRenderer.h"
-enum RankState
-{
-	
-};
+
 RankUI::RankUI() 
 {
 }
@@ -23,119 +20,127 @@ void RankUI::Start()
 	RankD_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 8.0f,8.0f,8.0f }, { -89.0f,0.0f,0.0f }, "RankDFrame.FBX");
 //	RankD_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankDInside.FBX");
 	RankD_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
+	RankC_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 8.0f,8.0f,8.0f }, { -89.0f,0.0f,0.0f }, "RankCFrame.FBX");
+	//RankC_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankDInside.FBX");
+	RankC_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
+	StateInit_RankD();
+	StateInit_RankC();
+	RankFSM.ChangeState(RankState::Appear_RankD);
+
 }
 
 void RankUI::Update(float _DeltaTime)
 {
-	//if (true == GameEngineInput::IsUp("UIDEBUGMODE"))
-	//{
-	//	CreateRank = true;
-	//}
-	//TestMove(_DeltaTime);
-	//OutMove(_DeltaTime);
-}
+	RankFSM.Update(_DeltaTime);
+	if (true == GameEngineInput::IsUp("UIDEBUGMODE"))
+	{
+		FullGauge = true;
+	}
 
-void RankUI::TestMove(float _Delta)
+}
+void RankUI::RankSpin(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render)
 {
-	//FSM 등장하기
-	if (CreateRank == true)
+	if (TurnValue == false)
 	{
 		Ratio += _Delta;
-		RankD_Frame->GetTransform()->SetLocalPosition(
-			float4::LerpClamp({ 580.0f,80.0f,0.0f,-150.0f }, { 660.0f,90.0f,0.0f,-150.0f }, Ratio*3.0f));
-		RankD_Frame->GetTransform()->SetLocalScale(
-			float4::LerpClamp({ 9.0f,9.0f,9.0f }, { 5.0f,5.0f,5.0f }, Ratio * 3.0f));
-		if (Ratio+0.5f <= 1.0f)
+		if (TurnIndex % 2 == 0)
 		{
-			RankD_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, Ratio+0.5f));
+			_Render->GetTransform()->SetLocalRotation(float4::LerpClamp({ -90.0f,0.0f,0.0f }, { -90.0f,0.0f,30.0f }, Ratio * 0.2f));
 		}
-		if (RankD_Frame->GetTransform()->GetLocalPosition() == float4{ 660.0f, 90.0f, 0.0f, -150.0f })
+		else
 		{
-			CreateRank = false;
-			//CHANGE STATE
-			ShakeRank = true;
+			_Render->GetTransform()->SetLocalRotation(float4::LerpClamp({ -90.0f,0.0f,0.0f }, { -90.0f,0.0f,-30.0f }, Ratio * 0.2f));
+		}
+		if (Ratio > 5.0f)
+		{
+			TurnValue = true;
+			Ratio = 0.0f;
+			TurnIndex++;
 		}
 	}
-	//FSM 흔들기
+	else
+	{
+		Ratio += _Delta;
+		if (TurnIndex % 2 == 0)
+		{
+			_Render->GetTransform()->SetLocalRotation(float4::LerpClamp({ -90.0f,0.0f,-30.0f }, { -90.0f,0.0f,0.0f }, Ratio * 0.2f));
+		}
+		else
+		{
+			_Render->GetTransform()->SetLocalRotation(float4::LerpClamp({ -90.0f,0.0f,30.0f }, { -90.0f,0.0f,0.0f }, Ratio * 0.2f));
+		}
+		if (Ratio > 5.0f)
+		{
+			TurnValue = false;
+			Ratio = 0.0f;
+		}
+	}
+}
+
+void RankUI::RankApper(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render, RankState _State, bool _Value, std::shared_ptr<class UIFBXRenderer> _PrevRender)
+{
+	Ratio += _Delta;
+	//등장하기
+	if (ShakeRank == false)
+	{
+		_Render->GetTransform()->SetLocalPosition(
+			float4::LerpClamp({ 580.0f,80.0f,0.0f,-150.0f }, { 660.0f,90.0f,0.0f,-150.0f }, Ratio * 3.0f));
+		_Render->GetTransform()->SetLocalScale(
+			float4::LerpClamp({ 9.0f,9.0f,9.0f }, { 5.0f,5.0f,5.0f }, Ratio * 3.0f));
+	}
+	//alpha값 줄이기
+	if (Ratio + 0.5f <= 1.0f)
+	{
+		_Render->SetMulColor(float4(1.0f, 1.0f, 1.0f, Ratio + 0.5f));
+	}
+	if (_Render->GetTransform()->GetLocalPosition() == float4{ 660.0f, 90.0f, 0.0f, -150.0f })
+	{
+		ShakeRank = true;
+		Ratio = 0.0f;
+	}
 	if (ShakeRank == true)
 	{
 		Ratio += _Delta;
 		if (Ratio < 0.6f)
 		{
-			UIFBXActorBase::ShakeUIRender(RankD_Frame, float4(400.f, 400.f, 0.0f), _Delta);
+			//만약에 이전 랭크가 있다면
+			if (_Value == true)
+			{
+				RankOut(_Delta, _PrevRender);
+			}
+			UIFBXActorBase::ShakeUIRender(_Render, float4(400.f, 400.f, 0.0f), _Delta);
 		}
 		else
 		{
-			RankD_Frame->GetTransform()->SetLocalPosition({ 660.0f,90.0f,0.0f,-150.0f });
+			_Render->GetTransform()->SetLocalPosition({ 660.0f,90.0f,0.0f,-150.0f });
 			ShakeRank = false;
-			TurnRank = true;
+			RankFSM.ChangeState(_State);
 			Ratio = 0.0f;
 		}
-		//Inside도 같이 돌리기
-		
-
 	}
-	if (TurnRank == true)
-	{
-		if (TurnValue == false)
-		{
-			Ratio += _Delta;
-			if (TurnIndex % 2 == 0)
-			{
-				RankD_Frame->GetTransform()->SetLocalRotation(float4::LerpClamp({ -90.0f,0.0f,0.0f }, { -90.0f,0.0f,30.0f }, Ratio * 0.2f));
-			}
-			else
-			{
-				RankD_Frame->GetTransform()->SetLocalRotation(float4::LerpClamp({ -90.0f,0.0f,0.0f }, { -90.0f,0.0f,-30.0f }, Ratio * 0.2f));
-			}
-			if (Ratio>5.0f)
-			{
-				TurnValue = true;
-				Ratio = 0.0f;
-				OutRank = true;
-				TurnIndex++;
-			}
-		}
-		else
-		{
-			Ratio += _Delta;
-			if (TurnIndex % 2 == 0)
-			{
-				RankD_Frame->GetTransform()->SetLocalRotation(float4::LerpClamp({ -90.0f,0.0f,-30.0f }, { -90.0f,0.0f,0.0f }, Ratio * 0.2f));
-			}
-			else
-			{
-				RankD_Frame->GetTransform()->SetLocalRotation(float4::LerpClamp({ -90.0f,0.0f,30.0f }, { -90.0f,0.0f,0.0f }, Ratio * 0.2f));
-			}
-			if (Ratio > 5.0f)
-			{
-				TurnValue = false;
-				Ratio = 0.0f;
-			}
-		}
-	
-
-
-	}
-
 }
 
-void RankUI::OutMove(float _Delta)
+void RankUI::RankOut(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render)
 {
-	if (OutRank == true)
+	Ratio += _Delta;
+	if (OutRank == false)
 	{
-		Ratio += _Delta;
-		RankD_Frame->GetTransform()->SetLocalPosition(float4::LerpClamp({ 660.0f,90.0f,0.0f,-150.0f }, { 1060.0f,90.0f,0.0f,-150.0f }, Ratio * 2.0f));
-		if (RankD_Frame->GetTransform()->GetLocalPosition() == float4{ 1060.0f, 90.0f, 0.0f, -150.0f })
-		{
-			//다시 기본값으로 셋팅
-			RankD_Frame->GetTransform()->SetLocalPosition({ { 660.0f,90.0f,0.0f,-150.0f } });
-			RankD_Frame->GetTransform()->SetLocalRotation({ -90.0f,0.0f,0.0f });
-			RankD_Frame->GetTransform()->SetLocalScale({ 8.0f,8.0f,8.0f });
-			int a = 0;
-		}
+		_Render->GetTransform()->SetLocalPosition(float4::LerpClamp({ 660.0f,90.0f,0.0f,-150.0f }, { 1060.0f,90.0f,0.0f,-150.0f }, Ratio * 0.5f));
+	}
+	if (_Render->GetTransform()->GetLocalPosition().x == 1060.0f)
+	{
+		//다시 기본값으로 셋팅
+		_Render->GetTransform()->SetLocalPosition({ {  1060.0f, 90.0f, 0.0f, -150.0f } });
+		_Render->GetTransform()->SetLocalRotation({ -90.0f,0.0f,0.0f });
+		_Render->GetTransform()->SetLocalScale({ 8.0f,8.0f,8.0f });
+		OutRank = true;
+	}
+	if (Ratio + 0.5f <= 1.0f)
+	{
+		_Render->SetMulColor(float4(1.0f, 1.0f, 1.0f, 1- Ratio + 0.5f));
+
 	}
 
-
 }
+
 
