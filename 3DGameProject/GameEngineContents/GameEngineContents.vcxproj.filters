@@ -154,9 +154,6 @@
     <ClInclude Include="StageBaseLevel.h">
       <Filter>Levels\Stage\0.StageBase</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerTestLevel.h">
-      <Filter>Levels\Test</Filter>
-    </ClInclude>
     <ClInclude Include="AnimationToolLevel.h">
       <Filter>Levels\Test</Filter>
     </ClInclude>
@@ -201,9 +198,6 @@
     </ClInclude>
     <ClInclude Include="Char_ChoiceButton.h">
       <Filter>UI\UI_Actor\C_ChoiceUI</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyTestLevel.h">
-      <Filter>Levels\Test</Filter>
     </ClInclude>
     <ClInclude Include="MainMenuBG.h">
       <Filter>UI\UI_Actor\MenuUI</Filter>
@@ -255,9 +249,6 @@
     </ClInclude>
     <ClInclude Include="FXAA_Effect.h">
       <Filter>PostEffect</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterTestLevel.h">
-      <Filter>Levels\Test</Filter>
     </ClInclude>
     <ClInclude Include="PlayUITestLevel.h">
       <Filter>UI\UI_Level</Filter>
@@ -430,9 +421,6 @@
     <ClInclude Include="EffectToolWindow.h">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="PhysXTestLevel.h">
-      <Filter>Levels\Test</Filter>
-    </ClInclude>
     <ClInclude Include="ThreadLoadingLevel.h">
       <Filter>Levels</Filter>
     </ClInclude>
@@ -604,9 +592,6 @@
     <ClCompile Include="StageBaseLevel.cpp">
       <Filter>Levels\Stage\0.StageBase</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerTestLevel.cpp">
-      <Filter>Levels\Test</Filter>
-    </ClCompile>
     <ClCompile Include="AnimationToolLevel.cpp">
       <Filter>Levels\Test</Filter>
     </ClCompile>
@@ -651,9 +636,6 @@
     </ClCompile>
     <ClCompile Include="Char_ChoiceButton.cpp">
       <Filter>UI\UI_Actor\C_ChoiceUI</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyTestLevel.cpp">
-      <Filter>Levels\Test</Filter>
     </ClCompile>
     <ClCompile Include="MainMenuBG.cpp">
       <Filter>UI\UI_Actor\MenuUI</Filter>
@@ -705,9 +687,6 @@
     </ClCompile>
     <ClCompile Include="FXAA_Effect.cpp">
       <Filter>PostEffect</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterTestLevel.cpp">
-      <Filter>Levels\Test</Filter>
     </ClCompile>
     <ClCompile Include="PlayUITestLevel.cpp">
       <Filter>UI\UI_Level</Filter>
@@ -876,9 +855,6 @@
     </ClCompile>
     <ClCompile Include="EffectToolWindow.cpp">
       <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysXTestLevel.cpp">
-      <Filter>Levels\Test</Filter>
     </ClCompile>
     <ClCompile Include="ThreadLoadingLevel.cpp">
       <Filter>Levels</Filter>

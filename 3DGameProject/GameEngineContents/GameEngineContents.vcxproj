@@ -247,10 +247,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="PhysXTestLevel.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="Player_MirageBlade.h">
       <SubType>
       </SubType>
@@ -290,10 +286,6 @@
     </ClInclude>
     <ClInclude Include="ContentsEnum.h" />
     <ClInclude Include="C_ChoiceBG.h" />
-    <ClInclude Include="EnemyTestLevel.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="FieldMap.h" />
     <ClInclude Include="FreeCameraActor.h">
       <SubType>
@@ -343,10 +335,6 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Menu_VirgilInfo.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="MonsterTestLevel.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -534,10 +522,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="PlayerTestLevel.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="PlayerWindow.h">
       <SubType>
       </SubType>
@@ -553,10 +537,6 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="ShaderTestActor.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="ShaderTestLevel.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -751,10 +731,6 @@
     </ClCompile>
     <ClCompile Include="EffectToolLevel.cpp" />
     <ClCompile Include="EffectToolWindow.cpp" />
-    <ClCompile Include="EnemyTestLevel.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="EventZone.cpp">
       <SubType>
       </SubType>
@@ -779,10 +755,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="NetworkObjectBase.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="PhysXTestLevel.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -859,10 +831,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Menu_VirgilInfo.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="MonsterTestLevel.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -1040,10 +1008,6 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="PlayerTestLevel.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="PlayerWindow.cpp">
       <SubType>
       </SubType>
@@ -1064,10 +1028,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="ShaderTestActor.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="ShaderTestLevel.cpp">
       <SubType>
       </SubType>
     </ClCompile>

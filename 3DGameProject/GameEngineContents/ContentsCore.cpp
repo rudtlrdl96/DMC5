@@ -4,8 +4,6 @@
 #include <GameEngineCore/GameEngineCore.h>
 #include <GameEngineCore/GameEngineCoreWindow.h>
 
-#include "PlayerTestLevel.h"
-#include "ShaderTestLevel.h"
 #include "NetworkTestLevel.h"
 #include "ThreadLoadingLevel.h"
 
@@ -17,16 +15,12 @@
 #include "Char_ChoiceLevel.h"
 #include "MainMenuLevel.h"
 #include "ShopLevel.h"
-#include "PlayerTestLevel.h"
-#include "EnemyTestLevel.h"
 #include "PlayUITestLevel.h"
 //Map
 #include "TestStageLevel.h"
 #include "StageEditLevel.h"
-#include "MonsterTestLevel.h"
 #include "AnimationToolLevel.h"
 #include "EffectToolLevel.h"
-#include "PhysXTestLevel.h"
 
 std::vector<std::function<void()>> ContentsCore::GameEndCallBacks;
 
@@ -52,15 +46,10 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<TitleLevel>();
 	GameEngineCore::CreateLevel<Char_ChoiceLevel>();
 	GameEngineCore::CreateLevel<MainMenuLevel>();
-	GameEngineCore::CreateLevel<PlayerTestLevel>();
-	GameEngineCore::CreateLevel<EnemyTestLevel>();
 	GameEngineCore::CreateLevel<AnimationToolLevel>();
 	GameEngineCore::CreateLevel<TestStageLevel>();
-	GameEngineCore::CreateLevel<ShaderTestLevel>();
 	GameEngineCore::CreateLevel<NetworkTestLevel>();
-	GameEngineCore::CreateLevel<MonsterTestLevel>();
 	GameEngineCore::CreateLevel<PlayUITestLevel>();
-	GameEngineCore::CreateLevel<PhysXTestLevel>();
 	GameEngineCore::CreateLevel<ThreadLoadingLevel>();
 	////
 	GameEngineCore::CreateLevel<StageEditLevel>();
