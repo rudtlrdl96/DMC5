@@ -4,6 +4,7 @@
 #include "TestObj.h"
 #include "TestEventZone.h"
 #include "WallLight_On.h"
+#include "ReflectionSetter.h"
 
 FieldMapObject::FieldMapObject()
 {
@@ -28,8 +29,10 @@ std::shared_ptr<FieldMapObject> FieldMapObject::CreateFieldMapObj(GameEngineLeve
 	case FieldMapObjType::WallLight_On:
 		Result = _Level->CreateActor<WallLight_On>();
 		break;
-	case FieldMapObjType::Test1:
-		Result = _Level->CreateActor<TestEventZone>();
+	case FieldMapObjType::ReflectionSetter:
+		Result = _Level->CreateActor<ReflectionSetter>();
+		Result->GetTransform()->SetLocalPosition(_ObjTransform.Pos);
+		return Result;
 		break;
 	default:
 		MsgAssert("¹Ì±¸Çö");

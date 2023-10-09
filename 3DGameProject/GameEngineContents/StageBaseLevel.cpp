@@ -27,7 +27,7 @@ void StageBaseLevel::LoadAllStageData()
 	Dir.MoveParentToDirectory("ContentData");
 	Dir.Move("ContentData");
 	Dir.Move("StageData");
-	std::filesystem::path temp = Dir.GetPlusFileName("TestStage").GetFullPath();
+	std::filesystem::path temp = Dir.GetPlusFileName("Location2").GetFullPath();
 
 	GameEngineFile File(temp);
 	File.LoadBin(LoadSerializer);

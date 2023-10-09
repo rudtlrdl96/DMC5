@@ -409,9 +409,6 @@
     <ClInclude Include="Player_MirageBlade.h">
       <Filter>Actor\Player\Weapon</Filter>
     </ClInclude>
-    <ClInclude Include="ReflectionSetter.h">
-      <Filter>Actor\Stage\FieldMap</Filter>
-    </ClInclude>
     <ClInclude Include="TestEventZone.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
     </ClInclude>
@@ -457,6 +454,9 @@
     </ClInclude>
     <ClInclude Include="RankUI.h">
       <Filter>UI\UI_Actor\PlayUI\RankUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ReflectionSetter.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\FunctionObj</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -856,9 +856,6 @@
     <ClCompile Include="PlayerActor_Vergil_MirageBlade.cpp">
       <Filter>Actor\Player\Character</Filter>
     </ClCompile>
-    <ClCompile Include="ReflectionSetter.cpp">
-      <Filter>Actor\Stage\FieldMap</Filter>
-    </ClCompile>
     <ClCompile Include="EventZone.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
     </ClCompile>
@@ -907,6 +904,9 @@
     </ClCompile>
     <ClCompile Include="RankUI_State.cpp">
       <Filter>UI\UI_Actor\PlayUI\RankUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ReflectionSetter.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\FunctionObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1185,6 +1185,9 @@
     </Filter>
     <Filter Include="UI\UI_Actor\PlayUI\RankUI">
       <UniqueIdentifier>{8a97f163-1d84-4c77-913b-2e1de7481972}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Stage\FieldMap\FieldMapObj\FunctionObj">
+      <UniqueIdentifier>{398524c7-d8ae-4d50-a2b0-75dfcca4ab68}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

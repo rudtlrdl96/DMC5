@@ -2,7 +2,7 @@
 #include "FieldMapObject.h"
 #include "ReflectionProbe.h"
 
-class ReflectionSetter : public BaseStageActor
+class ReflectionSetter : public FieldMapObject
 {
 public:
 	// construtor destructor
@@ -42,6 +42,7 @@ protected:
 
 private:
 	std::shared_ptr<ReflectionProbe> Probe = nullptr;
+	
 
 };
 

@@ -75,13 +75,14 @@ std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, cons
 	for (size_t i = 0; i < FieldMapObjRef.size(); i++)
 	{
 		FieldMapObjRef[i] = FieldMapObject::CreateFieldMapObj(_Level, _FieldMapObjs[i].Type, _FieldMapObjs[i].ObjTransform);
-		FieldMapObjRef[i].lock()->Off();
-	}
-
-	if (!_Level->DynamicThis<StageBaseLevel>()->IsEditLevel)
-	{
-		Result->Reflection = _Level->CreateActor<ReflectionSetter>();
-		Result->Reflection.lock()->GetTransform()->SetLocalPosition(_CullingCols[0].Pos + float4{0,200,0,0});
+		if (_FieldMapObjs[i].Type == FieldMapObjType::ReflectionSetter)
+		{
+			Result->Reflection = FieldMapObjRef[i].lock()->DynamicThis<ReflectionSetter>();
+		}
+		else
+		{
+			FieldMapObjRef[i].lock()->Off();
+		}
 	}
 
 	return Result;
@@ -110,7 +111,7 @@ void FieldMap::ReflectionSetting()
 
 	if (Reflection.lock() == nullptr)
 	{
-		MsgAssert("Reflection Setter가 nullptr입니다");
+		//MsgAssert("Reflection Setter가 nullptr입니다");
 		return;
 	}
 
