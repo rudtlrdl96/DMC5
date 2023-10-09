@@ -19,11 +19,16 @@ protected:
 	void Start() override;
 	void Update(float _Delta) override;
 private:
+	std::shared_ptr<class UIFBXRenderer> BossHPUI_Base = nullptr;
 	std::shared_ptr<class GameEngineUIRenderer> BossHPUI_Front = nullptr;
 	std::shared_ptr<class GameEngineUIRenderer> BossHPUI_HIT = nullptr;
 	std::shared_ptr<class GameEngineUIRenderer> BossHPUI_Back = nullptr;
 	std::shared_ptr<class GameEngineUIRenderer> BossHpAni = nullptr;
 	std::shared_ptr<class UIFBXRenderer> BossFrontGaege = nullptr;
+	std::shared_ptr<class UIFBXRenderer> BossHitGauge = nullptr;
+
+
+
 
 };
 

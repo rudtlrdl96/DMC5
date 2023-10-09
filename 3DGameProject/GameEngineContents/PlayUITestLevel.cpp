@@ -30,6 +30,8 @@ void PlayUITestLevel::Start()
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("HPGaugeAni.png").GetFullPath(), 4, 4);
 			GameEngineTexture::Load(NewDir.GetPlusFileName("BossGaugeBase.png").GetFullPath()); 
 			GameEngineTexture::Load(NewDir.GetPlusFileName("BossHitGauge.png").GetFullPath());
+			GameEngineTexture::Load(NewDir.GetPlusFileName("123123123.png").GetFullPath());
+
 
 		}
 
