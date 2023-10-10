@@ -41,7 +41,7 @@ void RankUI::StateInit_RankD()
 				//이부분에 게이지 클립과 이펙트 효과 추가.
 				
 				//만약 게이지가 100을 넘는다면
-				if (FullGauge == true)
+				if (TestRankGauge >= 100)
 				{
 					RankFSM.ChangeState(RankState::Appear_RankC);
 				}
@@ -84,15 +84,230 @@ void RankUI::StateInit_RankC()
 			//이전 메쉬 내보내기
 			//랭크 돌리기.
 				RankSpin(_DeltaTime,RankC_Frame);
-			//만약 게이지가 100을 넘는다면
-			//if (FullGauge == true)
-			//{
-			//	RankFSM.ChangeState(RankState::Appear_RankC);
-			//}
+			if (TestRankGauge >= 200)
+			{
+				RankFSM.ChangeState(RankState::Appear_RankB);
+			}
 		},
 		.End = [=]
 		{
 
 		},
+		});
+}
+
+void RankUI::StateInit_RankB()
+{
+	RankFSM.CreateState({
+		.StateValue = RankState::Appear_RankB,
+		.Start = [this]()
+		{
+			OutRank = false;
+			Ratio = 0.0f;
+		},
+		.Update = [this](float _DeltaTime)
+		{
+			RankApper(_DeltaTime,RankB_Frame,RankState::Spin_RankB,true,RankC_Frame);
+		},
+		.End = [this]()
+		{
+
+		},
+		});
+	RankFSM.CreateState(
+		{
+			.StateValue = RankState::Spin_RankB,
+			.Start = [=]()
+			{
+				Ratio = 0.0f;
+				TurnValue = false;
+			},
+			.Update = [=](float _DeltaTime)
+			{
+			//이전 메쉬 내보내기
+			//랭크 돌리기.
+				RankSpin(_DeltaTime,RankB_Frame);
+				if (TestRankGauge >= 300)
+				{
+					RankFSM.ChangeState(RankState::Appear_RankA);
+				}
+			},
+			.End = [=]
+			{
+
+			},
+		});
+}
+
+void RankUI::StateInit_RankA()
+{
+	RankFSM.CreateState({
+	.StateValue = RankState::Appear_RankA,
+	.Start = [this]()
+	{
+		OutRank = false;
+		Ratio = 0.0f;
+	},
+	.Update = [this](float _DeltaTime)
+	{
+		RankApper(_DeltaTime,RankA_Frame,RankState::Spin_RankA,true,RankB_Frame);
+	},
+	.End = [this]()
+	{
+
+	},
+		});
+	RankFSM.CreateState(
+		{
+			.StateValue = RankState::Spin_RankA,
+			.Start = [=]()
+			{
+				Ratio = 0.0f;
+				TurnValue = false;
+			},
+			.Update = [=](float _DeltaTime)
+			{
+			//이전 메쉬 내보내기
+			//랭크 돌리기.
+				RankSpin(_DeltaTime,RankA_Frame);
+				if (TestRankGauge >= 400)
+				{
+					RankFSM.ChangeState(RankState::Appear_RankS);
+				}
+			},
+			.End = [=]
+			{
+
+			},
+		});
+}
+
+void RankUI::StateInit_RankS()
+{
+	RankFSM.CreateState({
+	.StateValue = RankState::Appear_RankS,
+	.Start = [this]()
+	{
+		OutRank = false;
+		Ratio = 0.0f;
+	},
+	.Update = [this](float _DeltaTime)
+	{
+		RankApper(_DeltaTime,RankS_Frame,RankState::Spin_RankS,true,RankA_Frame);
+	},
+	.End = [this]()
+	{
+
+	},
+		});
+	RankFSM.CreateState(
+		{
+			.StateValue = RankState::Spin_RankS,
+			.Start = [=]()
+			{
+				Ratio = 0.0f;
+				TurnValue = false;
+			},
+			.Update = [=](float _DeltaTime)
+			{
+			//이전 메쉬 내보내기
+			//랭크 돌리기.
+				RankSpin(_DeltaTime,RankS_Frame);
+				if (TestRankGauge >= 500)
+				{
+					RankFSM.ChangeState(RankState::Appear_RankSS);
+				}
+			},
+			.End = [=]
+			{
+
+			},
+		});
+}
+
+void RankUI::StateInit_RankSS()
+{
+	RankFSM.CreateState({
+	.StateValue = RankState::Appear_RankSS,
+	.Start = [this]()
+	{
+		OutRank = false;
+		Ratio = 0.0f;
+	},
+	.Update = [this](float _DeltaTime)
+	{
+		RankApper(_DeltaTime,RankSS_Frame,RankState::Spin_RankSS,true,RankS_Frame);
+	},
+	.End = [this]()
+	{
+
+	},
+		});
+	RankFSM.CreateState(
+		{
+			.StateValue = RankState::Spin_RankSS,
+			.Start = [=]()
+			{
+				Ratio = 0.0f;
+				TurnValue = false;
+			},
+			.Update = [=](float _DeltaTime)
+			{
+			//이전 메쉬 내보내기
+			//랭크 돌리기.
+				RankSpin(_DeltaTime,RankSS_Frame);
+				if (TestRankGauge >= 600)
+				{
+					RankFSM.ChangeState(RankState::Appear_RankSSS);
+				}
+			},
+			.End = [=]
+			{
+
+			},
+		});
+}
+
+void RankUI::StateInit_RankSSS()
+{
+	RankFSM.CreateState({
+	.StateValue = RankState::Appear_RankSSS,
+	.Start = [this]()
+	{
+		OutRank = false;
+		Ratio = 0.0f;
+	},
+	.Update = [this](float _DeltaTime)
+	{
+		RankApper(_DeltaTime,RankSSS_Frame,RankState::Spin_RankSSS,true,RankSS_Frame);
+	},
+	.End = [this]()
+	{
+
+	},
+		});
+	RankFSM.CreateState(
+		{
+			.StateValue = RankState::Spin_RankSSS,
+			.Start = [=]()
+			{
+				Ratio = 0.0f;
+				TurnValue = false;
+			},
+			.Update = [=](float _DeltaTime)
+			{
+			//이전 메쉬 내보내기
+			//랭크 돌리기.
+				RankSpin(_DeltaTime,RankSSS_Frame);
+				//만약 게이지가 100을 넘는다면
+				//if (FullGauge == true)
+				//{
+				//	RankFSM.ChangeState(RankState::Appear_RankC);
+				//}
+			},
+			.End = [=]
+			{
+
+			},
 		});
 }
