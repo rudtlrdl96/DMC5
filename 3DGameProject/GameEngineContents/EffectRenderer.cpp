@@ -29,6 +29,11 @@ void EffectRenderer::SetDistortionTexture(const std::string_view& _TextureName)
 	DistortionOption.IsDistortion = float4(1, 0, 0, 0);
 }
 
+void EffectRenderer::UnSetDistortionTexture()
+{
+	DistortionOption.IsDistortion = float4(0, 0, 0, 0);
+}
+
 void EffectRenderer::SetSprite(const std::string_view& _SpriteName, size_t _Frame)
 {
 	Sprite = GameEngineSprite::Find(_SpriteName);
