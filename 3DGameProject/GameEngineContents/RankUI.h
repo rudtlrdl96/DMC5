@@ -35,9 +35,10 @@ protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 private:
-	void RankSpin(float _Delta , std::shared_ptr<class UIFBXRenderer> _Render);
+	void RankSpin(float _Delta , std::shared_ptr<class UIFBXRenderer> _Render, std::shared_ptr<class UIFBXRenderer> _InsideRender);
 	void RankApper(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render , RankState _State, bool _Value, std::shared_ptr<class UIFBXRenderer> _PrevRender);
 	void RankOut(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render);
+	void SetInsideMesh();
 	std::shared_ptr<class UIFBXRenderer> RankD_Frame = nullptr;
 	std::shared_ptr<class UIFBXRenderer> RankD_Inside = nullptr;
 	std::shared_ptr<class UIFBXRenderer> RankC_Frame = nullptr;

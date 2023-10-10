@@ -37,7 +37,7 @@ void RankUI::StateInit_RankD()
 			{
 
 				//랭크메쉬 돌리기
-				RankSpin(_DeltaTime,RankD_Frame);
+				RankSpin(_DeltaTime,RankD_Frame,RankD_Inside);
 				//이부분에 게이지 클립과 이펙트 효과 추가.
 				
 				//만약 게이지가 100을 넘는다면
@@ -83,7 +83,7 @@ void RankUI::StateInit_RankC()
 			{
 			//이전 메쉬 내보내기
 			//랭크 돌리기.
-				RankSpin(_DeltaTime,RankC_Frame);
+				RankSpin(_DeltaTime,RankC_Frame,RankC_Inside);
 			if (TestRankGauge >= 200)
 			{
 				RankFSM.ChangeState(RankState::Appear_RankB);
@@ -126,7 +126,7 @@ void RankUI::StateInit_RankB()
 			{
 			//이전 메쉬 내보내기
 			//랭크 돌리기.
-				RankSpin(_DeltaTime,RankB_Frame);
+				RankSpin(_DeltaTime,RankB_Frame,RankB_Inside);
 				if (TestRankGauge >= 300)
 				{
 					RankFSM.ChangeState(RankState::Appear_RankA);
@@ -169,7 +169,7 @@ void RankUI::StateInit_RankA()
 			{
 			//이전 메쉬 내보내기
 			//랭크 돌리기.
-				RankSpin(_DeltaTime,RankA_Frame);
+				RankSpin(_DeltaTime,RankA_Frame,RankA_Inside);
 				if (TestRankGauge >= 400)
 				{
 					RankFSM.ChangeState(RankState::Appear_RankS);
@@ -212,7 +212,7 @@ void RankUI::StateInit_RankS()
 			{
 			//이전 메쉬 내보내기
 			//랭크 돌리기.
-				RankSpin(_DeltaTime,RankS_Frame);
+				RankSpin(_DeltaTime,RankS_Frame,RankS_Inside);
 				if (TestRankGauge >= 500)
 				{
 					RankFSM.ChangeState(RankState::Appear_RankSS);
@@ -255,7 +255,7 @@ void RankUI::StateInit_RankSS()
 			{
 			//이전 메쉬 내보내기
 			//랭크 돌리기.
-				RankSpin(_DeltaTime,RankSS_Frame);
+				RankSpin(_DeltaTime,RankSS_Frame,RankSS_Inside);
 				if (TestRankGauge >= 600)
 				{
 					RankFSM.ChangeState(RankState::Appear_RankSSS);
@@ -298,7 +298,7 @@ void RankUI::StateInit_RankSSS()
 			{
 			//이전 메쉬 내보내기
 			//랭크 돌리기.
-				RankSpin(_DeltaTime,RankSSS_Frame);
+				RankSpin(_DeltaTime,RankSSS_Frame,RankSSS_Inside);
 				//만약 게이지가 100을 넘는다면
 				//if (FullGauge == true)
 				//{
