@@ -129,7 +129,7 @@ void TestStageLevel::LevelChangeStart()
 	SetCamera({ 0,0,-500 });
 	CreateStage(AllStageDatas[0]);
 
-	if (true)
+	if (false)
 	{
 		std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
 		Nero->SetUserControllType();

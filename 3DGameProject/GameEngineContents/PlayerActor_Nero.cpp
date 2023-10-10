@@ -98,6 +98,17 @@ void PlayerActor_Nero::PlayerLoad()
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Explosion_01.tga").GetFullPath(), 8, 8);
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Explosion_02.tga").GetFullPath(), 8, 8);
 		}
+		if (nullptr == GameEngineTexture::Find("DistortionSample_00.jpg"))
+		{
+			std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+				{
+					"Texture", "DistortionTexture"
+				});
+
+			GameEngineTexture::Load(Path + "\\DistortionSample_00.jpg");
+			GameEngineTexture::Load(Path + "\\DistortionSample_01.jpg");
+			GameEngineTexture::Load(Path + "\\DistortionSample_02.jpg");
+		}
 		NewDir.MoveParent();
 		NewDir.Move("Nero");
 
@@ -3263,6 +3274,17 @@ void PlayerActor_Nero::NetLoad()
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_05.tga").GetFullPath(), 8, 8);
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Explosion_01.tga").GetFullPath(), 8, 8);
 			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Explosion_02.tga").GetFullPath(), 8, 8);
+		}
+		if (nullptr == GameEngineTexture::Find("DistortionSample_00.jpg"))
+		{
+			std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+				{
+					"Texture", "DistortionTexture"
+				});
+
+			GameEngineTexture::Load(Path + "\\DistortionSample_00.jpg");
+			GameEngineTexture::Load(Path + "\\DistortionSample_01.jpg");
+			GameEngineTexture::Load(Path + "\\DistortionSample_02.jpg");
 		}
 		NewDir.MoveParent();
 		NewDir.Move("Nero");
