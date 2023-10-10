@@ -31,15 +31,23 @@ void RankUI::StateInit_RankD()
 			.StateValue = RankState::Spin_RankD,
 			.Start = [=]()
 			{
+				RankD_Inside->SetClipData(float4::ZERONULL);
 				Ratio = 0.0f;
 			},
 			.Update = [=](float _DeltaTime)
 			{
-
+				UpTime += _DeltaTime;
 				//랭크메쉬 돌리기
 				RankSpin(_DeltaTime,RankD_Frame,RankD_Inside);
 				//이부분에 게이지 클립과 이펙트 효과 추가.
-				
+				float EndUp = static_cast<float>(TestRankGauge) / 100.0f;
+				RankD_Inside->SetClipData(float4::LerpClamp(float4(0.0f, 0.0f, 0.0f, 1.0f), float4(0.0f, EndUp, 0.0f, 1.0f), UpTime));
+
+				//설명란 띄우기
+				if (UpTime > 2.0f)
+				{
+					SetRankExPlane("RankD_Explane.png", float4{228.0f,82.0f,0.0f}, float4{660.0f,-33.0f,0.0f }, _DeltaTime);
+				}
 				//만약 게이지가 100을 넘는다면
 				if (TestRankGauge >= 100)
 				{
@@ -78,12 +86,18 @@ void RankUI::StateInit_RankC()
 			{
 				Ratio = 0.0f;
 				TurnValue = false;
+				RankC_Inside->SetClipData(float4::ZERONULL);
+				UpTime = 0.0f;
 			},
 			.Update = [=](float _DeltaTime)
 			{
 			//이전 메쉬 내보내기
 			//랭크 돌리기.
 				RankSpin(_DeltaTime,RankC_Frame,RankC_Inside);
+				UpTime += _DeltaTime;
+				float EndUp = static_cast<float>(TestRankGauge-100) / 100.0f;
+				RankC_Inside->SetClipData(float4::LerpClamp(float4(0.0f, 0.0f, 0.0f, 1.0f), float4(0.0f, EndUp, 0.0f, 1.0f), UpTime));
+
 			if (TestRankGauge >= 200)
 			{
 				RankFSM.ChangeState(RankState::Appear_RankB);
@@ -104,6 +118,7 @@ void RankUI::StateInit_RankB()
 		{
 			OutRank = false;
 			Ratio = 0.0f;
+
 		},
 		.Update = [this](float _DeltaTime)
 		{
@@ -121,12 +136,17 @@ void RankUI::StateInit_RankB()
 			{
 				Ratio = 0.0f;
 				TurnValue = false;
+				RankB_Inside->SetClipData(float4::ZERONULL);
+				UpTime = 0.0f;
 			},
 			.Update = [=](float _DeltaTime)
 			{
 			//이전 메쉬 내보내기
 			//랭크 돌리기.
 				RankSpin(_DeltaTime,RankB_Frame,RankB_Inside);
+				UpTime += _DeltaTime;
+				float EndUp = static_cast<float>(TestRankGauge - 200) / 100.0f;
+				RankB_Inside->SetClipData(float4::LerpClamp(float4(0.0f, 0.0f, 0.0f, 1.0f), float4(0.0f, EndUp, 0.0f, 1.0f), UpTime));
 				if (TestRankGauge >= 300)
 				{
 					RankFSM.ChangeState(RankState::Appear_RankA);
@@ -164,12 +184,17 @@ void RankUI::StateInit_RankA()
 			{
 				Ratio = 0.0f;
 				TurnValue = false;
+				RankA_Inside->SetClipData(float4::ZERONULL);
+				UpTime = 0.0f;
 			},
 			.Update = [=](float _DeltaTime)
 			{
 			//이전 메쉬 내보내기
 			//랭크 돌리기.
 				RankSpin(_DeltaTime,RankA_Frame,RankA_Inside);
+				UpTime += _DeltaTime;
+				float EndUp = static_cast<float>(TestRankGauge - 300) / 100.0f;
+				RankA_Inside->SetClipData(float4::LerpClamp(float4(0.0f, 0.0f, 0.0f, 1.0f), float4(0.0f, EndUp, 0.0f, 1.0f), UpTime));
 				if (TestRankGauge >= 400)
 				{
 					RankFSM.ChangeState(RankState::Appear_RankS);
@@ -207,12 +232,15 @@ void RankUI::StateInit_RankS()
 			{
 				Ratio = 0.0f;
 				TurnValue = false;
+				RankS_Inside->SetClipData(float4::ZERONULL);
+				UpTime = 0.0f;
 			},
 			.Update = [=](float _DeltaTime)
 			{
-			//이전 메쉬 내보내기
-			//랭크 돌리기.
 				RankSpin(_DeltaTime,RankS_Frame,RankS_Inside);
+				UpTime += _DeltaTime;
+				float EndUp = static_cast<float>(TestRankGauge - 400) / 100.0f;
+				RankS_Inside->SetClipData(float4::LerpClamp(float4(0.0f, 0.0f, 0.0f, 1.0f), float4(0.0f, EndUp, 0.0f, 1.0f), UpTime));
 				if (TestRankGauge >= 500)
 				{
 					RankFSM.ChangeState(RankState::Appear_RankSS);
@@ -250,12 +278,17 @@ void RankUI::StateInit_RankSS()
 			{
 				Ratio = 0.0f;
 				TurnValue = false;
+				RankSS_Inside->SetClipData(float4::ZERONULL);
+				UpTime = 0.0f;
 			},
 			.Update = [=](float _DeltaTime)
 			{
 			//이전 메쉬 내보내기
 			//랭크 돌리기.
 				RankSpin(_DeltaTime,RankSS_Frame,RankSS_Inside);
+				UpTime += _DeltaTime;
+				float EndUp = static_cast<float>(TestRankGauge - 500) / 100.0f;
+				RankSS_Inside->SetClipData(float4::LerpClamp(float4(0.0f, 0.0f, 0.0f, 1.0f), float4(0.0f, EndUp, 0.0f, 1.0f), UpTime));
 				if (TestRankGauge >= 600)
 				{
 					RankFSM.ChangeState(RankState::Appear_RankSSS);
@@ -293,12 +326,20 @@ void RankUI::StateInit_RankSSS()
 			{
 				Ratio = 0.0f;
 				TurnValue = false;
+				RankSSS_Inside->SetClipData(float4::ZERONULL);
+				UpTime = 0.0f;
 			},
 			.Update = [=](float _DeltaTime)
 			{
 			//이전 메쉬 내보내기
 			//랭크 돌리기.
 				RankSpin(_DeltaTime,RankSSS_Frame,RankSSS_Inside);
+				UpTime += _DeltaTime;
+				float EndUp = static_cast<float>(TestRankGauge - 600) / 100.0f;
+				if (EndUp <= 1.0f)
+				{
+					RankSSS_Inside->SetClipData(float4::LerpClamp(float4(0.0f, 0.0f, 0.0f, 1.0f), float4(0.0f, EndUp, 0.0f, 1.0f), UpTime));
+				}
 				//만약 게이지가 100을 넘는다면
 				//if (FullGauge == true)
 				//{

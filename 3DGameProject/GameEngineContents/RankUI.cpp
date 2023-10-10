@@ -1,7 +1,7 @@
 #include "PrecompileHeader.h"
 #include "RankUI.h"
 #include "UIFBXRenderer.h"
-
+#include <GameEngineCore/GameEngineUIRenderer.h>
 RankUI::RankUI() 
 {
 }
@@ -17,40 +17,42 @@ RankUI::~RankUI()
 */
 void RankUI::Start()
 {
+	Rank_Explane = CreateComponent<GameEngineUIRenderer>();
+
 	RankD_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 9.0f,9.0f,9.0f }, { -89.0f,0.0f,0.0f }, "RankDFrame.FBX");
 	RankD_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
 	RankD_Inside = UIFBXActorBase::CreateGaugeBar({ 660.0f,90.0f,-150.0f}, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankDInside.FBX","FBX_ClipAlpha");
-	RankD_Inside->SetClipData(float4(0.0f, 1.0f, 0.0f, 1.0f));
+	RankD_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
 	
 	RankC_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 9.0f,9.0f,9.0f }, { -89.0f,0.0f,0.0f }, "RankCFrame.FBX");
 	RankC_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankC_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankBInside.FBX");
-	RankC_Inside->SetClipData(float4(0.0f, 1.0f, 0.0f, 1.0f));
+	RankC_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankCInside.FBX", "FBX_ClipAlpha");
+	RankC_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
 
 	RankB_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 9.0f,9.0f,9.0f }, { -89.0f,0.0f,0.0f }, "RankBFrame.FBX");
 	RankB_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankB_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankCInside.FBX");
-	RankB_Inside->SetClipData(float4(0.0f, 1.0f, 0.0f, 1.0f));
+	RankB_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankBInside.FBX", "FBX_ClipAlpha");
+	RankB_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
 
 	RankA_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 9.0f,9.0f,9.0f }, { -89.0f,0.0f,0.0f }, "RankAFrame.FBX");
 	RankA_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
 	RankA_Inside = UIFBXActorBase::CreateGaugeBar({ 660.0f,90.0f,-150.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankAInside.FBX", "FBX_ClipAlpha");
-	RankA_Inside->SetClipData(float4(0.0f, 1.0f, 0.0f, 1.0f));
+	RankA_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
 
 	RankS_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 9.0f,9.0f,9.0f }, { -89.0f,0.0f,0.0f }, "RankSFrame.FBX");
 	RankS_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankS_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankSInside.FBX");
-	RankS_Inside->SetClipData(float4(0.0f, 1.0f, 0.0f, 1.0f));
+	RankS_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankSInside.FBX", "FBX_ClipAlpha");
+	RankS_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
 
 	RankSS_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 9.0f,9.0f,9.0f }, { -89.0f,0.0f,0.0f }, "RankSSFrame.FBX");
 	RankSS_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankSS_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankSSInside.FBX");
-	RankSS_Inside->SetClipData(float4(0.0f, 1.0f, 0.0f, 1.0f));
+	RankSS_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankSSInside.FBX", "FBX_ClipAlpha");
+	RankSS_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
 
 	RankSSS_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 9.0f,9.0f,9.0f }, { -89.0f,0.0f,0.0f }, "RankSSSFrame.FBX");
 	RankSSS_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
 	RankSSS_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankSSSInside.FBX", "FBX_ClipAlpha");
-	RankSSS_Inside->SetClipData(float4(0.0f, 1.0f, 0.0f, 1.0f));
+	RankSSS_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
 
 	StateInit_RankD();
 	StateInit_RankC();
@@ -69,9 +71,9 @@ void RankUI::Update(float _DeltaTime)
 	RankD_Inside->GetTransform()->SetLocalPosition(RankD_Frame->GetTransform()->GetLocalPosition());
 	SetInsideMesh();
 	RankFSM.Update(_DeltaTime);
-	if (true == GameEngineInput::IsUp("UIDEBUGMODE"))
+	if (true == GameEngineInput::IsPress("UIDEBUGMODE"))
 	{
-		TestRankGauge += 100;
+		TestRankGauge += 1;
 	}
 
 }
@@ -190,8 +192,8 @@ void RankUI::RankOut(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render)
 void RankUI::SetInsideMesh()
 {
 	RankD_Inside->GetTransform()->SetLocalPosition({ RankD_Frame->GetTransform()->GetLocalPosition().x,RankD_Frame->GetTransform()->GetLocalPosition() .y,-150.0f});
-	RankB_Inside->GetTransform()->SetLocalPosition({ RankC_Frame->GetTransform()->GetLocalPosition().x,RankC_Frame->GetTransform()->GetLocalPosition().y,-150.0f });
-	RankC_Inside->GetTransform()->SetLocalPosition({ RankB_Frame->GetTransform()->GetLocalPosition().x,RankB_Frame->GetTransform()->GetLocalPosition().y,-150.0f });
+	RankC_Inside->GetTransform()->SetLocalPosition({ RankC_Frame->GetTransform()->GetLocalPosition().x,RankC_Frame->GetTransform()->GetLocalPosition().y,-150.0f });
+	RankB_Inside->GetTransform()->SetLocalPosition({ RankB_Frame->GetTransform()->GetLocalPosition().x,RankB_Frame->GetTransform()->GetLocalPosition().y,-150.0f });
 	RankA_Inside->GetTransform()->SetLocalPosition({ RankA_Frame->GetTransform()->GetLocalPosition().x,RankA_Frame->GetTransform()->GetLocalPosition().y,-150.0f });
 	RankS_Inside->GetTransform()->SetLocalPosition({ RankS_Frame->GetTransform()->GetLocalPosition().x,RankS_Frame->GetTransform()->GetLocalPosition().y,-150.0f });
 	RankSS_Inside->GetTransform()->SetLocalPosition({ RankSS_Frame->GetTransform()->GetLocalPosition().x,RankSS_Frame->GetTransform()->GetLocalPosition().y,-150.0f });
@@ -200,3 +202,13 @@ void RankUI::SetInsideMesh()
 }
 
 
+
+void RankUI::SetRankExPlane(const std::string_view& _Png,float4 _Scale, float4 _Pos, float _Ratio)
+{
+	ExplaneSpeed += _Ratio;
+	Rank_Explane->SetTexture(_Png);
+	float4 Scale = _Scale * 0.5f;
+	Rank_Explane->GetTransform()->SetLocalScale(Scale);
+	Rank_Explane->GetTransform()->SetLocalPosition(float4::LerpClamp(float4(_Pos.x+200.0f, _Pos.y, _Pos.z)
+		,_Pos, ExplaneSpeed*3.0f));
+}
