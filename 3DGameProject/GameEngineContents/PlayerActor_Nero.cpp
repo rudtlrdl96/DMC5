@@ -295,8 +295,6 @@ void PlayerActor_Nero::PlayerLoad()
 
 		Snatch = GetLevel()->CreateActor<Player_Snatch>();
 		Snatch->GetTransform()->SetParent(GetTransform());
-		Snatch->GetTransform()->SetLocalPosition({ 30, 30, 100 });
-		Snatch->Off();
 	}
 
 	SetHuman();
@@ -2553,7 +2551,12 @@ void PlayerActor_Nero::PlayerLoad()
 				RotationToTarget();
 				WeaponIdle();
 				Col_Attack->On();
-				Col_Attack->SetAttackData(DamageType::Snatch, 0, std::bind(&PlayerActor_Nero::ChangeState, this, FSM_State_Nero::Nero_Snatch_Pull));
+				Col_Attack->SetAttackData(DamageType::Snatch, 0, [=]
+				{
+					ChangeState(FSM_State_Nero::Nero_Snatch_Pull);
+					Snatch->SnatchOff();
+				});
+				//Col_Attack->SetAttackData(DamageType::Snatch, 0, std::bind(&PlayerActor_Nero::ChangeState, this, FSM_State_Nero::Nero_Snatch_Pull));
 				Col_Attack->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
 				Col_Attack->GetTransform()->SetLocalScale({100, 100, 100});
 				if (nullptr == LockOnEnemyTransform)
@@ -2566,7 +2569,7 @@ void PlayerActor_Nero::PlayerLoad()
 					SnatchDir.Normalize();
 				}
 				Renderer->ChangeAnimation("pl0000_Snatch", true);
-				Snatch->On();
+				Snatch->SnatchOn(SnatchDir);
 				SnatchTimer = 0;
 				InputCheck = false;
 				MoveCheck = false;
@@ -2679,7 +2682,11 @@ void PlayerActor_Nero::PlayerLoad()
 				RotationToTarget();
 				WeaponIdle();
 				Col_Attack->On();
-				Col_Attack->SetAttackData(DamageType::Snatch, 0, std::bind(&PlayerActor_Nero::ChangeState, this, FSM_State_Nero::Nero_Snatch_Pull_Air));
+				Col_Attack->SetAttackData(DamageType::Snatch, 0, [=]
+				{
+					ChangeState(FSM_State_Nero::Nero_Snatch_Pull_Air);
+					Snatch->SnatchOff();
+				});
 				Col_Attack->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
 				Col_Attack->GetTransform()->SetLocalScale({ 100, 100, 100 });
 				if (nullptr == LockOnEnemyTransform)
@@ -2692,6 +2699,7 @@ void PlayerActor_Nero::PlayerLoad()
 					SnatchDir.Normalize();
 				}
 				Renderer->ChangeAnimation("pl0000_Air_Snatch", true);
+				Snatch->SnatchOn(SnatchDir);
 				InputCheck = false;
 				MoveCheck = false;
 			},
