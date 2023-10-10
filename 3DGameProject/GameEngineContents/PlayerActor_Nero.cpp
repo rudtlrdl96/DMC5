@@ -14,6 +14,7 @@
 #include "NeroHPUI.h"
 #include "FXSystem.h"
 #include "PlayerCamera.h"
+#include "Player_Snatch.h"
 std::list<DevilBreaker> PlayerActor_Nero::BreakerList;
 PlayerActor_Nero::~PlayerActor_Nero()
 {
@@ -43,9 +44,9 @@ void PlayerActor_Nero::Start()
 		});
 
 	LinkData_UpdatePacket<int>(ArmValue, [this](int _BeforeData)
-	{
-		SetArm(ArmValue);
-	});
+		{
+			SetArm(ArmValue);
+		});
 	LinkData_UpdatePacket<int>(ExceedLevel);
 }
 
@@ -279,6 +280,23 @@ void PlayerActor_Nero::PlayerLoad()
 		}
 		Renderer_Overture->ChangeAnimation("wp00_010_Shoot.fbx");
 		Renderer_Overture->Off();
+	}
+
+	// Snatch 생성
+	{
+		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+			{
+				"Character", "Player", "Nero", "Wire"
+			});
+		if (nullptr == GameEngineFBXMesh::Find("Nero_WireArm.FBX"))
+		{
+			GameEngineFBXMesh::Load(Path + "\\Nero_WireArm.fbx");
+		}
+
+		Snatch = GetLevel()->CreateActor<Player_Snatch>();
+		Snatch->GetTransform()->SetParent(GetTransform());
+		Snatch->GetTransform()->SetLocalPosition({ 30, 30, 100 });
+		Snatch->Off();
 	}
 
 	SetHuman();
@@ -767,7 +785,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboA1_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
 				}
 				else
 				{
@@ -814,7 +832,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboA2_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
 				}
 				else
 				{
@@ -867,7 +885,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboA3_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
 				}
 				else
 				{
@@ -914,7 +932,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboA4_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
 				}
 				else
 				{
@@ -960,7 +978,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboD1_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
 				}
 				else
 				{
@@ -1007,7 +1025,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboD2_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
 				}
 				else
 				{
@@ -1054,7 +1072,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboD3_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
 				}
 				else
 				{
@@ -1101,7 +1119,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_ComboD4_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
 				}
 				else
 				{
@@ -1346,7 +1364,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_AirComboA1_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
 				}
 				else
 				{
@@ -1388,7 +1406,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_AirComboA2_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
 				}
 				else
 				{
@@ -1438,7 +1456,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_AirComboA3_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
 				}
 				else
 				{
@@ -1480,7 +1498,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_AirComboB_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager){ExceedLevel--;});
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
 				}
 				else
 				{
@@ -2527,6 +2545,7 @@ void PlayerActor_Nero::PlayerLoad()
 	{
 		static float4 SnatchDir;
 		const static float SnatchSpeed = 4000.0f;
+		static float SnatchTimer = 0;
 		// Snatch Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Snatch_Shoot,
 			.Start = [=] {
@@ -2547,6 +2566,8 @@ void PlayerActor_Nero::PlayerLoad()
 					SnatchDir.Normalize();
 				}
 				Renderer->ChangeAnimation("pl0000_Snatch", true);
+				Snatch->On();
+				SnatchTimer = 0;
 				InputCheck = false;
 				MoveCheck = false;
 			},
@@ -3347,7 +3368,7 @@ void PlayerActor_Nero::NetLoad()
 		Renderer->SetSpecularTexture("pl0010_03_albm.texout.png", "pl0010_03_atos.texout.png");
 
 		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer,
-			.Objects = { (GameEngineObject*)Col_Attack.get() },
+			//.Objects = { (GameEngineObject*)Col_Attack.get() },
 			.CallBacks_void = {
 				nullptr,
 				std::bind(&PlayerActor_Nero::RedQueenOn, this),
@@ -3445,7 +3466,7 @@ void PlayerActor_Nero::NetLoad()
 
 	SetHuman();
 	WeaponIdle();
-
+	Col_Attack->Off();
 	// 기본 움직임
 	{
 		// Idle

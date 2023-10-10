@@ -205,6 +205,7 @@ protected:
 private:
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer_Overture = nullptr;
 	std::shared_ptr<class FXSystem> EffectSystem = nullptr;
+	std::shared_ptr<class Player_Snatch> Snatch = nullptr;
 
 	GameEngineFSM FSM;
 	int ExceedLevel = 0;	// 익시드 단계

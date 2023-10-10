@@ -234,7 +234,6 @@
     <ClInclude Include="Slope.h">
       <Filter>Actor\TestObject</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderTestLevel.h" />
     <ClInclude Include="StageEditLevel.h">
       <Filter>Levels\Stage\StageEditor</Filter>
     </ClInclude>
@@ -442,6 +441,9 @@
     </ClInclude>
     <ClInclude Include="ReflectionSetter.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\FunctionObj</Filter>
+    </ClInclude>
+    <ClInclude Include="Player_Snatch.h">
+      <Filter>Actor\Player\Weapon</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -669,7 +671,6 @@
     <ClCompile Include="Slope.cpp">
       <Filter>Actor\TestObject</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderTestLevel.cpp" />
     <ClCompile Include="StageEditGUI.cpp">
       <Filter>Levels\Stage\StageEditor</Filter>
     </ClCompile>
@@ -877,6 +878,9 @@
     </ClCompile>
     <ClCompile Include="ReflectionSetter.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\FunctionObj</Filter>
+    </ClCompile>
+    <ClCompile Include="Player_Snatch.cpp">
+      <Filter>Actor\Player\Weapon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

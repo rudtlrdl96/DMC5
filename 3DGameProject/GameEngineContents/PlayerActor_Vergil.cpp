@@ -2255,7 +2255,7 @@ void PlayerActor_Vergil::NetLoad()
 		Renderer->SetSpecularTexture("pl0300_03_albm.texout.png", "pl0300_03_atos.texout.png");
 
 		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer, .RendererLocalPos = {0, -75, 0},
-			.Objects = { (GameEngineObject*)Col_Attack.get() },
+			//.Objects = { (GameEngineObject*)Col_Attack.get() },
 			.CallBacks_void = {
 				nullptr,			// 0
 				std::bind(&PlayerActor_Vergil::YamatoOn, this),
@@ -2270,6 +2270,7 @@ void PlayerActor_Vergil::NetLoad()
 		SetHuman();
 		WeaponIdle();
 	}
+	Col_Attack->Off();
 
 	/* 기본 움직임 */
 	{
