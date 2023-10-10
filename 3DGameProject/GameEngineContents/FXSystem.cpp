@@ -91,6 +91,15 @@ void FXSystem::ChangeFX(std::shared_ptr<class FXData> _FX)
 		{
 			FXRenders[UnitDatas[i].MeshName]->SetTexture("DiffuseTexture", UnitDatas[i].TextureName);
 			FXRenders[UnitDatas[i].MeshName]->Off();
+
+			if (UnitDatas[i].CutX == 1)
+			{
+				FXRenders[UnitDatas[i].MeshName]->SetDistortionTexture();
+			}
+			else
+			{
+				FXRenders[UnitDatas[i].MeshName]->UnSetDistortionTexture();
+			}
 		}
 		else
 		{
@@ -107,6 +116,7 @@ void FXSystem::ChangeFX(std::shared_ptr<class FXData> _FX)
 				FXRenders[Key]->ChangeAnimation(UnitDatas[i].AnimationName);
 			}
 			FXRenders[Key]->Off();
+
 		}
 	}
 }
@@ -222,6 +232,15 @@ void FXSystem::FXSetting()
 			}
 			FXRenders[UnitDatas[i].MeshName]->SetTexture("DiffuseTexture", UnitDatas[i].TextureName);
 			FXRenders[UnitDatas[i].MeshName]->Off();
+
+			if (UnitDatas[i].CutX == 1)
+			{
+				FXRenders[UnitDatas[i].MeshName]->SetDistortionTexture();
+			}
+			else
+			{
+				FXRenders[UnitDatas[i].MeshName]->UnSetDistortionTexture();
+			}
 		}
 		else
 		{

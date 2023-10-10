@@ -249,6 +249,10 @@ void EffectToolWindow::TimeLine()
 			{
 				CurUnitDatas[i].MeshName = Mesh->GetName();
 				CurUnitDatas[i].TextureName = FXRenders[i]->GetShaderResHelper(0).GetTextureSetter("DiffuseTexture")->Res->GetName();
+				if (true == FXRenders[i]->IsDistortion())
+				{
+					CurUnitDatas[i].CutX = 1;
+				}
 			}
 			else
 			{
@@ -464,6 +468,10 @@ void EffectToolWindow::Save(std::shared_ptr<GameEngineLevel> Level)
 					FXRenders[i]->SetName(std::to_string(i));
 					FXRenders[i]->SetFBXMesh(CurUnitDatas[i].MeshName, "Effect_2D");
 					FXRenders[i]->SetTexture("DiffuseTexture", CurUnitDatas[i].TextureName);
+					if (CurUnitDatas[i].CutX == 1)
+					{
+						FXRenders[i]->SetDistortionTexture();
+					}
 					//FXRenders[i]->Off();
 				}
 				else

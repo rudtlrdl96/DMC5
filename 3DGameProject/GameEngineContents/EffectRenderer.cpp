@@ -440,6 +440,15 @@ void EffectRenderer::DrawEditor()
 		}
 	}
 
+	if (ImGui::Button("DistortionOn"))
+	{
+		SetDistortionTexture();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("DistortionOff"))
+	{
+		UnSetDistortionTexture();
+	}
 	if (ImGui::Button("Death"))
 	{
 		Death();

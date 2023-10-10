@@ -5,6 +5,7 @@
 #include "FreeCameraActor.h"
 #include "SkyBox.h"
 #include "JudgementCut.h"
+#include "DistortionEffect.h"
 EffectToolLevel::EffectToolLevel() 
 {
 }
@@ -18,6 +19,12 @@ void EffectToolLevel::Start()
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -500 });
 	GetDirectionalLight()->GetTransform()->SetLocalRotation({ 0, 180, 0 });
+
+	{
+		std::shared_ptr<DistortionEffect> Distortion = GetCamera(0)->GetCamTarget()->CreateEffect<DistortionEffect>();
+		Distortion->SetMaskTexture(GetCamera(0)->GetCamAlphaTarget(), 1);
+		Distortion->SetDistortionValue(8, 4.5);
+	}
 }
 
 void EffectToolLevel::Update(float _DeltaTime)
