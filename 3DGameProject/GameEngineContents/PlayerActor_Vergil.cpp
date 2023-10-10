@@ -9,6 +9,7 @@
 #include "FXSystem.h"
 #include "JudgementCut.h"
 #include "ColorEffect.h"
+#include "PlayerCamera.h"
 PlayerActor_Vergil::~PlayerActor_Vergil()
 {
 }
@@ -163,6 +164,9 @@ void PlayerActor_Vergil::PlayerLoad()
 				std::bind([=] {MoveCheck = true; }),
 				std::bind([=] {DelayCheck = true; }),
 				std::bind(&PhysXCapsuleComponent::TurnOnGravity, PhysXCapsule),		// 8 
+				std::bind(&PlayerCamera::ShakeLight),	//9
+				std::bind(&PlayerCamera::ShakeMiddle),	//10
+				std::bind(&PlayerCamera::ShakeHeavy),	//11
 			},
 			.CallBacks_int = {
 				std::bind(&PlayerActor_Vergil::ChangeState, this, std::placeholders::_1),
