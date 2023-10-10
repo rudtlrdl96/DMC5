@@ -152,14 +152,48 @@ void TestStageLevel::LevelChangeStart()
 	SpotLight->SetLightPower(3.0f);
 	SpotLight->DynamicShadowOn();
 
+	if (nullptr == GameEngineTexture::Find("DistortionSample_00.jpg"))
+	{
+		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+			{
+				"Texture", "DistortionTexture"
+			});
 
-	std::shared_ptr<EffectRenderer> NewEffect = CreateActor<GameEngineActor>()->CreateComponent<EffectRenderer>();
-	NewEffect->GetTransform()->SetLocalPosition(float4(0, 300, 0));
-	NewEffect->GetTransform()->SetLocalScale(float4(300, 300, 100));
+		GameEngineTexture::Load(Path + "\\DistortionSample_00.jpg");
+		GameEngineTexture::Load(Path + "\\DistortionSample_01.jpg");
+		GameEngineTexture::Load(Path + "\\DistortionSample_02.jpg");
+	}
 
-	NewEffect->RectInit("Effect_2D");
-	NewEffect->SetTexture("DiffuseTexture", "Effect_Texture_03.tga");
-	NewEffect->SetDistortionTexture();
+	{
+		std::shared_ptr<EffectRenderer> NewEffect = CreateActor<GameEngineActor>()->CreateComponent<EffectRenderer>();
+		NewEffect->RectInit("Effect_2D");
+
+		NewEffect->GetTransform()->SetLocalPosition(float4(-300, 300, 0));
+		NewEffect->GetTransform()->SetLocalScale(float4(300, 300, 100));
+		NewEffect->SetTexture("DiffuseTexture", "Effect_Texture_03.tga");
+		NewEffect->SetDistortionTexture("DistortionSample_00.jpg");	
+	}
+
+	{
+		std::shared_ptr<EffectRenderer> NewEffect = CreateActor<GameEngineActor>()->CreateComponent<EffectRenderer>();
+		NewEffect->RectInit("Effect_2D");
+
+		NewEffect->GetTransform()->SetLocalPosition(float4(0, 300, 0));
+		NewEffect->GetTransform()->SetLocalScale(float4(300, 300, 300));
+		NewEffect->SetTexture("DiffuseTexture", "Effect_Texture_03.tga");
+		NewEffect->SetDistortionTexture("DistortionSample_01.jpg");
+	}
+
+	{
+		std::shared_ptr<EffectRenderer> NewEffect = CreateActor<GameEngineActor>()->CreateComponent<EffectRenderer>();
+		NewEffect->RectInit("Effect_2D");
+
+		NewEffect->GetTransform()->SetLocalPosition(float4(300, 300, 0));
+		NewEffect->GetTransform()->SetLocalScale(float4(300, 300, 100));
+		NewEffect->SetTexture("DiffuseTexture", "Effect_Texture_03.tga");
+		NewEffect->SetDistortionTexture("DistortionSample_02.jpg");
+	}
+
 
 	//CreateActor<ShaderTestActor>()->GetTransform()->SetLocalPosition(float4(0, 200, 0));
 

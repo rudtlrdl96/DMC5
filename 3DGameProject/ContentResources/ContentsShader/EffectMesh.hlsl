@@ -125,21 +125,22 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     }
         
     Result.ResultColor = DiffuseTexture.Sample(ENGINEBASE, UV);
-    
-    if (0 == IsDistortion.x)
-    {
-        Result.DistortionColor = (float4)0;
-    }
-    else
-    {
-        Result.DistortionColor = MaskTexture.Sample(ENGINEBASE, UV);
-    }
-    
+       
         
     Result.ResultColor *= EffectMulColor;
     Result.ResultColor += EffectPlusColor;
 
     Result.ResultColor.a = clamp(Result.ResultColor.a, 0, 1);
+        
+    if (0 == IsDistortion.x)
+    {
+        Result.DistortionColor = (float4) 0;
+    }
+    else
+    {
+        Result.DistortionColor = MaskTexture.Sample(ENGINEBASE, UV);
+        Result.DistortionColor.a = Result.ResultColor.a;
+    }
     
     return Result;
 }

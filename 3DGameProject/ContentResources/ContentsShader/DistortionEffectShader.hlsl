@@ -36,11 +36,11 @@ float4 DistortionEffect_PS(OutPut _Value) : SV_Target0
 	
     if (0 != MaskColor.a)
     {
-        UV.x += sin(MaskColor.a) / ScreenSize.x * DistortionValue.x;
-        UV.y += cos(MaskColor.a) / ScreenSize.y * DistortionValue.y;
+        UV.x += sin(MaskColor.x) / ScreenSize.x * DistortionValue.x * MaskColor.a;
+        UV.y += cos(MaskColor.x) / ScreenSize.y * DistortionValue.y * MaskColor.a;
     }
 	
-    float4 ResultColor = DiffuseTex.Sample(WRAPSAMPLER, UV);
+    float4 ResultColor = DiffuseTex.Sample(WRAPSAMPLER, saturate(UV));
     	
 	return ResultColor;
 }
