@@ -42,7 +42,5 @@ protected:
 
 private:
 	std::shared_ptr<ReflectionProbe> Probe = nullptr;
-	
-
 };
 

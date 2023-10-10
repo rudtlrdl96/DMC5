@@ -86,5 +86,6 @@ enum class FieldMapObjType
 {
 	Null = -1,
 	WallLight_On,
+	WallLight_Off,
 	ReflectionSetter,
 };

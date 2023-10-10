@@ -32,8 +32,8 @@ private:
 	
 	int ObjType_current = 0;
 	void ObjTypeSelectCombo();
-	const char* ObjType_items[2] = 
-	{ "WallLight_On", "ReflectionSetter" };
+	const char* ObjType_items[3] = 
+	{ "WallLight_On", "WallLight_Off", "ReflectionSetter" };
 
 	void InputObject(std::vector<StageData>& _AllData, size_t& _Stage_current, size_t& _FieldMap_current);
 

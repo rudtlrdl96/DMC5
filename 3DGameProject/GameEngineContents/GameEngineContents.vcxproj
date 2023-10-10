@@ -264,10 +264,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="TestObj.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="FsmChangePacket.h" />
     <ClInclude Include="Char_ChoiceButton.h" />
     <ClInclude Include="Char_ChoiceLevel.h" />
@@ -777,10 +773,6 @@
     <ClCompile Include="RankUI_State.cpp" />
     <ClCompile Include="ReflectionSetter.cpp" />
     <ClCompile Include="TestEventZone.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="TestObj.cpp">
       <SubType>
       </SubType>
     </ClCompile>

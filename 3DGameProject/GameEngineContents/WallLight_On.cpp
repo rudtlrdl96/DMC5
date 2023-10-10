@@ -19,5 +19,13 @@ void WallLight_On::Start()
 	PointLight->GetTransform()->SetParent(GetTransform());
 	PointLight->SetLightPower(2.f);
 
+	SetDebugRender();
+
 	StaticFieldMapObject::Start();
+}
+
+void WallLight_On::Update(float _DeltaTime)
+{
+	DebugRenderPivot->GetTransform()->SetLocalPosition(PointLight->GetTransform()->GetLocalPosition());
+	DrawDebugRender(_DeltaTime);
 }
