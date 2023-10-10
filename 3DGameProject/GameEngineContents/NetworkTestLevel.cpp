@@ -80,6 +80,8 @@ void NetworkTestLevel::LevelChangeStart()
 	}
 
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
+
+	Enemy = NetworkManager::CreateNetworkActor<Enemy_HellCaina>(this);
 }
 
 
