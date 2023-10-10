@@ -38,9 +38,11 @@ std::map<unsigned int, std::shared_ptr<ObjectUpdatePacket>> NetworkManager::AllU
 std::map<PacketEnum, std::vector<std::shared_ptr<GameEnginePacket>>> NetworkManager::AllPacket;
 GameEngineSerializer NetworkManager::ChunkPacketBytes;
 
-std::map<GameEngineLevel*, std::vector<BasePlayerActor*>> NetworkManager::AllPlayerActors;
-
 const std::string NetworkManager::SystemChatCheck = "[System] : ";
+
+
+std::map<unsigned int, std::vector<unsigned int>> NetworkManager::AllNetID;
+
 
 
 unsigned int NetworkManager::ServerOpen(int _Port)
@@ -331,9 +333,6 @@ void NetworkManager::LinkNetwork(NetworkObjectBase* _NetObjPtr, BaseLevel* _Leve
 	if (-1 != _NetObjPtr->GetNetObjectID())
 		return;
 
-	//연결시키려는 객체가 플레이어라면 자료구조에 보관
-	RegistPlayer(_NetObjPtr, _Level);
-
 	//싱글모드 일때
 	if (nullptr == NetInst)
 	{
@@ -480,40 +479,30 @@ std::shared_ptr<NetworkObjectBase> NetworkManager::CreateNetActor(Net_ActorType 
 }
 
 
-void NetworkManager::RegistPlayer(NetworkObjectBase* _NetObjPtr, GameEngineLevel* _Level)
+
+
+
+void NetworkManager::DisconnectObjects(unsigned int _NetID)
 {
-	BasePlayerActor* PlayerPtr = dynamic_cast<BasePlayerActor*>(_NetObjPtr);
-	if (nullptr == PlayerPtr)
+	if (false == IsServer())
 		return;
 
-	if (nullptr == _Level)
+	const std::vector<unsigned int>& DisconnectNetGroup = AllNetID[_NetID];
+	for (unsigned int ObjID : DisconnectNetGroup)
 	{
-		MsgAssert("[서버 오류] : Player를 알 수 없는 레벨에 생성하려고 했습니다");
-		return;
+		GameEngineNetObject* NetObjPtr = GameEngineNetObject::GetNetObject(ObjID);
+		if (nullptr == NetObjPtr)
+			continue;
+
+		GameEngineActor* ObjPtr = dynamic_cast<GameEngineActor*>(NetObjPtr);
+		if (nullptr == ObjPtr)
+		{
+			MsgAssert("GameEngineNetObject를 GameEngineActor로 변환시키는데 실패하였습니다");
+			return;
+		}
+
+		ObjPtr->Death();
 	}
 
-	std::vector<BasePlayerActor*>& PlayerGroup = AllPlayerActors[_Level];
-	std::vector<BasePlayerActor*>::iterator FindIter;
-
-	FindIter = std::find(PlayerGroup.begin(), PlayerGroup.end(), PlayerPtr);
-	if (PlayerGroup.end() != FindIter)
-	{
-		MsgAssert("[서버오류] : 해당 그룹에 이미 존재하는 플레이어를 또 넣으려고 했습니다");
-		return;
-	}
-
-	PlayerGroup.push_back(PlayerPtr);
+	AllNetID.erase(_NetID);
 }
-
-const std::vector<BasePlayerActor*>& NetworkManager::GetPlayers(GameEngineLevel* _Level /*= nullptr*/)
-{
-	GameEngineLevel* Level = _Level;
-	if (nullptr == Level)
-	{
-		Level = CurLevel;
-	}
-
-	return AllPlayerActors[Level];
-}
-
-

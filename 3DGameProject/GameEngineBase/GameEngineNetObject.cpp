@@ -90,7 +90,7 @@ GameEngineNetObject* GameEngineNetObject::GetNetObject(int _ID)
 
 	if (AllNetObjects.end() == FindIter)
 	{
-		MsgAssert(std::to_string(_ID) + " ID를 가진 오브젝트는 존재하지 않습니다");
+		//MsgAssert(std::to_string(_ID) + " ID를 가진 오브젝트는 존재하지 않습니다");
 		return nullptr;
 	}
 

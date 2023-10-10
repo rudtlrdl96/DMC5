@@ -100,9 +100,6 @@ public:
 	//쌓여있던 모든 패킷을 전송하는 부분
 	static void FlushPackets();
 
-	//해당 레벨의 플레이어 그룹을 반환합니다.(LevelChangeStart시점에서 사용하실땐 Level 인자를 넣어주세요)
-	static const std::vector<BasePlayerActor*>& GetPlayers(GameEngineLevel* _Level = nullptr);
-	//이거 나중까지 안 쓰면 코드 정리를 위해 지우자
 
 
 protected:
@@ -135,11 +132,15 @@ private:
 
 	static std::function<void(unsigned int)> ConnectCallBack;
 
-	//PlayerActor만을 담아놓는 자료구조
-	static std::map<GameEngineLevel*, std::vector<BasePlayerActor*>> AllPlayerActors;
-
 	//채팅 메세지가 올때 앞쪽에 이 글자가 들어있으면 System메세지이다
 	static const std::string SystemChatCheck;
+
+	//네트워크 아이디별로 오브젝트를 분류해서 관리
+	static std::map<unsigned int, std::vector<unsigned int>> AllNetID;
+
+	void DisconnectObjects(unsigned int _NetID);
+
+
 
 	//엑터 생성
 	static std::shared_ptr<NetworkObjectBase> CreateNetActor(unsigned int _ActorType, BaseLevel* _Level = nullptr, int _ObjectID = -1)
@@ -165,10 +166,6 @@ private:
 			_Left[i] = *_Right[i];
 		}
 	}
-
-	//Actor를 생성할 때 플레이어라면 별도의 자료구조에 저장
-	static void RegistPlayer(NetworkObjectBase* _NetObjPtr, GameEngineLevel*  _Level);
-
 
 	NetworkManager(){}
 	virtual ~NetworkManager() = 0{}

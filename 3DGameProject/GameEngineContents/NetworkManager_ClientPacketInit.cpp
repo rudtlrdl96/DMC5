@@ -70,6 +70,7 @@ void NetworkManager::ClientPacketInit()
 			std::shared_ptr<NetworkObjectBase> NewNetObj = nullptr;
 			NewNetObj = NetworkManager::CreateNetActor(_Packet->ActorType, nullptr, ObjID);
 			NewNetObj->SetControll(NetControllType::PassiveControll);
+			//AllNetObject[NetID].push_back(NewNetObj.get());
 
 			//디버그용 타겟 설정
 			if (NetworkObjectBase::DebugType == NewNetObj->GetNetObjectType())
