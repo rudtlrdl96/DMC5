@@ -89,6 +89,10 @@ void GameEngineCore::CoreResourcesInit()
 	GameEngineVertex::LayOut.AddInputLayOut("BLENDWEIGHT", DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT);
 	GameEngineVertex::LayOut.AddInputLayOut("BLENDINDICES", DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_SINT);
 
+	// 파티클 설정
+	GameEngineVertexParticle::LayOut.AddInputLayOut("POSITION", DXGI_FORMAT_R32G32B32A32_FLOAT);
+	GameEngineVertexParticle::LayOut.AddInputLayOut("PINDEX", DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_SINT); // 48
+
 	// 샘플러
 	{
 		D3D11_SAMPLER_DESC SamperData = {};

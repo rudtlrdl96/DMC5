@@ -22,7 +22,7 @@ void GameEngineStructuredBuffer::Release()
 	}
 }
 
-void GameEngineStructuredBuffer::CreateResize(const D3D11_SHADER_BUFFER_DESC& _Desc, int Count, void* _StartData)
+void GameEngineStructuredBuffer::CreateResize(const D3D11_SHADER_BUFFER_DESC& _Desc, int Count, StructuredBufferType _Type, void* _StartData/* = nullptr*/)
 {
 	if (false == IsInit)
 	{
@@ -30,15 +30,15 @@ void GameEngineStructuredBuffer::CreateResize(const D3D11_SHADER_BUFFER_DESC& _D
 		IsInit = true;
 	}
 
-	CreateResize(ShaderDesc.Size, Count, _StartData);
+	CreateResize(ShaderDesc.Size, Count, _Type, _StartData);
 }
 
-void GameEngineStructuredBuffer::CreateResize(size_t Count, void* _StartData /*= nullptr*/)
+void GameEngineStructuredBuffer::CreateResize(size_t Count, StructuredBufferType _Type, void* _StartData /*= nullptr*/)
 {
-	CreateResize(DataSize, Count, _StartData);
+	CreateResize(DataSize, Count, _Type, _StartData);
 }
 
-void GameEngineStructuredBuffer::CreateResize(size_t _DataSize, size_t Count, void* _StartData/* = nullptr*/)
+void GameEngineStructuredBuffer::CreateResize(size_t _DataSize, size_t Count, StructuredBufferType _Type, void* _StartData/* = nullptr*/)
 {
 	if (0 == _DataSize)
 	{
@@ -58,14 +58,41 @@ void GameEngineStructuredBuffer::CreateResize(size_t _DataSize, size_t Count, vo
 	}
 
 	Release();
+
+	D3D11_BUFFER_DESC Desc;
+
+	Desc.ByteWidth = DataSize * DataCount;
 	DataCount = static_cast<int>(Count);
 
 	BufferInfo.ByteWidth = DataSize * DataCount; // GPU 에 생성할 구조화 버퍼 메모리 크기(최소단위 ??)
-	BufferInfo.Usage = D3D11_USAGE_DYNAMIC;
-	BufferInfo.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	BufferInfo.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-	BufferInfo.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
 	BufferInfo.StructureByteStride = DataSize; // 1개 크기도 넣어줘야 한다.
+
+	CreateResize(BufferInfo, _Type, _StartData);
+}
+
+void GameEngineStructuredBuffer::CreateResize(const D3D11_BUFFER_DESC& _Data, StructuredBufferType _Type, void* _StartData)
+{
+	BufferInfo = _Data;
+
+	BufferInfo.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+	BufferInfo.Usage = D3D11_USAGE_DEFAULT;
+
+	switch (_Type)
+	{
+	case StructuredBufferType::SRV_ONLY:
+		BufferInfo.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+		BufferInfo.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		BufferInfo.Usage = D3D11_USAGE_DYNAMIC;
+		break;
+	case StructuredBufferType::UAV_INC:
+		// 컴퓨트 쉐이더에 들어가는 용도가 되면 CPU 쓰기 옵션이 불가능해진다.
+		BufferInfo.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
+		BufferInfo.CPUAccessFlags = 0;
+		BufferInfo.Usage = D3D11_USAGE_DEFAULT;
+		break;
+	default:
+		break;
+	}
 
 	D3D11_SUBRESOURCE_DATA* StartDataPtr = nullptr;
 	D3D11_SUBRESOURCE_DATA StartData = { 0 };
@@ -95,6 +122,20 @@ void GameEngineStructuredBuffer::CreateResize(size_t _DataSize, size_t Count, vo
 	if (S_OK != GameEngineDevice::GetDevice()->CreateShaderResourceView(Buffer, &tSRVDesc, &ShaderResourceView))
 	{
 		MsgAssert("FAIL (S_OK != GameEngineDevice::GetDevice()->CreateShaderResourceView(GetBuffer(), &tSRVDesc, &m_pSRV))");
+	}
+
+	if (_Type == StructuredBufferType::UAV_INC)
+	{
+		D3D11_UNORDERED_ACCESS_VIEW_DESC UAVDesc = {};
+		UAVDesc.Buffer.NumElements = DataCount;
+		UAVDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
+
+		if (S_OK != GameEngineDevice::GetDevice()->CreateUnorderedAccessView(Buffer, &UAVDesc, &UnorderedAccessView))
+		{
+			// 컴퓨트 쉐이더용 view
+			MsgAssert("if (S_OK != GameEngineDevice::GetDevice()->CreateUnorderedAccessView(Buffer, &UAVDesc, &UnorderedAccessView))");
+		}
+
 	}
 }
 

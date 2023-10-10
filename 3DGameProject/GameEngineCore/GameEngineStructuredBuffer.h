@@ -1,7 +1,13 @@
 #pragma once
+
 #include "GameEngineResource.h"
 #include "GameEngineDirectBuffer.h"
 
+enum class StructuredBufferType
+{
+	SRV_ONLY, // => 쉐이더 리소스로만 사용하겠다.
+	UAV_INC, // => 컴퓨트 쉐이더에 넣어서 사용할때.
+};
 
 // 설명 :
 class GameEngineStructuredBuffer : public GameEngineResource<GameEngineStructuredBuffer>, public GameEngineDirectBuffer
@@ -108,11 +114,13 @@ public:
 
 	void PSSetting(int _BindPoint);
 
-	void CreateResize(const D3D11_SHADER_BUFFER_DESC& _Desc, int Count, void* _StartData = nullptr);
+	void CreateResize(const D3D11_SHADER_BUFFER_DESC& _Desc, int Count, StructuredBufferType _Type = StructuredBufferType::SRV_ONLY, void* _StartData = nullptr);
 
-	void CreateResize(size_t DataSize, size_t Count, void* _StartData = nullptr);
+	void CreateResize(size_t DataSize, size_t Count, StructuredBufferType _Type = StructuredBufferType::SRV_ONLY, void* _StartData = nullptr);
 
-	void CreateResize(size_t Count, void* _StartData = nullptr);
+	void CreateResize(size_t Count, StructuredBufferType _Type = StructuredBufferType::SRV_ONLY, void* _StartData = nullptr);
+
+	void CreateResize(const D3D11_BUFFER_DESC& _Data, StructuredBufferType _Type = StructuredBufferType::SRV_ONLY, void* _StartData = nullptr);
 
 	inline int GetDataSize()
 	{
@@ -146,6 +154,8 @@ private:
 	D3D11_SHADER_BUFFER_DESC ShaderDesc;
 	D3D11_MAPPED_SUBRESOURCE SettingResources;
 	ID3D11ShaderResourceView* ShaderResourceView = nullptr;
+	// 컴퓨트 쉐이더에 넣어줄때 사용하는 view
+	ID3D11UnorderedAccessView* UnorderedAccessView = nullptr;
 	int DataSize = 0;
 	int DataCount = 0;
 	bool IsInit = false;

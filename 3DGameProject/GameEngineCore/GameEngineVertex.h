@@ -45,3 +45,13 @@ public:
 	int BLENDINDICES[4];
 
 };
+
+class GameEngineVertexParticle
+{
+public:
+	static GameEngineInputLayOutInfo LayOut;
+
+public:
+	float4 POSITION;
+	int PINDEX[4]; // x에 그냥 내가 0번이다 1번이다 2번이다
+};

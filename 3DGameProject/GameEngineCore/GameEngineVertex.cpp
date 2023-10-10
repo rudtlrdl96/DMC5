@@ -170,3 +170,4 @@ UINT GameEngineInputLayOutInfo::FormatSize(DXGI_FORMAT _Format)
 }
 
 GameEngineInputLayOutInfo GameEngineVertex::LayOut;
+GameEngineInputLayOutInfo GameEngineVertexParticle::LayOut;

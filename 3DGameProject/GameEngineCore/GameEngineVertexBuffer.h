@@ -39,6 +39,14 @@ public:
 		return Res;
 	}
 
+	template<typename VertexType>
+	static std::shared_ptr<GameEngineVertexBuffer> Create(int _Count)
+	{
+		std::shared_ptr<GameEngineVertexBuffer> Res = GameEngineResource::CreateUnNamed();
+		Res->LayOutInfo = &VertexType::LayOut;
+		Res->ResCreate(nullptr, sizeof(VertexType), _Count);
+		return Res;
+	}
 
 	void Setting() override;
 

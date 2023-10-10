@@ -1810,5 +1810,5 @@ void GameEngineFBXMesh::BuildSkeletonSystem(fbxsdk::FbxScene* pScene, std::vecto
 void GameEngineFBXMesh::CreateGameEngineStructuredBuffer()
 {
 	AllBoneStructuredBuffers = std::make_shared<GameEngineStructuredBuffer>();
-	AllBoneStructuredBuffers->CreateResize(sizeof(float4x4), static_cast<int>(AllBones.size()), nullptr);
+	AllBoneStructuredBuffers->CreateResize(sizeof(float4x4), static_cast<int>(AllBones.size()), StructuredBufferType::SRV_ONLY, nullptr);
 }
