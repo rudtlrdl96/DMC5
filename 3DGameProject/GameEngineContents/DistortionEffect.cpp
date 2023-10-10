@@ -15,7 +15,7 @@ void DistortionEffect::Start(GameEngineRenderTarget* _Target)
 	DistortionUnit->SetMesh("FullRect");
 	DistortionUnit->SetMaterial("Distortion");
 
-	Option.ScreenSize = GameEngineWindow::GetScreenSize() * 0.1f;
+	Option.ScreenSize = GameEngineWindow::GetScreenSize();
 	DistortionUnit->ShaderResHelper.SetConstantBufferLink("DistortionOption", Option);
 
 	ResultTarget = GameEngineRenderTarget::Create();

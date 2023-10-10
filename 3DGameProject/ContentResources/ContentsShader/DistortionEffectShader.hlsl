@@ -27,6 +27,7 @@ cbuffer DistortionOption : register(b2)
 {
     float4 ScreenSize;
     float4 DistortionValue;
+    float4 MaxPixel;
 };
 
 float4 DistortionEffect_PS(OutPut _Value) : SV_Target0
@@ -36,10 +37,19 @@ float4 DistortionEffect_PS(OutPut _Value) : SV_Target0
 	
     if (0 != MaskColor.a)
     {
-        UV.x += cos(MaskColor.x) / ScreenSize.x * DistortionValue.x * max(0.2, MaskColor.a);
-        UV.y += sin(MaskColor.x) / ScreenSize.y * DistortionValue.y * max(0.2, MaskColor.a);
+        float PixelSizeX = MaxPixel.x / ScreenSize.x;
+        float PixelSizeY = MaxPixel.y / ScreenSize.y;
+        
+        float AddUV_X = (cos(MaskColor.x * DistortionValue.x) * PixelSizeX) * max(0.1245f, MaskColor.a);
+        float AddUV_Y = (sin(MaskColor.x * DistortionValue.y) * PixelSizeY) * max(0.213f, MaskColor.a);
+        
+        UV.x += AddUV_X;
+        UV.y += AddUV_Y;
     }
 	    
+    UV.x = saturate(UV.x);
+    UV.y = saturate(UV.y);
+    
     float4 ResultColor = DiffuseTex.Sample(CLAMPSAMPLER, UV);
     	
 	return ResultColor;

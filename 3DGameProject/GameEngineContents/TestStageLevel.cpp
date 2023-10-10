@@ -49,7 +49,8 @@ void TestStageLevel::Start()
 	{
 		std::shared_ptr<DistortionEffect> Distortion = GetCamera(0)->GetCamTarget()->CreateEffect<DistortionEffect>();
 		Distortion->SetMaskTexture(GetCamera(0)->GetCamAlphaTarget(), 1);	
-		Distortion->SetDistortionValue(16, 9);
+		Distortion->SetDistortionValue(10, 10);
+		Distortion->SetMaxPixelValue(100, 100);
 	}
 
 	StageBaseLevel::Start();
@@ -129,7 +130,7 @@ void TestStageLevel::LevelChangeStart()
 	SetCamera({ 0,0,-500 });
 	CreateStage(AllStageDatas[0]);
 
-	if (false)
+	if (true)
 	{
 		std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
 		Nero->SetUserControllType();
@@ -145,7 +146,7 @@ void TestStageLevel::LevelChangeStart()
 	// 테스트용 코드
 	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 4000, 0));
 	GetDirectionalLight()->GetTransform()->SetWorldRotation(float4(45, 0, 0));
-	GetDirectionalLight()->SetLightColor(float4(0.4f, 0.4f, 0.4f));
+	//GetDirectionalLight()->SetLightColor(float4(0.4f, 0.4f, 0.4f));
 
 	std::shared_ptr<GameEngineLight> SpotLight = CreateSpotLight(float4(0, 400, 0), ShadowTextureScale::S_512, 2000, 90);
 	SpotLight->GetTransform()->SetLocalRotation(float4(90, 0, 0));

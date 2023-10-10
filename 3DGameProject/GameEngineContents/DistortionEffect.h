@@ -9,6 +9,7 @@ class DistortionEffect : public GameEnginePostProcess
 	public:
 		float4 ScreenSize = float4::ZERO;
 		float4 DistortionValue = float4(1, 1);
+		float4 PixelSizeValue = float4(10, 10);
 	};
 
 public:
@@ -32,6 +33,12 @@ public:
 	{
 		Option.DistortionValue.x = _ValueX;
 		Option.DistortionValue.y = _ValueY;
+	}
+
+	inline void SetMaxPixelValue(float _ValueX, float _ValueY)
+	{
+		Option.PixelSizeValue.x = _ValueX;
+		Option.PixelSizeValue.y = _ValueY;
 	}
 
 protected:
