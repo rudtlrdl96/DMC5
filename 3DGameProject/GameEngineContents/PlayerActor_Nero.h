@@ -208,6 +208,7 @@ private:
 	std::shared_ptr<class Player_Snatch> Snatch = nullptr;
 
 	GameEngineFSM FSM;
+	float4 LockOnPosition = float4::ZERO;
 	int ExceedLevel = 0;	// 익시드 단계
 	float WalkSpeed = 300;
 	float RunSpeed = 550;

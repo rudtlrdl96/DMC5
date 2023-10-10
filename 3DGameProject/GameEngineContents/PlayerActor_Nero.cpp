@@ -48,6 +48,9 @@ void PlayerActor_Nero::Start()
 			SetArm(ArmValue);
 		});
 	LinkData_UpdatePacket<int>(ExceedLevel);
+	LinkData_UpdatePacket<float>(LockOnPosition.x);
+	LinkData_UpdatePacket<float>(LockOnPosition.y);
+	LinkData_UpdatePacket<float>(LockOnPosition.z);
 }
 
 void PlayerActor_Nero::PlayerLoad()
@@ -2551,12 +2554,7 @@ void PlayerActor_Nero::PlayerLoad()
 				RotationToTarget();
 				WeaponIdle();
 				Col_Attack->On();
-				Col_Attack->SetAttackData(DamageType::Snatch, 0, [=]
-				{
-					ChangeState(FSM_State_Nero::Nero_Snatch_Pull);
-					Snatch->SnatchOff();
-				});
-				//Col_Attack->SetAttackData(DamageType::Snatch, 0, std::bind(&PlayerActor_Nero::ChangeState, this, FSM_State_Nero::Nero_Snatch_Pull));
+				Col_Attack->SetAttackData(DamageType::Snatch, 0, std::bind(&PlayerActor_Nero::ChangeState, this, FSM_State_Nero::Nero_Snatch_Pull));
 				Col_Attack->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
 				Col_Attack->GetTransform()->SetLocalScale({100, 100, 100});
 				if (nullptr == LockOnEnemyTransform)
@@ -2568,6 +2566,7 @@ void PlayerActor_Nero::PlayerLoad()
 					SnatchDir = LockOnEnemyTransform->GetWorldPosition() - GetTransform()->GetWorldPosition();
 					SnatchDir.Normalize();
 				}
+				LockOnPosition = SnatchDir;
 				Renderer->ChangeAnimation("pl0000_Snatch", true);
 				Snatch->SnatchOn(SnatchDir);
 				SnatchTimer = 0;
@@ -2607,6 +2606,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Snatch Pull
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Snatch_Pull,
 			.Start = [=] {
+				Snatch->SnatchOff();
 				RotationToTarget();
 				Renderer->ChangeAnimation("pl0000_Snatch_Pull");
 				InputCheck = false;
@@ -2682,11 +2682,7 @@ void PlayerActor_Nero::PlayerLoad()
 				RotationToTarget();
 				WeaponIdle();
 				Col_Attack->On();
-				Col_Attack->SetAttackData(DamageType::Snatch, 0, [=]
-				{
-					ChangeState(FSM_State_Nero::Nero_Snatch_Pull_Air);
-					Snatch->SnatchOff();
-				});
+				Col_Attack->SetAttackData(DamageType::Snatch, 0, std::bind(&PlayerActor_Nero::ChangeState, this, FSM_State_Nero::Nero_Snatch_Pull_Air));
 				Col_Attack->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
 				Col_Attack->GetTransform()->SetLocalScale({ 100, 100, 100 });
 				if (nullptr == LockOnEnemyTransform)
@@ -2698,6 +2694,7 @@ void PlayerActor_Nero::PlayerLoad()
 					SnatchDir = LockOnEnemyTransform->GetWorldPosition() - GetTransform()->GetWorldPosition();
 					SnatchDir.Normalize();
 				}
+				LockOnPosition = SnatchDir;
 				Renderer->ChangeAnimation("pl0000_Air_Snatch", true);
 				Snatch->SnatchOn(SnatchDir);
 				InputCheck = false;
@@ -2732,6 +2729,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Snatch Pull Air
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Snatch_Pull_Air,
 			.Start = [=] {
+				Snatch->SnatchOff();
 				RotationToTarget();
 				Renderer->ChangeAnimation("pl0000_Air_Snatch_Pull", true);
 				InputCheck = false;
@@ -3471,7 +3469,20 @@ void PlayerActor_Nero::NetLoad()
 		Renderer_Overture->ChangeAnimation("wp00_010_Shoot.fbx");
 		Renderer_Overture->Off();
 	}
+	// Snatch 생성
+	{
+		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+			{
+				"Character", "Player", "Nero", "Wire"
+			});
+		if (nullptr == GameEngineFBXMesh::Find("Nero_WireArm.FBX"))
+		{
+			GameEngineFBXMesh::Load(Path + "\\Nero_WireArm.fbx");
+		}
 
+		Snatch = GetLevel()->CreateActor<Player_Snatch>();
+		Snatch->GetTransform()->SetParent(GetTransform());
+	}
 	SetHuman();
 	WeaponIdle();
 	Col_Attack->Off();
@@ -4210,12 +4221,8 @@ void PlayerActor_Nero::NetLoad()
 		// Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Shoot,
 			.Start = [=] {
-				// 아직 미완성
 				EffectSystem->PlayFX("BR_Shoot.effect");
 				Col_Attack->SetAttackData(DamageType::Light, 54, std::bind(&GameEngineObjectBase::Off, Col_Attack));
-				Col_Attack->GetTransform()->SetLocalPosition({ 0, 100, 1000 });
-				Col_Attack->GetTransform()->SetLocalScale({ 50, 50, 2000 });
-				Col_Attack->On();
 				BlueRoseOn();
 				Renderer->ChangeAnimation("pl0000_BR_Shoot", true);
 			},
@@ -4231,9 +4238,6 @@ void PlayerActor_Nero::NetLoad()
 				// 아직 미완성
 				EffectSystem->PlayFX("BR_Shoot.effect");
 				Col_Attack->SetAttackData(DamageType::Light, 54, std::bind(&GameEngineObjectBase::Off, Col_Attack));
-				Col_Attack->GetTransform()->SetLocalPosition({ 0, 100, 1000 });
-				Col_Attack->GetTransform()->SetLocalScale({ 50, 50, 2000 });
-				Col_Attack->On();
 				BlueRoseOn();
 				Renderer->ChangeAnimation("pl0000_BR_Air_Shoot", true);
 			},
@@ -4435,17 +4439,12 @@ void PlayerActor_Nero::NetLoad()
 		// Snatch Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Snatch_Shoot,
 			.Start = [=] {
-				// 아직 미완성
 				WeaponIdle();
-				Col_Attack->On();
 				Col_Attack->SetAttackData(DamageType::Snatch, 0);
-				Col_Attack->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
-				Col_Attack->GetTransform()->SetLocalScale({100, 100, 100});
-				SnatchDir = GetTransform()->GetWorldForwardVector();
 				Renderer->ChangeAnimation("pl0000_Snatch", true);
+				Snatch->SnatchOn(LockOnPosition);
 			},
 			.Update = [=](float _DeltaTime) {
-				Col_Attack->GetTransform()->AddWorldPosition(SnatchDir * _DeltaTime * SnatchSpeed);
 			},
 			.End = [=] {
 				Col_Attack->Off();
@@ -4455,6 +4454,7 @@ void PlayerActor_Nero::NetLoad()
 		// Snatch Pull
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Snatch_Pull,
 			.Start = [=] {
+				Snatch->SnatchOff();
 				Renderer->ChangeAnimation("pl0000_Snatch_Pull");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -4477,26 +4477,21 @@ void PlayerActor_Nero::NetLoad()
 		// Snatch Shoot Air
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Snatch_Shoot_Air,
 			.Start = [=] {
-				// 아직 미완성
 				WeaponIdle();
-				Col_Attack->On();
 				Col_Attack->SetAttackData(DamageType::Snatch, 0);
-				Col_Attack->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
-				Col_Attack->GetTransform()->SetLocalScale({ 100, 100, 100 });
-				SnatchDir = GetTransform()->GetWorldForwardVector();
 				Renderer->ChangeAnimation("pl0000_Air_Snatch", true);
+				Snatch->SnatchOn(LockOnPosition);
 			},
 			.Update = [=](float _DeltaTime) {
-				Col_Attack->GetTransform()->AddWorldPosition(SnatchDir * _DeltaTime * SnatchSpeed);
 			},
 			.End = [=] {
-				Col_Attack->Off();
 			}
 			});
 
 		// Snatch Pull Air
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Snatch_Pull_Air,
 			.Start = [=] {
+				Snatch->SnatchOff();
 				Renderer->ChangeAnimation("pl0000_Air_Snatch_Pull", true);
 			},
 			.Update = [=](float _DeltaTime) {
