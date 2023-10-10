@@ -1,5 +1,10 @@
 #pragma once
-
+enum SnatchState
+{
+	Snatch_Off,
+	Snatch_Shoot,
+	Snatch_Back,
+};
 // Ό³Έν :
 class Player_Snatch : public GameEngineActor
 {
@@ -22,7 +27,9 @@ protected:
 	void Update(float _DeltaTime);
 
 private:
-	std::shared_ptr<class GameEngineFBXRenderer> Renderer_Snatch = nullptr;
-
+	GameEngineFSM FSM;
+	float FSMTimer = 0;
+	std::shared_ptr<class EffectRenderer> Renderer_Snatch = nullptr;
+	float4 Dir;
 };
 
