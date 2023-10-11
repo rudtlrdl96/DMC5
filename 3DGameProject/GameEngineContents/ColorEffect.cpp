@@ -1,6 +1,8 @@
 #include "PrecompileHeader.h"
 #include "ColorEffect.h"
 
+ColorEffect* ColorEffect::CurColorEffect = nullptr;
+
 ColorEffect::ColorEffect() 
 {
 }

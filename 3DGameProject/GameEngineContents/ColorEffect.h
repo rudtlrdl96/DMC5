@@ -11,6 +11,20 @@ class ColorEffect : public GameEnginePostProcess
 		float4 ColorEnd = float4::ZERO;
 		float4 ColorTime = float4::ZERO;
 	};
+
+	static ColorEffect* CurColorEffect;
+
+public:
+	static ColorEffect* GetColorEffect()
+	{
+		if (nullptr == CurColorEffect)
+		{
+			MsgAssert("ColorEffect PostEffect를 생성하지 않고 받아오려 했습니다.");
+		}
+
+		return CurColorEffect;
+	}
+
 public:
 	// constrcuter destructer
 	ColorEffect();
@@ -68,11 +82,13 @@ private:
 
 	void LevelChangeStart() override
 	{
+		CurColorEffect = this;
 		ResultTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 	}
 
 	void LevelChangeEnd() override
 	{
+		CurColorEffect = nullptr;
 		ResultTarget->ReleaseTextures();
 	}
 };
