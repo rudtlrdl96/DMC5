@@ -2,6 +2,7 @@
 #include "Item_DevilBreaker.h"
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
+#include "EffectRenderer.h"
 Item_DevilBreaker::Item_DevilBreaker() 
 {
 }
@@ -14,12 +15,15 @@ void Item_DevilBreaker::SetDevilBreaker(DevilBreaker _Value)
 {
 	Type = _Value;
 	ArmRenderer = CreateComponent<GameEngineFBXRenderer>();
+	//IconRenderer = CreateComponent<EffectRenderer>();
+	//IconRenderer->RectInit();
 	switch (_Value)
 	{
 	case DevilBreaker::None:
 		break;
 	case DevilBreaker::Overture:
 		ArmRenderer->SetFBXMesh("OvertureArmUI.FBX", "FBX");
+		
 		break;
 	case DevilBreaker::Gerbera:
 		ArmRenderer->SetFBXMesh("GerberaArmUI.FBX", "FBX");

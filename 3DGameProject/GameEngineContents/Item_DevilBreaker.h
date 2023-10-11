@@ -24,6 +24,7 @@ protected:
 private:
 	DevilBreaker Type = DevilBreaker::None;
 	std::shared_ptr<class GameEngineFBXRenderer> ArmRenderer = nullptr;
+	std::shared_ptr<class EffectRenderer> IconRenderer = nullptr;
 	std::shared_ptr<class EffectRenderer> NameRenderer = nullptr;
 	std::shared_ptr<class GameEngineCollision> Col = nullptr;
 };
