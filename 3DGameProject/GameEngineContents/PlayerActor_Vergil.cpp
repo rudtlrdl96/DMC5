@@ -1443,6 +1443,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				TimeEvent.AddEvent(1.78f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
 					Col_Attack->Off();
+					PlayerCamera::Shake(10.0f, 0.5f, 0.1f, 0.1f);
 				});
 				TimeEvent.AddEvent(1.83f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{

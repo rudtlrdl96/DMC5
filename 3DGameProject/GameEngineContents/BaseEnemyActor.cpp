@@ -64,7 +64,7 @@ void BaseEnemyActor::Update(float _DeltaTime)
 		MonsterAttackCollision->Off();
 		PhysXCapsule->Off();
 	}
-	else
+	else if (false == PhysXCapsule->IsUpdate())
 	{
 		PhysXCapsule->On();
 	}
