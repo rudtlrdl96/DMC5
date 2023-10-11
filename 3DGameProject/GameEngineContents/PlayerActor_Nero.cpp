@@ -3034,6 +3034,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Damage Light
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Light,
 			.Start = [=] {
+				SetInvincibility(0.2f);
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -3067,6 +3068,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Damage Heavy
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Heavy,
 			.Start = [=] {
+				SetInvincibility(0.6f);
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -3093,6 +3095,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Damage Fly
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Fly,
 			.Start = [=] {
+				SetInvincibility(9999.0f);
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -3122,6 +3125,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Damage Fall
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Fall,
 			.Start = [=] {
+				SetInvincibility(9999.0f);
 				PhysXCapsule->SetPush(float4::DOWN * FlyDownForce);
 				PhysXCapsule->TurnOnGravity();
 				Renderer->ChangeAnimation("pl0000_Damage_Supine_Fall_Loop");
@@ -3145,6 +3149,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Damage Ground
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Ground,
 			.Start = [=] {
+				SetInvincibility(0.5f);
 				UseDoubleJump = false;
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -3205,6 +3210,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Damage Death1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Death_1,
 			.Start = [=] {
+				SetInvincibility(9999.0f);
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -3239,6 +3245,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Damage Fly Death
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Fly_Death,
 			.Start = [=] {
+				SetInvincibility(9999.0f);
 				Renderer->ChangeAnimation("pl0000_Damage_Away_Death_Ground", true);
 			},
 			.Update = [=](float _DeltaTime) {
@@ -4235,7 +4242,6 @@ void PlayerActor_Nero::NetLoad()
 		// Air Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_AirShoot,
 			.Start = [=] {
-				// 아직 미완성
 				EffectSystem->PlayFX("BR_Shoot.effect");
 				Col_Attack->SetAttackData(DamageType::Light, 54, std::bind(&GameEngineObjectBase::Off, Col_Attack));
 				BlueRoseOn();
@@ -4357,7 +4363,6 @@ void PlayerActor_Nero::NetLoad()
 		// BusterArm Catch
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Catch,
 			.Start = [=] {
-				// 아직 미완성
 				Col_Attack->SetAttackData(DamageType::Buster, 0);
 				WeaponIdle();
 				EffectSystem->PlayFX("Buster_Catch.effect");
