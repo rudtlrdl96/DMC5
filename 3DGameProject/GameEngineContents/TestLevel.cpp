@@ -17,7 +17,7 @@
 #include "TestObject.h"
 #include "ColorEffect.h"
 #include "JudgementCut.h"
-
+#include "Item_DevilBreaker.h"
 #include "FXAA_Effect.h"
 
 TestLevel* TestLevel::TestLevelPtr = nullptr;
@@ -89,12 +89,24 @@ void TestLevel::LevelChangeStart()
 	IsDebugSwitch();
 	SetLevelSceneGravity(2000);
 
-	if (false)
+	if (true)
 	{
 		std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
 		Nero->GetPhysXComponent()->SetWorldPosition({ -1200, 100, -1300 });
 		Nero->SetUserControllType();
 		NetworkManager::LinkNetwork(Nero.get(), this);
+
+		std::shared_ptr<Item_DevilBreaker> Item_Overture = CreateActor<Item_DevilBreaker>();
+		Item_Overture->SetDevilBreaker(DevilBreaker::Overture);
+		Item_Overture->GetTransform()->SetLocalPosition({ -1000, 50, -1000 });
+
+		std::shared_ptr<Item_DevilBreaker> Item_Gerbera = CreateActor<Item_DevilBreaker>();
+		Item_Gerbera->SetDevilBreaker(DevilBreaker::Gerbera);
+		Item_Gerbera->GetTransform()->SetLocalPosition({ -1200, 50, -1000 });
+
+		std::shared_ptr<Item_DevilBreaker> Item_Buster = CreateActor<Item_DevilBreaker>();
+		Item_Buster->SetDevilBreaker(DevilBreaker::BusterArm);
+		Item_Buster->GetTransform()->SetLocalPosition({ -800, 50, -1000 });
 	}
 	else
 	{

@@ -247,6 +247,10 @@
     </ClInclude>
     <ClInclude Include="FXData.h" />
     <ClInclude Include="FXSystem.h" />
+    <ClInclude Include="Item_DevilBreaker.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="NeroItemGlass.h">
       <SubType>
       </SubType>
@@ -782,6 +786,10 @@
     </ClCompile>
     <ClCompile Include="FXData.cpp" />
     <ClCompile Include="FXSystem.cpp" />
+    <ClCompile Include="Item_DevilBreaker.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="NeroItemGlass.cpp">
       <SubType>
       </SubType>

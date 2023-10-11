@@ -199,7 +199,7 @@ protected:
 	void PlayerLoad();
 	void NetLoad();
 	void Update_Character(float _DeltaTime) override;
-
+	void ItemColCheck();
 	void LightDamage() override;
 	void HeavyDamage() override;
 private:
@@ -223,7 +223,7 @@ private:
 	bool UseDoubleJump = false;
 	bool IsExActTiming = false;	// 익시드 타이밍 여부
 	bool IsMaxActTiming = false;	// 멕스 엑트 타이밍 여부
-	DevilBreaker CurDevilBreaker = DevilBreaker::Overture;
+	DevilBreaker CurDevilBreaker = DevilBreaker::None;
 	static std::list<DevilBreaker> BreakerList;
 
 	// 검 버튼을 입력한 경우 실행

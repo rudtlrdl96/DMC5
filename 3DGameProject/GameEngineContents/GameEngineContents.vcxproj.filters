@@ -460,6 +460,9 @@
     <ClInclude Include="DecoLight.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClInclude>
+    <ClInclude Include="Item_DevilBreaker.h">
+      <Filter>Actor\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -912,6 +915,9 @@
     <ClCompile Include="Fountain.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClCompile>
+    <ClCompile Include="Item_DevilBreaker.cpp">
+      <Filter>Actor\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
@@ -1192,6 +1198,9 @@
     </Filter>
     <Filter Include="Actor\Stage\FieldMap\FieldMapObj\FunctionObj">
       <UniqueIdentifier>{398524c7-d8ae-4d50-a2b0-75dfcca4ab68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Item">
+      <UniqueIdentifier>{f9ad0c49-b904-471b-86a4-a7aae7ee8146}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
