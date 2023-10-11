@@ -152,35 +152,35 @@ void TestStageLevel::LevelChangeStart()
 		GameEngineTexture::Load(Path + "\\DistortionSample_02.jpg");
 	}
 
-	{
-		std::shared_ptr<EffectRenderer> NewEffect = CreateActor<GameEngineActor>()->CreateComponent<EffectRenderer>();
-		NewEffect->RectInit("Effect_2D");
-
-		NewEffect->GetTransform()->SetLocalPosition(float4(-300, 300, 0));
-		NewEffect->GetTransform()->SetLocalScale(float4(300, 300, 100));
-		NewEffect->SetTexture("DiffuseTexture", "Effect_Texture_03.tga");
-		NewEffect->SetDistortionTexture("DistortionSample_00.jpg");	
-	}
-
-	{
-		std::shared_ptr<EffectRenderer> NewEffect = CreateActor<GameEngineActor>()->CreateComponent<EffectRenderer>();
-		NewEffect->RectInit("Effect_2D");
-
-		NewEffect->GetTransform()->SetLocalPosition(float4(0, 300, 0));
-		NewEffect->GetTransform()->SetLocalScale(float4(300, 300, 300));
-		NewEffect->SetTexture("DiffuseTexture", "Effect_Texture_03.tga");
-		NewEffect->SetDistortionTexture("DistortionSample_01.jpg");
-	}
-
-	{
-		std::shared_ptr<EffectRenderer> NewEffect = CreateActor<GameEngineActor>()->CreateComponent<EffectRenderer>();
-		NewEffect->RectInit("Effect_2D");
-
-		NewEffect->GetTransform()->SetLocalPosition(float4(300, 300, 0));
-		NewEffect->GetTransform()->SetLocalScale(float4(300, 300, 100));
-		NewEffect->SetTexture("DiffuseTexture", "Effect_Texture_03.tga");
-		NewEffect->SetDistortionTexture("DistortionSample_02.jpg");
-	}
+	//{
+	//	std::shared_ptr<EffectRenderer> NewEffect = CreateActor<GameEngineActor>()->CreateComponent<EffectRenderer>();
+	//	NewEffect->RectInit("Effect_2D");
+	//
+	//	NewEffect->GetTransform()->SetLocalPosition(float4(-300, 300, 0));
+	//	NewEffect->GetTransform()->SetLocalScale(float4(300, 300, 100));
+	//	NewEffect->SetTexture("DiffuseTexture", "Effect_Texture_03.tga");
+	//	NewEffect->SetDistortionTexture("DistortionSample_00.jpg");	
+	//}
+	//
+	//{
+	//	std::shared_ptr<EffectRenderer> NewEffect = CreateActor<GameEngineActor>()->CreateComponent<EffectRenderer>();
+	//	NewEffect->RectInit("Effect_2D");
+	//
+	//	NewEffect->GetTransform()->SetLocalPosition(float4(0, 300, 0));
+	//	NewEffect->GetTransform()->SetLocalScale(float4(300, 300, 300));
+	//	NewEffect->SetTexture("DiffuseTexture", "Effect_Texture_03.tga");
+	//	NewEffect->SetDistortionTexture("DistortionSample_01.jpg");
+	//}
+	//
+	//{
+	//	std::shared_ptr<EffectRenderer> NewEffect = CreateActor<GameEngineActor>()->CreateComponent<EffectRenderer>();
+	//	NewEffect->RectInit("Effect_2D");
+	//
+	//	NewEffect->GetTransform()->SetLocalPosition(float4(300, 300, 0));
+	//	NewEffect->GetTransform()->SetLocalScale(float4(300, 300, 100));
+	//	NewEffect->SetTexture("DiffuseTexture", "Effect_Texture_03.tga");
+	//	NewEffect->SetDistortionTexture("DistortionSample_02.jpg");
+	//}
 
 
 	//CreateActor<ShaderTestActor>()->GetTransform()->SetLocalPosition(float4(0, 200, 0));

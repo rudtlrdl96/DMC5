@@ -56,6 +56,7 @@ TextureCube ReflectionTexture : register(t3); // Reflection Cubemap
 Texture2D WaterNoiseTexture : register(t4); // WaterNoise
 
 SamplerState ENGINEBASE : register(s0);
+SamplerState CUBEMAPSAMPLER : register(s1);
 
 struct DeferredOutPut
 {
@@ -102,7 +103,7 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     {
         Result.NorTarget = _Input.NORMAL;
     }
-        
+         
     // 반사량 계산 공식 러프니스 값에 따라서 결정된다        
     float roughness = 1.0 - NrmrData.r; // smoothness는 러프니스 값입니다.
     float3 reflection = reflect(AllLight[0].LightRevDir.xyz, Result.NorTarget.xyz); // 빛의 반사 방향 계산
@@ -116,23 +117,24 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     float3 CameraView = normalize(CameraPos - RefViewPos);
     
     // 반사벡터
-    float3 refnormal = Result.NorTarget.xyz;
+    float4 refnormal = normalize(float4(Result.NorTarget.xyz, 0));
                 
+    // Floor Water Noise Option
     if (0 != BaseColor.g)
     {
-        refnormal.xyz = NoiseWaterNormal(_Input.TEXCOORD.xy, WaterNoiseTexture, ENGINEBASE);
+        refnormal.xyz = (NoiseWaterNormal(_Input.TEXCOORD.xy, WaterNoiseTexture, ENGINEBASE));
     }
     
     // Point lobe in off-specular peak direction
-    refnormal = GetOffSpecularPeakReflectionDir(refnormal, CameraView, roughness);
+    refnormal.xyz = GetOffSpecularPeakReflectionDir(refnormal.xyz, CameraView, roughness);
     
     // ReflectionVector    
-    float3 refvector = mul(float4(reflect(refnormal, CameraView), 0.0f), AllLight[0].CameraViewInverseMatrix).xyz;
+    float3 refvector = mul(float4(reflect(refnormal.xyz, CameraView), 0.0f), AllLight[0].CameraViewInverseMatrix).xyz;
     
     // 축 반전
-    //refvector.x = -refvector.x;
+    //refvector.yz = -refvector.zy;
         
-    float4 ReflectionColor = ReflectionTexture.Sample(ENGINEBASE, normalize(refvector));
+    float4 ReflectionColor = ReflectionTexture.Sample(CUBEMAPSAMPLER, normalize(refvector));
     //float4 ReflectionColor = ReflectionTexture.Sample(ENGINEBASE, refvector);
     
     // 계산된 메탈릭 값

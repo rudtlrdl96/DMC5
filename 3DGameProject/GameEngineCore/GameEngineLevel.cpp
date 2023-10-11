@@ -100,6 +100,7 @@ void GameEngineLevel::LevelLightInit()
 		DirectionalLight->ShadowRange.y = 8192 * 2;
 		DirectionalLight->LightDataValue.LightColor = float4(1.0f, 1.0f, 1.0f);
 		DirectionalLight->SetLightRange(5000.0f);
+		DirectionalLight->DynamicShadowOn();
 	}
 }
 
