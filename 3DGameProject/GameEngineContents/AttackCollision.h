@@ -1,7 +1,7 @@
 #pragma once
 #include <GameEngineCore/GameEngineCollision.h>
 #include "ContentsEnum.h"
-
+#include "RankUI.h"
 class DamageData
 {
 public:
@@ -23,6 +23,10 @@ public:
 	AttackCollision& operator=(const AttackCollision& _Other) = delete;
 	AttackCollision& operator=(AttackCollision&& _Other) noexcept = delete;
 
+	void SetIsPlayerCollision()
+	{
+		IsPlayerCollision = true;
+	}
 	// 충돌체크시 항상 실행되는 콜백함수를 지정
 	void SetHitStopCallBack(std::function<void(float)> _CallBack)
 	{
@@ -38,6 +42,10 @@ public:
 		if (nullptr != CallBack_HitStop)
 		{
 			CallBack_HitStop(HitStopTime);
+		}
+		if (true == IsPlayerCollision)
+		{
+			RankUI::GetRankInst()->AddRankScore(Data.DamageValue / 3);
 		}
 		return Data;
 	}
@@ -136,5 +144,6 @@ private:
 	std::function<void()> CallBack = nullptr;
 	std::function<void(float)> CallBack_HitStop = nullptr;
 	float HitStopTime = 0;
+	bool IsPlayerCollision = false;
 };
 

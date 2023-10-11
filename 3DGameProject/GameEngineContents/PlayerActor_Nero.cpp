@@ -15,6 +15,7 @@
 #include "FXSystem.h"
 #include "PlayerCamera.h"
 #include "Player_Snatch.h"
+#include "RankUI.h"
 std::list<DevilBreaker> PlayerActor_Nero::BreakerList;
 PlayerActor_Nero::~PlayerActor_Nero()
 {
@@ -57,7 +58,7 @@ void PlayerActor_Nero::PlayerLoad()
 {
 	GetLevel()->CreateActor<NeroItemGlass>();
 	HPRender = GetLevel()->CreateActor<NeroHPUI>();
-
+	GetLevel()->CreateActor <RankUI>();
 	// Effect »ý¼º
 	{
 		EffectSystem = CreateComponent<FXSystem>();

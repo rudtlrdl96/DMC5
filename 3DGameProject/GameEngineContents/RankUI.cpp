@@ -95,7 +95,7 @@ void RankUI::Update(float _DeltaTime)
 	if (GetLiveTime() > 5.0f)
 	{
 		DisApperValue = true;
-		RankFSM.ChangeState(RankState::Rank_WaitState);
+		//RankFSM.ChangeState(RankState::Rank_WaitState);
 		RankScore = 0;
 		ResetLiveTime();
 		DisApperValue = true;

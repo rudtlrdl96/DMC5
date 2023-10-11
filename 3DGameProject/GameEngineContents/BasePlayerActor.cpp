@@ -173,6 +173,7 @@ void BasePlayerActor::Start()
 	Col_Attack->Off();
 	Col_Attack->SetColType(ColType::OBBBOX3D);
 	Col_Attack->SetHitStopCallBack(std::bind(&BasePlayerActor::StopTime, this, std::placeholders::_1));
+	Col_Attack->SetIsPlayerCollision();
 
 	LinkData_UpdatePacket<bool>(DTValue, [this](bool _BeforeData)
 	{

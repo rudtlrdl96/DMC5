@@ -10,6 +10,7 @@
 #include "JudgementCut.h"
 #include "ColorEffect.h"
 #include "PlayerCamera.h"
+#include "RankUI.h"
 PlayerActor_Vergil::~PlayerActor_Vergil()
 {
 }
@@ -18,7 +19,7 @@ void PlayerActor_Vergil::Start()
 {
 	BasePlayerActor::Start();
 	SetNetObjectType(Net_ActorType::Vergil);
-
+	GetLevel()->CreateActor<RankUI>();
 	Effect_JC = JudgementCut::GetJudgementCutEffect();
 	Effect_Color = ColorEffect::GetColorEffect();
 	//NetControllType::NetControll으로 변경될 때 아래 콜백이 실행됩니다. 
