@@ -5,6 +5,7 @@
 #include "GameEnginePixelShader.h"
 #include "GameEngineGeometryShader.h"
 #include "GameEngineStructuredBuffer.h"
+#include "GameEngineComputeShader.h"
 
 GameEngineShader::GameEngineShader() 
 {
@@ -164,7 +165,30 @@ void GameEngineShader::ShaderResCheck()
 			ResHelper.CreateStructuredBufferSetter(Setter);
 			break;
 		}
+		case D3D_SIT_UAV_RWSTRUCTURED:
+		{
+			// 스트럭처드 버퍼는 텍스처 슬롯을 사용합니다.
+			// 기본적으로 텍스처로 판단합니다.
+
+			ID3D11ShaderReflectionConstantBuffer* SBufferPtr = CompileInfo->GetConstantBufferByName(ResDesc.Name);
+			D3D11_SHADER_BUFFER_DESC BufferDesc;
+			SBufferPtr->GetDesc(&BufferDesc);
+
+			// RW버퍼로 
+
+			std::shared_ptr<GameEngineStructuredBuffer> Res = GameEngineStructuredBuffer::CreateAndFind(Name, BufferDesc, 0);
+
+			GameEngineStructuredBufferSetter Setter;
+			Setter.ParentShader = this;
+			Setter.Name = UpperName;
+			Setter.BindPoint = ResDesc.BindPoint;
+			Setter.Res = Res;
+
+			ResHelper.CreateStructuredBufferSetter(Setter);
+			break;
+		}
 		default:
+			MsgAssert(std::string(ResDesc.Name) + "처리할수 없는 리소스 입니다");
 			break;
 		}
 
@@ -204,6 +228,19 @@ void GameEngineShader::AutoCompile(GameEngineFile& _File)
 	}
 
 	{
+		size_t EntryIndex = ShaderCode.find("_CS(");
+		if (EntryIndex != std::string::npos)
+		{
+			{
+				size_t FirstIndex = ShaderCode.find_last_of(" ", EntryIndex);
+				std::string EntryName = ShaderCode.substr(FirstIndex + 1, EntryIndex - FirstIndex - 1);
+				EntryName += "_CS";
+				GameEngineComputeShader::Load(_File.GetFullPath(), EntryName);
+			}
+		}
+	}
+
+	{
 		size_t EntryIndex = ShaderCode.find("_PS(");
 		// unsigned __int64 == max값이 std::string::npos
 		if (EntryIndex != std::string::npos)
@@ -232,5 +269,4 @@ void GameEngineShader::AutoCompile(GameEngineFile& _File)
 			}
 		}
 	}
-
 }

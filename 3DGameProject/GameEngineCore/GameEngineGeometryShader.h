@@ -33,15 +33,9 @@ public:
 
 	void Setting() override;
 
-	RenderPath GetRenderPath()
-	{
-		return Path;
-	}
-
 protected:
 
 private:
-	RenderPath Path = RenderPath::Forward;
 	ID3D11GeometryShader* ShaderPtr = nullptr;
 	void ShaderLoad(const std::string_view& _Path, const std::string_view& _EntryPoint, UINT _VersionHigh = 5, UINT _VersionLow = 0);
 

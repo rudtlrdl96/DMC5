@@ -27,3 +27,5 @@
 #include <DirectXPackedVector.h>
 
 #pragma comment (lib, "ws2_32") // <= 윈도우 서버 사용을 위한 라이브러리
+
+using uint = unsigned int;

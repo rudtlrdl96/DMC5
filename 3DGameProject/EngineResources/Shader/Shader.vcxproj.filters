@@ -65,6 +65,7 @@
       <Filter>Deferred</Filter>
     </FxCompile>
     <FxCompile Include="Particle.hlsl" />
+    <FxCompile Include="ParticleUpdate.fx" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">

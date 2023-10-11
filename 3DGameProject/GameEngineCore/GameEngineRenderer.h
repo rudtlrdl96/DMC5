@@ -10,6 +10,26 @@ enum class RenderPath
 	Alpha,
 };
 
+class GameEngineComputeUnit : public GameEngineObjectBase, public std::enable_shared_from_this<GameEngineComputeUnit>
+{
+public:
+	GameEngineShaderResHelper ShaderResHelper;
+	std::shared_ptr<class GameEngineComputeShader> ComputeShader = nullptr;
+
+	// 쓰
+	UINT                            m_iGroupX = 0;
+	UINT                            m_iGroupY = 0;
+	UINT                            m_iGroupZ = 0;
+
+	// 128
+	UINT                      m_iGroupPerThreadX = 1;
+	UINT                      m_iGroupPerThreadY = 1;
+	UINT                      m_iGroupPerThreadZ = 1;
+
+	void SetComputeShader(const std::string_view& _Name);
+	void Execute();
+};
+
 class GameEngineRenderUnit : public GameEngineObjectBase, public std::enable_shared_from_this<GameEngineRenderUnit>
 {
 public:
@@ -48,7 +68,6 @@ private:
 	std::shared_ptr<class GameEngineInputLayOut> ShadowInputLayOutPtr = nullptr;
 };
 
-
 class RenderBaseValue
 {
 public:
@@ -63,6 +82,7 @@ public:
 	int IsSpecular = 0;
 	float4 ScreenScale;
 	float4 Mouse;
+	float4 NoiseResolution;
 };
 
 // 설명 :
@@ -89,17 +109,17 @@ public:
 	void SetMaterial(const std::string_view& _Name, int _index = 0);
 	void SetMesh(const std::string_view& _Name, int _index = 0);
 
-	std::shared_ptr<GameEngineRenderUnit> CreateRenderUnit(std::string_view _Mesh, std::string_view _Material);
+	std::shared_ptr<class GameEngineRenderUnit> CreateRenderUnit(std::string_view _Mesh, std::string_view _Material);
 
 	// void SetMesh(const std::string_view& _Name, int _index = 0);
 
 	// 랜더유니트를 만든다.
-	std::shared_ptr<GameEngineRenderUnit> CreateRenderUnit();
+	std::shared_ptr<class GameEngineRenderUnit> CreateRenderUnit();
 
-	std::shared_ptr<GameEngineRenderUnit> CreateRenderUnitToIndex(unsigned int _Index);
+	std::shared_ptr<class GameEngineRenderUnit> CreateRenderUnitToIndex(unsigned int _Index);
 
 	// 여기서 리턴된 파이프라인을 수정하면 이 파이프라인을 사용하는 모든 애들이 바뀌게 된다.
-	std::shared_ptr<GameEngineMaterial> GetMaterial(int _index = 0);
+	std::shared_ptr<class GameEngineMaterial> GetMaterial(int _index = 0);
 
 	// 이걸 사용하게되면 이 랜더러의 유니트는 자신만의 클론 파이프라인을 가지게 된다.
 	// std::shared_ptr<GameEngineMaterial> GetPipeLineClone(int _index = 0);

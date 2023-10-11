@@ -10,6 +10,7 @@
 #include "GameEngineShaderResHelper.h"
 #include "GameEngineMesh.h"
 #include "GameEngineInputLayOut.h"
+#include "GameEngineComputeShader.h"
 
 GameEngineRenderUnit::GameEngineRenderUnit()
 {
@@ -19,6 +20,27 @@ GameEngineRenderUnit::GameEngineRenderUnit()
 void GameEngineRenderUnit::SetRenderer(GameEngineRenderer* _Renderer)
 {
 	ParentRenderer = _Renderer;
+}
+
+void GameEngineComputeUnit::Execute()
+{
+	ShaderResHelper.Setting();
+	ComputeShader->Setting();
+	GameEngineDevice::GetContext()->Dispatch(m_iGroupX, m_iGroupY, m_iGroupZ);
+	ShaderResHelper.AllResourcesReset();
+}
+
+void GameEngineComputeUnit::SetComputeShader(const std::string_view& _Name)
+{
+	ComputeShader = GameEngineComputeShader::Find(_Name);
+
+	if (nullptr == ComputeShader)
+	{
+		MsgAssert(std::string(_Name) + "존재하지 않는 컴퓨트 쉐이더를 세팅하려고 했습니다");
+	}
+
+	const GameEngineShaderResHelper& Res = ComputeShader->GetShaderResHelper();
+	ShaderResHelper.Copy(Res);
 }
 
 void GameEngineRenderUnit::SetMesh(const std::string_view& _Name)
@@ -178,6 +200,7 @@ void GameEngineRenderUnit::Render(float _DeltaTime)
 GameEngineRenderer::GameEngineRenderer()
 {
 	BaseValue.ScreenScale = GameEngineWindow::GetScreenSize();
+	BaseValue.NoiseResolution = { 1024, 1024 };
 	SetName("GameEngineRenderer");
 }
 

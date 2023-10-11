@@ -6,6 +6,7 @@ enum class ShaderType
 	Vertex,
 	Geometry,
 	Pixel,
+	Compute,
 };
 
 enum class CameraType

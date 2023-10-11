@@ -15,6 +15,12 @@ GameEngineStructuredBuffer::~GameEngineStructuredBuffer()
 
 void GameEngineStructuredBuffer::Release()
 {
+	if (nullptr != UnorderedAccessView)
+	{
+		UnorderedAccessView->Release();
+		UnorderedAccessView = nullptr;
+	}
+
 	if (nullptr != ShaderResourceView)
 	{
 		ShaderResourceView->Release();
@@ -22,7 +28,7 @@ void GameEngineStructuredBuffer::Release()
 	}
 }
 
-void GameEngineStructuredBuffer::CreateResize(const D3D11_SHADER_BUFFER_DESC& _Desc, int Count, StructuredBufferType _Type, void* _StartData/* = nullptr*/)
+void GameEngineStructuredBuffer::CreateResize(const D3D11_SHADER_BUFFER_DESC& _Desc, int Count, StructuredBufferType _Type, void* _StartData, bool _CPUAccess)
 {
 	if (false == IsInit)
 	{
@@ -30,15 +36,15 @@ void GameEngineStructuredBuffer::CreateResize(const D3D11_SHADER_BUFFER_DESC& _D
 		IsInit = true;
 	}
 
-	CreateResize(ShaderDesc.Size, Count, _Type, _StartData);
+	CreateResize(ShaderDesc.Size, Count, _Type, _StartData, _CPUAccess);
 }
 
-void GameEngineStructuredBuffer::CreateResize(size_t Count, StructuredBufferType _Type, void* _StartData /*= nullptr*/)
+void GameEngineStructuredBuffer::CreateResize(size_t Count, StructuredBufferType _Type, void* _StartData /*= nullptr*/, bool _CPUAccess)
 {
-	CreateResize(DataSize, Count, _Type, _StartData);
+	CreateResize(DataSize, Count, _Type, _StartData, _CPUAccess);
 }
 
-void GameEngineStructuredBuffer::CreateResize(size_t _DataSize, size_t Count, StructuredBufferType _Type, void* _StartData/* = nullptr*/)
+void GameEngineStructuredBuffer::CreateResize(size_t _DataSize, size_t Count, StructuredBufferType _Type, void* _StartData/* = nullptr*/, bool _CPUAccess)
 {
 	if (0 == _DataSize)
 	{
@@ -70,7 +76,7 @@ void GameEngineStructuredBuffer::CreateResize(size_t _DataSize, size_t Count, St
 	CreateResize(BufferInfo, _Type, _StartData);
 }
 
-void GameEngineStructuredBuffer::CreateResize(const D3D11_BUFFER_DESC& _Data, StructuredBufferType _Type, void* _StartData)
+void GameEngineStructuredBuffer::CreateResize(const D3D11_BUFFER_DESC& _Data, StructuredBufferType _Type, void* _StartData, bool _CPUAccess)
 {
 	BufferInfo = _Data;
 
@@ -135,7 +141,30 @@ void GameEngineStructuredBuffer::CreateResize(const D3D11_BUFFER_DESC& _Data, St
 			// 컴퓨트 쉐이더용 view
 			MsgAssert("if (S_OK != GameEngineDevice::GetDevice()->CreateUnorderedAccessView(Buffer, &UAVDesc, &UnorderedAccessView))");
 		}
+	}
 
+	if (_CPUAccess)
+	{
+		BufferInfo.ByteWidth = DataSize * DataCount;	// 버퍼 전체 크기
+		BufferInfo.StructureByteStride = DataSize;		// 버퍼 요소 크기			
+		BufferInfo.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED; // 구조화 버퍼 추가 플래그 설정
+		BufferInfo.BindFlags = D3D11_BIND_SHADER_RESOURCE;	// Texture Register Binding	
+
+		BufferInfo.Usage = D3D11_USAGE_DYNAMIC;
+		BufferInfo.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+		if (GameEngineDevice::GetDevice()->CreateBuffer(&BufferInfo, nullptr, &WriteBuffer))
+		{
+			MsgAssert("if (GameEngineDevice::GetDevice()->CreateBuffer(&BufferInfo, nullptr, &WriteBuffer))");
+		}
+
+		BufferInfo.Usage = D3D11_USAGE_DEFAULT;
+		BufferInfo.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+
+		if (GameEngineDevice::GetDevice()->CreateBuffer(&BufferInfo, nullptr, &ReadBuffer))
+		{
+			MsgAssert("if (GameEngineDevice::GetDevice()->CreateBuffer(&BufferInfo, nullptr, &ReadBuffer))");
+		}
 	}
 }
 

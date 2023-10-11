@@ -11,5 +11,6 @@ cbuffer RenderBaseValue : register(b11)
     int IsSpecular;
     float4 ScreenScale;
     float4 Mouse;
+    float4 NoiseResolution;
 };
 
