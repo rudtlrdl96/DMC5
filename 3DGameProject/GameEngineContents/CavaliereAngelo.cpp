@@ -328,33 +328,33 @@ void CavaliereAngelo::EnemyAnimationLoad()
 	NewDir.Move("CavaliereAngelo");
 	NewDir.Move("Animation");
 
-	//AnimationEvent::LoadAll
-	//(
-	//	{
-	//		.Dir = NewDir.GetFullPath().c_str(),
-	//		.Renderer = EnemyRenderer,
-	//		.RendererLocalPos = { 0.0f, -45.0f, 0.0f },
-	//		.Objects = {(GameEngineObject*)MonsterAttackCollision.get()},
-	//		.CallBacks_void =
-	//		{
-	//		},
-	//		.CallBacks_int =
-	//		{
-	//			std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
-	//		},
-	//		.CallBacks_float4 =
-	//		{
-	//		}
-	//	}
-	//);
+	AnimationEvent::LoadAll
+	(
+		{
+			.Dir = NewDir.GetFullPath().c_str(),
+			.Renderer = EnemyRenderer,
+			.RendererLocalPos = { 0.0f, -45.0f, 0.0f },
+			.Objects = {(GameEngineObject*)MonsterAttackCollision.get()},
+			.CallBacks_void =
+			{
+			},
+			.CallBacks_int =
+			{
+				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
+			},
+			.CallBacks_float4 =
+			{
+			}
+		}
+	);
 
-	std::vector<GameEngineFile> FBXFiles = NewDir.GetAllFile({ ".FBX" });
+	//std::vector<GameEngineFile> FBXFiles = NewDir.GetAllFile({ ".FBX" });
 
-	for (size_t i = 0; i < FBXFiles.size(); i++)
-	{
-		GameEngineFBXAnimation::Load(FBXFiles[i].GetFullPath());
-		EnemyRenderer->CreateFBXAnimation(FBXFiles[i].GetFileName(), FBXFiles[i].GetFileName(), {.Inter = 0.01666f,});
-	}
+	//for (size_t i = 0; i < FBXFiles.size(); i++)
+	//{
+	//	GameEngineFBXAnimation::Load(FBXFiles[i].GetFullPath());
+	//	EnemyRenderer->CreateFBXAnimation(FBXFiles[i].GetFileName(), FBXFiles[i].GetFileName(), {.Inter = 0.01666f,});
+	//}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -364,13 +364,65 @@ void CavaliereAngelo::EnemyAnimationLoad()
 void CavaliereAngelo::EnemyCreateFSM()
 {
 	/////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////     등장     //////////////////////////////////////////
+	/////////////////////////////////     Idle     //////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
-	// 최초 등장_02
+	// 방어자세로 서있음
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Idle,
 	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em5501_defense-Idle.fbx");
+	EnemyRenderer->ChangeAnimation("em5501_defense-Idle");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Attack_To_Guard_Start);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+	});
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////     Special     //////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	// 번개 충전 시작
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Dengeki_Reload_Start,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_dengeki_reload_start");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Dengeki_Reload_Loop);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+	});
+
+	// 번개 충전 루프
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Dengeki_Reload_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_dengeki_reload_loop");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Dengeki_Reload_End);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+	});
+
+	// 번개 충전 끝
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Dengeki_Reload_End,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_dengeki_reload_end");
 	},
 	.Update = [=](float _DeltaTime) {
 	if (true == EnemyRenderer->IsAnimationEnd())
@@ -383,6 +435,124 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	});
 
+	// 워프 시작
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Warp_Start,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_warp_start");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+		if (0 == RandC)
+		{
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Dengeki_Reload_Start);
+		}
+		else
+		{
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Warp_End);
+		}
+		return;
+	}
+	},
+	.End = [=] {
+	}
+	});
+
+	// 워프 끝->방어자세로 변경
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Warp_End,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_warp_end");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+	});
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////     Move     //////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	// 서있다가 방어자세 취하면서 걷기 시작
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Attack_To_Guard_Start,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_A-walk_start_L0");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_Loop);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+	});
+
+	// 방어자세에서 걷기 시작
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_Start,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_guard_to_walk");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_Loop);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+	});
+
+	// 걷기 루프
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_A-walk_loop");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_End);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+	});
+
+	// 걷기 끝
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_End,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_A-walk_End_L0");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+	});
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////     Attack     //////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////     Damage     //////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
 	EnemyFSM.ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
 }
 
@@ -390,7 +560,7 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 {
 	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Idle,
 	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em5501_defense-Idle.fbx");
+	EnemyRenderer->ChangeAnimation("em5501_defense-Idle");
 	},
 	.Update = [=](float _DeltaTime) {
 	},

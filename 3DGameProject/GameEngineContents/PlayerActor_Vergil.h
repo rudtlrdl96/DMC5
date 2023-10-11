@@ -149,7 +149,6 @@ protected:
 	void HeavyDamage() override;
 private:
 	std::vector<std::shared_ptr<class Player_MirageBlade>> AllMirageBlades;
-	std::shared_ptr<class FXSystem> EffectSystem = nullptr;
 	std::shared_ptr<class FXSystem> EffectSystem_Target = nullptr;
 	class JudgementCut* Effect_JC = nullptr;
 	class ColorEffect* Effect_Color = nullptr;

@@ -227,12 +227,12 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 		break;
 	case DamageType::Light:
 
-		if (true == IsHeavyAttack)
+		if (true == IsBusterAttack)
 		{
 			return;
 		}
 
-		if (true == IsAirAttack || true == IsSlamAttack || true == IsBusterAttack)
+		if (true == IsAirAttack || true == IsSlamAttack || true == IsHeavyAttack)
 		{
 			StartRenderShaking(8);
 			ChangeState(FSM_State_Empusa::Empusa_Air_Damage_Under);
@@ -300,11 +300,12 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 		ChangeState(FSM_State_Empusa::Empusa_Buster_Start);
 		break;
 	case DamageType::Stun:
+		StopTime(2.9f);
 		break;
 	default:
 		break;
 	}
-
+	HitStop(Data.DamageTypeValue);
 	IsVergilLight = false;
 	AttackDelayCheck = 0.0f;
 }

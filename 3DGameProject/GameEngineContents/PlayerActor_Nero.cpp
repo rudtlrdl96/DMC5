@@ -15,6 +15,7 @@
 #include "FXSystem.h"
 #include "PlayerCamera.h"
 #include "Player_Snatch.h"
+#include "RankUI.h"
 std::list<DevilBreaker> PlayerActor_Nero::BreakerList;
 PlayerActor_Nero::~PlayerActor_Nero()
 {
@@ -57,7 +58,7 @@ void PlayerActor_Nero::PlayerLoad()
 {
 	GetLevel()->CreateActor<NeroItemGlass>();
 	HPRender = GetLevel()->CreateActor<NeroHPUI>();
-
+	GetLevel()->CreateActor <RankUI>();
 	// Effect »ý¼º
 	{
 		EffectSystem = CreateComponent<FXSystem>();
@@ -1615,18 +1616,18 @@ void PlayerActor_Nero::PlayerLoad()
 				UseDoubleJump = false;
 				InputCheck = false;
 				PhysXCapsule->SetLinearVelocityZero();
-				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->TurnOnGravity();
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Split_3");
 			},
 			.Update = [=](float _DeltaTime) {
+
+				if (true == Input_SpecialCheck()) { return; }
+				if (InputCheck == false) { return; }
 				if (false == FloorCheck())
 				{
 					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
 					return;
 				}
-
-				if (true == Input_SpecialCheck()) { return; }
-				if (InputCheck == false) { return; }
 
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }

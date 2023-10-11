@@ -73,6 +73,8 @@ protected:
 	virtual void LightDamage() {}
 	virtual void HeavyDamage() {}
 
+	void StopTime(float _Time);
+
 	GameEngineTimeEvent TimeEvent;
 
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
@@ -85,6 +87,7 @@ protected:
 	std::shared_ptr<class GameEngineCollision> Col_LockOn = nullptr;
 
 	std::shared_ptr<class PhysXCapsuleComponent> PhysXCapsule = nullptr;
+	std::shared_ptr<class FXSystem> EffectSystem = nullptr;
 	float4 Rot = float4::ZERO;
 
 	int HP = 10000;
