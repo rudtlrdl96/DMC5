@@ -19,7 +19,7 @@ void PlayerActor_Vergil::Start()
 	BasePlayerActor::Start();
 	SetNetObjectType(Net_ActorType::Vergil);
 
-	Effect_JC = GetLevel()->GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
+	Effect_JC = JudgementCut::GetJudgementCutEffect();
 	Effect_Color = GetLevel()->GetCamera(0)->GetCamTarget()->CreateEffect<ColorEffect>();
 	//NetControllType::NetControll으로 변경될 때 아래 콜백이 실행됩니다. 
 	SetControllCallBack(NetControllType::PassiveControll, [=]()
@@ -1865,6 +1865,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		.Start = [=] {
 			SetInvincibility(0.5f);
 			PhysXCapsule->SetLinearVelocityZero();
+			EffectSystem->PlayFX("Vergil_DT_On.effect");
 			Renderer->ChangeAnimation("pl0300_Demon_Start", true);
 			InputCheck = false;
 			MoveCheck = false;
@@ -1933,6 +1934,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Damage Light
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Light,
 			.Start = [=] {
+				SetInvincibility(0.2f);
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -1971,6 +1973,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Damage Heavy
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Heavy,
 			.Start = [=] {
+				SetInvincibility(0.5f);
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -1997,6 +2000,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Damage Fly
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Fly,
 			.Start = [=] {
+				SetInvincibility(9999.0f);
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -2026,6 +2030,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Damage Fall
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Fall,
 			.Start = [=] {
+				SetInvincibility(9999.0f);
 				PhysXCapsule->SetPush(float4::DOWN * FlyDownForce);
 				PhysXCapsule->TurnOnGravity();
 				Renderer->ChangeAnimation("pl0300_Damage_Away_Loop");
@@ -2049,6 +2054,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Damage Ground
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Ground,
 			.Start = [=] {
+				SetInvincibility(0.5f);
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
 				Renderer->ChangeAnimation("pl0300_Damage_Away_Bound");
@@ -2080,6 +2086,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Damage Death
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Death,
 			.Start = [=] {
+				SetInvincibility(9999.0f);
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -2094,6 +2101,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Damage Fly Death
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Fly_Death,
 			.Start = [=] {
+				SetInvincibility(9999.0f);
 				WeaponIdle();
 				Renderer->GetAllRenderUnit()[0][5]->Off();
 				Renderer->GetAllRenderUnit()[0][6]->Off();
@@ -2733,13 +2741,6 @@ void PlayerActor_Vergil::NetLoad()
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(450));
 				EffectSystem->PlayFX("Yamato_JudgementCut.effect");
 				EffectSystem_Target->GetTransform()->SetLocalPosition({0, 0, 200});
-				Col_Attack->GetTransform()->SetLocalPosition({ 0, 0, 200 });
-				Col_Attack->GetTransform()->SetLocalScale({300, 300, 300});
-				Col_Attack->On();
-				TimeEvent.AddEvent(0.08f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
-				{
-					Col_Attack->Off();
-				});
 				EffectSystem_Target->PlayFX("Yamato_JC_Effect.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCut_2_Loop");
 			},
@@ -2776,13 +2777,6 @@ void PlayerActor_Vergil::NetLoad()
 			.Start = [=] {
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(450));
 				EffectSystem_Target->GetTransform()->SetLocalPosition({ 0, 0, 200 });
-				Col_Attack->GetTransform()->SetLocalPosition({ 0, 0, 200 });
-				Col_Attack->GetTransform()->SetLocalScale({ 300, 300, 300 });
-				Col_Attack->On();
-				TimeEvent.AddEvent(0.08f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
-					{
-						Col_Attack->Off();
-					});
 				EffectSystem_Target->PlayFX("Yamato_JC_Effect.effect");
 				EffectSystem->PlayFX("Yamato_JudgementCut_Air.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Air_JudgementCut_2_Loop");
@@ -3055,6 +3049,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Demon Start
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_DT_Start,
 		.Start = [=] {
+			EffectSystem->PlayFX("Vergil_DT_On.effect");
 			Renderer->ChangeAnimation("pl0300_Demon_Start", true);
 			},
 		.Update = [=](float _DeltaTime) {
