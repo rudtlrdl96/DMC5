@@ -84,6 +84,7 @@ void MainLevel::Update(float _DeltaTime)
 	}
 	if (true == GameEngineInput::IsDown("SelectLevel_07"))
 	{
+		GameEngineCore::ChangeLevel("Location11_Level");
 		return;
 	}
 	if (true == GameEngineInput::IsDown("SelectLevel_08"))

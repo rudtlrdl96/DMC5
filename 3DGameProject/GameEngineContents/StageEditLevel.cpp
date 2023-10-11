@@ -84,21 +84,21 @@ void StageEditLevel::LevelChangeStart()
 			}
 		}
 
-		{
-			IsResourceLoaded = true;
-			GameEngineDirectory Dir = GameEnginePath::GetFileFullPath
-			(
-				"ContentResources",
-				{
-					"Map", "TestObj"
-				}
-			);
-			std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".fbx" });
-			for (GameEngineFile& File : FBXFiles)
-			{
-				GameEngineFBXMesh::Load(File.GetFullPath());
-			}
-		}
+		//{
+		//	IsResourceLoaded = true;
+		//	GameEngineDirectory Dir = GameEnginePath::GetFileFullPath
+		//	(
+		//		"ContentResources",
+		//		{
+		//			"Map", "TestObj"
+		//		}
+		//	);
+		//	std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".fbx" });
+		//	for (GameEngineFile& File : FBXFiles)
+		//	{
+		//		GameEngineFBXMesh::Load(File.GetFullPath());
+		//	}
+		//}
 
 		{
 			IsResourceLoaded = true;

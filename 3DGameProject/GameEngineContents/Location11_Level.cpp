@@ -2,6 +2,7 @@
 #include "Location11_Level.h"
 #include "FreeCameraActor.h"
 #include <GameEngineCore/GameEngineFBXMesh.h>
+#include "MapCollisionMesh.h"
 
 Location11_Level::Location11_Level()
 {
@@ -32,7 +33,7 @@ void Location11_Level::LevelChangeStart()
 		(
 			"ContentResources",
 			{
-				"Map", "Stage11"
+				"Map", "Location2"
 			}
 		);
 		std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".fbx" });
@@ -41,4 +42,8 @@ void Location11_Level::LevelChangeStart()
 			GameEngineFBXMesh::Load(File.GetFullPath());
 		}
 	}
+	SetCamera({ 0, 0, 0});
+	CreateStage(AllStageDatas[1]);
+	AcWallCol.lock()->RenderOn();
+	AcGroundCol.lock()->RenderOn();
 }

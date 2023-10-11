@@ -79,10 +79,6 @@ std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, cons
 		{
 			Result->Reflection = FieldMapObjRef[i].lock()->DynamicThis<ReflectionSetter>();
 		}
-		else
-		{
-			FieldMapObjRef[i].lock()->Off();
-		}
 	}
 
 	return Result;

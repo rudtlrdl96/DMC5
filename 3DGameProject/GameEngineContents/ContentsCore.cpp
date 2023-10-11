@@ -19,8 +19,11 @@
 //Map
 #include "TestStageLevel.h"
 #include "StageEditLevel.h"
+#include "Location11_Level.h"
+
 #include "AnimationToolLevel.h"
 #include "EffectToolLevel.h"
+
 
 std::vector<std::function<void()>> ContentsCore::GameEndCallBacks;
 
@@ -48,6 +51,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<MainMenuLevel>();
 	GameEngineCore::CreateLevel<AnimationToolLevel>();
 	GameEngineCore::CreateLevel<TestStageLevel>();
+	GameEngineCore::CreateLevel<Location11_Level>();
 	GameEngineCore::CreateLevel<NetworkTestLevel>();
 	GameEngineCore::CreateLevel<PlayUITestLevel>();
 	GameEngineCore::CreateLevel<ThreadLoadingLevel>();

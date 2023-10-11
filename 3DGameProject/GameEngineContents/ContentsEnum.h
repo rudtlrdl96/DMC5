@@ -85,7 +85,13 @@ enum class DevilBreaker
 enum class FieldMapObjType
 {
 	Null = -1,
+	ReflectionSetter,
 	WallLight_On,
 	WallLight_Off,
-	ReflectionSetter,
+	StreetLight_On,
+	StreetLight_Off,
+	DecoLight,
+	Fountain,
+	StreetStall,
+	Bench
 };
