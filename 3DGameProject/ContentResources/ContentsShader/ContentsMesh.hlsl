@@ -164,7 +164,7 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     
     // AlbmData -> metallicValue 값에 따라서 결정되어야 한다        
     Result.DifTarget.rgb = lerp(AlbmData.rgb, AlbmData.rgb * 0.3f, metallic);
-    Result.DifTarget.rgb += lerp(float3(0, 0, 0), ReflectionColor.rgb, metallic);
+    Result.DifTarget.rgb += lerp(float3(0, 0, 0), ReflectionColor.rgb * 0.7f, metallic);
     
     Result.DifTarget.a = 1.0f;
     Result.PosTarget.a = 1.0f;
