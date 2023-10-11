@@ -2,8 +2,10 @@
 #include "RankUI.h"
 #include "UIFBXRenderer.h"
 #include <GameEngineCore/GameEngineUIRenderer.h>
+RankUI* RankUI::MainRankUI = nullptr;
 RankUI::RankUI() 
 {
+	MainRankUI = this;
 }
 
 RankUI::~RankUI() 
@@ -15,6 +17,11 @@ RankUI::~RankUI()
 2. z회전시키기
 3. 나가기
 */
+void RankUI::AddRankScore(int _Score)
+{
+	RankScore += _Score*0.1f;
+	ResetLiveTime();
+}
 void RankUI::Start()
 {
 	Rank_Explane = CreateComponent<GameEngineUIRenderer>();
@@ -54,6 +61,7 @@ void RankUI::Start()
 	RankSSS_Inside = UIFBXActorBase::CreateGaugeBar(InsidePos,EndScale, StartRotation, "RankSSSInside.FBX", "FBX_ClipAlpha");
 	RankSSS_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
 
+	StateInit_Wait();
 	StateInit_RankD();
 	StateInit_RankC();
 	StateInit_RankB();
@@ -62,18 +70,38 @@ void RankUI::Start()
 	StateInit_RankSS();
 	StateInit_RankSSS();
 
-	RankFSM.ChangeState(RankState::Appear_RankD);
+	RankFSM.ChangeState(RankState::Rank_WaitState);
 
 }
 
 void RankUI::Update(float _DeltaTime)
 {
-	RankD_Inside->GetTransform()->SetLocalPosition(RankD_Frame->GetTransform()->GetLocalPosition());
-	SetInsideMesh();
 	RankFSM.Update(_DeltaTime);
-	if (true == GameEngineInput::IsPress("UIDEBUGMODE"))
+	SetInsideMesh();
+	if (DisApperValue == true)
 	{
-		TestRankGauge += 1;
+		Rank_Explane->GetTransform()->SetLocalPosition({ 1060.0f,-50.0f,0.0f });
+		Rank_Explane->Off();
+	}
+	//if (true == GameEngineInput::IsDown("UI_Tab"))
+	//{
+	//	RankScore += 0.2f;
+	//}
+	//if (true == GameEngineInput::IsDown("UIDEBUGMODE"))
+	//{
+	//	DisApperValue = true;
+	//	RankScore = 0;
+	//}
+	if (GetLiveTime() > 5.0f)
+	{
+		DisApperValue = true;
+		RankFSM.ChangeState(RankState::Rank_WaitState);
+		RankScore = 0;
+		ResetLiveTime();
+		DisApperValue = true;
+	
+		//하나의 불값을 갖자
+		//이 불값이 true가 되면 사라지고 스테이트 변경.
 	}
 
 }
@@ -120,6 +148,8 @@ void RankUI::RankSpin(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render
 			Ratio = 0.0f;
 		}
 	}
+
+
 }
 
 void RankUI::RankApper(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render, RankState _State, bool _Value, std::shared_ptr<class UIFBXRenderer> _PrevRender)
@@ -129,7 +159,7 @@ void RankUI::RankApper(float _Delta, std::shared_ptr<class UIFBXRenderer> _Rende
 	if (ShakeRank == false)
 	{
 		_Render->GetTransform()->SetLocalPosition(
-			float4::LerpClamp(EndPos, { 660.0f,90.0f,0.0f,-150.0f }, Ratio * 3.0f));
+			float4::LerpClamp(EndPos, StartPos, Ratio * 3.0f));
 		_Render->GetTransform()->SetLocalScale(
 			float4::LerpClamp(StartScale,EndScale, Ratio * 3.0f));
 	}
@@ -138,7 +168,7 @@ void RankUI::RankApper(float _Delta, std::shared_ptr<class UIFBXRenderer> _Rende
 	{
 		_Render->SetMulColor(float4(1.0f, 1.0f, 1.0f, Ratio + 0.5f));
 	}
-	if (_Render->GetTransform()->GetLocalPosition() == StartPos)
+	if (_Render->GetTransform()->GetLocalPosition().x == StartPos.x)
 	{
 		ShakeRank = true;
 		Ratio = 0.0f;
@@ -232,10 +262,35 @@ void RankUI::SetInsideMesh()
 
 }
 
+void RankUI::RankDisApper(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render, std::shared_ptr<class UIFBXRenderer> _InsideRender)
+{
+	if (DisApperValue == true)
+	{
+		DisTime += _Delta;
+		_Render->SetMulColor(float4(1.0f, 1.0f, 1.0f, 1 - DisTime * 2.0f));
+		_InsideRender->SetMulColor(float4(1.0f, 1.0f, 1.0f, 1 - DisTime * 2.0f));
+		if (_Render->GetMulColor().w <= 0.0f)
+		{
+			DisTime = 0.0f;
+			DisApperValue = false;
+			//_Render->GetTransform()->SetLocalPosition(InsideEnd);
+			//_InsideRender->GetTransform()->SetLocalPosition(InsideEnd);
+			//_ExplaneRender->
+			//_InsideRender->SetMulColor(float4::WHITE);
+			//_InsideRender->SetMulColor(float4::WHITE);
+			//_InsideRender->SetMulColor(float4::WHITE);
+
+			RankFSM.ChangeState(RankState::Rank_WaitState);
+		}
+	}
+
+}
+
 
 
 void RankUI::SetRankExPlane(const std::string_view& _Png,float4 _Scale, float4 _Pos, float _Ratio)
 {
+	Rank_Explane->On();
 	ExplaneSpeed += _Ratio;
 	Rank_Explane->SetTexture(_Png);
 	float4 Scale = _Scale * 0.5f;

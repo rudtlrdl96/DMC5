@@ -1,7 +1,29 @@
 #include "PrecompileHeader.h"
 #include "RankUI.h"
 #include "UIFBXRenderer.h"
+void RankUI::StateInit_Wait()
+{
+	RankFSM.CreateState(
+		{
+			.StateValue = RankState::Rank_WaitState,
+			.Start = [=]
+			{
+				DisApperValue = false;
+			},
+			.Update = [=](float _DeltaTime)
+			{
 
+				if (RankScore > 0.0f)
+				{
+					RankFSM.ChangeState(RankState::Appear_RankD);
+				}
+			},
+			.End = [=]()
+			{
+
+			},
+		});
+}
 void RankUI::StateInit_RankD()
 {
 	RankFSM.CreateState(
@@ -9,11 +31,9 @@ void RankUI::StateInit_RankD()
 			.StateValue = RankState::Appear_RankD,
 			.Start = [=]
 			{
-				RankD_Frame->GetTransform()->SetLocalPosition({ { 660.0f,90.0f,0.0f,-150.0f } });
-				RankD_Frame->GetTransform()->SetLocalRotation({ -90.0f,0.0f,0.0f });
-				RankD_Frame->GetTransform()->SetLocalScale({ 8.0f,8.0f,8.0f });
-				RankD_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-				Ratio = 0.0f;
+			ExplaneSpeed = 0.0F;
+			Ratio = 0.0f;
+			OutRank = false;
 			},
 			.Update = [=](float _DeltaTime)
 			{
@@ -37,6 +57,9 @@ void RankUI::StateInit_RankD()
 				ScaleSpeed = 0.0f;
 				ScaleUpValue = false;
 				ScaleValue = false;
+				TurnValue = false;
+				UpTime = 0.0f;
+
 			},
 			.Update = [=](float _DeltaTime)
 			{
@@ -44,7 +67,7 @@ void RankUI::StateInit_RankD()
 				//랭크메쉬 돌리기
 				RankSpin(_DeltaTime,RankD_Frame,RankD_Inside);
 				//이부분에 게이지 클립과 이펙트 효과 추가.
-				float EndUp = static_cast<float>(TestRankGauge) / 100.0f;
+				float EndUp = RankScore / 100.0f;
 				if (EndUp > 0.3f && EndUp<0.7f)
 				{
 					RankScaleUpDown(RankD_Frame, RankD_Inside, _DeltaTime);
@@ -60,14 +83,14 @@ void RankUI::StateInit_RankD()
 					RankScaleUpDown(RankD_Frame, RankD_Inside, _DeltaTime);
 				}
 				RankD_Inside->SetClipData(float4::LerpClamp(float4(0.0f, 0.0f, 0.0f, 1.0f), float4(0.0f, EndUp, 0.0f, 1.0f), UpTime));
-
 				//설명란 띄우기
 				if (UpTime > 2.0f)
 				{
 					SetRankExPlane("RankD_Explane.png", float4{228.0f,82.0f,0.0f}, InsideStart, _DeltaTime);
 				}
+				RankDisApper(_DeltaTime, RankD_Frame, RankD_Inside);
 				//만약 게이지가 100을 넘는다면
-				if (TestRankGauge >= 100)
+				if (RankScore >= 100.0f)
 				{
 					RankFSM.ChangeState(RankState::Appear_RankC);
 				}
@@ -117,7 +140,7 @@ void RankUI::StateInit_RankC()
 			//랭크 돌리기.
 				RankSpin(_DeltaTime,RankC_Frame,RankC_Inside);
 				UpTime += _DeltaTime;
-				float EndUp = static_cast<float>(TestRankGauge-100) / 100.0f;
+				float EndUp = (RankScore-100.0f) / 100.0f;
 				if (EndUp > 0.3f && EndUp < 0.7f)
 				{
 					RankScaleUpDown(RankC_Frame, RankC_Inside, _DeltaTime);
@@ -138,7 +161,7 @@ void RankUI::StateInit_RankC()
 				{
 					SetRankExPlane("RankC_Explane.png", float4{ 203.0f,99.0f,0.0f }, InsideStart, _DeltaTime);
 				}
-			if (TestRankGauge >= 200)
+			if (RankScore >= 200)
 			{
 				RankFSM.ChangeState(RankState::Appear_RankB);
 			}
@@ -190,7 +213,7 @@ void RankUI::StateInit_RankB()
 			//랭크 돌리기.
 				RankSpin(_DeltaTime,RankB_Frame,RankB_Inside);
 				UpTime += _DeltaTime;
-				float EndUp = static_cast<float>(TestRankGauge - 200) / 100.0f;
+				float EndUp = (RankScore - 200) / 100.0f;
 				if (EndUp > 0.3f && EndUp < 0.7f)
 				{
 					RankScaleUpDown(RankB_Frame, RankB_Inside,_DeltaTime);
@@ -210,7 +233,7 @@ void RankUI::StateInit_RankB()
 				{
 					SetRankExPlane("RankB_Explane.png", float4{ 264.0f,90.0f,0.0f }, InsideStart, _DeltaTime);
 				}
-				if (TestRankGauge >= 300)
+				if (RankScore >= 300)
 				{
 					RankFSM.ChangeState(RankState::Appear_RankA);
 				}
@@ -261,7 +284,7 @@ void RankUI::StateInit_RankA()
 			//랭크 돌리기.
 				RankSpin(_DeltaTime,RankA_Frame,RankA_Inside);
 				UpTime += _DeltaTime;
-				float EndUp = static_cast<float>(TestRankGauge - 300) / 100.0f;
+				float EndUp = (RankScore - 300) / 100.0f;
 				if (EndUp > 0.3f && EndUp < 0.7f)
 				{
 					RankScaleUpDown(RankA_Frame, RankA_Inside, _DeltaTime);
@@ -281,7 +304,7 @@ void RankUI::StateInit_RankA()
 				{
 					SetRankExPlane("RankA_Explane.png", float4{434.0f,107.0f,0.0f }, InsideStart, _DeltaTime);
 				}
-				if (TestRankGauge >= 400)
+				if (RankScore >= 400)
 				{
 					RankFSM.ChangeState(RankState::Appear_RankS);
 				}
@@ -330,7 +353,7 @@ void RankUI::StateInit_RankS()
 			{
 				RankSpin(_DeltaTime,RankS_Frame,RankS_Inside);
 				UpTime += _DeltaTime;
-				float EndUp = static_cast<float>(TestRankGauge - 400) / 100.0f;
+				float EndUp = (RankScore - 400) / 100.0f;
 				if (EndUp > 0.3f && EndUp < 0.7f)
 				{
 					RankScaleUpDown(RankS_Frame, RankS_Inside,_DeltaTime);
@@ -350,7 +373,7 @@ void RankUI::StateInit_RankS()
 				{
 					SetRankExPlane("RankS_Explane.png", float4{ 285.0f,147.0f,0.0f }, InsideStart, _DeltaTime);
 				}
-				if (TestRankGauge >= 500)
+				if (RankScore >= 500)
 				{
 					RankFSM.ChangeState(RankState::Appear_RankSS);
 				}
@@ -401,7 +424,7 @@ void RankUI::StateInit_RankSS()
 			//랭크 돌리기.
 				RankSpin(_DeltaTime,RankSS_Frame,RankSS_Inside);
 				UpTime += _DeltaTime;
-				float EndUp = static_cast<float>(TestRankGauge - 500) / 100.0f;
+				float EndUp = (RankScore - 500) / 100.0f;
 				if (EndUp > 0.3f && EndUp < 0.7f)
 				{
 					RankScaleUpDown(RankSS_Frame, RankSS_Inside, _DeltaTime);
@@ -421,7 +444,7 @@ void RankUI::StateInit_RankSS()
 				{
 					SetRankExPlane("RankSS_Explane.png", float4{ 269.0f,183.0f,0.0f }, InsideStart, _DeltaTime);
 				}
-				if (TestRankGauge >= 600)
+				if (RankScore >= 600)
 				{
 					RankFSM.ChangeState(RankState::Appear_RankSSS);
 				}
@@ -471,7 +494,7 @@ void RankUI::StateInit_RankSSS()
 			//랭크 돌리기.
 				RankSpin(_DeltaTime,RankSSS_Frame,RankSSS_Inside);
 				UpTime += _DeltaTime;
-				float EndUp = static_cast<float>(TestRankGauge - 600) / 100.0f;
+				float EndUp = (RankScore - 600) / 100.0f;
 				if (EndUp > 0.3f && EndUp < 0.7f)
 				{
 					RankScaleUpDown(RankSSS_Frame, RankSSS_Inside, _DeltaTime);
