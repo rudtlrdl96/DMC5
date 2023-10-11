@@ -112,12 +112,12 @@ void TestLevel::LevelChangeStart()
 	//	TestObj->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
 
-	if (nullptr == HellCaina)
-	{
-		HellCaina = CreateActor<Enemy_HellCaina>();
-		HellCaina->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-		HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	}
+	//if (nullptr == HellCaina)
+	//{
+	//	HellCaina = CreateActor<Enemy_HellCaina>();
+	//	HellCaina->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//	HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	//}
 
 	//if (nullptr == Empusa)
 	//{
@@ -126,12 +126,12 @@ void TestLevel::LevelChangeStart()
 	//	Empusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
 
-	//if (nullptr == Cavaliere)
-	//{
-	//	Cavaliere = CreateActor<CavaliereAngelo>();
-	//	Cavaliere->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	//	Cavaliere->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	//}
+	if (nullptr == Cavaliere)
+	{
+		Cavaliere = CreateActor<CavaliereAngelo>();
+		Cavaliere->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+		Cavaliere->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	}
 
 	if (nullptr == Flat)
 	{
