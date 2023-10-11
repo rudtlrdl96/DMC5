@@ -240,9 +240,6 @@
     <ClInclude Include="StageEditGUI.h">
       <Filter>Levels\Stage\StageEditor</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderTestLevel.h">
-      <Filter>Levels\Test</Filter>
-    </ClInclude>
     <ClInclude Include="ZoomEffect.h">
       <Filter>PostEffect</Filter>
     </ClInclude>
@@ -444,6 +441,24 @@
     </ClInclude>
     <ClInclude Include="Player_Snatch.h">
       <Filter>Actor\Player\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="StreetStall.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClInclude>
+    <ClInclude Include="StreetLight_Off.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClInclude>
+    <ClInclude Include="StreetLight_On.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClInclude>
+    <ClInclude Include="Fountain.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClInclude>
+    <ClInclude Include="Bench.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClInclude>
+    <ClInclude Include="DecoLight.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -677,9 +692,6 @@
     <ClCompile Include="StageEditLevel.cpp">
       <Filter>Levels\Stage\StageEditor</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderTestLevel.cpp">
-      <Filter>Levels\Test</Filter>
-    </ClCompile>
     <ClCompile Include="ZoomEffect.cpp">
       <Filter>PostEffect</Filter>
     </ClCompile>
@@ -881,6 +893,24 @@
     </ClCompile>
     <ClCompile Include="Player_Snatch.cpp">
       <Filter>Actor\Player\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="StreetLight_Off.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClCompile>
+    <ClCompile Include="StreetLight_On.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClCompile>
+    <ClCompile Include="StreetStall.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClCompile>
+    <ClCompile Include="Bench.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClCompile>
+    <ClCompile Include="DecoLight.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClCompile>
+    <ClCompile Include="Fountain.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
