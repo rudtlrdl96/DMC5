@@ -52,8 +52,10 @@ private:
 	void RankOut(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render);
 	void RankDisApper(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render, std::shared_ptr<class UIFBXRenderer> _InsideRender);
 	void RankScaleUpDown(std::shared_ptr<class UIFBXRenderer> _Render, std::shared_ptr<class UIFBXRenderer> _InsideRender,float _Ratio);
+	void RankClip(float _DeltaTime, std::shared_ptr<class UIFBXRenderer> _Render, std::shared_ptr<class UIFBXRenderer> _InsideRender, int _Value);
 	void SetRankExPlane(const std::string_view& _Png,float4 _Scale, float4 _Pos,float _Ratio);
 	void SetInsideMesh();
+	void MemberInitialize();
 	std::shared_ptr<class UIFBXRenderer> RankD_Frame = nullptr;
 	std::shared_ptr<class UIFBXRenderer> RankD_Inside = nullptr;
 	std::shared_ptr<class UIFBXRenderer> RankC_Frame = nullptr;
@@ -74,8 +76,9 @@ private:
 	float DisTime = 0.0f;
 	float ExplaneSpeed = 0.0f;
 	float ScaleSpeed = 0.0f;
-	int TurnIndex = 0;
 	float RankScore = 0.0f;
+	float DownScore = 0.0f;
+	int TurnIndex = 0;
 	//불값
 	bool ShakeRank = false; // 흔들지 말지
 	bool TurnRank = false; // 턴할지 말지

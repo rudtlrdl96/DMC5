@@ -78,30 +78,25 @@ void RankUI::Update(float _DeltaTime)
 {
 	RankFSM.Update(_DeltaTime);
 	SetInsideMesh();
-	if (DisApperValue == true)
+	if (true == GameEngineInput::IsDown("UI_Tab"))
 	{
-		Rank_Explane->GetTransform()->SetLocalPosition({ 1060.0f,-50.0f,0.0f });
-		Rank_Explane->Off();
-	}
-	//if (true == GameEngineInput::IsDown("UI_Tab"))
-	//{
-	//	RankScore += 0.2f;
-	//}
-	//if (true == GameEngineInput::IsDown("UIDEBUGMODE"))
-	//{
-	//	DisApperValue = true;
-	//	RankScore = 0;
-	//}
-	if (GetLiveTime() > 5.0f)
-	{
-		DisApperValue = true;
-		//RankFSM.ChangeState(RankState::Rank_WaitState);
-		RankScore = 0;
+		RankScore += 10.0f;
 		ResetLiveTime();
+	}
+	if (RankScore > 1.1f)
+	{
+		DownScore += _DeltaTime;
+		if (DownScore > 0.05f)
+		{
+			RankScore-=0.25f;
+			DownScore = 0.0f;
+		}
+	}
+	if (GetLiveTime() > 10.0f)
+	{
 		DisApperValue = true;
-	
-		//하나의 불값을 갖자
-		//이 불값이 true가 되면 사라지고 스테이트 변경.
+		RankScore = 0;
+		ResetLiveTime();	
 	}
 
 }
@@ -268,25 +263,52 @@ void RankUI::RankDisApper(float _Delta, std::shared_ptr<class UIFBXRenderer> _Re
 	{
 		DisTime += _Delta;
 		_Render->SetMulColor(float4(1.0f, 1.0f, 1.0f, 1 - DisTime * 2.0f));
-		_InsideRender->SetMulColor(float4(1.0f, 1.0f, 1.0f, 1 - DisTime * 2.0f));
+		_InsideRender->SetClipData(float4::ZERONULL);
+		Rank_Explane->Off();
 		if (_Render->GetMulColor().w <= 0.0f)
 		{
 			DisTime = 0.0f;
 			DisApperValue = false;
-			//_Render->GetTransform()->SetLocalPosition(InsideEnd);
-			//_InsideRender->GetTransform()->SetLocalPosition(InsideEnd);
-			//_ExplaneRender->
-			//_InsideRender->SetMulColor(float4::WHITE);
-			//_InsideRender->SetMulColor(float4::WHITE);
-			//_InsideRender->SetMulColor(float4::WHITE);
-
 			RankFSM.ChangeState(RankState::Rank_WaitState);
 		}
 	}
 
 }
 
+void RankUI::RankClip(float _DeltaTime , std::shared_ptr<class UIFBXRenderer> _Render, std::shared_ptr<class UIFBXRenderer> _InsideRender,int _Value)
+{
+	UpTime += _DeltaTime;
+	float EndUp = (RankScore - _Value) / 100.0f;
+	if (EndUp > 0.3f && EndUp < 0.7f)
+	{
+		RankScaleUpDown(_Render, _InsideRender, _DeltaTime);
+	}
+	else if (EndUp > 0.7f)
+	{
+		if (ScaleValue == false)
+		{
+			ScaleUpValue = false;
+			ScaleValue = true;
+			ScaleSpeed = 0.0f;
+		}
+		RankScaleUpDown(_Render, _InsideRender, _DeltaTime);
+	}
+	if (EndUp <= 1.0f)
+	{
+		_InsideRender->SetClipData(float4::LerpClamp(float4(0.0f, 0.0f, 0.0f, 1.0f), float4(0.0f, EndUp, 0.0f, 1.0f), UpTime));
+	}
+}
 
+void RankUI::MemberInitialize()
+{
+	Ratio = 0.0f;
+	TurnValue = false;
+	UpTime = 0.0f;
+	ExplaneSpeed = 0.0f;
+	ScaleSpeed = 0.0f;
+	ScaleUpValue = false;
+	ScaleValue = false;
+}
 
 void RankUI::SetRankExPlane(const std::string_view& _Png,float4 _Scale, float4 _Pos, float _Ratio)
 {
