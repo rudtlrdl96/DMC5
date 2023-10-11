@@ -8,6 +8,11 @@ class JudgementCut : public GameEnginePostProcess
 public:
 	static JudgementCut* GetJudgementCutEffect()
 	{
+		if (nullptr == CurLevelJudgementCut)
+		{
+			MsgAssert("JudgementCut PostEffect를 생성하지 않고 받아오려 했습니다.");
+		}
+
 		return CurLevelJudgementCut;
 	}
 

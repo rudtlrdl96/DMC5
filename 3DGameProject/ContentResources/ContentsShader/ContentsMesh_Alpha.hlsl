@@ -60,15 +60,6 @@ struct AlphaOutPut
     float4 ResultColor : SV_Target0;
 };
 
-float GGX_Distribution(float3 normal, float3 halfVector, float roughness)
-{
-    float NdotH = max(dot(normal, halfVector), 0.0f);
-    float roughnessSqr = roughness * roughness;
-    float a = roughnessSqr * roughnessSqr;
-    float denominator = (NdotH * NdotH * (a - 1.0f) + 1.0f);
-    return a / (3.14f * denominator * denominator);
-}
-
 AlphaOutPut MeshTexture_PS(Output _Input)
 {
     AlphaOutPut Result = (AlphaOutPut)0;

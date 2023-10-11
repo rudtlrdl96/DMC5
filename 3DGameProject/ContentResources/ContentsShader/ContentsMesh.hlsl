@@ -67,21 +67,6 @@ struct DeferredOutPut
     float4 SSSTarget : SV_Target5;
 };
 
-float GGX_Distribution(float3 normal, float3 halfVector, float roughness)
-{
-    float NdotH = max(dot(normal, halfVector), 0.0f);
-    float roughnessSqr = roughness * roughness;
-    float a = roughnessSqr * roughnessSqr;
-    float denominator = (NdotH * NdotH * (a - 1.0f) + 1.0f);
-    return a / (3.14f * denominator * denominator);
-}
-
-half3 GetOffSpecularPeakReflectionDir(half3 Normal, half3 ReflectionVector, half Roughness)
-{
-    half a = Roughness * Roughness;
-    return lerp(Normal, ReflectionVector, (1 - a) * (sqrt(1 - a) + a));
-}
-
 // float3 R = 2 * dot(V, N) * N - V;
 // float NoV = saturate(dot(N, V));
 
@@ -118,6 +103,11 @@ DeferredOutPut MeshTexture_PS(Output _Input)
         Result.NorTarget = _Input.NORMAL;
     }
     
+    if(0 != BaseColor.g)
+    {
+        Result.NorTarget.xyz = NoiseWaterNormal(Result.NorTarget.xyz);
+    }
+    
     // 반사량 계산 공식 러프니스 값에 따라서 결정된다        
     float roughness = 1.0 - NrmrData.r; // smoothness는 러프니스 값입니다.
     float3 reflection = reflect(AllLight[0].LightRevDir.xyz, Result.NorTarget.xyz); // 빛의 반사 방향 계산
@@ -133,6 +123,7 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     // 반사벡터
     float3 refnormal = Result.NorTarget.xyz;
     
+    
     // Point lobe in off-specular peak direction
     refnormal = GetOffSpecularPeakReflectionDir(refnormal, CameraView, roughness);
     
@@ -140,9 +131,15 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     float3 refvector = mul(float4(reflect(refnormal, CameraView), 0.0f), AllLight[0].CameraViewInverseMatrix).xyz;
     
     // 축 반전
-    refvector.x = -refvector.x;
+    //refvector.x = -refvector.x;
     
-    float4 ReflectionColor = ReflectionTexture.Sample(CUBEMAPSAMPLER, refvector);
+    
+    // if (0 != BaseColor.g)
+    // {
+    //     refvector = Float3_Noise(refvector, 5.0f);
+    // }
+        
+    float4 ReflectionColor = ReflectionTexture.Sample(CUBEMAPSAMPLER, normalize(refvector));
     //float4 ReflectionColor = ReflectionTexture.Sample(ENGINEBASE, refvector);
     
     // 계산된 메탈릭 값
@@ -172,7 +169,7 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     {
         Result.GlamTarget.rgb = AlbmData.rgb * BaseColor.r;
     }
-    
+       
     Result.GlamTarget.a = 1.0f;
         
     return Result;
