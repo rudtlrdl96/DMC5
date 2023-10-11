@@ -39,6 +39,7 @@ private:
 	void RankSpin(float _Delta , std::shared_ptr<class UIFBXRenderer> _Render, std::shared_ptr<class UIFBXRenderer> _InsideRender);
 	void RankApper(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render , RankState _State, bool _Value, std::shared_ptr<class UIFBXRenderer> _PrevRender);
 	void RankOut(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render);
+	void RankScaleUpDown(std::shared_ptr<class UIFBXRenderer> _Render, std::shared_ptr<class UIFBXRenderer> _InsideRender,float _Ratio);
 	void SetRankExPlane(const std::string_view& _Png,float4 _Scale, float4 _Pos,float _Ratio);
 	void SetInsideMesh();
 	std::shared_ptr<class UIFBXRenderer> RankD_Frame = nullptr;
@@ -58,17 +59,30 @@ private:
 	std::shared_ptr<class GameEngineUIRenderer> Rank_Explane = nullptr;
 
 	float Ratio = 0.0f;
-
 	float ExplaneSpeed = 0.0f;
-
-	bool CreateRank = false;
-	bool ShakeRank = false;
-	bool TurnRank = false;
-
-	bool TurnValue = false;
+	float ScaleSpeed = 0.0f;
 	int TurnIndex = 0;
-
+	//불값
+	bool ShakeRank = false; // 흔들지 말지
+	bool TurnRank = false; // 턴할지 말지
+	bool TurnValue = false; // 왔다갔다 턴하기
+	bool ScaleUpValue = false; // 스케일 올리고 줄이기
+	bool ScaleDownValue = false;
+	bool ScaleValue = false;
 	bool OutRank = false;
+
+	//랭크 트랜스폼
+	float4 StartRotation = { -90.0f,0.0f,0.0f };
+	float4 LeftTurn = { -90.0f,0.0f,-30.0f };
+	float4 RightTurn = { -90.0f,0.0f,30.0f };
+	float4 StartScale = { 9.0f,9.0f,9.0f };
+	float4 UpScale = { 6.0f,6.0f,6.0f };
+	float4 EndScale = { 5.0f,5.0f,5.0f };
+	float4 StartPos = { 660.0f,90.0f,0.0f };
+	float4 EndPos = { 580.0f,80.0f,0.0f };
+	float4 InsidePos = { 660.0f,90.0f,-150.0f };
+	float4 InsideStart = { 660.0f,-50.0f,0.0f };
+	float4 InsideEnd= { 1060.0f,-50.0f,0.0f };
 
 	//fsm
 	GameEngineFSM RankFSM = GameEngineFSM();

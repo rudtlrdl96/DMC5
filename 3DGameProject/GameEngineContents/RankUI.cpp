@@ -19,39 +19,39 @@ void RankUI::Start()
 {
 	Rank_Explane = CreateComponent<GameEngineUIRenderer>();
 
-	RankD_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 9.0f,9.0f,9.0f }, { -89.0f,0.0f,0.0f }, "RankDFrame.FBX");
+	RankD_Frame = UIFBXActorBase::CreateGaugeBar(EndPos, StartScale, StartRotation, "RankDFrame.FBX");
 	RankD_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankD_Inside = UIFBXActorBase::CreateGaugeBar({ 660.0f,90.0f,-150.0f}, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankDInside.FBX","FBX_ClipAlpha");
+	RankD_Inside = UIFBXActorBase::CreateGaugeBar(StartPos,EndScale, StartRotation, "RankDInside.FBX","FBX_ClipAlpha");
 	RankD_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
 	
-	RankC_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 9.0f,9.0f,9.0f }, { -89.0f,0.0f,0.0f }, "RankCFrame.FBX");
+	RankC_Frame = UIFBXActorBase::CreateGaugeBar(EndPos, StartScale, StartRotation, "RankCFrame.FBX");
 	RankC_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankC_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankCInside.FBX", "FBX_ClipAlpha");
+	RankC_Inside = UIFBXActorBase::CreateGaugeBar(InsidePos,EndScale, StartRotation, "RankCInside.FBX", "FBX_ClipAlpha");
 	RankC_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
 
-	RankB_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 9.0f,9.0f,9.0f }, { -89.0f,0.0f,0.0f }, "RankBFrame.FBX");
+	RankB_Frame = UIFBXActorBase::CreateGaugeBar(EndPos, StartScale, StartRotation, "RankBFrame.FBX");
 	RankB_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankB_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankBInside.FBX", "FBX_ClipAlpha");
+	RankB_Inside = UIFBXActorBase::CreateGaugeBar(InsidePos,EndScale, StartRotation, "RankBInside.FBX", "FBX_ClipAlpha");
 	RankB_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
 
-	RankA_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 9.0f,9.0f,9.0f }, { -89.0f,0.0f,0.0f }, "RankAFrame.FBX");
+	RankA_Frame = UIFBXActorBase::CreateGaugeBar(EndPos, StartScale, StartRotation, "RankAFrame.FBX");
 	RankA_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankA_Inside = UIFBXActorBase::CreateGaugeBar({ 660.0f,90.0f,-150.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankAInside.FBX", "FBX_ClipAlpha");
+	RankA_Inside = UIFBXActorBase::CreateGaugeBar(InsidePos,EndScale, StartRotation, "RankAInside.FBX", "FBX_ClipAlpha");
 	RankA_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
 
-	RankS_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 9.0f,9.0f,9.0f }, { -89.0f,0.0f,0.0f }, "RankSFrame.FBX");
+	RankS_Frame = UIFBXActorBase::CreateGaugeBar(EndPos, StartScale, StartRotation, "RankSFrame.FBX");
 	RankS_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankS_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankSInside.FBX", "FBX_ClipAlpha");
+	RankS_Inside = UIFBXActorBase::CreateGaugeBar(InsidePos,EndScale, StartRotation, "RankSInside.FBX", "FBX_ClipAlpha");
 	RankS_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
 
-	RankSS_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 9.0f,9.0f,9.0f }, { -89.0f,0.0f,0.0f }, "RankSSFrame.FBX");
+	RankSS_Frame = UIFBXActorBase::CreateGaugeBar(EndPos, StartScale, StartRotation, "RankSSFrame.FBX");
 	RankSS_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankSS_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankSSInside.FBX", "FBX_ClipAlpha");
+	RankSS_Inside = UIFBXActorBase::CreateGaugeBar(InsidePos,EndScale, StartRotation, "RankSSInside.FBX", "FBX_ClipAlpha");
 	RankSS_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
 
-	RankSSS_Frame = UIFBXActorBase::CreateGaugeBar({ 580.0f,80.0f,0.0f,-150.0f }, { 9.0f,9.0f,9.0f }, { -89.0f,0.0f,0.0f }, "RankSSSFrame.FBX");
+	RankSSS_Frame = UIFBXActorBase::CreateGaugeBar(EndPos, StartScale, StartRotation, "RankSSSFrame.FBX");
 	RankSSS_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankSSS_Inside = UIFBXActorBase::CreateGaugeBar({ 0.0f,0.0f,0.0f,0.0f }, { 5.0f,5.0f,5.0f }, { -90.0f,0.0f,0.0f }, "RankSSSInside.FBX", "FBX_ClipAlpha");
+	RankSSS_Inside = UIFBXActorBase::CreateGaugeBar(InsidePos,EndScale, StartRotation, "RankSSSInside.FBX", "FBX_ClipAlpha");
 	RankSSS_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
 
 	StateInit_RankD();
@@ -84,14 +84,14 @@ void RankUI::RankSpin(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render
 		Ratio += _Delta;
 		if (TurnIndex % 2 == 0)
 		{
-			_Render->GetTransform()->SetLocalRotation(float4::LerpClamp({ -90.0f,0.0f,0.0f }, { -90.0f,0.0f,30.0f }, Ratio * 0.2f));
-			_InsideRender->GetTransform()->SetLocalRotation(float4::LerpClamp({ -90.0f,0.0f,0.0f }, { -90.0f,0.0f,30.0f }, Ratio * 0.2f));
+			_Render->GetTransform()->SetLocalRotation(float4::LerpClamp(StartRotation, RightTurn, Ratio * 0.2f));
+			_InsideRender->GetTransform()->SetLocalRotation(float4::LerpClamp(StartRotation, RightTurn, Ratio * 0.2f));
 
 		}
 		else
 		{
-			_Render->GetTransform()->SetLocalRotation(float4::LerpClamp({ -90.0f,0.0f,0.0f }, { -90.0f,0.0f,-30.0f }, Ratio * 0.2f));
-			_InsideRender->GetTransform()->SetLocalRotation(float4::LerpClamp({ -90.0f,0.0f,0.0f }, { -90.0f,0.0f,-30.0f }, Ratio * 0.2f));
+			_Render->GetTransform()->SetLocalRotation(float4::LerpClamp(StartRotation, LeftTurn, Ratio * 0.2f));
+			_InsideRender->GetTransform()->SetLocalRotation(float4::LerpClamp(StartRotation, LeftTurn, Ratio * 0.2f));
 		}
 		if (Ratio > 8.0f)
 		{
@@ -105,13 +105,13 @@ void RankUI::RankSpin(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render
 		Ratio += _Delta;
 		if (TurnIndex % 2 == 0)
 		{
-			_Render->GetTransform()->SetLocalRotation(float4::LerpClamp({ -90.0f,0.0f,-30.0f }, { -90.0f,0.0f,0.0f }, Ratio * 0.2f));
-			_InsideRender->GetTransform()->SetLocalRotation(float4::LerpClamp({ -90.0f,0.0f,-30.0f }, { -90.0f,0.0f,0.0f }, Ratio * 0.2f));
+			_Render->GetTransform()->SetLocalRotation(float4::LerpClamp(LeftTurn, StartRotation, Ratio * 0.2f));
+			_InsideRender->GetTransform()->SetLocalRotation(float4::LerpClamp(LeftTurn, StartRotation, Ratio * 0.2f));
 		}
 		else
 		{
-			_Render->GetTransform()->SetLocalRotation(float4::LerpClamp({ -90.0f,0.0f,30.0f }, { -90.0f,0.0f,0.0f }, Ratio * 0.2f));
-			_InsideRender->GetTransform()->SetLocalRotation(float4::LerpClamp({ -90.0f,0.0f,30.0f }, { -90.0f,0.0f,0.0f }, Ratio * 0.2f));
+			_Render->GetTransform()->SetLocalRotation(float4::LerpClamp(RightTurn, StartRotation, Ratio * 0.2f));
+			_InsideRender->GetTransform()->SetLocalRotation(float4::LerpClamp(RightTurn, StartRotation, Ratio * 0.2f));
 
 		}
 		if (Ratio > 8.0f)
@@ -129,16 +129,16 @@ void RankUI::RankApper(float _Delta, std::shared_ptr<class UIFBXRenderer> _Rende
 	if (ShakeRank == false)
 	{
 		_Render->GetTransform()->SetLocalPosition(
-			float4::LerpClamp({ 580.0f,80.0f,0.0f,-150.0f }, { 660.0f,90.0f,0.0f,-150.0f }, Ratio * 3.0f));
+			float4::LerpClamp(EndPos, { 660.0f,90.0f,0.0f,-150.0f }, Ratio * 3.0f));
 		_Render->GetTransform()->SetLocalScale(
-			float4::LerpClamp({ 9.0f,9.0f,9.0f }, { 5.0f,5.0f,5.0f }, Ratio * 3.0f));
+			float4::LerpClamp(StartScale,EndScale, Ratio * 3.0f));
 	}
 	//alpha값 줄이기
 	if (Ratio + 0.5f <= 1.0f)
 	{
 		_Render->SetMulColor(float4(1.0f, 1.0f, 1.0f, Ratio + 0.5f));
 	}
-	if (_Render->GetTransform()->GetLocalPosition() == float4{ 660.0f, 90.0f, 0.0f, -150.0f })
+	if (_Render->GetTransform()->GetLocalPosition() == StartPos)
 	{
 		ShakeRank = true;
 		Ratio = 0.0f;
@@ -148,6 +148,7 @@ void RankUI::RankApper(float _Delta, std::shared_ptr<class UIFBXRenderer> _Rende
 		Ratio += _Delta;
 		if (Ratio < 0.6f)
 		{
+			Rank_Explane->GetTransform()->SetLocalPosition({ 1060.0f,-50.0f,0.0f });
 			//만약에 이전 랭크가 있다면
 			if (_Value == true)
 			{
@@ -157,7 +158,7 @@ void RankUI::RankApper(float _Delta, std::shared_ptr<class UIFBXRenderer> _Rende
 		}
 		else
 		{
-			_Render->GetTransform()->SetLocalPosition({ 660.0f,90.0f,0.0f,-150.0f });
+			_Render->GetTransform()->SetLocalPosition(StartPos);
 			ShakeRank = false;
 			RankFSM.ChangeState(_State);
 			Ratio = 0.0f;
@@ -170,14 +171,14 @@ void RankUI::RankOut(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render)
 	Ratio += _Delta;
 	if (OutRank == false)
 	{
-		_Render->GetTransform()->SetLocalPosition(float4::LerpClamp({ 660.0f,90.0f,0.0f,-150.0f }, { 1060.0f,90.0f,0.0f,-150.0f }, Ratio * 1.0f));
+		_Render->GetTransform()->SetLocalPosition(float4::LerpClamp(StartPos, { StartPos.x+400.0f,StartPos.y,StartPos.z }, Ratio * 1.0f));
 	}
 	if (_Render->GetTransform()->GetLocalPosition().x == 1060.0f)
 	{
 		//다시 기본값으로 셋팅
-		_Render->GetTransform()->SetLocalPosition({ {  1060.0f, 90.0f, 0.0f, -150.0f } });
-		_Render->GetTransform()->SetLocalRotation({ -90.0f,0.0f,0.0f });
-		_Render->GetTransform()->SetLocalScale({ 9.0f,9.0f,9.0f });
+		_Render->GetTransform()->SetLocalPosition(InsideEnd);
+		_Render->GetTransform()->SetLocalRotation(StartRotation);
+		_Render->GetTransform()->SetLocalScale(StartScale);
 		OutRank = true;
 		Ratio = 0.0f;
 	}
@@ -186,6 +187,36 @@ void RankUI::RankOut(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render)
 		_Render->SetMulColor(float4(1.0f, 1.0f, 1.0f, 1- Ratio + 0.5f));
 
 	}
+
+}
+
+void RankUI::RankScaleUpDown(std::shared_ptr<class UIFBXRenderer> _Render, std::shared_ptr<class UIFBXRenderer> _InsideRender, float _Ratio)
+{
+	ScaleSpeed += _Ratio;
+
+	if (ScaleUpValue == false)
+	{
+		_Render->GetTransform()->SetLocalScale(float4::LerpClamp(EndScale, UpScale, ScaleSpeed *10.0f));
+		_InsideRender->GetTransform()->SetLocalScale(float4::LerpClamp(EndScale, UpScale, ScaleSpeed * 10.0f));
+
+		if (_Render->GetTransform()->GetLocalScale().x == UpScale.x)
+		{
+			ScaleUpValue = true;
+			ScaleDownValue = true;
+			ScaleSpeed = 0.0f;
+		}
+	}
+	if(ScaleDownValue == true)
+	{
+		_Render->GetTransform()->SetLocalScale(float4::LerpClamp(UpScale, EndScale, ScaleSpeed * 10.0f));
+		_InsideRender->GetTransform()->SetLocalScale(float4::LerpClamp(UpScale, EndScale, ScaleSpeed * 10.0f));
+		if (_Render->GetTransform()->GetLocalScale().x == EndScale.x)
+		{
+			ScaleDownValue = false;
+		}
+	}
+
+
 
 }
 
@@ -209,6 +240,6 @@ void RankUI::SetRankExPlane(const std::string_view& _Png,float4 _Scale, float4 _
 	Rank_Explane->SetTexture(_Png);
 	float4 Scale = _Scale * 0.5f;
 	Rank_Explane->GetTransform()->SetLocalScale(Scale);
-	Rank_Explane->GetTransform()->SetLocalPosition(float4::LerpClamp(float4(_Pos.x+200.0f, _Pos.y, _Pos.z)
+	Rank_Explane->GetTransform()->SetLocalPosition(float4::LerpClamp(float4(_Pos.x+400.0f, _Pos.y, _Pos.z)
 		,_Pos, ExplaneSpeed*3.0f));
 }
