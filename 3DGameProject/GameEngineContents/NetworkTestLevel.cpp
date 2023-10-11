@@ -13,7 +13,8 @@
 #include "Player_MirageBlade.h"
 #include "Plane.h"
 #include "Enemy_HellCaina.h"
-
+#include "JudgementCut.h"
+#include "ColorEffect.h"
 NetworkTestLevel* NetworkTestLevel::Inst = nullptr;
 
 NetworkTestLevel::NetworkTestLevel()
@@ -34,6 +35,8 @@ void NetworkTestLevel::Start()
 	BaseLevel::Start();
 	BaseLevel::SetNetLevelType(Net_LevelType::NetTestLevel);
 
+	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
+	GetCamera(0)->GetCamTarget()->CreateEffect<ColorEffect>();
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 
 	GameEngineInput::CreateKey("Test_BackMainLevel", VK_ESCAPE);

@@ -27,7 +27,7 @@ void PlayerActor_Vergil::Start()
 			NetControllLoad();
 			NetLoad();
 			LoadCheck = true;
-		});
+		});	
 
 	//NetControllType::UserControll으로 변경될 때 아래 콜백이 실행됩니다.
 	SetControllCallBack(NetControllType::ActiveControll, [=]()
@@ -36,6 +36,9 @@ void PlayerActor_Vergil::Start()
 			PlayerLoad();
 			LoadCheck = true;
 		});
+	LinkData_UpdatePacket<float>(LockOnPosition.x);
+	LinkData_UpdatePacket<float>(LockOnPosition.y);
+	LinkData_UpdatePacket<float>(LockOnPosition.z);
 }
 
 void PlayerActor_Vergil::PlayerLoad()
@@ -1281,6 +1284,7 @@ void PlayerActor_Vergil::PlayerLoad()
 					EffectSystem_Target->GetTransform()->SetLocalPosition({0, 0, 200});
 					Col_Attack->GetTransform()->SetLocalPosition({ 0, 0, 200 });
 				}
+				LockOnPosition = EffectSystem_Target->GetTransform()->GetWorldPosition();
 				Col_Attack->GetTransform()->SetLocalScale({300, 300, 300});
 				Col_Attack->On();
 				TimeEvent.AddEvent(0.08f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
@@ -1362,6 +1366,7 @@ void PlayerActor_Vergil::PlayerLoad()
 					EffectSystem_Target->GetTransform()->SetLocalPosition({ 0, 0, 200 });
 					Col_Attack->GetTransform()->SetLocalPosition({ 0, 0, 200 });
 				}
+				LockOnPosition = EffectSystem_Target->GetTransform()->GetWorldPosition();
 				Col_Attack->GetTransform()->SetLocalScale({ 300, 300, 300 });
 				Col_Attack->On();
 				TimeEvent.AddEvent(0.08f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
@@ -2737,10 +2742,9 @@ void PlayerActor_Vergil::NetLoad()
 		// Vergil_yamato_JudgementCut_2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCut_2,
 			.Start = [=] {
-				// 아직 미완성
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(450));
 				EffectSystem->PlayFX("Yamato_JudgementCut.effect");
-				EffectSystem_Target->GetTransform()->SetLocalPosition({0, 0, 200});
+				EffectSystem_Target->GetTransform()->SetWorldPosition(LockOnPosition);
 				EffectSystem_Target->PlayFX("Yamato_JC_Effect.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCut_2_Loop");
 			},
@@ -2776,7 +2780,7 @@ void PlayerActor_Vergil::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCutAir_2,
 			.Start = [=] {
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(450));
-				EffectSystem_Target->GetTransform()->SetLocalPosition({ 0, 0, 200 });
+				EffectSystem_Target->GetTransform()->SetWorldPosition(LockOnPosition);
 				EffectSystem_Target->PlayFX("Yamato_JC_Effect.effect");
 				EffectSystem->PlayFX("Yamato_JudgementCut_Air.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Air_JudgementCut_2_Loop");

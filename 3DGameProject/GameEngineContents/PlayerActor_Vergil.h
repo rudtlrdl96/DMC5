@@ -148,7 +148,6 @@ protected:
 	void LightDamage() override;
 	void HeavyDamage() override;
 private:
-
 	std::vector<std::shared_ptr<class Player_MirageBlade>> AllMirageBlades;
 	std::shared_ptr<class FXSystem> EffectSystem = nullptr;
 	std::shared_ptr<class FXSystem> EffectSystem_Target = nullptr;
@@ -156,6 +155,7 @@ private:
 	class ColorEffect* Effect_Color = nullptr;
 	GameEngineFSM FSM;
 	GameEngineFSM FSM_MirageBlade;
+	float4 LockOnPosition = float4::ZERO;
 	float WalkSpeed = 300;
 	float RunSpeed = 550;
 	float JumpMoveForce = 7000.0f;
