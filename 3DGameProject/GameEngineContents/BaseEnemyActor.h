@@ -211,7 +211,7 @@ protected:
 	void AllDirectSetting();
 	void PushDirectSetting();
 	void SnatchCalculation();
-	void BusterCalculation();
+	void BusterCalculation(float4 _attachposition);
 	void BusterEnd();
 	void MonsterSnatch(float _DeltaTime);
 	

@@ -508,7 +508,7 @@ void BaseEnemyActor::RenderShake(float _DeltaTime)
 	}
 }
 
-void BaseEnemyActor::BusterCalculation()
+void BaseEnemyActor::BusterCalculation(float4 _attachposition)
 {
 	if (nullptr == Player)
 	{
@@ -521,7 +521,7 @@ void BaseEnemyActor::BusterCalculation()
 	float4 BusterPosition = Player->GetTransform()->GetWorldPosition() + Forword + float4{0.f, 40.f, 0.f};
 	
 	PhysXCapsule->SetWorldPosition(BusterPosition);
-	Player->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer->GetTransform(), float4{0.0f, -120.0f, 0.0f}/*, float4(0.0f, 0.0f, 0.0f)*/);
+	Player->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer->GetTransform(), _attachposition/*, float4(0.0f, 0.0f, 0.0f)*/);
 }
 
 void BaseEnemyActor::BusterEnd()

@@ -14,8 +14,14 @@ public:
 	Plane& operator=(const Plane& _Other) = delete;
 	Plane& operator=(Plane&& _Other) noexcept = delete;
 
+	// 몬스터 피직스 컴포넌트 리턴
+	std::shared_ptr<class PhysXBoxComponent> GetPhysXComponent()
+	{
+		return Component;
+	}
+
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
-	std::shared_ptr<class PhysXBoxComponent> Component = nullptr;
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -24,6 +30,6 @@ protected:
 	void ServerUpdate(float _DeltaTime);
 
 private:
-
+	std::shared_ptr<class PhysXBoxComponent> Component = nullptr;
 };
 

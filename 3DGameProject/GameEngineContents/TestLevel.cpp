@@ -4,6 +4,7 @@
 #include <GameEngineCore/GameEngineCoreWindow.h>
 #include <GameEngineCore/PhysXCapsuleComponent.h>
 #include <GameEngineCore/GameEngineCollision.h>
+#include <GameEngineCore/PhysXBoxComponent.h>
 
 #include "NetworkManager.h"
 #include "PlayerActor_Nero.h"
@@ -49,6 +50,8 @@ void TestLevel::Start()
 	//GetCamera(100)->SetSortType(0, SortType::ZSort);
 	GetCamera(100)->GetCamTarget()->DepthSettingOff();
 }
+
+bool Is = false;
 
 void TestLevel::Update(float _DeltaTime)
 {
@@ -133,6 +136,7 @@ void TestLevel::LevelChangeStart()
 	if (nullptr == Flat)
 	{
 		Flat = CreateActor<Plane>();
+		Flat->GetPhysXComponent()->SetWorldPosition({ 0, -50, 0 });
 	}
 
 	GameEngineCoreWindow::Clear();

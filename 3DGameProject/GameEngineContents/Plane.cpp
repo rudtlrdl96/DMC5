@@ -20,9 +20,10 @@ void Plane::Start()
 {
 	Renderer = CreateComponent<GameEngineFBXRenderer>();
 	Renderer->SetFBXMesh("Ground_Mesh.FBX", "FBX_Low");
+	Renderer->GetTransform()->SetLocalScale(Renderer->GetTransform()->GetLocalScale() * 3.0f);
 	//Renderer->LightOff();
 
-	float4 RenderMeshScale = Renderer->GetFBXMesh()->GetRenderUnit(0)->BoundScaleBox;
+	float4 RenderMeshScale = Renderer->GetFBXMesh()->GetRenderUnit(0)->BoundScaleBox * 3.0f;
 	physx::PxVec3 GeoMetryScale = { RenderMeshScale.x, RenderMeshScale.y, RenderMeshScale.z};
 
 	Component = CreateComponent<PhysXBoxComponent>();

@@ -227,12 +227,12 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 		break;
 	case DamageType::Light:
 
-		if (true == IsHeavyAttack || true == IsSlamAttack || true == IsBusterAttack)
+		if (true == IsHeavyAttack)
 		{
 			return;
 		}
 
-		if (true == IsAirAttack)
+		if (true == IsAirAttack || true == IsSlamAttack || true == IsBusterAttack)
 		{
 			StartRenderShaking(8);
 			ChangeState(FSM_State_Empusa::Empusa_Air_Damage_Under);
@@ -294,10 +294,9 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 	case DamageType::Buster:
 		IsCollapse = false;
 		IsBusterAttack = true;
-		BusterCalculation();
+		BusterCalculation(float4{ 0.f, -45.f, 0.f });
 		RotationCheck();
 		PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
-		PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
 		ChangeState(FSM_State_Empusa::Empusa_Buster_Start);
 		break;
 	case DamageType::Stun:
@@ -1102,6 +1101,8 @@ void Enemy_Empusa::EnemyCreateFSM()
 
 	{
 		EnemyRenderer->SetAnimationStartEvent("em0100_air_damage_under", 1, [=] {
+			if (true == IsBusterAttack)
+				return;
 			if (true == IsVergilLight)
 				SetAir(10000.0f);
 			else
@@ -1381,7 +1382,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// em0100_Buster_Start, 버스트 히트 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Buster_Start,
 	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_hold_pose");
+	EnemyRenderer->ChangeAnimation("em0100_air_damage_under");
 	},
 	.Update = [=](float _DeltaTime) {
 	SetMoveStop();
@@ -1418,12 +1419,11 @@ void Enemy_Empusa::EnemyCreateFSM()
 	IsSlamAttack = false;
 	IsBusterAttack = false;
 	IsCollapse = true;
-	EnemyRenderer->ChangeAnimation("em0100_slam_damage_landing");
+	EnemyRenderer->ChangeAnimation("em0100_blown_back_landing");
 	},
 	.Update = [=](float _DeltaTime) {
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
 		ChangeState(FSM_State_Empusa::Empusa_Downward_Getup);
 		return;
 	}
@@ -1856,7 +1856,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 		});
 	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Buster_Start,
 	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_hold_pose");
+	EnemyRenderer->ChangeAnimation("em0100_air_damage_under");
 	},
 	.Update = [=](float _DeltaTime) {
 	},
@@ -1865,6 +1865,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 		});
 	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Buster_Loop,
 	.Start = [=] {
+	//EnemyRenderer->ChangeAnimation("em0100_slam_damage_fall_loop");
 	},
 	.Update = [=](float _DeltaTime) {
 	},
@@ -1873,7 +1874,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 		});
 	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Buster_Finish,
 	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_slam_damage_landing");
+	EnemyRenderer->ChangeAnimation("em0100_blown_back_landing");
 	},
 	.Update = [=](float _DeltaTime) {
 	},

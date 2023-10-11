@@ -180,12 +180,12 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 		break;
 	case DamageType::Light:
 
-		if (true == IsHeavyAttack || true == IsSlamAttack || true == IsBusterAttack)
+		if (true == IsHeavyAttack)
 		{
 			return;
 		}
 
-		if (true == IsAirAttack)
+		if (true == IsAirAttack || true == IsSlamAttack || true == IsBusterAttack)
 		{
 			StartRenderShaking(8);
 			ChangeState(FSM_State_HellCaina::HellCaina_Air_Damage_Under);
@@ -247,7 +247,7 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 	case DamageType::Buster:
 		IsCollapse = false;
 		IsBusterAttack = true;
-		BusterCalculation();
+		BusterCalculation(float4{ 0.0f, -120.0f, 0.0f });
 		RotationCheck();
 		PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 		PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
@@ -1783,13 +1783,13 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 		});
 	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Buster_Start,
 	.Start = [=] {
-	BusterCalculation();
+	//BusterCalculation();
 	EnemyRenderer->ChangeAnimation("em0000_Buster_Start");
 	},
 	.Update = [=](float _DeltaTime) {
 	},
 	.End = [=] {
-	BusterEnd();
+	//BusterEnd();
 	}
 		});
 	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Buster_Loop,
