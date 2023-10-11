@@ -85,7 +85,7 @@ public:
 			HitStopTime = 0.0f;
 			break;
 		case DamageType::Slam:
-			HitStopTime = 0.08f;
+			HitStopTime = 0.03f;
 			break;
 		case DamageType::Buster:
 			HitStopTime = 0.0f;
@@ -125,7 +125,7 @@ public:
 			HitStopTime = 0.0f;
 			break;
 		case DamageType::Slam:
-			HitStopTime = 0.08f;
+			HitStopTime = 0.03f;
 			break;
 		case DamageType::Buster:
 			HitStopTime = 0.0f;

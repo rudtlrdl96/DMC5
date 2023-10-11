@@ -1616,18 +1616,18 @@ void PlayerActor_Nero::PlayerLoad()
 				UseDoubleJump = false;
 				InputCheck = false;
 				PhysXCapsule->SetLinearVelocityZero();
-				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->TurnOnGravity();
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Split_3");
 			},
 			.Update = [=](float _DeltaTime) {
+
+				if (true == Input_SpecialCheck()) { return; }
+				if (InputCheck == false) { return; }
 				if (false == FloorCheck())
 				{
 					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
 					return;
 				}
-
-				if (true == Input_SpecialCheck()) { return; }
-				if (InputCheck == false) { return; }
 
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
