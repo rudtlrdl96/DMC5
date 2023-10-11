@@ -259,7 +259,7 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 	default:
 		break;
 	}
-
+	HitStop(Data.DamageTypeValue);
 	IsVergilLight = false;
 	AttackDelayCheck = 0.0f;
 }

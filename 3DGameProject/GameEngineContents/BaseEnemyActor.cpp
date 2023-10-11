@@ -577,6 +577,39 @@ void BaseEnemyActor::MonsterSnatch(float _DeltaTime)
 	}
 }
 
+void BaseEnemyActor::HitStop(DamageType _Type)
+{
+	float _TimeScale = 0.1f;
+	float StopTime = 0.0f;
+	switch (_Type)
+	{
+	case DamageType::VergilLight:
+		StopTime = 0.01f;
+		break;
+	case DamageType::Light:
+		StopTime = 0.05f;
+		break;
+	case DamageType::Heavy:
+		StopTime = 0.08f;
+		break;
+	case DamageType::Air:
+		StopTime = 0.05f;
+		break;
+	case DamageType::Slam:
+		StopTime = 0.08f;
+		break;
+	case DamageType::Stun:
+		return;
+	default:
+		break;
+	}
+	SetTimeScale(_TimeScale);
+	GetLevel()->TimeEvent.AddEvent(StopTime, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+	{
+		SetTimeScale(1.0f);
+	});
+}
+
 void BaseEnemyActor::StopTime(float _Time)
 {
 	SetTimeScale(0.0f);

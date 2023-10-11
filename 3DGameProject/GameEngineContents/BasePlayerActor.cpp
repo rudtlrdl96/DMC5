@@ -14,6 +14,7 @@
 #include <GameEngineCore/PhysXCapsuleComponent.h>
 #include "FsmChangePacket.h"
 #include "AttackCollision.h"
+#include "FXSystem.h"
 std::vector<BasePlayerActor*> BasePlayerActor::Players = std::vector<BasePlayerActor*>();
 
 BasePlayerActor::BasePlayerActor()
@@ -171,6 +172,7 @@ void BasePlayerActor::Start()
 	Col_Attack = CreateComponent<AttackCollision>(CollisionOrder::PlayerAttack);
 	Col_Attack->Off();
 	Col_Attack->SetColType(ColType::OBBBOX3D);
+	Col_Attack->SetHitStopCallBack(std::bind(&BasePlayerActor::StopTime, this, std::placeholders::_1));
 
 	LinkData_UpdatePacket<bool>(DTValue, [this](bool _BeforeData)
 	{
@@ -216,6 +218,9 @@ void BasePlayerActor::UserControllLoad()
 
 void BasePlayerActor::Update(float _DeltaTime)
 {
+	_DeltaTime *= GetTimeScale();
+	Renderer->SetTimeScale(GetTimeScale());
+	EffectSystem->TimeScale = GetTimeScale();
 	TimeEvent.Update(_DeltaTime);
 	Update_Character(_DeltaTime);
 	Update_NetworkTrans(_DeltaTime);
@@ -275,6 +280,16 @@ bool BasePlayerActor::FloorCheck()
 		|| GetLevel()->RayCast(GetTransform()->GetWorldPosition() + (GetTransform()->GetWorldLeftVector() * 75), float4::DOWN, Point, 100.0f)
 		|| GetLevel()->RayCast(GetTransform()->GetWorldPosition() + (GetTransform()->GetWorldRightVector() * 75), float4::DOWN, Point, 100.0f)
 		|| GetLevel()->RayCast(GetTransform()->GetWorldPosition() + (GetTransform()->GetWorldBackVector() * 75), float4::DOWN, Point, 100.0f);
+}
+
+void BasePlayerActor::StopTime(float _Time)
+{
+	SetTimeScale(0.0f);
+	GetLevel()->TimeEvent.AddEvent(_Time, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+	{
+		Col_Attack->Off();
+		SetTimeScale(1.0f);
+	});
 }
 
 void BasePlayerActor::DamageColCheck()
