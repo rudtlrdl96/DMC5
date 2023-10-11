@@ -178,6 +178,13 @@ void NetworkManager::ClientPacketInit()
 		if (true == NetObj->IsNetDisconnected())
 			return;
 
+		//Passive에서 넘어온 패킷인 경우엔
+		if (0 != _Packet->AttackerID)
+		{
+			//Active컨트롤 객체도 패킷을 처리할 수 있게함
+			_Packet->SetActiveRecv();
+		}
+
 		//각자 스스로 처리할 수 있게 자료구조에 저장
 		GameEngineNetObject::PushNetObjectPacket(_Packet);
 	});

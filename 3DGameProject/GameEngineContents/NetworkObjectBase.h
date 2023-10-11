@@ -35,6 +35,16 @@ public:
 	NetworkObjectBase& operator=(const NetworkObjectBase& _Other) = delete;
 	NetworkObjectBase& operator=(const NetworkObjectBase&& _Other) noexcept = delete;
 
+	inline void SetTimeScale(float _Value)
+	{
+		ActorTimeScale = _Value;
+	}
+
+	inline float GetTimeScale() const
+	{
+		return ActorTimeScale;
+	}
+
 protected:
 	inline void SetNetObjectType(Net_ActorType _ActorType)
 	{
@@ -93,13 +103,27 @@ protected:
 
 	void SetFsmPacketCallBack(std::function<void(int _State)> _CallBack);
 
-	inline void SetTimeScale(float _Value)
+	
+	template <typename AttackerType>
+	void SetDamagedNetCallBack(std::function<void(AttackerType* _Attacker)> _CallBack)
 	{
-		ActorTimeScale = _Value;
-	}
-	inline float GetTimeScale()
-	{
-		return ActorTimeScale;
+		if (nullptr == _CallBack)
+		{
+			MsgAssert("nullptr인 함수포인터를 넣어주려고 했습니다");
+			return;
+		}
+
+		DamagedCallBack = [_CallBack](NetworkObjectBase* _Attacker)
+		{
+			AttackerType* AttackerPtr = dynamic_cast<AttackerType*>(_Attacker);
+			if (nullptr == AttackerPtr)
+			{
+				MsgAssert("피격패킷을 처리하는 과정에서 다운캐스팅에 실패하였습니다");
+				return;
+			}
+
+			_CallBack(AttackerPtr);
+		};
 	}
 
 private:
@@ -108,7 +132,7 @@ private:
 
 	static NetworkObjectBase* GetNetObj(unsigned int _ObjID);
 
-
+	std::function<void(NetworkObjectBase*)> DamagedCallBack = nullptr;
 	std::shared_ptr<PhysXCapsuleComponent> PhysXCapsule = nullptr;
 	class GameEngineTransform* ActorTrans = nullptr;
 
@@ -183,9 +207,6 @@ private:
 	template <typename PacketType>
 	void BindPacketCallBack(PacketEnum _Type, std::function<void(std::shared_ptr<PacketType>)> _Callback = nullptr)
 	{
-		if (NetControllType::ActiveControll == GetControllType())
-			return;
-
 		if (true == PacketProcessFunctions.contains(_Type))
 		{
 			MsgAssert("해당 패킷의 처리 함수는 이미 등록하였습니다");

@@ -245,7 +245,7 @@ void NetworkManager::PushUpdatePacket(
 }
 
 
-void NetworkManager::SendFsmChangePacket(NetworkObjectBase* _NetObjPtr, int _FsmState, bool _IsPassiveRequest/*= false*/)
+void NetworkManager::SendFsmChangePacket(NetworkObjectBase* _NetObjPtr, int _FsmState, NetworkObjectBase* _Attacker /*= nullptr*/)
 {
 	if (nullptr == _NetObjPtr)
 	{
@@ -283,12 +283,12 @@ void NetworkManager::SendFsmChangePacket(NetworkObjectBase* _NetObjPtr, int _Fsm
 	}
 
 	NetControllType NetCtrlType = _NetObjPtr->GetControllType();
-	if ((false == _IsPassiveRequest) && (NetControllType::PassiveControll == NetCtrlType))
+	if ((nullptr == _Attacker) && (NetControllType::PassiveControll == NetCtrlType))
 	{
 		MsgAssert("패킷을 받아 처리되는 오브젝트가 Fsm변경 패킷을 보낼려고 했습니다");
 		return;
 	}
-	else if ((true == _IsPassiveRequest) && (NetControllType::ActiveControll == NetCtrlType))
+	else if ((nullptr != _Attacker) && (NetControllType::ActiveControll == NetCtrlType))
 	{
 		MsgAssert("Fsm을 직접 변경하는 객체가 FSM 변경 요청 패킷을 보낼려고 했습니다");
 		return;
@@ -322,6 +322,19 @@ void NetworkManager::SendFsmChangePacket(NetworkObjectBase* _NetObjPtr, int _Fsm
 	}
 
 	Packet->LevelType = LevelType;
+
+	//공격한 대상이 있는 경우
+	if (nullptr != _Attacker)
+	{
+		int AttackerID = _Attacker->GetNetObjectID();
+		if (false == GameEngineNetObject::IsNetObject(AttackerID))
+		{
+			MsgAssert("공격을 한 객체가 네트워크에 연결되어 있지 않습니다");
+			return;
+		}
+
+		Packet->AttackerID = AttackerID;
+	}
 
 	NetInst->SendPacket(Packet);
 }

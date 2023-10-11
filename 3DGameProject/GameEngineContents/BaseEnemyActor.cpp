@@ -117,7 +117,7 @@ void BaseEnemyActor::Update(float _DeltaTime)
 			MonsterAttackCollision->Off();
 			EnemyFSM_Client.Update(_DeltaTime);
 			Update_NetworkTrans(_DeltaTime);
-			MonsterAttackCollision->Off();
+			//DamageCollisionCheck(_DeltaTime);
 		}
 	}
 }

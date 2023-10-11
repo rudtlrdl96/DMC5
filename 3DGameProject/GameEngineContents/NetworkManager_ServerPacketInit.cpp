@@ -199,11 +199,18 @@ void NetworkManager::ServerPacketInit()
 		if (true == NetObj->IsNetDisconnected())
 			return;
 
+		//Passive에서 넘어온 패킷인 경우엔
+		if (0 != _Packet->AttackerID)
+		{
+			//Active컨트롤 객체도 패킷을 처리할 수 있게함
+			_Packet->SetActiveRecv();
+		}
+
 		//각자 스스로 처리할 수 있게 자료구조에 저장
 		GameEngineNetObject::PushNetObjectPacket(_Packet);
 
-		//서버의 경우엔 수신받은 특정 오브젝트의 패킷을 다른 클라에 다 뿌려야 한다
-		NetInst->SendPacket(_Packet, _Packet->NetID);
+		//서버의 경우엔 수신받은 특정 오브젝트의 패킷을 다른 클라에 다 뿌려야 한다(뿌려야 하나?)
+		//NetInst->SendPacket(_Packet, _Packet->NetID);
 	});
 }
 

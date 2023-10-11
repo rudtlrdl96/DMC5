@@ -44,6 +44,9 @@ NetworkObjectBase::~NetworkObjectBase()
 
 void NetworkObjectBase::Update_ProcessPacket()
 {
+	NetControllType ThisNetCtrlType = GetControllType();
+	NetworkGUI* NetGUI = NetworkGUI::GetInst();
+
 	//패킷을 다 처리할 때 까지
 	while (GameEngineNetObject::IsPacket())
 	{
@@ -57,7 +60,23 @@ void NetworkObjectBase::Update_ProcessPacket()
 			return;
 		}
 
+		//패킷 꺼내기
 		std::shared_ptr<GameEnginePacket> Packet = PopFirstPacket();
+
+		//Active에서 처리가 허락되지 않은 패킷이면서 자신이 Active인지 확인
+		if (false == Packet->IsActiveRecv() && NetControllType::ActiveControll == ThisNetCtrlType)
+		{
+			//int PacketID = static_cast<int>(Packet->GetPacketID());
+			//int ObjectID = static_cast<int>(Packet->GetObjectID());
+			//std::string LogMsg = "PacketID : " + GameEngineString::ToString(PacketID) + " / ObjectID : " + GameEngineString::ToString(ObjectID);
+			//
+			//NetGUI->PrintLog("This is ActiveControll Objject", float4::RED);
+			//NetGUI->PrintLog("So, This Packet can not process", float4::RED);
+			//NetGUI->PrintLog(LogMsg.c_str(), float4::RED);
+			MsgAssert("Active컨트롤에서 처리가 허락되지 않은 패킷인데, Active컨트롤객체가 패킷을 처리하려고 했습니다");
+			continue;
+		}
+
 		PacketProcessFunctions[Type](Packet);
 	}
 }
@@ -116,43 +135,25 @@ void NetworkObjectBase::SetUpdateArrData(std::shared_ptr<ObjectUpdatePacket> _Pa
 }
 
 
-//void NetworkObjectBase::LinkChild_UpdatePacket(GameEngineTransform* _Child)
-//{
-//	float4 Rotation = _Child->GetLocalRotation();
-//	float4 Position = _Child->GetLocalPosition();
-//	
-//	ChildData& LinkData = Children[_Child];
-//	LinkData.Rotation = Rotation;
-//	LinkData.Position = Position;
-//
-//	for (size_t i = 0; i < 3; ++i)
-//	{
-//		float& LinkDataRot = LinkData.Rotation.Arr1D[i];
-//		float& LinkDataPos = LinkData.Position.Arr1D[i];
-//
-//		LinkData_UpdatePacket<float>(LinkDataRot);
-//		LinkData_UpdatePacket<float>(LinkDataPos);
-//	}
-//
-//	BindPacketCallBack<ObjectUpdatePacket>(PacketEnum::ObjectUpdatePacket, [this](std::shared_ptr<ObjectUpdatePacket> _Packet)
-//	{
-//		for (const std::pair<GameEngineTransform*, ChildData>& Pair : Children)
-//		{
-//			GameEngineTransform* Child = Pair.first;
-//			const ChildData& Data = Pair.second;
-//			
-//			Child->SetLocalRotation(Data.Rotation);
-//			Child->SetLocalPosition(Data.Position);
-//		}
-//	});
-//}
-
-
 void NetworkObjectBase::SetFsmPacketCallBack(std::function<void(int _State)> _CallBack)
 {
 	BindPacketCallBack<FsmChangePacket>(PacketEnum::FsmChangePacket, [=](std::shared_ptr<FsmChangePacket> _Packet)
 	{
 		_CallBack(_Packet->FsmState);
+
+		int AttackerID = _Packet->AttackerID;
+		if (0 == AttackerID || nullptr == DamagedCallBack)
+			return;
+
+		NetworkObjectBase* AttacketPtr = nullptr;
+		AttacketPtr = NetworkObjectBase::GetNetObj(AttackerID);
+		if (nullptr == AttacketPtr)
+		{
+			MsgAssert("패킷으로 받은 공격대상이 nullptr입니다");
+			return;
+		}
+
+		DamagedCallBack(AttacketPtr);
 	});
 }
 

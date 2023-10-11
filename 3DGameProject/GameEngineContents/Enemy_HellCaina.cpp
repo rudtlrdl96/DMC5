@@ -54,6 +54,12 @@ void Enemy_HellCaina::Start()
 
 	// 넷 오브젝트 타입 설정
 	SetNetObjectType(Net_ActorType::HellCaina);
+
+	//이런식으로 공격받았을 때 처리하시면 됩니다, 템플릿 인자는 내부에서 단순히 다운캐스팅 해주는 역할입니다
+	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker)
+	{
+		//TODO
+	});
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

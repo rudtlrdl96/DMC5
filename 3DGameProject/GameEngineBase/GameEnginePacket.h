@@ -60,6 +60,16 @@ public:
 		ObjectID = _ObjectID;
 	}
 
+	inline bool IsActiveRecv() const
+	{
+		return IsActiveRecvValue;
+	}
+
+	inline void SetActiveRecv()
+	{
+		IsActiveRecvValue = true;
+	}
+
 protected:
 	virtual void Serialize(GameEngineSerializer& _Ser)
 	{
@@ -82,6 +92,11 @@ private:
 	unsigned int Size = -1; 
 	//오브젝트 아이디
 	unsigned int ObjectID = -1; 
+
+	/// <summary>
+	/// Active컨트롤인 객체가 이 패킷을 처리하는지 여부, 이 값은 네트워크 직렬화가 이루어지지 않음
+	/// </summary>
+	bool IsActiveRecvValue = false;
 
 	//패킷의 크기는 모든 맴버변수를 GameEngineSerializer에 집어 넣고 결정된다. 직렬화가 끝난 이후 이 패킷의 총 크기를 알기위한 함수
 	void SerializeEnd(GameEngineSerializer& _Ser, unsigned int _PacketStartPos)

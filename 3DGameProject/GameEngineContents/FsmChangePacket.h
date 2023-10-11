@@ -24,6 +24,7 @@ public:
 	}
 
 	int FsmState = -1;
+	int AttackerID = 0;
 
 protected:
 	void Serialize(GameEngineSerializer& _Ser) override
@@ -31,6 +32,7 @@ protected:
 		GameEnginePacket::Serialize(_Ser);
 
 		_Ser << FsmState;
+		_Ser << AttackerID;
 		_Ser << NetID;
 		
 		unsigned int Level = static_cast<int>(LevelType);
@@ -42,6 +44,7 @@ protected:
 		GameEnginePacket::DeSeralize(_Ser);
 
 		_Ser >> FsmState;
+		_Ser >> AttackerID;
 		_Ser >> NetID;
 
 		unsigned int Level = 0;

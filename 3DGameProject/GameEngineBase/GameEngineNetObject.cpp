@@ -37,10 +37,6 @@ void GameEngineNetObject::Update_ProcessPackets()
 		if (false == Pair.second->IsNet())
 			continue;
 
-		//내가 조종하는 컨트롤 타입일 경우엔 패킷을 수신받지 않음
-		if (NetControllType::ActiveControll == Pair.second->ControllType)
-			continue;
-
 		//처리할 패킷이 없는 경우
 		if (true == Pair.second->Packets.empty())
 			continue;
