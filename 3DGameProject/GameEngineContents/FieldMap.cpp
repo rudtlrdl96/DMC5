@@ -57,6 +57,20 @@ std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, cons
 		MapRenderersRef[i].lock()->ShadowOn();
 		MapRenderersRef[i].lock()->SetStatic();
 		//MapRenderersRef[i]->Off();
+
+		if (nullptr == GameEngineTexture::Find("WaterNoise.png"))
+		{
+			std::string Path = GameEnginePath::GetFileFullPath(
+				"ContentResources",
+				{ "Texture",  "WaterNoise"},
+				"WaterNoise.png");
+
+			GameEngineTexture::Load(Path);
+		}
+
+		// 사용할놈만 켜야함
+		// MapRenderersRef[i].lock()->SetBaseColor(float4(0, 1, 0));
+		MapRenderersRef[i].lock()->SetTexture("WaterNoiseTexture", "WaterNoise.png");
 	}
 
 	std::vector<std::weak_ptr<GameEngineCollision>>& MapCullingColRef = Result->FieldMapCullingCol;

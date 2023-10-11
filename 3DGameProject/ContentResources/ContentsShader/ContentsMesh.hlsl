@@ -53,9 +53,9 @@ Texture2D DiffuseTexture : register(t0); // ALBM
 Texture2D NormalTexture : register(t1); // NRMR
 Texture2D SpecularTexture : register(t2); // ATOS
 TextureCube ReflectionTexture : register(t3); // Reflection Cubemap
+Texture2D WaterNoiseTexture : register(t4); // WaterNoise
 
 SamplerState ENGINEBASE : register(s0);
-SamplerState CUBEMAPSAMPLER : register(s1);
 
 struct DeferredOutPut
 {
@@ -102,12 +102,7 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     {
         Result.NorTarget = _Input.NORMAL;
     }
-    
-    if(0 != BaseColor.g)
-    {
-        Result.NorTarget.xyz = NoiseWaterNormal(Result.NorTarget.xyz);
-    }
-    
+        
     // 반사량 계산 공식 러프니스 값에 따라서 결정된다        
     float roughness = 1.0 - NrmrData.r; // smoothness는 러프니스 값입니다.
     float3 reflection = reflect(AllLight[0].LightRevDir.xyz, Result.NorTarget.xyz); // 빛의 반사 방향 계산
@@ -122,7 +117,11 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     
     // 반사벡터
     float3 refnormal = Result.NorTarget.xyz;
-    
+                
+    if (0 != BaseColor.g)
+    {
+        refnormal.xyz = NoiseWaterNormal(_Input.TEXCOORD.xy, WaterNoiseTexture, ENGINEBASE);
+    }
     
     // Point lobe in off-specular peak direction
     refnormal = GetOffSpecularPeakReflectionDir(refnormal, CameraView, roughness);
@@ -132,14 +131,8 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     
     // 축 반전
     //refvector.x = -refvector.x;
-    
-    
-    // if (0 != BaseColor.g)
-    // {
-    //     refvector = Float3_Noise(refvector, 5.0f);
-    // }
         
-    float4 ReflectionColor = ReflectionTexture.Sample(CUBEMAPSAMPLER, normalize(refvector));
+    float4 ReflectionColor = ReflectionTexture.Sample(ENGINEBASE, normalize(refvector));
     //float4 ReflectionColor = ReflectionTexture.Sample(ENGINEBASE, refvector);
     
     // 계산된 메탈릭 값
