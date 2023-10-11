@@ -39,6 +39,7 @@ void TestStageLevel::Start()
 {
 	CreateActor<FreeCameraActor>();
 
+	GetCamera(0)->GetCamTarget()->CreateEffect<ColorEffect>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
 
 	GetCamera(0)->GetDeferredLightTarget()->CreateEffect<BloomEffect>();

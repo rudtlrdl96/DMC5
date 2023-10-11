@@ -20,7 +20,7 @@ void PlayerActor_Vergil::Start()
 	SetNetObjectType(Net_ActorType::Vergil);
 
 	Effect_JC = JudgementCut::GetJudgementCutEffect();
-	Effect_Color = GetLevel()->GetCamera(0)->GetCamTarget()->CreateEffect<ColorEffect>();
+	Effect_Color = ColorEffect::GetColorEffect();
 	//NetControllType::NetControll으로 변경될 때 아래 콜백이 실행됩니다. 
 	SetControllCallBack(NetControllType::PassiveControll, [=]()
 		{

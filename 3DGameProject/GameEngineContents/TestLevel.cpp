@@ -14,6 +14,8 @@
 #include "Wall.h"
 #include "CavaliereAngelo.h"
 #include "TestObject.h"
+#include "ColorEffect.h"
+#include "JudgementCut.h"
 
 #include "FXAA_Effect.h"
 
@@ -38,6 +40,8 @@ void TestLevel::Start()
 
 	CreateScene(GetName());
 
+	GetCamera(0)->GetCamTarget()->CreateEffect<ColorEffect>();
+	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
 
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);

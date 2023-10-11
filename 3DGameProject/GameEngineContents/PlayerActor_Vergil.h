@@ -153,7 +153,7 @@ private:
 	std::shared_ptr<class FXSystem> EffectSystem = nullptr;
 	std::shared_ptr<class FXSystem> EffectSystem_Target = nullptr;
 	class JudgementCut* Effect_JC = nullptr;
-	std::shared_ptr<class ColorEffect> Effect_Color = nullptr;
+	class ColorEffect* Effect_Color = nullptr;
 	GameEngineFSM FSM;
 	GameEngineFSM FSM_MirageBlade;
 	float WalkSpeed = 300;
