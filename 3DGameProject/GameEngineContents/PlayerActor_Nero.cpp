@@ -16,6 +16,7 @@
 #include "PlayerCamera.h"
 #include "Player_Snatch.h"
 #include "RankUI.h"
+#include "Item_DevilBreaker.h"
 std::list<DevilBreaker> PlayerActor_Nero::BreakerList;
 PlayerActor_Nero::~PlayerActor_Nero()
 {
@@ -2883,7 +2884,7 @@ void PlayerActor_Nero::PlayerLoad()
 				return;
 			}
 			if (InputCheck == false) { return; }
-			if (true == Input_SpecialCheck()) { return; }
+			//if (true == Input_SpecialCheck()) { return; }
 
 
 			if (true == Input_JumpCheck()) { return; }
@@ -2923,7 +2924,7 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 
 				if (InputCheck == false) { return; }
-				if (true == Input_SpecialCheckFly()) { return; }
+				//if (true == Input_SpecialCheckFly()) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly()) { return; }
 				if (true == Input_GunCheckFly()) { return; }
@@ -4729,6 +4730,7 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 
 	if (NetControllType::ActiveControll == GameEngineNetObject::GetControllType())
 	{
+		ItemColCheck();
 		if (GameEngineInput::IsDown("SelectLevel_01"))
 		{
 			AddBreaker(DevilBreaker::Overture);
@@ -4753,6 +4755,17 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 			HPRender->SetPlayerHP(HP);
 			HeavyDamage();
 		}
+	}
+}
+
+void PlayerActor_Nero::ItemColCheck()
+{
+	std::vector<std::shared_ptr<GameEngineCollision>> Collisions;
+	if (Col_Player->CollisionAll(CollisionOrder::DevilBreaker, Collisions, ColType::SPHERE3D, ColType::SPHERE3D))
+	{
+		Item_DevilBreaker* _DevilBreaker = dynamic_cast<Item_DevilBreaker*>(Collisions[0]->GetActor());
+		if (nullptr == _DevilBreaker) { return; }
+		AddBreaker(_DevilBreaker->Take());
 	}
 }
 
