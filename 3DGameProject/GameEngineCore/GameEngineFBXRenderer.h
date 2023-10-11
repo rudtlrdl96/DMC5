@@ -224,6 +224,11 @@ public:
 
 	void SetAnimationStartEvent(const std::string_view& _AnimationName, size_t _Frame, std::function<void()> _Event);
 
+	void SetTimeScale(float _Value)
+	{
+		TimeScale = _Value;
+	}
+
 	void PauseSwtich()
 	{
 		Pause = !Pause;
@@ -328,5 +333,6 @@ private:
 	
 	float CurBlendTime = 0.0f;
 	float BlendTime = 0.0f;
+	float TimeScale = 1.0f;
 };
 

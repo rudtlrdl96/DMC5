@@ -52,7 +52,7 @@ void NetworkTestLevel::LevelChangeStart()
 	//Poolable<PlayerActor_Nero>::CreatePool(this, static_cast<int>(ActorOrder::Player));
 	//Poolable<PlayerActor_Vergil>::CreatePool(this, static_cast<int>(ActorOrder::Player));
 
-	if (/*네로만*//*false*/NetworkManager::IsServer())
+	if (/*네로만*//*false*/false)
 	{
 		//std::shared_ptr<PlayerActor_Nero> Nero = Poolable<PlayerActor_Nero>::PopFromPool(this);
 		std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>(ActorOrder::Player);
@@ -68,7 +68,7 @@ void NetworkTestLevel::LevelChangeStart()
 		Poolable<Player_MirageBlade>::CreatePool(this, static_cast<int>(ActorOrder::Player), 8);
 	}
 
-	if (/*버질*//*true*/NetworkManager::IsClient())
+	if (/*버질*//*true*/true)
 	{
 		//std::shared_ptr<PlayerActor_Vergil> Nero = Poolable<PlayerActor_Vergil>::PopFromPool(this);
 		std::shared_ptr<PlayerActor_Vergil> Nero = CreateActor<PlayerActor_Vergil>(ActorOrder::Player);

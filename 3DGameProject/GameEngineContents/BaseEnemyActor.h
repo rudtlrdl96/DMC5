@@ -261,6 +261,9 @@ protected:
 		PhysXCapsule->SetLinearVelocityZero();
 	}
 	//====================================================
+	// TimeScale 
+	// 일정시간동안 타임스케일을 0으로 합니다 _Time 초 후 타임스케일은 1이 됩니다
+	void StopTime(float _Time);
 
 	//====================================================
 	

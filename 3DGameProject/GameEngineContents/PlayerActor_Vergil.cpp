@@ -1433,6 +1433,17 @@ void PlayerActor_Vergil::PlayerLoad()
 					Effect_Color->SetSpeed({ 10.0f, 10.0f, 10.0f });
 					Effect_Color->ColorEffectOn();
 				});
+				TimeEvent.AddEvent(1.7f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Col_Attack->GetTransform()->SetLocalPosition(float4::ZERO);
+					Col_Attack->GetTransform()->SetLocalScale({ 2000, 2000, 2000 });
+					Col_Attack->SetAttackData(DamageType::Stun, 0);
+					Col_Attack->On();
+				});
+				TimeEvent.AddEvent(1.78f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Col_Attack->Off();
+				});
 				TimeEvent.AddEvent(1.83f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
 					Effect_JC->JudgementCutOn();
@@ -1468,6 +1479,12 @@ void PlayerActor_Vergil::PlayerLoad()
 					Effect_Color->SetEndColor(float4::ZERO);
 					Effect_Color->SetSpeed({ 10.0f, 10.0f, 10.0f });
 					Effect_Color->ColorEffectOn();
+					Col_Attack->SetAttackData(DamageType::Heavy, 3000);
+					Col_Attack->On();
+				});
+				TimeEvent.AddEvent(1.9f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Col_Attack->Off();
 				});
 			},
 			.Update = [=](float _DeltaTime) {

@@ -9,7 +9,7 @@
 #include "BasePlayerActor.h"
 #include "NetworkManager.h"
 #include "FsmChangePacket.h"
-
+#include "AttackCollision.h"
 BaseEnemyActor::BaseEnemyActor()
 {
 }
@@ -57,6 +57,17 @@ int TestCount = 0;
 
 void BaseEnemyActor::Update(float _DeltaTime)
 {
+	_DeltaTime *= GetTimeScale();
+	EnemyRenderer->SetTimeScale(GetTimeScale());
+	if (GetTimeScale() == 0.0f)
+	{
+		MonsterAttackCollision->Off();
+		PhysXCapsule->Off();
+	}
+	else
+	{
+		PhysXCapsule->On();
+	}
 	if (true == GameEngineInput::IsDown("MonsterTest"))
 	{
 		Disable = !Disable;
@@ -564,4 +575,13 @@ void BaseEnemyActor::MonsterSnatch(float _DeltaTime)
 		IsSnatch = false;
 		SnatchTime = 0.0f;
 	}
+}
+
+void BaseEnemyActor::StopTime(float _Time)
+{
+	SetTimeScale(0.0f);
+	GetLevel()->TimeEvent.AddEvent(_Time, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+	{
+		SetTimeScale(1.0f);
+	});
 }

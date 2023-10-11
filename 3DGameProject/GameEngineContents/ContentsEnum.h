@@ -10,7 +10,7 @@ enum class DamageType
 	Snatch,	// 그랩 공격
 	Slam,	// 공중에서 찍는 공격
 	Buster,	// 네로 잡기 공격
-	Stun,	// 경직
+	Stun,	// 경직 (저지먼트컷엔드)
 };
 
 enum class LogOrder

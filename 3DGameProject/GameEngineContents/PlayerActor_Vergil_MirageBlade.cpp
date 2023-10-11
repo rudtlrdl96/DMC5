@@ -30,11 +30,11 @@ void PlayerActor_Vergil::CreateMirageBlade()
 			FSM_MirageBlade.ChangeState(FSM_State_MirageBlade::MirageBlade_Spiral);
 			return;
 		}
-		if (true == Controller->GetIsBackFrontGun() && nullptr != LockOnEnemyTransform)
-		{
-			FSM_MirageBlade.ChangeState(FSM_State_MirageBlade::MirageBlade_HeavyRain);
-			return;
-		}
+		//if (true == Controller->GetIsBackFrontGun() && nullptr != LockOnEnemyTransform)
+		//{
+		//	FSM_MirageBlade.ChangeState(FSM_State_MirageBlade::MirageBlade_HeavyRain);
+		//	return;
+		//}
 		if (true == Controller->GetIsFrontGun() && nullptr != LockOnEnemyTransform)
 		{
 			FSM_MirageBlade.ChangeState(FSM_State_MirageBlade::MirageBlade_Blistering);

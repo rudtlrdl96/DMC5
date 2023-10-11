@@ -93,6 +93,14 @@ protected:
 
 	void SetFsmPacketCallBack(std::function<void(int _State)> _CallBack);
 
+	inline void SetTimeScale(float _Value)
+	{
+		ActorTimeScale = _Value;
+	}
+	inline float GetTimeScale()
+	{
+		return ActorTimeScale;
+	}
 
 private:
 	static NetworkObjectBase* DebugTarget;

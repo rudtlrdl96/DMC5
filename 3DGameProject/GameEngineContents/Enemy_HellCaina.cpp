@@ -254,6 +254,7 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 		ChangeState(FSM_State_HellCaina::HellCaina_Buster_Start);
 		break;
 	case DamageType::Stun:
+		StopTime(2.9f);
 		break;
 	default:
 		break;

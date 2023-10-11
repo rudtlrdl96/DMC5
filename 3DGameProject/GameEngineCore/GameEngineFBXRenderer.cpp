@@ -179,6 +179,7 @@ GameEngineFBXRenderer::~GameEngineFBXRenderer()
 
 void GameEngineFBXRenderer::Update(float _DeltaTime)
 {
+	_DeltaTime *= TimeScale;
 	if (nullptr == CurAnimation)
 	{
 		return;
