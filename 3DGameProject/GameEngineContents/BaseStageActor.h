@@ -17,7 +17,7 @@ public:
 
 protected:
 	static bool alphaCheck(const std::string_view& _FBXName);
-
+	static bool waterCheck(const std::string_view& _FBXName);
 private:
 
 };

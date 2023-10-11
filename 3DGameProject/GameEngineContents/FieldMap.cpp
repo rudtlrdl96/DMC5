@@ -68,9 +68,13 @@ std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, cons
 			GameEngineTexture::Load(Path);
 		}
 
+		if (waterCheck(_FBXNames[i]))
+		{
+			MapRenderersRef[i].lock()->SetBaseColor(float4(0, 1, 0));
+			MapRenderersRef[i].lock()->SetTexture("WaterNoiseTexture", "WaterNoise.png");
+		}
 		// 사용할놈만 켜야함
-		// MapRenderersRef[i].lock()->SetBaseColor(float4(0, 1, 0));
-		MapRenderersRef[i].lock()->SetTexture("WaterNoiseTexture", "WaterNoise.png");
+
 	}
 
 	std::vector<std::weak_ptr<GameEngineCollision>>& MapCullingColRef = Result->FieldMapCullingCol;
