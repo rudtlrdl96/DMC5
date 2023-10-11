@@ -102,6 +102,15 @@ float4 CalSpacularLight(float4 _Pos, float4 _Normal, LightData _Data)
 
 }
 
+float3 CalReflection(float3 _Normal, float3 _View)
+{
+    float3 Result = (float3) 0;
+       
+    Result = normalize(2.0f * _Normal.xyz * dot(_View.xyz, _Normal.xyz) - _View.xyz);
+    
+    return Result;
+}
+
 float4 CalAmbientLight(LightData _LightData)
 {
     return _LightData.AmbientLight;

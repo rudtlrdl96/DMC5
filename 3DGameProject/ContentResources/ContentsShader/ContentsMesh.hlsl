@@ -17,11 +17,16 @@ struct Output
 {
     float4 POSITION : SV_POSITION;
     float4 VIEWPOSITION : POSITION0;
+    float4 WORLDPOSITION : POSITION1;
+    float4x4 WORLDMATRIX : MATRIX;
     float4 WVPPOSITION : POSITION5;
     float4 TEXCOORD : TEXCOORD;
-    float4 NORMAL : NORMAL;
-    float4 TANGENT : TANGENT;
-    float4 BINORMAL : BINORMAL;
+    float4 NORMAL : NORMAL0;
+    float4 WORLDNORMAL : NORMAL1;
+    float4 TANGENT : TANGENT0;
+    float4 WORLDTANGENT : TANGENT1;
+    float4 BINORMAL : BINORMAL0;
+    float4 WORLDBINORMAL : BINORMAL1;
 };
 
 Output MeshTexture_VS(Input _Input)
@@ -35,16 +40,21 @@ Output MeshTexture_VS(Input _Input)
     NewOutPut.TEXCOORD = _Input.TEXCOORD;
     NewOutPut.WVPPOSITION = NewOutPut.POSITION;
     
+    NewOutPut.WORLDPOSITION = mul(InputPos, WorldMatrix);
     NewOutPut.VIEWPOSITION = mul(InputPos, WorldView);
+    NewOutPut.WORLDMATRIX = WorldMatrix;
     
     _Input.NORMAL.w = 0.0f;
     NewOutPut.NORMAL = mul(_Input.NORMAL, WorldView);
+    NewOutPut.WORLDNORMAL = mul(_Input.NORMAL, WorldMatrix);
     
     _Input.TANGENT.w = 0.0f;
     NewOutPut.TANGENT = mul(_Input.TANGENT, WorldView);
+    NewOutPut.WORLDTANGENT = mul(_Input.TANGENT, WorldMatrix);
     
     _Input.BINORMAL.w = 0.0f;
     NewOutPut.BINORMAL = mul(_Input.BINORMAL, WorldView);
+    NewOutPut.WORLDBINORMAL = mul(_Input.BINORMAL, WorldMatrix);
 
     return NewOutPut;
 }
@@ -94,14 +104,18 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     
     Result.PosTarget = _Input.VIEWPOSITION;    
     Result.DifTarget = float4(AlbmData.r, AlbmData.g, AlbmData.b, AtosData.r);
-            
+                
+    float4 WorldNormal;
+    
     if (0 != IsNormal)
     {
-       Result.NorTarget = NormalTexCalculate(NormalTexture, ENGINEBASE, _Input.TEXCOORD, _Input.TANGENT, _Input.BINORMAL, _Input.NORMAL);
+        Result.NorTarget = NormalTexCalculate(NormalTexture, ENGINEBASE, _Input.TEXCOORD, _Input.TANGENT, _Input.BINORMAL, _Input.NORMAL);
+        WorldNormal = NormalTexCalculate(NormalTexture, ENGINEBASE, _Input.TEXCOORD, _Input.WORLDNORMAL, _Input.WORLDNORMAL, _Input.WORLDNORMAL);
     }
     else
     {
         Result.NorTarget = _Input.NORMAL;
+        WorldNormal = _Input.WORLDNORMAL;
     }
          
     // 반사량 계산 공식 러프니스 값에 따라서 결정된다        
@@ -110,29 +124,35 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     float distribution = GGX_Distribution(Result.NorTarget.xyz, reflection, roughness); // 반사 분포 계산
         
     // View.TranslatedWorldCameraOrigin    
-    float3 CameraPos = AllLight[0].CameraPosition;
+    float3 CameraPos = AllLight[0].CameraWorldPosition;
     // TranslatedWorldPosition
-    float3 RefViewPos = _Input.VIEWPOSITION.xyz;    
+    float3 RefViewPos = _Input.WORLDPOSITION.xyz; 
+        
     // CameraToPixel
     float3 CameraView = normalize(CameraPos - RefViewPos);
     
     // 반사벡터
-    float4 refnormal = normalize(float4(Result.NorTarget.xyz, 0));
-                
+    float4 refnormal = normalize(WorldNormal);
+    
+    // ReflectionVector    
+    float3 refvector;
+    
     // Floor Water Noise Option
     if (0 != BaseColor.g)
     {
-        refnormal.xyz = (NoiseWaterNormal(_Input.TEXCOORD.xy, WaterNoiseTexture, ENGINEBASE));
+        refnormal.xyz = NoiseWaterNormal(_Input.TEXCOORD.xy, WaterNoiseTexture, ENGINEBASE);
+        //refnormal.xyz = mul(refnormal, _Input.WORLDMATRIX).xyz;        
+        //refnormal.z = -refnormal.z;
     }
     
-    // Point lobe in off-specular peak direction
-    refnormal.xyz = GetOffSpecularPeakReflectionDir(refnormal.xyz, CameraView, roughness);
+    //refnormal.y = -refnormal.y;
     
-    // ReflectionVector    
-    float3 refvector = mul(float4(reflect(refnormal.xyz, CameraView), 0.0f), AllLight[0].CameraViewInverseMatrix).xyz;
-    
+    // Point lobe in off-specular peak direction 
+    // 코드 수정 필요
+    //refnormal.xyz = GetOffSpecularPeakReflectionDir(refnormal.xyz, CameraView, roughness);
+            
+    refvector = CalReflection(normalize(refnormal.xyz), normalize(CameraView));
     // 축 반전
-    //refvector.yz = -refvector.zy;
         
     float4 ReflectionColor = ReflectionTexture.Sample(CUBEMAPSAMPLER, normalize(refvector));
     //float4 ReflectionColor = ReflectionTexture.Sample(ENGINEBASE, refvector);
@@ -143,8 +163,8 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     // sss (subsurface scattering)
     
     // AlbmData -> metallicValue 값에 따라서 결정되어야 한다        
-    Result.DifTarget.rgb = lerp(AlbmData.rgb, AlbmData.rgb * 0.5f, metallic);
-    Result.DifTarget.rgb += lerp(float3(0, 0, 0), ReflectionColor.rgb * 0.5f, metallic);
+    Result.DifTarget.rgb = lerp(AlbmData.rgb, AlbmData.rgb * 0.3f, metallic);
+    Result.DifTarget.rgb += lerp(float3(0, 0, 0), ReflectionColor.rgb, metallic);
     
     Result.DifTarget.a = 1.0f;
     Result.PosTarget.a = 1.0f;

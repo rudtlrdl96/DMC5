@@ -34,7 +34,7 @@ void ReflectionProbe::Init(const std::string_view& _CaptureTextureName, const fl
 		}
 
 		float4 CenterPos = GetTransform()->GetWorldPosition();
-		float4 CenterRot = GetTransform()->GetWorldRotation();
+		float4 CenterRot = float4::ZERO;
 
 		// Forward
 		GetLevel()->GetMainCamera()->CaptureCubemap(CenterPos, CenterRot, float4(900, 900));

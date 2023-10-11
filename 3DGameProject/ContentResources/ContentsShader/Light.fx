@@ -9,10 +9,11 @@ float GGX_Distribution(float3 normal, float3 halfVector, float roughness)
     return a / (3.14f * denominator * denominator);
 }
 
-half3 GetOffSpecularPeakReflectionDir(half3 Normal, half3 ReflectionVector, half Roughness)
+float3 GetOffSpecularPeakReflectionDir(float3 Normal, float3 ReflectionVector, float Roughness)
 {
-    half a = Roughness * Roughness;
-    return lerp(Normal, ReflectionVector, (1 - a) * (sqrt(1 - a) + a));
+    float a = Roughness * Roughness;
+    
+    return lerp(ReflectionVector, Normal, (1 - a) * (sqrt(1 - a) + a));
 }
 
 float hash(float n)
@@ -70,15 +71,6 @@ float fbm(float3 p, Texture2D _NoiseTex, SamplerState _Sample)
 
 #define BUMPFACTOR 3.0
 #define EPSILON 0.1
-#define BUMPDISTANCE 200.
-
-#define CAMERASPEED 15.
-
-#define BUILDINGSPACING 20.
-#define MAXBUILDINGINSET 12.
-
-#define GALLERYHEIGHT 10.5
-#define GALLERYINSET 2.5
 
 float waterHeightMap(float2 pos, Texture2D _NoiseTex, SamplerState _Sample)
 {
@@ -96,10 +88,10 @@ float3 NoiseWaterNormal(float2 _coord, Texture2D _NoiseTex, SamplerState _Sample
     float2 dx = float2(EPSILON, 0.);
     float2 dz = float2(0., EPSILON);
 					
-    float3 Normal = float3(0., 1., 0.);
+    float3 Normal = float3(0., -1., 0.);
     
-    Normal.x = -BUMPFACTOR * (waterHeightMap(_coord + dx, _NoiseTex, _Sample) - waterHeightMap(_coord - dx, _NoiseTex, _Sample)) / (2. * EPSILON);
-    Normal.z = -BUMPFACTOR * (waterHeightMap(_coord + dz, _NoiseTex, _Sample) - waterHeightMap(_coord - dz, _NoiseTex, _Sample)) / (2. * EPSILON);
+    Normal.x = min(1.0f, BUMPFACTOR * (waterHeightMap(_coord + dx, _NoiseTex, _Sample) - waterHeightMap(_coord - dx, _NoiseTex, _Sample)) / (2. * EPSILON));
+    Normal.z = min(1.0f, BUMPFACTOR * (waterHeightMap(_coord + dz, _NoiseTex, _Sample) - waterHeightMap(_coord - dz, _NoiseTex, _Sample)) / (2. * EPSILON));
     
     return normalize(Normal);
 }
