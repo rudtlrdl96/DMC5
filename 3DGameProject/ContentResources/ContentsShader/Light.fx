@@ -9,9 +9,9 @@ float GGX_Distribution(float3 normal, float3 halfVector, float roughness)
     return a / (3.14f * denominator * denominator);
 }
 
-float3 GetOffSpecularPeakReflectionDir(float3 Normal, float3 ReflectionVector, float Roughness)
+half3 GetOffSpecularPeakReflectionDir(half3 Normal, half3 ReflectionVector, half Roughness)
 {
-    float a = Roughness * Roughness;
+    half a = Roughness * Roughness;
     
     return lerp(ReflectionVector, Normal, (1 - a) * (sqrt(1 - a) + a));
 }
