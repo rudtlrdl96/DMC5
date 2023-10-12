@@ -75,6 +75,7 @@ private:
 
 	std::shared_ptr<class FXSystem> RankBackEffect = nullptr;
 	std::shared_ptr<class FXSystem> RankBackEffect_Up = nullptr;
+	std::shared_ptr<class EffectRenderer> RankAFire = nullptr;
 
 	float Ratio = 0.0f;
 	float DisTime = 0.0f;

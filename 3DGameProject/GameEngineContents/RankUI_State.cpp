@@ -196,9 +196,13 @@ void RankUI::StateInit_RankA()
 		OutRank = false;
 		Ratio = 0.0f;
 		RankA_Inside->SetClipData(float4::ZERONULL);
+		RankAFire->EffectOption.MulColor = float4{ 0.3f,0.3f,1.0f,1.f };
+		RankAFire->EffectOption.PlusColor = float4{ 0.274f,0.583f,1.f,0.0f };
 	},
 	.Update = [this](float _DeltaTime)
 	{
+		
+			
 		RankApper(_DeltaTime,RankA_Frame,RankState::Spin_RankA,true,RankB_Frame);
 	},
 	.End = [this]()
@@ -212,9 +216,17 @@ void RankUI::StateInit_RankA()
 			.Start = [=]()
 			{
 				MemberInitialize();
+				RankAFire->On();
+				RankAFire->ChangeAnimation("FireAni");
+
 			},
 			.Update = [=](float _DeltaTime)
 			{
+				if (RankAFire->IsAnimationEnd() == true)
+				{
+					RankAFire->Off();
+					RankAFire->SetAnimPauseOn();
+				}
 				RankSpin(_DeltaTime,RankA_Frame,RankA_Inside);
 				RankClip(_DeltaTime, RankA_Frame, RankA_Inside, 300);
 
@@ -245,6 +257,9 @@ void RankUI::StateInit_RankS()
 		OutRank = false;
 		Ratio = 0.0f;
 		RankS_Inside->SetClipData(float4::ZERONULL);
+		RankAFire->EffectOption.MulColor = float4{ 0.913f,0.894f,0.250f,1.f };
+		RankAFire->EffectOption.PlusColor = float4{ 0.588f,0.78f,1.f,0.006f };
+
 	},
 	.Update = [this](float _DeltaTime)
 	{
@@ -261,11 +276,19 @@ void RankUI::StateInit_RankS()
 			.Start = [=]()
 			{
 				MemberInitialize();
+				RankAFire->SetAnimPauseOff();
+				RankAFire->On();
+				RankAFire->ChangeAnimation("FireAni");
 			},
 			.Update = [=](float _DeltaTime)
 			{
 				RankSpin(_DeltaTime,RankS_Frame,RankS_Inside);
 				RankClip(_DeltaTime, RankS_Frame, RankS_Inside, 400);
+				if (RankAFire->IsAnimationEnd() == true)
+				{
+					RankAFire->Off();
+					RankAFire->SetAnimPauseOn();
+				}
 				if (UpTime > 1.0f)
 				{
 					SetRankExPlane("RankS_Explane.png", float4{ 285.0f,147.0f,0.0f }, InsideStart, _DeltaTime);
@@ -293,6 +316,8 @@ void RankUI::StateInit_RankSS()
 		OutRank = false;
 		Ratio = 0.0f;
 		RankSS_Inside->SetClipData(float4::ZERONULL);
+		RankAFire->EffectOption.MulColor = float4{ 0.913f,0.894f,0.250f,1.f };
+		RankAFire->EffectOption.PlusColor = float4{ 0.588f,0.78f,1.f,0.006f };
 	},
 	.Update = [this](float _DeltaTime)
 	{
@@ -309,11 +334,19 @@ void RankUI::StateInit_RankSS()
 			.Start = [=]()
 			{
 				MemberInitialize();
+				RankAFire->SetAnimPauseOff();
+				RankAFire->On();
+				RankAFire->ChangeAnimation("FireAni");
 			},
 			.Update = [=](float _DeltaTime)
 			{
 				RankSpin(_DeltaTime,RankSS_Frame,RankSS_Inside);
 				RankClip(_DeltaTime, RankSS_Frame, RankSS_Inside, 500);
+				if (RankAFire->IsAnimationEnd() == true)
+				{
+					RankAFire->Off();
+					RankAFire->SetAnimPauseOn();
+				}
 				if (UpTime > 1.0f)
 				{
 					SetRankExPlane("RankSS_Explane.png", float4{ 269.0f,183.0f,0.0f }, InsideStart, _DeltaTime);
@@ -340,6 +373,8 @@ void RankUI::StateInit_RankSSS()
 	{
 		OutRank = false;
 		RankSSS_Inside->SetClipData(float4::ZERONULL);
+		RankAFire->EffectOption.MulColor = float4{ 0.913f,0.894f,0.250f,1.f };
+		RankAFire->EffectOption.PlusColor = float4{ 0.588f,0.78f,1.f,0.006f };
 		Ratio = 0.0f;
 	},
 	.Update = [this](float _DeltaTime)
@@ -357,11 +392,19 @@ void RankUI::StateInit_RankSSS()
 			.Start = [=]()
 			{
 				MemberInitialize();
+				RankAFire->SetAnimPauseOff();
+				RankAFire->On();
+				RankAFire->ChangeAnimation("FireAni");
 			},
 			.Update = [=](float _DeltaTime)
 			{
 				RankSpin(_DeltaTime,RankSSS_Frame,RankSSS_Inside);
 				RankClip(_DeltaTime, RankSSS_Frame, RankSSS_Inside, 600);
+				if (RankAFire->IsAnimationEnd() == true)
+				{
+					RankAFire->Off();
+					RankAFire->SetAnimPauseOn();
+				}
 				if (UpTime > 1.0f)
 				{
 					SetRankExPlane("RankSSS_Explane.png", float4{ 431.0f,250.0f,0.0f }, InsideStart, _DeltaTime);

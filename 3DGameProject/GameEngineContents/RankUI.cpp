@@ -7,6 +7,7 @@
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/GameEngineFBXAnimation.h>
 RankUI* RankUI::MainRankUI = nullptr;
+
 RankUI::RankUI() 
 {
 	MainRankUI = this;
@@ -31,10 +32,13 @@ void RankUI::Start()
 	RankBackEffect = CreateComponent<FXSystem>();
 	RankBackEffect->GetTransform()->SetLocalPosition({1450.f,190.0f,0.0f});
 	RankBackEffect->GetTransform()->SetLocalScale({ 3.0f,3.0f,3.0f });
-
 	RankBackEffect_Up = CreateComponent<FXSystem>();
 	RankBackEffect_Up->GetTransform()->SetLocalPosition({ 1450.f,190.0f,0.0f });
 	RankBackEffect_Up->GetTransform()->SetLocalScale({ 3.0f,3.0f,3.0f });
+
+
+
+
 	GameEngineDirectory NewDir;
 	NewDir.MoveParentToDirectory("ContentResources");
 	NewDir.Move("ContentResources");
@@ -47,6 +51,12 @@ void RankUI::Start()
 		{
 			GameEngineTexture::Load(File.GetFullPath());
 		}
+	}
+	if (nullptr == GameEngineSprite::Find("Effect_Impact.tga"))
+	{
+
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_03.tga").GetFullPath(), 8, 4);
+
 	}
 	NewDir.MoveParent();
 	NewDir.Move("EffectUI");
@@ -112,6 +122,12 @@ void RankUI::Start()
 	RankFSM.ChangeState(RankState::Rank_WaitState);
 
 
+	RankAFire = CreateComponent<EffectRenderer>(3);
+	RankAFire->RectInit("Effect_2D");
+	RankAFire->CreateAnimation({ .AnimationName = "FireAni", .SpriteName = "Effect_Fire_03.tga", .Start = 0, .End = 31,.FrameInter = 0.034f,.Loop = true });
+	RankAFire->GetTransform()->SetLocalScale({ 720.0f,720.0f,0.0f });
+	RankAFire->GetTransform()->SetLocalPosition({ 1467.0f,186.0f,0.0f });
+	RankAFire->Off();
 
 }
 
@@ -221,6 +237,7 @@ void RankUI::RankApper(float _Delta, std::shared_ptr<class UIFBXRenderer> _Rende
 				RankOut(_Delta, _PrevRender);
 			}
 			UIFBXActorBase::ShakeUIRender(_Render, float4(400.f, 400.f, 0.0f), _Delta);
+
 		}
 		else
 		{

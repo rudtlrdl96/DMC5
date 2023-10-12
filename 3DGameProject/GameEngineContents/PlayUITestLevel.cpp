@@ -65,7 +65,7 @@ void PlayUITestLevel::Start()
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
 	//std::shared_ptr<NeroLoading> NeroHPUIPtr = CreateActor<NeroLoading>();
 	//std::shared_ptr<NeroItemGlass> NeroItemGlassPtr = CreateActor<NeroItemGlass>();
-//	std::shared_ptr<C_ChoiceBG> C_ChoiceBGPtr = CreateActor<C_ChoiceBG>();
+	//std::shared_ptr<C_ChoiceBG> C_ChoiceBGPtr = CreateActor<C_ChoiceBG>();
 	//std::shared_ptr<NeroHPUI> NeroHPUIPtr = CreateActor<NeroHPUI>();
 	//std::shared_ptr<BossHpBar> BossHpBarPtr = CreateActor<BossHpBar>();
 	std::shared_ptr<RankUI> RankUIPtr = CreateActor<RankUI>();
