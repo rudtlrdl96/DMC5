@@ -151,7 +151,7 @@ void BaseEnemyActor::PlayerContactCheck(float _DeltaTime, GameEngineCollision* _
 {
 	ContactDelayTime += _DeltaTime;
 
-	if (15.0f >= ContactDelayTime)
+	if (10.0f >= ContactDelayTime)
 	{
 		return;
 	}
@@ -188,7 +188,7 @@ void BaseEnemyActor::PlayerContactCheck(float _DeltaTime, GameEngineCollision* _
 			{
 				int PlayersID = Players[i]->GetNetObjectID();
 
-				if (PlayersID == PlayerID)
+				if (ContactID == PlayersID)
 				{
 					Player = Players[i];
 				}
