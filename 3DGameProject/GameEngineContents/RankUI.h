@@ -71,6 +71,10 @@ private:
 	std::shared_ptr<class UIFBXRenderer> RankSSS_Frame = nullptr;
 	std::shared_ptr<class UIFBXRenderer> RankSSS_Inside = nullptr;
 	std::shared_ptr<class GameEngineUIRenderer> Rank_Explane = nullptr;
+	//이펙트 효과
+
+	std::shared_ptr<class FXSystem> RankBackEffect = nullptr;
+	std::shared_ptr<class FXSystem> RankBackEffect_Up = nullptr;
 
 	float Ratio = 0.0f;
 	float DisTime = 0.0f;

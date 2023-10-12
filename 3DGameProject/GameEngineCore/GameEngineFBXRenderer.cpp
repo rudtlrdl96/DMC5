@@ -242,7 +242,7 @@ void GameEngineFBXRenderer::SetFBXMesh(const std::string_view& _Name, const std:
 	// 너 몇개 가지고 있어.
 	for (size_t UnitCount = 0; UnitCount < FindFBXMesh->GetRenderUnitCount(); UnitCount++)
 	{
-		SetFBXMesh(_Name, _Material, UnitCount);
+		GameEngineFBXRenderer::SetFBXMesh(_Name, _Material, UnitCount);
 	}
 }
 
@@ -266,11 +266,11 @@ void GameEngineFBXRenderer::SetFBXMesh(const std::string_view& _Name, const std:
 	{
 		if (_Materials.size() <= UnitCount)
 		{
-			SetFBXMesh(_Name, _Materials[0], UnitCount);
+			GameEngineFBXRenderer::SetFBXMesh(_Name, _Materials[0], UnitCount);
 		}
 		else
 		{
-			SetFBXMesh(_Name, _Materials[UnitCount], UnitCount);
+			GameEngineFBXRenderer::SetFBXMesh(_Name, _Materials[UnitCount], UnitCount);
 		}
 	}
 }
@@ -283,7 +283,7 @@ void GameEngineFBXRenderer::SetFBXMesh(const std::string_view& _Name, const std:
 	{
 		size_t SubSet = FindFBXMesh->GetSubSetCount(MeshIndex);
 
-		SetFBXMesh(_Name, _Material, MeshIndex, SubSetCount);
+		GameEngineFBXRenderer::SetFBXMesh(_Name, _Material, MeshIndex, SubSetCount);
 	}
 }
 
@@ -300,11 +300,11 @@ void GameEngineFBXRenderer::SetFBXMesh(const std::string_view& _Name, std::vecto
 	{
 		if (SubSetCount >= _Material.size())
 		{
-			SetFBXMesh(_Name, _Material[0], MeshIndex, SubSetCount);
+			GameEngineFBXRenderer::SetFBXMesh(_Name, _Material[0], MeshIndex, SubSetCount);
 		}
 		else
 		{
-			SetFBXMesh(_Name, _Material[SubSetCount], MeshIndex, SubSetCount);
+			GameEngineFBXRenderer::SetFBXMesh(_Name, _Material[SubSetCount], MeshIndex, SubSetCount);
 		}
 	}
 }

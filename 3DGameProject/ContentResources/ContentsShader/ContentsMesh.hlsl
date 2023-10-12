@@ -128,7 +128,7 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     // TranslatedWorldPosition
     float3 RefViewPos = _Input.WORLDPOSITION.xyz; 
         
-    // CameraToPixel
+    // CameraToPixel (World)
     float3 CameraView = normalize(CameraPos - RefViewPos);
     
     // 반사벡터
@@ -149,7 +149,7 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     
     // Point lobe in off-specular peak direction 
     // 코드 수정 필요
-    //refnormal.xyz = GetOffSpecularPeakReflectionDir(refnormal.xyz, CameraView, roughness);
+    //refnormal.xyz = GetOffSpecularPeakReflectionDir(refnormal.xyz, CameraViewDir, roughness);
             
     refvector = CalReflection(normalize(refnormal.xyz), normalize(CameraView));
     // 축 반전

@@ -1,7 +1,11 @@
 #include "PrecompileHeader.h"
 #include "RankUI.h"
 #include "UIFBXRenderer.h"
+#include "EffectRenderer.h"
+#include "FXSystem.h"
 #include <GameEngineCore/GameEngineUIRenderer.h>
+#include <GameEngineCore/GameEngineFBXRenderer.h>
+#include <GameEngineCore/GameEngineFBXAnimation.h>
 RankUI* RankUI::MainRankUI = nullptr;
 RankUI::RankUI() 
 {
@@ -24,6 +28,41 @@ void RankUI::AddRankScore(int _Score)
 }
 void RankUI::Start()
 {
+	RankBackEffect = CreateComponent<FXSystem>();
+	RankBackEffect->GetTransform()->SetLocalPosition({1450.f,190.0f,0.0f});
+	RankBackEffect->GetTransform()->SetLocalScale({ 3.0f,3.0f,3.0f });
+
+	RankBackEffect_Up = CreateComponent<FXSystem>();
+	RankBackEffect_Up->GetTransform()->SetLocalPosition({ 1450.f,190.0f,0.0f });
+	RankBackEffect_Up->GetTransform()->SetLocalScale({ 3.0f,3.0f,3.0f });
+	GameEngineDirectory NewDir;
+	NewDir.MoveParentToDirectory("ContentResources");
+	NewDir.Move("ContentResources");
+	NewDir.Move("Effect");
+	NewDir.Move("Texture");
+	if (nullptr == GameEngineTexture::Find("RankBackEffect.png"))
+	{
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".png" });
+		for (GameEngineFile File : Files)
+		{
+			GameEngineTexture::Load(File.GetFullPath());
+		}
+	}
+	NewDir.MoveParent();
+	NewDir.Move("EffectUI");
+	std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".effect" });
+	for (GameEngineFile File : Files)
+	{
+		if (nullptr == FXData::Find(File.GetFileName()))
+		{
+			FXData::Load(File.GetFullPath());
+		}
+		RankBackEffect->CreateFX(FXData::Find(File.GetFileName()));
+		RankBackEffect_Up->CreateFX(FXData::Find(File.GetFileName()));
+	}
+
+
+
 	Rank_Explane = CreateComponent<GameEngineUIRenderer>();
 
 	RankD_Frame = UIFBXActorBase::CreateGaugeBar(EndPos, StartScale, StartRotation, "RankDFrame.FBX");
@@ -71,6 +110,8 @@ void RankUI::Start()
 	StateInit_RankSSS();
 
 	RankFSM.ChangeState(RankState::Rank_WaitState);
+
+
 
 }
 
@@ -282,11 +323,15 @@ void RankUI::RankClip(float _DeltaTime , std::shared_ptr<class UIFBXRenderer> _R
 	if (EndUp > 0.3f && EndUp < 0.7f)
 	{
 		RankScaleUpDown(_Render, _InsideRender, _DeltaTime);
+		RankBackEffect_Up->PlayFX("RankBackEffect.effect");
+		RankBackEffect_Up->Loop = true;
+		RankBackEffect_Up->IsUI = true;
 	}
 	else if (EndUp > 0.7f)
 	{
 		if (ScaleValue == false)
 		{
+			RankBackEffect_Up->Loop = false;
 			ScaleUpValue = false;
 			ScaleValue = true;
 			ScaleSpeed = 0.0f;

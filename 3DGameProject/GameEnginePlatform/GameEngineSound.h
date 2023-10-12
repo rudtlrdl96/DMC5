@@ -142,11 +142,23 @@ public:
 
 	static void Load(const std::string_view& _Name, const std::string_view& _Path);
 
+	static void UnLoad(const std::string_view& _Name);
+
+	// UnLoad 추가
+
 	static GameEngineSoundPlayer Play(const std::string_view& _Name);
+
+	std::string GetName() const
+	{
+		return Name;
+	}
 
 protected:
 
 private:
+	std::string Name;
+	FMOD::Sound* FMODSound = nullptr;
+
 	void SoundLoad(const std::string_view& _Path);
 	FMOD::Channel* SoundPlay();
 	// 시퀸스
@@ -155,8 +167,6 @@ private:
 
 	// map 노드형 연관 컨테이너
 	// Hash기반 맵입니다. 
-
-	FMOD::Sound* FMODSound = nullptr;
 
 };
 

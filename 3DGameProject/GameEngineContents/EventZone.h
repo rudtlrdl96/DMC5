@@ -17,6 +17,7 @@ public:
 	//void SetTriggerZoneTransform(const float4& _Position, const float4& _Scale, const float4& _Rotation);
 
 protected:
+	void Start() override;
 	void Update(float _DeltaTime) override;
 
 protected:

@@ -455,19 +455,16 @@ std::shared_ptr<NetworkObjectBase> NetworkManager::CreateNetActor(Net_ActorType 
 		break;
 	}
 	case Net_ActorType::Nero:
-		//NetObject = CreateLevel->CreateActor<PlayerActor_Nero>();
 		NetObject = Poolable<PlayerActor_Nero>::PopFromPool(CreateLevel, static_cast<int>(ActorOrder::Player));
 		break;
 	case Net_ActorType::Vergil:
-		//NetObject = CreateLevel->CreateActor<PlayerActor_Vergil>();
 		NetObject = Poolable<PlayerActor_Vergil>::PopFromPool(CreateLevel, static_cast<int>(ActorOrder::Player));
 		break;
 	case Net_ActorType::MirageBlade:
-		//NetObject = CreateLevel->CreateActor<Player_MirageBlade>();
 		NetObject = Poolable<Player_MirageBlade>::PopFromPool(CreateLevel, static_cast<int>(ActorOrder::Player));
 		break;
 	case Net_ActorType::HellCaina:
-		NetObject = CreateLevel->CreateActor<Enemy_HellCaina>();
+		NetObject = Poolable<Enemy_HellCaina>::PopFromPool(CreateLevel, static_cast<int>(ActorOrder::Enemy));
 		break;
 	default:
 	{

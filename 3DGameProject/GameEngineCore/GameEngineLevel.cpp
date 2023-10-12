@@ -581,6 +581,28 @@ void GameEngineLevel::ActorRelease()
 	}
 }
 
+void GameEngineLevel::LightRelease()
+{
+	std::list<std::shared_ptr<GameEngineLight>>::iterator LoopIter = AllLight.begin();
+	std::list<std::shared_ptr<GameEngineLight>>::iterator EndIter = AllLight.end();
+
+	while (LoopIter != EndIter)
+	{
+		std::shared_ptr<GameEngineLight> LightPtr = *LoopIter;
+
+		if (true == LightPtr->IsDeath())
+		{
+			(*LoopIter) = nullptr;
+			LoopIter = AllLight.erase(LoopIter);
+		}
+		else
+		{
+			++LoopIter;
+		}
+	}
+
+}
+
 void GameEngineLevel::ActorInit(std::shared_ptr<GameEngineActor> _Actor, int _Order, GameEngineLevel* _Level)
 {
 	_Actor->Level = this;

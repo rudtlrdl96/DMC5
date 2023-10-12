@@ -136,7 +136,19 @@ void GameEngineSound::Load(const std::string_view& _Name, const std::string_view
 	std::string UpperName = GameEngineString::ToUpper(_Name);
 	std::shared_ptr<GameEngineSound> NewSound = std::make_shared<GameEngineSound>();
 	NewSound->SoundLoad(_Path);
+	NewSound->Name = UpperName;
 	AllSound.insert(std::pair<std::string, std::shared_ptr<GameEngineSound>>(UpperName, NewSound));
+}
+
+void GameEngineSound::UnLoad(const std::string_view& _Name)
+{
+	std::string UpperName = GameEngineString::ToUpper(_Name);
+	std::unordered_map<std::string, std::shared_ptr<GameEngineSound>>::iterator FindIter = AllSound.find(UpperName);
+
+	if (FindIter != AllSound.end())
+	{
+		AllSound.erase(FindIter);
+	}
 }
 
 GameEngineSoundPlayer GameEngineSound::Play(const std::string_view& _Name)

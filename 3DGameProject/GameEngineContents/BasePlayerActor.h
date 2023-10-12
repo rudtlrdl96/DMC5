@@ -53,6 +53,7 @@ public:
 	virtual void SetArm(unsigned int _ArmValue) {}
 	void SetInvincibility(float _Time);
 
+	void SetBossCam(GameEngineTransform* _BossCam);
 protected:
 	void Start() override;
 

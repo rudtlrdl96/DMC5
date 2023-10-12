@@ -423,7 +423,6 @@
     <ClInclude Include="WallLight_Off.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClInclude>
-    <ClInclude Include="NeroLoading.h" />
     <ClInclude Include="BossHpBar.h">
       <Filter>UI\UI_Actor\PlayUI\BossHpBar</Filter>
     </ClInclude>
@@ -462,6 +461,27 @@
     </ClInclude>
     <ClInclude Include="Item_DevilBreaker.h">
       <Filter>Actor\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Location2_FightEvent1.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
+    </ClInclude>
+    <ClInclude Include="RedSeal.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClInclude>
+    <ClInclude Include="UIEffectRenderer.h">
+      <Filter>Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Cavaliere_Electric.h">
+      <Filter>Actor\Enemy\BossEnemy\Stage11\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicResourcesLoadTest.h">
+      <Filter>Levels\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="AutoResourceLoader.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="NeroLoading.h">
+      <Filter>UI\UI_Actor\LodingUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -875,7 +895,6 @@
     <ClCompile Include="WallLight_Off.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClCompile>
-    <ClCompile Include="NeroLoading.cpp" />
     <ClCompile Include="BossHpBar.cpp">
       <Filter>UI\UI_Actor\PlayUI\BossHpBar</Filter>
     </ClCompile>
@@ -917,6 +936,27 @@
     </ClCompile>
     <ClCompile Include="Item_DevilBreaker.cpp">
       <Filter>Actor\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Location2_FightEvent1.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
+    </ClCompile>
+    <ClCompile Include="RedSeal.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClCompile>
+    <ClCompile Include="UIEffectRenderer.cpp">
+      <Filter>Component\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Cavaliere_Electric.cpp">
+      <Filter>Actor\Enemy\BossEnemy\Stage11\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicResourcesLoadTest.cpp">
+      <Filter>Levels\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoResourceLoader.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="NeroLoading.cpp">
+      <Filter>UI\UI_Actor\LodingUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1201,6 +1241,9 @@
     </Filter>
     <Filter Include="Actor\Item">
       <UniqueIdentifier>{f9ad0c49-b904-471b-86a4-a7aae7ee8146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy\BossEnemy\Stage11\Weapon">
+      <UniqueIdentifier>{9347a9db-38fa-4b74-81ae-3ceaba348b69}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

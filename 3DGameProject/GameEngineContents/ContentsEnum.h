@@ -93,5 +93,7 @@ enum class FieldMapObjType
 	DecoLight,
 	Fountain,
 	StreetStall,
-	Bench
+	Bench,
+	RedSeal,
+
 };

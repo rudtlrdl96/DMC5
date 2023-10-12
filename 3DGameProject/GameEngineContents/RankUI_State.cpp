@@ -1,5 +1,8 @@
 #include "PrecompileHeader.h"
 #include "RankUI.h"
+#include <GameEngineCore/GameEngineFBXRenderer.h>
+#include <GameEngineCore/GameEngineFBXAnimation.h>
+#include "FXSystem.h"
 #include "UIFBXRenderer.h"
 void RankUI::StateInit_Wait()
 {
@@ -9,6 +12,7 @@ void RankUI::StateInit_Wait()
 			.Start = [=]
 			{
 				DisApperValue = false;
+
 			},
 			.Update = [=](float _DeltaTime)
 			{
@@ -31,6 +35,9 @@ void RankUI::StateInit_RankD()
 			.StateValue = RankState::Appear_RankD,
 			.Start = [=]
 			{
+			RankBackEffect->PlayFX("RankBackEffect.effect");
+			RankBackEffect->Loop = true;
+			RankBackEffect->IsUI = true;
 			ExplaneSpeed = 0.0F;
 			Ratio = 0.0f;
 			OutRank = false;
@@ -355,11 +362,11 @@ void RankUI::StateInit_RankSSS()
 			{
 				RankSpin(_DeltaTime,RankSSS_Frame,RankSSS_Inside);
 				RankClip(_DeltaTime, RankSSS_Frame, RankSSS_Inside, 600);
-				RankDisApper(_DeltaTime, RankSSS_Frame, RankSSS_Inside);
 				if (UpTime > 1.0f)
 				{
 					SetRankExPlane("RankSSS_Explane.png", float4{ 431.0f,250.0f,0.0f }, InsideStart, _DeltaTime);
 				}
+				RankDisApper(_DeltaTime, RankSSS_Frame, RankSSS_Inside);
 			},
 			.End = [=]
 			{

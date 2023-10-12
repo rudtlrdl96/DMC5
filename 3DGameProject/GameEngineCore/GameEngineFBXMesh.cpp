@@ -12,14 +12,14 @@ GameEngineFBXMesh::~GameEngineFBXMesh()
 	Release();
 }
 
-std::shared_ptr<GameEngineFBXMesh> GameEngineFBXMesh::Load(const std::string& _Path, const std::string& _Name)
+std::shared_ptr<GameEngineFBXMesh> GameEngineFBXMesh::Load(const std::string_view& _Path, const std::string_view& _Name)
 {
 	std::shared_ptr<GameEngineFBXMesh> Res = GameEngineResource::Create(_Name);
 	Res->SetPath(_Path);
 	return Res;
 }
 
-void GameEngineFBXMesh::UnLoad(const std::string& _Name)
+void GameEngineFBXMesh::UnLoad(const std::string_view& _Name)
 {
 	GameEngineResource::Remove(_Name);
 	return;

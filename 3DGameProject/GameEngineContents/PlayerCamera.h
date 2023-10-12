@@ -41,6 +41,12 @@ public:
 		return CameraTarget;
 	}
 
+	void SetBossCam(GameEngineTransform* _BossTransform)
+	{
+		BossTransform = _BossTransform;
+
+		CameraDistance.z = -200 ;
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -50,12 +56,12 @@ protected:
 	void ShakeUpdate(float _DeltaTime);
 	
 private:
-
 	GameEngineTransform* PlayerTransform = nullptr;
 	GameEngineTransform* TargetTransform = nullptr;
 	GameEngineTransform* CameraArm = nullptr;
 	GameEngineTransform* CameraTarget = nullptr;
 	GameEngineTransform* CameraTransform = nullptr;
+	GameEngineTransform* BossTransform = nullptr;
 	float4 CameraTargetPos;
 	float4 CameraDistance = { 0, 100, -300 };
 	float4 CameraFarDistance = { 0, 0, -500 };
@@ -69,7 +75,9 @@ private:
 	float CameraRotYSpeed = 120.0f;		// 카메라 y축 회전 속도
 	float CameraRotXSpeed = 80.0f;		// 카메라 x축 회전 속도
 
-	float MinDistance = 400.0f;
+	float DistanceMul = 0.65f;
+	float MinDistance = 260.0f;
+	float MaxDistance = 260.0f;
 	float TrackingSpeed = 5.0f;
 	float LockOnTrackingSpeed = 10.0f;
 
@@ -79,6 +87,7 @@ private:
 	bool IsMouseControll = false;
 
 
+	void DrawEditor() override;
 
 };
 

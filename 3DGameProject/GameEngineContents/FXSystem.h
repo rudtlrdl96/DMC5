@@ -45,6 +45,7 @@ public:
 	bool Loop = false;
 	bool Pause = false;
 
+	bool IsUI = false;
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

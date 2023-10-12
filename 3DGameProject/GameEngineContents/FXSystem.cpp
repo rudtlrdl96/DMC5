@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "FXSystem.h"
 #include "EffectRenderer.h"
+#include "UIEffectRenderer.h"
 FXSystem::FXSystem()
 {
 	Off();
@@ -39,7 +40,14 @@ void FXSystem::CreateFX(std::shared_ptr<class FXData> _FX)
 			if (false == FXRenders.contains(UnitDatas[i].MeshName))
 			{
 				// 해당 매쉬가 존재하지 않는경우
-				FXRenders[UnitDatas[i].MeshName] = GetActor()->CreateComponent<EffectRenderer>();
+				if (true == IsUI)
+				{
+					FXRenders[UnitDatas[i].MeshName] = GetActor()->CreateComponent<UIEffectRenderer>();
+				}
+				else
+				{
+					FXRenders[UnitDatas[i].MeshName] = GetActor()->CreateComponent<EffectRenderer>();
+				}
 				FXRenders[UnitDatas[i].MeshName]->GetTransform()->SetParent(GetTransform());
 				FXRenders[UnitDatas[i].MeshName]->SetFBXMesh(UnitDatas[i].MeshName, "Effect_2D");
 			}
@@ -50,7 +58,15 @@ void FXSystem::CreateFX(std::shared_ptr<class FXData> _FX)
 			if (false == FXRenders.contains(Key))
 			{
 				// 렌더러가 부족한 경우
-				FXRenders[Key] = GetActor()->CreateComponent<EffectRenderer>();
+
+				if (true == IsUI)
+				{
+					FXRenders[Key] = GetActor()->CreateComponent<UIEffectRenderer>();
+				}
+				else
+				{
+					FXRenders[Key] = GetActor()->CreateComponent<EffectRenderer>();
+				}
 				FXRenders[Key]->GetTransform()->SetParent(GetTransform());
 				FXRenders[Key]->RectInit("Effect_2D");
 				FXRenders[Key]->LockRotation();

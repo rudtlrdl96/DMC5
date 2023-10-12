@@ -155,6 +155,20 @@ void PlayerCamera::CameraControll(float _DeltaTime)
 
 void PlayerCamera::TargetCheck(float _DeltaTime)
 {
+	if (BossTransform != nullptr)
+	{
+		float Distance = (GetTransform()->GetWorldPosition() - BossTransform->GetWorldPosition()).Size() * DistanceMul;
+		if (MaxDistance < Distance)
+		{
+			CameraArm->SetLocalPosition(float4::LerpClamp(CameraArm->GetLocalPosition(), float4::ZERO, _DeltaTime * LockOnTrackingSpeed));
+			CameraTarget->SetLocalPosition(float4::LerpClamp(CameraTarget->GetLocalPosition(), CameraDistance, _DeltaTime * LockOnTrackingSpeed));
+			return;
+		}
+		Distance = std::max<float>(std::abs(Distance), MinDistance);
+		CameraTarget->SetLocalPosition(float4::LerpClamp(CameraTarget->GetLocalPosition(), { 0, 100, -Distance }, _DeltaTime * LockOnTrackingSpeed));
+		CameraArm->SetWorldPosition(float4::LerpClamp(CameraArm->GetWorldPosition(), float4::Lerp(GetTransform()->GetWorldPosition(), BossTransform->GetWorldPosition(), 0.3f), _DeltaTime * LockOnTrackingSpeed));
+		return;
+	}
 	if (TargetTransform == nullptr) {
 		// 락온 대상이 없을 시
 		// 기존의 카메라 위치로 Lerp 이용하여 이동
@@ -164,9 +178,14 @@ void PlayerCamera::TargetCheck(float _DeltaTime)
 	}
 	// 락온 대상이 있을 시
 	// 대상과 플레이어의 사이를 바라보며. 대상과 플레이어의 거리만큼 z값을 뒤로 이동시킨다 (z 이동은 최소값이 정해져 있다)
-	float Distance = (GetTransform()->GetWorldPosition() - TargetTransform->GetWorldPosition()).Size() * 1.1f;
+	float Distance = (GetTransform()->GetWorldPosition() - TargetTransform->GetWorldPosition()).Size() * DistanceMul;
 	Distance = std::max<float>(std::abs(Distance), MinDistance);
-
+	if (MaxDistance < Distance)
+	{
+		CameraArm->SetLocalPosition(float4::LerpClamp(CameraArm->GetLocalPosition(), float4::ZERO, _DeltaTime * LockOnTrackingSpeed));
+		CameraTarget->SetLocalPosition(float4::LerpClamp(CameraTarget->GetLocalPosition(), CameraDistance, _DeltaTime * LockOnTrackingSpeed));
+		return;
+	}
 	CameraTarget->SetLocalPosition(float4::LerpClamp(CameraTarget->GetLocalPosition(), { 0, 100, -Distance }, _DeltaTime * LockOnTrackingSpeed));
 
 	CameraArm->SetWorldPosition(float4::LerpClamp(CameraArm->GetWorldPosition(), (GetTransform()->GetWorldPosition() + TargetTransform->GetWorldPosition()) * 0.5f, _DeltaTime * LockOnTrackingSpeed));
@@ -220,5 +239,25 @@ void PlayerCamera::ShakeUpdate(float _DeltaTime)
 	float z = GameEngineRandom::MainRandom.RandomFloat(-1, 1) * ShakePower * Ratio;
 
 	CameraTransform->AddWorldPosition({ x, y, z });
+}
+
+void PlayerCamera::DrawEditor()
+{
+	ImGui::InputFloat4("CameraDistance", CameraDistance.Arr1D);
+	ImGui::InputFloat4("CameraFarDistance", CameraFarDistance.Arr1D);
+
+	ImGui::InputFloat("MouseAcceleration", &MouseAcceleration);
+	ImGui::InputFloat("MouseSensitivity", &MouseSensitivity);
+	ImGui::InputFloat("CameraRotBraking", &CameraRotBraking);
+	ImGui::InputFloat("CameraRotAcceleration", &CameraRotAcceleration);
+	ImGui::InputFloat("CameraRotYSpeed", &CameraRotYSpeed);
+	ImGui::InputFloat("CameraRotXSpeed", &CameraRotXSpeed);
+	ImGui::InputFloat("DistanceMul", &DistanceMul);
+	ImGui::InputFloat("MinDistance", &MinDistance);
+	ImGui::InputFloat("MaxDistance", &MaxDistance);
+	ImGui::InputFloat("TrackingSpeed", &TrackingSpeed);
+	ImGui::InputFloat("LockOnTrackingSpeed", &LockOnTrackingSpeed);
+	ImGui::InputFloat("FastTrackingDistance", &FastTrackingDistance);
+	ImGui::InputFloat("FastTrackingSpeed", &FastTrackingSpeed);
 }
 

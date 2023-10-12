@@ -563,15 +563,15 @@ public:
 
 	void Initialize();
 
-	static std::shared_ptr<GameEngineFBXMesh> Load(const std::string& _Path)
+	static std::shared_ptr<GameEngineFBXMesh> Load(const std::string_view& _Path)
 	{
 		GameEnginePath FilePath(_Path);
 		return Load(_Path, FilePath.GetFileName());
 	}
 
-	static std::shared_ptr<GameEngineFBXMesh> Load(const std::string& _Path, const std::string& _Name);
+	static std::shared_ptr<GameEngineFBXMesh> Load(const std::string_view& _Path, const std::string_view& _Name);
 
-	static void UnLoad(const std::string& _Name);
+	static void UnLoad(const std::string_view& _Name);
 
 	std::shared_ptr<GameEngineMesh> GetGameEngineMesh(size_t _MeshIndex, size_t _SubIndex);
 

@@ -210,6 +210,7 @@ void GameEngineCore::EngineUpdate()
 		GameEngineScreenShoot::RenderTargetShoot(MainLevel->GetScreenShootTarget(), Path, "RenderTargetShoot.DDS");
 	}
 
+	MainLevel->LightRelease();
 	MainLevel->ActorRelease();
 }
 

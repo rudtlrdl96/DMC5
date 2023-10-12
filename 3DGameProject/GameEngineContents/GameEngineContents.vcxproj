@@ -175,6 +175,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="AutoResourceLoader.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Ball.h">
       <SubType>
       </SubType>
@@ -215,11 +219,19 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Cavaliere_Electric.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="DecoLight.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="DistortionEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="DynamicResourcesLoadTest.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -251,6 +263,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Location2_FightEvent1.h" />
     <ClInclude Include="NeroItemGlass.h">
       <SubType>
       </SubType>
@@ -276,6 +289,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="RankUI.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="RedSeal.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -320,6 +337,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="ThreadLoadingLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="UIEffectRenderer.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -697,6 +718,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="AutoResourceLoader.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Ball.cpp">
       <SubType>
       </SubType>
@@ -737,6 +762,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Cavaliere_Electric.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Char_ChoiceButton.cpp" />
     <ClCompile Include="Char_ChoiceLevel.cpp" />
     <ClCompile Include="Char_ChoiceUI.cpp" />
@@ -758,6 +787,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="DistortionEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="DynamicResourcesLoadTest.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -790,6 +823,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Location2_FightEvent1.cpp" />
     <ClCompile Include="NeroItemGlass.cpp">
       <SubType>
       </SubType>
@@ -823,6 +857,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="RankUI_State.cpp" />
+    <ClCompile Include="RedSeal.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ReflectionSetter.cpp" />
     <ClCompile Include="StreetLight_Off.cpp">
       <SubType>
@@ -845,6 +883,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="ThreadLoadingLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="UIEffectRenderer.cpp">
       <SubType>
       </SubType>
     </ClCompile>
