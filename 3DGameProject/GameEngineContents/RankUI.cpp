@@ -36,8 +36,22 @@ void RankUI::Start()
 	RankBackEffect_Up->GetTransform()->SetLocalPosition({ 1450.f,190.0f,0.0f });
 	RankBackEffect_Up->GetTransform()->SetLocalScale({ 3.0f,3.0f,3.0f });
 
+	GameEngineDirectory NewMeshDir;
+	NewMeshDir.MoveParentToDirectory("ContentResources");
+	NewMeshDir.Move("ContentResources");
+	NewMeshDir.Move("Mesh");
+	NewMeshDir.Move("UIMesh");
+	NewMeshDir.Move("RankMesh");
 
-
+	if (nullptr == GameEngineFBXMesh::Find("RankAFrame.FBX"))
+	{
+		std::vector<GameEngineFile> Files = NewMeshDir.GetAllFile({ ".fbx" });
+		for (GameEngineFile File : Files)
+		{
+			GameEngineFBXMesh::Load(File.GetFullPath());
+		}
+	}
+	
 
 	GameEngineDirectory NewDir;
 	NewDir.MoveParentToDirectory("ContentResources");
