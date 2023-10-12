@@ -20,6 +20,90 @@ CavaliereAngelo::~CavaliereAngelo()
 {
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////   Actor Init   ///////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CavaliereAngelo::EnemyMeshLoad()
+{
+	if (nullptr == GameEngineFBXMesh::Find("em5501.FBX"))
+	{
+		std::string Path = GameEnginePath::GetFileFullPath
+		(
+			"ContentResources",
+			{
+				"Character", "Enemy", "CavaliereAngelo", "mesh"
+			},
+			"em5501.FBX"
+		);
+		GameEngineFBXMesh::Load(Path);
+	}
+
+	switch (GameEngineOption::GetOption("Shader"))
+	{
+	case GameEngineOptionValue::Low:
+	{
+		EnemyRenderer->SetFBXMesh("em5501.fbx", "AniFBX_Low");
+	}
+	break;
+	case GameEngineOptionValue::High:
+	{
+		EnemyRenderer->SetFBXMesh("em5501.fbx", "AniFBX");
+	}
+	break;
+	default:
+		break;
+	}
+
+	EnemyRenderer->GetTransform()->SetLocalScale({ 0.8f , 0.8f , 0.8f });
+}
+
+void CavaliereAngelo::EnemyTypeLoad()
+{
+	EnemyCodeValue = EnemyCode::HellCaina;
+	EnemyHP = 0;
+}
+
+void CavaliereAngelo::EnemyAnimationLoad()
+{
+	//Animation정보 경로를 찾아서 모든animation파일 로드
+	GameEngineDirectory NewDir;
+	NewDir.MoveParentToDirectory("ContentResources");
+	NewDir.Move("ContentResources");
+	NewDir.Move("Character");
+	NewDir.Move("Enemy");
+	NewDir.Move("CavaliereAngelo");
+	NewDir.Move("Animation");
+
+	AnimationEvent::LoadAll
+	(
+		{
+			.Dir = NewDir.GetFullPath().c_str(),
+			.Renderer = EnemyRenderer,
+			.RendererLocalPos = { 0.0f, -45.0f, 0.0f },
+			.Objects = {(GameEngineObject*)MonsterAttackCollision.get()},
+			.CallBacks_void =
+			{
+			},
+			.CallBacks_int =
+			{
+				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
+			},
+			.CallBacks_float4 =
+			{
+			}
+		}
+	);
+
+	//std::vector<GameEngineFile> FBXFiles = NewDir.GetAllFile({ ".FBX" });
+
+	//for (size_t i = 0; i < FBXFiles.size(); i++)
+	//{
+	//	GameEngineFBXAnimation::Load(FBXFiles[i].GetFullPath());
+	//	EnemyRenderer->CreateFBXAnimation(FBXFiles[i].GetFileName(), FBXFiles[i].GetFileName(), {.Inter = 0.01666f,});
+	//}
+}
+
 void CavaliereAngelo::Start()
 {
 	BaseEnemyActor::Start();
@@ -123,7 +207,17 @@ void CavaliereAngelo::PlayerAttack(float _DeltaTime)
 
 void CavaliereAngelo::AttackCalculation()
 {
+	AttackDirectCheck();
 
+	if (true == AnimationTurnStart)
+	{
+		AnimationTurnStart = false;
+		RotationCheck();
+		PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
+		EnemyHitDirValue = EnemyHitDirect::Forward;
+	}
+
+	PushDirectSetting();
 }
 
 void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
@@ -145,17 +239,6 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 
 	PlayerAttackCheck(AttackCol.get());
 	MonsterAttackCollision->Off();
-	AttackDirectCheck();
-
-	if (true == AnimationTurnStart)
-	{
-		AnimationTurnStart = false;
-		RotationCheck();
-		PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
-		EnemyHitDirValue = EnemyHitDirect::Forward;
-	}
-
-	PushDirectSetting();
 	DamageData Data = AttackCol->GetDamage();
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
@@ -188,6 +271,8 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 			StartRenderShaking(8);
 			return;
 		}
+
+		AttackCalculation();
 
 		switch (EnemyHitDirValue)
 		{
@@ -273,6 +358,10 @@ void CavaliereAngelo::RecognizeCollisionCheck(float _DeltaTime)
 	IsRecognize = true;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////     FSM     ///////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void CavaliereAngelo::ChangeState(int _StateValue)
 {
 	EnemyFSM.ChangeState(_StateValue);
@@ -280,94 +369,12 @@ void CavaliereAngelo::ChangeState(int _StateValue)
 	NetworkManager::SendFsmChangePacket(this, _StateValue);
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////   Actor Init   ///////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void CavaliereAngelo::EnemyMeshLoad()
+void CavaliereAngelo::ChangeState_Client(int _StateValue)
 {
-	if (nullptr == GameEngineFBXMesh::Find("em5501.FBX"))
-	{
-		std::string Path = GameEnginePath::GetFileFullPath
-		(
-			"ContentResources",
-			{
-				"Character", "Enemy", "CavaliereAngelo", "mesh"
-			},
-			"em5501.FBX"
-		);
-		GameEngineFBXMesh::Load(Path);
-	}
-
-	switch (GameEngineOption::GetOption("Shader"))
-	{
-	case GameEngineOptionValue::Low:
-	{
-		EnemyRenderer->SetFBXMesh("em5501.fbx", "AniFBX_Low");
-	}
-	break;
-	case GameEngineOptionValue::High:
-	{
-		EnemyRenderer->SetFBXMesh("em5501.fbx", "AniFBX");
-	}
-	break;
-	default:
-		break;
-	}
-
-	EnemyRenderer->GetTransform()->SetLocalScale({ 0.8f , 0.8f , 0.8f });
+	EnemyFSM.ChangeState(_StateValue);
+	EnemyFSMValue = _StateValue;
+	NetworkManager::SendFsmChangePacket(this, _StateValue, Player);
 }
-
-void CavaliereAngelo::EnemyTypeLoad()
-{
-	//EnemyCodeValue = EnemyCode::HellCaina;
-
-	EnemyHP = 0;
-}
-
-void CavaliereAngelo::EnemyAnimationLoad()
-{
-	//Animation정보 경로를 찾아서 모든animation파일 로드
-	GameEngineDirectory NewDir;
-	NewDir.MoveParentToDirectory("ContentResources");
-	NewDir.Move("ContentResources");
-	NewDir.Move("Character");
-	NewDir.Move("Enemy");
-	NewDir.Move("CavaliereAngelo");
-	NewDir.Move("Animation");
-
-	AnimationEvent::LoadAll
-	(
-		{
-			.Dir = NewDir.GetFullPath().c_str(),
-			.Renderer = EnemyRenderer,
-			.RendererLocalPos = { 0.0f, -45.0f, 0.0f },
-			.Objects = {(GameEngineObject*)MonsterAttackCollision.get()},
-			.CallBacks_void =
-			{
-			},
-			.CallBacks_int =
-			{
-				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
-			},
-			.CallBacks_float4 =
-			{
-			}
-		}
-	);
-
-	//std::vector<GameEngineFile> FBXFiles = NewDir.GetAllFile({ ".FBX" });
-
-	//for (size_t i = 0; i < FBXFiles.size(); i++)
-	//{
-	//	GameEngineFBXAnimation::Load(FBXFiles[i].GetFullPath());
-	//	EnemyRenderer->CreateFBXAnimation(FBXFiles[i].GetFileName(), FBXFiles[i].GetFileName(), {.Inter = 0.01666f,});
-	//}
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////     FSM     ///////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void CavaliereAngelo::EnemyCreateFSM()
 {
