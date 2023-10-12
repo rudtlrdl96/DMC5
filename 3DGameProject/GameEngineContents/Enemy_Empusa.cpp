@@ -423,6 +423,8 @@ void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 			return;
 		}
 
+		AttackDirectCheck();
+
 		switch (EnemyHitDirValue)
 		{
 		case EnemyHitDirect::Forward:
@@ -1053,6 +1055,9 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 정면 약공격 피격
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Standing_Damage_Weak_Front,
 	.Start = [=] {
+
+	AttackCalculation();
+
 	if (true == IsVergilLight)
 	{
 		SetPush(10000.0f);
@@ -1078,6 +1083,9 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 후면 약공격 피격
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Standing_Damage_Weak_Back,
 	.Start = [=] {
+
+	AttackCalculation();
+
 	if (true == IsVergilLight)
 	{
 		SetPush(10000.0f);
@@ -1101,6 +1109,9 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 좌측 약공격 피격
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Standing_Damage_Weak_Left,
 	.Start = [=] {
+
+	AttackCalculation();
+
 	if (true == IsVergilLight)
 	{
 		SetPush(10000.0f);
@@ -1124,6 +1135,9 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 우측 약공격 피격 
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Standing_Damage_Weak_Right,
 	.Start = [=] {
+
+	AttackCalculation();
+
 	if (true == IsVergilLight)
 	{
 		SetPush(10000.0f);
@@ -1149,9 +1163,9 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 강공격 맞고 날아감
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Blown_Back,
 	.Start = [=] {
-	AttackCalculation();
 	IsCollapse = false;
 	IsHeavyAttack = true;
+	AttackCalculation();
 	RotationCheck();
 	PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 	SetPush(50000.0f);
@@ -1174,9 +1188,9 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 띄우기 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Air_Damage,
 	.Start = [=] {
-	AttackCalculation();
 	IsCollapse = false;
 	IsAirAttack = true;
+	AttackCalculation();
 	RotationCheck();
 	PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 	PhysXCapsule->SetAirState(110000.0f);
@@ -1271,9 +1285,9 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 슬램 피격 start
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Slam_Damage,
 	.Start = [=] {
-	AttackCalculation();
 	IsCollapse = false;
 	IsSlamAttack = true;
+	AttackCalculation();
 	EnemyRenderer->ChangeAnimation("em0100_slam_damage_start");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1326,9 +1340,9 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 스내치 start
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Snatch,
 	.Start = [=] {
-	AttackCalculation();
 	IsCollapse = false;
 	IsAirAttack = true;
+	AttackCalculation();
 	StartMonsterSnatch();
 	RotationCheck();
 	PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
@@ -1489,9 +1503,9 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// em0100_Buster_Start, 버스트 히트 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Buster_Start,
 	.Start = [=] {
-	AttackCalculation();
 	IsCollapse = false;
 	IsBusterAttack = true;
+	AttackCalculation();
 	BusterCalculation(float4{ 0.f, -45.f, 0.f });
 	RotationCheck();
 	PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });

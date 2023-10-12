@@ -139,6 +139,7 @@ void BaseEnemyActor::PlayerCheckInit()
 	}
 
 	Player = Players[0];
+	int PlayerID = Player->GetNetObjectID();
 
 	if (nullptr == Player)
 	{
@@ -228,7 +229,7 @@ void BaseEnemyActor::PlayerAttackCheck(GameEngineCollision* _Collision)
 			{
 				int PlayersID = Players[i]->GetNetObjectID();
 
-				if (PlayersID == PlayerID)
+				if (ContactID == PlayersID)
 				{
 					Player = Players[i];
 				}
