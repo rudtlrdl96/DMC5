@@ -46,19 +46,15 @@ void BaseEnemyActor::Start()
 	EnemyTypeLoad();
 	EnemyAnimationLoad();
 
-	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
-	{
-		EnemyCreateFSM();
-	}
-	else if (NetControllType::ActiveControll == GetControllType())
-	{
-		EnemyCreateFSM();
-	}
-	else if (NetControllType::ActiveControll != GetControllType())
+	if (NetControllType::ActiveControll != GetControllType())
 	{
 		EnemyCreateFSM_Client();
 	}
-	
+	else
+	{
+		EnemyCreateFSM();
+	}
+
 	PlayerCheckInit();
 	
 	SetFsmPacketCallBack(std::bind(&BaseEnemyActor::SetFSMStateValue, this, std::placeholders::_1));

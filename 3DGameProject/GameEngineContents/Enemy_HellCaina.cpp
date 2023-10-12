@@ -62,6 +62,13 @@ void Enemy_HellCaina::Start()
 	//{
 	//	ChangeState(FSM_State_HellCaina::HellCaina_Walk_Start);
 	//});
+
+	//LinkData_UpdatePacket<bool>(IsHeavyAttack);
+	//LinkData_UpdatePacket<bool>(IsAirAttack);
+	//LinkData_UpdatePacket<bool>(IsSlamAttack);
+	//LinkData_UpdatePacket<bool>(IsBusterAttack);
+	//LinkData_UpdatePacket<bool>(IsVergilLight);
+	//LinkData_UpdatePacket<bool>(IsCollapse);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -312,7 +319,7 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 		if (true == IsAirAttack || true == IsSlamAttack || true == IsBusterAttack)
 		{
 			StartRenderShaking(8);
-			NetworkManager::SendFsmChangePacket(this, FSM_State_HellCaina::HellCaina_Air_Damage_Under, Player);
+			ChangeState_Client(FSM_State_HellCaina::HellCaina_Air_Damage_Under);
 			return;
 		}
 
@@ -325,16 +332,16 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 		switch (EnemyHitDirValue)
 		{
 		case EnemyHitDirect::Forward:
-			NetworkManager::SendFsmChangePacket(this, FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Front, Player);
+			ChangeState_Client(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Front);
 			break;
 		case EnemyHitDirect::Back:
-			NetworkManager::SendFsmChangePacket(this, FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Back, Player);
+			ChangeState_Client(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Back);
 			break;
 		case EnemyHitDirect::Left:
-			NetworkManager::SendFsmChangePacket(this, FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Left, Player);
+			ChangeState_Client(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Left);
 			break;
 		case EnemyHitDirect::Right:
-			NetworkManager::SendFsmChangePacket(this, FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Right, Player);
+			ChangeState_Client(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Right);
 			break;
 		default:
 			break;
@@ -342,19 +349,19 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 		break;
 
 	case DamageType::Heavy:
-		NetworkManager::SendFsmChangePacket(this, FSM_State_HellCaina::HellCaina_Blown_Back, Player);
+		ChangeState_Client(FSM_State_HellCaina::HellCaina_Blown_Back);
 		break;
 	case DamageType::Air:
-		NetworkManager::SendFsmChangePacket(this, FSM_State_HellCaina::HellCaina_Blown_Up, Player);
+		ChangeState_Client(FSM_State_HellCaina::HellCaina_Blown_Up);
 		break;
 	case DamageType::Snatch:
-		NetworkManager::SendFsmChangePacket(this, FSM_State_HellCaina::HellCaina_Snatch, Player);
+		ChangeState_Client(FSM_State_HellCaina::HellCaina_Snatch);
 		break;
 	case DamageType::Slam:
-		NetworkManager::SendFsmChangePacket(this, FSM_State_HellCaina::HellCaina_Slam_Damage, Player);
+		ChangeState_Client(FSM_State_HellCaina::HellCaina_Slam_Damage);
 		break;
 	case DamageType::Buster:
-		NetworkManager::SendFsmChangePacket(this, FSM_State_HellCaina::HellCaina_Buster_Start, Player);
+		ChangeState_Client(FSM_State_HellCaina::HellCaina_Buster_Start);
 		break;
 	case DamageType::Stun:
 		//StopTime(2.9f);
@@ -373,6 +380,13 @@ void Enemy_HellCaina::ChangeState(int _StateValue)
 	EnemyFSM.ChangeState(_StateValue);
 	EnemyFSMValue = _StateValue;
 	NetworkManager::SendFsmChangePacket(this, _StateValue);
+}
+
+void Enemy_HellCaina::ChangeState_Client(int _StateValue)
+{
+	EnemyFSM.ChangeState(_StateValue);
+	EnemyFSMValue = _StateValue;
+	NetworkManager::SendFsmChangePacket(this, _StateValue, Player);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -102,6 +102,7 @@ private:
 	void PlayerAttack(float _DeltaTime);
 	void RandomAttack();
 	void ChangeState(int _StateValue);
+	void ChangeState_Client(int _StateValue);
 	void AttackCalculation();
 
 	float WaitTime = 0.0f;
