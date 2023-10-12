@@ -44,31 +44,24 @@ void Enemy_HellCaina::Start()
 	MonsterCollision->SetColType(ColType::OBBBOX3D);
 	RN_MonsterCollision->GetTransform()->SetLocalScale({ 700, 0, 0 });
 	RN_MonsterCollision->GetTransform()->SetLocalPosition({ 0, 80, 0 });
-	//RN_MonsterCollision->Off();
 
 	// 기본 세팅
 	FallDistance = 55.0f;
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
 
-	//EnemyRenderer->Off();
-	MonsterCollision->On();
-	RN_MonsterCollision->Off();
+	//MonsterCollision->Off();
+	//RN_MonsterCollision->Off();
 
 	// 넷 오브젝트 타입 설정
 	SetNetObjectType(Net_ActorType::HellCaina);
 
-	//이런식으로 공격받았을 때 처리하시면 됩니다, 템플릿 인자는 내부에서 단순히 다운캐스팅 해주는 역할입니다
-	//SetDamagedNetCallBack<BasePlayerActor>([this](int _State, BasePlayerActor* _Attacker)
-	//{
-	//	ChangeState(FSM_State_HellCaina::HellCaina_Walk_Start);
-	//});
-
-	//LinkData_UpdatePacket<bool>(IsHeavyAttack);
-	//LinkData_UpdatePacket<bool>(IsAirAttack);
-	//LinkData_UpdatePacket<bool>(IsSlamAttack);
-	//LinkData_UpdatePacket<bool>(IsBusterAttack);
-	//LinkData_UpdatePacket<bool>(IsVergilLight);
-	//LinkData_UpdatePacket<bool>(IsCollapse);
+	LinkData_UpdatePacket<bool>(AnimationTurnStart);
+	LinkData_UpdatePacket<bool>(IsHeavyAttack);
+	LinkData_UpdatePacket<bool>(IsAirAttack);
+	LinkData_UpdatePacket<bool>(IsSlamAttack);
+	LinkData_UpdatePacket<bool>(IsBusterAttack);
+	LinkData_UpdatePacket<bool>(IsVergilLight);
+	LinkData_UpdatePacket<bool>(IsCollapse);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -294,8 +287,6 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 	std::shared_ptr<AttackCollision> AttackCol = std::dynamic_pointer_cast<AttackCollision>(Col);
 	if (nullptr == AttackCol) { return; }
 
-	PlayerAttackCheck(AttackCol.get());
-	MonsterAttackCollision->Off();
 	DamageData Data = AttackCol->GetDamage();
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
@@ -481,7 +472,6 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0000_appear_02");
 	},
 	.Update = [=](float _DeltaTime) {
-	EnemyRenderer->On();
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Idle);
@@ -489,8 +479,6 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
-	MonsterCollision->On();
-	RN_MonsterCollision->On();
 	}
 	});
 
@@ -1534,8 +1522,6 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	.Update = [=](float _DeltaTime) {
 	},
 	.End = [=] {
-	MonsterCollision->On();
-	RN_MonsterCollision->On();
 	}
 		});
 	// Idle

@@ -73,11 +73,6 @@ public:
 		IsSnatch = true;
 	}
 
-	void SetClinetHit()
-	{
-		IsClientHit = true;
-	}
-
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -97,10 +92,6 @@ protected:
 	std::shared_ptr<class AttackCollision> MonsterAttackCollision = nullptr;  // 몬스터 공격 콜리전
 	std::shared_ptr<class GameEngineCollision> RN_MonsterCollision = nullptr; // 몬스터 공격 범위 인식 콜리전
 
-	GameEngineFSM EnemyFSM;        // 싱글, 서버용 FSM
-
-	float AppearDelayTime = 0.0f;
-
 	//하위에서 설정해줘야하는 Data들=====================================================
 	EnemyCode EnemyCodeValue = EnemyCode::None;
 	//HP
@@ -111,13 +102,14 @@ protected:
 
 	//====================================================
 	// 플레이어 세팅
-	class BasePlayerActor* Player = nullptr;
 	void PlayerCheckInit();
 	void PlayerContactCheck(float _DeltaTime, GameEngineCollision* _Collision);
 	void PlayerAttackCheck(GameEngineCollision* _Collision);
 
+	class BasePlayerActor* Player = nullptr;
+	GameEngineFSM EnemyFSM;
+	float AppearDelayTime = 0.0f;
 	float ContactDelayTime = 0.0f;
-	bool IsClientHit = false;
 	//====================================================
 
 	//====================================================

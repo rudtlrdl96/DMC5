@@ -10,6 +10,7 @@
 #include "NetworkManager.h"
 #include "FsmChangePacket.h"
 #include "AttackCollision.h"
+
 BaseEnemyActor::BaseEnemyActor()
 {
 }
@@ -46,9 +47,13 @@ void BaseEnemyActor::Start()
 	EnemyTypeLoad();
 	EnemyAnimationLoad();
 	
-	if (NetControllType::ActiveControll != GetControllType())
+	if (true == NetworkManager::IsClient())
 	{
 		EnemyCreateFSM_Client();
+	}
+	else if (true == NetworkManager::IsServer())
+	{
+		EnemyCreateFSM();
 	}
 	else
 	{
@@ -56,7 +61,9 @@ void BaseEnemyActor::Start()
 	}
 
 	PlayerCheckInit();
+
 	SetFsmPacketCallBack(std::bind(&BaseEnemyActor::SetFSMStateValue, this, std::placeholders::_1));
+	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker){ Player = _Attacker; });
 }
 
 void BaseEnemyActor::Update(float _DeltaTime)
@@ -80,20 +87,31 @@ void BaseEnemyActor::Update(float _DeltaTime)
 		return;
 	}
 
-	if (NetControllType::ActiveControll != GetControllType())
+	RenderShake(_DeltaTime);
+
+	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
 	{
-		Update_NetworkTrans(_DeltaTime);
-		DamageCollisionCheck_Client(_DeltaTime);
-		EnemyFSM.Update(_DeltaTime);
-		MonsterAttackCollision->Off();
-	}
-	else
-	{
-		RenderShake(_DeltaTime);
 		MonsterSnatch(_DeltaTime);
 		RecognizeCollisionCheck(_DeltaTime);
 		DamageCollisionCheck(_DeltaTime);
 		EnemyFSM.Update(_DeltaTime);
+	}
+	else 
+	{
+		if (NetControllType::ActiveControll == GetControllType())
+		{
+			MonsterSnatch(_DeltaTime);
+			RecognizeCollisionCheck(_DeltaTime);
+			DamageCollisionCheck(_DeltaTime);
+			EnemyFSM.Update(_DeltaTime);
+		}
+		else
+		{
+			Update_NetworkTrans(_DeltaTime);
+			DamageCollisionCheck_Client(_DeltaTime);
+			EnemyFSM.Update(_DeltaTime);
+			MonsterAttackCollision->Off();
+		}
 	}
 }
 
@@ -111,8 +129,8 @@ bool BaseEnemyActor::FloorCheck(float _Distance)
 
 void BaseEnemyActor::PlayerCheckInit()
 {
-	// 기본적으로는 서버 플레이어
 	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
+	size_t Playersize = Players.size();
 
 	if (0 == Players.size())
 	{
@@ -128,35 +146,85 @@ void BaseEnemyActor::PlayerCheckInit()
 	}
 }
 
-void BaseEnemyActor::PlayerContactCheck(float _DeltaTimem, GameEngineCollision* _Collision)
+void BaseEnemyActor::PlayerContactCheck(float _DeltaTime, GameEngineCollision* _Collision)
 {
-	ContactDelayTime += _DeltaTimem;
+	ContactDelayTime += _DeltaTime;
 
-	if (10.0f >= ContactDelayTime)
+	if (15.0f >= ContactDelayTime)
 	{
 		return;
 	}
 
 	ContactDelayTime = 0.0f;
 
-	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
-	size_t Playersize = Players.size();
-
 	GameEngineCollision* CheckCollision = _Collision;
 	BasePlayerActor* ContactPlayer = dynamic_cast<BasePlayerActor*>(CheckCollision->GetActor());
 
-	Player = ContactPlayer;
+	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
+	{
+		Player = ContactPlayer;
+	}
+	else
+	{
+		int ContactID = ContactPlayer->GetNetObjectID();
+		int PlayerID = Player->GetNetObjectID();
+
+		if (ContactID == PlayerID)
+		{
+			Player = ContactPlayer;
+		}
+		else
+		{
+			std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
+			size_t Playersize = Players.size();
+
+			for (size_t i = 0; i < Playersize; i++)
+			{
+				int PlayersID = Players[i]->GetNetObjectID();
+
+				if (PlayersID == PlayerID)
+				{
+					Player = Players[i];
+				}
+			}
+		}
+	}
 }
 
 void BaseEnemyActor::PlayerAttackCheck(GameEngineCollision* _Collision)
 {
-	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
-	size_t Playersize = Players.size();
-
 	GameEngineCollision* CheckCollision = _Collision;
 	BasePlayerActor* ContactPlayer = dynamic_cast<BasePlayerActor*>(CheckCollision->GetActor());
 
-	Player = ContactPlayer;
+	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
+	{
+		Player = ContactPlayer;
+	}
+	else
+	{
+		int ContactID = ContactPlayer->GetNetObjectID();
+		int PlayerID = Player->GetNetObjectID();
+
+		if (ContactID == PlayerID)
+		{
+			Player = ContactPlayer;
+		}
+		else
+		{
+			std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
+			size_t Playersize = Players.size();
+
+			for (size_t i = 0; i < Playersize; i++)
+			{
+				int PlayersID = Players[i]->GetNetObjectID();
+
+				if (PlayersID == PlayerID)
+				{
+					Player = Players[i];
+				}
+			}
+		}
+	}
 }
 
 float4 BaseEnemyActor::MonsterAndPlayerCross()
