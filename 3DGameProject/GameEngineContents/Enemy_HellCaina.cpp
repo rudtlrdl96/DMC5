@@ -20,7 +20,81 @@ Enemy_HellCaina::~Enemy_HellCaina()
 {
 }
 
-#include "NetworkGUI.h"
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////   Actor Init   ///////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Enemy_HellCaina::EnemyMeshLoad()
+{
+	if (nullptr == GameEngineFBXMesh::Find("em0000.FBX"))
+	{
+		std::string Path = GameEnginePath::GetFileFullPath
+		(
+			"ContentResources",
+			{
+				"Character", "Enemy", "HellCaina", "mesh"
+			},
+			"em0000.FBX"
+		);
+		GameEngineFBXMesh::Load(Path);
+	}
+
+	switch (GameEngineOption::GetOption("Shader"))
+	{
+	case GameEngineOptionValue::Low:
+	{
+		EnemyRenderer->SetFBXMesh("em0000.fbx", "AniFBX_Low");
+	}
+	break;
+	case GameEngineOptionValue::High:
+	{
+		EnemyRenderer->SetFBXMesh("em0000.fbx", "AniFBX");
+	}
+	break;
+	default:
+		break;
+	}
+
+	EnemyRenderer->GetTransform()->SetLocalScale({ 0.8f , 0.8f , 0.8f });
+}
+
+void Enemy_HellCaina::EnemyTypeLoad()
+{
+	EnemyCodeValue = EnemyCode::HellCaina;
+	EnemyHP = 0;
+}
+
+void Enemy_HellCaina::EnemyAnimationLoad()
+{
+	//Animation정보 경로를 찾아서 모든animation파일 로드
+	GameEngineDirectory NewDir;
+	NewDir.MoveParentToDirectory("ContentResources");
+	NewDir.Move("ContentResources");
+	NewDir.Move("Character");
+	NewDir.Move("Enemy");
+	NewDir.Move("HellCaina");
+	NewDir.Move("Animation");
+
+	AnimationEvent::LoadAll
+	(
+		{
+			.Dir = NewDir.GetFullPath().c_str(),
+			.Renderer = EnemyRenderer,
+			.RendererLocalPos = { 0.0f, -45.0f, 0.0f },
+			.Objects = {(GameEngineObject*)MonsterAttackCollision.get()},
+			.CallBacks_void =
+			{
+			},
+			.CallBacks_int =
+			{
+				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
+			},
+			.CallBacks_float4 =
+			{
+			}
+		}
+	);
+}
 
 void Enemy_HellCaina::Start()
 {
@@ -210,6 +284,8 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 			return;
 		}
 
+		AttackCalculation();
+
 		switch (EnemyHitDirValue)
 		{
 		case EnemyHitDirect::Forward:
@@ -254,20 +330,6 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 	HitStop(Data.DamageTypeValue);
 	IsVergilLight = false;
 	AttackDelayCheck = 0.0f;
-}
-
-void Enemy_HellCaina::RecognizeCollisionCheck(float _DeltaTime)
-{
-	if (true == IsRecognize || false == RN_MonsterCollision->IsUpdate())
-	{
-		return;
-	}
-
-	std::shared_ptr<GameEngineCollision> Collision = RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D);
-	if (nullptr == Collision) { return; }
-
-	PlayerContactCheck(_DeltaTime, Collision.get());
-	IsRecognize = true;
 }
 
 void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
@@ -355,16 +417,34 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 		ChangeState_Client(FSM_State_HellCaina::HellCaina_Buster_Start);
 		break;
 	case DamageType::Stun:
-		//StopTime(2.9f);
+		StopTime(2.9f);
 		break;
 	default:
 		break;
 	}
 
-	//HitStop(Data.DamageTypeValue);
+	HitStop(Data.DamageTypeValue);
 	IsVergilLight = false;
 	AttackDelayCheck = 0.0f;
 }
+
+void Enemy_HellCaina::RecognizeCollisionCheck(float _DeltaTime)
+{
+	if (true == IsRecognize || false == RN_MonsterCollision->IsUpdate())
+	{
+		return;
+	}
+
+	std::shared_ptr<GameEngineCollision> Collision = RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D);
+	if (nullptr == Collision) { return; }
+
+	PlayerContactCheck(_DeltaTime, Collision.get());
+	IsRecognize = true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////     FSM     ///////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Enemy_HellCaina::ChangeState(int _StateValue)
 {
@@ -379,86 +459,6 @@ void Enemy_HellCaina::ChangeState_Client(int _StateValue)
 	EnemyFSMValue = _StateValue;
 	NetworkManager::SendFsmChangePacket(this, _StateValue, Player);
 }
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////   Actor Init   ///////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void Enemy_HellCaina::EnemyMeshLoad()
-{
-	if (nullptr == GameEngineFBXMesh::Find("em0000.FBX"))
-	{
-		std::string Path = GameEnginePath::GetFileFullPath
-		(
-			"ContentResources",
-			{
-				"Character", "Enemy", "HellCaina", "mesh"
-			},
-			"em0000.FBX"
-		);
-		GameEngineFBXMesh::Load(Path);
-	}
-
-	switch (GameEngineOption::GetOption("Shader"))
-	{
-	case GameEngineOptionValue::Low:
-	{
-		EnemyRenderer->SetFBXMesh("em0000.fbx", "AniFBX_Low");
-	}
-	break;
-	case GameEngineOptionValue::High:
-	{
-		EnemyRenderer->SetFBXMesh("em0000.fbx", "AniFBX");
-	}
-	break;
-	default:
-		break;
-	}
-
-	EnemyRenderer->GetTransform()->SetLocalScale({ 0.8f , 0.8f , 0.8f });
-}
-
-void Enemy_HellCaina::EnemyTypeLoad()
-{
-	EnemyCodeValue = EnemyCode::HellCaina;
-	EnemyHP = 0;
-}
-
-void Enemy_HellCaina::EnemyAnimationLoad()
-{
-	//Animation정보 경로를 찾아서 모든animation파일 로드
-	GameEngineDirectory NewDir;
-	NewDir.MoveParentToDirectory("ContentResources");
-	NewDir.Move("ContentResources");
-	NewDir.Move("Character");
-	NewDir.Move("Enemy");
-	NewDir.Move("HellCaina");
-	NewDir.Move("Animation");
-
-	AnimationEvent::LoadAll
-	(
-		{
-			.Dir = NewDir.GetFullPath().c_str(),
-			.Renderer = EnemyRenderer,
-			.RendererLocalPos = { 0.0f, -45.0f, 0.0f },
-			.Objects = {(GameEngineObject*)MonsterAttackCollision.get()},
-			.CallBacks_void =
-			{
-			},
-			.CallBacks_int =
-			{
-				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
-			},
-			.CallBacks_float4 =
-			{
-			}
-		}
-	);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////     FSM     ///////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Enemy_HellCaina::EnemyCreateFSM()
 {
@@ -1005,7 +1005,6 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 정면 약공격 피격
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Front,
 	.Start = [=] {
-			AttackCalculation();
 	if (true == IsVergilLight)
 	{
 		SetPush(10000.0f);
@@ -1031,7 +1030,6 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 후면 약공격 피격 (뒤로돈다)
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Back,
 	.Start = [=] {
-			AttackCalculation();
 	if (true == IsVergilLight)
 	{
 		SetPush(10000.0f);
@@ -1061,7 +1059,6 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 좌측 약공격 피격
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Left,
 	.Start = [=] {
-			AttackCalculation();
 	if (true == IsVergilLight)
 	{
 		SetPush(10000.0f);
@@ -1091,7 +1088,6 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 우측 약공격 피격 
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Right,
 	.Start = [=] {
-			AttackCalculation();
 	if (true == IsVergilLight)
 	{
 		SetPush(10000.0f);
@@ -1123,11 +1119,11 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 강공격 맞고 날아감
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Blown_Back,
 	.Start = [=] {
-		AttackCalculation();
-		IsCollapse = false;
-		IsHeavyAttack = true;
-		RotationCheck();
-		PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
+	AttackCalculation();
+	IsCollapse = false;
+	IsHeavyAttack = true;
+	RotationCheck();
+	PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 	SetPush(50000.0f);
 	SetAir(42000.0f);
 	EnemyRenderer->ChangeAnimation("em0000_blown_back", true);

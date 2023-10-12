@@ -20,6 +20,82 @@ Enemy_Empusa::~Enemy_Empusa()
 {
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////   Actor Init   ///////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Enemy_Empusa::EnemyMeshLoad()
+{
+	if (nullptr == GameEngineFBXMesh::Find("em0100.FBX"))
+	{
+		std::string Path = GameEnginePath::GetFileFullPath
+		(
+			"ContentResources",
+			{
+				"Character", "Enemy", "Empusa", "mesh"
+			},
+			"em0100.FBX"
+		);
+		GameEngineFBXMesh::Load(Path);
+	}
+
+	switch (GameEngineOption::GetOption("Shader"))
+	{
+	case GameEngineOptionValue::Low:
+	{
+		EnemyRenderer->SetFBXMesh("em0100.fbx", "AniFBX_Low");
+	}
+	break;
+	case GameEngineOptionValue::High:
+	{
+		EnemyRenderer->SetFBXMesh("em0100.fbx", "AniFBX");
+	}
+	break;
+	default:
+		break;
+	}
+
+	EnemyRenderer->GetTransform()->SetLocalScale({ 0.8f , 0.8f , 0.8f });
+}
+
+void Enemy_Empusa::EnemyTypeLoad()
+{
+	EnemyCodeValue = EnemyCode::Empusa;
+	EnemyHP = 0;
+}
+
+void Enemy_Empusa::EnemyAnimationLoad()
+{
+	//Animation정보 경로를 찾아서 모든animation파일 로드
+	GameEngineDirectory NewDir;
+	NewDir.MoveParentToDirectory("ContentResources");
+	NewDir.Move("ContentResources");
+	NewDir.Move("Character");
+	NewDir.Move("Enemy");
+	NewDir.Move("Empusa");
+	NewDir.Move("Animation");
+
+	AnimationEvent::LoadAll
+	(
+		{
+			.Dir = NewDir.GetFullPath().c_str(),
+			.Renderer = EnemyRenderer,
+			.RendererLocalPos = { 0.0f, -50.0f, 0.0f },
+			.Objects = {(GameEngineObject*)MonsterAttackCollision.get()},
+			.CallBacks_void =
+			{
+			},
+			.CallBacks_int =
+			{
+				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
+			},
+			.CallBacks_float4 =
+			{
+			}
+		}
+	);
+}
+
 void Enemy_Empusa::Start()
 {
 	BaseEnemyActor::Start();
@@ -184,7 +260,17 @@ void Enemy_Empusa::RandomAttack()
 
 void Enemy_Empusa::AttackCalculation()
 {
+	AttackDirectCheck();
 
+	if (true == AnimationTurnStart)
+	{
+		AnimationTurnStart = false;
+		RotationCheck();
+		PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
+		EnemyHitDirValue = EnemyHitDirect::Forward;
+	}
+
+	PushDirectSetting();
 }
 
 void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
@@ -206,17 +292,6 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 
 	PlayerAttackCheck(AttackCol.get());
 	MonsterAttackCollision->Off();
-	AttackDirectCheck();
-
-	if (true == AnimationTurnStart)
-	{
-		AnimationTurnStart = false;
-		RotationCheck();
-		PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
-		EnemyHitDirValue = EnemyHitDirect::Forward;
-	}
-
-	PushDirectSetting();
 	DamageData Data = AttackCol->GetDamage();
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
@@ -250,6 +325,8 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 			return;
 		}
 
+		AttackCalculation();
+
 		switch (EnemyHitDirValue)
 		{
 		case EnemyHitDirect::Forward:
@@ -270,38 +347,18 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 		break;
 
 	case DamageType::Heavy:
-		IsCollapse = false;
-		IsHeavyAttack = true;
-		RotationCheck();
-		PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 		ChangeState(FSM_State_Empusa::Empusa_Blown_Back);
 		break;
 	case DamageType::Air:
-		IsCollapse = false;
-		IsAirAttack = true;
-		RotationCheck();
-		PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 		ChangeState(FSM_State_Empusa::Empusa_Air_Damage);
 		break;
 	case DamageType::Snatch:
-		IsCollapse = false;
-		IsAirAttack = true;
-		StartMonsterSnatch();
-		RotationCheck();
-		PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 		ChangeState(FSM_State_Empusa::Empusa_Snatch);
 		break;
 	case DamageType::Slam:
-		IsCollapse = false;
-		IsSlamAttack = true;
 		ChangeState(FSM_State_Empusa::Empusa_Slam_Damage);
 		break;
 	case DamageType::Buster:
-		IsCollapse = false;
-		IsBusterAttack = true;
-		BusterCalculation(float4{ 0.f, -45.f, 0.f });
-		RotationCheck();
-		PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 		ChangeState(FSM_State_Empusa::Empusa_Buster_Start);
 		break;
 	case DamageType::Stun:
@@ -318,7 +375,98 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 
 void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 {
+	AttackDelayCheck += _DeltaTime;
 
+	float FrameTime = (1.0f / 60.0f) * 5.0f;
+
+	if (FrameTime > AttackDelayCheck)
+	{
+		return;
+	}
+
+	std::shared_ptr<GameEngineCollision> Col = MonsterCollision->Collision(CollisionOrder::PlayerAttack);
+	if (nullptr == Col) { return; }
+
+	std::shared_ptr<AttackCollision> AttackCol = std::dynamic_pointer_cast<AttackCollision>(Col);
+	if (nullptr == AttackCol) { return; }
+
+	DamageData Data = AttackCol->GetDamage();
+
+	if (DamageType::VergilLight == Data.DamageTypeValue)
+	{
+		IsVergilLight = true;
+		Data.DamageTypeValue = DamageType::Light;
+	}
+
+	switch (Data.DamageTypeValue)
+	{
+	case DamageType::None:
+		return;
+		break;
+	case DamageType::Light:
+
+		if (true == IsBusterAttack)
+		{
+			return;
+		}
+
+		if (true == IsAirAttack || true == IsSlamAttack || true == IsHeavyAttack)
+		{
+			StartRenderShaking(8);
+			ChangeState_Client(FSM_State_Empusa::Empusa_Air_Damage_Under);
+			return;
+		}
+
+		if (true == IsCollapse)
+		{
+			StartRenderShaking(8);
+			return;
+		}
+
+		switch (EnemyHitDirValue)
+		{
+		case EnemyHitDirect::Forward:
+			ChangeState_Client(FSM_State_Empusa::Empusa_Standing_Damage_Weak_Front);
+			break;
+		case EnemyHitDirect::Back:
+			ChangeState_Client(FSM_State_Empusa::Empusa_Standing_Damage_Weak_Back);
+			break;
+		case EnemyHitDirect::Left:
+			ChangeState_Client(FSM_State_Empusa::Empusa_Standing_Damage_Weak_Left);
+			break;
+		case EnemyHitDirect::Right:
+			ChangeState_Client(FSM_State_Empusa::Empusa_Standing_Damage_Weak_Right);
+			break;
+		default:
+			break;
+		}
+		break;
+
+	case DamageType::Heavy:
+		ChangeState_Client(FSM_State_Empusa::Empusa_Blown_Back);
+		break;
+	case DamageType::Air:
+		ChangeState_Client(FSM_State_Empusa::Empusa_Air_Damage);
+		break;
+	case DamageType::Snatch:
+		ChangeState_Client(FSM_State_Empusa::Empusa_Snatch);
+		break;
+	case DamageType::Slam:
+		ChangeState_Client(FSM_State_Empusa::Empusa_Slam_Damage);
+		break;
+	case DamageType::Buster:
+		ChangeState_Client(FSM_State_Empusa::Empusa_Buster_Start);
+		break;
+	case DamageType::Stun:
+		StopTime(2.9f);
+		break;
+	default:
+		break;
+	}
+
+	HitStop(Data.DamageTypeValue);
+	IsVergilLight = false;
+	AttackDelayCheck = 0.0f;
 }
 
 void Enemy_Empusa::RecognizeCollisionCheck(float _DeltaTime)
@@ -335,6 +483,10 @@ void Enemy_Empusa::RecognizeCollisionCheck(float _DeltaTime)
 	IsRecognize = true;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////     FSM     ///////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void Enemy_Empusa::ChangeState(int _StateValue)
 {
 	EnemyFSM.ChangeState(_StateValue);
@@ -342,86 +494,12 @@ void Enemy_Empusa::ChangeState(int _StateValue)
 	NetworkManager::SendFsmChangePacket(this, _StateValue);
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////   Actor Init   ///////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void Enemy_Empusa::EnemyMeshLoad()
+void Enemy_Empusa::ChangeState_Client(int _StateValue)
 {
-	if (nullptr == GameEngineFBXMesh::Find("em0100.FBX"))
-	{
-		std::string Path = GameEnginePath::GetFileFullPath
-		(
-			"ContentResources",
-			{
-				"Character", "Enemy", "Empusa", "mesh"
-			},
-			"em0100.FBX"
-		);
-		GameEngineFBXMesh::Load(Path);
-	}
-
-	switch (GameEngineOption::GetOption("Shader"))
-	{
-	case GameEngineOptionValue::Low:
-	{
-		EnemyRenderer->SetFBXMesh("em0100.fbx", "AniFBX_Low");
-	}
-	break;
-	case GameEngineOptionValue::High:
-	{
-		EnemyRenderer->SetFBXMesh("em0100.fbx", "AniFBX");
-	}
-	break;
-	default:
-		break;
-	}
-
-	EnemyRenderer->GetTransform()->SetLocalScale({ 0.8f , 0.8f , 0.8f });
+	EnemyFSM.ChangeState(_StateValue);
+	EnemyFSMValue = _StateValue;
+	NetworkManager::SendFsmChangePacket(this, _StateValue, Player);
 }
-
-void Enemy_Empusa::EnemyTypeLoad()
-{
-	//EnemyCodeValue = EnemyCode::Empusa;
-
-	EnemyHP = 0;
-}
-
-void Enemy_Empusa::EnemyAnimationLoad()
-{
-	//Animation정보 경로를 찾아서 모든animation파일 로드
-	GameEngineDirectory NewDir;
-	NewDir.MoveParentToDirectory("ContentResources");
-	NewDir.Move("ContentResources");
-	NewDir.Move("Character");
-	NewDir.Move("Enemy");
-	NewDir.Move("Empusa");
-	NewDir.Move("Animation");
-
-	AnimationEvent::LoadAll
-	(
-		{
-			.Dir = NewDir.GetFullPath().c_str(),
-			.Renderer = EnemyRenderer,
-			.RendererLocalPos = { 0.0f, -50.0f, 0.0f },
-			.Objects = {(GameEngineObject*)MonsterAttackCollision.get()},
-			.CallBacks_void =
-			{
-			},
-			.CallBacks_int =
-			{
-				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
-			},
-			.CallBacks_float4 =
-			{
-			}
-		}
-	);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////     FSM     ///////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Enemy_Empusa::EnemyCreateFSM()
 {
@@ -1071,6 +1149,11 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 강공격 맞고 날아감
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Blown_Back,
 	.Start = [=] {
+	AttackCalculation();
+	IsCollapse = false;
+	IsHeavyAttack = true;
+	RotationCheck();
+	PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 	SetPush(50000.0f);
 	SetAir(42000.0f);
 	EnemyRenderer->ChangeAnimation("em0100_blown_back_start", true);
@@ -1091,6 +1174,11 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 띄우기 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Air_Damage,
 	.Start = [=] {
+	AttackCalculation();
+	IsCollapse = false;
+	IsAirAttack = true;
+	RotationCheck();
+	PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 	PhysXCapsule->SetAirState(110000.0f);
 	EnemyRenderer->ChangeAnimation("em0100_air_damage", true);
 	},
@@ -1183,6 +1271,9 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 슬램 피격 start
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Slam_Damage,
 	.Start = [=] {
+	AttackCalculation();
+	IsCollapse = false;
+	IsSlamAttack = true;
 	EnemyRenderer->ChangeAnimation("em0100_slam_damage_start");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1235,6 +1326,12 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 스내치 start
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Snatch,
 	.Start = [=] {
+	AttackCalculation();
+	IsCollapse = false;
+	IsAirAttack = true;
+	StartMonsterSnatch();
+	RotationCheck();
+	PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 	EnemyRenderer->ChangeAnimation("em0100_snatch_loop");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1392,6 +1489,12 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// em0100_Buster_Start, 버스트 히트 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Buster_Start,
 	.Start = [=] {
+	AttackCalculation();
+	IsCollapse = false;
+	IsBusterAttack = true;
+	BusterCalculation(float4{ 0.f, -45.f, 0.f });
+	RotationCheck();
+	PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 	EnemyRenderer->ChangeAnimation("em0100_air_damage_under");
 	},
 	.Update = [=](float _DeltaTime) {

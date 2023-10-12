@@ -98,7 +98,6 @@ public:
 	
 protected:
 	void Start() override;
-
 	void EnemyMeshLoad() override;
 	void EnemyTypeLoad() override;
 	void EnemyAnimationLoad() override;
@@ -113,6 +112,7 @@ private:
 	void PlayerAttack(float _DeltaTime);
 	void RandomAttack();
 	void ChangeState(int _StateValue);
+	void ChangeState_Client(int _StateValue);
 	void AttackCalculation();
 
 	float WaitTime = 0.0f;

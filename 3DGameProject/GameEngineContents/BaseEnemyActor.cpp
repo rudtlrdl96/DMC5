@@ -160,6 +160,11 @@ void BaseEnemyActor::PlayerContactCheck(float _DeltaTime, GameEngineCollision* _
 	GameEngineCollision* CheckCollision = _Collision;
 	BasePlayerActor* ContactPlayer = dynamic_cast<BasePlayerActor*>(CheckCollision->GetActor());
 
+	if (nullptr == ContactPlayer)
+	{
+		return;
+	}
+
 	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
 	{
 		Player = ContactPlayer;
@@ -195,6 +200,11 @@ void BaseEnemyActor::PlayerAttackCheck(GameEngineCollision* _Collision)
 {
 	GameEngineCollision* CheckCollision = _Collision;
 	BasePlayerActor* ContactPlayer = dynamic_cast<BasePlayerActor*>(CheckCollision->GetActor());
+
+	if (nullptr == ContactPlayer)
+	{
+		return;
+	}
 
 	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
 	{
