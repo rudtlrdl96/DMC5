@@ -19,7 +19,7 @@
 #include "JudgementCut.h"
 #include "Item_DevilBreaker.h"
 #include "FXAA_Effect.h"
-
+#include "Cavaliere_Electric.h"
 TestLevel* TestLevel::TestLevelPtr = nullptr;
 
 TestLevel::TestLevel()
@@ -59,7 +59,10 @@ void TestLevel::Update(float _DeltaTime)
 		IsMessage = true;
 		//MsgTextBox("CurrentLevel is TestLevel");
 	}
-
+	if (true == GameEngineInput::IsDown("SelectLevel_03"))
+	{
+		CreateActor<Cavaliere_Electric>()->LookTarget(Player);
+	}
 	if (true == GameEngineInput::IsDown("ReturnToMainLevel"))
 	{
 		GameEngineCore::ChangeLevel("MainLevel");
@@ -89,31 +92,34 @@ void TestLevel::LevelChangeStart()
 	IsDebugSwitch();
 	SetLevelSceneGravity(2000);
 
-	if (true)
+	if (nullptr == Player)
 	{
-		std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
-		Nero->GetPhysXComponent()->SetWorldPosition({ -1200, 100, -1300 });
-		Nero->SetUserControllType();
-		NetworkManager::LinkNetwork(Nero.get(), this);
+		if (false)
+		{
+			Player = CreateActor<PlayerActor_Nero>();
+			Player->GetPhysXComponent()->SetWorldPosition({ -1200, 100, -1300 });
+			Player->SetUserControllType();
+			NetworkManager::LinkNetwork(Player.get(), this);
 
-		std::shared_ptr<Item_DevilBreaker> Item_Overture = CreateActor<Item_DevilBreaker>();
-		Item_Overture->SetDevilBreaker(DevilBreaker::Overture);
-		Item_Overture->GetTransform()->SetLocalPosition({ -1000, 50, -1000 });
+			std::shared_ptr<Item_DevilBreaker> Item_Overture = CreateActor<Item_DevilBreaker>();
+			Item_Overture->SetDevilBreaker(DevilBreaker::Overture);
+			Item_Overture->GetTransform()->SetLocalPosition({ -1000, 50, -1000 });
 
-		std::shared_ptr<Item_DevilBreaker> Item_Gerbera = CreateActor<Item_DevilBreaker>();
-		Item_Gerbera->SetDevilBreaker(DevilBreaker::Gerbera);
-		Item_Gerbera->GetTransform()->SetLocalPosition({ -1200, 50, -1000 });
+			std::shared_ptr<Item_DevilBreaker> Item_Gerbera = CreateActor<Item_DevilBreaker>();
+			Item_Gerbera->SetDevilBreaker(DevilBreaker::Gerbera);
+			Item_Gerbera->GetTransform()->SetLocalPosition({ -1200, 50, -1000 });
 
-		std::shared_ptr<Item_DevilBreaker> Item_Buster = CreateActor<Item_DevilBreaker>();
-		Item_Buster->SetDevilBreaker(DevilBreaker::BusterArm);
-		Item_Buster->GetTransform()->SetLocalPosition({ -800, 50, -1000 });
-	}
-	else
-	{
-		std::shared_ptr<PlayerActor_Vergil> Vergil = CreateActor<PlayerActor_Vergil>();
-		Vergil->GetPhysXComponent()->SetWorldPosition({ -1200, 100, -1300 });
-		Vergil->SetUserControllType();
-		NetworkManager::LinkNetwork(Vergil.get(), this);
+			std::shared_ptr<Item_DevilBreaker> Item_Buster = CreateActor<Item_DevilBreaker>();
+			Item_Buster->SetDevilBreaker(DevilBreaker::BusterArm);
+			Item_Buster->GetTransform()->SetLocalPosition({ -800, 50, -1000 });
+		}
+		else
+		{
+			Player = CreateActor<PlayerActor_Vergil>();
+			Player->GetPhysXComponent()->SetWorldPosition({ -1200, 100, -1300 });
+			Player->SetUserControllType();
+			NetworkManager::LinkNetwork(Player.get(), this);
+		}
 	}
 
 	//if (nullptr == TestObj)

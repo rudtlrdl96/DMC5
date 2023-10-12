@@ -32,7 +32,7 @@ public:
 	void TimeCheck(float _LiveTime)
 	{
 		if (Size == 0) { return; }
-		if (0.2f < _LiveTime - Times[Size - 1])
+		if (0.3f < _LiveTime - Times[Size - 1])
 		{
 			DeleteKey();
 		}

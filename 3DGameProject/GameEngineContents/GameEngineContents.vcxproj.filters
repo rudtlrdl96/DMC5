@@ -472,6 +472,9 @@
     <ClInclude Include="UIEffectRenderer.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="Cavaliere_Electric.h">
+      <Filter>Actor\Enemy\BossEnemy\Stage11\Weapon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -936,6 +939,9 @@
     <ClCompile Include="UIEffectRenderer.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Cavaliere_Electric.cpp">
+      <Filter>Actor\Enemy\BossEnemy\Stage11\Weapon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
@@ -1219,6 +1225,9 @@
     </Filter>
     <Filter Include="Actor\Item">
       <UniqueIdentifier>{f9ad0c49-b904-471b-86a4-a7aae7ee8146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy\BossEnemy\Stage11\Weapon">
+      <UniqueIdentifier>{9347a9db-38fa-4b74-81ae-3ceaba348b69}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
