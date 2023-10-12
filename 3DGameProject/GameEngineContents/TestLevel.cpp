@@ -61,7 +61,7 @@ void TestLevel::Update(float _DeltaTime)
 	}
 	if (true == GameEngineInput::IsDown("SelectLevel_03"))
 	{
-		CreateActor<Cavaliere_Electric>()->LookTarget(Player);
+		Electric->Shoot(Player);
 	}
 	if (true == GameEngineInput::IsDown("ReturnToMainLevel"))
 	{
@@ -121,7 +121,10 @@ void TestLevel::LevelChangeStart()
 			NetworkManager::LinkNetwork(Player.get(), this);
 		}
 	}
-
+	if (nullptr == Electric)
+	{
+		Electric = CreateActor<Cavaliere_Electric>();
+	}
 	//if (nullptr == TestObj)
 	//{
 	//	TestObj = CreateActor<TestObject>();

@@ -12,6 +12,7 @@ Cavaliere_Electric::~Cavaliere_Electric()
 
 void Cavaliere_Electric::LookTarget(const float4& _Target)
 {
+	GetTransform()->SetWorldRotation(float4::ZERO);
 	// y 축 회전
 	float4 LocalForward = GetTransform()->GetWorldForwardVector();
 	LocalForward.y = 0;
@@ -37,7 +38,7 @@ void Cavaliere_Electric::LookTarget(const float4& _Target)
 	// x 축 회전
 	LocalForward = GetTransform()->GetWorldForwardVector();
 	LocalForward.Normalize();
-	LookDir = _Target + float4::UP * 100 - GetTransform()->GetWorldPosition();
+	LookDir = _Target + float4::UP * 50 - GetTransform()->GetWorldPosition();
 	LookDir.Normalize();
 
 	Dot = float4::DotProduct3D(LocalForward, LookDir);
@@ -61,6 +62,24 @@ void Cavaliere_Electric::LookTarget(const float4& _Target)
 
 }
 
+void Cavaliere_Electric::Shoot()
+{
+	GetTransform()->SetLocalPosition(float4::ZERO);
+	ResetLiveTime();
+	On();
+	Col->On();
+	IsShoot = true;
+
+	Effect->PlayFX("Cavalier_Electric_1.effect");
+
+	TimeEvent.AddEvent(0.17f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+	{
+		Effect->PlayFX("Cavalier_Electric_2.effect");
+		Effect->Loop = true;
+	});
+
+}
+
 void Cavaliere_Electric::Start()
 {
 	Effect = CreateComponent<FXSystem>();
@@ -77,18 +96,13 @@ void Cavaliere_Electric::Start()
 	Effect->CreateFX(FXData::Find("Cavalier_Electric_1.effect"));
 	Effect->CreateFX(FXData::Find("Cavalier_Electric_2.effect"));
 	Effect->CreateFX(FXData::Find("Cavalier_Electric_3.effect"));
-
-	Effect->PlayFX("Cavalier_Electric_1.effect");
-
-	TimeEvent.AddEvent(0.17f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-	{
-		Effect->PlayFX("Cavalier_Electric_2.effect");
-		Effect->Loop = true;
-	});
+	Effect->GetTransform()->SetLocalPosition({ 0, 0, 100 });
+	Effect->GetTransform()->SetLocalScale({ 0.5f, 0.5f, 0.5f });
 
 	Col = CreateComponent<AttackCollision>(CollisionOrder::EnemyAttack);
 	Col->GetTransform()->SetLocalScale({ 100, 100, 100 });
 	Col->SetAttackData(DamageType::Light, 100, [=] {
+		IsShoot = false;
 		Col->Off();
 		TimeEvent.ClearEvent();
 		Effect->PlayFX("Cavalier_Electric_3.effect");
@@ -98,11 +112,20 @@ void Cavaliere_Electric::Start()
 				Off();
 			});
 	});
+
+	Off();
 }
 
 void Cavaliere_Electric::Update(float _DeltaTime)
 {
+	if (3.0f < GetLiveTime())
+	{
+		Off();
+	}
 	TimeEvent.Update(_DeltaTime);
-	GetTransform()->AddLocalPosition(GetTransform()->GetLocalForwardVector() * Speed * _DeltaTime);
+	if (true == IsShoot)
+	{
+		GetTransform()->AddLocalPosition(GetTransform()->GetLocalForwardVector() * Speed * _DeltaTime);
+	}
 }
 
