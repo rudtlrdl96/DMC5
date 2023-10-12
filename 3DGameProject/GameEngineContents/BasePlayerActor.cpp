@@ -152,6 +152,11 @@ void BasePlayerActor::SetInvincibility(float _Time)
 	InvincibilityTime = _Time;
 }
 
+void BasePlayerActor::SetBossCam(GameEngineTransform* _BossCam)
+{
+	Camera->SetBossCam(_BossCam);
+}
+
 void BasePlayerActor::Start()
 {
 	// PhysX ÄÝ¸®Àü
