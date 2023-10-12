@@ -45,7 +45,7 @@ void BaseEnemyActor::Start()
 	EnemyMeshLoad();
 	EnemyTypeLoad();
 	EnemyAnimationLoad();
-
+	
 	if (NetControllType::ActiveControll != GetControllType())
 	{
 		EnemyCreateFSM_Client();
@@ -56,12 +56,8 @@ void BaseEnemyActor::Start()
 	}
 
 	PlayerCheckInit();
-	
-	SetFsmPacketCallBack(std::bind(&BaseEnemyActor::SetFSMStateValue, this, std::placeholders::_1));
+	SetFsmPacketCallBack(std::bind(&BaseEnemyActor::SetFSMStateValue, this, std::placeholders::_1));2
 }
-
-bool Disable = false;
-int TestCount = 0;
 
 void BaseEnemyActor::Update(float _DeltaTime)
 {
@@ -76,24 +72,6 @@ void BaseEnemyActor::Update(float _DeltaTime)
 	{
 		PhysXCapsule->On();
 	}
-	if (true == GameEngineInput::IsDown("MonsterTest"))
-	{
-		Disable = !Disable;
-		TestCount = 1;
-	}
-
-	if (1 == TestCount)
-	{
-		TestCount = 0;
-		if (true == Disable)
-		{
-			PhysXCapsule->Off();
-		}
-		else
-		{
-			PhysXCapsule->On();
-		}
-	}
 
 	AppearDelayTime += _DeltaTime;
 
@@ -102,31 +80,20 @@ void BaseEnemyActor::Update(float _DeltaTime)
 		return;
 	}
 
-	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
+	if (NetControllType::ActiveControll != GetControllType())
+	{
+		Update_NetworkTrans(_DeltaTime);
+		DamageCollisionCheck_Client(_DeltaTime);
+		EnemyFSM.Update(_DeltaTime);
+		MonsterAttackCollision->Off();
+	}
+	else
 	{
 		RenderShake(_DeltaTime);
 		MonsterSnatch(_DeltaTime);
 		RecognizeCollisionCheck(_DeltaTime);
 		DamageCollisionCheck(_DeltaTime);
 		EnemyFSM.Update(_DeltaTime);
-	}
-	else
-	{
-		if (NetControllType::ActiveControll == GetControllType())
-		{
-			RenderShake(_DeltaTime);
-			MonsterSnatch(_DeltaTime);
-			RecognizeCollisionCheck(_DeltaTime);
-			DamageCollisionCheck(_DeltaTime);
-			EnemyFSM.Update(_DeltaTime);
-		}
-		else if (NetControllType::ActiveControll != GetControllType())
-		{
-			Update_NetworkTrans(_DeltaTime);
-			DamageCollisionCheck_Client(_DeltaTime);
-			EnemyFSM.Update(_DeltaTime);
-			MonsterAttackCollision->Off();
-		}
 	}
 }
 
