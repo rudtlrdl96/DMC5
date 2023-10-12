@@ -16,6 +16,7 @@
 #include "MainMenuLevel.h"
 #include "ShopLevel.h"
 #include "PlayUITestLevel.h"
+
 //Map
 #include "TestStageLevel.h"
 #include "StageEditLevel.h"
@@ -23,6 +24,7 @@
 
 #include "AnimationToolLevel.h"
 #include "EffectToolLevel.h"
+#include "DynamicResourcesLoadTest.h"
 
 
 std::vector<std::function<void()>> ContentsCore::GameEndCallBacks;
@@ -55,8 +57,9 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<NetworkTestLevel>();
 	GameEngineCore::CreateLevel<PlayUITestLevel>();
 	GameEngineCore::CreateLevel<ThreadLoadingLevel>();
+	//GameEngineCore::CreateLevel<DynamicResourcesLoadTest>();
 	////
-	GameEngineCore::CreateLevel<StageEditLevel>();
+	//GameEngineCore::CreateLevel<StageEditLevel>();
 	GameEngineCore::CreateLevel<ShopLevel>();
 	GameEngineCore::CreateLevel<EffectToolLevel>();
 	

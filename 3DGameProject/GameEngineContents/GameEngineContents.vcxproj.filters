@@ -423,7 +423,6 @@
     <ClInclude Include="WallLight_Off.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClInclude>
-    <ClInclude Include="NeroLoading.h" />
     <ClInclude Include="BossHpBar.h">
       <Filter>UI\UI_Actor\PlayUI\BossHpBar</Filter>
     </ClInclude>
@@ -474,6 +473,15 @@
     </ClInclude>
     <ClInclude Include="Cavaliere_Electric.h">
       <Filter>Actor\Enemy\BossEnemy\Stage11\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicResourcesLoadTest.h">
+      <Filter>Levels\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="AutoResourceLoader.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="NeroLoading.h">
+      <Filter>UI\UI_Actor\LodingUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -887,7 +895,6 @@
     <ClCompile Include="WallLight_Off.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClCompile>
-    <ClCompile Include="NeroLoading.cpp" />
     <ClCompile Include="BossHpBar.cpp">
       <Filter>UI\UI_Actor\PlayUI\BossHpBar</Filter>
     </ClCompile>
@@ -941,6 +948,15 @@
     </ClCompile>
     <ClCompile Include="Cavaliere_Electric.cpp">
       <Filter>Actor\Enemy\BossEnemy\Stage11\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicResourcesLoadTest.cpp">
+      <Filter>Levels\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoResourceLoader.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="NeroLoading.cpp">
+      <Filter>UI\UI_Actor\LodingUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -17,7 +17,7 @@ void GameEngineFBXAnimation::Release()
 	IsInit = false;
 }
 
-std::shared_ptr<GameEngineFBXAnimation> GameEngineFBXAnimation::Load(const std::string& _Path, const std::string& _Name)
+std::shared_ptr<GameEngineFBXAnimation> GameEngineFBXAnimation::Load(const std::string_view& _Path, const std::string_view& _Name)
 {
 	std::shared_ptr<GameEngineFBXAnimation> NewRes = Create(_Name);
 	NewRes->SetPath(_Path);
@@ -55,7 +55,7 @@ void GameEngineFBXAnimation::Initialize()
 	IsInit = true;
 }
 
-void GameEngineFBXAnimation::LoadMesh(const std::string& _Path, const std::string& _Name)
+void GameEngineFBXAnimation::LoadMesh(const std::string_view& _Path, const std::string_view& _Name)
 {
 	SetPath(_Path);
 

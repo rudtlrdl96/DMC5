@@ -104,14 +104,11 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     float3 SpacularRatio = (float3) 0.0f;
     float3 AmbientRatio = (float3) 0.0f;
     
-    for (int i = 0; i < LightCount; ++i)
-    {
-        ResultLight CalLightData = CalLight(i, _Input.VIEWPOSITION, _Input.NORMAL, metallic);
+    ResultLight CalLightData = CalLight(0, _Input.VIEWPOSITION, _Input.NORMAL, metallic);
         
-        DiffuseRatio += CalLightData.CurLightDiffuseRatio;
-        SpacularRatio += CalLightData.CurLightSpacularRatio;
-        AmbientRatio += CalLightData.CurLightAmbientRatio;
-    }
+    DiffuseRatio += CalLightData.CurLightDiffuseRatio;
+    SpacularRatio += CalLightData.CurLightSpacularRatio;
+    AmbientRatio += CalLightData.CurLightAmbientRatio;
     
     Result.ResultColor.rgb = Result.ResultColor.rgb * (DiffuseRatio + SpacularRatio + AmbientRatio);
     Result.ResultColor.a = AtosData.r;

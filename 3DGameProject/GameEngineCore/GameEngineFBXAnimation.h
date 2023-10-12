@@ -161,12 +161,17 @@ public:
 	GameEngineFBXAnimation& operator=(const GameEngineFBXAnimation& _Other) = delete;
 	GameEngineFBXAnimation& operator=(GameEngineFBXAnimation&& _Other) noexcept = delete;
 
-	static std::shared_ptr<GameEngineFBXAnimation> Load(const std::string& _Path)
+	static std::shared_ptr<GameEngineFBXAnimation> Load(const std::string_view& _Path)
 	{
 		return Load(_Path, GameEnginePath::GetFileName(_Path));
 	}
 
-	static std::shared_ptr<GameEngineFBXAnimation> Load(const std::string& _Path, const std::string& _Name);
+	static std::shared_ptr<GameEngineFBXAnimation> Load(const std::string_view& _Path, const std::string_view& _Name);
+
+	static void UnLoad(const std::string_view& _Name)
+	{
+		GameEngineResource::Remove(_Name);		
+	}
 
 	void AnimationMatrixLoad(std::shared_ptr <GameEngineFBXMesh> _Mesh, const std::string_view& _Name, int _AnimationIndex);
 
@@ -183,7 +188,7 @@ public:
 	void Initialize();
 
 protected:
-	void LoadMesh(const std::string& _Path, const std::string& _Name);
+	void LoadMesh(const std::string_view& _Path, const std::string_view& _Name);
 
 	// 애니메이션은 노드의 어트리뷰트가 다 eMesh인 녀석에게 들어있으므로 그녀석에게서 애니메이션 로드 함수를 실행시키는 역할을 한다.
 	void ProcessAnimationLoad(std::shared_ptr <GameEngineFBXMesh> _Mesh, fbxsdk::FbxNode* pNode, int _index);
