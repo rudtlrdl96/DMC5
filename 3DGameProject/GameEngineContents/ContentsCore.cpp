@@ -44,6 +44,7 @@ void ContentsCore::GameStart()
 	SetOption();
 	ContentsResourcesCreate();
 	CreateContentsKey();
+	EffectTextureLoad();
 
 	GameEngineCore::CreateLevel<MainLevel>();
 	GameEngineCore::CreateLevel<TestLevel>();
