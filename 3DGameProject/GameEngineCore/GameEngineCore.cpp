@@ -211,6 +211,7 @@ void GameEngineCore::EngineUpdate()
 	}
 
 	MainLevel->ActorRelease();
+	MainLevel->LightRelease();
 }
 
 void GameEngineCore::EngineEnd(std::function<void()> _ContentsEnd)

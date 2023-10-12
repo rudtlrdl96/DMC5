@@ -169,13 +169,13 @@ private:
 
 	LightDatas LightDataObject;
 
+	std::map<int, std::list<std::shared_ptr<GameEngineActor>>> Actors;
+	std::map<int, std::list<std::shared_ptr<GameEngineCollision>>> Collisions;
+
 	void PushLight(std::shared_ptr<GameEngineLight> _Light);
+	void LightRelease();
 
 	void PushCameraRenderer(std::shared_ptr<GameEngineRenderer> _Renderer, int _CameraOrder);
-
-	std::map<int, std::list<std::shared_ptr<GameEngineActor>>> Actors;
-
-	std::map<int, std::list<std::shared_ptr<GameEngineCollision>>> Collisions;
 
 	void PushCollision(std::shared_ptr<GameEngineCollision> _Collision);
 
@@ -183,6 +183,7 @@ private:
 
 	void ActorUpdate(float _DeltaTime);
 	void ActorRelease();
+
 
 	void ActorLevelChangeStart();
 	void ActorLevelChangeEnd();

@@ -65,6 +65,8 @@ void TestStageLevel::Start()
 
 }
 
+std::shared_ptr<GameEngineLight> PointLight = nullptr;
+
 void TestStageLevel::Update(float _DeltaTime)
 {
 	StageBaseLevel::Update(_DeltaTime);
@@ -72,6 +74,12 @@ void TestStageLevel::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsDown("BakeTestKey"))
 	{
 		GetDirectionalLight()->BakeShadow(GetMainCamera());
+
+		if (nullptr != PointLight)
+		{
+			PointLight->Death();
+			PointLight = nullptr;
+		}
 	}
 }
 
@@ -135,10 +143,10 @@ void TestStageLevel::LevelChangeStart()
 	GetDirectionalLight()->GetTransform()->SetWorldRotation(float4(45, 0, 0));
 	//GetDirectionalLight()->SetLightColor(float4(0.4f, 0.4f, 0.4f));
 
-	std::shared_ptr<GameEngineLight> SpotLight = CreateSpotLight(float4(0, 400, 0), ShadowTextureScale::S_512, 2000, 90);
-	SpotLight->GetTransform()->SetLocalRotation(float4(90, 0, 0));
-	SpotLight->SetLightPower(3.0f);
-	SpotLight->DynamicShadowOn();
+	//std::shared_ptr<GameEngineLight> SpotLight = CreateSpotLight(float4(0, 400, 0), ShadowTextureScale::S_512, 2000, 90);
+	//SpotLight->GetTransform()->SetLocalRotation(float4(90, 0, 0));
+	//SpotLight->SetLightPower(3.0f);
+	//SpotLight->DynamicShadowOn();
 
 	if (nullptr == GameEngineTexture::Find("DistortionSample_00.jpg"))
 	{
@@ -185,7 +193,7 @@ void TestStageLevel::LevelChangeStart()
 
 	//CreateActor<ShaderTestActor>()->GetTransform()->SetLocalPosition(float4(0, 200, 0));
 
-	std::shared_ptr<GameEngineLight> PointLight = CreatePointLight(float4(0, 400, 0), ShadowTextureScale::S_512, 1024);
+	PointLight = CreatePointLight(float4(0, 400, 0), ShadowTextureScale::S_512, 1024);
 	PointLight->DynamicShadowOn();
 
 	GameEngineCoreWindow::Clear();
