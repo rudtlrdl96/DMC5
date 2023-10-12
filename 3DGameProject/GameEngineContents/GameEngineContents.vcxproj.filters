@@ -469,6 +469,9 @@
     <ClInclude Include="RedSeal.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClInclude>
+    <ClInclude Include="UIEffectRenderer.h">
+      <Filter>Component\Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -929,6 +932,9 @@
     </ClCompile>
     <ClCompile Include="RedSeal.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClCompile>
+    <ClCompile Include="UIEffectRenderer.cpp">
+      <Filter>Component\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
