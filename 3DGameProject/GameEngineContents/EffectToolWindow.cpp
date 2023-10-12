@@ -40,7 +40,7 @@ void EffectToolWindow::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _Delt
 void EffectToolWindow::CharacterSetting(std::shared_ptr<GameEngineLevel> Level)
 {
 	// 캐릭터 매쉬, 애니메이션을 로드하여 적용합니다
-	if (ImGui::Button("Open Mesh FBX"))
+	if (ImGui::Button("Open Mesh AnimFBX"))
 	{
 		OPENFILENAME OFN;
 		TCHAR lpstrFile[200] = L"";
@@ -81,41 +81,40 @@ void EffectToolWindow::CharacterSetting(std::shared_ptr<GameEngineLevel> Level)
 		}
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Vergil Mesh FBX"))
+	// 캐릭터 매쉬, 애니메이션을 로드하여 적용합니다
+	if (ImGui::Button("Open Mesh FBX"))
 	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("ContentResources");
-		NewDir.Move("ContentResources");
-		NewDir.Move("Character");
-		NewDir.Move("Player");
-		NewDir.Move("Vergil");
-		NewDir.Move("Mesh");
-		if (nullptr == GameEngineFBXMesh::Find("Vergil.FBX"))
-		{
-			GameEngineFBXMesh::Load(NewDir.GetPlusFileName("Vergil.fbx").GetFullPath());
-			GameEngineTexture::Load(NewDir.GetPlusFileName("pl0300_03_atos.texout.png").GetFullPath());
-		}
+		OPENFILENAME OFN;
+		TCHAR lpstrFile[200] = L"";
+		static TCHAR filter[] = L".fbx 메쉬 파일\0*.fbx";
 
-		if (nullptr == Actor)
-		{
-			Actor = Level->CreateActor<GameEngineActor>();
-			FXSys = Actor->CreateComponent<FXSystem>();
-		}
-		if (nullptr != CharacterRender)
-		{
-			CharacterRender->Death();
-		}
-		CharacterRender = Actor->CreateComponent<GameEngineFBXRenderer>();
-		CharacterRender->SetFBXMesh("Vergil.FBX", "AniFBX");
-		CharacterRender->GetTransform()->SetLocalPosition({ 0, -75, 0 });
+		memset(&OFN, 0, sizeof(OPENFILENAME));
+		OFN.lStructSize = sizeof(OPENFILENAME);
+		OFN.hwndOwner = GameEngineWindow::GetHWnd();
+		OFN.lpstrFilter = filter;
+		OFN.lpstrFile = lpstrFile;
+		OFN.nMaxFile = 200;
+		OFN.lpstrInitialDir = L".";
 
-		for (int i = 9; i <= 21; i++)
-		{
-			CharacterRender->GetAllRenderUnit()[0][i]->On();
-		}
-		for (int i = 2; i <= 4; i++)
-		{
-			CharacterRender->GetAllRenderUnit()[0][i]->Off();
+		if (GetOpenFileName(&OFN) != 0) {
+			GameEnginePath Path = GameEngineString::UniCodeToAnsi(OFN.lpstrFile);
+			std::string FileName = Path.GetFileName();
+			if (nullptr == GameEngineFBXMesh::Find(FileName))
+			{
+				GameEngineFBXMesh::Load(Path.GetFullPath());
+			}
+
+			if (nullptr == Actor)
+			{
+				Actor = Level->CreateActor<GameEngineActor>();
+				FXSys = Actor->CreateComponent<FXSystem>();
+			}
+			if (nullptr != CharacterRender)
+			{
+				CharacterRender->Death();
+			}
+			CharacterRender = Actor->CreateComponent<GameEngineFBXRenderer>();
+			CharacterRender->SetFBXMesh(FileName, "FBX");
 		}
 	}
 	ImGui::SameLine();
