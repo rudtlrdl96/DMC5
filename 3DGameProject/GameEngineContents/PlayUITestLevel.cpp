@@ -38,23 +38,6 @@ void PlayUITestLevel::LevelChangeStart()
 	Distortion->SetMaskTexture(GetCamera(0)->GetCamAlphaTarget(), 1);
 	Distortion->SetDistortionValue(8, 4.5);
 	{
-		GameEngineDirectory NewMeshDir;
-		NewMeshDir.MoveParentToDirectory("ContentResources");
-		NewMeshDir.Move("ContentResources");
-		NewMeshDir.Move("Mesh");
-		NewMeshDir.Move("UIMesh");
-		NewMeshDir.Move("RankMesh");
-
-		if (nullptr == GameEngineFBXMesh::Find("RankAFrame.FBX"))
-		{
-			std::vector<GameEngineFile> Files = NewMeshDir.GetAllFile({ ".fbx" });
-			for (GameEngineFile File : Files)
-			{
-				GameEngineFBXMesh::Load(File.GetFullPath());
-			}
-		}
-	}
-	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
 		NewDir.Move("ContentResources");
