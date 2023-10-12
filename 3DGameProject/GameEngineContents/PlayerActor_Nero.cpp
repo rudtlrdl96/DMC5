@@ -62,8 +62,6 @@ void PlayerActor_Nero::PlayerLoad()
 	GetLevel()->CreateActor <RankUI>();
 	// Effect 持失
 	{
-		EffectSystem = CreateComponent<FXSystem>();
-
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
 		NewDir.Move("ContentResources");
@@ -147,7 +145,6 @@ void PlayerActor_Nero::PlayerLoad()
 		NewDir.MoveParent();
 		NewDir.Move("Animation");
 
-		Renderer = CreateComponent<GameEngineFBXRenderer>();
 		Renderer->GetTransform()->SetLocalRotation({ 0, 0, 0 });
 		Renderer->GetTransform()->SetLocalPosition({ 0, -75, 0 });
 
@@ -3269,8 +3266,6 @@ void PlayerActor_Nero::NetLoad()
 {
 	// Effect 持失
 	{
-		EffectSystem = CreateComponent<FXSystem>();
-
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
 		NewDir.Move("ContentResources");
@@ -3354,7 +3349,6 @@ void PlayerActor_Nero::NetLoad()
 		NewDir.MoveParent();
 		NewDir.Move("Animation");
 
-		Renderer = CreateComponent<GameEngineFBXRenderer>();
 		Renderer->GetTransform()->SetLocalRotation({ 0, 0, 0 });
 		Renderer->GetTransform()->SetLocalPosition({ 0, -75, 0 });
 

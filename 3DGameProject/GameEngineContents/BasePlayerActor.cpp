@@ -181,6 +181,9 @@ void BasePlayerActor::Start()
 	});
 
 	SetFsmPacketCallBack(std::bind(&BasePlayerActor::SetFSMStateValue, this, std::placeholders::_1));
+
+	Renderer = CreateComponent<GameEngineFBXRenderer>();
+	EffectSystem = CreateComponent<FXSystem>();
 }
 
 void BasePlayerActor::NetControllLoad()
