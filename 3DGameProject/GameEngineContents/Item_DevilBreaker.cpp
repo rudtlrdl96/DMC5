@@ -66,13 +66,34 @@ void Item_DevilBreaker::Start()
 		}
 	}
 
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Texture");
+		NewDir.Move("UI");
+		NewDir.Move("MainMenuTexture");
+		NewDir.Move("PlayLevelTexture");
+
+		if (nullptr == GameEngineTexture::Find("ItemExPlane_OverTure.png"))
+		{
+			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".fbx" });
+			for (GameEngineFile File : Files)
+			{
+				GameEngineTexture::Load(File.GetFullPath());
+			}
+		}
+	}
+
 	ArmRenderer = CreateComponent<GameEngineFBXRenderer>();
+	ArmRenderer->GetTransform()->SetLocalScale({ 1.5f, 1.5f, 1.5f});
 	IconRenderer = CreateComponent<EffectRenderer>();
-	IconRenderer->GetTransform()->SetLocalPosition({ 0, 256 });
-	IconRenderer->GetTransform()->SetWorldScale({ 268, 268, 268 });
+	IconRenderer->GetTransform()->SetLocalPosition({ 75, 275 });
+	IconRenderer->GetTransform()->SetLocalScale({ 200, 200, 200 });
 	IconRenderer->GetTransform()->SetWorldRotation(float4::ZERO);
 
 	Col = CreateComponent<GameEngineCollision>(CollisionOrder::DevilBreaker);
+	Col->GetTransform()->SetLocalPosition({ 75, 0, 0 });
 	Col->GetTransform()->SetLocalScale({ 150, 150, 150 });
 }
 

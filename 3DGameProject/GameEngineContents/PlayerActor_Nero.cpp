@@ -5332,6 +5332,7 @@ void PlayerActor_Nero::OnDevilBraeker()
 	switch (CurDevilBreaker)
 	{
 	case DevilBreaker::None:
+		OffDevilBraeker();
 		break;
 	case DevilBreaker::Overture:
 		SetOverture();
