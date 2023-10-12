@@ -20,6 +20,8 @@ Enemy_HellCaina::~Enemy_HellCaina()
 {
 }
 
+#include "NetworkGUI.h"
+
 void Enemy_HellCaina::Start()
 {
 	BaseEnemyActor::Start();
@@ -59,6 +61,7 @@ void Enemy_HellCaina::Start()
 	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker)
 	{
 		//TODO
+		NetworkGUI::GetInst()->PrintLog("HellCaina Hited", float4::WHITE);
 	});
 }
 
@@ -152,6 +155,12 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 		return;
 	}
 
+	NetControllType Type = GetControllType();
+	if (NetControllType::PassiveControll == Type && (false == MonsterCollision->IsUpdate()))
+	{
+		MonsterCollision->On();
+	}
+
 	std::shared_ptr<GameEngineCollision> Col = MonsterCollision->Collision(CollisionOrder::PlayerAttack);
 	if (nullptr == Col) { return; }
 
@@ -160,6 +169,22 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 
 	PlayerAttackCheck(AttackCol.get());
 	MonsterAttackCollision->Off();
+
+	if (NetControllType::PassiveControll == GetControllType())
+	{
+		NetworkManager::SendFsmChangePacket(this, FSM_State_HellCaina::HellCaina_Blown_Back, Player);
+		return;
+	}
+
+
+
+
+
+
+
+
+
+
 	AttackDirectCheck();
 
 	if (true == AnimationTurnStart)
