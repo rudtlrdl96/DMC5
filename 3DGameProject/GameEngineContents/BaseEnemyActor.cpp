@@ -56,7 +56,7 @@ void BaseEnemyActor::Start()
 	}
 
 	PlayerCheckInit();
-	SetFsmPacketCallBack(std::bind(&BaseEnemyActor::SetFSMStateValue, this, std::placeholders::_1));2
+	SetFsmPacketCallBack(std::bind(&BaseEnemyActor::SetFSMStateValue, this, std::placeholders::_1));
 }
 
 void BaseEnemyActor::Update(float _DeltaTime)
