@@ -14,6 +14,8 @@ public:
 	FXSystem& operator=(const FXSystem & _Other) = delete;
 	FXSystem& operator=(FXSystem && _Other) noexcept = delete;
 
+	static void EffectTextureLoad();
+
 	void SetFX(std::shared_ptr<class FXData> _FX);
 	void SetFX(const std::string_view& _Name);
 

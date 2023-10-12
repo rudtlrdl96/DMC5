@@ -18,6 +18,7 @@ public:
 	static void GameEnd();
 	static void ContentsResourcesCreate();
 	static void CreateContentsKey();
+	static void EffectTextureLoad();
 	static void SetOption();
 
 	//ContentsCore::GameEnd() 에서 수행될 콜백을 추가합니다

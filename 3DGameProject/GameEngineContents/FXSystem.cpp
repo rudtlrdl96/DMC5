@@ -11,6 +11,62 @@ FXSystem::~FXSystem()
 {
 }
 
+void FXSystem::EffectTextureLoad()
+{
+	GameEngineDirectory NewDir;
+	NewDir.MoveParentToDirectory("ContentResources");
+	NewDir.Move("ContentResources");
+	NewDir.Move("Effect");
+	NewDir.Move("Mesh");
+	if (nullptr == GameEngineFBXMesh::Find("Effect_Mesh_01.FBX"))
+	{
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".fbx" });
+		for (GameEngineFile File : Files)
+		{
+			GameEngineFBXMesh::Load(File.GetFullPath());
+		}
+	}
+	NewDir.MoveParent();
+	NewDir.Move("Texture");
+	if (nullptr == GameEngineTexture::Find("Effect_Texture_01.tga"))
+	{
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".tga" });
+		for (GameEngineFile File : Files)
+		{
+			GameEngineTexture::Load(File.GetFullPath());
+		}
+	}
+
+	// ¿Ã∆Â∆Æ Sprite ∑ŒµÂ
+	if (nullptr == GameEngineSprite::Find("Effect_Impact.tga"))
+	{
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Impact.tga").GetFullPath(), 8, 8);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Impact_01.tga").GetFullPath(), 8, 4);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Muzzle_03.tga").GetFullPath(), 2, 1);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Spark_02.tga").GetFullPath(), 8, 8);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Magic_01.tga").GetFullPath(), 8, 8);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_01.tga").GetFullPath(), 8, 4);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_02.tga").GetFullPath(), 8, 4);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_03.tga").GetFullPath(), 8, 4);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_04.tga").GetFullPath(), 8, 8);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_05.tga").GetFullPath(), 8, 8);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Explosion_01.tga").GetFullPath(), 8, 8);
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Explosion_02.tga").GetFullPath(), 8, 8);
+	}
+	if (nullptr == GameEngineTexture::Find("DistortionSample_00.jpg"))
+	{
+		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+			{
+				"Texture", "DistortionTexture"
+			});
+
+		GameEngineTexture::Load(Path + "\\DistortionSample_00.jpg");
+		GameEngineTexture::Load(Path + "\\DistortionSample_01.jpg");
+		GameEngineTexture::Load(Path + "\\DistortionSample_02.jpg");
+	}
+
+}
+
 void FXSystem::SetFX(std::shared_ptr<FXData> _FX)
 {
 	if (nullptr == _FX)

@@ -52,12 +52,6 @@ void RankUI::Start()
 			GameEngineTexture::Load(File.GetFullPath());
 		}
 	}
-	if (nullptr == GameEngineSprite::Find("Effect_Impact.tga"))
-	{
-
-		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_03.tga").GetFullPath(), 8, 4);
-
-	}
 	NewDir.MoveParent();
 	NewDir.Move("EffectUI");
 	std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".effect" });

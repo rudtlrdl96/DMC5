@@ -17,7 +17,7 @@
 #include "NetworkGUI.h"
 #include "ConsoleGUI.h"
 #include "StageEditGUI.h"
-
+#include "FXSystem.h"
 void ContentsCore::ContentsResourcesCreate()
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -455,6 +455,11 @@ void ContentsCore::CreateContentsKey()
 		GameEngineInput::CreateKey("Hierarchy_Rotation", 'R');
 		GameEngineInput::CreateKey("Hierarchy_Scale", 'F');
 	}
+}
+
+void ContentsCore::EffectTextureLoad()
+{
+	FXSystem::EffectTextureLoad();
 }
 
 void ContentsCore::SetOption()
