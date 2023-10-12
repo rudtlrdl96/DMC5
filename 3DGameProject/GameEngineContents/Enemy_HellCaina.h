@@ -1,4 +1,5 @@
 #pragma once
+#include "Poolable.h"
 
 enum FSM_State_HellCaina
 {
@@ -72,7 +73,7 @@ enum FSM_State_HellCaina
 };
 
 // Ό³Έν :
-class Enemy_HellCaina : public BaseEnemyActor
+class Enemy_HellCaina : public BaseEnemyActor, public Poolable<Enemy_HellCaina>
 {
 public:
 	// constrcuter destructer

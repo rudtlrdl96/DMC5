@@ -1,14 +1,11 @@
 #pragma once
 #include "BaseLevel.h"
 
+enum class Net_ActorType;
+
 class NetworkTestLevel : public BaseLevel
 {
 public:
-	static NetworkTestLevel* GetInst()
-	{
-		return Inst;
-	}
-
 	NetworkTestLevel();
 	~NetworkTestLevel();
 
@@ -24,9 +21,12 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
-	static NetworkTestLevel* Inst;
-
 	bool IsConnect = false;
 	std::shared_ptr<class Enemy_HellCaina> Enemy = nullptr;
+
+	void InitPool();
+	void InitHost(Net_ActorType _PlayerType);
+	void InitClient(Net_ActorType _PlayerType);
+	std::shared_ptr<class BasePlayerActor> CreatePlayer(Net_ActorType _PlayerType);
 };
 
