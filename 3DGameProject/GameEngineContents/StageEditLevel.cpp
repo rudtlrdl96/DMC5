@@ -9,6 +9,8 @@
 #include "StageEditGUI.h"
 #include "FreeCameraActor.h"
 
+#include "DistortionEffect.h"
+
 
 StageEditLevel::StageEditLevel()
 {
@@ -43,6 +45,13 @@ void StageEditLevel::Start()
 	Grid = CreateActor<EngineGrid>();
 	FreeCam = CreateActor<FreeCameraActor>();
 	IsEditLevel = true;
+
+	{
+		std::shared_ptr<DistortionEffect> Distortion = GetCamera(0)->GetCamTarget()->CreateEffect<DistortionEffect>();
+		Distortion->SetMaskTexture(GetCamera(0)->GetCamAlphaTarget(), 1);
+		Distortion->SetDistortionValue(10, 10);
+		Distortion->SetMaxPixelValue(100, 100);
+	}
 }
 
 void StageEditLevel::Update(float _DeltaTime)

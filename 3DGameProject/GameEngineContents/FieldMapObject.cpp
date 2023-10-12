@@ -12,6 +12,7 @@
 #include "DecoLight.h"
 #include "Fountain.h"
 #include "StreetStall.h"
+#include "RedSeal.h"
 
 FieldMapObject::FieldMapObject()
 {
@@ -62,6 +63,9 @@ std::shared_ptr<FieldMapObject> FieldMapObject::CreateFieldMapObj(GameEngineLeve
 		break;
 	case FieldMapObjType::Bench:
 		Result = _Level->CreateActor<StreetStall>();
+		break;
+	case FieldMapObjType::RedSeal:
+		Result = _Level->CreateActor<RedSeal>();
 		break;
 	default:
 		MsgAssert("¹Ì±¸Çö");

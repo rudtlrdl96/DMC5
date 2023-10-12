@@ -15,8 +15,7 @@ TestEventZone::~TestEventZone()
 
 void TestEventZone::Start()
 {
-	TriggerZone = CreateComponent<GameEngineCollision>(CollisionOrder::EventZone);
-	TriggerZone->SetColType(ColType::OBBBOX3D);
+	EventZone::Start();
 	Event = []()
 		{
 			GameEngineCore::ChangeLevel("MainLevel");

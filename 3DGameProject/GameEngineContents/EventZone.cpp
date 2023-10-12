@@ -13,6 +13,12 @@ EventZone::~EventZone()
 
 }
 
+void EventZone::Start()
+{
+	TriggerZone = CreateComponent<GameEngineCollision>(CollisionOrder::EventZone);
+	TriggerZone->SetColType(ColType::OBBBOX3D);
+}
+
 void EventZone::Update(float _DeltaTime)
 {
 	if (TriggerZone == nullptr)

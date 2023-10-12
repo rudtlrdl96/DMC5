@@ -463,6 +463,12 @@
     <ClInclude Include="Item_DevilBreaker.h">
       <Filter>Actor\Item</Filter>
     </ClInclude>
+    <ClInclude Include="Location2_FightEvent1.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
+    </ClInclude>
+    <ClInclude Include="RedSeal.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -917,6 +923,12 @@
     </ClCompile>
     <ClCompile Include="Item_DevilBreaker.cpp">
       <Filter>Actor\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Location2_FightEvent1.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
+    </ClCompile>
+    <ClCompile Include="RedSeal.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

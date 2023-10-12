@@ -21,8 +21,8 @@ protected:
 
 	std::string FBXFileName = "";
 
-private:
 	void SetRenderer(const std::string_view& _Mat);
+private:
 	void SetPhysX();
 
 };

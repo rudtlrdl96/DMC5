@@ -251,6 +251,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Location2_FightEvent1.h" />
     <ClInclude Include="NeroItemGlass.h">
       <SubType>
       </SubType>
@@ -276,6 +277,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="RankUI.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="RedSeal.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -790,6 +795,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Location2_FightEvent1.cpp" />
     <ClCompile Include="NeroItemGlass.cpp">
       <SubType>
       </SubType>
@@ -823,6 +829,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="RankUI_State.cpp" />
+    <ClCompile Include="RedSeal.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ReflectionSetter.cpp" />
     <ClCompile Include="StreetLight_Off.cpp">
       <SubType>
