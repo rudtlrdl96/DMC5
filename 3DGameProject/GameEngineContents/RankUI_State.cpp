@@ -3,6 +3,7 @@
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/GameEngineFBXAnimation.h>
 #include "FXSystem.h"
+#include "UIEffectRenderer.h"
 #include "UIFBXRenderer.h"
 void RankUI::StateInit_Wait()
 {
@@ -37,11 +38,11 @@ void RankUI::StateInit_RankD()
 			{
 			RankBackEffect->PlayFX("RankBackEffect.effect");
 			RankBackEffect->Loop = true;
-			RankBackEffect->IsUI = true;
 			ExplaneSpeed = 0.0F;
 			Ratio = 0.0f;
 			OutRank = false;
 			RankD_Inside->SetClipData(float4::ZERONULL);
+
 			},
 			.Update = [=](float _DeltaTime)
 			{

@@ -1,7 +1,7 @@
 #include "PrecompileHeader.h"
 #include "RankUI.h"
 #include "UIFBXRenderer.h"
-#include "EffectRenderer.h"
+#include "UIEffectRenderer.h"
 #include "FXSystem.h"
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineFBXRenderer.h>
@@ -30,12 +30,13 @@ void RankUI::AddRankScore(int _Score)
 void RankUI::Start()
 {
 	RankBackEffect = CreateComponent<FXSystem>();
-	RankBackEffect->GetTransform()->SetLocalPosition({1450.f,190.0f,0.0f});
-	RankBackEffect->GetTransform()->SetLocalScale({ 3.0f,3.0f,3.0f });
+	RankBackEffect->GetTransform()->SetLocalPosition(InsidePos);
+	RankBackEffect->GetTransform()->SetLocalScale({ 1.0f,1.0f,1.0f });
+	RankBackEffect->IsUI = true;
 	RankBackEffect_Up = CreateComponent<FXSystem>();
-	RankBackEffect_Up->GetTransform()->SetLocalPosition({ 1450.f,190.0f,0.0f });
-	RankBackEffect_Up->GetTransform()->SetLocalScale({ 3.0f,3.0f,3.0f });
-
+	RankBackEffect_Up->GetTransform()->SetLocalPosition(InsidePos);
+	RankBackEffect_Up->GetTransform()->SetLocalScale({ 1.0f,1.0f,1.0f });
+	RankBackEffect_Up->IsUI = true;
 	GameEngineDirectory NewMeshDir;
 	NewMeshDir.MoveParentToDirectory("ContentResources");
 	NewMeshDir.Move("ContentResources");
@@ -82,40 +83,40 @@ void RankUI::Start()
 
 
 	Rank_Explane = CreateComponent<GameEngineUIRenderer>();
-
-	RankD_Frame = UIFBXActorBase::CreateGaugeBar(EndPos, StartScale, StartRotation, "RankDFrame.FBX");
+	Rank_Explane->SetTexture("NullTexture.png");
+	RankD_Frame = UIFBXActorBase::CreateGaugeBar(DefaultPos, StartScale, StartRotation, "RankDFrame.FBX");
 	RankD_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankD_Inside = UIFBXActorBase::CreateGaugeBar(StartPos,EndScale, StartRotation, "RankDInside.FBX","FBX_ClipAlpha");
+	RankD_Inside = UIFBXActorBase::CreateGaugeBar(DefaultPos,EndScale, StartRotation, "RankDInside.FBX","FBX_ClipAlpha");
 	RankD_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
 	
-	RankC_Frame = UIFBXActorBase::CreateGaugeBar(EndPos, StartScale, StartRotation, "RankCFrame.FBX");
+	RankC_Frame = UIFBXActorBase::CreateGaugeBar(DefaultPos, StartScale, StartRotation, "RankCFrame.FBX");
 	RankC_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankC_Inside = UIFBXActorBase::CreateGaugeBar(InsidePos,EndScale, StartRotation, "RankCInside.FBX", "FBX_ClipAlpha");
+	RankC_Inside = UIFBXActorBase::CreateGaugeBar(DefaultPos,EndScale, StartRotation, "RankCInside.FBX", "FBX_ClipAlpha");
 	RankC_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
 
-	RankB_Frame = UIFBXActorBase::CreateGaugeBar(EndPos, StartScale, StartRotation, "RankBFrame.FBX");
+	RankB_Frame = UIFBXActorBase::CreateGaugeBar(DefaultPos, StartScale, StartRotation, "RankBFrame.FBX");
 	RankB_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankB_Inside = UIFBXActorBase::CreateGaugeBar(InsidePos,EndScale, StartRotation, "RankBInside.FBX", "FBX_ClipAlpha");
+	RankB_Inside = UIFBXActorBase::CreateGaugeBar(DefaultPos,EndScale, StartRotation, "RankBInside.FBX", "FBX_ClipAlpha");
 	RankB_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
 
-	RankA_Frame = UIFBXActorBase::CreateGaugeBar(EndPos, StartScale, StartRotation, "RankAFrame.FBX");
+	RankA_Frame = UIFBXActorBase::CreateGaugeBar(DefaultPos, StartScale, StartRotation, "RankAFrame.FBX");
 	RankA_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankA_Inside = UIFBXActorBase::CreateGaugeBar(InsidePos,EndScale, StartRotation, "RankAInside.FBX", "FBX_ClipAlpha");
+	RankA_Inside = UIFBXActorBase::CreateGaugeBar(DefaultPos,EndScale, StartRotation, "RankAInside.FBX", "FBX_ClipAlpha");
 	RankA_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
 
-	RankS_Frame = UIFBXActorBase::CreateGaugeBar(EndPos, StartScale, StartRotation, "RankSFrame.FBX");
+	RankS_Frame = UIFBXActorBase::CreateGaugeBar(DefaultPos, StartScale, StartRotation, "RankSFrame.FBX");
 	RankS_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankS_Inside = UIFBXActorBase::CreateGaugeBar(InsidePos,EndScale, StartRotation, "RankSInside.FBX", "FBX_ClipAlpha");
+	RankS_Inside = UIFBXActorBase::CreateGaugeBar(DefaultPos,EndScale, StartRotation, "RankSInside.FBX", "FBX_ClipAlpha");
 	RankS_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
 
-	RankSS_Frame = UIFBXActorBase::CreateGaugeBar(EndPos, StartScale, StartRotation, "RankSSFrame.FBX");
+	RankSS_Frame = UIFBXActorBase::CreateGaugeBar(DefaultPos, StartScale, StartRotation, "RankSSFrame.FBX");
 	RankSS_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankSS_Inside = UIFBXActorBase::CreateGaugeBar(InsidePos,EndScale, StartRotation, "RankSSInside.FBX", "FBX_ClipAlpha");
+	RankSS_Inside = UIFBXActorBase::CreateGaugeBar(DefaultPos,EndScale, StartRotation, "RankSSInside.FBX", "FBX_ClipAlpha");
 	RankSS_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
 
-	RankSSS_Frame = UIFBXActorBase::CreateGaugeBar(EndPos, StartScale, StartRotation, "RankSSSFrame.FBX");
+	RankSSS_Frame = UIFBXActorBase::CreateGaugeBar(DefaultPos, StartScale, StartRotation, "RankSSSFrame.FBX");
 	RankSSS_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankSSS_Inside = UIFBXActorBase::CreateGaugeBar(InsidePos,EndScale, StartRotation, "RankSSSInside.FBX", "FBX_ClipAlpha");
+	RankSSS_Inside = UIFBXActorBase::CreateGaugeBar(DefaultPos,EndScale, StartRotation, "RankSSSInside.FBX", "FBX_ClipAlpha");
 	RankSSS_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
 
 	StateInit_Wait();
@@ -130,11 +131,11 @@ void RankUI::Start()
 	RankFSM.ChangeState(RankState::Rank_WaitState);
 
 
-	RankAFire = CreateComponent<EffectRenderer>(3);
+	RankAFire = CreateComponent<UIEffectRenderer>(3);
 	RankAFire->RectInit("Effect_2D");
 	RankAFire->CreateAnimation({ .AnimationName = "FireAni", .SpriteName = "Effect_Fire_03.tga", .Start = 0, .End = 31,.FrameInter = 0.034f,.Loop = true });
-	RankAFire->GetTransform()->SetLocalScale({ 720.0f,720.0f,0.0f });
-	RankAFire->GetTransform()->SetLocalPosition({ 1467.0f,186.0f,0.0f });
+	RankAFire->GetTransform()->SetLocalScale({ 240.0f,240.0f,0.0f });
+	RankAFire->GetTransform()->SetLocalPosition({InsidePos.x,InsidePos.y,20.0f});
 	RankAFire->Off();
 
 }
@@ -333,6 +334,7 @@ void RankUI::RankDisApper(float _Delta, std::shared_ptr<class UIFBXRenderer> _Re
 		Rank_Explane->Off();
 		if (_Render->GetMulColor().w <= 0.0f)
 		{
+			_Render->GetTransform()->SetLocalPosition(DefaultPos);
 			DisTime = 0.0f;
 			DisApperValue = false;
 			RankFSM.ChangeState(RankState::Rank_WaitState);
@@ -350,7 +352,6 @@ void RankUI::RankClip(float _DeltaTime , std::shared_ptr<class UIFBXRenderer> _R
 		RankScaleUpDown(_Render, _InsideRender, _DeltaTime);
 		RankBackEffect_Up->PlayFX("RankBackEffect.effect");
 		RankBackEffect_Up->Loop = true;
-		RankBackEffect_Up->IsUI = true;
 	}
 	else if (EndUp > 0.7f)
 	{
@@ -363,9 +364,14 @@ void RankUI::RankClip(float _DeltaTime , std::shared_ptr<class UIFBXRenderer> _R
 		}
 		RankScaleUpDown(_Render, _InsideRender, _DeltaTime);
 	}
-	if (EndUp <= 1.0f)
+	if (EndUp <= 1.0f && EndUp>=0.0f)
 	{
 		_InsideRender->SetClipData(float4::LerpClamp(float4(0.0f, 0.0f, 0.0f, 1.0f), float4(0.0f, EndUp, 0.0f, 1.0f), UpTime));
+	}
+	else
+	{
+		_InsideRender->SetClipData(float4(0.0f,1.0f,0.0f,1.0f));
+
 	}
 }
 

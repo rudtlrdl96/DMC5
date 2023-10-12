@@ -75,7 +75,7 @@ private:
 
 	std::shared_ptr<class FXSystem> RankBackEffect = nullptr;
 	std::shared_ptr<class FXSystem> RankBackEffect_Up = nullptr;
-	std::shared_ptr<class EffectRenderer> RankAFire = nullptr;
+	std::shared_ptr<class UIEffectRenderer> RankAFire = nullptr;
 
 	float Ratio = 0.0f;
 	float DisTime = 0.0f;
@@ -100,12 +100,12 @@ private:
 	float4 StartScale = { 9.0f,9.0f,9.0f };
 	float4 UpScale = { 6.0f,6.0f,6.0f };
 	float4 EndScale = { 5.0f,5.0f,5.0f };
-	float4 StartPos = { 660.0f,90.0f,0.0f };
-	float4 EndPos = { 580.0f,80.0f,0.0f };
+	float4 StartPos = { 660.0f,90.0f,-10.0f };
+	float4 EndPos = { 580.0f,80.0f,-10.0f };
 	float4 InsidePos = { 660.0f,90.0f,-150.0f };
 	float4 InsideStart = { 660.0f,-50.0f,0.0f };
 	float4 InsideEnd= { 1060.0f,-50.0f,0.0f };
-
+	float4 DefaultPos = { 2000.0f,2000.f,0.0f };
 	//fsm
 	GameEngineFSM RankFSM = GameEngineFSM();
 
