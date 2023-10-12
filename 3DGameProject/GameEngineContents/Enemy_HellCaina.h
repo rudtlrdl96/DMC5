@@ -93,6 +93,7 @@ protected:
 	void EnemyCreateFSM() override;
 	void EnemyCreateFSM_Client() override;
 	void DamageCollisionCheck(float _DeltaTime) override;
+	void DamageCollisionCheck_Client(float _DeltaTime) override;
 	void RecognizeCollisionCheck(float _DeltaTime) override;
 
 private:
@@ -100,6 +101,7 @@ private:
 	void PlayerAttack(float _DeltaTime);
 	void RandomAttack();
 	void ChangeState(int _StateValue);
+	void AttackCalculation();
 
 	float WaitTime = 0.0f;
 	float RotationDelayTime = 0.0f;

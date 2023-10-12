@@ -28,9 +28,7 @@ void Enemy_RedEmpusa::EnemyMeshLoad()
 
 void Enemy_RedEmpusa::EnemyTypeLoad()
 {
-	EnemyCodeValue = EnemyCode::RedEmpusa;
-	EnemyTypeValue = EnemyType::Normal;
-	EnemySizeValue = EnemySize::Middle;
+	//EnemyCodeValue = EnemyCode::RedEmpusa;
 }
 
 void Enemy_RedEmpusa::EnemyAnimationLoad()

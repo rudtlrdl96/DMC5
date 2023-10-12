@@ -182,6 +182,11 @@ void Enemy_Empusa::RandomAttack()
 	}
 }
 
+void Enemy_Empusa::AttackCalculation()
+{
+
+}
+
 void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 {
 	AttackDelayCheck += _DeltaTime;
@@ -305,9 +310,15 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 	default:
 		break;
 	}
+
 	HitStop(Data.DamageTypeValue);
 	IsVergilLight = false;
 	AttackDelayCheck = 0.0f;
+}
+
+void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
+{
+
 }
 
 void Enemy_Empusa::RecognizeCollisionCheck(float _DeltaTime)
@@ -371,9 +382,7 @@ void Enemy_Empusa::EnemyMeshLoad()
 
 void Enemy_Empusa::EnemyTypeLoad()
 {
-	EnemyCodeValue = EnemyCode::Empusa;
-	EnemyTypeValue = EnemyType::Normal;
-	EnemySizeValue = EnemySize::Small;
+	//EnemyCodeValue = EnemyCode::Empusa;
 
 	EnemyHP = 0;
 }
@@ -1450,7 +1459,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 
 void Enemy_Empusa::EnemyCreateFSM_Client()
 {
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Appear_A,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Appear_A,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_enter_ground_A");
 	},
@@ -1459,7 +1468,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Appear_B,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Appear_B,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_enter_ground_B");
 	},
@@ -1468,7 +1477,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Idle,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Idle,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_biped_idle");
 	},
@@ -1477,7 +1486,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Quadruped_Idle,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Quadruped_Idle,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_quadruped_idle");
 	},
@@ -1486,7 +1495,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Quadruped_To_Biped,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Quadruped_To_Biped,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_quadruped_to_biped");
 	},
@@ -1495,7 +1504,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Step_Back,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Step_Back,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_step_back");
 	},
@@ -1504,7 +1513,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Walk_Start,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Walk_Start,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_biped_walk_start");
 	},
@@ -1513,7 +1522,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Walk_Loop,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Walk_Loop,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_biped_walk_loop");
 	},
@@ -1522,7 +1531,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Walk_Stop,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Walk_Stop,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_biped_walk_stop");
 	},
@@ -1531,7 +1540,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Run_Start,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Run_Start,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_biped_run_start");
 	},
@@ -1540,7 +1549,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Run_Loop,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Run_Loop,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_biped_run_loop");
 	},
@@ -1549,7 +1558,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Run_Stop,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Run_Stop,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_biped_run_stop");
 	},
@@ -1558,7 +1567,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Turn_Left_90,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Turn_Left_90,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_turn_90_left");
 	},
@@ -1567,7 +1576,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Turn_Right_90,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Turn_Right_90,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_turn_90_right");
 	},
@@ -1576,7 +1585,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Turn_Left_180,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Turn_Left_180,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_turn_180_left");
 	},
@@ -1585,7 +1594,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Turn_Right_180,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Turn_Right_180,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_turn_180_right");
 	},
@@ -1594,7 +1603,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Attack_A,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Attack_A,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_attack_A");
 	},
@@ -1603,7 +1612,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Attack_B,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Attack_B,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_attack_B");
 	},
@@ -1612,7 +1621,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Attack_C,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Attack_C,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_attack_C");
 	},
@@ -1621,7 +1630,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Attack_D,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Attack_D,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_attack_D");
 	},
@@ -1630,7 +1639,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Attack_W,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Attack_W,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_attack_W");
 	},
@@ -1639,7 +1648,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Continuation_Attack,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Continuation_Attack,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_continuation_attack");
 	},
@@ -1648,7 +1657,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Standing_Damage_Weak_Front,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Standing_Damage_Weak_Front,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_angledamage_front", true);
 	},
@@ -1657,7 +1666,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Standing_Damage_Weak_Back,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Standing_Damage_Weak_Back,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_angledamage_back", true);
 	},
@@ -1666,7 +1675,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Standing_Damage_Weak_Left,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Standing_Damage_Weak_Left,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_angledamage_left", true);
 	},
@@ -1675,7 +1684,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Standing_Damage_Weak_Right,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Standing_Damage_Weak_Right,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_angledamage_right", true);
 	},
@@ -1684,7 +1693,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Blown_Back,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Blown_Back,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_blown_back_start", true);
 	},
@@ -1693,7 +1702,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Air_Damage,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Air_Damage,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_air_damage", true);
 	},
@@ -1702,7 +1711,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Air_Damage_Under,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Air_Damage_Under,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_air_damage_under", true);
 	},
@@ -1711,7 +1720,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Blown_Back_Landing,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Blown_Back_Landing,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_blown_back_landing");
 	},
@@ -1720,7 +1729,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Blown_Wall_Back,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Blown_Wall_Back,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_blown_wall_back");
 	},
@@ -1729,7 +1738,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Slam_Damage,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Slam_Damage,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_slam_damage_start");
 	},
@@ -1738,7 +1747,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Slam_Damage_Loop,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Slam_Damage_Loop,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_slam_damage_fall_loop");
 	},
@@ -1747,7 +1756,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Slam_Damage_Landing,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Slam_Damage_Landing,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_slam_damage_landing");
 	},
@@ -1756,7 +1765,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Snatch,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Snatch,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_snatch_loop");
 	},
@@ -1765,7 +1774,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Snatch_End,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Snatch_End,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0000_snatch_end");
 	},
@@ -1774,7 +1783,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Stun,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Stun,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_stun_loop");
 	},
@@ -1783,7 +1792,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Stun_Revive,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Stun_Revive,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_stun_revive");
 	},
@@ -1792,7 +1801,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Down,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Down,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_downward_down_start");
 	},
@@ -1801,7 +1810,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Down_Loop,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Down_Loop,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_downward_down_loop");
 	},
@@ -1810,7 +1819,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Getup,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Getup,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_downward_down_standup");
 	},
@@ -1819,7 +1828,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Death,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Death,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_downward_die");
 	},
@@ -1828,7 +1837,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Damage,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Damage,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_downward_damage", true);
 	},
@@ -1837,7 +1846,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Death_Back,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Death_Back,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_death_back");
 	},
@@ -1846,7 +1855,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Death_Front,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Death_Front,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_death_front");
 	},
@@ -1855,7 +1864,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Buster_Start,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Buster_Start,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_air_damage_under");
 	},
@@ -1864,7 +1873,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Buster_Loop,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Buster_Loop,
 	.Start = [=] {
 	//EnemyRenderer->ChangeAnimation("em0100_slam_damage_fall_loop");
 	},
@@ -1873,7 +1882,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Buster_Finish,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Buster_Finish,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_blown_back_landing");
 	},

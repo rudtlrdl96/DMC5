@@ -13,7 +13,6 @@ public:
 
 	float4 SpawnLocalPos = float4::ZERO;
 	float4 SpawnLocalRotation = float4::ZERO;
-
 };
 
 // Ό³Έν :

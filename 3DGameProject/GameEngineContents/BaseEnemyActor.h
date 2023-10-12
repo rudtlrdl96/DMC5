@@ -6,7 +6,7 @@
 enum class EnemyCode
 {
 	//초기화용
-	None=100000,
+	None = 100000,
 	// 일반 몬스터
 	Empusa = 0,
 	GreenEmpusa = 1,
@@ -16,22 +16,6 @@ enum class EnemyCode
 
 	// 보스 몬스터
 	CavliereAngelo = 5000,
-};
-
-enum class EnemyType
-{
-	None,
-	Normal,
-	Fly,
-	Boss,
-};
-
-enum class EnemySize
-{
-	None,
-	Small,
-	Middle,
-	Large,
 };
 
 enum class EnemyHitDirect
@@ -74,25 +58,7 @@ public:
 	// 패킷으로 전송받은 FSM을 클라이언트 FSM에 적용
 	void SetFSMStateValue(int _StateValue)
 	{
-		EnemyFSM_Client.ChangeState(_StateValue);
-	}
-
-	// 몬스터의 종류를 반환합니다.
-	inline EnemyCode GetEnemyCode() const
-	{
-		return EnemyCodeValue;
-	}
-
-	// 몬스터의 타입을 반환합니다. Normal,Fly, Boss 세 가지 타입이 있습니다.
-	inline EnemyType GetEnemyType() const
-	{
-		return EnemyTypeValue;
-	}
-
-	// 몬스터의 크기를 반환합니다.
-	inline EnemySize GetEnemySize() const
-	{
-		return EnemySizeValue;
+		EnemyFSM.ChangeState(_StateValue);
 	}
 
 	void StartRenderShaking(short _ShakingMaxCount)
@@ -107,6 +73,11 @@ public:
 		IsSnatch = true;
 	}
 
+	void SetClinetHit()
+	{
+		IsClientHit = true;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -117,6 +88,7 @@ protected:
 	virtual void EnemyCreateFSM() = 0;
 	virtual void EnemyCreateFSM_Client() = 0;
 	virtual void DamageCollisionCheck(float _DeltaTime) = 0;
+	virtual void DamageCollisionCheck_Client(float _DeltaTime) = 0;
 	virtual void RecognizeCollisionCheck(float _DeltaTime) = 0;
 
 	std::shared_ptr<class GameEngineFBXRenderer> EnemyRenderer = nullptr;     // 랜더러
@@ -126,14 +98,11 @@ protected:
 	std::shared_ptr<class GameEngineCollision> RN_MonsterCollision = nullptr; // 몬스터 공격 범위 인식 콜리전
 
 	GameEngineFSM EnemyFSM;        // 싱글, 서버용 FSM
-	GameEngineFSM EnemyFSM_Client; // 클라이언트용 FSM (패킷 전송 받아서 변경됨)
 
 	float AppearDelayTime = 0.0f;
 
 	//하위에서 설정해줘야하는 Data들=====================================================
 	EnemyCode EnemyCodeValue = EnemyCode::None;
-	EnemyType EnemyTypeValue  = EnemyType::None;
-	EnemySize EnemySizeValue = EnemySize::None;
 	//HP
 	float EnemyHP = 0.0f;
 	// FSM 밸류
@@ -148,6 +117,7 @@ protected:
 	void PlayerAttackCheck(GameEngineCollision* _Collision);
 
 	float ContactDelayTime = 0.0f;
+	bool IsClientHit = false;
 	//====================================================
 
 	//====================================================

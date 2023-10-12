@@ -121,6 +121,11 @@ void CavaliereAngelo::PlayerAttack(float _DeltaTime)
 	}
 }
 
+void CavaliereAngelo::AttackCalculation()
+{
+
+}
+
 void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 {
 	AttackDelayCheck += _DeltaTime;
@@ -249,6 +254,11 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 	AttackDelayCheck = 0.0f;
 }
 
+void CavaliereAngelo::DamageCollisionCheck_Client(float _DeltaTime)
+{
+
+}
+
 void CavaliereAngelo::RecognizeCollisionCheck(float _DeltaTime)
 {
 	if (true == IsRecognize || false == RN_MonsterCollision->IsUpdate())
@@ -310,9 +320,7 @@ void CavaliereAngelo::EnemyMeshLoad()
 
 void CavaliereAngelo::EnemyTypeLoad()
 {
-	EnemyCodeValue = EnemyCode::HellCaina;
-	EnemyTypeValue = EnemyType::Normal;
-	EnemySizeValue = EnemySize::Small;
+	//EnemyCodeValue = EnemyCode::HellCaina;
 
 	EnemyHP = 0;
 }
@@ -558,7 +566,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 
 void CavaliereAngelo::EnemyCreateFSM_Client()
 {
-	EnemyFSM_Client.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Idle,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Idle,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em5501_defense-Idle");
 	},
@@ -568,5 +576,5 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 	}
 	});
 
-	EnemyFSM_Client.ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
+	EnemyFSM.ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
 }

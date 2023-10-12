@@ -45,10 +45,22 @@ void BaseEnemyActor::Start()
 	EnemyMeshLoad();
 	EnemyTypeLoad();
 	EnemyAnimationLoad();
-	EnemyCreateFSM();
-	EnemyCreateFSM_Client();
-	PlayerCheckInit();
 
+	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
+	{
+		EnemyCreateFSM();
+	}
+	else if (NetControllType::ActiveControll == GetControllType())
+	{
+		EnemyCreateFSM();
+	}
+	else if (NetControllType::ActiveControll != GetControllType())
+	{
+		EnemyCreateFSM_Client();
+	}
+	
+	PlayerCheckInit();
+	
 	SetFsmPacketCallBack(std::bind(&BaseEnemyActor::SetFSMStateValue, this, std::placeholders::_1));
 }
 
@@ -114,10 +126,10 @@ void BaseEnemyActor::Update(float _DeltaTime)
 		}
 		else if (NetControllType::ActiveControll != GetControllType())
 		{
-			MonsterAttackCollision->Off();
-			EnemyFSM_Client.Update(_DeltaTime);
 			Update_NetworkTrans(_DeltaTime);
-			DamageCollisionCheck(_DeltaTime);
+			DamageCollisionCheck_Client(_DeltaTime);
+			EnemyFSM.Update(_DeltaTime);
+			MonsterAttackCollision->Off();
 		}
 	}
 }

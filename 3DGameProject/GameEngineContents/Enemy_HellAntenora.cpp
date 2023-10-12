@@ -26,9 +26,7 @@ void Enemy_HellAntenora::EnemyMeshLoad()
 
 void Enemy_HellAntenora::EnemyTypeLoad()
 {
-	EnemyCodeValue = EnemyCode::HellAntenora;
-	EnemyTypeValue = EnemyType::Normal;
-	EnemySizeValue = EnemySize::Middle;
+	//EnemyCodeValue = EnemyCode::HellAntenora;
 }
 
 void Enemy_HellAntenora::EnemyAnimationLoad()
