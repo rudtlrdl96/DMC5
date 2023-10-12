@@ -9,6 +9,8 @@
 #include "C_ChoiceBG.h"
 #include "BossHpBar.h"
 #include "RankUI.h"
+#include "DistortionEffect.h"
+
 PlayUITestLevel::PlayUITestLevel()
 {
 }
@@ -19,6 +21,10 @@ PlayUITestLevel::~PlayUITestLevel()
 
 void PlayUITestLevel::Start()
 {
+
+	std::shared_ptr<DistortionEffect> Distortion = GetCamera(100)->GetCamTarget()->CreateEffect<DistortionEffect>();
+	Distortion->SetMaskTexture(GetCamera(0)->GetCamAlphaTarget(), 1);
+	Distortion->SetDistortionValue(8, 4.5);
 	{
 		GameEngineDirectory NewMeshDir;
 		NewMeshDir.MoveParentToDirectory("ContentResources");

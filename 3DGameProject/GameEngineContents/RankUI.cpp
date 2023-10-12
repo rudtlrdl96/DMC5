@@ -1,7 +1,11 @@
 #include "PrecompileHeader.h"
 #include "RankUI.h"
 #include "UIFBXRenderer.h"
+#include "EffectRenderer.h"
+#include "FXSystem.h"
 #include <GameEngineCore/GameEngineUIRenderer.h>
+#include <GameEngineCore/GameEngineFBXRenderer.h>
+#include <GameEngineCore/GameEngineFBXAnimation.h>
 RankUI* RankUI::MainRankUI = nullptr;
 RankUI::RankUI() 
 {
@@ -24,6 +28,35 @@ void RankUI::AddRankScore(int _Score)
 }
 void RankUI::Start()
 {
+	RankBackEffect = CreateComponent<FXSystem>();
+	RankBackEffect->GetTransform()->SetLocalPosition(EndPos);
+	GameEngineDirectory NewDir;
+	NewDir.MoveParentToDirectory("ContentResources");
+	NewDir.Move("ContentResources");
+	NewDir.Move("Effect");
+	NewDir.Move("Texture");
+	if (nullptr == GameEngineTexture::Find("RankBackEffect.png"))
+	{
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".png" });
+		for (GameEngineFile File : Files)
+		{
+			GameEngineTexture::Load(File.GetFullPath());
+		}
+	}
+	NewDir.MoveParent();
+	NewDir.Move("EffectUI");
+	std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".effect" });
+	for (GameEngineFile File : Files)
+	{
+		if (nullptr == FXData::Find(File.GetFileName()))
+		{
+			FXData::Load(File.GetFullPath());
+		}
+		RankBackEffect->CreateFX(FXData::Find(File.GetFileName()));
+	}
+
+
+
 	Rank_Explane = CreateComponent<GameEngineUIRenderer>();
 
 	RankD_Frame = UIFBXActorBase::CreateGaugeBar(EndPos, StartScale, StartRotation, "RankDFrame.FBX");
@@ -71,6 +104,8 @@ void RankUI::Start()
 	StateInit_RankSSS();
 
 	RankFSM.ChangeState(RankState::Rank_WaitState);
+
+
 
 }
 
