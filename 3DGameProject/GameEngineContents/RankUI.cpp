@@ -29,7 +29,12 @@ void RankUI::AddRankScore(int _Score)
 void RankUI::Start()
 {
 	RankBackEffect = CreateComponent<FXSystem>();
-	RankBackEffect->GetTransform()->SetLocalPosition(EndPos);
+	RankBackEffect->GetTransform()->SetLocalPosition({1450.f,190.0f,0.0f});
+	RankBackEffect->GetTransform()->SetLocalScale({ 3.0f,3.0f,3.0f });
+
+	RankBackEffect_Up = CreateComponent<FXSystem>();
+	RankBackEffect_Up->GetTransform()->SetLocalPosition({ 1450.f,190.0f,0.0f });
+	RankBackEffect_Up->GetTransform()->SetLocalScale({ 3.0f,3.0f,3.0f });
 	GameEngineDirectory NewDir;
 	NewDir.MoveParentToDirectory("ContentResources");
 	NewDir.Move("ContentResources");
@@ -53,6 +58,7 @@ void RankUI::Start()
 			FXData::Load(File.GetFullPath());
 		}
 		RankBackEffect->CreateFX(FXData::Find(File.GetFileName()));
+		RankBackEffect_Up->CreateFX(FXData::Find(File.GetFileName()));
 	}
 
 
@@ -317,11 +323,15 @@ void RankUI::RankClip(float _DeltaTime , std::shared_ptr<class UIFBXRenderer> _R
 	if (EndUp > 0.3f && EndUp < 0.7f)
 	{
 		RankScaleUpDown(_Render, _InsideRender, _DeltaTime);
+		RankBackEffect_Up->PlayFX("RankBackEffect.effect");
+		RankBackEffect_Up->Loop = true;
+		RankBackEffect_Up->IsUI = true;
 	}
 	else if (EndUp > 0.7f)
 	{
 		if (ScaleValue == false)
 		{
+			RankBackEffect_Up->Loop = false;
 			ScaleUpValue = false;
 			ScaleValue = true;
 			ScaleSpeed = 0.0f;

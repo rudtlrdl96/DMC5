@@ -29,10 +29,10 @@ void EffectToolLevel::Start()
 
 void EffectToolLevel::Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsDown("ReturnToMainLevel"))
-	{
-		GameEngineCore::ChangeLevel("MainLevel");
-	}
+	//if (true == GameEngineInput::IsDown("ReturnToMainLevel"))
+	//{
+	//	GameEngineCore::ChangeLevel("MainLevel");
+	//}
 }
 
 void EffectToolLevel::LevelChangeStart()
