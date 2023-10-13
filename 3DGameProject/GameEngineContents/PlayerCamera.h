@@ -82,7 +82,7 @@ private:
 	float LockOnTrackingSpeed = 10.0f;
 
 	float FastTrackingDistance = 120.0f;
-	float FastTrackingSpeed = 0.5f;
+	float FastTrackingSpeed = 0.02f;
 
 	bool IsMouseControll = false;
 

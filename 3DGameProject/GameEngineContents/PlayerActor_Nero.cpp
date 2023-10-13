@@ -2013,6 +2013,7 @@ void PlayerActor_Nero::PlayerLoad()
 				BlueRoseOn();
 				InputCheck = false;
 				MoveCheck = false;
+				DelayCheck = false;
 				Renderer->ChangeAnimation("pl0000_BR_Shoot", true);
 			},
 			.Update = [=](float _DeltaTime) {
@@ -2031,9 +2032,10 @@ void PlayerActor_Nero::PlayerLoad()
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
-
-				if (true == Input_GunCheck()) { return; }
 				if (true == Input_DevilBreakerCheck()) { return; }
+
+				if (DelayCheck == false) { return; }
+				if (true == Input_GunCheck()) { return; }
 
 				if (MoveCheck == false) { return; }
 
@@ -2067,6 +2069,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->TurnOffGravity();
 				RotationToTarget();
 				InputCheck = false;
+				DelayCheck = false;
 				MoveCheck = false;
 				Renderer->ChangeAnimation("pl0000_BR_Air_Shoot", true);
 			},
@@ -2084,8 +2087,9 @@ void PlayerActor_Nero::PlayerLoad()
 				if (false == InputCheck) { return; }
 				if (true == Input_JumpCheckFly()) { return; }
 				if (true == Input_SwordCheckFly()) { return; }
-				if (true == Input_GunCheckFly()) { return; }
 				if (true == Input_DevilBreakerCheckFly()) { return; }
+				if (DelayCheck == false) { return; }
+				if (true == Input_GunCheckFly()) { return; }
 			},
 			.End = [=] {
 				WeaponIdle();

@@ -829,7 +829,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Sissonal3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Sissonal_3,
 			.Start = [=] {
-				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(600));
+				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(600));
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				EffectSystem->PlayFX("Yamato_Sissonal_3.effect");

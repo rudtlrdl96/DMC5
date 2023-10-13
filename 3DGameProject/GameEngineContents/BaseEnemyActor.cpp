@@ -618,7 +618,7 @@ void BaseEnemyActor::SnatchCalculation()
 
 	SnatchStartPosition = this->GetTransform()->GetWorldPosition();
 	float4 Forword = Player->GetTransform()->GetWorldForwardVector() * 120.0f;
-	SnatchEndPosition = Player->GetTransform()->GetWorldPosition() + Forword + float4{0.f, 20.f, 0.f};
+	SnatchEndPosition = Player->GetTransform()->GetWorldPosition() + Forword + float4{0.f, -20.f, 0.f};
 }
 
 /// <summary>
