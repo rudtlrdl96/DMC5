@@ -24,6 +24,12 @@ Enemy_HellCaina::~Enemy_HellCaina()
 /////////////////////////////////////////////////   Actor Init   ///////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Enemy_HellCaina::EnemyTypeLoad()
+{
+	EnemyCodeValue = EnemyCode::HellCaina;
+	EnemyHP = 0;
+}
+
 void Enemy_HellCaina::EnemyMeshLoad()
 {
 	if (nullptr == GameEngineFBXMesh::Find("em0000.FBX"))
@@ -56,12 +62,6 @@ void Enemy_HellCaina::EnemyMeshLoad()
 	}
 
 	EnemyRenderer->GetTransform()->SetLocalScale({ 0.8f , 0.8f , 0.8f });
-}
-
-void Enemy_HellCaina::EnemyTypeLoad()
-{
-	EnemyCodeValue = EnemyCode::HellCaina;
-	EnemyHP = 0;
 }
 
 void Enemy_HellCaina::EnemyAnimationLoad()
@@ -103,7 +103,7 @@ void Enemy_HellCaina::Start()
 	//PhysX(Ãæµ¹)
 	PhysXCapsule = CreateComponent<PhysXCapsuleComponent>();
 	PhysXCapsule->SetPhysxMaterial(0, 0, 0);
-	PhysXCapsule->CreatePhysXActors({ 90, 90, 90 });
+	PhysXCapsule->CreatePhysXActors({ 90, 120, 90 });
 	PhysXCapsule->GetDynamic()->setMass(80.0f);
 	BindPhysicsWithNet(PhysXCapsule);
 

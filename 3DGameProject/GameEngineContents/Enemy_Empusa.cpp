@@ -24,6 +24,12 @@ Enemy_Empusa::~Enemy_Empusa()
 /////////////////////////////////////////////////   Actor Init   ///////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Enemy_Empusa::EnemyTypeLoad()
+{
+	EnemyCodeValue = EnemyCode::Empusa;
+	EnemyHP = 0;
+}
+
 void Enemy_Empusa::EnemyMeshLoad()
 {
 	if (nullptr == GameEngineFBXMesh::Find("em0100.FBX"))
@@ -56,12 +62,6 @@ void Enemy_Empusa::EnemyMeshLoad()
 	}
 
 	EnemyRenderer->GetTransform()->SetLocalScale({ 0.8f , 0.8f , 0.8f });
-}
-
-void Enemy_Empusa::EnemyTypeLoad()
-{
-	EnemyCodeValue = EnemyCode::Empusa;
-	EnemyHP = 0;
 }
 
 void Enemy_Empusa::EnemyAnimationLoad()

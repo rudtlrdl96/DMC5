@@ -542,14 +542,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="PickableActor.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="Picker.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="Plane.h">
       <SubType>
       </SubType>
@@ -1080,14 +1072,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="OldTVEffect.cpp" />
-    <ClCompile Include="PickableActor.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="Picker.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="Plane.cpp">
       <SubType>
       </SubType>

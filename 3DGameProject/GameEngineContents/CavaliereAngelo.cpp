@@ -24,6 +24,12 @@ CavaliereAngelo::~CavaliereAngelo()
 /////////////////////////////////////////////////   Actor Init   ///////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void CavaliereAngelo::EnemyTypeLoad()
+{
+	EnemyCodeValue = EnemyCode::HellCaina;
+	EnemyHP = 0;
+}
+
 void CavaliereAngelo::EnemyMeshLoad()
 {
 	if (nullptr == GameEngineFBXMesh::Find("em5501.FBX"))
@@ -56,12 +62,6 @@ void CavaliereAngelo::EnemyMeshLoad()
 	}
 
 	EnemyRenderer->GetTransform()->SetLocalScale({ 0.8f , 0.8f , 0.8f });
-}
-
-void CavaliereAngelo::EnemyTypeLoad()
-{
-	EnemyCodeValue = EnemyCode::HellCaina;
-	EnemyHP = 0;
 }
 
 void CavaliereAngelo::EnemyAnimationLoad()
@@ -133,8 +133,8 @@ void CavaliereAngelo::Start()
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
 
 	//EnemyRenderer->Off();
-	MonsterCollision->Off();
-	RN_MonsterCollision->Off();
+	//MonsterCollision->Off();
+	//RN_MonsterCollision->Off();
 
 	// 넷 오브젝트 타입 설정
 	SetNetObjectType(Net_ActorType::HellCaina);

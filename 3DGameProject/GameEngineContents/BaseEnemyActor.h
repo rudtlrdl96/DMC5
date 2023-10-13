@@ -189,6 +189,7 @@ protected:
 	/// </summary>
 	void SetThrowback(float _Value)
 	{
+		SetMoveStop();
 		PhysXCapsule->SetPush(BackDirect * _Value);
 	}
 

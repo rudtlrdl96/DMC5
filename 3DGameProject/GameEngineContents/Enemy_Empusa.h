@@ -99,8 +99,8 @@ public:
 protected:
 	void Start() override;
 	void EnemyMeshLoad() override;
-	void EnemyTypeLoad() override;
 	void EnemyAnimationLoad() override;
+	void EnemyTypeLoad() override;
 	void EnemyCreateFSM() override;
 	void EnemyCreateFSM_Client() override;
 	void DamageCollisionCheck(float _DeltaTime) override;
