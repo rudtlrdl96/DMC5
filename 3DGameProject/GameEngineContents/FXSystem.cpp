@@ -131,7 +131,7 @@ void FXSystem::CreateFX(std::shared_ptr<class FXData> _FX)
 
 			if (UnitDatas[i].AnimationName != "" && nullptr == FXRenders[Key]->FindAnimation(UnitDatas[i].AnimationName))
 			{
-				FXRenders[Key]->CreateAnimation({ .AnimationName = UnitDatas[i].AnimationName, .SpriteName = UnitDatas[i].AnimationName, .FrameInter = 0.0166f, .Loop = false });
+				FXRenders[Key]->CreateAnimation({ .AnimationName = UnitDatas[i].AnimationName, .SpriteName = UnitDatas[i].AnimationName, .FrameInter = 0.0166f, .Loop = true });
 			}
 		}
 	}
@@ -336,7 +336,7 @@ void FXSystem::FXSetting()
 				if (nullptr == FXRenders[Key]->FindAnimation(UnitDatas[i].AnimationName))
 				{
 					// 애니메이션이 없는 경우
-					FXRenders[Key]->CreateAnimation({ .AnimationName = UnitDatas[i].AnimationName, .SpriteName = UnitDatas[i].AnimationName, .FrameInter = 0.0166f, .Loop = false });
+					FXRenders[Key]->CreateAnimation({ .AnimationName = UnitDatas[i].AnimationName, .SpriteName = UnitDatas[i].AnimationName, .FrameInter = 0.0166f, .Loop = true });
 				}
 				FXRenders[Key]->ChangeAnimation(UnitDatas[i].AnimationName);
 			}

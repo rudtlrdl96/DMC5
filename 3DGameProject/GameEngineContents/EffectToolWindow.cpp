@@ -78,6 +78,10 @@ void EffectToolWindow::CharacterSetting(std::shared_ptr<GameEngineLevel> Level)
 			{
 				CharacterRender->GetTransform()->SetLocalPosition({ 0, -75, 0 });
 			}
+			else if (FileName == "em5501.fbx")
+			{
+				CharacterRender->GetTransform()->SetLocalPosition({ 0.0f, -45.0f, 0.0f });
+			}
 		}
 	}
 	ImGui::SameLine();
