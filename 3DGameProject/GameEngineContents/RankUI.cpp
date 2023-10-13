@@ -38,7 +38,7 @@ void RankUI::Start()
 	RankBackEffect_Up->GetTransform()->SetLocalScale({ 1.0f,1.0f,1.0f });
 	RankBackEffect_Up->IsUI = true;
 	RankALightEffect = CreateComponent<FXSystem>();
-	RankALightEffect->GetTransform()->SetLocalPosition({ InsidePos.x,InsidePos.y,20.0f });
+	RankALightEffect->GetTransform()->SetLocalPosition({ InsidePos.x,InsidePos.y,25.0f });
 	RankALightEffect->GetTransform()->SetLocalScale({ 5.0f,5.0f,5.0f });
 	RankALightEffect->IsUI = true;
 	GameEngineDirectory NewMeshDir;
@@ -244,13 +244,7 @@ void RankUI::RankApper(float _Delta, std::shared_ptr<class UIFBXRenderer> _Rende
 		Ratio += _Delta;
 		if (Ratio < 0.6f)
 		{
-			if (EffectValue == true)
-			{
-				RankAFire->On();
-				RankAFire->ChangeAnimation("FireAni");
-				RankALightEffect->PlayFX("RankALightEffect.effect");
-				EffectValue = false;
-			}
+			EffectValue = true;
 			Rank_Explane->GetTransform()->SetLocalPosition({ 1060.0f,-50.0f,0.0f });
 			//만약에 이전 랭크가 있다면
 			if (_Value == true)

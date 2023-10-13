@@ -199,13 +199,19 @@ void RankUI::StateInit_RankA()
 		RankA_Inside->SetClipData(float4::ZERONULL);
 		RankAFire->EffectOption.MulColor = float4{ 0.3f,0.3f,1.0f,1.f };
 		RankAFire->EffectOption.PlusColor = float4{ 0.274f,0.583f,1.f,0.0f };
-		EffectValue = true;
 	},
 	.Update = [this](float _DeltaTime)
 	{
 		
 			
 		RankApper(_DeltaTime,RankA_Frame,RankState::Spin_RankA,true,RankB_Frame);
+		if (EffectValue == true)
+		{
+			RankAFire->On();
+			RankAFire->ChangeAnimation("FireAni");
+			RankALightEffect->PlayFX("RankALightEffect.effect");
+			EffectValue = false;
+		}
 
 	},
 	.End = [this]()
@@ -261,6 +267,13 @@ void RankUI::StateInit_RankS()
 	.Update = [this](float _DeltaTime)
 	{
 		RankApper(_DeltaTime,RankS_Frame,RankState::Spin_RankS,true,RankA_Frame);
+		if (EffectValue == true)
+		{
+			RankAFire->On();
+			RankAFire->ChangeAnimation("FireAni");
+			RankALightEffect->ChangeFX("RankSLightEffect.effect");
+			EffectValue = false;
+		}
 	},
 	.End = [this]()
 	{
@@ -273,19 +286,12 @@ void RankUI::StateInit_RankS()
 			.Start = [=]()
 			{
 				MemberInitialize();
-				RankAFire->SetAnimPauseOff();
-				RankAFire->On();
-				RankAFire->ChangeAnimation("FireAni");
+				RankAFire->Off();
 			},
 			.Update = [=](float _DeltaTime)
 			{
 				RankSpin(_DeltaTime,RankS_Frame,RankS_Inside);
 				RankClip(_DeltaTime, RankS_Frame, RankS_Inside, 400);
-				if (RankAFire->IsAnimationEnd() == true)
-				{
-					RankAFire->Off();
-					RankAFire->SetAnimPauseOn();
-				}
 				if (UpTime > 1.0f)
 				{
 					SetRankExPlane("RankS_Explane.png", float4{ 285.0f,147.0f,0.0f }, InsideStart, _DeltaTime);
@@ -315,10 +321,18 @@ void RankUI::StateInit_RankSS()
 		RankSS_Inside->SetClipData(float4::ZERONULL);
 		RankAFire->EffectOption.MulColor = float4{ 0.913f,0.894f,0.250f,1.f };
 		RankAFire->EffectOption.PlusColor = float4{ 0.588f,0.78f,1.f,0.006f };
+
 	},
 	.Update = [this](float _DeltaTime)
 	{
 		RankApper(_DeltaTime,RankSS_Frame,RankState::Spin_RankSS,true,RankS_Frame);
+		if (EffectValue == true)
+		{
+			RankAFire->On();
+			RankAFire->ChangeAnimation("FireAni");
+			RankALightEffect->ChangeFX("RankSLightEffect.effect");
+			EffectValue = false;
+		}
 	},
 	.End = [this]()
 	{
@@ -377,6 +391,13 @@ void RankUI::StateInit_RankSSS()
 	.Update = [this](float _DeltaTime)
 	{
 		RankApper(_DeltaTime,RankSSS_Frame,RankState::Spin_RankSSS,true,RankSS_Frame);
+		if (EffectValue == true)
+		{
+			RankAFire->On();
+			RankAFire->ChangeAnimation("FireAni");
+			RankALightEffect->ChangeFX("RankSLightEffect.effect");
+			EffectValue = false;
+		}
 	},
 	.End = [this]()
 	{
