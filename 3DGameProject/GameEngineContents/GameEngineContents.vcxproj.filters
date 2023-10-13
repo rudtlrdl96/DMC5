@@ -462,9 +462,6 @@
     <ClInclude Include="Item_DevilBreaker.h">
       <Filter>Actor\Item</Filter>
     </ClInclude>
-    <ClInclude Include="Location2_FightEvent1.h">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
-    </ClInclude>
     <ClInclude Include="RedSeal.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClInclude>
@@ -482,6 +479,9 @@
     </ClInclude>
     <ClInclude Include="NeroLoading.h">
       <Filter>UI\UI_Actor\LodingUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Location2_Level.h">
+      <Filter>Levels\Stage\1.Location2</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -829,9 +829,6 @@
     <ClCompile Include="FieldMap.cpp">
       <Filter>Actor\Stage\FieldMap</Filter>
     </ClCompile>
-    <ClCompile Include="FieldMapObjEditGUI.cpp">
-      <Filter>Levels\Stage\StageEditor</Filter>
-    </ClCompile>
     <ClCompile Include="FieldMapObject.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj</Filter>
     </ClCompile>
@@ -937,9 +934,6 @@
     <ClCompile Include="Item_DevilBreaker.cpp">
       <Filter>Actor\Item</Filter>
     </ClCompile>
-    <ClCompile Include="Location2_FightEvent1.cpp">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
-    </ClCompile>
     <ClCompile Include="RedSeal.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClCompile>
@@ -957,6 +951,12 @@
     </ClCompile>
     <ClCompile Include="NeroLoading.cpp">
       <Filter>UI\UI_Actor\LodingUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Location2_Level.cpp">
+      <Filter>Levels\Stage\1.Location2</Filter>
+    </ClCompile>
+    <ClCompile Include="FieldMapObjEditGUI.cpp">
+      <Filter>Levels\Stage\StageEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

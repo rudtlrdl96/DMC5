@@ -20,6 +20,7 @@
 //Map
 #include "TestStageLevel.h"
 #include "StageEditLevel.h"
+#include "Location2_Level.h"
 #include "Location11_Level.h"
 
 #include "AnimationToolLevel.h"
@@ -54,6 +55,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<MainMenuLevel>();
 	GameEngineCore::CreateLevel<AnimationToolLevel>();
 	GameEngineCore::CreateLevel<TestStageLevel>();
+	GameEngineCore::CreateLevel<Location2_Level>();
 	GameEngineCore::CreateLevel<Location11_Level>();
 	GameEngineCore::CreateLevel<NetworkTestLevel>();
 	GameEngineCore::CreateLevel<PlayUITestLevel>();
