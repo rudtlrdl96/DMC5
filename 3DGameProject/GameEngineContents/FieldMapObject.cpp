@@ -2,6 +2,7 @@
 #include "FieldMapObject.h"
 
 #include "StageBaseLevel.h"
+#include <GameEngineCore/PhysXBoxComponent.h>
 
 #include "TestEventZone.h"
 #include "WallLight_On.h"
@@ -75,6 +76,8 @@ std::shared_ptr<FieldMapObject> FieldMapObject::CreateFieldMapObj(GameEngineLeve
 	Result->GetTransform()->SetLocalPosition(_ObjTransform.Pos);
 	Result->GetTransform()->SetLocalScale(_ObjTransform.Scale);
 	Result->GetTransform()->SetLocalRotation(_ObjTransform.Rot);
+
+
 
 	return Result;
 }

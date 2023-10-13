@@ -57,8 +57,10 @@ void StaticFieldMapObject::SetPhysX()
 	}
 
 	PhysXBox = CreateComponent<PhysXBoxComponent>();
+	const float4& AcScale = GetTransform()->GetLocalScale();
 	const float4& MeshScale = FBXMesh->GetMeshScale();
-	physx::PxVec3 PxScale = { MeshScale.x, MeshScale.y, MeshScale.z };
+	physx::PxVec3 PxScale = { MeshScale.x * AcScale.x, MeshScale.y * AcScale.y, MeshScale.z * AcScale.z };
 	PhysXBox->SetObstacleObject();
+	PhysXBox->SetPositionSetFromParentFlag(true);
 	PhysXBox->CreatePhysXActors(PxScale);
 }

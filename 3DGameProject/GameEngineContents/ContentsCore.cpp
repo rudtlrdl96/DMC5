@@ -60,7 +60,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<ThreadLoadingLevel>();
 	//GameEngineCore::CreateLevel<DynamicResourcesLoadTest>();
 	////
-	//GameEngineCore::CreateLevel<StageEditLevel>();
+	GameEngineCore::CreateLevel<StageEditLevel>();
 	GameEngineCore::CreateLevel<ShopLevel>();
 	GameEngineCore::CreateLevel<EffectToolLevel>();
 	
