@@ -51,9 +51,29 @@ void TestLevel::Start()
 }
 
 bool Is = false;
+int cal = 0;
 
 void TestLevel::Update(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("MonsterTest"))
+	{
+		Is = !Is;
+		cal = 1;
+	}
+
+	if (1 == cal)
+	{
+		cal = 0;
+		if (true == Is)
+		{
+			HellCaina->On();
+		}
+		else
+		{
+			HellCaina->Off();
+		}
+	}
+
 	if (false == IsMessage)
 	{
 		IsMessage = true;
@@ -137,6 +157,7 @@ void TestLevel::LevelChangeStart()
 		HellCaina = CreateActor<Enemy_HellCaina>();
 		HellCaina->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
 		HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+		//HellCaina->Off();
 	}
 
 	//if (nullptr == Empusa)

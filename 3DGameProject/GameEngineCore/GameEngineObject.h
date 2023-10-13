@@ -102,7 +102,7 @@ private:
 
 	const int ActorID;
 
-	bool PhysicsUpdate = false;
+	bool PhysicsUpdate = true;
 
 	/////////////////////  Gui ÇÔ¼ö /////////////////////
 
