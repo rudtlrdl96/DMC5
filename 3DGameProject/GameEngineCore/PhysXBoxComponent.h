@@ -23,12 +23,14 @@ public:
 	{
 		GameEngineObjectBase::On();
 		m_pShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
+		RaycastOn();
 	}
 
 	void Off() override
 	{
 		GameEngineObjectBase::Off();
 		m_pShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
+		RaycastOff();
 	}
 
 	physx::PxRigidStatic* GetStatic()

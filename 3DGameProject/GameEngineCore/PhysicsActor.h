@@ -17,6 +17,16 @@ public:
 	PhysicsActor& operator=(const PhysicsActor& _Other) = delete;
 	PhysicsActor& operator=(PhysicsActor&& _Other) noexcept = delete;
 
+	void RaycastOn()
+	{
+		m_pShape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, true);
+	}
+
+	void RaycastOff()
+	{
+		m_pShape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, false);
+	}
+
 	void ReleaseRigid()
 	{
 		UserDataRelease();
