@@ -502,6 +502,11 @@ void EffectToolWindow::Save(std::shared_ptr<GameEngineLevel> Level)
 			}
 		}
 	}
+
+	if (ImGui::Button("Clear KeyFrame"))
+	{
+		CurFrameData.clear();
+	}
 }
 
 void EffectToolWindow::KeyFramePreview()
