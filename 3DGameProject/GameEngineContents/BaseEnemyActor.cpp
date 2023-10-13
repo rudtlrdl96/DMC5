@@ -68,18 +68,6 @@ void BaseEnemyActor::Start()
 
 void BaseEnemyActor::Update(float _DeltaTime)
 {
-	_DeltaTime *= GetTimeScale();
-	EnemyRenderer->SetTimeScale(GetTimeScale());
-	if (GetTimeScale() == 0.0f)
-	{
-		MonsterAttackCollision->Off();
-		PhysXCapsule->Off();
-	}
-	else if (false == PhysXCapsule->IsUpdate())
-	{
-		PhysXCapsule->On();
-	}
-
 	AppearDelayTime += _DeltaTime;
 
 	if (AppearDelayTime <= 1.0f)
@@ -87,24 +75,42 @@ void BaseEnemyActor::Update(float _DeltaTime)
 		return;
 	}
 
-	RenderShake(_DeltaTime);
+	// 싱글, 서버, 클라이언트 상관없이 계속해서 체크되어야 하는 함수들
+	{
+		_DeltaTime *= GetTimeScale();
+		EnemyRenderer->SetTimeScale(GetTimeScale());
 
+		if (GetTimeScale() == 0.0f)
+		{
+			MonsterAttackCollision->Off();
+			PhysXCapsule->Off();
+		}
+		else if (false == PhysXCapsule->IsUpdate())
+		{
+			PhysXCapsule->On();
+		}
+
+		RenderShake(_DeltaTime);
+		MonsterSnatch(_DeltaTime);
+	}
+
+	// 싱글 플레이일 때 실행
 	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
 	{
-		MonsterSnatch(_DeltaTime);
 		RecognizeCollisionCheck(_DeltaTime);
 		DamageCollisionCheck(_DeltaTime);
 		EnemyFSM.Update(_DeltaTime);
 	}
 	else 
 	{
+		// 서버 플레이일 때 실행
 		if (NetControllType::ActiveControll == GetControllType())
 		{
-			MonsterSnatch(_DeltaTime);
 			RecognizeCollisionCheck(_DeltaTime);
 			DamageCollisionCheck(_DeltaTime);
 			EnemyFSM.Update(_DeltaTime);
 		}
+		// 클라이언트 플레이일 때 실행
 		else
 		{
 			Update_NetworkTrans(_DeltaTime);
@@ -118,7 +124,7 @@ void BaseEnemyActor::Update(float _DeltaTime)
 /// <summary>
 /// 액터 위치에서 아래 방향으로 Raycast를 실시하여 바닥(피직스 충돌체)을 체크한다.
 /// </summary>
-/// <param name="_Distance">Raycasting 길이, 몬스터마다 다름</param>
+/// <param name="_Distance :">Raycasting 길이, 몬스터마다 다름</param>
 bool BaseEnemyActor::FloorCheck(float _Distance)
 {
 	float4 StartPosision = this->GetTransform()->GetWorldPosition();
@@ -157,8 +163,8 @@ void BaseEnemyActor::PlayerCheckInit()
 /// <summary>
 /// RN_MonsterCollision에 충돌한 충돌체(Player) 정보를 class BasePlayerActor* Player에 저장
 /// </summary>
-/// <param name="_DeltaTime">시간</param>
-/// <param name="_Collision">체크할 충돌체</param>
+/// <param name="_DeltaTime :">시간</param>
+/// <param name="_Collision :">체크할 충돌체</param>
 void BaseEnemyActor::PlayerContactCheck(float _DeltaTime, GameEngineCollision* _Collision)
 {
 	ContactDelayTime += _DeltaTime;
@@ -212,7 +218,7 @@ void BaseEnemyActor::PlayerContactCheck(float _DeltaTime, GameEngineCollision* _
 /// <summary>
 /// 자신을 공격한 충돌체(Player) 정보를 class BasePlayerActor* Player에 저장
 /// </summary>
-/// <param name="_Collision">체크할 충돌체</param>
+/// <param name="_Collision :">체크할 충돌체</param>
 void BaseEnemyActor::PlayerAttackCheck(GameEngineCollision* _Collision)
 {
 	GameEngineCollision* CheckCollision = _Collision;
@@ -478,7 +484,7 @@ void BaseEnemyActor::SlerpCalculation()
 /// <summary>
 /// 일정 시간 동안 SlerpCalculation()()로 계산된  값을 향해 몬스터를 Slerp시킨다.
 /// </summary>
-/// <param name="_DeltaTime">시간</param>
+/// <param name="_DeltaTime :">시간</param>
 void BaseEnemyActor::SlerpTurn(float _DeltaTime)
 {
 	SlerpTime += _DeltaTime;
@@ -521,7 +527,7 @@ void BaseEnemyActor::PushDirectSetting()
 /// <summary>
 /// 슈퍼아머 상태에서 히트 시 랜더러를 좌우로 흔든다.
 /// </summary>
-/// <param name="_DeltaTime">0.025초마다 1회 떨림 체크를 위한 시간</param>
+/// <param name="_DeltaTime :">0.025초마다 1회 떨림 체크를 위한 시간</param>
 void BaseEnemyActor::RenderShake(float _DeltaTime)
 {
 	if (false == IsRenderShaking)
@@ -569,7 +575,7 @@ void BaseEnemyActor::RenderShake(float _DeltaTime)
 /// <summary>
 /// 버스터 히트 시 몬스터를 Player FBX Bone의 어떤 위치에 부착할지 결정한다.
 /// </summary>
-/// <param name="_attachposition">FBX Bone에 부착된 상태에서의 랜더러 Position</param>
+/// <param name="_attachposition :">FBX Bone에 부착된 상태에서의 랜더러 Position</param>
 void BaseEnemyActor::BusterCalculation(float4 _attachposition)
 {
 	if (nullptr == Player)
@@ -618,7 +624,7 @@ void BaseEnemyActor::SnatchCalculation()
 /// <summary>
 /// 일정 시간(1.0f) 동안 계산된 SnatchCalculation()로 계산된 값을 향해 몬스터를 Lerp시킨다.
 /// </summary>
-/// <param name="_DeltaTime">1.0초를 체크할 시간</param>
+/// <param name="_DeltaTime :">1.0초를 체크할 시간</param>
 void BaseEnemyActor::MonsterSnatch(float _DeltaTime)
 {
 	if (false == IsSnatch)
@@ -641,7 +647,7 @@ void BaseEnemyActor::MonsterSnatch(float _DeltaTime)
 /// <summary>
 /// 입력된 DamageType에 따라 일정시간동안 타임스케일을 낮춥니다
 /// </summary>
-/// <param name="_Type">DamageType</param>
+/// <param name="_Type :">DamageType</param>
 void BaseEnemyActor::HitStop(DamageType _Type)
 {
 	float _TimeScale = 0.1f;
@@ -678,7 +684,7 @@ void BaseEnemyActor::HitStop(DamageType _Type)
 /// <summary>
 /// 일정시간동안 타임스케일을 0으로 합니다. _DeltaTime 초 후 타임스케일은 1이 됩니다. CapsuleCollision은 Off됩니다
 /// </summary>
-/// <param name="_DeltaTime">타임 스케일이 1이 되기까지의 시간을 체크하기 위함</param>
+/// <param name="_DeltaTime :">타임 스케일이 1이 되기까지의 시간을 체크하기 위함</param>
 void BaseEnemyActor::StopTime(float _DeltaTime)
 {
 	SetTimeScale(0.0f);
