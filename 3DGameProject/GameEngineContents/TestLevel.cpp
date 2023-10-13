@@ -20,11 +20,9 @@
 #include "Item_DevilBreaker.h"
 #include "FXAA_Effect.h"
 #include "Cavaliere_Electric.h"
-TestLevel* TestLevel::TestLevelPtr = nullptr;
 
 TestLevel::TestLevel()
 {
-	TestLevelPtr = this;
 }
 
 TestLevel::~TestLevel()
@@ -66,44 +64,28 @@ void TestLevel::Update(float _DeltaTime)
 		cal = 0;
 		if (true == Is)
 		{
-			HellCaina->On();
+			if (nullptr != HellCaina)
+			{
+				HellCaina->On();
+			}
 		}
 		else
 		{
-			HellCaina->Off();
+			if (nullptr != HellCaina)
+			{
+				HellCaina->Off();
+			}
 		}
 	}
 
-	if (false == IsMessage)
-	{
-		IsMessage = true;
-		//MsgTextBox("CurrentLevel is TestLevel");
-	}
 	if (true == GameEngineInput::IsDown("SelectLevel_03"))
 	{
 		Electric->Shoot(Player);
 	}
+
 	if (true == GameEngineInput::IsDown("ReturnToMainLevel"))
 	{
 		GameEngineCore::ChangeLevel("MainLevel");
-	}
-
-	if (nullptr != HellCaina)
-	{
-		if (-100.0f >= HellCaina->GetTransform()->GetWorldPosition().y)
-		{
-			HellCaina->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-			HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-		}
-	}
-
-	if (nullptr != Empusa)
-	{
-		if (-100.0f >= Empusa->GetTransform()->GetWorldPosition().y)
-		{
-			Empusa->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-			Empusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-		}
 	}
 }
 
@@ -121,17 +103,17 @@ void TestLevel::LevelChangeStart()
 			Player->SetUserControllType();
 			NetworkManager::LinkNetwork(Player.get(), this);
 
-			std::shared_ptr<Item_DevilBreaker> Item_Overture = CreateActor<Item_DevilBreaker>();
-			Item_Overture->SetDevilBreaker(DevilBreaker::Overture);
-			Item_Overture->GetTransform()->SetLocalPosition({ -1000, 50, -1000 });
+			//std::shared_ptr<Item_DevilBreaker> Item_Overture = CreateActor<Item_DevilBreaker>();
+			//Item_Overture->SetDevilBreaker(DevilBreaker::Overture);
+			//Item_Overture->GetTransform()->SetLocalPosition({ -1000, 50, -1000 });
 
-			std::shared_ptr<Item_DevilBreaker> Item_Gerbera = CreateActor<Item_DevilBreaker>();
-			Item_Gerbera->SetDevilBreaker(DevilBreaker::Gerbera);
-			Item_Gerbera->GetTransform()->SetLocalPosition({ -1200, 50, -1000 });
+			//std::shared_ptr<Item_DevilBreaker> Item_Gerbera = CreateActor<Item_DevilBreaker>();
+			//Item_Gerbera->SetDevilBreaker(DevilBreaker::Gerbera);
+			//Item_Gerbera->GetTransform()->SetLocalPosition({ -1200, 50, -1000 });
 
-			std::shared_ptr<Item_DevilBreaker> Item_Buster = CreateActor<Item_DevilBreaker>();
-			Item_Buster->SetDevilBreaker(DevilBreaker::BusterArm);
-			Item_Buster->GetTransform()->SetLocalPosition({ -800, 50, -1000 });
+			//std::shared_ptr<Item_DevilBreaker> Item_Buster = CreateActor<Item_DevilBreaker>();
+			//Item_Buster->SetDevilBreaker(DevilBreaker::BusterArm);
+			//Item_Buster->GetTransform()->SetLocalPosition({ -800, 50, -1000 });
 		}
 		else
 		{
@@ -157,7 +139,6 @@ void TestLevel::LevelChangeStart()
 		HellCaina = CreateActor<Enemy_HellCaina>();
 		HellCaina->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
 		HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-		//HellCaina->Off();
 	}
 
 	//if (nullptr == Empusa)
@@ -180,17 +161,16 @@ void TestLevel::LevelChangeStart()
 		Flat->GetPhysXComponent()->SetWorldPosition({ 0, -50, 0 });
 	}
 
-	GameEngineCoreWindow::Clear();
-	GameEngineCoreWindow::AddDebugRenderTarget(0, "Forward Target", GetCamera(100)->GetCamForwardTarget());
+	//GameEngineCoreWindow::Clear();
+	//GameEngineCoreWindow::AddDebugRenderTarget(0, "Forward Target", GetCamera(100)->GetCamForwardTarget());
 	//GameEngineCoreWindow::AddDebugRenderTarget(1, "Deferred Target", GetCamera(100)->GetCamDeferrdTarget());
 	//GameEngineCoreWindow::AddDebugRenderTarget(2, "Light Target", GetCamera(100)->GetDeferredLightTarget());
-	GameEngineCoreWindow::AddDebugRenderTarget(3, "Alpha Target", GetCamera(100)->GetCamAlphaTarget());
-	GameEngineCoreWindow::AddDebugRenderTarget(4, "Last Target", GetCamera(100)->GetCamTarget());
+	//GameEngineCoreWindow::AddDebugRenderTarget(3, "Alpha Target", GetCamera(100)->GetCamAlphaTarget());
+	//GameEngineCoreWindow::AddDebugRenderTarget(4, "Last Target", GetCamera(100)->GetCamTarget());
 	//GameEngineCoreWindow::AddDebugRenderTarget(5, "Bake Shadow", GetLevel()->GetDirectionalLight()->GetBakeTarget(0));
 	//GameEngineCoreWindow::AddDebugRenderTarget(6, "Last Shadow", GetLevel()->GetDirectionalLight()->GetShadowTarget());
 }
 
 void TestLevel::LevelChangeEnd()
 {
-	IsMessage = false;
 }

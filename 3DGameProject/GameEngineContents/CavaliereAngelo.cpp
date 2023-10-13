@@ -124,7 +124,7 @@ void CavaliereAngelo::Start()
 	MonsterCollision->GetTransform()->SetLocalScale({ 80, 180, 70 });
 	MonsterCollision->GetTransform()->SetLocalPosition({ 0, 50, 0 });
 	MonsterCollision->SetColType(ColType::OBBBOX3D);
-	RN_MonsterCollision->GetTransform()->SetLocalScale({ 700, 0, 0 });
+	RN_MonsterCollision->GetTransform()->SetLocalScale({ 600, 0, 0 });
 	RN_MonsterCollision->GetTransform()->SetLocalPosition({ 0, 80, 0 });
 	//RN_MonsterCollision->Off();
 

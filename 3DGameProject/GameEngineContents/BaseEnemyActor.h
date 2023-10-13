@@ -142,7 +142,7 @@ protected:
 	float4 SnatchEndPosition = float4::ZERO;				    // Snatch 시작 시 목표로 하는 위치
 	float SnatchTime = 0.0f;								    // Snatch 시작 시 소요된 시간 (Lerp 시간)
 	float SlerpTime = 0.0f;									    // Slerp 시작 시 소요된 시간 (Slerp 시간)
-	float DotProductValue = 0.0f;                               // CheckHeadingRotationValue() 실행 후 내적 결과값
+	float DotProductValue = 0.0f;                               // MonsterAndPlayerDotProductDegree() 실행 후 내적 결과값
 	bool IsSnatch = false;									    // true로 변경 시 Snatch 실시, 끝나면 false로 변경됨
 	bool AnimationTurnStart = false;						    // true로 변경 시 랜더러가 턴 됐을 때 RotationCheck()를 실시할지 결정, 히트 시 false로 변경되며 몬스터를 해당 위치로 바로 회전시킴
 

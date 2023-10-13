@@ -7,8 +7,6 @@
 class TestLevel : public BaseLevel
 {
 public:
-	static TestLevel* TestLevelPtr;
-
 	// constrcuter destructer
 	TestLevel();
 	~TestLevel();
@@ -28,7 +26,6 @@ protected:
 	void LevelChangeEnd() override;
 
 private:
-	bool IsMessage = false;
 	std::shared_ptr<class AnimationToolWindow> AnimWindow = nullptr;
 	std::shared_ptr<class ObjectWindow> ObjWindow = nullptr;
 	std::shared_ptr<class Enemy_HellCaina> HellCaina = nullptr;

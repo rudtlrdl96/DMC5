@@ -122,6 +122,8 @@ protected:
 	void RecognizeCollisionCheck(float _DeltaTime) override;
 
 private:
+	std::shared_ptr<class GameEngineCollision> ParryCollision = nullptr;
+
 	void PlayerChase(float _DeltaTime);
 	void PlayerAttack(float _DeltaTime);
 	void ChangeState(int _StateValue);
