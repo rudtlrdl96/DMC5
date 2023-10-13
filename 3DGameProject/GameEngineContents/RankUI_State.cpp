@@ -199,6 +199,7 @@ void RankUI::StateInit_RankA()
 		RankA_Inside->SetClipData(float4::ZERONULL);
 		RankAFire->EffectOption.MulColor = float4{ 0.3f,0.3f,1.0f,1.f };
 		RankAFire->EffectOption.PlusColor = float4{ 0.274f,0.583f,1.f,0.0f };
+		EffectValue = false;
 	},
 	.Update = [this](float _DeltaTime)
 	{
@@ -228,7 +229,6 @@ void RankUI::StateInit_RankA()
 			},
 			.Update = [=](float _DeltaTime)
 			{
-				RankAFire->Off();
 				RankSpin(_DeltaTime,RankA_Frame,RankA_Inside);
 				RankClip(_DeltaTime, RankA_Frame, RankA_Inside, 300);
 
@@ -270,7 +270,7 @@ void RankUI::StateInit_RankS()
 		{
 			RankAFire->On();
 			RankAFire->ChangeAnimation("FireAni");
-			RankALightEffect->PlayFX("RankSLightEffect.effect");
+			RankSLightEffect->PlayFX("RankSLightEffect.effect");
 			EffectValue = false;
 		}
 	},
@@ -285,11 +285,9 @@ void RankUI::StateInit_RankS()
 			.Start = [=]()
 			{
 				MemberInitialize();
-				RankAFire->Off();
 			},
 			.Update = [=](float _DeltaTime)
 			{
-				RankAFire->Off();
 				RankSpin(_DeltaTime,RankS_Frame,RankS_Inside);
 				RankClip(_DeltaTime, RankS_Frame, RankS_Inside, 400);
 				if (UpTime > 1.0f)
@@ -330,7 +328,7 @@ void RankUI::StateInit_RankSS()
 		{
 			RankAFire->On();
 			RankAFire->ChangeAnimation("FireAni");
-			RankALightEffect->PlayFX("RankSLightEffect.effect");
+			RankSLightEffect->PlayFX("RankSLightEffect.effect");
 			EffectValue = false;
 		}
 	},
@@ -345,14 +343,11 @@ void RankUI::StateInit_RankSS()
 			.Start = [=]()
 			{
 				MemberInitialize();
-				RankAFire->Off();
-
 			},
 			.Update = [=](float _DeltaTime)
 			{
 				RankSpin(_DeltaTime,RankSS_Frame,RankSS_Inside);
 				RankClip(_DeltaTime, RankSS_Frame, RankSS_Inside, 500);
-				RankAFire->Off();
 				if (UpTime > 1.0f)
 				{
 					SetRankExPlane("RankSS_Explane.png", float4{ 269.0f,183.0f,0.0f }, InsideStart, _DeltaTime);
@@ -390,7 +385,7 @@ void RankUI::StateInit_RankSSS()
 		{
 			RankAFire->On();
 			RankAFire->ChangeAnimation("FireAni");
-			RankALightEffect->PlayFX("RankSLightEffect.effect");
+			RankSLightEffect->PlayFX("RankSLightEffect.effect");
 			EffectValue = false;
 		}
 	},
@@ -405,13 +400,11 @@ void RankUI::StateInit_RankSSS()
 			.Start = [=]()
 			{
 				MemberInitialize();
-				RankAFire->Off();
 			},
 			.Update = [=](float _DeltaTime)
 			{
 				RankSpin(_DeltaTime,RankSSS_Frame,RankSSS_Inside);
 				RankClip(_DeltaTime, RankSSS_Frame, RankSSS_Inside, 600);
-				RankAFire->Off();
 				if (UpTime > 1.0f)
 				{
 					SetRankExPlane("RankSSS_Explane.png", float4{ 431.0f,250.0f,0.0f }, InsideStart, _DeltaTime);

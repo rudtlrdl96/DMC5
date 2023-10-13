@@ -39,8 +39,12 @@ void RankUI::Start()
 	RankBackEffect_Up->IsUI = true;
 	RankALightEffect = CreateComponent<FXSystem>();
 	RankALightEffect->GetTransform()->SetLocalPosition({ InsidePos.x,InsidePos.y,25.0f });
-	RankALightEffect->GetTransform()->SetLocalScale({ 1.0f,1.0f,1.0f });
+	RankALightEffect->GetTransform()->SetLocalScale({ 5.0f,5.0f,5.0f });
 	RankALightEffect->IsUI = true;
+	RankSLightEffect = CreateComponent<FXSystem>();
+	RankSLightEffect->GetTransform()->SetLocalPosition({ InsidePos.x,InsidePos.y,25.0f });
+	RankSLightEffect->GetTransform()->SetLocalScale({ 3.0f,3.0f,3.0f });
+	RankSLightEffect->IsUI = true;
 	GameEngineDirectory NewMeshDir;
 	NewMeshDir.MoveParentToDirectory("ContentResources");
 	NewMeshDir.Move("ContentResources");
@@ -83,6 +87,7 @@ void RankUI::Start()
 		RankBackEffect->CreateFX(FXData::Find(File.GetFileName()));
 		RankBackEffect_Up->CreateFX(FXData::Find(File.GetFileName()));
 		RankALightEffect->CreateFX(FXData::Find(File.GetFileName()));
+		RankSLightEffect->CreateFX(FXData::Find(File.GetFileName()));
 	}
 
 
@@ -138,11 +143,10 @@ void RankUI::Start()
 
 	RankAFire = CreateComponent<UIEffectRenderer>(3);
 	RankAFire->RectInit("Effect_2D");
-	RankAFire->CreateAnimation({ .AnimationName = "FireAni", .SpriteName = "Effect_Fire_03.tga", .Start = 0, .End = 31,.FrameInter = 0.034f,.Loop = false });
+	RankAFire->CreateAnimation({ .AnimationName = "FireAni", .SpriteName = "Effect_Fire_06.tga", .Start = 0, .End = 31,.FrameInter = 0.034f,.Loop = false });
 	RankAFire->GetTransform()->SetLocalScale({ 240.0f,240.0f,0.0f });
 	RankAFire->GetTransform()->SetLocalPosition({InsidePos.x,InsidePos.y,20.0f});
 	RankAFire->Off();
-
 }
 
 void RankUI::Update(float _DeltaTime)
@@ -251,11 +255,14 @@ void RankUI::RankApper(float _Delta, std::shared_ptr<class UIFBXRenderer> _Rende
 				RankOut(_Delta, _PrevRender);
 			}
 			UIFBXActorBase::ShakeUIRender(_Render, float4(400.f, 400.f, 0.0f), _Delta);
-
+			if (IsValue == false)
+			{
+				EffectValue = true;
+				IsValue = true;
+			}
 		}
 		else
 		{
-			EffectValue = true;
 			_Render->GetTransform()->SetLocalPosition(StartPos);
 			ShakeRank = false;
 			RankFSM.ChangeState(_State);
@@ -391,6 +398,7 @@ void RankUI::MemberInitialize()
 	ScaleSpeed = 0.0f;
 	ScaleUpValue = false;
 	ScaleValue = false;
+	IsValue = false;
 }
 
 void RankUI::SetRankExPlane(const std::string_view& _Png,float4 _Scale, float4 _Pos, float _Ratio)
