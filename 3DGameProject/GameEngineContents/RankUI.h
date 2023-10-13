@@ -75,6 +75,7 @@ private:
 
 	std::shared_ptr<class FXSystem> RankBackEffect = nullptr;
 	std::shared_ptr<class FXSystem> RankBackEffect_Up = nullptr;
+	std::shared_ptr<class FXSystem> RankALightEffect = nullptr;
 	std::shared_ptr<class UIEffectRenderer> RankAFire = nullptr;
 
 	float Ratio = 0.0f;
@@ -92,7 +93,7 @@ private:
 	bool ScaleDownValue = false;
 	bool ScaleValue = false;
 	bool OutRank = false;
-
+	bool EffectValue = false;
 	//·©Å© Æ®·£½ºÆû
 	float4 StartRotation = { -90.0f,0.0f,0.0f };
 	float4 LeftTurn = { -90.0f,0.0f,-30.0f };

@@ -199,12 +199,14 @@ void RankUI::StateInit_RankA()
 		RankA_Inside->SetClipData(float4::ZERONULL);
 		RankAFire->EffectOption.MulColor = float4{ 0.3f,0.3f,1.0f,1.f };
 		RankAFire->EffectOption.PlusColor = float4{ 0.274f,0.583f,1.f,0.0f };
+		EffectValue = true;
 	},
 	.Update = [this](float _DeltaTime)
 	{
 		
 			
 		RankApper(_DeltaTime,RankA_Frame,RankState::Spin_RankA,true,RankB_Frame);
+
 	},
 	.End = [this]()
 	{
@@ -215,19 +217,13 @@ void RankUI::StateInit_RankA()
 		{
 			.StateValue = RankState::Spin_RankA,
 			.Start = [=]()
-			{
-				MemberInitialize();
-				RankAFire->On();
-				RankAFire->ChangeAnimation("FireAni");
-
+			{		
+			RankAFire->Off();
+			MemberInitialize();
 			},
 			.Update = [=](float _DeltaTime)
 			{
-				if (RankAFire->IsAnimationEnd() == true)
-				{
-					RankAFire->Off();
-					RankAFire->SetAnimPauseOn();
-				}
+
 				RankSpin(_DeltaTime,RankA_Frame,RankA_Inside);
 				RankClip(_DeltaTime, RankA_Frame, RankA_Inside, 300);
 

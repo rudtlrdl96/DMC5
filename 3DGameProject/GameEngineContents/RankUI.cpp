@@ -37,6 +37,10 @@ void RankUI::Start()
 	RankBackEffect_Up->GetTransform()->SetLocalPosition(InsidePos);
 	RankBackEffect_Up->GetTransform()->SetLocalScale({ 1.0f,1.0f,1.0f });
 	RankBackEffect_Up->IsUI = true;
+	RankALightEffect = CreateComponent<FXSystem>();
+	RankALightEffect->GetTransform()->SetLocalPosition({ InsidePos.x,InsidePos.y,20.0f });
+	RankALightEffect->GetTransform()->SetLocalScale({ 5.0f,5.0f,5.0f });
+	RankALightEffect->IsUI = true;
 	GameEngineDirectory NewMeshDir;
 	NewMeshDir.MoveParentToDirectory("ContentResources");
 	NewMeshDir.Move("ContentResources");
@@ -78,6 +82,7 @@ void RankUI::Start()
 		}
 		RankBackEffect->CreateFX(FXData::Find(File.GetFileName()));
 		RankBackEffect_Up->CreateFX(FXData::Find(File.GetFileName()));
+		RankALightEffect->CreateFX(FXData::Find(File.GetFileName()));
 	}
 
 
@@ -133,7 +138,7 @@ void RankUI::Start()
 
 	RankAFire = CreateComponent<UIEffectRenderer>(3);
 	RankAFire->RectInit("Effect_2D");
-	RankAFire->CreateAnimation({ .AnimationName = "FireAni", .SpriteName = "Effect_Fire_03.tga", .Start = 0, .End = 31,.FrameInter = 0.034f,.Loop = true });
+	RankAFire->CreateAnimation({ .AnimationName = "FireAni", .SpriteName = "Effect_Fire_03.tga", .Start = 0, .End = 31,.FrameInter = 0.034f,.Loop = false });
 	RankAFire->GetTransform()->SetLocalScale({ 240.0f,240.0f,0.0f });
 	RankAFire->GetTransform()->SetLocalPosition({InsidePos.x,InsidePos.y,20.0f});
 	RankAFire->Off();
@@ -239,6 +244,13 @@ void RankUI::RankApper(float _Delta, std::shared_ptr<class UIFBXRenderer> _Rende
 		Ratio += _Delta;
 		if (Ratio < 0.6f)
 		{
+			if (EffectValue == true)
+			{
+				RankAFire->On();
+				RankAFire->ChangeAnimation("FireAni");
+				RankALightEffect->PlayFX("RankALightEffect.effect");
+				EffectValue = false;
+			}
 			Rank_Explane->GetTransform()->SetLocalPosition({ 1060.0f,-50.0f,0.0f });
 			//만약에 이전 랭크가 있다면
 			if (_Value == true)
@@ -364,13 +376,14 @@ void RankUI::RankClip(float _DeltaTime , std::shared_ptr<class UIFBXRenderer> _R
 		}
 		RankScaleUpDown(_Render, _InsideRender, _DeltaTime);
 	}
-	if (EndUp <= 1.0f && EndUp>=0.0f)
+	if (EndUp <= 1.0f && EndUp>0.0f)
 	{
 		_InsideRender->SetClipData(float4::LerpClamp(float4(0.0f, 0.0f, 0.0f, 1.0f), float4(0.0f, EndUp, 0.0f, 1.0f), UpTime));
 	}
-	else
+	else if(EndUp > 1.0f)
 	{
 		_InsideRender->SetClipData(float4(0.0f,1.0f,0.0f,1.0f));
+		EndUp = 0.0f;
 
 	}
 }
