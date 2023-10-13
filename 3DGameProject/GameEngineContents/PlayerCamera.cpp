@@ -48,15 +48,15 @@ void PlayerCamera::Update(float _DeltaTime)
 	// 락온한 적 여부에 따라 계산
 	TargetCheck(_DeltaTime);
 	CameraControll(_DeltaTime);
-
+	float MulTrackingSpeed = std::clamp<float>((((GetTransform()->GetWorldPosition() - PlayerTransform->GetWorldPosition()).Size() - FastTrackingDistance) * FastTrackingSpeed), 1, 2);
 	// 락온 여부에 따라 카메라 추적 속도 조절
 	if (TargetTransform == nullptr)
 	{
-		GetTransform()->SetWorldPosition(float4::LerpClamp(GetTransform()->GetWorldPosition(), PlayerTransform->GetWorldPosition(), _DeltaTime * TrackingSpeed));
+		GetTransform()->SetWorldPosition(float4::LerpClamp(GetTransform()->GetWorldPosition(), PlayerTransform->GetWorldPosition(), _DeltaTime * TrackingSpeed * MulTrackingSpeed));
 	}
 	else
 	{
-		GetTransform()->SetWorldPosition(float4::LerpClamp(GetTransform()->GetWorldPosition(), PlayerTransform->GetWorldPosition(), _DeltaTime * LockOnTrackingSpeed));
+		GetTransform()->SetWorldPosition(float4::LerpClamp(GetTransform()->GetWorldPosition(), PlayerTransform->GetWorldPosition(), _DeltaTime * LockOnTrackingSpeed * MulTrackingSpeed));
 	}
 
 	// 레이캐스트로 벽 감지

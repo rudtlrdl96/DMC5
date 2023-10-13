@@ -266,12 +266,12 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 		break;
 	case DamageType::Light:
 
-		if (true == IsHeavyAttack)
+		if (true == IsBusterAttack)
 		{
 			return;
 		}
 
-		if (true == IsAirAttack || true == IsSlamAttack || true == IsBusterAttack)
+		if (true == IsAirAttack || true == IsSlamAttack || true == IsHeavyAttack)
 		{
 			StartRenderShaking(8);
 			ChangeState(FSM_State_HellCaina::HellCaina_Air_Damage_Under);
@@ -364,12 +364,12 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 		break;
 	case DamageType::Light:
 
-		if (true == IsHeavyAttack)
+		if (true == IsBusterAttack)
 		{
 			return;
 		}
 
-		if (true == IsAirAttack || true == IsSlamAttack || true == IsBusterAttack)
+		if (true == IsAirAttack || true == IsSlamAttack || true == IsHeavyAttack)
 		{
 			StartRenderShaking(8);
 			ChangeState_Client(FSM_State_HellCaina::HellCaina_Air_Damage_Under);

@@ -75,14 +75,14 @@ private:
 	float CameraRotYSpeed = 120.0f;		// 카메라 y축 회전 속도
 	float CameraRotXSpeed = 80.0f;		// 카메라 x축 회전 속도
 
-	float DistanceMul = 0.65f;
+	float DistanceMul = 0.68f;
 	float MinDistance = 260.0f;
-	float MaxDistance = 260.0f;
+	float MaxDistance = 1000.0f;
 	float TrackingSpeed = 5.0f;
 	float LockOnTrackingSpeed = 10.0f;
 
-	float FastTrackingDistance = 400.0f;
-	float FastTrackingSpeed = 20.0f;
+	float FastTrackingDistance = 120.0f;
+	float FastTrackingSpeed = 0.5f;
 
 	bool IsMouseControll = false;
 
