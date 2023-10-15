@@ -127,16 +127,70 @@ void CavaliereAngelo::Start()
 	RN_MonsterCollision->GetTransform()->SetLocalScale({ 600, 0, 0 });
 	RN_MonsterCollision->GetTransform()->SetLocalPosition({ 0, 80, 0 });
 
+	ParryCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
+	ParryCollision->SetColType(ColType::OBBBOX3D);
+	ParryCollision->GetTransform()->SetLocalScale({ 200, 200, 200 });
+	ParryCollision->GetTransform()->SetLocalPosition({ 0, 100, 100 });
+
 	// 기본 세팅
 	FallDistance = 55.0f;
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
 
 	//EnemyRenderer->Off();
 	//MonsterCollision->Off();
-	//RN_MonsterCollision->Off();
+	RN_MonsterCollision->Off();
 
 	// 넷 오브젝트 타입 설정
 	SetNetObjectType(Net_ActorType::HellCaina);
+}
+
+void CavaliereAngelo::Update(float _DeltaTime)
+{
+	// 싱글, 서버, 클라이언트 상관없이 계속해서 체크되어야 하는 함수들
+	{
+		_DeltaTime *= GetTimeScale();
+		EnemyRenderer->SetTimeScale(GetTimeScale());
+
+		if (GetTimeScale() == 0.0f)
+		{
+			MonsterAttackCollision->Off();
+			PhysXCapsule->Off();
+		}
+		else if (false == PhysXCapsule->IsUpdate())
+		{
+			PhysXCapsule->On();
+		}
+
+		RenderShake(_DeltaTime);
+		//MonsterSnatch(_DeltaTime);
+		ParryCheck();
+	}
+
+	// 싱글 플레이일 때 실행
+	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
+	{
+		RecognizeCollisionCheck(_DeltaTime);
+		DamageCollisionCheck(_DeltaTime);
+		EnemyFSM.Update(_DeltaTime);
+	}
+	else
+	{
+		// 서버 플레이일 때 실행
+		if (NetControllType::ActiveControll == GetControllType())
+		{
+			RecognizeCollisionCheck(_DeltaTime);
+			DamageCollisionCheck(_DeltaTime);
+			EnemyFSM.Update(_DeltaTime);
+		}
+		// 클라이언트 플레이일 때 실행
+		else
+		{
+			Update_NetworkTrans(_DeltaTime);
+			DamageCollisionCheck_Client(_DeltaTime);
+			EnemyFSM.Update(_DeltaTime);
+			MonsterAttackCollision->Off();
+		}
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -355,6 +409,22 @@ void CavaliereAngelo::RecognizeCollisionCheck(float _DeltaTime)
 
 	PlayerContactCheck(_DeltaTime, Collision.get());
 	IsRecognize = true;
+}
+
+void CavaliereAngelo::ParryCheck()
+{
+	if (false == IsParryCheck)
+	{
+		return;
+	}
+
+	std::shared_ptr<GameEngineCollision> Col = ParryCollision->Collision(CollisionOrder::PlayerAttack);
+	if (nullptr == Col) { return; }
+
+	std::shared_ptr<AttackCollision> AttackCol = std::dynamic_pointer_cast<AttackCollision>(Col);
+	if (nullptr == AttackCol) { return; }
+
+	ParryOkay = true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -616,13 +686,30 @@ void CavaliereAngelo::EnemyCreateFSM()
 	/////////////////////////////////     Attack     //////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
+	// 01(오중단) 공격, 끝나면 방어자세
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack01,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_Attack01_R");
+	},
+	.Update = [=](float _DeltaTime) {
 
+
+
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack01);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////     Damage     //////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
-	EnemyFSM.ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_Start);
+	EnemyFSM.ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack01);
 }
 
 void CavaliereAngelo::EnemyCreateFSM_Client()

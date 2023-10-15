@@ -10,7 +10,6 @@ enum FSM_State_CavaliereAngelo
 	CavaliereAngelo_Dengeki_Reload_Loop,		 // em5501_dengeki_reload_loop : 번개 충전 루프
 	CavaliereAngelo_Dengeki_Reload_End,			 // em5501_dengeki_reload_end : 번개 충전 끝
 	CavaliereAngelo_Warp_Start,					 // em5501_warp_start : 워프 시작
-	CavaliereAngelo_Warp_Offense,				 // em5501_warp_offense : 망토 걷고 검 앞으로(먼지 모르겠따)
 	CavaliereAngelo_Warp_End,					 // em5501_warp_end : 워프 끝->방어자세로 변경
 
 	// <move> ==================================================================================
@@ -28,54 +27,49 @@ enum FSM_State_CavaliereAngelo
 	CavaliereAngelo_Guard_Quick_Turn_Left,       // em5501_guard_quick_turn_L : 방어자세 도중 왼쪽으로 180도 회전
 	CavaliereAngelo_Guard_Quick_Turn_Right,      // em5501_guard_quick_turn_R : 방어자세 도중 오른쪽으로 180도 회전
 
+	CavaliereAngelo_Attack_Guard_Turn_Right,     // em5501_Attack_guard_turn_R : 방어자세 도중 오른쪽으로 180도 회전하며 공격
+
+	CavaliereAngelo_Attack01_Turn_Back,			 // em5501_Attack01_back_L : 방어자세 도중 왼쪽으로 돌면서 공격 시작 전    // 돌면서 공격 류는 안쓸지도 (Slerp turn 실시할 예정)
+	CavaliereAngelo_Attack01_Turn_Left,			 // em5501_Attack01_turn_L : 왼쪽으로 돈 후 공격 시작 전					// 돌면서 공격 류는 안쓸지도 (Slerp turn 실시할 예정)
+	CavaliereAngelo_Attack01_Turn_Right,		 // em5501_Attack01_turn_R : 방어자세 도중 오른쪽으로 돌면서 공격 시작 전   // 돌면서 공격 류는 안쓸지도 (Slerp turn 실시할 예정)
+
 	// <attack> ==================================================================================
-	CavaliereAngelo_Attack_Collider,             // em5501_Attack_collider : 서있다가 칼 위로 들어올리기 시작
-	CavaliereAngelo_Attack_Collider_To_Dengeki,  // em5501_Attack_collider_to_Dengeki : 칼 위로 들고있다가 내리면서 앞으로 왼손
-	CavaliereAngelo_Attack_Collider_To_Rakurai,  // em5501_Attack_collider_to_Rakurai : 칼 위로 들고있다가 앞으로 휘두르면서 내리고 방어자세 걷기 시작
+	CavaliereAngelo_Attack_Collider,             // em5501_Attack_collider : 공격 도중 칼 위로 들어서 빠른 충전
+	CavaliereAngelo_Attack_Collider_To_Dengeki,  // em5501_Attack_collider_to_Dengeki : 충전 완료 후 Dengeki 걷기 시작
+	CavaliereAngelo_Attack_Collider_To_Rakurai,  // em5501_Attack_collider_to_Rakurai : 충전 완료 후 Rakurai 실시, 이후 방어자세 걷기 시작
 												 
-	CavaliereAngelo_Attack_Rakurai,				 // em5501_Attack_Rakurai : 방어자세 걷기 하다가 망토 걷고 왼손 위로 들고있기
-	CavaliereAngelo_Attack_Rakurai_to_01,		 // em5501_Attack_Rakurai_to_01 : 왼손 위로 들고있다가 앞으로 공격 시작(전)
-	CavaliereAngelo_Attack_Rakurai_to_stinger,   // em5501_Attack_Rakurai_to_stinger : 왼손 위로 들고있다가 앞으로 걸어감, 이후 휘두르기 시작 전
+	CavaliereAngelo_Attack_Rakurai,				 // em5501_Attack_Rakurai : 방어자세 도중 Rakurai 실시, 이후 방어자세 걷기 시작
+	CavaliereAngelo_Attack_Rakurai_to_01,		 // em5501_Attack_Rakurai_to_01 : Rakurai 후 바로 01(오중단) 공격 시작 전
+	CavaliereAngelo_Attack_Rakurai_to_stinger,   // em5501_Attack_Rakurai_to_stinger : Rakurai 후 바로 stinger(왼중단-크게휘두르기) 공격 시작 전
 												 
-	CavaliereAngelo_Attack_03_to_Rakuraui,       // em5501_Attack_03_to_Rakuraui : 서있다가 방어자세로 전환
-												 
-	CavaliereAngelo_Attack_guard_turn_R,		 // em5501_Attack_guard_turn_R : 가드 자세에서 돌면서 공격 시작
-	CavaliereAngelo_Attack_kaiten,				 // em5501_Attack_kaiten : 망토 펼치고 앞으로 크게 휘두른 뒤 방어자세 걷기 시작
-												 
-	CavaliereAngelo_Attack_Stinger_To_01,		 // em5501_Attack_stinger_to_01 : 칼 돌려서 올려치기 시작 전
-	CavaliereAngelo_Attack_Stinger01,			 // em5501_Attack_stinger01 : 방어자세 걷다가 발도자세 취하고 휘두루기 시작 전
-	CavaliereAngelo_Attack_Stinger02,			 // em5501_Attack_stinger02 : 발도 공격 완료 후 방어자세
+	CavaliereAngelo_Attack_Stinger01,			 // em5501_Attack_stinger01 : 방어자세 걷는 도중 바로 stinger(오중-크게휘두르기) 공격 시작 전
+	CavaliereAngelo_Attack_Stinger02,			 // em5501_Attack_stinger02 : stinger 실시, 이후 방어자세 걷기 시작 end 애니메이션으로 변경
 
-	CavaliereAngelo_Attack01,					 // em5501_Attack01_R : 방어자세 도중 앞으로 휘두르기
-	CavaliereAngelo_Attack01_Turn_Back,			 // em5501_Attack01_back_L : 방어자세 도중 왼쪽으로 돌면서 공격 시작 전
-	CavaliereAngelo_Attack01_Turn_Left,			 // em5501_Attack01_turn_L : 왼쪽으로 돈 후 공격 중
-	CavaliereAngelo_Attack01_Turn_Right,		 // em5501_Attack01_turn_R : 방어자세 도중 오른쪽으로 돌면서 공격 시작 전
+	CavaliereAngelo_Attack01,					 // em5501_Attack01_R : 01(오중단) 공격, 끝나면 방어자세, 66프레임 on, 69프레임 off
+	CavaliereAngelo_Attack02,					 // em5501_Attack02 : 02(오상단) 공격, 끝나면 방어자세, 44프레임 on, 47프레임 off
+	CavaliereAngelo_Attack03,					 // em5501_Attack03 : 03(왼중단) 공격, 끝나면 방어자세, 29프레임 on, 33프레임 off
+	CavaliereAngelo_Attack04,					 // em5501_Attack04 : 04(양손으로 상단찍기) 공격, 끝나면 방어자세, 90프레임 on, 94프레임 off
+	CavaliereAngelo_Attack04_C1,				 // em5501_Attack04_C1 : C1(위로 올려치기) 공격, 끝나면 방어자세
+	CavaliereAngelo_Attack05,					 // em5501_Attack05 : 05(찌르기)끝난 후 방어자세로 전환(역패리 후 찌르기 공격 성공하면 취하는 자세)
 
-	CavaliereAngelo_Attack02,					 // em5501_Attack02 : 위에서 아래로 내려치기 후 방어자세 전환
-	CavaliereAngelo_Attack03,					 // em5501_Attack03 : 앞으로 크게 휘두르기 후 방어자세 전환
-	CavaliereAngelo_Attack04,					 // em5501_Attack04 : 앞으로 양손 내려찍기 후 방어자세 전환
-	CavaliereAngelo_Attack04_C1,				 // em5501_Attack04_C1 : 앞으로 크게 올려치기 후 방어자세 전환
-	CavaliereAngelo_Attack04_C2,				 // em5501_Attack04_C2 : 앞으로 양손 내려찍기 시작 전
-	CavaliereAngelo_Attack05,					 // em5501_Attack05 : 앞으로 검 치켜들고 있다가 방어자세 전환
+	CavaliereAngelo_Parry_Lose,					 // em5501_Parry_lose : 패리 중첩 후 스턴, 이후 자세 회복
+	CavaliereAngelo_Parry_Even01,				 // em5501_Parry_even01 : 01 패리
+	CavaliereAngelo_Parry_Even01_To_02,			 // em5501_Parry_even01_to_02 : 01 패리 후 바로 02 시작 전
+	CavaliereAngelo_Parry_Even01_To_04,			 // em5501_Parry_even01_to_04 : 01 패리 후 바로 03 시작 전
+	CavaliereAngelo_Parry_normal01,				 // em5501_Parry_normal01 : 01 패리 후 경직
+	CavaliereAngelo_Parry_normal01_to_02,		 // em5501_Parry_normal01_to_02 : 01 패리 후 경직, 이후 02 시작 전
+	CavaliereAngelo_Parry_normal01_to_03,		 // em5501_Parry_normal01_to_03 : 01 패리 후 경직, 이후 03 시작 전
+	CavaliereAngelo_Parry_normal01_to_C1,		 // em5501_Parry_normal01_to_C1 : 01 패리 후 경직, 이후 C1 시작 전
 
-	CavaliereAngelo_Parry_Lose,					 // em5501_Parry_lose : 패리 중첩 후 스턴
-	CavaliereAngelo_Parry_Even01,				 // em5501_Parry_even01 : 1번 공격 패리
-	CavaliereAngelo_Parry_Even01_To_02,			 // em5501_Parry_even01_to_02 : 1번공격 패리 이후 2번공격 시작 전
-	CavaliereAngelo_Parry_Even01_To_04,			 // em5501_Parry_even01_to_04 : 1번공격 패리 이후 4번공격 시작 전
-	CavaliereAngelo_Parry_normal01,				 // em5501_Parry_normal01 : 1번공격 패리 후 스턴(? )
-	CavaliereAngelo_Parry_normal01_to_02,		 // em5501_Parry_normal01_to_02 : 1번 스턴 후 2번공격 전환 시작 전
-	CavaliereAngelo_Parry_normal01_to_03,		 // em5501_Parry_normal01_to_03 : 1번 스턴 후 3번공격 전환 시작 전
-	CavaliereAngelo_Parry_normal01_to_C1,		 // em5501_Parry_normal01_to_C1 : 1번 스턴 후 C1 공격 전환 시작 전
-
-	CavaliereAngelo_Parry_TATE,					 // em5501_Parry_TATE : 망토 앞으로 휘두르기(패리 ? )
-	CavaliereAngelo_Parry_TATE_To_Rakurai,		 // em5501_Parry_TATE_to_Rakurai : Tate 후 왼손 치켜들기 시작 전
-	CavaliereAngelo_Parry_TATE_To_05,			 // em5501_Parry_TATE_to_05 : Tate 후 5번 공격 시작 전
-	CavaliereAngelo_Parry_TATE_To_C1,			 // em5501_Parry_TATE_to_C1 : Tate 후 C1 공격 시작 전
-	CavaliereAngelo_Parry_Win01,				 // em5501_Parry_win01 : 1번 패리 윈(? )
-	CavaliereAngelo_Parry_Win01_to_05,			 // em5501_Parry_win01_to_05 : 1번 윈 후 5번공격 전환 시작 전
-	CavaliereAngelo_Parry_Win01_to_C1,			 // em5501_Parry_win01_to_C1 : 1번 윈 후 C1공격 전환 시작 전
+	CavaliereAngelo_Parry_TATE,					 // em5501_Parry_TATE : 보스 역패리
+	CavaliereAngelo_Parry_TATE_To_Rakurai,		 // em5501_Parry_TATE_to_Rakurai : 역패리 후 Rakurai
+	CavaliereAngelo_Parry_TATE_To_05,			 // em5501_Parry_TATE_to_05 : 역패리 후 05, 47프레임 on, 52프레임 off
+	CavaliereAngelo_Parry_TATE_To_C1,			 // em5501_Parry_TATE_to_C1 : 역패리 후 04 시작 전
+	CavaliereAngelo_Parry_Win01,				 // em5501_Parry_win01 : 01 역패리 성공
+	CavaliereAngelo_Parry_Win01_to_05,			 // em5501_Parry_win01_to_05 : 01 역패리 후 05, 35프레임 on, 40프레임 off
+	CavaliereAngelo_Parry_Win01_to_C1,			 // em5501_Parry_win01_to_C1 : 01 역패리 후 C1 시작 전
 	CavaliereAngelo_Stun_To_02,					 // em5501_Stun_to_02 : 스턴 후 2번 공격 시작 전
-	CavaliereAngelo_Warp_End_Stinger,		     // em5501_warp_end_stinger : 워프 후 스트링거 시작 전
+	CavaliereAngelo_Warp_End_Stinger,		     // em5501_warp_end_stinger : 워프 후 02 시작 전
 
 	// <damage> ==================================================================================
 	CavaliereAngelo_Dengeki_Reload_Damage,       // em5501_dengeki_reload_damage : 번개 충전 중 공격 맞을 때 모션
@@ -109,6 +103,7 @@ public:
 
 protected:
 	void Start() override;
+	void Update(float _DeltaTime) override;
 	void EnemyMeshLoad() override;
 	void EnemyAnimationLoad() override;
 	void EnemyTypeLoad() override;
@@ -126,6 +121,7 @@ private:
 	void ChangeState(int _StateValue);
 	void ChangeState_Client(int _StateValue);
 	void AttackCalculation();
+	void ParryCheck();
 
 	float WaitTime = 0.0f;
 	float RotationDelayTime = 0.0f;
@@ -142,7 +138,10 @@ private:
 	bool IsVergilLight = false;
 	bool IsCollapse = false;      // 쓰러져있는 상태
 	bool IsRecognize = false;
+	bool IsParryCheck = false;    // 패리 체크 on off
+	bool ParryOkay = false;
 
 	bool IsPowerUpValue = false;
+	
 
 };
