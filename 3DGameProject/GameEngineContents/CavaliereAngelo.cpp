@@ -129,8 +129,8 @@ void CavaliereAngelo::Start()
 
 	ParryCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
 	ParryCollision->SetColType(ColType::OBBBOX3D);
-	ParryCollision->GetTransform()->SetLocalScale({ 200, 200, 200 });
-	ParryCollision->GetTransform()->SetLocalPosition({ 0, 100, 100 });
+	ParryCollision->GetTransform()->SetLocalScale({ 220, 220, 200 });
+	ParryCollision->GetTransform()->SetLocalPosition({ 0, 150, 220 });
 
 	// 기본 세팅
 	FallDistance = 55.0f;
@@ -413,7 +413,7 @@ void CavaliereAngelo::RecognizeCollisionCheck(float _DeltaTime)
 
 void CavaliereAngelo::ParryCheck()
 {
-	if (false == IsParryCheck)
+	if (false == IsParryCheck || true == ParryOkay)
 	{
 		return;
 	}
@@ -457,13 +457,15 @@ void CavaliereAngelo::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em5501_defense-Idle");
 	},
 	.Update = [=](float _DeltaTime) {
-	if (true == EnemyRenderer->IsAnimationEnd())
+	WaitTime += _DeltaTime;
+	if (WaitTime >= 1.0f)
 	{
-		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Attack_To_Guard_Start);
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack01);
 		return;
 	}
 	},
 	.End = [=] {
+	WaitTime = 0.0f;
 	}
 	});
 
@@ -686,18 +688,115 @@ void CavaliereAngelo::EnemyCreateFSM()
 	/////////////////////////////////     Attack     //////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
-	// 01(오중단) 공격, 끝나면 방어자세
+	// 01(오중단) 공격, 끝나면 방어자세, 66프레임 on, 69프레임 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack01,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em5501_Attack01_R");
 	},
 	.Update = [=](float _DeltaTime) {
 
+	if (false == ParryOkay)
+	{
+		if (60 <= EnemyRenderer->GetCurFrame() && 69 > EnemyRenderer->GetCurFrame())
+		{
+			IsParryCheck = true;
+		}
+		else
+		{
+			IsParryCheck = false;
+		}
+	}
 
+	if (true == ParryOkay)
+	{
+		MonsterAttackCollision->Off();
+		ParryOkay = false;
+		IsParryCheck = false;
+		++ParryStack;
+
+		if (ParryStack <= 1)
+		{
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_Even01);
+		}
+		else if (ParryStack >= 2 && ParryStack < 5)
+		{
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_normal01);
+		}
+		else if (ParryStack >= 5)
+		{
+			ParryStack = 0;
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Damage_Drill);
+		}
+		return;
+	}
 
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack01);
+		ParryStack = 0;
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+	});
+
+	// 02(오상단) 공격, 끝나면 방어자세, 44프레임 on, 47프레임 off
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack02,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_Attack02");
+	if (true == Event01)
+	{
+		Event01 = false;
+		EnemyRenderer->SetCurFrame(38);
+	}
+	if (true == Normal01)
+	{
+		Normal01 = false;
+		EnemyRenderer->SetCurFrame(38);
+	}
+	},
+	.Update = [=](float _DeltaTime) {
+
+	if (false == ParryOkay)
+	{
+		if (38 <= EnemyRenderer->GetCurFrame() && 47 > EnemyRenderer->GetCurFrame())
+		{
+			IsParryCheck = true;
+		}
+		else
+		{
+			IsParryCheck = false;
+		}
+	}
+
+	if (true == ParryOkay)
+	{
+		MonsterAttackCollision->Off();
+		ParryOkay = false;
+		IsParryCheck = false;
+		++ParryStack;
+
+		if (ParryStack <= 1)
+		{
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_Even01);
+		}
+		else if (ParryStack >= 2 && ParryStack < 5)
+		{
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_normal01);
+		}
+		else if (ParryStack >= 5)
+		{
+			ParryStack = 0;
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Damage_Drill);
+		}
+		return;
+	}
+
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ParryStack = 0;
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
 		return;
 	}
 	},
@@ -705,11 +804,226 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 		});
 
+	// 03(왼중단) 공격, 끝나면 방어자세, 29프레임 on, 33프레임 off
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack03,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_Attack03");
+	if (true == Event01)
+	{
+		Event01 = false;
+		EnemyRenderer->SetCurFrame(23);
+	}
+	if (true == Normal01)
+	{
+		Normal01 = false;
+		EnemyRenderer->SetCurFrame(23);
+	}
+	},
+	.Update = [=](float _DeltaTime) {
+
+	if (false == ParryOkay)
+	{
+		if (23 <= EnemyRenderer->GetCurFrame() && 33 > EnemyRenderer->GetCurFrame())
+		{
+			IsParryCheck = true;
+		}
+		else
+		{
+			IsParryCheck = false;
+		}
+	}
+
+	if (true == ParryOkay)
+	{
+		MonsterAttackCollision->Off();
+		ParryOkay = false;
+		IsParryCheck = false;
+		++ParryStack;
+
+		if (ParryStack <= 1)
+		{
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_Even01);
+		}
+		else if (ParryStack >= 2 && ParryStack < 5)
+		{
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_normal01);
+		}
+		else if (ParryStack >= 5)
+		{
+			ParryStack = 0;
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Damage_Drill);
+		}
+		return;
+	}
+
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ParryStack = 0;
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 플레이어 패리 성공 후 바로 공격
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_Even01,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_Parry_even01");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+
+		if (0 == RandC)
+		{
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_Even01_To_02);
+		}
+		else
+		{
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_Even01_To_03);
+		}
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 플레이어 패리 후 성공 후 약경직
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_normal01,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_Parry_normal01");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+
+		if (0 == RandC)
+		{
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_normal01_to_02);
+		}
+		else
+		{
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_normal01_to_03);
+		}
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 01 패리 후 바로 02 시작 전, 37프레임 스타트 (38 프레임으로 변경)
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_Even01_To_02,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_Parry_even01_to_02");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		Event01 = true;
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack02);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 01 패리 후 바로 03 시작 전, 24 프레임 스타트 (23 프레임으로 변경)
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_Even01_To_03,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_Parry_even01_to_04");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		Event01 = true;
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack03);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 01 패리 후 경직, 이후 02 시작 전, 37프레임 스타트 (38 프레임으로 변경)
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_normal01_to_02,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_Parry_normal01_to_02");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		Normal01 = true;
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack02);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 01 패리 후 경직, 이후 03 시작 전, 24 프레임 스타트 (23 프레임으로 변경)
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_normal01_to_03,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_Parry_normal01_to_03");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		Normal01 = true;
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack03);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	//// 01 패리 후 경직, 이후 C1 시작 전, 62 프레임 스타트
+	//EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_normal01_to_C1,
+	//.Start = [=] {
+	//EnemyRenderer->ChangeAnimation("em5501_Parry_normal01_to_C1");
+	//},
+	//.Update = [=](float _DeltaTime) {
+	//if (true == EnemyRenderer->IsAnimationEnd())
+	//{
+	//	Normal01 = true;
+	//	ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack03);
+	//	return;
+	//}
+	//},
+	//.End = [=] {
+	//}
+	//	});
+
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////     Damage     //////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
-	EnemyFSM.ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack01);
+	// 정면공격(드릴) 맞고 스턴 (스턴이 조금 더 김), 이후 자세 회복
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Damage_Drill,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_Damage_Drill");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	ParryStack = 0;
+	}
+		});
+
+	EnemyFSM.ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
 }
 
 void CavaliereAngelo::EnemyCreateFSM_Client()

@@ -53,13 +53,13 @@ enum FSM_State_CavaliereAngelo
 	CavaliereAngelo_Attack05,					 // em5501_Attack05 : 05(찌르기)끝난 후 방어자세로 전환(역패리 후 찌르기 공격 성공하면 취하는 자세)
 
 	CavaliereAngelo_Parry_Lose,					 // em5501_Parry_lose : 패리 중첩 후 스턴, 이후 자세 회복
-	CavaliereAngelo_Parry_Even01,				 // em5501_Parry_even01 : 01 패리
-	CavaliereAngelo_Parry_Even01_To_02,			 // em5501_Parry_even01_to_02 : 01 패리 후 바로 02 시작 전
-	CavaliereAngelo_Parry_Even01_To_04,			 // em5501_Parry_even01_to_04 : 01 패리 후 바로 03 시작 전
-	CavaliereAngelo_Parry_normal01,				 // em5501_Parry_normal01 : 01 패리 후 경직
-	CavaliereAngelo_Parry_normal01_to_02,		 // em5501_Parry_normal01_to_02 : 01 패리 후 경직, 이후 02 시작 전
-	CavaliereAngelo_Parry_normal01_to_03,		 // em5501_Parry_normal01_to_03 : 01 패리 후 경직, 이후 03 시작 전
-	CavaliereAngelo_Parry_normal01_to_C1,		 // em5501_Parry_normal01_to_C1 : 01 패리 후 경직, 이후 C1 시작 전
+	CavaliereAngelo_Parry_Even01,				 // em5501_Parry_even01 : 플레이어 패리 성공 후 바로 공격
+	CavaliereAngelo_Parry_Even01_To_02,			 // em5501_Parry_even01_to_02 : 01 패리 후 바로 02 시작 전, 37프레임 스타트 (38 프레임으로 변경)
+	CavaliereAngelo_Parry_Even01_To_03,			 // em5501_Parry_even01_to_04 : 01 패리 후 바로 03 시작 전, 24 프레임 스타트 (23 프레임으로 변경)
+	CavaliereAngelo_Parry_normal01,				 // em5501_Parry_normal01 : 플레이어 패리 후 성공 후 약경직 
+	CavaliereAngelo_Parry_normal01_to_02,		 // em5501_Parry_normal01_to_02 : 01 패리 후 경직, 이후 02 시작 전, 37프레임 스타트 (38 프레임으로 변경)
+	CavaliereAngelo_Parry_normal01_to_03,		 // em5501_Parry_normal01_to_03 : 01 패리 후 경직, 이후 03 시작 전, 24 프레임 스타트 (23 프레임으로 변경)
+	CavaliereAngelo_Parry_normal01_to_C1,		 // em5501_Parry_normal01_to_C1 : 01 패리 후 경직, 이후 C1 시작 전, 62 프레임 스타트
 
 	CavaliereAngelo_Parry_TATE,					 // em5501_Parry_TATE : 보스 역패리
 	CavaliereAngelo_Parry_TATE_To_Rakurai,		 // em5501_Parry_TATE_to_Rakurai : 역패리 후 Rakurai
@@ -129,7 +129,7 @@ private:
 	float AttackDelayCheck = 0.0f;
 	float AttackDelayTime = 0.0f;
 
-	short WalkCount = 0;
+	short ParryStack = 0;
 
 	bool IsHeavyAttack = false;   // 강공격 히트
 	bool IsAirAttack = false;     // 에어공격 히트
@@ -140,6 +140,9 @@ private:
 	bool IsRecognize = false;
 	bool IsParryCheck = false;    // 패리 체크 on off
 	bool ParryOkay = false;
+
+	bool Event01 = false;
+	bool Normal01 = false;
 
 	bool IsPowerUpValue = false;
 	
