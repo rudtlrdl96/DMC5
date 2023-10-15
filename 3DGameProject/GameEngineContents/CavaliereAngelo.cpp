@@ -126,7 +126,6 @@ void CavaliereAngelo::Start()
 	MonsterCollision->SetColType(ColType::OBBBOX3D);
 	RN_MonsterCollision->GetTransform()->SetLocalScale({ 600, 0, 0 });
 	RN_MonsterCollision->GetTransform()->SetLocalPosition({ 0, 80, 0 });
-	//RN_MonsterCollision->Off();
 
 	// 기본 세팅
 	FallDistance = 55.0f;
@@ -510,7 +509,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	});
 
-	// 방어자세에서 걷기 시작
+	// 방어자세 걷기 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_Start,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em5501_guard_to_walk");
@@ -526,7 +525,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	});
 
-	// 걷기 루프
+	// 방어자세 걷기 루프
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_Loop,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em5501_A-walk_loop");
@@ -534,7 +533,14 @@ void CavaliereAngelo::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_End);
+		if (true)
+		{
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Dengeki_Start);
+		}
+		else
+		{
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_End);
+		}
 		return;
 	}
 	},
@@ -542,7 +548,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	});
 
-	// 걷기 끝
+	// 방어자세 걷기 끝
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_End,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em5501_A-walk_End_L0");
@@ -558,6 +564,54 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	});
 
+	// Dengeki 걷기 시작
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Dengeki_Start,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_Attack_Dengeki_Start");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Dengeki_Loop);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// Dengeki 걷기 루프
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Dengeki_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_Attack_Dengeki_Loop");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Dengeki_End);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// Dengeki 걷기 끝
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Dengeki_End,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_Attack_Dengeki_End");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_Loop);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////     Attack     //////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////
@@ -568,7 +622,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	/////////////////////////////////     Damage     //////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
-	EnemyFSM.ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
+	EnemyFSM.ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_Start);
 }
 
 void CavaliereAngelo::EnemyCreateFSM_Client()
