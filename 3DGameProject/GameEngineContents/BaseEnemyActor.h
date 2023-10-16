@@ -177,6 +177,7 @@ protected:
 	float4 PushDirect = float4::ZERO;	  // 몬스터의 날아갈 방향(후방)
 
 	void AllDirectSetting();              // 몬스터의 현재 위치와 각도에 대해 전방, 후방, 좌측, 우측에 대한 노말 벡터값을 결정해준다. Phsysics와 Engine 연산이 1프레임 차이나기 때문에 벡터를 임의로 회전시킨다.
+	void AllDirectSetting_Normal();       // 몬스터의 현재 위치와 각도에 대해 전방, 후방, 좌측, 우측에 대한 노말 벡터값을 결정해준다.
 	void PushDirectSetting();             // 몬스터의 현재 위치와 각도에 대해 날아갈 방향을 PushDirect에 노말벡터로 저장한다.
 	
 	/// <summary>

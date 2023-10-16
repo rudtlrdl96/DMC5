@@ -516,6 +516,17 @@ void BaseEnemyActor::AllDirectSetting()
 }
 
 /// <summary>
+/// 몬스터의 현재 위치와 각도에 대해 전방, 후방, 좌측, 우측에 대한 노말 벡터값을 결정해준다.
+/// </summary>
+void BaseEnemyActor::AllDirectSetting_Normal()
+{
+	ForwardDirect = GetTransform()->GetWorldForwardVector().NormalizeReturn();
+	BackDirect = GetTransform()->GetWorldBackVector().NormalizeReturn();
+	RightDirect = GetTransform()->GetWorldRightVector().NormalizeReturn();
+	LeftDirect = GetTransform()->GetWorldLeftVector().NormalizeReturn();
+}
+
+/// <summary>
 /// 몬스터의 현재 위치와 각도에 대해 날아갈 방향을 PushDirect에 노말벡터로 저장한다.
 /// </summary>
 void BaseEnemyActor::PushDirectSetting()
