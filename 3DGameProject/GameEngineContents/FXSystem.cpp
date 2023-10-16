@@ -167,7 +167,7 @@ void FXSystem::ChangeFX(std::shared_ptr<class FXData> _FX)
 
 			if (UnitDatas[i].CutX == 1)
 			{
-				FXRenders[UnitDatas[i].MeshName]->SetDistortionTexture("DistortionSample_00.jpg");
+				FXRenders[UnitDatas[i].MeshName]->SetDistortionTexture(DistortionTextureName);
 			}
 			else
 			{
@@ -308,7 +308,7 @@ void FXSystem::FXSetting()
 
 			if (UnitDatas[i].CutX == 1)
 			{
-				FXRenders[UnitDatas[i].MeshName]->SetDistortionTexture("DistortionSample_00.jpg");
+				FXRenders[UnitDatas[i].MeshName]->SetDistortionTexture(DistortionTextureName);
 			}
 			else
 			{

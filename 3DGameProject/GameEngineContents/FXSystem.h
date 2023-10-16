@@ -34,6 +34,11 @@ public:
 		return CurFX;
 	}
 
+	void SetDistortionTextureName(const std::string_view& _Name)
+	{
+		DistortionTextureName = _Name;
+	}
+
 	void Play();
 
 	float CurFrameTime = 0.0f;
@@ -57,6 +62,6 @@ protected:
 private:
 	std::map<std::string , std::shared_ptr<class EffectRenderer>> FXRenders;
 	std::shared_ptr<FXData> CurFX = nullptr;
-
+	std::string_view DistortionTextureName = "DistortionSample_00.jpg";
 };
 
