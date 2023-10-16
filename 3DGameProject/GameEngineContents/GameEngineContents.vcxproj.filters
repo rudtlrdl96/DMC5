@@ -477,6 +477,9 @@
     <ClInclude Include="Location2_Level.h">
       <Filter>Levels\Stage\1.Location2</Filter>
     </ClInclude>
+    <ClInclude Include="Item_RedOrb.h">
+      <Filter>Actor\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -945,6 +948,9 @@
     </ClCompile>
     <ClCompile Include="FieldMapObjEditGUI.cpp">
       <Filter>Levels\Stage\StageEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="Item_RedOrb.cpp">
+      <Filter>Actor\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

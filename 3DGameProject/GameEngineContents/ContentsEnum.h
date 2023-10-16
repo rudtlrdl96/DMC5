@@ -72,6 +72,7 @@ enum class CollisionOrder
 	GameEngineRenderer,
 	EventZone,
 	DevilBreaker,
+	RedOrb,
 };
 
 enum class DevilBreaker

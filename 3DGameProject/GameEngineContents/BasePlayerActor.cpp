@@ -3,6 +3,7 @@
 #include <GameEngineBase/GameEngineNet.h>
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
+#include <GameEngineCore/PhysXCapsuleComponent.h>
 #include "PlayerController.h"
 #include "PlayerCamera.h"
 #include "ServerWindow.h"
@@ -11,10 +12,10 @@
 #include "BaseLog.h"
 #include "AnimationEvent.h"
 #include "NetworkManager.h"
-#include <GameEngineCore/PhysXCapsuleComponent.h>
 #include "FsmChangePacket.h"
 #include "AttackCollision.h"
 #include "FXSystem.h"
+#include "Item_RedOrb.h"
 std::vector<BasePlayerActor*> BasePlayerActor::Players = std::vector<BasePlayerActor*>();
 
 BasePlayerActor::BasePlayerActor()
@@ -243,6 +244,7 @@ void BasePlayerActor::Update(float _DeltaTime)
 	{
 		InvincibilityTime -= _DeltaTime;
 		DamageColCheck();
+		OrbColCheck();
 	}
 }
 
@@ -336,6 +338,16 @@ void BasePlayerActor::DamageColCheck()
 		break;
 	}
 
+}
+
+void BasePlayerActor::OrbColCheck()
+{
+	std::shared_ptr<GameEngineCollision> Col = Col_Player->Collision(CollisionOrder::RedOrb);
+	if (nullptr == Col) { return; }
+	Item_RedOrb* Orb = dynamic_cast<Item_RedOrb*>(Col->GetActor());
+	if (nullptr == Orb) { return; }
+	Orb->Take();
+	// ¿Àºê È¹µæ
 }
 
 void BasePlayerActor::SetForce(float4 _Value)

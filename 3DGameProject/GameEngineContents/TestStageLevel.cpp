@@ -14,7 +14,7 @@
 #include "TestObject.h"
 #include "PlayerActor_Nero.h"
 #include "PlayerActor_Vergil.h"
-
+#include "Item_RedOrb.h"
 #include "ShaderTestActor.h"
 #include "FreeCameraActor.h"
 #include "ReflectionProbe.h"
@@ -136,6 +136,10 @@ void TestStageLevel::LevelChangeStart()
 		std::shared_ptr<PlayerActor_Vergil> Vergil = CreateActor<PlayerActor_Vergil>();
 		Vergil->SetUserControllType();
 		Vergil->SetWorldPosition({ 0, 100, 0 });
+	}
+	for (int i = 0; i < 20; i++)
+	{
+		CreateActor<Item_RedOrb>()->GetTransform()->SetWorldPosition({ 150 + i * 20.0f, 15, 150 + i * 20.0f });
 	}
 
 	// 테스트용 코드

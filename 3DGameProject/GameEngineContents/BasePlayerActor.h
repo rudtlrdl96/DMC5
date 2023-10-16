@@ -97,7 +97,7 @@ protected:
 	bool DTValue = false;
 private:
 	void DamageColCheck();
-
+	void OrbColCheck();
 	static std::vector<BasePlayerActor*> Players;
 	float InvincibilityTime = 0.0f; // 무적 프레임
 };
