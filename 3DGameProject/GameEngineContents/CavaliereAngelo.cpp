@@ -990,6 +990,21 @@ void CavaliereAngelo::EnemyCreateFSM()
 	/////////////////////////////////     Attack     //////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
+	{
+		EnemyRenderer->SetAnimationStartEvent("em5501_Attack01_R", 68, [=] {
+			int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+			if (0 == RandC)
+			{
+				Event01 = false;
+				Normal01 = false;
+				ParryStack = 0;
+				++ColliderStack;
+				ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack02);
+				return;
+			}
+			});
+	}
+
 	// 01(오중단) 공격, 끝나면 방어자세, 66프레임 on, 69프레임 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack01,
 	.Start = [=] {
@@ -1004,19 +1019,6 @@ void CavaliereAngelo::EnemyCreateFSM()
 	{
 		SlerpTurn(_DeltaTime);
 		AllDirectSetting_Normal();
-
-		if (68 == EnemyRenderer->GetCurFrame())
-		{
-			int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
-
-			if (0 == RandC)
-			{
-				Event01 = false;
-				Normal01 = false;
-				ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack02);
-				return;
-			}
-		}
 
 		if (79 > EnemyRenderer->GetCurFrame())
 		{
