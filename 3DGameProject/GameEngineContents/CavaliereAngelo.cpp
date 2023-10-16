@@ -485,18 +485,12 @@ void CavaliereAngelo::BossTurn()
 {
 	RotationCheck();
 
-	if (-3.0f <= DotProductValue && 3.0f >= DotProductValue)
+	if (-4.0f <= DotProductValue && 4.0f >= DotProductValue)
 	{
 		ForwardDirect = GetTransform()->GetWorldForwardVector().NormalizeReturn();
 		BackDirect = GetTransform()->GetWorldBackVector().NormalizeReturn();
 		RightDirect = GetTransform()->GetWorldRightVector().NormalizeReturn();
 		LeftDirect = GetTransform()->GetWorldLeftVector().NormalizeReturn();
-
-		// 한프레임 차이나서 꺾어줘야함
-		//ForwardDirect.RotationYDeg(DotProductValue);
-		//BackDirect.RotationYDeg(DotProductValue);
-		//RightDirect.RotationYDeg(DotProductValue);
-		//LeftDirect.RotationYDeg(DotProductValue);
 		return;
 	}
 
@@ -522,19 +516,12 @@ void CavaliereAngelo::BossTurn()
 	GoalRot.x = 0.0f;
 	GoalRot.z = 0.0f;
 
-	float4 Rot = float4::SLerpQuaternion(CurRot, GoalRot, 1.0f);
-	PhysXCapsule->SetWorldRotation(Rot);
+	PhysXCapsule->SetWorldRotation(GoalRot);
 
 	ForwardDirect = GetTransform()->GetWorldForwardVector().NormalizeReturn();
 	BackDirect = GetTransform()->GetWorldBackVector().NormalizeReturn();
 	RightDirect = GetTransform()->GetWorldRightVector().NormalizeReturn();
 	LeftDirect = GetTransform()->GetWorldLeftVector().NormalizeReturn();
-
-	// 한프레임 차이나서 꺾어줘야함
-	//ForwardDirect.RotationYDeg(DotProductValue);
-	//BackDirect.RotationYDeg(DotProductValue);
-	//RightDirect.RotationYDeg(DotProductValue);
-	//LeftDirect.RotationYDeg(DotProductValue);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
