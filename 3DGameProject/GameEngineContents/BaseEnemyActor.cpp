@@ -483,7 +483,7 @@ void BaseEnemyActor::SlerpCalculation()
 	CurRotation.z = 0.0f;
 	GoalRotation.x = 0.0f;
 	GoalRotation.z = 0.0f;
-	SlerpTime = 0.0f;
+	//SlerpTime = 0.0f;
 }
 
 /// <summary>

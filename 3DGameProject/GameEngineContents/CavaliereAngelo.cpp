@@ -993,10 +993,10 @@ void CavaliereAngelo::EnemyCreateFSM()
 	{
 		// Attack1 -> 2 연계
 		EnemyRenderer->SetAnimationStartEvent("em5501_Attack01_R", 68, [=] {
-			// ColliderStack이 다 찬 경우에는 33퍼 확률로 Idle로 이행 (그냥 return)
+			// ColliderStack이 다 찬 경우에는 25퍼 확률로 Idle로 이행 (그냥 return)
 			if (3 <= ColliderStack + 1)
 			{
-				int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+				int RandC = GameEngineRandom::MainRandom.RandomInt(0, 3);
 				if (0 == RandC)
 				{
 					return;
@@ -1020,7 +1020,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 		EnemyRenderer->SetAnimationStartEvent("em5501_Attack02", 59, [=] {
 			if (3 <= ColliderStack + 1)
 			{
-				int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+				int RandC = GameEngineRandom::MainRandom.RandomInt(0, 3);
 				if (0 == RandC)
 				{
 					return;
@@ -1042,7 +1042,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 		EnemyRenderer->SetAnimationStartEvent("em5501_Attack03", 37, [=] {
 			if (3 <= ColliderStack + 1)
 			{
-				int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+				int RandC = GameEngineRandom::MainRandom.RandomInt(0, 3);
 				if (0 == RandC)
 				{
 					return;
@@ -1065,8 +1065,10 @@ void CavaliereAngelo::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack01,
 	.Start = [=] {
 	RotationCheck();
+	SlerpCalculation();
 	AllDirectSetting_Normal();
 	SlerpCalculation();
+	SlerpTime = 0.0f;
 	EffectRenderer_0->PlayFX("Cavalier_Attack_1.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack01_R");
 	},
@@ -1084,6 +1086,21 @@ void CavaliereAngelo::EnemyCreateFSM()
 		if (129 < EnemyRenderer->GetCurFrame())
 		{
 			SetForwardMove(120.0f);
+		}
+
+		if (EnemyRenderer->GetCurFrame() < 64)
+		{
+			if (50 < EnemyRenderer->GetCurFrame())
+			{
+				RotationCheck();
+				SlerpCalculation();
+				SlerpTime = 0.0f;
+				SlerpTurn(_DeltaTime * 10.0f);
+			}
+			else
+			{
+				SlerpTurn(_DeltaTime * 1.1f);
+			}
 		}
 	}
 
@@ -1142,6 +1159,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	.Start = [=] {
 	RotationCheck();
 	SlerpCalculation();
+	SlerpTime = 0.0f;
 	EffectRenderer_1->PlayFX("Cavalier_Attack_2.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack02");
 	if (true == Event01)
@@ -1177,11 +1195,12 @@ void CavaliereAngelo::EnemyCreateFSM()
 			{
 				RotationCheck();
 				SlerpCalculation();
+				SlerpTime = 0.0f;
 				SlerpTurn(_DeltaTime * 10.0f);
 			}
 			else
 			{
-				SlerpTurn(_DeltaTime * 2.0f);
+				SlerpTurn(_DeltaTime * 1.36f);
 			}
 		}
 	}
@@ -1240,6 +1259,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	.Start = [=] {
 	RotationCheck();
 	SlerpCalculation();
+	SlerpTime = 0.0f;
 	EnemyRenderer->ChangeAnimation("em5501_Attack03");
 	if (true == Event01)
 	{
@@ -1267,15 +1287,19 @@ void CavaliereAngelo::EnemyCreateFSM()
 			SetForwardMove(120.0f);
 		}
 
-		if (EnemyRenderer->GetCurFrame() < 25)
+		if (EnemyRenderer->GetCurFrame() < 28)
 		{
 			if (20 < EnemyRenderer->GetCurFrame())
 			{
 				RotationCheck();
 				SlerpCalculation();
+				SlerpTime = 0.0f;
 				SlerpTurn(_DeltaTime * 10.0f);
 			}
-			SlerpTurn(_DeltaTime * 3.0f);
+			else
+			{
+				SlerpTurn(_DeltaTime * 2.0f);
+			}
 		}
 	}
 
@@ -1508,6 +1532,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	.Start = [=] {
 	RotationCheck();
 	SlerpCalculation();
+	SlerpTime = 0.0f;
 	SetMoveStop();
 	EnemyRenderer->ChangeAnimation("em5501_Attack04");
 	},
@@ -1517,6 +1542,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	{
 		RotationCheck();
 		SlerpCalculation();
+		SlerpTime = 0.0f;
 		SlerpTurn(_DeltaTime * 5.0f);
 	}
 	if (140 < EnemyRenderer->GetCurFrame())
