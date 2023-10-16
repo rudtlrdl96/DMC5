@@ -45,6 +45,7 @@ public:
 	{
 		BossTransform = _BossTransform;
 
+		MinDistance = 380.0f;
 		CameraDistance.z = -200 ;
 	}
 protected:

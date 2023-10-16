@@ -161,6 +161,7 @@ void TestLevel::LevelChangeStart()
 		Cavaliere = CreateActor<CavaliereAngelo>();
 		Cavaliere->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
 		Cavaliere->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+		Player->SetBossCam(Cavaliere->GetTransform());
 	}
 
 	if (nullptr == Flat)

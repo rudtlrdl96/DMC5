@@ -117,7 +117,6 @@ private:
 	std::shared_ptr<class GameEngineCollision> ParryCollision = nullptr;
 	std::shared_ptr<class FXSystem> EffectRenderer_0 = nullptr;
 	std::shared_ptr<class FXSystem> EffectRenderer_1 = nullptr;
-	std::shared_ptr<class FXSystem> EffectRenderer_2 = nullptr;
 
 	void PlayerChase(float _DeltaTime);
 	void PlayerAttack(float _DeltaTime);
