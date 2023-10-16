@@ -122,6 +122,8 @@ private:
 	void ChangeState_Client(int _StateValue);
 	void AttackCalculation();
 	void ParryCheck();
+	void ParryTime();
+	void BossTurn();
 
 	float WaitTime = 0.0f;
 	float RotationDelayTime = 0.0f;

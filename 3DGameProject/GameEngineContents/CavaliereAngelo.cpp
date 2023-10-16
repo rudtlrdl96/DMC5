@@ -61,6 +61,17 @@ void CavaliereAngelo::EnemyMeshLoad()
 		break;
 	}
 
+	// PaperBurn, z값 변경하면 됨
+	//if (nullptr == GameEngineTexture::Find("PaperBurnNoise.jpg"))
+	//{
+	//	GameEngineTexture::Load(GameEnginePath::GetFileFullPath("ContentResources",
+	//		{
+	//			"Texture", "BurnNoiseTexture"
+	//		}, "PaperBurnNoise.jpg"));
+	//}
+
+	//EnemyRenderer->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
+
 	EnemyRenderer->GetTransform()->SetLocalScale({ 0.8f , 0.8f , 0.8f });
 }
 
@@ -124,7 +135,7 @@ void CavaliereAngelo::Start()
 	MonsterCollision->GetTransform()->SetLocalScale({ 80, 180, 70 });
 	MonsterCollision->GetTransform()->SetLocalPosition({ 0, 50, 0 });
 	MonsterCollision->SetColType(ColType::OBBBOX3D);
-	RN_MonsterCollision->GetTransform()->SetLocalScale({ 600, 0, 0 });
+	RN_MonsterCollision->GetTransform()->SetLocalScale({ 800, 0, 0 });
 	RN_MonsterCollision->GetTransform()->SetLocalPosition({ 0, 80, 0 });
 
 	ParryCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
@@ -138,7 +149,7 @@ void CavaliereAngelo::Start()
 
 	//EnemyRenderer->Off();
 	//MonsterCollision->Off();
-	RN_MonsterCollision->Off();
+	//RN_MonsterCollision->Off();
 
 	// 넷 오브젝트 타입 설정
 	SetNetObjectType(Net_ActorType::HellCaina);
@@ -201,37 +212,54 @@ void CavaliereAngelo::PlayerChase(float _DeltaTime)
 {
 	RotationCheck();
 
-	switch (EnemyRotationValue)
+	if (EnemyRotation::Right_180 == EnemyRotationValue)
 	{
-	case EnemyRotation::Forward:
-		AllDirectSetting();
-		//ChangeState(FSM_State_HellCaina::HellCaina_Walk_Start);
-		break;
-	case EnemyRotation::Left:
-		AllDirectSetting();
-		//ChangeState(FSM_State_HellCaina::HellCaina_Navi_Turn_Left);
-		break;
-	case EnemyRotation::Left_90:
-		AllDirectSetting();
-		//ChangeState(FSM_State_HellCaina::HellCaina_Navi_Turn_Left);
-		break;
-	case EnemyRotation::Left_180:
-		//ChangeState(FSM_State_HellCaina::HellCaina_Turn_Left_180);
-		break;
-	case EnemyRotation::Right:
-		AllDirectSetting();
-		//ChangeState(FSM_State_HellCaina::HellCaina_Navi_Turn_Right);
-		break;
-	case EnemyRotation::Right_90:
-		AllDirectSetting();
-		//ChangeState(FSM_State_HellCaina::HellCaina_Navi_Turn_Right);
-		break;
-	case EnemyRotation::Right_180:
-		//ChangeState(FSM_State_HellCaina::HellCaina_Turn_Right_180);
-		break;
-	default:
-		break;
+		if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
+		{
+			IsRecognize = true;
+		}
+		else
+		{
+			IsRecognize = false;
+		}
+
+		if (false == IsRecognize)
+		{
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Guard_Quick_Turn_Right);
+		}
+		else
+		{
+			IsRecognize = false;
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Guard_Quick_Turn_Right);
+		}
 	}
+	else if (EnemyRotation::Left_180 == EnemyRotationValue)
+	{
+		if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
+		{
+			IsRecognize = true;
+		}
+		else
+		{
+			IsRecognize = false;
+		}
+
+		if (false == IsRecognize)
+		{
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Guard_Quick_Turn_Left);
+		}
+		else
+		{
+			IsRecognize = false;
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Guard_Quick_Turn_Left);
+		}
+	}
+	else
+	{
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_Start);
+	}
+
+	return;
 }
 
 void CavaliereAngelo::PlayerAttack(float _DeltaTime)
@@ -424,7 +452,89 @@ void CavaliereAngelo::ParryCheck()
 	std::shared_ptr<AttackCollision> AttackCol = std::dynamic_pointer_cast<AttackCollision>(Col);
 	if (nullptr == AttackCol) { return; }
 
+	if (false == AttackCol->GetIsParryAttack()) { return; }
+
 	ParryOkay = true;
+}
+
+void CavaliereAngelo::ParryTime()
+{
+	SetTimeScale(0.2f);
+	GetLevel()->TimeEvent.AddEvent(0.4f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+		{
+			SetTimeScale(0.4f);
+		});
+	GetLevel()->TimeEvent.AddEvent(0.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+		{
+			SetTimeScale(0.6f);
+		});
+	GetLevel()->TimeEvent.AddEvent(0.8f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+		{
+			SetTimeScale(0.8f);
+		});
+	GetLevel()->TimeEvent.AddEvent(1.f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+		{
+			SetTimeScale(1.f);
+		});
+}
+
+/// <summary>
+/// Slerp로 회전해야 하는 경우에 대한 값을 계산합니다. 계산 결과는 float4 CurRotation, float4 GoalRotation에 저장됩니다. Y축에 대한 회전만 따집니다.
+/// </summary>
+void CavaliereAngelo::BossTurn()
+{
+	RotationCheck();
+
+	if (-3.0f <= DotProductValue && 3.0f >= DotProductValue)
+	{
+		ForwardDirect = GetTransform()->GetWorldForwardVector().NormalizeReturn();
+		BackDirect = GetTransform()->GetWorldBackVector().NormalizeReturn();
+		RightDirect = GetTransform()->GetWorldRightVector().NormalizeReturn();
+		LeftDirect = GetTransform()->GetWorldLeftVector().NormalizeReturn();
+
+		// 한프레임 차이나서 꺾어줘야함
+		//ForwardDirect.RotationYDeg(DotProductValue);
+		//BackDirect.RotationYDeg(DotProductValue);
+		//RightDirect.RotationYDeg(DotProductValue);
+		//LeftDirect.RotationYDeg(DotProductValue);
+		return;
+	}
+
+	float4 CurRot = GetTransform()->GetWorldRotation();
+
+	if (CurRot.y <= 0.0f)
+	{
+		CurRot.y += 360.f;
+	}
+
+	float4 Value = float4{ 0.0f, DotProductValue, 0.0f };
+
+	float4 GoalRot = CurRot + Value;
+
+	if (GoalRot.y <= 0.0f)
+	{
+		CurRot.y += 360.f;
+		GoalRot = CurRot + Value;
+	}
+
+	CurRot.x = 0.0f;
+	CurRot.z = 0.0f;
+	GoalRot.x = 0.0f;
+	GoalRot.z = 0.0f;
+
+	float4 Rot = float4::SLerpQuaternion(CurRot, GoalRot, 1.0f);
+	PhysXCapsule->SetWorldRotation(Rot);
+
+	ForwardDirect = GetTransform()->GetWorldForwardVector().NormalizeReturn();
+	BackDirect = GetTransform()->GetWorldBackVector().NormalizeReturn();
+	RightDirect = GetTransform()->GetWorldRightVector().NormalizeReturn();
+	LeftDirect = GetTransform()->GetWorldLeftVector().NormalizeReturn();
+
+	// 한프레임 차이나서 꺾어줘야함
+	//ForwardDirect.RotationYDeg(DotProductValue);
+	//BackDirect.RotationYDeg(DotProductValue);
+	//RightDirect.RotationYDeg(DotProductValue);
+	//LeftDirect.RotationYDeg(DotProductValue);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -460,7 +570,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	WaitTime += _DeltaTime;
 	if (WaitTime >= 1.0f)
 	{
-		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack01);
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_Start);
 		return;
 	}
 	},
@@ -587,6 +697,12 @@ void CavaliereAngelo::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em5501_guard_to_walk");
 	},
 	.Update = [=](float _DeltaTime) {
+
+	{
+		BossTurn();
+		SetForwardMove(120.0f);
+	}
+
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_Loop);
@@ -603,17 +719,29 @@ void CavaliereAngelo::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em5501_A-walk_loop");
 	},
 	.Update = [=](float _DeltaTime) {
-	if (true == EnemyRenderer->IsAnimationEnd())
+
 	{
-		if (true)
-		{
-			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Dengeki_Start);
-		}
-		else
-		{
-			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_End);
-		}
-		return;
+		BossTurn();
+		SetForwardMove(200.0f);
+	}
+
+	if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
+	{
+		IsRecognize = true;
+	}
+	else
+	{
+		IsRecognize = false;
+	}
+
+	if (false == IsRecognize)
+	{
+		//ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack01);
+	}
+	else
+	{
+		IsRecognize = false;
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack01);
 	}
 	},
 	.End = [=] {
@@ -626,6 +754,12 @@ void CavaliereAngelo::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em5501_A-walk_End_L0");
 	},
 	.Update = [=](float _DeltaTime) {
+
+	{
+		//BossTurn();
+		SetForwardMove(120.0f);
+	}
+
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
@@ -677,6 +811,38 @@ void CavaliereAngelo::EnemyCreateFSM()
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_Loop);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 방어자세 도중 왼쪽으로 180도 회전
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Guard_Quick_Turn_Left,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_guard_quick_turn_L");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 방어자세 도중 오른쪽으로 180도 회전
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Guard_Quick_Turn_Right,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_guard_quick_turn_R");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
 		return;
 	}
 	},
@@ -870,6 +1036,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 플레이어 패리 성공 후 바로 공격
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_Even01,
 	.Start = [=] {
+	ParryTime();
 	EnemyRenderer->ChangeAnimation("em5501_Parry_even01");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -895,6 +1062,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 플레이어 패리 후 성공 후 약경직
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_normal01,
 	.Start = [=] {
+	ParryTime();
 	EnemyRenderer->ChangeAnimation("em5501_Parry_normal01");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1009,6 +1177,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 정면공격(드릴) 맞고 스턴 (스턴이 조금 더 김), 이후 자세 회복
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Damage_Drill,
 	.Start = [=] {
+	ParryTime();
 	EnemyRenderer->ChangeAnimation("em5501_Damage_Drill");
 	},
 	.Update = [=](float _DeltaTime) {
