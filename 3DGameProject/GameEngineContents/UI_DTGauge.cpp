@@ -51,8 +51,13 @@ void UI_DTGauge::ActivateDT()
 {
 	if (DTIndex > -1 && DTIndex < 10)
 	{
+		DTGaugeBars[DTIndex]->On();
 		DTGauges[DTIndex]->SetMulColor({ 0.59f,0.588f,0.2925f,1.0f });
 		DTGauges[DTIndex]->SetAddColor({ 0.29f,0.088f,0.0925f,0.0f });
+	}
+	if (DTIndex == 9)
+	{
+		DTElectroEffect->On();
 	}
 }
 
@@ -63,7 +68,9 @@ void UI_DTGauge::CreateDTBar(const std::string_view& _Png,  float4 _Pos, float4 
 	DTGauge->SetTexture(_Png);
 	DTGauge->GetTransform()->SetLocalPosition(_Pos);
 	DTGauge->GetTransform()->SetLocalScale(_Scale);
+	DTGauge->Off();
 	DTGaugeBars.push_back(DTGauge);
+	
 }
 
 //{ 171.0f,34.8f,0.0f }
