@@ -157,6 +157,32 @@ void EffectToolWindow::CharacterSetting(std::shared_ptr<GameEngineLevel> Level)
 			CharacterRender->SetPause();
 		}
 	}
+
+	if (ImGui::Button("Open Cavaliere Mesh"))
+	{
+		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+			{
+				"Character", "Enemy", "CavaliereAngelo", "mesh", "em5501.fbx"
+			});
+		if (nullptr == GameEngineFBXMesh::Find("em5501.fbx"))
+		{
+			GameEngineFBXMesh::Load(Path);
+		}
+
+		if (nullptr == Actor)
+		{
+			Actor = Level->CreateActor<GameEngineActor>();
+			FXSys = Actor->CreateComponent<FXSystem>();
+		}
+		if (nullptr != CharacterRender)
+		{
+			CharacterRender->Death();
+		}
+		CharacterRender = Actor->CreateComponent<GameEngineFBXRenderer>();
+		CharacterRender->SetFBXMesh("em5501.fbx", "AniFBX");
+
+		CharacterRender->GetTransform()->SetLocalPosition({ 0.0f, -45.0f, 0.0f });
+	}
 }
 
 void EffectToolWindow::CreateFXRender(std::shared_ptr<GameEngineLevel> Level)

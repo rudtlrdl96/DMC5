@@ -173,6 +173,7 @@ void CavaliereAngelo::Update(float _DeltaTime)
 		_DeltaTime *= GetTimeScale();
 		EnemyRenderer->SetTimeScale(GetTimeScale());
 		EffectRenderer_0->TimeScale = GetTimeScale();
+		EffectRenderer_1->TimeScale = GetTimeScale();
 
 		if (GetTimeScale() == 0.0f)
 		{
@@ -916,11 +917,13 @@ void CavaliereAngelo::EnemyCreateFSM()
 	{
 		Event01 = false;
 		EnemyRenderer->SetCurFrame(38);
+		EffectRenderer_1->SetCurFrame(38);
 	}
 	if (true == Normal01)
 	{
 		Normal01 = false;
 		EnemyRenderer->SetCurFrame(38);
+		EffectRenderer_1->SetCurFrame(38);
 	}
 	},
 	.Update = [=](float _DeltaTime) {

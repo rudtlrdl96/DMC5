@@ -29,6 +29,11 @@ public:
 		Play();
 	}
 
+	void SetCurFrame(const int _Frame)
+	{
+		CurFrame = _Frame;
+	}
+
 	std::shared_ptr<class FXData> GetFX()
 	{
 		return CurFX;
