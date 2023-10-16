@@ -373,7 +373,7 @@ void RankUI::RankClip(float _DeltaTime , std::shared_ptr<class UIFBXRenderer> _R
 			RankBackEffect_Up->Loop = false;
 			ScaleUpValue = false;
 			ScaleValue = true;
-			ScaleSpeed = 0.0f;
+			ScaleSpeed = 0.0f;	
 		}
 		RankScaleUpDown(_Render, _InsideRender, _DeltaTime);
 	}
