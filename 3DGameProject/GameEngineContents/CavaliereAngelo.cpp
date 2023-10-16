@@ -695,17 +695,22 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 		});
 
+	{
+		EnemyRenderer->SetAnimationStartEvent("em5501_Attack_collider_to_Dengeki", 70, [=] { 
+			RotationCheck();
+			AllDirectSetting_Normal(); 
+			SlerpCalculation(); 
+			IsFastCharge = true; });
+	}
+
 	// 충전 완료 후 Dengeki 걷기 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Collider_To_Dengeki,
 	.Start = [=] {
-	RotationCheck();
-	AllDirectSetting_Normal();
-	SlerpCalculation();
-	IsFastCharge = true;
 	EnemyRenderer->ChangeAnimation("em5501_Attack_collider_to_Dengeki");
 	},
 	.Update = [=](float _DeltaTime) {
 
+	if (70 < EnemyRenderer->GetCurFrame())
 	{
 		SlerpTurn(_DeltaTime);
 		AllDirectSetting_Normal();
