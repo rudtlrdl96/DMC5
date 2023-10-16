@@ -29,6 +29,14 @@ void ShaderTestActor::Start()
 	//	GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_0_atos.png");
 	//}
 	 
+	if (nullptr == GameEngineTexture::Find("PaperBurnNoise.jpg"))
+	{
+		GameEngineTexture::Load(GameEnginePath::GetFileFullPath("ContentResources",
+			{
+				"Texture", "BurnNoiseTexture"
+			}, "PaperBurnNoise.jpg"));
+	}
+
 	TestRenderer = CreateComponent<GameEngineFBXRenderer>();
 	 	
 	//FBX파일경로를 찾아서 로드
@@ -42,8 +50,9 @@ void ShaderTestActor::Start()
 		GameEngineFBXMesh::Load(Path);
 	}
 	
-	TestRenderer->SetShadowFBXMesh("House1.fbx", false);
+	TestRenderer->SetFBXMesh("House1.FBX", "FBX");
 	TestRenderer->GetTransform()->SetLocalScale(float4(0.5f, 0.5f, 0.5f));
+	TestRenderer->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
 
 	//TestRenderer->EffectOption.MulColor = float4(1, 1, 1, 0.5f);
 
@@ -152,4 +161,14 @@ void ShaderTestActor::InitTest(int _Index)
 	}
 
 
+}
+
+#include <GameEngineCore/imgui.h>
+
+void ShaderTestActor::DrawEditor()
+{
+	float4 BC = TestRenderer->GetBaseColor();
+	float InputColor[4] = {BC.r, BC.g, BC.b, BC.a};
+	ImGui::DragFloat4("BaseColor", InputColor, 0.01f);
+	TestRenderer->SetBaseColor({ InputColor[0], InputColor[1], InputColor[2], InputColor[3]});
 }

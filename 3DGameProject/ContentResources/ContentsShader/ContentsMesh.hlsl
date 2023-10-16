@@ -64,6 +64,7 @@ Texture2D NormalTexture : register(t1); // NRMR
 Texture2D SpecularTexture : register(t2); // ATOS
 TextureCube ReflectionTexture : register(t3); // Reflection Cubemap
 Texture2D WaterNoiseTexture : register(t4); // WaterNoise
+Texture2D PaperBurnTexture : register(t5); // PaperBurn
 
 SamplerState ENGINEBASE : register(s0);
 SamplerState CUBEMAPSAMPLER : register(s1);
@@ -78,12 +79,6 @@ struct DeferredOutPut
     float4 SSSTarget : SV_Target5;
 };
 
-// float3 R = 2 * dot(V, N) * N - V;
-// float NoV = saturate(dot(N, V));
-
-// Point lobe in off-specular peak direction
-//R = GetOffSpecularPeakReflectionDir(N, R, GBuffer.Roughness);
-
 DeferredOutPut MeshTexture_PS(Output _Input)
 {
     DeferredOutPut Result = (DeferredOutPut)0;
@@ -96,6 +91,29 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     
     // r = Alpha, gba = sss (subsurface scattering)
     float4 AtosData = SpecularTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
+    
+    if (0 != BaseColor.b)
+    {
+        float4 BurnTexData = PaperBurnTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
+        
+        if (BurnTexData.r < BaseColor.b)
+        {
+            clip(-1);
+        }
+
+        if (BurnTexData.r >= BaseColor.b - 0.025 && BurnTexData.r <= BaseColor.b + 0.025)
+        {
+            AlbmData = float4(1, 1, 1, 1); // 흰
+        }
+        else if (BurnTexData.r >= BaseColor.b - 0.03 && BurnTexData.r <= BaseColor.b + 0.03)
+        {
+            AlbmData = float4(1, 1, 0, 1); // 노
+        }
+        else if (BurnTexData.r >= BaseColor.b - 0.05 && BurnTexData.r <= BaseColor.b + 0.05)
+        {
+            AlbmData = float4(1, 0, 0, 1); // 빨
+        }
+    }    
                    
     if (0.0f >= AtosData.r)
     {
@@ -141,21 +159,15 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     if (0 != BaseColor.g)
     {
         refnormal.xyz = NoiseWaterNormal(_Input.TEXCOORD.xy, WaterNoiseTexture, ENGINEBASE);
-        //refnormal.xyz = mul(refnormal, _Input.WORLDMATRIX).xyz;        
-        //refnormal.z = -refnormal.z;
     }
-    
-    //refnormal.y = -refnormal.y;
-    
+        
     // Point lobe in off-specular peak direction 
     // 코드 수정 필요
     //refnormal.xyz = GetOffSpecularPeakReflectionDir(refnormal.xyz, CameraViewDir, roughness);
             
     refvector = CalReflection(normalize(refnormal.xyz), normalize(CameraView));
-    // 축 반전
         
     float4 ReflectionColor = ReflectionTexture.Sample(CUBEMAPSAMPLER, normalize(refvector));
-    //float4 ReflectionColor = ReflectionTexture.Sample(ENGINEBASE, refvector);
     
     // 계산된 메탈릭 값
     float metallic = saturate(AlbmData.a - distribution);

@@ -61,6 +61,7 @@ Output MeshAniTexture_VS(Input _Input)
 Texture2D DiffuseTexture : register(t0); // ALBM
 Texture2D NormalTexture : register(t1); // NRMR
 Texture2D SpecularTexture : register(t2); // ATOS
+Texture2D PaperBurnTexture : register(t3); // PaperBurn
 
 SamplerState ENGINEBASE : register(s0);
 
@@ -86,7 +87,30 @@ DeferredOutPut MeshAniTexture_PS(Output _Input)
     
     // r = Alpha, gba = sss (subsurface scattering)
     float4 AtosData = SpecularTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
-         
+             
+    if(0 != BaseColor.b)
+    {
+        float4 BurnTexData = PaperBurnTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
+        
+        if (BurnTexData.r < BaseColor.b)
+        {
+            clip(-1);
+        }
+
+        if (BurnTexData.r >= BaseColor.b - 0.05 && BurnTexData.r <= BaseColor.b + 0.05)
+        {
+            AlbmData = float4(1, 0, 0, 1); // »¡
+        }        
+        else if (BurnTexData.r >= BaseColor.b - 0.03 && BurnTexData.r <= BaseColor.b + 0.03)
+        {
+            AlbmData = float4(1, 1, 0, 1); // ³ë
+        }        
+        else if (BurnTexData.r >= BaseColor.b - 0.025 && BurnTexData.r <= BaseColor.b + 0.025)
+        {
+            AlbmData = float4(1, 1, 1, 1); // Èò
+        }
+    }    
+
     if (0.0f >= AtosData.r)
     {
         clip(-1);

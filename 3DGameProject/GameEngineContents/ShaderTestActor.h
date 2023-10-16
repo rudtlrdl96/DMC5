@@ -27,6 +27,6 @@ private:
 	std::shared_ptr<GameEngineFBXRenderer> TestRenderer = nullptr;
 	//std::shared_ptr<EffectRenderer> TestRenderer = nullptr;
 
-
+	void DrawEditor() override;
 };
 

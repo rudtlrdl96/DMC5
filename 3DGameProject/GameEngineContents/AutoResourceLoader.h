@@ -77,4 +77,5 @@ private:
 
 	void LoadCountReset();
 	void UnloadExceptionCheck(int _UnloadGroup, const std::vector<int>& _UseGroup);
+	void LoadExceptionCheck(int _LoadGroup, const std::vector<int>& _UseGroup);
 };

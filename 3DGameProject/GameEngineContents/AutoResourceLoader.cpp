@@ -193,9 +193,10 @@ void AutoResourceLoader::LoadStart(int _LoadGroup, int _UnloadGroup, const std::
 		IsUnLoadEnd = false;
 	}
 
-	if (true == GroupDatas.contains(_UnloadGroup))
+	if (true == GroupDatas.contains(_LoadGroup))
 	{
-		GameEngineCore::JobQueue.Work(std::bind(LoadDataLoop, std::placeholders::_1, this, GroupDatas[_UnloadGroup]));
+		LoadExceptionCheck(_LoadGroup, _UseGroup);
+		GameEngineCore::JobQueue.Work(std::bind(LoadDataLoop, std::placeholders::_1, this, GroupDatas[_LoadGroup]));
 		IsLoadEnd = false;
 	}
 
@@ -355,6 +356,109 @@ void AutoResourceLoader::UnloadExceptionCheck(int _UnloadGroup, const std::vecto
 				if (true == GroupDatas[_UseGroup[i]].SoundNames.contains(SoundLoop->first))
 				{
 					SoundLoop = GroupDatas[_UnloadGroup].SoundNames.erase(SoundLoop);
+				}
+				else
+				{
+					++SoundLoop;
+				}
+			}
+		}
+	}
+}
+
+void AutoResourceLoader::LoadExceptionCheck(int _LoadGroup, const std::vector<int>& _UseGroup)
+{
+	{
+		std::map<std::string, std::string>::iterator TextureLoop = GroupDatas[_LoadGroup].TextureNames.begin();
+		std::map<std::string, std::string>::iterator TextureEnd = GroupDatas[_LoadGroup].TextureNames.end();
+
+		while (TextureLoop != TextureEnd)
+		{
+			for (size_t i = 0; i < _UseGroup.size(); i++)
+			{
+				if (_UseGroup[i] == _LoadGroup)
+				{
+					continue;
+				}
+
+				if (true == GroupDatas[_UseGroup[i]].TextureNames.contains(TextureLoop->first))
+				{
+					TextureLoop = GroupDatas[_LoadGroup].TextureNames.erase(TextureLoop);
+				}
+				else
+				{
+					++TextureLoop;
+				}
+			}
+		}
+	}
+
+	{
+		std::map<std::string, std::string>::iterator MeshLoop = GroupDatas[_LoadGroup].MeshNames.begin();
+		std::map<std::string, std::string>::iterator MeshEnd = GroupDatas[_LoadGroup].MeshNames.end();
+
+		while (MeshLoop != MeshEnd)
+		{
+			for (size_t i = 0; i < _UseGroup.size(); i++)
+			{
+				if (_UseGroup[i] == _LoadGroup)
+				{
+					continue;
+				}
+
+				if (true == GroupDatas[_UseGroup[i]].MeshNames.contains(MeshLoop->first))
+				{
+					MeshLoop = GroupDatas[_LoadGroup].MeshNames.erase(MeshLoop);
+				}
+				else
+				{
+					++MeshLoop;
+				}
+			}
+		}
+	}
+
+	{
+		std::map<std::string, std::string>::iterator AnimationLoop = GroupDatas[_LoadGroup].AnimationNames.begin();
+		std::map<std::string, std::string>::iterator AnimationEnd = GroupDatas[_LoadGroup].AnimationNames.end();
+
+		while (AnimationLoop != AnimationEnd)
+		{
+			for (size_t i = 0; i < _UseGroup.size(); i++)
+			{
+				if (_UseGroup[i] == _LoadGroup)
+				{
+					continue;
+				}
+
+				if (true == GroupDatas[_UseGroup[i]].AnimationNames.contains(AnimationLoop->first))
+				{
+					AnimationLoop = GroupDatas[_LoadGroup].AnimationNames.erase(AnimationLoop);
+				}
+				else
+				{
+					++AnimationLoop;
+				}
+			}
+		}
+	}
+
+	{
+		std::map<std::string, std::string>::iterator SoundLoop = GroupDatas[_LoadGroup].SoundNames.begin();
+		std::map<std::string, std::string>::iterator SoundEnd = GroupDatas[_LoadGroup].SoundNames.end();
+
+		while (SoundLoop != SoundEnd)
+		{
+			for (size_t i = 0; i < _UseGroup.size(); i++)
+			{
+				if (_UseGroup[i] == _LoadGroup)
+				{
+					continue;
+				}
+
+				if (true == GroupDatas[_UseGroup[i]].SoundNames.contains(SoundLoop->first))
+				{
+					SoundLoop = GroupDatas[_LoadGroup].SoundNames.erase(SoundLoop);
 				}
 				else
 				{
