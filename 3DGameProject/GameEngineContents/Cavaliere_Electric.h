@@ -15,7 +15,7 @@ public:
 	Cavaliere_Electric& operator=(Cavaliere_Electric&& _Other) noexcept = delete;
 
 	// 이 엑터를 _Target을 향하게 방향을 전환합니다
-	void LookTarget(std::shared_ptr<GameEngineActor> _Target)
+	void LookTarget(GameEngineActor* _Target)
 	{
 		LookTarget(_Target->GetTransform()->GetWorldPosition());
 	}
@@ -23,7 +23,13 @@ public:
 	void LookTarget(const float4& _Target);
 
 	// 번개 발사하는 함수. _Target 방향으로 날라갑니다
-	void Shoot(std::shared_ptr<GameEngineActor> _Target)
+	void Shoot(const float4& _Target)
+	{
+		Shoot();
+		LookTarget(_Target);
+	}
+	// 번개 발사하는 함수. _Target 방향으로 날라갑니다
+	void Shoot(GameEngineActor* _Target)
 	{
 		Shoot();
 		LookTarget(_Target);

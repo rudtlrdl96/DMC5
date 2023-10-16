@@ -12,7 +12,7 @@
 #include "AnimationEvent.h"
 #include "AttackCollision.h"
 #include "FXSystem.h"
-
+#include "Cavaliere_Electric.h"
 CavaliereAngelo::CavaliereAngelo() 
 {
 }
@@ -153,6 +153,10 @@ void CavaliereAngelo::Start()
 	ParryCollision->SetColType(ColType::OBBBOX3D);
 	ParryCollision->GetTransform()->SetLocalScale({ 220, 220, 280 });
 	ParryCollision->GetTransform()->SetLocalPosition({ 0, 150, 100 });
+
+	Electric = GetLevel()->CreateActor<Cavaliere_Electric>();
+	Electric->GetTransform()->SetParent(GetTransform());
+	Electric->Off();
 
 	// 기본 세팅
 	FallDistance = 55.0f;
@@ -885,11 +889,24 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// Dengeki 걷기 루프
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Dengeki_Loop,
 	.Start = [=] {
+	WaitTime = 0.2f;
 	EffectRenderer_0->PlayFX("Cavalier_Dengeki_Loop.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack_Dengeki_Loop");
 	},
 	.Update = [=](float _DeltaTime) {
-
+	WaitTime -= _DeltaTime;
+	if (WaitTime < 0)
+	{
+		if (nullptr == Player)
+		{
+			Electric->Shoot(GetTransform()->GetLocalForwardVector());
+		}
+		else
+		{
+			Electric->Shoot(Player);
+		}
+		WaitTime = 1.0f;
+	}
 	{
 		BossTurn();
 		SetForwardMove(200.0f);
@@ -898,7 +915,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	if (true == IsRecognize)
 	{
 		IsRecognize = false;
-		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack04);
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Dengeki_End);
 		return;
 	}
 

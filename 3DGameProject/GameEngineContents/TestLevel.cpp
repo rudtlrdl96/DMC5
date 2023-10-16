@@ -88,7 +88,7 @@ void TestLevel::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("SelectLevel_03"))
 	{
-		Electric->Shoot(Player);
+		Electric->Shoot(Player.get());
 	}
 
 	if (true == GameEngineInput::IsDown("ReturnToMainLevel"))

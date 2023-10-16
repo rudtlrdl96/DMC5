@@ -64,7 +64,8 @@ void Cavaliere_Electric::LookTarget(const float4& _Target)
 
 void Cavaliere_Electric::Shoot()
 {
-	GetTransform()->SetLocalPosition(float4::ZERO);
+	GetTransform()->SetLocalPosition({-25, 275, 0});
+	GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
 	ResetLiveTime();
 	On();
 	Col->On();
@@ -125,7 +126,7 @@ void Cavaliere_Electric::Update(float _DeltaTime)
 	TimeEvent.Update(_DeltaTime);
 	if (true == IsShoot)
 	{
-		GetTransform()->AddLocalPosition(GetTransform()->GetLocalForwardVector() * Speed * _DeltaTime);
+		GetTransform()->AddWorldPosition(GetTransform()->GetWorldForwardVector() * Speed * _DeltaTime);
 	}
 }
 
