@@ -19,6 +19,10 @@ protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 private:
+	std::shared_ptr<class UIEffectRenderer> DTElectroEffect = nullptr;
+	std::shared_ptr<class GameEngineUIRenderer> DTGauge = nullptr;
+
+	std::vector<std::shared_ptr<class UIFBXRenderer>> DTGauges;
 
 };
 

@@ -23,6 +23,5 @@ protected:
 private:
 	float ShakeTime = 0.1f;
 	float ShakeSpeed = 0.5f;
-
 };
 
