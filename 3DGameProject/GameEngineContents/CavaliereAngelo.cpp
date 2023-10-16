@@ -151,8 +151,8 @@ void CavaliereAngelo::Start()
 
 	ParryCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Null);
 	ParryCollision->SetColType(ColType::OBBBOX3D);
-	ParryCollision->GetTransform()->SetLocalScale({ 220, 220, 200 });
-	ParryCollision->GetTransform()->SetLocalPosition({ 0, 150, 220 });
+	ParryCollision->GetTransform()->SetLocalScale({ 220, 220, 240 });
+	ParryCollision->GetTransform()->SetLocalPosition({ 0, 150, 180 });
 
 	// 기본 세팅
 	FallDistance = 55.0f;
@@ -475,7 +475,7 @@ void CavaliereAngelo::ParryCheck()
 	if (nullptr == AttackCol) { return; }
 
 	if (false == AttackCol->GetIsParryAttack()) { return; }
-
+	AttackCol->ParryEvent();
 	ParryOkay = true;
 }
 
@@ -609,6 +609,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 번개 충전 루프
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Dengeki_Reload_Loop,
 	.Start = [=] {
+	EffectRenderer_0->PlayFX("Cavalier_Charge_1.effect");
 	EnemyRenderer->ChangeAnimation("em5501_dengeki_reload_loop");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -630,6 +631,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Dengeki_Reload_End,
 	.Start = [=] {
 	IsPowerUp = true;
+	EffectRenderer_0->PlayFX("Cavalier_Charge_2.effect");
 	EnemyRenderer->ChangeAnimation("em5501_dengeki_reload_end");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1551,6 +1553,41 @@ void CavaliereAngelo::EnemyCreateFSM()
 		SetForwardMove(120.0f);
 	}
 
+	if (false == ParryOkay)
+	{
+		if (85 <= EnemyRenderer->GetCurFrame() && 94 > EnemyRenderer->GetCurFrame())
+		{
+			IsParryCheck = true;
+		}
+		else
+		{
+			IsParryCheck = false;
+		}
+	}
+
+	if (true == ParryOkay)
+	{
+		SetMoveStop();
+		MonsterAttackCollision->Off();
+		ParryOkay = false;
+		IsParryCheck = false;
+		++ParryStack;
+
+		if (ParryStack <= 1)
+		{
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_Even01);
+		}
+		else if (ParryStack >= 2 && ParryStack < 5)
+		{
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_normal01);
+		}
+		else if (ParryStack >= 5)
+		{
+			ParryStack = 0;
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Damage_Drill);
+		}
+		return;
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		if (true == IsFastCharge)

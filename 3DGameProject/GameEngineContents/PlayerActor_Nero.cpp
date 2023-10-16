@@ -1963,12 +1963,12 @@ void PlayerActor_Nero::PlayerLoad()
 				if (nullptr == LockOnEnemyTransform)
 				{
 					Col_Attack->GetTransform()->SetLocalPosition({ 0, 100, 1000 });
-					Col_Attack->GetTransform()->SetLocalScale({ 50, 50, 2000 });
+					Col_Attack->GetTransform()->SetLocalScale({ 100, 100, 2000 });
 				}
 				else
 				{
 					Col_Attack->GetTransform()->SetWorldPosition(LockOnEnemyTransform->GetWorldPosition());
-					Col_Attack->GetTransform()->SetLocalScale({ 50, 50, 50 });
+					Col_Attack->GetTransform()->SetLocalScale({ 150, 150, 150 });
 				}
 				Col_Attack->On();
 				PhysXCapsule->TurnOffGravity();
@@ -2020,12 +2020,12 @@ void PlayerActor_Nero::PlayerLoad()
 				if (nullptr == LockOnEnemyTransform)
 				{
 					Col_Attack->GetTransform()->SetLocalPosition({ 0, 100, 1000 });
-					Col_Attack->GetTransform()->SetLocalScale({ 50, 50, 2000 });
+					Col_Attack->GetTransform()->SetLocalScale({ 100, 100, 2000 });
 				}
 				else
 				{
 					Col_Attack->GetTransform()->SetWorldPosition(LockOnEnemyTransform->GetWorldPosition());
-					Col_Attack->GetTransform()->SetLocalScale({ 50, 50, 50 });
+					Col_Attack->GetTransform()->SetLocalScale({ 150, 150, 150 });
 				}
 				Col_Attack->On();
 				BlueRoseOn();
@@ -4706,6 +4706,7 @@ void PlayerActor_Nero::NetLoad()
 void PlayerActor_Nero::Update_Character(float _DeltaTime)
 {
 	if (LoadCheck == false) { return; }
+	Renderer_Overture->SetTimeScale(GetTimeScale());
 	FSM.Update(_DeltaTime);
 
 	if (NetControllType::ActiveControll == GameEngineNetObject::GetControllType())
