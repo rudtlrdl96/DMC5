@@ -1005,6 +1005,19 @@ void CavaliereAngelo::EnemyCreateFSM()
 		SlerpTurn(_DeltaTime);
 		AllDirectSetting_Normal();
 
+		if (68 == EnemyRenderer->GetCurFrame())
+		{
+			int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+
+			if (0 == RandC)
+			{
+				Event01 = false;
+				Normal01 = false;
+				ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack02);
+				return;
+			}
+		}
+
 		if (79 > EnemyRenderer->GetCurFrame())
 		{
 			SetForwardMove(120.0f);
@@ -1051,7 +1064,6 @@ void CavaliereAngelo::EnemyCreateFSM()
 		}
 		return;
 	}
-
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ParryStack = 0;
@@ -1061,6 +1073,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	MonsterAttackCollision->Off();
 	SlerpTime = 0.0f;
 	}
 	});
