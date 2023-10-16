@@ -85,7 +85,7 @@ void Cavaliere_Electric::Start()
 	Effect = CreateComponent<FXSystem>();
 	std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
 	{
-		"Effect", "CavalierAngelo"
+		"Effect", "CavalierAngelo_Electric"
 	});
 	if (nullptr == FXData::Find("Cavalier_Electric_1.effect"))
 	{

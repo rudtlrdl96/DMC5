@@ -20,7 +20,7 @@
 #include "Item_DevilBreaker.h"
 #include "FXAA_Effect.h"
 #include "Cavaliere_Electric.h"
-
+#include "DistortionEffect.h"
 TestLevel::TestLevel()
 {
 }
@@ -46,6 +46,14 @@ void TestLevel::Start()
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 50.0f, -100.0f });
 	GetCamera(100)->GetCamTarget()->DepthSettingOff();
+
+	if (false)
+	{
+		std::shared_ptr<DistortionEffect> Distortion = GetCamera(0)->GetCamTarget()->CreateEffect<DistortionEffect>();
+		Distortion->SetMaskTexture(GetCamera(0)->GetCamAlphaTarget(), 1);
+		Distortion->SetDistortionValue(10, 10);
+		Distortion->SetMaxPixelValue(100, 100);
+	}
 }
 
 bool Is = false;

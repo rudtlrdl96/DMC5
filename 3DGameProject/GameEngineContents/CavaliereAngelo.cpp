@@ -11,6 +11,7 @@
 #include "NetworkManager.h"
 #include "AnimationEvent.h"
 #include "AttackCollision.h"
+#include "FXSystem.h"
 
 CavaliereAngelo::CavaliereAngelo() 
 {
@@ -106,13 +107,25 @@ void CavaliereAngelo::EnemyAnimationLoad()
 		}
 	);
 
-	//std::vector<GameEngineFile> FBXFiles = NewDir.GetAllFile({ ".FBX" });
+	// 이펙트 시스템 생성
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Effect");
+		NewDir.Move("CavalierAngelo");
+		std::vector<GameEngineFile> FXFiles = NewDir.GetAllFile({ ".Effect" });
 
-	//for (size_t i = 0; i < FBXFiles.size(); i++)
-	//{
-	//	GameEngineFBXAnimation::Load(FBXFiles[i].GetFullPath());
-	//	EnemyRenderer->CreateFBXAnimation(FBXFiles[i].GetFileName(), FBXFiles[i].GetFileName(), {.Inter = 0.01666f,});
-	//}
+		EffectRenderer_0 = CreateComponent<FXSystem>();
+		EffectRenderer_1 = CreateComponent<FXSystem>();
+		EffectRenderer_2 = CreateComponent<FXSystem>();
+		for (size_t i = 0; i < FXFiles.size(); i++)
+		{
+			EffectRenderer_0->CreateFX(FXData::Load(FXFiles[i].GetFullPath()));
+			EffectRenderer_1->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
+			EffectRenderer_2->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
+		}
+	}
 }
 
 void CavaliereAngelo::Start()
@@ -161,6 +174,7 @@ void CavaliereAngelo::Update(float _DeltaTime)
 	{
 		_DeltaTime *= GetTimeScale();
 		EnemyRenderer->SetTimeScale(GetTimeScale());
+		EffectRenderer_0->TimeScale = GetTimeScale();
 
 		if (GetTimeScale() == 0.0f)
 		{
@@ -844,6 +858,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 01(오중단) 공격, 끝나면 방어자세, 66프레임 on, 69프레임 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack01,
 	.Start = [=] {
+	EffectRenderer_0->PlayFX("Cavalier_Attack_1.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack01_R");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -897,6 +912,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 02(오상단) 공격, 끝나면 방어자세, 44프레임 on, 47프레임 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack02,
 	.Start = [=] {
+	EffectRenderer_1->PlayFX("Cavalier_Attack_2.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack02");
 	if (true == Event01)
 	{
@@ -1025,6 +1041,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	.Start = [=] {
 	ParryTime();
 	EnemyRenderer->ChangeAnimation("em5501_Parry_even01");
+	EffectRenderer_2->PlayFX("Cavalier_Parry.effect");
 	},
 	.Update = [=](float _DeltaTime) {
 	if (true == EnemyRenderer->IsAnimationEnd())
@@ -1051,7 +1068,8 @@ void CavaliereAngelo::EnemyCreateFSM()
 	.Start = [=] {
 	ParryTime();
 	EnemyRenderer->ChangeAnimation("em5501_Parry_normal01");
-	},
+	EffectRenderer_2->PlayFX("Cavalier_Parry.effect");
+		},
 	.Update = [=](float _DeltaTime) {
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
@@ -1165,6 +1183,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Damage_Drill,
 	.Start = [=] {
 	ParryTime();
+	EffectRenderer_2->PlayFX("Cavalier_Parry.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Damage_Drill");
 	},
 	.Update = [=](float _DeltaTime) {
