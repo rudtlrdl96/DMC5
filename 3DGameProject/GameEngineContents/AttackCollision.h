@@ -23,6 +23,15 @@ public:
 	AttackCollision& operator=(const AttackCollision& _Other) = delete;
 	AttackCollision& operator=(AttackCollision&& _Other) noexcept = delete;
 
+	void ParryAttackOn()
+	{
+		IsParryAttack = true;
+	}
+	bool GetIsParryAttack()
+	{
+		return IsParryAttack;
+	}
+
 	void SetIsPlayerCollision()
 	{
 		IsPlayerCollision = true;
@@ -145,5 +154,6 @@ private:
 	std::function<void(float)> CallBack_HitStop = nullptr;
 	float HitStopTime = 0;
 	bool IsPlayerCollision = false;
+	bool IsParryAttack = false;
 };
 
