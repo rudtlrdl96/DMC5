@@ -4,7 +4,7 @@
 #include <GameEngineCore/GameEngineFBXMesh.h>
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEngineCore/GameEngineRenderer.h>
-
+#include <GameEngineCore/GameEngineFBXAnimation.h>
 #include "NetworkTestLevel.h"
 #include "FXData.h"
 ThreadLoadingLevel* ThreadLoadingLevel::Inst = nullptr;
