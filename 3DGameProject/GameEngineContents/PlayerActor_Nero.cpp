@@ -77,6 +77,18 @@ void PlayerActor_Nero::PlayerLoad()
 			}
 			EffectSystem->CreateFX(FXData::Find(File.GetFileName()));
 		}
+
+		NewDir.MoveParent();
+		NewDir.Move("Damage");
+		Files = NewDir.GetAllFile({ ".effect" });
+		for (GameEngineFile File : Files)
+		{
+			if (nullptr == FXData::Find(File.GetFileName()))
+			{
+				FXData::Load(File.GetFullPath());
+			}
+			EffectSystem->CreateFX(FXData::Find(File.GetFileName()));
+		}
 	}
 
 	// Renderer »ý¼º
@@ -2993,6 +3005,7 @@ void PlayerActor_Nero::PlayerLoad()
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
+				EffectSystem->PlayFX("Damage_Light.effect");
 				Renderer->ChangeAnimation("pl0000_Damage_Common", true);
 				InputCheck = false;
 			},
@@ -3027,6 +3040,7 @@ void PlayerActor_Nero::PlayerLoad()
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
+				EffectSystem->PlayFX("Damage_Heavy.effect");
 				Renderer->ChangeAnimation("pl0000_Damage_Away_Fly", true);
 				InputCheck = false;
 			},
@@ -3054,6 +3068,7 @@ void PlayerActor_Nero::PlayerLoad()
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
+				EffectSystem->PlayFX("Damage_Heavy.effect");
 				Renderer->ChangeAnimation("pl0000_Damage_AirCombo_Fly", true);
 			},
 			.Update = [=](float _DeltaTime) {
@@ -3277,6 +3292,18 @@ void PlayerActor_Nero::NetLoad()
 		NewDir.Move("Nero");
 
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".effect" });
+		for (GameEngineFile File : Files)
+		{
+			if (nullptr == FXData::Find(File.GetFileName()))
+			{
+				FXData::Load(File.GetFullPath());
+			}
+			EffectSystem->CreateFX(FXData::Find(File.GetFileName()));
+		}
+
+		NewDir.MoveParent();
+		NewDir.Move("Damage");
+		Files = NewDir.GetAllFile({ ".effect" });
 		for (GameEngineFile File : Files)
 		{
 			if (nullptr == FXData::Find(File.GetFileName()))
@@ -4570,6 +4597,7 @@ void PlayerActor_Nero::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Light,
 			.Start = [=] {
 				WeaponIdle();
+				EffectSystem->PlayFX("Damage_Light.effect");
 				Renderer->ChangeAnimation("pl0000_Damage_Common", true);
 			},
 			.Update = [=](float _DeltaTime) {
@@ -4582,6 +4610,7 @@ void PlayerActor_Nero::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Heavy,
 			.Start = [=] {
 				WeaponIdle();
+				EffectSystem->PlayFX("Damage_Heavy.effect");
 				Renderer->ChangeAnimation("pl0000_Damage_Away_Fly", true);
 			},
 			.Update = [=](float _DeltaTime) {
@@ -4594,6 +4623,7 @@ void PlayerActor_Nero::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Fly,
 			.Start = [=] {
 				WeaponIdle();
+				EffectSystem->PlayFX("Damage_Heavy.effect");
 				Renderer->ChangeAnimation("pl0000_Damage_AirCombo_Fly", true);
 			},
 			.Update = [=](float _DeltaTime) {
