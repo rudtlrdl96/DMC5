@@ -146,10 +146,10 @@ void CavaliereAngelo::Start()
 	MonsterCollision->GetTransform()->SetLocalScale({ 80, 180, 70 });
 	MonsterCollision->GetTransform()->SetLocalPosition({ 0, 50, 0 });
 	MonsterCollision->SetColType(ColType::OBBBOX3D);
-	RN_MonsterCollision->GetTransform()->SetLocalScale({ 800, 0, 0 });
+	RN_MonsterCollision->GetTransform()->SetLocalScale({ 1000, 0, 0 });
 	RN_MonsterCollision->GetTransform()->SetLocalPosition({ 0, 80, 0 });
 
-	ParryCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
+	ParryCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Null);
 	ParryCollision->SetColType(ColType::OBBBOX3D);
 	ParryCollision->GetTransform()->SetLocalScale({ 220, 220, 200 });
 	ParryCollision->GetTransform()->SetLocalPosition({ 0, 150, 220 });
@@ -991,15 +991,71 @@ void CavaliereAngelo::EnemyCreateFSM()
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
 	{
+		// Attack1 -> 2 연계
 		EnemyRenderer->SetAnimationStartEvent("em5501_Attack01_R", 68, [=] {
-			int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
-			if (0 == RandC)
+			// ColliderStack이 다 찬 경우에는 33퍼 확률로 Idle로 이행 (그냥 return)
+			if (3 <= ColliderStack + 1)
 			{
+				int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+				if (0 == RandC)
+				{
+					return;
+				}
+			}
+
+			// 근처에 플레이어가 있으면 후속타로 이행
+			if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
+			{
+				PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 				Event01 = false;
 				Normal01 = false;
 				ParryStack = 0;
 				++ColliderStack;
 				ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack02);
+				return;
+			}
+		});
+
+		// Attack2 -> 3 연계
+		EnemyRenderer->SetAnimationStartEvent("em5501_Attack02", 59, [=] {
+			if (3 <= ColliderStack + 1)
+			{
+				int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+				if (0 == RandC)
+				{
+					return;
+				}
+			}
+			if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
+			{
+				PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
+				Event01 = false;
+				Normal01 = false;
+				ParryStack = 0;
+				++ColliderStack;
+				ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack03);
+				return;
+			}
+			});
+
+		// Attack3 -> 4 연계
+		EnemyRenderer->SetAnimationStartEvent("em5501_Attack03", 37, [=] {
+			if (3 <= ColliderStack + 1)
+			{
+				int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+				if (0 == RandC)
+				{
+					return;
+				}
+			}
+			if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
+			{
+				PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
+				Event01 = false;
+				Normal01 = false;
+				ParryStack = 0;
+				++ColliderStack;
+				ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack04);
 				return;
 			}
 			});
@@ -1076,6 +1132,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	},
 	.End = [=] {
 	MonsterAttackCollision->Off();
+	IsParryCheck = false;
 	SlerpTime = 0.0f;
 	}
 	});
@@ -1083,6 +1140,8 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 02(오상단) 공격, 끝나면 방어자세, 44프레임 on, 47프레임 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack02,
 	.Start = [=] {
+	RotationCheck();
+	SlerpCalculation();
 	EffectRenderer_1->PlayFX("Cavalier_Attack_2.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack02");
 	if (true == Event01)
@@ -1111,6 +1170,19 @@ void CavaliereAngelo::EnemyCreateFSM()
 		if (117 < EnemyRenderer->GetCurFrame())
 		{
 			SetForwardMove(120.0f);
+		}
+		if (EnemyRenderer->GetCurFrame() < 40)
+		{
+			if (30 < EnemyRenderer->GetCurFrame())
+			{
+				RotationCheck();
+				SlerpCalculation();
+				SlerpTurn(_DeltaTime * 10.0f);
+			}
+			else
+			{
+				SlerpTurn(_DeltaTime * 2.0f);
+			}
 		}
 	}
 
@@ -1158,12 +1230,16 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	MonsterAttackCollision->Off();
+	IsParryCheck = false;
 	}
 		});
 
 	// 03(왼중단) 공격, 끝나면 방어자세, 29프레임 on, 33프레임 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack03,
 	.Start = [=] {
+	RotationCheck();
+	SlerpCalculation();
 	EnemyRenderer->ChangeAnimation("em5501_Attack03");
 	if (true == Event01)
 	{
@@ -1189,6 +1265,17 @@ void CavaliereAngelo::EnemyCreateFSM()
 		if (113 < EnemyRenderer->GetCurFrame())
 		{
 			SetForwardMove(120.0f);
+		}
+
+		if (EnemyRenderer->GetCurFrame() < 25)
+		{
+			if (20 < EnemyRenderer->GetCurFrame())
+			{
+				RotationCheck();
+				SlerpCalculation();
+				SlerpTurn(_DeltaTime * 10.0f);
+			}
+			SlerpTurn(_DeltaTime * 3.0f);
 		}
 	}
 
@@ -1236,6 +1323,8 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	MonsterAttackCollision->Off();
+	IsParryCheck = false;
 	}
 		});
 
@@ -1417,11 +1506,19 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 04(양손으로 상단찍기) 공격, 끝나면 방어자세, 90프레임 on, 94프레임 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack04,
 	.Start = [=] {
+	RotationCheck();
+	SlerpCalculation();
 	SetMoveStop();
 	EnemyRenderer->ChangeAnimation("em5501_Attack04");
 	},
 	.Update = [=](float _DeltaTime) {
 
+	if (EnemyRenderer->GetCurFrame() < 90)
+	{
+		RotationCheck();
+		SlerpCalculation();
+		SlerpTurn(_DeltaTime * 5.0f);
+	}
 	if (140 < EnemyRenderer->GetCurFrame())
 	{
 		AllDirectSetting_Normal();
