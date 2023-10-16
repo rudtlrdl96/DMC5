@@ -73,7 +73,7 @@ void CavaliereAngelo::EnemyMeshLoad()
 
 	//EnemyRenderer->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
 
-	EnemyRenderer->GetTransform()->SetLocalScale({ 0.8f , 0.8f , 0.8f });
+	//EnemyRenderer->GetTransform()->SetLocalScale({ 0.8f , 0.8f , 0.8f });
 }
 
 void CavaliereAngelo::EnemyAnimationLoad()
@@ -151,8 +151,8 @@ void CavaliereAngelo::Start()
 
 	ParryCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Null);
 	ParryCollision->SetColType(ColType::OBBBOX3D);
-	ParryCollision->GetTransform()->SetLocalScale({ 220, 220, 240 });
-	ParryCollision->GetTransform()->SetLocalPosition({ 0, 150, 180 });
+	ParryCollision->GetTransform()->SetLocalScale({ 220, 220, 280 });
+	ParryCollision->GetTransform()->SetLocalPosition({ 0, 150, 100 });
 
 	// 기본 세팅
 	FallDistance = 55.0f;
@@ -708,6 +708,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 충전 완료 후 Dengeki 걷기 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Collider_To_Dengeki,
 	.Start = [=] {
+	EffectRenderer_0->PlayFX("Cavalier_Collider_To_Dengeki.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack_collider_to_Dengeki");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -851,6 +852,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	RotationCheck();
 	AllDirectSetting_Normal();
 	SlerpCalculation();
+	EffectRenderer_0->PlayFX("Cavalier_Dengeki_Start.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack_Dengeki_Start");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -876,12 +878,14 @@ void CavaliereAngelo::EnemyCreateFSM()
 	},
 	.End = [=] {
 	SlerpTime = 0.0f;
+	EffectRenderer_0->Off();
 	}
 		});
 
 	// Dengeki 걷기 루프
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Dengeki_Loop,
 	.Start = [=] {
+	EffectRenderer_0->PlayFX("Cavalier_Dengeki_Loop.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack_Dengeki_Loop");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -907,12 +911,14 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+		EffectRenderer_0->Off();
 	}
 		});
 
 	// Dengeki 걷기 끝
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Dengeki_End,
 	.Start = [=] {
+	EffectRenderer_0->PlayFX("Cavalier_Dengeki_End.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack_Dengeki_End");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -953,6 +959,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+		EffectRenderer_0->Off();
 	}
 		});
 
@@ -1262,16 +1269,19 @@ void CavaliereAngelo::EnemyCreateFSM()
 	RotationCheck();
 	SlerpCalculation();
 	SlerpTime = 0.0f;
+	EffectRenderer_0->PlayFX("Cavalier_Attack_3.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack03");
 	if (true == Event01)
 	{
 		Event01 = false;
 		EnemyRenderer->SetCurFrame(23);
+		EffectRenderer_0->SetCurFrame(23);
 	}
 	if (true == Normal01)
 	{
 		Normal01 = false;
 		EnemyRenderer->SetCurFrame(23);
+		EffectRenderer_0->SetCurFrame(23);
 	}
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1536,6 +1546,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	SlerpCalculation();
 	SlerpTime = 0.0f;
 	SetMoveStop();
+	EffectRenderer_1->PlayFX("Cavalier_Attack_4.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack04");
 	},
 	.Update = [=](float _DeltaTime) {

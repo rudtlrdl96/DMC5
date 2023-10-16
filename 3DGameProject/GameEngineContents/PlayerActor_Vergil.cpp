@@ -1482,6 +1482,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Warp Front 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Front_1,
 		.Start = [=] {
+			WeaponIdle();
 			RotationToTarget();
 			SetInvincibility(0.5f);
 			Renderer->ChangeAnimation("pl0300_Warp_Front_1", true);
@@ -1557,6 +1558,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Warp Back 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Back_1,
 		.Start = [=] {
+			WeaponIdle();
 			RotationToTarget();
 			SetInvincibility(0.5f);
 			Renderer->ChangeAnimation("pl0300_Warp_Back_1");
@@ -1619,6 +1621,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Warp Left 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Left_1,
 		.Start = [=] {
+			WeaponIdle();
 			RotationToTarget();
 			SetInvincibility(0.5f);
 			Renderer->ChangeAnimation("pl0300_Warp_Left_1");
@@ -1681,6 +1684,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Warp Right 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Right_1,
 		.Start = [=] {
+			WeaponIdle();
 			RotationToTarget();
 			SetInvincibility(0.5f);
 			Renderer->ChangeAnimation("pl0300_Warp_Right_1", true);
@@ -1746,6 +1750,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		static GameEngineTransform* WarpTarget;
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_AirTrick,
 		.Start = [=] {
+			WeaponIdle();
 			PhysXCapsule->TurnOffGravity();
 			PhysXCapsule->SetLinearVelocityZero();
 			SetInvincibility(0.5f);
@@ -1799,6 +1804,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Warp Down
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_TrickDown,
 		.Start = [=] {
+			WeaponIdle();
 			SetInvincibility(0.5f);
 			PhysXCapsule->TurnOffGravity();
 			PhysXCapsule->SetLinearVelocityZero();
@@ -2806,6 +2812,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Warp Front 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Front_1,
 		.Start = [=] {
+			WeaponIdle();
 			Renderer->ChangeAnimation("pl0300_Warp_Front_1", true);
 			EffectSystem->PlayFX("Vergil_Warp_1.effect");
 			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
@@ -2842,6 +2849,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Warp Back 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Back_1,
 		.Start = [=] {
+			WeaponIdle();
 			Renderer->ChangeAnimation("pl0300_Warp_Back_1");
 			EffectSystem->PlayFX("Vergil_Warp_1.effect");
 			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
@@ -2879,6 +2887,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Warp Left 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Left_1,
 		.Start = [=] {
+			WeaponIdle();
 			Renderer->ChangeAnimation("pl0300_Warp_Left_1");
 			EffectSystem->PlayFX("Vergil_Warp_1.effect");
 			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
@@ -2916,6 +2925,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Warp Right 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Right_1,
 		.Start = [=] {
+			WeaponIdle();
 			Renderer->ChangeAnimation("pl0300_Warp_Right_1", true);
 			EffectSystem->PlayFX("Vergil_Warp_1.effect");
 			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
@@ -2954,6 +2964,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Warp Up
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_AirTrick,
 		.Start = [=] {
+			WeaponIdle();
 			Renderer->ChangeAnimation("pl0300_Warp_Up", true);
 			EffectSystem->PlayFX("Vergil_Warp_1.effect");
 			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
@@ -2980,6 +2991,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Warp Down
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_TrickDown,
 		.Start = [=] {
+			WeaponIdle();
 			Renderer->ChangeAnimation("pl0300_Warp_Down", true);
 			EffectSystem->PlayFX("Vergil_Warp_1.effect");
 			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
