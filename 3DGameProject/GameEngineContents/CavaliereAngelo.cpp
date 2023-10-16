@@ -262,7 +262,15 @@ void CavaliereAngelo::PlayerChase(float _DeltaTime)
 	{
 		if (false == IsRecognize)
 		{
-			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_Start);
+			if (true == IsPowerUp)
+			{
+				IsPowerUp = false;
+				ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Dengeki_Start);
+			}
+			else
+			{
+				ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_Start);
+			}
 		}
 		else
 		{
@@ -558,6 +566,14 @@ void CavaliereAngelo::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em5501_defense-Idle");
 	},
 	.Update = [=](float _DeltaTime) {
+
+	if (3 <= ColliderStack)
+	{
+		IsRecognize = false;
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Collider);
+		return;
+	}
+
 	WaitTime += _DeltaTime;
 	if (WaitTime >= 0.6f)
 	{
@@ -613,6 +629,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 번개 충전 끝
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Dengeki_Reload_End,
 	.Start = [=] {
+	IsPowerUp = true;
 	EnemyRenderer->ChangeAnimation("em5501_dengeki_reload_end");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -659,6 +676,53 @@ void CavaliereAngelo::EnemyCreateFSM()
 	.End = [=] {
 	}
 	});
+
+	// 공격 도중 칼 위로 들어서 빠른 충전
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Collider,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_Attack_collider");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		PhysXCapsule->SetWorldPosition({ 0, 100, 0 });
+		PhysXCapsule->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Collider_To_Dengeki);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 충전 완료 후 Dengeki 걷기 시작
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Collider_To_Dengeki,
+	.Start = [=] {
+	RotationCheck();
+	AllDirectSetting_Normal();
+	SlerpCalculation();
+	IsFastCharge = true;
+	EnemyRenderer->ChangeAnimation("em5501_Attack_collider_to_Dengeki");
+	},
+	.Update = [=](float _DeltaTime) {
+
+	{
+		SlerpTurn(_DeltaTime);
+		AllDirectSetting_Normal();
+		SetForwardMove(120.0f);
+	}
+
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		IsRecognize = false;
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Dengeki_Loop);
+		return;
+	}
+	},
+	.End = [=] {
+	SlerpTime = 0.0f;
+	}
+		});
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////     Move     //////////////////////////////////////////
@@ -729,23 +793,23 @@ void CavaliereAngelo::EnemyCreateFSM()
 		SetForwardMove(200.0f);
 	}
 
-	if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
-	{
-		IsRecognize = true;
-	}
-	else
-	{
-		IsRecognize = false;
-	}
-
 	if (false == IsRecognize)
 	{
 		//ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack01);
+		//return;
 	}
 	else
 	{
 		IsRecognize = false;
-		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack01);
+		if (3 <= ColliderStack)
+		{
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Collider);
+		}
+		else
+		{
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack01);
+		}
+		return;
 	}
 	},
 	.End = [=] {
@@ -790,6 +854,13 @@ void CavaliereAngelo::EnemyCreateFSM()
 		SetForwardMove(120.0f);
 	}
 
+	if (true == IsRecognize)
+	{
+		IsRecognize = false;
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack04);
+		return;
+	}
+
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Dengeki_Loop);
@@ -813,8 +884,17 @@ void CavaliereAngelo::EnemyCreateFSM()
 		SetForwardMove(200.0f);
 	}
 
+	if (true == IsRecognize)
+	{
+		IsRecognize = false;
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack04);
+		return;
+	}
+
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
+		IsFastCharge = false;
+		ColliderStack = 0;
 		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Dengeki_End);
 		return;
 	}
@@ -837,7 +917,31 @@ void CavaliereAngelo::EnemyCreateFSM()
 
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_Loop);
+		if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
+		{
+			IsRecognize = true;
+		}
+		else
+		{
+			IsRecognize = false;
+		}
+
+		if (false == IsRecognize)
+		{
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Guard_Loop);
+		}
+		else
+		{
+			IsRecognize = false;
+			if (3 <= ColliderStack)
+			{
+				ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Collider);
+			}
+			else
+			{
+				ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack01);
+			}
+		}
 		return;
 	}
 	},
@@ -946,6 +1050,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ParryStack = 0;
+		++ColliderStack;
 		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
 		return;
 	}
@@ -1289,22 +1394,44 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 		});
 
-	//// 01 패리 후 경직, 이후 C1 시작 전, 62 프레임 스타트
-	//EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_normal01_to_C1,
-	//.Start = [=] {
-	//EnemyRenderer->ChangeAnimation("em5501_Parry_normal01_to_C1");
-	//},
-	//.Update = [=](float _DeltaTime) {
-	//if (true == EnemyRenderer->IsAnimationEnd())
-	//{
-	//	Normal01 = true;
-	//	ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack03);
-	//	return;
-	//}
-	//},
-	//.End = [=] {
-	//}
-	//	});
+	// 04(양손으로 상단찍기) 공격, 끝나면 방어자세, 90프레임 on, 94프레임 off
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack04,
+	.Start = [=] {
+	SetMoveStop();
+	EnemyRenderer->ChangeAnimation("em5501_Attack04");
+	},
+	.Update = [=](float _DeltaTime) {
+
+	if (140 < EnemyRenderer->GetCurFrame())
+	{
+		AllDirectSetting_Normal();
+		SetForwardMove(120.0f);
+	}
+
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		if (true == IsFastCharge)
+		{
+			IsFastCharge = false;
+			ColliderStack = 0;
+		}
+
+		if (2 <= ColliderStack)
+		{
+			ColliderStack = 0;
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Collider);
+		}
+		else
+		{
+			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
+		}
+		return;
+	}
+	},
+	.End = [=] {
+	SlerpTime = 0.0f;
+	}
+		});
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////     Damage     //////////////////////////////////////////
@@ -1319,6 +1446,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	EffectRenderer_0->PlayFX("Cavalier_Parry.effect");
 	EffectRenderer_1->Off();
 	EnemyRenderer->ChangeAnimation("em5501_Damage_Drill");
+	ColliderStack = 0;
 	},
 	.Update = [=](float _DeltaTime) {
 

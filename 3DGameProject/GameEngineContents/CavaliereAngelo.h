@@ -29,10 +29,6 @@ enum FSM_State_CavaliereAngelo
 
 	CavaliereAngelo_Attack_Guard_Turn_Right,     // em5501_Attack_guard_turn_R : 방어자세 도중 오른쪽으로 180도 회전하며 공격
 
-	CavaliereAngelo_Attack01_Turn_Back,			 // em5501_Attack01_back_L : 방어자세 도중 왼쪽으로 돌면서 공격 시작 전    // 돌면서 공격 류는 안쓸지도 (Slerp turn 실시할 예정)
-	CavaliereAngelo_Attack01_Turn_Left,			 // em5501_Attack01_turn_L : 왼쪽으로 돈 후 공격 시작 전					// 돌면서 공격 류는 안쓸지도 (Slerp turn 실시할 예정)
-	CavaliereAngelo_Attack01_Turn_Right,		 // em5501_Attack01_turn_R : 방어자세 도중 오른쪽으로 돌면서 공격 시작 전   // 돌면서 공격 류는 안쓸지도 (Slerp turn 실시할 예정)
-
 	// <attack> ==================================================================================
 	CavaliereAngelo_Attack_Collider,             // em5501_Attack_collider : 공격 도중 칼 위로 들어서 빠른 충전
 	CavaliereAngelo_Attack_Collider_To_Dengeki,  // em5501_Attack_collider_to_Dengeki : 충전 완료 후 Dengeki 걷기 시작
@@ -134,6 +130,7 @@ private:
 	float AttackDelayTime = 0.0f;
 
 	short ParryStack = 0;
+	short ColliderStack = 0;
 
 	bool IsHeavyAttack = false;   // 강공격 히트
 	bool IsAirAttack = false;     // 에어공격 히트
@@ -147,8 +144,7 @@ private:
 
 	bool Event01 = false;
 	bool Normal01 = false;
-
-	bool IsPowerUpValue = false;
-	
+	bool IsPowerUp = false;
+	bool IsFastCharge = false;
 
 };
