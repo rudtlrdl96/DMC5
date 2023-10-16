@@ -110,6 +110,9 @@ protected:
 	GameEngineFSM EnemyFSM;
 	float AppearDelayTime = 0.0f;
 	float ContactDelayTime = 0.0f;
+	bool IsClientHit = false;
+	bool IsTimeStop = false;
+	bool TimeStop = false;
 	//====================================================
 
 	//====================================================

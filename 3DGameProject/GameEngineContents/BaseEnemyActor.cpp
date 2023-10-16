@@ -80,14 +80,18 @@ void BaseEnemyActor::Update(float _DeltaTime)
 		_DeltaTime *= GetTimeScale();
 		EnemyRenderer->SetTimeScale(GetTimeScale());
 
-		if (GetTimeScale() == 0.0f)
+		if (true == TimeStop)
 		{
-			MonsterAttackCollision->Off();
-			PhysXCapsule->Off();
-		}
-		else if (false == PhysXCapsule->IsUpdate())
-		{
-			PhysXCapsule->On();
+			TimeStop = false;
+			if (true == IsTimeStop)
+			{
+				MonsterAttackCollision->Off();
+				PhysXCapsule->Off();
+			}
+			else if (false == IsTimeStop)
+			{
+				PhysXCapsule->On();
+			}
 		}
 
 		RenderShake(_DeltaTime);
@@ -652,6 +656,7 @@ void BaseEnemyActor::HitStop(DamageType _Type)
 {
 	float _TimeScale = 0.1f;
 	float StopTime = 0.0f;
+
 	switch (_Type)
 	{
 	case DamageType::VergilLight:
@@ -674,7 +679,9 @@ void BaseEnemyActor::HitStop(DamageType _Type)
 	default:
 		break;
 	}
+
 	SetTimeScale(_TimeScale);
+
 	GetLevel()->TimeEvent.AddEvent(StopTime, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 	{
 		SetTimeScale(1.0f);
@@ -687,9 +694,13 @@ void BaseEnemyActor::HitStop(DamageType _Type)
 /// <param name="_DeltaTime :">타임 스케일이 1이 되기까지의 시간을 체크하기 위함</param>
 void BaseEnemyActor::StopTime(float _DeltaTime)
 {
+	TimeStop = true;
+	IsTimeStop = true;
 	SetTimeScale(0.0f);
 	GetLevel()->TimeEvent.AddEvent(_DeltaTime, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 	{
+		TimeStop = true;
+		IsTimeStop = false;
 		SetTimeScale(1.0f);
 	});
 }
