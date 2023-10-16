@@ -52,6 +52,7 @@ void FXSystem::EffectTextureLoad()
 	// ¿Ã∆Â∆Æ Sprite ∑ŒµÂ
 	if (nullptr == GameEngineSprite::Find("Effect_Impact.tga"))
 	{
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Blood.tga").GetFullPath(), 8, 4);
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Impact.tga").GetFullPath(), 8, 8);
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Impact_01.tga").GetFullPath(), 8, 4);
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Muzzle_03.tga").GetFullPath(), 2, 1);
