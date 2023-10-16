@@ -6,7 +6,7 @@
 #include <GameEngineCore/GameEngineRenderer.h>
 
 #include "NetworkTestLevel.h"
-
+#include "FXData.h"
 ThreadLoadingLevel* ThreadLoadingLevel::Inst = nullptr;
 std::string ThreadLoadingLevel::NextLevelName;
 
@@ -50,7 +50,25 @@ void ThreadLoadingLevel::Start()
 
 	//===========================================================================================================
 
+	// 네로
+	{
+		PushAllLoadCallBack<NetworkTestLevel, FXData>("Effect\\Nero", { ".effect" });
+		PushLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Character\\Player\\Nero\\Mesh\\Nero.fbx");
+		PushLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Character\\Player\\Nero\\Overture\\Mesh\\Overture.fbx");
+		PushLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Character\\Player\\Nero\\Wire\\Nero_WireArm.fbx");
+		PushLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character\\Player\\Nero\\Mesh\\pl0000_03_atos.texout.png");
+		PushLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character\\Player\\Nero\\Mesh\\pl0010_03_atos.texout.png");
+		PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXAnimation>("Character\\Player\\Nero\\Animation", { ".fbx" });
+		PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXAnimation>("Character\\Player\\Nero\\Overture\\Animation", { ".fbx" });
+	}
 
+	// 버질
+	{
+		PushAllLoadCallBack<NetworkTestLevel, FXData>("Effect\\Vergil", { ".effect" });
+		PushLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Character\\Player\\Vergil\\Mesh\\Vergil.fbx");
+		PushLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character\\Player\\Vergil\\Mesh\\pl0300_03_atos.texout.png");
+		PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXAnimation>("Character\\Player\\Vergil\\Animation", { ".fbx" });
+	}
 
 	//NetwortTestLevel(레벨별로 구분시켜주세요)
 	{

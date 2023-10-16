@@ -38,7 +38,7 @@ public:
 	{
 		DistortionTextureName = _Name;
 	}
-
+	
 	void Play();
 
 	float CurFrameTime = 0.0f;

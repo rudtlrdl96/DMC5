@@ -13,6 +13,18 @@ FXSystem::~FXSystem()
 
 void FXSystem::EffectTextureLoad()
 {
+	if (nullptr == GameEngineTexture::Find("DistortionSample_00.jpg"))
+	{
+		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+			{
+				"Texture", "DistortionTexture"
+			});
+
+		GameEngineTexture::Load(Path + "\\DistortionSample_00.jpg");
+		GameEngineTexture::Load(Path + "\\DistortionSample_01.jpg");
+		GameEngineTexture::Load(Path + "\\DistortionSample_02.jpg");
+	}
+
 	GameEngineDirectory NewDir;
 	NewDir.MoveParentToDirectory("ContentResources");
 	NewDir.Move("ContentResources");
