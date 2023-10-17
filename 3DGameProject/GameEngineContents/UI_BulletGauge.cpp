@@ -14,10 +14,10 @@ void UI_BulletGauge::Start()
 
 	BulletGaugeBase = CreateComponent<GameEngineUIRenderer>(5);
 	BulletGaugeBase->SetScaleToTexture("BulletGaugeBase.png");
-	BulletGaugeBase->GetTransform()->SetLocalPosition({ -561.0f,336.0f,40.0f });
+	BulletGaugeBase->GetTransform()->SetLocalPosition({ -561.0f,336.0f,-1.0f });
 	BulletGauge = CreateComponent<GameEngineUIRenderer>(5);
 	BulletGauge->SetScaleToTexture("BulletGauge.png");
-	BulletGauge->GetTransform()->SetLocalPosition({ -561.0f,336.0f,40.0f });
+	BulletGauge->GetTransform()->SetLocalPosition({ -561.0f,336.0f,-1.0f });
 }
 
 void UI_BulletGauge::Update(float _DeltaTime)
