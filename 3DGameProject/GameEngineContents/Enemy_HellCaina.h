@@ -29,10 +29,10 @@ enum FSM_State_HellCaina
 	HellCaina_Turn_Right_180,  // em0000_turn_right_180, 오른쪽 회전
 
 	// 공격
-	HellCaina_Attack_DownUp,  // em0000_attack_01, 아래에서 위로 베기
-	HellCaina_Attack_UpDown,  // em0000_attack_02, 위에서 아래로 베기
-	HellCaina_Attack_Turn,    // em0000_attack_01_turn, 뒤로 돌아서 공격
-	HellCaina_Attack_Dash,    // em0000_attack_atackhard, 돌진베기
+	HellCaina_Attack_DownUp,  // em0000_attack_01, 아래에서 위로 베기, 70 on, 74 off
+	HellCaina_Attack_UpDown,  // em0000_attack_02, 위에서 아래로 베기, 79 on, 83 off
+	HellCaina_Attack_Turn,    // em0000_attack_01_turn, 뒤로 돌아서 공격, 68 on, 72 off
+	HellCaina_Attack_Dash,    // em0000_attack_atackhard, 돌진베기, 110 start, 133 on, 137 off
 
 	// 피격류
 	HellCaina_Standing_Damage_Weak_Front, // em0000_standing_damage_weak_front_01, 정면 약공격 히트

@@ -29,12 +29,12 @@ enum FSM_State_Empusa
 	Empusa_Turn_Right_180, // em0100_turn_180_right : 미어캣 자세 오른쪽 180도 턴
 
 	// 공격
-	Empusa_Attack_A, // em0100_attack_A : 오른손 위에서 아래로 베기
-	Empusa_Attack_B, // em0100_attack_B : 왼손 위에서 아래로 베기
-	Empusa_Attack_C, // em0100_attack_C : 오른손 횡베기
-	Empusa_Attack_D, // em0100_attack_D : 왼손 횡베기
-	Empusa_Attack_W, // em0100_attack_W : 양손 내려찍기
-	Empusa_Continuation_Attack, // em0100_continuation_attack : 연속공격(여러번 공격하면서 전진)
+	Empusa_Attack_A, // em0100_attack_A : 오른손 위에서 아래로 베기, 136 on, 142 off
+	Empusa_Attack_B, // em0100_attack_B : 왼손 위에서 아래로 베기, 68 on, 73 off
+	Empusa_Attack_C, // em0100_attack_C : 오른손 횡베기, 60 on, 64 off
+	Empusa_Attack_D, // em0100_attack_D : 왼손 횡베기, 60 on, 65 off
+	Empusa_Attack_W, // em0100_attack_W : 양손 내려찍기, 151 on, 155 off
+	Empusa_Continuation_Attack, // em0100_continuation_attack : 연속공격(여러번 공격하면서 전진), 128/131, 161/163, 195/197, 230/233, 296/301
 
 	// 피격류
 	Empusa_Standing_Damage_Weak_Front, // em0100_angledamage_front, 정면 약공격 히트

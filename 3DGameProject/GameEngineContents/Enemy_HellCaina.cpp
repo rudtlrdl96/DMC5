@@ -1000,7 +1000,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 		EnemyRenderer->SetAnimationStartEvent("em0000_attack_atackhard", 117, [=] { SetAdvance(34000.0f); });
 	}
 
-	// 아래에서 위로 횡베기
+	// 아래에서 위로 횡베기, 70 on, 74 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Attack_DownUp,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0000_attack_01");
@@ -1021,9 +1021,10 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	MonsterAttackCollision->Off();
 	}
 		});
-	// 위에서 아래로 횡베기
+	// 위에서 아래로 횡베기, 79 on, 83 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Attack_UpDown,
 	.Start = [=] {
 	SetMoveStop();
@@ -1045,9 +1046,10 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	MonsterAttackCollision->Off();
 	}
 		});
-	// 뒤에 있으면 턴해서 공격
+	// 뒤에 있으면 턴해서 공격, 68 on, 72 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Attack_Turn,
 	.Start = [=] {
 	SetMoveStop();
@@ -1075,9 +1077,10 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	MonsterAttackCollision->Off();
 	}
 		});
-	// 돌진공격
+	// 돌진공격, 110 start, 133 on, 137 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Attack_Dash,
 	.Start = [=] {
 	SetMoveStop();
@@ -1099,6 +1102,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	MonsterAttackCollision->Off();
 	}
 		});
 

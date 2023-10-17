@@ -958,7 +958,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 		EnemyRenderer->SetAnimationStartEvent("em0100_continuation_attack", 100, [=] { 	RotationCheck(); AllDirectSetting(); });
 	}
 
-	// 오른손 위에서 아래로 베기
+	// 오른손 위에서 아래로 베기, 136 on, 142 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Attack_A,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_attack_A");
@@ -988,7 +988,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	.End = [=] {
 	}
 		});
-	// 왼손 위에서 아래로 베기
+	// 왼손 위에서 아래로 베기, 68 on, 73 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Attack_B,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_attack_B");
@@ -1016,9 +1016,10 @@ void Enemy_Empusa::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	MonsterAttackCollision->Off();
 	}
 		});
-	// 양손 내려찍기
+	// 양손 내려찍기, 151 on, 155 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Attack_W,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_attack_W");
@@ -1035,9 +1036,10 @@ void Enemy_Empusa::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	MonsterAttackCollision->Off();
 	}
 		});
-	// 오른손 횡베기
+	// 오른손 횡베기, 60 on, 64 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Attack_C,
 	.Start = [=] {
 	SlerpCalculation();
@@ -1064,9 +1066,10 @@ void Enemy_Empusa::EnemyCreateFSM()
 	},
 	.End = [=] {
 	SlerpTime = 0.0f;
+	MonsterAttackCollision->Off();
 	}
 		});
-	// 왼손 횡베기
+	// 왼손 횡베기, 60 on, 65 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Attack_D,
 	.Start = [=] {
 	SlerpCalculation();
@@ -1093,10 +1096,11 @@ void Enemy_Empusa::EnemyCreateFSM()
 	},
 	.End = [=] {
 	SlerpTime = 0.0f;
+	MonsterAttackCollision->Off();
 	}
 		});
 
-	// 돌진공격
+	// 돌진공격, 128/131, 161/163, 195/197, 230/233, 296/301
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Continuation_Attack,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_continuation_attack");
@@ -1113,6 +1117,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	MonsterAttackCollision->Off();
 	}
 		});
 
