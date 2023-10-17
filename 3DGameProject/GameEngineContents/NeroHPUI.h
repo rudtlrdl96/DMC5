@@ -17,6 +17,8 @@ public:
 	NeroHPUI& operator=(NeroHPUI&& _Other) noexcept = delete;
 	void SetPlayerHP(int _HP);
 	void ShootBullet();
+	bool IsChargeBullet();
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

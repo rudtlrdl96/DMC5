@@ -22,6 +22,17 @@ void NeroHPUI::ShootBullet()
 {
 	UI_BulletGaugeBar->SetBullet();
 }
+bool NeroHPUI::IsChargeBullet()
+{
+	if (UI_BulletGaugeBar->GetBullet() >= 1.0f)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 /*
 후드,후드불
 HP바 1줄

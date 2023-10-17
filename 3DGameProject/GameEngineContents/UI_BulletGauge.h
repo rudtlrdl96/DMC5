@@ -18,6 +18,10 @@ public:
 	{
 		ExBulletCount--;
 	}
+	float GetBullet()
+	{
+		return ExBulletCount;
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
