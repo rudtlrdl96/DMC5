@@ -68,6 +68,7 @@ void RankUI::StateInit_RankD()
 				ScaleValue = false;
 				TurnValue = false;
 				UpTime = 0.0f;
+				DisApperValue = false;
 
 			},
 			.Update = [=](float _DeltaTime)
