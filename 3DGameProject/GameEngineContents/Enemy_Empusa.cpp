@@ -1332,24 +1332,6 @@ void Enemy_Empusa::EnemyCreateFSM()
 	}
 		});
 
-	/////////////////////////날아가다가 벽에 박음
-	// 날아가다가 벽에 박음
-	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Blown_Wall_Back,
-	.Start = [=] {
-
-	EnemyRenderer->ChangeAnimation("em0100_blown_wall_back");
-	},
-	.Update = [=](float _DeltaTime) {
-	if (true == EnemyRenderer->IsAnimationEnd())
-	{
-		ChangeState(FSM_State_Empusa::Empusa_Blown_Back_Landing);
-		return;
-	}
-	},
-	.End = [=] {
-	}
-	});
-
 	/////////////////////////슬램
 
 	{
@@ -1484,27 +1466,6 @@ void Enemy_Empusa::EnemyCreateFSM()
 	/////////////////////////////////      쓰러짐      //////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
-	///////////////////////////// 앞으로 넘어지는 종류
-	// 앞으로 넘어짐
-	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Down,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_downward_down_start");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
-	// 앞으로 넘어진 상태 루프
-	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Down_Loop,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_downward_down_loop");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
 	// 앞으로 엎어졌을 때 일어나는 모션
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Getup,
 	.Start = [=] {
@@ -1568,21 +1529,6 @@ void Enemy_Empusa::EnemyCreateFSM()
 		}
 	}
 
-	},
-	.End = [=] {
-	}
-		});
-	// 앞으로 누워있는 상태에서 약공격 맞음
-	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Damage,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_downward_damage", true);
-	},
-	.Update = [=](float _DeltaTime) {
-	if (true == EnemyRenderer->IsAnimationEnd())
-	{
-		ChangeState(FSM_State_Empusa::Empusa_Downward_Getup);
-		return;
-	}
 	},
 	.End = [=] {
 	}
@@ -1979,15 +1925,6 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Blown_Wall_Back,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_blown_wall_back");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Slam_Damage,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_slam_damage_start");
@@ -2051,24 +1988,6 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Down,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_downward_down_start");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
-	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Down_Loop,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_downward_down_loop");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Getup,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_downward_down_standup");
@@ -2081,15 +2000,6 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Death,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0100_downward_die");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
-	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Damage,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_downward_damage", true);
 	},
 	.Update = [=](float _DeltaTime) {
 	},

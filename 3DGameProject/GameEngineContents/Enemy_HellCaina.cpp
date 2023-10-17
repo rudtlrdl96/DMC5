@@ -1293,39 +1293,6 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	}
 		});
 
-	/////////////////////////날아가다가 벽에 박음
-	// 날아가다가 벽에 박음
-	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Blown_Wall_Back,
-	.Start = [=] {
-
-	EnemyRenderer->ChangeAnimation("em0000_blown_wall_back");
-	},
-	.Update = [=](float _DeltaTime) {
-	if (true == EnemyRenderer->IsAnimationEnd())
-	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Blown_Wall_Back_Landing);
-		return;
-	}
-	},
-	.End = [=] {
-	}
-		});
-	// 날아가다가 벽에 박은 후 엎어짐
-	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Blown_Wall_Back_Landing,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0000_blown_wall_back_landing");
-	},
-	.Update = [=](float _DeltaTime) {
-	if (true == EnemyRenderer->IsAnimationEnd())
-	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Prone_Getup);
-		return;
-	}
-	},
-	.End = [=] {
-	}
-		});
-
 	/////////////////////////슬램
 	
 	{
@@ -1444,18 +1411,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////      쓰러짐      //////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////
-
-	///////////////////////////// 앞으로 넘어지는 종류
-	// 앞으로 넘어짐
-	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Prone_Down,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0000_prone_down");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
+	// 
 	// 앞으로 엎어졌을 때 일어나는 모션
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Prone_Getup,
 	.Start = [=] {
@@ -1520,21 +1476,6 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.End = [=] {
 	}
 		});
-	// 앞으로 누워있는 상태에서 약공격 맞음
-	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Prone_Damage_Gun,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0000_prone_damage_gun", true);
-	},
-	.Update = [=](float _DeltaTime) {
-	if (true == EnemyRenderer->IsAnimationEnd())
-	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Prone_Getup);
-		return;
-	}
-	},
-	.End = [=] {
-	}
-	});
 	// 뒤로 쓰러지면서 죽음
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Death_Front,
 	.Start = [=] {
@@ -1882,8 +1823,6 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Blown_Back,
 	.Start = [=] {
-	//IsCollapse = false;
-	//IsHeavyAttack = true;
 	EnemyRenderer->ChangeAnimation("em0000_blown_back", true);
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1894,8 +1833,6 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	// 띄우기 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Blown_Up,
 	.Start = [=] {
-	//IsCollapse = false;
-	//IsAirAttack = true;
 	EnemyRenderer->ChangeAnimation("em0000_blown_up", true);
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1917,32 +1854,7 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	// 강공격 피격, 에어피격 끝나고 땅에 닿을때
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Blown_Back_Landing,
 	.Start = [=] {
-	//IsHeavyAttack = false;
-	//IsAirAttack = false;
-	//IsSlamAttack = false;
-	//IsBusterAttack = false;
-	//IsCollapse = true;
 	EnemyRenderer->ChangeAnimation("em0000_blown_back_landing");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
-
-	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Blown_Wall_Back,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0000_blown_wall_back");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
-	// 날아가다가 벽에 박은 후 엎어짐
-	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Blown_Wall_Back_Landing,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0000_blown_wall_back_landing");
 	},
 	.Update = [=](float _DeltaTime) {
 	},
@@ -1953,8 +1865,6 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	// 슬램 피격 start
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Slam_Damage,
 	.Start = [=] {
-	//IsCollapse = false;
-	//IsSlamAttack = true;
 	EnemyRenderer->ChangeAnimation("em0000_slam_damage");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1975,11 +1885,6 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	// 슬램 피격 후 땅에 부딫힘
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Slam_Damage_Landing,
 	.Start = [=] {
-	//IsHeavyAttack = false;
-	//IsAirAttack = false;
-	//IsSlamAttack = false;
-	//IsBusterAttack = false;
-	//IsCollapse = true;
 	EnemyRenderer->ChangeAnimation("em0000_slam_damage_landing");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1991,8 +1896,6 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	// 스내치 start
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Snatch,
 	.Start = [=] {
-	//IsCollapse = false;
-	//IsAirAttack = true;
 	EnemyRenderer->ChangeAnimation("em0000_snatch");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2021,18 +1924,6 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-
-	///////////////////////////// 앞으로 넘어지는 종류
-	// 앞으로 넘어짐
-	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Prone_Down,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0000_prone_down");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
 	// 앞으로 엎어졌을 때 일어나는 모션
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Prone_Getup,
 	.Start = [=] {
@@ -2041,8 +1932,6 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	.Update = [=](float _DeltaTime) {
 	},
 	.End = [=] {
-	//IsRecognize = false;
-	//IsCollapse = false;
 	}
 		});
 	// 앞으로 넘어진 상태에서 Death
@@ -2065,16 +1954,6 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	// 앞으로 누워있는 상태에서 약공격 맞음
-	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Prone_Damage_Gun,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0000_prone_damage_gun", true);
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
 	// 뒤로 쓰러지면서 죽음
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Death_Front,
 	.Start = [=] {
@@ -2089,8 +1968,6 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	// em0000_Buster_Start, 버스트 히트 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Buster_Start,
 	.Start = [=] {
-	//IsCollapse = false;
-	//IsBusterAttack = true;
 	EnemyRenderer->ChangeAnimation("em0000_Buster_Start");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2110,11 +1987,6 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	// em0000_Buster_Finish, 버스트 히트 땅에 떨어짐
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Buster_Finish,
 	.Start = [=] {
-	//IsHeavyAttack = false;
-	//IsAirAttack = false;
-	//IsSlamAttack = false;
-	//IsBusterAttack = false;
-	//IsCollapse = true;
 	EnemyRenderer->ChangeAnimation("em0000_Buster_Finish");
 	},
 	.Update = [=](float _DeltaTime) {

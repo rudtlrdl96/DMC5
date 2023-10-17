@@ -47,9 +47,6 @@ enum FSM_State_HellCaina
 	HellCaina_Blown_Back_Loop,			  // em0000_blown_back_loop, 강공격 피격 후 땅에 닿기 전 Loop
 	HellCaina_Blown_Back_Landing,		  // em0000_blown_back_landing, 강공격 피격 후 날아가다 땅에 부딫힘
 
-	HellCaina_Blown_Wall_Back,			  // em0000_blown_wall_back, 벽에 박음 start
-	HellCaina_Blown_Wall_Back_Landing,    // em0000_blown_wall_back_landing, 벽에 박고 땅에 부딫힐 때
-
 	HellCaina_Slam_Damage,				  // em0000_slam_damage, 슬램 피격 시 start
 	HellCaina_Slam_Damage_Loop,			  // em0000_slam_damage_loop, 슬램 피격 공중 loop
 	HellCaina_Slam_Damage_Landing,		  // em0000_slam_damage_landing, 슬램 피격 후 땅에 부딫힘
@@ -62,9 +59,7 @@ enum FSM_State_HellCaina
 	HellCaina_Death_Front,				  // em0000_death_front, 뒤로 쓰러지면서 죽음
 	HellCaina_Death_Back,				  // em0000_death_back, 앞으로 쓰러지면서 죽음
 
-	HellCaina_Prone_Damage_Gun,			  // em0000_prone_damage_gun, 앞으로 누워있는 상태에서 약공 맞을때
 	HellCaina_Prone_Death,				  // em0000_prone_death, 앞으로 누워있는 상태에서 Death
-	HellCaina_Prone_Down,				  // em0000_prone_down, 앞으로 넘어짐
 	HellCaina_Prone_Getup,				  // em0000_prone_getup, 앞으로 넘어진 상태에서 일어남
 
 	HellCaina_Buster_Start,       // em0000_Buster_Start, 버스트 히트 시작

@@ -6,22 +6,12 @@ enum FSM_State_Empusa
 	Empusa_Appear_A,      // em0100_enter_ground_A, 등장 A
 	Empusa_Appear_B,      // em0100_enter_ground_B, 등장 B
 
-	// 기본 (자세가 3개임 // biped == 미어캣 자세 // orb == 오브 흡수 자세 (오브자세, 땅에 머리박고 있음) // quadruped == 돌격 자세)
 	// 미어캣 자세
 	Empusa_Biped_Idle, // em0100_biped_idle, 미어캣처럼 서있음
-	Empusa_Biped_To_Quadruped, // em0100_biped_to_quadruped, 미어캣->돌격자세 변경
 
 	// 돌격 자세
 	Empusa_Quadruped_Idle, // em0100_quadruped_idle : 돌격자세
 	Empusa_Quadruped_To_Biped, // em0100_quadruped_to_biped : 돌격자세->미어캣자세 변경
-
-	// 휴식
-	Empusa_Idle_Variation_A, // em0100_Idle_variation_A, 미어캣 휴식자세 A 
-	Empusa_Idle_Variation_B, // em0100_Idle_variation_B, 미어캣 휴식자세 B
-	Empusa_Idle_Variation_C, // em0100_Idle_variation_C : 휴식자세 C / 돌격자세
-	Empusa_Idle_Variation_D, // em0100_Idle_variation_D : 휴식자세 D / 돌격자세
-	Empusa_Setting_C, // em0100_setting_C : 돌격자세 휴식
-	Empusa_Setting_D, // em0100_setting_D, 오브자세 휴식
 
 	// 움직임
 	Empusa_Biped_Run_Start, // em0100_biped_run_start : 미어캣자세->돌격자세 변경되면서 움직임 시작
@@ -58,8 +48,6 @@ enum FSM_State_Empusa
 	Empusa_Blown_Back,				  // em0100_blown_back_start, 강공격 피격 시 날아가기 start
 	Empusa_Blown_Back_Landing,		  // em0100_blown_back_landing, 강공격 피격 후 날아가다 땅에 부딫힘
 
-	Empusa_Blown_Wall_Back,			  // em0100_blown_wall_back, 벽에 박음 start
-
 	Empusa_Slam_Damage,				  // em0100_slam_damage_start, 슬램 피격 시 start
 	Empusa_Slam_Damage_Loop,		  // em0100_slam_damage_fall_loop, 슬램 피격 공중 loop
 	Empusa_Slam_Damage_Landing,		  // em0100_slam_damage_landing, 슬램 피격 후 땅에 부딫힘
@@ -72,11 +60,8 @@ enum FSM_State_Empusa
 
 	Empusa_Death_Front,				  // em0100_death_front, 뒤로 쓰러지면서 죽음
 	Empusa_Death_Back,				  // em0100_death_back, 앞으로 쓰러지면서 죽음
-	Empusa_Downward_Down,			  // em0100_downward_down_start, 앞으로 넘어짐
-	Empusa_Downward_Down_Loop, 	      // em0100_downward_down_loop, 앞으로 넘어진 상태 loop
 	Empusa_Downward_Getup,			  // em0100_downward_down_standup, 앞으로 넘어진 상태에서 일어남
 	Empusa_Downward_Death,			  // em0100_downward_die, 앞으로 누워있는 상태에서 Death
-	Empusa_Downward_Damage,		      // em0100_downward_damage, 앞으로 누워있는 상태에서 약공 맞을때
 
 	Empusa_Buster_Start,       // em0000_Buster_Start, 버스트 히트 시작
 	Empusa_Buster_Loop,        // 버스트 히트 루프
