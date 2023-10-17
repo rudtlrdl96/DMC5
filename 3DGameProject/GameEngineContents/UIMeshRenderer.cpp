@@ -46,6 +46,46 @@ void UIMeshRenderer::LightDataLink()
 		for (size_t j = 0; j < Unit[i].size(); j++)
 		{
 			Unit[i][j]->ShaderResHelper.SetConstantBufferLink("UILightDatas", LightDataValue);
+			Unit[i][j]->ShaderResHelper.SetConstantBufferLink("ColorData", HBSCColor);
+			Unit[i][j]->ShaderResHelper.SetConstantBufferLink("ClipData", Clip);
 		}
+	}
+}
+
+void UIMeshRenderer::DrawEditor()
+{
+	ImGui::Spacing();
+
+	{
+		float4 BC = BaseValue.AddColor;
+		float InputColor[4] = { BC.r, BC.g, BC.b, BC.a };
+		ImGui::DragFloat4("AddColor", InputColor, 0.01f);
+		BaseValue.AddColor = { InputColor[0], InputColor[1], InputColor[2], InputColor[3] };
+	}
+
+	{
+		float4 BC = BaseValue.MulColor;
+		float InputColor[4] = { BC.r, BC.g, BC.b, BC.a };
+		ImGui::DragFloat4("MulColor", InputColor, 0.01f);
+		BaseValue.MulColor = { InputColor[0], InputColor[1], InputColor[2], InputColor[3] };
+	}
+
+	{
+		float4 BC = HBSCColor;
+		float InputColor[4] = { BC.r, BC.g, BC.b, BC.a };
+		ImGui::DragFloat4("HBSCColor", InputColor, 0.01f);
+		HBSCColor = { InputColor[0], InputColor[1], InputColor[2], InputColor[3] };
+	}
+
+	ImGui::Spacing();
+
+	{
+		float InputColor[4] = { Clip.ClipStartX, Clip.ClipEndX, Clip.ClipStartY, Clip.ClipEndY };
+		ImGui::DragFloat4("Clip", InputColor, 0.01f);
+
+		Clip.ClipStartX = InputColor[0];
+		Clip.ClipEndX = InputColor[1];
+		Clip.ClipStartY = InputColor[2];
+		Clip.ClipEndY = InputColor[3];
 	}
 }

@@ -6,6 +6,15 @@
 class UIMeshRenderer : public GameEngineFBXRenderer
 {
 public:
+	class ClipData
+	{
+	public:
+		float ClipStartX = 0.0f;
+		float ClipEndX = 1.0f;
+		float ClipStartY = 0.0f;
+		float ClipEndY = 1.0f;
+	};
+public:
 	UIMeshRenderer();
 	~UIMeshRenderer();
 
@@ -15,6 +24,8 @@ public:
 	UIMeshRenderer& operator=(UIMeshRenderer&& _Other) noexcept = delete;
 
 	LightData LightDataValue;
+	ClipData Clip;
+	float4 HBSCColor = { 0.5f, 0.5f, 0.5f, 0.0f };
 
 	void LightDataUpdate();
 
@@ -42,10 +53,20 @@ public:
 		LightDataLink();
 	}
 
+	void HBSCControl(float _saturation, float _brightness, float _contrast)
+	{
+		HBSCColor.r = _saturation;
+		HBSCColor.g = _brightness;
+		HBSCColor.b = _contrast;
+	}
+
 protected:
 	void Start() override;
 
 private:
+
 	void LightDataLink();
+
+	void DrawEditor() override;
 
 };

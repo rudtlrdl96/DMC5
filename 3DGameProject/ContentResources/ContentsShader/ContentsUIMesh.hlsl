@@ -60,25 +60,63 @@ struct AlphaOutPut
     float4 ResultColor : SV_Target0;
 };
 
+cbuffer ColorData : register(b1)
+{
+    float4 HBSCColor;
+}
+
+cbuffer ClipData : register(b2)
+{
+    float ClipStartX;
+    float ClipEndX;
+    float ClipStartY;
+    float ClipEndY;
+};
+
 AlphaOutPut MeshTexture_PS(Output _Input)
 {
-    AlphaOutPut Result = (AlphaOutPut) 0;
+    if (ClipStartX > _Input.TEXCOORD.x || ClipEndX < _Input.TEXCOORD.x)
+    {
+        clip(-1);
+    }
     
+    if (ClipStartY > _Input.TEXCOORD.y || ClipEndY < _Input.TEXCOORD.y)
+    {
+        clip(-1);
+    }
+    
+    AlphaOutPut Result = (AlphaOutPut) 0;
+       
     // rgb = »ö»ó, a = metallicValue 
     float4 AlbmData = DiffuseTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
     
-    // rgb = NormalMap, a = smoothnessValue 
-    float4 NrmrData = NormalTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
-    
     // r = Alpha, gba = sss (subsurface scattering)
     float4 AtosData = SpecularTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
+    
+    AlbmData.a = AtosData.r;
+    
+    AlbmData += AddColor;
+    AlbmData *= MulColor;
+    
+    float saturation = HBSCColor.r * 2;
+    float brightness = HBSCColor.g * 2 - 1;
+    float contrast = HBSCColor.b * 2;
+    
+    AlbmData.rgb = (AlbmData.rgb - 0.5f) * contrast + 0.5f;
+    AlbmData.rgb = AlbmData.rgb + brightness;
+    float3 intensity = dot(AlbmData.rgb, float3(0.39, 0.59, 0.11));
+
+    AlbmData.rgb = lerp(intensity, AlbmData.rgb, saturation);
+    
+    // rgb = NormalMap, a = smoothnessValue 
+    float4 NrmrData = NormalTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
     
     if (0.0f >= AtosData.r)
     {
         clip(-1);
     }
         
-    Result.ResultColor.rgb = AlbmData.rgb;
+    Result.ResultColor = AlbmData;
         
     float4 Normal = _Input.NORMAL;
     
@@ -100,16 +138,13 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     float3 SpacularRatio = (float3) 0.0f;
     float3 AmbientRatio = (float3) 0.0f;
     
-    ResultLight CalLightData = CalLight(UILightData, _Input.VIEWPOSITION, _Input.NORMAL, metallic);
+    ResultLight CalLightData = CalLight(UILightData, _Input.VIEWPOSITION, Normal, metallic);
         
     DiffuseRatio += CalLightData.CurLightDiffuseRatio;
     SpacularRatio += CalLightData.CurLightSpacularRatio;
     AmbientRatio += CalLightData.CurLightAmbientRatio;
     
     Result.ResultColor.rgb = Result.ResultColor.rgb * (DiffuseRatio + SpacularRatio + AmbientRatio);
-    Result.ResultColor.a = AtosData.r;
-    Result.ResultColor += AddColor;
-    Result.ResultColor *= MulColor;
     
     return Result;
 }

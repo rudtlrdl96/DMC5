@@ -113,7 +113,7 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     
     for (int i = 0; i < LightCount; ++i)
     {
-        ResultLight CalLightData = CalLight(i, _Input.VIEWPOSITION, _Input.NORMAL, metallic);
+        ResultLight CalLightData = CalLight(i, _Input.VIEWPOSITION, Normal, metallic);
         
         DiffuseRatio += CalLightData.CurLightDiffuseRatio;
         SpacularRatio += CalLightData.CurLightSpacularRatio;

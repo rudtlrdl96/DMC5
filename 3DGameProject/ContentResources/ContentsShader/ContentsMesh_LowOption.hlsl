@@ -69,7 +69,6 @@ float4 MeshTexture_PS(Output _Input) : SV_Target0
     
     Color += AddColor;
     Color *= MulColor;
-    
-    
+        
     return Color + (NrmrData * 0.000001f);
 }
