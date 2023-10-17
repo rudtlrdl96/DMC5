@@ -15,15 +15,23 @@ void UI_DTGauge::Start()
 {
 	DTElectroEffect = CreateComponent<UIEffectRenderer>(3);
 	DTElectroEffect->RectInit("Effect_2D");
-	DTElectroEffect->CreateAnimation({ .AnimationName = "DTELECT", .SpriteName = "Effect_Electric_04.tga", .Start = 0, .End = 3,.FrameInter = 0.033f,.Loop = true });
-	DTElectroEffect->GetTransform()->SetLocalScale({ 42.0f,138.0f,3.0f });
+	DTElectroEffect->CreateAnimation({ .AnimationName = "DTELECT", .SpriteName = "Effect_Electric_04.tga", .Start = 0, .End = 3,.FrameInter = 0.036f,.Loop = true });
+	DTElectroEffect->GetTransform()->SetLocalScale({ 50.0f,138.0f,3.0f });
 	DTElectroEffect->GetTransform()->SetLocalPosition({ -523.0f,376.0f,-150.0f });
 	DTElectroEffect->GetTransform()->SetLocalRotation({ 0.0f,0.0f,-90.0f });
-	DTElectroEffect->EffectOption.PlusColor = { 0.0f,0.0f,0.0f,-0.2f };
+	DTElectroEffect->EffectOption.PlusColor = { 1.0f,1.0f,1.0f,-0.3f };
 	DTElectroEffect->ChangeAnimation("DTELECT");
 	DTElectroEffect->Off();
 
-
+	DTElectroEffect_Down = CreateComponent<UIEffectRenderer>(3);
+	DTElectroEffect_Down->RectInit("Effect_2D");
+	DTElectroEffect_Down->CreateAnimation({ .AnimationName = "DTELECT", .SpriteName = "Effect_Electric_04.tga", .Start = 0, .End = 3,.FrameInter = 0.046f,.Loop = true });
+	DTElectroEffect_Down->GetTransform()->SetLocalScale({ 50.0f,138.0f,3.0f });
+	DTElectroEffect_Down->GetTransform()->SetLocalPosition({ -523.0f,376.0f,-150.0f });
+	DTElectroEffect_Down->GetTransform()->SetLocalRotation({ 0.0f,180.0f,-90.0f });
+	DTElectroEffect_Down->EffectOption.PlusColor = { 1.0f,1.0f,1.0f,-0.3f };
+	DTElectroEffect_Down->ChangeAnimation("DTELECT");
+	DTElectroEffect_Down->Off();
 	for (int i = 0; i < 3; i++)
 	{
 		DTGauges.push_back(UIFBXActorBase::CreateGaugeBar({ -590.0f + i * 16.0f , 372.0f , 30.0f + i *1.0f }, { 0.9f, 0.9f, 0.9f }, { -90.0f,0.0f,0.0f }, "DtGauge.FBX"));
@@ -58,6 +66,7 @@ void UI_DTGauge::ActivateDT()
 	if (DTIndex == 9)
 	{
 		DTElectroEffect->On();
+		DTElectroEffect_Down->On();
 	}
 }
 
