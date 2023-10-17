@@ -58,4 +58,8 @@ void UI_BulletGauge::ClipGauge(float _DeltaTime)
 			AddTime = 0.0f;
 		}
 	}
+	else
+	{
+		AddTime = 0.0f;
+	}
 }

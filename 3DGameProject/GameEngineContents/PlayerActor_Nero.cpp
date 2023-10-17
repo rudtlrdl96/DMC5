@@ -1959,8 +1959,17 @@ void PlayerActor_Nero::PlayerLoad()
 		// Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Shoot,
 			.Start = [=] {
-				EffectSystem->PlayFX("BR_Shoot.effect");
-				Col_Attack->SetAttackData(DamageType::Light, 54, std::bind(&GameEngineObjectBase::Off, Col_Attack));
+				if (true == HPRender->IsChargeBullet())
+				{
+					EffectSystem->PlayFX("BR_Shoot_Charge.effect");
+					Col_Attack->SetAttackData(DamageType::Light, 100, std::bind(&GameEngineObjectBase::Off, Col_Attack));
+					HPRender->ShootBullet();
+				}
+				else
+				{
+					EffectSystem->PlayFX("BR_Shoot.effect");
+					Col_Attack->SetAttackData(DamageType::Light, 54, std::bind(&GameEngineObjectBase::Off, Col_Attack));
+				}
 				if (nullptr == LockOnEnemyTransform)
 				{
 					Col_Attack->GetTransform()->SetLocalPosition({ 0, 100, 1000 });
@@ -2016,8 +2025,17 @@ void PlayerActor_Nero::PlayerLoad()
 		// Air Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_AirShoot,
 			.Start = [=] {
-				EffectSystem->PlayFX("BR_Shoot.effect");
-				Col_Attack->SetAttackData(DamageType::Light, 54, std::bind(&GameEngineObjectBase::Off, Col_Attack));
+				if (true == HPRender->IsChargeBullet())
+				{
+					EffectSystem->PlayFX("BR_Shoot_Charge.effect");
+					Col_Attack->SetAttackData(DamageType::Light, 100, std::bind(&GameEngineObjectBase::Off, Col_Attack));
+					HPRender->ShootBullet();
+				}
+				else
+				{
+					EffectSystem->PlayFX("BR_Shoot.effect");
+					Col_Attack->SetAttackData(DamageType::Light, 54, std::bind(&GameEngineObjectBase::Off, Col_Attack));
+				}
 				if (nullptr == LockOnEnemyTransform)
 				{
 					Col_Attack->GetTransform()->SetLocalPosition({ 0, 100, 1000 });
