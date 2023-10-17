@@ -112,7 +112,7 @@ void MainLevel::LevelChangeStart()
 	GameEngineCoreWindow::AddDebugRenderTarget(3, "Alpha Target", GetMainCamera()->GetCamAlphaTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(4, "Last Target", GetMainCamera()->GetCamTarget());
 
-	std::shared_ptr<ShaderTestActor> TestActor = CreateActor<ShaderTestActor>();
+	//std::shared_ptr<ShaderTestActor> TestActor = CreateActor<ShaderTestActor>();
 }
 
 void MainLevel::LevelChangeEnd()
