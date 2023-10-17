@@ -105,6 +105,11 @@ cbuffer DistortionData : register(b3)
     float4 IsDistortion;
 };
 
+cbuffer HBSCColorData : register(b4)
+{
+    float4 HBSCColor;
+};
+
 AlphaOutPut MeshTexture_PS(Output _Input)
 {
     AlphaOutPut Result = (AlphaOutPut) 0;
@@ -125,10 +130,17 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     }
         
     Result.ResultColor = DiffuseTexture.Sample(ENGINEBASE, UV);
-       
-        
+               
     Result.ResultColor *= EffectMulColor;
     Result.ResultColor += EffectPlusColor;
+    
+    float saturation = HBSCColor.r * 2;
+    float brightness = HBSCColor.g * 2 - 1;
+    float contrast = HBSCColor.b * 2;
+    
+    Result.ResultColor.rgb = (Result.ResultColor.rgb - 0.5f) * contrast + 0.5f;
+    Result.ResultColor.rgb = Result.ResultColor.rgb + brightness;
+    float3 intensity = dot(Result.ResultColor.rgb, float3(0.39, 0.59, 0.11));
 
     Result.ResultColor.a = clamp(Result.ResultColor.a, 0, 1);
         
