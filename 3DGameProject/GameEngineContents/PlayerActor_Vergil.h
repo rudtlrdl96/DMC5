@@ -123,17 +123,7 @@ public:
 	{
 		FSM.ChangeState(_StateValue);
 	}
-	void SetDT(unsigned int _DTValue) override
-	{
-		if (_DTValue == 1)
-		{
-			SetDemon();
-		}
-		else
-		{
-			SetHuman();
-		}
-	}
+	void SetDT(unsigned int _DTValue) override;
 	void SetArm(unsigned int _ArmValue) override
 	{
 		return;

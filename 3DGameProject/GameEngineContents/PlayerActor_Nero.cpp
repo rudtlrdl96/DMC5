@@ -23,6 +23,19 @@ PlayerActor_Nero::~PlayerActor_Nero()
 {
 }
 
+void PlayerActor_Nero::SetDT(unsigned int _DTValue)
+{
+	if (_DTValue == 1)
+	{
+		SetDemon();
+	}
+	else
+	{
+		DTOffEffect->Play();
+		SetHuman();
+	}
+}
+
 void PlayerActor_Nero::Start()
 {
 	BasePlayerActor::Start();
@@ -90,6 +103,9 @@ void PlayerActor_Nero::PlayerLoad()
 			}
 			EffectSystem->CreateFX(FXData::Find(File.GetFileName()));
 		}
+		DTOffEffect->CreateFX(FXData::Find("Nero_DT_Off.effect"));
+		DTOffEffect->ChangeFX("Nero_DT_Off.effect");
+		DTOffEffect->Off();
 	}
 
 	// Renderer 생성
@@ -3316,54 +3332,6 @@ void PlayerActor_Nero::NetLoad()
 		NewDir.MoveParentToDirectory("ContentResources");
 		NewDir.Move("ContentResources");
 		NewDir.Move("Effect");
-		NewDir.Move("Mesh");
-		if (nullptr == GameEngineFBXMesh::Find("Effect_Mesh_01.FBX"))
-		{
-			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".fbx" });
-			for (GameEngineFile File : Files)
-			{
-				GameEngineFBXMesh::Load(File.GetFullPath());
-			}
-		}
-		NewDir.MoveParent();
-		NewDir.Move("Texture");
-		if (nullptr == GameEngineTexture::Find("Effect_Texture_01.tga"))
-		{
-			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".tga" });
-			for (GameEngineFile File : Files)
-			{
-				GameEngineTexture::Load(File.GetFullPath());
-			}
-		}
-
-		// 이펙트 Sprite 로드
-		if (nullptr == GameEngineSprite::Find("Effect_Impact.tga"))
-		{
-			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Impact.tga").GetFullPath(), 8, 8);
-			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Impact_01.tga").GetFullPath(), 8, 4);
-			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Muzzle_03.tga").GetFullPath(), 2, 1);
-			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Spark_02.tga").GetFullPath(), 8, 8);
-			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Magic_01.tga").GetFullPath(), 8, 8);
-			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_01.tga").GetFullPath(), 8, 4);
-			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_02.tga").GetFullPath(), 8, 4);
-			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_03.tga").GetFullPath(), 8, 4);
-			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_04.tga").GetFullPath(), 8, 8);
-			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Fire_05.tga").GetFullPath(), 8, 8);
-			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Explosion_01.tga").GetFullPath(), 8, 8);
-			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Explosion_02.tga").GetFullPath(), 8, 8);
-		}
-		if (nullptr == GameEngineTexture::Find("DistortionSample_00.jpg"))
-		{
-			std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
-				{
-					"Texture", "DistortionTexture"
-				});
-
-			GameEngineTexture::Load(Path + "\\DistortionSample_00.jpg");
-			GameEngineTexture::Load(Path + "\\DistortionSample_01.jpg");
-			GameEngineTexture::Load(Path + "\\DistortionSample_02.jpg");
-		}
-		NewDir.MoveParent();
 		NewDir.Move("Nero");
 
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".effect" });
@@ -3387,6 +3355,9 @@ void PlayerActor_Nero::NetLoad()
 			}
 			EffectSystem->CreateFX(FXData::Find(File.GetFileName()));
 		}
+		DTOffEffect->CreateFX(FXData::Find("Nero_DT_Off.effect"));
+		DTOffEffect->ChangeFX("Nero_DT_Off.effect");
+		DTOffEffect->Off();
 	}
 
 	// Renderer 생성
@@ -5146,6 +5117,7 @@ bool PlayerActor_Nero::Input_SpecialCheck()
 			return true;
 		}
 		DTValue = false;
+		DTOffEffect->Play();
 		SetHuman();
 		OnDevilBraeker();
 		return true;
@@ -5200,6 +5172,7 @@ bool PlayerActor_Nero::Input_SpecialCheckFly()
 			return true;
 		}
 		DTValue = false;
+		DTOffEffect->Play();
 		SetHuman();
 		OnDevilBraeker();
 		return true;
