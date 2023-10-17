@@ -100,6 +100,7 @@ private:
 	void ChangeState(int _StateValue);
 	void ChangeState_Client(int _StateValue);
 	void AttackCalculation();
+	void DeathCheck_Client();
 
 	float WaitTime = 0.0f;
 	float RotationDelayTime = 0.0f;

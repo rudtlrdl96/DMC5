@@ -1103,13 +1103,6 @@ void Enemy_Empusa::EnemyCreateFSM()
 	.Start = [=] {
 
 	AttackCalculation();
-	DeathCheck();
-
-	if (true == DeathValue)
-	{
-		ChangeState(FSM_State_Empusa::Empusa_Death_Back);
-		return;
-	}
 
 	if (true == IsVergilLight)
 	{
@@ -1123,6 +1116,12 @@ void Enemy_Empusa::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0100_angledamage_front", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	DeathCheck();
+	if (true == DeathValue)
+	{
+		ChangeState(FSM_State_Empusa::Empusa_Death_Back);
+		return;
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_Empusa::Empusa_Biped_Idle);
@@ -1138,13 +1137,6 @@ void Enemy_Empusa::EnemyCreateFSM()
 	.Start = [=] {
 
 	AttackCalculation();
-	DeathCheck();
-
-	if (true == DeathValue)
-	{
-		ChangeState(FSM_State_Empusa::Empusa_Death_Front);
-		return;
-	}
 
 	if (true == IsVergilLight)
 	{
@@ -1157,6 +1149,12 @@ void Enemy_Empusa::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0100_angledamage_back", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	DeathCheck();
+	if (true == DeathValue)
+	{
+		ChangeState(FSM_State_Empusa::Empusa_Death_Front);
+		return;
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_Empusa::Empusa_Biped_Idle);
@@ -1171,13 +1169,6 @@ void Enemy_Empusa::EnemyCreateFSM()
 	.Start = [=] {
 
 	AttackCalculation();
-	DeathCheck();
-
-	if (true == DeathValue)
-	{
-		ChangeState(FSM_State_Empusa::Empusa_Death_Back);
-		return;
-	}
 
 	if (true == IsVergilLight)
 	{
@@ -1190,6 +1181,12 @@ void Enemy_Empusa::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0100_angledamage_left", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	DeathCheck();
+	if (true == DeathValue)
+	{
+		ChangeState(FSM_State_Empusa::Empusa_Death_Back);
+		return;
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_Empusa::Empusa_Biped_Idle);
@@ -1204,13 +1201,6 @@ void Enemy_Empusa::EnemyCreateFSM()
 	.Start = [=] {
 
 	AttackCalculation();
-	DeathCheck();
-
-	if (true == DeathValue)
-	{
-		ChangeState(FSM_State_Empusa::Empusa_Death_Back);
-		return;
-	}
 
 	if (true == IsVergilLight)
 	{
@@ -1223,6 +1213,12 @@ void Enemy_Empusa::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0100_angledamage_right", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	DeathCheck();
+	if (true == DeathValue)
+	{
+		ChangeState(FSM_State_Empusa::Empusa_Death_Back);
+		return;
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_Empusa::Empusa_Biped_Idle);
@@ -1470,18 +1466,15 @@ void Enemy_Empusa::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Getup,
 	.Start = [=] {
 	PhysXCapsule->AddWorldRotation({ 0.0f, -20.0f, 0.0f });
-
+	EnemyRenderer->ChangeAnimation("em0100_downward_down_standup");
+	},
+	.Update = [=](float _DeltaTime) {
 	DeathCheck();
-
 	if (true == DeathValue)
 	{
 		ChangeState(FSM_State_Empusa::Empusa_Downward_Death);
 		return;
 	}
-
-	EnemyRenderer->ChangeAnimation("em0100_downward_down_standup");
-	},
-	.Update = [=](float _DeltaTime) {
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_Empusa::Empusa_Biped_Idle);
@@ -1499,25 +1492,6 @@ void Enemy_Empusa::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0100_downward_die");
 	},
 	.Update = [=](float _DeltaTime) {
-
-	//if (6 < EnemyRenderer->GetCurFrame() && 62 > EnemyRenderer->GetCurFrame())
-	//{
-	//	float4 CurPos = EnemyRenderer->GetTransform()->GetWorldPosition();
-	//	float4 BackMove = EnemyRenderer->GetTransform()->GetWorldBackVector();
-	//	float4 PlusPos = BackMove * _DeltaTime * 200.0f;
-	//	float4 NewPos = CurPos + PlusPos;
-	//	EnemyRenderer->GetTransform()->SetWorldPosition(NewPos);
-	//}
-
-	//if (150 < EnemyRenderer->GetCurFrame() && 235 > EnemyRenderer->GetCurFrame())
-	//{
-	//	float4 CurPos = EnemyRenderer->GetTransform()->GetWorldPosition();
-	//	float4 BackMove = EnemyRenderer->GetTransform()->GetWorldBackVector();
-	//	float4 PlusPos = BackMove * _DeltaTime * 150.0f;
-	//	float4 NewPos = CurPos + PlusPos;
-	//	EnemyRenderer->GetTransform()->SetWorldPosition(NewPos);
-	//}
-
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		DeathColor += _DeltaTime;
@@ -1528,7 +1502,6 @@ void Enemy_Empusa::EnemyCreateFSM()
 			Death();
 		}
 	}
-
 	},
 	.End = [=] {
 	}

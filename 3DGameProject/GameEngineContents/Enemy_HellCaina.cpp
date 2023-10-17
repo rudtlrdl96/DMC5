@@ -168,6 +168,14 @@ void Enemy_HellCaina::DeathCheck()
 	}
 }
 
+void Enemy_HellCaina::DeathCheck_Client()
+{
+	if (EnemyHP <= 0)
+	{
+		DeathValue = true;
+	}
+}
+
 void Enemy_HellCaina::PlayerChase(float _DeltaTime)
 {
 	RotationCheck();
@@ -388,6 +396,7 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 
 	DamageData Data = AttackCol->GetDamage();
 	MinusEnemyHP(Data.DamageValue);
+	DeathCheck_Client();
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
@@ -1047,13 +1056,6 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Start = [=] {
 
 	AttackCalculation();
-	DeathCheck();
-
-	if (true == DeathValue)
-	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Death_Front);
-		return;
-	}
 
 	if (true == IsVergilLight)
 	{
@@ -1067,6 +1069,12 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0000_standing_damage_weak_front_01", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	DeathCheck();
+	if (true == DeathValue)
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Death_Front);
+		return;
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Idle);
@@ -1082,13 +1090,6 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Start = [=] {
 
 	AttackCalculation();
-	DeathCheck();
-
-	if (true == DeathValue)
-	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Death_Back);
-		return;
-	}
 
 	if (true == IsVergilLight)
 	{
@@ -1101,6 +1102,12 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0000_standing_damage_weak_back_01", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	DeathCheck();
+	if (true == DeathValue)
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Death_Back);
+		return;
+	}
 	if (90 <= EnemyRenderer->GetCurFrame())
 	{
 		AnimationTurnStart = true;
@@ -1121,13 +1128,6 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Start = [=] {
 
 	AttackCalculation();
-	DeathCheck();
-
-	if (true == DeathValue)
-	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Death_Front);
-		return;
-	}
 
 	if (true == IsVergilLight)
 	{
@@ -1140,6 +1140,12 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0000_standing_damage_weak_left_01", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	DeathCheck();
+	if (true == DeathValue)
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Death_Front);
+		return;
+	}
 	if (90 <= EnemyRenderer->GetCurFrame())
 	{
 		AnimationTurnStart = true;
@@ -1160,13 +1166,6 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Start = [=] {
 
 	AttackCalculation();
-	DeathCheck();
-
-	if (true == DeathValue)
-	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Death_Front);
-		return;
-	}
 
 	if (true == IsVergilLight)
 	{
@@ -1179,6 +1178,12 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0000_standing_damage_weak_right_01", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	DeathCheck();
+	if (true == DeathValue)
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Death_Front);
+		return;
+	}
 	if (90 <= EnemyRenderer->GetCurFrame())
 	{
 		AnimationTurnStart = true;
@@ -1415,16 +1420,15 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 앞으로 엎어졌을 때 일어나는 모션
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Prone_Getup,
 	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0000_prone_getup");
+	},
+	.Update = [=](float _DeltaTime) {
 	DeathCheck();
-
 	if (true == DeathValue)
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Prone_Death);
 		return;
 	}
-	EnemyRenderer->ChangeAnimation("em0000_prone_getup");
-	},
-	.Update = [=](float _DeltaTime) {
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Idle);
