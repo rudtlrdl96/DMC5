@@ -5072,7 +5072,7 @@ bool PlayerActor_Nero::Input_SpecialCheck()
 		}
 		DTValue = false;
 		SetHuman();
-		SetOverture();
+		OnDevilBraeker();
 		return true;
 	}
 	if (Controller->GetIsGTBomb() && CurDevilBreaker != DevilBreaker::None)
@@ -5126,7 +5126,7 @@ bool PlayerActor_Nero::Input_SpecialCheckFly()
 		}
 		DTValue = false;
 		SetHuman();
-		SetOverture();
+		OnDevilBraeker();
 		return true;
 	}
 	if (Controller->GetIsGTBomb() && CurDevilBreaker != DevilBreaker::None)

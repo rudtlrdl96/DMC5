@@ -143,8 +143,8 @@ void CavaliereAngelo::Start()
 	// 콜리전 옵션, 크기 설정
 	MonsterAttackCollision->SetAttackData(DamageType::Light, 0);
 	MonsterAttackCollision->SetColType(ColType::OBBBOX3D);
-	MonsterCollision->GetTransform()->SetLocalScale({ 80, 180, 70 });
-	MonsterCollision->GetTransform()->SetLocalPosition({ 0, 50, 0 });
+	MonsterCollision->GetTransform()->SetLocalScale({ 100, 250, 100 });
+	MonsterCollision->GetTransform()->SetLocalPosition({ 0, 125, 0 });
 	MonsterCollision->SetColType(ColType::OBBBOX3D);
 	RN_MonsterCollision->GetTransform()->SetLocalScale({ 1000, 0, 0 });
 	RN_MonsterCollision->GetTransform()->SetLocalPosition({ 0, 80, 0 });
@@ -597,6 +597,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 번개 충전 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Dengeki_Reload_Start,
 	.Start = [=] {
+	EffectRenderer_0->PlayFX("Cavalier_Charge_1.effect");
 	EnemyRenderer->ChangeAnimation("em5501_dengeki_reload_start");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -613,7 +614,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 번개 충전 루프
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Dengeki_Reload_Loop,
 	.Start = [=] {
-	EffectRenderer_0->PlayFX("Cavalier_Charge_1.effect");
+	EffectRenderer_0->PlayFX("Cavalier_Charge_2.effect");
 	EnemyRenderer->ChangeAnimation("em5501_dengeki_reload_loop");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -635,7 +636,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Dengeki_Reload_End,
 	.Start = [=] {
 	IsPowerUp = true;
-	EffectRenderer_0->PlayFX("Cavalier_Charge_2.effect");
+	EffectRenderer_0->PlayFX("Cavalier_Charge_3.effect");
 	EnemyRenderer->ChangeAnimation("em5501_dengeki_reload_end");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -652,6 +653,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 워프 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Warp_Start,
 	.Start = [=] {
+	EffectRenderer_1->PlayFX("Cavalier_Warp.effect");
 	EnemyRenderer->ChangeAnimation("em5501_warp_start");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -686,6 +688,8 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 공격 도중 칼 위로 들어서 빠른 충전
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Collider,
 	.Start = [=] {
+	ColliderStack = 0;
+	EffectRenderer_0->PlayFX("Cavalier_Colider.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack_collider");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -712,7 +716,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 충전 완료 후 Dengeki 걷기 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Collider_To_Dengeki,
 	.Start = [=] {
-	EffectRenderer_0->PlayFX("Cavalier_Collider_To_Dengeki.effect");
+	EffectRenderer_1->PlayFX("Cavalier_Collider_To_Dengeki.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack_collider_to_Dengeki");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -732,6 +736,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+		EffectRenderer_1->Off();
 	SlerpTime = 0.0f;
 	}
 		});
