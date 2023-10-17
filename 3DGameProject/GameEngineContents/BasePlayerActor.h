@@ -89,6 +89,7 @@ protected:
 
 	std::shared_ptr<class PhysXCapsuleComponent> PhysXCapsule = nullptr;
 	std::shared_ptr<class FXSystem> EffectSystem = nullptr;
+	std::shared_ptr<class FXSystem> DTOffEffect = nullptr;
 	float4 Rot = float4::ZERO;
 
 	int HP = 10000;

@@ -193,6 +193,7 @@ void BasePlayerActor::Start()
 
 	Renderer = CreateComponent<GameEngineFBXRenderer>();
 	EffectSystem = CreateComponent<FXSystem>();
+	DTOffEffect = CreateComponent<FXSystem>();
 }
 
 void BasePlayerActor::NetControllLoad()

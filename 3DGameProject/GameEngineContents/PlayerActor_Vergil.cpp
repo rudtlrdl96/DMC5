@@ -15,6 +15,20 @@ PlayerActor_Vergil::~PlayerActor_Vergil()
 {
 }
 
+void PlayerActor_Vergil::SetDT(unsigned int _DTValue)
+{
+	if (_DTValue == 1)
+	{
+		SetDemon();
+	}
+	else
+	{
+		DTOffEffect->Play();
+		SetHuman();
+	}
+}
+
+
 void PlayerActor_Vergil::Start()
 {
 	BasePlayerActor::Start();
@@ -77,6 +91,9 @@ void PlayerActor_Vergil::PlayerLoad()
 			}
 			EffectSystem->CreateFX(FXData::Find(File.GetFileName()));
 		}
+		DTOffEffect->CreateFX(FXData::Find("Vergil_DT_Off.effect"));
+		DTOffEffect->ChangeFX("Vergil_DT_Off.effect");
+		DTOffEffect->Off();
 	}
 	// Renderer 持失
 	{
@@ -2183,6 +2200,9 @@ void PlayerActor_Vergil::NetLoad()
 			}
 			EffectSystem->CreateFX(FXData::Find(File.GetFileName()));
 		}
+		DTOffEffect->CreateFX(FXData::Find("Vergil_DT_Off.effect"));
+		DTOffEffect->ChangeFX("Vergil_DT_Off.effect");
+		DTOffEffect->Off();
 	}
 
 	// Renderer 持失
@@ -3361,6 +3381,7 @@ bool PlayerActor_Vergil::Input_SpecialCheck()
 			ChangeState(FSM_State_Vergil::Vergil_DT_Start);
 			return true;
 		}
+		DTOffEffect->Play();
 		ChangeState(FSM_State_Vergil::Vergil_DT_End);
 		return true;
 	}
