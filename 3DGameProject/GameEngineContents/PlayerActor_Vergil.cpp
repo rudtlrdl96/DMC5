@@ -758,6 +758,17 @@ void PlayerActor_Vergil::PlayerLoad()
 					ChangeState(FSM_State_Vergil::Vergil_Jump_Fly);
 					return;
 				}
+				std::vector<std::shared_ptr<GameEngineCollision>> Cols;
+				if (true == Col_EnemyStepCheck->CollisionAll(CollisionOrder::Enemy, Cols))
+				{
+					if (true == Controller->GetIsSwordPress())
+					{
+						ChangeState(FSM_State_Vergil::pl0300_yamato_Sissonal_Up);
+						return;
+					}
+					ChangeState(FSM_State_Vergil::pl0300_yamato_Sissonal_3);
+					return;
+				}
 				if (true == Renderer->IsAnimationEnd())
 				{
 					ChangeState(FSM_State_Vergil::pl0300_yamato_Sissonal_2);
@@ -765,7 +776,6 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 			},
 			.End = [=] {
-
 			}
 			});
 		static float SissonalTimer = 0;
@@ -813,12 +823,17 @@ void PlayerActor_Vergil::PlayerLoad()
 				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(600));
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
+				PhysXCapsule->Off();
 				EffectSystem->PlayFX("Yamato_Sissonal_3.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Sissonal_3");
 				InputCheck = false;
 				MoveCheck = false;
 			},
 			.Update = [=](float _DeltaTime) {
+				if (Renderer->GetCurFrame() < 20)
+				{
+					GetTransform()->AddWorldPosition(GetTransform()->GetWorldForwardVector()* _DeltaTime * 2000);
+				}
 				if (false == FloorCheck())
 				{
 					ChangeState(FSM_State_Vergil::Vergil_Jump_Fly);
@@ -841,6 +856,8 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 			},
 			.End = [=] {
+				SetWorldPosition(GetTransform()->GetWorldPosition());
+				PhysXCapsule->On();
 				WeaponIdle();
 				Rot.y += 180.0f;
 				PhysXCapsule->AddWorldRotation({ 0, 180, 0 });
@@ -1876,6 +1893,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		.Start = [=] {
 			SetInvincibility(0.5f);
 			PhysXCapsule->SetLinearVelocityZero();
+			Col_Attack->SetAttackData(DamageType::Air, 150);
 			EffectSystem->PlayFX("Vergil_DT_On.effect");
 			Renderer->ChangeAnimation("pl0300_Demon_Start", true);
 			InputCheck = false;
