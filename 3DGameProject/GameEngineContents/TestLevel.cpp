@@ -19,7 +19,6 @@
 #include "JudgementCut.h"
 #include "Item_DevilBreaker.h"
 #include "FXAA_Effect.h"
-#include "Cavaliere_Electric.h"
 #include "DistortionEffect.h"
 TestLevel::TestLevel()
 {
@@ -86,11 +85,6 @@ void TestLevel::Update(float _DeltaTime)
 		}
 	}
 
-	if (true == GameEngineInput::IsDown("SelectLevel_03"))
-	{
-		Electric->Shoot(Player.get());
-	}
-
 	if (true == GameEngineInput::IsDown("ReturnToMainLevel"))
 	{
 		GameEngineCore::ChangeLevel("MainLevel");
@@ -130,10 +124,6 @@ void TestLevel::LevelChangeStart()
 			Player->SetUserControllType();
 			NetworkManager::LinkNetwork(Player.get(), this);
 		}
-	}
-	if (nullptr == Electric)
-	{
-		Electric = CreateActor<Cavaliere_Electric>();
 	}
 	//if (nullptr == TestObj)
 	//{

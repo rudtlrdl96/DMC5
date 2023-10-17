@@ -606,6 +606,7 @@ void PlayerActor_Nero::PlayerLoad()
 				MoveCheck = false;
 				PhysXCapsule->TurnOnGravity();
 				UseDoubleJump = false;
+				UseCaliber = false;
 				PhysXCapsule->SetLinearVelocityZero();
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Jump_Landing");
@@ -1593,6 +1594,7 @@ void PlayerActor_Nero::PlayerLoad()
 					EffectSystem->PlayFX("RQ_Split_3.effect");
 				}
 				UseDoubleJump = false;
+				UseCaliber = false;
 				InputCheck = false;
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOnGravity();
@@ -2434,10 +2436,33 @@ void PlayerActor_Nero::PlayerLoad()
 			.Start = [=] {
 				EffectSystem->PlayFX("Buster_Strike_em5501.effect");
 				Renderer->ChangeAnimation("pl0000_Buster_em5501");
+
+				GetLevel()->TimeEvent.AddEvent(.316f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						PlayerCamera::ShakeMiddle();
+					});
+				GetLevel()->TimeEvent.AddEvent(.683f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						PlayerCamera::ShakeMiddle();
+					});
+				GetLevel()->TimeEvent.AddEvent(1.13f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						PlayerCamera::ShakeMiddle();
+					});
+				GetLevel()->TimeEvent.AddEvent(1.4f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						PlayerCamera::ShakeMiddle();
+					});
+				GetLevel()->TimeEvent.AddEvent(1.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						PlayerCamera::ShakeMiddle();
+					});
 				GetLevel()->TimeEvent.AddEvent(1.93f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 					{
+						PlayerCamera::ShakeHeavy();
 						StopTime(0.15f);
 					});
+
 			},
 			.Update = [=](float _DeltaTime) {
 				if (true == Renderer->IsAnimationEnd())
@@ -2995,6 +3020,7 @@ void PlayerActor_Nero::PlayerLoad()
 			.Start = [=] {
 				WeaponIdle();
 				UseDoubleJump = false;
+				UseCaliber = false;
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
 				SetInvincibility(0.5f);
@@ -3212,6 +3238,7 @@ void PlayerActor_Nero::PlayerLoad()
 			.Start = [=] {
 				SetInvincibility(0.5f);
 				UseDoubleJump = false;
+				UseCaliber = false;
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
 				Renderer->ChangeAnimation("pl0000_Damage_Away_Ground");
@@ -4876,8 +4903,9 @@ bool PlayerActor_Nero::Input_SwordCheckFly(int AddState /*= 0*/)
 		return false;
 	}
 
-	if (Controller->GetIsBackFrontSword())
+	if (Controller->GetIsBackFrontSword() && false == UseCaliber)
 	{
+		UseCaliber = true;
 		ChangeState(FSM_State_Nero::Nero_RQ_Skill_Caliber_1);
 		return true;
 	}
