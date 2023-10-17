@@ -45,12 +45,16 @@ void UI_BulletGauge::ClipGauge(float _DeltaTime)
 		BulletGauge->ImageClippingX(1.0f, ClipXDir::Left);
 	}
 	//총알을 채울때
-	if (true == GameEngineInput::IsPress("UI_bullet"))
+	if (true == GameEngineInput::IsPress("UI_bullet") || true == GameEngineInput::IsPress("Player_Gun"))
 	{
 		AddTime += _DeltaTime;
 		if (AddTime > 1.0f)
 		{
-			ExBulletCount++;
+			if (ExBulletCount < 3)
+			{
+				ExBulletCount++;
+				AddTime = 0.0f;
+			}
 			AddTime = 0.0f;
 		}
 	}

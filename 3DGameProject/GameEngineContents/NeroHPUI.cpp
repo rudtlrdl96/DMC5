@@ -24,7 +24,7 @@ void NeroHPUI::ShootBullet()
 }
 bool NeroHPUI::IsChargeBullet()
 {
-	if (UI_BulletGaugeBar->GetBullet() >= 1.0f)
+	if (UI_BulletGaugeBar->GetBullet() >= 1)
 	{
 		return true;
 	}

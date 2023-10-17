@@ -18,7 +18,7 @@ public:
 	{
 		ExBulletCount--;
 	}
-	float GetBullet()
+	int GetBullet()
 	{
 		return ExBulletCount;
 	}
@@ -32,6 +32,6 @@ private:
 
 	float AddTime = 0.0f;
 	float Time = 0.0f;
-	float ExBulletCount = 3.0f;
+	int ExBulletCount = 0;
 };
 
