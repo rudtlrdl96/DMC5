@@ -153,6 +153,8 @@ void CavaliereAngelo::Start()
 	ParryCollision->SetColType(ColType::OBBBOX3D);
 	ParryCollision->GetTransform()->SetLocalScale({ 220, 220, 280 });
 	ParryCollision->GetTransform()->SetLocalPosition({ 0, 150, 100 });
+	//ParryCollision->GetTransform()->SetLocalScale({ 220, 220, 220 });
+	//ParryCollision->GetTransform()->SetLocalPosition({ 0, 150, 240 });
 
 	Electric = GetLevel()->CreateActor<Cavaliere_Electric>();
 	Electric->GetTransform()->SetParent(GetTransform());
@@ -1062,8 +1064,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 				PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 				Event01 = false;
 				Normal01 = false;
-				ParryStack = 0;
-				++ColliderStack;
+				//++ColliderStack;
 				ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack03);
 				return;
 			}
@@ -1084,8 +1085,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 				PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 				Event01 = false;
 				Normal01 = false;
-				ParryStack = 0;
-				++ColliderStack;
+				//++ColliderStack;
 				ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack04);
 				return;
 			}
@@ -1274,7 +1274,6 @@ void CavaliereAngelo::EnemyCreateFSM()
 
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		ParryStack = 0;
 		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
 		return;
 	}
@@ -1375,7 +1374,6 @@ void CavaliereAngelo::EnemyCreateFSM()
 
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		ParryStack = 0;
 		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
 		return;
 	}
