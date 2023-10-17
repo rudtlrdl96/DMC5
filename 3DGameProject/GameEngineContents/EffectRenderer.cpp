@@ -330,6 +330,7 @@ void EffectRenderer::CustomOptionSetting()
 			Unit[i][j]->ShaderResHelper.SetConstantBufferLink("EffectData", EffectOption);
 			Unit[i][j]->ShaderResHelper.SetConstantBufferLink("EffectVertextData", VertexOption);
 			Unit[i][j]->ShaderResHelper.SetConstantBufferLink("DistortionData", DistortionOption);
+			Unit[i][j]->ShaderResHelper.SetConstantBufferLink("HBSCColorData", HBSCColor);
 		}
 	}
 }
