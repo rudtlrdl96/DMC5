@@ -8,7 +8,7 @@ enum FSM_State_CavaliereAngelo
 	// <special> ==================================================================================
 	CavaliereAngelo_Dengeki_Reload_Start,		 // em5501_dengeki_reload_start : 번개 충전 시작
 	CavaliereAngelo_Dengeki_Reload_Loop,		 // em5501_dengeki_reload_loop : 번개 충전 루프
-	CavaliereAngelo_Dengeki_Reload_End,			 // em5501_dengeki_reload_end : 번개 충전 끝
+	CavaliereAngelo_Dengeki_Reload_End,			 // em5501_dengeki_reload_end : 번개 충전 끝, 100프레임 on, 105프레임 off
 	CavaliereAngelo_Warp_Start,					 // em5501_warp_start : 워프 시작
 	CavaliereAngelo_Warp_End,					 // em5501_warp_end : 워프 끝->방어자세로 변경
 
@@ -48,7 +48,6 @@ enum FSM_State_CavaliereAngelo
 	CavaliereAngelo_Attack04_C1,				 // em5501_Attack04_C1 : C1(위로 올려치기) 공격, 끝나면 방어자세
 	CavaliereAngelo_Attack05,					 // em5501_Attack05 : 05(찌르기)끝난 후 방어자세로 전환(역패리 후 찌르기 공격 성공하면 취하는 자세)
 
-	CavaliereAngelo_Parry_Lose,					 // em5501_Parry_lose : 패리 중첩 후 스턴, 이후 자세 회복
 	CavaliereAngelo_Parry_Even01,				 // em5501_Parry_even01 : 플레이어 패리 성공 후 바로 공격
 	CavaliereAngelo_Parry_Even01_To_02,			 // em5501_Parry_even01_to_02 : 01 패리 후 바로 02 시작 전, 37프레임 스타트 (38 프레임으로 변경)
 	CavaliereAngelo_Parry_Even01_To_03,			 // em5501_Parry_even01_to_04 : 01 패리 후 바로 03 시작 전, 24 프레임 스타트 (23 프레임으로 변경)
@@ -56,16 +55,6 @@ enum FSM_State_CavaliereAngelo
 	CavaliereAngelo_Parry_normal01_to_02,		 // em5501_Parry_normal01_to_02 : 01 패리 후 경직, 이후 02 시작 전, 37프레임 스타트 (38 프레임으로 변경)
 	CavaliereAngelo_Parry_normal01_to_03,		 // em5501_Parry_normal01_to_03 : 01 패리 후 경직, 이후 03 시작 전, 24 프레임 스타트 (23 프레임으로 변경)
 	CavaliereAngelo_Parry_normal01_to_C1,		 // em5501_Parry_normal01_to_C1 : 01 패리 후 경직, 이후 C1 시작 전, 62 프레임 스타트
-
-	CavaliereAngelo_Parry_TATE,					 // em5501_Parry_TATE : 보스 역패리
-	CavaliereAngelo_Parry_TATE_To_Rakurai,		 // em5501_Parry_TATE_to_Rakurai : 역패리 후 Rakurai
-	CavaliereAngelo_Parry_TATE_To_05,			 // em5501_Parry_TATE_to_05 : 역패리 후 05, 47프레임 on, 52프레임 off
-	CavaliereAngelo_Parry_TATE_To_C1,			 // em5501_Parry_TATE_to_C1 : 역패리 후 04 시작 전
-	CavaliereAngelo_Parry_Win01,				 // em5501_Parry_win01 : 01 역패리 성공
-	CavaliereAngelo_Parry_Win01_to_05,			 // em5501_Parry_win01_to_05 : 01 역패리 후 05, 35프레임 on, 40프레임 off
-	CavaliereAngelo_Parry_Win01_to_C1,			 // em5501_Parry_win01_to_C1 : 01 역패리 후 C1 시작 전
-	CavaliereAngelo_Stun_To_02,					 // em5501_Stun_to_02 : 스턴 후 2번 공격 시작 전
-	CavaliereAngelo_Warp_End_Stinger,		     // em5501_warp_end_stinger : 워프 후 02 시작 전
 
 	// <damage> ==================================================================================
 	CavaliereAngelo_Dengeki_Reload_Damage,       // em5501_dengeki_reload_damage : 번개 충전 중 공격 맞을 때 모션
@@ -80,6 +69,9 @@ enum FSM_State_CavaliereAngelo
 	CavaliereAngelo_Guard_Left,				     // em5501_guard_L : 방어자세 서있는 상태에서 좌측 공격 피격
 	CavaliereAngelo_Guard_Right,			     // em5501_guard_R : 방어자세 서있는 상태에서 우측 공격 피격
 	CavaliereAngelo_Daeth_Front,				 // em5501_daeth_front : 정면 공격 맞고 사망
+
+	CavaliereAngelo_Stun_Start,				     // em5501_stun_start : 데미지 중첩 스턴 시작
+	CavaliereAngelo_Stun_Hukki,				     // em5501_stun_hukki : 데미지 중첩 스턴 끝
 
 };
 
@@ -96,6 +88,28 @@ public:
 	CavaliereAngelo(CavaliereAngelo&& _Other) noexcept = delete;
 	CavaliereAngelo& operator=(const CavaliereAngelo& _Other) = delete;
 	CavaliereAngelo& operator=(CavaliereAngelo&& _Other) noexcept = delete;
+
+	void MinusEnemyHP(int _Value)
+	{
+		EnemyHP -= _Value;
+	}
+
+	void HPStackPlus(int _Value)
+	{
+		HPOverallStack += _Value;
+	}
+
+	void HPSeverStackPlus(int _Value)
+	{
+		HPOverallStack += _Value;
+		HPServerStack += _Value;
+	}
+
+	void HPClientStackPlus(int _Value)
+	{
+		HPOverallStack += _Value;
+		HPClientStack += _Value;
+	}
 
 	bool GetIsStun()
 	{
@@ -134,23 +148,22 @@ private:
 	float FallCheckDelayTime = 0.0f;
 	float AttackDelayCheck = 0.0f;
 	float AttackDelayTime = 0.0f;
+	float ElectroTime = 0.0f;
 
 	short ParryStack = 0;
 	short ColliderStack = 0;
 
-	bool IsHeavyAttack = false;   // 강공격 히트
-	bool IsAirAttack = false;     // 에어공격 히트
-	bool IsSlamAttack = false;    // 슬램공격 히트
-	bool IsBusterAttack = false;  // 버스터 히트
+	int ChargeDamageStack = 0;
+
 	bool IsVergilLight = false;
-	bool IsCollapse = false;      // 쓰러져있는 상태
+	bool IsSturn = false;
 	bool IsRecognize = false;
 	bool IsParryCheck = false;    // 패리 체크 on off
 	bool IsStun = false; // 기절상태 (버스터 가능)
 	bool ParryOkay = false;
-
 	bool Event01 = false;
 	bool Normal01 = false;
+	bool IsCharge = false;
 	bool IsPowerUp = false;
 	bool IsFastCharge = false;
 

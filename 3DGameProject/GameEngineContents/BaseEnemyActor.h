@@ -95,7 +95,10 @@ protected:
 	//하위에서 설정해줘야하는 Data들=====================================================
 	EnemyCode EnemyCodeValue = EnemyCode::None;
 	//HP
-	float EnemyHP = 0.0f;
+	int EnemyHP = 0;
+	int HPOverallStack = 0;
+	int HPServerStack = 0;
+	int HPClientStack = 0;
 	// FSM 밸류
 	int EnemyFSMValue = -1;
 	//=================================================================================

@@ -28,7 +28,10 @@ CavaliereAngelo::~CavaliereAngelo()
 void CavaliereAngelo::EnemyTypeLoad()
 {
 	EnemyCodeValue = EnemyCode::HellCaina;
-	EnemyHP = 0;
+	EnemyHP = 10000;
+	HPOverallStack = 0;
+	HPServerStack = 0;
+	HPClientStack = 0;
 }
 
 void CavaliereAngelo::EnemyMeshLoad()
@@ -170,6 +173,13 @@ void CavaliereAngelo::Start()
 
 	// 넷 오브젝트 타입 설정
 	SetNetObjectType(Net_ActorType::HellCaina);
+
+	LinkData_UpdatePacket<bool>(IsCharge);
+	LinkData_UpdatePacket<int>(ChargeDamageStack);
+	LinkData_UpdatePacket<int>(EnemyHP);
+	//LinkData_UpdatePacket<int>(HPOverallStack);
+	//LinkData_UpdatePacket<int>(HPServerStack);
+	//LinkData_UpdatePacket<int>(HPClientStack);
 }
 
 void CavaliereAngelo::Update(float _DeltaTime)
@@ -355,116 +365,35 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 	}
 
 	StartRenderShaking(6);
+	MinusEnemyHP(Data.DamageValue);
 
-	switch (Data.DamageTypeValue)
+	if (true == IsCharge)
 	{
-	case DamageType::None:
-		return;
-		break;
-	case DamageType::Light:
+		ChargeDamageStack += Data.DamageValue;
+	}
 
-		if (true == IsHeavyAttack || true == IsSlamAttack || true == IsBusterAttack)
-		{
-			return;
-		}
-
-		if (true == IsAirAttack)
-		{
-			StartRenderShaking(8);
-			//ChangeState(FSM_State_HellCaina::HellCaina_Air_Damage_Under);
-			return;
-		}
-
-		if (true == IsCollapse)
-		{
-			StartRenderShaking(8);
-			return;
-		}
-
-		AttackCalculation();
-
-		switch (EnemyHitDirValue)
-		{
-		case EnemyHitDirect::Forward:
-			//ChangeState(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Front);
-			break;
-		case EnemyHitDirect::Back:
-			//ChangeState(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Back);
-			break;
-		case EnemyHitDirect::Left:
-			//ChangeState(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Left);
-			break;
-		case EnemyHitDirect::Right:
-			//ChangeState(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Right);
-			break;
-		default:
-			break;
-		}
-		break;
-
-	case DamageType::Heavy:
-		//IsCollapse = false;
-		//IsHeavyAttack = true;
-		//RotationCheck();
-		//PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
-		//ChangeState(FSM_State_HellCaina::HellCaina_Blown_Back);
-		break;
-	case DamageType::Air:
-		//IsCollapse = false;
-		//IsAirAttack = true;
-		//RotationCheck();
-		//PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
-		//ChangeState(FSM_State_HellCaina::HellCaina_Blown_Up);
-		break;
-	case DamageType::Snatch:
-		//IsCollapse = false;
-		//IsAirAttack = true;
-		//StartMonsterSnatch();
-		//RotationCheck();
-		//PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
-		//ChangeState(FSM_State_HellCaina::HellCaina_Snatch);
-		break;
-	case DamageType::Slam:
-		//IsCollapse = false;
-		//IsSlamAttack = true;
-		//ChangeState(FSM_State_HellCaina::HellCaina_Slam_Damage);
-		break;
-	case DamageType::Buster:
+	if (ChargeDamageStack >= 650)
 	{
-		IsStun = false;
-		SetTimeScale(0.4f);
-		GetLevel()->TimeEvent.AddEvent(.316f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-			{
-				StartRenderShaking(8);
-			});
-		GetLevel()->TimeEvent.AddEvent(.683f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-			{
-				StartRenderShaking(8);
-			});
-		GetLevel()->TimeEvent.AddEvent(1.13f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-			{
-				StartRenderShaking(8);
-			});
-		GetLevel()->TimeEvent.AddEvent(1.4f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-			{
-				StartRenderShaking(8);
-			});
-		GetLevel()->TimeEvent.AddEvent(1.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-			{
-				StartRenderShaking(8);
-			});
-		GetLevel()->TimeEvent.AddEvent(1.93f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-			{
-				StartRenderShaking(8);
-				SetTimeScale(1.0f);
-			});
-		break;
+		ChargeDamageStack = 0;
+		RotationCheck();
+		AllDirectSetting();
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Stun_Start);
 	}
-	case DamageType::Stun:
-		break;
-	default:
-		break;
-	}
+
+	//if (false == IsSturn)
+	//{
+	//	HPSeverStackPlus(Data.DamageValue);
+	//}
+
+	//if (HPOverallStack >= 1000 && false == IsSturn)
+	//{
+	//	IsSturn = true;
+	//	HPOverallStack = 0;
+	//	HPServerStack = 0;
+	//	HPClientStack = 0;
+
+	//	ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Stun_Start);
+	//}
 
 	IsVergilLight = false;
 	AttackDelayCheck = 0.0f;
@@ -472,7 +401,47 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 
 void CavaliereAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 {
+	AttackDelayCheck += _DeltaTime;
 
+	float FrameTime = (1.0f / 60.0f) * 5.0f;
+
+	if (FrameTime > AttackDelayCheck)
+	{
+		return;
+	}
+
+	std::shared_ptr<GameEngineCollision> Col = MonsterCollision->Collision(CollisionOrder::PlayerAttack);
+	if (nullptr == Col) { return; }
+
+	std::shared_ptr<AttackCollision> AttackCol = std::dynamic_pointer_cast<AttackCollision>(Col);
+	if (nullptr == AttackCol) { return; }
+
+	PlayerAttackCheck(AttackCol.get());
+	MonsterAttackCollision->Off();
+	DamageData Data = AttackCol->GetDamage();
+
+	if (DamageType::VergilLight == Data.DamageTypeValue)
+	{
+		IsVergilLight = true;
+		Data.DamageTypeValue = DamageType::Light;
+	}
+
+	StartRenderShaking(6);
+	MinusEnemyHP(Data.DamageValue);
+
+	if (true == IsCharge)
+	{
+		ChargeDamageStack += Data.DamageValue;
+	}
+
+	if (ChargeDamageStack >= 1000)
+	{
+		ChargeDamageStack = 0;
+		ChangeState_Client(FSM_State_CavaliereAngelo::CavaliereAngelo_Stun_Start);
+	}
+
+	IsVergilLight = false;
+	AttackDelayCheck = 0.0f;
 }
 
 void CavaliereAngelo::RecognizeCollisionCheck(float _DeltaTime)
@@ -603,7 +572,8 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 
 	WaitTime += _DeltaTime;
-	if (WaitTime >= 0.6f)
+
+	if (WaitTime >= 0.2f)
 	{
 		PlayerChase(_DeltaTime);
 		return;
@@ -640,6 +610,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	.Start = [=] {
 	EffectRenderer_0->PlayFX("Cavalier_Charge_2.effect");
 	EnemyRenderer->ChangeAnimation("em5501_dengeki_reload_loop");
+	IsCharge = true;
 	},
 	.Update = [=](float _DeltaTime) {
 
@@ -650,13 +621,16 @@ void CavaliereAngelo::EnemyCreateFSM()
 		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Dengeki_Reload_End);
 		return;
 	}
+
 	},
 	.End = [=] {
+	IsCharge = false;
+	ChargeDamageStack = 0;
 	WaitTime = 0.0f;
 	}
 	});
 
-	// 번개 충전 끝
+	// 번개 충전 끝, 100프레임 on, 105프레임 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Dengeki_Reload_End,
 	.Start = [=] {
 	IsPowerUp = true;
@@ -671,6 +645,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	MonsterAttackCollision->Off();
 	}
 	});
 
@@ -760,7 +735,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
-		EffectRenderer_1->Off();
+	EffectRenderer_1->Off();
 	SlerpTime = 0.0f;
 	}
 		});
@@ -1066,6 +1041,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 				Normal01 = false;
 				ParryStack = 0;
 				++ColliderStack;
+				SetMoveStop();
 				ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack02);
 				return;
 			}
@@ -1087,6 +1063,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 				Event01 = false;
 				Normal01 = false;
 				//++ColliderStack;
+				SetMoveStop();
 				ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack03);
 				return;
 			}
@@ -1108,6 +1085,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 				Event01 = false;
 				Normal01 = false;
 				//++ColliderStack;
+				SetMoveStop();
 				ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack04);
 				return;
 			}
@@ -1662,6 +1640,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	MonsterAttackCollision->Off();
 	SlerpTime = 0.0f;
 	}
 		});
@@ -1673,6 +1652,15 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 정면공격(드릴) 맞고 스턴 (스턴이 조금 더 김), 이후 자세 회복
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Damage_Drill,
 	.Start = [=] {
+	IsRecognize = false;
+	Event01 = false;
+	Normal01 = false;
+	IsPowerUp = false;
+	IsFastCharge = false;
+	IsParryCheck = false;
+	ParryOkay = false;
+	ColliderStack = 0;
+	ParryStack = 0;
 	ParryTime();
 	RotationCheck();
 	AllDirectSetting_Normal();
@@ -1680,7 +1668,6 @@ void CavaliereAngelo::EnemyCreateFSM()
 	EffectRenderer_1->Off();
 	EnemyRenderer->ChangeAnimation("em5501_Damage_Drill");
 	ColliderStack = 0;
-	IsStun = true;
 	},
 	.Update = [=](float _DeltaTime) {
 
@@ -1696,8 +1683,64 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
-	IsStun = false;
+	}
+	});
+
+	// 데미지 중첩 스턴 시작
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Stun_Start,
+	.Start = [=] {
+	IsRecognize = false;
+	Event01 = false;
+	Normal01 = false;
+	IsPowerUp = false;
+	IsFastCharge = false;
+	IsParryCheck = false;
+	ParryOkay = false;
 	ParryStack = 0;
+	ColliderStack = 0;
+	ParryTime();
+	RotationCheck();
+	AllDirectSetting_Normal();
+	EffectRenderer_0->PlayFX("Cavalier_Parry.effect");
+	EffectRenderer_1->Off();
+	EnemyRenderer->ChangeAnimation("em5501_stun_start");
+	},
+	.Update = [=](float _DeltaTime) {
+
+	if (50 < EnemyRenderer->GetCurFrame() && 70 > EnemyRenderer->GetCurFrame())
+	{
+		SetBackMove(120.0f);
+	}
+
+	if (100 < EnemyRenderer->GetCurFrame() && 120 > EnemyRenderer->GetCurFrame())
+	{
+		SetForwardMove(120.0f);
+	}
+
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Stun_Hukki);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 데미지 중첩 스턴 끝
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Stun_Hukki,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_stun_hukki");
+	IsSturn = false;
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
 	}
 		});
 
