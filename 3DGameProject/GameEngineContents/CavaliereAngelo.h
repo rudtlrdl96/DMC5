@@ -97,6 +97,11 @@ public:
 	CavaliereAngelo& operator=(const CavaliereAngelo& _Other) = delete;
 	CavaliereAngelo& operator=(CavaliereAngelo&& _Other) noexcept = delete;
 
+	bool GetIsStun()
+	{
+		return IsStun;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -141,6 +146,7 @@ private:
 	bool IsCollapse = false;      // 쓰러져있는 상태
 	bool IsRecognize = false;
 	bool IsParryCheck = false;    // 패리 체크 on off
+	bool IsStun = false; // 기절상태 (버스터 가능)
 	bool ParryOkay = false;
 
 	bool Event01 = false;

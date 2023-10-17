@@ -430,14 +430,36 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 		//ChangeState(FSM_State_HellCaina::HellCaina_Slam_Damage);
 		break;
 	case DamageType::Buster:
-		//IsCollapse = false;
-		//IsBusterAttack = true;
-		//BusterCalculation();
-		//RotationCheck();
-		//PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
-		//PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
-		//ChangeState(FSM_State_HellCaina::HellCaina_Buster_Start);
+	{
+		IsStun = false;
+		SetTimeScale(0.4f);
+		GetLevel()->TimeEvent.AddEvent(.316f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				StartRenderShaking(8);
+			});
+		GetLevel()->TimeEvent.AddEvent(.683f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				StartRenderShaking(8);
+			});
+		GetLevel()->TimeEvent.AddEvent(1.13f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				StartRenderShaking(8);
+			});
+		GetLevel()->TimeEvent.AddEvent(1.4f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				StartRenderShaking(8);
+			});
+		GetLevel()->TimeEvent.AddEvent(1.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				StartRenderShaking(8);
+			});
+		GetLevel()->TimeEvent.AddEvent(1.93f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				StartRenderShaking(8);
+				SetTimeScale(1.0f);
+			});
 		break;
+	}
 	case DamageType::Stun:
 		break;
 	default:
@@ -1658,6 +1680,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	EffectRenderer_1->Off();
 	EnemyRenderer->ChangeAnimation("em5501_Damage_Drill");
 	ColliderStack = 0;
+	IsStun = true;
 	},
 	.Update = [=](float _DeltaTime) {
 
@@ -1665,7 +1688,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	{
 		SetBackMove(160.0f);
 	}
-
+	
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Warp_Start);
@@ -1673,6 +1696,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	IsStun = false;
 	ParryStack = 0;
 	}
 		});

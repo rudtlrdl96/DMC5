@@ -156,6 +156,7 @@ void BasePlayerActor::SetInvincibility(float _Time)
 void BasePlayerActor::SetBossCam(GameEngineTransform* _BossCam)
 {
 	Camera->SetBossCam(_BossCam);
+	IsBossBattle = true;
 }
 
 void BasePlayerActor::Start()

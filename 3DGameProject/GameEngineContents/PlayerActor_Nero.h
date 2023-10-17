@@ -82,6 +82,8 @@ enum FSM_State_Nero
 	Nero_Buster_Strike_Air,
 	Nero_Buster_Repelled_Air,
 
+	Nero_Buster_em5501,
+
 	Nero_Snatch_Shoot,
 	Nero_Snatch_Pull,
 	Nero_Snatch_Repel,

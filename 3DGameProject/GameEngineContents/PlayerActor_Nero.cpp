@@ -17,6 +17,7 @@
 #include "Player_Snatch.h"
 #include "RankUI.h"
 #include "Item_DevilBreaker.h"
+#include "CavaliereAngelo.h"
 std::list<DevilBreaker> PlayerActor_Nero::BreakerList;
 PlayerActor_Nero::~PlayerActor_Nero()
 {
@@ -2336,9 +2337,31 @@ void PlayerActor_Nero::PlayerLoad()
 			}
 			});
 
+
+
 		// BusterArm Strike
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Strike,
 			.Start = [=] {
+				Col_Attack->On();
+				std::shared_ptr<GameEngineCollision> Col = Col_Attack->Collision(CollisionOrder::Enemy);
+				Col_Attack->Off();
+				if (nullptr != Col)
+				{
+					CavaliereAngelo* Cava = dynamic_cast<CavaliereAngelo*>(Col->GetActor());
+					if (nullptr != Cava)
+					{
+						if (true == Cava->GetIsStun())
+						{
+							ChangeState(FSM_State_Nero::Nero_Buster_em5501);
+						}
+						else
+						{
+							ChangeState(FSM_State_Nero::Nero_Buster_Repelled);
+						}
+						return;
+					}
+				}
+
 				EffectSystem->PlayFX("Buster_Strike.effect");
 				Renderer->ChangeAnimation("pl0000_Buster_Strike_Common");
 				InputCheck = false;
@@ -2371,6 +2394,28 @@ void PlayerActor_Nero::PlayerLoad()
 			.End = [=] {
 			}
 			});
+
+		// BusterArm em5501
+		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_em5501,
+			.Start = [=] {
+				EffectSystem->PlayFX("Buster_Strike_em5501.effect");
+				Renderer->ChangeAnimation("pl0000_Buster_em5501");
+				GetLevel()->TimeEvent.AddEvent(1.93f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						StopTime(0.15f);
+					});
+			},
+			.Update = [=](float _DeltaTime) {
+				if (true == Renderer->IsAnimationEnd())
+				{
+					ChangeState(FSM_State_Nero::Nero_Idle);
+					return;
+				}
+			},
+			.End = [=] {
+			}
+			});
+
 
 		// BusterArm Repelled
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Repelled,
@@ -2450,6 +2495,18 @@ void PlayerActor_Nero::PlayerLoad()
 		// BusterArm Strike Air
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Strike_Air,
 			.Start = [=] {
+				Col_Attack->On();
+				std::shared_ptr<GameEngineCollision> Col = Col_Attack->Collision(CollisionOrder::Enemy);
+				Col_Attack->Off();
+				if (nullptr != Col)
+				{
+					CavaliereAngelo* Cava = dynamic_cast<CavaliereAngelo*>(Col->GetActor());
+					if (nullptr != Cava)
+					{
+						ChangeState(FSM_State_Nero::Nero_Buster_Repelled_Air);
+						return;
+					}
+				}
 				EffectSystem->PlayFX("Buster_Strike.effect");
 				Renderer->ChangeAnimation("pl0000_Buster_Air_Strike_Common");
 				InputCheck = false;

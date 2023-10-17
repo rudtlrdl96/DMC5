@@ -95,6 +95,7 @@ protected:
 	int FSMValue = -1;
 	int ArmValue;
 	bool DTValue = false;
+	bool IsBossBattle = false;
 private:
 	void DamageColCheck();
 	void OrbColCheck();
