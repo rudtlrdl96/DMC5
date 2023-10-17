@@ -27,7 +27,7 @@ Enemy_HellCaina::~Enemy_HellCaina()
 void Enemy_HellCaina::EnemyTypeLoad()
 {
 	EnemyCodeValue = EnemyCode::HellCaina;
-	EnemyHP = 0;
+	EnemyHP = 1500;
 }
 
 void Enemy_HellCaina::EnemyMeshLoad()
@@ -142,6 +142,11 @@ void Enemy_HellCaina::Start()
 ///////////////////////////////////////////////// 움직임, 히트 관련 ///////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Enemy_HellCaina::DeathCheck()
+{
+
+}
+
 void Enemy_HellCaina::PlayerChase(float _DeltaTime)
 {
 	RotationCheck();
@@ -234,6 +239,11 @@ void Enemy_HellCaina::AttackCalculation()
 
 void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 {
+	if (true == DeathValue)
+	{
+		return;
+	}
+
 	AttackDelayCheck += _DeltaTime;
 
 	float FrameTime = (1.0f / 60.0f) * 5.0f;
@@ -334,6 +344,11 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 
 void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 {
+	if (true == DeathValue)
+	{
+		return;
+	}
+
 	AttackDelayCheck += _DeltaTime;
 
 	float FrameTime = (1.0f / 60.0f) * 5.0f;
@@ -432,7 +447,7 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 
 void Enemy_HellCaina::RecognizeCollisionCheck(float _DeltaTime)
 {
-	if (true == IsRecognize || false == RN_MonsterCollision->IsUpdate())
+	if (true == IsRecognize || false == RN_MonsterCollision->IsUpdate() || true == DeathValue)
 	{
 		return;
 	}

@@ -27,8 +27,8 @@ CavaliereAngelo::~CavaliereAngelo()
 
 void CavaliereAngelo::EnemyTypeLoad()
 {
-	EnemyCodeValue = EnemyCode::HellCaina;
-	EnemyHP = 10000;
+	EnemyCodeValue = EnemyCode::CavaliereAngelo;
+	EnemyHP = 1000;
 	HPOverallStack = 0;
 	HPServerStack = 0;
 	HPClientStack = 0;
@@ -65,18 +65,15 @@ void CavaliereAngelo::EnemyMeshLoad()
 		break;
 	}
 
-	// PaperBurn, z값 변경하면 됨
-	//if (nullptr == GameEngineTexture::Find("PaperBurnNoise.jpg"))
-	//{
-	//	GameEngineTexture::Load(GameEnginePath::GetFileFullPath("ContentResources",
-	//		{
-	//			"Texture", "BurnNoiseTexture"
-	//		}, "PaperBurnNoise.jpg"));
-	//}
+	if (nullptr == GameEngineTexture::Find("PaperBurnNoise.jpg"))
+	{
+		GameEngineTexture::Load(GameEnginePath::GetFileFullPath("ContentResources",
+			{
+				"Texture", "BurnNoiseTexture"
+			}, "PaperBurnNoise.jpg"));
+	}
 
-	//EnemyRenderer->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
-
-	//EnemyRenderer->GetTransform()->SetLocalScale({ 0.8f , 0.8f , 0.8f });
+	EnemyRenderer->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
 }
 
 void CavaliereAngelo::EnemyAnimationLoad()
@@ -191,15 +188,15 @@ void CavaliereAngelo::Update(float _DeltaTime)
 		EffectRenderer_0->TimeScale = GetTimeScale();
 		EffectRenderer_1->TimeScale = GetTimeScale();
 
-		if (GetTimeScale() == 0.0f)
-		{
-			MonsterAttackCollision->Off();
-			PhysXCapsule->Off();
-		}
-		else if (false == PhysXCapsule->IsUpdate())
-		{
-			PhysXCapsule->On();
-		}
+		//if (GetTimeScale() == 0.0f)
+		//{
+		//	MonsterAttackCollision->Off();
+		//	PhysXCapsule->Off();
+		//}
+		//else if (false == PhysXCapsule->IsUpdate())
+		//{
+		//	PhysXCapsule->On();
+		//}
 
 		RenderShake(_DeltaTime);
 		//MonsterSnatch(_DeltaTime);
@@ -209,6 +206,7 @@ void CavaliereAngelo::Update(float _DeltaTime)
 	// 싱글 플레이일 때 실행
 	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
 	{
+		DeathCheck();
 		RecognizeCollisionCheck(_DeltaTime);
 		DamageCollisionCheck(_DeltaTime);
 		EnemyFSM.Update(_DeltaTime);
@@ -218,6 +216,7 @@ void CavaliereAngelo::Update(float _DeltaTime)
 		// 서버 플레이일 때 실행
 		if (NetControllType::ActiveControll == GetControllType())
 		{
+			DeathCheck();
 			RecognizeCollisionCheck(_DeltaTime);
 			DamageCollisionCheck(_DeltaTime);
 			EnemyFSM.Update(_DeltaTime);
@@ -236,6 +235,25 @@ void CavaliereAngelo::Update(float _DeltaTime)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////// 움직임, 히트 관련 ///////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void CavaliereAngelo::DeathCheck()
+{
+	if (EnemyHP <= 0)
+	{
+		DeathValue = true;
+	}
+
+	if (true == DeathValue && false == DeathSettig)
+	{
+		DeathSettig = true;
+		MonsterCollision->Off();
+		ParryCollision->Off();
+		RN_MonsterCollision->Off();
+		PhysXCapsule->Off();
+
+		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Daeth_Front);
+	}
+}
 
 void CavaliereAngelo::PlayerChase(float _DeltaTime)
 {
@@ -339,6 +357,11 @@ void CavaliereAngelo::AttackCalculation()
 
 void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 {
+	if (true == DeathValue)
+	{
+		return;
+	}
+
 	AttackDelayCheck += _DeltaTime;
 
 	float FrameTime = (1.0f / 60.0f) * 5.0f;
@@ -366,6 +389,12 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 
 	StartRenderShaking(6);
 	MinusEnemyHP(Data.DamageValue);
+
+	if (EnemyHP <= 0)
+	{
+		DeathValue = true;
+		return;
+	}
 
 	if (true == IsCharge)
 	{
@@ -432,6 +461,11 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 
 void CavaliereAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 {
+	if (true == DeathValue)
+	{
+		return;
+	}
+
 	AttackDelayCheck += _DeltaTime;
 
 	float FrameTime = (1.0f / 60.0f) * 5.0f;
@@ -477,7 +511,7 @@ void CavaliereAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 
 void CavaliereAngelo::RecognizeCollisionCheck(float _DeltaTime)
 {
-	if (true == IsRecognize || false == RN_MonsterCollision->IsUpdate())
+	if (true == IsRecognize || false == RN_MonsterCollision->IsUpdate() || true == DeathValue)
 	{
 		return;
 	}
@@ -491,7 +525,7 @@ void CavaliereAngelo::RecognizeCollisionCheck(float _DeltaTime)
 
 void CavaliereAngelo::ParryCheck()
 {
-	if (false == IsParryCheck || true == ParryOkay)
+	if (false == IsParryCheck || true == ParryOkay || true == DeathValue)
 	{
 		return;
 	}
@@ -1772,6 +1806,27 @@ void CavaliereAngelo::EnemyCreateFSM()
 	{
 		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
 		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 으앙쥬금
+	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Daeth_Front,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em5501_daeth_front");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		DeathColor += _DeltaTime;
+		EnemyRenderer->SetBaseColor({0.0f, 0.0f, DeathColor});
+
+		if (DeathColor >= 1.0f)
+		{
+			int a = 0;
+		}
 	}
 	},
 	.End = [=] {

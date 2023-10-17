@@ -27,7 +27,7 @@ Enemy_Empusa::~Enemy_Empusa()
 void Enemy_Empusa::EnemyTypeLoad()
 {
 	EnemyCodeValue = EnemyCode::Empusa;
-	EnemyHP = 0;
+	EnemyHP = 1200;
 }
 
 void Enemy_Empusa::EnemyMeshLoad()
@@ -133,6 +133,11 @@ void Enemy_Empusa::Start()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////// 움직임, 히트 관련 ///////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Enemy_Empusa::DeathCheck()
+{
+
+}
 
 void Enemy_Empusa::PlayerChase(float _DeltaTime)
 {
@@ -275,6 +280,11 @@ void Enemy_Empusa::AttackCalculation()
 
 void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 {
+	if (true == DeathValue)
+	{
+		return;
+	}
+
 	AttackDelayCheck += _DeltaTime;
 
 	float FrameTime = (1.0f / 60.0f) * 5.0f;
@@ -375,6 +385,11 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 
 void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 {
+	if (true == DeathValue)
+	{
+		return;
+	}
+
 	AttackDelayCheck += _DeltaTime;
 
 	float FrameTime = (1.0f / 60.0f) * 5.0f;
@@ -473,7 +488,7 @@ void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 
 void Enemy_Empusa::RecognizeCollisionCheck(float _DeltaTime)
 {
-	if (true == IsRecognize || false == RN_MonsterCollision->IsUpdate())
+	if (true == IsRecognize || false == RN_MonsterCollision->IsUpdate() || true == DeathValue)
 	{
 		return;
 	}

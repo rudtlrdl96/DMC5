@@ -546,6 +546,11 @@ void BaseEnemyActor::PushDirectSetting()
 /// <param name="_DeltaTime :">0.025초마다 1회 떨림 체크를 위한 시간</param>
 void BaseEnemyActor::RenderShake(float _DeltaTime)
 {
+	if (true == DeathValue)
+	{
+		return;
+	}
+
 	if (false == IsRenderShaking)
 	{
 		ShakingCameraSetting = 1;
@@ -643,6 +648,11 @@ void BaseEnemyActor::SnatchCalculation()
 /// <param name="_DeltaTime :">1.0초를 체크할 시간</param>
 void BaseEnemyActor::MonsterSnatch(float _DeltaTime)
 {
+	if (true == DeathValue)
+	{
+		return;
+	}
+
 	if (false == IsSnatch)
 	{
 		return;

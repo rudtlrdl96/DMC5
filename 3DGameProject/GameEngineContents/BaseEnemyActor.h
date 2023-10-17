@@ -15,7 +15,7 @@ enum class EnemyCode
 	HellAntenora = 1001,
 
 	// 보스 몬스터
-	CavliereAngelo = 5000,
+	CavaliereAngelo = 5000,
 };
 
 enum class EnemyHitDirect
@@ -85,6 +85,7 @@ protected:
 	virtual void DamageCollisionCheck(float _DeltaTime) = 0;          // 서버, 싱글에서 처리할 데미지 콜리전 체크 함수
 	virtual void DamageCollisionCheck_Client(float _DeltaTime) = 0;   // 클라이언트에서 처리할 데미지 콜리전 체크 함수
 	virtual void RecognizeCollisionCheck(float _DeltaTime) = 0;
+	virtual void DeathCheck() = 0;
 
 	std::shared_ptr<class GameEngineFBXRenderer> EnemyRenderer = nullptr;     // 랜더러
 	std::shared_ptr<class PhysXCapsuleComponent> PhysXCapsule = nullptr;      // 피직스 컴포넌트
@@ -101,6 +102,10 @@ protected:
 	int HPClientStack = 0;
 	// FSM 밸류
 	int EnemyFSMValue = -1;
+
+	bool DeathValue = false;
+	bool DeathSettig = false;
+	float DeathColor = 0.0f;
 	//=================================================================================
 
 	//====================================================
