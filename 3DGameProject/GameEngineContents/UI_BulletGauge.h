@@ -14,7 +14,10 @@ public:
 	UI_BulletGauge(UI_BulletGauge&& _Other) noexcept = delete;
 	UI_BulletGauge& operator=(const UI_BulletGauge& _Other) = delete;
 	UI_BulletGauge& operator=(UI_BulletGauge&& _Other) noexcept = delete;
-
+	void SetBullet()
+	{
+		ExBulletCount--;
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -25,6 +28,6 @@ private:
 
 	float AddTime = 0.0f;
 	float Time = 0.0f;
-	float ExBulletCount = 1.0f;
+	float ExBulletCount = 3.0f;
 };
 

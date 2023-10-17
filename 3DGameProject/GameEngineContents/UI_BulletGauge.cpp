@@ -28,21 +28,30 @@ void UI_BulletGauge::Update(float _DeltaTime)
 void UI_BulletGauge::ClipGauge(float _DeltaTime)
 {
 	
-	AddTime += _DeltaTime; 
-	BulletGauge->ImageClippingX(ExBulletCount, ClipXDir::Left);
-	//ÃÑ¾ËÀ» ½úÀ»¶§
-	if (true == GameEngineInput::IsUp("UIDEBUGMODE"))
+	if (ExBulletCount == 0)
 	{
-		ExBulletCount-=0.33f;
+		BulletGauge->ImageClippingX(0.0f, ClipXDir::Left);
+	}
+	else if (ExBulletCount == 1)
+	{
+		BulletGauge->ImageClippingX(0.33f, ClipXDir::Left);
+	}
+	else if (ExBulletCount == 2)
+	{
+		BulletGauge->ImageClippingX(0.66f, ClipXDir::Left);
+	}
+	else if (ExBulletCount == 3)
+	{
+		BulletGauge->ImageClippingX(1.0f, ClipXDir::Left);
 	}
 	//ÃÑ¾ËÀ» Ã¤¿ï¶§
-	if (true == GameEngineInput::IsPress("UI_Tab"))
+	if (true == GameEngineInput::IsPress("UI_bullet"))
 	{
-
-		if (ExBulletCount < 1.0f)
+		AddTime += _DeltaTime;
+		if (AddTime > 1.0f)
 		{
-			ExBulletCount += _DeltaTime*0.3f;
+			ExBulletCount++;
+			AddTime = 0.0f;
 		}
-
 	}
 }

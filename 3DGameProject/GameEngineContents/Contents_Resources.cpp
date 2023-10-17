@@ -409,7 +409,8 @@ void ContentsCore::CreateContentsKey()
 		GameEngineInput::CreateKey("UI_Left", VK_LEFT);
 		GameEngineInput::CreateKey("UI_Right", VK_RIGHT);
 		GameEngineInput::CreateKey("UI_Tab", VK_TAB);
-
+		GameEngineInput::CreateKey("UI_bullet", VK_RBUTTON);
+		
 	}
 	if (false == GameEngineInput::IsKey("Player_Up"))
 	{

@@ -18,6 +18,10 @@ void NeroHPUI::SetPlayerHP(int _HP)
 {
 	UI_HPGaegeBar->UpdateHPBar(_HP);
 }
+void NeroHPUI::ShootBullet()
+{
+	UI_BulletGaugeBar->SetBullet();
+}
 /*
 후드,후드불
 HP바 1줄
