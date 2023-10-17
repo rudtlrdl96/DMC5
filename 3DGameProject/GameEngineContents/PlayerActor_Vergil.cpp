@@ -1785,7 +1785,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			else
 			{
 				WarpTarget = nullptr;
-				WarpPos = GetTransform()->GetWorldPosition() + float4::UP * 500;
+				WarpPos = GetTransform()->GetWorldPosition();
 			}
 			Renderer->ChangeAnimation("pl0300_Warp_Up", true);
 
