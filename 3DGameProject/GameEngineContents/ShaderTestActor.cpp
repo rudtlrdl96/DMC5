@@ -3,6 +3,7 @@
 
 ShaderTestActor::ShaderTestActor() 
 {
+	SetName("ShaderTestActor");
 }
 
 ShaderTestActor::~ShaderTestActor() 
@@ -11,33 +12,15 @@ ShaderTestActor::~ShaderTestActor()
 
 void ShaderTestActor::Start()
 {
-	//if (nullptr == GameEngineTexture::Find("ShaderTest_Case_0_albm.png"))
+	//if (nullptr == GameEngineTexture::Find("PaperBurnNoise.jpg"))
 	//{
-	//	std::string DirectoryPath = GameEnginePath::GetFileFullPath("ContentResources",
+	//	GameEngineTexture::Load(GameEnginePath::GetFileFullPath("ContentResources",
 	//		{
-	//			"Texture", "ShaderDebug"
-	//		});
-	//
-	//	GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_0_albm.png");
-	//	GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_1_albm.png");
-	//	GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_2_albm.png");
-	//
-	//	GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_0_nrmr.png");
-	//	GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_1_nrmr.png");
-	//	GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_2_nrmr.png");
-	//
-	//	GameEngineTexture::Load(DirectoryPath + "/ShaderTest_Case_0_atos.png");
+	//			"Texture", "BurnNoiseTexture"
+	//		}, "PaperBurnNoise.jpg"));
 	//}
-	 
-	if (nullptr == GameEngineTexture::Find("PaperBurnNoise.jpg"))
-	{
-		GameEngineTexture::Load(GameEnginePath::GetFileFullPath("ContentResources",
-			{
-				"Texture", "BurnNoiseTexture"
-			}, "PaperBurnNoise.jpg"));
-	}
 
-	TestRenderer = CreateComponent<GameEngineFBXRenderer>();
+	TestRenderer = CreateComponent<UIMeshRenderer>();
 	 	
 	//FBX파일경로를 찾아서 로드
 	if (nullptr == GameEngineFBXMesh::Find("House1.FBX"))
@@ -49,10 +32,16 @@ void ShaderTestActor::Start()
 	
 		GameEngineFBXMesh::Load(Path);
 	}
+
+	// Light 데이터 설정
+	TestRenderer->LightDataValue.LightPos = float4(0, 1000, 0);
+	TestRenderer->LightDataValue.LightDir = float4(-1, -1, 0).NormalizeReturn();
+	TestRenderer->LightDataUpdate();
 	
-	TestRenderer->SetFBXMesh("House1.FBX", "FBX");
+	TestRenderer->SetFBXMesh("House1.FBX", "UIFBXMesh");
 	TestRenderer->GetTransform()->SetLocalScale(float4(0.5f, 0.5f, 0.5f));
-	TestRenderer->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
+
+	//TestRenderer->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
 
 	//TestRenderer->EffectOption.MulColor = float4(1, 1, 1, 0.5f);
 

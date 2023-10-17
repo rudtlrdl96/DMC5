@@ -67,6 +67,15 @@
     <FxCompile Include="ContentsMesh_ClipAlpha.hlsl">
       <Filter>MeshShader</Filter>
     </FxCompile>
+    <FxCompile Include="ContentsUIMesh.hlsl">
+      <Filter>MeshShader</Filter>
+    </FxCompile>
+    <FxCompile Include="UILight.fx">
+      <Filter>Header</Filter>
+    </FxCompile>
+    <FxCompile Include="ContentsUIAniMesh.hlsl">
+      <Filter>MeshShader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">

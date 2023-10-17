@@ -480,6 +480,9 @@
     <ClInclude Include="Item_RedOrb.h">
       <Filter>Actor\Item</Filter>
     </ClInclude>
+    <ClInclude Include="UIMeshRenderer.h">
+      <Filter>Component\Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -951,6 +954,9 @@
     </ClCompile>
     <ClCompile Include="Item_RedOrb.cpp">
       <Filter>Actor\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="UIMeshRenderer.cpp">
+      <Filter>Component\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

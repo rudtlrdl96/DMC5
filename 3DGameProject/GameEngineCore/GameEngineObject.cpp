@@ -358,9 +358,9 @@ GameEngineObject* GameEngineObject::DrawGUI()
 				Result = ChildResult;
 			}
 		}
-	}
 
-	ImGui::TreePop();
+		ImGui::TreePop();
+	}
 
 	return Result;
 }

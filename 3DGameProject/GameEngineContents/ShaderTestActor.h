@@ -1,5 +1,5 @@
 #pragma once
-#include <GameEngineCore/GameEngineFBXRenderer.h>
+#include "UIMeshRenderer.h"
 #include "EffectRenderer.h"
 
 // Ό³Έν :
@@ -24,7 +24,7 @@ public:
 protected:
 
 private:
-	std::shared_ptr<GameEngineFBXRenderer> TestRenderer = nullptr;
+	std::shared_ptr<UIMeshRenderer> TestRenderer = nullptr;
 	//std::shared_ptr<EffectRenderer> TestRenderer = nullptr;
 
 	void DrawEditor() override;

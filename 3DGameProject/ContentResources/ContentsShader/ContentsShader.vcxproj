@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <FxCompile Include="ContentsMesh_ClipAlpha.hlsl" />
+    <FxCompile Include="ContentsUIAniMesh.hlsl" />
     <FxCompile Include="EffectMesh.hlsl" />
     <FxCompile Include="ContentsAniMesh_Alpha.hlsl" />
     <FxCompile Include="ContentsAniMesh_LowOption.hlsl" />
@@ -172,6 +173,8 @@
     <FxCompile Include="OldTVShader.hlsl" />
     <FxCompile Include="RenderBaseValue.fx" />
     <FxCompile Include="Transform.fx" />
+    <FxCompile Include="ContentsUIMesh.hlsl" />
+    <FxCompile Include="UILight.fx" />
     <FxCompile Include="ZoomEffectShader.hlsl" />
   </ItemGroup>
   <ItemGroup>

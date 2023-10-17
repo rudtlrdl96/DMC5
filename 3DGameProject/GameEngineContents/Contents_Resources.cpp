@@ -381,6 +381,27 @@ void ContentsCore::ContentsResourcesCreate()
 		Material->SetBlendState("BaseBlend");
 		Material->SetDepthState("AlphaDepth");
 	}
+
+	// UIMesh
+	{
+		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("UIFBXMesh");
+
+		Material->SetVertexShader("ContentsUIMesh.hlsl");
+		Material->SetRasterizer("Engine2DBase");
+		Material->SetPixelShader("ContentsUIMesh.hlsl");
+		Material->SetBlendState("BaseBlend");
+		Material->SetDepthState("AlphaDepth");
+	}
+
+	{
+		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("UIFBXAniMesh");
+
+		Material->SetVertexShader("ContentsUIAniMesh.hlsl");
+		Material->SetRasterizer("Engine3DBase");
+		Material->SetPixelShader("ContentsUIAniMesh.hlsl");
+		Material->SetBlendState("BaseBlend");
+		Material->SetDepthState("AlphaDepth");
+	}
 }
 
 void ContentsCore::CreateContentsKey()

@@ -82,11 +82,11 @@ void TestStageLevel::Update(float _DeltaTime)
 	{
 		GetDirectionalLight()->BakeShadow(GetMainCamera());
 
-		if (nullptr != PointLight)
-		{
-			PointLight->Death();
-			PointLight = nullptr;
-		}
+		//if (nullptr != PointLight)
+		//{
+		//	PointLight->Death();
+		//	PointLight = nullptr;
+		//}
 	}
 }
 
@@ -142,7 +142,7 @@ void TestStageLevel::LevelChangeStart()
 	{
 		std::shared_ptr<PlayerActor_Vergil> Vergil = CreateActor<PlayerActor_Vergil>();
 		Vergil->SetUserControllType();
-		Vergil->SetWorldPosition({ 0, 100, 0 });
+		Vergil->SetWorldPosition({ 0, 100, 0 }); 
 	}
 	for (int i = 0; i < 20; i++)
 	{
@@ -204,7 +204,8 @@ void TestStageLevel::LevelChangeStart()
 
 	//CreateActor<ShaderTestActor>()->GetTransform()->SetLocalPosition(float4(0, 200, 0));
 
-	PointLight = CreatePointLight(float4(0, 400, 0), ShadowTextureScale::S_512, 1024);
+	PointLight = CreatePointLight(float4(0, 300, 0), ShadowTextureScale::S_512, 1024);
+	PointLight->SetLightPower(2.0f);
 	PointLight->DynamicShadowOn();
 
 	GameEngineCoreWindow::Clear();
