@@ -380,6 +380,37 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Stun_Start);
 	}
 
+	if (DamageType::Stun == Data.DamageTypeValue)
+	{
+		IsStun = false;
+		SetTimeScale(0.4f);
+		GetLevel()->TimeEvent.AddEvent(.316f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				StartRenderShaking(8);
+			});
+		GetLevel()->TimeEvent.AddEvent(.683f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				StartRenderShaking(8);
+			});
+		GetLevel()->TimeEvent.AddEvent(1.13f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				StartRenderShaking(8);
+			});
+		GetLevel()->TimeEvent.AddEvent(1.4f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				StartRenderShaking(8);
+			});
+		GetLevel()->TimeEvent.AddEvent(1.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				StartRenderShaking(8);
+			});
+		GetLevel()->TimeEvent.AddEvent(1.93f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				StartRenderShaking(8);
+				SetTimeScale(1.0f);
+			});
+	}
+
 	//if (false == IsSturn)
 	//{
 	//	HPSeverStackPlus(Data.DamageValue);
@@ -1659,6 +1690,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	IsFastCharge = false;
 	IsParryCheck = false;
 	ParryOkay = false;
+	IsStun = true;
 	ColliderStack = 0;
 	ParryStack = 0;
 	ParryTime();
@@ -1667,7 +1699,6 @@ void CavaliereAngelo::EnemyCreateFSM()
 	EffectRenderer_0->PlayFX("Cavalier_Parry.effect");
 	EffectRenderer_1->Off();
 	EnemyRenderer->ChangeAnimation("em5501_Damage_Drill");
-	ColliderStack = 0;
 	},
 	.Update = [=](float _DeltaTime) {
 
@@ -1683,6 +1714,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	IsStun = false;
 	}
 	});
 
@@ -1696,6 +1728,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	IsFastCharge = false;
 	IsParryCheck = false;
 	ParryOkay = false;
+	IsStun = true;
 	ParryStack = 0;
 	ColliderStack = 0;
 	ParryTime();
@@ -1724,6 +1757,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	IsStun = false;
 	}
 		});
 
