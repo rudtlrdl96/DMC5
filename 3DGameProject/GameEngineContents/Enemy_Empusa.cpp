@@ -132,9 +132,6 @@ void Enemy_Empusa::Start()
 	FallDistance = 55.0f;
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
 
-	MonsterCollision->Off();
-	RN_MonsterCollision->Off();
-
 	// 넷 오브젝트 타입 설정
 	SetNetObjectType(Net_ActorType::Empusa);
 
@@ -545,10 +542,14 @@ void Enemy_Empusa::RecognizeCollisionCheck(float _DeltaTime)
 	}
 
 	std::shared_ptr<GameEngineCollision> Collision = RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D);
-	if (nullptr == Collision) { return; }
+	if (nullptr == Collision) { IsRecognize = false;  return; }
 
-	PlayerContactCheck(_DeltaTime, Collision.get());
-	IsRecognize = true;
+	bool Iscontact = PlayerContactCheck(_DeltaTime, Collision.get());
+
+	if (true == Iscontact)
+	{
+		IsRecognize = true;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -589,8 +590,6 @@ void Enemy_Empusa::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
-	MonsterCollision->On();
-	RN_MonsterCollision->On();
 	}
 		});
 	// 최초 등장_B
@@ -607,8 +606,6 @@ void Enemy_Empusa::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
-	MonsterCollision->On();
-	RN_MonsterCollision->On();
 	}
 		});
 
@@ -628,7 +625,13 @@ void Enemy_Empusa::EnemyCreateFSM()
 	{
 		if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
 		{
-			IsRecognize = true;
+			std::shared_ptr<GameEngineCollision> Collision = RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D);
+			bool Iscontact = PlayerContactCheck_Normal(Collision.get());
+
+			if (true == Iscontact)
+			{
+				IsRecognize = true;
+			}
 		}
 		else
 		{

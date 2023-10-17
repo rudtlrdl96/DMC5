@@ -286,7 +286,13 @@ void CavaliereAngelo::PlayerChase(float _DeltaTime)
 
 	if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
 	{
-		IsRecognize = true;
+		std::shared_ptr<GameEngineCollision> Collision = RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D);
+		bool Iscontact = PlayerContactCheck_Normal(Collision.get());
+
+		if (true == Iscontact)
+		{
+			IsRecognize = true;
+		}
 	}
 	else
 	{
@@ -539,10 +545,14 @@ void CavaliereAngelo::RecognizeCollisionCheck(float _DeltaTime)
 	}
 
 	std::shared_ptr<GameEngineCollision> Collision = RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D);
-	if (nullptr == Collision) { return; }
+	if (nullptr == Collision) { IsRecognize = false;  return; }
 
-	PlayerContactCheck(_DeltaTime, Collision.get());
-	IsRecognize = true;
+	bool Iscontact = PlayerContactCheck(_DeltaTime, Collision.get());
+
+	if (true == Iscontact)
+	{
+		IsRecognize = true;
+	}
 }
 
 void CavaliereAngelo::ParryCheck()
@@ -1040,7 +1050,13 @@ void CavaliereAngelo::EnemyCreateFSM()
 	{
 		if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
 		{
-			IsRecognize = true;
+			std::shared_ptr<GameEngineCollision> Collision = RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D);
+			bool Iscontact = PlayerContactCheck(_DeltaTime, Collision.get());
+
+			if (true == Iscontact)
+			{
+				IsRecognize = true;
+			}
 		}
 		else
 		{
@@ -1123,14 +1139,30 @@ void CavaliereAngelo::EnemyCreateFSM()
 			// 근처에 플레이어가 있으면 후속타로 이행
 			if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
 			{
-				PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
-				Event01 = false;
-				Normal01 = false;
-				ParryStack = 0;
-				++ColliderStack;
-				SetMoveStop();
-				ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack02);
+				std::shared_ptr<GameEngineCollision> Collision = RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D);
+				bool Iscontact = PlayerContactCheck_Normal(Collision.get());
+
+				if (true == Iscontact)
+				{
+					IsRecognize = true;
+				}
+
+				if (true == IsRecognize)
+				{
+					IsRecognize = false;
+					PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
+					Event01 = false;
+					Normal01 = false;
+					ParryStack = 0;
+					++ColliderStack;
+					SetMoveStop();
+					ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack02);
+				}
 				return;
+			}
+			else
+			{
+				IsRecognize = false;
 			}
 			});
 
@@ -1146,13 +1178,27 @@ void CavaliereAngelo::EnemyCreateFSM()
 			}
 			if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
 			{
-				PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
-				Event01 = false;
-				Normal01 = false;
-				//++ColliderStack;
-				SetMoveStop();
-				ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack03);
+				std::shared_ptr<GameEngineCollision> Collision = RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D);
+				bool Iscontact = PlayerContactCheck_Normal(Collision.get());
+
+				if (true == Iscontact)
+				{
+					IsRecognize = true;
+				}
+
+				if (true == IsRecognize)
+				{
+					PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
+					Event01 = false;
+					Normal01 = false;
+					SetMoveStop();
+					ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack03);
+				}
 				return;
+			}
+			else
+			{
+				IsRecognize = false;
 			}
 			});
 
@@ -1168,13 +1214,27 @@ void CavaliereAngelo::EnemyCreateFSM()
 			}
 			if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
 			{
-				PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
-				Event01 = false;
-				Normal01 = false;
-				//++ColliderStack;
-				SetMoveStop();
-				ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack04);
+				std::shared_ptr<GameEngineCollision> Collision = RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D);
+				bool Iscontact = PlayerContactCheck_Normal(Collision.get());
+
+				if (true == Iscontact)
+				{
+					IsRecognize = true;
+				}
+
+				if (true == IsRecognize)
+				{
+					PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
+					Event01 = false;
+					Normal01 = false;
+					SetMoveStop();
+					ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack04);
+				}
 				return;
+			}
+			else
+			{
+				IsRecognize = false;
 			}
 			});
 	}

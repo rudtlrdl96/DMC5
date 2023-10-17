@@ -496,10 +496,14 @@ void Enemy_HellCaina::RecognizeCollisionCheck(float _DeltaTime)
 	}
 
 	std::shared_ptr<GameEngineCollision> Collision = RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D);
-	if (nullptr == Collision) { return; }
+	if (nullptr == Collision) { IsRecognize = false;  return; }
 
-	PlayerContactCheck(_DeltaTime, Collision.get());
-	IsRecognize = true;
+	bool Iscontact = PlayerContactCheck(_DeltaTime, Collision.get());
+
+	if (true == Iscontact)
+	{
+		IsRecognize = true;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -558,7 +562,13 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	{
 		if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
 		{
-			IsRecognize = true;
+			std::shared_ptr<GameEngineCollision> Collision = RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D);
+			bool Iscontact = PlayerContactCheck_Normal(Collision.get());
+
+			if (true == Iscontact)
+			{
+				IsRecognize = true;
+			}
 		}
 		else
 		{
@@ -728,24 +738,42 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 	SetRightMove(70.0f);
 	AttackDelayTime += _DeltaTime;
-	if (true == IsRecognize && 1.7f <= AttackDelayTime)
+	if (1.7f <= AttackDelayTime)
 	{
-		IsRecognize = false;
-
-		if (EnemyRotation::Left_180 == EnemyRotationValue || EnemyRotation::Right_180 == EnemyRotationValue)
+		if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
 		{
-			RotationCheck();
-			AllDirectSetting();
-			ChangeState(FSM_State_HellCaina::HellCaina_Attack_Turn);
+			std::shared_ptr<GameEngineCollision> Collision = RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D);
+			bool Iscontact = PlayerContactCheck_Normal(Collision.get());
+
+			if (true == Iscontact)
+			{
+				IsRecognize = true;
+			}
 		}
 		else
 		{
-			RotationCheck();
-			AllDirectSetting();
-			RandomAttack();
+			IsRecognize = false;
+		}
+
+		if (true == IsRecognize)
+		{
+			IsRecognize = false;
+
+			if (EnemyRotation::Left_180 == EnemyRotationValue || EnemyRotation::Right_180 == EnemyRotationValue)
+			{
+				RotationCheck();
+				AllDirectSetting();
+				ChangeState(FSM_State_HellCaina::HellCaina_Attack_Turn);
+			}
+			else
+			{
+				RotationCheck();
+				AllDirectSetting();
+				RandomAttack();
+			}
 		}
 	}
-	else if (false == IsRecognize && 2.3f <= AttackDelayTime)
+	else if (2.3f <= AttackDelayTime)
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Right_Stop);
 		return;
@@ -803,24 +831,41 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 	SetLeftMove(70.0f);
 	AttackDelayTime += _DeltaTime;
-	if (true == IsRecognize && 1.7f <= AttackDelayTime)
+	if (1.7f <= AttackDelayTime)
 	{
-		IsRecognize = false;
-
-		if (EnemyRotation::Left_180 == EnemyRotationValue || EnemyRotation::Right_180 == EnemyRotationValue)
+		if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
 		{
-			RotationCheck();
-			AllDirectSetting();
-			ChangeState(FSM_State_HellCaina::HellCaina_Attack_Turn);
+			std::shared_ptr<GameEngineCollision> Collision = RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D);
+			bool Iscontact = PlayerContactCheck_Normal(Collision.get());
+
+			if (true == Iscontact)
+			{
+				IsRecognize = true;
+			}
 		}
 		else
 		{
-			RotationCheck();
-			AllDirectSetting();
-			RandomAttack();
+			IsRecognize = false;
+		}
+
+		if (true == IsRecognize)
+		{
+			IsRecognize = false;
+			if (EnemyRotation::Left_180 == EnemyRotationValue || EnemyRotation::Right_180 == EnemyRotationValue)
+			{
+				RotationCheck();
+				AllDirectSetting();
+				ChangeState(FSM_State_HellCaina::HellCaina_Attack_Turn);
+			}
+			else
+			{
+				RotationCheck();
+				AllDirectSetting();
+				RandomAttack();
+			}
 		}
 	}
-	else if (false == IsRecognize && 2.3f <= AttackDelayTime)
+	else if (2.3f <= AttackDelayTime)
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Left_Stop);
 		return;

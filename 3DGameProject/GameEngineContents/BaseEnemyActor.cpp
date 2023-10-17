@@ -169,14 +169,14 @@ void BaseEnemyActor::PlayerCheckInit()
 /// </summary>
 /// <param name="_DeltaTime :">시간</param>
 /// <param name="_Collision :">체크할 충돌체</param>
-void BaseEnemyActor::PlayerContactCheck(float _DeltaTime, GameEngineCollision* _Collision)
+bool BaseEnemyActor::PlayerContactCheck(float _DeltaTime, GameEngineCollision* _Collision)
 {
-	ContactDelayTime += _DeltaTime;
+	//ContactDelayTime += _DeltaTime;
 
-	if (10.0f >= ContactDelayTime)
-	{
-		return;
-	}
+	//if (10.0f >= ContactDelayTime)
+	//{
+	//	return false;
+	//}
 
 	ContactDelayTime = 0.0f;
 
@@ -185,12 +185,15 @@ void BaseEnemyActor::PlayerContactCheck(float _DeltaTime, GameEngineCollision* _
 
 	if (nullptr == ContactPlayer)
 	{
-		return;
+		return false;
 	}
+
+	bool IsContact = false;
 
 	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
 	{
-		Player = ContactPlayer;
+		//Player = ContactPlayer;
+		IsContact = true;
 	}
 	else
 	{
@@ -200,23 +203,51 @@ void BaseEnemyActor::PlayerContactCheck(float _DeltaTime, GameEngineCollision* _
 		if (ContactID == PlayerID)
 		{
 			Player = ContactPlayer;
+			IsContact = true;
 		}
 		else
 		{
-			std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
-			size_t Playersize = Players.size();
-
-			for (size_t i = 0; i < Playersize; i++)
-			{
-				int PlayersID = Players[i]->GetNetObjectID();
-
-				if (ContactID == PlayersID)
-				{
-					Player = Players[i];
-				}
-			}
+			IsContact = false;
 		}
 	}
+
+	return IsContact;
+}
+
+/// <summary>
+/// RN_MonsterCollision에 충돌한 충돌체(Player) 정보를 class BasePlayerActor* Player에 저장
+/// </summary>
+/// <param name="_DeltaTime :">시간</param>
+/// <param name="_Collision :">체크할 충돌체</param>
+bool BaseEnemyActor::PlayerContactCheck_Normal(GameEngineCollision* _Collision)
+{
+	GameEngineCollision* CheckCollision = _Collision;
+	BasePlayerActor* ContactPlayer = dynamic_cast<BasePlayerActor*>(CheckCollision->GetActor());
+
+	if (nullptr == ContactPlayer)
+	{
+		return false;
+	}
+
+	bool IsContact = false;
+
+	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
+	{
+		//Player = ContactPlayer;
+		IsContact = true;
+	}
+	else
+	{
+		int ContactID = ContactPlayer->GetNetObjectID();
+		int PlayerID = Player->GetNetObjectID();
+
+		if (ContactID == PlayerID)
+		{
+			IsContact = true;
+		}
+	}
+
+	return IsContact;
 }
 
 /// <summary>

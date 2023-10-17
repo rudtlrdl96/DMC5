@@ -119,7 +119,8 @@ protected:
 	//====================================================
 	// 플레이어 세팅
 	void PlayerCheckInit();                                                          // 몬스터 최초 생성 시 플레이어 정보를 class BasePlayerActor* Player에 저장
-	void PlayerContactCheck(float _DeltaTime, GameEngineCollision* _Collision);      // RN_MonsterCollision에 충돌한 충돌체(플레이어) 정보를 class BasePlayerActor* Player에 저장
+	bool PlayerContactCheck(float _DeltaTime, GameEngineCollision* _Collision);      // RN_MonsterCollision에 충돌한 충돌체(플레이어) 정보를 class BasePlayerActor* Player에 저장
+	bool PlayerContactCheck_Normal(GameEngineCollision* _Collision);
 	void PlayerAttackCheck(GameEngineCollision* _Collision);                         // 자신을 공격한 충돌체(플레이어) 정보를 class BasePlayerActor* Player에 저장
 
 	class BasePlayerActor* Player = nullptr;
