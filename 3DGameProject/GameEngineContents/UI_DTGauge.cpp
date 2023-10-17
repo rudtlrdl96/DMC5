@@ -15,7 +15,7 @@ void UI_DTGauge::Start()
 {
 	DTElectroEffect = CreateComponent<UIEffectRenderer>(3);
 	DTElectroEffect->RectInit("Effect_2D");
-	DTElectroEffect->CreateAnimation({ .AnimationName = "DTELECT", .SpriteName = "Effect_Electric_04.tga", .Start = 0, .End = 3,.FrameInter = 0.07f,.Loop = true });
+	DTElectroEffect->CreateAnimation({ .AnimationName = "DTELECT", .SpriteName = "Effect_Electric_04.tga", .Start = 0, .End = 3,.FrameInter = 0.033f,.Loop = true });
 	DTElectroEffect->GetTransform()->SetLocalScale({ 42.0f,138.0f,3.0f });
 	DTElectroEffect->GetTransform()->SetLocalPosition({ -523.0f,376.0f,-150.0f });
 	DTElectroEffect->GetTransform()->SetLocalRotation({ 0.0f,0.0f,-90.0f });
