@@ -61,6 +61,15 @@ void Enemy_HellCaina::EnemyMeshLoad()
 		break;
 	}
 
+	if (nullptr == GameEngineTexture::Find("PaperBurnNoise.jpg"))
+	{
+		GameEngineTexture::Load(GameEnginePath::GetFileFullPath("ContentResources",
+			{
+				"Texture", "BurnNoiseTexture"
+			}, "PaperBurnNoise.jpg"));
+	}
+
+	EnemyRenderer->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
 	EnemyRenderer->GetTransform()->SetLocalScale({ 0.8f , 0.8f , 0.8f });
 }
 
@@ -136,6 +145,7 @@ void Enemy_HellCaina::Start()
 	LinkData_UpdatePacket<bool>(IsBusterAttack);
 	LinkData_UpdatePacket<bool>(IsVergilLight);
 	LinkData_UpdatePacket<bool>(IsCollapse);
+	LinkData_UpdatePacket<int>(EnemyHP);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -144,7 +154,18 @@ void Enemy_HellCaina::Start()
 
 void Enemy_HellCaina::DeathCheck()
 {
+	if (EnemyHP <= 0)
+	{
+		DeathValue = true;
+	}
 
+	if (true == DeathValue && false == DeathSettig)
+	{
+		DeathSettig = true;
+		MonsterCollision->Off();
+		RN_MonsterCollision->Off();
+		PhysXCapsule->Off();
+	}
 }
 
 void Enemy_HellCaina::PlayerChase(float _DeltaTime)
@@ -262,6 +283,7 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 	PlayerAttackCheck(AttackCol.get());
 	MonsterAttackCollision->Off();
 	DamageData Data = AttackCol->GetDamage();
+	MinusEnemyHP(Data.DamageValue);
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
@@ -365,6 +387,7 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 	if (nullptr == AttackCol) { return; }
 
 	DamageData Data = AttackCol->GetDamage();
+	MinusEnemyHP(Data.DamageValue);
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
@@ -1024,6 +1047,13 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Start = [=] {
 
 	AttackCalculation();
+	DeathCheck();
+
+	if (true == DeathValue)
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Death_Front);
+		return;
+	}
 
 	if (true == IsVergilLight)
 	{
@@ -1052,6 +1082,13 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Start = [=] {
 
 	AttackCalculation();
+	DeathCheck();
+
+	if (true == DeathValue)
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Death_Back);
+		return;
+	}
 
 	if (true == IsVergilLight)
 	{
@@ -1084,6 +1121,13 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Start = [=] {
 
 	AttackCalculation();
+	DeathCheck();
+
+	if (true == DeathValue)
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Death_Front);
+		return;
+	}
 
 	if (true == IsVergilLight)
 	{
@@ -1116,6 +1160,13 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Start = [=] {
 
 	AttackCalculation();
+	DeathCheck();
+
+	if (true == DeathValue)
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Death_Front);
+		return;
+	}
 
 	if (true == IsVergilLight)
 	{
@@ -1408,6 +1459,13 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 앞으로 엎어졌을 때 일어나는 모션
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Prone_Getup,
 	.Start = [=] {
+	DeathCheck();
+
+	if (true == DeathValue)
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Prone_Death);
+		return;
+	}
 	EnemyRenderer->ChangeAnimation("em0000_prone_getup");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1428,6 +1486,16 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0000_prone_death");
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		DeathColor += _DeltaTime;
+		EnemyRenderer->SetBaseColor({0.0f, 0.0f, DeathColor});
+
+		if (DeathColor >= 1.0f)
+		{
+			Death();
+		}
+	}
 	},
 	.End = [=] {
 	}
@@ -1438,6 +1506,16 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0000_death_back");
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		DeathColor += _DeltaTime;
+		EnemyRenderer->SetBaseColor({0.0f, 0.0f, DeathColor});
+
+		if (DeathColor >= 1.0f)
+		{
+			Death();
+		}
+	}
 	},
 	.End = [=] {
 	}
@@ -1463,6 +1541,16 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0000_death_front");
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		DeathColor += _DeltaTime;
+		EnemyRenderer->SetBaseColor({0.0f, 0.0f, DeathColor});
+
+		if (DeathColor >= 1.0f)
+		{
+			Death();
+		}
+	}
 	},
 	.End = [=] {
 	}

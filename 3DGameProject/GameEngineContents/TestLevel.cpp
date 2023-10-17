@@ -139,20 +139,20 @@ void TestLevel::LevelChangeStart()
 	//	HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
 
-	//if (nullptr == Empusa)
-	//{
-	//	Empusa = CreateActor<Enemy_Empusa>();
-	//	Empusa->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	//	Empusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	//}
-
-	if (nullptr == Cavaliere)
+	if (nullptr == Empusa)
 	{
-		Cavaliere = CreateActor<CavaliereAngelo>();
-		Cavaliere->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-		Cavaliere->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-		Player->SetBossCam(Cavaliere->GetTransform());
+		Empusa = CreateActor<Enemy_Empusa>();
+		Empusa->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+		Empusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	}
+
+	//if (nullptr == Cavaliere)
+	//{
+	//	Cavaliere = CreateActor<CavaliereAngelo>();
+	//	Cavaliere->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//	Cavaliere->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	//	Player->SetBossCam(Cavaliere->GetTransform());
+	//}
 
 	if (nullptr == Flat)
 	{

@@ -49,6 +49,11 @@ public:
 	BaseEnemyActor& operator=(const BaseEnemyActor& _Other) = delete;
 	BaseEnemyActor& operator=(BaseEnemyActor&& _Other) noexcept = delete;
 
+	void MinusEnemyHP(int _Value)
+	{
+		EnemyHP -= _Value;
+	}
+
 	// 몬스터 피직스 컴포넌트 리턴
 	std::shared_ptr<class PhysXCapsuleComponent> GetPhysXComponent()
 	{

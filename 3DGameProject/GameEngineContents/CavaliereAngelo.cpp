@@ -28,7 +28,7 @@ CavaliereAngelo::~CavaliereAngelo()
 void CavaliereAngelo::EnemyTypeLoad()
 {
 	EnemyCodeValue = EnemyCode::CavaliereAngelo;
-	EnemyHP = 1000;
+	EnemyHP = 10000;
 	HPOverallStack = 0;
 	HPServerStack = 0;
 	HPClientStack = 0;

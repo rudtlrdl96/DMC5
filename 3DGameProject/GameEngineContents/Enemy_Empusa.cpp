@@ -61,6 +61,15 @@ void Enemy_Empusa::EnemyMeshLoad()
 		break;
 	}
 
+	if (nullptr == GameEngineTexture::Find("PaperBurnNoise.jpg"))
+	{
+		GameEngineTexture::Load(GameEnginePath::GetFileFullPath("ContentResources",
+			{
+				"Texture", "BurnNoiseTexture"
+			}, "PaperBurnNoise.jpg"));
+	}
+
+	EnemyRenderer->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
 	EnemyRenderer->GetTransform()->SetLocalScale({ 0.8f , 0.8f , 0.8f });
 }
 
@@ -128,6 +137,15 @@ void Enemy_Empusa::Start()
 
 	// 넷 오브젝트 타입 설정
 	SetNetObjectType(Net_ActorType::Empusa);
+
+	LinkData_UpdatePacket<bool>(AnimationTurnStart);
+	LinkData_UpdatePacket<bool>(IsHeavyAttack);
+	LinkData_UpdatePacket<bool>(IsAirAttack);
+	LinkData_UpdatePacket<bool>(IsSlamAttack);
+	LinkData_UpdatePacket<bool>(IsBusterAttack);
+	LinkData_UpdatePacket<bool>(IsVergilLight);
+	LinkData_UpdatePacket<bool>(IsCollapse);
+	LinkData_UpdatePacket<int>(EnemyHP);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -136,7 +154,18 @@ void Enemy_Empusa::Start()
 
 void Enemy_Empusa::DeathCheck()
 {
+	if (EnemyHP <= 0)
+	{
+		DeathValue = true;
+	}
 
+	if (true == DeathValue && false == DeathSettig)
+	{
+		DeathSettig = true;
+		MonsterCollision->Off();
+		RN_MonsterCollision->Off();
+		PhysXCapsule->Off();
+	}
 }
 
 void Enemy_Empusa::PlayerChase(float _DeltaTime)
@@ -303,6 +332,7 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 	PlayerAttackCheck(AttackCol.get());
 	MonsterAttackCollision->Off();
 	DamageData Data = AttackCol->GetDamage();
+	MinusEnemyHP(Data.DamageValue);
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
@@ -406,6 +436,7 @@ void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 	if (nullptr == AttackCol) { return; }
 
 	DamageData Data = AttackCol->GetDamage();
+	MinusEnemyHP(Data.DamageValue);
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
@@ -1072,6 +1103,13 @@ void Enemy_Empusa::EnemyCreateFSM()
 	.Start = [=] {
 
 	AttackCalculation();
+	DeathCheck();
+
+	if (true == DeathValue)
+	{
+		ChangeState(FSM_State_Empusa::Empusa_Death_Back);
+		return;
+	}
 
 	if (true == IsVergilLight)
 	{
@@ -1100,6 +1138,13 @@ void Enemy_Empusa::EnemyCreateFSM()
 	.Start = [=] {
 
 	AttackCalculation();
+	DeathCheck();
+
+	if (true == DeathValue)
+	{
+		ChangeState(FSM_State_Empusa::Empusa_Death_Front);
+		return;
+	}
 
 	if (true == IsVergilLight)
 	{
@@ -1126,6 +1171,13 @@ void Enemy_Empusa::EnemyCreateFSM()
 	.Start = [=] {
 
 	AttackCalculation();
+	DeathCheck();
+
+	if (true == DeathValue)
+	{
+		ChangeState(FSM_State_Empusa::Empusa_Death_Back);
+		return;
+	}
 
 	if (true == IsVergilLight)
 	{
@@ -1152,6 +1204,13 @@ void Enemy_Empusa::EnemyCreateFSM()
 	.Start = [=] {
 
 	AttackCalculation();
+	DeathCheck();
+
+	if (true == DeathValue)
+	{
+		ChangeState(FSM_State_Empusa::Empusa_Death_Back);
+		return;
+	}
 
 	if (true == IsVergilLight)
 	{
@@ -1450,6 +1509,15 @@ void Enemy_Empusa::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Getup,
 	.Start = [=] {
 	PhysXCapsule->AddWorldRotation({ 0.0f, -20.0f, 0.0f });
+
+	DeathCheck();
+
+	if (true == DeathValue)
+	{
+		ChangeState(FSM_State_Empusa::Empusa_Downward_Death);
+		return;
+	}
+
 	EnemyRenderer->ChangeAnimation("em0100_downward_down_standup");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1470,6 +1538,36 @@ void Enemy_Empusa::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0100_downward_die");
 	},
 	.Update = [=](float _DeltaTime) {
+
+	//if (6 < EnemyRenderer->GetCurFrame() && 62 > EnemyRenderer->GetCurFrame())
+	//{
+	//	float4 CurPos = EnemyRenderer->GetTransform()->GetWorldPosition();
+	//	float4 BackMove = EnemyRenderer->GetTransform()->GetWorldBackVector();
+	//	float4 PlusPos = BackMove * _DeltaTime * 200.0f;
+	//	float4 NewPos = CurPos + PlusPos;
+	//	EnemyRenderer->GetTransform()->SetWorldPosition(NewPos);
+	//}
+
+	//if (150 < EnemyRenderer->GetCurFrame() && 235 > EnemyRenderer->GetCurFrame())
+	//{
+	//	float4 CurPos = EnemyRenderer->GetTransform()->GetWorldPosition();
+	//	float4 BackMove = EnemyRenderer->GetTransform()->GetWorldBackVector();
+	//	float4 PlusPos = BackMove * _DeltaTime * 150.0f;
+	//	float4 NewPos = CurPos + PlusPos;
+	//	EnemyRenderer->GetTransform()->SetWorldPosition(NewPos);
+	//}
+
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		DeathColor += _DeltaTime;
+		EnemyRenderer->SetBaseColor({0.0f, 0.0f, DeathColor});
+
+		if (DeathColor >= 1.0f)
+		{
+			Death();
+		}
+	}
+
 	},
 	.End = [=] {
 	}
@@ -1496,6 +1594,16 @@ void Enemy_Empusa::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0100_death_back");
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		DeathColor += _DeltaTime;
+		EnemyRenderer->SetBaseColor({0.0f, 0.0f, DeathColor});
+
+		if (DeathColor >= 1.0f)
+		{
+			Death();
+		}
+	}
 	},
 	.End = [=] {
 	}
@@ -1506,6 +1614,16 @@ void Enemy_Empusa::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0100_death_front");
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		DeathColor += _DeltaTime;
+		EnemyRenderer->SetBaseColor({0.0f, 0.0f, DeathColor});
+
+		if (DeathColor >= 1.0f)
+		{
+			Death();
+		}
+	}
 	},
 	.End = [=] {
 	}

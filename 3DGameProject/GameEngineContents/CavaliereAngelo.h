@@ -89,11 +89,6 @@ public:
 	CavaliereAngelo& operator=(const CavaliereAngelo& _Other) = delete;
 	CavaliereAngelo& operator=(CavaliereAngelo&& _Other) noexcept = delete;
 
-	void MinusEnemyHP(int _Value)
-	{
-		EnemyHP -= _Value;
-	}
-
 	void HPStackPlus(int _Value)
 	{
 		HPOverallStack += _Value;
