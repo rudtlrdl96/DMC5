@@ -20,6 +20,7 @@ protected:
 	void Update(float _DeltaTime) override;
 private:
 	void ActivateDT();
+	void Transfor(float _Delta);
 	void CreateDTBar(const std::string_view& _Png , float4 _Pos,float4 _Scale);
 	std::shared_ptr<class UIEffectRenderer> DTElectroEffect = nullptr;
 	std::shared_ptr<class UIEffectRenderer> DTElectroEffect_Down = nullptr;
@@ -27,7 +28,10 @@ private:
 
 	std::vector<std::shared_ptr<class UIFBXRenderer>> DTGauges;
 	std::vector<std::shared_ptr<class GameEngineUIRenderer>> DTGaugeBars;
-
+	float TransforTime = 0.0f;
+	float DownTime = 0.0f;
+	bool IsTrans = false;
 	int DTIndex = -1;
+	int Index = 10;
 };
 
