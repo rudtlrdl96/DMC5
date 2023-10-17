@@ -145,7 +145,32 @@ void Enemy_HellCaina::Start()
 	LinkData_UpdatePacket<bool>(IsBusterAttack);
 	LinkData_UpdatePacket<bool>(IsVergilLight);
 	LinkData_UpdatePacket<bool>(IsCollapse);
+	LinkData_UpdatePacket<bool>(IsBurn);
 	LinkData_UpdatePacket<int>(EnemyHP);
+
+	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker) { 
+		Player = _Attacker; 
+		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
+		MinusEnemyHP(Datas.DamageValue);
+
+		if (DamageType::VergilLight == Datas.DamageTypeValue)
+		{
+			IsVergilLight = true;
+		}
+
+		if (DamageType::Stun == Datas.DamageTypeValue)
+		{
+			StopTime(2.9f);
+		}
+
+		HitStop(Datas.DamageTypeValue);
+
+		if (EnemyHP < 0)
+		{
+			DeathValue = true;
+		}
+
+		});
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -165,14 +190,6 @@ void Enemy_HellCaina::DeathCheck()
 		MonsterCollision->Off();
 		RN_MonsterCollision->Off();
 		PhysXCapsule->Off();
-	}
-}
-
-void Enemy_HellCaina::DeathCheck_Client()
-{
-	if (EnemyHP <= 0)
-	{
-		DeathValue = true;
 	}
 }
 
@@ -368,7 +385,6 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 	}
 
 	HitStop(Data.DamageTypeValue);
-	IsVergilLight = false;
 	AttackDelayCheck = 0.0f;
 }
 
@@ -395,8 +411,6 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 	if (nullptr == AttackCol) { return; }
 
 	DamageData Data = AttackCol->GetDamage();
-	MinusEnemyHP(Data.DamageValue);
-	DeathCheck_Client();
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
@@ -466,14 +480,11 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 		ChangeState_Client(FSM_State_HellCaina::HellCaina_Buster_Start);
 		break;
 	case DamageType::Stun:
-		StopTime(2.9f);
 		break;
 	default:
 		break;
 	}
-
-	HitStop(Data.DamageTypeValue);
-	IsVergilLight = false;
+	
 	AttackDelayCheck = 0.0f;
 }
 
@@ -1059,6 +1070,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 
 	if (true == IsVergilLight)
 	{
+		IsVergilLight = false;
 		SetPush(10000.0f);
 	}
 	else
@@ -1093,6 +1105,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 
 	if (true == IsVergilLight)
 	{
+		IsVergilLight = false;
 		SetPush(10000.0f);
 	}
 	else
@@ -1131,6 +1144,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 
 	if (true == IsVergilLight)
 	{
+		IsVergilLight = false;
 		SetPush(10000.0f);
 	}
 	else
@@ -1169,6 +1183,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 
 	if (true == IsVergilLight)
 	{
+		IsVergilLight = false;
 		SetPush(10000.0f);
 	}
 	else
@@ -1255,9 +1270,14 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	{
 		EnemyRenderer->SetAnimationStartEvent("em0000_air_damage_under", 1, [=] { 
 			if (true == IsVergilLight)
+			{
+				IsVergilLight = false;
 				SetAir(10000.0f);
+			}
 			else
+			{
 				SetAir(30000.0f);
+			}
 			});
 	}
 
@@ -1448,13 +1468,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		DeathColor += _DeltaTime;
-		EnemyRenderer->SetBaseColor({0.0f, 0.0f, DeathColor});
-
-		if (DeathColor >= 1.0f)
-		{
-			Death();
-		}
+		IsBurn = true;
 	}
 	},
 	.End = [=] {
@@ -1468,13 +1482,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		DeathColor += _DeltaTime;
-		EnemyRenderer->SetBaseColor({0.0f, 0.0f, DeathColor});
-
-		if (DeathColor >= 1.0f)
-		{
-			Death();
-		}
+		IsBurn = true;
 	}
 	},
 	.End = [=] {
@@ -1488,13 +1496,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		DeathColor += _DeltaTime;
-		EnemyRenderer->SetBaseColor({0.0f, 0.0f, DeathColor});
-
-		if (DeathColor >= 1.0f)
-		{
-			Death();
-		}
+		IsBurn = true;
 	}
 	},
 	.End = [=] {

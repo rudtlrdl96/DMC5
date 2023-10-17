@@ -172,11 +172,36 @@ void CavaliereAngelo::Start()
 	SetNetObjectType(Net_ActorType::HellCaina);
 
 	LinkData_UpdatePacket<bool>(IsCharge);
+	LinkData_UpdatePacket<bool>(IsBurn);
 	LinkData_UpdatePacket<int>(ChargeDamageStack);
 	LinkData_UpdatePacket<int>(EnemyHP);
 	//LinkData_UpdatePacket<int>(HPOverallStack);
 	//LinkData_UpdatePacket<int>(HPServerStack);
 	//LinkData_UpdatePacket<int>(HPClientStack);
+
+	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker) {
+		Player = _Attacker;
+		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
+		MinusEnemyHP(Datas.DamageValue);
+
+		if (DamageType::VergilLight == Datas.DamageTypeValue)
+		{
+			IsVergilLight = true;
+		}
+
+		if (DamageType::Stun == Datas.DamageTypeValue)
+		{
+			StopTime(2.9f);
+		}
+
+		HitStop(Datas.DamageTypeValue);
+
+		if (EnemyHP < 0)
+		{
+			DeathValue = true;
+		}
+
+		});
 }
 
 void CavaliereAngelo::Update(float _DeltaTime)
@@ -198,8 +223,8 @@ void CavaliereAngelo::Update(float _DeltaTime)
 		//	PhysXCapsule->On();
 		//}
 
+		RendererBurn(_DeltaTime);
 		RenderShake(_DeltaTime);
-		//MonsterSnatch(_DeltaTime);
 		ParryCheck();
 	}
 
@@ -482,7 +507,6 @@ void CavaliereAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 	if (nullptr == AttackCol) { return; }
 
 	PlayerAttackCheck(AttackCol.get());
-	MonsterAttackCollision->Off();
 	DamageData Data = AttackCol->GetDamage();
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
@@ -492,7 +516,6 @@ void CavaliereAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 	}
 
 	StartRenderShaking(6);
-	MinusEnemyHP(Data.DamageValue);
 
 	if (true == IsCharge)
 	{
@@ -505,7 +528,6 @@ void CavaliereAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 		ChangeState_Client(FSM_State_CavaliereAngelo::CavaliereAngelo_Stun_Start);
 	}
 
-	IsVergilLight = false;
 	AttackDelayCheck = 0.0f;
 }
 
@@ -1839,13 +1861,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		DeathColor += _DeltaTime;
-		EnemyRenderer->SetBaseColor({0.0f, 0.0f, DeathColor});
-
-		if (DeathColor >= 1.0f)
-		{
-			Death();
-		}
+		IsBurn = true;
 	}
 	},
 	.End = [=] {

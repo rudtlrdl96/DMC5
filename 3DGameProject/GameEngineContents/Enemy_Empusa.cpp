@@ -145,7 +145,32 @@ void Enemy_Empusa::Start()
 	LinkData_UpdatePacket<bool>(IsBusterAttack);
 	LinkData_UpdatePacket<bool>(IsVergilLight);
 	LinkData_UpdatePacket<bool>(IsCollapse);
+	LinkData_UpdatePacket<bool>(IsBurn);
 	LinkData_UpdatePacket<int>(EnemyHP);
+
+	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker) {
+		Player = _Attacker;
+		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
+		MinusEnemyHP(Datas.DamageValue);
+
+		if (DamageType::VergilLight == Datas.DamageTypeValue)
+		{
+			IsVergilLight = true;
+		}
+
+		if (DamageType::Stun == Datas.DamageTypeValue)
+		{
+			StopTime(2.9f);
+		}
+
+		HitStop(Datas.DamageTypeValue);
+
+		if (EnemyHP < 0)
+		{
+			DeathValue = true;
+		}
+
+		});
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -409,7 +434,6 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 	}
 
 	HitStop(Data.DamageTypeValue);
-	IsVergilLight = false;
 	AttackDelayCheck = 0.0f;
 }
 
@@ -436,7 +460,6 @@ void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 	if (nullptr == AttackCol) { return; }
 
 	DamageData Data = AttackCol->GetDamage();
-	MinusEnemyHP(Data.DamageValue);
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
@@ -506,14 +529,11 @@ void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 		ChangeState_Client(FSM_State_Empusa::Empusa_Buster_Start);
 		break;
 	case DamageType::Stun:
-		StopTime(2.9f);
 		break;
 	default:
 		break;
 	}
 
-	HitStop(Data.DamageTypeValue);
-	IsVergilLight = false;
 	AttackDelayCheck = 0.0f;
 }
 
@@ -1106,6 +1126,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 
 	if (true == IsVergilLight)
 	{
+		IsVergilLight = false;
 		SetPush(10000.0f);
 	}
 	else
@@ -1140,6 +1161,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 
 	if (true == IsVergilLight)
 	{
+		IsVergilLight = false;
 		SetPush(10000.0f);
 	}
 	else
@@ -1172,6 +1194,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 
 	if (true == IsVergilLight)
 	{
+		IsVergilLight = false;
 		SetPush(10000.0f);
 	}
 	else
@@ -1204,6 +1227,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 
 	if (true == IsVergilLight)
 	{
+		IsVergilLight = false;
 		SetPush(10000.0f);
 	}
 	else
@@ -1284,11 +1308,19 @@ void Enemy_Empusa::EnemyCreateFSM()
 	{
 		EnemyRenderer->SetAnimationStartEvent("em0100_air_damage_under", 1, [=] {
 			if (true == IsBusterAttack)
+			{
 				return;
+			}
+				
 			if (true == IsVergilLight)
+			{
+				IsVergilLight = false;
 				SetAir(10000.0f);
+			}
 			else
+			{
 				SetAir(30000.0f);
+			}
 			});
 	}
 
@@ -1494,13 +1526,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		DeathColor += _DeltaTime;
-		EnemyRenderer->SetBaseColor({0.0f, 0.0f, DeathColor});
-
-		if (DeathColor >= 1.0f)
-		{
-			Death();
-		}
+		IsBurn = true;
 	}
 	},
 	.End = [=] {
@@ -1515,13 +1541,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		DeathColor += _DeltaTime;
-		EnemyRenderer->SetBaseColor({0.0f, 0.0f, DeathColor});
-
-		if (DeathColor >= 1.0f)
-		{
-			Death();
-		}
+		IsBurn = true;
 	}
 	},
 	.End = [=] {
@@ -1535,13 +1555,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		DeathColor += _DeltaTime;
-		EnemyRenderer->SetBaseColor({0.0f, 0.0f, DeathColor});
-
-		if (DeathColor >= 1.0f)
-		{
-			Death();
-		}
+		IsBurn = true;
 	}
 	},
 	.End = [=] {

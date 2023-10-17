@@ -40,6 +40,11 @@ public:
 		return Renderer;
 	}
 
+	std::shared_ptr<class AttackCollision> GetAttackCollision()
+	{
+		return Col_Attack;
+	}
+
 	void SetForce(float4 _Value);
 	void SetPush(float4 _Value);
 	void SetMove(float4 _Value);

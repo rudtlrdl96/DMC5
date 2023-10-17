@@ -63,7 +63,6 @@ void BaseEnemyActor::Start()
 	PlayerCheckInit();
 
 	SetFsmPacketCallBack(std::bind(&BaseEnemyActor::SetFSMStateValue, this, std::placeholders::_1));
-	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker){ Player = _Attacker; });
 }
 
 void BaseEnemyActor::Update(float _DeltaTime)
@@ -94,6 +93,7 @@ void BaseEnemyActor::Update(float _DeltaTime)
 			}
 		}
 
+		RendererBurn(_DeltaTime);
 		RenderShake(_DeltaTime);
 		MonsterSnatch(_DeltaTime);
 	}
@@ -725,4 +725,35 @@ void BaseEnemyActor::StopTime(float _DeltaTime)
 		IsTimeStop = false;
 		SetTimeScale(1.0f);
 	});
+}
+
+void BaseEnemyActor::RendererBurn(float _DeltaTime)
+{
+	if (false == IsBurn)
+	{
+		return;
+	}
+
+	DeathColor += _DeltaTime;
+
+	if (DeathColor <= 1.1f)
+	{
+		EnemyRenderer->SetBaseColor({ 0.0f, 0.0f, DeathColor });
+	}
+
+	if (DeathColor >= 1.0f)
+	{
+		// 싱글 플레이일 때 실행
+		if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
+		{
+			Death();
+		}
+		else
+		{
+			if (NetControllType::ActiveControll == GetControllType())
+			{
+				Death();
+			}
+		}
+	}
 }

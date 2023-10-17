@@ -110,7 +110,10 @@ protected:
 
 	bool DeathValue = false;
 	bool DeathSettig = false;
+	bool IsBurn = false;
 	float DeathColor = 0.0f;
+
+	void RendererBurn(float _DeltaTime);
 	//=================================================================================
 
 	//====================================================
