@@ -132,6 +132,8 @@ void Enemy_Empusa::Start()
 	FallDistance = 55.0f;
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
 
+	MonsterAttackCollision->SetAttackData(DamageType::Light, 100);
+
 	// 넷 오브젝트 타입 설정
 	SetNetObjectType(Net_ActorType::Empusa);
 
@@ -961,6 +963,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 오른손 위에서 아래로 베기, 136 on, 142 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Attack_A,
 	.Start = [=] {
+	MonsterAttackCollision->SetAttackData(DamageType::Light, 100);
 	EnemyRenderer->ChangeAnimation("em0100_attack_A");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -991,6 +994,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 왼손 위에서 아래로 베기, 68 on, 73 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Attack_B,
 	.Start = [=] {
+	MonsterAttackCollision->SetAttackData(DamageType::Light, 100);
 	EnemyRenderer->ChangeAnimation("em0100_attack_B");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1022,6 +1026,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 양손 내려찍기, 151 on, 155 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Attack_W,
 	.Start = [=] {
+	MonsterAttackCollision->SetAttackData(DamageType::Heavy, 120);
 	EnemyRenderer->ChangeAnimation("em0100_attack_W");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1043,6 +1048,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Attack_C,
 	.Start = [=] {
 	SlerpCalculation();
+	MonsterAttackCollision->SetAttackData(DamageType::Light, 100);
 	EnemyRenderer->ChangeAnimation("em0100_attack_C");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1073,6 +1079,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Attack_D,
 	.Start = [=] {
 	SlerpCalculation();
+	MonsterAttackCollision->SetAttackData(DamageType::Light, 100);
 	EnemyRenderer->ChangeAnimation("em0100_attack_D");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1103,6 +1110,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 돌진공격, 128/131, 161/163, 195/197, 230/233, 296/301
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Continuation_Attack,
 	.Start = [=] {
+	MonsterAttackCollision->SetAttackData(DamageType::Light, 100);
 	EnemyRenderer->ChangeAnimation("em0100_continuation_attack");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1110,6 +1118,13 @@ void Enemy_Empusa::EnemyCreateFSM()
 	{
 		SetForwardMove(150.0f);
 	}
+
+	if (295 < EnemyRenderer->GetCurFrame() && AttackTypeChange == false)
+	{
+		AttackTypeChange = true;
+		MonsterAttackCollision->SetAttackData(DamageType::Heavy, 120);
+	}
+
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_Empusa::Empusa_Biped_Idle);
@@ -1117,6 +1132,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	AttackTypeChange = false;
 	MonsterAttackCollision->Off();
 	}
 		});

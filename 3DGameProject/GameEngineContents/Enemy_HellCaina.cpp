@@ -134,6 +134,7 @@ void Enemy_HellCaina::Start()
 
 	//MonsterCollision->Off();
 	//RN_MonsterCollision->Off();
+	MonsterAttackCollision->SetAttackData(DamageType::Heavy, 120);
 
 	// 넷 오브젝트 타입 설정
 	SetNetObjectType(Net_ActorType::HellCaina);

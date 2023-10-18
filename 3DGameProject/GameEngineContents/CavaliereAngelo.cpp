@@ -167,9 +167,7 @@ void CavaliereAngelo::Start()
 	FallDistance = 55.0f;
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
 
-	//EnemyRenderer->Off();
-	//MonsterCollision->Off();
-	//RN_MonsterCollision->Off();
+	MonsterAttackCollision->SetAttackData(DamageType::Heavy, 200);
 
 	// 넷 오브젝트 타입 설정
 	SetNetObjectType(Net_ActorType::HellCaina);
