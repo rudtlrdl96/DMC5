@@ -609,8 +609,6 @@ void CavaliereAngelo::ParryTime()
 
 void CavaliereAngelo::BossTurn()
 {
-	//RotationCheck();
-
 	float4 CrossResult = MonsterAndPlayerCross();
 	float RotationValue = 0.0f;
 	float4 EnemyPosition = GetTransform()->GetWorldPosition();
