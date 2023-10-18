@@ -768,6 +768,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Dengeki_Reload_End,
 	.Start = [=] {
 	IsPowerUp = true;
+	MonsterAttackCollision->SetAttackData(DamageType::Heavy, 200);
 	EffectRenderer_0->PlayFX("Cavalier_Charge_3.effect");
 	EnemyRenderer->ChangeAnimation("em5501_dengeki_reload_end");
 	},
@@ -1027,6 +1028,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// Dengeki 걷기 루프
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Dengeki_Loop,
 	.Start = [=] {
+	MonsterAttackCollision->SetAttackData(DamageType::Light, 100);
 	WaitTime = 0.2f;
 	EffectRenderer_0->PlayFX("Cavalier_Dengeki_Loop.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack_Dengeki_Loop");
@@ -1066,7 +1068,8 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
-		EffectRenderer_0->Off();
+	WaitTime = 0.0f;
+	EffectRenderer_0->Off();
 	}
 		});
 
@@ -1279,6 +1282,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 01(오중단) 공격, 끝나면 방어자세, 66프레임 on, 69프레임 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack01,
 	.Start = [=] {
+	MonsterAttackCollision->SetAttackData(DamageType::Heavy, 200);
 	RotationCheck();
 	SlerpCalculation();
 	AllDirectSetting_Normal();
@@ -1372,6 +1376,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 02(오상단) 공격, 끝나면 방어자세, 44프레임 on, 47프레임 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack02,
 	.Start = [=] {
+	MonsterAttackCollision->SetAttackData(DamageType::Heavy, 200);
 	RotationCheck();
 	SlerpCalculation();
 	SlerpTime = 0.0f;
@@ -1471,6 +1476,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 03(왼중단) 공격, 끝나면 방어자세, 29프레임 on, 33프레임 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack03,
 	.Start = [=] {
+	MonsterAttackCollision->SetAttackData(DamageType::Heavy, 200);
 	RotationCheck();
 	SlerpCalculation();
 	SlerpTime = 0.0f;
@@ -1746,6 +1752,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 04(양손으로 상단찍기) 공격, 끝나면 방어자세, 90프레임 on, 94프레임 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack04,
 	.Start = [=] {
+	MonsterAttackCollision->SetAttackData(DamageType::Heavy, 200);
 	RotationCheck();
 	SlerpCalculation();
 	SlerpTime = 0.0f;
