@@ -180,7 +180,27 @@ void BasePlayerActor::Start()
 	Col_Attack->Off();
 	Col_Attack->SetColType(ColType::OBBBOX3D);
 	Col_Attack->SetHitStopCallBack(std::bind(&BasePlayerActor::StopTime, this, std::placeholders::_1));
-	Col_Attack->SetParryCallBack(std::bind(&NetworkObjectBase::SetTimeScale, this, std::placeholders::_1));
+	Col_Attack->SetParryCallBack([=]
+		{
+			Sound.Play("Parry");
+			SetTimeScale(0.2f);
+			GetLevel()->TimeEvent.AddEvent(0.4f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					SetTimeScale(0.4f);
+				});
+			GetLevel()->TimeEvent.AddEvent(0.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					SetTimeScale(0.6f);
+				});
+			GetLevel()->TimeEvent.AddEvent(0.8f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					SetTimeScale(0.8f);
+				});
+			GetLevel()->TimeEvent.AddEvent(1.f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					SetTimeScale(1.f);
+				});
+		});
 	Col_Attack->SetIsPlayerCollision();
 	Col_Attack->ParryAttackOn();
 

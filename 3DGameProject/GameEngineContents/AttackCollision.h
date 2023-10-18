@@ -41,7 +41,7 @@ public:
 	{
 		CallBack_HitStop = _CallBack;
 	}
-	void SetParryCallBack(std::function<void(float)> _CallBack)
+	void SetParryCallBack(std::function<void()> _CallBack)
 	{
 		CallBack_Parry = _CallBack;
 	}
@@ -153,24 +153,8 @@ public:
 	void ParryEvent()
 	{
 		if (CallBack_Parry == nullptr) { return; }
+		CallBack_Parry();
 		Off();
-		CallBack_Parry(0.2f);
-		GetLevel()->TimeEvent.AddEvent(0.4f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-			{
-				CallBack_Parry(0.4f);
-			});
-		GetLevel()->TimeEvent.AddEvent(0.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-			{
-				CallBack_Parry(0.6f);
-			});
-		GetLevel()->TimeEvent.AddEvent(0.8f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-			{
-				CallBack_Parry(0.8f);
-			});
-		GetLevel()->TimeEvent.AddEvent(1.f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-			{
-				CallBack_Parry(1.f);
-			});
 	}
 protected:
 
@@ -178,7 +162,7 @@ private:
 	DamageData Data;
 	std::function<void()> CallBack = nullptr;
 	std::function<void(float)> CallBack_HitStop = nullptr;
-	std::function<void(float)> CallBack_Parry = nullptr;
+	std::function<void()> CallBack_Parry = nullptr;
 	float HitStopTime = 0;
 	bool IsPlayerCollision = false;
 	bool IsParryAttack = false;

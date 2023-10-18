@@ -1216,6 +1216,7 @@ void PlayerActor_Nero::NetLoad()
 					});
 				GetLevel()->TimeEvent.AddEvent(2.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 					{
+						Sound.Play("Buster_", 0);
 						Sound.Play("Buster_", 5);
 					});
 			},
