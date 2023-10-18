@@ -82,25 +82,33 @@ void Enemy_HellAntenora::EnemyAnimationLoad()
 	NewDir.Move("HellAntenora");
 	NewDir.Move("Animation");
 
-	AnimationEvent::LoadAll
-	(
-		{
-			.Dir = NewDir.GetFullPath().c_str(),
-			.Renderer = EnemyRenderer,
-			.RendererLocalPos = { 0.0f, -50.0f, 0.0f },
-			.Objects = {(GameEngineObject*)MonsterAttackCollision.get()},
-			.CallBacks_void =
-			{
-			},
-			.CallBacks_int =
-			{
-				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
-			},
-			.CallBacks_float4 =
-			{
-			}
-		}
-	);
+	//AnimationEvent::LoadAll
+	//(
+	//	{
+	//		.Dir = NewDir.GetFullPath().c_str(),
+	//		.Renderer = EnemyRenderer,
+	//		.RendererLocalPos = { 0.0f, -50.0f, 0.0f },
+	//		.Objects = {(GameEngineObject*)MonsterAttackCollision.get()},
+	//		.CallBacks_void =
+	//		{
+	//		},
+	//		.CallBacks_int =
+	//		{
+	//			std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
+	//		},
+	//		.CallBacks_float4 =
+	//		{
+	//		}
+	//	}
+	//);
+
+	std::vector<GameEngineFile> FBXFiles = NewDir.GetAllFile({ ".FBX" });
+
+	for (size_t i = 0; i < FBXFiles.size(); i++)
+	{
+		GameEngineFBXAnimation::Load(FBXFiles[i].GetFullPath());
+		EnemyRenderer->CreateFBXAnimation(FBXFiles[i].GetFileName(), FBXFiles[i].GetFileName(), { .Inter = 0.01666f, });
+	}
 }
 
 void Enemy_HellAntenora::Start()
@@ -579,7 +587,7 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	// Idle
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Idle,
 	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_enter_ground_A");
+	EnemyRenderer->ChangeAnimation("em0001_Idle_01_loop.fbx");
 	},
 	.Update = [=](float _DeltaTime) {
 	},
@@ -594,7 +602,7 @@ void Enemy_HellAntenora::EnemyCreateFSM_Client()
 {
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Idle,
 	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0100_enter_ground_A");
+	EnemyRenderer->ChangeAnimation("em0001_Idle_01_loop.fbx");
 	},
 	.Update = [=](float _DeltaTime) {
 	},
