@@ -50,7 +50,10 @@ public:
 		{
 			VoicePlayer = GameEngineSound::Play(VoiceName + "DT_" + std::to_string(_Number) + ".wav");
 		}
-		VoicePlayer = GameEngineSound::Play(VoiceName + std::to_string(_Number) + ".wav");
+		else
+		{
+			VoicePlayer = GameEngineSound::Play(VoiceName + std::to_string(_Number) + ".wav");
+		}
 
 		VoicePlayer.SetVolume(VoiceVolume);
 	}
