@@ -24,7 +24,7 @@ private:
 	int PrintLogOrder = 0;
 
 	const char* LogTypeNames[(int)LogOrder::Count] = {0};
-	char MoveLevelName[255] = {0};
+	char MoveLevelName[255] = "MainLevel";
 
 };
 
