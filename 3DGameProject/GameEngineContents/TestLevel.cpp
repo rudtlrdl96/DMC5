@@ -173,19 +173,19 @@ void TestLevel::LevelChangeStart()
 	//	RedEmpusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
 
-	if (nullptr == HellAntenora)
-	{
-		HellAntenora = CreateActor<Enemy_HellAntenora>();
-		HellAntenora->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-		HellAntenora->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	}
-
-	//if (nullptr == GreenEmpusa)
+	//if (nullptr == HellAntenora)
 	//{
-	//	GreenEmpusa = CreateActor<Enemy_GreenEmpusa>();
-	//	GreenEmpusa->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	//	GreenEmpusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	//	HellAntenora = CreateActor<Enemy_HellAntenora>();
+	//	HellAntenora->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//	HellAntenora->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
+
+	if (nullptr == GreenEmpusa)
+	{
+		GreenEmpusa = CreateActor<Enemy_GreenEmpusa>();
+		GreenEmpusa->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+		GreenEmpusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	}
 
 	//GameEngineCoreWindow::Clear();
 	//GameEngineCoreWindow::AddDebugRenderTarget(0, "Forward Target", GetCamera(100)->GetCamForwardTarget());
