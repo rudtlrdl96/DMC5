@@ -36,7 +36,7 @@ void Enemy_HellAntenora::EnemyMeshLoad()
 	{
 		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
 			{
-				"Character", "Enemy", "em0001", "mesh"
+				"Character", "Enemy", "HellAntenora", "mesh"
 			}, 
 			"em0001.FBX");
 
@@ -79,7 +79,7 @@ void Enemy_HellAntenora::EnemyAnimationLoad()
 	NewDir.Move("ContentResources");
 	NewDir.Move("Character");
 	NewDir.Move("Enemy");
-	NewDir.Move("em0001");
+	NewDir.Move("HellAntenora");
 	NewDir.Move("Animation");
 
 	AnimationEvent::LoadAll
