@@ -189,6 +189,7 @@ void PlayerActor_Nero::PlayerLoad()
 				std::bind(&PlayerActor_Nero::ChangeState, this, std::placeholders::_1),
 				std::bind(&SoundController::Play, &Sound, "RQ_", std::placeholders::_1),
 				std::bind(&SoundController::Play, &Sound, "BR_", std::placeholders::_1),
+				std::bind(&SoundController::Play, &Sound, "FootStep_", std::placeholders::_1),
 			},
 			.CallBacks_float = {
 				std::bind(&BasePlayerActor::RotationToTarget, this, std::placeholders::_1),
@@ -516,6 +517,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Jump_Vertical
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Jump_Vertical,
 			.Start = [=] {
+				Sound.Play("Jump");
 				RotationToMoveVector();
 				PhysXCapsule->TurnOnGravity();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -554,6 +556,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Jump_Back
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Jump_Back,
 			.Start = [=] {
+				Sound.Play("Jump");
 				PhysXCapsule->TurnOnGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->SetMove(Controller->GetMoveVector() * 500);
@@ -652,6 +655,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// 2nd_Jump
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_2nd_Jump,
 			.Start = [=] {
+				Sound.Play("DoubleJump");
 				InputCheck = false;
 				MoveCheck = false;
 				RotationToMoveVector();
@@ -692,6 +696,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// 2nd_Jump_Back
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_2nd_Jump_Back,
 			.Start = [=] {
+				Sound.Play("DoubleJump");
 				InputCheck = false;
 				MoveCheck = false;
 				PhysXCapsule->TurnOnGravity();
@@ -732,6 +737,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// EnemyStep Jump
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_EnemyStep_Jump,
 			.Start = [=] {
+				Sound.Play("Jump");
 				InputCheck = false;
 				MoveCheck = false;
 				PhysXCapsule->TurnOnGravity();
@@ -1955,6 +1961,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Evade
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Evade_Left,
 			.Start = [=] {
+				Sound.Play("Evade");
 				RotationToTarget();
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -1998,6 +2005,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Evade
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Evade_Right,
 			.Start = [=] {
+				Sound.Play("Evade");
 				RotationToTarget();
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -3147,6 +3155,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// EnemyStep
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_EnemyStep,
 			.Start = [=] {
+				Sound.Play("EnemyStep");
 				WeaponIdle();
 				UseDoubleJump = false;
 				UseCaliber = false;

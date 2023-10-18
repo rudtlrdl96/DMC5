@@ -285,6 +285,7 @@ void PlayerActor_Nero::NetLoad()
 		// Jump_Vertical
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Jump_Vertical,
 			.Start = [=] {
+				Sound.Play("Jump");
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Jump_Vertical");
 			},
@@ -296,6 +297,7 @@ void PlayerActor_Nero::NetLoad()
 		// Jump_Back
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Jump_Back,
 			.Start = [=] {
+				Sound.Play("Jump");
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Jump_Back");
 			},
@@ -329,6 +331,7 @@ void PlayerActor_Nero::NetLoad()
 		// 2nd_Jump
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_2nd_Jump,
 			.Start = [=] {
+				Sound.Play("DoubleJump");
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Jump_2ndJump", true);
 			},
@@ -340,6 +343,7 @@ void PlayerActor_Nero::NetLoad()
 		// 2nd_Jump_Back
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_2nd_Jump_Back,
 			.Start = [=] {
+				Sound.Play("DoubleJump");
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Jump_Back_2ndJump", true);
 			},
@@ -351,6 +355,7 @@ void PlayerActor_Nero::NetLoad()
 		// EnemyStep Jump
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_EnemyStep_Jump,
 			.Start = [=] {
+				Sound.Play("Jump");
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Jump_EnemyStep", true);
 			},
@@ -979,6 +984,7 @@ void PlayerActor_Nero::NetLoad()
 		// Evade
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Evade_Left,
 			.Start = [=] {
+				Sound.Play("Evade");
 				BlueRoseOn();
 				Renderer->ChangeAnimation("pl0000_Evade_Left", true);
 			},
@@ -991,6 +997,7 @@ void PlayerActor_Nero::NetLoad()
 		// Evade
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Evade_Right,
 			.Start = [=] {
+				Sound.Play("Evade");
 				BlueRoseOn();
 				Renderer->ChangeAnimation("pl0000_Evade_Right", true);
 			},
@@ -1423,6 +1430,7 @@ void PlayerActor_Nero::NetLoad()
 		// EnemyStep
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_EnemyStep,
 			.Start = [=] {
+				Sound.Play("EnemyStep");
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_EnemyStep", true);
 			},
