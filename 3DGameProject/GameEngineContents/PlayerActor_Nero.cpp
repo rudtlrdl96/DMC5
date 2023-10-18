@@ -3042,6 +3042,8 @@ void PlayerActor_Nero::PlayerLoad()
 		// GT Bomb
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_GT_Bomb,
 		.Start = [=] {
+			Sound.Play("GT_Bomb");
+			Sound.PlayVoice(33, DTValue);
 			WeaponIdle();
 			PhysXCapsule->SetLinearVelocityZero();
 			SetInvincibility(0.5f);
@@ -3049,7 +3051,7 @@ void PlayerActor_Nero::PlayerLoad()
 			EffectSystem->PlayFX("GT_Bomb.effect");
 			Renderer->ChangeAnimation("pl0000_GT_Bomb", true);
 			InputCheck = false;
-		},
+		},	
 		.Update = [=](float _DeltaTime) {
 			if (false == FloorCheck())
 			{
@@ -3076,6 +3078,8 @@ void PlayerActor_Nero::PlayerLoad()
 		// GT Bomb Air
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_GT_AirBomb,
 			.Start = [=] {
+				Sound.Play("GT_Bomb");
+				Sound.PlayVoice(33, DTValue);
 				WeaponIdle();
 				InputCheck = false;
 				PhysXCapsule->SetLinearVelocityZero();
@@ -3136,6 +3140,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Provocation 1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Provocation,
 		.Start = [=] {
+			Sound.PlayVoice(30, DTValue);
 			WeaponIdle();
 			PhysXCapsule->SetLinearVelocityZero();
 			Renderer->ChangeAnimation("pl0000_Provocation", true);
@@ -3171,6 +3176,8 @@ void PlayerActor_Nero::PlayerLoad()
 		// Provocation Air
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Provocation_Air,
 			.Start = [=] {
+				Sound.Play("RQ_", 19);
+				Sound.PlayVoiceRandom(31, 32, DTValue);
 				WeaponIdle();
 				InputCheck = false;
 				PhysXCapsule->SetLinearVelocityZero();
@@ -3210,6 +3217,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Damage Light
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Light,
 			.Start = [=] {
+				Sound.PlayVoiceRandom(22, 24, DTValue);
 				SetInvincibility(0.2f);
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -3245,6 +3253,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Damage Heavy
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Heavy,
 			.Start = [=] {
+				Sound.PlayVoiceRandom(24, 26, DTValue);
 				SetInvincibility(0.6f);
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -3273,6 +3282,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Damage Fly
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Fly,
 			.Start = [=] {
+				Sound.PlayVoiceRandom(24, 26, DTValue);
 				SetInvincibility(9999.0f);
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -3328,6 +3338,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Damage Ground
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Ground,
 			.Start = [=] {
+				Sound.PlayVoiceRandom(27, 28, DTValue);
 				SetInvincibility(0.5f);
 				UseDoubleJump = false;
 				UseCaliber = false;
@@ -3390,6 +3401,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Damage Death1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Death_1,
 			.Start = [=] {
+				Sound.PlayVoice(29, DTValue);
 				SetInvincibility(9999.0f);
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -3425,6 +3437,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Damage Fly Death
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Fly_Death,
 			.Start = [=] {
+				Sound.PlayVoiceRandom(27, 28, DTValue);
 				SetInvincibility(9999.0f);
 				Renderer->ChangeAnimation("pl0000_Damage_Away_Death_Ground", true);
 			},
@@ -3493,10 +3506,12 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 		}
 		if (GameEngineInput::IsDown("SelectLevel_04"))
 		{
+			HP -= 1000;
 			LightDamage();
 		}
 		if (GameEngineInput::IsDown("SelectLevel_05"))
 		{
+			HP -= 1000;
 			HeavyDamage();
 		}
 	}

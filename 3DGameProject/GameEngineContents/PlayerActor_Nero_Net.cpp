@@ -1363,6 +1363,8 @@ void PlayerActor_Nero::NetLoad()
 		// GT Bomb
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_GT_Bomb,
 		.Start = [=] {
+			Sound.Play("GT_Bomb");
+			Sound.PlayVoice(33, DTValue);
 			WeaponIdle();
 			Col_Attack->SetAttackData(DamageType::Heavy, 150);
 			EffectSystem->PlayFX("GT_Bomb.effect");
@@ -1376,6 +1378,8 @@ void PlayerActor_Nero::NetLoad()
 		// GT Bomb Air
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_GT_AirBomb,
 			.Start = [=] {
+				Sound.Play("GT_Bomb");
+				Sound.PlayVoice(33, DTValue);
 				WeaponIdle();
 				Col_Attack->SetAttackData(DamageType::Heavy, 150);
 				EffectSystem->PlayFX("GT_Bomb.effect");
@@ -1403,6 +1407,7 @@ void PlayerActor_Nero::NetLoad()
 		// Provocation 1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Provocation,
 		.Start = [=] {
+			Sound.PlayVoice(30, DTValue);
 			WeaponIdle();
 			Renderer->ChangeAnimation("pl0000_Provocation", true);
 		},
@@ -1414,6 +1419,8 @@ void PlayerActor_Nero::NetLoad()
 		// Provocation Air
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Provocation_Air,
 			.Start = [=] {
+				Sound.Play("RQ_", 19);
+				Sound.PlayVoiceRandom(31, 32, DTValue);
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Air_Provocation", true);
 			},
@@ -1431,6 +1438,7 @@ void PlayerActor_Nero::NetLoad()
 		// Damage Light
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Light,
 			.Start = [=] {
+				Sound.PlayVoiceRandom(22, 24, DTValue);
 				WeaponIdle();
 				EffectSystem->PlayFX("Damage_Light.effect");
 				Renderer->ChangeAnimation("pl0000_Damage_Common", true);
@@ -1444,6 +1452,7 @@ void PlayerActor_Nero::NetLoad()
 		// Damage Heavy
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Heavy,
 			.Start = [=] {
+				Sound.PlayVoiceRandom(24, 26, DTValue);
 				WeaponIdle();
 				EffectSystem->PlayFX("Damage_Heavy.effect");
 				Renderer->ChangeAnimation("pl0000_Damage_Away_Fly", true);
@@ -1457,6 +1466,7 @@ void PlayerActor_Nero::NetLoad()
 		// Damage Fly
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Fly,
 			.Start = [=] {
+				Sound.PlayVoiceRandom(24, 26, DTValue);
 				WeaponIdle();
 				EffectSystem->PlayFX("Damage_Heavy.effect");
 				Renderer->ChangeAnimation("pl0000_Damage_AirCombo_Fly", true);
@@ -1481,6 +1491,7 @@ void PlayerActor_Nero::NetLoad()
 		// Damage Ground
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Ground,
 			.Start = [=] {
+				Sound.PlayVoiceRandom(27, 28, DTValue);
 				Renderer->ChangeAnimation("pl0000_Damage_Away_Ground");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -1503,6 +1514,7 @@ void PlayerActor_Nero::NetLoad()
 		// Damage Death1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Death_1,
 			.Start = [=] {
+				Sound.PlayVoice(29, DTValue);
 				WeaponIdle();
 				Renderer->ChangeAnimation("pl0000_Damage_Kneel_Down_1", true);
 			},
@@ -1526,6 +1538,7 @@ void PlayerActor_Nero::NetLoad()
 		// Damage Fly Death
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Fly_Death,
 			.Start = [=] {
+				Sound.PlayVoice(29, DTValue);
 				Renderer->ChangeAnimation("pl0000_Damage_Away_Death_Ground", true);
 			},
 			.Update = [=](float _DeltaTime) {
