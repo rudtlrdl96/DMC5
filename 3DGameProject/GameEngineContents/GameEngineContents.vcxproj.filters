@@ -330,9 +330,6 @@
     <ClInclude Include="Location11_Level.h">
       <Filter>Levels\Stage\2.Location11</Filter>
     </ClInclude>
-    <ClInclude Include="StartStageLevel.h">
-      <Filter>Levels\Stage\0.StageBase</Filter>
-    </ClInclude>
     <ClInclude Include="InfoUIRender.h">
       <Filter>UI\UI_Base\Button</Filter>
     </ClInclude>
@@ -485,6 +482,15 @@
     </ClInclude>
     <ClInclude Include="SoundController.h">
       <Filter>Component\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemySpawner.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\FunctionObj</Filter>
+    </ClInclude>
+    <ClInclude Include="TestEventZone0.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
+    </ClInclude>
+    <ClInclude Include="TestEventZone1.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -802,9 +808,6 @@
     <ClCompile Include="Location11_Level.cpp">
       <Filter>Levels\Stage\2.Location11</Filter>
     </ClCompile>
-    <ClCompile Include="StartStageLevel.cpp">
-      <Filter>Levels\Stage\0.StageBase</Filter>
-    </ClCompile>
     <ClCompile Include="InfoUIRender.cpp">
       <Filter>UI\UI_Base\Button</Filter>
     </ClCompile>
@@ -963,6 +966,15 @@
     </ClCompile>
     <ClCompile Include="SoundController.cpp">
       <Filter>Component\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemySpawner.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\FunctionObj</Filter>
+    </ClCompile>
+    <ClCompile Include="TestEventZone0.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
+    </ClCompile>
+    <ClCompile Include="TestEventZone1.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
