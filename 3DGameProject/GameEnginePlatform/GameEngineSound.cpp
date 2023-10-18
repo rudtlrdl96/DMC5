@@ -125,6 +125,18 @@ GameEngineSound::~GameEngineSound()
 	}
 }
 
+std::shared_ptr<GameEngineSound> GameEngineSound::Find(const std::string_view& _Name)
+{
+	std::string UpperName = GameEngineString::ToUpper(_Name);
+
+	if (AllSound.end() == AllSound.find(UpperName.c_str()))
+	{
+		return nullptr;
+	}
+
+	return AllSound[UpperName];
+}
+
 void GameEngineSound::Load(const std::string_view& _Path)
 {
 	GameEnginePath NewPath(_Path);

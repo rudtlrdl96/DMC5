@@ -138,6 +138,8 @@ public:
 	GameEngineSound& operator=(const GameEngineSound& _Other) = delete;
 	GameEngineSound& operator=(GameEngineSound&& _Other) noexcept = delete;
 
+	static std::shared_ptr<GameEngineSound> Find(const std::string_view& _Name);
+
 	static void Load(const std::string_view& _Path);
 
 	static void Load(const std::string_view& _Name, const std::string_view& _Path);

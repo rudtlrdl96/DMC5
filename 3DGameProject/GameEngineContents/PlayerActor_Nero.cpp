@@ -48,6 +48,7 @@ void PlayerActor_Nero::Start()
 		{
 			NetControllLoad();
 			NetLoad();
+			SoundLoad();
 			LoadCheck = true;
 		});
 
@@ -56,6 +57,7 @@ void PlayerActor_Nero::Start()
 		{
 			UserControllLoad();
 			PlayerLoad();
+			SoundLoad();
 			LoadCheck = true;
 		});
 
@@ -67,6 +69,9 @@ void PlayerActor_Nero::Start()
 	LinkData_UpdatePacket<float>(LockOnPosition.x);
 	LinkData_UpdatePacket<float>(LockOnPosition.y);
 	LinkData_UpdatePacket<float>(LockOnPosition.z);
+
+	Sound.SetVoiceName("Nero_V_");
+	Sound.VFXVolume = 0.5f;
 }
 
 void PlayerActor_Nero::PlayerLoad()
@@ -763,6 +768,8 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboA1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_1,
 			.Start = [=] {
+				Sound.Play("RQ_", 0);
+				Sound.PlayVoiceRandom(0, 1, DTValue);
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(120));
 				if (0 < ExceedLevel)
 				{
@@ -810,6 +817,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboA2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_2,
 			.Start = [=] {
+				Sound.Play("RQ_", 1);
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(90));
 				if (0 < ExceedLevel)
 				{
@@ -863,6 +871,8 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboA3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_3,
 			.Start = [=] {
+				Sound.Play("RQ_", 3);
+				Sound.PlayVoiceRandom(2, 3, DTValue);
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(60));
 				if (0 < ExceedLevel)
 				{
@@ -910,6 +920,8 @@ void PlayerActor_Nero::PlayerLoad()
 		// RedQueen ComboA4
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_ComboA_4,
 			.Start = [=] {
+				Sound.Play("RQ_", 4);
+				Sound.PlayVoiceRandom(4, 5, DTValue);
 				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(150));
 				if (0 < ExceedLevel)
 				{
@@ -1175,7 +1187,6 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_DevilBreakerCheckFly()) { return; }
 			},
 			.End = [=] {
-				RedQueenOff();
 				WeaponIdle();
 			}
 			});
@@ -1253,7 +1264,7 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 			},
 			.End = [=] {
-				RedQueenOff();
+				WeaponIdle();
 			}
 			});
 		static float StreakTimer = 0;
@@ -1286,7 +1297,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->SetMove(GetTransform()->GetWorldForwardVector() * 1300);
 			},
 			.End = [=] {
-				RedQueenOff();
+				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
 			}
 			});
@@ -1336,7 +1347,7 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 			},
 			.End = [=] {
-				RedQueenOff();
+				WeaponIdle();
 			}
 			});
 		// RedQueen AirComboA1
@@ -1688,7 +1699,7 @@ void PlayerActor_Nero::PlayerLoad()
 			},
 			.End = [=] {
 				PhysXCapsule->TurnOnGravity();
-				RedQueenOff();
+				WeaponIdle();
 			}
 			});
 
@@ -3878,7 +3889,6 @@ void PlayerActor_Nero::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				RedQueenOff();
 				WeaponIdle();
 			}
 			});
@@ -3913,7 +3923,7 @@ void PlayerActor_Nero::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				RedQueenOff();
+				WeaponIdle();
 			}
 			});
 		// RedQueen Stleak2
@@ -3925,7 +3935,7 @@ void PlayerActor_Nero::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				RedQueenOff();
+				WeaponIdle();
 			}
 			});
 		// RedQueen Stleak3
@@ -3946,7 +3956,7 @@ void PlayerActor_Nero::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				RedQueenOff();
+				WeaponIdle();
 			}
 			});
 		// RedQueen AirComboA1
@@ -4121,7 +4131,7 @@ void PlayerActor_Nero::NetLoad()
 			.Update = [=](float _DeltaTime) {
 			},
 			.End = [=] {
-				RedQueenOff();
+				WeaponIdle();
 			}
 			});
 
@@ -4774,6 +4784,33 @@ void PlayerActor_Nero::NetLoad()
 	}
 
 	FSM.ChangeState(FSM_State_Nero::Nero_Idle);
+}
+
+void PlayerActor_Nero::SoundLoad()
+{
+	if (nullptr != GameEngineSound::Find("Nero_V_00.wav")) { return; }
+
+	GameEngineDirectory NewDir;
+	NewDir.MoveParentToDirectory("ContentResources");
+	NewDir.Move("ContentResources");
+	NewDir.Move("Sound");
+	NewDir.Move("Voice");
+	NewDir.Move("Nero");
+	std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".wav" });
+	for (GameEngineFile File : Files)
+	{
+		GameEngineSound::Load(File.GetFullPath());
+	}
+	NewDir.MoveParent();
+	NewDir.MoveParent();
+	NewDir.Move("SFX");
+	NewDir.Move("Nero");
+	Files = NewDir.GetAllFile({ ".wav" });
+	for (GameEngineFile File : Files)
+	{
+		GameEngineSound::Load(File.GetFullPath());
+	}
+
 }
 
 void PlayerActor_Nero::Update_Character(float _DeltaTime)

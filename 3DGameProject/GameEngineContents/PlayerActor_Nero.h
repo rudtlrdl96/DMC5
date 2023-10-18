@@ -191,6 +191,7 @@ protected:
 	void Start() override;
 	void PlayerLoad();
 	void NetLoad();
+	void SoundLoad();
 	void Update_Character(float _DeltaTime) override;
 	void ItemColCheck();
 	void LightDamage() override;

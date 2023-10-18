@@ -483,6 +483,9 @@
     <ClInclude Include="UIMeshRenderer.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="SoundController.h">
+      <Filter>Component\Sound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -958,6 +961,9 @@
     <ClCompile Include="UIMeshRenderer.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="SoundController.cpp">
+      <Filter>Component\Sound</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
@@ -1244,6 +1250,9 @@
     </Filter>
     <Filter Include="Actor\Enemy\BossEnemy\Stage11\Weapon">
       <UniqueIdentifier>{9347a9db-38fa-4b74-81ae-3ceaba348b69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Sound">
+      <UniqueIdentifier>{198ea466-eb78-4293-aa81-d5a9edd43e9f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

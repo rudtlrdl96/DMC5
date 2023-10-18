@@ -1,5 +1,6 @@
 #pragma once
 #include "NetworkObjectBase.h"
+#include "SoundController.h"
 // Ό³Έν :
 
 
@@ -82,6 +83,7 @@ protected:
 	void StopTime(float _Time);
 
 	GameEngineTimeEvent TimeEvent;
+	SoundController	Sound;
 
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
 	std::shared_ptr<class PlayerController> Controller = nullptr;
