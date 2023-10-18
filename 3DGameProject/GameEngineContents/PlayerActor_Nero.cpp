@@ -31,6 +31,7 @@ void PlayerActor_Nero::SetDT(unsigned int _DTValue)
 	}
 	else
 	{
+		Sound.Play("DT_Off");
 		DTOffEffect->Play();
 		SetHuman();
 	}
@@ -2942,6 +2943,8 @@ void PlayerActor_Nero::PlayerLoad()
 		// DT Start
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_DT_Start,
 		.Start = [=] {
+			Sound.Play("DT_On");
+			Sound.PlayVoiceRandom(34, 36, true);
 			WeaponIdle();
 			PhysXCapsule->SetLinearVelocityZero();
 			SetInvincibility(0.5f);
@@ -2980,7 +2983,9 @@ void PlayerActor_Nero::PlayerLoad()
 		// DT Air Start
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_DT_AirStart,
 			.Start = [=] {
-			WeaponIdle();
+				Sound.Play("DT_On");
+				Sound.PlayVoiceRandom(34, 36, true);
+				WeaponIdle();
 				InputCheck = false;
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -3810,6 +3815,7 @@ bool PlayerActor_Nero::Input_SpecialCheck()
 			ChangeState(FSM_State_Nero::Nero_DT_Start);
 			return true;
 		}
+		Sound.Play("DT_Off");
 		DTValue = false;
 		DTOffEffect->Play();
 		SetHuman();
@@ -3865,6 +3871,7 @@ bool PlayerActor_Nero::Input_SpecialCheckFly()
 			ChangeState(FSM_State_Nero::Nero_DT_AirStart);
 			return true;
 		}
+		Sound.Play("DT_Off");
 		DTValue = false;
 		DTOffEffect->Play();
 		SetHuman();
