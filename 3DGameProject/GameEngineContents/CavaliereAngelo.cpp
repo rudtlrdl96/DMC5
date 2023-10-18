@@ -1,6 +1,8 @@
 #include "PrecompileHeader.h"
 #include "CavaliereAngelo.h"
 
+#include <cmath>
+
 #include <GameEngineBase/GameEngineDirectory.h>
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/GameEngineFBXAnimation.h>
@@ -13,6 +15,7 @@
 #include "AttackCollision.h"
 #include "FXSystem.h"
 #include "Cavaliere_Electric.h"
+
 CavaliereAngelo::CavaliereAngelo() 
 {
 }
@@ -600,20 +603,26 @@ void CavaliereAngelo::BossTurn()
 
 	float4 CrossResult = MonsterAndPlayerCross();
 	float RotationValue = 0.0f;
-	float4 EnemyPosition = this->GetTransform()->GetWorldPosition();
+	float4 EnemyPosition = GetTransform()->GetWorldPosition();
 	float4 PlayerPosition = Player->GetTransform()->GetWorldPosition();
-	float4 EnemyForWardVector = this->GetTransform()->GetWorldForwardVector();
 
+	float4 EnemyForWardVector = GetTransform()->GetWorldForwardVector();
 	EnemyForWardVector.Normalize();
 
-	float4 ToPlayerVector = (PlayerPosition - EnemyPosition);
-	ToPlayerVector.Normalize();
+	PlayerPosition.y = 0.0f;
+	EnemyPosition.y = 0.0f;
 
-	float4 Direct = PlayerPosition - EnemyPosition;
-	float4 RotationDirectNormal = Direct.NormalizeReturn();
+	float4 ToPlayerVector = (PlayerPosition - EnemyPosition);
+	float4 RotationDirectNormal = ToPlayerVector.NormalizeReturn();
 	RotationValue = float4::GetAngleVectorToVectorDeg(EnemyForWardVector, RotationDirectNormal);
 
-	if (-5.0f <= RotationValue && 5.0f >= RotationValue)
+	if (-1.0f <= RotationValue && 1.0f >= RotationValue)
+	{
+		AllDirectSetting_Normal();
+		return;
+	}
+
+	if (true == isnan(RotationValue))
 	{
 		AllDirectSetting_Normal();
 		return;
@@ -634,7 +643,29 @@ void CavaliereAngelo::BossTurn()
 		}
 	}
 
-	PhysXCapsule->AddWorldRotation(float4{ 0.0f, RotationValue, 0.0f });
+	float4 CurRot = GetTransform()->GetWorldRotation();
+
+	if (CurRot.y <= 0.0f)
+	{
+		CurRot.y += 360.f;
+	}
+
+	float4 Value = float4{ 0.0f, RotationValue, 0.0f };
+
+	float4 GoalRot = CurRot + Value;
+
+	if (GoalRot.y <= 0.0f)
+	{
+		CurRot.y += 360.f;
+		GoalRot = CurRot + Value;
+	}
+
+	CurRot.x = 0.0f;
+	CurRot.z = 0.0f;
+	GoalRot.x = 0.0f;
+	GoalRot.z = 0.0f;
+
+	PhysXCapsule->SetWorldRotation(GoalRot);
 	AllDirectSetting_Normal();
 }
 
@@ -860,7 +891,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 
 	{
-		SlerpTurn(_DeltaTime);
+		SlerpTurn(_DeltaTime * 2.0f);
 		AllDirectSetting_Normal();
 		SetForwardMove(140.0f);
 	}
@@ -886,7 +917,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 
 	{
-		SlerpTurn(_DeltaTime);
+		SlerpTurn(_DeltaTime * 2.0f);
 		AllDirectSetting_Normal();
 		SetForwardMove(140.0f);
 	}
@@ -971,7 +1002,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 
 	{
-		SlerpTurn(_DeltaTime);
+		SlerpTurn(_DeltaTime * 2.0f);
 		AllDirectSetting_Normal();
 		SetForwardMove(140.0f);
 	}
