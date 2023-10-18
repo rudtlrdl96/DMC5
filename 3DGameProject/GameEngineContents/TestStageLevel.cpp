@@ -12,6 +12,10 @@
 
 #include "Plane.h"
 #include "TestObject.h"
+#include "EventZone.h"
+#include "RedSeal.h"
+#include "EnemySpawner.h"
+
 #include "PlayerActor_Nero.h"
 #include "PlayerActor_Vergil.h"
 #include "Item_RedOrb.h"
@@ -32,12 +36,12 @@ TestStageLevel::TestStageLevel()
 
 TestStageLevel::~TestStageLevel()
 {
-	Inst = nullptr;
 }
 
 void TestStageLevel::Start()
 {
 	CreateActor<FreeCameraActor>();
+
 
 	GetCamera(0)->GetCamTarget()->CreateEffect<ColorEffect>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
@@ -66,6 +70,21 @@ void TestStageLevel::Start()
 	if (false == GameEngineInput::IsKey("BakeTestKey"))
 	{
 		GameEngineInput::CreateKey("BakeTestKey", VK_SPACE);
+	}
+
+	if (TestEvent0 == nullptr)
+	{
+		TestEvent0 = [this]()
+			{
+				TestSpawner = GetLevel()->CreateActor<EnemySpawner>();
+				RedSealWallOn();
+			};
+
+		TestEvent1 = [this]()
+			{
+				RedSealWallOn();
+			};
+
 	}
 
 	//CreateActor<ShaderTestActor>()->GetTransform()->SetWorldPosition(float4(0, 100, 0));
@@ -112,7 +131,6 @@ void TestStageLevel::LevelChangeStart()
 			}
 		}
 	}
-
 
 	{
 		GameEngineDirectory Dir = GameEnginePath::GetFileFullPath

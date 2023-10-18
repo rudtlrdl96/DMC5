@@ -96,5 +96,6 @@ enum class FieldMapObjType
 	StreetStall,
 	Bench,
 	RedSeal,
-
+	TestEventZone0,
+	TestEventZone1
 };

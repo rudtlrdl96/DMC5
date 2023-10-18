@@ -9,6 +9,8 @@
 #include <GameEngineCore/GameEngineGUI.h>
 #include "StageGUI.h"
 
+#include "RedSeal.h"
+
 std::vector<StageData> StageBaseLevel::AllStageDatas;
 
 StageBaseLevel::StageBaseLevel()
@@ -27,7 +29,7 @@ void StageBaseLevel::LoadAllStageData()
 	Dir.MoveParentToDirectory("ContentData");
 	Dir.Move("ContentData");
 	Dir.Move("StageData");
-	std::filesystem::path temp = Dir.GetPlusFileName("Location2_ver3").GetFullPath();
+	std::filesystem::path temp = Dir.GetPlusFileName("Location2_ver4").GetFullPath();
 
 	GameEngineFile File(temp);
 	File.LoadBin(LoadSerializer);
@@ -118,6 +120,27 @@ void StageBaseLevel::ReflectionTextureSetting(std::shared_ptr<GameEngineTexture>
 				MapRenderer->SetTexture("ReflectionTexture", _RefTexture);
 			}
 		}
+	}
+}
+
+void StageBaseLevel::PushBackRedSealWall(std::weak_ptr<class RedSeal> _Wall)
+{
+	RedSealWalls.emplace_back(_Wall);
+}
+
+void StageBaseLevel::RedSealWallOn()
+{
+	for (size_t i = 0; i < RedSealWalls.size(); i++)
+	{
+		RedSealWalls[i].lock()->WallOn();
+	}
+}
+
+void StageBaseLevel::RedSealWallOff()
+{
+	for (size_t i = 0; i < RedSealWalls.size(); i++)
+	{
+		RedSealWalls[i].lock()->WallOff();
 	}
 }
 

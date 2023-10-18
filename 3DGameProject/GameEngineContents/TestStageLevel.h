@@ -4,10 +4,7 @@
 class TestStageLevel : public StageBaseLevel
 {
 public:
-	static TestStageLevel* GetInst()
-	{
-		return Inst;
-	}
+	static TestStageLevel* Inst;
 
 	// construtor destructor
 	TestStageLevel();
@@ -19,6 +16,9 @@ public:
 	TestStageLevel& operator=(const TestStageLevel& _Other) = delete;
 	TestStageLevel& operator=(TestStageLevel&& _Other) noexcept = delete;
 
+	std::function<void()> TestEvent0 = nullptr;
+	std::function<void()> TestEvent1 = nullptr;
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -26,6 +26,8 @@ protected:
 	void LevelChangeStart() override;
 
 private:
-	static TestStageLevel* Inst;
+
+	std::shared_ptr<class EnemySpawner> TestSpawner = nullptr;
+
 };
 

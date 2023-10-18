@@ -19,6 +19,10 @@ public:
 	void SetCamera(float4 _Position);
 
 	void ReflectionTextureSetting(std::shared_ptr<GameEngineTexture> _RefTexture, const float4& _Pos, const float4& _Scale);
+	void PushBackRedSealWall(std::weak_ptr<class RedSeal> _Wall);
+
+	void RedSealWallOn();
+	void RedSealWallOff();
 
 	//void FieldMapOn(int _Index = -1);
 	//void FieldMapOff(int _Index = -1);
@@ -41,6 +45,10 @@ protected:
 	std::weak_ptr<class MapCollisionMesh> AcGroundCol;
 	std::weak_ptr<class MapCollisionMesh> AcWallCol;
 
+
+	std::vector<std::weak_ptr<class RedSeal>> RedSealWalls;
+
+	//스테이지 생성
 	void CreateStage(const StageData& _Data); // 데이터 넣어주면 스테이지 생성
 
 private:

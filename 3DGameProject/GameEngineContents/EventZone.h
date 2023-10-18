@@ -15,6 +15,7 @@ public:
 	EventZone& operator=(EventZone&& _Other) noexcept = delete;
 	
 	//void SetTriggerZoneTransform(const float4& _Position, const float4& _Scale, const float4& _Rotation);
+	void SetEvent(std::function<void()> _Event);
 
 protected:
 	void Start() override;

@@ -1,4 +1,5 @@
 #pragma once
+#include "Poolable.h"
 
 enum FSM_State_Empusa
 {
@@ -68,7 +69,7 @@ enum FSM_State_Empusa
 	Empusa_Buster_Finish,      // em0000_Buster_Finish, ¹ö½ºÆ® È÷Æ® ¶¥¿¡ ¶³¾îÁü
 
 };
-class Enemy_Empusa : public BaseEnemyActor
+class Enemy_Empusa : public BaseEnemyActor, public Poolable<Enemy_Empusa>
 {
 public:
 	// constrcuter destructer
@@ -80,7 +81,7 @@ public:
 	Enemy_Empusa(Enemy_Empusa&& _Other) noexcept = delete;
 	Enemy_Empusa& operator=(const Enemy_Empusa& _Other) = delete;
 	Enemy_Empusa& operator=(Enemy_Empusa&& _Other) noexcept = delete;
-	
+
 protected:
 	void Start() override;
 	void EnemyMeshLoad() override;

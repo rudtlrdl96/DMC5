@@ -271,6 +271,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="EnemySpawner.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="NeroItemGlass.h">
       <SubType>
       </SubType>
@@ -344,6 +348,14 @@
     <ClInclude Include="C_ChoiceBG.h" />
     <ClInclude Include="FieldMap.h" />
     <ClInclude Include="FreeCameraActor.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TestEventZone0.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TestEventZone1.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -644,7 +656,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="StartStageLevel.h" />
     <ClInclude Include="StaticFieldMapObject.h">
       <SubType>
       </SubType>
@@ -838,6 +849,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="EnemySpawner.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="NeroItemGlass.cpp">
       <SubType>
       </SubType>
@@ -897,6 +912,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="FreeCameraActor.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TestEventZone0.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TestEventZone1.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -1191,7 +1214,6 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="StartStageLevel.cpp" />
     <ClCompile Include="StaticFieldMapObject.cpp">
       <SubType>
       </SubType>

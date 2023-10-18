@@ -13,6 +13,11 @@ EventZone::~EventZone()
 
 }
 
+void EventZone::SetEvent(std::function<void()> _Event)
+{
+	Event = _Event;
+}
+
 void EventZone::Start()
 {
 	TriggerZone = CreateComponent<GameEngineCollision>(CollisionOrder::EventZone);
@@ -24,6 +29,11 @@ void EventZone::Update(float _DeltaTime)
 	if (TriggerZone == nullptr)
 	{
 		MsgAssert("EventZone : TriggerZone 이 nullptr입니다")
+	}
+
+	if (Event == nullptr)
+	{
+		MsgAssert("EventZone : Event가 nullptr입니다")
 	}
 
 	if (IsEventStart)
