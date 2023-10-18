@@ -33,7 +33,8 @@ enum class Net_ActorType
 	Empusa,
 	HellCaina,
 	GreenEmpusa,
-	Enemy_HellAntenora,
+	RedEmpusa,
+	HellAntenora,
 
 	//º¸½º
 	CavaliereAngelo,

@@ -1,5 +1,10 @@
 #pragma once
 
+enum FSM_State_RedEmpusa
+{
+	RedEmpusa_Idle,
+};
+
 // 설명 :
 class Enemy_RedEmpusa : public BaseEnemyActor
 {
@@ -16,55 +21,41 @@ public:
 
 protected:
 	void Start() override;
-	void Update(float _DeltaTime) override;
-
 	void EnemyMeshLoad() override;
-	void EnemyTypeLoad() override;
 	void EnemyAnimationLoad() override;
+	void EnemyTypeLoad() override;
 	void EnemyCreateFSM() override;
 	void EnemyCreateFSM_Client() override;
+	void DamageCollisionCheck(float _DeltaTime) override;
+	void DamageCollisionCheck_Client(float _DeltaTime) override;
+	void RecognizeCollisionCheck(float _DeltaTime) override;
+	void DeathCheck() override;
 
 private:
-	bool CheckBool = false;
+	void PlayerChase(float _DeltaTime);
+	void PlayerAttack(float _DeltaTime);
+	void RandomAttack();
+	void ChangeState(int _StateValue);
+	void ChangeState_Client(int _StateValue);
+	void AttackCalculation();
 
-	// 대기상태
-	virtual void Idle_Enter();
-	virtual void Idle_Update(float _DeltaTime);
-	virtual void Idle_Exit();
+	float WaitTime = 0.0f;
+	float RunTime = 0.0f;
+	float RotationDelayTime = 0.0f;
+	float FallCheckDelayTime = 0.0f;
+	float AttackDelayCheck = 0.0f;
+	float AttackDelayTime = 0.0f;
 
-	// 플레이어 추적
-	virtual void Chase_Enter();
-	virtual void Chase_Update(float _DeltaTime);
-	virtual void Chase_Exit();
+	short WalkCount = 0;
 
-	// 공격
-	virtual void Attack_Enter();
-	virtual void Attack_Update(float _DeltaTime);
-	virtual void Attack_Exit();
+	bool IsHeavyAttack = false;   // 강공격 히트
+	bool IsAirAttack = false;     // 에어공격 히트
+	bool IsSlamAttack = false;    // 슬램공격 히트
+	bool IsBusterAttack = false;  // 버스터 히트
+	bool IsVergilLight = false;
+	bool IsCollapse = false;      // 쓰러져있는 상태
+	bool IsRecognize = false;
+	bool AttackTypeChange = false;
 
-	// 추락
-	virtual void Fall_Enter();
-	virtual void Fall_Update(float _DeltaTime);
-	virtual void Fall_Exit();
-
-	// 그랩 상태
-	virtual void Snatch_Enter();
-	virtual void Snatch_Update(float _DeltaTime);
-	virtual void Snatch_Exit();
-
-	// 버스터
-	virtual void Buster_Enter();
-	virtual void Buster_Update(float _DeltaTime);
-	virtual void Buster_Exit();
-
-	// 피격
-	virtual void Hit_Enter();
-	virtual void Hit_Update(float _DeltaTime);
-	virtual void Hit_Exit();
-
-	// 사망
-	virtual void Death_Enter();
-	virtual void Death_Update(float _DeltaTime);
-	virtual void Death_Exit();
 };
 

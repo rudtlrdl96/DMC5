@@ -69,6 +69,7 @@ enum FSM_State_Empusa
 	Empusa_Buster_Finish,      // em0000_Buster_Finish, 버스트 히트 땅에 떨어짐
 
 };
+
 class Enemy_Empusa : public BaseEnemyActor, public Poolable<Enemy_Empusa>
 {
 public:
@@ -118,7 +119,7 @@ private:
 	bool IsVergilLight = false;
 	bool IsCollapse = false;      // 쓰러져있는 상태
 	bool IsRecognize = false;
-	bool IsAppearA = false;
 	bool AttackTypeChange = false;
+	bool IsAppearA = false;
 };
 
