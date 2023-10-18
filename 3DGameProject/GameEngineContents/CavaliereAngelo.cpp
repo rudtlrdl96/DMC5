@@ -1951,6 +1951,8 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// À¸¾ÓÁê±Ý
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Daeth_Front,
 	.Start = [=] {
+	EffectRenderer_0->Off();
+	EffectRenderer_1->Off();
 	EnemyRenderer->ChangeAnimation("em5501_daeth_front");
 	},
 	.Update = [=](float _DeltaTime) {

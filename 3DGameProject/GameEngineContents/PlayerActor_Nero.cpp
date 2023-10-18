@@ -664,6 +664,8 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->SetMove(Controller->GetMoveVector() * 250);
 				SetInvincibility(0.5f);
 				WeaponIdle();
+				EffectSystem->PlayFX("Nero_DoubleJump.effect");
+				EffectSystem->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
 				Renderer->ChangeAnimation("pl0000_Jump_2ndJump", true);
 			},
 			.Update = [=](float _DeltaTime) {
@@ -691,6 +693,8 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 			},
 			.End = [=] {
+				EffectSystem->Off();
+				EffectSystem->GetTransform()->SetLocalPosition(float4::ZERO);
 			}
 			});
 		// 2nd_Jump_Back
@@ -704,6 +708,8 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->SetMove(Controller->GetMoveVector() * 250);
 				SetInvincibility(0.5f);
 				WeaponIdle();
+				EffectSystem->PlayFX("Nero_DoubleJump.effect");
+				EffectSystem->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
 				Renderer->ChangeAnimation("pl0000_Jump_Back_2ndJump", true);
 			},
 			.Update = [=](float _DeltaTime) {
@@ -731,6 +737,8 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 			},
 			.End = [=] {
+				EffectSystem->Off();
+				EffectSystem->GetTransform()->SetLocalPosition(float4::ZERO);
 			}
 			});
 
