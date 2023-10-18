@@ -976,6 +976,9 @@
     <ClCompile Include="TestEventZone1.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerActor_Nero_Net.cpp">
+      <Filter>Actor\Player\Character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">

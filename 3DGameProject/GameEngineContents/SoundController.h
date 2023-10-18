@@ -14,9 +14,15 @@ public:
 	SoundController& operator=(const SoundController& _Other) = delete;
 	SoundController& operator=(SoundController&& _Other) = delete;
 
+
 	void Play(const std::string_view& _Name, int _Number)
 	{
 		GameEngineSound::Play(std::string(_Name) + std::to_string(_Number) + ".wav").SetVolume(VFXVolume);
+	}
+
+	void PlaySetVolume(const std::string_view& _Name, int _Number, float _Volume)
+	{
+		GameEngineSound::Play(std::string(_Name) + std::to_string(_Number) + ".wav").SetVolume(VFXVolume * _Volume);
 	}
 
 	void PlayRandom(const std::string_view& _Name, int _Min, int _Max)

@@ -562,6 +562,37 @@ void AnimationToolWindow::AnimationFrameUpdate()
 				PhysXCapsule->SetLinearVelocityZero();
 			}
 		}
+		else if (CurData.Type == EventType::CallBackInt)
+		{
+			// 네로 테스트용
+			if (CurData.Index == 1)
+			{
+				if (nullptr == GameEngineSound::Find("RQ_" + std::to_string(CurData.IntValue) + ".wav"))
+				{
+					GameEngineDirectory NewDir;
+					NewDir.MoveParentToDirectory("ContentResources");
+					NewDir.Move("ContentResources");
+					NewDir.Move("Sound");
+					NewDir.Move("Voice");
+					NewDir.Move("Nero");
+					std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".wav" });
+					for (GameEngineFile File : Files)
+					{
+						GameEngineSound::Load(File.GetFullPath());
+					}
+					NewDir.MoveParent();
+					NewDir.MoveParent();
+					NewDir.Move("SFX");
+					NewDir.Move("Nero");
+					Files = NewDir.GetAllFile({ ".wav" });
+					for (GameEngineFile File : Files)
+					{
+						GameEngineSound::Load(File.GetFullPath());
+					}
+				}
+				GameEngineSound::Play("RQ_" + std::to_string(CurData.IntValue) + ".wav");
+			}
+		}
 	}
 }
 

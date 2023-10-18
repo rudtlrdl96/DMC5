@@ -865,6 +865,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="PlayerActor_Nero_Net.cpp" />
     <ClCompile Include="PlayerActor_Vergil_MirageBlade.cpp">
       <SubType>
       </SubType>
