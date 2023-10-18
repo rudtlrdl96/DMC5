@@ -2168,6 +2168,12 @@ void PlayerActor_Nero::PlayerLoad()
 		// Nero_Overture_Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Overture_Shoot,
 			.Start = [=] {
+				TimeEvent.AddEvent(0.15f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Sound.PlayVoiceRandom(6, 7, DTValue);
+					Sound.Play("Overture_Shoot");
+				});
+				
 				WeaponIdle();
 				SetOvertureAnimation();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -2213,6 +2219,11 @@ void PlayerActor_Nero::PlayerLoad()
 		// Nero_Overture_AirShoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Overture_AirShoot,
 			.Start = [=] {
+				TimeEvent.AddEvent(0.15f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Sound.PlayVoiceRandom(6, 7, DTValue);
+					Sound.Play("Overture_Shoot");
+				});
 				WeaponIdle();
 				SetOvertureAnimation();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -2257,6 +2268,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Nero_Gerbera_Back
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Gerbera_Back,
 			.Start = [=] {
+				Sound.Play("Gerbera_Shoot");
 				WeaponIdle();
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -2290,6 +2302,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Nero_Gerbera_Front
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Gerbera_Front,
 			.Start = [=] {
+				Sound.Play("Gerbera_Shoot");
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
@@ -2325,6 +2338,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Nero_Gerbera_Left
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Gerbera_Left,
 			.Start = [=] {
+				Sound.Play("Gerbera_Shoot");
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
@@ -2360,6 +2374,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Nero_Gerbera_Right
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Gerbera_Right,
 			.Start = [=] {
+				Sound.Play("Gerbera_Shoot");
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
@@ -2398,6 +2413,8 @@ void PlayerActor_Nero::PlayerLoad()
 		// BusterArm Catch
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Catch,
 			.Start = [=] {
+				Sound.PlayVoiceRandom(6, 7, DTValue);
+				Sound.Play("BusterArm_Catch");
 				Col_Attack->SetAttackData(DamageType::Buster, 0, std::bind(&PlayerActor_Nero::ChangeState, this, Nero_Buster_Strike));
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -2462,7 +2479,7 @@ void PlayerActor_Nero::PlayerLoad()
 						return;
 					}
 				}
-
+				Sound.Play("BusterArm_Strike");
 				EffectSystem->PlayFX("Buster_Strike.effect");
 				Renderer->ChangeAnimation("pl0000_Buster_Strike_Common");
 				InputCheck = false;
@@ -2499,6 +2516,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// BusterArm em5501
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_em5501,
 			.Start = [=] {
+				Sound.Play("BusterArm_Strike");
 				EffectSystem->PlayFX("Buster_Strike_em5501.effect");
 				Renderer->ChangeAnimation("pl0000_Buster_em5501");
 
@@ -2544,6 +2562,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// BusterArm Repelled
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Repelled,
 			.Start = [=] {
+				Sound.Play("BusterArm_Repelled");
 				Renderer->ChangeAnimation("pl0000_Buster_Catch_Repelled");
 				InputCheck = false;
 				MoveCheck = false;
@@ -2579,6 +2598,8 @@ void PlayerActor_Nero::PlayerLoad()
 		// BusterArm Catch Air
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Catch_Air,
 			.Start = [=] {
+				Sound.PlayVoiceRandom(6, 7, DTValue);
+				Sound.Play("BusterArm_Catch");
 				Col_Attack->SetAttackData(DamageType::Buster, 50, std::bind(&PlayerActor_Nero::ChangeState, this, Nero_Buster_Strike_Air));
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -2631,6 +2652,7 @@ void PlayerActor_Nero::PlayerLoad()
 						return;
 					}
 				}
+				Sound.Play("BusterArm_Strike");
 				EffectSystem->PlayFX("Buster_Strike.effect");
 				Renderer->ChangeAnimation("pl0000_Buster_Air_Strike_Common");
 				InputCheck = false;
@@ -2662,6 +2684,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// BusterArm Repelled Air
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Repelled_Air,
 			.Start = [=] {
+				Sound.Play("BusterArm_Repelled");
 				Renderer->ChangeAnimation("pl0000_Buster_Air_Catch_Repelled");
 				InputCheck = false;
 				MoveCheck = false;
@@ -3470,14 +3493,10 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 		}
 		if (GameEngineInput::IsDown("SelectLevel_04"))
 		{
-			HP -= 500;
-			HPRender->SetPlayerHP(HP);
 			LightDamage();
 		}
 		if (GameEngineInput::IsDown("SelectLevel_05"))
 		{
-			HP -= 500;
-			HPRender->SetPlayerHP(HP);
 			HeavyDamage();
 		}
 	}
@@ -3496,6 +3515,7 @@ void PlayerActor_Nero::ItemColCheck()
 
 void PlayerActor_Nero::LightDamage()
 {
+	HPRender->SetPlayerHP(HP);
 	if (true == FloorCheck())
 	{
 		if (HP <= 0)
@@ -3513,6 +3533,7 @@ void PlayerActor_Nero::LightDamage()
 }
 void PlayerActor_Nero::HeavyDamage()
 {
+	HPRender->SetPlayerHP(HP);
 	if (true == FloorCheck())
 	{
 		if (HP <= 0)
