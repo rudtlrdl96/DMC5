@@ -523,16 +523,16 @@ void CavaliereAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 
 	StartRenderShaking(6);
 
-	if (true == IsCharge)
-	{
-		ChargeDamageStack += Data.DamageValue;
-	}
+	//if (true == IsCharge)
+	//{
+	//	ChargeDamageStack += Data.DamageValue;
+	//}
 
-	if (ChargeDamageStack >= 1000)
-	{
-		ChargeDamageStack = 0;
-		ChangeState_Client(FSM_State_CavaliereAngelo::CavaliereAngelo_Stun_Start);
-	}
+	//if (ChargeDamageStack >= 1000)
+	//{
+	//	ChargeDamageStack = 0;
+	//	ChangeState_Client(FSM_State_CavaliereAngelo::CavaliereAngelo_Stun_Start);
+	//}
 
 	AttackDelayCheck = 0.0f;
 }
@@ -596,37 +596,45 @@ void CavaliereAngelo::ParryTime()
 
 void CavaliereAngelo::BossTurn()
 {
-	RotationCheck();
+	//RotationCheck();
 
-	if (-4.0f <= DotProductValue && 4.0f >= DotProductValue)
+	float4 CrossResult = MonsterAndPlayerCross();
+	float RotationValue = 0.0f;
+	float4 EnemyPosition = this->GetTransform()->GetWorldPosition();
+	float4 PlayerPosition = Player->GetTransform()->GetWorldPosition();
+	float4 EnemyForWardVector = this->GetTransform()->GetWorldForwardVector();
+
+	EnemyForWardVector.Normalize();
+
+	float4 ToPlayerVector = (PlayerPosition - EnemyPosition);
+	ToPlayerVector.Normalize();
+
+	float4 Direct = PlayerPosition - EnemyPosition;
+	float4 RotationDirectNormal = Direct.NormalizeReturn();
+	RotationValue = float4::GetAngleVectorToVectorDeg(EnemyForWardVector, RotationDirectNormal);
+
+	if (-5.0f <= RotationValue && 5.0f >= RotationValue)
 	{
 		AllDirectSetting_Normal();
 		return;
 	}
 
-	float4 CurRot = GetTransform()->GetWorldRotation();
-
-	if (CurRot.y <= 0.0f)
+	if (CrossResult.y < 0)
 	{
-		CurRot.y += 360.f;
+		if (RotationValue >= 0)
+		{
+			RotationValue = -RotationValue;
+		}
+	}
+	else if (CrossResult.y > 0)
+	{
+		if (RotationValue < 0)
+		{
+			RotationValue = -RotationValue;
+		}
 	}
 
-	float4 Value = float4{ 0.0f, DotProductValue, 0.0f };
-
-	float4 GoalRot = CurRot + Value;
-
-	if (GoalRot.y <= 0.0f)
-	{
-		CurRot.y += 360.f;
-		GoalRot = CurRot + Value;
-	}
-
-	CurRot.x = 0.0f;
-	CurRot.z = 0.0f;
-	GoalRot.x = 0.0f;
-	GoalRot.z = 0.0f;
-
-	PhysXCapsule->SetWorldRotation(GoalRot);
+	PhysXCapsule->AddWorldRotation(float4{ 0.0f, RotationValue, 0.0f });
 	AllDirectSetting_Normal();
 }
 
