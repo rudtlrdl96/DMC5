@@ -196,7 +196,7 @@ void CavaliereAngelo::Start()
 			IsVergilLight = true;
 		}
 
-		if (DamageType::Stun == Datas.DamageTypeValue)
+		if (DamageType::Buster == Datas.DamageTypeValue)
 		{
 			IsStun = false;
 			SetTimeScale(0.4f);
@@ -472,7 +472,7 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Stun_Start);
 	}
 
-	if (DamageType::Stun == Data.DamageTypeValue)
+	if (DamageType::Buster == Data.DamageTypeValue)
 	{
 		IsStun = false;
 		SetTimeScale(0.4f);
@@ -496,9 +496,17 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 			{
 				StartRenderShaking(8);
 			});
-		GetLevel()->TimeEvent.AddEvent(1.93f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+		GetLevel()->TimeEvent.AddEvent(1.7f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				SetTimeScale(0.3f);
+			});
+		GetLevel()->TimeEvent.AddEvent(2.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 			{
 				StartRenderShaking(8);
+				SetTimeScale(0.0f);
+			});
+		GetLevel()->TimeEvent.AddEvent(3.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
 				SetTimeScale(1.0f);
 			});
 	}

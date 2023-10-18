@@ -20,6 +20,7 @@
 #include "Item_DevilBreaker.h"
 #include "FXAA_Effect.h"
 #include "DistortionEffect.h"
+#include "ZoomEffect.h"
 TestLevel::TestLevel()
 {
 }
@@ -41,6 +42,7 @@ void TestLevel::Start()
 	GetCamera(0)->GetCamTarget()->CreateEffect<ColorEffect>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
+	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
 
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 50.0f, -100.0f });

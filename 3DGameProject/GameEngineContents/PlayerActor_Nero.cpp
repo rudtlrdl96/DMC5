@@ -18,6 +18,7 @@
 #include "RankUI.h"
 #include "Item_DevilBreaker.h"
 #include "CavaliereAngelo.h"
+#include "ZoomEffect.h"
 std::list<DevilBreaker> PlayerActor_Nero::BreakerList;
 PlayerActor_Nero::~PlayerActor_Nero()
 {
@@ -73,6 +74,8 @@ void PlayerActor_Nero::Start()
 
 	Sound.SetVoiceName("Nero_V_");
 	Sound.VFXVolume = 0.5f;
+	Effect_Zoom = ZoomEffect::GetZoomEffect();
+	
 }
 
 void PlayerActor_Nero::PlayerLoad()
@@ -2519,7 +2522,10 @@ void PlayerActor_Nero::PlayerLoad()
 				Sound.Play("BusterArm_Strike");
 				EffectSystem->PlayFX("Buster_Strike_em5501.effect");
 				Renderer->ChangeAnimation("pl0000_Buster_em5501");
-
+				if (nullptr != Effect_Zoom)
+				{
+					Effect_Zoom->EffectOn(1.3f);
+				}
 				GetLevel()->TimeEvent.AddEvent(.316f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 					{
 						Sound.Play("Buster_", 0);
@@ -2545,11 +2551,27 @@ void PlayerActor_Nero::PlayerLoad()
 						Sound.Play("Buster_", 4);
 						PlayerCamera::ShakeMiddle();
 					});
-				GetLevel()->TimeEvent.AddEvent(1.93f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				GetLevel()->TimeEvent.AddEvent(1.7f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						SetTimeScale(0.3f);
+					});
+				GetLevel()->TimeEvent.AddEvent(2.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 					{
 						Sound.Play("Buster_", 5);
 						PlayerCamera::ShakeHeavy();
-						StopTime(0.15f);
+						SetTimeScale(0.0f);
+					});
+				GetLevel()->TimeEvent.AddEvent(2.7f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						SetTimeScale(0.3f);
+					});
+				GetLevel()->TimeEvent.AddEvent(3.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						if (nullptr != Effect_Zoom)
+						{
+							Effect_Zoom->EffectOff();
+						}
+						SetTimeScale(1.0f);
 					});
 
 			},

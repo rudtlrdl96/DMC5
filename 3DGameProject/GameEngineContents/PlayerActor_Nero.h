@@ -199,7 +199,7 @@ protected:
 private:
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer_Overture = nullptr;
 	std::shared_ptr<class Player_Snatch> Snatch = nullptr;
-
+	class ZoomEffect* Effect_Zoom = nullptr;
 	GameEngineFSM FSM;
 	float4 LockOnPosition = float4::ZERO;
 	int ExceedLevel = 0;	// 익시드 단계
