@@ -102,9 +102,6 @@ protected:
 	EnemyCode EnemyCodeValue = EnemyCode::None;
 	//HP
 	int EnemyHP = 0;
-	int HPOverallStack = 0;
-	int HPServerStack = 0;
-	int HPClientStack = 0;
 	// FSM 밸류
 	int EnemyFSMValue = -1;
 
@@ -123,10 +120,11 @@ protected:
 	bool PlayerContactCheck_Normal(GameEngineCollision* _Collision);
 	void PlayerAttackCheck(GameEngineCollision* _Collision);                         // 자신을 공격한 충돌체(플레이어) 정보를 class BasePlayerActor* Player에 저장
 
-	class BasePlayerActor* Player = nullptr;
 	GameEngineFSM EnemyFSM;
+	class BasePlayerActor* Player = nullptr;
 	float AppearDelayTime = 0.0f;
 	float ContactDelayTime = 0.0f;
+	int ServerPlayerID = 0;
 	bool IsClientHit = false;
 	bool IsTimeStop = false;
 	bool TimeStop = false;

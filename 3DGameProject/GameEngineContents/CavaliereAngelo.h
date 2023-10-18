@@ -89,20 +89,13 @@ public:
 	CavaliereAngelo& operator=(const CavaliereAngelo& _Other) = delete;
 	CavaliereAngelo& operator=(CavaliereAngelo&& _Other) noexcept = delete;
 
-	void HPStackPlus(int _Value)
-	{
-		HPOverallStack += _Value;
-	}
-
 	void HPSeverStackPlus(int _Value)
 	{
-		HPOverallStack += _Value;
 		HPServerStack += _Value;
 	}
 
 	void HPClientStackPlus(int _Value)
 	{
-		HPOverallStack += _Value;
 		HPClientStack += _Value;
 	}
 
@@ -131,7 +124,6 @@ private:
 	std::shared_ptr<class Cavaliere_Electric> Electric = nullptr;
 
 	void PlayerChase(float _DeltaTime);
-	void PlayerAttack(float _DeltaTime);
 	void ChangeState(int _StateValue);
 	void ChangeState_Client(int _StateValue);
 	void AttackCalculation();
@@ -150,6 +142,8 @@ private:
 	short ColliderStack = 0;
 
 	int ChargeDamageStack = 0;
+	int HPServerStack = 0;
+	int HPClientStack = 0;
 
 	bool IsVergilLight = false;
 	bool IsSturn = false;

@@ -156,7 +156,11 @@ void BaseEnemyActor::PlayerCheckInit()
 	}
 
 	Player = Players[0];
-	int PlayerID = Player->GetNetObjectID();
+
+	if (true == NetworkManager::IsServer())
+	{
+		ServerPlayerID = Player->GetNetObjectID();
+	}
 
 	if (nullptr == Player)
 	{

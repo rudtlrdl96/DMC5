@@ -32,7 +32,6 @@ void CavaliereAngelo::EnemyTypeLoad()
 {
 	EnemyCodeValue = EnemyCode::CavaliereAngelo;
 	EnemyHP = 10000;
-	HPOverallStack = 0;
 	HPServerStack = 0;
 	HPClientStack = 0;
 }
@@ -170,20 +169,27 @@ void CavaliereAngelo::Start()
 	MonsterAttackCollision->SetAttackData(DamageType::Heavy, 200);
 
 	// 넷 오브젝트 타입 설정
-	SetNetObjectType(Net_ActorType::HellCaina);
+	SetNetObjectType(Net_ActorType::CavaliereAngelo);
 
 	LinkData_UpdatePacket<bool>(IsCharge);
 	LinkData_UpdatePacket<bool>(IsBurn);
+	LinkData_UpdatePacket<bool>(IsStun);
 	LinkData_UpdatePacket<int>(ChargeDamageStack);
 	LinkData_UpdatePacket<int>(EnemyHP);
-	//LinkData_UpdatePacket<int>(HPOverallStack);
-	//LinkData_UpdatePacket<int>(HPServerStack);
-	//LinkData_UpdatePacket<int>(HPClientStack);
+	LinkData_UpdatePacket<int>(HPServerStack);
+	LinkData_UpdatePacket<int>(HPClientStack);
 
 	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker) {
-		Player = _Attacker;
 		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
 		MinusEnemyHP(Datas.DamageValue);
+		HPClientStackPlus(Datas.DamageValue);
+
+		if (600 < HPClientStack)
+		{
+			HPServerStack = 0;
+			HPClientStack = 0;
+			Player = _Attacker;
+		}
 
 		if (DamageType::VergilLight == Datas.DamageTypeValue)
 		{
@@ -192,10 +198,34 @@ void CavaliereAngelo::Start()
 
 		if (DamageType::Stun == Datas.DamageTypeValue)
 		{
-			StopTime(2.9f);
+			IsStun = false;
+			SetTimeScale(0.4f);
+			GetLevel()->TimeEvent.AddEvent(.316f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					StartRenderShaking(8);
+				});
+			GetLevel()->TimeEvent.AddEvent(.683f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					StartRenderShaking(8);
+				});
+			GetLevel()->TimeEvent.AddEvent(1.13f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					StartRenderShaking(8);
+				});
+			GetLevel()->TimeEvent.AddEvent(1.4f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					StartRenderShaking(8);
+				});
+			GetLevel()->TimeEvent.AddEvent(1.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					StartRenderShaking(8);
+				});
+			GetLevel()->TimeEvent.AddEvent(1.93f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					StartRenderShaking(8);
+					SetTimeScale(1.0f);
+				});
 		}
-
-		HitStop(Datas.DamageTypeValue);
 
 		if (EnemyHP < 0)
 		{
@@ -348,30 +378,6 @@ void CavaliereAngelo::PlayerChase(float _DeltaTime)
 	return;
 }
 
-void CavaliereAngelo::PlayerAttack(float _DeltaTime)
-{
-	RotationCheck();
-	AllDirectSetting();
-
-	if (EnemyRotation::Left == EnemyRotationValue)
-	{
-		//ChangeState(FSM_State_HellCaina::HellCaina_Walk_Right_Start);
-	}
-	else if (EnemyRotation::Right == EnemyRotationValue)
-	{
-		//ChangeState(FSM_State_HellCaina::HellCaina_Walk_Left_Start);
-	}
-	else if (EnemyRotation::Left_180 == EnemyRotationValue || EnemyRotation::Right_180 == EnemyRotationValue)
-	{
-		PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
-		//ChangeState(FSM_State_HellCaina::HellCaina_Attack_Turn);
-	}
-	else
-	{
-		//RandomAttack();
-	}
-}
-
 void CavaliereAngelo::AttackCalculation()
 {
 	AttackDirectCheck();
@@ -421,6 +427,31 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 
 	StartRenderShaking(6);
 	MinusEnemyHP(Data.DamageValue);
+	HPSeverStackPlus(Data.DamageValue);
+
+	if (NetControllType::ActiveControll == GetControllType())
+	{
+		if (600 < HPServerStack)
+		{
+			HPServerStack = 0;
+			HPClientStack = 0;
+
+			std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
+			size_t Playersize = Players.size();
+
+			int PlayerID = Player->GetNetObjectID();
+
+			for (size_t i = 0; i < Playersize; i++)
+			{
+				int PlayersID = Players[i]->GetNetObjectID();
+
+				if (ServerPlayerID == PlayersID)
+				{
+					Player = Players[i];
+				}
+			}
+		}
+	}
 
 	if (EnemyHP <= 0)
 	{
@@ -472,21 +503,6 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 			});
 	}
 
-	//if (false == IsSturn)
-	//{
-	//	HPSeverStackPlus(Data.DamageValue);
-	//}
-
-	//if (HPOverallStack >= 1000 && false == IsSturn)
-	//{
-	//	IsSturn = true;
-	//	HPOverallStack = 0;
-	//	HPServerStack = 0;
-	//	HPClientStack = 0;
-
-	//	ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Stun_Start);
-	//}
-
 	IsVergilLight = false;
 	AttackDelayCheck = 0.0f;
 }
@@ -523,18 +539,6 @@ void CavaliereAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 	}
 
 	StartRenderShaking(6);
-
-	//if (true == IsCharge)
-	//{
-	//	ChargeDamageStack += Data.DamageValue;
-	//}
-
-	//if (ChargeDamageStack >= 1000)
-	//{
-	//	ChargeDamageStack = 0;
-	//	ChangeState_Client(FSM_State_CavaliereAngelo::CavaliereAngelo_Stun_Start);
-	//}
-
 	AttackDelayCheck = 0.0f;
 }
 
