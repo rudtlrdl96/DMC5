@@ -120,6 +120,7 @@ void PlayerActor_Nero::NetLoad()
 			.CallBacks_int = {
 				std::bind(&GameEngineFSM::ChangeState, &FSM, std::placeholders::_1),
 				std::bind(&SoundController::Play, &Sound, "RQ_", std::placeholders::_1),
+				std::bind(&SoundController::Play, &Sound, "BR_", std::placeholders::_1),
 			},
 			});
 
@@ -1002,6 +1003,7 @@ void PlayerActor_Nero::NetLoad()
 		// Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Shoot,
 			.Start = [=] {
+				Sound.Play("BR_", 0);
 				EffectSystem->PlayFX("BR_Shoot.effect");
 				Col_Attack->SetAttackData(DamageType::Light, 54, std::bind(&GameEngineObjectBase::Off, Col_Attack));
 				BlueRoseOn();
@@ -1016,6 +1018,7 @@ void PlayerActor_Nero::NetLoad()
 		// Air Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_AirShoot,
 			.Start = [=] {
+				Sound.Play("BR_", 0);
 				EffectSystem->PlayFX("BR_Shoot.effect");
 				Col_Attack->SetAttackData(DamageType::Light, 54, std::bind(&GameEngineObjectBase::Off, Col_Attack));
 				BlueRoseOn();

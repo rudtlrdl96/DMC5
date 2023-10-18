@@ -184,6 +184,7 @@ void PlayerActor_Nero::PlayerLoad()
 			.CallBacks_int = {
 				std::bind(&PlayerActor_Nero::ChangeState, this, std::placeholders::_1),
 				std::bind(&SoundController::Play, &Sound, "RQ_", std::placeholders::_1),
+				std::bind(&SoundController::Play, &Sound, "BR_", std::placeholders::_1),
 			},
 			.CallBacks_float = {
 				std::bind(&BasePlayerActor::RotationToTarget, this, std::placeholders::_1),
@@ -2038,12 +2039,14 @@ void PlayerActor_Nero::PlayerLoad()
 			.Start = [=] {
 				if (true == HPRender->IsChargeBullet())
 				{
+					Sound.Play("BR_", 1);
 					EffectSystem->PlayFX("BR_Shoot_Charge.effect");
 					Col_Attack->SetAttackData(DamageType::Light, 100, std::bind(&GameEngineObjectBase::Off, Col_Attack));
 					HPRender->ShootBullet();
 				}
 				else
 				{
+					Sound.Play("BR_", 0);
 					EffectSystem->PlayFX("BR_Shoot.effect");
 					Col_Attack->SetAttackData(DamageType::Light, 54, std::bind(&GameEngineObjectBase::Off, Col_Attack));
 				}
@@ -2104,12 +2107,14 @@ void PlayerActor_Nero::PlayerLoad()
 			.Start = [=] {
 				if (true == HPRender->IsChargeBullet())
 				{
+					Sound.Play("BR_", 1);
 					EffectSystem->PlayFX("BR_Shoot_Charge.effect");
 					Col_Attack->SetAttackData(DamageType::Light, 100, std::bind(&GameEngineObjectBase::Off, Col_Attack));
 					HPRender->ShootBullet();
 				}
 				else
 				{
+					Sound.Play("BR_", 0);
 					EffectSystem->PlayFX("BR_Shoot.effect");
 					Col_Attack->SetAttackData(DamageType::Light, 54, std::bind(&GameEngineObjectBase::Off, Col_Attack));
 				}
