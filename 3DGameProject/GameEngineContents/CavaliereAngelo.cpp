@@ -145,8 +145,8 @@ void CavaliereAngelo::Start()
 	// 콜리전 옵션, 크기 설정
 	MonsterAttackCollision->SetAttackData(DamageType::Light, 0);
 	MonsterAttackCollision->SetColType(ColType::OBBBOX3D);
-	MonsterCollision->GetTransform()->SetLocalScale({ 100, 250, 100 });
-	MonsterCollision->GetTransform()->SetLocalPosition({ 0, 125, 0 });
+	MonsterCollision->GetTransform()->SetLocalScale({ 150, 300, 150 });
+	MonsterCollision->GetTransform()->SetLocalPosition({ 0, 150, 0 });
 	MonsterCollision->SetColType(ColType::OBBBOX3D);
 	RN_MonsterCollision->GetTransform()->SetLocalScale({ 1000, 0, 0 });
 	RN_MonsterCollision->GetTransform()->SetLocalPosition({ 0, 80, 0 });
