@@ -37,7 +37,7 @@ void Enemy_RedEmpusa::EnemyMeshLoad()
 	{
 		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
 			{
-				"Character", "Enemy", "em0102", "mesh"
+				"Character", "Enemy", "RedEmpusa", "mesh"
 			},
 			"em0102.FBX");
 
@@ -80,7 +80,7 @@ void Enemy_RedEmpusa::EnemyAnimationLoad()
 	NewDir.Move("ContentResources");
 	NewDir.Move("Character");
 	NewDir.Move("Enemy");
-	NewDir.Move("em0102");
+	NewDir.Move("RedEmpusa");
 	NewDir.Move("Animation");
 
 	AnimationEvent::LoadAll
