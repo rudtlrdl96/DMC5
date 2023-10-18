@@ -1299,6 +1299,8 @@ void PlayerActor_Nero::NetLoad()
 		// DT Start
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_DT_Start,
 		.Start = [=] {
+			Sound.Play("DT_On");
+			Sound.PlayVoiceRandom(34, 36, true);
 			WeaponIdle();
 			Col_Attack->SetAttackData(DamageType::Air, 150);
 			EffectSystem->PlayFX("Nero_DT_On.effect");
@@ -1312,6 +1314,8 @@ void PlayerActor_Nero::NetLoad()
 		// DT Air Start
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_DT_AirStart,
 			.Start = [=] {
+				Sound.Play("DT_On");
+				Sound.PlayVoiceRandom(34, 36, true);
 				WeaponIdle();
 				Col_Attack->SetAttackData(DamageType::Air, 150);
 				EffectSystem->PlayFX("Nero_DT_On.effect");
