@@ -1520,7 +1520,6 @@ void PlayerActor_Nero::NetLoad()
 		// Damage Ground
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Ground,
 			.Start = [=] {
-				Sound.PlayVoiceRandom(27, 28, DTValue);
 				Renderer->ChangeAnimation("pl0000_Damage_Away_Ground");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -1532,6 +1531,7 @@ void PlayerActor_Nero::NetLoad()
 		// Damage GetUp
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_GetUp,
 			.Start = [=] {
+				Sound.PlayVoiceRandom(27, 28, DTValue);
 				Renderer->ChangeAnimation("pl0000_Damage_Away_GetUp");
 			},
 			.Update = [=](float _DeltaTime) {

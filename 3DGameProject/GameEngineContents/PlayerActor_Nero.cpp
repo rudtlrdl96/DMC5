@@ -2459,7 +2459,7 @@ void PlayerActor_Nero::PlayerLoad()
 			});
 
 
-
+		static CavaliereAngelo* BusterTarget = nullptr;
 		// BusterArm Strike
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Strike,
 			.Start = [=] {
@@ -2468,10 +2468,10 @@ void PlayerActor_Nero::PlayerLoad()
 				Col_Attack->Off();
 				if (nullptr != Col)
 				{
-					CavaliereAngelo* Cava = dynamic_cast<CavaliereAngelo*>(Col->GetActor());
-					if (nullptr != Cava)
+					BusterTarget = dynamic_cast<CavaliereAngelo*>(Col->GetActor());
+					if (nullptr != BusterTarget)
 					{
-						if (true == Cava->GetIsStun())
+						if (true == BusterTarget->GetIsStun())
 						{
 							ChangeState(FSM_State_Nero::Nero_Buster_em5501);
 						}
@@ -2519,6 +2519,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// BusterArm em5501
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_em5501,
 			.Start = [=] {
+				RotationToDir(BusterTarget->GetTransform()->GetWorldPosition() - GetTransform()->GetWorldPosition());
 				Sound.Play("BusterArm_Strike");
 				EffectSystem->PlayFX("Buster_Strike_em5501.effect");
 				Renderer->ChangeAnimation("pl0000_Buster_em5501");
@@ -3370,7 +3371,6 @@ void PlayerActor_Nero::PlayerLoad()
 		// Damage Ground
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Ground,
 			.Start = [=] {
-				Sound.PlayVoiceRandom(27, 28, DTValue);
 				SetInvincibility(0.5f);
 				UseDoubleJump = false;
 				UseCaliber = false;
@@ -3406,6 +3406,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Damage GetUp
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_GetUp,
 			.Start = [=] {
+				Sound.PlayVoiceRandom(27, 28, DTValue);
 				Renderer->ChangeAnimation("pl0000_Damage_Away_GetUp");
 			},
 			.Update = [=](float _DeltaTime) {

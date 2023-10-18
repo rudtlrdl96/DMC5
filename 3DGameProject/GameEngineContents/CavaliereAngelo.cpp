@@ -196,7 +196,7 @@ void CavaliereAngelo::Start()
 			IsVergilLight = true;
 		}
 
-		if (DamageType::Buster == Datas.DamageTypeValue)
+		if (DamageType::Buster == Datas.DamageTypeValue && true == IsStun)
 		{
 			IsStun = false;
 			SetTimeScale(0.4f);
@@ -472,7 +472,7 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Stun_Start);
 	}
 
-	if (DamageType::Buster == Data.DamageTypeValue)
+	if (DamageType::Buster == Data.DamageTypeValue && true == IsStun)
 	{
 		IsStun = false;
 		SetTimeScale(0.4f);
