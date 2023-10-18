@@ -1186,6 +1186,31 @@ void PlayerActor_Nero::NetLoad()
 				Sound.Play("BusterArm_Strike");
 				EffectSystem->PlayFX("Buster_Strike_em5501.effect");
 				Renderer->ChangeAnimation("pl0000_Buster_em5501");
+
+				GetLevel()->TimeEvent.AddEvent(.316f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						Sound.Play("Buster_", 0);
+					});
+				GetLevel()->TimeEvent.AddEvent(.683f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						Sound.Play("Buster_", 1);
+					});
+				GetLevel()->TimeEvent.AddEvent(1.13f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						Sound.Play("Buster_", 2);
+					});
+				GetLevel()->TimeEvent.AddEvent(1.4f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						Sound.Play("Buster_", 3);
+					});
+				GetLevel()->TimeEvent.AddEvent(1.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						Sound.Play("Buster_", 4);
+					});
+				GetLevel()->TimeEvent.AddEvent(2.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						Sound.Play("Buster_", 5);
+					});
 			},
 			.Update = [=](float _DeltaTime) {
 			},
