@@ -1254,6 +1254,8 @@ void PlayerActor_Nero::NetLoad()
 		// Snatch Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Snatch_Shoot,
 			.Start = [=] {
+				Sound.Play("Snatch_Shoot");
+				Sound.PlayVoiceRandom(0, 3, DTValue);
 				WeaponIdle();
 				Col_Attack->SetAttackData(DamageType::Snatch, 0);
 				Renderer->ChangeAnimation("pl0000_Snatch", true);
@@ -1292,6 +1294,8 @@ void PlayerActor_Nero::NetLoad()
 		// Snatch Shoot Air
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Snatch_Shoot_Air,
 			.Start = [=] {
+				Sound.Play("Snatch_Shoot");
+				Sound.PlayVoiceRandom(0, 3, DTValue);
 				WeaponIdle();
 				Col_Attack->SetAttackData(DamageType::Snatch, 0);
 				Renderer->ChangeAnimation("pl0000_Air_Snatch", true);

@@ -2522,26 +2522,32 @@ void PlayerActor_Nero::PlayerLoad()
 
 				GetLevel()->TimeEvent.AddEvent(.316f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 					{
+						Sound.Play("Buster_", 0);
 						PlayerCamera::ShakeMiddle();
 					});
 				GetLevel()->TimeEvent.AddEvent(.683f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 					{
+						Sound.Play("Buster_", 1);
 						PlayerCamera::ShakeMiddle();
 					});
 				GetLevel()->TimeEvent.AddEvent(1.13f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 					{
+						Sound.Play("Buster_", 2);
 						PlayerCamera::ShakeMiddle();
 					});
 				GetLevel()->TimeEvent.AddEvent(1.4f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 					{
+						Sound.Play("Buster_", 3);
 						PlayerCamera::ShakeMiddle();
 					});
 				GetLevel()->TimeEvent.AddEvent(1.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 					{
+						Sound.Play("Buster_", 4);
 						PlayerCamera::ShakeMiddle();
 					});
 				GetLevel()->TimeEvent.AddEvent(1.93f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 					{
+						Sound.Play("Buster_", 5);
 						PlayerCamera::ShakeHeavy();
 						StopTime(0.15f);
 					});
@@ -2721,6 +2727,8 @@ void PlayerActor_Nero::PlayerLoad()
 		// Snatch Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Snatch_Shoot,
 			.Start = [=] {
+				Sound.Play("Snatch_Shoot");
+				Sound.PlayVoiceRandom(0, 3, DTValue);
 				PhysXCapsule->SetLinearVelocityZero();
 				RotationToTarget();
 				WeaponIdle();
@@ -2848,6 +2856,8 @@ void PlayerActor_Nero::PlayerLoad()
 		// Snatch Shoot Air
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Snatch_Shoot_Air,
 			.Start = [=] {
+				Sound.Play("Snatch_Shoot");
+				Sound.PlayVoiceRandom(0, 3, DTValue);
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				RotationToTarget();
