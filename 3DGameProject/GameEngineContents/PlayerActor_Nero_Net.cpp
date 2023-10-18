@@ -577,9 +577,15 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen Shuffle
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Shuffle,
 			.Start = [=] {
+				Sound.Play("RQ_", 22);
+				TimeEvent.AddEvent(0.4f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+					{
+						Sound.PlayVoiceRandom(18, 19, DTValue);
+					});
 				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(180, true));
 				if (0 < ExceedLevel)
 				{
+					Sound.Play("RQ_", 12);
 					EffectSystem->PlayFX("RQ_Shuffle_EX.effect");
 				}
 				else
@@ -598,6 +604,7 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen Stleak1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Stleak1,
 			.Start = [=] {
+				Sound.Play("RQ_", 22);
 				EffectSystem->PlayFX("RQ_Stleak_1.effect");
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Stleak_1");
@@ -623,9 +630,12 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen Stleak3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Stleak3,
 			.Start = [=] {
+				Sound.Play("RQ_", 8);
+				Sound.PlayVoiceRandom(15, 17, DTValue);
 				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(180, true));
 				if (0 < ExceedLevel)
 				{
+					Sound.Play("RQ_", 12);
 					EffectSystem->PlayFX("RQ_Stleak_3_EX.effect");
 				}
 				else
@@ -644,9 +654,12 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen AirComboA1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_1,
 			.Start = [=] {
+				Sound.Play("RQ_", 0);
+				Sound.PlayVoiceRandom(4, 5, DTValue);
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(150));
 				if (0 < ExceedLevel)
 				{
+					Sound.Play("RQ_", 12);
 					EffectSystem->PlayFX("RQ_AirComboA1_EX.effect");
 				}
 				else
@@ -664,9 +677,11 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen AirComboA2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_2,
 			.Start = [=] {
+				Sound.Play("RQ_", 1);
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(120));
 				if (0 < ExceedLevel)
 				{
+					Sound.Play("RQ_", 12);
 					EffectSystem->PlayFX("RQ_AirComboA2_EX.effect");
 				}
 				else
@@ -685,9 +700,12 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen AirComboA3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboA_3,
 			.Start = [=] {
+				Sound.Play("RQ_", 7);
+				Sound.PlayVoiceRandom(6, 7, DTValue);
 				Col_Attack->SetAttackData(DamageType::Slam, DamageCalculate(180));
 				if (0 < ExceedLevel)
 				{
+					Sound.Play("RQ_", 14);
 					EffectSystem->PlayFX("RQ_AirComboA3_EX.effect");
 				}
 				else
@@ -706,9 +724,12 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen AirComboB
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_AirComboB,
 			.Start = [=] {
+				Sound.Play("RQ_", 2);
+				Sound.PlayVoiceRandom(7, 8, DTValue);
 				Col_Attack->SetAttackData(DamageType::Air, DamageCalculate(405));
 				if (0 < ExceedLevel)
 				{
+					Sound.Play("RQ_", 14);
 					EffectSystem->PlayFX("RQ_AirComboB_EX.effect");
 				}
 				else
@@ -727,9 +748,12 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen Split_1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Split_1,
 			.Start = [=] {
+				Sound.Play("RQ_", 3);
+				Sound.PlayVoiceRandom(13, 14, DTValue);
 				Col_Attack->SetAttackData(DamageType::Slam, DamageCalculate(22, true));
 				if (0 < ExceedLevel)
 				{
+					Sound.Play("RQ_", 14);
 					EffectSystem->PlayFX("RQ_Split_1_EX.effect");
 				}
 				else
@@ -767,9 +791,11 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen Split_3
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Split_3,
 			.Start = [=] {
+				Sound.Play("RQ_", 11);
 				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(90, true));
 				if (0 < ExceedLevel)
 				{
+					Sound.Play("RQ_", 13);
 					EffectSystem->PlayFX("RQ_Split_3_EX.effect");
 				}
 				else
@@ -787,6 +813,7 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen Caliber_1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Caliber_1,
 			.Start = [=] {
+				Sound.Play("RQ_", 22);
 				EffectSystem->PlayFX("RQ_Calibur_1.effect");
 				RedQueenOn();
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Caliber_1");
@@ -799,9 +826,12 @@ void PlayerActor_Nero::NetLoad()
 		// RedQueen Caliber_2
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Caliber_2,
 			.Start = [=] {
+				Sound.Play("RQ_", 8);
+				Sound.PlayVoiceRandom(19, 20, DTValue);
 				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(180, true));
 				if (0 < ExceedLevel)
 				{
+					Sound.Play("RQ_", 12);
 					EffectSystem->PlayFX("RQ_Calibur_2_EX.effect");
 				}
 				else
