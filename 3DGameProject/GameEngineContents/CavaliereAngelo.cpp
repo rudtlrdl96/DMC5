@@ -153,8 +153,8 @@ void CavaliereAngelo::Start()
 
 	ParryCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Null);
 	ParryCollision->SetColType(ColType::OBBBOX3D);
-	ParryCollision->GetTransform()->SetLocalScale({ 220, 220, 280 });
-	ParryCollision->GetTransform()->SetLocalPosition({ 0, 150, 100 });
+	ParryCollision->GetTransform()->SetLocalScale({ 220, 220, 400 });
+	ParryCollision->GetTransform()->SetLocalPosition({ 0, 150, 220 });
 	//ParryCollision->GetTransform()->SetLocalScale({ 220, 220, 220 });
 	//ParryCollision->GetTransform()->SetLocalPosition({ 0, 150, 240 });
 
