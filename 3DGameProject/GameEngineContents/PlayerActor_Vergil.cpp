@@ -269,7 +269,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Walk,
 			.Start = [=] {
 				PhysXCapsule->SetLinearVelocityZero();
-				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->TurnOnGravity();
 			},
 			.Update = [=](float _DeltaTime) {
 				if (false == FloorCheck())
@@ -325,7 +325,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Run Start
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_RunStart,
 			.Start = [=] {
-				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->TurnOnGravity();
 				Renderer->ChangeAnimation("pl0300_Run_Start");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -392,12 +392,12 @@ void PlayerActor_Vergil::PlayerLoad()
 				PhysXCapsule->SetMove(MoveDir);
 			},
 			.End = [=] {
-				PhysXCapsule->SetLinearVelocityZero();
 			}
 			});
 		// RunStop
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_RunStop,
 			.Start = [=] {
+				PhysXCapsule->SetLinearVelocityZero();
 				MoveCheck = false;
 				Renderer->ChangeAnimation("pl0300_Run_Stop");
 			},
@@ -424,6 +424,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Jump Vertical
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Jump_Vertical,
 		.Start = [=] {
+			RotationToMoveVector();
 			PhysXCapsule->TurnOnGravity();
 			PhysXCapsule->SetLinearVelocityZero();
 			PhysXCapsule->SetMove(Controller->GetMoveVector() * 500);
@@ -483,13 +484,14 @@ void PlayerActor_Vergil::PlayerLoad()
 
 			},
 			.End = [=] {
-
+				PhysXCapsule->TurnOffGravity();
 			}
 			});
 		// Landing
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Landing,
 			.Start = [=] {
 				PhysXCapsule->TurnOnGravity();
+				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_Jump_Vertical_Landing");
 				MoveCheck = false;
 			},

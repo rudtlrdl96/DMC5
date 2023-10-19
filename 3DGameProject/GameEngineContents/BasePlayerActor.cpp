@@ -404,4 +404,5 @@ void BasePlayerActor::SetMove(float4 _Value)
 void BasePlayerActor::SetWorldPosition(float4 _Value)
 {
 	PhysXCapsule->SetWorldPosition(_Value);
+	GetTransform()->SetWorldPosition(_Value);
 }
