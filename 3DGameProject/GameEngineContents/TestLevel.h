@@ -30,9 +30,7 @@ private:
 	std::shared_ptr<class ObjectWindow> ObjWindow = nullptr;
 	std::shared_ptr<class Enemy_HellCaina> HellCaina = nullptr;
 	std::shared_ptr<class Enemy_Empusa> Empusa = nullptr;
-	std::shared_ptr<class Enemy_RedEmpusa> RedEmpusa = nullptr;
 	std::shared_ptr<class Enemy_HellAntenora> HellAntenora = nullptr;
-	std::shared_ptr<class Enemy_GreenEmpusa> GreenEmpusa = nullptr;
 	std::shared_ptr<class BasePlayerActor> Player = nullptr;
 	std::shared_ptr<class CavaliereAngelo> Cavaliere = nullptr;
 	std::shared_ptr<class TestObject> TestObj = nullptr;

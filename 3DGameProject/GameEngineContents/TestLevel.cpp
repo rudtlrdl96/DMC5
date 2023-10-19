@@ -21,9 +21,7 @@
 #include "FXAA_Effect.h"
 #include "DistortionEffect.h"
 #include "ZoomEffect.h"
-#include "Enemy_RedEmpusa.h"
 #include "Enemy_HellAntenora.h"
-#include "Enemy_GreenEmpusa.h"
 
 TestLevel::TestLevel()
 {
@@ -166,25 +164,11 @@ void TestLevel::LevelChangeStart()
 		Flat->GetPhysXComponent()->SetWorldPosition({ 0, -50, 0 });
 	}
 
-	//if (nullptr == RedEmpusa)
-	//{
-	//	RedEmpusa = CreateActor<Enemy_RedEmpusa>();
-	//	RedEmpusa->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	//	RedEmpusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	//}
-
 	//if (nullptr == HellAntenora)
 	//{
 	//	HellAntenora = CreateActor<Enemy_HellAntenora>();
 	//	HellAntenora->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
 	//	HellAntenora->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	//}
-
-	//if (nullptr == GreenEmpusa)
-	//{
-	//	GreenEmpusa = CreateActor<Enemy_GreenEmpusa>();
-	//	GreenEmpusa->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	//	GreenEmpusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
 
 	//GameEngineCoreWindow::Clear();
