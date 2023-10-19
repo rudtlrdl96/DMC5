@@ -116,7 +116,7 @@ float CalShadow(float4 _WorldPos, int _LightType)
             
             if (0.001f < ShadowUV.x && 0.999f > ShadowUV.x &&
             0.001f < ShadowUV.y && 0.999f > ShadowUV.y &&
-            ShadowWorldProjection.z >= (ShadowDepthValue + 0.001f))
+            ShadowWorldProjection.z >= (ShadowDepthValue + 0.005f))
             {
                 ShadowValue += INV_SAMPLES_COUNT;
             }

@@ -34,7 +34,7 @@ void FXAA_Effect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 	ResultTarget->Setting();
 	TAAUnit->Render(_DeltaTime);
 	TAAUnit->ShaderResHelper.AllResourcesReset();
-
+	
 	_Target->Clear();
 	_Target->Merge(ResultTarget);
 }

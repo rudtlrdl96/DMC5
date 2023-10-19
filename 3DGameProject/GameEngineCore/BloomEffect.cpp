@@ -23,12 +23,12 @@ void BloomEffect::Start(GameEngineRenderTarget* _Target)
 
 	Data.ScreenSize = GameEngineWindow::GetScreenSize();
 
-	Data.ScreenRatio.x = 4.0f / Data.ScreenSize.x;
-	Data.ScreenRatio.y = 4.0f / Data.ScreenSize.y;
+	Data.ScreenRatio.x = 2.0f / Data.ScreenSize.x;
+	Data.ScreenRatio.y = 2.0f / Data.ScreenSize.y;
 
 	ResultTarget = GameEngineRenderTarget::Create();
-	DebugTargetA = GameEngineRenderTarget::Create();
-	DebugTargetB = GameEngineRenderTarget::Create();
+	//DebugTargetA = GameEngineRenderTarget::Create();
+	//DebugTargetB = GameEngineRenderTarget::Create();
 }
 
 void BloomEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
@@ -41,8 +41,8 @@ void BloomEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 	BlurUnit->Render(_DeltaTime);
 	BlurUnit->ShaderResHelper.AllResourcesReset();
 
-	DebugTargetA->Clear();
-	DebugTargetA->Merge(ResultTarget);
+	//DebugTargetA->Clear();
+	//DebugTargetA->Merge(ResultTarget);
 
 	_Target->Setting(1);
 	
@@ -50,6 +50,6 @@ void BloomEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 	BloomBlurUnit->Render(_DeltaTime);
 	BloomBlurUnit->ShaderResHelper.AllResourcesReset();
 
-	DebugTargetB->Clear();
-	DebugTargetB->Merge(_Target, 1);
+	//DebugTargetB->Clear();
+	//DebugTargetB->Merge(_Target, 1);
 }

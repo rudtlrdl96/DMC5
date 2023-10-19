@@ -167,7 +167,8 @@ void TestStageLevel::LevelChangeStart()
 
 	// 테스트용 코드
 	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 4000, 0));
-	GetDirectionalLight()->GetTransform()->SetWorldRotation(float4(45, 0, 0));
+	GetDirectionalLight()->GetTransform()->SetWorldRotation(float4(90, 0, 0));
+	GetDirectionalLight()->SetLightPower(0.2f);
 	//GetDirectionalLight()->SetLightColor(float4(0.4f, 0.4f, 0.4f));
 
 	//std::shared_ptr<GameEngineLight> SpotLight = CreateSpotLight(float4(0, 400, 0), ShadowTextureScale::S_512, 2000, 90);
@@ -232,6 +233,6 @@ void TestStageLevel::LevelChangeStart()
 	GameEngineCoreWindow::AddDebugRenderTarget(4, "Last Target", GetMainCamera()->GetCamTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(5, "Bake Shadow", GetDirectionalLight()->GetBakeTarget(0));
 	GameEngineCoreWindow::AddDebugRenderTarget(6, "Last Shadow", GetDirectionalLight()->GetShadowTarget());
-	GameEngineCoreWindow::AddDebugRenderTarget(7, "Bloom Debug A", Bloom->DebugTargetA);
-	GameEngineCoreWindow::AddDebugRenderTarget(8, "Bloom Debug B", Bloom->DebugTargetB);
+	//GameEngineCoreWindow::AddDebugRenderTarget(7, "Bloom Debug A", Bloom->DebugTargetA);
+	//GameEngineCoreWindow::AddDebugRenderTarget(8, "Bloom Debug B", Bloom->DebugTargetB);
 }

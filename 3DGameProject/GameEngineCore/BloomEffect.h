@@ -15,8 +15,8 @@ public:
 	BloomEffect();
 	~BloomEffect();
 
-	std::shared_ptr<GameEngineRenderTarget> DebugTargetA = nullptr;
-	std::shared_ptr<GameEngineRenderTarget> DebugTargetB = nullptr;
+	//std::shared_ptr<GameEngineRenderTarget> DebugTargetA = nullptr;
+	//std::shared_ptr<GameEngineRenderTarget> DebugTargetB = nullptr;
 
 protected:
 	void Start(GameEngineRenderTarget* _Target) override;
@@ -31,8 +31,8 @@ private:
 	void LevelChangeStart() override
 	{
 		ResultTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-		DebugTargetA->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-		DebugTargetB->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+		//DebugTargetA->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+		//DebugTargetB->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 	}
 
 	void LevelChangeEnd() override
