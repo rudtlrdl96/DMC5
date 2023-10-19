@@ -1,5 +1,6 @@
 #pragma once
 #include "EventZone.h"
+#include "BGMPlayer.h"
 
 class EnemySpawner : public EventZone
 {

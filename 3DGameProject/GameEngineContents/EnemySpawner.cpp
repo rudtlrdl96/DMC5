@@ -2,7 +2,6 @@
 #include "EnemySpawner.h"
 #include "Enemy_Empusa.h"
 #include "TestStageLevel.h"
-
 EnemySpawner::EnemySpawner()
 {
 
@@ -55,6 +54,7 @@ void EnemySpawner::Update(float _DeltaTime)
 
 	if (IsAllDeath)
 	{
+		BGMPlayer::SetBattleEnd();
 		GetLevel()->DynamicThis<StageBaseLevel>()->RedSealWallOff();
 		Death();
 	}

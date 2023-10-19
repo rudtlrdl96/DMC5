@@ -2,7 +2,7 @@
 #include "Location2_EnemySpawner0.h"
 #include "Enemy_Empusa.h"
 #include "StageBaseLevel.h"
-
+#include "BGMPlayer.h"
 Location2_EnemySpawner0::Location2_EnemySpawner0()
 {
 
@@ -29,5 +29,6 @@ void Location2_EnemySpawner0::Start()
 			{
 				Monsters[i].lock()->GetPhysXComponent()->SetWorldPosition({ 0, 150.f * i, 0 });
 			}
+			BGMPlayer::SetBattleBGM();
 		};
 }

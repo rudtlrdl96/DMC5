@@ -29,5 +29,6 @@ void Location2_EnemySpawner1::Start()
 			{
 				Monsters[i].lock()->GetPhysXComponent()->SetWorldPosition({ 3725.f, 150.f * i, -8527.f });
 			}
+			BGMPlayer::SetBattleBGM();
 		};
 }

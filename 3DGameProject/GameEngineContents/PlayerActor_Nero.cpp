@@ -107,7 +107,6 @@ void PlayerActor_Nero::PlayerLoad()
 {
 	BGMPlayer::BGMLoad();
 	BGMPlayer::SetCharater(PlayerType::Nero);
-	BGMPlayer::SetBattleBGM();
 
 	GetLevel()->CreateActor<NeroItemGlass>();
 	HUD = GetLevel()->CreateActor<NeroHPUI>();
