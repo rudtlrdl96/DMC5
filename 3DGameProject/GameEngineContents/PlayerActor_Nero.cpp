@@ -41,6 +41,28 @@ void PlayerActor_Nero::SetDT(unsigned int _DTValue)
 void PlayerActor_Nero::Start()
 {
 	BasePlayerActor::Start();
+	Col_Attack->SetParryCallBack([=]
+		{
+			Sound.Play("Nero_Parry");
+			SetTimeScale(0.2f);
+			GetLevel()->TimeEvent.AddEvent(0.4f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					SetTimeScale(0.4f);
+				});
+			GetLevel()->TimeEvent.AddEvent(0.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					SetTimeScale(0.6f);
+				});
+			GetLevel()->TimeEvent.AddEvent(0.8f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					SetTimeScale(0.8f);
+				});
+			GetLevel()->TimeEvent.AddEvent(1.f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					SetTimeScale(1.f);
+				});
+		});
+
 	BreakerList.push_back(DevilBreaker::None);
 
 	SetNetObjectType(Net_ActorType::Nero);

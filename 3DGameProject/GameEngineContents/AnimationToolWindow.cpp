@@ -564,14 +564,14 @@ void AnimationToolWindow::AnimationFrameUpdate()
 		}
 		else if (CurData.Type == EventType::CallBackInt)
 		{
-			if (nullptr == GameEngineSound::Find("RQ_" + std::to_string(CurData.IntValue) + ".wav"))
+			if (nullptr == GameEngineSound::Find("Yamato_" + std::to_string(CurData.IntValue) + ".wav"))
 			{
 				GameEngineDirectory NewDir;
 				NewDir.MoveParentToDirectory("ContentResources");
 				NewDir.Move("ContentResources");
 				NewDir.Move("Sound");
 				NewDir.Move("Voice");
-				NewDir.Move("Nero");
+				NewDir.Move("Vergil");
 				std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".wav" });
 				for (GameEngineFile File : Files)
 				{
@@ -580,27 +580,66 @@ void AnimationToolWindow::AnimationFrameUpdate()
 				NewDir.MoveParent();
 				NewDir.MoveParent();
 				NewDir.Move("SFX");
-				NewDir.Move("Nero");
+				NewDir.Move("Vergil");
 				Files = NewDir.GetAllFile({ ".wav" });
 				for (GameEngineFile File : Files)
 				{
 					GameEngineSound::Load(File.GetFullPath());
 				}
 			}
-			// 네로 테스트용
+			// 버질 테스트용
 			if (CurData.Index == 1)
 			{
-				GameEngineSound::Play("RQ_" + std::to_string(CurData.IntValue) + ".wav");
+				GameEngineSound::Play("Yamato_" + std::to_string(CurData.IntValue) + ".wav");
 			}
 			else if (CurData.Index == 2)
 			{
-				GameEngineSound::Play("BR_" + std::to_string(CurData.IntValue) + ".wav");
+				//GameEngineSound::Play("BR_" + std::to_string(CurData.IntValue) + ".wav");
 			}
 			else if (CurData.Index == 3)
 			{
-				GameEngineSound::Play("FootStep_" + std::to_string(CurData.IntValue) + ".wav");
+				//GameEngineSound::Play("FootStep_" + std::to_string(CurData.IntValue) + ".wav");
 			}
 		}
+		//else if (CurData.Type == EventType::CallBackInt)
+		//{
+		//	if (nullptr == GameEngineSound::Find("RQ_" + std::to_string(CurData.IntValue) + ".wav"))
+		//	{
+		//		GameEngineDirectory NewDir;
+		//		NewDir.MoveParentToDirectory("ContentResources");
+		//		NewDir.Move("ContentResources");
+		//		NewDir.Move("Sound");
+		//		NewDir.Move("Voice");
+		//		NewDir.Move("Nero");
+		//		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".wav" });
+		//		for (GameEngineFile File : Files)
+		//		{
+		//			GameEngineSound::Load(File.GetFullPath());
+		//		}
+		//		NewDir.MoveParent();
+		//		NewDir.MoveParent();
+		//		NewDir.Move("SFX");
+		//		NewDir.Move("Nero");
+		//		Files = NewDir.GetAllFile({ ".wav" });
+		//		for (GameEngineFile File : Files)
+		//		{
+		//			GameEngineSound::Load(File.GetFullPath());
+		//		}
+		//	}
+		//	// 네로 테스트용
+		//	if (CurData.Index == 1)
+		//	{
+		//		GameEngineSound::Play("RQ_" + std::to_string(CurData.IntValue) + ".wav");
+		//	}
+		//	else if (CurData.Index == 2)
+		//	{
+		//		GameEngineSound::Play("BR_" + std::to_string(CurData.IntValue) + ".wav");
+		//	}
+		//	else if (CurData.Index == 3)
+		//	{
+		//		GameEngineSound::Play("FootStep_" + std::to_string(CurData.IntValue) + ".wav");
+		//	}
+		//}
 	}
 }
 

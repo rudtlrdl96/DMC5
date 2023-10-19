@@ -32,6 +32,28 @@ void PlayerActor_Vergil::SetDT(unsigned int _DTValue)
 void PlayerActor_Vergil::Start()
 {
 	BasePlayerActor::Start();
+	Col_Attack->SetParryCallBack([=]
+		{
+			Sound.Play("Vergil_Parry");
+			SetTimeScale(0.2f);
+			GetLevel()->TimeEvent.AddEvent(0.4f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					SetTimeScale(0.4f);
+				});
+			GetLevel()->TimeEvent.AddEvent(0.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					SetTimeScale(0.6f);
+				});
+			GetLevel()->TimeEvent.AddEvent(0.8f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					SetTimeScale(0.8f);
+				});
+			GetLevel()->TimeEvent.AddEvent(1.f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					SetTimeScale(1.f);
+				});
+		});
+
 	SetNetObjectType(Net_ActorType::Vergil);
 	GetLevel()->CreateActor<RankUI>();
 	Effect_JC = JudgementCut::GetJudgementCutEffect();
@@ -58,7 +80,7 @@ void PlayerActor_Vergil::Start()
 	LinkData_UpdatePacket<float>(LockOnPosition.z);
 
 	Sound.SetVoiceName("Vergil_V_");
-	Sound.VFXVolume = 0.5f;
+	Sound.VFXVolume = 0.3f;
 }
 
 void PlayerActor_Vergil::PlayerLoad()
@@ -160,6 +182,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			},
 			.CallBacks_int = {
 				std::bind(&PlayerActor_Vergil::ChangeState, this, std::placeholders::_1),
+				std::bind(&SoundController::Play, &Sound, "Yamato_", std::placeholders::_1),
 			},
 			.CallBacks_float = {
 				std::bind(&BasePlayerActor::RotationToTarget, this, std::placeholders::_1),
@@ -501,6 +524,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Combo_1,
 			.Start = [=] {
 				Sound.PlayVoiceRandom(0, 2, DTValue);
+				Sound.Play("Yamato_", 0);
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(75));
 				PhysXCapsule->SetLinearVelocityZero();
 				RotationToTarget();
@@ -539,6 +563,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Combo2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Combo_2,
 			.Start = [=] {
+				Sound.Play("Yamato_", 1);
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(93));
 				PhysXCapsule->SetLinearVelocityZero();
 				EffectSystem->PlayFX("Yamato_Combo_2.effect");
