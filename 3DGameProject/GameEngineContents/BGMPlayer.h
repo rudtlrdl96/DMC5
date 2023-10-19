@@ -17,6 +17,8 @@ public:
 
 	static void SetBattleBGM();
 
+	static void SetBattleEnd();
+
 	static void SetBossBGM();
 
 	static void SetCharater(PlayerType _Type);
@@ -29,5 +31,6 @@ protected:
 
 private:
 	static PlayerType Type;
+	static bool BossBGM;
 };
 

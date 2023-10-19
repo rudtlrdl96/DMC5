@@ -23,6 +23,8 @@
 #include "ZoomEffect.h"
 #include "Enemy_HellAntenora.h"
 
+#include "BGMPlayer.h"
+
 TestLevel::TestLevel()
 {
 }
@@ -88,7 +90,22 @@ void TestLevel::Update(float _DeltaTime)
 			}
 		}
 	}
-
+	if (true == GameEngineInput::IsDown("SelectLevel_01"))
+	{
+		BGMPlayer::SetBattleBGM();
+	}
+	if (true == GameEngineInput::IsDown("SelectLevel_02"))
+	{
+		BGMPlayer::SetBattleEnd();
+	}
+	if (true == GameEngineInput::IsDown("SelectLevel_03"))
+	{
+		BGMPlayer::SetBossBGM();
+	}
+	if (true == GameEngineInput::IsDown("SelectLevel_04"))
+	{
+		BGMPlayer::SetCharater(PlayerType::Vergil);
+	}
 	if (true == GameEngineInput::IsDown("ReturnToMainLevel"))
 	{
 		GameEngineCore::ChangeLevel("MainLevel");

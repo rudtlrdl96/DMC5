@@ -43,7 +43,11 @@ void PlayerCamera::Start()
 
 void PlayerCamera::Update(float _DeltaTime)
 {
-
+	if (true == FirstFrame)
+	{
+		GetTransform()->SetWorldPosition(PlayerTransform->GetWorldPosition());
+		FirstFrame = false;
+	}
 
 	// 락온한 적 여부에 따라 계산
 	TargetCheck(_DeltaTime);

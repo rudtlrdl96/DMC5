@@ -88,7 +88,7 @@ void PlayerActor_Vergil::PlayerLoad()
 {
 	BGMPlayer::BGMLoad();
 	BGMPlayer::SetCharater(PlayerType::Vergil);
-	BGMPlayer::SetBattleBGM();
+
 	// Effect »ý¼º
 	{
 		EffectSystem = CreateComponent<FXSystem>();

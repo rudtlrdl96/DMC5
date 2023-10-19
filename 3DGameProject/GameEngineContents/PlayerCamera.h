@@ -86,7 +86,7 @@ private:
 	float FastTrackingSpeed = 0.02f;
 
 	bool IsMouseControll = false;
-
+	bool FirstFrame = true;
 
 	void DrawEditor() override;
 

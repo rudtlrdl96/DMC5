@@ -2,8 +2,9 @@
 #include "BGMPlayer.h"
 
 GameEngineSoundPlayer BGMPlayer::SoundPlayer;
-PlayerType BGMPlayer::Type = PlayerType::None;
-float BGMPlayer::Volume = 0.3f;
+PlayerType BGMPlayer::Type = PlayerType::Nero;
+float BGMPlayer::Volume = 0.2f;
+bool BGMPlayer::BossBGM = false;
 
 BGMPlayer::BGMPlayer()
 {
@@ -27,9 +28,15 @@ void BGMPlayer::SetBattleBGM()
 		break;
 	case PlayerType::Nero:
 		SoundPlayer = GameEngineSound::Play("Devil Trigger.ogg");
+		SoundPlayer.SetPosition(358.0f);
+		SoundPlayer.SoundFadeIn(1.0f);
+		SoundPlayer.SetLoop();
+		SoundPlayer.SetLoopPoint(198.3f, 360.5f);
 		break;
 	case PlayerType::Vergil:
 		SoundPlayer = GameEngineSound::Play("Bury the Light.ogg");
+		SoundPlayer.SetPosition(20.0f);
+		SoundPlayer.SoundFadeIn(2.0f);
 		break;
 	default:
 		break;
@@ -37,8 +44,42 @@ void BGMPlayer::SetBattleBGM()
 	SoundPlayer.SetVolume(Volume);
 }
 
+void BGMPlayer::SetBattleEnd()
+{
+	if (SoundPlayer.IsValid())
+	{
+		if (true == BossBGM)
+		{
+			return;
+		}
+
+		switch (Type)
+		{
+		case PlayerType::None:
+			break;
+		case PlayerType::Nero:
+			SoundPlayer.SoundFadeOut(5.0f);
+			SoundPlayer = GameEngineSound::Play("Devil Trigger.ogg");
+			SoundPlayer.SetVolume(Volume);
+			SoundPlayer.SetPosition(361.0f);
+			SoundPlayer.SoundFadeIn(0.2f);
+			break;
+		case PlayerType::Vergil:
+			SoundPlayer.SoundFadeOut(5.0f);
+			SoundPlayer = GameEngineSound::Play("Bury the Light.ogg");
+			SoundPlayer.SetVolume(Volume);
+			SoundPlayer.SetPosition(364.0f);
+			SoundPlayer.SoundFadeIn(0.2f);
+			break;
+		default:
+			break;
+		}
+	}
+}
+
 void BGMPlayer::SetBossBGM()
 {
+	BossBGM = true;
 	if (SoundPlayer.IsValid())
 	{
 		SoundPlayer.Stop();
