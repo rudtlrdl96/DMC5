@@ -4,6 +4,8 @@
 class Location2_Level : public StageBaseLevel
 {
 public:
+	static Location2_Level* Inst;
+
 	// construtor destructor
 	Location2_Level();
 	~Location2_Level();
@@ -21,6 +23,6 @@ protected:
 	void LevelChangeStart() override;
 
 private:
-
+	std::list<std::function<void()>> FightEvents = std::list<std::function<void()>>();
 };
 

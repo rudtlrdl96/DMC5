@@ -151,13 +151,14 @@ void TestStageLevel::LevelChangeStart()
 	{
 		std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
 		Nero->SetUserControllType();
-		Nero->SetWorldPosition({ 0, 100, 0 });
+		Nero->SetWorldPosition({ 8615.f, 0, 5060.f });
+		Nero->GetTransform()->SetWorldPosition({ 8615.f, 0, 5060.f });
 	}
 	else
 	{
 		std::shared_ptr<PlayerActor_Vergil> Vergil = CreateActor<PlayerActor_Vergil>();
 		Vergil->SetUserControllType();
-		Vergil->SetWorldPosition({ 0, 100, 0 }); 
+		Vergil->SetWorldPosition({ 8615.f, 0, 5060.f });
 	}
 	for (int i = 0; i < 20; i++)
 	{

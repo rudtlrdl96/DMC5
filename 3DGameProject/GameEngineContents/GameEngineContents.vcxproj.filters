@@ -384,9 +384,6 @@
     <ClInclude Include="Player_MirageBlade.h">
       <Filter>Actor\Player\Weapon</Filter>
     </ClInclude>
-    <ClInclude Include="TestEventZone.h">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
-    </ClInclude>
     <ClInclude Include="EventZone.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
     </ClInclude>
@@ -483,14 +480,17 @@
     <ClInclude Include="SoundController.h">
       <Filter>Component\Sound</Filter>
     </ClInclude>
+    <ClInclude Include="Location2_EnemySpawner1.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\EnemySpawner</Filter>
+    </ClInclude>
     <ClInclude Include="EnemySpawner.h">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\FunctionObj</Filter>
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\EnemySpawner</Filter>
     </ClInclude>
-    <ClInclude Include="TestEventZone0.h">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
+    <ClInclude Include="Location2_EnemySpawner0.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\EnemySpawner</Filter>
     </ClInclude>
-    <ClInclude Include="TestEventZone1.h">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
+    <ClInclude Include="StatueB.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -865,9 +865,6 @@
     <ClCompile Include="EventZone.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
     </ClCompile>
-    <ClCompile Include="TestEventZone.cpp">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
-    </ClCompile>
     <ClCompile Include="FXData.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
@@ -968,13 +965,16 @@
       <Filter>Component\Sound</Filter>
     </ClCompile>
     <ClCompile Include="EnemySpawner.cpp">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\FunctionObj</Filter>
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\EnemySpawner</Filter>
     </ClCompile>
-    <ClCompile Include="TestEventZone0.cpp">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
+    <ClCompile Include="Location2_EnemySpawner1.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\EnemySpawner</Filter>
     </ClCompile>
-    <ClCompile Include="TestEventZone1.cpp">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone</Filter>
+    <ClCompile Include="StatueB.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClCompile>
+    <ClCompile Include="Location2_EnemySpawner0.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\EnemySpawner</Filter>
     </ClCompile>
     <ClCompile Include="PlayerActor_Nero_Net.cpp">
       <Filter>Actor\Player\Character</Filter>
@@ -1271,6 +1271,9 @@
     </Filter>
     <Filter Include="Component\Sound">
       <UniqueIdentifier>{198ea466-eb78-4293-aa81-d5a9edd43e9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Stage\FieldMap\FieldMapObj\EventZone\EnemySpawner">
+      <UniqueIdentifier>{b1027b39-a211-4c88-bdff-2c3d3d91d764}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

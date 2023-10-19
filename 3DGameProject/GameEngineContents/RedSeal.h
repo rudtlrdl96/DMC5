@@ -36,7 +36,7 @@ private:
 	std::shared_ptr<class FXSystem> EffectSystem = nullptr;
 	RedSealState State = RedSealState::Off;
 	GameEngineFSM RedSealFSM = GameEngineFSM();
-
+	
 	void OffStateInit();
 	void OnStateInit();
 };

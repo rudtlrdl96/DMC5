@@ -5,6 +5,7 @@
 #include "FXSystem.h"
 #include <GameEngineCore/PhysXBoxComponent.h>
 
+bool IsEditLevel = false;
 
 RedSeal::RedSeal()
 {
@@ -28,46 +29,60 @@ void RedSeal::WallOff()
 
 void RedSeal::Start()
 {
-	PhysXBox = CreateComponent<PhysXBoxComponent>();
-	physx::PxVec3 PxScale = { 3000.f, 3000.f, 100.f };
-	PhysXBox->SetObstacleObject();
-	PhysXBox->SetPositionSetFromParentFlag(true);
-	PhysXBox->CreatePhysXActors(PxScale);
-
-	GetLevel()->DynamicThis<StageBaseLevel>()->PushBackRedSealWall(DynamicThis<RedSeal>());
-
-	EffectSystem = CreateComponent<FXSystem>();
-
-	if (FXData::Find("RedSealEffect_Start.effect") == nullptr)
+	IsEditLevel = GetLevel()->DynamicThis<StageBaseLevel>()->IsEditLevel;
+	if (!IsEditLevel)
 	{
-		GameEngineDirectory NewDir = GameEngineDirectory();
-		NewDir.MoveParentToDirectory("ContentResources");
-		NewDir.Move("ContentResources");
-		NewDir.Move("Effect");
-		NewDir.Move("Map");
+		PhysXBox = CreateComponent<PhysXBoxComponent>();
+		physx::PxVec3 PxScale = { 3000.f, 3000.f, 100.f };
+		PhysXBox->SetObstacleObject();
+		PhysXBox->SetPositionSetFromParentFlag(true);
+		PhysXBox->CreatePhysXActors(PxScale);
 
-		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".effect" });
-		for (GameEngineFile File : Files)
+		GetLevel()->DynamicThis<StageBaseLevel>()->PushBackRedSealWall(DynamicThis<RedSeal>());
+
+		EffectSystem = CreateComponent<FXSystem>();
+
+		if (FXData::Find("RedSealEffect_Start.effect") == nullptr)
 		{
-			if (nullptr == FXData::Find(File.GetFileName()))
+			GameEngineDirectory NewDir = GameEngineDirectory();
+			NewDir.MoveParentToDirectory("ContentResources");
+			NewDir.Move("ContentResources");
+			NewDir.Move("Effect");
+			NewDir.Move("Map");
+
+			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".effect" });
+			for (GameEngineFile File : Files)
 			{
-				FXData::Load(File.GetFullPath());
+				if (nullptr == FXData::Find(File.GetFileName()))
+				{
+					FXData::Load(File.GetFullPath());
+				}
 			}
 		}
+
+		EffectSystem->CreateFX(FXData::Find("RedSealEffect_Start.effect"));
+		EffectSystem->CreateFX(FXData::Find("RedSealEffect_End.effect"));
+		EffectSystem->SetDistortionTextureName("");
+
+		OffStateInit();
+		OnStateInit();
+
+		RedSealFSM.ChangeState(static_cast<int>(State));
 	}
-
-	EffectSystem->CreateFX(FXData::Find("RedSealEffect_Start.effect"));
-	EffectSystem->CreateFX(FXData::Find("RedSealEffect_End.effect"));
-	EffectSystem->SetDistortionTextureName("");
-
-	OffStateInit();
-	OnStateInit();
-
-	RedSealFSM.ChangeState(static_cast<int>(State));
+	else
+	{
+		FBXMesh = CreateComponent<GameEngineFBXRenderer>();
+		FBXMesh->SetFBXMesh("sm7001_seal_02.fbx", "FBX");
+	}
+	
 }
 
 void RedSeal::Update(float _DeltaTime)
 {
+	if (IsEditLevel)
+	{
+		return;
+	}
 	RedSealFSM.Update(_DeltaTime);
 }
 

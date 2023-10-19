@@ -1,7 +1,7 @@
 #pragma once
-#include "FieldMapObject.h"
+#include "EventZone.h"
 
-class EnemySpawner : public FieldMapObject
+class EnemySpawner : public EventZone
 {
 public:
 	// construtor destructor
@@ -14,15 +14,14 @@ public:
 	EnemySpawner& operator=(const EnemySpawner& _Other) = delete;
 	EnemySpawner& operator=(EnemySpawner&& _Other) noexcept = delete;
 
-	void SpawnEnemys();
-
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
+	std::vector<std::weak_ptr<class BaseEnemyActor>> Monsters;
+
 private:
 	std::vector<float4> EnemyPositions = std::vector<float4>();
-	std::vector<std::weak_ptr<class Enemy_Empusa>> Monsters;
 	size_t AliveCount = 0;
 };
 

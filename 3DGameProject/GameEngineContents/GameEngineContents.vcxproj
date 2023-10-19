@@ -267,6 +267,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Location2_EnemySpawner0.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Location2_EnemySpawner1.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Location2_Level.h">
       <SubType>
       </SubType>
@@ -312,6 +320,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="StatueB.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="StreetLight_Off.h">
       <SubType>
       </SubType>
@@ -321,10 +333,6 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="StreetStall.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="TestEventZone.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -348,14 +356,6 @@
     <ClInclude Include="C_ChoiceBG.h" />
     <ClInclude Include="FieldMap.h" />
     <ClInclude Include="FreeCameraActor.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="TestEventZone0.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="TestEventZone1.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -845,6 +845,14 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Location2_EnemySpawner0.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Location2_EnemySpawner1.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Location2_Level.cpp">
       <SubType>
       </SubType>
@@ -897,6 +905,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="StatueB.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="StreetLight_Off.cpp">
       <SubType>
       </SubType>
@@ -909,19 +921,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="TestEventZone.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="FreeCameraActor.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="TestEventZone0.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="TestEventZone1.cpp">
       <SubType>
       </SubType>
     </ClCompile>

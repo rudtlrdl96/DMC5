@@ -1,5 +1,6 @@
 #pragma once
 #include "Poolable.h"
+#include "BaseEnemyActor.h"
 
 enum FSM_State_Empusa
 {

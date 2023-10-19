@@ -13,13 +13,9 @@ EnemySpawner::~EnemySpawner()
 
 }
 
-void EnemySpawner::SpawnEnemys()
-{
-
-}
-
 void EnemySpawner::Start()
 {
+	EventZone::Start();
 	//Monsters.push_back(GetLevel()->CreateActor<Enemy_Empusa>());
 
 	//for (size_t i = 0; i < 3; i++)
@@ -40,19 +36,17 @@ void EnemySpawner::Start()
 	//			Death();
 	//		});
 	//}
-
-	Monsters.push_back(Poolable<Enemy_Empusa>::PopFromPool(GetLevel()));
-	Monsters.push_back(Poolable<Enemy_Empusa>::PopFromPool(GetLevel()));
-	Monsters.push_back(Poolable<Enemy_Empusa>::PopFromPool(GetLevel()));
-
-	for (size_t i = 0; i < Monsters.size(); i++)
-	{
-		Monsters[i].lock()->GetPhysXComponent()->SetWorldPosition({0, 100.f * i, 0});
-	}
 }
 
 void EnemySpawner::Update(float _DeltaTime)
 {
+	EventZone::Update(_DeltaTime);
+
+	if (!IsEventStart)
+	{
+		return;
+	}
+
 	bool IsAllDeath = true;
 	for (size_t i = 0; i < Monsters.size(); i++)
 	{
@@ -64,4 +58,5 @@ void EnemySpawner::Update(float _DeltaTime)
 		GetLevel()->DynamicThis<StageBaseLevel>()->RedSealWallOff();
 		Death();
 	}
+
 }

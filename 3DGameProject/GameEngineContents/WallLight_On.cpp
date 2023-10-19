@@ -18,10 +18,10 @@ void WallLight_On::Start()
 	FBXFileName = "sm0003_wall_light.fbx";
 
 	SetDebugRender();
-	DebugRenderPivot->GetTransform()->SetLocalPosition({ 0.f, 40.f, -20.f });
-	PointLight = GetLevel()->CreatePointLight({ 0.f, 40.f, -20.f }, ShadowTextureScale::S_512, 1000.f);
+	DebugRenderPivot->GetTransform()->SetLocalPosition(LightPosition);
+	PointLight = GetLevel()->CreatePointLight(GetTransform()->GetLocalPosition() + LightPosition, ShadowTextureScale::S_512, 1500.f);
 	PointLight->GetTransform()->SetParent(GetTransform());
-	PointLight->SetLightPower(2.f);
+	PointLight->SetLightPower(1.f);
 
 	StaticFieldMapObject::Start();
 }

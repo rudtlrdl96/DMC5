@@ -4,7 +4,6 @@
 #include "StageBaseLevel.h"
 #include <GameEngineCore/PhysXBoxComponent.h>
 
-#include "TestEventZone.h"
 #include "WallLight_On.h"
 #include "WallLight_Off.h"
 #include "ReflectionSetter.h"
@@ -14,8 +13,10 @@
 #include "Fountain.h"
 #include "StreetStall.h"
 #include "RedSeal.h"
-#include "TestEventZone0.h"
-#include "TestEventZone1.h"
+#include "Bench.h"
+#include "StatueB.h"
+#include "Location2_EnemySpawner0.h"
+#include "Location2_EnemySpawner1.h"
 
 FieldMapObject::FieldMapObject()
 {
@@ -65,16 +66,19 @@ std::shared_ptr<FieldMapObject> FieldMapObject::CreateFieldMapObj(GameEngineLeve
 		Result = _Level->CreateActor<StreetStall>();
 		break;
 	case FieldMapObjType::Bench:
-		Result = _Level->CreateActor<StreetStall>();
+		Result = _Level->CreateActor<Bench>();
 		break;
 	case FieldMapObjType::RedSeal:
 		Result = _Level->CreateActor<RedSeal>();
 		break;
-	case FieldMapObjType::TestEventZone0:
-		Result = _Level->CreateActor<TestEventZone0>();
+	case FieldMapObjType::StatueB:
+		Result = _Level->CreateActor<StatueB>();
 		break;
-	case FieldMapObjType::TestEventZone1:
-		Result = _Level->CreateActor<TestEventZone1>();
+	case FieldMapObjType::Location2_EnemySpawner0:
+		Result = _Level->CreateActor<Location2_EnemySpawner0>();
+		break;
+	case FieldMapObjType::Location2_EnemySpawner1:
+		Result = _Level->CreateActor<Location2_EnemySpawner1>();
 		break;
 	default:
 		MsgAssert("¹Ì±¸Çö");

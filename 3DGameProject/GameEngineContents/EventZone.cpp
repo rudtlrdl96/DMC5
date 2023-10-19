@@ -20,6 +20,7 @@ void EventZone::SetEvent(std::function<void()> _Event)
 
 void EventZone::Start()
 {
+	FieldMapObject::Start();
 	TriggerZone = CreateComponent<GameEngineCollision>(CollisionOrder::EventZone);
 	TriggerZone->SetColType(ColType::OBBBOX3D);
 }

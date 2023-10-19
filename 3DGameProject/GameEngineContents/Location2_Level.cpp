@@ -3,6 +3,7 @@
 #include "NetworkManager.h"
 #include <GameEngineCore/GameEngineFBXMesh.h>
 #include "FreeCameraActor.h"
+#include "EnemySpawner.h"
 
 #include "JudgementCut.h"
 #include "ColorEffect.h"
@@ -23,9 +24,13 @@
 #include <GameEngineCore/BloomEffect.h>
 #include <GameEngineCore/GameEngineCoreWindow.h>
 
+#include "Location2_EnemySpawner0.h"
+
+Location2_Level* Location2_Level::Inst = nullptr;
+
 Location2_Level::Location2_Level()
 {
-
+	Inst = this;
 }
 
 Location2_Level::~Location2_Level()
@@ -58,6 +63,19 @@ void Location2_Level::Start()
 	{
 		GameEngineInput::CreateKey("BakeTestKey", VK_SPACE);
 	}
+
+	//FightEvent »ý¼º
+	FightEvents.push_back([this]()
+		{
+			std::shared_ptr<EnemySpawner> Spawner = GetLevel()->CreateActor<Location2_EnemySpawner0>();
+			RedSealWallOn();
+		});
+
+	FightEvents.push_back([this]()
+		{
+			//std::shared_ptr<EnemySpawner> Spawner = GetLevel()->CreateActor<Location2_EnemySpawner1>();
+			RedSealWallOn();
+		});
 }
 
 void Location2_Level::Update(float _DeltaTime)

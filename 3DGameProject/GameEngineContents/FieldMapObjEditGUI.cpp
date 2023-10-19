@@ -125,6 +125,7 @@ void FieldMapObjEditGUI::InputObject(std::vector<StageData>& _AllData, size_t& _
 		FieldMapObjData& tempData = _AllData[_Stage_current].MapDatas[_FieldMap_current].MapObjData.emplace_back();
 		tempData.Type = static_cast<FieldMapObjType>(ObjType_current);
 		CreateStage(_AllData[_Stage_current]);
+		Parent->AcFieldMaps[_FieldMap_current].lock()->FieldMapObj.back().lock()->GetTransform()->SetLocalPosition(Parent->GetMainCamera()->GetTransform()->GetLocalPosition());
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("DelObj"))

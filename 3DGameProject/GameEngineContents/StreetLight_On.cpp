@@ -14,12 +14,12 @@ StreetLight_On::~StreetLight_On()
 void StreetLight_On::Start()
 {
 	FBXFileName = "sm0026_streetlight01.fbx";
-	PointLight = GetLevel()->CreatePointLight({ 0.f, 720.f, 0.f }, ShadowTextureScale::S_512, 1000.f);
-	PointLight->GetTransform()->SetParent(GetTransform());
-	PointLight->SetLightPower(2.f);
 
 	SetDebugRender();
-	DebugRenderPivot->GetTransform()->SetLocalPosition(PointLight->GetTransform()->GetLocalPosition());
+	DebugRenderPivot->GetTransform()->SetLocalPosition(LightPosition);
+	PointLight = GetLevel()->CreatePointLight(GetTransform()->GetLocalPosition() + LightPosition, ShadowTextureScale::S_512, 1500.f);
+	PointLight->GetTransform()->SetParent(GetTransform());
+	PointLight->SetLightPower(1.f);
 
 	StaticFieldMapObject::Start();
 }
