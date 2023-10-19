@@ -11,6 +11,8 @@ UI_BulletGauge::~UI_BulletGauge()
 
 void UI_BulletGauge::Start()
 {
+	float Ratio = GameEngineWindow::GetScreenSize().y / 900;
+	GetTransform()->SetWorldScale(float4::ONE * Ratio);
 
 	BulletGaugeBase = CreateComponent<GameEngineUIRenderer>(5);
 	BulletGaugeBase->SetScaleToTexture("BulletGaugeBase.png");

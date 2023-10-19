@@ -23,7 +23,7 @@ public:
 	}
 
 	// 윈도우를 만들어 주는 기능입니다.
-	static void WindowCreate(HINSTANCE _hInstance, const std::string_view& _TitleName, float4 _Size, float4 _Pos);
+	static void WindowCreate(HINSTANCE _hInstance, const std::string_view& _TitleName, float4 _Size, float4 _Pos, bool _IsFullScreen = false);
 
 	static void SettingWindowSize(float4 _Size);
 	static void SettingWindowPos(float4 _Pos);

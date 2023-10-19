@@ -19,6 +19,9 @@ NeroItemGlass::~NeroItemGlass()
 
 void NeroItemGlass::Start()
 {
+	float Ratio = GameEngineWindow::GetScreenSize().y / 900;
+	GetTransform()->SetLocalScale(float4::ONE * Ratio);
+
 	GameEngineDirectory NewDir;
 	NewDir.MoveParentToDirectory("ContentResources");
 	NewDir.Move("ContentResources");

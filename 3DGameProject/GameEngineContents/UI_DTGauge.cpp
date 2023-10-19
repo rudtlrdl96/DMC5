@@ -13,6 +13,9 @@ UI_DTGauge::~UI_DTGauge()
 
 void UI_DTGauge::Start()
 {
+	float Ratio = GameEngineWindow::GetScreenSize().y / 900;
+	GetTransform()->SetLocalScale(float4::ONE * Ratio);
+
 	DTElectroEffect = CreateComponent<UIEffectRenderer>(3);
 	DTElectroEffect->RectInit("Effect_2D");
 	DTElectroEffect->CreateAnimation({ .AnimationName = "DTELECT", .SpriteName = "Effect_Electric_04.tga", .Start = 0, .End = 3,.FrameInter = 0.036f,.Loop = true });

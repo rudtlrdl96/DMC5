@@ -69,7 +69,7 @@ GameEngineWindow::~GameEngineWindow()
 {
 }
 
-void GameEngineWindow::WindowCreate(HINSTANCE _hInstance, const std::string_view& _TitleName, float4 _Size, float4 _Pos)
+void GameEngineWindow::WindowCreate(HINSTANCE _hInstance, const std::string_view& _TitleName, float4 _Size, float4 _Pos, bool _IsFullScreen /*= false*/)
 {
     // 생성할 윈도우에 대한 설정
     {
@@ -95,7 +95,7 @@ void GameEngineWindow::WindowCreate(HINSTANCE _hInstance, const std::string_view
     }
 
     // 핸들 생성
-    HWnd = CreateWindow("GameEngineWindowDefault", _TitleName.data(), WS_OVERLAPPEDWINDOW,
+    HWnd = CreateWindow("GameEngineWindowDefault", _TitleName.data(), _IsFullScreen ? (WS_VISIBLE | WS_POPUP) : WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, _hInstance, nullptr);
 
     if (nullptr == HWnd)
@@ -111,7 +111,6 @@ void GameEngineWindow::WindowCreate(HINSTANCE _hInstance, const std::string_view
 
     SettingWindowSize(_Size);  // 생성할 윈도우 사이즈 설정
     SettingWindowPos(_Pos);    // 윈도우 생성 포지션 설정
-
     BackBufferImage = new GameEngineImage();
     BackBufferImage->ImageCreate(WindowBackBufferHdc);
 

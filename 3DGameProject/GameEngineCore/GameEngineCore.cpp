@@ -43,12 +43,12 @@ void GameEngineCore::Release()
 	LevelMap.clear();
 }
 
-void GameEngineCore::Start(HINSTANCE _instance, std::function<void()> _Start, std::function<void()> _End, float4 _Pos, float4 _Size)
+void GameEngineCore::Start(HINSTANCE _instance, std::function<void()> _Start, std::function<void()> _End, float4 _Pos, float4 _Size, bool _IsFullScreen /*= false*/)
 {
 	GameEngineDebug::LeakCheck();
 
 	// 윈도우 창 생성 후 루프문 시작
-	GameEngineWindow::WindowCreate(_instance, "DevilMayCry 5", _Size, _Pos);
+	GameEngineWindow::WindowCreate(_instance, "DevilMayCry 5", _Size, _Pos, _IsFullScreen);
 	GameEngineWindow::WindowLoop(std::bind(GameEngineCore::EngineStart, _Start), GameEngineCore::EngineUpdate, std::bind(GameEngineCore::EngineEnd, _End));
 }
 

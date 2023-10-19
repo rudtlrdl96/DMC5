@@ -26,6 +26,8 @@ void UI_HPGaege::Start()
 	//{
 	//	GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("HPGaugeAni.png").GetFullPath(), 4, 4);
 	//}
+	float Ratio = GameEngineWindow::GetScreenSize().y / 900;
+	GetTransform()->SetLocalScale(float4::ONE * Ratio);
 
 	NeroHpAni = CreateComponent<GameEngineUIRenderer>(3);
 	NeroHpAni->SetTexture("HPGaugeAni.png");

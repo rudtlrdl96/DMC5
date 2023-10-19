@@ -45,6 +45,7 @@ void PlayerActor_Nero::Start()
 	BasePlayerActor::Start();
 	Col_Attack->SetParryCallBack([=]
 		{
+			RankUI::GetRankInst()->AddRankScore(1000);
 			AddDTGauge(1.5f);
 			Sound.Play("Nero_Parry");
 			SetTimeScale(0.2f);

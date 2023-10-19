@@ -33,7 +33,7 @@ public:
 	GameEngineCore& operator=(const GameEngineCore& _Other) = delete;
 	GameEngineCore& operator=(GameEngineCore&& _Other) noexcept = delete;
 
-	static void Start(HINSTANCE _instance, std::function<void()> _Start, std::function<void()> _End, float4 _Pos = { 0, 0 }, float4 _Size = { 1600, 900 });
+	static void Start(HINSTANCE _instance, std::function<void()> _Start, std::function<void()> _End, float4 _Pos = { 0, 0 }, float4 _Size = { 1600, 900 }, bool _IsFullScreen = false);
 
 	template<typename LevelType>
 	static std::shared_ptr<LevelType> CreateLevel(const std::string_view& _Name = "")

@@ -29,6 +29,9 @@ void RankUI::AddRankScore(int _Score)
 }
 void RankUI::Start()
 {
+	float Ratio = GameEngineWindow::GetScreenSize().y / 900;
+	GetTransform()->SetLocalScale({ Ratio , Ratio , 1});
+
 	RankBackEffect = CreateComponent<FXSystem>();
 	RankBackEffect->GetTransform()->SetLocalPosition(InsidePos);
 	RankBackEffect->GetTransform()->SetLocalScale({ 1.0f,1.0f,1.0f });

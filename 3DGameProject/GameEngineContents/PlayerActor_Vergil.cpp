@@ -35,6 +35,7 @@ void PlayerActor_Vergil::Start()
 	BasePlayerActor::Start();
 	Col_Attack->SetParryCallBack([=]
 		{
+			RankUI::GetRankInst()->AddRankScore(1000);
 			Sound.Play("Vergil_Parry");
 			SetTimeScale(0.2f);
 			GetLevel()->TimeEvent.AddEvent(0.4f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
