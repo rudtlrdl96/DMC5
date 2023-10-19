@@ -52,12 +52,6 @@
     <ClInclude Include="CavaliereAngelo.h">
       <Filter>Actor\Enemy\BossEnemy\Stage11</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyActor_Fly.h">
-      <Filter>Actor\Enemy\NormalEnemy\FlyEnemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy_GreenEmpusa.h">
-      <Filter>Actor\Enemy\NormalEnemy\FlyEnemy\GreenEmpusa</Filter>
-    </ClInclude>
     <ClInclude Include="Enemy_Empusa.h">
       <Filter>Actor\Enemy\NormalEnemy\BasicEnemy\Empusa</Filter>
     </ClInclude>
@@ -66,9 +60,6 @@
     </ClInclude>
     <ClInclude Include="Enemy_HellAntenora.h">
       <Filter>Actor\Enemy\NormalEnemy\BasicEnemy\HellAntenora</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy_RedEmpusa.h">
-      <Filter>Actor\Enemy\NormalEnemy\BasicEnemy\RedEmpusa</Filter>
     </ClInclude>
     <ClInclude Include="EnemySpawnArea.h">
       <Filter>Actor\Enemy\EnemySpawn</Filter>
@@ -548,12 +539,6 @@
     <ClCompile Include="CavaliereAngelo.cpp">
       <Filter>Actor\Enemy\BossEnemy\Stage11</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyActor_Fly.cpp">
-      <Filter>Actor\Enemy\NormalEnemy\FlyEnemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy_GreenEmpusa.cpp">
-      <Filter>Actor\Enemy\NormalEnemy\FlyEnemy\GreenEmpusa</Filter>
-    </ClCompile>
     <ClCompile Include="Enemy_Empusa.cpp">
       <Filter>Actor\Enemy\NormalEnemy\BasicEnemy\Empusa</Filter>
     </ClCompile>
@@ -562,9 +547,6 @@
     </ClCompile>
     <ClCompile Include="Enemy_HellAntenora.cpp">
       <Filter>Actor\Enemy\NormalEnemy\BasicEnemy\HellAntenora</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy_RedEmpusa.cpp">
-      <Filter>Actor\Enemy\NormalEnemy\BasicEnemy\RedEmpusa</Filter>
     </ClCompile>
     <ClCompile Include="EnemySpawnArea.cpp">
       <Filter>Actor\Enemy\EnemySpawn</Filter>
@@ -1026,20 +1008,11 @@
     <Filter Include="Actor\Enemy\NormalEnemy">
       <UniqueIdentifier>{cb99ca06-163e-4d2b-99b0-2b1df4abfd2b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Actor\Enemy\NormalEnemy\FlyEnemy">
-      <UniqueIdentifier>{09ec54df-fc76-42d2-9d94-905bf04caab1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Actor\Enemy\NormalEnemy\FlyEnemy\GreenEmpusa">
-      <UniqueIdentifier>{fa8c3f5e-5d7e-4b3a-8157-cf802a0eab5b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Actor\Enemy\NormalEnemy\BasicEnemy">
       <UniqueIdentifier>{a039970f-a1d5-4a45-b659-380726b4ff25}</UniqueIdentifier>
     </Filter>
     <Filter Include="Actor\Enemy\NormalEnemy\BasicEnemy\Empusa">
       <UniqueIdentifier>{8d4d9cde-6490-49d7-8474-70a62809557a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Actor\Enemy\NormalEnemy\BasicEnemy\RedEmpusa">
-      <UniqueIdentifier>{408e38d7-2c65-4828-a606-0ec13208f7de}</UniqueIdentifier>
     </Filter>
     <Filter Include="Actor\Enemy\NormalEnemy\BasicEnemy\HellCaina">
       <UniqueIdentifier>{e335c326-9be0-4e07-b397-4e2c3328512a}</UniqueIdentifier>
