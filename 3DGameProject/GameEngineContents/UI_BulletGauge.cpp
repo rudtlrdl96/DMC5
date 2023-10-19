@@ -54,6 +54,14 @@ void UI_BulletGauge::ClipGauge(float _DeltaTime)
 			{
 				ExBulletCount++;
 				AddTime = 0.0f;
+				if (ExBulletCount == 3)
+				{
+					GameEngineSound::Play("BR_2.wav");
+				}
+				else
+				{
+					GameEngineSound::Play("BR_3.wav");
+				}
 			}
 			AddTime = 0.0f;
 		}

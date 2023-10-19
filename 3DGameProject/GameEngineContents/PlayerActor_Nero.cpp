@@ -3200,6 +3200,11 @@ void PlayerActor_Nero::PlayerLoad()
 		},
 		.Update = [=](float _DeltaTime) {
 			if (InputCheck == false) { return; }
+			if (true == Renderer->IsAnimationEnd())
+			{
+				ChangeState(FSM_State_Nero::Nero_Idle);
+				return;
+			}
 			if (false == FloorCheck())
 			{
 				ChangeState(FSM_State_Nero::Nero_Jump_Fly);
@@ -3879,15 +3884,26 @@ bool PlayerActor_Nero::Input_DevilBreakerCheckFly()
 bool PlayerActor_Nero::Input_SpecialCheck()
 {
 	// 익시드 체크
-	if (GameEngineInput::IsDown("Player_Exceed"))
+	if (GameEngineInput::IsDown("Player_Exceed") && false == IsActFaild)
 	{
 		if (true == IsMaxActTiming)
 		{
+			Sound.Play("RQ_MaxAct");
 			ExceedLevel = 3;
 		}
 		else if (true == IsExActTiming)
 		{
+			Sound.Play("RQ_ExAct");
 			ExceedLevel = std::clamp(ExceedLevel + 1, 1, 3);
+		}
+		else
+		{
+			Sound.Play("RQ_ActFailed");
+			IsActFaild = true;
+			TimeEvent.AddEvent(0.4f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					IsActFaild = false;
+				});
 		}
 		IsMaxActTiming = false;
 		IsExActTiming = false;
@@ -3921,15 +3937,26 @@ bool PlayerActor_Nero::Input_SpecialCheck()
 bool PlayerActor_Nero::Input_SpecialCheckFly()
 {
 	// 익시드 체크
-	if (GameEngineInput::IsDown("Player_Exceed"))
+	if (GameEngineInput::IsDown("Player_Exceed") && false == IsActFaild)
 	{
 		if (true == IsMaxActTiming)
 		{
+			Sound.Play("RQ_MaxAct");
 			ExceedLevel = 3;
 		}
 		else if (true == IsExActTiming)
 		{
+			Sound.Play("RQ_ExAct");
 			ExceedLevel = std::clamp(ExceedLevel + 1, 1, 3);
+		}
+		else
+		{
+			Sound.Play("RQ_ActFailed");
+			IsActFaild = true;
+			TimeEvent.AddEvent(0.4f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					IsActFaild = false;
+				});
 		}
 		IsMaxActTiming = false;
 		IsExActTiming = false;

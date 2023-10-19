@@ -218,6 +218,7 @@ private:
 	bool UseCaliber = false;
 	bool IsExActTiming = false;	// 익시드 타이밍 여부
 	bool IsMaxActTiming = false;	// 멕스 엑트 타이밍 여부
+	bool IsActFaild = false;		// 엑트 실패 여부
 	DevilBreaker CurDevilBreaker = DevilBreaker::None;
 	static std::list<DevilBreaker> BreakerList;
 
