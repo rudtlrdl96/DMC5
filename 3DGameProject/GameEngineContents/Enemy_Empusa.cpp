@@ -133,6 +133,7 @@ void Enemy_Empusa::Start()
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
 
 	MonsterAttackCollision->SetAttackData(DamageType::Light, 100);
+	MonsterAttackCollision->Off();
 
 	// 넷 오브젝트 타입 설정
 	SetNetObjectType(Net_ActorType::Empusa);
