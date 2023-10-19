@@ -28,7 +28,7 @@ void BGMPlayer::SetBattleBGM()
 		break;
 	case PlayerType::Nero:
 		SoundPlayer = GameEngineSound::Play("Devil Trigger.ogg");
-		SoundPlayer.SetPosition(358.0f);
+		SoundPlayer.SetPosition(15.0f);
 		SoundPlayer.SoundFadeIn(1.0f);
 		SoundPlayer.SetLoop();
 		SoundPlayer.SetLoopPoint(198.3f, 360.5f);
@@ -37,6 +37,8 @@ void BGMPlayer::SetBattleBGM()
 		SoundPlayer = GameEngineSound::Play("Bury the Light.ogg");
 		SoundPlayer.SetPosition(20.0f);
 		SoundPlayer.SoundFadeIn(2.0f);
+		SoundPlayer.SetLoop();
+		SoundPlayer.SetLoopPoint(51.99f, 359.06f);
 		break;
 	default:
 		break;
@@ -50,6 +52,12 @@ void BGMPlayer::SetBattleEnd()
 	{
 		if (true == BossBGM)
 		{
+			BossBGM = false;
+			SoundPlayer.SoundFadeOut(5.0f);
+			SoundPlayer = GameEngineSound::Play("Voltaic Black Knight.ogg");
+			SoundPlayer.SetVolume(Volume);
+			SoundPlayer.SetPosition(207.02f);
+			SoundPlayer.SoundFadeIn(0.2f);
 			return;
 		}
 
@@ -87,6 +95,8 @@ void BGMPlayer::SetBossBGM()
 
 	SoundPlayer = GameEngineSound::Play("Voltaic Black Knight.ogg");
 	SoundPlayer.SetVolume(Volume);
+	SoundPlayer.SetLoop();
+	SoundPlayer.SetLoopPoint(4.17f, 208.7f);
 }
 
 void BGMPlayer::SetCharater(PlayerType _Type)

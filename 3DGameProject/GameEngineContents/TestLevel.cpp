@@ -92,11 +92,13 @@ void TestLevel::Update(float _DeltaTime)
 	}
 	if (true == GameEngineInput::IsDown("SelectLevel_01"))
 	{
+		BGMPlayer::SetCharater(PlayerType::Nero);
 		BGMPlayer::SetBattleBGM();
 	}
 	if (true == GameEngineInput::IsDown("SelectLevel_02"))
 	{
-		BGMPlayer::SetBattleEnd();
+		BGMPlayer::SetCharater(PlayerType::Vergil);
+		BGMPlayer::SetBattleBGM();
 	}
 	if (true == GameEngineInput::IsDown("SelectLevel_03"))
 	{
@@ -104,7 +106,7 @@ void TestLevel::Update(float _DeltaTime)
 	}
 	if (true == GameEngineInput::IsDown("SelectLevel_04"))
 	{
-		BGMPlayer::SetCharater(PlayerType::Vergil);
+		BGMPlayer::SetBattleEnd();
 	}
 	if (true == GameEngineInput::IsDown("ReturnToMainLevel"))
 	{
