@@ -16,10 +16,15 @@ public:
 	UI_DTGauge& operator=(UI_DTGauge&& _Other) noexcept = delete;
 
 	void ActivateDtUI(float _DtGauge);
+	void SetTransValue(bool _IsValue)
+	{
+		IsTrans = _IsValue;
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 private:
+	void TransforDtUT();
 	void Transfor(float _Delta);
 	void CreateDTBar(const std::string_view& _Png , float4 _Pos,float4 _Scale);
 	std::shared_ptr<class UIEffectRenderer> DTElectroEffect = nullptr;
@@ -31,7 +36,7 @@ private:
 	float TransforTime = 0.0f;
 	float DownTime = 0.0f;
 	bool IsTrans = false;
-	float DTIndex = 3.2f;
+	float DTIndex = 0.0f;
 
 	int ActiveCount = 0;
 };

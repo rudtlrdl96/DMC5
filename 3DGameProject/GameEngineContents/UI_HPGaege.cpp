@@ -53,7 +53,7 @@ void UI_HPGaege::Start()
 
 void UI_HPGaege::Update(float _DeltaTime)
 {
-	//ClipHPBar(_DeltaTime);
+	ClipHPBar(_DeltaTime);
 }
 
 void UI_HPGaege::ClipHPBar(float _Delta)
