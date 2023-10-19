@@ -77,14 +77,14 @@ void Enemy_HellAntenora::EnemyMeshLoad()
 	{
 	case GameEngineOptionValue::Low:
 	{
-		LeftWeapon->SetFBXMesh("em0001_00.fbx", "AniFBX_Low");
-		RightWeapon->SetFBXMesh("em0001_00.fbx", "AniFBX_Low");
+		LeftWeapon->SetFBXMesh("em0001_00.fbx", "FBX_Low");
+		RightWeapon->SetFBXMesh("em0001_00.fbx", "FBX_Low");
 	}
 	break;
 	case GameEngineOptionValue::High:
 	{
-		LeftWeapon->SetFBXMesh("em0001_00.fbx", "AniFBX");
-		RightWeapon->SetFBXMesh("em0001_00.fbx", "AniFBX");
+		LeftWeapon->SetFBXMesh("em0001_00.fbx", "FBX");
+		RightWeapon->SetFBXMesh("em0001_00.fbx", "FBX");
 	}
 	break;
 	default:
@@ -183,9 +183,10 @@ void Enemy_HellAntenora::Start()
 	MonsterAttackCollision->Off();
 
 	// 무기 붙이기
-	CurRenderPosition = EnemyRenderer->GetTransform()->GetLocalPosition();
-	LeftWeapon->SetAttachTransform("L_Hand", EnemyRenderer->GetTransform(), float4(-50.0f, 0.0f, 0.0f)/*, float4(0.0f, 0.0f, 0.0f)*/);
-	RightWeapon->SetAttachTransform("R_Hand", EnemyRenderer->GetTransform(), float4(50.0f, 0.0f, 0.0f)/*, float4(0.0f, 0.0f, 0.0f)*/);
+	LeftWeapon->GetTransform()->SetLocalScale({ 2.f , 2.f , 2.f });
+
+	LeftWeapon->SetAttachTransform("L_WeaponHand", EnemyRenderer->GetTransform(), float4(-50.0f, 50.0f, 0.0f), float4(0.0f, 0.0f, 0.0f), true);
+	RightWeapon->SetAttachTransform("R_WeaponHand", EnemyRenderer->GetTransform(), float4(50.0f, 50.0f, 0.0f), float4(0.0f, 0.0f, 0.0f), true);
 
 	// 넷 오브젝트 타입 설정
 	SetNetObjectType(Net_ActorType::HellCaina);
