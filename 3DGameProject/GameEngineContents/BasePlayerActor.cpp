@@ -249,6 +249,10 @@ void BasePlayerActor::Update(float _DeltaTime)
 	}
 	else if (NetControllType::ActiveControll == GameEngineNetObject::GetControllType())
 	{
+		if (true == DTValue)
+		{
+			AddDTGauge(-0.5f * _DeltaTime);
+		}
 		InvincibilityTime -= _DeltaTime;
 		DamageColCheck();
 		OrbColCheck();

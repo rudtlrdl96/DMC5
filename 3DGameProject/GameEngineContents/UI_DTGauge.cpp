@@ -36,13 +36,13 @@ void UI_DTGauge::Start()
 	{
 		DTGauges.push_back(UIFBXActorBase::CreateGaugeBar({ -590.0f + i * 16.0f , 372.0f , 30.0f + i *1.0f }, { 0.9f, 0.9f, 0.9f }, { -90.0f,0.0f,0.0f }, "DtGauge.FBX"));
 		CreateDTBar("DTLargeGauge.png", { -590.0f + i * 16.0f , 372.0f , 40.0f }, {34.0f,28.0f,0.0f});
-		DTGauges[i]->SetMulColor({ 0.0f,0.0f,0.0f,1.0f });
+		DTGauges[i]->SetMulColor(float4::ZERO);
 	}
 	for (int i = 0; i < 7; i++)
 	{
 		DTGauges.push_back(UIFBXActorBase::CreateGaugeBar({ -541.0f + i * 13.0f , 375.0f , 30.0f + i * 1.0f }, { 0.7f, 0.7f, 0.7f }, { -90.0f,0.0f,0.0f }, "DtGauge.FBX"));
 		CreateDTBar("DTSmallGauge.png", { -541.0f + i * 13.0f , 375.0f , 40.0f }, { 29.0f,28.0f,0.0f });
-		DTGauges[i+3]->SetMulColor({ 0.0f,0.0f,0.0f,1.0f });
+		DTGauges[i+3]->SetMulColor(float4::ZERONULL);
 	}
 }
 
@@ -50,10 +50,20 @@ void UI_DTGauge::Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsDown("UI_Tab"))
 	{
-		DTIndex++;
+		IsTrans = true;
 	}
 	Transfor(_DeltaTime);
-
+	if (IsTrans == true)
+	{
+		DTElectroEffect->On();
+		DTElectroEffect_Down->On();
+		TransforDtUT();
+	}
+	else
+	{
+		DTElectroEffect->Off();
+		DTElectroEffect_Down->Off();
+	}
 }
 
 void UI_DTGauge::ActivateDtUI(float _DtGauge)
@@ -61,7 +71,7 @@ void UI_DTGauge::ActivateDtUI(float _DtGauge)
 	// 0 ~ 10
 	//ActiveCount = static_cast<int>(_DtGauge);	// 소수점 버리고
 	ActiveCount = static_cast<int>(std::ceil(_DtGauge));	// 올림
-
+	DTIndex = _DtGauge;
 	for (int i = 0; i < ActiveCount; i++)
 	{
 		DTGauges[i]->SetMulColor({ 0.59f,0.588f,0.2925f,1.0f });
@@ -78,16 +88,16 @@ void UI_DTGauge::ActivateDtUI(float _DtGauge)
 		DTGaugeBars[i]->Off();
 	}
 
-	//DTGauges[ActiveCount]->SetMulColor({ 0.59f,0.588f,0.2925f,1.0f });
-	//DTGauges[ActiveCount]->SetAddColor({ 0.29f,0.088f,0.0925f,0.0f });
-	//DTGaugeBars[ActiveCount]->On();
-	//DTGaugeBars[ActiveCount]->ColorOptionValue.MulColor = { 1.0f, 1.0f, 1.0f,_DtGauge - static_cast<float>(ActiveCount)};
+}
 
-	//for (int i = 0; i < ActiveCount; i++)
-	//{
-	//	DTGaugeBars[ActiveCount]->On();
-	//	DTGaugeBars[ActiveCount]->ColorOptionValue.MulColor = float4::ONE;
-	//}
+
+void UI_DTGauge::TransforDtUT()
+{
+	float Ratio = std::clamp(DTIndex / 10.0f, 0.0f, 1.0f);
+	DTElectroEffect->GetTransform()->SetLocalScale({ 50.0f,138.0f * Ratio,3.0f });
+	DTElectroEffect_Down->GetTransform()->SetLocalScale({50.0f,138.0f* Ratio,3.0f});
+	DTElectroEffect->GetTransform()->SetLocalPosition({ -530.0f-(65.0f * Ratio),376.0f,-150.0f});
+	DTElectroEffect_Down->GetTransform()->SetLocalPosition({ -530.0f-(65.0f * Ratio),376.0f,-150.0f});
 }
 
 //void UI_DTGauge::Transfor(float _Delta)
