@@ -264,6 +264,7 @@ private:
 	void DestroyBreaker();
 
 	void SetExActTiming();
+	void UseExceed(int _Level = 1);
 
 	int DamageCalculate(int _Damage, bool _IsSkill = false);
 	std::shared_ptr<class NeroHPUI> HPRender = nullptr;

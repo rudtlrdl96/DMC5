@@ -858,6 +858,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Sissonal3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Sissonal_3,
 			.Start = [=] {
+				Sound.Play("Yamato_", 7);
 				Sound.PlayVoiceRandom(16, 18, DTValue);
 				Sound.NoSkipOn();
 				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(600));
@@ -970,6 +971,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Upper 2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Upper_2,
 			.Start = [=] {
+				Sound.Play("Yamato_", 6);
 				YamatoOn();
 				Col_Attack->SetAttackData(DamageType::Air, DamageCalculate(168));
 				PhysXCapsule->TurnOffGravity();
@@ -1000,6 +1002,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Upper3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Upper_3,
 			.Start = [=] {
+				Sound.Play("Yamato_", 7);
 				YamatoOn();
 				Col_Attack->SetAttackData(DamageType::Air, DamageCalculate(168));
 				PhysXCapsule->TurnOffGravity();
@@ -1039,6 +1042,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Air Combo 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_Combo_1,
 			.Start = [=] {
+				Sound.Play("Yamato_", 2);
 				Sound.PlayVoiceRandom(1, 2, DTValue);
 				RotationToTarget();
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(93));
@@ -1074,6 +1078,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Air Combo 2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_Combo_2,
 			.Start = [=] {
+				Sound.Play("Yamato_", 4);
 				YamatoOn();
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(112));
 				PhysXCapsule->TurnOffGravity();
@@ -1113,6 +1118,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Air Combo 3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_Combo_3,
 			.Start = [=] {
+				Sound.Play("Yamato_", 3);
 				Sound.PlayVoiceRandom(5, 6, DTValue);
 				YamatoOn();
 				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(225));
@@ -1184,6 +1190,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Air Combo B 2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_ComboB_2,
 			.Start = [=] {
+				Sound.Play("Yamato_", 7);
 				Sound.PlayVoiceRandom(7, 8, DTValue);
 				YamatoOn();
 				Col_Attack->SetAttackData(DamageType::Slam, DamageCalculate(187));
@@ -1271,6 +1278,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Raid3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Raid3,
 			.Start = [=] {
+				Sound.Play("Yamato_", 8);
 				Controller->SwordChargeTimer = 0.0f;
 				YamatoOn();
 				EffectSystem->PlayFX("Yamato_Raid_3.effect");
@@ -1319,6 +1327,8 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Vergil_yamato_JudgementCut_2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCut_2,
 			.Start = [=] {
+				Sound.Play("Yamato_", 13);
+				Sound.Play("Yamato_", 14);
 				Sound.PlayVoiceRandom(13, 15, DTValue);
 				Sound.NoSkipOn();
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(450));
@@ -1403,6 +1413,8 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Vergil_yamato_JudgementCutAir_2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCutAir_2,
 			.Start = [=] {
+				Sound.Play("Yamato_", 13);
+				Sound.Play("Yamato_", 14);
 				Sound.PlayVoiceRandom(13, 15, DTValue);
 				Sound.NoSkipOn();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -1471,6 +1483,8 @@ void PlayerActor_Vergil::PlayerLoad()
 		// JudgementCutEnd 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_1,
 			.Start = [=] {
+				Sound.Play("Yamato_", 15);
+				Sound.Play("Yamato_", 17);
 				Sound.PlayVoice(21, DTValue);
 				RotationToTarget();
 				PhysXCapsule->TurnOffGravity();
@@ -1480,6 +1494,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCutEnd_1");
 				TimeEvent.AddEvent(1.58f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
+					Sound.Play("Yamato_", 16);
 					Renderer->Off();
 					Effect_Color->SetStartColor(float4::ZERO);
 					Effect_Color->SetEndColor({-0.15f, -0.15f, -0.11f});

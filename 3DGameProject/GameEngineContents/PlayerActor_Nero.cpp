@@ -817,7 +817,7 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					Sound.Play("RQ_", 12);
 					EffectSystem->PlayFX("RQ_ComboA1_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {UseExceed(); });
 				}
 				else
 				{
@@ -866,7 +866,7 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					Sound.Play("RQ_", 14);
 					EffectSystem->PlayFX("RQ_ComboA2_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {UseExceed(); });
 				}
 				else
 				{
@@ -922,7 +922,7 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					Sound.Play("RQ_", 12);
 					EffectSystem->PlayFX("RQ_ComboA3_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {UseExceed(); });
 				}
 				else
 				{
@@ -971,7 +971,7 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					Sound.Play("RQ_", 12);
 					EffectSystem->PlayFX("RQ_ComboA4_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {UseExceed(); });
 				}
 				else
 				{
@@ -1020,7 +1020,7 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					Sound.Play("RQ_", 12);
 					EffectSystem->PlayFX("RQ_ComboD1_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {UseExceed(); });
 				}
 				else
 				{
@@ -1070,7 +1070,7 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					Sound.Play("RQ_", 14);
 					EffectSystem->PlayFX("RQ_ComboD2_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {UseExceed(); });
 				}
 				else
 				{
@@ -1120,7 +1120,7 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					Sound.Play("RQ_", 12);
 					EffectSystem->PlayFX("RQ_ComboD3_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {UseExceed(); });
 				}
 				else
 				{
@@ -1170,7 +1170,7 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					Sound.Play("RQ_", 14);
 					EffectSystem->PlayFX("RQ_ComboD4_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {UseExceed(); });
 				}
 				else
 				{
@@ -1219,7 +1219,7 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					Sound.Play("RQ_", 12);
 					EffectSystem->PlayFX("RQ_HR_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel -= 3; });
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {UseExceed(3); });
 				}
 				else
 				{
@@ -1262,7 +1262,7 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					Sound.Play("RQ_", 12);
 					EffectSystem->PlayFX("RQ_Shuffle_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel -= 3; });
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {UseExceed(3); });
 				}
 				else
 				{
@@ -1377,7 +1377,7 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					Sound.Play("RQ_", 12);
 					EffectSystem->PlayFX("RQ_Stleak_3_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel -= 3; });
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {UseExceed(3); });
 				}
 				else
 				{
@@ -1429,7 +1429,7 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					Sound.Play("RQ_", 12);
 					EffectSystem->PlayFX("RQ_AirComboA1_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {UseExceed(); });
 				}
 				else
 				{
@@ -1473,7 +1473,7 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					Sound.Play("RQ_", 12);
 					EffectSystem->PlayFX("RQ_AirComboA2_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {UseExceed(); });
 				}
 				else
 				{
@@ -1526,7 +1526,7 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					Sound.Play("RQ_", 14);
 					EffectSystem->PlayFX("RQ_AirComboA3_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {UseExceed(); });
 				}
 				else
 				{
@@ -1571,7 +1571,7 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					Sound.Play("RQ_", 14);
 					EffectSystem->PlayFX("RQ_AirComboB_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel--; });
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {UseExceed(); });
 				}
 				else
 				{
@@ -1683,7 +1683,7 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					Sound.Play("RQ_", 13);
 					EffectSystem->PlayFX("RQ_Split_3_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel -= 3; });
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {UseExceed(3); });
 				}
 				else
 				{
@@ -1760,7 +1760,7 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					Sound.Play("RQ_", 12);
 					EffectSystem->PlayFX("RQ_Calibur_2_EX.effect");
-					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {ExceedLevel -= 3; });
+					TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager) {UseExceed(3); });
 				}
 				else
 				{
@@ -3911,11 +3911,13 @@ bool PlayerActor_Nero::Input_SpecialCheck()
 		{
 			Sound.Play("RQ_MaxAct");
 			ExceedLevel = 3;
+			HPRender->SetExceedCount(ExceedLevel);
 		}
 		else if (true == IsExActTiming)
 		{
 			Sound.Play("RQ_ExAct");
 			ExceedLevel = std::clamp(ExceedLevel + 1, 1, 3);
+			HPRender->SetExceedCount(ExceedLevel);
 		}
 		else
 		{
@@ -3964,11 +3966,13 @@ bool PlayerActor_Nero::Input_SpecialCheckFly()
 		{
 			Sound.Play("RQ_MaxAct");
 			ExceedLevel = 3;
+			HPRender->SetExceedCount(ExceedLevel);
 		}
 		else if (true == IsExActTiming)
 		{
 			Sound.Play("RQ_ExAct");
 			ExceedLevel = std::clamp(ExceedLevel + 1, 1, 3);
+			HPRender->SetExceedCount(ExceedLevel);
 		}
 		else
 		{
@@ -4286,6 +4290,12 @@ void PlayerActor_Nero::SetExActTiming()
 		{
 			IsExActTiming = false;
 		});
+}
+
+void PlayerActor_Nero::UseExceed(int _Level)
+{
+	ExceedLevel = std::clamp(ExceedLevel - _Level, 1, 3);
+	HPRender->SetExceedCount(ExceedLevel);
 }
 
 int PlayerActor_Nero::DamageCalculate(int _Damage, bool _IsSkill /* = false */)

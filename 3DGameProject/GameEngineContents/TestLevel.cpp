@@ -166,12 +166,12 @@ void TestLevel::LevelChangeStart()
 		Flat->GetPhysXComponent()->SetWorldPosition({ 0, -50, 0 });
 	}
 
-	//if (nullptr == RedEmpusa)
-	//{
-	//	RedEmpusa = CreateActor<Enemy_RedEmpusa>();
-	//	RedEmpusa->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	//	RedEmpusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	//}
+	if (nullptr == RedEmpusa)
+	{
+		RedEmpusa = CreateActor<Enemy_RedEmpusa>();
+		RedEmpusa->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+		RedEmpusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	}
 
 	//if (nullptr == HellAntenora)
 	//{
