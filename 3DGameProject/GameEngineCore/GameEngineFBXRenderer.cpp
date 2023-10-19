@@ -207,7 +207,11 @@ void GameEngineFBXRenderer::Update(float _DeltaTime)
 
 		// 세팅할때 월드로 해줘야 한다. 
 		// 정말 너무 다양한 상황이 있을수 있기 때문에 월드로 변경해서 넣어줘야 한다.
-		//Data.Transform->SetWorldRotation(Rot.QuaternionToEulerDeg() + Data.OffsetRot);
+		if (true == AttachTransformValue[i].RotEffect)
+		{
+			Data.Transform->SetWorldRotation(Rot.QuaternionToEulerDeg() + Data.OffsetRot);
+		}
+		
 		Data.Transform->SetWorldPosition(Pos + Data.OffsetPos);
 	}
 }
@@ -866,7 +870,7 @@ AnimationBoneData GameEngineFBXRenderer::GetBoneData(std::string _Name)
 	return Data;
 }
 
-void GameEngineFBXRenderer::SetAttachTransform(std::string_view _Name, GameEngineTransform* _Transform, float4 _OffsetPos, float4 _OffsetRot)
+void GameEngineFBXRenderer::SetAttachTransform(std::string_view _Name, GameEngineTransform* _Transform, float4 _OffsetPos, float4 _OffsetRot, bool _RotEffect)
 {
 	Bone* BoneData = FBXMesh->FindBone(_Name.data());
 
@@ -876,10 +880,10 @@ void GameEngineFBXRenderer::SetAttachTransform(std::string_view _Name, GameEngin
 		return;
 	}
 
-	SetAttachTransform(BoneData->Index, _Transform, _OffsetPos, _OffsetRot);
+	SetAttachTransform(BoneData->Index, _Transform, _OffsetPos, _OffsetRot, _RotEffect);
 }
 
-void GameEngineFBXRenderer::SetAttachTransform(int Index, GameEngineTransform* _Transform, float4 _OffsetPos, float4 _OffsetRot)
+void GameEngineFBXRenderer::SetAttachTransform(int Index, GameEngineTransform* _Transform, float4 _OffsetPos, float4 _OffsetRot, bool _RotEffect)
 {
 	float4x4 Rot;
 	float4x4 Pos;
@@ -887,7 +891,7 @@ void GameEngineFBXRenderer::SetAttachTransform(int Index, GameEngineTransform* _
 	Rot.RotationDeg(_OffsetRot);
 	Pos.Pos(_OffsetPos);
 
-	AttachTransformValue.push_back({ Index, _Transform, _OffsetPos, _OffsetRot, Rot * Pos });
+	AttachTransformValue.push_back({ Index, _Transform, _OffsetPos, _OffsetRot, Rot * Pos, _RotEffect });
 }
 
 void GameEngineFBXRenderer::SetDettachTransform()

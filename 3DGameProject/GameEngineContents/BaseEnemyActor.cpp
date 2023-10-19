@@ -776,6 +776,15 @@ void BaseEnemyActor::RendererBurn(float _DeltaTime)
 	if (DeathColor <= 1.1f)
 	{
 		EnemyRenderer->SetBaseColor({ 0.0f, 0.0f, DeathColor });
+
+		if (nullptr != LeftWeapon)
+		{
+			LeftWeapon->SetBaseColor({ 0.0f, 0.0f, DeathColor });
+		}
+		if (nullptr != RightWeapon)
+		{
+			RightWeapon->SetBaseColor({ 0.0f, 0.0f, DeathColor });
+		}
 	}
 
 	if (DeathColor >= 1.0f)

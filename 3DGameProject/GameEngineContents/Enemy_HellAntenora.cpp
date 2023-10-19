@@ -59,6 +59,44 @@ void Enemy_HellAntenora::EnemyMeshLoad()
 		break;
 	}
 
+	LeftWeapon = CreateComponent<GameEngineFBXRenderer>();
+	RightWeapon = CreateComponent<GameEngineFBXRenderer>();
+	
+	if (nullptr == GameEngineFBXMesh::Find("em0001_00.FBX"))
+	{
+		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+			{
+				"Character", "Enemy", "HellAntenora", "mesh"
+			},
+			"em0001_00.FBX");
+
+		GameEngineFBXMesh::Load(Path);
+	}
+
+	switch (GameEngineOption::GetOption("Shader"))
+	{
+	case GameEngineOptionValue::Low:
+	{
+		LeftWeapon->SetFBXMesh("em0001_00.fbx", "AniFBX_Low");
+		RightWeapon->SetFBXMesh("em0001_00.fbx", "AniFBX_Low");
+	}
+	break;
+	case GameEngineOptionValue::High:
+	{
+		LeftWeapon->SetFBXMesh("em0001_00.fbx", "AniFBX");
+		RightWeapon->SetFBXMesh("em0001_00.fbx", "AniFBX");
+	}
+	break;
+	default:
+		break;
+	}
+	
+	LeftWeapon->ShadowOn();
+	LeftWeapon->SetDynamic();
+
+	RightWeapon->ShadowOn();
+	RightWeapon->SetDynamic();
+
 	if (nullptr == GameEngineTexture::Find("PaperBurnNoise.jpg"))
 	{
 		GameEngineTexture::Load(GameEnginePath::GetFileFullPath("ContentResources",
@@ -68,6 +106,8 @@ void Enemy_HellAntenora::EnemyMeshLoad()
 	}
 
 	EnemyRenderer->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
+	LeftWeapon->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
+	RightWeapon->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
 }
 
 void Enemy_HellAntenora::EnemyAnimationLoad()
@@ -141,6 +181,11 @@ void Enemy_HellAntenora::Start()
 	//RN_MonsterCollision->Off();
 	MonsterAttackCollision->SetAttackData(DamageType::Heavy, 120);
 	MonsterAttackCollision->Off();
+
+	// 무기 붙이기
+	CurRenderPosition = EnemyRenderer->GetTransform()->GetLocalPosition();
+	LeftWeapon->SetAttachTransform("L_Hand", EnemyRenderer->GetTransform(), float4(-50.0f, 0.0f, 0.0f)/*, float4(0.0f, 0.0f, 0.0f)*/);
+	RightWeapon->SetAttachTransform("R_Hand", EnemyRenderer->GetTransform(), float4(50.0f, 0.0f, 0.0f)/*, float4(0.0f, 0.0f, 0.0f)*/);
 
 	// 넷 오브젝트 타입 설정
 	SetNetObjectType(Net_ActorType::HellCaina);
