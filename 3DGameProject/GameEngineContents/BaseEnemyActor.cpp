@@ -28,8 +28,6 @@ void BaseEnemyActor::Start()
 
 	//Render생성
 	EnemyRenderer = CreateComponent<GameEngineFBXRenderer>();
-	EnemyRenderer->ShadowOn();
-	EnemyRenderer->SetDynamic();
 
 	//공격 가능한 Enemy Collision
 	//Monster 자체 콜리전
@@ -44,6 +42,10 @@ void BaseEnemyActor::Start()
 	RN_MonsterCollision->SetColType(ColType::SPHERE3D);
 
 	EnemyMeshLoad();
+
+	EnemyRenderer->ShadowOn();
+	EnemyRenderer->SetDynamic();
+
 	EnemyTypeLoad();
 	EnemyAnimationLoad();
 	

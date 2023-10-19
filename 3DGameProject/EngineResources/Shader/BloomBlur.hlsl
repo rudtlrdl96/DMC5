@@ -45,32 +45,30 @@ cbuffer BlurData : register(b2)
     float4 ScreenRatio;
 }
 
-float4 Blur_PS(OutPut _Value) : SV_Target1
+float4 Blur_PS(OutPut _Value) : SV_Target0
 {
-    float2 PixelSize = float2(1.0f / (ScreenSize.x * ScreenRatio.x), 1.0f / (ScreenSize.y * ScreenRatio.x)) * 2.0f;
-    // 현재 UV
-    float2 PixelUvCenter = _Value.UV.xy;
+    float2 PixelSize;
+    
+    PixelSize.x = ScreenRatio.x;
+    PixelSize.y = ScreenRatio.y;
+        
     float2 StartUV = _Value.UV.xy - (PixelSize * 4.0f);
     float2 CurUV = StartUV;
     
     float4 ResultColor = (float4) 0.0f;
  
-    // 쉐이더 for문 쓰는건 정말 주의해야 합니다.
-    // 상수가 아닐시 에러가 뜰때가 있다.
     for (int y = 0; y < 9; ++y)
     {
         for (int x = 0; x < 9; ++x)
         {
-            ResultColor += SmallBloomTex.Sample(POINTSAMPLER, CurUV.xy) * Gau[y][x];
-            // ResultColor *= float4(0.0f, 1.0f, 0.0f, 1.0f);
+            ResultColor += SmallBloomTex.Sample(POINTSAMPLER, saturate(CurUV.xy)) * Gau[y][x];
             CurUV.x += PixelSize.x;
         }
         
         CurUV.x = StartUV.x;
         CurUV.y += PixelSize.y;
     }
-    
-    
+            
     ResultColor.a = 1.0f;
     
     return ResultColor;

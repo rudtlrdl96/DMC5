@@ -22,21 +22,34 @@ void BloomEffect::Start(GameEngineRenderTarget* _Target)
 	BloomBlurUnit->ShaderResHelper.SetConstantBufferLink("BlurData", Data);
 
 	Data.ScreenSize = GameEngineWindow::GetScreenSize();
-	Data.ScreenRatio.x = 0.5f;
+
+	Data.ScreenRatio.x = 4.0f / Data.ScreenSize.x;
+	Data.ScreenRatio.y = 4.0f / Data.ScreenSize.y;
 
 	ResultTarget = GameEngineRenderTarget::Create();
+	DebugTargetA = GameEngineRenderTarget::Create();
+	DebugTargetB = GameEngineRenderTarget::Create();
 }
 
 void BloomEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 {
+
 	ResultTarget->Clear();
-	BlurUnit->ShaderResHelper.SetTexture("LightTarget", _Target->GetTexture(1));
 	ResultTarget->Setting();
+
+	BlurUnit->ShaderResHelper.SetTexture("LightTarget", _Target->GetTexture(1));
 	BlurUnit->Render(_DeltaTime);
 	BlurUnit->ShaderResHelper.AllResourcesReset();
 
-	_Target->Setting();
+	DebugTargetA->Clear();
+	DebugTargetA->Merge(ResultTarget);
+
+	_Target->Setting(1);
+	
 	BloomBlurUnit->ShaderResHelper.SetTexture("SmallBloomTex", ResultTarget->GetTexture(0));
 	BloomBlurUnit->Render(_DeltaTime);
 	BloomBlurUnit->ShaderResHelper.AllResourcesReset();
+
+	DebugTargetB->Clear();
+	DebugTargetB->Merge(_Target, 1);
 }

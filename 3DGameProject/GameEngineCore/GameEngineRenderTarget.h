@@ -62,6 +62,7 @@ public:
 	void Clear();
 
 	void TextureClear();
+	void TextureClear(size_t _Index);
 	void DepthClear();
 
 	void Setting() override;

@@ -24,7 +24,7 @@ public:
 protected:
 
 private:
-	std::shared_ptr<UIMeshRenderer> TestRenderer = nullptr;
+	std::shared_ptr<class GameEngineFBXRenderer> TestRenderer = nullptr;
 	//std::shared_ptr<EffectRenderer> TestRenderer = nullptr;
 
 	void DrawEditor() override;

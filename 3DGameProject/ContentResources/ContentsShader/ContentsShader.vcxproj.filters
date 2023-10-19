@@ -76,6 +76,9 @@
     <FxCompile Include="ContentsUIAniMesh.hlsl">
       <Filter>MeshShader</Filter>
     </FxCompile>
+    <FxCompile Include="WaveUVEffect.hlsl">
+      <Filter>Effect</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">

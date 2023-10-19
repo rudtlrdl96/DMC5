@@ -46,7 +46,7 @@ void TestStageLevel::Start()
 	GetCamera(0)->GetCamTarget()->CreateEffect<ColorEffect>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
 
-	GetCamera(0)->GetDeferredLightTarget()->CreateEffect<BloomEffect>();
+	Bloom = GetCamera(0)->GetDeferredLightTarget()->CreateEffect<BloomEffect>();
 
 	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
@@ -86,9 +86,6 @@ void TestStageLevel::Start()
 			};
 
 	}
-
-	//CreateActor<ShaderTestActor>()->GetTransform()->SetWorldPosition(float4(0, 100, 0));
-
 }
 
 std::shared_ptr<GameEngineLight> PointLight = nullptr;
@@ -220,7 +217,7 @@ void TestStageLevel::LevelChangeStart()
 	//}
 
 
-	//CreateActor<ShaderTestActor>()->GetTransform()->SetLocalPosition(float4(0, 200, 0));
+	CreateActor<ShaderTestActor>()->GetTransform()->SetWorldPosition(float4(0, 400, 0));
 
 	PointLight = CreatePointLight(float4(0, 300, 0), ShadowTextureScale::S_512, 1024);
 	PointLight->SetLightPower(2.0f);
@@ -234,5 +231,6 @@ void TestStageLevel::LevelChangeStart()
 	GameEngineCoreWindow::AddDebugRenderTarget(4, "Last Target", GetMainCamera()->GetCamTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(5, "Bake Shadow", GetDirectionalLight()->GetBakeTarget(0));
 	GameEngineCoreWindow::AddDebugRenderTarget(6, "Last Shadow", GetDirectionalLight()->GetShadowTarget());
-	GameEngineCoreWindow::AddDebugRenderTarget(7, "Distortion Target", GetCamera(100)->GetCamAlphaTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(7, "Bloom Debug A", Bloom->DebugTargetA);
+	GameEngineCoreWindow::AddDebugRenderTarget(8, "Bloom Debug B", Bloom->DebugTargetB);
 }

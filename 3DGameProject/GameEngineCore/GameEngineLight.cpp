@@ -158,7 +158,7 @@ void GameEngineLight::SetLightRange(float _Range)
 void GameEngineLight::LightUpdate(GameEngineCamera* _Camera, float _DeltaTime)
 {
 	LightDataValue.LightPos = GetTransform()->GetWorldPosition();
-	LightDataValue.LightDir = GetTransform()->GetLocalForwardVector();
+	LightDataValue.LightDir = GetTransform()->GetWorldForwardVector();
 	LightDataValue.ViewLightPos = LightDataValue.LightPos * _Camera->GetView();
 	LightDataValue.ViewLightDir = LightDataValue.LightDir * _Camera->GetView();
 	LightDataValue.ViewLightRevDir = -LightDataValue.ViewLightDir;

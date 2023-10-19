@@ -138,7 +138,7 @@ DeferredOutPut MeshAniTexture_PS(Output _Input)
     float metallic = saturate(AlbmData.a - distribution);
      
     // AlbmData -> metallicValue 값에 따라서 결정되어야 한다        
-    Result.DifTarget.rgb = lerp(float3(0, 0, 0), AlbmData.rgb, metallic);
+    //Result.DifTarget.rgb = lerp(float3(0, 0, 0), AlbmData.rgb, metallic); 
     
     Result.DifTarget.a = 1.0f;
     Result.PosTarget.a = 1.0f;

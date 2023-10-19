@@ -20,7 +20,7 @@ void ShaderTestActor::Start()
 	//		}, "PaperBurnNoise.jpg"));
 	//}
 
-	TestRenderer = CreateComponent<UIMeshRenderer>();
+	TestRenderer = CreateComponent<GameEngineFBXRenderer>();
 	 	
 	//FBX파일경로를 찾아서 로드
 	if (nullptr == GameEngineFBXMesh::Find("House1.FBX"))
@@ -34,12 +34,13 @@ void ShaderTestActor::Start()
 	}
 
 	// Light 데이터 설정
-	TestRenderer->LightDataValue.LightPos = float4(0, 1000, 0);
-	TestRenderer->LightDataValue.LightDir = float4(-1, -1, 0).NormalizeReturn();
-	TestRenderer->LightDataUpdate();
+	//TestRenderer->LightDataValue.LightPos = float4(0, 1000, 0);
+	//TestRenderer->LightDataValue.LightDir = float4(-1, -1, 0).NormalizeReturn();
+	//TestRenderer->LightDataUpdate();
 	
-	TestRenderer->SetFBXMesh("House1.FBX", "UIFBXMesh");
-	TestRenderer->GetTransform()->SetLocalScale(float4(0.5f, 0.5f, 0.5f));
+	TestRenderer->SetFBXMesh("House1.FBX", "FBX");
+	TestRenderer->GetTransform()->SetLocalScale(float4(5.0f, 5.0f, 5.0f));
+	TestRenderer->SetBaseColor({ 20.0f, 0.0f, 0.0f });
 
 	//TestRenderer->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
 

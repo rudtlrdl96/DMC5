@@ -184,6 +184,28 @@ void GameEngineRenderTarget::TextureClear()
 	}
 }
 
+void GameEngineRenderTarget::TextureClear(size_t _Index)
+{
+	if (Textures.size() <= _Index)
+	{
+		MsgAssert("존재하지않는 텍스쳐를 Clear 하려 했습니다");
+		return;
+	}
+
+	for (size_t j = 0; j < Textures[_Index]->GetRTVSize(); j++)
+	{
+		ID3D11RenderTargetView* RTV = Textures[_Index]->GetRTV(j);
+
+		if (nullptr == RTV)
+		{
+			MsgAssert("랜더타겟 뷰가 존재하지 않아서 클리어가 불가능합니다.");
+			return;
+		}
+
+		GameEngineDevice::GetContext()->ClearRenderTargetView(RTV, Color[_Index].Arr1D);
+	}
+}
+
 void GameEngineRenderTarget::DepthClear()
 {
 	ID3D11DepthStencilView* DSV = DepthTexture != nullptr ? DepthTexture->GetDSV() : nullptr;

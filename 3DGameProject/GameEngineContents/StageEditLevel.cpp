@@ -4,6 +4,8 @@
 #include <GameEngineCore/GameEngineGUI.h>
 #include <GameEngineCore/GameEngineFBXMesh.h>
 #include <GameEngineCore/EngineGrid.h>
+#include <GameEngineCore/BloomEffect.h>
+#include <GameEngineCore/GameEngineCoreWindow.h>
 
 #include "NetworkManager.h"
 #include "StageEditGUI.h"
@@ -46,12 +48,17 @@ void StageEditLevel::Start()
 	FreeCam = CreateActor<FreeCameraActor>();
 	IsEditLevel = true;
 
+	GetCamera(0)->GetDeferredLightTarget()->CreateEffect<BloomEffect>();
+
 	{
 		std::shared_ptr<DistortionEffect> Distortion = GetCamera(0)->GetCamTarget()->CreateEffect<DistortionEffect>();
 		Distortion->SetMaskTexture(GetCamera(0)->GetCamAlphaTarget(), 1);
 		Distortion->SetDistortionValue(10, 10);
 		Distortion->SetMaxPixelValue(100, 100);
 	}
+
+
+
 }
 
 void StageEditLevel::Update(float _DeltaTime)
@@ -127,6 +134,16 @@ void StageEditLevel::LevelChangeStart()
 	}
 
 	IsDebugSwitch();
+
+	GameEngineCoreWindow::Clear();
+	GameEngineCoreWindow::AddDebugRenderTarget(0, "Forward Target", GetMainCamera()->GetCamForwardTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(1, "Deferred Target", GetMainCamera()->GetCamDeferrdTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(2, "Light Target", GetMainCamera()->GetDeferredLightTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(3, "Alpha Target", GetMainCamera()->GetCamAlphaTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(4, "Last Target", GetMainCamera()->GetCamTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(5, "Bake Shadow", GetDirectionalLight()->GetBakeTarget(0));
+	GameEngineCoreWindow::AddDebugRenderTarget(6, "Last Shadow", GetDirectionalLight()->GetShadowTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(7, "Distortion Target", GetCamera(100)->GetCamAlphaTarget());
 }
 
 void StageEditLevel::LevelChangeEnd()

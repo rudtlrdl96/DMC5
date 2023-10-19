@@ -28,10 +28,12 @@ float4 Bloom_PS(OutPut _Value) : SV_Target0
     float4 Color = LightTarget.Sample(WRAPSAMPLER, _Value.UV.xy);
     float LightPower = max(max(Color.r, Color.g), Color.b);
     
-    if(0.7f >= LightPower)
-    {
-        return Color;
-    }
+    Color.a = 1.0f;
     
-    return Color * (1.0f + (LightPower - 0.7));
+    if(0.7f <= LightPower)
+    {
+        Color.rgb *= 1.5f;
+    }
+        
+    return Color;
 }

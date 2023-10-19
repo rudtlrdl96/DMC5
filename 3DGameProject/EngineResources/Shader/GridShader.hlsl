@@ -30,18 +30,27 @@ cbuffer GridData : register(b0)
     float4 GridScale;
 };
 
-float4 MeshAniTexture_PS(Output _Input) : SV_Target0
+struct AlphaOutPut
 {
+    float4 ResultColor : SV_Target0;
+};
+
+AlphaOutPut MeshAniTexture_PS(Output _Input)
+{
+    AlphaOutPut Result;
+    
     float CalX = abs(_Input.WPOSITION.x) % GridScale.x;
     float CalZ = abs(_Input.WPOSITION.z) % GridScale.z;
     
     if (GridScale.y >= CalX)
     {
-        return float4(1.0f, 1.0f, 1.0f, GridScale.w);
+        Result.ResultColor = float4(1.0f, 1.0f, 1.0f, GridScale.w);        
+        return Result;
     }
     else if (GridScale.y >= CalZ)
     {
-        return float4(1.0f, 1.0f, 1.0f, GridScale.w);
+        Result.ResultColor = float4(1.0f, 1.0f, 1.0f, GridScale.w);
+        return Result;
     }
     
     //float CalX1 = abs(_Input.WPOSITION.x) % GridScale.x * 10.0f;
@@ -58,6 +67,7 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
     
     clip(-1);
     
-    return float4(0.0f, 0.0f, 0.0f, 0.0f);
+    Result.ResultColor = float4(0, 0, 0, 0);    
+    return Result;
 }
 
