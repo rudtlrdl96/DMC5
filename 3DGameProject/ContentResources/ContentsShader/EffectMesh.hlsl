@@ -105,9 +105,9 @@ cbuffer DistortionData : register(b3)
     float4 IsDistortion;
 };
 
-cbuffer HBSCColorData : register(b4)
+cbuffer HSVColorData : register(b4)
 {
-    float4 HBSCColor;
+    float4 HSVColor;
 };
 
 AlphaOutPut MeshTexture_PS(Output _Input)
@@ -134,9 +134,9 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     Result.ResultColor *= EffectMulColor;
     Result.ResultColor += EffectPlusColor;
     
-    float saturation = HBSCColor.r * 2;
-    float brightness = HBSCColor.g * 2 - 1;
-    float contrast = HBSCColor.b * 2;
+    float saturation = HSVColor.r * 2;
+    float brightness = HSVColor.g * 2 - 1;
+    float contrast = HSVColor.b * 2;
     
     Result.ResultColor.rgb = (Result.ResultColor.rgb - 0.5f) * contrast + 0.5f;
     Result.ResultColor.rgb = Result.ResultColor.rgb + brightness;

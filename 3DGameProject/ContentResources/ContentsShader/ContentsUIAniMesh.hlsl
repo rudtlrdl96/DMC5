@@ -69,7 +69,7 @@ struct AlphaOutPut
 
 cbuffer ColorData : register(b1)
 {
-    float4 HBSCColor;
+    float4 HSVColor;
 }
 
 cbuffer ClipData : register(b2)
@@ -105,9 +105,9 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     AlbmData += AddColor;
     AlbmData *= MulColor;
     
-    float saturation = HBSCColor.r * 2;
-    float brightness = HBSCColor.g * 2 - 1;
-    float contrast = HBSCColor.b * 2;
+    float saturation = HSVColor.r * 2;
+    float brightness = HSVColor.g * 2 - 1;
+    float contrast = HSVColor.b * 2;
     
     AlbmData.rgb = (AlbmData.rgb - 0.5f) * contrast + 0.5f;
     AlbmData.rgb = AlbmData.rgb + brightness;

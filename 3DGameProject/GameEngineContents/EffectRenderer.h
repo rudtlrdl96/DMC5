@@ -185,11 +185,11 @@ public:
 
 	void Reset();
 
-	void HBSCControl(float _saturation, float _brightness, float _contrast)
+	void HSVControl(float _saturation, float _brightness, float _contrast)
 	{
-		HBSCColor.r = _saturation;
-		HBSCColor.g = _brightness;
-		HBSCColor.b = _contrast;
+		HSVColor.r = _saturation;
+		HSVColor.g = _brightness;
+		HSVColor.b = _contrast;
 	}
 
 protected:
@@ -199,7 +199,7 @@ protected:
 private:
 	EffectVertextData VertexOption = EffectVertextData();
 	DistortionData DistortionOption = DistortionData();
-	float4 HBSCColor = { 0.5f, 0.5f, 0.5f, 0.5f};
+	float4 HSVColor = { 0.5f, 0.5f, 0.5f, 0.5f};
 
 	std::map<std::string, std::shared_ptr<AnimationInfo>> Animations;
 	std::shared_ptr<AnimationInfo> CurAnimation;

@@ -46,7 +46,7 @@ void UIMeshRenderer::LightDataLink()
 		for (size_t j = 0; j < Unit[i].size(); j++)
 		{
 			Unit[i][j]->ShaderResHelper.SetConstantBufferLink("UILightDatas", LightDataValue);
-			Unit[i][j]->ShaderResHelper.SetConstantBufferLink("ColorData", HBSCColor);
+			Unit[i][j]->ShaderResHelper.SetConstantBufferLink("ColorData", HSVColor);
 			Unit[i][j]->ShaderResHelper.SetConstantBufferLink("ClipData", Clip);
 		}
 	}
@@ -71,10 +71,10 @@ void UIMeshRenderer::DrawEditor()
 	}
 
 	{
-		float4 BC = HBSCColor;
+		float4 BC = HSVColor;
 		float InputColor[4] = { BC.r, BC.g, BC.b, BC.a };
-		ImGui::DragFloat4("HBSCColor", InputColor, 0.01f);
-		HBSCColor = { InputColor[0], InputColor[1], InputColor[2], InputColor[3] };
+		ImGui::DragFloat4("HSVColor", InputColor, 0.01f);
+		HSVColor = { InputColor[0], InputColor[1], InputColor[2], InputColor[3] };
 	}
 
 	ImGui::Spacing();

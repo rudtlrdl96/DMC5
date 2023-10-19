@@ -29,10 +29,10 @@ void GameEngineFontRenderer::Start()
 	AtlasData.y = 0.0f;
 	AtlasData.z = 1.0f;
 	AtlasData.w = 1.0f;
-	float4 HBSCMin = { 0.0f, 0.5f, 0.5f, 0.5f };
+	float4 HSVMin = { 0.0f, 0.5f, 0.5f, 0.5f };
 	ColorOptionValue.MulColor = float4::ONE;
 	ColorOptionValue.PlusColor = float4::ZERONULL;
-	ColorOptionValue.BSCColor = HBSCMin;
+	ColorOptionValue.BSCColor = HSVMin;
 
 	GetShaderResHelper().SetConstantBufferLink("AtlasData", AtlasData);
 	GetShaderResHelper().SetConstantBufferLink("ColorOption", ColorOptionValue);
