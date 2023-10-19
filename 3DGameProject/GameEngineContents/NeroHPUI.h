@@ -29,6 +29,7 @@ protected:
 
 private:
 	void CreatFireEffect();
+	void SetExceed();
 	std::shared_ptr<class UIFBXRenderer> NeroUI_HPGlass = nullptr;
 	std::shared_ptr<class UIFBXRenderer> NeroUI_Hud1 = nullptr;
 	std::shared_ptr<class UIFBXRenderer> NeroUI_Hud2 = nullptr;

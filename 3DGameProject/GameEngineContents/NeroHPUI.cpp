@@ -92,8 +92,7 @@ void NeroHPUI::Start()
 
 void NeroHPUI::Update(float _DeltaTime)
 {
-	PlayerCurHp;
-	int a = 0;
+	SetExceed();
 }
 
 void NeroHPUI::CreatFireEffect()
@@ -105,7 +104,8 @@ void NeroHPUI::CreatFireEffect()
 	ExFire_Effect1->GetTransform()->SetLocalPosition({ -656.0f,335.0f,12.0f });
 	ExFire_Effect1->GetTransform()->SetLocalRotation({ 0.0f,0.0f,-50.0f });
 	ExFire_Effect1->ChangeAnimation("HudAni_1");
-
+	ExFire_Effect1->Off();
+	
 	ExFire_Effect2 = CreateComponent<GameEngineUIRenderer>(3);
 	ExFire_Effect2->SetTexture("NullTexture.png");
 	ExFire_Effect2->CreateAnimation({ .AnimationName = "HudAni_2", .SpriteName = "Effect_Fire_07.tga", .Start = 0, .End = 63,.FrameInter = 0.001f, .Loop = true});
@@ -113,7 +113,8 @@ void NeroHPUI::CreatFireEffect()
 	ExFire_Effect2->GetTransform()->SetLocalPosition({ -648.0f,372.0f,9.0f });
 	ExFire_Effect2->GetTransform()->SetLocalRotation({ 0.0f,0.0f,-50.0f });
 	ExFire_Effect2->ChangeAnimation("HudAni_2");
-	
+	ExFire_Effect2->Off();
+
 	ExFire_Effect3 = CreateComponent<GameEngineUIRenderer>(3);
 	ExFire_Effect3->SetTexture("NullTexture.png");
 	ExFire_Effect3->CreateAnimation({ .AnimationName = "HudAni_3", .SpriteName = "Effect_Fire_07.tga", .Start = 0, .End = 63,.FrameInter = 0.001f, .Loop = true});
@@ -121,6 +122,35 @@ void NeroHPUI::CreatFireEffect()
 	ExFire_Effect3->GetTransform()->SetLocalPosition({ -645.0f,408.0f,7.0f });
 	ExFire_Effect3->GetTransform()->SetLocalRotation({ 0.0f,0.0f,-50.0f });
 	ExFire_Effect3->ChangeAnimation("HudAni_3");
+	ExFire_Effect3->Off();
+}
 
+void NeroHPUI::SetExceed()
+{
+	if (ExceedCount == 0)
+	{
+		ExFire_Effect1->Off();
+		ExFire_Effect2->Off();
+		ExFire_Effect3->Off();
+
+	}
+	else if (ExceedCount == 1)
+	{
+		ExFire_Effect1->On();
+		ExFire_Effect2->Off();
+		ExFire_Effect3->Off();
+	}
+	else if (ExceedCount == 2)
+	{
+		ExFire_Effect1->On();
+		ExFire_Effect2->On();
+		ExFire_Effect3->Off();
+	}
+	else if (ExceedCount == 3)
+	{
+		ExFire_Effect1->On();
+		ExFire_Effect2->On();
+		ExFire_Effect3->On();
+	}
 }
 
