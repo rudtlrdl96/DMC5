@@ -483,6 +483,9 @@
     <ClInclude Include="StatueB.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClInclude>
+    <ClInclude Include="BGMPlayer.h">
+      <Filter>Component\Sound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -963,6 +966,9 @@
     </ClCompile>
     <ClCompile Include="PlayerActor_Vergil_Net.cpp">
       <Filter>Actor\Player\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="BGMPlayer.cpp">
+      <Filter>Component\Sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

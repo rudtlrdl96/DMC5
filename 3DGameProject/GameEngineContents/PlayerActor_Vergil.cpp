@@ -11,6 +11,7 @@
 #include "ColorEffect.h"
 #include "PlayerCamera.h"
 #include "RankUI.h"
+#include "BGMPlayer.h"
 PlayerActor_Vergil::~PlayerActor_Vergil()
 {
 }
@@ -85,6 +86,9 @@ void PlayerActor_Vergil::Start()
 
 void PlayerActor_Vergil::PlayerLoad()
 {
+	BGMPlayer::BGMLoad();
+	BGMPlayer::SetCharater(PlayerType::Vergil);
+	BGMPlayer::SetBattleBGM();
 	// Effect »ý¼º
 	{
 		EffectSystem = CreateComponent<FXSystem>();
