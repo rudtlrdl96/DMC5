@@ -24,6 +24,25 @@ public:
 		GameEngineSound::Play(std::string(_Name) + std::to_string(_Number) + ".wav").SetVolume(VFXVolume);
 	}
 
+	bool IsVoicePlay()
+	{
+		if (true == VoicePlayer.IsValid())
+		{
+			bool IsPlaying = false;
+			VoicePlayer.isPlaying(&IsPlaying);
+			return IsPlaying;
+		}
+		return false;
+	}
+
+	void VoiceStop()
+	{
+		if (true == IsVoicePlay())
+		{
+			VoicePlayer.Stop();
+		}
+	}
+
 	void PlaySetVolume(const std::string_view& _Name, int _Number, float _Volume)
 	{
 		GameEngineSound::Play(std::string(_Name) + std::to_string(_Number) + ".wav").SetVolume(VFXVolume * _Volume);
@@ -41,15 +60,12 @@ public:
 
 	void PlayVoice(int _Number, bool _DTValue = false)
 	{
-		if (true == VoicePlayer.IsValid())
+		if (true == IsVoicePlay())
 		{
-			bool IsPlaying = false;
-			VoicePlayer.isPlaying(&IsPlaying);
-			if (true == IsPlaying)
-			{
-				VoicePlayer.Stop();
-			}
+			if (true == NoSkip) { return; }
+			VoiceStop();
 		}
+		NoSkip = false;
 		if (true == _DTValue)
 		{
 			VoicePlayer = GameEngineSound::Play(VoiceName + "DT_" + std::to_string(_Number) + ".wav");
@@ -67,11 +83,17 @@ public:
 		PlayVoice(GameEngineRandom::MainRandom.RandomInt(_Min, _Max), _DTValue);
 	}
 
+	void NoSkipOn()
+	{
+		NoSkip = true;
+	}
+
 	float VFXVolume = 1.0f;
 	float VoiceVolume = 1.0f;
 protected:
 
 private:
+	bool NoSkip = false;
 	GameEngineSoundPlayer VoicePlayer;
 	std::string VoiceName;
 };

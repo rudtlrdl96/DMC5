@@ -979,6 +979,9 @@
     <ClCompile Include="PlayerActor_Nero_Net.cpp">
       <Filter>Actor\Player\Character</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerActor_Vergil_Net.cpp">
+      <Filter>Actor\Player\Character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">

@@ -104,7 +104,7 @@ void TestLevel::LevelChangeStart()
 
 	if (nullptr == Player)
 	{
-		if (true)
+		if (false)
 		{
 			Player = CreateActor<PlayerActor_Nero>();
 			Player->GetPhysXComponent()->SetWorldPosition({ -1200, 100, -1300 });
@@ -180,12 +180,12 @@ void TestLevel::LevelChangeStart()
 	//	HellAntenora->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
 
-	if (nullptr == GreenEmpusa)
-	{
-		GreenEmpusa = CreateActor<Enemy_GreenEmpusa>();
-		GreenEmpusa->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-		GreenEmpusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	}
+	//if (nullptr == GreenEmpusa)
+	//{
+	//	GreenEmpusa = CreateActor<Enemy_GreenEmpusa>();
+	//	GreenEmpusa->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//	GreenEmpusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	//}
 
 	//GameEngineCoreWindow::Clear();
 	//GameEngineCoreWindow::AddDebugRenderTarget(0, "Forward Target", GetCamera(100)->GetCamForwardTarget());

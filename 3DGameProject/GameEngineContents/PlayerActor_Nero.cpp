@@ -3187,7 +3187,6 @@ void PlayerActor_Nero::PlayerLoad()
 			}
 			});
 
-
 		// Provocation 1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Provocation,
 		.Start = [=] {
@@ -3514,7 +3513,7 @@ void PlayerActor_Nero::PlayerLoad()
 
 void PlayerActor_Nero::SoundLoad()
 {
-	if (nullptr != GameEngineSound::Find("Nero_V_00.wav")) { return; }
+	if (nullptr != GameEngineSound::Find("Nero_V_0.wav")) { return; }
 
 	GameEngineDirectory NewDir;
 	NewDir.MoveParentToDirectory("ContentResources");

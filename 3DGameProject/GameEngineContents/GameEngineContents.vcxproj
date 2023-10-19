@@ -870,6 +870,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="PlayerActor_Vergil_Net.cpp" />
     <ClCompile Include="Player_MirageBlade.cpp">
       <SubType>
       </SubType>
