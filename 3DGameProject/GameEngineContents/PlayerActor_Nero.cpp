@@ -3649,7 +3649,7 @@ void PlayerActor_Nero::HeavyDamage()
 void PlayerActor_Nero::AddDTGauge(float _Value)
 {
 	DTGauge = std::min<float>(10.0f, DTGauge + _Value);
-	//HPRender->GetDtUI()->ActivateDtUI(DTGauge);
+	HPRender->GetDtUI()->ActivateDtUI(DTGauge);
 	BaseLog::PushLog(0, "DT : " + std::to_string(DTGauge));
 }
 bool PlayerActor_Nero::Input_SwordCheck(int AddState /*= 0*/)

@@ -58,14 +58,36 @@ void UI_DTGauge::Update(float _DeltaTime)
 
 void UI_DTGauge::ActivateDtUI(float _DtGauge)
 {
-	ActiveCount = static_cast<int>(_DtGauge);
-	if (DTGauges[ActiveCount]->GetMulColor() != float4{ 0.59f,0.588f,0.2925f,1.0f })
+	// 0 ~ 10
+	//ActiveCount = static_cast<int>(_DtGauge);	// 소수점 버리고
+	ActiveCount = static_cast<int>(std::ceil(_DtGauge));	// 올림
+
+	for (int i = 0; i < ActiveCount; i++)
 	{
-		DTGauges[ActiveCount]->SetMulColor({ 0.59f,0.588f,0.2925f,1.0f });
-		DTGauges[ActiveCount]->SetAddColor({ 0.29f,0.088f,0.0925f,0.0f });
+		DTGauges[i]->SetMulColor({ 0.59f,0.588f,0.2925f,1.0f });
+		DTGauges[i]->SetAddColor({ 0.29f,0.088f,0.0925f,0.0f });
+		DTGaugeBars[i]->On();
+		DTGaugeBars[i]->ColorOptionValue.MulColor = { 1.0f, 1.0f, 1.0f, std::clamp(_DtGauge - static_cast<float>(i), 0.0f, 1.0f) };
 	}
-	DTGaugeBars[ActiveCount]->On();
-	DTGaugeBars[ActiveCount]->ColorOptionValue.MulColor = { 1.0f, 1.0f, 1.0f,_DtGauge - static_cast<float>(ActiveCount)};
+
+	for (int i = ActiveCount; i < 10; i++)
+	{
+		DTGauges[i]->SetMulColor(float4::ZERO);
+		DTGauges[i]->SetAddColor(float4::ZERONULL);
+
+		DTGaugeBars[i]->Off();
+	}
+
+	//DTGauges[ActiveCount]->SetMulColor({ 0.59f,0.588f,0.2925f,1.0f });
+	//DTGauges[ActiveCount]->SetAddColor({ 0.29f,0.088f,0.0925f,0.0f });
+	//DTGaugeBars[ActiveCount]->On();
+	//DTGaugeBars[ActiveCount]->ColorOptionValue.MulColor = { 1.0f, 1.0f, 1.0f,_DtGauge - static_cast<float>(ActiveCount)};
+
+	//for (int i = 0; i < ActiveCount; i++)
+	//{
+	//	DTGaugeBars[ActiveCount]->On();
+	//	DTGaugeBars[ActiveCount]->ColorOptionValue.MulColor = float4::ONE;
+	//}
 }
 
 //void UI_DTGauge::Transfor(float _Delta)
