@@ -165,8 +165,14 @@ void Enemy_HellAntenora::Start()
 	EnemyRenderer->GetTransform()->AddLocalPosition({ 0.0f, -45.0f, 0.0f });
 
 	// 콜리전 옵션, 크기 설정
-	MonsterAttackCollision->SetAttackData(DamageType::Light, 0);
+	MonsterAttackCollision->SetAttackData(DamageType::Light, 100);
 	MonsterAttackCollision->SetColType(ColType::OBBBOX3D);
+
+	MonsterAttackCollision_Two = CreateComponent<AttackCollision>(CollisionOrder::EnemyAttack);
+	MonsterAttackCollision_Two->GetTransform()->SetWorldScale(float4::ZERO);
+	MonsterAttackCollision_Two->SetAttackData(DamageType::Light, 100);
+	MonsterAttackCollision_Two->SetColType(ColType::OBBBOX3D);
+
 	MonsterCollision->GetTransform()->SetLocalScale({ 80, 210, 70 });
 	MonsterCollision->GetTransform()->SetLocalPosition({ 0, 65, 0 });
 	MonsterCollision->SetColType(ColType::OBBBOX3D);
@@ -178,15 +184,31 @@ void Enemy_HellAntenora::Start()
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
 
 	//MonsterCollision->Off();
-	//RN_MonsterCollision->Off();
-	MonsterAttackCollision->SetAttackData(DamageType::Heavy, 120);
-	MonsterAttackCollision->Off();
+	RN_MonsterCollision->Off();
 
 	// 무기 붙이기
-	//LeftWeapon->GetTransform()->SetLocalScale({ 2.f , 2.f , 2.f });
+	EnemyRenderer->SetAttachTransform("L_WeaponHand", LeftWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 170.0f, 180.0f), true);
+	EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 170.0f, 180.0f), true);
 
-	EnemyRenderer->SetAttachTransform("L_WeaponHand", LeftWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 180.0f, 180.0f), true);
-	EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 180.0f, 180.0f), true);
+	float4 MeshScale_L = LeftWeapon->GetMeshScale();
+	// MeshScale = { 77.6 , 10.5 , 171.0 }
+	MeshScale_L.x *= 0.7f;
+	MeshScale_L.z *= 0.6f;
+	float4 MeshScale_R = RightWeapon->GetMeshScale();
+	MeshScale_R.x *= 0.7f;
+	MeshScale_R.z *= 0.6f;
+
+	MonsterAttackCollision->GetTransform()->SetWorldScale(MeshScale_L);
+	MonsterAttackCollision_Two->GetTransform()->SetWorldScale(MeshScale_R);
+
+	MonsterAttackCollision->GetTransform()->SetParent(LeftWeapon->GetTransform());
+	MonsterAttackCollision_Two->GetTransform()->SetParent(RightWeapon->GetTransform());
+
+	MonsterAttackCollision->GetTransform()->AddLocalPosition(float4{0.0f, 0.0f, 80.0f});
+	MonsterAttackCollision_Two->GetTransform()->AddLocalPosition(float4{0.0f, 0.0f, 80.0f});
+
+	MonsterAttackCollision->GetTransform()->AddLocalRotation(float4{ 0.0f, -10.0f, 0.0f });
+	MonsterAttackCollision_Two->GetTransform()->AddLocalRotation(float4{ 0.0f, -10.0f, 0.0f });
 
 	// 넷 오브젝트 타입 설정1
 	SetNetObjectType(Net_ActorType::HellCaina);
@@ -229,6 +251,18 @@ void Enemy_HellAntenora::Start()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////// 움직임, 히트 관련 ///////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Enemy_HellAntenora::MonsterAttackCollisionOn()
+{
+	MonsterAttackCollision->On();
+	MonsterAttackCollision_Two->On();
+}
+
+void Enemy_HellAntenora::MonsterAttackCollisionOff()
+{
+	MonsterAttackCollision->Off();
+	MonsterAttackCollision_Two->Off();
+}
 
 void Enemy_HellAntenora::DeathCheck()
 {

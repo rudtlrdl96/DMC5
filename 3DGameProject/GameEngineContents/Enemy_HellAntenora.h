@@ -40,6 +40,8 @@ private:
 	void ChangeState(int _StateValue);
 	void ChangeState_Client(int _StateValue);
 	void AttackCalculation();
+	void MonsterAttackCollisionOn();
+	void MonsterAttackCollisionOff();
 
 	float WaitTime = 0.0f;
 	float RunTime = 0.0f;

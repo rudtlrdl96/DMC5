@@ -92,15 +92,16 @@ protected:
 	virtual void RecognizeCollisionCheck(float _DeltaTime) = 0;
 	virtual void DeathCheck() = 0;
 
-	std::shared_ptr<class GameEngineFBXRenderer> EnemyRenderer = nullptr;     // 랜더러
-
-	std::shared_ptr<class GameEngineFBXRenderer> LeftWeapon = nullptr;        // 무기가 있으면 이용
-	std::shared_ptr<class GameEngineFBXRenderer> RightWeapon = nullptr;       // 무기가 있으면 이용
-
-	std::shared_ptr<class PhysXCapsuleComponent> PhysXCapsule = nullptr;      // 피직스 컴포넌트
-	std::shared_ptr<class GameEngineCollision> MonsterCollision = nullptr;    // 몬스터 자체 콜리전
-	std::shared_ptr<class AttackCollision> MonsterAttackCollision = nullptr;  // 몬스터 공격 콜리전
-	std::shared_ptr<class GameEngineCollision> RN_MonsterCollision = nullptr; // 몬스터 공격 범위 인식 콜리전
+	std::shared_ptr<class GameEngineFBXRenderer> EnemyRenderer = nullptr;         // 랜더러
+																			      
+	std::shared_ptr<class GameEngineFBXRenderer> LeftWeapon = nullptr;            // 무기가 있으면 이용
+	std::shared_ptr<class GameEngineFBXRenderer> RightWeapon = nullptr;           // 무기가 있으면 이용
+																			      
+	std::shared_ptr<class PhysXCapsuleComponent> PhysXCapsule = nullptr;          // 피직스 컴포넌트
+	std::shared_ptr<class GameEngineCollision> MonsterCollision = nullptr;        // 몬스터 자체 콜리전
+	std::shared_ptr<class AttackCollision> MonsterAttackCollision = nullptr;      // 몬스터 공격 콜리전
+	std::shared_ptr<class AttackCollision> MonsterAttackCollision_Two = nullptr;  // 몬스터 공격 콜리전
+	std::shared_ptr<class GameEngineCollision> RN_MonsterCollision = nullptr;     // 몬스터 공격 범위 인식 콜리전
 
 	//하위에서 설정해줘야하는 Data들=====================================================
 	EnemyCode EnemyCodeValue = EnemyCode::None;
