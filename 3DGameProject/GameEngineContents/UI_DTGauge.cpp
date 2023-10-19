@@ -52,7 +52,8 @@ void UI_DTGauge::Update(float _DeltaTime)
 	{
 		IsTrans = true;
 	}
-	Transfor(_DeltaTime);
+	DTElectroEffect->On();
+	DTElectroEffect_Down->On();
 	if (IsTrans == true)
 	{
 		DTElectroEffect->On();
@@ -94,10 +95,10 @@ void UI_DTGauge::ActivateDtUI(float _DtGauge)
 void UI_DTGauge::TransforDtUT()
 {
 	float Ratio = std::clamp(DTIndex / 10.0f, 0.0f, 1.0f);
-	DTElectroEffect->GetTransform()->SetLocalScale({ 50.0f,138.0f * Ratio,3.0f });
-	DTElectroEffect_Down->GetTransform()->SetLocalScale({50.0f,138.0f* Ratio,3.0f});
-	DTElectroEffect->GetTransform()->SetLocalPosition({ -530.0f-(65.0f * Ratio),376.0f,-150.0f});
-	DTElectroEffect_Down->GetTransform()->SetLocalPosition({ -530.0f-(65.0f * Ratio),376.0f,-150.0f});
+	DTElectroEffect->GetTransform()->SetLocalScale({ 50.0f,138.0f * -Ratio,3.0f });
+	DTElectroEffect_Down->GetTransform()->SetLocalScale({50.0f,138.0f* -Ratio,3.0f});
+	DTElectroEffect->GetTransform()->SetLocalPosition({ -591.0f+(65.0f * Ratio),376.0f,-150.0f});
+	DTElectroEffect_Down->GetTransform()->SetLocalPosition({ -591.0f+(65.0f * Ratio),376.0f,-150.0f});
 }
 
 //void UI_DTGauge::Transfor(float _Delta)
