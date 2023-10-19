@@ -105,7 +105,9 @@ void PlayerActor_Nero::Start()
 void PlayerActor_Nero::PlayerLoad()
 {
 	GetLevel()->CreateActor<NeroItemGlass>();
-	HPRender = GetLevel()->CreateActor<NeroHPUI>();
+	HUD = GetLevel()->CreateActor<NeroHPUI>();
+	HUD->SetPlayerHP(HP);
+
 	GetLevel()->CreateActor <RankUI>();
 	// Effect »ý¼º
 	{
@@ -2085,12 +2087,12 @@ void PlayerActor_Nero::PlayerLoad()
 		// Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Shoot,
 			.Start = [=] {
-				if (true == HPRender->IsChargeBullet())
+				if (true == HUD->IsChargeBullet())
 				{
 					Sound.Play("BR_", 1);
 					EffectSystem->PlayFX("BR_Shoot_Charge.effect");
 					Col_Attack->SetAttackData(DamageType::Light, 100, std::bind(&GameEngineObjectBase::Off, Col_Attack));
-					HPRender->ShootBullet();
+					HUD->ShootBullet();
 				}
 				else
 				{
@@ -2153,12 +2155,12 @@ void PlayerActor_Nero::PlayerLoad()
 		// Air Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_AirShoot,
 			.Start = [=] {
-				if (true == HPRender->IsChargeBullet())
+				if (true == HUD->IsChargeBullet())
 				{
 					Sound.Play("BR_", 1);
 					EffectSystem->PlayFX("BR_Shoot_Charge.effect");
 					Col_Attack->SetAttackData(DamageType::Light, 100, std::bind(&GameEngineObjectBase::Off, Col_Attack));
-					HPRender->ShootBullet();
+					HUD->ShootBullet();
 				}
 				else
 				{
@@ -3044,7 +3046,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// DT Start
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_DT_Start,
 		.Start = [=] {
-			HPRender->GetDtUI()->SetTransValue(true);
+			HUD->GetDtUI()->SetTransValue(true);
 			Sound.Play("DT_On");
 			Sound.PlayVoiceRandom(34, 36, true);
 			WeaponIdle();
@@ -3085,7 +3087,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// DT Air Start
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_DT_AirStart,
 			.Start = [=] {
-				HPRender->GetDtUI()->SetTransValue(true);
+				HUD->GetDtUI()->SetTransValue(true);
 				Sound.Play("DT_On");
 				Sound.PlayVoiceRandom(34, 36, true);
 				WeaponIdle();
@@ -3579,7 +3581,7 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 		if (true == DTValue)
 		{
 			HP = std::clamp(static_cast<int>(HP + 200 * _DeltaTime), 0, MaxHP);
-			HPRender->SetPlayerHP(HP);
+			HUD->SetPlayerHP(HP);
 		}
 
 		ItemColCheck();
@@ -3621,7 +3623,7 @@ void PlayerActor_Nero::ItemColCheck()
 
 void PlayerActor_Nero::LightDamage()
 {
-	HPRender->SetPlayerHP(HP);
+	HUD->SetPlayerHP(HP);
 	if (true == FloorCheck())
 	{
 		if (HP <= 0)
@@ -3639,7 +3641,7 @@ void PlayerActor_Nero::LightDamage()
 }
 void PlayerActor_Nero::HeavyDamage()
 {
-	HPRender->SetPlayerHP(HP);
+	HUD->SetPlayerHP(HP);
 	if (true == FloorCheck())
 	{
 		if (HP <= 0)
@@ -3659,10 +3661,10 @@ void PlayerActor_Nero::AddDTGauge(float _Value)
 	if (true == DTValue && 0 < _Value) { return; }
 
 	DTGauge = std::clamp(DTGauge + _Value, 0.0f, 10.0f);
-	HPRender->GetDtUI()->ActivateDtUI(DTGauge);
+	HUD->GetDtUI()->ActivateDtUI(DTGauge);
 	if (DTGauge <= 0.0f)
 	{
-		HPRender->GetDtUI()->SetTransValue(false);
+		HUD->GetDtUI()->SetTransValue(false);
 		Sound.Play("DT_Off");
 		DTValue = false;
 		DTOffEffect->Play();
@@ -3941,13 +3943,13 @@ bool PlayerActor_Nero::Input_SpecialCheck()
 		{
 			Sound.Play("RQ_MaxAct");
 			ExceedLevel = 3;
-			HPRender->SetExceedCount(ExceedLevel);
+			HUD->SetExceedCount(ExceedLevel);
 		}
 		else if (true == IsExActTiming)
 		{
 			Sound.Play("RQ_ExAct");
 			ExceedLevel = std::clamp(ExceedLevel + 1, 1, 3);
-			HPRender->SetExceedCount(ExceedLevel);
+			HUD->SetExceedCount(ExceedLevel);
 		}
 		else
 		{
@@ -3975,7 +3977,7 @@ bool PlayerActor_Nero::Input_SpecialCheck()
 			}
 			return false;
 		}
-		HPRender->GetDtUI()->SetTransValue(false);
+		HUD->GetDtUI()->SetTransValue(false);
 		Sound.Play("DT_Off");
 		DTValue = false;
 		DTOffEffect->Play();
@@ -4001,13 +4003,13 @@ bool PlayerActor_Nero::Input_SpecialCheckFly()
 		{
 			Sound.Play("RQ_MaxAct");
 			ExceedLevel = 3;
-			HPRender->SetExceedCount(ExceedLevel);
+			HUD->SetExceedCount(ExceedLevel);
 		}
 		else if (true == IsExActTiming)
 		{
 			Sound.Play("RQ_ExAct");
 			ExceedLevel = std::clamp(ExceedLevel + 1, 1, 3);
-			HPRender->SetExceedCount(ExceedLevel);
+			HUD->SetExceedCount(ExceedLevel);
 		}
 		else
 		{
@@ -4049,7 +4051,7 @@ bool PlayerActor_Nero::Input_SpecialCheckFly()
 			}
 			return false;
 		}
-		HPRender->GetDtUI()->SetTransValue(false);
+		HUD->GetDtUI()->SetTransValue(false);
 		Sound.Play("DT_Off");
 		DTValue = false;
 		DTOffEffect->Play();
@@ -4335,7 +4337,7 @@ void PlayerActor_Nero::SetExActTiming()
 void PlayerActor_Nero::UseExceed(int _Level)
 {
 	ExceedLevel = std::clamp(ExceedLevel - _Level, 0, 3);
-	HPRender->SetExceedCount(ExceedLevel);
+	HUD->SetExceedCount(ExceedLevel);
 }
 
 int PlayerActor_Nero::DamageCalculate(int _Damage, bool _IsSkill /* = false */)
