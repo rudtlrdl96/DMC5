@@ -22,7 +22,10 @@ public:
 		ExceedCount = _Ex;
 	}
 	bool IsChargeBullet();
-
+	std::shared_ptr<class UI_DTGauge> GetDtUI()
+	{
+		return UI_DTGaugeBar;
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
