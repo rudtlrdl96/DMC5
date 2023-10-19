@@ -150,13 +150,13 @@ void TestLevel::LevelChangeStart()
 	//	Empusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
 
-	if (nullptr == Cavaliere)
-	{
-		Cavaliere = CreateActor<CavaliereAngelo>();
-		Cavaliere->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-		Cavaliere->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-		Player->SetBossCam(Cavaliere->GetTransform());
-	}
+	//if (nullptr == Cavaliere)
+	//{
+	//	Cavaliere = CreateActor<CavaliereAngelo>();
+	//	Cavaliere->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//	Cavaliere->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	//	Player->SetBossCam(Cavaliere->GetTransform());
+	//}
 
 	if (nullptr == Flat)
 	{
@@ -164,12 +164,12 @@ void TestLevel::LevelChangeStart()
 		Flat->GetPhysXComponent()->SetWorldPosition({ 0, -50, 0 });
 	}
 
-	//if (nullptr == HellAntenora)
-	//{
-	//	HellAntenora = CreateActor<Enemy_HellAntenora>();
-	//	HellAntenora->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	//	HellAntenora->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	//}
+	if (nullptr == HellAntenora)
+	{
+		HellAntenora = CreateActor<Enemy_HellAntenora>();
+		HellAntenora->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+		HellAntenora->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	}
 
 	//GameEngineCoreWindow::Clear();
 	//GameEngineCoreWindow::AddDebugRenderTarget(0, "Forward Target", GetCamera(100)->GetCamForwardTarget());

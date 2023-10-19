@@ -70,7 +70,7 @@ void Enemy_Empusa::EnemyMeshLoad()
 	}
 
 	EnemyRenderer->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
-	EnemyRenderer->GetTransform()->SetLocalScale({ 0.8f , 0.8f , 0.8f });
+	//EnemyRenderer->GetTransform()->SetLocalScale({ 0.8f , 0.8f , 0.8f });
 }
 
 void Enemy_Empusa::EnemyAnimationLoad()
@@ -112,7 +112,7 @@ void Enemy_Empusa::Start()
 	//PhysX(충돌)
 	PhysXCapsule = CreateComponent<PhysXCapsuleComponent>();
 	PhysXCapsule->SetPhysxMaterial(0, 0, 0);
-	PhysXCapsule->CreatePhysXActors({ 90, 90, 90 });
+	PhysXCapsule->CreatePhysXActors({ 90, 110, 90 });
 	PhysXCapsule->GetDynamic()->setMass(80.0f);
 	BindPhysicsWithNet(PhysXCapsule);
 
@@ -122,8 +122,8 @@ void Enemy_Empusa::Start()
 	// 콜리전 옵션, 크기 설정
 	MonsterAttackCollision->SetAttackData(DamageType::Light, 0);
 	MonsterAttackCollision->SetColType(ColType::OBBBOX3D);
-	MonsterCollision->GetTransform()->SetLocalScale({ 80, 180, 70 });
-	MonsterCollision->GetTransform()->SetLocalPosition({ 0, 50, 0 });
+	MonsterCollision->GetTransform()->SetLocalScale({ 80, 210, 70 });
+	MonsterCollision->GetTransform()->SetLocalPosition({ 0, 65, 0 });
 	MonsterCollision->SetColType(ColType::OBBBOX3D);
 	RN_MonsterCollision->GetTransform()->SetLocalScale({ 600, 0, 0 });
 	RN_MonsterCollision->GetTransform()->SetLocalPosition({ 0, 80, 0 });

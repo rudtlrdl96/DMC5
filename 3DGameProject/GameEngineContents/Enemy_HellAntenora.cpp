@@ -68,7 +68,6 @@ void Enemy_HellAntenora::EnemyMeshLoad()
 	}
 
 	EnemyRenderer->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
-	EnemyRenderer->GetTransform()->SetLocalScale({ 0.8f , 0.8f , 0.8f });
 }
 
 void Enemy_HellAntenora::EnemyAnimationLoad()
@@ -118,18 +117,18 @@ void Enemy_HellAntenora::Start()
 	//PhysX(충돌)
 	PhysXCapsule = CreateComponent<PhysXCapsuleComponent>();
 	PhysXCapsule->SetPhysxMaterial(0, 0, 0);
-	PhysXCapsule->CreatePhysXActors({ 90, 90, 90 });
+	PhysXCapsule->CreatePhysXActors({ 90, 120, 90 });
 	PhysXCapsule->GetDynamic()->setMass(80.0f);
 	BindPhysicsWithNet(PhysXCapsule);
 
 	// 랜더러 크기 설정
-	EnemyRenderer->GetTransform()->AddLocalPosition({ 0.0f, -50.0f, 0.0f });
+	EnemyRenderer->GetTransform()->AddLocalPosition({ 0.0f, -45.0f, 0.0f });
 
 	// 콜리전 옵션, 크기 설정
 	MonsterAttackCollision->SetAttackData(DamageType::Light, 0);
 	MonsterAttackCollision->SetColType(ColType::OBBBOX3D);
-	MonsterCollision->GetTransform()->SetLocalScale({ 80, 180, 70 });
-	MonsterCollision->GetTransform()->SetLocalPosition({ 0, 50, 0 });
+	MonsterCollision->GetTransform()->SetLocalScale({ 80, 210, 70 });
+	MonsterCollision->GetTransform()->SetLocalPosition({ 0, 65, 0 });
 	MonsterCollision->SetColType(ColType::OBBBOX3D);
 	RN_MonsterCollision->GetTransform()->SetLocalScale({ 600, 0, 0 });
 	RN_MonsterCollision->GetTransform()->SetLocalPosition({ 0, 80, 0 });
@@ -138,11 +137,13 @@ void Enemy_HellAntenora::Start()
 	FallDistance = 55.0f;
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
 
-	MonsterAttackCollision->SetAttackData(DamageType::Light, 100);
+	//MonsterCollision->Off();
+	//RN_MonsterCollision->Off();
+	MonsterAttackCollision->SetAttackData(DamageType::Heavy, 120);
 	MonsterAttackCollision->Off();
 
 	// 넷 오브젝트 타입 설정
-	SetNetObjectType(Net_ActorType::HellAntenora);
+	SetNetObjectType(Net_ActorType::HellCaina);
 
 	LinkData_UpdatePacket<bool>(AnimationTurnStart);
 	LinkData_UpdatePacket<bool>(IsHeavyAttack);
