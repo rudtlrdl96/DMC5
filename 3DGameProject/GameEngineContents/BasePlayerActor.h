@@ -102,6 +102,7 @@ protected:
 	std::shared_ptr<class FXSystem> DTOffEffect = nullptr;
 	float4 Rot = float4::ZERO;
 
+	const int MaxHP = 10000;
 	int HP = 10000;
 	int FSMValue = -1;
 	int ArmValue;

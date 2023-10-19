@@ -3044,6 +3044,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// DT Start
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_DT_Start,
 		.Start = [=] {
+			HPRender->GetDtUI()->SetTransValue(true);
 			Sound.Play("DT_On");
 			Sound.PlayVoiceRandom(34, 36, true);
 			WeaponIdle();
@@ -3084,6 +3085,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// DT Air Start
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_DT_AirStart,
 			.Start = [=] {
+				HPRender->GetDtUI()->SetTransValue(true);
 				Sound.Play("DT_On");
 				Sound.PlayVoiceRandom(34, 36, true);
 				WeaponIdle();
@@ -3574,6 +3576,12 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 
 	if (NetControllType::ActiveControll == GameEngineNetObject::GetControllType())
 	{
+		if (true == DTValue)
+		{
+			HP = std::clamp(static_cast<int>(HP + 200 * _DeltaTime), 0, MaxHP);
+			HPRender->SetPlayerHP(HP);
+		}
+
 		ItemColCheck();
 		if (GameEngineInput::IsDown("SelectLevel_01"))
 		{
@@ -3648,9 +3656,19 @@ void PlayerActor_Nero::HeavyDamage()
 }
 void PlayerActor_Nero::AddDTGauge(float _Value)
 {
-	DTGauge = std::min<float>(10.0f, DTGauge + _Value);
+	if (true == DTValue && 0 < _Value) { return; }
+
+	DTGauge = std::clamp(DTGauge + _Value, 0.0f, 10.0f);
 	HPRender->GetDtUI()->ActivateDtUI(DTGauge);
-	BaseLog::PushLog(0, "DT : " + std::to_string(DTGauge));
+	if (DTGauge <= 0.0f)
+	{
+		HPRender->GetDtUI()->SetTransValue(false);
+		Sound.Play("DT_Off");
+		DTValue = false;
+		DTOffEffect->Play();
+		SetHuman();
+		OnDevilBraeker();
+	}
 }
 bool PlayerActor_Nero::Input_SwordCheck(int AddState /*= 0*/)
 {
@@ -3949,10 +3967,15 @@ bool PlayerActor_Nero::Input_SpecialCheck()
 	{
 		if (false == DTValue)
 		{
-			DTValue = true;
-			ChangeState(FSM_State_Nero::Nero_DT_Start);
-			return true;
+			if (3 <= DTGauge)
+			{
+				DTValue = true;
+				ChangeState(FSM_State_Nero::Nero_DT_Start);
+				return true;
+			}
+			return false;
 		}
+		HPRender->GetDtUI()->SetTransValue(false);
 		Sound.Play("DT_Off");
 		DTValue = false;
 		DTOffEffect->Play();
@@ -4018,10 +4041,15 @@ bool PlayerActor_Nero::Input_SpecialCheckFly()
 	{
 		if (false == DTValue)
 		{
-			DTValue = true;
-			ChangeState(FSM_State_Nero::Nero_DT_AirStart);
-			return true;
+			if (3 <= DTGauge)
+			{
+				DTValue = true;
+				ChangeState(FSM_State_Nero::Nero_DT_AirStart);
+				return true;
+			}
+			return false;
 		}
+		HPRender->GetDtUI()->SetTransValue(false);
 		Sound.Play("DT_Off");
 		DTValue = false;
 		DTOffEffect->Play();
