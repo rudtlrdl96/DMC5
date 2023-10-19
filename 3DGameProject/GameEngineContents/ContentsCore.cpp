@@ -66,7 +66,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<ShopLevel>();
 	GameEngineCore::CreateLevel<EffectToolLevel>();
 	
-	GameEngineCore::ChangeLevel("AnimationToolLevel");
+	GameEngineCore::ChangeLevel("MainLevel");
 }
 
 void ContentsCore::GameEnd() 
