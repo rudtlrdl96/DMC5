@@ -52,57 +52,51 @@ void UI_DTGauge::Update(float _DeltaTime)
 	{
 		DTIndex++;
 	}
-	ActivateDT();
 	Transfor(_DeltaTime);
 
 }
 
-void UI_DTGauge::ActivateDT()
+void UI_DTGauge::ActivateDtUI(float _DtGauge)
 {
-	if (DTIndex > -1 && DTIndex < 10)
+	ActiveCount = static_cast<int>(_DtGauge);
+	if (DTGauges[ActiveCount]->GetMulColor() != float4{ 0.59f,0.588f,0.2925f,1.0f })
 	{
-		DTGaugeBars[DTIndex]->On();
-		DTGauges[DTIndex]->SetMulColor({ 0.59f,0.588f,0.2925f,1.0f });
-		DTGauges[DTIndex]->SetAddColor({ 0.29f,0.088f,0.0925f,0.0f });
+		DTGauges[ActiveCount]->SetMulColor({ 0.59f,0.588f,0.2925f,1.0f });
+		DTGauges[ActiveCount]->SetAddColor({ 0.29f,0.088f,0.0925f,0.0f });
 	}
-	if (DTIndex == 9)
-	{
-		DTElectroEffect->On();
-		DTElectroEffect_Down->On();
-		IsTrans = true;
-	}
-
+	DTGaugeBars[ActiveCount]->On();
+	DTGaugeBars[ActiveCount]->ColorOptionValue.MulColor = { 1.0f, 1.0f, 1.0f,_DtGauge - static_cast<float>(ActiveCount)};
 }
 
-void UI_DTGauge::Transfor(float _Delta)
-{
-	if (IsTrans == true)
-	{
-		TransforTime += _Delta;
-		DownTime += _Delta;
-		DTElectroEffect->GetTransform()->SetLocalScale(float4::LerpClamp({ 50.0f,138.0f,3.0f }, { 50.0f,0.0f,3.0f }, TransforTime/27.0f));
-		DTElectroEffect_Down->GetTransform()->SetLocalScale(float4::LerpClamp({ 50.0f,138.0f,3.0f }, { 50.0f,0.0f,3.0f }, TransforTime / 27.0f));
-		DTElectroEffect->GetTransform()->SetLocalPosition(float4::LerpClamp({ -530.0f,376.0f,-150.0f }, { -591.0f,376.0f,-150.0f }, TransforTime / 27.0f));
-		DTElectroEffect_Down->GetTransform()->SetLocalPosition(float4::LerpClamp({ -530.0f,376.0f,-150.0f }, { -591.0f,376.0f,-150.0f }, TransforTime / 27.0f));
-		if (DownTime >= 2.7f)
-		{
-			if (DTIndex >= 0)
-			{
-				DTGaugeBars[DTIndex]->Off();
-				DTGauges[DTIndex]->SetMulColor({ 0.0f,0.0f,0.0f,1.0f });
-				DTGauges[DTIndex]->SetAddColor({ 0.0f,0.0f,0.0f,0.0f });	
-				DTIndex--;
-				DownTime = 0.0f;
-			}
-			else
-			{
-				IsTrans = false;
-			}
-
-		}
-	}
-
-}
+//void UI_DTGauge::Transfor(float _Delta)
+//{
+//	if (IsTrans == true)
+//	{
+//		TransforTime += _Delta;
+//		DownTime += _Delta;
+//		DTElectroEffect->GetTransform()->SetLocalScale(float4::LerpClamp({ 50.0f,138.0f,3.0f }, { 50.0f,0.0f,3.0f }, TransforTime/27.0f));
+//		DTElectroEffect_Down->GetTransform()->SetLocalScale(float4::LerpClamp({ 50.0f,138.0f,3.0f }, { 50.0f,0.0f,3.0f }, TransforTime / 27.0f));
+//		DTElectroEffect->GetTransform()->SetLocalPosition(float4::LerpClamp({ -530.0f,376.0f,-150.0f }, { -591.0f,376.0f,-150.0f }, TransforTime / 27.0f));
+//		DTElectroEffect_Down->GetTransform()->SetLocalPosition(float4::LerpClamp({ -530.0f,376.0f,-150.0f }, { -591.0f,376.0f,-150.0f }, TransforTime / 27.0f));
+//		if (DownTime >= 2.7f)
+//		{
+//			if (DTIndex >= 0)
+//			{
+//				DTGaugeBars[DTIndex]->Off();
+//				DTGauges[DTIndex]->SetMulColor({ 0.0f,0.0f,0.0f,1.0f });
+//				DTGauges[DTIndex]->SetAddColor({ 0.0f,0.0f,0.0f,0.0f });	
+//				DTIndex--;
+//				DownTime = 0.0f;
+//			}
+//			else
+//			{
+//				IsTrans = false;
+//			}
+//
+//		}
+//	}
+//
+//}
 
 void UI_DTGauge::CreateDTBar(const std::string_view& _Png,  float4 _Pos, float4 _Scale)
 {
@@ -112,6 +106,7 @@ void UI_DTGauge::CreateDTBar(const std::string_view& _Png,  float4 _Pos, float4 
 	DTGauge->GetTransform()->SetLocalPosition(_Pos);
 	DTGauge->GetTransform()->SetLocalScale(_Scale);
 	DTGauge->Off();
+	DTGauge->ColorOptionValue.MulColor = float4::ZERONULL;
 	DTGaugeBars.push_back(DTGauge);
 	
 }
