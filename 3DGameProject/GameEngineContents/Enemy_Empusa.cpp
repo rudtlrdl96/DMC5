@@ -325,7 +325,7 @@ void Enemy_Empusa::AttackCalculation()
 	{
 		AnimationTurnStart = false;
 		RotationCheck();
-		PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
+		AllDirectSetting();
 		EnemyHitDirValue = EnemyHitDirect::Forward;
 	}
 
@@ -1286,7 +1286,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	IsHeavyAttack = true;
 	AttackCalculation();
 	RotationCheck();
-	PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
+	AllDirectSetting();
 	SetPush(50000.0f);
 	SetAir(42000.0f);
 	EnemyRenderer->ChangeAnimation("em0100_blown_back_start", true);
@@ -1311,7 +1311,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	IsAirAttack = true;
 	AttackCalculation();
 	RotationCheck();
-	PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
+	AllDirectSetting();
 	PhysXCapsule->SetAirState(110000.0f);
 	EnemyRenderer->ChangeAnimation("em0100_air_damage", true);
 	},
@@ -1454,7 +1454,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	AttackCalculation();
 	StartMonsterSnatch();
 	RotationCheck();
-	PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
+	AllDirectSetting();
 	EnemyRenderer->ChangeAnimation("em0100_snatch_loop");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1599,7 +1599,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	AttackCalculation();
 	BusterCalculation(float4{ 0.f, -45.f, 0.f });
 	RotationCheck();
-	PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
+	AllDirectSetting();
 	EnemyRenderer->ChangeAnimation("em0100_air_damage_under");
 	},
 	.Update = [=](float _DeltaTime) {

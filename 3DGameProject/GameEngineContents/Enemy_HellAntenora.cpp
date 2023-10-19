@@ -416,7 +416,7 @@ void Enemy_HellAntenora::AttackCalculation()
 	{
 		AnimationTurnStart = false;
 		RotationCheck();
-		PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
+		AllDirectSetting();
 		EnemyHitDirValue = EnemyHitDirect::Forward;
 	}
 
@@ -855,7 +855,6 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	IsHeavyAttack = true;
 	AttackCalculation();
 	RotationCheck();
-	//PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 	AllDirectSetting();
 	SetPush(50000.0f);
 	SetAir(42000.0f);
@@ -903,7 +902,6 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	IsAirAttack = true;
 	AttackCalculation();
 	RotationCheck();
-	//PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 	AllDirectSetting();
 	PhysXCapsule->SetAirState(110000.0f);
 	EnemyRenderer->ChangeAnimation("em0001_blown_up", true);
@@ -993,7 +991,7 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0001_blown_up_landing");
 	},
 	.Update = [=](float _DeltaTime) {
-	if (true == FloorCheck(FallDistance))
+	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_HellAntenora::HellAntenora_Prone_Getup);
 		return;
@@ -1072,7 +1070,6 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	AttackCalculation();
 	StartMonsterSnatch();
 	RotationCheck();
-	//PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 	AllDirectSetting();
 	EnemyRenderer->ChangeAnimation("em0001_snatch");
 	},
@@ -1201,7 +1198,6 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	IsBusterAttack = true;
 	BusterCalculation(float4{ 0.0f, -120.0f, 0.0f });
 	RotationCheck();
-	//PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 	AllDirectSetting();
 	//PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
 	EnemyRenderer->ChangeAnimation("em0001_buster_loop");

@@ -422,6 +422,8 @@ void BaseEnemyActor::RotationCheck()
 
 	if (0.0f == DotProductResult)
 	{
+		EnemyRotationValue = EnemyRotation::Forward;
+		DotProductValue = 0.0f;
 		return;
 	}
 
