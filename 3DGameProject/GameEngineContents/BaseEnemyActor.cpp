@@ -341,6 +341,9 @@ float BaseEnemyActor::MonsterAndPlayerDotProduct()
 	float4 PlayerPosition = Player->GetTransform()->GetWorldPosition();
 	float4 EnemyForWardVector = this->GetTransform()->GetWorldForwardVector();
 
+	PlayerPosition.y = 0.0f;
+	EnemyPosition.y = 0.0f;
+
 	EnemyForWardVector.y = 0;
 	EnemyForWardVector.Normalize();
 
@@ -349,6 +352,12 @@ float BaseEnemyActor::MonsterAndPlayerDotProduct()
 	ToPlayerVector.Normalize();
 
 	float DotProductResult = float4::DotProduct3D(EnemyForWardVector, ToPlayerVector);
+
+	if (true == isnan(DotProductResult))
+	{
+		DotProductResult = 0.0f;
+		return DotProductResult;
+	}
 
 	return DotProductResult;
 }
@@ -369,6 +378,9 @@ float BaseEnemyActor::MonsterAndPlayerDotProductDegree()
 	float4 PlayerPosition = Player->GetTransform()->GetWorldPosition();
 	float4 EnemyForWardVector = this->GetTransform()->GetWorldForwardVector();
 
+	PlayerPosition.y = 0.0f;
+	EnemyPosition.y = 0.0f;
+
 	EnemyForWardVector.y = 0;
 	EnemyForWardVector.Normalize();
 
@@ -378,9 +390,13 @@ float BaseEnemyActor::MonsterAndPlayerDotProductDegree()
 
 	float4 CrossResult = MonsterAndPlayerCross();
 
-	float4 Direct = PlayerPosition - EnemyPosition;
-	float4 RotationDirectNormal = Direct.NormalizeReturn();
-	RotationValue = float4::GetAngleVectorToVectorDeg(EnemyForWardVector, RotationDirectNormal);
+	RotationValue = float4::GetAngleVectorToVectorDeg(EnemyForWardVector, ToPlayerVector);
+
+	if (true == isnan(RotationValue))
+	{
+		RotationValue = 0.0f;
+		return RotationValue;
+	}
 
 	if (CrossResult.y < 0)
 	{
