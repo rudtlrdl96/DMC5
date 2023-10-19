@@ -98,6 +98,10 @@ void UI_DTGauge::ActivateDtUI(float _DtGauge)
 //
 //}
 
+void UI_DTGauge::Transfor(float _Delta)
+{
+}
+
 void UI_DTGauge::CreateDTBar(const std::string_view& _Png,  float4 _Pos, float4 _Scale)
 {
 

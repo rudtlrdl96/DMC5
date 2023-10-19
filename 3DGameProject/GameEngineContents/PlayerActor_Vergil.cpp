@@ -1588,6 +1588,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			WeaponIdle();
 			RotationToTarget();
 			SetInvincibility(0.5f);
+			IsEvade = true;
 			Renderer->ChangeAnimation("pl0300_Warp_Front_1", true);
 			EffectSystem->PlayFX("Vergil_Warp_1.effect");
 			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
@@ -1656,7 +1657,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			}
 		},
 		.End = [=] {
-
+			IsEvade = false;
 		} });
 		// Warp Back 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Back_1,
@@ -1664,6 +1665,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			WeaponIdle();
 			RotationToTarget();
 			SetInvincibility(0.5f);
+			IsEvade = true;
 			Renderer->ChangeAnimation("pl0300_Warp_Back_1");
 			EffectSystem->PlayFX("Vergil_Warp_1.effect");
 			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
@@ -1718,7 +1720,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			}
 		},
 		.End = [=] {
-
+			IsEvade = false;
 		}
 			});
 		// Warp Left 1
@@ -1727,6 +1729,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			WeaponIdle();
 			RotationToTarget();
 			SetInvincibility(0.5f);
+			IsEvade = true;
 			Renderer->ChangeAnimation("pl0300_Warp_Left_1");
 			EffectSystem->PlayFX("Vergil_Warp_1.effect");
 			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
@@ -1781,7 +1784,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			}
 		},
 		.End = [=] {
-
+			IsEvade = false;
 		}
 			});
 		// Warp Right 1
@@ -1790,6 +1793,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			WeaponIdle();
 			RotationToTarget();
 			SetInvincibility(0.5f);
+			IsEvade = true;
 			Renderer->ChangeAnimation("pl0300_Warp_Right_1", true);
 			EffectSystem->PlayFX("Vergil_Warp_1.effect");
 			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
@@ -1845,7 +1849,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			}
 		},
 		.End = [=] {
-
+			IsEvade = false;
 		} });
 
 		// Warp Up
@@ -2341,6 +2345,12 @@ void PlayerActor_Vergil::HeavyDamage()
 	{
 		ChangeState(FSM_State_Vergil::Vergil_Damage_Fly);
 	}
+}
+
+void PlayerActor_Vergil::AddDTGauge(float _Value)
+{
+	DTGauge = std::min<float>(10.0f, DTGauge + _Value);
+	BaseLog::PushLog(0, "DT : " + std::to_string(DTGauge));
 }
 
 void PlayerActor_Vergil::ChangeState(int _StateValue)

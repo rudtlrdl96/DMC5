@@ -15,11 +15,11 @@ public:
 	UI_DTGauge& operator=(const UI_DTGauge& _Other) = delete;
 	UI_DTGauge& operator=(UI_DTGauge&& _Other) noexcept = delete;
 
+	void ActivateDtUI(float _DtGauge);
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 private:
-	void ActivateDtUI(float _DtGauge);
 	void Transfor(float _Delta);
 	void CreateDTBar(const std::string_view& _Png , float4 _Pos,float4 _Scale);
 	std::shared_ptr<class UIEffectRenderer> DTElectroEffect = nullptr;

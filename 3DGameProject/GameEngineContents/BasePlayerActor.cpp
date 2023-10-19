@@ -226,6 +226,11 @@ void BasePlayerActor::UserControllLoad()
 	Col_LockOn->GetTransform()->SetLocalPosition({ 0, 0, 2500 });
 	Col_LockOn->SetColType(ColType::OBBBOX3D);
 	Col_LockOn->Off();
+
+	Col_Attack->SetDamageCallBack([=](float _Value)
+	{
+		AddDTGauge(_Value);
+	});
 }
 
 
@@ -308,13 +313,36 @@ void BasePlayerActor::StopTime(float _Time)
 
 void BasePlayerActor::DamageColCheck()
 {
-	// 무적시간 체크
-	if (0 < InvincibilityTime) { return; }
 	std::shared_ptr<GameEngineCollision> Col = Col_Player->Collision(CollisionOrder::EnemyAttack);
 	if (nullptr == Col) { return; }
 
 	std::shared_ptr<AttackCollision> AttackCol = std::dynamic_pointer_cast<AttackCollision>(Col);
 	if (nullptr == AttackCol) { return; }
+
+	// 무적시간 체크
+	if (0 < InvincibilityTime) {
+		if (false == IsEvade) { return; }
+		// 회피 상황시 스톱타임
+		SetTimeScale(0.1f);
+		GetLevel()->TimeEvent.AddEvent(0.1f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+		{
+			SetTimeScale(1.0f);
+		});
+		BaseEnemyActor* Enemy = dynamic_cast<BaseEnemyActor*>(Col->GetActor());
+		if (nullptr != Enemy)
+		{
+			Enemy->SetTimeScale(0.1f);
+			GetLevel()->TimeEvent.AddEvent(0.1f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				Enemy->SetTimeScale(1.0f);
+			});
+		}
+		RankUI::GetRankInst()->AddRankScore(30);
+		AddDTGauge(0.5f);
+		IsEvade = false;
+		return;
+	}
+
 	DamageData Data = AttackCol->GetDamage();
 	HP -= Data.DamageValue;
 	switch (Data.DamageTypeValue)

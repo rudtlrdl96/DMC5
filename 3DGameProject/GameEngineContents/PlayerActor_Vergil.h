@@ -138,6 +138,7 @@ protected:
 
 	void LightDamage() override;
 	void HeavyDamage() override;
+	void AddDTGauge(float _Value) override;
 private:
 	std::vector<std::shared_ptr<class Player_MirageBlade>> AllMirageBlades;
 	std::shared_ptr<class FXSystem> EffectSystem_Target = nullptr;

@@ -57,6 +57,9 @@ public:
 	virtual void SetDT(unsigned int _DTValue) = 0;
 	// Arm 상태 변환
 	virtual void SetArm(unsigned int _ArmValue) {}
+
+	virtual void AddDTGauge(float _Value) = 0;
+
 	void SetInvincibility(float _Time);
 
 	void SetBossCam(GameEngineTransform* _BossCam);
@@ -102,8 +105,10 @@ protected:
 	int HP = 10000;
 	int FSMValue = -1;
 	int ArmValue;
+	float DTGauge = 0.0f;
 	bool DTValue = false;
 	bool IsBossBattle = false;
+	bool IsEvade = false;
 private:
 	void DamageColCheck();
 	void OrbColCheck();

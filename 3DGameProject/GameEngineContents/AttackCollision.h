@@ -45,6 +45,10 @@ public:
 	{
 		CallBack_Parry = _CallBack;
 	}
+	void SetDamageCallBack(std::function<void(float)> _CallBack)
+	{
+		CallBack_Damage = _CallBack;
+	}
 	const DamageData& GetDamage()
 	{
 		if (nullptr != CallBack)
@@ -57,7 +61,11 @@ public:
 		}
 		if (true == IsPlayerCollision)
 		{
-			RankUI::GetRankInst()->AddRankScore(Data.DamageValue / 3);
+			RankUI::GetRankInst()->AddRankScore(Data.DamageValue / 2);
+			if (nullptr != CallBack_Damage)
+			{
+				CallBack_Damage(Data.DamageValue * 0.001f);
+			}
 		}
 		return Data;
 	}
@@ -163,6 +171,7 @@ private:
 	std::function<void()> CallBack = nullptr;
 	std::function<void(float)> CallBack_HitStop = nullptr;
 	std::function<void()> CallBack_Parry = nullptr;
+	std::function<void(float)> CallBack_Damage = nullptr;
 	float HitStopTime = 0;
 	bool IsPlayerCollision = false;
 	bool IsParryAttack = false;

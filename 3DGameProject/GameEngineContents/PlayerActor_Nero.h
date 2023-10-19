@@ -196,6 +196,7 @@ protected:
 	void ItemColCheck();
 	void LightDamage() override;
 	void HeavyDamage() override;
+	void AddDTGauge(float _Value) override;
 private:
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer_Overture = nullptr;
 	std::shared_ptr<class Player_Snatch> Snatch = nullptr;

@@ -179,10 +179,11 @@ protected:
 
 	//====================================================
 	// TimeScale Action
+public:
 	void HitStop(DamageType _Type);  // 입력된 DamageType에 따라 일정시간동안 타임스케일을 낮춥니다
 	void StopTime(float _DeltaTime); // 일정시간동안 타임스케일을 0으로 합니다. _Time 초 후 타임스케일은 1이 됩니다. CapsuleCollision은 Off됩니다
 	//====================================================
-
+protected:
 	//====================================================
 	// 방향 설정
 	float4 ForwardDirect = float4::ZERO;  // 몬스터의 전방

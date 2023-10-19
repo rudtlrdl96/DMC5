@@ -12,6 +12,7 @@
 #include "BaseEnemyActor.h"
 #include "NeroItemGlass.h"
 #include "NeroHPUI.h"
+#include "UI_DTGauge.h"
 #include "FXSystem.h"
 #include "PlayerCamera.h"
 #include "Player_Snatch.h"
@@ -43,6 +44,7 @@ void PlayerActor_Nero::Start()
 	BasePlayerActor::Start();
 	Col_Attack->SetParryCallBack([=]
 		{
+			AddDTGauge(1.5f);
 			Sound.Play("Nero_Parry");
 			SetTimeScale(0.2f);
 			GetLevel()->TimeEvent.AddEvent(0.4f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
@@ -1997,6 +1999,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
 				MoveCheck = false;
+				IsEvade = true;
 				BlueRoseOn();
 				SetInvincibility(0.5f);
 				Renderer->ChangeAnimation("pl0000_Evade_Left", true);
@@ -2030,6 +2033,7 @@ void PlayerActor_Nero::PlayerLoad()
 			},
 			.End = [=] {
 				WeaponIdle();
+				IsEvade = false;
 			}
 			});
 		// Evade
@@ -2041,6 +2045,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
 				MoveCheck = false;
+				IsEvade = true;
 				BlueRoseOn();
 				SetInvincibility(0.5f);
 				Renderer->ChangeAnimation("pl0000_Evade_Right", true);
@@ -2074,6 +2079,7 @@ void PlayerActor_Nero::PlayerLoad()
 			},
 			.End = [=] {
 				WeaponIdle();
+				IsEvade = false;
 			}
 			});
 		// Shoot
@@ -3639,6 +3645,12 @@ void PlayerActor_Nero::HeavyDamage()
 	{
 		ChangeState(FSM_State_Nero::Nero_Damage_Fly);
 	}
+}
+void PlayerActor_Nero::AddDTGauge(float _Value)
+{
+	DTGauge = std::min<float>(10.0f, DTGauge + _Value);
+	//HPRender->GetDtUI()->ActivateDtUI(DTGauge);
+	BaseLog::PushLog(0, "DT : " + std::to_string(DTGauge));
 }
 bool PlayerActor_Nero::Input_SwordCheck(int AddState /*= 0*/)
 {
