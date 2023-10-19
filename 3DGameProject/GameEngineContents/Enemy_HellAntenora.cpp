@@ -62,13 +62,13 @@ void Enemy_HellAntenora::EnemyMeshLoad()
 	LeftWeapon = CreateComponent<GameEngineFBXRenderer>();
 	RightWeapon = CreateComponent<GameEngineFBXRenderer>();
 	
-	if (nullptr == GameEngineFBXMesh::Find("em0001_00.FBX"))
+	if (nullptr == GameEngineFBXMesh::Find("wpem0001_00.FBX"))
 	{
 		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
 			{
 				"Character", "Enemy", "HellAntenora", "mesh"
 			},
-			"em0001_00.FBX");
+			"wpem0001_00.FBX");
 
 		GameEngineFBXMesh::Load(Path);
 	}
@@ -77,14 +77,14 @@ void Enemy_HellAntenora::EnemyMeshLoad()
 	{
 	case GameEngineOptionValue::Low:
 	{
-		LeftWeapon->SetFBXMesh("em0001_00.fbx", "FBX_Low");
-		RightWeapon->SetFBXMesh("em0001_00.fbx", "FBX_Low");
+		LeftWeapon->SetFBXMesh("wpem0001_00.fbx", "FBX_Low");
+		RightWeapon->SetFBXMesh("wpem0001_00.fbx", "FBX_Low");
 	}
 	break;
 	case GameEngineOptionValue::High:
 	{
-		LeftWeapon->SetFBXMesh("em0001_00.fbx", "FBX");
-		RightWeapon->SetFBXMesh("em0001_00.fbx", "FBX");
+		LeftWeapon->SetFBXMesh("wpem0001_00.fbx", "FBX");
+		RightWeapon->SetFBXMesh("wpem0001_00.fbx", "FBX");
 	}
 	break;
 	default:
@@ -183,12 +183,12 @@ void Enemy_HellAntenora::Start()
 	MonsterAttackCollision->Off();
 
 	// 무기 붙이기
-	LeftWeapon->GetTransform()->SetLocalScale({ 2.f , 2.f , 2.f });
+	//LeftWeapon->GetTransform()->SetLocalScale({ 2.f , 2.f , 2.f });
 
-	LeftWeapon->SetAttachTransform("L_WeaponHand", EnemyRenderer->GetTransform(), float4(-50.0f, 50.0f, 0.0f), float4(0.0f, 0.0f, 0.0f), true);
-	RightWeapon->SetAttachTransform("R_WeaponHand", EnemyRenderer->GetTransform(), float4(50.0f, 50.0f, 0.0f), float4(0.0f, 0.0f, 0.0f), true);
+	EnemyRenderer->SetAttachTransform("L_WeaponHand", LeftWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 180.0f, 180.0f), true);
+	EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 180.0f, 180.0f), true);
 
-	// 넷 오브젝트 타입 설정
+	// 넷 오브젝트 타입 설정1
 	SetNetObjectType(Net_ActorType::HellCaina);
 
 	LinkData_UpdatePacket<bool>(AnimationTurnStart);
@@ -637,7 +637,32 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0001_Idle_01_loop.fbx");
 	},
-	.Update = [=](float _DeltaTime) {
+	.Update = [=](float _DeltaTime) 
+	{
+	WaitTime += _DeltaTime;
+	if (0.5f <= WaitTime)
+	{
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Counter_Attack);
+		return;
+	}
+	},
+	.End = [=] {
+	WaitTime = 0.0f;
+	}
+		});
+
+	// 카운터어택
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Counter_Attack,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_Attack_counter_attack.fbx");
+	},
+	.Update = [=](float _DeltaTime) 
+	{
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Idle);
+		return;
+	}
 	},
 	.End = [=] {
 	}

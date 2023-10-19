@@ -3,6 +3,8 @@
 enum FSM_State_HellAntenora
 {
 	HellAntenora_Idle,
+
+	HellAntenora_Counter_Attack, //em0001_Attack_counter_attack
 };
 
 // Ό³Έν :
