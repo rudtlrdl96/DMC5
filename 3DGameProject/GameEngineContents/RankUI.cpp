@@ -153,11 +153,6 @@ void RankUI::Update(float _DeltaTime)
 {
 	RankFSM.Update(_DeltaTime);
 	SetInsideMesh();
-	if (true == GameEngineInput::IsDown("UI_Tab"))
-	{
-		RankScore += 10.0f;
-		ResetLiveTime();
-	}
 	if (RankScore > 1.1f)
 	{
 		DownScore += _DeltaTime;
