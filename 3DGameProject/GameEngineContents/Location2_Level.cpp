@@ -128,13 +128,13 @@ void Location2_Level::LevelChangeStart()
 	{
 		std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
 		Nero->SetUserControllType();
-		Nero->SetWorldPosition({ 0, 100, 0 });
+		Nero->SetWorldPosition(PlayerStartPos);
 	}
 	else
 	{
 		std::shared_ptr<PlayerActor_Vergil> Vergil = CreateActor<PlayerActor_Vergil>();
 		Vergil->SetUserControllType();
-		Vergil->SetWorldPosition({ 0, 100, 0 });
+		Vergil->SetWorldPosition(PlayerStartPos);
 	}
 
 	// 테스트용 코드

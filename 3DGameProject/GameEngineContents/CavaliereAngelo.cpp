@@ -167,6 +167,7 @@ void CavaliereAngelo::Start()
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
 
 	MonsterAttackCollision->SetAttackData(DamageType::Heavy, 200);
+	MonsterAttackCollision->Off();
 
 	// 넷 오브젝트 타입 설정
 	SetNetObjectType(Net_ActorType::CavaliereAngelo);
@@ -479,22 +480,32 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 		GetLevel()->TimeEvent.AddEvent(.316f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 			{
 				StartRenderShaking(8);
+				MinusEnemyHP(300);
+				HPSeverStackPlus(300);
 			});
 		GetLevel()->TimeEvent.AddEvent(.683f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 			{
 				StartRenderShaking(8);
+				MinusEnemyHP(300);
+				HPSeverStackPlus(300);
 			});
 		GetLevel()->TimeEvent.AddEvent(1.13f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 			{
 				StartRenderShaking(8);
+				MinusEnemyHP(300);
+				HPSeverStackPlus(300);
 			});
 		GetLevel()->TimeEvent.AddEvent(1.4f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 			{
 				StartRenderShaking(8);
+				MinusEnemyHP(300);
+				HPSeverStackPlus(300);
 			});
 		GetLevel()->TimeEvent.AddEvent(1.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 			{
 				StartRenderShaking(8);
+				MinusEnemyHP(300);
+				HPSeverStackPlus(300);
 			});
 		GetLevel()->TimeEvent.AddEvent(1.7f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 			{
@@ -503,6 +514,8 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 		GetLevel()->TimeEvent.AddEvent(2.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 			{
 				StartRenderShaking(8);
+				MinusEnemyHP(800);
+				HPSeverStackPlus(800);
 				SetTimeScale(0.0f);
 			});
 		GetLevel()->TimeEvent.AddEvent(3.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
