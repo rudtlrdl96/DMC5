@@ -17,6 +17,10 @@ public:
 	NeroHPUI& operator=(NeroHPUI&& _Other) noexcept = delete;
 	void SetPlayerHP(int _HP);
 	void ShootBullet();
+	void SetExceedCount(int _Ex)
+	{
+		ExceedCount = _Ex;
+	}
 	bool IsChargeBullet();
 
 protected:
@@ -36,5 +40,9 @@ private:
 	std::shared_ptr<class UI_DTGauge> UI_DTGaugeBar = nullptr;
 	std::shared_ptr<class UI_BulletGauge> UI_BulletGaugeBar = nullptr;
 	int PlayerCurHp = -1;
-	};
+
+
+	int ExceedCount = 0;
+
+};
 
