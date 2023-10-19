@@ -14,7 +14,11 @@ void RankUI::StateInit_Wait()
 			{
 				DisApperValue = false;
 				RankBackEffect->Loop = false;
+				RankBackEffect->Off();
 				RankBackEffect_Up->Loop = false;
+				RankBackEffect_Up->Off();
+
+
 			},
 			.Update = [=](float _DeltaTime)
 			{
@@ -37,6 +41,8 @@ void RankUI::StateInit_RankD()
 			.StateValue = RankState::Appear_RankD,
 			.Start = [=]
 			{
+			RankBackEffect_Up->On();
+			RankBackEffect->On();
 			RankBackEffect->PlayFX("RankBackEffect.effect");
 			RankBackEffect->Loop = true;
 			ExplaneSpeed = 0.0F;
