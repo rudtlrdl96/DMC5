@@ -326,7 +326,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Idle
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Idle,
 			.Start = [=] {
-				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->TurnOnGravity();
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0000_Idle_Normal");
@@ -637,12 +637,13 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->SetForce(Controller->GetMoveVector() * JumpMoveForce);
 			},
 			.End = [=] {
-				PhysXCapsule->TurnOffGravity();
+				//PhysXCapsule->TurnOffGravity();
 			}
 			});
 		// Landing
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Landing,
 			.Start = [=] {
+				SetFloorPos();
 				MoveCheck = false;
 				PhysXCapsule->TurnOnGravity();
 				UseDoubleJump = false;
@@ -1804,7 +1805,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Idle To LockOn
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon,
 			.Start = [=] {
-				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->TurnOnGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0000_BR_Switch_Idle_to_Lockon");
 			},
@@ -1845,7 +1846,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// LockOnFront
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Lockon_Front,
 			.Start = [=] {
-				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->TurnOnGravity();
 				BlueRoseOn();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0000_BR_Lockon_Front");

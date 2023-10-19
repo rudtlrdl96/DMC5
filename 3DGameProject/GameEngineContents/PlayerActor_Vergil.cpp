@@ -490,6 +490,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Landing
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Landing,
 			.Start = [=] {
+				SetFloorPos();
 				PhysXCapsule->TurnOnGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_Jump_Vertical_Landing");

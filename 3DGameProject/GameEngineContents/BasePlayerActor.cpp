@@ -305,6 +305,15 @@ bool BasePlayerActor::FloorCheck()
 		|| GetLevel()->RayCast(GetTransform()->GetWorldPosition() + (GetTransform()->GetWorldBackVector() * 75), float4::DOWN, Point, 100.0f);
 }
 
+void BasePlayerActor::SetFloorPos()
+{
+	float4 Point;
+	if (false == GetLevel()->RayCast(GetTransform()->GetWorldPosition(), float4::DOWN, Point, 100.0f)) { return; }
+
+	Point += float4::UP * 80;
+	SetWorldPosition(Point);
+}
+
 void BasePlayerActor::StopTime(float _Time)
 {
 	SetTimeScale(0.0f);

@@ -79,6 +79,7 @@ protected:
 	void LockOff();
 
 	bool FloorCheck();
+	void SetFloorPos();
 
 	virtual void LightDamage() {}
 	virtual void HeavyDamage() {}
