@@ -42,7 +42,7 @@ void UI_DTGauge::Start()
 	{
 		DTGauges.push_back(UIFBXActorBase::CreateGaugeBar({ -541.0f + i * 13.0f , 375.0f , 30.0f + i * 1.0f }, { 0.7f, 0.7f, 0.7f }, { -90.0f,0.0f,0.0f }, "DtGauge.FBX"));
 		CreateDTBar("DTSmallGauge.png", { -541.0f + i * 13.0f , 375.0f , 40.0f }, { 29.0f,28.0f,0.0f });
-		DTGauges[i+3]->SetMulColor(float4::ZERONULL);
+		DTGauges[i+3]->SetMulColor(float4::ZERO);
 	}
 }
 
@@ -52,8 +52,6 @@ void UI_DTGauge::Update(float _DeltaTime)
 	{
 		IsTrans = true;
 	}
-	DTElectroEffect->On();
-	DTElectroEffect_Down->On();
 	if (IsTrans == true)
 	{
 		DTElectroEffect->On();
