@@ -396,6 +396,11 @@ void CavaliereAngelo::AttackCalculation()
 
 void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 {
+	if (FSM_State_CavaliereAngelo::CavaliereAngelo_Daeth_Front == EnemyFSM.GetCurState())
+	{
+		return;
+	}
+
 	if (true == DeathValue)
 	{
 		return;
@@ -530,6 +535,11 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 
 void CavaliereAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 {
+	if (FSM_State_CavaliereAngelo::CavaliereAngelo_Daeth_Front == EnemyFSM.GetCurState())
+	{
+		return;
+	}
+
 	if (true == DeathValue)
 	{
 		return;
@@ -555,7 +565,6 @@ void CavaliereAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
-		IsVergilLight = true;
 		Data.DamageTypeValue = DamageType::Light;
 	}
 

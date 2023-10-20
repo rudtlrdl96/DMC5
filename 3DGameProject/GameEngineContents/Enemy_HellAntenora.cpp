@@ -346,6 +346,14 @@ void Enemy_HellAntenora::AttackCalculation()
 
 void Enemy_HellAntenora::DamageCollisionCheck(float _DeltaTime)
 {
+	if (FSM_State_HellAntenora::HellAntenora_Death_Front == EnemyFSM.GetCurState()
+		|| FSM_State_HellAntenora::HellAntenora_Death_Back == EnemyFSM.GetCurState()
+		|| FSM_State_HellAntenora::HellAntenora_Death_Front == EnemyFSM.GetCurState()
+		|| FSM_State_HellAntenora::HellAntenora_Blown_Up_Landing == EnemyFSM.GetCurState())
+	{
+		return;
+	}
+
 	if (true == DeathValue)
 	{
 		return;
