@@ -26,6 +26,7 @@ void Shop_NeroArmUI::Start()
 	ArmExplane->GetTransform()->SetParent(GetTransform());
 	ArmExplane->GetTransform()->SetWorldPosition({ 0.0f,0.0f,0.0f });
 	AcNeroInven = GetLevel()->CreateActor<Nero_Inven>();
+	AcNeroInven->GetTransform()->SetParent(GetTransform());
 }
 
 void Shop_NeroArmUI::Update(float _Delta)
