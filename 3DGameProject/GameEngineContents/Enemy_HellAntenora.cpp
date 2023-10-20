@@ -27,7 +27,7 @@ Enemy_HellAntenora::~Enemy_HellAntenora()
 void Enemy_HellAntenora::EnemyTypeLoad()
 {
 	EnemyCodeValue = EnemyCode::HellAntenora;
-	EnemyHP = 200000;
+	EnemyHP = 2000;
 }
 
 void Enemy_HellAntenora::EnemyMeshLoad()
@@ -942,8 +942,6 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 		EnemyRenderer->SetAnimationStartEvent("em0001_Attack_counter_landing", 1,
 			[=]
 			{
-				//RotationCheck();
-				//AllDirectSetting();
 				SetThrowback(45000.0f);
 			});
 	}
@@ -976,8 +974,6 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 			{
 				if (true == IsAirAttackSetting)
 				{
-					//RotationCheck();
-					//AllDirectSetting();
 					SetThrowback(45000.0f);
 				}
 			});
@@ -995,6 +991,12 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0001_Attack_counter_landing");
 	},
 	.Update = [=](float _DeltaTime) {
+	DeathCheck();
+	if (true == DeathValue)
+	{
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Blown_Up_Landing);
+		return;
+	}
 	{
 		MoveLoop();
 
@@ -1030,6 +1032,13 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0001_Attack_counter_loop");
 	},
 	.Update = [=](float _DeltaTime) {
+	DeathCheck();
+	if (true == DeathValue)
+	{
+		SetMoveStop();
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Death_Front);
+		return;
+	}
 	RunTime += _DeltaTime;
 	{
 		MoveLoop();
@@ -1757,17 +1766,9 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 		SetAir(42000.0f);
 	}
 	FallCheckDelayTime += _DeltaTime;
-	DeathCheck();
 	if (true == FloorCheck(FallDistance) && 0.2f <= FallCheckDelayTime)
 	{
-		if (false == DeathValue)
-		{
-			ChangeState(FSM_State_HellAntenora::HellAntenora_Attack_Counter_Start);
-		}
-		else
-		{
-			ChangeState(FSM_State_HellAntenora::HellAntenora_Blown_Up_Landing);
-		}
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Attack_Counter_Start);
 		return;
 	}
 	},
@@ -1821,18 +1822,9 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 		ChangeState(FSM_State_HellAntenora::HellAntenora_Blown_Up_Loop);
 		return;
 	}
-	DeathCheck();
 	if (true == FloorCheck(FallDistance) && 0.5f <= FallCheckDelayTime)
 	{
-		if (false == DeathValue)
-		{
-			IsAirAttackSetting = true;
-			ChangeState(FSM_State_HellAntenora::HellAntenora_Attack_Counter_Landing);
-		}
-		else
-		{
-			ChangeState(FSM_State_HellAntenora::HellAntenora_Blown_Up_Landing);
-		}
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Attack_Counter_Landing);
 		return;
 	}
 	},
@@ -1866,18 +1858,9 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 		ChangeState(FSM_State_HellAntenora::HellAntenora_Blown_Up_Loop);
 		return;
 	}
-	DeathCheck();
 	if (true == FloorCheck(FallDistance))
 	{
-		if (false == DeathValue)
-		{
-			IsAirAttackSetting = true;
-			ChangeState(FSM_State_HellAntenora::HellAntenora_Attack_Counter_Landing);
-		}
-		else
-		{
-			ChangeState(FSM_State_HellAntenora::HellAntenora_Blown_Up_Landing);
-		}
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Attack_Counter_Landing);
 		return;
 	}
 	},
@@ -1891,18 +1874,9 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0001_blown_up_loop", true);
 	},
 	.Update = [=](float _DeltaTime) {
-	DeathCheck();
 	if (true == FloorCheck(FallDistance))
 	{
-		if (false == DeathValue)
-		{
-			IsAirAttackSetting = true;
-			ChangeState(FSM_State_HellAntenora::HellAntenora_Attack_Counter_Landing);
-		}
-		else
-		{
-			ChangeState(FSM_State_HellAntenora::HellAntenora_Blown_Up_Landing);
-		}
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Attack_Counter_Landing);
 		return;
 	}
 	},

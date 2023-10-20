@@ -338,6 +338,13 @@ void Enemy_Empusa::AttackCalculation()
 
 void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 {
+	if (FSM_State_Empusa::Empusa_Death_Back == EnemyFSM.GetCurState()
+		|| FSM_State_Empusa::Empusa_Death_Front == EnemyFSM.GetCurState()
+		|| FSM_State_Empusa::Empusa_Downward_Death == EnemyFSM.GetCurState())
+	{
+		return;
+	}
+
 	if (true == DeathValue)
 	{
 		return;

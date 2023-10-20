@@ -27,7 +27,7 @@ Enemy_HellCaina::~Enemy_HellCaina()
 void Enemy_HellCaina::EnemyTypeLoad()
 {
 	EnemyCodeValue = EnemyCode::HellCaina;
-	EnemyHP = 15000;
+	EnemyHP = 1500;
 }
 
 void Enemy_HellCaina::EnemyMeshLoad()
@@ -405,7 +405,14 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 
 void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 {
-	if (true == DeathValue || 0 > EnemyHP)
+	if (FSM_State_HellCaina::HellCaina_Death_Front == EnemyFSM.GetCurState()
+		|| FSM_State_HellCaina::HellCaina_Death_Back == EnemyFSM.GetCurState()
+		|| FSM_State_HellCaina::HellCaina_Prone_Death == EnemyFSM.GetCurState())
+	{
+		return;
+	}
+
+	if (true == DeathValue)
 	{
 		return;
 	}
@@ -1520,7 +1527,6 @@ void Enemy_HellCaina::EnemyCreateFSM()
 		IsCollapse = false;
 		IsSlamAttack = true;
 		AttackCalculation();
-		PhysXCapsule->SetAirState(110000.0f);
 	}
 	if (true == EnemyRenderer->IsAnimationEnd() || true == FloorCheck(FallDistance))
 	{
