@@ -55,7 +55,7 @@ private:
 	std::list<DevilBreaker>* ArmList;
 	int MaxItem = 4;
 	float Time = 0.0f;
-
+	bool IsOff = false;
 	//µ¥ºô ºê·¹ÀÌÄ¿ Æ®·»½ºÆû
 	float4 FirstScale = { 5.0f,5.0f,5.0f };
 	float4 SecondScale = { 4.0f,4.0f,4.0f };
@@ -75,5 +75,10 @@ private:
 	void DestroyMoveBreaker(float _Delta);
 	std::vector<std::shared_ptr<class UIFBXRenderer>> Arms;
 	std::shared_ptr<class UIFBXRenderer> Render = nullptr;
+
+	std::shared_ptr<class UIFBXRenderer> Render_0 = nullptr;
+	std::shared_ptr<class UIFBXRenderer> Render_1 = nullptr;
+	std::shared_ptr<class UIFBXRenderer> Render_2= nullptr;
+
 };
 

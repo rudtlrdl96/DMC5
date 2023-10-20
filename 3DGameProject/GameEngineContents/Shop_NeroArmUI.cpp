@@ -7,7 +7,7 @@
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include "Nero_Inven.h"
-
+#include "PlayerActor_Nero.h"
  std::function<void(DevilBreaker _Value)> Shop_NeroArmUI::CallBack_AddBreaker = nullptr;
 
 Shop_NeroArmUI::Shop_NeroArmUI()
@@ -28,6 +28,8 @@ void Shop_NeroArmUI::Start()
 	ArmExplane->GetTransform()->SetWorldPosition({ 0.0f,0.0f,0.0f });
 	AcNeroInven = GetLevel()->CreateActor<Nero_Inven>();
 	AcNeroInven->GetTransform()->SetParent(GetTransform());
+	ArmList = PlayerActor_Nero::GetBreakerListPointer();
+
 }
 
 void Shop_NeroArmUI::Update(float _Delta)
@@ -51,7 +53,7 @@ void Shop_NeroArmUI::Update(float _Delta)
 	Shop_ItemButton::Items[PrevIndex]->SetSelectValue(false);
 	Shop_ItemButton::Items[Index]->SetSelectValue(true);
 	SetExText();
-
+	BuyBreaker();
 }
 
 void Shop_NeroArmUI::SetIndex()
@@ -95,23 +97,46 @@ void Shop_NeroArmUI::SetExText()
 			,._Explane1 = "다용도로 사용가능한 데빌 브레이커.",
 			._Explane2 = "전기 충격파로 적을 날리거나,"
 			,._Explane3 = "적에게 찔러 넣고 폭발시킬 수 있다." });
-
-			break;
+		break;
 	case 1:
 		ArmExplane->SetExplaneText({ ._EName = "GERBERA" ,._KName = "거베라" ,
 			._Explane1 = "이동력을 가진 데빌 브레이커."
 			,._Explane2 = "큰 범위의 충격파로 공격을 무력화하거나"
 			,._Explane3 = "강한 힘을 가진 광선을 발사한다." });
 		break;
-		break;
 	case 2:
 		ArmExplane->SetExplaneText({ ._EName = "BUSTER ARM" ,._KName = "버스트 암" ,._Explane1 = "화려한 검 콤보로",._Explane2 = "보다 넓은 범위에 걸쳐",._Explane3 = "적들을 해치웁니다." });
-
-		break;
 		break;
 
 	default:
 		break;
+	}
+}
+
+void Shop_NeroArmUI::BuyBreaker()
+{
+	if (Index == 0)
+	{
+		if (ArmList->size() <= 4 &&GameEngineInput::IsUp("UI_Enter") == true)
+		{
+			CallBack_AddBreaker(DevilBreaker::Overture);
+		}
+	}
+	else if (Index == 1)
+	{
+		if (ArmList->size() <= 4 && GameEngineInput::IsUp("UI_Enter") == true)
+		{
+			CallBack_AddBreaker(DevilBreaker::Gerbera);
+
+		}
+	}
+	else if (Index == 2)
+	{
+		if (ArmList->size() <= 4 && GameEngineInput::IsUp("UI_Enter") == true)
+		{
+			CallBack_AddBreaker(DevilBreaker::BusterArm);
+
+		}
 	}
 }
 
