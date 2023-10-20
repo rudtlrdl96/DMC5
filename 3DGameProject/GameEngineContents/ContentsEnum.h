@@ -105,5 +105,8 @@ enum class FieldMapObjType
 	StatueB,
 	Location2_EnemySpawner0,
 	Location2_EnemySpawner1,
-
+	Item_RedOrb,
+	Item_DevilBreaker_Overture,
+	Item_DevilBreaker_Gerbera,
+	Item_DevilBreaker_BusterArm,
 };

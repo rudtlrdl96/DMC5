@@ -512,8 +512,8 @@ void GameEngineFBXMesh::LoadUV(fbxsdk::FbxMesh* _Mesh, fbxsdk::FbxAMatrix _MeshM
 
 	// _ArrVtx[_Index].TEXCOORD.x = 0.0f;
 	// _ArrVtx[_Index].TEXCOORD.y = 0.0f;
-	_ArrVtx[_Index].TEXCOORD.x = (float)result.x;
 	//// _ArrVtx[_Index].TEXCOORD.y = (float)result.y;
+	_ArrVtx[_Index].TEXCOORD.x = (float)result.x;
 	_ArrVtx[_Index].TEXCOORD.y = 1.0f - (float)result.y;
 	_ArrVtx[_Index].TEXCOORD.z = 0.0f;
 	_ArrVtx[_Index].TEXCOORD.w = 0.0f;

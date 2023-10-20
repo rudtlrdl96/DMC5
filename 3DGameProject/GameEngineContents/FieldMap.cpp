@@ -89,6 +89,12 @@ std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, cons
 		MapCullingColRef[i].lock()->GetTransform()->SetLocalRotation(_CullingCols[i].Rot);
 	}
 
+	std::list<std::shared_ptr<GameEngineLight>> AllLight = _Level->GetAllLightRef();
+	for (auto& i : AllLight)
+	{
+		i->BakeShadow(_Level->GetMainCamera());
+	}
+
 	std::vector<std::weak_ptr<FieldMapObject>>& FieldMapObjRef = Result->FieldMapObj;
 	FieldMapObjRef.resize(_FieldMapObjs.size());
 	for (size_t i = 0; i < FieldMapObjRef.size(); i++)

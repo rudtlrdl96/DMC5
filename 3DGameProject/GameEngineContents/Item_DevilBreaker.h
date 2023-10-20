@@ -1,7 +1,8 @@
 #pragma once
 #include "ContentsEnum.h"
+#include "FieldMapObject.h"
 // Ό³Έν :
-class Item_DevilBreaker : public GameEngineActor
+class Item_DevilBreaker : public FieldMapObject
 {
 public:
 	// constrcuter destructer
@@ -23,7 +24,6 @@ protected:
 
 private:
 	DevilBreaker Type = DevilBreaker::None;
-	std::shared_ptr<class GameEngineFBXRenderer> ArmRenderer = nullptr;
 	std::shared_ptr<class EffectRenderer> IconRenderer = nullptr;
 	std::shared_ptr<class EffectRenderer> NameRenderer = nullptr;
 	std::shared_ptr<class GameEngineCollision> Col = nullptr;

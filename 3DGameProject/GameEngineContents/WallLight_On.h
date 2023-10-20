@@ -21,5 +21,7 @@ protected:
 private:
 	std::shared_ptr<class GameEngineLight> PointLight;
 	float4 LightPosition = { 0.f, 40.f, -20.f };
+	class RenderBaseValue LightValue;
+
 };
 

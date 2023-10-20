@@ -14,13 +14,13 @@ Item_RedOrb::~Item_RedOrb()
 
 void Item_RedOrb::Take()
 {
-	Renderer->Off();
+	FBXMesh->Off();
 	Col->Off();
 	Effect->PlayFX("RedOrb_Disappear.effect");
 
 	GetLevel()->TimeEvent.AddEvent(0.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager) {
 		Off();
-		Renderer->On();
+		FBXMesh->On();
 		Col->On();
 		});
 }
@@ -55,13 +55,14 @@ void Item_RedOrb::Start()
 		Effect->CreateFX(FXData::Find("RedOrb_Disappear.effect"));
 	}
 
-	Renderer = CreateComponent<GameEngineFBXRenderer>();
-	Renderer->SetFBXMesh("orb000_0_low.meshout.FBX", "FBX");
+	FBXMesh = CreateComponent<GameEngineFBXRenderer>();
+	FBXMesh->SetFBXMesh("orb000_0_low.meshout.FBX", "FBX");
+	FBXMesh->SetBaseColor({2.f, 0.f, 0.f, 0.f});
+	FBXMesh->GetTransform()->SetLocalScale(FBXMesh->GetTransform()->GetLocalScale()*2);
 
 	Col = CreateComponent<GameEngineCollision>(CollisionOrder::RedOrb);
 	Col->GetTransform()->SetLocalScale({ 30, 30, 30 });
 
-	GetTransform()->SetLocalScale({ 2.f, 2.f, 2.f });
 }
 
 void Item_RedOrb::Update(float _DeltaTime)

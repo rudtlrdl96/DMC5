@@ -305,7 +305,7 @@ void ContentsCore::ContentsResourcesCreate()
 		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("FBX");
 
 		Material->SetVertexShader("ContentsMesh.hlsl");				
-		Material->SetRasterizer("Engine2DBase");
+		Material->SetRasterizer("Engine3DBase");
 		Material->SetPixelShader("ContentsMesh.hlsl");
 		Material->SetBlendState("BaseBlend");
 		Material->SetDepthState("EngineDepth");

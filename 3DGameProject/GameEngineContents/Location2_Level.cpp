@@ -76,6 +76,11 @@ void Location2_Level::Start()
 			//std::shared_ptr<EnemySpawner> Spawner = GetLevel()->CreateActor<Location2_EnemySpawner1>();
 			RedSealWallOn();
 		});
+
+	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 4000, 0));
+	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 90.f,0.f,0.f });
+	GetDirectionalLight()->SetLightPower(0.25f);
+	GetDirectionalLight()->SetLightColor({ 0.85f,0.85f,1.f });
 }
 
 void Location2_Level::Update(float _DeltaTime)

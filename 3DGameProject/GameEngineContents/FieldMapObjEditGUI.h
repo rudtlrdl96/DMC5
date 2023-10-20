@@ -32,9 +32,11 @@ private:
 	
 	int ObjType_current = 0;
 	void ObjTypeSelectCombo();
-	const char* ObjType_items[13] = 
-	{  "ReflectionSetter", "WallLight_On", "WallLight_Off", "StreetLight_On", "StreetLight_Off", "DecoLight", "Fountain", "StreetStall", 
-	 "Bench", "RedSeal", "StatueB", "l02_Enemy0", "l02_Enemy1" };
+	const char* ObjType_items[17] = 
+	{  "ReflectionSetter", "WallLight_On", "WallLight_Off", "StreetLight_On",
+		"StreetLight_Off", "DecoLight", "Fountain", "StreetStall", 
+	 "Bench", "RedSeal", "StatueB", "l02_Enemy0", "l02_Enemy1", "Item_RedOrb",
+		"Item_DB_Overture", "Item_DB_Gerbera", "Item_DB_BusterArm" };
 
 	void InputObject(std::vector<StageData>& _AllData, size_t& _Stage_current, size_t& _FieldMap_current);
 

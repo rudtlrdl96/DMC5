@@ -21,23 +21,21 @@ void Item_DevilBreaker::SetDevilBreaker(DevilBreaker _Value)
 	case DevilBreaker::None:
 		break;
 	case DevilBreaker::Overture:
-		ArmRenderer->SetFBXMesh("OvertureArmUI.FBX", "FBX");
+		FBXMesh->SetFBXMesh("OvertureArmUI.FBX", "FBX");
 		IconRenderer->SetTexture("DiffuseTexture", "ItemExPlane_OverTure.png");
 		break;
 	case DevilBreaker::Gerbera:
-		ArmRenderer->SetFBXMesh("GerberaArmUI.FBX", "FBX");
+		FBXMesh->SetFBXMesh("GerberaArmUI.FBX", "FBX");
 		IconRenderer->SetTexture("DiffuseTexture", "ItemExPlane_Gerbera.png");
 		break;
 	case DevilBreaker::BusterArm:
-		ArmRenderer->SetFBXMesh("BusterArmUI.FBX", "FBX");
+		FBXMesh->SetFBXMesh("BusterArmUI.FBX", "FBX");
 		IconRenderer->SetTexture("DiffuseTexture", "ItemExPlane_BusterArm.png");
 		break;
 	default:
 		break;
 	}
 	IconRenderer->GetTransform()->SetWorldScale({ 268, 268, 268 });
-
-
 }
 
 DevilBreaker Item_DevilBreaker::Take()
@@ -85,8 +83,9 @@ void Item_DevilBreaker::Start()
 		}
 	}
 
-	ArmRenderer = CreateComponent<GameEngineFBXRenderer>();
-	ArmRenderer->GetTransform()->SetLocalScale({ 1.5f, 1.5f, 1.5f});
+	FBXMesh = CreateComponent<GameEngineFBXRenderer>();
+	FBXMesh->GetTransform()->SetLocalScale({ 1.5f, 1.5f, 1.5f});
+	FBXMesh->SetBaseColor({1.0f,0.f,0.f,0.f});
 	IconRenderer = CreateComponent<EffectRenderer>();
 	IconRenderer->GetTransform()->SetLocalPosition({ 75, 275 });
 	IconRenderer->GetTransform()->SetLocalScale({ 200, 200, 200 });

@@ -436,7 +436,7 @@
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClInclude>
     <ClInclude Include="Item_DevilBreaker.h">
-      <Filter>Actor\Item</Filter>
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\ItemObj</Filter>
     </ClInclude>
     <ClInclude Include="RedSeal.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
@@ -460,7 +460,7 @@
       <Filter>Levels\Stage\1.Location2</Filter>
     </ClInclude>
     <ClInclude Include="Item_RedOrb.h">
-      <Filter>Actor\Item</Filter>
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\ItemObj</Filter>
     </ClInclude>
     <ClInclude Include="UIMeshRenderer.h">
       <Filter>Component\Renderer</Filter>
@@ -918,7 +918,7 @@
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClCompile>
     <ClCompile Include="Item_DevilBreaker.cpp">
-      <Filter>Actor\Item</Filter>
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\ItemObj</Filter>
     </ClCompile>
     <ClCompile Include="RedSeal.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
@@ -945,7 +945,7 @@
       <Filter>Levels\Stage\StageEditor</Filter>
     </ClCompile>
     <ClCompile Include="Item_RedOrb.cpp">
-      <Filter>Actor\Item</Filter>
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\ItemObj</Filter>
     </ClCompile>
     <ClCompile Include="UIMeshRenderer.cpp">
       <Filter>Component\Renderer</Filter>
@@ -1244,9 +1244,6 @@
     <Filter Include="Actor\Stage\FieldMap\FieldMapObj\FunctionObj">
       <UniqueIdentifier>{398524c7-d8ae-4d50-a2b0-75dfcca4ab68}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Actor\Item">
-      <UniqueIdentifier>{f9ad0c49-b904-471b-86a4-a7aae7ee8146}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Actor\Enemy\BossEnemy\Stage11\Weapon">
       <UniqueIdentifier>{9347a9db-38fa-4b74-81ae-3ceaba348b69}</UniqueIdentifier>
     </Filter>
@@ -1270,6 +1267,9 @@
     </Filter>
     <Filter Include="Actor\Enemy\NormalEnemy\ProtoAngelo">
       <UniqueIdentifier>{346975b2-e408-42a3-a573-b8ff9e8e1235}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Stage\FieldMap\FieldMapObj\ItemObj">
+      <UniqueIdentifier>{f9ad0c49-b904-471b-86a4-a7aae7ee8146}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

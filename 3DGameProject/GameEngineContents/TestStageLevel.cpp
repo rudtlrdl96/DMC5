@@ -73,21 +73,6 @@ void TestStageLevel::Start()
 	{
 		GameEngineInput::CreateKey("BakeTestKey", VK_SPACE);
 	}
-
-	if (TestEvent0 == nullptr)
-	{
-		TestEvent0 = [this]()
-			{
-				TestSpawner = GetLevel()->CreateActor<EnemySpawner>();
-				RedSealWallOn();
-			};
-
-		TestEvent1 = [this]()
-			{
-				RedSealWallOn();
-			};
-
-	}
 }
 
 std::shared_ptr<GameEngineLight> PointLight = nullptr;
@@ -163,15 +148,12 @@ void TestStageLevel::LevelChangeStart()
 		Vergil->SetUserControllType();
 		Vergil->SetWorldPosition({ 8615.f, 0, 5060.f });
 	}
-	for (int i = 0; i < 20; i++)
-	{
-		CreateActor<Item_RedOrb>()->GetTransform()->SetWorldPosition({ 150 + i * 20.0f, 15, 150 + i * 20.0f });
-	}
 
 	// 테스트용 코드
 	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 4000, 0));
-	GetDirectionalLight()->GetTransform()->SetWorldRotation(float4(90, 0, 0));
-	GetDirectionalLight()->SetLightPower(0.2f);
+	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 90.f,0.f,0.f });
+	GetDirectionalLight()->SetLightPower(0.25f);
+	GetDirectionalLight()->SetLightColor({ 0.85f,0.85f,1.f });
 	//GetDirectionalLight()->SetLightColor(float4(0.4f, 0.4f, 0.4f));
 
 	//std::shared_ptr<GameEngineLight> SpotLight = CreateSpotLight(float4(0, 400, 0), ShadowTextureScale::S_512, 2000, 90);

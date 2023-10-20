@@ -17,6 +17,8 @@
 #include "StatueB.h"
 #include "Location2_EnemySpawner0.h"
 #include "Location2_EnemySpawner1.h"
+#include "Item_RedOrb.h"
+#include "Item_DevilBreaker.h"
 
 FieldMapObject::FieldMapObject()
 {
@@ -79,6 +81,21 @@ std::shared_ptr<FieldMapObject> FieldMapObject::CreateFieldMapObj(GameEngineLeve
 		break;
 	case FieldMapObjType::Location2_EnemySpawner1:
 		Result = _Level->CreateActor<Location2_EnemySpawner1>();
+		break;
+	case FieldMapObjType::Item_RedOrb:
+		Result = _Level->CreateActor<Item_RedOrb>();
+		break;
+	case FieldMapObjType::Item_DevilBreaker_Overture:
+		Result = _Level->CreateActor<Item_DevilBreaker>();
+		Result->DynamicThis<Item_DevilBreaker>()->SetDevilBreaker(DevilBreaker::Overture);
+		break;
+	case FieldMapObjType::Item_DevilBreaker_Gerbera:
+		Result = _Level->CreateActor<Item_DevilBreaker>();
+		Result->DynamicThis<Item_DevilBreaker>()->SetDevilBreaker(DevilBreaker::Gerbera);
+		break;
+	case FieldMapObjType::Item_DevilBreaker_BusterArm:
+		Result = _Level->CreateActor<Item_DevilBreaker>();
+		Result->DynamicThis<Item_DevilBreaker>()->SetDevilBreaker(DevilBreaker::BusterArm);
 		break;
 	default:
 		MsgAssert("¹Ì±¸Çö");

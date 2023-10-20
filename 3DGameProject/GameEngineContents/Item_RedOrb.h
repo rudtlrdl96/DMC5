@@ -1,7 +1,8 @@
 #pragma once
 #include "ContentsEnum.h"
+#include "FieldMapObject.h"
 // Ό³Έν :
-class Item_RedOrb : public GameEngineActor
+class Item_RedOrb : public FieldMapObject
 {
 public:
 	// constrcuter destructer
@@ -20,7 +21,6 @@ protected:
 	void Update(float _DeltaTime) override;
 
 private:
-	std::shared_ptr<class GameEngineFBXRenderer> Renderer = nullptr;
 	std::shared_ptr<class FXSystem> Effect = nullptr;
 	std::shared_ptr<class GameEngineCollision> Col = nullptr;
 };

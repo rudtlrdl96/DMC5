@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 #include "StreetLight_On.h"
+#include <GameEngineCore/GameEngineFBXRenderer.h>
 
 StreetLight_On::StreetLight_On()
 {
@@ -22,6 +23,11 @@ void StreetLight_On::Start()
 	PointLight->SetLightPower(1.f);
 
 	StaticFieldMapObject::Start();
+
+	LightValue = FBXMesh->GetRenderBaseValueRef();
+	LightValue.BaseColor = { 10.0f, 0, 0, 0 };
+	FBXMesh->GetRenderUnit(2, 0)->ShaderResHelper.SetConstantBufferLink("RenderBaseValue", LightValue);
+
 }
 
 void StreetLight_On::Update(float _DeltaTime)

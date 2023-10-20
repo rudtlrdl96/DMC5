@@ -41,6 +41,11 @@ void StageEditGUI::OnGUI(std::shared_ptr<GameEngineLevel> _Level, float _DeltaTi
 		Parent->FreeCam->Off();
 	}
 
+	if (ImGui::Button("DebugRender"))
+	{
+		Parent->IsDebugSwitch();
+	}
+
     StageCombo(_Level);
 
 	if (AllData.empty())

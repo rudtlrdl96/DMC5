@@ -16,9 +16,6 @@ public:
 	TestStageLevel& operator=(const TestStageLevel& _Other) = delete;
 	TestStageLevel& operator=(TestStageLevel&& _Other) noexcept = delete;
 
-	std::function<void()> TestEvent0 = nullptr;
-	std::function<void()> TestEvent1 = nullptr;
-
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -27,7 +24,6 @@ protected:
 
 private:
 
-	std::shared_ptr<class EnemySpawner> TestSpawner = nullptr;
 	std::shared_ptr<class BloomEffect> Bloom = nullptr;
 	std::shared_ptr<class BWColorEffect> BWEffect = nullptr;
 
