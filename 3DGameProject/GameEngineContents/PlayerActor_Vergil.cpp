@@ -793,7 +793,6 @@ void PlayerActor_Vergil::PlayerLoad()
 			.Start = [=] {
 				RotationToTarget();
 				PhysXCapsule->SetLinearVelocityZero();
-				RotationToTarget();
 				EffectSystem->PlayFX("Yamato_Sissonal_1.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Sissonal_1");
 			},
@@ -802,17 +801,6 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (false == FloorCheck())
 				{
 					ChangeState(FSM_State_Vergil::Vergil_Jump_Fly);
-					return;
-				}
-				std::vector<std::shared_ptr<GameEngineCollision>> Cols;
-				if (true == Col_EnemyStepCheck->CollisionAll(CollisionOrder::Enemy, Cols))
-				{
-					if (true == Controller->GetIsSwordPress())
-					{
-						ChangeState(FSM_State_Vergil::pl0300_yamato_Sissonal_Up);
-						return;
-					}
-					ChangeState(FSM_State_Vergil::pl0300_yamato_Sissonal_3);
 					return;
 				}
 				if (true == Renderer->IsAnimationEnd())
@@ -825,40 +813,46 @@ void PlayerActor_Vergil::PlayerLoad()
 			}
 			});
 		static float SissonalTimer = 0;
+		static float4 SissonalTargetPos;
 		// Sissonal2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Sissonal_2,
 			.Start = [=] {
 				SissonalTimer = 0;
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_Sissonal_2_loop");
+				Col_EnemyStepCheck->GetTransform()->SetLocalScale({ 300, 275, 300 });
+				PhysXCapsule->Off();
+
+				if (false == GetLevel()->RayCast(GetTransform()->GetWorldPosition(), GetTransform()->GetWorldForwardVector(), SissonalTargetPos, 2000.0f))
+				{
+					SissonalTargetPos.w = -1;
+				}
 			},
 			.Update = [=](float _DeltaTime) {
 				if (true == Input_SpecialCheck()) { return; }
-				if (false == FloorCheck())
-				{
-					ChangeState(FSM_State_Vergil::Vergil_Jump_Fly);
-					return;
-				}
 				std::vector<std::shared_ptr<GameEngineCollision>> Cols;
-				if (true == Col_EnemyStepCheck->CollisionAll(CollisionOrder::Enemy, Cols))
+				if (true == Controller->GetIsSwordPress() && true == Col_EnemyStepCheck->CollisionAll(CollisionOrder::Enemy, Cols))
 				{
-					if (true == Controller->GetIsSwordPress())
-					{
-						ChangeState(FSM_State_Vergil::pl0300_yamato_Sissonal_Up);
-						return;
-					}
-					ChangeState(FSM_State_Vergil::pl0300_yamato_Sissonal_3);
+					ChangeState(FSM_State_Vergil::pl0300_yamato_Sissonal_Up);
 					return;
 				}
 				SissonalTimer += _DeltaTime;
-				if (0.2f < SissonalTimer)
+				if (0.23f < SissonalTimer)
 				{
 					ChangeState(FSM_State_Vergil::pl0300_yamato_Sissonal_3);
 					return;
 				}
-				PhysXCapsule->SetMove(GetTransform()->GetWorldForwardVector() * 1300);
+				if (SissonalTargetPos.w != -1 && (GetTransform()->GetWorldPosition() - SissonalTargetPos).Size() < 100)
+				{
+					ChangeState(FSM_State_Vergil::pl0300_yamato_Sissonal_3);
+					return;
+				}
+				GetTransform()->AddWorldPosition(GetTransform()->GetWorldForwardVector()* _DeltaTime * 1300);
 			},
 			.End = [=] {
+				PhysXCapsule->On();
+				SetWorldPosition(GetTransform()->GetWorldPosition());
+				Col_EnemyStepCheck->GetTransform()->SetLocalScale({ 200, 175, 200 });
 				PhysXCapsule->SetLinearVelocityZero();
 				Controller->SwordChargeTimer = -1.0f;
 			}
@@ -872,22 +866,13 @@ void PlayerActor_Vergil::PlayerLoad()
 				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(600));
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
-				PhysXCapsule->Off();
+				PhysXCapsule->SetMove(GetTransform()->GetWorldForwardVector() * 800);
 				EffectSystem->PlayFX("Yamato_Sissonal_3.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Sissonal_3");
 				InputCheck = false;
 				MoveCheck = false;
 			},
 			.Update = [=](float _DeltaTime) {
-				if (Renderer->GetCurFrame() < 20)
-				{
-					GetTransform()->AddWorldPosition(GetTransform()->GetWorldForwardVector()* _DeltaTime * 2000);
-				}
-				if (false == FloorCheck())
-				{
-					ChangeState(FSM_State_Vergil::Vergil_Jump_Fly);
-					return;
-				}
 
 				if (true == Input_SpecialCheck()) { return; }
 
@@ -906,7 +891,6 @@ void PlayerActor_Vergil::PlayerLoad()
 			},
 			.End = [=] {
 				SetWorldPosition(GetTransform()->GetWorldPosition());
-				PhysXCapsule->On();
 				WeaponIdle();
 				Rot.y += 180.0f;
 				PhysXCapsule->AddWorldRotation({ 0, 180, 0 });
@@ -957,7 +941,6 @@ void PlayerActor_Vergil::PlayerLoad()
 				RotationToTarget();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_AttackUp_1");
-				RotationToTarget(30.0f);
 			},
 			.Update = [=](float _DeltaTime) {
 				if (true == Input_SpecialCheck()) { return; }

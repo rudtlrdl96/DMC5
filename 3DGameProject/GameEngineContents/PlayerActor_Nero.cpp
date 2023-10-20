@@ -1743,6 +1743,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Caliber_1");
+				Col_EnemyStepCheck->GetTransform()->SetLocalScale({ 300, 275, 300 });
 			},
 			.Update = [=](float _DeltaTime) {
 				if (true == Input_SpecialCheckFly()) { return; }
@@ -1758,6 +1759,7 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 			},
 			.End = [=] {
+				Col_EnemyStepCheck->GetTransform()->SetLocalScale({ 200, 175, 200 });
 			}
 			});
 		// RedQueen Caliber_2
@@ -1778,6 +1780,7 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Caliber_2");
 				InputCheck = false;
+				Col_EnemyStepCheck->GetTransform()->SetLocalScale({ 300, 275, 300 });
 			},
 			.Update = [=](float _DeltaTime) {
 				if (Renderer->IsAnimationEnd())
@@ -1797,6 +1800,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_DevilBreakerCheckFly()) { return; }
 			},
 			.End = [=] {
+				Col_EnemyStepCheck->GetTransform()->SetLocalScale({ 200, 175, 200 });
 				PhysXCapsule->TurnOnGravity();
 				WeaponIdle();
 			}
@@ -3665,6 +3669,7 @@ void PlayerActor_Nero::HeavyDamage()
 void PlayerActor_Nero::AddDTGauge(float _Value)
 {
 	if (true == DTValue && 0 < _Value) { return; }
+	if (false == DTValue && 0 >= _Value) { return; }
 
 	DTGauge = std::clamp(DTGauge + _Value, 0.0f, 10.0f);
 	HUD->GetDtUI()->ActivateDtUI(DTGauge);

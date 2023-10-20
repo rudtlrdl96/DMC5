@@ -31,6 +31,7 @@ protected:
 
 private:
 	static PlayerType Type;
+	static int BattleCount;
 	static bool BossBGM;
 };
 
