@@ -15,9 +15,9 @@ enum FSM_State_HellAntenora
 	HellAntenora_fall_loop,					 // em0001_fall_loop : 위에서 등장 후 떨어질때
 	HellAntenora_fall_landing,				 // em0001_fall_landing : 위에서 등장 후 랜딩
 
-	HellAntenora_Turn_Left_,				 // em0001_turn_left_90_noTransRot : 슬러프턴
+	HellAntenora_Navi_Turn_Left,			 // em0001_turn_left_90_noTransRot : 슬러프턴
 	HellAntenora_Turn_Left_180,				 // em0001_turn_left_180 : 25프레임 애니메이션 턴
-	HellAntenora_Turn_Right,				 // em0001_turn_right_90_noTransRot : 슬러프턴
+	HellAntenora_Navi_Turn_Right,			 // em0001_turn_right_90_noTransRot : 슬러프턴
 	HellAntenora_Turn_Right_180,			 // em0001_turn_right_180 : 25프레임 애니메이션 턴
 
 	HellAntenora_Walk_Start,				 // em0001_walk_start : 걷기 시작
@@ -114,8 +114,8 @@ protected:
 	void DeathCheck() override;
 
 private:
-	void PlayerChase(float _DeltaTime);
-	void PlayerAttack(float _DeltaTime);
+	void PlayerChase();
+	void PlayerAttack();
 	void RandomAttack();
 	void ChangeState(int _StateValue);
 	void ChangeState_Client(int _StateValue);

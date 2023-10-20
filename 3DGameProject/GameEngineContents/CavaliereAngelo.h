@@ -123,7 +123,7 @@ private:
 	std::shared_ptr<class FXSystem> EffectRenderer_1 = nullptr;
 	std::shared_ptr<class Cavaliere_Electric> Electric = nullptr;
 
-	void PlayerChase(float _DeltaTime);
+	void PlayerChase();
 	void ChangeState(int _StateValue);
 	void ChangeState_Client(int _StateValue);
 	void AttackCalculation();

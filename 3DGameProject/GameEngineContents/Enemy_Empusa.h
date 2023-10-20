@@ -97,8 +97,8 @@ protected:
 	void DeathCheck() override;
 
 private:
-	void PlayerChase(float _DeltaTime);
-	void PlayerAttack(float _DeltaTime);
+	void PlayerChase();
+	void PlayerAttack();
 	void RandomAttack();
 	void ChangeState(int _StateValue);
 	void ChangeState_Client(int _StateValue);

@@ -283,72 +283,50 @@ void Enemy_HellAntenora::DeathCheck()
 	}
 }
 
-void Enemy_HellAntenora::PlayerChase(float _DeltaTime)
+void Enemy_HellAntenora::PlayerChase()
 {
 	RotationCheck();
 
 	switch (EnemyRotationValue)
 	{
 	case EnemyRotation::Forward:
-	{
 		AllDirectSetting();
-		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
-		if (0 == RandC)
-		{
-			//ChangeState(FSM_State_HellAntenora::Empusa_Biped_Walk_Start);
-		}
-		else
-		{
-			//ChangeState(FSM_State_HellAntenora::Empusa_Biped_Run_Start);
-		}
-	}
-	break;
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Walk_Start);
+		break;
 	case EnemyRotation::Left:
-	{
 		AllDirectSetting();
-		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
-		if (0 == RandC)
-		{
-			//ChangeState(FSM_State_HellAntenora::Empusa_Biped_Walk_Start);
-		}
-		else
-		{
-			//ChangeState(FSM_State_HellAntenora::Empusa_Biped_Run_Start);
-		}
-	}
-	break;
+		WaitTime += 0.2f;
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Navi_Turn_Left);
+		break;
 	case EnemyRotation::Left_90:
-		//ChangeState(FSM_State_HellAntenora::Empusa_Turn_Left_90);
+		AllDirectSetting();
+		WaitTime += 0.2f;
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Navi_Turn_Left);
 		break;
 	case EnemyRotation::Left_180:
-		//ChangeState(FSM_State_HellAntenora::Empusa_Turn_Left_180);
+		WaitTime += 0.2f;
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Turn_Left_180);
 		break;
 	case EnemyRotation::Right:
-	{
 		AllDirectSetting();
-		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
-		if (0 == RandC)
-		{
-			//ChangeState(FSM_State_HellAntenora::Empusa_Biped_Walk_Start);
-		}
-		else
-		{
-			//ChangeState(FSM_State_HellAntenora::Empusa_Biped_Run_Start);
-		}
-	}
-	break;
+		WaitTime += 0.2f;
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Navi_Turn_Right);
+		break;
 	case EnemyRotation::Right_90:
-		//ChangeState(FSM_State_HellAntenora::Empusa_Turn_Right_90);
+		AllDirectSetting();
+		WaitTime += 0.2f;
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Navi_Turn_Right);
 		break;
 	case EnemyRotation::Right_180:
-		//ChangeState(FSM_State_HellAntenora::Empusa_Turn_Right_180);
+		WaitTime += 0.2f;
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Turn_Right_180);
 		break;
 	default:
 		break;
 	}
 }
 
-void Enemy_HellAntenora::PlayerAttack(float _DeltaTime)
+void Enemy_HellAntenora::PlayerAttack()
 {
 	RotationCheck();
 	AllDirectSetting();
@@ -740,18 +718,38 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	/////////////////////////////////     Basic     //////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
+	// 최초 등장_02
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Appear_01,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_appear_01");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////     Basic     //////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
 	// Idle
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Idle,
 	.Start = [=] {
+	SetMoveStop();
 	EnemyRenderer->ChangeAnimation("em0001_Idle_01_loop");
 	},
 	.Update = [=](float _DeltaTime) 
 	{
 	WaitTime += _DeltaTime;
-	if (0.5f <= WaitTime)
+	if (0.35f <= WaitTime)
 	{
-		ChangeState(FSM_State_HellAntenora::HellAntenora_Walk_Start);
-		return;
+		PlayerChase();
 	}
 	},
 	.End = [=] {
@@ -767,16 +765,17 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Walk_Start,
 	.Start = [=] 
 	{
-	RotationCheck();
-	SlerpCalculation();
+	MoveLoop();
 	EnemyRenderer->ChangeAnimation("em0001_walk_start");
 	},
 	.Update = [=](float _DeltaTime)
 	{
 	{
-		SlerpTurn(_DeltaTime * 2.0f);
-		AllDirectSetting_Normal();
-		SetForwardMove(140.0f);
+		MoveLoop();
+		if (40 <= EnemyRenderer->GetCurFrame())
+		{
+			SetForwardMove(170.0f);
+		}
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
@@ -784,7 +783,8 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 		return;
 	}
 	},
-	.End = [=] {
+	.End = [=] 
+	{
 	}
 		});
 
@@ -798,7 +798,7 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 
 	{
 		MoveLoop();
-		SetForwardMove(190.0f);
+		SetForwardMove(210.0f);
 	}
 
 	if (true == IsRecognize)
@@ -822,12 +822,104 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 
 	{
 		AllDirectSetting_Normal();
-		SetForwardMove(140.0f);
+		if (50 >= EnemyRenderer->GetCurFrame())
+		{
+			SetForwardMove(170.0f);
+		}
 	}
+
+	if (70 <= EnemyRenderer->GetCurFrame())
+	{
+		RotationCheck();
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////   Rotation   //////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	// 왼쪽 슬러프 회전
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Navi_Turn_Left,
+	.Start = [=] {
+	SlerpCalculation();
+	EnemyRenderer->ChangeAnimation("em0001_turn_left_90_noTransRot");
+	},
+	.Update = [=](float _DeltaTime) {
+
+	SlerpTurn(_DeltaTime);
 
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		RotationCheck();
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	SlerpTime = 0.0f;
+	}
+		});
+	// 오른쪽 슬러프 회전
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Navi_Turn_Right,
+	.Start = [=] {
+	SlerpCalculation();
+	EnemyRenderer->ChangeAnimation("em0001_turn_right_90_noTransRot");
+	},
+	.Update = [=](float _DeltaTime) {
+
+	SlerpTurn(_DeltaTime);
+
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	SlerpTime = 0.0f;
+	}
+		});
+	// 왼쪽 180도 회전, 25프레임 애니메이션 턴
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Turn_Left_180,
+	.Start = [=] {
+	SetMoveStop();
+	EnemyRenderer->ChangeAnimation("em0001_turn_left_180");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (25 <= EnemyRenderer->GetCurFrame())
+	{
+		AnimationTurnStart = true;
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		AnimationTurnStart = false;
+		PhysXCapsule->AddWorldRotation({ 0.f, -180.f, 0.f });
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+	// 왼쪽 180도 회전, 25프레임 애니메이션 턴
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Turn_Right_180,
+	.Start = [=] {
+	SetMoveStop();
+	EnemyRenderer->ChangeAnimation("em0001_turn_right_180");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (25 <= EnemyRenderer->GetCurFrame())
+	{
+		AnimationTurnStart = true;
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		AnimationTurnStart = false;
+		PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
 		ChangeState(FSM_State_HellAntenora::HellAntenora_Idle);
 		return;
 	}
@@ -1131,7 +1223,7 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 		EnemyRenderer->SetAnimationStartEvent("em0001_blown_up_landing", 1, 
 			[=] 
 			{
-				SetPush(40000.0f);
+				SetPush(37000.0f);
 			});
 	}
 
@@ -1409,7 +1501,7 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 		});
 
 
-	EnemyFSM.ChangeState(FSM_State_HellAntenora::HellAntenora_Idle);
+	EnemyFSM.ChangeState(FSM_State_HellAntenora::HellAntenora_Appear_01);
 }
 
 void Enemy_HellAntenora::EnemyCreateFSM_Client()

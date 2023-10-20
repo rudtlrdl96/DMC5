@@ -312,7 +312,7 @@ void CavaliereAngelo::DeathCheck()
 	}
 }
 
-void CavaliereAngelo::PlayerChase(float _DeltaTime)
+void CavaliereAngelo::PlayerChase()
 {
 	RotationCheck();
 
@@ -732,7 +732,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 
 	if (WaitTime >= 0.2f)
 	{
-		PlayerChase(_DeltaTime);
+		PlayerChase();
 		return;
 	}
 	},

@@ -194,7 +194,7 @@ void Enemy_HellCaina::DeathCheck()
 	}
 }
 
-void Enemy_HellCaina::PlayerChase(float _DeltaTime)
+void Enemy_HellCaina::PlayerChase()
 {
 	RotationCheck();
 
@@ -237,7 +237,7 @@ void Enemy_HellCaina::PlayerChase(float _DeltaTime)
 	}
 }
 
-void Enemy_HellCaina::PlayerAttack(float _DeltaTime)
+void Enemy_HellCaina::PlayerAttack()
 {
 	RotationCheck();
 	AllDirectSetting();
@@ -654,12 +654,12 @@ void Enemy_HellCaina::EnemyCreateFSM()
 
 		if (false == IsRecognize)
 		{
-			PlayerChase(_DeltaTime);
+			PlayerChase();
 		}
 		else
 		{
 			IsRecognize = false;
-			PlayerAttack(_DeltaTime);
+			PlayerAttack();
 		}
 		return;
 	}

@@ -193,7 +193,7 @@ void Enemy_Empusa::DeathCheck()
 	}
 }
 
-void Enemy_Empusa::PlayerChase(float _DeltaTime)
+void Enemy_Empusa::PlayerChase()
 {
 	RotationCheck();
 
@@ -262,7 +262,7 @@ void Enemy_Empusa::PlayerChase(float _DeltaTime)
 	}
 }
 
-void Enemy_Empusa::PlayerAttack(float _DeltaTime)
+void Enemy_Empusa::PlayerAttack()
 {
 	RotationCheck();
 	AllDirectSetting();
@@ -717,12 +717,12 @@ void Enemy_Empusa::EnemyCreateFSM()
 
 		if (false == IsRecognize)
 		{
-			PlayerChase(_DeltaTime);
+			PlayerChase();
 		}
 		else
 		{
 			IsRecognize = false;
-			PlayerAttack(_DeltaTime);
+			PlayerAttack();
 		}
 		return;
 	}
