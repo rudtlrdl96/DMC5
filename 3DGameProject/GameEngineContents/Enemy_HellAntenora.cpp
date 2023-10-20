@@ -120,7 +120,6 @@ void Enemy_HellAntenora::EnemyAnimationLoad()
 	NewDir.Move("Enemy");
 	NewDir.Move("HellAntenora");
 	NewDir.Move("Animation");
-	NewDir.Move("damage");
 
 	AnimationEvent::LoadAll
 	(
@@ -177,7 +176,7 @@ void Enemy_HellAntenora::Start()
 	MonsterCollision->GetTransform()->SetLocalScale({ 80, 210, 70 });
 	MonsterCollision->GetTransform()->SetLocalPosition({ 0, 65, 0 });
 	MonsterCollision->SetColType(ColType::OBBBOX3D);
-	RN_MonsterCollision->GetTransform()->SetLocalScale({ 600, 0, 0 });
+	RN_MonsterCollision->GetTransform()->SetLocalScale({ 700, 0, 0 });
 	RN_MonsterCollision->GetTransform()->SetLocalPosition({ 0, 80, 0 });
 
 	// 기본 세팅
@@ -185,7 +184,7 @@ void Enemy_HellAntenora::Start()
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
 
 	//MonsterCollision->Off();
-	RN_MonsterCollision->Off();
+	//RN_MonsterCollision->Off();
 
 	// 무기 붙이기
 	EnemyRenderer->SetAttachTransform("L_WeaponHand", LeftWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 170.0f, 180.0f), true);
@@ -647,6 +646,76 @@ void Enemy_HellAntenora::RecognizeCollisionCheck(float _DeltaTime)
 	}
 }
 
+void Enemy_HellAntenora::MoveLoop()
+{
+	float4 CrossResult = MonsterAndPlayerCross();
+	float RotationValue = 0.0f;
+	float4 EnemyPosition = GetTransform()->GetWorldPosition();
+	float4 PlayerPosition = Player->GetTransform()->GetWorldPosition();
+
+	float4 EnemyForWardVector = GetTransform()->GetWorldForwardVector();
+	EnemyForWardVector.Normalize();
+
+	PlayerPosition.y = 0.0f;
+	EnemyPosition.y = 0.0f;
+
+	float4 ToPlayerVector = (PlayerPosition - EnemyPosition);
+	float4 RotationDirectNormal = ToPlayerVector.NormalizeReturn();
+	RotationValue = float4::GetAngleVectorToVectorDeg(EnemyForWardVector, RotationDirectNormal);
+
+	if (-1.0f <= RotationValue && 1.0f >= RotationValue)
+	{
+		AllDirectSetting_Normal();
+		return;
+	}
+
+	if (true == isnan(RotationValue))
+	{
+		AllDirectSetting_Normal();
+		return;
+	}
+
+	if (CrossResult.y < 0)
+	{
+		if (RotationValue >= 0)
+		{
+			RotationValue = -RotationValue;
+		}
+	}
+	else if (CrossResult.y > 0)
+	{
+		if (RotationValue < 0)
+		{
+			RotationValue = -RotationValue;
+		}
+	}
+
+	float4 CurRot = GetTransform()->GetWorldRotation();
+
+	if (CurRot.y <= 0.0f)
+	{
+		CurRot.y += 360.f;
+	}
+
+	float4 Value = float4{ 0.0f, RotationValue, 0.0f };
+
+	float4 GoalRot = CurRot + Value;
+
+	if (GoalRot.y <= 0.0f)
+	{
+		CurRot.y += 360.f;
+		GoalRot = CurRot + Value;
+	}
+
+	CurRot.x = 0.0f;
+	CurRot.z = 0.0f;
+	GoalRot.x = 0.0f;
+	GoalRot.z = 0.0f;
+
+	PhysXCapsule->SetWorldRotation(GoalRot);
+	AllDirectSetting_Normal();
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////     FSM     ///////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -679,14 +748,91 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) 
 	{
 	WaitTime += _DeltaTime;
-	//if (0.5f <= WaitTime)
-	//{
-	//	ChangeState(FSM_State_HellAntenora::HellAntenora_Counter_Attack);
-	//	return;
-	//}
+	if (0.5f <= WaitTime)
+	{
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Walk_Start);
+		return;
+	}
 	},
 	.End = [=] {
 	WaitTime = 0.0f;
+	}
+		});
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////     Move     //////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	// 걷기 시작
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Walk_Start,
+	.Start = [=] 
+	{
+	RotationCheck();
+	SlerpCalculation();
+	EnemyRenderer->ChangeAnimation("em0001_walk_start");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	{
+		SlerpTurn(_DeltaTime * 2.0f);
+		AllDirectSetting_Normal();
+		SetForwardMove(140.0f);
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Walk_Loop);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 걷기 루프
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Walk_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_walk_loop");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+
+	{
+		MoveLoop();
+		SetForwardMove(190.0f);
+	}
+
+	if (true == IsRecognize)
+	{
+		IsRecognize = false;
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Walk_End);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 걷기 끝
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Walk_End,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_walk_stop");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+
+	{
+		AllDirectSetting_Normal();
+		SetForwardMove(140.0f);
+	}
+
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		RotationCheck();
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Idle);
+		return;
+	}
+	},
+	.End = [=] {
 	}
 		});
 
@@ -865,7 +1011,7 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	FallCheckDelayTime += _DeltaTime;
 	if (true == FloorCheck(FallDistance) && 0.2f <= FallCheckDelayTime)
 	{
-		ChangeState(FSM_State_HellAntenora::HellAntenora_Blown_Back_Landing);
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Blown_Up_Landing);
 		return;
 	}
 	},
@@ -980,6 +1126,14 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	.End = [=] {
 	}
 		});
+
+	{
+		EnemyRenderer->SetAnimationStartEvent("em0001_blown_up_landing", 1, 
+			[=] 
+			{
+				SetPush(40000.0f);
+			});
+	}
 
 	// 에어어택 착지 시 앉은 상태이지만 비틀거리다가 쓰러지는 랜딩
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Blown_Up_Landing,

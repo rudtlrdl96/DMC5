@@ -206,24 +206,30 @@ void Enemy_HellCaina::PlayerChase(float _DeltaTime)
 		break;
 	case EnemyRotation::Left:
 		AllDirectSetting();
+		WaitTime += 0.2f;
 		ChangeState(FSM_State_HellCaina::HellCaina_Navi_Turn_Left);
 		break;
 	case EnemyRotation::Left_90:
 		AllDirectSetting();
+		WaitTime += 0.2f;
 		ChangeState(FSM_State_HellCaina::HellCaina_Navi_Turn_Left);
 		break;
 	case EnemyRotation::Left_180:
+		WaitTime += 0.2f;
 		ChangeState(FSM_State_HellCaina::HellCaina_Turn_Left_180);
 		break;
 	case EnemyRotation::Right:
 		AllDirectSetting();
+		WaitTime += 0.2f;
 		ChangeState(FSM_State_HellCaina::HellCaina_Navi_Turn_Right);
 		break;
 	case EnemyRotation::Right_90:
 		AllDirectSetting();
+		WaitTime += 0.2f;
 		ChangeState(FSM_State_HellCaina::HellCaina_Navi_Turn_Right);
 		break;
 	case EnemyRotation::Right_180:
+		WaitTime += 0.2f;
 		ChangeState(FSM_State_HellCaina::HellCaina_Turn_Right_180);
 		break;
 	default:
@@ -507,6 +513,76 @@ void Enemy_HellCaina::RecognizeCollisionCheck(float _DeltaTime)
 	}
 }
 
+void Enemy_HellCaina::MoveLoop()
+{
+	float4 CrossResult = MonsterAndPlayerCross();
+	float RotationValue = 0.0f;
+	float4 EnemyPosition = GetTransform()->GetWorldPosition();
+	float4 PlayerPosition = Player->GetTransform()->GetWorldPosition();
+
+	float4 EnemyForWardVector = GetTransform()->GetWorldForwardVector();
+	EnemyForWardVector.Normalize();
+
+	PlayerPosition.y = 0.0f;
+	EnemyPosition.y = 0.0f;
+
+	float4 ToPlayerVector = (PlayerPosition - EnemyPosition);
+	float4 RotationDirectNormal = ToPlayerVector.NormalizeReturn();
+	RotationValue = float4::GetAngleVectorToVectorDeg(EnemyForWardVector, RotationDirectNormal);
+
+	if (-1.0f <= RotationValue && 1.0f >= RotationValue)
+	{
+		AllDirectSetting_Normal();
+		return;
+	}
+
+	if (true == isnan(RotationValue))
+	{
+		AllDirectSetting_Normal();
+		return;
+	}
+
+	if (CrossResult.y < 0)
+	{
+		if (RotationValue >= 0)
+		{
+			RotationValue = -RotationValue;
+		}
+	}
+	else if (CrossResult.y > 0)
+	{
+		if (RotationValue < 0)
+		{
+			RotationValue = -RotationValue;
+		}
+	}
+
+	float4 CurRot = GetTransform()->GetWorldRotation();
+
+	if (CurRot.y <= 0.0f)
+	{
+		CurRot.y += 360.f;
+	}
+
+	float4 Value = float4{ 0.0f, RotationValue, 0.0f };
+
+	float4 GoalRot = CurRot + Value;
+
+	if (GoalRot.y <= 0.0f)
+	{
+		CurRot.y += 360.f;
+		GoalRot = CurRot + Value;
+	}
+
+	CurRot.x = 0.0f;
+	CurRot.z = 0.0f;
+	GoalRot.x = 0.0f;
+	GoalRot.z = 0.0f;
+
+	PhysXCapsule->SetWorldRotation(GoalRot);
+	AllDirectSetting_Normal();
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////     FSM     ///////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -559,7 +635,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	},
 	.Update = [=](float _DeltaTime) {
 	WaitTime += _DeltaTime;
-	if (0.5f <= WaitTime)
+	if (0.35f <= WaitTime)
 	{
 		if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
 		{
@@ -647,12 +723,16 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 앞으로 걷기 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Walk_Start,
 	.Start = [=] {
+	MoveLoop();
 	EnemyRenderer->ChangeAnimation("em0000_walk_start");
 	},
 	.Update = [=](float _DeltaTime) {
-	if (8 < EnemyRenderer->GetCurFrame())
 	{
-		SetForwardMove(100.0f);
+		MoveLoop();
+		if (8 < EnemyRenderer->GetCurFrame())
+		{
+			SetForwardMove(100.0f);
+		}
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
@@ -674,7 +754,10 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0000_walk_loop");
 	},
 	.Update = [=](float _DeltaTime) {
-	SetForwardMove(140.0f);
+	{
+		MoveLoop();
+		SetForwardMove(140.0f);
+	}
 	if (0.5f >= MonsterAndPlayerDotProduct() || true == IsRecognize)
 	{
 		IsRecognize = false;
@@ -700,10 +783,12 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 	if (48 > EnemyRenderer->GetCurFrame())
 	{
+		AllDirectSetting_Normal();
 		SetForwardMove(90.0f);
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
+		//RotationCheck();
 		ChangeState(FSM_State_HellCaina::HellCaina_Idle);
 		return;
 	}
@@ -1081,17 +1166,29 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	MonsterAttackCollision->Off();
 	}
 		});
-	// 돌진공격, 110 start, 133 on, 137 off
+	// 돌진베기, 110 start, 133 on, 116 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Attack_Dash,
 	.Start = [=] {
+	DashAttackSetting = true;
 	SetMoveStop();
 	EnemyRenderer->ChangeAnimation("em0000_attack_atackhard");
 	},
 	.Update = [=](float _DeltaTime) {
-	if (10 < EnemyRenderer->GetCurFrame() && EnemyRenderer->GetCurFrame() <= 115)
 	{
-		SetForwardMove(400.0f);
+		MoveLoop();
+		if (10 < EnemyRenderer->GetCurFrame() && EnemyRenderer->GetCurFrame() <= 115)
+		{
+			SetForwardMove(500.0f);
+		}
 	}
+
+	if (true == IsRecognize && true == DashAttackSetting)
+	{
+		IsRecognize = false;
+		DashAttackSetting = false;
+		EnemyRenderer->SetCurFrame(115);
+	}
+
 	if (345 < EnemyRenderer->GetCurFrame() && EnemyRenderer->GetCurFrame() <= 390)
 	{
 		SetForwardMove(60.0f);
@@ -1104,6 +1201,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	},
 	.End = [=] {
 	MonsterAttackCollision->Off();
+	DashAttackSetting = false;
 	}
 		});
 

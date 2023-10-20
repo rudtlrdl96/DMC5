@@ -967,12 +967,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 		SetForwardMove(220.0f);
 	}
 
-	if (false == IsRecognize)
-	{
-		//ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack01);
-		//return;
-	}
-	else
+	if (true == IsRecognize)
 	{
 		IsRecognize = false;
 		if (3 <= ColliderStack)

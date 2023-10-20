@@ -100,6 +100,7 @@ private:
 	void ChangeState(int _StateValue);
 	void ChangeState_Client(int _StateValue);
 	void AttackCalculation();
+	void MoveLoop();
 
 	float WaitTime = 0.0f;
 	float RotationDelayTime = 0.0f;
@@ -116,6 +117,7 @@ private:
 	bool IsVergilLight = false;
 	bool IsCollapse = false;      // 쓰러져있는 상태
 	bool IsRecognize = false;
+	bool DashAttackSetting = false;
 	
 };
 

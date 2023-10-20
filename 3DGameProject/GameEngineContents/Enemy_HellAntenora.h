@@ -20,18 +20,6 @@ enum FSM_State_HellAntenora
 	HellAntenora_Turn_Right,				 // em0001_turn_right_90_noTransRot : 슬러프턴
 	HellAntenora_Turn_Right_180,			 // em0001_turn_right_180 : 25프레임 애니메이션 턴
 
-	HellAntenora_Walk_Back_Start,			 // em0001_walk_back_start : 뒤로 걷기 시작
-	HellAntenora_Walk_Back_Loop,			 // em0001_walk_back_loop : 뒤로 걷기 중
-	HellAntenora_Walk_Back_End,				 // em0001_walk_back_end : 뒤로 걷기 끝
-
-	HellAntenora_Walk_Left_Start,			 // em0001_walk_left_start : 왼쪽 걷기 시작
-	HellAntenora_Walk_Left_Loop,			 // em0001_walk_left_loop : 왼쪽 걷기 중
-	HellAntenora_Walk_Left_End,				 // em0001_walk_left_end : 왼쪽 걷기 끝
-
-	HellAntenora_Walk_Right_start,			 // em0001_walk_Right_start : 오른쪽 걷기 시작
-	HellAntenora_Walk_Right_loop,			 // em0001_walk_Right_loop : 오른쪽 걷기 중
-	HellAntenora_Walk_Right_End,			 // em0001_walk_Right_end : 오른쪽 걷기 끝
-
 	HellAntenora_Walk_Start,				 // em0001_walk_start : 걷기 시작
 	HellAntenora_Walk_Loop,					 // em0001_walk_loop : 걷기 루프
 	HellAntenora_Walk_End,					 // em0001_walk_stop : 걷기 끝
@@ -134,6 +122,7 @@ private:
 	void AttackCalculation();
 	void MonsterAttackCollisionOn();
 	void MonsterAttackCollisionOff();
+	void MoveLoop();
 
 	float WaitTime = 0.0f;
 	float RunTime = 0.0f;
