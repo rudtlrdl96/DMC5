@@ -4,9 +4,63 @@ enum FSM_State_HellAntenora
 {
 	HellAntenora_Idle,                       // em0001_Idle_01_loop, 서있음
 
+	HellAntenora_Menace_01_Loop,			 // em0001_menace_01_loop : 두리번거림
+	HellAntenora_Menace_02,					 // em0001_menace_02 : 칼 땅에 꽂았다가 뽑음
 
+	HellAntenora_Appear_01,					 // em0001_appear_01 : 바닥에서 등장 1
+	HellAntenora_Appear_02,					 // em0001_appear_02 : 바닥에서 등장 2
+	HellAntenora_Appear_05,					 // em0001_appear_05 : 위에서 등장
+	HellAntenora_Appear_30,					 // em0001_appear_30 : 벽에서  등장
 
-	HellAntenora_Counter_Attack,			 // em0001_Attack_counter_attack
+	HellAntenora_fall_loop,					 // em0001_fall_loop : 위에서 등장 후 떨어질때
+	HellAntenora_fall_landing,				 // em0001_fall_landing : 위에서 등장 후 랜딩
+
+	HellAntenora_Turn_Left_,				 // em0001_turn_left_90_noTransRot : 슬러프턴
+	HellAntenora_Turn_Left_180,				 // em0001_turn_left_180 : 25프레임 애니메이션 턴
+	HellAntenora_Turn_Right,				 // em0001_turn_right_90_noTransRot : 슬러프턴
+	HellAntenora_Turn_Right_180,			 // em0001_turn_right_180 : 25프레임 애니메이션 턴
+
+	HellAntenora_Walk_Back_Start,			 // em0001_walk_back_start : 뒤로 걷기 시작
+	HellAntenora_Walk_Back_Loop,			 // em0001_walk_back_loop : 뒤로 걷기 중
+	HellAntenora_Walk_Back_End,				 // em0001_walk_back_end : 뒤로 걷기 끝
+
+	HellAntenora_Walk_Left_Start,			 // em0001_walk_left_start : 왼쪽 걷기 시작
+	HellAntenora_Walk_Left_Loop,			 // em0001_walk_left_loop : 왼쪽 걷기 중
+	HellAntenora_Walk_Left_End,				 // em0001_walk_left_end : 왼쪽 걷기 끝
+
+	HellAntenora_Walk_Right_start,			 // em0001_walk_Right_start : 오른쪽 걷기 시작
+	HellAntenora_Walk_Right_loop,			 // em0001_walk_Right_loop : 오른쪽 걷기 중
+	HellAntenora_Walk_Right_End,			 // em0001_walk_Right_end : 오른쪽 걷기 끝
+
+	HellAntenora_Walk_Start,				 // em0001_walk_start : 걷기 시작
+	HellAntenora_Walk_Loop,					 // em0001_walk_loop : 걷기 루프
+	HellAntenora_Walk_End,					 // em0001_walk_stop : 걷기 끝
+
+	HellAntenora_Attack_Counter_JumpAttack_Start, // em0001_Attack_Counter_JumpAttack_Start : 점프어택 스타트, 66 on, 71 off
+	HellAntenora_Attack_Counter_JumpAttack_End,   // em0001_Attack_Counter_JumpAttack_End : 점프어택 앤드
+
+	HellAntenora_Attack_counter_Start,			  // em0001_Attack_counter_Start : 돌진 전 뒤구르기
+	HellAntenora_Attack_counter_landing,		  // em0001_Attack_counter_landing : 엎드렸다가 돌진
+	HellAntenora_Attack_counter_loop,			  // em0001_Attack_counter_loop : 돌진 루프
+	HellAntenora_Attack_counter_attack,			  // em0001_Attack_counter_attack : 앞으로 휘두르고 뒤로 돔, 38 on, 43 off / 55 프레임 애니메이션 턴
+	HellAntenora_Attack_counter_stop,			  // em0001_Attack_counter_stop : 돌진 종료
+
+	HellAntenora_Counter_Damage,				  // em0001_counter_s_damage : 약공 맞았을때 반격 곻격
+	HellAntenora_Counter_Short_Attack,			  // em0001_counter_short_attack : 비틀거리다가 일어나면서 공격
+
+	HellAntenora_Multiattack_Start,					  // em0001_multiattack_Start : 오른쪽에서 왼쪽으로 휘두르기 공격 시작
+	HellAntenora_Multiattack_SideAttack_to_Right,     // em0001_multiattack_SideAttack_to_R : 오른쪽에서 왼쪽으로 크게 휘두름, 22 R on, 27 R Off / 37 L on, 42 L Off
+	HellAntenora_Multiattack_From_Right_End,		  // em0001_multiattack_from_R_End : 오른쪽에서 왼쪽으로 크게 휘두름 끝
+	HellAntenora_Multiattack_To_Attack_End_Right,	  // em0001_multiattack_to_attack_End_R : 오른쪽에서 왼쪽으로 휘두른 뒤 위에서 찍는 연계공격, 73 on, 78 off
+	HellAntenora_Multiattack_UpAttack_To_Right,		  // em0001_multiattack_UpAttack_to_R : 오른쪽에서 왼쪽으로 휘두른 뒤 다시 왼쪽 위로 휘두르는 연계공격, 60 R on, 65 R Off, 76 L On, 81 L Off
+
+	HellAntenora_Multiattack_SideAttack_To_Left,	  // em0001_multiattack_SideAttack_to_L : 왼쪽에서 오른쪽으로 크게 휘두름, 22 L on, 27 L off / 37 R on, 42 off
+	HellAntenora_Multiattack_From_Left_End,			  // em0001_multiattack_from_L_End : 왼쪽에서 오른쪽으로 크게 휘두름 끝
+	HellAntenora_Multiattack_To_Attack_End_Left,	  // em0001_multiattack_to_attack_End_L : 왼쪽에서 오른쪽으로 휘두른 뒤 위에서 찍는 연계공격, 73 on, 78 off
+	HellAntenora_Multiattack_UpAttack_To_Left,		  // em0001_multiattack_UpAttack_to_L : 왼쪽에서 오른쪽으로 휘두른 뒤 다시 오른쪽 위로 휘두르는 연계공격, 61 L on, 66 L Off, 76 R On, 81 R Off
+
+	HellAntenora_Turn_Attack_Left,					  // em0001_turn_attack_L : 왼쪽 뒤로 돌면서 공격, 78 프레임 애니메이션 턴, 84 L on, 89 L Off
+	HellAntenora_Turn_Attack_Right,					  // em0001_turn_attack_R : 오른쪽 뒤로 돌면서 공격, 78 프레임 애니메이션 턴, 85 L on, 90 L Off
 
 	HellAntenora_Standing_Damage_Weak_Front, // em0001_standing_damage_weak_front_01 : 정면 약공 히트
 	HellAntenora_Standing_Damage_Weak_Back,  // em0001_standing_damage_weak_back_01 : 뒤에서 약공 히트시, 105 프레임 애니메이션 턴
