@@ -56,7 +56,7 @@ void NetworkTestLevel::LevelChangeStart()
 	//호스트일때 어떤 캐릭터로 플레이할지 결정합니다
 	InitHost(Net_ActorType::Vergil);
 	//클라이언트일때 어떤 캐릭터로 플레이할지 결정합니다
-	InitClient(Net_ActorType::Vergil);
+	InitClient(Net_ActorType::Nero);
 	InitPool();
 
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
