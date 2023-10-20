@@ -140,14 +140,6 @@ void Enemy_HellAntenora::EnemyAnimationLoad()
 			}
 		}
 	);
-
-	//std::vector<GameEngineFile> FBXFiles = NewDir.GetAllFile({ ".FBX" });
-
-	//for (size_t i = 0; i < FBXFiles.size(); i++)
-	//{
-	//	GameEngineFBXAnimation::Load(FBXFiles[i].GetFullPath());
-	//	EnemyRenderer->CreateFBXAnimation(FBXFiles[i].GetFileName(), FBXFiles[i].GetFileName(), { .Inter = 0.01666f, });
-	//}
 }
 
 void Enemy_HellAntenora::Start()
@@ -228,7 +220,13 @@ void Enemy_HellAntenora::Start()
 	LinkData_UpdatePacket<int>(EnemyHP);
 
 	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker) {
-		Player = _Attacker;
+		
+		if (false == DashAttackSetting)
+		{
+			Player = _Attacker;
+		}
+		
+		MultiAttackStack = 0;
 		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
 		MinusEnemyHP(Datas.DamageValue);
 
@@ -330,65 +328,6 @@ void Enemy_HellAntenora::PlayerChase()
 	}
 }
 
-void Enemy_HellAntenora::PlayerAttack()
-{
-	RotationCheck();
-	AllDirectSetting();
-
-	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 3);
-
-	if (0 == RandC)
-	{
-		//ChangeState(FSM_State_HellAntenora::Empusa_Continuation_Attack);
-		return;
-	}
-
-	switch (EnemyRotationValue)
-	{
-	case EnemyRotation::Forward:
-		RandomAttack();
-		break;
-	case EnemyRotation::Left:
-		//ChangeState(FSM_State_HellAntenora::Empusa_Attack_C);
-		break;
-	case EnemyRotation::Left_90:
-		//ChangeState(FSM_State_HellAntenora::Empusa_Attack_C);
-		break;
-	case EnemyRotation::Left_180:
-		//ChangeState(FSM_State_HellAntenora::Empusa_Attack_C);
-		break;
-	case EnemyRotation::Right:
-		//ChangeState(FSM_State_HellAntenora::Empusa_Attack_D);
-		break;
-	case EnemyRotation::Right_90:
-		//ChangeState(FSM_State_HellAntenora::Empusa_Attack_D);
-		break;
-	case EnemyRotation::Right_180:
-		//ChangeState(FSM_State_HellAntenora::Empusa_Attack_D);
-		break;
-	default:
-		break;
-	}
-}
-
-void Enemy_HellAntenora::RandomAttack()
-{
-	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
-
-	if (0 == RandC)
-	{
-		//ChangeState(FSM_State_HellAntenora::Empusa_Attack_A);
-	}
-	else if (1 == RandC)
-	{
-		//ChangeState(FSM_State_HellAntenora::Empusa_Attack_B);
-	}
-	else if (2 == RandC)
-	{
-		//ChangeState(FSM_State_HellAntenora::Empusa_Attack_W);
-	}
-}
-
 void Enemy_HellAntenora::AttackCalculation()
 {
 	AttackDirectCheck();
@@ -430,6 +369,7 @@ void Enemy_HellAntenora::DamageCollisionCheck(float _DeltaTime)
 	MonsterAttackCollision->Off();
 	DamageData Data = AttackCol->GetDamage();
 	MinusEnemyHP(Data.DamageValue);
+	MultiAttackStack = 0;
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
@@ -776,7 +716,31 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	WaitTime += _DeltaTime;
 	if (0.35f <= WaitTime)
 	{
-		PlayerChase();
+		if (true == IsRecognize)
+		{
+			IsRecognize = false;
+
+			RotationCheck();
+			AllDirectSetting();
+
+			if (EnemyRotation::Left_180 == EnemyRotationValue)
+			{
+				ChangeState(FSM_State_HellAntenora::HellAntenora_Turn_Attack_Left);
+			}
+			else if (EnemyRotation::Right_180 == EnemyRotationValue)
+			{
+				ChangeState(FSM_State_HellAntenora::HellAntenora_Turn_Attack_Right);
+			}
+			else
+			{
+				ChangeState(FSM_State_HellAntenora::HellAntenora_Multiattack_Start);
+			}
+		}
+		else
+		{
+			PlayerChase();
+		}
+		return;
 	}
 	},
 	.End = [=] {
@@ -822,7 +786,7 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	},
 	.Update = [=](float _DeltaTime)
 	{
-
+	RunTime += _DeltaTime;
 	{
 		MoveLoop();
 		SetForwardMove(210.0f);
@@ -831,11 +795,17 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	if (true == IsRecognize)
 	{
 		IsRecognize = false;
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Multiattack_Start);
+		return;
+	}
+	else if (RunTime >= 4.0f)
+	{
 		ChangeState(FSM_State_HellAntenora::HellAntenora_Walk_End);
 		return;
 	}
 	},
 	.End = [=] {
+	RunTime = 0.0f;
 	}
 		});
 
@@ -1082,6 +1052,7 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	RotationCheck();
 	SlerpCalculation();
 	SlerpTime = 0.0f;
+	MonsterAttackCollision->SetAttackData(DamageType::Heavy, MONSTER_HEAVY_DAMAGE);
 	MonsterAttackCollision_Two->SetAttackData(DamageType::Heavy, MONSTER_HEAVY_DAMAGE);
 	EnemyRenderer->ChangeAnimation("em0001_Attack_counter_attack");
 	},
@@ -1144,26 +1115,442 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	}
 		});
 
-	HellAntenora_Attack_Counter_JumpAttack_Start, // em0001_Attack_Counter_JumpAttack_Start : 점프어택 스타트, 66 on, 71 off
-	HellAntenora_Attack_Counter_JumpAttack_End,   // em0001_Attack_Counter_JumpAttack_End : 점프어택 앤드
+	// 오른쪽에서 왼쪽으로 휘두르기 공격 시작
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Multiattack_Start,
+	.Start = [=] 
+	{
+	SetMoveStop();
+	RotationCheck();
+	AllDirectSetting();
+	EnemyRenderer->ChangeAnimation("em0001_multiattack_Start");
+	},
+	.Update = [=](float _DeltaTime) 
+	{
+	{
+		SetForwardMove(220.0f);
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Multiattack_SideAttack_to_Right);
+		return;
+	}
+	},
+	.End = [=] 
+	{
+	}
+		});
 
-	HellAntenora_Counter_Damage,				  // em0001_counter_s_damage : 약공 맞았을때 반격 곻격
-	HellAntenora_Counter_Short_Attack,			  // em0001_counter_short_attack : 비틀거리다가 일어나면서 공격
+	// 오른쪽에서 왼쪽으로 크게 휘두름, 22 R on, 27 R Off / 37 L on, 42 L Off
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Multiattack_SideAttack_to_Right,
+	.Start = [=]
+	{
+	MonsterAttackCollision->SetAttackData(DamageType::Light, MONSTER_LIGHT_DAMAGE);     // L
+	MonsterAttackCollision_Two->SetAttackData(DamageType::Light, MONSTER_LIGHT_DAMAGE); // R
+	RotationCheck();
+	AllDirectSetting_Normal();
+	SlerpCalculation();
+	EnemyRenderer->ChangeAnimation("em0001_multiattack_SideAttack_to_R");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	if (22 > EnemyRenderer->GetCurFrame())
+	{
+		SlerpTurn(_DeltaTime * 3.0f);
+		AllDirectSetting_Normal();
+		SetForwardMove(220.0f);
+	}
+	if (22 <= EnemyRenderer->GetCurFrame() && 27 > EnemyRenderer->GetCurFrame())
+	{
+		MonsterAttackCollision_Two->On();
+	}
+	else
+	{
+		MonsterAttackCollision_Two->Off();
+	}
+	if (37 <= EnemyRenderer->GetCurFrame() && 42 > EnemyRenderer->GetCurFrame())
+	{
+		MonsterAttackCollision->On();
+	}
+	else
+	{
+		MonsterAttackCollision->Off();
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		if (true == IsRecognize)
+		{
+			IsRecognize = false;
+			++MultiAttackStack;
+		
+			if (3 > MultiAttackStack)
+			{
+				ChangeState(FSM_State_HellAntenora::HellAntenora_Multiattack_SideAttack_To_Left);
+			}
+			else
+			{
+				MultiAttackStack = 0;
+				ChangeState(FSM_State_HellAntenora::HellAntenora_Multiattack_To_Attack_End_Right);
+			}
+		}
+		else
+		{
+			MultiAttackStack = 0;
+			ChangeState(FSM_State_HellAntenora::HellAntenora_Multiattack_UpAttack_To_Left);
+		}
+		return;
+	}
+	},
+	.End = [=]
+	{
+	SlerpTime = 0.0f;
+	MonsterAttackCollisionOff();
+	}
+		});
 
-	HellAntenora_Multiattack_Start,					  // em0001_multiattack_Start : 오른쪽에서 왼쪽으로 휘두르기 공격 시작
-	HellAntenora_Multiattack_SideAttack_to_Right,     // em0001_multiattack_SideAttack_to_R : 오른쪽에서 왼쪽으로 크게 휘두름, 22 R on, 27 R Off / 37 L on, 42 L Off
-	HellAntenora_Multiattack_From_Right_End,		  // em0001_multiattack_from_R_End : 오른쪽에서 왼쪽으로 크게 휘두름 끝
-	HellAntenora_Multiattack_To_Attack_End_Right,	  // em0001_multiattack_to_attack_End_R : 오른쪽에서 왼쪽으로 휘두른 뒤 위에서 찍는 연계공격, 73 on, 78 off
-	HellAntenora_Multiattack_UpAttack_To_Right,		  // em0001_multiattack_UpAttack_to_R : 오른쪽에서 왼쪽으로 휘두른 뒤 다시 왼쪽 위로 휘두르는 연계공격, 60 R on, 65 R Off, 76 L On, 81 L Off
+	// 왼쪽에서 오른쪽으로 크게 휘두름, 22 L on, 27 L off / 37 R on, 42 off
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Multiattack_SideAttack_To_Left,
+	.Start = [=]
+	{
+	MonsterAttackCollision->SetAttackData(DamageType::Light, MONSTER_LIGHT_DAMAGE);     // L
+	MonsterAttackCollision_Two->SetAttackData(DamageType::Light, MONSTER_LIGHT_DAMAGE); // R
+	RotationCheck();
+	AllDirectSetting_Normal();
+	SlerpCalculation();
+	EnemyRenderer->ChangeAnimation("em0001_multiattack_SideAttack_to_L");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	if (22 > EnemyRenderer->GetCurFrame())
+	{
+		SlerpTurn(_DeltaTime * 3.0f);
+		AllDirectSetting_Normal();
+		SetForwardMove(220.0f);
+	}
+	if (22 <= EnemyRenderer->GetCurFrame() && 27 > EnemyRenderer->GetCurFrame())
+	{
+		MonsterAttackCollision->On();
+	}
+	else
+	{
+		MonsterAttackCollision->Off();
+	}
+	if (37 <= EnemyRenderer->GetCurFrame() && 42 > EnemyRenderer->GetCurFrame())
+	{
+		MonsterAttackCollision_Two->On();
+	}
+	else
+	{
+		MonsterAttackCollision_Two->Off();
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		if (true == IsRecognize)
+		{
+			IsRecognize = false;
+			++MultiAttackStack;
 
-	HellAntenora_Multiattack_SideAttack_To_Left,	  // em0001_multiattack_SideAttack_to_L : 왼쪽에서 오른쪽으로 크게 휘두름, 22 L on, 27 L off / 37 R on, 42 off
-	HellAntenora_Multiattack_From_Left_End,			  // em0001_multiattack_from_L_End : 왼쪽에서 오른쪽으로 크게 휘두름 끝
-	HellAntenora_Multiattack_To_Attack_End_Left,	  // em0001_multiattack_to_attack_End_L : 왼쪽에서 오른쪽으로 휘두른 뒤 위에서 찍는 연계공격, 73 on, 78 off
-	HellAntenora_Multiattack_UpAttack_To_Left,		  // em0001_multiattack_UpAttack_to_L : 왼쪽에서 오른쪽으로 휘두른 뒤 다시 오른쪽 위로 휘두르는 연계공격, 61 L on, 66 L Off, 76 R On, 81 R Off
+			if (3 > MultiAttackStack)
+			{
+				ChangeState(FSM_State_HellAntenora::HellAntenora_Multiattack_SideAttack_to_Right);
+			}
+			else
+			{
+				MultiAttackStack = 0;
+				ChangeState(FSM_State_HellAntenora::HellAntenora_Multiattack_To_Attack_End_Left);
+			}
+		}
+		else
+		{
+			MultiAttackStack = 0;
+			ChangeState(FSM_State_HellAntenora::HellAntenora_Multiattack_UpAttack_To_Right);
+		}
+		return;
+	}
+	},
+	.End = [=]
+	{
+	SlerpTime = 0.0f;
+	MonsterAttackCollisionOff();
+	}
+		});
 
-	HellAntenora_Turn_Attack_Left,					  // em0001_turn_attack_L : 왼쪽 뒤로 돌면서 공격, 78 프레임 애니메이션 턴, 84 L on, 89 L Off
-	HellAntenora_Turn_Attack_Right,					  // em0001_turn_attack_R : 오른쪽 뒤로 돌면서 공격, 78 프레임 애니메이션 턴, 85 L on, 90 L Off
+	// 오른쪽에서 왼쪽으로 휘두른 뒤 다시 왼쪽 위로 휘두르는 연계공격, 60 R on, 65 R Off, 76 L On, 81 L Off
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Multiattack_UpAttack_To_Right,
+	.Start = [=]
+	{
+	MonsterAttackCollision->SetAttackData(DamageType::Light, MONSTER_LIGHT_DAMAGE);     // L
+	MonsterAttackCollision_Two->SetAttackData(DamageType::Light, MONSTER_LIGHT_DAMAGE); // R
+	RotationCheck();
+	AllDirectSetting_Normal();
+	SlerpCalculation();
+	EnemyRenderer->ChangeAnimation("em0001_multiattack_UpAttack_to_R");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	if (60 > EnemyRenderer->GetCurFrame())
+	{
+		SlerpTurn(_DeltaTime * 3.0f);
+		AllDirectSetting_Normal();
+		SetForwardMove(220.0f);
+	}
+	if (60 <= EnemyRenderer->GetCurFrame() && 65 > EnemyRenderer->GetCurFrame())
+	{
+		MonsterAttackCollision_Two->On();
+	}
+	else
+	{
+		MonsterAttackCollision_Two->Off();
+	}
+	if (76 <= EnemyRenderer->GetCurFrame() && 81 > EnemyRenderer->GetCurFrame())
+	{
+		MonsterAttackCollision->On();
+	}
+	else
+	{
+		MonsterAttackCollision->Off();
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Multiattack_From_Right_End);
+		return;
+	}
+	},
+	.End = [=]
+	{
+	MonsterAttackCollisionOff();
+	}
+		});
 
+	// 왼쪽에서 오른쪽으로 휘두른 뒤 다시 오른쪽 위로 휘두르는 연계공격, 61 L on, 66 L Off, 76 R On, 81 R Off
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Multiattack_UpAttack_To_Left,
+	.Start = [=]
+	{
+	MonsterAttackCollision->SetAttackData(DamageType::Light, MONSTER_LIGHT_DAMAGE);     // L
+	MonsterAttackCollision_Two->SetAttackData(DamageType::Light, MONSTER_LIGHT_DAMAGE); // R
+	RotationCheck();
+	AllDirectSetting_Normal();
+	SlerpCalculation();
+	EnemyRenderer->ChangeAnimation("em0001_multiattack_UpAttack_to_L");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	if (61 > EnemyRenderer->GetCurFrame())
+	{
+		SlerpTurn(_DeltaTime * 3.0f);
+		AllDirectSetting_Normal();
+		SetForwardMove(220.0f);
+	}
+	if (61 <= EnemyRenderer->GetCurFrame() && 66 > EnemyRenderer->GetCurFrame())
+	{
+		MonsterAttackCollision->On();
+	}
+	else
+	{
+		MonsterAttackCollision->Off();
+	}
+	if (76 <= EnemyRenderer->GetCurFrame() && 81 > EnemyRenderer->GetCurFrame())
+	{
+		MonsterAttackCollision_Two->On();
+	}
+	else
+	{
+		MonsterAttackCollision_Two->Off();
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Multiattack_From_Left_End);
+		return;
+	}
+	},
+	.End = [=]
+	{
+	MonsterAttackCollisionOff();
+	}
+		});
+
+	// 왼쪽에서 오른쪽으로 휘두른 뒤 위에서 찍는 연계공격, 73 on, 78 off
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Multiattack_To_Attack_End_Left,
+	.Start = [=]
+	{
+	MonsterAttackCollision->SetAttackData(DamageType::Heavy, MONSTER_HEAVY_DAMAGE);     // L
+	MonsterAttackCollision_Two->SetAttackData(DamageType::Heavy, MONSTER_HEAVY_DAMAGE); // R
+	RotationCheck();
+	AllDirectSetting();
+	EnemyRenderer->ChangeAnimation("em0001_multiattack_to_attack_End_L");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	if (73 > EnemyRenderer->GetCurFrame())
+	{
+		SetForwardMove(220.0f);
+	}
+	if (73 <= EnemyRenderer->GetCurFrame() && 78 > EnemyRenderer->GetCurFrame())
+	{
+		MonsterAttackCollisionOn();
+	}
+	else
+	{
+		MonsterAttackCollisionOff();
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Idle);
+		return;
+	}
+	},
+	.End = [=]
+	{
+	MonsterAttackCollisionOff();
+	}
+		});
+
+	// 오른쪽에서 왼쪽으로 휘두른 뒤 위에서 찍는 연계공격, 73 on, 78 off
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Multiattack_To_Attack_End_Right,
+	.Start = [=]
+	{
+	MonsterAttackCollision->SetAttackData(DamageType::Heavy, MONSTER_HEAVY_DAMAGE);     // L
+	MonsterAttackCollision_Two->SetAttackData(DamageType::Heavy, MONSTER_HEAVY_DAMAGE); // R
+	RotationCheck();
+	AllDirectSetting();
+	EnemyRenderer->ChangeAnimation("em0001_multiattack_to_attack_End_R");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	if (73 > EnemyRenderer->GetCurFrame())
+	{
+		SetForwardMove(220.0f);
+	}
+	if (73 <= EnemyRenderer->GetCurFrame() && 78 > EnemyRenderer->GetCurFrame())
+	{
+		MonsterAttackCollisionOn();
+	}
+	else
+	{
+		MonsterAttackCollisionOff();
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Idle);
+		return;
+	}
+	},
+	.End = [=]
+	{
+	MonsterAttackCollisionOff();
+	}
+		});
+
+	// 오른쪽에서 왼쪽으로 크게 휘두름 끝
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Multiattack_From_Right_End,
+	.Start = [=]
+	{
+	SetMoveStop();
+	EnemyRenderer->ChangeAnimation("em0001_multiattack_from_R_End");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Idle);
+		return;
+	}
+	},
+	.End = [=]
+	{
+	}
+		});
+
+	// 왼쪽에서 오른쪽으로 크게 휘두름 끝
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Multiattack_From_Left_End,
+	.Start = [=]
+	{
+	SetMoveStop();
+	EnemyRenderer->ChangeAnimation("em0001_multiattack_from_L_End");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Idle);
+		return;
+	}
+	},
+	.End = [=]
+	{
+	}
+	});
+
+	// 왼쪽 뒤로 돌면서 공격, 78 프레임 애니메이션 턴, 84 L on, 89 L Off
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Turn_Attack_Left,
+	.Start = [=]
+	{
+	SetMoveStop();
+	MonsterAttackCollision->SetAttackData(DamageType::Light, MONSTER_LIGHT_DAMAGE);     // L
+	EnemyRenderer->ChangeAnimation("em0001_turn_attack_L");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	if (78 < EnemyRenderer->GetCurFrame())
+	{
+		AnimationTurnStart = true;
+	}
+	if (84 <= EnemyRenderer->GetCurFrame() && 89 > EnemyRenderer->GetCurFrame())
+	{
+		MonsterAttackCollision->On();
+	}
+	else
+	{
+		MonsterAttackCollision->Off();
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		AnimationTurnStart = false;
+		PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Idle);
+		return;
+	}
+	},
+	.End = [=]
+	{
+	MonsterAttackCollisionOff();
+	}
+		});
+
+	// 오른쪽 뒤로 돌면서 공격, 78 프레임 애니메이션 턴, 85 L on, 90 L Off
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Turn_Attack_Right,
+	.Start = [=]
+	{
+	SetMoveStop();
+	MonsterAttackCollision_Two->SetAttackData(DamageType::Light, MONSTER_LIGHT_DAMAGE);     // R
+	EnemyRenderer->ChangeAnimation("em0001_turn_attack_R");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	if (78 < EnemyRenderer->GetCurFrame())
+	{
+		AnimationTurnStart = true;
+	}
+	if (85 <= EnemyRenderer->GetCurFrame() && 90 > EnemyRenderer->GetCurFrame())
+	{
+		MonsterAttackCollision_Two->On();
+	}
+	else
+	{
+		MonsterAttackCollision_Two->Off();
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		AnimationTurnStart = false;
+		PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Idle);
+		return;
+	}
+	},
+	.End = [=]
+	{
+	MonsterAttackCollisionOff();
+	}
+		});
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////      피격      //////////////////////////////////////////

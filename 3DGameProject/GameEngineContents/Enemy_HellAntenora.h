@@ -24,8 +24,8 @@ enum FSM_State_HellAntenora
 	HellAntenora_Walk_Loop,					 // em0001_walk_loop : 걷기 루프
 	HellAntenora_Walk_End,					 // em0001_walk_stop : 걷기 끝
 
-	HellAntenora_Attack_Counter_JumpAttack_Start, // em0001_Attack_Counter_JumpAttack_Start : 점프어택 스타트, 66 on, 71 off
-	HellAntenora_Attack_Counter_JumpAttack_End,   // em0001_Attack_Counter_JumpAttack_End : 점프어택 앤드
+	HellAntenora_Attack_Counter_JumpAttack_Start, // em0001_Attack_Counter_JumpAttack_Start : 점프어택 스타트, 66 on, 71 off // 안쓸듯
+	HellAntenora_Attack_Counter_JumpAttack_End,   // em0001_Attack_Counter_JumpAttack_End : 점프어택 앤드                    // 안쓸듯
 
 	HellAntenora_Attack_Counter_Start,			  // em0001_Attack_counter_Start : 돌진 전 뒤구르기
 	HellAntenora_Attack_Counter_Landing,		  // em0001_Attack_counter_landing : 엎드렸다가 돌진
@@ -33,7 +33,7 @@ enum FSM_State_HellAntenora
 	HellAntenora_Attack_Counter_Attack,			  // em0001_Attack_counter_attack : 앞으로 휘두르고 뒤로 돔, 38 on, 43 off / 55 프레임 애니메이션 턴
 	HellAntenora_Attack_Counter_Stop,			  // em0001_Attack_counter_stop : 돌진 종료
 
-	HellAntenora_Counter_Damage,				  // em0001_counter_s_damage : 약공 맞았을때 반격 곻격
+	HellAntenora_Counter_Damage,				  // em0001_counter_s_damage : 약공 맞았을때 반격 곻격          // 안쓸듯
 	HellAntenora_Counter_Short_Attack,			  // em0001_counter_short_attack : 비틀거리다가 일어나면서 공격
 
 	HellAntenora_Multiattack_Start,					  // em0001_multiattack_Start : 오른쪽에서 왼쪽으로 휘두르기 공격 시작
@@ -115,8 +115,6 @@ protected:
 
 private:
 	void PlayerChase();
-	void PlayerAttack();
-	void RandomAttack();
 	void ChangeState(int _StateValue);
 	void ChangeState_Client(int _StateValue);
 	void AttackCalculation();
@@ -132,6 +130,7 @@ private:
 	float AttackDelayTime = 0.0f;
 
 	short WalkCount = 0;
+	short MultiAttackStack = 0;
 
 	bool IsHeavyAttack = false;   // 강공격 히트
 	bool IsAirAttack = false;     // 에어공격 히트
