@@ -6,6 +6,11 @@
 #include "Vergil_ShopUI.h"
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include <GameEngineCore/GameEngineLevel.h>
+bool Shop_VergilYamatoUI::IsRapidSlash = false;
+bool Shop_VergilYamatoUI::IsUpperSlash = false;
+bool Shop_VergilYamatoUI::IsAerialRave = false;
+bool Shop_VergilYamatoUI::IsYamatoCombo = false;
+bool Shop_VergilYamatoUI::IsJudgmentCutEnd = false;
 Shop_VergilYamatoUI::Shop_VergilYamatoUI()
 {
 }
@@ -45,6 +50,7 @@ void Shop_VergilYamatoUI::Update(float _Delta)
 		PrevIndex = 4;
 		Index = 0;
 	}
+	ActivSkill();
 }
 
 void Shop_VergilYamatoUI::SetIndex()
@@ -122,6 +128,53 @@ void Shop_VergilYamatoUI::SetValue()
 	for (int i = 0; i < Shop_ItemButton::Skills.size(); i++)
 	{
 		Shop_ItemButton::Skills[i]->SetSizeValue(true);
+	}
+}
+
+void Shop_VergilYamatoUI::ActivSkill()
+{
+	if (Index == 0)
+	{
+		if (IsRapidSlash == false && GameEngineInput::IsUp("UI_Enter") == true)
+		{
+			IsRapidSlash = true;
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
+		}
+	}
+	else if (Index == 1)
+	{
+		if (IsUpperSlash == false && GameEngineInput::IsUp("UI_Enter") == true)
+		{
+			IsUpperSlash = true;
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
+		}
+	}
+	else if (Index == 2)
+	{
+		if (IsAerialRave == false && GameEngineInput::IsUp("UI_Enter") == true)
+		{
+			IsAerialRave = true;
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
+
+		}
+	}
+	else if (Index == 3)
+	{
+		if (IsYamatoCombo == false && GameEngineInput::IsUp("UI_Enter") == true)
+		{
+			IsYamatoCombo = true;
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
+
+		}
+	}
+	else if (Index == 4)
+	{
+		if (IsJudgmentCutEnd == false && GameEngineInput::IsUp("UI_Enter") == true)
+		{
+			IsJudgmentCutEnd = true;
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
+
+		}
 	}
 }
 

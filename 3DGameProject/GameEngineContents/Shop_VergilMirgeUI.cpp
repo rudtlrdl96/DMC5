@@ -6,6 +6,10 @@
 #include "Vergil_ShopUI.h"
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include <GameEngineCore/GameEngineLevel.h>
+bool Shop_VergilMirgeUI::IsSpiralBlade = false;
+bool Shop_VergilMirgeUI::IsStormBlade = false;
+bool Shop_VergilMirgeUI::IsLesteringBlade = false;
+bool Shop_VergilMirgeUI::IsHeavyRainBlade = false;
 Shop_VergilMirgeUI::Shop_VergilMirgeUI()
 {
 }
@@ -44,6 +48,7 @@ void Shop_VergilMirgeUI::Update(float _Delta)
 		PrevIndex = 3;
 		Index = 0;
 	}
+	ActivSkill();
 }
 
 void Shop_VergilMirgeUI::SetIndex()
@@ -114,6 +119,44 @@ void Shop_VergilMirgeUI::SetValue()
 	for (int i = 0; i < Shop_ItemButton::SecoundSkills.size(); i++)
 	{
 		Shop_ItemButton::SecoundSkills[i]->SetSizeValue(true);
+	}
+}
+
+void Shop_VergilMirgeUI::ActivSkill()
+{
+	if (Index == 0)
+	{
+		if (IsSpiralBlade == false && GameEngineInput::IsUp("UI_Enter") == true)
+		{
+			IsSpiralBlade = true;
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
+		}
+	}
+	else if (Index == 1)
+	{
+		if (IsStormBlade == false && GameEngineInput::IsUp("UI_Enter") == true)
+		{
+			IsStormBlade = true;
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
+		}
+	}
+	else if (Index == 2)
+	{
+		if (IsLesteringBlade == false && GameEngineInput::IsUp("UI_Enter") == true)
+		{
+			IsLesteringBlade = true;
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
+
+		}
+	}
+	else if (Index == 3)
+	{
+		if (IsHeavyRainBlade == false && GameEngineInput::IsUp("UI_Enter") == true)
+		{
+			IsHeavyRainBlade = true;
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
+
+		}
 	}
 }
 

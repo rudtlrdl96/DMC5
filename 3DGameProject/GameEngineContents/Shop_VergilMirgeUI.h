@@ -17,6 +17,10 @@ public:
 	{
 		return ExplanePtr;
 	}
+	static bool IsSpiralBlade;
+	static bool IsStormBlade;
+	static bool IsLesteringBlade;
+	static bool IsHeavyRainBlade;
 protected:
 	void Start() override;
 	void Update(float _Delta) override;
@@ -24,6 +28,7 @@ private:
 	void SetIndex();
 	void SetExText();
 	void SetValue();
+	void ActivSkill();
 	std::shared_ptr<class Shop_TitleButton> YamatoButton = nullptr;
 	std::shared_ptr<class Shop_ItemButton>  SkillButton = nullptr;
 	std::shared_ptr<class Shop_ExplaneUI> ExplanePtr = nullptr;

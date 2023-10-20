@@ -62,9 +62,11 @@ void Vergil_ShopUI::Start()
 	MirgeButton->GetFont()->GetTransform()->SetLocalPosition({ -736.0f,222.0f,0.0f });
 	
 	YamatoSkill = GetLevel()->CreateActor<Shop_VergilYamatoUI>();
+	YamatoSkill->GetTransform()->SetParent(GetTransform());
 	YamatoSkill->Off();
 
 	MirgeSkill = GetLevel()->CreateActor<Shop_VergilMirgeUI>();
+	MirgeSkill->GetTransform()->SetParent(GetTransform());
 	MirgeSkill->Off();
 
 }

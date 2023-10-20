@@ -17,6 +17,12 @@ public:
 	{
 		return ExplanePtr;
 	}
+	static bool IsRapidSlash;
+	static bool IsUpperSlash;
+	static bool IsAerialRave;
+	static bool IsYamatoCombo;
+	static bool IsJudgmentCutEnd;
+
 protected:
 	void Start() override;
 	void Update(float _Delta) override;
@@ -25,6 +31,7 @@ private:
 	void SetIndex();
 	void SetExText();
 	void SetValue();
+	void ActivSkill();
 	std::shared_ptr<class Shop_TitleButton> YamatoButton = nullptr;
 	std::shared_ptr<class Shop_ItemButton>  SkillButton = nullptr;
 	std::shared_ptr<class Shop_ExplaneUI> ExplanePtr = nullptr;

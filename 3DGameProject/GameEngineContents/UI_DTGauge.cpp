@@ -51,10 +51,6 @@ void UI_DTGauge::Start()
 
 void UI_DTGauge::Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsDown("UI_Tab"))
-	{
-		IsTrans = true;
-	}
 	if (IsTrans == true)
 	{
 		DTElectroEffect->On();
