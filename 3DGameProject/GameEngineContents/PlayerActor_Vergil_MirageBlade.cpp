@@ -61,6 +61,7 @@ void PlayerActor_Vergil::CreateMirageBlade()
 	// Shoot
 	FSM_MirageBlade.CreateState({ .StateValue = FSM_State_MirageBlade::MirageBlade_Shoot,
 	.Start = [=] {
+		Sound.Play("Mirage_", 1);
 		IsDelay = true;
 		std::shared_ptr<Player_MirageBlade> CurBlade = AllMirageBlades[BladesIndex];
 		CurBlade->Reset();
@@ -113,6 +114,7 @@ void PlayerActor_Vergil::CreateMirageBlade()
 	// Spiral
 	FSM_MirageBlade.CreateState({ .StateValue = FSM_State_MirageBlade::MirageBlade_Spiral,
 	.Start = [=] {
+		Sound.Play("Mirage_", 3);
 		SpiralPivot->SetLocalPosition(float4::ZERO);
 		SpiralPivot->SetWorldRotation(float4::ZERO);
 		for (int i = 0; i < 8; i++)
@@ -139,6 +141,7 @@ void PlayerActor_Vergil::CreateMirageBlade()
 	// Spiral Shoot
 	FSM_MirageBlade.CreateState({ .StateValue = FSM_State_MirageBlade::MirageBlade_SpiralShoot,
 	.Start = [=] {
+		Sound.Play("Mirage_", 0);
 		IsDelay = false;
 	},
 	.Update = [=](float _DeltaTime) {
@@ -148,6 +151,7 @@ void PlayerActor_Vergil::CreateMirageBlade()
 		}
 		if (Controller->GetIsGunUp())
 		{
+			Sound.Play("Mirage_", 2);
 			for (int i = 0; i < 8; i++)
 			{
 				AllMirageBlades[i]->GetTransform()->SetWorldPosition(AllMirageBlades[i]->GetTransform()->GetWorldPosition());
@@ -170,6 +174,7 @@ void PlayerActor_Vergil::CreateMirageBlade()
 	// Storm
 	FSM_MirageBlade.CreateState({ .StateValue = FSM_State_MirageBlade::MirageBlade_Storm,
 	.Start = [=] {
+		Sound.Play("Mirage_", 3);
 		IsDelay = false;
 		SpiralPivot->SetWorldPosition(LockOnEnemyTransform->GetWorldPosition());
 		SpiralPivot->SetWorldRotation(float4::ZERO);
@@ -194,16 +199,19 @@ void PlayerActor_Vergil::CreateMirageBlade()
 		SpiralPivot->AddWorldRotation(float4::UP * 360 * _DeltaTime);
 		if (Controller->GetIsGunUp())
 		{
-			for (int i = 0; i < 8; i++)
-			{
-				TimeEvent.AddEvent(0.4f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+			Sound.Play("Mirage_", 0);
+
+			TimeEvent.AddEvent(0.4f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					Sound.Play("Mirage_", 2);
+					for (int i = 0; i < 8; i++)
 					{
 						AllMirageBlades[i]->GetTransform()->SetWorldPosition(AllMirageBlades[i]->GetTransform()->GetWorldPosition());
 						AllMirageBlades[i]->GetTransform()->SetWorldRotation(AllMirageBlades[i]->GetTransform()->GetWorldRotation());
 						AllMirageBlades[i]->Collision->SetAttackData(DamageType::Air, 450);
 						AllMirageBlades[i]->Shoot();
-					});
-			}
+					}
+				});
 			TimeEvent.AddEvent(1.0f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
 					FSM_MirageBlade.ChangeState(FSM_State_MirageBlade::MirageBlade_Idle);
@@ -218,7 +226,7 @@ void PlayerActor_Vergil::CreateMirageBlade()
 	.End = [=] {
 
 	}
-	});
+		});
 
 	// Blistering
 	static const std::vector<float4> BlisteringPos = {
@@ -233,6 +241,7 @@ void PlayerActor_Vergil::CreateMirageBlade()
 	};
 	FSM_MirageBlade.CreateState({ .StateValue = FSM_State_MirageBlade::MirageBlade_Blistering,
 	.Start = [=] {
+		Sound.Play("Mirage_", 3);
 		IsDelay = false;
 		SpiralPivot->SetLocalPosition(float4::ZERO);
 		SpiralPivot->SetWorldRotation(float4::ZERO);
@@ -298,6 +307,7 @@ void PlayerActor_Vergil::CreateMirageBlade()
 			{
 				TimeEvent.AddEvent(0.05f * i, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
+					Sound.Play("Mirage_", 0);
 					AllMirageBlades[i]->GetTransform()->SetWorldPosition(AllMirageBlades[i]->GetTransform()->GetWorldPosition());
 					AllMirageBlades[i]->GetTransform()->SetWorldRotation(AllMirageBlades[i]->GetTransform()->GetWorldRotation());
 					AllMirageBlades[i]->Collision->SetAttackData(DamageType::VergilLight, 94);
@@ -319,7 +329,7 @@ void PlayerActor_Vergil::CreateMirageBlade()
 	.End = [=] {
 
 	}
-	});
+		});
 
 	// HeavyRain
 	static const std::vector<float4> HeavyRainPos = {

@@ -364,6 +364,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Sissonal1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Sissonal_1,
 			.Start = [=] {
+				Sound.Play("Yamato_", 16);
 				RotationToTarget();
 				EffectSystem->PlayFX("Yamato_Sissonal_1.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Sissonal_1");
