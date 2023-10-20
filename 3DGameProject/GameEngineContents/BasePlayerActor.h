@@ -104,6 +104,7 @@ protected:
 	std::shared_ptr<class PhysXCapsuleComponent> PhysXCapsule = nullptr;
 	std::shared_ptr<class FXSystem> EffectSystem = nullptr;
 	std::shared_ptr<class FXSystem> DTOffEffect = nullptr;
+	std::shared_ptr<GameEngineObject> Shop = nullptr;
 	float4 Rot = float4::ZERO;
 
 	const int MaxHP = 10000;
@@ -114,6 +115,7 @@ protected:
 	bool DTValue = false;
 	bool IsBossBattle = false;
 	bool IsEvade = false;
+	bool IsShopOn = false;
 private:
 	void DamageColCheck();
 	void OrbColCheck();

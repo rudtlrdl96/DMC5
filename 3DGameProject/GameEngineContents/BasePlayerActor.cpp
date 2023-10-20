@@ -253,6 +253,13 @@ void BasePlayerActor::Update(float _DeltaTime)
 		{
 			AddDTGauge(-0.5f * _DeltaTime);
 		}
+		if (true == IsShopOn && false == Shop->IsUpdate())
+		{
+			ShopOff();
+			IsShopOn = false;
+			Controller->On();
+			Camera->On();
+		}
 		InvincibilityTime -= _DeltaTime;
 		DamageColCheck();
 		OrbColCheck();
@@ -400,8 +407,14 @@ void BasePlayerActor::ShopColCheck()
 	if (GameEngineInput::IsUp("Enter"))
 	{
 		ShopOn();
+		IsShopOn = true;
 		Controller->Off();
+		Camera->Off();
 		Controller->ResetKey();
+		GetLevel()->TimeEvent.AddEvent(0.02f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				Shop->On();
+			});
 	}
 }
 

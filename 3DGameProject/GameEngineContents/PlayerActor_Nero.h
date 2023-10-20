@@ -197,12 +197,11 @@ protected:
 	void LightDamage() override;
 	void HeavyDamage() override;
 	void AddDTGauge(float _Value) override;
-
 	void ShopOn() override;
+	void ShopOff() override;
 private:
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer_Overture = nullptr;
 	std::shared_ptr<class Player_Snatch> Snatch = nullptr;
-	std::shared_ptr<class Nero_ShopUI> Shop = nullptr;
 	class ZoomEffect* Effect_Zoom = nullptr;
 	GameEngineFSM FSM;
 	float4 LockOnPosition = float4::ZERO;
@@ -223,6 +222,14 @@ private:
 	bool IsExActTiming = false;	// 익시드 타이밍 여부
 	bool IsMaxActTiming = false;	// 멕스 엑트 타이밍 여부
 	bool IsActFaild = false;		// 엑트 실패 여부
+
+	bool IsStreak = false;
+	bool IsSplit = false;
+	bool IsRedqueen = false;
+	bool IsRouletteSpin = false;
+	bool IsShufle = false;
+	bool IsCalibur = false;
+
 	DevilBreaker CurDevilBreaker = DevilBreaker::None;
 	static std::list<DevilBreaker> BreakerList;
 

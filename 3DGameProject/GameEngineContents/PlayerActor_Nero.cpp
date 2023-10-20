@@ -22,6 +22,7 @@
 #include "ZoomEffect.h"
 #include "BGMPlayer.h"
 #include "Nero_ShopUI.h"
+#include "Shop_NeroSkillUI.h"
 std::list<DevilBreaker> PlayerActor_Nero::BreakerList;
 PlayerActor_Nero::~PlayerActor_Nero()
 {
@@ -909,7 +910,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_GunCheck()) { return; }
 				if (true == Input_DevilBreakerCheck()) { return; }
 
-				if (true == DelayCheck)
+				if (IsRedqueen && true == DelayCheck)
 				{
 					if (true == Input_SwordCheck(4)) { return; }
 				}
@@ -1516,7 +1517,7 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 				if (true == Input_SpecialCheckFly()) { return; }
 				if (false == InputCheck) { return; }
-				if (DelayCheck == true)
+				if (IsRouletteSpin && DelayCheck == true)
 				{
 					if (true == Input_SwordCheckFly(3)) { return; }
 				}
@@ -3706,7 +3707,17 @@ void PlayerActor_Nero::AddDTGauge(float _Value)
 }
 void PlayerActor_Nero::ShopOn()
 {
-	Shop->On();
+	HUD->Off();
+}
+void PlayerActor_Nero::ShopOff()
+{
+	HUD->On();
+	IsStreak = Shop_NeroSkillUI::IsStreak;
+	IsSplit = Shop_NeroSkillUI::IsSplit;
+	IsRedqueen = Shop_NeroSkillUI::IsRedqueen;
+	IsRouletteSpin = Shop_NeroSkillUI::IsRouletteSpin;
+	IsShufle = Shop_NeroSkillUI::IsShufle;
+	IsCalibur = Shop_NeroSkillUI::IsCalibur;
 }
 bool PlayerActor_Nero::Input_SwordCheck(int AddState /*= 0*/)
 {
@@ -3720,12 +3731,12 @@ bool PlayerActor_Nero::Input_SwordCheck(int AddState /*= 0*/)
 		return false;
 	}
 
-	if (Controller->GetIsBackFrontSword())
+	if (IsShufle && Controller->GetIsBackFrontSword())
 	{
 		ChangeState(FSM_State_Nero::Nero_RQ_Skill_Shuffle);
 		return true;
 	}
-	if (Controller->GetIsFrontSword())
+	if (IsStreak && Controller->GetIsFrontSword())
 	{
 		ChangeState(FSM_State_Nero::Nero_RQ_Skill_Stleak1);
 		return true;
@@ -3755,13 +3766,13 @@ bool PlayerActor_Nero::Input_SwordCheckFly(int AddState /*= 0*/)
 		return false;
 	}
 
-	if (Controller->GetIsBackFrontSword() && false == UseCaliber)
+	if (IsCalibur && Controller->GetIsBackFrontSword() && false == UseCaliber)
 	{
 		UseCaliber = true;
 		ChangeState(FSM_State_Nero::Nero_RQ_Skill_Caliber_1);
 		return true;
 	}
-	if (Controller->GetIsBackSword())
+	if (IsSplit && Controller->GetIsBackSword())
 	{
 		ChangeState(FSM_State_Nero::Nero_RQ_Skill_Split_1);
 		return true;
