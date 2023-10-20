@@ -9,10 +9,10 @@ enum class EnemyCode
 	None = 100000,
 	// 일반 몬스터
 	Empusa = 0,
-	GreenEmpusa = 1,
-	RedEmpusa = 2,
-	HellCaina = 1000,
-	HellAntenora = 1001,
+	HellCaina = 10,
+	HellAntenora = 11,
+	ScudoAngelo = 100,
+	ProtoAngelo = 101,
 
 	// 보스 몬스터
 	CavaliereAngelo = 5000,
