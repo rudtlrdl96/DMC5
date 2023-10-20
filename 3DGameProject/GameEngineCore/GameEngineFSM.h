@@ -52,6 +52,11 @@ public:
 		return CurState != nullptr;
 	}
 
+	int GetCurState()
+	{
+		return CurState->StateValue;
+	}
+
 protected:
 	GameEngineFSM::State* FindState(int _State);
 

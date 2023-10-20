@@ -467,6 +467,14 @@ void Enemy_HellAntenora::DamageCollisionCheck(float _DeltaTime)
 
 void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 {
+	if (FSM_State_HellAntenora::HellAntenora_Death_Front == EnemyFSM.GetCurState()
+		|| FSM_State_HellAntenora::HellAntenora_Death_Back == EnemyFSM.GetCurState()
+		|| FSM_State_HellAntenora::HellAntenora_Death_Front == EnemyFSM.GetCurState()
+		|| FSM_State_HellAntenora::HellAntenora_Blown_Up_Landing == EnemyFSM.GetCurState())
+	{
+		return;
+	}
+
 	if (true == DeathValue)
 	{
 		return;
@@ -491,7 +499,6 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
-		IsVergilLight = true;
 		Data.DamageTypeValue = DamageType::Light;
 	}
 
@@ -1562,22 +1569,26 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	// 정면 약공 히트
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Front,
 	.Start = [=] {
-
-	AttackCalculation();
-
-	if (true == IsVergilLight)
-	{
-		IsVergilLight = false;
-		SetPush(10000.0f);
-	}
-	else
-	{
-		SetPush(24000.0f);
-	}
-
 	EnemyRenderer->ChangeAnimation("em0001_standing_damage_weak_front_01", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		AttackCalculation();
+		RotationCheck();
+		AllDirectSetting_Normal();
+
+		if (true == IsVergilLight)
+		{
+			IsVergilLight = false;
+			SetPush(10000.0f);
+		}
+		else
+		{
+			SetPush(24000.0f);
+		}
+	}
 	DeathCheck();
 	if (true == DeathValue)
 	{
@@ -1597,21 +1608,26 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	// 뒤에서 약공 히트시, 105 프레임 애니메이션 턴
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Back,
 	.Start = [=] {
-
-	AttackCalculation();
-
-	if (true == IsVergilLight)
-	{
-		IsVergilLight = false;
-		SetPush(10000.0f);
-	}
-	else
-	{
-		SetPush(24000.0f);
-	}
 	EnemyRenderer->ChangeAnimation("em0001_standing_damage_weak_back_01", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		AttackCalculation();
+		RotationCheck();
+		AllDirectSetting_Normal();
+
+		if (true == IsVergilLight)
+		{
+			IsVergilLight = false;
+			SetPush(10000.0f);
+		}
+		else
+		{
+			SetPush(24000.0f);
+		}
+	}
 	DeathCheck();
 	if (true == DeathValue)
 	{
@@ -1636,21 +1652,26 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	// 왼쪽 약공 히트, 115 프레임 애니메이션 턴
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Left,
 	.Start = [=] {
-
-	AttackCalculation();
-
-	if (true == IsVergilLight)
-	{
-		IsVergilLight = false;
-		SetPush(10000.0f);
-	}
-	else
-	{
-		SetPush(24000.0f);
-	}
 	EnemyRenderer->ChangeAnimation("em0001_standing_damage_weak_left_01", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		AttackCalculation();
+		RotationCheck();
+		AllDirectSetting_Normal();
+
+		if (true == IsVergilLight)
+		{
+			IsVergilLight = false;
+			SetPush(10000.0f);
+		}
+		else
+		{
+			SetPush(24000.0f);
+		}
+	}
 	DeathCheck();
 	if (true == DeathValue)
 	{
@@ -1675,21 +1696,26 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	// 오른쪽 약공 히트, 100 프레임 애니메이션 턴
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Right,
 	.Start = [=] {
-
-	AttackCalculation();
-
-	if (true == IsVergilLight)
-	{
-		IsVergilLight = false;
-		SetPush(10000.0f);
-	}
-	else
-	{
-		SetPush(24000.0f);
-	}
 	EnemyRenderer->ChangeAnimation("em0001_standing_damage_weak_right", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		AttackCalculation();
+		RotationCheck();
+		AllDirectSetting_Normal();
+
+		if (true == IsVergilLight)
+		{
+			IsVergilLight = false;
+			SetPush(10000.0f);
+		}
+		else
+		{
+			SetPush(24000.0f);
+		}
+	}
 	DeathCheck();
 	if (true == DeathValue)
 	{
@@ -1716,16 +1742,20 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	// 헤비어택 히트시
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Blown_Back,
 	.Start = [=] {
-	IsCollapse = false;
-	IsHeavyAttack = true;
-	AttackCalculation();
-	RotationCheck();
-	AllDirectSetting();
-	SetPush(50000.0f);
-	SetAir(42000.0f);
 	EnemyRenderer->ChangeAnimation("em0001_blown_back", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		IsCollapse = false;
+		IsHeavyAttack = true;
+		AttackCalculation();
+		RotationCheck();
+		AllDirectSetting();
+		SetPush(50000.0f);
+		SetAir(42000.0f);
+	}
 	FallCheckDelayTime += _DeltaTime;
 	DeathCheck();
 	if (true == FloorCheck(FallDistance) && 0.2f <= FallCheckDelayTime)
@@ -1771,16 +1801,19 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	// 띄우기 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Blown_Up,
 	.Start = [=] {
-	IsCollapse = false;
-	IsAirAttack = true;
-	AttackCalculation();
-	RotationCheck();
-	AllDirectSetting();
-	PhysXCapsule->SetAirState(110000.0f);
 	EnemyRenderer->ChangeAnimation("em0001_blown_up", true);
 	},
 	.Update = [=](float _DeltaTime) {
-
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		IsCollapse = false;
+		IsAirAttack = true;
+		AttackCalculation();
+		RotationCheck();
+		AllDirectSetting();
+		PhysXCapsule->SetAirState(110000.0f);
+	}
 	FallCheckDelayTime += _DeltaTime;
 
 	if (true == EnemyRenderer->IsAnimationEnd())
@@ -1825,7 +1858,6 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	// 에어 상태에서 약공격 맞을때
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Air_Damage_Under,
 	.Start = [=] {
-	AttackCalculation();
 	EnemyRenderer->ChangeAnimation("em0001_air_damage_gun", true);
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1916,12 +1948,16 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	// 슬램 피격 start
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Slam_Damage,
 	.Start = [=] {
-	IsCollapse = false;
-	IsSlamAttack = true;
-	AttackCalculation();
 	EnemyRenderer->ChangeAnimation("em0001_slam_damage");
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		IsCollapse = false;
+		IsSlamAttack = true;
+		AttackCalculation();
+	}
 	if (true == EnemyRenderer->IsAnimationEnd() || true == FloorCheck(FallDistance))
 	{
 		ChangeState(FSM_State_HellAntenora::HellAntenora_Slam_Damage_Loop);
@@ -1971,15 +2007,19 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	// 스내치 start
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Snatch,
 	.Start = [=] {
-	IsCollapse = false;
-	IsAirAttack = true;
-	AttackCalculation();
-	StartMonsterSnatch();
-	RotationCheck();
-	AllDirectSetting();
 	EnemyRenderer->ChangeAnimation("em0001_snatch");
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		IsCollapse = false;
+		IsAirAttack = true;
+		AttackCalculation();
+		StartMonsterSnatch();
+		RotationCheck();
+		AllDirectSetting();
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_HellAntenora::HellAntenora_Air_Damage_Under);
@@ -2099,16 +2139,20 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	// em0000_Buster_Start, 버스트 히트 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Buster_Start,
 	.Start = [=] {
-	AttackCalculation();
-	IsCollapse = false;
-	IsBusterAttack = true;
-	BusterCalculation(float4{ 0.0f, -120.0f, 0.0f });
-	RotationCheck();
-	AllDirectSetting();
 	//PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
 	EnemyRenderer->ChangeAnimation("em0001_buster_loop");
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		AttackCalculation();
+		IsCollapse = false;
+		IsBusterAttack = true;
+		BusterCalculation(float4{ 0.0f, -120.0f, 0.0f });
+		RotationCheck();
+		AllDirectSetting();
+	}
 	SetMoveStop();
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{

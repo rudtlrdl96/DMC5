@@ -293,6 +293,13 @@ void Enemy_HellCaina::AttackCalculation()
 
 void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 {
+	if (FSM_State_HellCaina::HellCaina_Death_Front == EnemyFSM.GetCurState()
+		|| FSM_State_HellCaina::HellCaina_Death_Back == EnemyFSM.GetCurState()
+		|| FSM_State_HellCaina::HellCaina_Prone_Death == EnemyFSM.GetCurState())
+	{
+		return;
+	}
+
 	if (true == DeathValue)
 	{
 		return;
@@ -398,7 +405,7 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 
 void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 {
-	if (true == DeathValue)
+	if (true == DeathValue || 0 > EnemyHP)
 	{
 		return;
 	}

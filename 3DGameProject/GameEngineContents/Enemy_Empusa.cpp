@@ -70,7 +70,6 @@ void Enemy_Empusa::EnemyMeshLoad()
 	}
 
 	EnemyRenderer->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
-	//EnemyRenderer->GetTransform()->SetLocalScale({ 0.8f , 0.8f , 0.8f });
 }
 
 void Enemy_Empusa::EnemyAnimationLoad()
@@ -444,6 +443,13 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 
 void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 {
+	if (FSM_State_Empusa::Empusa_Death_Back == EnemyFSM.GetCurState()
+		|| FSM_State_Empusa::Empusa_Death_Front == EnemyFSM.GetCurState()
+		|| FSM_State_Empusa::Empusa_Downward_Death == EnemyFSM.GetCurState())
+	{
+		return;
+	}
+
 	if (true == DeathValue)
 	{
 		return;
@@ -1241,22 +1247,26 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 정면 약공격 피격
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Standing_Damage_Weak_Front,
 	.Start = [=] {
-
-	AttackCalculation();
-
-	if (true == IsVergilLight)
-	{
-		IsVergilLight = false;
-		SetPush(10000.0f);
-	}
-	else
-	{
-		SetPush(26000.0f);
-	}
-
 	EnemyRenderer->ChangeAnimation("em0100_angledamage_front", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		AttackCalculation();
+		RotationCheck();
+		AllDirectSetting_Normal();
+
+		if (true == IsVergilLight)
+		{
+			IsVergilLight = false;
+			SetPush(10000.0f);
+		}
+		else
+		{
+			SetPush(26000.0f);
+		}
+	}
 	DeathCheck();
 	if (true == DeathValue)
 	{
@@ -1276,21 +1286,26 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 후면 약공격 피격
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Standing_Damage_Weak_Back,
 	.Start = [=] {
-
-	AttackCalculation();
-
-	if (true == IsVergilLight)
-	{
-		IsVergilLight = false;
-		SetPush(10000.0f);
-	}
-	else
-	{
-		SetPush(26000.0f);
-	}
 	EnemyRenderer->ChangeAnimation("em0100_angledamage_back", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		AttackCalculation();
+		RotationCheck();
+		AllDirectSetting_Normal();
+
+		if (true == IsVergilLight)
+		{
+			IsVergilLight = false;
+			SetPush(10000.0f);
+		}
+		else
+		{
+			SetPush(26000.0f);
+		}
+	}
 	DeathCheck();
 	if (true == DeathValue)
 	{
@@ -1309,21 +1324,26 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 좌측 약공격 피격
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Standing_Damage_Weak_Left,
 	.Start = [=] {
-
-	AttackCalculation();
-
-	if (true == IsVergilLight)
-	{
-		IsVergilLight = false;
-		SetPush(10000.0f);
-	}
-	else
-	{
-		SetPush(26000.0f);
-	}
 	EnemyRenderer->ChangeAnimation("em0100_angledamage_left", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		AttackCalculation();
+		RotationCheck();
+		AllDirectSetting_Normal();
+
+		if (true == IsVergilLight)
+		{
+			IsVergilLight = false;
+			SetPush(10000.0f);
+		}
+		else
+		{
+			SetPush(26000.0f);
+		}
+	}
 	DeathCheck();
 	if (true == DeathValue)
 	{
@@ -1342,21 +1362,26 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 우측 약공격 피격 
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Standing_Damage_Weak_Right,
 	.Start = [=] {
-
-	AttackCalculation();
-
-	if (true == IsVergilLight)
-	{
-		IsVergilLight = false;
-		SetPush(10000.0f);
-	}
-	else
-	{
-		SetPush(26000.0f);
-	}
 	EnemyRenderer->ChangeAnimation("em0100_angledamage_right", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		AttackCalculation();
+		RotationCheck();
+		AllDirectSetting_Normal();
+
+		if (true == IsVergilLight)
+		{
+			IsVergilLight = false;
+			SetPush(10000.0f);
+		}
+		else
+		{
+			SetPush(26000.0f);
+		}
+	}
 	DeathCheck();
 	if (true == DeathValue)
 	{
@@ -1377,16 +1402,20 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 강공격 맞고 날아감
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Blown_Back,
 	.Start = [=] {
-	IsCollapse = false;
-	IsHeavyAttack = true;
-	AttackCalculation();
-	RotationCheck();
-	AllDirectSetting();
-	SetPush(50000.0f);
-	SetAir(42000.0f);
 	EnemyRenderer->ChangeAnimation("em0100_blown_back_start", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		IsCollapse = false;
+		IsHeavyAttack = true;
+		AttackCalculation();
+		RotationCheck();
+		AllDirectSetting();
+		SetPush(50000.0f);
+		SetAir(42000.0f);
+	}
 	FallCheckDelayTime += _DeltaTime;
 	if (true == FloorCheck(FallDistance) && 0.2f <= FallCheckDelayTime)
 	{
@@ -1402,15 +1431,19 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 띄우기 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Air_Damage,
 	.Start = [=] {
-	IsCollapse = false;
-	IsAirAttack = true;
-	AttackCalculation();
-	RotationCheck();
-	AllDirectSetting();
-	PhysXCapsule->SetAirState(110000.0f);
 	EnemyRenderer->ChangeAnimation("em0100_air_damage", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		IsCollapse = false;
+		IsAirAttack = true;
+		AttackCalculation();
+		RotationCheck();
+		AllDirectSetting();
+		PhysXCapsule->SetAirState(110000.0f);
+	}
 
 	FallCheckDelayTime += _DeltaTime;
 
@@ -1489,12 +1522,16 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 슬램 피격 start
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Slam_Damage,
 	.Start = [=] {
-	IsCollapse = false;
-	IsSlamAttack = true;
-	AttackCalculation();
 	EnemyRenderer->ChangeAnimation("em0100_slam_damage_start");
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		IsCollapse = false;
+		IsSlamAttack = true;
+		AttackCalculation();
+	}
 	if (true == EnemyRenderer->IsAnimationEnd() || true == FloorCheck(FallDistance))
 	{
 		ChangeState(FSM_State_Empusa::Empusa_Slam_Damage_Loop);
@@ -1544,15 +1581,19 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 스내치 start
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Snatch,
 	.Start = [=] {
-	IsCollapse = false;
-	IsAirAttack = true;
-	AttackCalculation();
-	StartMonsterSnatch();
-	RotationCheck();
-	AllDirectSetting();
 	EnemyRenderer->ChangeAnimation("em0100_snatch_loop");
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		IsCollapse = false;
+		IsAirAttack = true;
+		AttackCalculation();
+		StartMonsterSnatch();
+		RotationCheck();
+		AllDirectSetting();
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_Empusa::Empusa_Air_Damage_Under);
@@ -1689,15 +1730,19 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// em0100_Buster_Start, 버스트 히트 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Buster_Start,
 	.Start = [=] {
-	IsCollapse = false;
-	IsBusterAttack = true;
-	AttackCalculation();
-	BusterCalculation(float4{ 0.f, -45.f, 0.f });
-	RotationCheck();
-	AllDirectSetting();
 	EnemyRenderer->ChangeAnimation("em0100_air_damage_under");
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		IsCollapse = false;
+		IsBusterAttack = true;
+		AttackCalculation();
+		BusterCalculation(float4{ 0.f, -45.f, 0.f });
+		RotationCheck();
+		AllDirectSetting();
+	}
 	SetMoveStop();
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
