@@ -256,6 +256,7 @@ void BasePlayerActor::Update(float _DeltaTime)
 		InvincibilityTime -= _DeltaTime;
 		DamageColCheck();
 		OrbColCheck();
+		ShopColCheck();
 	}
 }
 
@@ -392,6 +393,16 @@ void BasePlayerActor::OrbColCheck()
 	if (nullptr == Orb) { return; }
 	Orb->Take();
 	// ¿Àºê È¹µæ
+}
+
+void BasePlayerActor::ShopColCheck()
+{
+	if (GameEngineInput::IsUp("Enter"))
+	{
+		ShopOn();
+		Controller->Off();
+		Controller->ResetKey();
+	}
 }
 
 void BasePlayerActor::SetForce(float4 _Value)

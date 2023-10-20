@@ -109,7 +109,8 @@ void PlayerActor_Nero::PlayerLoad()
 {
 	BGMPlayer::SetCharater(PlayerType::Nero);
 	
-	GetLevel()->CreateActor<Nero_ShopUI>();
+	Shop = GetLevel()->CreateActor<Nero_ShopUI>();
+	Shop->Off();
 	GetLevel()->CreateActor<NeroItemGlass>();
 	HUD = GetLevel()->CreateActor<NeroHPUI>();
 	HUD->SetPlayerHP(HP);
@@ -3702,6 +3703,10 @@ void PlayerActor_Nero::AddDTGauge(float _Value)
 		SetHuman();
 		OnDevilBraeker();
 	}
+}
+void PlayerActor_Nero::ShopOn()
+{
+	Shop->On();
 }
 bool PlayerActor_Nero::Input_SwordCheck(int AddState /*= 0*/)
 {

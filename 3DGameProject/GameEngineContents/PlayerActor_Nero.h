@@ -197,9 +197,12 @@ protected:
 	void LightDamage() override;
 	void HeavyDamage() override;
 	void AddDTGauge(float _Value) override;
+
+	void ShopOn() override;
 private:
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer_Overture = nullptr;
 	std::shared_ptr<class Player_Snatch> Snatch = nullptr;
+	std::shared_ptr<class Nero_ShopUI> Shop = nullptr;
 	class ZoomEffect* Effect_Zoom = nullptr;
 	GameEngineFSM FSM;
 	float4 LockOnPosition = float4::ZERO;

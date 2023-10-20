@@ -99,6 +99,34 @@ public:
 	// 벡터에 대한 방향을 4방향으로 알려주는 함수 (키패드 참조 8: 앞, 2 : 뒤)
 	char MoveVectorToChar4(const float4& _Value);
 
+	void ResetKey()
+	{
+		MoveVector = float4::ZERO;
+
+		IsBackFrontSword = false;
+		IsFrontSword = false;
+		IsBackSword = false;
+		IsSword = false;
+		IsSwordChargeUp = false;
+
+		IsLeftJump = false;
+		IsRightJump = false;
+		IsJump = false;
+
+		IsBackFrontGun = false;
+		IsFrontGun = false;
+		IsBackGun = false;
+		IsGunCharge = false;
+		IsGunDown = false;
+		IsGunUp = false;
+		IsBackFrontSkill = false;
+		IsFrontSkill = false;
+		IsLockOnSkill = false;
+		IsSkill = false;
+
+		IsSpecialMove = false;
+		IsLockOn = false;
+	}
 
 protected:
 	void Start() override;

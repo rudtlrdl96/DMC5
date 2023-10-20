@@ -60,11 +60,14 @@ public:
 
 	virtual void AddDTGauge(float _Value) = 0;
 
+
 	void SetInvincibility(float _Time);
 
 	void SetBossCam(GameEngineTransform* _BossCam);
 protected:
 	void Start() override;
+	virtual void ShopOn() {}
+	virtual void ShopOff() {}
 
 	void NetControllLoad();
 	void UserControllLoad();
@@ -114,6 +117,7 @@ protected:
 private:
 	void DamageColCheck();
 	void OrbColCheck();
+	void ShopColCheck();
 	static std::vector<BasePlayerActor*> Players;
 	float InvincibilityTime = 0.0f; // 무적 프레임
 };
