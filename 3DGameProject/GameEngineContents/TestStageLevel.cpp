@@ -22,6 +22,7 @@
 #include "ShaderTestActor.h"
 #include "FreeCameraActor.h"
 #include "ReflectionProbe.h"
+#include "BWColorEffect.h"
 
 #include <GameEngineCore/GameEngineGUI.h>
 #include <GameEngineCore/BloomEffect.h>
@@ -50,6 +51,7 @@ void TestStageLevel::Start()
 
 	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
+	BWEffect = GetCamera(0)->GetCamTarget()->CreateEffect<BWColorEffect>();
 
 	{
 		std::shared_ptr<DistortionEffect> Distortion = GetCamera(0)->GetCamTarget()->CreateEffect<DistortionEffect>();
@@ -97,6 +99,7 @@ void TestStageLevel::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsDown("BakeTestKey"))
 	{
 		GetDirectionalLight()->BakeShadow(GetMainCamera());
+		BWEffect->BWColorEffectSwitch();
 
 		//if (nullptr != PointLight)
 		//{

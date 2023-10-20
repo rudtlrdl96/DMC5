@@ -223,6 +223,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="BWColorEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Cavaliere_Electric.h">
       <SubType>
       </SubType>
@@ -773,6 +777,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Box300.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="BWColorEffect.cpp">
       <SubType>
       </SubType>
     </ClCompile>

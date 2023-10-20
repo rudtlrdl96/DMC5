@@ -29,6 +29,7 @@ private:
 
 	std::shared_ptr<class EnemySpawner> TestSpawner = nullptr;
 	std::shared_ptr<class BloomEffect> Bloom = nullptr;
+	std::shared_ptr<class BWColorEffect> BWEffect = nullptr;
 
 };
 

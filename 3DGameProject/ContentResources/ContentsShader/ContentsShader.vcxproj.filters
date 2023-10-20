@@ -79,6 +79,9 @@
     <FxCompile Include="WaveUVEffect.hlsl">
       <Filter>Effect</Filter>
     </FxCompile>
+    <FxCompile Include="BWColorShader.hlsl">
+      <Filter>PostEffect</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">
