@@ -17,6 +17,32 @@ NeroItemGlass::~NeroItemGlass()
 {
 }
 
+void NeroItemGlass::ArmRenderOff()
+{
+	ItemText->Off();
+	CurCount->Off();
+	SlashText->Off();
+	MaxCount->Off();
+	for (int i = 0; Arms.size(); i++)
+	{
+		Arms[i]->Off();
+	}
+	Ratio = 10.0f;
+}
+
+void NeroItemGlass::ArmRenderOn()
+{
+	ItemText->On();
+	CurCount->On();
+	SlashText->On();
+	MaxCount->On();
+	for (int i = 0; Arms.size(); i++)
+	{
+		Arms[i]->On();
+	}
+	Ratio = 1.0f;
+}
+
 void NeroItemGlass::Start()
 {
 	float Ratio = GameEngineWindow::GetScreenSize().y / 900;
@@ -171,7 +197,7 @@ void NeroItemGlass::AddMoveBreaker(float _Delta)
 	if (AddFirst  == true)
 	{
 		Arms[0]->On();
-		Time += _Delta;
+		Time += _Delta * Ratio;
 		Arms[0]->On();
 		Arms[0]->GetTransform()->SetLocalScale(ThirdScale);
 		Arms[0]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 180.0f,0.0f,120.0f }, { 180.0f,0.0f,150.0f }, Time * 2.0f));
@@ -206,7 +232,7 @@ void NeroItemGlass::AddMoveBreaker(float _Delta)
 	if (AddSecound  == true)
 	{
 
-		Time += _Delta;
+		Time += _Delta* Ratio;
 		Arms[0]->GetTransform()->SetLocalPosition(float4::LerpClamp(EndPos, StartPos, Time * 2.0f));
 		Arms[0]->GetTransform()->SetLocalScale(float4::LerpClamp(ThirdScale, FirstScale, Time * 2.0f));
 		Arms[0]->GetTransform()->SetLocalRotation(float4::LerpClamp({ 180.0f,0.0f,150.0f }, { 90.0f,0.0f,180.0f }, Time * 2.0f));

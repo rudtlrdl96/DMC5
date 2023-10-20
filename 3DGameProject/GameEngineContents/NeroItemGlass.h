@@ -34,6 +34,9 @@ public:
 	{
 		DestroyItemValue = _Value;
 	}
+	void ArmRenderOff();
+	void ArmRenderOn();
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -65,6 +68,7 @@ private:
 	bool AddSecound = false;
 	bool DestroyFirst = false;
 	bool DestroySecond = false;
+	float Ratio = 1.0f;
 	static bool AddItemValue;
 	static bool DestroyItemValue;
 	void AddMoveBreaker(float _Delta);
