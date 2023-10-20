@@ -796,6 +796,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Sissonal1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Sissonal_1,
 			.Start = [=] {
+				Sound.Play("Yamato_", 16);
 				RotationToTarget();
 				PhysXCapsule->TurnOnGravity();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -874,7 +875,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->SetMove(GetTransform()->GetWorldForwardVector() * 800);
 				SetFloorPos();
-				EffectSystem->PlayFX("Yamato_Sissonal_3.effect");
+				//EffectSystem->PlayFX("Yamato_Sissonal_3.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Sissonal_3");
 				InputCheck = false;
 				MoveCheck = false;
