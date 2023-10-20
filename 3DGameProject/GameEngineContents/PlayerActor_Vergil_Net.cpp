@@ -264,6 +264,7 @@ void PlayerActor_Vergil::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Combo_1,
 			.Start = [=] {
 				Sound.PlayVoiceRandom(0, 2, DTValue);
+				Sound.Play("Yamato_", 0);
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(75));
 				EffectSystem->PlayFX("Yamato_Combo_1.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Combo_1");
@@ -277,6 +278,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Combo2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Combo_2,
 			.Start = [=] {
+				Sound.Play("Yamato_", 1);
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(93));
 				EffectSystem->PlayFX("Yamato_Combo_2.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Combo_2");
@@ -384,6 +386,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Sissonal3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Sissonal_3,
 			.Start = [=] {
+				Sound.Play("Yamato_", 7);
 				Sound.PlayVoiceRandom(16, 18, DTValue);
 				Sound.NoSkipOn();
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(600));
@@ -430,6 +433,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Upper 2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Upper_2,
 			.Start = [=] {
+				Sound.Play("Yamato_", 6);
 				YamatoOn();
 				Col_Attack->SetAttackData(DamageType::Air, DamageCalculate(168));
 				EffectSystem->PlayFX("Yamato_AttackUp_2.effect");
@@ -444,6 +448,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Upper3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Upper_3,
 			.Start = [=] {
+				Sound.Play("Yamato_", 7);
 				YamatoOn();
 				Col_Attack->SetAttackData(DamageType::Air, DamageCalculate(168));
 				EffectSystem->PlayFX("Yamato_AttackUp_3.effect");
@@ -459,6 +464,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Air Combo 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_Combo_1,
 			.Start = [=] {
+				Sound.Play("Yamato_", 2);
 				Sound.PlayVoiceRandom(1, 2, DTValue);
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(93));
 				EffectSystem->PlayFX("Yamato_Air_Combo_1.effect");
@@ -473,6 +479,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Air Combo 2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_Combo_2,
 			.Start = [=] {
+				Sound.Play("Yamato_", 4);
 				YamatoOn();
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(112));
 				EffectSystem->PlayFX("Yamato_Air_Combo_2.effect");
@@ -487,6 +494,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Air Combo 3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_Combo_3,
 			.Start = [=] {
+				Sound.Play("Yamato_", 3);
 				Sound.PlayVoiceRandom(5, 6, DTValue);
 				YamatoOn();
 				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(225));
@@ -517,6 +525,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Air Combo B 2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Air_ComboB_2,
 			.Start = [=] {
+				Sound.Play("Yamato_", 7);
 				Sound.PlayVoiceRandom(7, 8, DTValue);
 				YamatoOn();
 				Col_Attack->SetAttackData(DamageType::Slam, DamageCalculate(187));
@@ -559,6 +568,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Raid3
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_Raid3,
 			.Start = [=] {
+				Sound.Play("Yamato_", 8);
 				YamatoOn();
 				EffectSystem->PlayFX("Yamato_Raid_3.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Raid3");
@@ -584,6 +594,8 @@ void PlayerActor_Vergil::NetLoad()
 		// Vergil_yamato_JudgementCut_2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCut_2,
 			.Start = [=] {
+				Sound.Play("Yamato_", 13);
+				Sound.Play("Yamato_", 14);
 				Sound.PlayVoiceRandom(13, 15, DTValue);
 				Sound.NoSkipOn();
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(450));
@@ -623,6 +635,8 @@ void PlayerActor_Vergil::NetLoad()
 		// Vergil_yamato_JudgementCutAir_2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCutAir_2,
 			.Start = [=] {
+				Sound.Play("Yamato_", 13);
+				Sound.Play("Yamato_", 14);
 				Sound.PlayVoiceRandom(13, 15, DTValue);
 				Sound.NoSkipOn();
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(450));
@@ -651,11 +665,14 @@ void PlayerActor_Vergil::NetLoad()
 		// JudgementCutEnd 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_1,
 			.Start = [=] {
+				Sound.Play("Yamato_", 15);
+				Sound.Play("Yamato_", 17);
 				Sound.PlayVoice(21, DTValue);
 				EffectSystem->PlayFX("Yamato_JudgementCut_End_1.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCutEnd_1");
 				TimeEvent.AddEvent(1.58f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
+					Sound.Play("Yamato_", 16);
 					Renderer->Off();
 					Effect_Color->SetStartColor(float4::ZERO);
 					Effect_Color->SetEndColor({-0.15f, -0.15f, -0.11f});
@@ -666,6 +683,24 @@ void PlayerActor_Vergil::NetLoad()
 				{
 					Effect_JC->JudgementCutOn();
 				});
+
+				// »ç¿îµå
+				TimeEvent.AddEvent(1.56f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+					{
+						Sound.Play("Yamato_", 9);
+					});
+				TimeEvent.AddEvent(1.7f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+					{
+						Sound.Play("Yamato_", 6);
+					});
+				TimeEvent.AddEvent(1.8f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+					{
+						Sound.Play("Yamato_", 19);
+					});
+				TimeEvent.AddEvent(1.95f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+					{
+						Sound.Play("Yamato_", 8);
+					});
 			},
 			.Update = [=](float _DeltaTime) {
 			},
@@ -681,6 +716,8 @@ void PlayerActor_Vergil::NetLoad()
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCutEnd_2");
 				TimeEvent.AddEvent(1.82f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
+					Sound.Play("Yamato_", 18);
+					Sound.Play("Yamato_", 20);
 					Effect_JC->JudgementCutOff();
 					Effect_Color->SetStartColor(float4::ONE * 0.3f);
 					Effect_Color->SetEndColor(float4::ZERO);
@@ -703,6 +740,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Warp Front 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Front_1,
 		.Start = [=] {
+			Sound.Play("Vergil_Warp");
 			WeaponIdle();
 			Renderer->ChangeAnimation("pl0300_Warp_Front_1", true);
 			EffectSystem->PlayFX("Vergil_Warp_1.effect");
@@ -740,6 +778,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Warp Back 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Back_1,
 		.Start = [=] {
+			Sound.Play("Vergil_Warp");
 			WeaponIdle();
 			Renderer->ChangeAnimation("pl0300_Warp_Back_1");
 			EffectSystem->PlayFX("Vergil_Warp_1.effect");
@@ -778,6 +817,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Warp Left 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Left_1,
 		.Start = [=] {
+			Sound.Play("Vergil_Warp");
 			WeaponIdle();
 			Renderer->ChangeAnimation("pl0300_Warp_Left_1");
 			EffectSystem->PlayFX("Vergil_Warp_1.effect");
@@ -816,6 +856,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Warp Right 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Right_1,
 		.Start = [=] {
+			Sound.Play("Vergil_Warp");
 			WeaponIdle();
 			Renderer->ChangeAnimation("pl0300_Warp_Right_1", true);
 			EffectSystem->PlayFX("Vergil_Warp_1.effect");
@@ -855,6 +896,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Warp Up
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_AirTrick,
 		.Start = [=] {
+			Sound.Play("Vergil_Warp");
 			WeaponIdle();
 			Renderer->ChangeAnimation("pl0300_Warp_Up", true);
 			EffectSystem->PlayFX("Vergil_Warp_1.effect");
@@ -882,6 +924,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Warp Down
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_TrickDown,
 		.Start = [=] {
+			Sound.Play("Vergil_Warp");
 			WeaponIdle();
 			Renderer->ChangeAnimation("pl0300_Warp_Down", true);
 			EffectSystem->PlayFX("Vergil_Warp_1.effect");

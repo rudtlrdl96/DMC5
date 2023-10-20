@@ -429,7 +429,6 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Jump Vertical
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Jump_Vertical,
 		.Start = [=] {
-			RotationToMoveVector();
 			PhysXCapsule->TurnOnGravity();
 			PhysXCapsule->SetLinearVelocityZero();
 			PhysXCapsule->SetMove(Controller->GetMoveVector() * 500);
@@ -837,7 +836,7 @@ void PlayerActor_Vergil::PlayerLoad()
 					return;
 				}
 				SissonalTimer += _DeltaTime;
-				if (0.23f < SissonalTimer)
+				if (0.1f < SissonalTimer)
 				{
 					ChangeState(FSM_State_Vergil::pl0300_yamato_Sissonal_3);
 					return;
@@ -847,7 +846,7 @@ void PlayerActor_Vergil::PlayerLoad()
 					ChangeState(FSM_State_Vergil::pl0300_yamato_Sissonal_3);
 					return;
 				}
-				GetTransform()->AddWorldPosition(GetTransform()->GetWorldForwardVector()* _DeltaTime * 1300);
+				GetTransform()->AddWorldPosition(GetTransform()->GetWorldForwardVector()* _DeltaTime * 2300);
 			},
 			.End = [=] {
 				PhysXCapsule->On();
@@ -871,6 +870,14 @@ void PlayerActor_Vergil::PlayerLoad()
 				Renderer->ChangeAnimation("pl0300_yamato_Sissonal_3");
 				InputCheck = false;
 				MoveCheck = false;
+
+				if (true == DTValue)
+				{
+					TimeEvent.AddEvent(0.07f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+					{
+						InputCheck = true;
+					});
+				}
 			},
 			.Update = [=](float _DeltaTime) {
 
@@ -1515,6 +1522,25 @@ void PlayerActor_Vergil::PlayerLoad()
 					GetTransform()->AddWorldRotation({ 0, 180, 0 });
 					ChangeState(FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_2);
 				});
+
+				// »ç¿îµå
+				TimeEvent.AddEvent(1.56f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+					{
+						Sound.Play("Yamato_", 9);
+					});
+				TimeEvent.AddEvent(1.7f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+					{
+						Sound.Play("Yamato_", 6);
+					});
+				TimeEvent.AddEvent(1.8f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+					{
+						Sound.Play("Yamato_", 19);
+					});
+				TimeEvent.AddEvent(1.95f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+					{
+						Sound.Play("Yamato_", 8);
+					});
+
 			},
 			.Update = [=](float _DeltaTime) {
 				PhysXCapsule->SetLinearVelocityZero();
@@ -1534,6 +1560,8 @@ void PlayerActor_Vergil::PlayerLoad()
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCutEnd_2");
 				TimeEvent.AddEvent(1.82f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
+					Sound.Play("Yamato_", 18);
+					Sound.Play("Yamato_", 20);
 					Effect_JC->JudgementCutOff();
 					Effect_Color->SetStartColor(float4::ONE * 0.3f);
 					Effect_Color->SetEndColor(float4::ZERO);
@@ -1576,6 +1604,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Warp Front 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Front_1,
 		.Start = [=] {
+			Sound.Play("Vergil_Warp");
 			WeaponIdle();
 			RotationToTarget();
 			SetInvincibility(0.5f);
@@ -1653,6 +1682,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Warp Back 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Back_1,
 		.Start = [=] {
+			Sound.Play("Vergil_Warp");
 			WeaponIdle();
 			RotationToTarget();
 			SetInvincibility(0.5f);
@@ -1717,6 +1747,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Warp Left 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Left_1,
 		.Start = [=] {
+			Sound.Play("Vergil_Warp");
 			WeaponIdle();
 			RotationToTarget();
 			SetInvincibility(0.5f);
@@ -1781,6 +1812,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Warp Right 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Right_1,
 		.Start = [=] {
+			Sound.Play("Vergil_Warp");
 			WeaponIdle();
 			RotationToTarget();
 			SetInvincibility(0.5f);
@@ -1848,6 +1880,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		static GameEngineTransform* WarpTarget;
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_AirTrick,
 		.Start = [=] {
+			Sound.Play("Vergil_Warp");
 			WeaponIdle();
 			PhysXCapsule->TurnOffGravity();
 			PhysXCapsule->SetLinearVelocityZero();
@@ -1902,6 +1935,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Warp Down
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_TrickDown,
 		.Start = [=] {
+			Sound.Play("Vergil_Warp");
 			WeaponIdle();
 			SetInvincibility(0.5f);
 			PhysXCapsule->TurnOffGravity();
@@ -2529,6 +2563,16 @@ bool PlayerActor_Vergil::Input_SpecialCheck()
 
 bool PlayerActor_Vergil::Input_SpecialCheckFly()
 {
+	if (Controller->GetIsDevilTrigger())
+	{
+		if (true == DTValue)
+		{
+			DTOffEffect->Play();
+			SetHuman();
+			return true;
+		}
+	}
+
 	if (Controller->GetIsAnyJump())
 	{
 		std::vector<std::shared_ptr<GameEngineCollision>> Cols;
