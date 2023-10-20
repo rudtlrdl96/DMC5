@@ -3,7 +3,7 @@
 #include "Shop_TitleButton.h"
 #include "Shop_ItemButton.h"
 #include "Shop_ExplaneUI.h"
-#include "Vergil_ShopTitleBar.h"
+#include "Vergil_ShopUI.h"
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include <GameEngineCore/GameEngineLevel.h>
 Shop_VergilYamatoUI::Shop_VergilYamatoUI()
@@ -31,7 +31,7 @@ void Shop_VergilYamatoUI::Start()
 
 void Shop_VergilYamatoUI::Update(float _Delta)
 {
-	if (Vergil_ShopTitleBar::Vergil_ShopBar->GetUIIndex() == 1)
+	if (Vergil_ShopUI::Vergil_ShopBar->GetUIIndex() == 1)
 	{
 		SetIndex();
 		Shop_ItemButton::Skills[PrevIndex]->SetSelectValue(false);

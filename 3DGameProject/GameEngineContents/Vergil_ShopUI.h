@@ -1,19 +1,19 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
 // Ό³Έν :
-class Vergil_ShopTitleBar : public GameEngineActor
+class Vergil_ShopUI : public GameEngineActor
 {
 public:
-	static Vergil_ShopTitleBar* Vergil_ShopBar;
+	static Vergil_ShopUI* Vergil_ShopBar;
 	// constrcuter destructer
-	Vergil_ShopTitleBar();
-	~Vergil_ShopTitleBar();
+	Vergil_ShopUI();
+	~Vergil_ShopUI();
 
 	// delete Function
-	Vergil_ShopTitleBar(const Vergil_ShopTitleBar& _Other) = delete;
-	Vergil_ShopTitleBar(Vergil_ShopTitleBar&& _Other) noexcept = delete;
-	Vergil_ShopTitleBar& operator=(const Vergil_ShopTitleBar& _Other) = delete;
-	Vergil_ShopTitleBar& operator=(Vergil_ShopTitleBar&& _Other) noexcept = delete;
+	Vergil_ShopUI(const Vergil_ShopUI& _Other) = delete;
+	Vergil_ShopUI(Vergil_ShopUI&& _Other) noexcept = delete;
+	Vergil_ShopUI& operator=(const Vergil_ShopUI& _Other) = delete;
+	Vergil_ShopUI& operator=(Vergil_ShopUI&& _Other) noexcept = delete;
 	int GetUIIndex()
 	{
 		return Index;

@@ -3,8 +3,8 @@
 #include "ShopBG.h"
 #include "Nero_InvenToryUI.h"
 #include "FadeEffect.h"
-#include "Nero_ShopTitleBar.h"
-#include "Vergil_ShopTitleBar.h"
+#include "Nero_ShopUI.h"
+#include "Vergil_ShopUI.h"
 #include "Char_ChoiceUI.h"
 #include <GameEngineCore/GameEngineFont.h>
 #include <GameEngineCore/GameEngineTexture.h>
@@ -49,11 +49,11 @@ void ShopLevel::LevelChangeStart()
 {
 	if (Char_ChoiceUI::GetPlayerType() == ChoicePlayerType::NERO)
 	{
-		std::shared_ptr<Nero_ShopTitleBar> Nero_ShopTitleBarPtr = CreateActor<Nero_ShopTitleBar>();
+		std::shared_ptr<Nero_ShopUI> Nero_ShopUIPtr = CreateActor<Nero_ShopUI>();
 	}
 	else if (Char_ChoiceUI::GetPlayerType() == ChoicePlayerType::VERGIL)
 	{
-		std::shared_ptr<Vergil_ShopTitleBar> Vergil_ShopTitleBarPtr = CreateActor<Vergil_ShopTitleBar>();
+		std::shared_ptr<Vergil_ShopUI> Vergil_ShopUIPtr = CreateActor<Vergil_ShopUI>();
 	}
 }
 

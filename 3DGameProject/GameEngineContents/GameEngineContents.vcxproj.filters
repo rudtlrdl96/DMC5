@@ -240,9 +240,6 @@
     <ClInclude Include="Menu_VirgilInfo.h">
       <Filter>UI\UI_Actor\MenuUI\VergilInfo</Filter>
     </ClInclude>
-    <ClInclude Include="Nero_ShopTitleBar.h">
-      <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
-    </ClInclude>
     <ClInclude Include="Shop_TitleButton.h">
       <Filter>UI\UI_Base\Button\ShopTitleButton</Filter>
     </ClInclude>
@@ -303,7 +300,7 @@
     <ClInclude Include="Shop_ExplaneUI.h">
       <Filter>UI\UI_Actor\ShopUI</Filter>
     </ClInclude>
-    <ClInclude Include="Vergil_ShopTitleBar.h">
+    <ClInclude Include="Vergil_ShopUI.h">
       <Filter>UI\UI_Actor\ShopUI\VergilShopUI</Filter>
     </ClInclude>
     <ClInclude Include="Shop_VergilYamatoUI.h">
@@ -486,6 +483,7 @@
     <ClInclude Include="BGMPlayer.h">
       <Filter>Component\Sound</Filter>
     </ClInclude>
+    <ClInclude Include="Nero_ShopUI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -718,9 +716,6 @@
     <ClCompile Include="Menu_VirgilInfo.cpp">
       <Filter>UI\UI_Actor\MenuUI\VergilInfo</Filter>
     </ClCompile>
-    <ClCompile Include="Nero_ShopTitleBar.cpp">
-      <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
-    </ClCompile>
     <ClCompile Include="Shop_TitleButton.cpp">
       <Filter>UI\UI_Base\Button\ShopTitleButton</Filter>
     </ClCompile>
@@ -775,7 +770,7 @@
     <ClCompile Include="Shop_ExplaneUI.cpp">
       <Filter>UI\UI_Actor\ShopUI</Filter>
     </ClCompile>
-    <ClCompile Include="Vergil_ShopTitleBar.cpp">
+    <ClCompile Include="Vergil_ShopUI.cpp">
       <Filter>UI\UI_Actor\ShopUI\VergilShopUI</Filter>
     </ClCompile>
     <ClCompile Include="Shop_VergilYamatoUI.cpp">
@@ -970,6 +965,7 @@
     <ClCompile Include="BGMPlayer.cpp">
       <Filter>Component\Sound</Filter>
     </ClCompile>
+    <ClCompile Include="Nero_ShopUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">

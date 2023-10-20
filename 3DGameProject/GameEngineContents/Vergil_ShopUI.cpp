@@ -1,5 +1,5 @@
 #include "PrecompileHeader.h"
-#include "Vergil_ShopTitleBar.h"
+#include "Vergil_ShopUI.h"
 #include "Shop_TitleButton.h"
 #include "Shop_ExplaneUI.h"
 #include "Shop_ItemButton.h"
@@ -7,17 +7,17 @@
 #include "Shop_VergilMirgeUI.h"
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
-Vergil_ShopTitleBar* Vergil_ShopTitleBar::Vergil_ShopBar = nullptr;
-Vergil_ShopTitleBar::Vergil_ShopTitleBar()
+Vergil_ShopUI* Vergil_ShopUI::Vergil_ShopBar = nullptr;
+Vergil_ShopUI::Vergil_ShopUI()
 {
 	Vergil_ShopBar = this;
 }
 
-Vergil_ShopTitleBar::~Vergil_ShopTitleBar()
+Vergil_ShopUI::~Vergil_ShopUI()
 {
 }
 
-void Vergil_ShopTitleBar::Start()
+void Vergil_ShopUI::Start()
 {
 	SkillButton = GetLevel()->CreateActor<Shop_TitleButton>();
 	SkillButton->SetUIText("SKILLS");
@@ -71,7 +71,7 @@ void Vergil_ShopTitleBar::Start()
 
 
 
-void Vergil_ShopTitleBar::Update(float _Delta)
+void Vergil_ShopUI::Update(float _Delta)
 {
 
 	SkillButton->SetSelectValue(true);
@@ -123,7 +123,7 @@ void Vergil_ShopTitleBar::Update(float _Delta)
 	}
 }
 
-void Vergil_ShopTitleBar::SetIndexCount()
+void Vergil_ShopUI::SetIndexCount()
 {
 	if (Index == 0 && true == GameEngineInput::IsUp("UI_UP"))
 	{
@@ -176,7 +176,7 @@ void Vergil_ShopTitleBar::SetIndexCount()
 	}
 }
 
-void Vergil_ShopTitleBar::ScaleUpDown(float _Delta , std::shared_ptr<Shop_TitleButton> _Button)
+void Vergil_ShopUI::ScaleUpDown(float _Delta , std::shared_ptr<Shop_TitleButton> _Button)
 {
 	LerpTime += _Delta;
 	if (ScaleValue == false)

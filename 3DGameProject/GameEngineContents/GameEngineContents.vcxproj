@@ -438,7 +438,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="Nero_ShopTitleBar.h">
+    <ClInclude Include="Nero_ShopUI.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -701,7 +701,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="Vergil_ShopTitleBar.h">
+    <ClInclude Include="Vergil_ShopUI.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -995,7 +995,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="Nero_ShopTitleBar.cpp">
+    <ClCompile Include="Nero_ShopUI.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -1249,7 +1249,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="Vergil_ShopTitleBar.cpp">
+    <ClCompile Include="Vergil_ShopUI.cpp">
       <SubType>
       </SubType>
     </ClCompile>

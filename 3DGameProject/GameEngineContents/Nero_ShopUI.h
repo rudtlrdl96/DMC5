@@ -1,18 +1,18 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
 // Ό³Έν :
-class Nero_ShopTitleBar : public GameEngineActor
+class Nero_ShopUI : public GameEngineActor
 {
 public:
 	// constrcuter destructer
-	Nero_ShopTitleBar();
-	~Nero_ShopTitleBar();
+	Nero_ShopUI();
+	~Nero_ShopUI();
 
 	// delete Function
-	Nero_ShopTitleBar(const Nero_ShopTitleBar& _Other) = delete;
-	Nero_ShopTitleBar(Nero_ShopTitleBar&& _Other) noexcept = delete;
-	Nero_ShopTitleBar& operator=(const Nero_ShopTitleBar& _Other) = delete;
-	Nero_ShopTitleBar& operator=(Nero_ShopTitleBar&& _Other) noexcept = delete;
+	Nero_ShopUI(const Nero_ShopUI& _Other) = delete;
+	Nero_ShopUI(Nero_ShopUI&& _Other) noexcept = delete;
+	Nero_ShopUI& operator=(const Nero_ShopUI& _Other) = delete;
+	Nero_ShopUI& operator=(Nero_ShopUI&& _Other) noexcept = delete;
 
 protected:
 	void Start() override;

@@ -1,20 +1,20 @@
 #include "PrecompileHeader.h"
-#include "Nero_ShopTitleBar.h"
+#include "Nero_ShopUI.h"
 #include "Shop_TitleButton.h"
 #include "Shop_NeroSkillUI.h"
 #include "Shop_ExplaneUI.h"
 #include "Shop_ItemButton.h"
 #include "Shop_NeroArmUI.h"
 #include <GameEngineCore/GameEngineLevel.h>
-Nero_ShopTitleBar::Nero_ShopTitleBar()
+Nero_ShopUI::Nero_ShopUI()
 {
 }
 
-Nero_ShopTitleBar::~Nero_ShopTitleBar()
+Nero_ShopUI::~Nero_ShopUI()
 {
 }
 
-void Nero_ShopTitleBar::Start()
+void Nero_ShopUI::Start()
 {
 	SkillButton = GetLevel()->CreateActor<Shop_TitleButton>();
 	SkillButton->SetUIText("SKILLS");
@@ -39,7 +39,7 @@ void Nero_ShopTitleBar::Start()
 
 
 
-void Nero_ShopTitleBar::Update(float _Delta)
+void Nero_ShopUI::Update(float _Delta)
 {
 	LerpScreen(_Delta);
 	if (TitleIndex == 0)
@@ -81,7 +81,7 @@ void Nero_ShopTitleBar::Update(float _Delta)
 	}
 }
 
-void Nero_ShopTitleBar::LerpScreen(float _Delta)
+void Nero_ShopUI::LerpScreen(float _Delta)
 {
 	if (IsValue==true)
 	{
