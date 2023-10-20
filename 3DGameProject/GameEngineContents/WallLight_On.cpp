@@ -29,6 +29,7 @@ void WallLight_On::Start()
 	LightValue = FBXMesh->GetRenderBaseValueRef();
 	LightValue.BaseColor = { 10.0f, 0, 0, 0 };
 	FBXMesh->GetRenderUnit(1, 0)->ShaderResHelper.SetConstantBufferLink("RenderBaseValue", LightValue);
+	FBXMesh->GetRenderUnit(1, 0)->ShadowOff();
 }
 
 void WallLight_On::Update(float _DeltaTime)

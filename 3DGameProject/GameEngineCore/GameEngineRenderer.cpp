@@ -173,6 +173,11 @@ void GameEngineRenderUnit::ShadowOn()
 	}
 }
 
+void GameEngineRenderUnit::ShadowOff()
+{
+	IsShadow = false;
+}
+
 void GameEngineRenderUnit::Draw()
 {
 	UINT IndexCount = Mesh->IndexBufferPtr->GetIndexCount();

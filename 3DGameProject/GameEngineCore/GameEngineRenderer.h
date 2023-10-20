@@ -59,6 +59,7 @@ public:
 	void Draw(UINT _IndexCount, UINT _IndexStart);
 
 	void ShadowOn();
+	void ShadowOff();
 	void ShadowSetting();
 
 private:

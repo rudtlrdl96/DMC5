@@ -137,6 +137,7 @@ void GameEngineLight::BakeShadow(std::shared_ptr<GameEngineCamera> _BakeCam, int
 		NewBakeTarget->SetName("Bake Target : " + std::to_string(_BakeIndex));
 	}
 
+	LightUpdate(_BakeCam.get(), 0.0f);
 	_BakeCam->BakeShadow(DynamicThis<GameEngineLight>(), _BakeIndex);
 
 	BakeShadowTarget[_BakeIndex] = NewBakeTarget;

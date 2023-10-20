@@ -271,40 +271,40 @@ void GameEngineCore::CoreResourcesInit()
 		Vertex.resize(24);
 		
 		// 오른쪽
-		Vertex[0] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, 1.0f, 1.0f).RotationYDegReturn(90) };
-		Vertex[1] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, 1.0f, 1.0f).RotationYDegReturn(90)  };
-		Vertex[2] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, -1.0f, 1.0f).RotationYDegReturn(90) };
-		Vertex[3] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, -1.0f, 1.0f).RotationYDegReturn(90)};
+		Vertex[0] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, 1.0f,  1.0f).RotationYDegReturn(90)};
+		Vertex[1] = {{ 1.0f, 1.0f, 0.0f  }, float4(1.0f,  1.0f,  1.0f).RotationYDegReturn(90)};
+		Vertex[2] = {{ 1.0f, -1.0f, 0.0f }, float4(1.0f,  -1.0f, 1.0f).RotationYDegReturn(90)};
+		Vertex[3] = {{ -1.0f, -1.0f, 0.0f}, float4(-1.0f, -1.0f, 1.0f).RotationYDegReturn(90)};
 
 		// 왼쪽
-		Vertex[4] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, 1.0f, 1.0f).RotationYDegReturn(-90) };
-		Vertex[5] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, 1.0f, 1.0f).RotationYDegReturn(-90)  };
-		Vertex[6] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, -1.0f, 1.0f).RotationYDegReturn(-90) };
-		Vertex[7] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, -1.0f, 1.0f).RotationYDegReturn(-90)};
+		Vertex[4] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, 1.0f,  1.0f).RotationYDegReturn(-90)};
+		Vertex[5] = {{ 1.0f, 1.0f, 0.0f  }, float4(1.0f,  1.0f,  1.0f).RotationYDegReturn(-90)};
+		Vertex[6] = {{ 1.0f, -1.0f, 0.0f }, float4(1.0f,  -1.0f, 1.0f).RotationYDegReturn(-90)};
+		Vertex[7] = {{ -1.0f, -1.0f, 0.0f}, float4(-1.0f, -1.0f, 1.0f).RotationYDegReturn(-90)};
 
 		// 위
-		Vertex[8] =  {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, 1.0f, 1.0f).RotationXDegReturn(-90) };
-		Vertex[9] =  {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, 1.0f, 1.0f).RotationXDegReturn(-90)  };
-		Vertex[10] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, -1.0f, 1.0f).RotationXDegReturn(-90) };
-		Vertex[11] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, -1.0f, 1.0f).RotationXDegReturn(-90)};
+		Vertex[8] =  {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, 1.0f,  1.0f).RotationXDegReturn(-90)};
+		Vertex[9] =  {{ 1.0f, 1.0f, 0.0f  }, float4(1.0f,  1.0f,  1.0f).RotationXDegReturn(-90)};
+		Vertex[10] = {{ 1.0f, -1.0f, 0.0f }, float4(1.0f,  -1.0f, 1.0f).RotationXDegReturn(-90)};
+		Vertex[11] = {{ -1.0f, -1.0f, 0.0f}, float4(-1.0f, -1.0f, 1.0f).RotationXDegReturn(-90)};
 
 		// 아래
-		Vertex[12] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, 1.0f, 1.0f).RotationXDegReturn(90) };
-		Vertex[13] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, 1.0f, 1.0f).RotationXDegReturn(90)  };
-		Vertex[14] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, -1.0f, 1.0f).RotationXDegReturn(90) };
-		Vertex[15] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, -1.0f, 1.0f).RotationXDegReturn(90)};
+		Vertex[12] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, 1.0f,  1.0f).RotationXDegReturn(90)};
+		Vertex[13] = {{ 1.0f, 1.0f, 0.0f  }, float4(1.0f,  1.0f,  1.0f).RotationXDegReturn(90)};
+		Vertex[14] = {{ 1.0f, -1.0f, 0.0f }, float4(1.0f,  -1.0f, 1.0f).RotationXDegReturn(90)};
+		Vertex[15] = {{ -1.0f, -1.0f, 0.0f}, float4(-1.0f, -1.0f, 1.0f).RotationXDegReturn(90)};
 
 		// 앞면
-		Vertex[16] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, 1.0f, 1.0f) };
-		Vertex[17] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, 1.0f, 1.0f)  };
-		Vertex[18] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, -1.0f, 1.0f) };
-		Vertex[19] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, -1.0f, 1.0f)};
+		Vertex[16] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, 1.0f,  1.0f)};
+		Vertex[17] = {{ 1.0f, 1.0f, 0.0f  }, float4(1.0f,  1.0f,  1.0f)};
+		Vertex[18] = {{ 1.0f, -1.0f, 0.0f }, float4(1.0f,  -1.0f, 1.0f)};
+		Vertex[19] = {{ -1.0f, -1.0f, 0.0f}, float4(-1.0f, -1.0f, 1.0f)};
 
 		// 뒷면
-		Vertex[20] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, 1.0f, 1.0f).RotationXDegReturn(180) };
-		Vertex[21] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, 1.0f, 1.0f).RotationXDegReturn(180)  };
-		Vertex[22] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, -1.0f, 1.0f).RotationXDegReturn(180) };
-		Vertex[23] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, -1.0f, 1.0f).RotationXDegReturn(180)};
+		Vertex[20] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, 1.0f,  1.0f).RotationXDegReturn(180)};
+		Vertex[21] = {{ 1.0f, 1.0f, 0.0f  }, float4(1.0f,  1.0f,  1.0f).RotationXDegReturn(180)};
+		Vertex[22] = {{ 1.0f, -1.0f, 0.0f }, float4(1.0f,  -1.0f, 1.0f).RotationXDegReturn(180)};
+		Vertex[23] = {{ -1.0f, -1.0f, 0.0f}, float4(-1.0f, -1.0f, 1.0f).RotationXDegReturn(180)};
 
 		GameEngineVertexBuffer::Create("FullBox", Vertex);
 	}
