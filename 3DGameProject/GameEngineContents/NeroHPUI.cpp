@@ -86,7 +86,9 @@ void NeroHPUI::Start()
 	NeroUI_Back->GetTransform()->SetLocalPosition({ -696.0f,334.0f,40.0f });
 
 	UI_HPGaegeBar = GetLevel()->CreateActor<UI_HPGaege>();
+	UI_HPGaegeBar->GetTransform()->SetParent(GetTransform());
 	UI_DTGaugeBar = GetLevel()->CreateActor<UI_DTGauge>();
+	UI_DTGaugeBar->GetTransform()->SetParent(GetTransform());
 	UI_BulletGaugeBar = GetLevel()->CreateActor<UI_BulletGauge>();
 	UI_BulletGaugeBar->GetTransform()->SetParent(GetTransform());
 
