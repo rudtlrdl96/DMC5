@@ -486,6 +486,9 @@
     <ClInclude Include="BGMPlayer.h">
       <Filter>Component\Sound</Filter>
     </ClInclude>
+    <ClInclude Include="BWColorEffect.h">
+      <Filter>PostEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -969,6 +972,9 @@
     </ClCompile>
     <ClCompile Include="BGMPlayer.cpp">
       <Filter>Component\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="BWColorEffect.cpp">
+      <Filter>PostEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -248,6 +248,16 @@ void ContentsCore::ContentsResourcesCreate()
 		Pipe->SetPixelShader("ColorEffectShader.hlsl");
 		Pipe->SetBlendState("MergeBlend");
 		Pipe->SetDepthState("EngineDepth");
+	}		
+	
+	{
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("BWColorEffect");
+
+		Pipe->SetVertexShader("BWColorShader.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("BWColorShader.hlsl");
+		Pipe->SetBlendState("MergeBlend");
+		Pipe->SetDepthState("EngineDepth");
 	}	
 	
 	{
