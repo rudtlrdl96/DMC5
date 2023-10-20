@@ -331,7 +331,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Idle
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Idle,
 			.Start = [=] {
-				PhysXCapsule->TurnOnGravity();
+				PhysXCapsule->TurnOffGravity();
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0000_Idle_Normal");
@@ -408,6 +408,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Run
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Run,
 			.Start = [=] {
+				PhysXCapsule->TurnOnGravity();
 				DashTimer = 0;
 				Renderer->ChangeAnimation("pl0000_Run_Loop");
 			},
@@ -451,6 +452,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// RunStop
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RunStop,
 			.Start = [=] {
+				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0000_Run_Stop");
 			},
@@ -517,6 +519,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// DashStop
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_DashStop,
 			.Start = [=] {
+				PhysXCapsule->TurnOffGravity();
 				Renderer->ChangeAnimation("pl0000_Dash_Stop");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -650,7 +653,7 @@ void PlayerActor_Nero::PlayerLoad()
 			.Start = [=] {
 				SetFloorPos();
 				MoveCheck = false;
-				PhysXCapsule->TurnOnGravity();
+				PhysXCapsule->TurnOffGravity();
 				UseDoubleJump = false;
 				UseCaliber = false;
 				PhysXCapsule->SetLinearVelocityZero();
@@ -1280,6 +1283,7 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 				InputCheck = false;
 				DelayCheck = false;
+				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				RotationToTarget();
 				SetInvincibility(0.5f);
@@ -1322,6 +1326,7 @@ void PlayerActor_Nero::PlayerLoad()
 			.Start = [=] {
 				Sound.Play("RQ_", 22);
 				EffectSystem->PlayFX("RQ_Stleak_1.effect");
+				PhysXCapsule->TurnOnGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				RotationToTarget();
 				RedQueenOn();
@@ -1702,8 +1707,9 @@ void PlayerActor_Nero::PlayerLoad()
 				UseDoubleJump = false;
 				UseCaliber = false;
 				InputCheck = false;
+				SetFloorPos();
 				PhysXCapsule->SetLinearVelocityZero();
-				PhysXCapsule->TurnOnGravity();
+				PhysXCapsule->TurnOffGravity();
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Split_3");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -1814,7 +1820,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Idle To LockOn
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Switch_Idle_to_Lockon,
 			.Start = [=] {
-				PhysXCapsule->TurnOnGravity();
+				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0000_BR_Switch_Idle_to_Lockon");
 			},
@@ -1855,7 +1861,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// LockOnFront
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Lockon_Front,
 			.Start = [=] {
-				PhysXCapsule->TurnOnGravity();
+				PhysXCapsule->TurnOffGravity();
 				BlueRoseOn();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0000_BR_Lockon_Front");
@@ -2007,7 +2013,7 @@ void PlayerActor_Nero::PlayerLoad()
 			.Start = [=] {
 				Sound.Play("Evade");
 				RotationToTarget();
-				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->TurnOnGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
 				MoveCheck = false;
@@ -2053,7 +2059,7 @@ void PlayerActor_Nero::PlayerLoad()
 			.Start = [=] {
 				Sound.Play("Evade");
 				RotationToTarget();
-				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->TurnOnGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				InputCheck = false;
 				MoveCheck = false;
@@ -2235,6 +2241,7 @@ void PlayerActor_Nero::PlayerLoad()
 				
 				WeaponIdle();
 				SetOvertureAnimation();
+				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				Col_Attack->SetAttackData(DamageType::Heavy, 420);
 				EffectSystem->PlayFX("Overture_Shoot.effect");
@@ -2476,6 +2483,7 @@ void PlayerActor_Nero::PlayerLoad()
 				Sound.Play("BusterArm_Catch");
 				Col_Attack->SetAttackData(DamageType::Buster, 0, std::bind(&PlayerActor_Nero::ChangeState, this, Nero_Buster_Strike));
 				WeaponIdle();
+				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				EffectSystem->PlayFX("Buster_Catch.effect");
 				Renderer->ChangeAnimation("pl0000_Buster_Catch", true);
@@ -2809,6 +2817,7 @@ void PlayerActor_Nero::PlayerLoad()
 			.Start = [=] {
 				Sound.Play("Snatch_Shoot");
 				Sound.PlayVoiceRandom(0, 3, DTValue);
+				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				RotationToTarget();
 				WeaponIdle();
@@ -3060,6 +3069,7 @@ void PlayerActor_Nero::PlayerLoad()
 			Sound.Play("DT_On");
 			Sound.PlayVoiceRandom(34, 36, true);
 			WeaponIdle();
+			PhysXCapsule->TurnOffGravity();
 			PhysXCapsule->SetLinearVelocityZero();
 			SetInvincibility(0.5f);
 			Col_Attack->SetAttackData(DamageType::Air, 150);
@@ -3137,6 +3147,7 @@ void PlayerActor_Nero::PlayerLoad()
 			Sound.Play("GT_Bomb");
 			Sound.PlayVoice(33, DTValue);
 			WeaponIdle();
+			PhysXCapsule->TurnOffGravity();
 			PhysXCapsule->SetLinearVelocityZero();
 			SetInvincibility(0.5f);
 			Col_Attack->SetAttackData(DamageType::Heavy, 150);
@@ -3234,6 +3245,7 @@ void PlayerActor_Nero::PlayerLoad()
 		.Start = [=] {
 			Sound.PlayVoice(30, DTValue);
 			WeaponIdle();
+			PhysXCapsule->TurnOffGravity();
 			PhysXCapsule->SetLinearVelocityZero();
 			Renderer->ChangeAnimation("pl0000_Provocation", true);
 			InputCheck = false;

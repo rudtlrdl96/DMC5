@@ -812,7 +812,6 @@ void PlayerActor_Vergil::PlayerLoad()
 			}
 			});
 		static float SissonalTimer = 0;
-		static float4 SissonalTargetPos;
 		// Sissonal2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Sissonal_2,
 			.Start = [=] {
@@ -821,14 +820,14 @@ void PlayerActor_Vergil::PlayerLoad()
 				Renderer->ChangeAnimation("pl0300_yamato_Sissonal_2_loop");
 				Col_EnemyStepCheck->GetTransform()->SetLocalScale({ 300, 275, 300 });
 				PhysXCapsule->Off();
-
-				if (false == GetLevel()->RayCast(GetTransform()->GetWorldPosition(), GetTransform()->GetWorldForwardVector(), SissonalTargetPos, 2000.0f))
-				{
-					SissonalTargetPos.w = -1;
-				}
 			},
 			.Update = [=](float _DeltaTime) {
 				if (true == Input_SpecialCheck()) { return; }
+				if (true == DTValue && Controller->GetIsFrontSword())
+				{
+					ChangeState(FSM_State_Vergil::pl0300_yamato_Sissonal_1);
+					return;
+				}
 				std::vector<std::shared_ptr<GameEngineCollision>> Cols;
 				if (true == Controller->GetIsSwordPress() && true == Col_EnemyStepCheck->CollisionAll(CollisionOrder::Enemy, Cols))
 				{
@@ -841,7 +840,8 @@ void PlayerActor_Vergil::PlayerLoad()
 					ChangeState(FSM_State_Vergil::pl0300_yamato_Sissonal_3);
 					return;
 				}
-				if (SissonalTargetPos.w != -1 && (GetTransform()->GetWorldPosition() - SissonalTargetPos).Size() < 100)
+				float4 Pos;
+				if (true == GetLevel()->RayCast(GetTransform()->GetWorldPosition(), GetTransform()->GetWorldForwardVector(), Pos, 100.0f))
 				{
 					ChangeState(FSM_State_Vergil::pl0300_yamato_Sissonal_3);
 					return;
@@ -866,23 +866,21 @@ void PlayerActor_Vergil::PlayerLoad()
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->SetMove(GetTransform()->GetWorldForwardVector() * 800);
+				SetFloorPos();
 				EffectSystem->PlayFX("Yamato_Sissonal_3.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Sissonal_3");
 				InputCheck = false;
 				MoveCheck = false;
-
-				if (true == DTValue)
-				{
-					TimeEvent.AddEvent(0.07f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
-					{
-						InputCheck = true;
-					});
-				}
 			},
 			.Update = [=](float _DeltaTime) {
 
 				if (true == Input_SpecialCheck()) { return; }
 
+				if (true == DTValue && Controller->GetIsFrontSword())
+				{
+					ChangeState(FSM_State_Vergil::pl0300_yamato_Sissonal_1);
+					return;
+				}
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheck()) { return; }
 				if (true == Input_SwordCheck()) { return; }
