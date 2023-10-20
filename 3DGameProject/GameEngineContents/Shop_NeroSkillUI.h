@@ -17,6 +17,13 @@ public:
 	{
 		return ExplanePtr;
 	}
+	static bool IsStreak;
+	static bool IsSplit;
+	static bool IsRedqueen;
+	static bool IsRouletteSpin;
+	static bool IsShufle;
+	static bool IsCalibur;
+
 protected:
 	void Start() override;
 	void Update(float _Delta) override;
@@ -25,6 +32,7 @@ private:
 	void SetIndex();
 	void SetExText();
 	void SetValue();
+	void ActivSkill();
 	std::shared_ptr<class Shop_TitleButton> RedQueenButton = nullptr;
 	std::shared_ptr<class Shop_ItemButton>  SkillButton = nullptr;
 	std::shared_ptr<class Shop_ExplaneUI> ExplanePtr = nullptr;

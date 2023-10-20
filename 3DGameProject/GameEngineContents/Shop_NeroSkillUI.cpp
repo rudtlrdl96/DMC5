@@ -6,6 +6,12 @@
 
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include <GameEngineCore/GameEngineLevel.h>
+bool Shop_NeroSkillUI::IsStreak =false;
+bool Shop_NeroSkillUI::IsSplit = false;
+bool Shop_NeroSkillUI::IsRedqueen = false;
+bool Shop_NeroSkillUI::IsRouletteSpin = false;
+bool Shop_NeroSkillUI::IsShufle = false;
+bool Shop_NeroSkillUI::IsCalibur = false;
 Shop_NeroSkillUI::Shop_NeroSkillUI()
 {
 }
@@ -53,6 +59,7 @@ void Shop_NeroSkillUI::Update(float _Delta)
 	SetIndex();
 	Shop_ItemButton::Skills[PrevIndex]->SetSelectValue(false);
 	Shop_ItemButton::Skills[Index]->SetSelectValue(true);
+	ActivSkill();
 	LerpItem(_Delta);
 	SetExText();
 
@@ -115,6 +122,7 @@ void Shop_NeroSkillUI::LerpItem(float _Delta)
 
 void Shop_NeroSkillUI::SetIndex()
 {
+	
 	RedQueenButton->SetUIText("RED QUEEN");
 	if (IsValue == false && true == GameEngineInput::IsUp("UI_UP"))
 	{
@@ -202,6 +210,63 @@ void Shop_NeroSkillUI::SetValue()
 	for (int i = 0; i < Shop_ItemButton::Skills.size(); i++)
 	{
 		Shop_ItemButton::Skills[i]->SetSizeValue(true);
+	}
+}
+
+
+void Shop_NeroSkillUI::ActivSkill()
+{
+	if (Index == 0)
+	{
+		if (IsStreak == false && GameEngineInput::IsUp("UI_Enter") == true)
+		{
+			IsStreak = true;
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("시도");
+		}
+	}
+	else if (Index == 1)
+	{
+		if (IsSplit == false && GameEngineInput::IsUp("UI_Enter") == true)
+		{
+			IsSplit = true;
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("시도");
+		}
+	}
+	else if (Index == 2)
+	{
+		if (IsRedqueen == false && GameEngineInput::IsUp("UI_Enter") == true)
+		{
+			IsRedqueen = true;
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("시도");
+
+		}
+	}
+	else if (Index == 3)
+	{
+		if (IsRouletteSpin == false && GameEngineInput::IsUp("UI_Enter") == true)
+		{
+			IsRouletteSpin = true;
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("시도");
+
+		}
+	}
+	else if (Index == 4)
+	{
+		if (IsShufle == false && GameEngineInput::IsUp("UI_Enter") == true)
+		{
+			IsShufle = true;
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("시도");
+
+		}
+	}
+	else if (Index == 5)
+	{
+		if (IsCalibur == false && GameEngineInput::IsUp("UI_Enter") == true)
+		{
+			IsCalibur = true;
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("시도");
+
+		}
 	}
 }
 

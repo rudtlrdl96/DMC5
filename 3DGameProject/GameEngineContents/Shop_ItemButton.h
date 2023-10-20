@@ -59,6 +59,10 @@ public:
 	{
 		return NameText_Render;
 	}
+	std::shared_ptr<class GameEngineFontRenderer> GetBuyRender()
+	{
+		return BuyText_Render;
+	}
 	void SetEvent(std::function<void()> _Click)
 	{
 		Click = _Click;

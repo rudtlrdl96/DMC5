@@ -483,7 +483,10 @@
     <ClInclude Include="BGMPlayer.h">
       <Filter>Component\Sound</Filter>
     </ClInclude>
-    <ClInclude Include="Nero_ShopUI.h" />
+    <ClInclude Include="BWColorEffect.h" />
+    <ClInclude Include="Nero_ShopUI.h">
+      <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -965,7 +968,10 @@
     <ClCompile Include="BGMPlayer.cpp">
       <Filter>Component\Sound</Filter>
     </ClCompile>
-    <ClCompile Include="Nero_ShopUI.cpp" />
+    <ClCompile Include="BWColorEffect.cpp" />
+    <ClCompile Include="Nero_ShopUI.cpp">
+      <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
