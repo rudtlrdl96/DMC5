@@ -17,6 +17,7 @@ Nero_ShopUI::~Nero_ShopUI()
 void Nero_ShopUI::Start()
 {
 	SkillButton = GetLevel()->CreateActor<Shop_TitleButton>();
+	SkillButton->GetTransform()->SetParent(GetTransform());
 	SkillButton->SetUIText("SKILLS");
 	SkillButton->GetTransform()->SetLocalPosition({ -600.0f,370.0f,0.0f });
 	SkillButton->SetEvent([this]()
@@ -26,6 +27,7 @@ void Nero_ShopUI::Start()
 	DBButton = GetLevel()->CreateActor<Shop_TitleButton>();
 	DBButton->SetUIText("DEVIL BREAKERS");
 	DBButton->GetTransform()->SetLocalPosition({ -300.0f,370.0f,0.0f });
+	DBButton->GetTransform()->SetParent(GetTransform());
 	DBButton->SetEvent([this]()
 		{
 			TitleIndex = 1;
@@ -33,14 +35,20 @@ void Nero_ShopUI::Start()
 	//Å×½ºÆ®
 	SkillScreen = GetLevel()->CreateActor<Shop_NeroSkillUI>();
 	SkillScreen->GetTransform()->SetLocalPosition(SkillStartPos);
+	SkillScreen->GetTransform()->SetParent(GetTransform());
 	ArmScreen = GetLevel()->CreateActor<Shop_NeroArmUI>();
 	ArmScreen->GetTransform()->SetLocalPosition(ItemDefaulPos);
+	ArmScreen->GetTransform()->SetParent(GetTransform());
 }	
 
 
 
 void Nero_ShopUI::Update(float _Delta)
 {
+	if (true == GameEngineInput::IsUp("UI_ESC"))
+	{
+		Off();
+	}
 	LerpScreen(_Delta);
 	if (TitleIndex == 0)
 	{

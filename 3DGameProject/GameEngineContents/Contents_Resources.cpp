@@ -441,6 +441,7 @@ void ContentsCore::CreateContentsKey()
 		GameEngineInput::CreateKey("UI_Right", VK_RIGHT);
 		GameEngineInput::CreateKey("UI_Tab", VK_TAB);
 		GameEngineInput::CreateKey("UI_bullet", VK_RBUTTON);
+		GameEngineInput::CreateKey("UI_ESC", VK_ESCAPE);
 		
 	}
 	if (false == GameEngineInput::IsKey("Player_Up"))

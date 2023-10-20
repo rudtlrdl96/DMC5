@@ -63,6 +63,7 @@ void Shop_NeroSkillUI::Update(float _Delta)
 	LerpItem(_Delta);
 	SetExText();
 
+
 }
 
 void Shop_NeroSkillUI::LerpItem(float _Delta)
@@ -221,7 +222,7 @@ void Shop_NeroSkillUI::ActivSkill()
 		if (IsStreak == false && GameEngineInput::IsUp("UI_Enter") == true)
 		{
 			IsStreak = true;
-			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("시도");
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 	}
 	else if (Index == 1)
@@ -229,7 +230,7 @@ void Shop_NeroSkillUI::ActivSkill()
 		if (IsSplit == false && GameEngineInput::IsUp("UI_Enter") == true)
 		{
 			IsSplit = true;
-			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("시도");
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 	}
 	else if (Index == 2)
@@ -237,7 +238,7 @@ void Shop_NeroSkillUI::ActivSkill()
 		if (IsRedqueen == false && GameEngineInput::IsUp("UI_Enter") == true)
 		{
 			IsRedqueen = true;
-			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("시도");
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
 		}
 	}
@@ -246,7 +247,7 @@ void Shop_NeroSkillUI::ActivSkill()
 		if (IsRouletteSpin == false && GameEngineInput::IsUp("UI_Enter") == true)
 		{
 			IsRouletteSpin = true;
-			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("시도");
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
 		}
 	}
@@ -255,7 +256,7 @@ void Shop_NeroSkillUI::ActivSkill()
 		if (IsShufle == false && GameEngineInput::IsUp("UI_Enter") == true)
 		{
 			IsShufle = true;
-			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("시도");
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
 		}
 	}
@@ -264,7 +265,7 @@ void Shop_NeroSkillUI::ActivSkill()
 		if (IsCalibur == false && GameEngineInput::IsUp("UI_Enter") == true)
 		{
 			IsCalibur = true;
-			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("시도");
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
 		}
 	}
