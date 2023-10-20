@@ -242,6 +242,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Idle LockOn
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_IdleLockOn,
 			.Start = [=] {
+				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_Idle_Normal");
 			},
@@ -369,6 +370,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Run
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Run,
 			.Start = [=] {
+				PhysXCapsule->TurnOnGravity();
 				Renderer->ChangeAnimation("pl0300_Run_Loop");
 			},
 			.Update = [=](float _DeltaTime) {
@@ -402,6 +404,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// RunStop
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_RunStop,
 			.Start = [=] {
+				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				MoveCheck = false;
 				Renderer->ChangeAnimation("pl0300_Run_Stop");
@@ -495,7 +498,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Landing,
 			.Start = [=] {
 				SetFloorPos();
-				PhysXCapsule->TurnOnGravity();
+				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_Jump_Vertical_Landing");
 				MoveCheck = false;
@@ -533,6 +536,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				Sound.PlayVoiceRandom(0, 2, DTValue);
 				Sound.Play("Yamato_", 0);
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(75));
+				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				RotationToTarget();
 				EffectSystem->PlayFX("Yamato_Combo_1.effect");
@@ -791,6 +795,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::pl0300_yamato_Sissonal_1,
 			.Start = [=] {
 				RotationToTarget();
+				PhysXCapsule->TurnOnGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				EffectSystem->PlayFX("Yamato_Sissonal_1.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Sissonal_1");
@@ -799,6 +804,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				if (true == Input_SpecialCheck()) { return; }
 				if (false == FloorCheck())
 				{
+					WeaponIdle();
 					ChangeState(FSM_State_Vergil::Vergil_Jump_Fly);
 					return;
 				}
@@ -863,7 +869,6 @@ void PlayerActor_Vergil::PlayerLoad()
 				Sound.PlayVoiceRandom(16, 18, DTValue);
 				Sound.NoSkipOn();
 				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(600));
-				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->SetMove(GetTransform()->GetWorldForwardVector() * 800);
 				SetFloorPos();
@@ -944,6 +949,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				Sound.PlayVoiceRandom(18, 19, DTValue);
 				Sound.NoSkipOn();
 				RotationToTarget();
+				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_AttackUp_1");
 			},
@@ -1277,6 +1283,9 @@ void PlayerActor_Vergil::PlayerLoad()
 				Sound.Play("Yamato_", 8);
 				Controller->SwordChargeTimer = 0.0f;
 				YamatoOn();
+				SetFloorPos();
+				PhysXCapsule->TurnOffGravity();
+				PhysXCapsule->SetLinearVelocityZero();
 				EffectSystem->PlayFX("Yamato_Raid_3.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Raid3");
 			},
@@ -1306,6 +1315,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCut_1,
 			.Start = [=] {
 				RotationToTarget();
+				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCut_1");
 			},
@@ -1607,6 +1617,8 @@ void PlayerActor_Vergil::PlayerLoad()
 			RotationToTarget();
 			SetInvincibility(0.5f);
 			IsEvade = true;
+			PhysXCapsule->TurnOnGravity();
+			PhysXCapsule->SetLinearVelocityZero();
 			Renderer->ChangeAnimation("pl0300_Warp_Front_1", true);
 			EffectSystem->PlayFX("Vergil_Warp_1.effect");
 			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
@@ -1635,6 +1647,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		.Start = [=] {
 			EffectSystem->PlayFX("Vergil_Warp_2.effect");
 			Renderer->ChangeAnimation("pl0300_Warp_Front_2");
+			PhysXCapsule->TurnOffGravity();
 			InputCheck = false;
 			MoveCheck = false;
 		},
@@ -1687,6 +1700,8 @@ void PlayerActor_Vergil::PlayerLoad()
 			IsEvade = true;
 			Renderer->ChangeAnimation("pl0300_Warp_Back_1");
 			EffectSystem->PlayFX("Vergil_Warp_1.effect");
+			PhysXCapsule->TurnOnGravity();
+			PhysXCapsule->SetLinearVelocityZero();
 			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
 					Renderer->Off();
@@ -1714,6 +1729,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			PhysXCapsule->TurnOnGravity();
 			Renderer->ChangeAnimation("pl0300_Warp_Back_2");
 			EffectSystem->PlayFX("Vergil_Warp_2.effect");
+			PhysXCapsule->TurnOffGravity();
 			InputCheck = false;
 			MoveCheck = false;
 		},
@@ -1752,6 +1768,8 @@ void PlayerActor_Vergil::PlayerLoad()
 			IsEvade = true;
 			Renderer->ChangeAnimation("pl0300_Warp_Left_1");
 			EffectSystem->PlayFX("Vergil_Warp_1.effect");
+			PhysXCapsule->TurnOnGravity();
+			PhysXCapsule->SetLinearVelocityZero();
 			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
 					Renderer->Off();
@@ -1779,6 +1797,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			RotationToTarget();
 			Renderer->ChangeAnimation("pl0300_Warp_Left_2");
 			EffectSystem->PlayFX("Vergil_Warp_2.effect");
+			PhysXCapsule->TurnOffGravity();
 			InputCheck = false;
 			MoveCheck = false;
 		},
@@ -1817,6 +1836,8 @@ void PlayerActor_Vergil::PlayerLoad()
 			IsEvade = true;
 			Renderer->ChangeAnimation("pl0300_Warp_Right_1", true);
 			EffectSystem->PlayFX("Vergil_Warp_1.effect");
+			PhysXCapsule->TurnOnGravity();
+			PhysXCapsule->SetLinearVelocityZero();
 			TimeEvent.AddEvent(0.116f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
 					Renderer->Off();
@@ -1845,6 +1866,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			RotationToTarget();
 			Renderer->ChangeAnimation("pl0300_Warp_Right_2");
 			EffectSystem->PlayFX("Vergil_Warp_2.effect");
+			PhysXCapsule->TurnOffGravity();
 			InputCheck = false;
 			MoveCheck = false;
 		},
@@ -1990,6 +2012,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			Sound.PlayVoice(31, true);
 			Sound.NoSkipOn();
 			SetInvincibility(0.5f);
+			PhysXCapsule->TurnOffGravity();
 			PhysXCapsule->SetLinearVelocityZero();
 			Col_Attack->SetAttackData(DamageType::Air, 150);
 			EffectSystem->PlayFX("Vergil_DT_On.effect");
@@ -2025,6 +2048,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Demon End
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_DT_End,
 		.Start = [=] {
+			PhysXCapsule->TurnOffGravity();
 			PhysXCapsule->SetLinearVelocityZero();
 			Renderer->ChangeAnimation("pl0300_Demon_End", true);
 			InputCheck = false;
