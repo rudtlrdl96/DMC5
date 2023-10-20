@@ -23,10 +23,7 @@ void NeroItemGlass::ArmRenderOff()
 	CurCount->Off();
 	SlashText->Off();
 	MaxCount->Off();
-	for (int i = 0; i < Arms.size(); i++)
-	{
-		Arms[i]->Off();
-	}
+	IsOff = true;
 	Ratio = 100.0f;
 }
 
@@ -36,6 +33,7 @@ void NeroItemGlass::ArmRenderOn()
 	CurCount->On();
 	SlashText->On();
 	MaxCount->On();
+	IsOff = false;
 	for (int i = 0; i < Arms.size(); i++)
 	{
 		Arms[i]->On();
@@ -66,6 +64,17 @@ void NeroItemGlass::Start()
 	SetItemText();
 	//NeroUI_ItemGlass = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 560.0f,-380.0f,172.0f }, { 0.6f,0.6f,0.6f }, { -90.0f,0.0f,0.0f }, "NeroItemGlass.FBX","FBX_Alpha");
 	ArmList = PlayerActor_Nero::GetBreakerListPointer();
+	Render_0 = CreateComponent<UIFBXRenderer>(3);
+	Render_0->SetFBXMesh("OvertureArmUI.FBX", "FBX_Low");
+	Render_0->Death();
+	Render_1 = CreateComponent<UIFBXRenderer>(3);
+	Render_1->SetFBXMesh("GerberaArmUI.FBX", "FBX_Low");
+	Render_1->Death();
+
+	Render_2 = CreateComponent<UIFBXRenderer>(3);
+	Render_2->SetFBXMesh("BusterArmUI.FBX", "FBX_Low");
+	Render_2->Death();
+
 }
 
 void NeroItemGlass::Update(float _DeltaTime)
@@ -76,6 +85,13 @@ void NeroItemGlass::Update(float _DeltaTime)
 	AddDestroyValue();
 	AddMoveBreaker(_DeltaTime);
 	DestroyMoveBreaker(_DeltaTime);
+	if (IsOff == true)
+	{
+		for (int i = 0; i < Arms.size(); i++)
+		{
+			Arms[i]->Off();
+		}
+	}
 }
 
 void NeroItemGlass::SetItemText()

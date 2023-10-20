@@ -26,11 +26,13 @@ protected:
 private:
 	void SetIndex();
 	void SetExText();
+	void BuyBreaker();
 	std::shared_ptr<class Shop_ItemButton>  ArmButton = nullptr;
 	std::shared_ptr<class Shop_ExplaneUI> ArmExplane = nullptr;
 	std::shared_ptr<class Nero_InvenToryUI> InvenTory = nullptr;
 	std::shared_ptr<class Nero_Inven> AcNeroInven = nullptr;
 	bool Test = false;
+	std::list<DevilBreaker>* ArmList;
 
 	int Index = 0;
 	int PrevIndex = 2;
