@@ -404,16 +404,16 @@ void BasePlayerActor::OrbColCheck()
 
 void BasePlayerActor::ShopColCheck()
 {
-	if (GameEngineInput::IsUp("Enter"))
+	if (false == IsShopOn && GameEngineInput::IsUp("Enter"))
 	{
 		ShopOn();
-		IsShopOn = true;
 		Controller->Off();
 		Camera->Off();
 		Controller->ResetKey();
 		GetLevel()->TimeEvent.AddEvent(0.02f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 			{
 				Shop->On();
+				IsShopOn = true;
 			});
 	}
 }

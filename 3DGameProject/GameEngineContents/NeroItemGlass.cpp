@@ -23,11 +23,11 @@ void NeroItemGlass::ArmRenderOff()
 	CurCount->Off();
 	SlashText->Off();
 	MaxCount->Off();
-	for (int i = 0; Arms.size(); i++)
+	for (int i = 0; i < Arms.size(); i++)
 	{
 		Arms[i]->Off();
 	}
-	Ratio = 10.0f;
+	Ratio = 100.0f;
 }
 
 void NeroItemGlass::ArmRenderOn()
@@ -36,7 +36,7 @@ void NeroItemGlass::ArmRenderOn()
 	CurCount->On();
 	SlashText->On();
 	MaxCount->On();
-	for (int i = 0; Arms.size(); i++)
+	for (int i = 0; i < Arms.size(); i++)
 	{
 		Arms[i]->On();
 	}

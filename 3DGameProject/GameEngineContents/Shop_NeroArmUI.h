@@ -14,6 +14,8 @@ public:
 	Shop_NeroArmUI& operator=(const Shop_NeroArmUI& _Other) = delete;
 	Shop_NeroArmUI& operator=(Shop_NeroArmUI&& _Other) noexcept = delete;
 
+	static std::function<void(DevilBreaker _Value)> CallBack_AddBreaker;
+
 	std::shared_ptr<class Shop_ExplaneUI> GetExPlane()
 	{
 		return ArmExplane;

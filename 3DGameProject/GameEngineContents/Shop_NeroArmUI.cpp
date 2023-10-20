@@ -8,6 +8,8 @@
 #include <GameEngineCore/GameEngineLevel.h>
 #include "Nero_Inven.h"
 
+ std::function<void(DevilBreaker _Value)> Shop_NeroArmUI::CallBack_AddBreaker = nullptr;
+
 Shop_NeroArmUI::Shop_NeroArmUI()
 {
 }
@@ -18,7 +20,6 @@ Shop_NeroArmUI::~Shop_NeroArmUI()
 
 void Shop_NeroArmUI::Start()
 {
-
 	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_0, { ._Name = "OVERTURE",._Price = "500",._png = "Nero_Overture.png",._BaseNone = "Shop_ArmBase.png", ._BaseSelect = "Shop_ArmSelect.png",.IsValue = false }, GetTransform(), float4(118.0f, 120.0f, 0.0f), float4(-160.0f, 0.0f, 0.0f));
 	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_1, { ._Name = "GERBERA",._Price = "1200",._png = "Nero_Gerbera.png",._BaseNone = "Shop_ArmBase.png", ._BaseSelect = "Shop_ArmSelect.png" ,.IsValue = false }, GetTransform(), float4(118.0f, 120.0f, 0.0f), float4(-160.0f, 0.0f, 0.0f));
 	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_2, { ._Name = "BUSTER ARM",._Price = "5000",._png = "Nero_BusterArm.png",._BaseNone = "Shop_ArmBase.png", ._BaseSelect = "Shop_ArmSelect.png",.IsValue = false }, GetTransform(), float4(118.0f, 120.0f, 0.0f), float4(-160.0f, 0.0f, 0.0f));

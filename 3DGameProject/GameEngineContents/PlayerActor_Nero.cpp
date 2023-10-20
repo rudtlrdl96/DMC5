@@ -23,6 +23,7 @@
 #include "BGMPlayer.h"
 #include "Nero_ShopUI.h"
 #include "Shop_NeroSkillUI.h"
+#include "Shop_NeroArmUI.h"
 std::list<DevilBreaker> PlayerActor_Nero::BreakerList;
 PlayerActor_Nero::~PlayerActor_Nero()
 {
@@ -112,10 +113,10 @@ void PlayerActor_Nero::PlayerLoad()
 	
 	Shop = GetLevel()->CreateActor<Nero_ShopUI>();
 	Shop->Off();
-	GetLevel()->CreateActor<NeroItemGlass>();
 	HUD = GetLevel()->CreateActor<NeroHPUI>();
 	HUD->SetPlayerHP(HP);
-
+	HUD2 = GetLevel()->CreateActor<NeroItemGlass>();
+	Shop_NeroArmUI::CallBack_AddBreaker = std::bind(&PlayerActor_Nero::AddBreaker, this, std::placeholders::_1);
 	GetLevel()->CreateActor <RankUI>();
 	// Effect »ý¼º
 	{
@@ -3708,10 +3709,12 @@ void PlayerActor_Nero::AddDTGauge(float _Value)
 void PlayerActor_Nero::ShopOn()
 {
 	HUD->Off();
+	HUD2->ArmRenderOff();
 }
 void PlayerActor_Nero::ShopOff()
 {
 	HUD->On();
+	HUD2->ArmRenderOn();
 	IsStreak = Shop_NeroSkillUI::IsStreak;
 	IsSplit = Shop_NeroSkillUI::IsSplit;
 	IsRedqueen = Shop_NeroSkillUI::IsRedqueen;
