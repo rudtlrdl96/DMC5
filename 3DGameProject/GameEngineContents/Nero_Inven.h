@@ -27,5 +27,8 @@ protected:
 private:
 	
 	std::vector<std::shared_ptr<class Nero_InvenToryUI>> Inventory;
+	std::shared_ptr<class Nero_InvenToryUI> Inven0 = nullptr;
+	std::shared_ptr<class Nero_InvenToryUI> Inven1 = nullptr;
+	std::shared_ptr<class Nero_InvenToryUI> Inven2 = nullptr;
 };
 

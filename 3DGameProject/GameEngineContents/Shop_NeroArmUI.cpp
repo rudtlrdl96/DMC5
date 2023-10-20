@@ -42,7 +42,7 @@ void Shop_NeroArmUI::Update(float _Delta)
 	{
 		//인자로 메인메뉴에서 들고있던 인벤 인덱스 넣어주기
 		AcNeroInven->GetInvenVec()[0]->On();
-		AcNeroInven->GetInvenVec()[0]->GetTransform()->SetLocalPosition({ 565.0f,-233.0f,0.0f });
+		AcNeroInven->GetInvenVec()[0]->GetTransform()->SetLocalPosition({ 665.0f,-233.0f,0.0f });
 	}
 
 
