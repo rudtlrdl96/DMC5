@@ -119,7 +119,7 @@ void Enemy_HellCaina::Start()
 	EnemyRenderer->GetTransform()->AddLocalPosition({ 0.0f, -45.0f, 0.0f });
 
 	// 콜리전 옵션, 크기 설정
-	MonsterAttackCollision->SetAttackData(DamageType::Light, 0);
+	MonsterAttackCollision->SetAttackData(DamageType::Light, MONSTER_LIGHT_DAMAGE);
 	MonsterAttackCollision->SetColType(ColType::OBBBOX3D);
 	MonsterCollision->GetTransform()->SetLocalScale({ 80, 210, 70 });
 	MonsterCollision->GetTransform()->SetLocalPosition({ 0, 65, 0 });
@@ -133,7 +133,7 @@ void Enemy_HellCaina::Start()
 
 	//MonsterCollision->Off();
 	//RN_MonsterCollision->Off();
-	MonsterAttackCollision->SetAttackData(DamageType::Heavy, 120);
+	MonsterAttackCollision->SetAttackData(DamageType::Heavy, MONSTER_HEAVY_DAMAGE);
 	MonsterAttackCollision->Off();
 
 	// 넷 오브젝트 타입 설정

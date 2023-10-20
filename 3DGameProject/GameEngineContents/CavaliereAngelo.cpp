@@ -143,7 +143,7 @@ void CavaliereAngelo::Start()
 	EnemyRenderer->GetTransform()->AddLocalPosition({ 0.0f, -45.0f, 0.0f });
 
 	// 콜리전 옵션, 크기 설정
-	MonsterAttackCollision->SetAttackData(DamageType::Light, 0);
+	MonsterAttackCollision->SetAttackData(DamageType::Light, BOSS_LIGHT_DAMAGE);
 	MonsterAttackCollision->SetColType(ColType::OBBBOX3D);
 	MonsterCollision->GetTransform()->SetLocalScale({ 150, 300, 150 });
 	MonsterCollision->GetTransform()->SetLocalPosition({ 0, 150, 0 });
@@ -166,7 +166,7 @@ void CavaliereAngelo::Start()
 	FallDistance = 55.0f;
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
 
-	MonsterAttackCollision->SetAttackData(DamageType::Heavy, 200);
+	MonsterAttackCollision->SetAttackData(DamageType::Heavy, BOSS_HEAVY_DAMAGE);
 	MonsterAttackCollision->Off();
 
 	// 넷 오브젝트 타입 설정
@@ -791,7 +791,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Dengeki_Reload_End,
 	.Start = [=] {
 	IsPowerUp = true;
-	MonsterAttackCollision->SetAttackData(DamageType::Heavy, 200);
+	MonsterAttackCollision->SetAttackData(DamageType::Heavy, BOSS_HEAVY_DAMAGE);
 	EffectRenderer_0->PlayFX("Cavalier_Charge_3.effect");
 	EnemyRenderer->ChangeAnimation("em5501_dengeki_reload_end");
 	},
@@ -1046,7 +1046,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// Dengeki 걷기 루프
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Dengeki_Loop,
 	.Start = [=] {
-	MonsterAttackCollision->SetAttackData(DamageType::Light, 100);
+	MonsterAttackCollision->SetAttackData(DamageType::Light, BOSS_LIGHT_DAMAGE);
 	WaitTime = 0.2f;
 	EffectRenderer_0->PlayFX("Cavalier_Dengeki_Loop.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack_Dengeki_Loop");
@@ -1300,7 +1300,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 01(오중단) 공격, 끝나면 방어자세, 66프레임 on, 69프레임 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack01,
 	.Start = [=] {
-	MonsterAttackCollision->SetAttackData(DamageType::Heavy, 200);
+	MonsterAttackCollision->SetAttackData(DamageType::Heavy, BOSS_HEAVY_DAMAGE);
 	RotationCheck();
 	SlerpCalculation();
 	AllDirectSetting_Normal();
@@ -1394,7 +1394,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 02(오상단) 공격, 끝나면 방어자세, 44프레임 on, 47프레임 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack02,
 	.Start = [=] {
-	MonsterAttackCollision->SetAttackData(DamageType::Heavy, 200);
+	MonsterAttackCollision->SetAttackData(DamageType::Heavy, BOSS_HEAVY_DAMAGE);
 	RotationCheck();
 	SlerpCalculation();
 	SlerpTime = 0.0f;
@@ -1494,7 +1494,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 03(왼중단) 공격, 끝나면 방어자세, 29프레임 on, 33프레임 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack03,
 	.Start = [=] {
-	MonsterAttackCollision->SetAttackData(DamageType::Heavy, 200);
+	MonsterAttackCollision->SetAttackData(DamageType::Heavy, BOSS_HEAVY_DAMAGE);
 	RotationCheck();
 	SlerpCalculation();
 	SlerpTime = 0.0f;
@@ -1770,7 +1770,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 04(양손으로 상단찍기) 공격, 끝나면 방어자세, 90프레임 on, 94프레임 off
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack04,
 	.Start = [=] {
-	MonsterAttackCollision->SetAttackData(DamageType::Heavy, 200);
+	MonsterAttackCollision->SetAttackData(DamageType::Heavy, BOSS_HEAVY_DAMAGE);
 	RotationCheck();
 	SlerpCalculation();
 	SlerpTime = 0.0f;

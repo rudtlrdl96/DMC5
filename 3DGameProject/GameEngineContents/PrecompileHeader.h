@@ -19,3 +19,7 @@
 #include "ContentsEnum.h"
 #include "BaseLog.h"
 
+#define MONSTER_LIGHT_DAMAGE 100
+#define MONSTER_HEAVY_DAMAGE 150
+#define BOSS_LIGHT_DAMAGE 150
+#define BOSS_HEAVY_DAMAGE 200
