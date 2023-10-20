@@ -13,13 +13,13 @@ void RankUI::StateInit_Wait()
 			.Start = [=]
 			{
 				DisApperValue = false;
-				RankBackEffect->Loop = false;
-				RankBackEffect_Up->Loop = false;
+
 
 			},
 			.Update = [=](float _DeltaTime)
 			{
-
+				RankBackEffect->Loop = false;
+				RankBackEffect_Up->Loop = false;
 				if (RankScore > 0.0f)
 				{
 					RankFSM.ChangeState(RankState::Appear_RankD);
