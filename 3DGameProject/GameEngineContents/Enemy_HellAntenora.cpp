@@ -573,7 +573,7 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 		if (true == IsAirAttack || true == IsSlamAttack || true == IsHeavyAttack)
 		{
 			StartRenderShaking(8);
-			//ChangeState_Client(FSM_State_HellAntenora::Empusa_Air_Damage_Under);
+			ChangeState(FSM_State_HellAntenora::HellAntenora_Air_Damage_Under);
 			return;
 		}
 
@@ -583,21 +583,21 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 			return;
 		}
 
-		AttackDirectCheck();
+		AttackCalculation();
 
 		switch (EnemyHitDirValue)
 		{
 		case EnemyHitDirect::Forward:
-			//ChangeState_Client(FSM_State_HellAntenora::Empusa_Standing_Damage_Weak_Front);
+			ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Front);
 			break;
 		case EnemyHitDirect::Back:
-			//ChangeState_Client(FSM_State_HellAntenora::Empusa_Standing_Damage_Weak_Back);
+			ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Back);
 			break;
 		case EnemyHitDirect::Left:
-			//ChangeState_Client(FSM_State_HellAntenora::Empusa_Standing_Damage_Weak_Left);
+			ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Left);
 			break;
 		case EnemyHitDirect::Right:
-			//ChangeState_Client(FSM_State_HellAntenora::Empusa_Standing_Damage_Weak_Right);
+			ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Right);
 			break;
 		default:
 			break;
@@ -605,21 +605,22 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 		break;
 
 	case DamageType::Heavy:
-		//ChangeState_Client(FSM_State_HellAntenora::Empusa_Blown_Back);
+		ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Blown_Back);
 		break;
 	case DamageType::Air:
-		//ChangeState_Client(FSM_State_HellAntenora::Empusa_Air_Damage);
+		ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Blown_Up);
 		break;
 	case DamageType::Snatch:
-		//ChangeState_Client(FSM_State_HellAntenora::Empusa_Snatch);
+		ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Snatch);
 		break;
 	case DamageType::Slam:
-		//ChangeState_Client(FSM_State_HellAntenora::Empusa_Slam_Damage);
+		ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Slam_Damage);
 		break;
 	case DamageType::Buster:
-		//ChangeState_Client(FSM_State_HellAntenora::Empusa_Buster_Start);
+		ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Buster_Start);
 		break;
 	case DamageType::Stun:
+		StopTime(2.9f);
 		break;
 	default:
 		break;

@@ -4,6 +4,8 @@ enum FSM_State_HellAntenora
 {
 	HellAntenora_Idle,                       // em0001_Idle_01_loop, 서있음
 
+
+
 	HellAntenora_Counter_Attack,			 // em0001_Attack_counter_attack
 
 	HellAntenora_Standing_Damage_Weak_Front, // em0001_standing_damage_weak_front_01 : 정면 약공 히트
