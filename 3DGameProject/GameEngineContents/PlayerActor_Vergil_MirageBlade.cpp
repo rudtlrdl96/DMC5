@@ -124,6 +124,7 @@ void PlayerActor_Vergil::CreateMirageBlade()
 			AllMirageBlades[i]->GetTransform()->SetLocalRotation({0, 45.0f * i, 0});
 			AllMirageBlades[i]->GetTransform()->SetLocalPosition({0, 50, 0});
 			AllMirageBlades[i]->GetTransform()->AddLocalPosition(AllMirageBlades[i]->GetTransform()->GetWorldForwardVector() * 150);
+			AllMirageBlades[i]->SetSpiral();
 		}
 	},
 	.Update = [=](float _DeltaTime) {
@@ -143,6 +144,10 @@ void PlayerActor_Vergil::CreateMirageBlade()
 	.Start = [=] {
 		Sound.Play("Mirage_", 0);
 		IsDelay = false;
+		for (int i = 0; i < 8; i++)
+		{
+			AllMirageBlades[i]->SpiralStop();
+		}
 	},
 	.Update = [=](float _DeltaTime) {
 		if (true == IsDelay)
@@ -157,7 +162,6 @@ void PlayerActor_Vergil::CreateMirageBlade()
 				AllMirageBlades[i]->GetTransform()->SetWorldPosition(AllMirageBlades[i]->GetTransform()->GetWorldPosition());
 				AllMirageBlades[i]->GetTransform()->SetWorldRotation(AllMirageBlades[i]->GetTransform()->GetWorldRotation());
 				AllMirageBlades[i]->Shoot();
-
 			}
 			TimeEvent.AddEvent(1.0f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 			{
@@ -307,7 +311,7 @@ void PlayerActor_Vergil::CreateMirageBlade()
 			{
 				TimeEvent.AddEvent(0.05f * i, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
-					Sound.Play("Mirage_", 0);
+					Sound.PlaySetVolume("Mirage_", 0, 0.5f);
 					AllMirageBlades[i]->GetTransform()->SetWorldPosition(AllMirageBlades[i]->GetTransform()->GetWorldPosition());
 					AllMirageBlades[i]->GetTransform()->SetWorldRotation(AllMirageBlades[i]->GetTransform()->GetWorldRotation());
 					AllMirageBlades[i]->Collision->SetAttackData(DamageType::VergilLight, 94);
