@@ -250,6 +250,7 @@ void Enemy_HellAntenora::Start()
 			DeathValue = true;
 		}
 
+		IsChangeState = true;
 		});
 }
 
@@ -417,7 +418,7 @@ void Enemy_HellAntenora::DamageCollisionCheck(float _DeltaTime)
 			return;
 		}
 
-		AttackCalculation();
+		AttackDirectCheck();
 
 		switch (EnemyHitDirValue)
 		{
@@ -527,7 +528,7 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 			return;
 		}
 
-		AttackCalculation();
+		AttackDirectCheck();
 
 		switch (EnemyHitDirValue)
 		{
@@ -670,6 +671,7 @@ void Enemy_HellAntenora::ChangeState(int _StateValue)
 	EnemyFSM.ChangeState(_StateValue);
 	EnemyFSMValue = _StateValue;
 	NetworkManager::SendFsmChangePacket(this, _StateValue);
+	IsChangeState = true;
 }
 
 void Enemy_HellAntenora::ChangeState_Client(int _StateValue)

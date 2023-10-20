@@ -170,6 +170,7 @@ void Enemy_Empusa::Start()
 			DeathValue = true;
 		}
 
+		IsChangeState = true;
 		});
 }
 
@@ -394,7 +395,7 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 			return;
 		}
 
-		AttackCalculation();
+		AttackDirectCheck();
 
 		switch (EnemyHitDirValue)
 		{
@@ -467,7 +468,6 @@ void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
-		IsVergilLight = true;
 		Data.DamageTypeValue = DamageType::Light;
 	}
 
@@ -638,6 +638,7 @@ void Enemy_Empusa::ChangeState(int _StateValue)
 	EnemyFSM.ChangeState(_StateValue);
 	EnemyFSMValue = _StateValue;
 	NetworkManager::SendFsmChangePacket(this, _StateValue);
+	IsChangeState = true;
 }
 
 void Enemy_Empusa::ChangeState_Client(int _StateValue)

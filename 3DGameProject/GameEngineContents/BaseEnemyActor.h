@@ -133,6 +133,7 @@ protected:
 	bool IsClientHit = false;
 	bool IsTimeStop = false;
 	bool TimeStop = false;
+	bool IsChangeState = false;
 	//====================================================
 
 	//====================================================

@@ -27,7 +27,7 @@ Enemy_HellCaina::~Enemy_HellCaina()
 void Enemy_HellCaina::EnemyTypeLoad()
 {
 	EnemyCodeValue = EnemyCode::HellCaina;
-	EnemyHP = 1500;
+	EnemyHP = 15000;
 }
 
 void Enemy_HellCaina::EnemyMeshLoad()
@@ -171,6 +171,7 @@ void Enemy_HellCaina::Start()
 			DeathValue = true;
 		}
 
+		IsChangeState = true;
 		});
 }
 
@@ -348,7 +349,7 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 			return;
 		}
 
-		AttackCalculation();
+		AttackDirectCheck();
 
 		switch (EnemyHitDirValue)
 		{
@@ -421,7 +422,6 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
-		IsVergilLight = true;
 		Data.DamageTypeValue = DamageType::Light;
 	}
 
@@ -592,6 +592,7 @@ void Enemy_HellCaina::ChangeState(int _StateValue)
 	EnemyFSM.ChangeState(_StateValue);
 	EnemyFSMValue = _StateValue;
 	NetworkManager::SendFsmChangePacket(this, _StateValue);
+	IsChangeState = true;
 }
 
 void Enemy_HellCaina::ChangeState_Client(int _StateValue)
@@ -824,7 +825,12 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 	SetRightMove(70.0f);
 	AttackDelayTime += _DeltaTime;
-	if (1.7f <= AttackDelayTime)
+	if (2.3f <= AttackDelayTime)
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Right_Stop);
+		return;
+	}
+	else if (1.7f <= AttackDelayTime)
 	{
 		if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
 		{
@@ -858,11 +864,6 @@ void Enemy_HellCaina::EnemyCreateFSM()
 				RandomAttack();
 			}
 		}
-	}
-	else if (2.3f <= AttackDelayTime)
-	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Right_Stop);
-		return;
 	}
 	},
 	.End = [=] {
@@ -917,7 +918,12 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 	SetLeftMove(70.0f);
 	AttackDelayTime += _DeltaTime;
-	if (1.7f <= AttackDelayTime)
+	if (2.3f <= AttackDelayTime)
+	{
+		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Left_Stop);
+		return;
+	}
+	else if (1.7f <= AttackDelayTime)
 	{
 		if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
 		{
@@ -950,11 +956,6 @@ void Enemy_HellCaina::EnemyCreateFSM()
 				RandomAttack();
 			}
 		}
-	}
-	else if (2.3f <= AttackDelayTime)
-	{
-		ChangeState(FSM_State_HellCaina::HellCaina_Walk_Left_Stop);
-		return;
 	}
 	},
 	.End = [=] {
@@ -1213,22 +1214,26 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 정면 약공격 피격
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Front,
 	.Start = [=] {
-
-	AttackCalculation();
-
-	if (true == IsVergilLight)
-	{
-		IsVergilLight = false;
-		SetPush(10000.0f);
-	}
-	else
-	{
-		SetPush(26000.0f);
-	}
-	
 	EnemyRenderer->ChangeAnimation("em0000_standing_damage_weak_front_01", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		AttackCalculation();
+		RotationCheck();
+		AllDirectSetting_Normal();
+
+		if (true == IsVergilLight)
+		{
+			IsVergilLight = false;
+			SetPush(10000.0f);
+		}
+		else
+		{
+			SetPush(26000.0f);
+		}
+	}
 	DeathCheck();
 	if (true == DeathValue)
 	{
@@ -1248,21 +1253,26 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 후면 약공격 피격 (뒤로돈다)
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Back,
 	.Start = [=] {
-
-	AttackCalculation();
-
-	if (true == IsVergilLight)
-	{
-		IsVergilLight = false;
-		SetPush(10000.0f);
-	}
-	else
-	{
-		SetPush(26000.0f);
-	}
 	EnemyRenderer->ChangeAnimation("em0000_standing_damage_weak_back_01", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		AttackCalculation();
+		RotationCheck();
+		AllDirectSetting_Normal();
+
+		if (true == IsVergilLight)
+		{
+			IsVergilLight = false;
+			SetPush(10000.0f);
+		}
+		else
+		{
+			SetPush(26000.0f);
+		}
+	}
 	DeathCheck();
 	if (true == DeathValue)
 	{
@@ -1287,21 +1297,26 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 좌측 약공격 피격
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Left,
 	.Start = [=] {
-
-	AttackCalculation();
-
-	if (true == IsVergilLight)
-	{
-		IsVergilLight = false;
-		SetPush(10000.0f);
-	}
-	else
-	{
-		SetPush(26000.0f);
-	}
 	EnemyRenderer->ChangeAnimation("em0000_standing_damage_weak_left_01", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		AttackCalculation();
+		RotationCheck();
+		AllDirectSetting_Normal();
+
+		if (true == IsVergilLight)
+		{
+			IsVergilLight = false;
+			SetPush(10000.0f);
+		}
+		else
+		{
+			SetPush(26000.0f);
+		}
+	}
 	DeathCheck();
 	if (true == DeathValue)
 	{
@@ -1326,21 +1341,26 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 우측 약공격 피격 
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Right,
 	.Start = [=] {
-
-	AttackCalculation();
-
-	if (true == IsVergilLight)
-	{
-		IsVergilLight = false;
-		SetPush(10000.0f);
-	}
-	else
-	{
-		SetPush(26000.0f);
-	}
 	EnemyRenderer->ChangeAnimation("em0000_standing_damage_weak_right_01", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		AttackCalculation();
+		RotationCheck();
+		AllDirectSetting_Normal();
+
+		if (true == IsVergilLight)
+		{
+			IsVergilLight = false;
+			SetPush(10000.0f);
+		}
+		else
+		{
+			SetPush(26000.0f);
+		}
+	}
 	DeathCheck();
 	if (true == DeathValue)
 	{
@@ -1367,16 +1387,21 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 강공격 맞고 날아감
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Blown_Back,
 	.Start = [=] {
-	IsCollapse = false;
-	IsHeavyAttack = true;
-	AttackCalculation();
-	RotationCheck();
-	AllDirectSetting();
-	SetPush(50000.0f);
-	SetAir(42000.0f);
+
 	EnemyRenderer->ChangeAnimation("em0000_blown_back", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		IsCollapse = false;
+		IsHeavyAttack = true;
+		AttackCalculation();
+		RotationCheck();
+		AllDirectSetting();
+		SetPush(50000.0f);
+		SetAir(42000.0f);
+	}
 	FallCheckDelayTime += _DeltaTime;
 	if (true == FloorCheck(FallDistance) && 0.2f <= FallCheckDelayTime)
 	{
@@ -1392,15 +1417,19 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 띄우기 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Blown_Up,
 	.Start = [=] {
-	IsCollapse = false;
-	IsAirAttack = true;
-	AttackCalculation();
-	RotationCheck();
-	AllDirectSetting();
-	PhysXCapsule->SetAirState(110000.0f);
 	EnemyRenderer->ChangeAnimation("em0000_blown_up", true);
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		IsCollapse = false;
+		IsAirAttack = true;
+		AttackCalculation();
+		RotationCheck();
+		AllDirectSetting();
+		PhysXCapsule->SetAirState(110000.0f);
+	}
 
 	FallCheckDelayTime += _DeltaTime;
 
@@ -1432,7 +1461,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 에어 상태에서 약공격 맞을때
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Air_Damage_Under,
 	.Start = [=] {
-	AttackCalculation();
+	//AttackCalculation();
 	EnemyRenderer->ChangeAnimation("em0000_air_damage_under", true);
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1475,12 +1504,17 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 슬램 피격 start
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Slam_Damage,
 	.Start = [=] {
-	IsCollapse = false;
-	IsSlamAttack = true;
-	AttackCalculation();
 	EnemyRenderer->ChangeAnimation("em0000_slam_damage");
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		IsCollapse = false;
+		IsSlamAttack = true;
+		AttackCalculation();
+		PhysXCapsule->SetAirState(110000.0f);
+	}
 	if (true == EnemyRenderer->IsAnimationEnd() || true == FloorCheck(FallDistance))
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Slam_Damage_Loop);
@@ -1530,15 +1564,19 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 스내치 start
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Snatch,
 	.Start = [=] {
-	IsCollapse = false;
-	IsAirAttack = true;
-	AttackCalculation();
-	StartMonsterSnatch();
-	RotationCheck();
-	AllDirectSetting();
 	EnemyRenderer->ChangeAnimation("em0000_snatch");
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		IsCollapse = false;
+		IsAirAttack = true;
+		AttackCalculation();
+		StartMonsterSnatch();
+		RotationCheck();
+		AllDirectSetting();
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_HellCaina::HellCaina_Air_Damage_Under);
@@ -1658,6 +1696,12 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// em0000_Buster_Start, 버스트 히트 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Buster_Start,
 	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0000_Buster_Start");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
 		AttackCalculation();
 		IsCollapse = false;
 		IsBusterAttack = true;
@@ -1665,9 +1709,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 		RotationCheck();
 		AllDirectSetting();
 		PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
-	EnemyRenderer->ChangeAnimation("em0000_Buster_Start");
-	},
-	.Update = [=](float _DeltaTime) {
+	}
 	SetMoveStop();
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
