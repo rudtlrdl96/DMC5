@@ -106,7 +106,6 @@ void PlayerActor_Nero::Start()
 
 void PlayerActor_Nero::PlayerLoad()
 {
-	BGMPlayer::BGMLoad();
 	BGMPlayer::SetCharater(PlayerType::Nero);
 
 	GetLevel()->CreateActor<NeroItemGlass>();
@@ -3589,7 +3588,14 @@ void PlayerActor_Nero::SoundLoad()
 	{
 		GameEngineSound::Load(File.GetFullPath());
 	}
-
+	if (nullptr != GameEngineSound::Find("FootStep_0.wav")) { return; }
+	NewDir.MoveParent();
+	NewDir.Move("Player");
+	Files = NewDir.GetAllFile({ ".wav" });
+	for (GameEngineFile File : Files)
+	{
+		GameEngineSound::Load(File.GetFullPath());
+	}
 }
 
 void PlayerActor_Nero::Update_Character(float _DeltaTime)

@@ -225,6 +225,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Jump Vertical
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Jump_Vertical,
 		.Start = [=] {
+			Sound.Play("Jump");
 			Renderer->ChangeAnimation("pl0300_Jump_Vertical");
 		},
 		.Update = [=](float _DeltaTime) {
@@ -949,6 +950,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Demon Start
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_DT_Start,
 		.Start = [=] {
+			Sound.Play("DT_On");
 			Sound.PlayVoice(31, true);
 			Sound.NoSkipOn();
 			EffectSystem->PlayFX("Vergil_DT_On.effect");

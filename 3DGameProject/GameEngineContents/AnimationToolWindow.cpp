@@ -570,18 +570,7 @@ void AnimationToolWindow::AnimationFrameUpdate()
 				NewDir.MoveParentToDirectory("ContentResources");
 				NewDir.Move("ContentResources");
 				NewDir.Move("Sound");
-				NewDir.Move("Voice");
-				NewDir.Move("Vergil");
-				std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".wav" });
-				for (GameEngineFile File : Files)
-				{
-					GameEngineSound::Load(File.GetFullPath());
-				}
-				NewDir.MoveParent();
-				NewDir.MoveParent();
-				NewDir.Move("SFX");
-				NewDir.Move("Vergil");
-				Files = NewDir.GetAllFile({ ".wav" });
+				std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".wav", ".ogg"});
 				for (GameEngineFile File : Files)
 				{
 					GameEngineSound::Load(File.GetFullPath());
@@ -594,6 +583,7 @@ void AnimationToolWindow::AnimationFrameUpdate()
 			}
 			else if (CurData.Index == 2)
 			{
+				GameEngineSound::Play("FootStep_" + std::to_string(CurData.IntValue) + ".wav");
 				//GameEngineSound::Play("BR_" + std::to_string(CurData.IntValue) + ".wav");
 			}
 			else if (CurData.Index == 3)

@@ -25,6 +25,7 @@ void PlayerActor_Vergil::SetDT(unsigned int _DTValue)
 	else
 	{
 		DTOffEffect->Play();
+		Sound.Play("DT_Off");
 		SetHuman();
 	}
 }
@@ -87,7 +88,6 @@ void PlayerActor_Vergil::Start()
 
 void PlayerActor_Vergil::PlayerLoad()
 {
-	BGMPlayer::BGMLoad();
 	BGMPlayer::SetCharater(PlayerType::Vergil);
 
 	// Effect 积己
@@ -188,6 +188,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			.CallBacks_int = {
 				std::bind(&PlayerActor_Vergil::ChangeState, this, std::placeholders::_1),
 				std::bind(&SoundController::Play, &Sound, "Yamato_", std::placeholders::_1),
+				std::bind(&SoundController::Play, &Sound, "FootStep_", std::placeholders::_1),
 			},
 			.CallBacks_float = {
 				std::bind(&BasePlayerActor::RotationToTarget, this, std::placeholders::_1),
@@ -432,6 +433,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Jump Vertical
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Jump_Vertical,
 		.Start = [=] {
+			Sound.Play("Jump");
 			PhysXCapsule->TurnOnGravity();
 			PhysXCapsule->SetLinearVelocityZero();
 			PhysXCapsule->SetMove(Controller->GetMoveVector() * 500);
@@ -1645,6 +1647,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Warp Front 2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Front_2,
 		.Start = [=] {
+			SetFloorPos();
 			EffectSystem->PlayFX("Vergil_Warp_2.effect");
 			Renderer->ChangeAnimation("pl0300_Warp_Front_2");
 			PhysXCapsule->TurnOffGravity();
@@ -1726,6 +1729,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Warp Back 2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Back_2,
 		.Start = [=] {
+			SetFloorPos();
 			PhysXCapsule->TurnOnGravity();
 			Renderer->ChangeAnimation("pl0300_Warp_Back_2");
 			EffectSystem->PlayFX("Vergil_Warp_2.effect");
@@ -1794,6 +1798,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Warp Left 2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Left_2,
 		.Start = [=] {
+			SetFloorPos();
 			RotationToTarget();
 			Renderer->ChangeAnimation("pl0300_Warp_Left_2");
 			EffectSystem->PlayFX("Vergil_Warp_2.effect");
@@ -1863,6 +1868,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Warp Right 2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Warp_Right_2,
 		.Start = [=] {
+			SetFloorPos();
 			RotationToTarget();
 			Renderer->ChangeAnimation("pl0300_Warp_Right_2");
 			EffectSystem->PlayFX("Vergil_Warp_2.effect");
@@ -2001,7 +2007,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		.End = [=] {
 			SetWorldPosition(WarpPos);
 		}
-			});
+		});
 	}
 	/* 单呼 飘府芭 */
 	{}
@@ -2009,6 +2015,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Demon Start
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_DT_Start,
 		.Start = [=] {
+			Sound.Play("DT_On");
 			Sound.PlayVoice(31, true);
 			Sound.NoSkipOn();
 			SetInvincibility(0.5f);
@@ -2336,6 +2343,15 @@ void PlayerActor_Vergil::SoundLoad()
 	{
 		GameEngineSound::Load(File.GetFullPath());
 	}
+
+	if (nullptr != GameEngineSound::Find("FootStep_0.wav")) { return; }
+	NewDir.MoveParent();
+	NewDir.Move("Player");
+	Files = NewDir.GetAllFile({ ".wav" });
+	for (GameEngineFile File : Files)
+	{
+		GameEngineSound::Load(File.GetFullPath());
+	}
 }
 
 void PlayerActor_Vergil::Update_Character(float _DeltaTime)
@@ -2562,6 +2578,7 @@ bool PlayerActor_Vergil::Input_SpecialCheck()
 			return true;
 		}
 		DTOffEffect->Play();
+		Sound.Play("DT_Off");
 		ChangeState(FSM_State_Vergil::Vergil_DT_End);
 		return true;
 	}
@@ -2590,6 +2607,7 @@ bool PlayerActor_Vergil::Input_SpecialCheckFly()
 		if (true == DTValue)
 		{
 			DTOffEffect->Play();
+			Sound.Play("DT_Off");
 			SetHuman();
 			return true;
 		}
@@ -2600,6 +2618,7 @@ bool PlayerActor_Vergil::Input_SpecialCheckFly()
 		std::vector<std::shared_ptr<GameEngineCollision>> Cols;
 		if (true == Col_EnemyStepCheck->CollisionAll(CollisionOrder::Enemy, Cols))
 		{
+			Sound.Play("EnemyStep");
 			ChangeState(FSM_State_Vergil::Vergil_Jump_Vertical);
 			return true;
 		}

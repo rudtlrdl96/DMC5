@@ -18,6 +18,7 @@ BGMPlayer::~BGMPlayer()
 
 void BGMPlayer::SetBattleBGM()
 {
+	if (nullptr == GameEngineSound::Find("Devil Trigger.ogg")) { BGMLoad(); }
 	if (SoundPlayer.IsValid())
 	{
 		SoundPlayer.Stop();
@@ -76,6 +77,7 @@ void BGMPlayer::SetBattleBGM()
 
 void BGMPlayer::SetBattleEnd()
 {
+	if (nullptr == GameEngineSound::Find("Devil Trigger.ogg")) { BGMLoad(); }
 	if (SoundPlayer.IsValid())
 	{
 		if (true == BossBGM)
@@ -115,6 +117,8 @@ void BGMPlayer::SetBattleEnd()
 
 void BGMPlayer::SetBossBGM()
 {
+	if (nullptr == GameEngineSound::Find("Devil Trigger.ogg")) { BGMLoad(); }
+
 	BossBGM = true;
 	if (SoundPlayer.IsValid())
 	{
