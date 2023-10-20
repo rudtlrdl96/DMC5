@@ -53,13 +53,13 @@
       <Filter>Actor\Enemy\BossEnemy\Stage11</Filter>
     </ClInclude>
     <ClInclude Include="Enemy_Empusa.h">
-      <Filter>Actor\Enemy\NormalEnemy\BasicEnemy\Empusa</Filter>
+      <Filter>Actor\Enemy\NormalEnemy\Empusa</Filter>
     </ClInclude>
     <ClInclude Include="Enemy_HellCaina.h">
-      <Filter>Actor\Enemy\NormalEnemy\BasicEnemy\HellCaina</Filter>
+      <Filter>Actor\Enemy\NormalEnemy\HellCaina</Filter>
     </ClInclude>
     <ClInclude Include="Enemy_HellAntenora.h">
-      <Filter>Actor\Enemy\NormalEnemy\BasicEnemy\HellAntenora</Filter>
+      <Filter>Actor\Enemy\NormalEnemy\HellAntenora</Filter>
     </ClInclude>
     <ClInclude Include="EnemySpawnArea.h">
       <Filter>Actor\Enemy\EnemySpawn</Filter>
@@ -487,6 +487,12 @@
     <ClInclude Include="Nero_ShopUI.h">
       <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy_ScudoAngelo.h">
+      <Filter>Actor\Enemy\NormalEnemy\ScudoAngelo</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_ProtoAngelo.h">
+      <Filter>Actor\Enemy\NormalEnemy\ProtoAngelo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -544,13 +550,13 @@
       <Filter>Actor\Enemy\BossEnemy\Stage11</Filter>
     </ClCompile>
     <ClCompile Include="Enemy_Empusa.cpp">
-      <Filter>Actor\Enemy\NormalEnemy\BasicEnemy\Empusa</Filter>
+      <Filter>Actor\Enemy\NormalEnemy\Empusa</Filter>
     </ClCompile>
     <ClCompile Include="Enemy_HellCaina.cpp">
-      <Filter>Actor\Enemy\NormalEnemy\BasicEnemy\HellCaina</Filter>
+      <Filter>Actor\Enemy\NormalEnemy\HellCaina</Filter>
     </ClCompile>
     <ClCompile Include="Enemy_HellAntenora.cpp">
-      <Filter>Actor\Enemy\NormalEnemy\BasicEnemy\HellAntenora</Filter>
+      <Filter>Actor\Enemy\NormalEnemy\HellAntenora</Filter>
     </ClCompile>
     <ClCompile Include="EnemySpawnArea.cpp">
       <Filter>Actor\Enemy\EnemySpawn</Filter>
@@ -972,6 +978,12 @@
     <ClCompile Include="Nero_ShopUI.cpp">
       <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy_ScudoAngelo.cpp">
+      <Filter>Actor\Enemy\NormalEnemy\ScudoAngelo</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_ProtoAngelo.cpp">
+      <Filter>Actor\Enemy\NormalEnemy\ProtoAngelo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
@@ -1015,18 +1027,6 @@
     </Filter>
     <Filter Include="Actor\Enemy\NormalEnemy">
       <UniqueIdentifier>{cb99ca06-163e-4d2b-99b0-2b1df4abfd2b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Actor\Enemy\NormalEnemy\BasicEnemy">
-      <UniqueIdentifier>{a039970f-a1d5-4a45-b659-380726b4ff25}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Actor\Enemy\NormalEnemy\BasicEnemy\Empusa">
-      <UniqueIdentifier>{8d4d9cde-6490-49d7-8474-70a62809557a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Actor\Enemy\NormalEnemy\BasicEnemy\HellCaina">
-      <UniqueIdentifier>{e335c326-9be0-4e07-b397-4e2c3328512a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Actor\Enemy\NormalEnemy\BasicEnemy\HellAntenora">
-      <UniqueIdentifier>{819e33f9-1097-4bef-9215-58e4a30a65fe}</UniqueIdentifier>
     </Filter>
     <Filter Include="Actor\Enemy\EnemySpawn">
       <UniqueIdentifier>{4aeb497a-468f-4b41-8ab2-3ddcb2d4576b}</UniqueIdentifier>
@@ -1255,6 +1255,21 @@
     </Filter>
     <Filter Include="Actor\Stage\FieldMap\FieldMapObj\EventZone\EnemySpawner">
       <UniqueIdentifier>{b1027b39-a211-4c88-bdff-2c3d3d91d764}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy\NormalEnemy\Empusa">
+      <UniqueIdentifier>{8d4d9cde-6490-49d7-8474-70a62809557a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy\NormalEnemy\HellAntenora">
+      <UniqueIdentifier>{819e33f9-1097-4bef-9215-58e4a30a65fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy\NormalEnemy\HellCaina">
+      <UniqueIdentifier>{e335c326-9be0-4e07-b397-4e2c3328512a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy\NormalEnemy\ScudoAngelo">
+      <UniqueIdentifier>{254f3871-b4bb-4cb7-ae8d-23073f7d3216}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy\NormalEnemy\ProtoAngelo">
+      <UniqueIdentifier>{346975b2-e408-42a3-a573-b8ff9e8e1235}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

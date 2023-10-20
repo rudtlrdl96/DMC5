@@ -21,6 +21,7 @@
 #include "CavaliereAngelo.h"
 #include "ZoomEffect.h"
 #include "BGMPlayer.h"
+#include "Nero_ShopUI.h"
 std::list<DevilBreaker> PlayerActor_Nero::BreakerList;
 PlayerActor_Nero::~PlayerActor_Nero()
 {
@@ -107,7 +108,8 @@ void PlayerActor_Nero::Start()
 void PlayerActor_Nero::PlayerLoad()
 {
 	BGMPlayer::SetCharater(PlayerType::Nero);
-
+	
+	GetLevel()->CreateActor<Nero_ShopUI>();
 	GetLevel()->CreateActor<NeroItemGlass>();
 	HUD = GetLevel()->CreateActor<NeroHPUI>();
 	HUD->SetPlayerHP(HP);

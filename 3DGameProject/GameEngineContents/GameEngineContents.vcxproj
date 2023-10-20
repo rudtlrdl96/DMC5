@@ -249,6 +249,14 @@
     </ClInclude>
     <ClInclude Include="EffectToolLevel.h" />
     <ClInclude Include="EffectToolWindow.h" />
+    <ClInclude Include="Enemy_ProtoAngelo.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Enemy_ScudoAngelo.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="EventZone.h">
       <SubType>
       </SubType>
@@ -822,6 +830,14 @@
     </ClCompile>
     <ClCompile Include="EffectToolLevel.cpp" />
     <ClCompile Include="EffectToolWindow.cpp" />
+    <ClCompile Include="Enemy_ProtoAngelo.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Enemy_ScudoAngelo.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="EventZone.cpp">
       <SubType>
       </SubType>

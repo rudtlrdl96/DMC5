@@ -50,6 +50,19 @@ void PlayerActor_Vergil::NetLoad()
 		DTOffEffect->CreateFX(FXData::Find("Vergil_DT_Off.effect"));
 		DTOffEffect->ChangeFX("Vergil_DT_Off.effect");
 		DTOffEffect->Off();
+
+		NewDir.MoveParent();
+		NewDir.Move("Mirage");
+		Files = NewDir.GetAllFile({ ".effect" });
+		for (GameEngineFile File : Files)
+		{
+			if (nullptr == FXData::Find(File.GetFileName()))
+			{
+				FXData::Load(File.GetFullPath());
+			}
+			EffectSystem->CreateFX(FXData::Find(File.GetFileName()));
+		}
+
 	}
 
 	// Renderer »ý¼º
