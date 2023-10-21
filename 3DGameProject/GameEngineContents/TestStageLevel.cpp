@@ -66,12 +66,12 @@ void TestStageLevel::Start()
 		Distortion->SetDistortionValue(10, 10);
 		Distortion->SetMaxPixelValue(100, 100);
 	}
-
+		
 	StageBaseLevel::Start();
 
 	if (false == GameEngineInput::IsKey("BakeTestKey"))
 	{
-		GameEngineInput::CreateKey("BakeTestKey", VK_SPACE);
+		GameEngineInput::CreateKey("BakeTestKey", VK_PRIOR);
 	}
 }
 
@@ -83,12 +83,12 @@ void TestStageLevel::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("BakeTestKey"))
 	{
-		//const std::list<std::shared_ptr<GameEngineLight>>& AllLightRef = GetAllLightRef();
-		//
-		//for (std::shared_ptr<GameEngineLight> Ref: AllLightRef)
-		//{
-		//	Ref->BakeShadow(GetMainCamera());
-		//}
+		const std::list<std::shared_ptr<GameEngineLight>>& AllLightRef = GetAllLightRef();
+		
+		for (std::shared_ptr<GameEngineLight> Ref: AllLightRef)
+		{
+			Ref->BakeShadow(GetMainCamera());
+		}
 
 		//GetDirectionalLight()->BakeShadow(GetMainCamera());
 		//BWEffect->BWColorEffectSwitch();
@@ -211,7 +211,7 @@ void TestStageLevel::LevelChangeStart()
 	//}
 
 
-	//CreateActor<ShaderTestActor>()->GetTransform()->SetWorldPosition(float4(0, 400, 0));
+	CreateActor<ShaderTestActor>()->GetTransform()->SetWorldPosition(float4(0, 400, 0));
 
 	//PointLight = CreatePointLight(float4(0, 300, 0), ShadowTextureScale::S_512, 1024);
 	//PointLight->SetLightPower(2.0f);

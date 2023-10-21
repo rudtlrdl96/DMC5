@@ -82,6 +82,9 @@
     <FxCompile Include="BWColorShader.hlsl">
       <Filter>PostEffect</Filter>
     </FxCompile>
+    <FxCompile Include="HDREffect.hlsl">
+      <Filter>PostEffect</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">

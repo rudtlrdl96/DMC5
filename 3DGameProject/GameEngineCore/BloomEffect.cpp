@@ -17,7 +17,11 @@ void BloomEffect::Start(GameEngineRenderTarget* _Target)
 
 	BloomBlurUnit = std::make_shared<GameEngineRenderUnit>();
 	BloomBlurUnit->SetMesh("FullRect");
-	BloomBlurUnit->SetMaterial("BloomBlur");
+	BloomBlurUnit->SetMaterial("BloomBlur");	
+	
+	BloomMergeUnit = std::make_shared<GameEngineRenderUnit>();
+	BloomMergeUnit->SetMesh("FullRect");
+	BloomMergeUnit->SetMaterial("MaxMerge");
 
 	BloomBlurUnit->ShaderResHelper.SetConstantBufferLink("BlurData", Data);
 
@@ -37,19 +41,16 @@ void BloomEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 	ResultTarget->Clear();
 	ResultTarget->Setting();
 
-	BlurUnit->ShaderResHelper.SetTexture("LightTarget", _Target->GetTexture(1));
-	BlurUnit->Render(_DeltaTime);
-	BlurUnit->ShaderResHelper.AllResourcesReset();
+	//BlurUnit->ShaderResHelper.SetTexture("LightTarget", _Target->GetTexture(1));
+	//BlurUnit->Render(_DeltaTime);
+	//BlurUnit->ShaderResHelper.AllResourcesReset();
 
-	//DebugTargetA->Clear();
-	//DebugTargetA->Merge(ResultTarget);
-
-	_Target->Setting(1);
-	
-	BloomBlurUnit->ShaderResHelper.SetTexture("SmallBloomTex", ResultTarget->GetTexture(0));
+	BloomBlurUnit->ShaderResHelper.SetTexture("SmallBloomTex", _Target->GetTexture(1));
 	BloomBlurUnit->Render(_DeltaTime);
 	BloomBlurUnit->ShaderResHelper.AllResourcesReset();
 
-	//DebugTargetB->Clear();
-	//DebugTargetB->Merge(_Target, 1);
+	_Target->Setting(1);
+	BloomMergeUnit->ShaderResHelper.SetTexture("DiffuseTex", ResultTarget->GetTexture(0));
+	BloomMergeUnit->Render(0.0f);
+	BloomMergeUnit->ShaderResHelper.AllResourcesReset();
 }

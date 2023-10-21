@@ -138,7 +138,7 @@ void ContentsCore::ContentsResourcesCreate()
 	{
 		D3D11_SAMPLER_DESC SamperData = {};
 
-		SamperData.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+		SamperData.Filter = D3D11_FILTER_ANISOTROPIC;
 		SamperData.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -296,6 +296,16 @@ void ContentsCore::ContentsResourcesCreate()
 		Pipe->SetVertexShader("DistortionEffectShader.hlsl");
 		Pipe->SetRasterizer("Engine2DBase");
 		Pipe->SetPixelShader("DistortionEffectShader.hlsl");
+		Pipe->SetBlendState("MergeBlend");
+		Pipe->SetDepthState("EngineDepth");
+	}	
+	
+	{
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("HDREffect");
+
+		Pipe->SetVertexShader("HDREffect.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("HDREffect.hlsl");
 		Pipe->SetBlendState("MergeBlend");
 		Pipe->SetDepthState("EngineDepth");
 	}

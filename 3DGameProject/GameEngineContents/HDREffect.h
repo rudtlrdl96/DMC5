@@ -1,26 +1,25 @@
 #pragma once
-#include "GameEngineRenderTarget.h"
+#include <GameEngineCore/GameEngineRenderTarget.h>
 
 // Ό³Έν :
-class BlurEffect : public GameEnginePostProcess
+class HDREffect : public GameEnginePostProcess
 {
 public:
 	// constrcuter destructer
-	BlurEffect();
-	~BlurEffect();
+	HDREffect();
+	~HDREffect();
 
 	// delete Function
-	BlurEffect(const BlurEffect& _Other) = delete;
-	BlurEffect(BlurEffect&& _Other) noexcept = delete;
-	BlurEffect& operator=(const BlurEffect& _Other) = delete;
-	BlurEffect& operator=(BlurEffect&& _Other) noexcept = delete;
+	HDREffect(const HDREffect& _Other) = delete;
+	HDREffect(HDREffect&& _Other) noexcept = delete;
+	HDREffect& operator=(const HDREffect& _Other) = delete;
+	HDREffect& operator=(HDREffect&& _Other) noexcept = delete;
 
 protected:
 	void Start(GameEngineRenderTarget* _Target) override;
 	void Effect(GameEngineRenderTarget* _Target, float _DeltaTime) override;
-
 private:
-	std::shared_ptr<GameEngineRenderUnit> BlurUnit;
+	std::shared_ptr<GameEngineRenderUnit> HDRColorUnit = nullptr;
 
 	void LevelChangeStart() override
 	{

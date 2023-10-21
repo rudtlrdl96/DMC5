@@ -80,7 +80,7 @@ private:
 	void LevelChangeStart() override
 	{
 		CurLevelJudgementCut = this;
-		ResultTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+		ResultTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 	}
 
 	void LevelChangeEnd() override

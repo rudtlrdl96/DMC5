@@ -26,13 +26,13 @@ SamplerState WRAPSAMPLER : register(s0);
 float4 Bloom_PS(OutPut _Value) : SV_Target0
 {
     float4 Color = LightTarget.Sample(WRAPSAMPLER, _Value.UV.xy);
-    float LightPower = max(max(Color.r, Color.g), Color.b);
+    float LightPower = length(Color.rgb);
     
     Color.a = 1.0f;
     
-    if(0.7f <= LightPower)
+    if(0.7f > LightPower)
     {
-        Color.rgb *= 1.5f;
+        clip(-1);
     }
         
     return Color;

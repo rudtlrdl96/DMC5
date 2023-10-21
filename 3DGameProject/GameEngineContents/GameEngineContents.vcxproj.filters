@@ -483,7 +483,6 @@
     <ClInclude Include="BGMPlayer.h">
       <Filter>Component\Sound</Filter>
     </ClInclude>
-    <ClInclude Include="BWColorEffect.h" />
     <ClInclude Include="Nero_ShopUI.h">
       <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
     </ClInclude>
@@ -492,6 +491,12 @@
     </ClInclude>
     <ClInclude Include="Enemy_ProtoAngelo.h">
       <Filter>Actor\Enemy\NormalEnemy\ProtoAngelo</Filter>
+    </ClInclude>
+    <ClInclude Include="HDREffect.h">
+      <Filter>PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="BWColorEffect.h">
+      <Filter>PostEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -974,7 +979,6 @@
     <ClCompile Include="BGMPlayer.cpp">
       <Filter>Component\Sound</Filter>
     </ClCompile>
-    <ClCompile Include="BWColorEffect.cpp" />
     <ClCompile Include="Nero_ShopUI.cpp">
       <Filter>UI\UI_Actor\ShopUI\NeroShopUI</Filter>
     </ClCompile>
@@ -983,6 +987,12 @@
     </ClCompile>
     <ClCompile Include="Enemy_ProtoAngelo.cpp">
       <Filter>Actor\Enemy\NormalEnemy\ProtoAngelo</Filter>
+    </ClCompile>
+    <ClCompile Include="HDREffect.cpp">
+      <Filter>PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="BWColorEffect.cpp">
+      <Filter>PostEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

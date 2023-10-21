@@ -172,6 +172,7 @@
     <FxCompile Include="Animation.fx" />
     <FxCompile Include="ColorEffectShader.hlsl" />
     <FxCompile Include="FadeShader.hlsl" />
+    <FxCompile Include="HDREffect.hlsl" />
     <FxCompile Include="JudgementCutShader.hlsl" />
     <FxCompile Include="Light.fx" />
     <FxCompile Include="Rain.hlsl" />
