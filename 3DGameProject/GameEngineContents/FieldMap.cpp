@@ -217,13 +217,13 @@ void FieldMap::MapCulling()
 	for (size_t i = 0; i < RenderOnNode.size(); i++)
 	{
 		RenderOnNode[i].lock()->FieldMapRendererOn();
-		RenderOnNode[i].lock()->FieldMapObjOn();
+		//RenderOnNode[i].lock()->FieldMapObjOn();
 	}
 
 	for (size_t i = 0; i < RenderOffNode.size(); i++)
 	{
 		RenderOffNode[i].lock()->FieldMapRendererOff();
-		RenderOffNode[i].lock()->FieldMapObjOff();
+		//RenderOffNode[i].lock()->FieldMapObjOff();
 	}
 }
 

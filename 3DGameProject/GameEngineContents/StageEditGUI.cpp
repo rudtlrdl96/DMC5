@@ -46,6 +46,19 @@ void StageEditGUI::OnGUI(std::shared_ptr<GameEngineLevel> _Level, float _DeltaTi
 		Parent->IsDebugSwitch();
 	}
 
+	if (!Parent->IsDebug())
+	{
+		ImGui::SameLine();
+		if (ImGui::Button("LightDebugRender"))
+		{
+			for (auto& i : Parent->GetAllLightRef())
+			{
+				i->IsDebugDraw = !i->IsDebugDraw;
+			}
+		}
+	}
+	
+
     StageCombo(_Level);
 
 	if (AllData.empty())
@@ -406,7 +419,11 @@ void StageEditGUI::InputCullingCol()
 {
 	if (ImGui::Button("AddCullingCol"))
 	{
-		AllData[Stage_current].MapDatas[FieldMap_current].CullingColTransform.emplace_back();
+		ObjTransformData Temp;
+		Temp.Pos = Parent->GetMainCamera()->GetTransform()->GetLocalPosition();
+		Temp.Pos.y = 0.0f;
+		Temp.Scale = {1000.f, 1.f, 1000.f};
+		AllData[Stage_current].MapDatas[FieldMap_current].CullingColTransform.emplace_back(Temp);
 		CreateStage(AllData[Stage_current]);
 	}
 	ImGui::SameLine();

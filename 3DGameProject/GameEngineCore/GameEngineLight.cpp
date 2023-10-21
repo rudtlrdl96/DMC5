@@ -68,7 +68,8 @@ void GameEngineLight::Update(float _DeltaTime)
 {
 	if (true == IsDebugDraw)
 	{
-		GetTransform()->SetWorldScale(float4(LightDataValue.LightRange, LightDataValue.LightRange, LightDataValue.LightRange));
+		//GetTransform()->SetWorldScale(float4(LightDataValue.LightRange, LightDataValue.LightRange, LightDataValue.LightRange));
+		GetTransform()->SetWorldScale(float4(100.f, 100.f, 100.f));
 		GameEngineDebug::DrawSphere(GetLevel()->GetCamera(0).get(), GetTransform(), float4::GREEN);
 	}
 }

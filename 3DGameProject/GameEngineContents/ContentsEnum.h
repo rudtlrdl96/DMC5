@@ -110,4 +110,5 @@ enum class FieldMapObjType
 	Item_DevilBreaker_Gerbera,
 	Item_DevilBreaker_BusterArm,
 	ElectronicBillboard,
+	illminary,
 };

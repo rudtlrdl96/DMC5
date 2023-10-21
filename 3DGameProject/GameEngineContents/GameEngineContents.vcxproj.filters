@@ -498,6 +498,12 @@
     <ClInclude Include="BWColorEffect.h">
       <Filter>PostEffect</Filter>
     </ClInclude>
+    <ClInclude Include="ElectronicBillboard.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClInclude>
+    <ClInclude Include="illminary.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -993,6 +999,12 @@
     </ClCompile>
     <ClCompile Include="BWColorEffect.cpp">
       <Filter>PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="ElectronicBillboard.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClCompile>
+    <ClCompile Include="illminary.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

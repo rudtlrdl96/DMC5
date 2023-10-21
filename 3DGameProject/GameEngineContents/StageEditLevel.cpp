@@ -57,8 +57,10 @@ void StageEditLevel::Start()
 		Distortion->SetMaxPixelValue(100, 100);
 	}
 
-
-
+	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 4000, 0));
+	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 90.f,0.f,0.f });
+	GetDirectionalLight()->SetLightPower(0.25f);
+	GetDirectionalLight()->SetLightColor({ 0.85f,0.85f,1.f });
 }
 
 void StageEditLevel::Update(float _DeltaTime)

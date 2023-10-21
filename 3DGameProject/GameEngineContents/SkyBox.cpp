@@ -20,9 +20,10 @@ std::shared_ptr<SkyBox> SkyBox::CreateSkyBox(GameEngineLevel* _Level, const std:
 	Result->SetName("SkyBox");
 	Result->Sky = Result->CreateComponent<GameEngineFBXRenderer>();
 	Result->Sky->SetName("Renderer");
-	Result->Sky->SetFBXMesh(_FBXName.data(), "FBX_Low");
+	Result->Sky->SetFBXMesh(_FBXName.data(), "FBX");
 	Result->Sky->LightOff();
 	Result->Sky->ShadowOff();
+	Result->Sky->SetBaseColor({5.f,0.f,0.f});
 	return Result;
 }
 

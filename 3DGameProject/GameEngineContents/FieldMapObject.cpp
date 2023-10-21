@@ -19,7 +19,8 @@
 #include "Location2_EnemySpawner1.h"
 #include "Item_RedOrb.h"
 #include "Item_DevilBreaker.h"
-#include "ElectronicBillboard.h";
+#include "ElectronicBillboard.h"
+#include "illminary.h"
 
 FieldMapObject::FieldMapObject()
 {
@@ -31,14 +32,11 @@ FieldMapObject::~FieldMapObject()
 
 }
 
-
-
 std::shared_ptr<FieldMapObject> FieldMapObject::CreateFieldMapObj(GameEngineLevel* _Level, FieldMapObjType _FieldMapObjType, const class ObjTransformData& _ObjTransform)
 {
 	std::shared_ptr<FieldMapObject> Result = nullptr;
 	switch (_FieldMapObjType)
 	{
-
 	case FieldMapObjType::Null:
 		MsgAssert("FieldMapObjType이 Null입니다");
 		break;
@@ -101,6 +99,9 @@ std::shared_ptr<FieldMapObject> FieldMapObject::CreateFieldMapObj(GameEngineLeve
 	case FieldMapObjType::ElectronicBillboard:
 		Result = _Level->CreateActor<ElectronicBillboard>();
 		break;
+	case FieldMapObjType::illminary:
+		Result = _Level->CreateActor<illminary>();
+		break;
 	default:
 		MsgAssert("미구현");
 		break;
@@ -120,16 +121,3 @@ const std::shared_ptr<class GameEngineFBXRenderer> FieldMapObject::GetFBXMesh()
 	return FBXMesh;
 }
 
-void FieldMapObject::SetDebugRender()
-{
-	DebugRenderPivot = CreateComponent<GameEngineComponent>();
-	DebugRenderPivot->GetTransform()->SetLocalScale({ 100.f,100.f,100.f });
-}
-
-void FieldMapObject::DrawDebugRender(float _DeltaTime)
-{
-	if (GetLevel()->DynamicThis<StageBaseLevel>()->IsEditLevel)
-	{
-		GameEngineDebug::DrawSphere(GetLevel()->GetCamera(0).get(), DebugRenderPivot->GetTransform());
-	}
-}

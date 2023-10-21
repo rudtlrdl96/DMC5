@@ -412,6 +412,10 @@ void BasePlayerActor::ShopColCheck()
 		Controller->ResetKey();
 		GetLevel()->TimeEvent.AddEvent(0.02f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 			{
+				if (Shop == nullptr)
+				{
+					return;
+				}
 				Shop->On();
 				IsShopOn = true;
 			});

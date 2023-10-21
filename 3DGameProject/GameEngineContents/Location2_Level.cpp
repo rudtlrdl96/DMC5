@@ -83,9 +83,9 @@ void Location2_Level::Start()
 			RedSealWallOn();
 		});
 
-	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 4000, 0));
-	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 90.f,0.f,0.f });
-	GetDirectionalLight()->SetLightPower(0.25f);
+	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 30000, 0));
+	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 45.f,45.f,45.f });
+	GetDirectionalLight()->SetLightPower(0.5f);
 	GetDirectionalLight()->SetLightColor({ 0.85f,0.85f,1.f });
 }
 
@@ -147,10 +147,6 @@ void Location2_Level::LevelChangeStart()
 		Vergil->SetUserControllType();
 		Vergil->SetWorldPosition(PlayerStartPos);
 	}
-
-	// 테스트용 코드
-	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 4000, 0));
-	GetDirectionalLight()->GetTransform()->SetWorldRotation(float4(45, 0, 0));
 
 	if (nullptr == GameEngineTexture::Find("DistortionSample_00.jpg"))
 	{

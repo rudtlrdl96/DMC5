@@ -21,10 +21,6 @@ public:
 protected:
 	std::shared_ptr<class GameEngineFBXRenderer> FBXMesh = nullptr;
 	std::shared_ptr<class PhysXBoxComponent> PhysXBox = nullptr;
-	std::shared_ptr<class GameEngineComponent> DebugRenderPivot = nullptr;
-
-	void SetDebugRender();
-	void DrawDebugRender(float _DeltaTime);
 
 private:
 
