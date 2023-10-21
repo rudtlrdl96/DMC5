@@ -60,7 +60,7 @@ float4 MeshTexture_PS(Output _Input) : SV_Target0
     float4 NrmrData = NormalTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
     float4 AtosData = SpecularTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
     
-    if (1.0f > AtosData.a)
+    if (1.0f != AtosData.a)
     {
         clip(-1);
     }

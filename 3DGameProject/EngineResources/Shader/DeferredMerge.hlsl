@@ -61,7 +61,8 @@ OutPutColor DeferredMerge_PS(Output _Input) : SV_Target0
     
     NewOutPut.Result.rgb = Color.rgb * (DiffuseRatio.rgb + SpacularRatio.rgb + AmbientRatio.rgb);
     //NewOutPut.Result.rgb = Color.rgb * (DiffuseRatio.rgb + SpacularRatio.rgb + AmbientRatio.rgb + BackRatio.rgb);
-    NewOutPut.Result.a = Color.a;
+    
+    NewOutPut.Result.a = saturate(Color.a);
     
     //NewOutPut.Result = saturate(NewOutPut.Result);
     
