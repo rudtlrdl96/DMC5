@@ -19,6 +19,7 @@
 #include "Location2_EnemySpawner1.h"
 #include "Item_RedOrb.h"
 #include "Item_DevilBreaker.h"
+#include "ElectronicBillboard.h";
 
 FieldMapObject::FieldMapObject()
 {
@@ -96,6 +97,9 @@ std::shared_ptr<FieldMapObject> FieldMapObject::CreateFieldMapObj(GameEngineLeve
 	case FieldMapObjType::Item_DevilBreaker_BusterArm:
 		Result = _Level->CreateActor<Item_DevilBreaker>();
 		Result->DynamicThis<Item_DevilBreaker>()->SetDevilBreaker(DevilBreaker::BusterArm);
+		break;
+	case FieldMapObjType::ElectronicBillboard:
+		Result = _Level->CreateActor<ElectronicBillboard>();
 		break;
 	default:
 		MsgAssert("¹Ì±¸Çö");

@@ -71,8 +71,8 @@ void RedSeal::Start()
 	}
 	else
 	{
-		FBXMesh = CreateComponent<GameEngineFBXRenderer>();
-		FBXMesh->SetFBXMesh("sm7001_seal_02.fbx", "FBX");
+		//FBXMesh = CreateComponent<GameEngineFBXRenderer>();
+		//FBXMesh->SetFBXMesh("sm7001_seal_02.fbx", "FBX");
 	}
 	
 }

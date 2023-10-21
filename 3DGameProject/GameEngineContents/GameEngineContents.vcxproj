@@ -249,6 +249,10 @@
     </ClInclude>
     <ClInclude Include="EffectToolLevel.h" />
     <ClInclude Include="EffectToolWindow.h" />
+    <ClInclude Include="ElectronicBillboard.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Enemy_ProtoAngelo.h">
       <SubType>
       </SubType>
@@ -834,6 +838,10 @@
     </ClCompile>
     <ClCompile Include="EffectToolLevel.cpp" />
     <ClCompile Include="EffectToolWindow.cpp" />
+    <ClCompile Include="ElectronicBillboard.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Enemy_ProtoAngelo.cpp">
       <SubType>
       </SubType>
