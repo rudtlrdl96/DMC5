@@ -23,6 +23,6 @@ protected:
 
 private:
 	std::vector<float4> EnemyPositions = std::vector<float4>();
-	size_t AliveCount = 0;
+	//size_t AliveCount = 0;
 };
 

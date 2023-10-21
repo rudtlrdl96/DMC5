@@ -25,5 +25,9 @@ protected:
 private:
 	float4 PlayerStartPos = { 8615.f, 0.f, 5060.f };
 	std::list<std::function<void()>> FightEvents = std::list<std::function<void()>>();
+
+
+
+	void InitPool();
 };
 

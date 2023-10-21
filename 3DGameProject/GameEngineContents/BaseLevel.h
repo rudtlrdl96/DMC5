@@ -12,7 +12,7 @@ class BaseLevel : public GameEngineLevel
 {
 public:
 	//Net_LevelType 값으로 BaseLevel*를 얻어옵니다. (대신 자식쪽 Start에서 SetNetLevelType를 호출시켜 주어야 합니다)
-	static BaseLevel* GetNetLevel(Net_LevelType _Type);
+	//static BaseLevel* GetNetLevel(Net_LevelType _Type);
 
 	BaseLevel();
 	~BaseLevel();

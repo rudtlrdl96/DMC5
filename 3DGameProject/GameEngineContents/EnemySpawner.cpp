@@ -16,21 +16,21 @@ void EnemySpawner::Start()
 {
 	EventZone::Start();
 	//Monsters.push_back(GetLevel()->CreateActor<Enemy_Empusa>());
-
+	//
 	//for (size_t i = 0; i < 3; i++)
 	//{
 	//	std::shared_ptr<Enemy_Empusa> Enemy = nullptr;
 	//	Enemy = Poolable<Enemy_Empusa>::PopFromPool(GetLevel());
 	//	Monsters.push_back(Enemy);
 	//	AliveCount++;
-
+	//
 	//	Enemy->PushPoolEvent([this]()
 	//		{
 	//			AliveCount--;
-
+	//
 	//			if (0 != AliveCount)
 	//				return;
-
+	//
 	//			GetLevel()->DynamicThis<StageBaseLevel>()->RedSealWallOff();
 	//			Death();
 	//		});
@@ -46,7 +46,7 @@ void EnemySpawner::Update(float _DeltaTime)
 		return;
 	}
 
-	bool IsAllDeath = true;
+	/*bool IsAllDeath = true;
 	for (size_t i = 0; i < Monsters.size(); i++)
 	{
 		IsAllDeath &= Monsters[i].expired();
@@ -57,6 +57,6 @@ void EnemySpawner::Update(float _DeltaTime)
 		BGMPlayer::SetBattleEnd();
 		GetLevel()->DynamicThis<StageBaseLevel>()->RedSealWallOff();
 		Death();
-	}
+	}*/
 
 }

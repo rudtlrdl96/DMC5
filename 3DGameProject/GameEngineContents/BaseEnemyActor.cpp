@@ -855,3 +855,18 @@ void BaseEnemyActor::RendererBurn(float _DeltaTime)
 //
 //	}
 //}
+
+
+
+
+void BaseEnemyActor::Destroy()
+{
+	GameEngineActor::Destroy();
+
+	for (const std::function<void()>& CallBack : DestroyCallbacks)
+	{
+		CallBack();
+	}
+
+	DestroyCallbacks.clear();
+}

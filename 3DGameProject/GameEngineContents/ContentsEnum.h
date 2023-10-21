@@ -50,8 +50,8 @@ enum class PlayerType
 
 enum class Net_LevelType
 {
-	StartStage,
-	BossStage,
+	Location2,
+	Location11,
 	NetTestLevel,
 
 	UNKNOWN

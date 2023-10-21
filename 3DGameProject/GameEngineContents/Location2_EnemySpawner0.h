@@ -18,6 +18,8 @@ protected:
 	void Start() override;
 
 private:
+	size_t EmpusaAliveCount = 0;
 
+	void DestroyEmpusa();
 };
 

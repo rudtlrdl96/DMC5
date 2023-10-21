@@ -15,6 +15,9 @@
 #include "TestObject.h"
 #include "PlayerActor_Nero.h"
 #include "PlayerActor_Vergil.h"
+#include "Player_MirageBlade.h"
+#include "Enemy_HellCaina.h"
+#include "Enemy_Empusa.h"
 
 #include "ShaderTestActor.h"
 #include "FreeCameraActor.h"
@@ -40,6 +43,9 @@ Location2_Level::~Location2_Level()
 
 void Location2_Level::Start()
 {
+	BaseLevel::Start();
+	BaseLevel::SetNetLevelType(Net_LevelType::Location2);
+
 	CreateActor<FreeCameraActor>();
 
 	GetCamera(0)->GetCamTarget()->CreateEffect<ColorEffect>();
@@ -166,4 +172,41 @@ void Location2_Level::LevelChangeStart()
 	GameEngineCoreWindow::AddDebugRenderTarget(4, "Last Target", GetMainCamera()->GetCamTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(5, "Bake Shadow", GetDirectionalLight()->GetBakeTarget(0));
 	GameEngineCoreWindow::AddDebugRenderTarget(6, "Last Shadow", GetDirectionalLight()->GetShadowTarget());
+
+	InitPool();
+}
+
+
+void Location2_Level::InitPool()
+{
+	//Passive컨트롤 용 네로 오브젝트 풀링
+	Poolable<PlayerActor_Nero>::CreatePool(this, static_cast<int>(ActorOrder::Player), 1,
+		[](std::shared_ptr<PlayerActor_Nero> _ActorPtr)
+	{
+		_ActorPtr->SetControll(NetControllType::PassiveControll);
+	});
+
+	//Passive컨트롤 용 버질 오브젝트 풀링
+	Poolable<PlayerActor_Vergil>::CreatePool(this, static_cast<int>(ActorOrder::Player), 1,
+		[](std::shared_ptr<PlayerActor_Vergil> _ActorPtr)
+	{
+		_ActorPtr->SetControll(NetControllType::PassiveControll);
+	});
+
+	//Passive컨트롤 용 미자리 블레이드 오브젝트 풀링
+	Poolable<Player_MirageBlade>::CreatePool(this, static_cast<int>(ActorOrder::Player), 8);
+
+	//Monster_헬카이나
+	Poolable<Enemy_HellCaina>::CreatePool(this, static_cast<int>(ActorOrder::Enemy), 3,
+		[](std::shared_ptr<Enemy_HellCaina> _ActorPtr)
+	{
+		_ActorPtr->SetControll(NetControllType::PassiveControll);
+	});
+
+	//Monster_헬카이나
+	Poolable<Enemy_Empusa>::CreatePool(this, static_cast<int>(ActorOrder::Enemy), 5,
+		[](std::shared_ptr<Enemy_Empusa> _ActorPtr)
+	{
+		_ActorPtr->SetControll(NetControllType::PassiveControll);
+	});
 }

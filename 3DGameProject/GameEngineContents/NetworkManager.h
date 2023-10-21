@@ -56,11 +56,11 @@ public:
 
 
 	//네트워크용 엑터를 생성합니다. 클라이언트의 경우엔 nullptr을 반환하니 꼭 nullptr를 해주세요
-	template <typename ActorPtr, typename OrderType>
+	/*template <typename ActorPtr, typename OrderType>
 	static std::shared_ptr<ActorPtr> CreateNetworkActor(class GameEngineLevel* _Level, OrderType _Order)
 	{
 		return CreateNetworkActor(_Level, static_cast<int>(_Order));
-	}
+	}*/
 
 	template <typename ActorPtr>
 	static std::shared_ptr<ActorPtr> CreateNetworkActor(class GameEngineLevel* _Level, int _Order = 0)

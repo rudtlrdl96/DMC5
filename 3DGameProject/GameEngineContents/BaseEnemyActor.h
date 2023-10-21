@@ -78,9 +78,16 @@ public:
 		IsSnatch = true;
 	}
 
+	//이 몬스터가 삭제될 때 호출될 함수를 등록합니다.
+	inline void PushDestroyCallback(const std::function<void()>& _Callback)
+	{
+		DestroyCallbacks.push_back(_Callback);
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
+	void Destroy() final;
 
 	virtual void EnemyTypeLoad() = 0;                                 // 기본 정보 입력 (HP, EnemyCode)
 	virtual void EnemyMeshLoad() = 0;                                 // 매쉬 로드, 애니메이션 전에 실시한다.
@@ -277,5 +284,5 @@ protected:
 	}
 
 private:
-
+	std::vector<std::function<void()>> DestroyCallbacks;
 };

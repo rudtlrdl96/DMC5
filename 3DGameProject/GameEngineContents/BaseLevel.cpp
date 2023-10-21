@@ -6,16 +6,16 @@
 std::map<Net_LevelType, BaseLevel*> BaseLevel::AllNetLevel;
 
 
-BaseLevel* BaseLevel::GetNetLevel(Net_LevelType _Type)
-{
-	if (false == AllNetLevel.contains(_Type))
-	{
-		MsgAssert("지정하지 않은 네트워크 레벨타입으로 레벨포인터를 받아오려고 했습니다");
-		return nullptr;
-	}
-
-	return AllNetLevel[_Type];
-}
+//BaseLevel* BaseLevel::GetNetLevel(Net_LevelType _Type)
+//{
+//	if (false == AllNetLevel.contains(_Type))
+//	{
+//		MsgAssert("지정하지 않은 네트워크 레벨타입으로 레벨포인터를 받아오려고 했습니다");
+//		return nullptr;
+//	}
+//
+//	return AllNetLevel[_Type];
+//}
 
 
 
