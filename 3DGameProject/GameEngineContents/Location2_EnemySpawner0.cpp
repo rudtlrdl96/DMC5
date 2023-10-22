@@ -33,24 +33,11 @@ void Location2_EnemySpawner0::Start()
 				if (nullptr == Enemy)
 					continue;
 
-				++EmpusaAliveCount;
+				++MonsterAliveCount;
 				Enemy->GetPhysXComponent()->SetWorldPosition({ 0, 150.f * i, 0 });
-				Enemy->PushDestroyCallback(std::bind(&Location2_EnemySpawner0::DestroyEmpusa, this));
+				Enemy->PushDestroyCallback(std::bind(&EnemySpawner::DestroyMonster, this));
 			}
 
 			BGMPlayer::SetBattleBGM();
 		};
-}
-
-
-void Location2_EnemySpawner0::DestroyEmpusa()
-{
-	--EmpusaAliveCount;
-
-	if (0 < EmpusaAliveCount)
-		return;
-
-	BGMPlayer::SetBattleEnd();
-	GetLevel()->DynamicThis<StageBaseLevel>()->RedSealWallOff();
-	Death();
 }

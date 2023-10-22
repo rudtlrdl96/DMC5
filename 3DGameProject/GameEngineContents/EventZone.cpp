@@ -2,6 +2,8 @@
 #include "EventZone.h"
 
 #include <GameEngineCore/GameEngineCollision.h>
+#include "BGMPlayer.h"
+#include "StageBaseLevel.h"
 
 EventZone::EventZone()
 {
@@ -49,14 +51,14 @@ void EventZone::Update(float _DeltaTime)
 	}
 }
 
-//void EventZone::SetTriggerZoneTransform(const float4& _Position, const float4& _Scale, const float4& _Rotation)
-//{
-//	if (TriggerZone == nullptr)
-//	{
-//		MsgAssert("TriggerZone가 nullptr인데 Transform을 변경하려 했습니다")
-//	}
-//
-//	TriggerZone->GetTransform()->SetLocalPosition(_Position);
-//	TriggerZone->GetTransform()->SetLocalScale(_Scale);
-//	TriggerZone->GetTransform()->SetLocalRotation(_Rotation);
-//}
+void EventZone::DestroyMonster()
+{
+	--MonsterAliveCount;
+
+	if (0 < MonsterAliveCount)
+		return;
+
+	BGMPlayer::SetBattleEnd();
+	GetLevel()->DynamicThis<StageBaseLevel>()->RedSealWallOff();
+	Death();
+}
