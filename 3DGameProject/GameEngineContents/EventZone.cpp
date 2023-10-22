@@ -51,14 +51,4 @@ void EventZone::Update(float _DeltaTime)
 	}
 }
 
-void EventZone::DestroyMonster()
-{
-	--MonsterAliveCount;
 
-	if (0 < MonsterAliveCount)
-		return;
-
-	BGMPlayer::SetBattleEnd();
-	GetLevel()->DynamicThis<StageBaseLevel>()->RedSealWallOff();
-	Death();
-}

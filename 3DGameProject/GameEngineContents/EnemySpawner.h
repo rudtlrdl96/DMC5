@@ -17,12 +17,12 @@ public:
 
 protected:
 	void Start() override;
-	void Update(float _DeltaTime) override;
 
 	std::vector<std::weak_ptr<class BaseEnemyActor>> Monsters;
+	size_t MonsterAliveCount = 0;
+	void DestroyMonster();
 
 private:
 	std::vector<float4> EnemyPositions = std::vector<float4>();
-	//size_t AliveCount = 0;
 };
 

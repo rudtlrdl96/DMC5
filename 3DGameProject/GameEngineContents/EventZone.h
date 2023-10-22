@@ -26,9 +26,7 @@ protected:
 	std::function<void()> Event = nullptr;
 	bool IsEventStart = false;
 	
-	size_t MonsterAliveCount = 0;
 
-	void DestroyMonster();
 
 private:
 };
