@@ -35,7 +35,7 @@ void Location2_EnemySpawner1::Start()
 
 				++MonsterAliveCount;
 				Enemy->GetPhysXComponent()->SetWorldPosition({ 3725.f, 150.f * i, -8527.f });
-				Enemy->PushDestroyCallback(std::bind(&EnemySpawner::DestroyMonster, this));
+				Enemy->PushDeathCallback(std::bind(&EnemySpawner::DestroyMonster, this));
 			}
 
 			BGMPlayer::SetBattleBGM();

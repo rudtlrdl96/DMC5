@@ -176,7 +176,7 @@ void GameEngineCore::EngineUpdate()
 		FrameTime = 0.0f;
 		FrameRate = 1.0f / TimeDeltaTime;
 	}
-
+	TimeDeltaTime *= GameEngineTime::GlobalTime.GetGlobalTimeScale();
 	GameEngineInput::Update(TimeDeltaTime);
 	GameEngineSound::SoundUpdate();
 

@@ -270,23 +270,6 @@ void Enemy_HellAntenora::MonsterAttackCollisionOff()
 	MonsterAttackCollision_Two->Off();
 }
 
-void Enemy_HellAntenora::DeathCheck()
-{
-	if (EnemyHP <= 0)
-	{
-		DeathValue = true;
-		RedOrbDrop();
-	}
-
-	if (true == DeathValue && false == DeathSettig)
-	{
-		DeathSettig = true;
-		MonsterCollision->Off();
-		RN_MonsterCollision->Off();
-		PhysXCapsule->Off();
-	}
-}
-
 void Enemy_HellAntenora::PlayerChase()
 {
 	RotationCheck();

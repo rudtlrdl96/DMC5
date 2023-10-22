@@ -41,6 +41,11 @@ public:
 		return floatDeltaTime * GlobalTimeScale;
 	}
 
+	float GetGlobalTimeScale()
+	{
+		return GlobalTimeScale;
+	}
+
 	void SetGlobalTimeScale(float _TimeScale) 
 	{
 		GlobalTimeScale = _TimeScale;

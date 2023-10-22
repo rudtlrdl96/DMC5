@@ -91,7 +91,6 @@ protected:
 	void DamageCollisionCheck(float _DeltaTime) override;
 	void DamageCollisionCheck_Client(float _DeltaTime) override;
 	void RecognizeCollisionCheck(float _DeltaTime) override;
-	void DeathCheck() override;
 
 private:
 	void PlayerChase();

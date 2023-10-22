@@ -52,6 +52,10 @@ public:
 	void MinusEnemyHP(int _Value)
 	{
 		EnemyHP -= _Value;
+		if (EnemyHP < 0)
+		{
+			DeathEvent();
+		}
 	}
 
 	// 몬스터 피직스 컴포넌트 리턴
@@ -78,6 +82,11 @@ public:
 		IsSnatch = true;
 	}
 
+	//이 몬스터가 죽었을때 호출될 함수를 등록합니다.
+	inline void PushDeathCallback(const std::function<void()>& _Callback)
+	{
+		DeathCallbacks.push_back(_Callback);
+	}
 	//이 몬스터가 삭제될 때 호출될 함수를 등록합니다.
 	inline void PushDestroyCallback(const std::function<void()>& _Callback)
 	{
@@ -97,7 +106,8 @@ protected:
 	virtual void DamageCollisionCheck(float _DeltaTime) = 0;          // 서버, 싱글에서 처리할 데미지 콜리전 체크 함수
 	virtual void DamageCollisionCheck_Client(float _DeltaTime) = 0;   // 클라이언트에서 처리할 데미지 콜리전 체크 함수
 	virtual void RecognizeCollisionCheck(float _DeltaTime) = 0;
-	virtual void DeathCheck() = 0;
+	virtual void DeathCheck();
+	void DeathEvent();
 	void RedOrbDrop();													// 사망시 실행. 레드오브를 뿌립니다
 
 	std::shared_ptr<class GameEngineFBXRenderer> EnemyRenderer = nullptr;         // 랜더러
@@ -287,5 +297,6 @@ protected:
 	}
 
 private:
+	std::vector<std::function<void()>> DeathCallbacks;
 	std::vector<std::function<void()>> DestroyCallbacks;
 };

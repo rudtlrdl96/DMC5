@@ -36,5 +36,5 @@ float GameEngineTime::TimeCheck()
 
 	floatDeltaTime = static_cast<float>(DoubleDeltaTime);
 
-	return GetTimeScaleDeltaTime();
+	return floatDeltaTime;
 }

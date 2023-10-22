@@ -177,23 +177,6 @@ void Enemy_Empusa::Start()
 ///////////////////////////////////////////////// 움직임, 히트 관련 ///////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Enemy_Empusa::DeathCheck()
-{
-	if (EnemyHP <= 0)
-	{
-		DeathValue = true;
-		RedOrbDrop();
-	}
-
-	if (true == DeathValue && false == DeathSettig)
-	{
-		DeathSettig = true;
-		MonsterCollision->Off();
-		RN_MonsterCollision->Off();
-		PhysXCapsule->Off();
-	}
-}
-
 void Enemy_Empusa::PlayerChase()
 {
 	RotationCheck();

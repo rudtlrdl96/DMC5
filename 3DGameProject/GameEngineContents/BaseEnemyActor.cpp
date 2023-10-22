@@ -872,6 +872,34 @@ void BaseEnemyActor::Destroy()
 	DestroyCallbacks.clear();
 }
 
+void BaseEnemyActor::DeathCheck()
+{
+	if (EnemyHP <= 0)
+	{
+		DeathValue = true;
+		RedOrbDrop();
+		DeathEvent();
+	}
+
+	if (true == DeathValue && false == DeathSettig)
+	{
+		DeathSettig = true;
+		MonsterCollision->Off();
+		RN_MonsterCollision->Off();
+		PhysXCapsule->Off();
+	}
+}
+
+void BaseEnemyActor::DeathEvent()
+{
+	for (const std::function<void()>& CallBack : DeathCallbacks)
+	{
+		CallBack();
+	}
+
+	DeathCallbacks.clear();
+}
+
 void BaseEnemyActor::RedOrbDrop()
 {
 	RedOrbs->OrbOn();

@@ -328,6 +328,7 @@ void CavaliereAngelo::DeathCheck()
 	if (EnemyHP <= 0)
 	{
 		DeathValue = true;
+		DeathEvent();
 	}
 
 	if (true == DeathValue && false == DeathSettig)
