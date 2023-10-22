@@ -12,17 +12,26 @@ Item_RedOrb::~Item_RedOrb()
 {
 }
 
-void Item_RedOrb::Take()
-{
-	FBXMesh->Off();
-	Col->Off();
-	Effect->PlayFX("RedOrb_Disappear.effect");
 
-	GetLevel()->TimeEvent.AddEvent(0.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager) {
-		Off();
-		FBXMesh->On();
-		Col->On();
-		});
+void Item_RedOrb::SetWait()
+{
+	FSM.ChangeState(RedOrb_Wait);
+}
+
+void Item_RedOrb::Take(GameEngineTransform* _Transform)
+{
+	Col->Off();
+	Player = _Transform;
+	IsTake = true;
+	//Col->Off();
+	//FBXMesh->Off();
+	//Effect->PlayFX("RedOrb_Disappear.effect");
+
+	//GetLevel()->TimeEvent.AddEvent(0.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager) {
+	//	Off();
+	//	FBXMesh->On();
+	//	Col->On();
+	//	});
 }
 
 void Item_RedOrb::Start()
@@ -57,14 +66,164 @@ void Item_RedOrb::Start()
 
 	FBXMesh = CreateComponent<GameEngineFBXRenderer>();
 	FBXMesh->SetFBXMesh("orb000_0_low.meshout.FBX", "FBX");
-	FBXMesh->SetBaseColor({2.f, 0.f, 0.f, 0.f});
-	FBXMesh->GetTransform()->SetLocalScale(FBXMesh->GetTransform()->GetLocalScale()*2);
+	//FBXMesh->GetTransform()->SetLocalScale({2.0f, 2.0f, 2.0f});
 
 	Col = CreateComponent<GameEngineCollision>(CollisionOrder::RedOrb);
-	Col->GetTransform()->SetLocalScale({ 30, 30, 30 });
+	Col->GetTransform()->SetLocalScale({ 500, 500, 500 });
 
+	FSM.CreateState({ .StateValue = RedOrb_Wait,
+		.Start = [=]
+		{
+			FBXMesh->GetTransform()->SetLocalScale({0.0f, 0.0f, 0.0f});
+			Off();
+		},
+		.Update = [=](float _DeltaTime)
+		{
+			if (true == IsUpdate())
+			{
+				FSM.ChangeState(RedOrb_Bursts);
+			}
+		},
+		.End = [=]
+		{
+		}
+		});
+
+	FSM.CreateState({ .StateValue = RedOrb_Bursts,
+	.Start = [=]
+	{
+		Col->On();
+		FBXMesh->On();
+		Effect->PlayFX("RedOrb_Disappear.effect");
+		Force = GetTransform()->GetLocalForwardVector() * 1000;
+		FloorHeight = GetTransform()->GetLocalPosition().y - 10;
+		Gravity = 350;
+
+		ResetLiveTime();
+	},
+	.Update = [=](float _DeltaTime)
+	{
+		FBXMesh->GetTransform()->SetLocalScale(float4::ONE * std::clamp(GetLiveTime() * 5.0f, 0.0f, 2.0f));
+
+		Force = float4::LerpClamp(Force, float4::ZERO, 0.05f);
+
+		if (GetTransform()->GetLocalPosition().y < FloorHeight)
+		{
+			Gravity = 0;
+			float4 Pos = GetTransform()->GetLocalPosition();
+			Pos.y = FloorHeight;
+			GetTransform()->SetLocalPosition(Pos);
+			FSM.ChangeState(RedOrb_Bound);
+			return;
+		}
+		Gravity = std::max<float>(-500, Gravity - 800 * _DeltaTime);
+		GetTransform()->AddLocalPosition((Force + float4::UP * Gravity) * _DeltaTime);
+		GetTransform()->AddLocalRotation(float4::UP * 60 * _DeltaTime);
+		},
+	.End = [=]
+	{
+	}
+		});
+
+
+	FSM.CreateState({ .StateValue = RedOrb_Bound,
+	.Start = [=]
+	{
+		Gravity = 50;
+		BoundCount = 0;
+	},
+	.Update = [=](float _DeltaTime)
+	{
+		if (true == IsTake)
+		{
+			FSM.ChangeState(RedOrb_SuckIn);
+		}
+		Force = float4::LerpClamp(Force, float4::ZERO, 0.05f);
+
+		if (GetTransform()->GetLocalPosition().y < FloorHeight)
+		{
+			if (5 < ++BoundCount)
+			{
+				FSM.ChangeState(RedOrb_Idle);
+				GetTransform()->AddLocalPosition(float4::DOWN* GetTransform()->GetLocalPosition().y);
+				return;
+			}
+			Gravity = 50;
+			float4 Pos = GetTransform()->GetLocalPosition();
+			Pos.y = FloorHeight;
+			GetTransform()->SetLocalPosition(Pos);
+		}
+		Gravity = std::max<float>(-500, Gravity - 300 * _DeltaTime);
+		GetTransform()->AddLocalPosition((Force + float4::UP * Gravity) * _DeltaTime);
+		GetTransform()->AddLocalRotation(float4::UP * 60 * _DeltaTime);
+		},
+	.End = [=]
+	{
+	}
+		});
+
+	FSM.CreateState({ .StateValue = RedOrb_Idle,
+	.Start = [=]
+	{
+		FBXMesh->GetTransform()->SetLocalScale(float4::ONE * 2.0f);
+	},
+	.Update = [=](float _DeltaTime)
+	{
+		if (true == IsTake)
+		{
+			FSM.ChangeState(RedOrb_SuckIn);
+		}
+		GetTransform()->AddLocalRotation(float4::UP * 60 * _DeltaTime);
+	},
+	.End = [=]
+	{
+	}
+	});
+
+	FSM.CreateState({ .StateValue = RedOrb_SuckIn,
+	.Start = [=]
+	{
+		StartPos = GetTransform()->GetWorldPosition();
+		ResetLiveTime();
+	},
+	.Update = [=](float _DeltaTime)
+	{
+		if (1.0f < GetLiveTime() * 3.0f)
+		{
+			FSM.ChangeState(RedOrb_Disappear);
+			return;
+		}
+		GetTransform()->SetWorldPosition(float4::LerpClamp (StartPos, Player->GetWorldPosition(), GetLiveTime() * 3.0f));
+		GetTransform()->AddLocalRotation(float4::UP * 60 * _DeltaTime);
+	},
+	.End = [=]
+	{
+	}
+	});
+	
+	FSM.CreateState({ .StateValue = RedOrb_Disappear,
+	.Start = [=]
+	{
+		FBXMesh->Off();
+		Effect->PlayFX("RedOrb_Disappear.effect");
+		ResetLiveTime();
+	},
+	.Update = [=](float _DeltaTime)
+	{
+		if (1 < GetLiveTime())
+		{
+			Off();
+		}
+	},
+	.End = [=]
+	{
+	}
+	});
+
+	FSM.ChangeState(RedOrb_Idle);
 }
 
 void Item_RedOrb::Update(float _DeltaTime)
 {
+	FSM.Update(_DeltaTime);
 }

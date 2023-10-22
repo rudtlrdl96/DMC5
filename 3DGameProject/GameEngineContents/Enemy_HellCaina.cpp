@@ -184,6 +184,7 @@ void Enemy_HellCaina::DeathCheck()
 	if (EnemyHP <= 0)
 	{
 		DeathValue = true;
+		RedOrbDrop();
 	}
 
 	if (true == DeathValue && false == DeathSettig)

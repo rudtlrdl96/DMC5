@@ -273,6 +273,7 @@ void Enemy_ProtoAngelo::DeathCheck()
 	if (EnemyHP <= 0)
 	{
 		DeathValue = true;
+		RedOrbDrop();
 	}
 
 	if (true == DeathValue && false == DeathSettig)

@@ -2,7 +2,7 @@
 #include <GameEngineCore/GameEngineFSM.h>
 #include <GameEngineCore/PhysXCapsuleComponent.h>
 #include "NetworkObjectBase.h"
-
+#include "SoundController.h"
 enum class EnemyCode
 {
 	//초기화용
@@ -98,6 +98,7 @@ protected:
 	virtual void DamageCollisionCheck_Client(float _DeltaTime) = 0;   // 클라이언트에서 처리할 데미지 콜리전 체크 함수
 	virtual void RecognizeCollisionCheck(float _DeltaTime) = 0;
 	virtual void DeathCheck() = 0;
+	void RedOrbDrop();													// 사망시 실행. 레드오브를 뿌립니다
 
 	std::shared_ptr<class GameEngineFBXRenderer> EnemyRenderer = nullptr;         // 랜더러
 																			      
@@ -109,6 +110,7 @@ protected:
 	std::shared_ptr<class AttackCollision> MonsterAttackCollision = nullptr;      // 몬스터 공격 콜리전
 	std::shared_ptr<class AttackCollision> MonsterAttackCollision_Two = nullptr;  // 몬스터 공격 콜리전
 	std::shared_ptr<class GameEngineCollision> RN_MonsterCollision = nullptr;     // 몬스터 공격 범위 인식 콜리전
+	std::shared_ptr<class Item_EnemyRedOrb> RedOrbs = nullptr;					  // 죽을때 드랍되는 레드오브
 
 	//하위에서 설정해줘야하는 Data들=====================================================
 	EnemyCode EnemyCodeValue = EnemyCode::None;
@@ -133,6 +135,7 @@ protected:
 	void PlayerAttackCheck(GameEngineCollision* _Collision);                         // 자신을 공격한 충돌체(플레이어) 정보를 class BasePlayerActor* Player에 저장
 
 	GameEngineFSM EnemyFSM;
+	SoundController Sound;
 	class BasePlayerActor* Player = nullptr;
 	float AppearDelayTime = 0.0f;
 	float ContactDelayTime = 0.0f;

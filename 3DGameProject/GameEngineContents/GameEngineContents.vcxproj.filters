@@ -504,6 +504,9 @@
     <ClInclude Include="illminary.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClInclude>
+    <ClInclude Include="Item_EnemyRedOrb.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\ItemObj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -1005,6 +1008,9 @@
     </ClCompile>
     <ClCompile Include="illminary.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClCompile>
+    <ClCompile Include="Item_EnemyRedOrb.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\ItemObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

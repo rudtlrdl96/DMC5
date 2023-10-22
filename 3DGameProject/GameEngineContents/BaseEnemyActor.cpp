@@ -10,7 +10,7 @@
 #include "NetworkManager.h"
 #include "FsmChangePacket.h"
 #include "AttackCollision.h"
-
+#include "Item_EnemyRedOrb.h"
 BaseEnemyActor::BaseEnemyActor()
 {
 }
@@ -40,7 +40,8 @@ void BaseEnemyActor::Start()
 	RN_MonsterCollision = CreateComponent<GameEngineCollision>(CollisionOrder::RN_Enemy);
 	RN_MonsterCollision->GetTransform()->SetWorldScale(float4::ZERO);
 	RN_MonsterCollision->SetColType(ColType::SPHERE3D);
-
+	// 죽을때 드랍되는 레드오브
+	RedOrbs = CreateComponent<Item_EnemyRedOrb>();
 	EnemyMeshLoad();
 
 	EnemyRenderer->ShadowOn();
@@ -869,4 +870,9 @@ void BaseEnemyActor::Destroy()
 	}
 
 	DestroyCallbacks.clear();
+}
+
+void BaseEnemyActor::RedOrbDrop()
+{
+	RedOrbs->OrbOn();
 }

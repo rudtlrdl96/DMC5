@@ -398,7 +398,7 @@ void BasePlayerActor::OrbColCheck()
 	if (nullptr == Col) { return; }
 	Item_RedOrb* Orb = dynamic_cast<Item_RedOrb*>(Col->GetActor());
 	if (nullptr == Orb) { return; }
-	Orb->Take();
+	Orb->Take(GetTransform());
 	// ¿Àºê È¹µæ
 }
 

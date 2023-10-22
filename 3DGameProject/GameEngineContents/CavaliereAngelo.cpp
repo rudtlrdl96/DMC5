@@ -101,7 +101,9 @@ void CavaliereAngelo::EnemyAnimationLoad()
 			},
 			.CallBacks_int =
 			{
-				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
+				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1),
+				std::bind(&SoundController::Play, &Sound, "Cavaliere_SFX_",std::placeholders::_1),
+				std::bind(&SoundController::PlayVoice, &Sound, std::placeholders::_1, false),
 			},
 			.CallBacks_float4 =
 			{
@@ -124,6 +126,34 @@ void CavaliereAngelo::EnemyAnimationLoad()
 		{
 			EffectRenderer_0->CreateFX(FXData::Load(FXFiles[i].GetFullPath()));
 			EffectRenderer_1->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
+		}
+	}
+
+	// 사운드 로드
+	Sound.SetVoiceName("Cavaliere_V_");
+	if (nullptr == GameEngineSound::Find("Cavaliere_SFX_0.wav")) {
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Sound");
+		NewDir.Move("Voice");
+		NewDir.Move("Cavaliere");
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".wav" });
+
+		for (size_t i = 0; i < Files.size(); i++)
+		{
+			GameEngineSound::Load(Files[i].GetFullPath());
+		}
+
+		NewDir.MoveParent();
+		NewDir.MoveParent(); 
+		NewDir.Move("SFX");
+		NewDir.Move("Cavaliere");
+		Files = NewDir.GetAllFile({ ".wav" });
+
+		for (size_t i = 0; i < Files.size(); i++)
+		{
+			GameEngineSound::Load(Files[i].GetFullPath());
 		}
 	}
 }
