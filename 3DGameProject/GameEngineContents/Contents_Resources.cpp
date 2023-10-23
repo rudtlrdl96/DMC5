@@ -143,10 +143,11 @@ void ContentsCore::ContentsResourcesCreate()
 		SamperData.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 		SamperData.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 		SamperData.MipLODBias = 0.0f;
-		SamperData.MaxAnisotropy = 1;
+		SamperData.MaxAnisotropy = 16;
 		SamperData.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
 		SamperData.MinLOD = -FLT_MAX;
 		SamperData.MaxLOD = FLT_MAX;
+		//SamperData.
 
 		GameEngineSampler::ReSetting("ENGINEBASE", SamperData);
 	}

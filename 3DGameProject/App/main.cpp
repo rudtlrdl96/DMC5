@@ -19,7 +19,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_ LPWSTR    lpCmdLine,
 	_In_ int       nCmdShow)
 {
-	GameEngineCore::Start(hInstance, ContentsCore::GameStart, ContentsCore::GameEnd, {0, 0}, {1600, 900}, false);
+	GameEngineCore::Start(hInstance, ContentsCore::GameStart, ContentsCore::GameEnd, {0, 0}, {1920, 1080}, false);
 }
 
 // 이제 릭 남을 것인데 GECore에 Release 추가함

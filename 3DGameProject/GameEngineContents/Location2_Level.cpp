@@ -83,9 +83,9 @@ void Location2_Level::Start()
 			RedSealWallOn();
 		});
 
-	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 30000, 0));
-	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 45.f,45.f,45.f });
-	GetDirectionalLight()->SetLightPower(0.5f);
+	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 5000, 0));
+	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 90.f,0.f,0.f });
+	GetDirectionalLight()->SetLightPower(0.25f);
 	GetDirectionalLight()->SetLightColor({ 0.85f,0.85f,1.f });
 }
 

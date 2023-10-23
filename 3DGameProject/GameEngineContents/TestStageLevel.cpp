@@ -104,6 +104,12 @@ void TestStageLevel::Update(float _DeltaTime)
 
 void TestStageLevel::LevelChangeStart()
 {
+	// 테스트용 코드
+	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 5000, 0));
+	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 90.f,0.f,0.f });
+	GetDirectionalLight()->SetLightPower(0.25f);
+	GetDirectionalLight()->SetLightColor({ 0.85f,0.85f,1.f });
+
 	//임시 불러오기, 추후 수정 예정
 	StageBaseLevel::LevelChangeStart();
 	{
@@ -156,13 +162,6 @@ void TestStageLevel::LevelChangeStart()
 		Vergil->SetWorldPosition({ 8615.f, 0, 5060.f });
 	}
 
-	// 테스트용 코드
-	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 30000, 0));
-	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 45.f,45.f,45.f });
-	GetDirectionalLight()->SetLightPower(0.5f);
-	GetDirectionalLight()->SetLightColor({ 0.85f,0.85f,1.f });
-	//GetDirectionalLight()->SetLightColor(float4(0.4f, 0.4f, 0.4f));
-
 	//std::shared_ptr<GameEngineLight> SpotLight = CreateSpotLight(float4(0, 400, 0), ShadowTextureScale::S_512, 2000, 90);
 	//SpotLight->GetTransform()->SetLocalRotation(float4(90, 0, 0));
 	//SpotLight->SetLightPower(3.0f);
@@ -211,7 +210,7 @@ void TestStageLevel::LevelChangeStart()
 	//}
 
 
-	CreateActor<ShaderTestActor>()->GetTransform()->SetWorldPosition(float4(0, 400, 0));
+	//CreateActor<ShaderTestActor>()->GetTransform()->SetWorldPosition(float4(0, 400, 0));
 
 	//PointLight = CreatePointLight(float4(0, 300, 0), ShadowTextureScale::S_512, 1024);
 	//PointLight->SetLightPower(2.0f);

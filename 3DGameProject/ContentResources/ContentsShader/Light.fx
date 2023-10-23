@@ -69,8 +69,8 @@ float fbm(float3 p, Texture2D _NoiseTex, SamplerState _Sample)
     return f / 0.9375;
 }
 
-#define BUMPFACTOR 3.0
-#define EPSILON 0.1
+#define BUMPFACTOR 1.5
+#define EPSILON 0.8
 
 float waterHeightMap(float2 pos, Texture2D _NoiseTex, SamplerState _Sample)
 {

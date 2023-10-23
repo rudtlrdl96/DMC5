@@ -139,7 +139,7 @@ void FieldMap::ReflectionSetting()
 
 	static int n = 0;
 
-	Reflection.lock()->Init("TestReflection" + std::to_string(n++), float4(256, 256));
+	Reflection.lock()->Init("TestReflection" + std::to_string(n++), float4(512, 512));
 
 	if (FieldMapRenderer.empty())
 	{
