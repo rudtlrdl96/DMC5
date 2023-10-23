@@ -178,7 +178,10 @@ void StageEditGUI::StageCombo(std::shared_ptr<GameEngineLevel> _Level)
 		{
 			const bool is_selected = (Stage_current == n);
 			if (ImGui::Selectable(AllData[n].StageName.c_str(), is_selected))
+			{
 				Stage_current = n;
+				CreateStage(AllData[Stage_current]);
+			}
 
 			if (is_selected)
 			{
