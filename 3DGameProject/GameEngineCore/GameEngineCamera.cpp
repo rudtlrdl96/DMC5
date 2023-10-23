@@ -246,6 +246,11 @@ void GameEngineCamera::BakeShadow(std::shared_ptr<GameEngineLight> _BakeLight, i
 
 	BakeTarget->Clear();
 
+	if (false == _BakeLight->IsShadow())
+	{
+		return;
+	}
+
 	std::shared_ptr<GameEngineMaterial> Pipe = nullptr;
 
 	switch (_BakeLight->GetLightData().LightType)
@@ -255,13 +260,18 @@ void GameEngineCamera::BakeShadow(std::shared_ptr<GameEngineLight> _BakeLight, i
 	{
 		Pipe = GameEngineMaterial::Find("PShadow");
 	}
-		break;
+	break;
 	default:
 	{
 		Pipe = GameEngineMaterial::Find("OShadow");
 	}
-		break;
+	break;
 	}
+
+	TransformData CurData = GetTransform()->GetTransDataRef();
+	GetTransform()->SetWorldPosition(_BakeLight->GetTransform()->GetWorldPosition());
+
+	_BakeLight->LightUpdate(this, 0.0f);
 
 	for (size_t i = 0; i < _BakeLight->ViewDatas.size(); i++)
 	{
@@ -295,7 +305,7 @@ void GameEngineCamera::BakeShadow(std::shared_ptr<GameEngineLight> _BakeLight, i
 				continue;
 			}
 
-			Unit->GetRenderer()->GetTransform()->SetCameraMatrix(_BakeLight->GetLightData().LightViewMatrix, _BakeLight->GetLightData().LightProjectionMatrix);
+			Unit->GetRenderer()->GetTransform()->SetCameraMatrix(_BakeLight->ViewDatas[i].LightViewMatrix, _BakeLight->ViewDatas[i].LightProjectionMatrix);
 			TransformData Data = Unit->GetRenderer()->GetTransform()->GetTransDataRef();
 			Unit->ShadowSetting();
 			Pipe->VertexShader();
@@ -305,6 +315,8 @@ void GameEngineCamera::BakeShadow(std::shared_ptr<GameEngineLight> _BakeLight, i
 			Unit->Draw();
 		}
 	}
+
+	GetTransform()->SetTransformData(CurData);
 }
 
 void GameEngineCamera::PushStaticUnit(std::shared_ptr<GameEngineRenderUnit> _Unit)

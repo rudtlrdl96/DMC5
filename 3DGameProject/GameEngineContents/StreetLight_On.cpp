@@ -16,11 +16,17 @@ void StreetLight_On::Start()
 {
 	FBXFileName = "sm0026_streetlight01.fbx";
 
-	PointLight = GetLevel()->CreatePointLight(GetTransform()->GetLocalPosition() + LightPosition, ShadowTextureScale::S_512, 1500.f);
+	PointLight = GetLevel()->CreatePointLight(GetTransform()->GetLocalPosition() + LightPosition, ShadowTextureScale::S_1024, 1500.f);
 	PointLight->GetTransform()->SetParent(GetTransform());
 	PointLight->SetLightPower(2.f);
 	PointLight->SetLightColor({0.95f, 0.85f, 0.6f});
 	PointLight->IsDebugDraw = true;
+
+#ifdef _DEBUG
+
+#else
+	PointLight->DynamicShadowOn();
+#endif // _DEBUG
 
 	StaticFieldMapObject::Start();
 

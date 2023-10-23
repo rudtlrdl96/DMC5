@@ -269,7 +269,7 @@ void GameEngineCore::CoreResourcesInit()
 	{
 		std::vector<GameEngineVertex> Vertex;
 		Vertex.resize(24);
-		
+
 		// ¿À¸¥ÂÊ
 		Vertex[0] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, 1.0f,  1.0f).RotationYDegReturn(90)};
 		Vertex[1] = {{ 1.0f, 1.0f, 0.0f  }, float4(1.0f,  1.0f,  1.0f).RotationYDegReturn(90)};

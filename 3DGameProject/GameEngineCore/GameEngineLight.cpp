@@ -10,7 +10,7 @@ const float4 GameEngineLight::PointViewDatas[6][2] = {
 	{{0, 1, 0},  {0, 0, -1}},	// Top
 	{{0, -1, 0}, {0, 0, 1}},	// Bot
 	{{0, 0, 1},  {0, 1, 0}},	// Forward
-	{{0, 0, -1}, {0, 1, 0}},	// Back
+	{{0, 0, -1}, {0, -1, 0}},	// Back
 };
 /// 0 == EyeDIr, 1 == UpDIr
 
@@ -140,7 +140,6 @@ void GameEngineLight::BakeShadow(std::shared_ptr<GameEngineCamera> _BakeCam, int
 		NewBakeTarget->SetName("Bake Target : " + std::to_string(_BakeIndex));
 	}
 
-	LightUpdate(_BakeCam.get(), 0.0f);
 	_BakeCam->BakeShadow(DynamicThis<GameEngineLight>(), _BakeIndex);
 
 	BakeShadowTarget[_BakeIndex] = NewBakeTarget;
@@ -189,7 +188,7 @@ void GameEngineLight::LightUpdate(GameEngineCamera* _Camera, float _DeltaTime)
 			ShadowRange.x,
 			ShadowRange.y,
 			LightDataValue.LightNear,
-			LightDataValue.LightFar);
+			LightDataValue.LightFar * 2.0f);
 
 		ViewDatas[0].LightProjectionInverseMatrix = ViewDatas[0].LightProjectionMatrix.InverseReturn();
 
@@ -208,7 +207,6 @@ void GameEngineLight::LightUpdate(GameEngineCamera* _Camera, float _DeltaTime)
 			float4 EyeDir = PointViewDatas[i][0];
 			float4 UpDir = PointViewDatas[i][1];
 
-
 			ViewDatas[i].LightViewMatrix.LookToLH(
 				WorldPos,
 				EyeDir,
@@ -220,7 +218,7 @@ void GameEngineLight::LightUpdate(GameEngineCamera* _Camera, float _DeltaTime)
 				90.0f,
 				1.0f,
 				LightDataValue.LightNear,
-				LightDataValue.LightFar);
+				LightDataValue.LightFar * 2.0f);
 
 			ViewDatas[i].LightProjectionInverseMatrix = ViewDatas[i].LightProjectionMatrix.InverseReturn();
 			ViewDatas[i].LightViewProjectionMatrix = ViewDatas[i].LightViewMatrix * ViewDatas[i].LightProjectionMatrix;
