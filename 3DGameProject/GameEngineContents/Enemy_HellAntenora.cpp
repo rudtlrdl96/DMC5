@@ -2181,7 +2181,7 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Buster_Start,
 	.Start = [=] {
 	//PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
-	EnemyRenderer->ChangeAnimation("em0001_buster_loop");
+	EnemyRenderer->ChangeAnimation("em0001_air_damage_gun");
 	},
 	.Update = [=](float _DeltaTime) {
 	if (true == IsChangeState)
@@ -2209,7 +2209,6 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	// 버스트 히트 루프
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Buster_Loop,
 	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0001_slam_damage_loop");
 	},
 	.Update = [=](float _DeltaTime) {
 	if (true == FloorCheck(FallDistance))
