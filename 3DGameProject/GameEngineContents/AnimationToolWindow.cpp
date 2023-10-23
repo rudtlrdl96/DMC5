@@ -293,6 +293,11 @@ void AnimationToolWindow::FrameEvent(std::shared_ptr<GameEngineLevel> Level)
 	{
 		AnimEvent.Events[CurrentFrame].push_back(EventData(EventType::CallBackVoid));
 	}
+	ImGui::SameLine();
+	if (ImGui::Button("Add CallBack int Event"))
+	{
+		AnimEvent.Events[CurrentFrame].push_back(EventData(EventType::CallBackInt));
+	}
 
 	// 현재 프레임에 존재하는 이벤트를 표시하고, 인자값을 수정한다
 	std::vector<EventData>::iterator Iter = AnimEvent.Events[CurrentFrame].begin();
@@ -588,6 +593,7 @@ void AnimationToolWindow::AnimationFrameUpdate()
 			}
 			else if (CurData.Index == 3)
 			{
+				GameEngineSound::Play("Cavaliere_Damage_" + std::to_string(CurData.IntValue) + ".wav");
 				//GameEngineSound::Play("FootStep_" + std::to_string(CurData.IntValue) + ".wav");
 			}
 		}

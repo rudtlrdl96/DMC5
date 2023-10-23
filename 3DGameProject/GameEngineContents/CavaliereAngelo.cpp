@@ -104,6 +104,7 @@ void CavaliereAngelo::EnemyAnimationLoad()
 				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1),
 				std::bind(&SoundController::Play, &Sound, "Cavaliere_SFX_",std::placeholders::_1),
 				std::bind(&SoundController::PlayVoice, &Sound, std::placeholders::_1, false),
+				std::bind(&SoundController::Play, &Sound, "Cavaliere_Damage_",std::placeholders::_1),
 			},
 			.CallBacks_float4 =
 			{
@@ -112,7 +113,7 @@ void CavaliereAngelo::EnemyAnimationLoad()
 	);
 
 	// 이펙트 시스템 생성
-	{
+	if (nullptr == FXData::Find("Cavalier_Attack_1.effect")) {
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
 		NewDir.Move("ContentResources");

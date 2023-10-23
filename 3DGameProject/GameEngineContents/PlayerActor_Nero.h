@@ -224,13 +224,13 @@ private:
 	bool IsMaxActTiming = false;	// ∏ﬂΩ∫ ø¢∆Æ ≈∏¿Ãπ÷ ø©∫Œ
 	bool IsActFaild = false;		// ø¢∆Æ Ω«∆– ø©∫Œ
 
-	bool IsStreak = false;
-	bool IsSplit = false;
-	bool IsRedqueen = false;
-	bool IsRouletteSpin = false;
-	bool IsShufle = false;
-	bool IsCalibur = false;
-	bool IsDelayBomb = false;
+	bool IsStreak =			true;
+	bool IsSplit =			true;
+	bool IsRedqueen =		true;
+	bool IsRouletteSpin =	true;
+	bool IsShufle =			true;
+	bool IsCalibur =		true;
+	bool IsDelayBomb =		true;
 
 	DevilBreaker CurDevilBreaker = DevilBreaker::None;
 	static std::list<DevilBreaker> BreakerList;

@@ -78,7 +78,7 @@ void Cavaliere_Electric::Shoot()
 		Effect->PlayFX("Cavalier_Electric_2.effect");
 		Effect->Loop = true;
 	});
-
+	GameEngineSound::Play("Cavaliere_SFX_11.wav");
 }
 
 void Cavaliere_Electric::Start()
@@ -103,6 +103,7 @@ void Cavaliere_Electric::Start()
 	Col = CreateComponent<AttackCollision>(CollisionOrder::EnemyAttack);
 	Col->GetTransform()->SetLocalScale({ 100, 100, 100 });
 	Col->SetAttackData(DamageType::Light, 100, [=] {
+		GameEngineSound::Play("Cavaliere_SFX_10.wav");
 		IsShoot = false;
 		Col->Off();
 		TimeEvent.ClearEvent();
