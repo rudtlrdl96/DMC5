@@ -8,6 +8,7 @@
 #include "ReflectionSetter.h"
 #include "FieldMapObject.h"
 #include "StageBaseLevel.h"
+#include "BasePlayerActor.h"
 
 
 FieldMap::FieldMap()
@@ -185,7 +186,6 @@ void FieldMap::ClearFieldMapRenderer()
 	FieldMapRenderer.clear();
 }
 
-#include "BasePlayerActor.h"
 
 bool FieldMap::IsPlayerCollsionToCullingCol()
 {
