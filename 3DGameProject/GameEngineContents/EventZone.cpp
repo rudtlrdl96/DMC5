@@ -5,6 +5,8 @@
 #include "BGMPlayer.h"
 #include "StageBaseLevel.h"
 
+#include "BasePlayerActor.h"
+
 EventZone::EventZone()
 {
 
@@ -44,7 +46,18 @@ void EventZone::Update(float _DeltaTime)
 		return;
 	}
 
-	if (TriggerZone->Collision(CollisionOrder::Player, ColType::OBBBOX3D, ColType::OBBBOX3D))
+	size_t PlayerCount = BasePlayerActor::GetPlayers().size();
+
+	if (PlayerCount == 0)
+	{
+		return;
+	}
+
+	std::vector<std::shared_ptr<GameEngineCollision>> Temp;
+
+	TriggerZone->CollisionAll(CollisionOrder::Player, Temp, ColType::OBBBOX3D, ColType::OBBBOX3D);
+
+	if (Temp.size() == PlayerCount)
 	{
 		Event();
 		IsEventStart = true;
