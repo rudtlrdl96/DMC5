@@ -3158,6 +3158,12 @@ void PlayerActor_Nero::PlayerLoad()
 			EffectSystem->PlayFX("GT_Bomb.effect");
 			Renderer->ChangeAnimation("pl0000_GT_Bomb", true);
 			InputCheck = false;
+			MoveCheck = false;
+			IsDelayBomb = true;
+			GetLevel()->TimeEvent.AddEvent(1.3f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				IsDelayBomb = false;
+			});
 		},	
 		.Update = [=](float _DeltaTime) {
 			if (false == FloorCheck())
@@ -3173,7 +3179,7 @@ void PlayerActor_Nero::PlayerLoad()
 			if (true == Input_SwordCheck()) { return; }
 			if (true == Input_GunCheck()) { return; }
 			if (true == Input_DevilBreakerCheck()) { return; }
-			if (Controller->GetMoveVector() != float4::ZERO)
+			if (true == MoveCheck && Controller->GetMoveVector() != float4::ZERO)
 			{
 				ChangeState(FSM_State_Nero::Nero_RunStart);
 				return;
@@ -3195,6 +3201,11 @@ void PlayerActor_Nero::PlayerLoad()
 				Col_Attack->SetAttackData(DamageType::Heavy, 150);
 				EffectSystem->PlayFX("GT_Bomb.effect");
 				Renderer->ChangeAnimation("pl0000_GT_AirBomb", true);
+				IsDelayBomb = true;
+				GetLevel()->TimeEvent.AddEvent(1.3f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						IsDelayBomb = false;
+					});
 			},
 			.Update = [=](float _DeltaTime) {
 				if (Renderer->IsAnimationEnd())
@@ -3645,6 +3656,7 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 
 void PlayerActor_Nero::ItemColCheck()
 {
+	if (5 <= BreakerList.size()) { return; }
 	std::vector<std::shared_ptr<GameEngineCollision>> Collisions;
 	if (Col_Player->CollisionAll(CollisionOrder::DevilBreaker, Collisions, ColType::SPHERE3D, ColType::SPHERE3D))
 	{
@@ -4035,7 +4047,7 @@ bool PlayerActor_Nero::Input_SpecialCheck()
 		OnDevilBraeker();
 		return true;
 	}
-	if (Controller->GetIsGTBomb() && CurDevilBreaker != DevilBreaker::None)
+	if (Controller->GetIsGTBomb() && CurDevilBreaker != DevilBreaker::None && false == IsDelayBomb)
 	{
 		ChangeState(FSM_State_Nero::Nero_GT_Bomb);
 		return true;
@@ -4109,7 +4121,7 @@ bool PlayerActor_Nero::Input_SpecialCheckFly()
 		OnDevilBraeker();
 		return true;
 	}
-	if (Controller->GetIsGTBomb() && CurDevilBreaker != DevilBreaker::None)
+	if (Controller->GetIsGTBomb() && CurDevilBreaker != DevilBreaker::None && false == IsDelayBomb)
 	{
 		ChangeState(FSM_State_Nero::Nero_GT_AirBomb);
 		return true;
@@ -4321,6 +4333,11 @@ void PlayerActor_Nero::OffDevilBraeker()
 
 void PlayerActor_Nero::AddBreaker(DevilBreaker _Breaker)
 {
+	if (5 <= BreakerList.size())
+	{
+		return;
+	}
+
 	NeroItemGlass::AddItemUI(true);
 	CurDevilBreaker = _Breaker;
 	switch (CurDevilBreaker)

@@ -230,6 +230,7 @@ private:
 	bool IsRouletteSpin = false;
 	bool IsShufle = false;
 	bool IsCalibur = false;
+	bool IsDelayBomb = false;
 
 	DevilBreaker CurDevilBreaker = DevilBreaker::None;
 	static std::list<DevilBreaker> BreakerList;
