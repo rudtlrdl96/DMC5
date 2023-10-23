@@ -192,17 +192,31 @@ void Location2_Level::InitPool()
 	//Passive컨트롤 용 미자리 블레이드 오브젝트 풀링
 	Poolable<Player_MirageBlade>::CreatePool(this, static_cast<int>(ActorOrder::Player), 8);
 
-	//Monster_헬카이나
+	//Enemy_HellCaina
 	Poolable<Enemy_HellCaina>::CreatePool(this, static_cast<int>(ActorOrder::Enemy), 3,
 		[](std::shared_ptr<Enemy_HellCaina> _ActorPtr)
 	{
-		_ActorPtr->SetControll(NetControllType::PassiveControll);
+		if (true == NetworkManager::IsClient())
+		{
+			_ActorPtr->SetControll(NetControllType::PassiveControll);
+		}
+		else
+		{
+			_ActorPtr->SetControll(NetControllType::ActiveControll);
+		}
 	});
 
-	//Monster_헬카이나
+	//Enemy_Empusa
 	Poolable<Enemy_Empusa>::CreatePool(this, static_cast<int>(ActorOrder::Enemy), 5,
 		[](std::shared_ptr<Enemy_Empusa> _ActorPtr)
 	{
-		_ActorPtr->SetControll(NetControllType::PassiveControll);
+		if (true == NetworkManager::IsClient())
+		{
+			_ActorPtr->SetControll(NetControllType::PassiveControll);
+		}
+		else
+		{
+			_ActorPtr->SetControll(NetControllType::ActiveControll);
+		}
 	});
 }

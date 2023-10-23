@@ -29,7 +29,8 @@ void Location2_EnemySpawner0::Start()
 				std::shared_ptr<Enemy_Empusa> Enemy = nullptr;
 
 				//싱글이거나 호스트일때만 몬스터를 생성 후 포인터를 반환합니다.(클라이언트인 경우 nullptr 반환)
-				Enemy = NetworkManager::CreateNetworkActor<Enemy_Empusa>(Level, static_cast<int>(ActorOrder::Enemy));
+				//Enemy = NetworkManager::CreateNetworkActor<Enemy_Empusa>(Level, static_cast<int>(ActorOrder::Enemy));
+				Enemy = Poolable<Enemy_Empusa>::PopFromPool(Level, static_cast<int>(ActorOrder::Enemy));
 				if (nullptr == Enemy)
 					continue;
 
