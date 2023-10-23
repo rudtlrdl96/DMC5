@@ -256,7 +256,7 @@ void TestStageLevel::InitPool()
 
 	//Enemy_HellCaina
 	Poolable<Enemy_HellCaina>::CreatePool(this, static_cast<int>(ActorOrder::Enemy), 3,
-		[](std::shared_ptr<Enemy_HellCaina> _ActorPtr)
+		[this](std::shared_ptr<Enemy_HellCaina> _ActorPtr)
 	{
 		if (true == NetworkManager::IsClient())
 		{
@@ -264,13 +264,14 @@ void TestStageLevel::InitPool()
 		}
 		else
 		{
-			_ActorPtr->SetControll(NetControllType::ActiveControll);
+			//_ActorPtr->SetControll(NetControllType::ActiveControll);
+			NetworkManager::LinkNetwork(_ActorPtr.get(), this);
 		}
 	});
 
 	//Enemy_Empusa
 	Poolable<Enemy_Empusa>::CreatePool(this, static_cast<int>(ActorOrder::Enemy), 5,
-		[](std::shared_ptr<Enemy_Empusa> _ActorPtr)
+		[this](std::shared_ptr<Enemy_Empusa> _ActorPtr)
 	{
 		if (true == NetworkManager::IsClient())
 		{
@@ -278,7 +279,8 @@ void TestStageLevel::InitPool()
 		}
 		else
 		{
-			_ActorPtr->SetControll(NetControllType::ActiveControll);
+			//_ActorPtr->SetControll(NetControllType::ActiveControll);
+			NetworkManager::LinkNetwork(_ActorPtr.get(), this);
 		}
 	});
 }
