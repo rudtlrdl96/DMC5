@@ -87,8 +87,12 @@ void Player_MirageBlade::LookTarget()
 	}
 }
 
-void Player_MirageBlade::Shoot()
+void Player_MirageBlade::Shoot(int _Damage, DamageType _Type)
 {
+	Collision->SetAttackData(_Type, _Damage, [=]
+		{
+			Collision->Off();
+		});
 	Collision->On();
 	IsShoot = true;
 	ResetLiveTime();
@@ -96,7 +100,8 @@ void Player_MirageBlade::Shoot()
 
 void Player_MirageBlade::SetSpiral()
 {
-	Collision->On();
+	IsSpiralStop = false;
+	Collision->Off();
 	Effect->PlayFX("Mirage_Spiral_1.effect");
 	EffectValue = 1;
 	GetLevel()->TimeEvent.AddEvent(0.08f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
@@ -108,6 +113,7 @@ void Player_MirageBlade::SetSpiral()
 
 void Player_MirageBlade::SpiralStop()
 {
+	IsSpiralStop = true;
 	Collision->Off();
 	Effect->PlayFX("Mirage_Spiral_3.effect");
 	EffectValue = 3;

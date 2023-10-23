@@ -97,7 +97,7 @@ void PlayerActor_Vergil::CreateMirageBlade()
 			CurBlade->SetTarget(LockOnEnemyTransform);
 			CurBlade->LookTarget();
 		}
-		CurBlade->Shoot();
+		CurBlade->Shoot(9, DamageType::VergilLight);
 
 	},
 	.Update = [=](float _DeltaTime) {
@@ -126,8 +126,23 @@ void PlayerActor_Vergil::CreateMirageBlade()
 			AllMirageBlades[i]->GetTransform()->AddLocalPosition(AllMirageBlades[i]->GetTransform()->GetWorldForwardVector() * 150);
 			AllMirageBlades[i]->SetSpiral();
 		}
+		AllMirageBlades[0]->Collision->GetTransform()->SetParent(GetTransform());
+		AllMirageBlades[0]->Collision->GetTransform()->SetLocalPosition({0, 50, 0});
+		AllMirageBlades[0]->Collision->GetTransform()->SetLocalRotation(float4::ZERO);
+		AllMirageBlades[0]->Collision->GetTransform()->SetLocalScale({300, 50, 300});
+		AllMirageBlades[0]->Collision->On();
+		AllMirageBlades[0]->Collision->SetAttackData(DamageType::VergilLight, 9, [=]
+			{
+				AllMirageBlades[0]->Collision->Off();
+				TimeEvent.AddEvent(0.2f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+					{
+						if (true == AllMirageBlades[0]->IsSpiralStop) { return; }
+						AllMirageBlades[0]->Collision->On();
+					});
+			});
 	},
 	.Update = [=](float _DeltaTime) {
+		AllMirageBlades[0]->Collision->GetTransform()->AddLocalRotation(float4::UP * 360 * _DeltaTime);
 		SpiralPivot->AddWorldRotation(float4::UP * 360 * _DeltaTime);
 		if (Controller->GetIsGunDown())
 		{
@@ -144,6 +159,10 @@ void PlayerActor_Vergil::CreateMirageBlade()
 	.Start = [=] {
 		Sound.Play("Mirage_", 0);
 		IsDelay = false;
+		AllMirageBlades[0]->Collision->GetTransform()->SetParent(AllMirageBlades[0]->GetTransform());
+		AllMirageBlades[0]->Collision->GetTransform()->SetLocalPosition({ 0, 0, -50 });
+		AllMirageBlades[0]->Collision->GetTransform()->SetLocalRotation(float4::ZERO);
+		AllMirageBlades[0]->Collision->GetTransform()->SetLocalScale({ 25, 25, 150 });
 		for (int i = 0; i < 8; i++)
 		{
 			AllMirageBlades[i]->SpiralStop();
@@ -161,7 +180,7 @@ void PlayerActor_Vergil::CreateMirageBlade()
 			{
 				AllMirageBlades[i]->GetTransform()->SetWorldPosition(AllMirageBlades[i]->GetTransform()->GetWorldPosition());
 				AllMirageBlades[i]->GetTransform()->SetWorldRotation(AllMirageBlades[i]->GetTransform()->GetWorldRotation());
-				AllMirageBlades[i]->Shoot();
+				AllMirageBlades[i]->Shoot(20, DamageType::VergilLight);
 			}
 			TimeEvent.AddEvent(1.0f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 			{
@@ -212,17 +231,12 @@ void PlayerActor_Vergil::CreateMirageBlade()
 					{
 						AllMirageBlades[i]->GetTransform()->SetWorldPosition(AllMirageBlades[i]->GetTransform()->GetWorldPosition());
 						AllMirageBlades[i]->GetTransform()->SetWorldRotation(AllMirageBlades[i]->GetTransform()->GetWorldRotation());
-						AllMirageBlades[i]->Collision->SetAttackData(DamageType::Air, 450);
-						AllMirageBlades[i]->Shoot();
+						AllMirageBlades[i]->Shoot(50, DamageType::Air);
 					}
 				});
 			TimeEvent.AddEvent(1.0f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
 					FSM_MirageBlade.ChangeState(FSM_State_MirageBlade::MirageBlade_Idle);
-					for (int i = 0; i < 8; i++)
-					{
-						AllMirageBlades[i]->Collision->SetAttackData(DamageType::VergilLight, 9);
-					}
 				});
 			IsDelay = true;
 		}
@@ -314,17 +328,12 @@ void PlayerActor_Vergil::CreateMirageBlade()
 					Sound.PlaySetVolume("Mirage_", 0, 0.5f);
 					AllMirageBlades[i]->GetTransform()->SetWorldPosition(AllMirageBlades[i]->GetTransform()->GetWorldPosition());
 					AllMirageBlades[i]->GetTransform()->SetWorldRotation(AllMirageBlades[i]->GetTransform()->GetWorldRotation());
-					AllMirageBlades[i]->Collision->SetAttackData(DamageType::VergilLight, 94);
-					AllMirageBlades[i]->Shoot();
+					AllMirageBlades[i]->Shoot(94, DamageType::VergilLight);
 				});
 
 			}
 			TimeEvent.AddEvent(1.5f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
-					for (int i = 0; i < 8; i++)
-					{
-						AllMirageBlades[i]->Collision->SetAttackData(DamageType::VergilLight, 9);
-					}
 					FSM_MirageBlade.ChangeState(FSM_State_MirageBlade::MirageBlade_Idle);
 				});
 			IsDelay = true;
@@ -372,8 +381,7 @@ void PlayerActor_Vergil::CreateMirageBlade()
 				{
 					AllMirageBlades[i]->GetTransform()->SetWorldPosition(AllMirageBlades[i]->GetTransform()->GetWorldPosition());
 					AllMirageBlades[i]->GetTransform()->SetWorldRotation(AllMirageBlades[i]->GetTransform()->GetWorldRotation());
-					AllMirageBlades[i]->Collision->SetAttackData(DamageType::Stun, 390);
-					AllMirageBlades[i]->Shoot();
+					AllMirageBlades[i]->Shoot(390, DamageType::Stun);
 				});
 			}
 			TimeEvent.AddEvent(1.4f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)

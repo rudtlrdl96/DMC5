@@ -21,9 +21,12 @@ public:
 	void Reset();
 	void SetTarget(GameEngineTransform* _Transform);
 	void LookTarget();
-	void Shoot();
+	void Shoot(int _Damage, DamageType _Type);
 	void SetSpiral();
 	void SpiralStop();
+
+	bool IsSpiralStop = false;
+
 	std::shared_ptr<class AttackCollision> Collision = nullptr;
 protected:
 	void Start() override;
