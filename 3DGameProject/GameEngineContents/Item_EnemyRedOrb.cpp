@@ -26,6 +26,7 @@ void Item_EnemyRedOrb::Start()
 		Orbs[i] = GetLevel()->CreateActor<Item_RedOrb>();
 		Orbs[i]->SetWait();
 		Orbs[i]->GetTransform()->SetParent(GetTransform());
-		Orbs[i]->GetTransform()->SetLocalRotation(float4::UP * static_cast<float>(45 * i));
+		float Random = GameEngineRandom::MainRandom.RandomFloat(-1, 1);
+		Orbs[i]->GetTransform()->SetLocalRotation(float4::UP * (static_cast<float>(45 * i) + Random * 40.0f));
 	}
 }

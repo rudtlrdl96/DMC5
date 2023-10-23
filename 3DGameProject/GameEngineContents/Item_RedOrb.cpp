@@ -66,10 +66,9 @@ void Item_RedOrb::Start()
 
 	FBXMesh = CreateComponent<GameEngineFBXRenderer>();
 	FBXMesh->SetFBXMesh("orb000_0_low.meshout.FBX", "FBX");
-	//FBXMesh->GetTransform()->SetLocalScale({2.0f, 2.0f, 2.0f});
 
 	Col = CreateComponent<GameEngineCollision>(CollisionOrder::RedOrb);
-	Col->GetTransform()->SetLocalScale({ 500, 500, 500 });
+	Col->GetTransform()->SetLocalScale({ 800, 800, 800 });
 
 	FSM.CreateState({ .StateValue = RedOrb_Wait,
 		.Start = [=]
@@ -95,7 +94,8 @@ void Item_RedOrb::Start()
 		Col->On();
 		FBXMesh->On();
 		Effect->PlayFX("RedOrb_Disappear.effect");
-		Force = GetTransform()->GetLocalForwardVector() * 1000;
+		float Random = GameEngineRandom::MainRandom.RandomFloat(0.3f, 1);
+		Force = GetTransform()->GetLocalForwardVector() * 1000 * Random;
 		FloorHeight = GetTransform()->GetLocalPosition().y - 10;
 		Gravity = 350;
 
@@ -103,7 +103,7 @@ void Item_RedOrb::Start()
 	},
 	.Update = [=](float _DeltaTime)
 	{
-		FBXMesh->GetTransform()->SetLocalScale(float4::ONE * std::clamp(GetLiveTime() * 5.0f, 0.0f, 2.0f));
+		FBXMesh->GetTransform()->SetLocalScale(float4::ONE * std::clamp(GetLiveTime() * 7.0f, 0.0f, 3.0f));
 
 		Force = float4::LerpClamp(Force, float4::ZERO, 0.05f);
 
@@ -122,6 +122,7 @@ void Item_RedOrb::Start()
 		},
 	.End = [=]
 	{
+		FBXMesh->GetTransform()->SetLocalScale(float4::ONE * 3);
 	}
 		});
 
@@ -165,7 +166,7 @@ void Item_RedOrb::Start()
 	FSM.CreateState({ .StateValue = RedOrb_Idle,
 	.Start = [=]
 	{
-		FBXMesh->GetTransform()->SetLocalScale(float4::ONE * 2.0f);
+		FBXMesh->GetTransform()->SetLocalScale(float4::ONE * 3.0f);
 	},
 	.Update = [=](float _DeltaTime)
 	{
