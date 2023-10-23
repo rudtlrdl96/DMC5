@@ -2205,6 +2205,9 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	// em0000_Buster_Finish, ¹ö½ºÆ® È÷Æ® ¶¥¿¡ ¶³¾îÁü
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Buster_Finish,
 	.Start = [=] {
+	MinusEnemyHP(500);
+	Sound.Play("Enemy_Damage_", 12);
+	Sound.PlayVoice(5);
 	IsHeavyAttack = false;
 	IsAirAttack = false;
 	IsSlamAttack = false;

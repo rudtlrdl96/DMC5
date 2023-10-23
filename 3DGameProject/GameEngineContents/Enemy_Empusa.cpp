@@ -1815,6 +1815,9 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// em0100_Buster_Finish, ¹ö½ºÆ® È÷Æ® ¶¥¿¡ ¶³¾îÁü
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Buster_Finish,
 	.Start = [=] {
+	MinusEnemyHP(500);
+	Sound.Play("Enemy_Damage_", 12);
+	Sound.PlayVoiceRandom(4, 5, false);
 	IsHeavyAttack = false;
 	IsAirAttack = false;
 	IsSlamAttack = false;

@@ -62,7 +62,14 @@ public:
 		}
 		if (true == IsPlayerCollision)
 		{
-			RankUI::GetRankInst()->AddRankScore(Data.DamageValue / 2);
+			if (Data.DamageTypeValue == DamageType::Buster)
+			{
+				RankUI::GetRankInst()->AddRankScore(300);
+			}
+			else
+			{
+				RankUI::GetRankInst()->AddRankScore(Data.DamageValue / 2);
+			}
 			if (nullptr != CallBack_Damage)
 			{
 				CallBack_Damage(Data.DamageValue * 0.001f);
