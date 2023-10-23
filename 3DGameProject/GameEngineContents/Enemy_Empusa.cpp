@@ -95,13 +95,54 @@ void Enemy_Empusa::EnemyAnimationLoad()
 			},
 			.CallBacks_int =
 			{
-				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
+				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1),
+				std::bind(&SoundController::Play, &Sound, "Empusa_SFX_",std::placeholders::_1),
+				std::bind(&SoundController::PlayVoice, &Sound, std::placeholders::_1, false),
 			},
 			.CallBacks_float4 =
 			{
 			}
 		}
 	);
+
+	// 사운드 로드
+	Sound.SetVoiceName("Empusa_V_");
+	if (nullptr == GameEngineSound::Find("Empusa_V_0.wav")) {
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Sound");
+		NewDir.Move("Voice");
+		NewDir.Move("Empusa");
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".wav" });
+
+		for (size_t i = 0; i < Files.size(); i++)
+		{
+			GameEngineSound::Load(Files[i].GetFullPath());
+		}
+
+		NewDir.MoveParent();
+		NewDir.MoveParent();
+		NewDir.Move("SFX");
+		NewDir.Move("Empusa");
+		Files = NewDir.GetAllFile({ ".wav" });
+
+		for (size_t i = 0; i < Files.size(); i++)
+		{
+			GameEngineSound::Load(Files[i].GetFullPath());
+		}
+
+		if (nullptr == GameEngineSound::Find("Enemy_Damage_0.wav"))
+		{
+			NewDir.MoveParent();
+			NewDir.Move("Enemy");
+			Files = NewDir.GetAllFile({ ".wav" });
+			for (size_t i = 0; i < Files.size(); i++)
+			{
+				GameEngineSound::Load(Files[i].GetFullPath());
+			}
+		}
+	}
 }
 
 void Enemy_Empusa::Start()
@@ -150,6 +191,8 @@ void Enemy_Empusa::Start()
 	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker) {
 		Player = _Attacker;
 		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
+		PlayDamageSound(Datas.SoundType);
+		Sound.PlayVoiceRandom(4, 5, false);
 		MinusEnemyHP(Datas.DamageValue);
 
 		if (DamageType::VergilLight == Datas.DamageTypeValue)
@@ -353,8 +396,9 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 	PlayerAttackCheck(AttackCol.get());
 	MonsterAttackCollision->Off();
 	DamageData Data = AttackCol->GetDamage();
+	PlayDamageSound(Data.SoundType);
 	MinusEnemyHP(Data.DamageValue);
-
+	Sound.PlayVoiceRandom(4, 5, false);
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
 		IsVergilLight = true;
@@ -463,6 +507,8 @@ void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 	if (nullptr == AttackCol) { return; }
 
 	DamageData Data = AttackCol->GetDamage();
+	PlayDamageSound(Data.SoundType);
+	Sound.PlayVoiceRandom(4, 5, false);
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
@@ -1674,6 +1720,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 앞으로 넘어진 상태에서 Death
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Death,
 	.Start = [=] {
+	Sound.PlayVoice(15);
 	EnemyRenderer->ChangeAnimation("em0100_downward_die");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1689,6 +1736,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 앞으로 쓰러지면서 죽음
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Death_Back,
 	.Start = [=] {
+	Sound.PlayVoice(15);
 	EnemyRenderer->ChangeAnimation("em0100_death_back");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1703,6 +1751,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 뒤로 쓰러지면서 죽음
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Death_Front,
 	.Start = [=] {
+	Sound.PlayVoice(15);
 	EnemyRenderer->ChangeAnimation("em0100_death_front");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2143,6 +2192,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Death,
 	.Start = [=] {
+	Sound.PlayVoice(15);
 	EnemyRenderer->ChangeAnimation("em0100_downward_die");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2152,6 +2202,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Death_Back,
 	.Start = [=] {
+	Sound.PlayVoice(15);
 	EnemyRenderer->ChangeAnimation("em0100_death_back");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2161,6 +2212,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Death_Front,
 	.Start = [=] {
+	Sound.PlayVoice(15);
 	EnemyRenderer->ChangeAnimation("em0100_death_front");
 	},
 	.Update = [=](float _DeltaTime) {

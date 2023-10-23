@@ -631,6 +631,7 @@ void CavaliereAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 
 	PlayerAttackCheck(AttackCol.get());
 	DamageData Data = AttackCol->GetDamage();
+	PlayDamageSound(Data.SoundType);
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{

@@ -890,6 +890,32 @@ void BaseEnemyActor::DeathCheck()
 	}
 }
 
+void BaseEnemyActor::PlayDamageSound(DamageSoundType _Type)
+{
+	switch (_Type)
+	{
+	case DamageSoundType::None:
+		break;
+	case DamageSoundType::Sword:
+		Sound.PlayRandom("Enemy_Damage_", 0, 3);
+		break;
+	case DamageSoundType::Magic:
+		Sound.PlayRandom("Enemy_Damage_", 4, 5);
+		break;
+	case DamageSoundType::Katana:
+		Sound.PlayRandom("Enemy_Damage_", 0, 3);
+		break;
+	case DamageSoundType::Blunt:
+		Sound.PlayRandom("Enemy_Damage_", 7, 8);
+		break;
+	case DamageSoundType::Gun:
+		Sound.Play("Enemy_Damage_", 11);
+		break;
+	default:
+		break;
+	}
+}
+
 void BaseEnemyActor::DeathEvent()
 {
 	for (const std::function<void()>& CallBack : DeathCallbacks)

@@ -107,6 +107,8 @@ protected:
 	virtual void DamageCollisionCheck_Client(float _DeltaTime) = 0;   // 클라이언트에서 처리할 데미지 콜리전 체크 함수
 	virtual void RecognizeCollisionCheck(float _DeltaTime) = 0;
 	virtual void DeathCheck();
+	virtual void PlayDamageSound(DamageSoundType _Type);
+
 	void DeathEvent();
 	void RedOrbDrop();													// 사망시 실행. 레드오브를 뿌립니다
 
