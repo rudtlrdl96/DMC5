@@ -212,7 +212,7 @@ void Item_RedOrb::Start()
 	{
 		if (1 < GetLiveTime())
 		{
-			Off();
+			Death();
 		}
 	},
 	.End = [=]

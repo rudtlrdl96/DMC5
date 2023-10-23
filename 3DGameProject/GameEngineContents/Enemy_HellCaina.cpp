@@ -11,7 +11,7 @@
 #include "AnimationEvent.h"
 #include "BasePlayerActor.h"
 #include "AttackCollision.h"
-
+#include "FXSystem.h"
 Enemy_HellCaina::Enemy_HellCaina()
 {
 }
@@ -105,6 +105,26 @@ void Enemy_HellCaina::EnemyAnimationLoad()
 		}
 	);
 
+	{
+		// 이펙트 시스템 생성
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Effect");
+		NewDir.Move("Enemy");
+		std::vector<GameEngineFile> FXFiles = NewDir.GetAllFile({ ".Effect" });
+
+		EffectRenderer = CreateComponent<FXSystem>();
+		for (size_t i = 0; i < FXFiles.size(); i++)
+		{
+			if (nullptr == FXData::Find(FXFiles[i].GetFileName()))
+			{
+				FXData::Load(FXFiles[i].GetFullPath());
+			}
+			EffectRenderer->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
+		}
+	}
+
 	// 사운드 로드
 	Sound.SetVoiceName("HellCaina_V_");
 	if (nullptr == GameEngineSound::Find("HellCaina_V_0.wav")) {
@@ -194,7 +214,7 @@ void Enemy_HellCaina::Start()
 		Player = _Attacker; 
 		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
 		MinusEnemyHP(Datas.DamageValue);
-		PlayDamageSound(Datas.SoundType);
+		PlayDamageEvent(Datas.DamageTypeValue, Datas.SoundType);
 		Sound.PlayVoice(3, false);
 		if (DamageType::VergilLight == Datas.DamageTypeValue)
 		{
@@ -351,7 +371,7 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 	MonsterAttackCollision->Off();
 	DamageData Data = AttackCol->GetDamage();
 	MinusEnemyHP(Data.DamageValue);
-	PlayDamageSound(Data.SoundType);
+	PlayDamageEvent(Data.DamageTypeValue, Data.SoundType);
 	Sound.PlayVoice(3, false);
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
@@ -463,7 +483,7 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 	if (nullptr == AttackCol) { return; }
 
 	DamageData Data = AttackCol->GetDamage();
-	PlayDamageSound(Data.SoundType);
+	PlayDamageEvent(Data.DamageTypeValue, Data.SoundType);
 	Sound.PlayVoice(3, false);
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
@@ -659,6 +679,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 최초 등장_02
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Appear_02,
 	.Start = [=] {
+	EffectRenderer->PlayFX("Enemy_Appear.effect");
 	EnemyRenderer->ChangeAnimation("em0000_appear_02");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1819,6 +1840,7 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	// 최초 등장_02
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Appear_02,
 	.Start = [=] {
+	EffectRenderer->PlayFX("Enemy_Appear.effect");
 	EnemyRenderer->ChangeAnimation("em0000_appear_02");
 	},
 	.Update = [=](float _DeltaTime) {
