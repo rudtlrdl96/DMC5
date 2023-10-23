@@ -420,6 +420,7 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 		if (true == IsAirAttack || true == IsSlamAttack || true == IsHeavyAttack)
 		{
 			StartRenderShaking(8);
+			AttackDelayCheck = 0.0f;
 			ChangeState(FSM_State_Empusa::Empusa_Air_Damage_Under);
 			return;
 		}
@@ -427,6 +428,7 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 		if (true == IsCollapse)
 		{
 			StartRenderShaking(8);
+			AttackDelayCheck = 0.0f;
 			return;
 		}
 

@@ -359,12 +359,12 @@ void BasePlayerActor::DamageColCheck()
 			});
 		}
 		RankUI::GetRankInst()->AddRankScore(300);
-		Sound.Play("Player_Damage");
 		AddDTGauge(0.5f);
 		IsEvade = false;
 		return;
 	}
 
+	Sound.Play("Player_Damage");
 	DamageData Data = AttackCol->GetDamage();
 	HP -= Data.DamageValue;
 	switch (Data.DamageTypeValue)

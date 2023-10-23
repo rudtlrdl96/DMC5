@@ -3021,7 +3021,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_DevilBreakerCheckFly()) { return; }
 			},
 			.End = [=] {
-				Col_Attack->SetDamageSoundType(DamageSoundType::None);
+				Col_Attack->SetDamageSoundType(DamageSoundType::Sword);
 				Col_Attack->Off();
 			}
 			});
