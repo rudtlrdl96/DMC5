@@ -185,12 +185,24 @@ void FieldMap::ClearFieldMapRenderer()
 	FieldMapRenderer.clear();
 }
 
+#include "BasePlayerActor.h"
+
 bool FieldMap::IsPlayerCollsionToCullingCol()
 {
 	for (size_t i = 0; i < FieldMapCullingCol.size(); i++)
 	{
-		if (nullptr != FieldMapCullingCol[i].lock()->Collision(CollisionOrder::Player, ColType::OBBBOX3D, ColType::OBBBOX3D))
+		std::vector<std::shared_ptr<GameEngineCollision>> Players;
+		if (false == FieldMapCullingCol[i].lock()->CollisionAll(CollisionOrder::Player, Players, ColType::OBBBOX3D, ColType::OBBBOX3D))
+			continue;
+
+		for (std::shared_ptr<GameEngineCollision> PlayerCol : Players)
 		{
+			BasePlayerActor* TempPlayer = nullptr;
+			TempPlayer = dynamic_cast<BasePlayerActor*>(PlayerCol->GetActor());
+
+			if (NetControllType::PassiveControll == TempPlayer->GetControllType())
+				continue;
+			
 			return true;
 		}
 	}
@@ -308,5 +320,6 @@ void FieldMap::DrawEditor()
 		FieldMapRenderer[i].lock()->SetBaseColor(float4(InputColor[0], InputColor[1], InputColor[2], InputColor[3]));
 	}
 }
+
 
 
