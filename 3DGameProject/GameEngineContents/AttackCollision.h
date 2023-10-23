@@ -6,6 +6,7 @@ class DamageData
 {
 public:
 	DamageType DamageTypeValue = DamageType::None;
+	DamageSoundType SoundType = DamageSoundType::None;
 	int DamageValue = 0;
 };
 
@@ -70,8 +71,17 @@ public:
 		return Data;
 	}
 
+	void SetDamageSoundType(DamageSoundType _Type)
+	{
+		Data.SoundType = _Type;
+	}
+
 	void SetAttackData(DamageData _Data, std::function<void()> _CallBack = nullptr, float _HitStopTime = 0)
 	{
+		if (_Data.SoundType == DamageSoundType::None)
+		{
+			_Data.SoundType = Data.SoundType;
+		}
 		Data = _Data;
 		CallBack = _CallBack;
 		HitStopTime = _HitStopTime;

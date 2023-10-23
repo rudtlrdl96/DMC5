@@ -12,7 +12,15 @@ enum class DamageType
 	Buster,	// 네로 잡기 공격
 	Stun,	// 경직 (저지먼트컷엔드)
 };
-
+enum class DamageSoundType
+{
+	None,
+	Sword,	// 검 (네로)
+	Magic,	// 마법 (네로)
+	Katana,	// 도 (버질)
+	Blunt,	// 둔기(버질)
+	Gun,	// 총, 원거리 공격
+};
 enum class LogOrder
 {
 	Network,

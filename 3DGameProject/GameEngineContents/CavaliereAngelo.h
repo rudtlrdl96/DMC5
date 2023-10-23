@@ -130,6 +130,7 @@ private:
 	void ParryCheck();
 	void ParryTime();
 	void BossTurn();
+	void PlayDamageSound(DamageSoundType _Type);
 
 	float WaitTime = 0.0f;
 	float RotationDelayTime = 0.0f;

@@ -69,6 +69,7 @@ void PlayerActor_Nero::Start()
 					SetTimeScale(1.f);
 				});
 		});
+	Col_Attack->SetDamageSoundType(DamageSoundType::Sword);
 
 	BreakerList.push_back(DevilBreaker::None);
 
@@ -2130,6 +2131,7 @@ void PlayerActor_Nero::PlayerLoad()
 					Col_Attack->GetTransform()->SetWorldPosition(LockOnEnemyTransform->GetWorldPosition());
 					Col_Attack->GetTransform()->SetLocalScale({ 150, 150, 150 });
 				}
+				Col_Attack->SetDamageSoundType(DamageSoundType::Gun);
 				Col_Attack->On();
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -2169,8 +2171,10 @@ void PlayerActor_Nero::PlayerLoad()
 					return;
 				}			},
 			.End = [=] {
+				Col_Attack->SetDamageSoundType(DamageSoundType::Sword);
 				WeaponIdle();
-			}
+			}	
+
 			});
 		// Air Shoot
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_AirShoot,
@@ -2198,6 +2202,7 @@ void PlayerActor_Nero::PlayerLoad()
 					Col_Attack->GetTransform()->SetWorldPosition(LockOnEnemyTransform->GetWorldPosition());
 					Col_Attack->GetTransform()->SetLocalScale({ 150, 150, 150 });
 				}
+				Col_Attack->SetDamageSoundType(DamageSoundType::Gun);
 				Col_Attack->On();
 				BlueRoseOn();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -2227,6 +2232,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_GunCheckFly()) { return; }
 			},
 			.End = [=] {
+				Col_Attack->SetDamageSoundType(DamageSoundType::Sword);
 				WeaponIdle();
 			}
 			});
@@ -2248,6 +2254,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				Col_Attack->SetAttackData(DamageType::Heavy, 420);
+				Col_Attack->SetDamageSoundType(DamageSoundType::Magic);
 				EffectSystem->PlayFX("Overture_Shoot.effect");
 				Renderer->ChangeAnimation("pl0000_Overture_Shoot", true);
 				Renderer_Overture->ChangeAnimation("wp00_010_Shoot.fbx", true);
@@ -2282,6 +2289,7 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 			},
 			.End = [=] {
+				Col_Attack->SetDamageSoundType(DamageSoundType::Sword);
 				SetOverture();
 				WeaponIdle();
 			}
@@ -2299,6 +2307,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
 				Col_Attack->SetAttackData(DamageType::Heavy, 420);
+				Col_Attack->SetDamageSoundType(DamageSoundType::Magic);
 				EffectSystem->PlayFX("Overture_Shoot.effect");
 				Renderer->ChangeAnimation("pl0000_Overture_Air_Shoot", true);
 				Renderer_Overture->ChangeAnimation("wp00_010_Air_Shoot.fbx", true);
@@ -2327,6 +2336,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_DevilBreakerCheckFly()) { return; }
 			},
 			.End = [=] {
+				Col_Attack->SetDamageSoundType(DamageSoundType::Sword);
 				SetOverture();
 				WeaponIdle();
 			}
@@ -2345,6 +2355,7 @@ void PlayerActor_Nero::PlayerLoad()
 				InputCheck = false;
 				SetInvincibility(0.5f);
 				Col_Attack->SetAttackData(DamageType::Heavy, 75);
+				Col_Attack->SetDamageSoundType(DamageSoundType::Magic);
 				EffectSystem->PlayFX("Gerbera_Jump_Back.effect");
 				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Back", true);
 			},
@@ -2366,6 +2377,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_DevilBreakerCheckFly()) { return; }
 			},
 			.End = [=] {
+				Col_Attack->SetDamageSoundType(DamageSoundType::Sword);
 			}
 			});
 
@@ -2379,6 +2391,7 @@ void PlayerActor_Nero::PlayerLoad()
 				WeaponIdle();
 				SetInvincibility(0.5f);
 				Col_Attack->SetAttackData(DamageType::Heavy, 75);
+				Col_Attack->SetDamageSoundType(DamageSoundType::Magic);
 				EffectSystem->PlayFX("Gerbera_Jump_Back.effect");
 				EffectSystem->GetTransform()->SetLocalRotation({ 0, 180, 0 });
 				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Front", true);
@@ -2401,6 +2414,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_DevilBreakerCheckFly()) { return; }
 			},
 			.End = [=] {
+				Col_Attack->SetDamageSoundType(DamageSoundType::Sword);
 				EffectSystem->GetTransform()->SetLocalRotation(float4::ZERO);
 			}
 			});
@@ -2415,6 +2429,7 @@ void PlayerActor_Nero::PlayerLoad()
 				WeaponIdle();
 				SetInvincibility(0.5f);
 				Col_Attack->SetAttackData(DamageType::Heavy, 75);
+				Col_Attack->SetDamageSoundType(DamageSoundType::Magic);
 				EffectSystem->PlayFX("Gerbera_Jump_Back.effect");
 				EffectSystem->GetTransform()->SetLocalRotation({ 0, 90, 0 });
 				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Left", true);
@@ -2437,6 +2452,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_DevilBreakerCheckFly()) { return; }
 			},
 			.End = [=] {
+				Col_Attack->SetDamageSoundType(DamageSoundType::Sword);
 				EffectSystem->GetTransform()->SetLocalRotation(float4::ZERO);
 			}
 			});
@@ -2451,6 +2467,7 @@ void PlayerActor_Nero::PlayerLoad()
 				WeaponIdle();
 				SetInvincibility(0.5f);
 				Col_Attack->SetAttackData(DamageType::Heavy, 75);
+				Col_Attack->SetDamageSoundType(DamageSoundType::Magic);
 				EffectSystem->PlayFX("Gerbera_Jump_Back.effect");
 				EffectSystem->GetTransform()->SetLocalRotation({ 0, -90, 0 });
 				Renderer->ChangeAnimation("pl0000_Gerbera_Jump_Right", true);
@@ -2473,6 +2490,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_DevilBreakerCheckFly()) { return; }
 			},
 			.End = [=] {
+				Col_Attack->SetDamageSoundType(DamageSoundType::Sword);
 				EffectSystem->GetTransform()->SetLocalRotation(float4::ZERO);
 			}
 			});
@@ -2486,6 +2504,7 @@ void PlayerActor_Nero::PlayerLoad()
 				Sound.PlayVoiceRandom(6, 7, DTValue);
 				Sound.Play("BusterArm_Catch");
 				Col_Attack->SetAttackData(DamageType::Buster, 0, std::bind(&PlayerActor_Nero::ChangeState, this, Nero_Buster_Strike));
+				Col_Attack->SetDamageSoundType(DamageSoundType::Magic);
 				WeaponIdle();
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
@@ -2522,6 +2541,7 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 			},
 			.End = [=] {
+				Col_Attack->SetDamageSoundType(DamageSoundType::Sword);
 				Col_Attack->Off();
 			}
 			});
@@ -2699,6 +2719,7 @@ void PlayerActor_Nero::PlayerLoad()
 				Sound.PlayVoiceRandom(6, 7, DTValue);
 				Sound.Play("BusterArm_Catch");
 				Col_Attack->SetAttackData(DamageType::Buster, 50, std::bind(&PlayerActor_Nero::ChangeState, this, Nero_Buster_Strike_Air));
+				Col_Attack->SetDamageSoundType(DamageSoundType::Magic);
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
 				PhysXCapsule->TurnOffGravity();
@@ -2731,6 +2752,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_DevilBreakerCheckFly()) { return; }
 			},
 			.End = [=] {
+				Col_Attack->SetDamageSoundType(DamageSoundType::Sword);
 				Col_Attack->Off();
 			}
 			});
@@ -2827,6 +2849,7 @@ void PlayerActor_Nero::PlayerLoad()
 				WeaponIdle();
 				Col_Attack->On();
 				Col_Attack->SetAttackData(DamageType::Snatch, 0, std::bind(&PlayerActor_Nero::ChangeState, this, FSM_State_Nero::Nero_Snatch_Pull));
+				Col_Attack->SetDamageSoundType(DamageSoundType::Magic);
 				Col_Attack->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
 				Col_Attack->GetTransform()->SetLocalScale({100, 100, 100});
 				if (nullptr == LockOnEnemyTransform)
@@ -2871,6 +2894,7 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 			},
 			.End = [=] {
+				Col_Attack->SetDamageSoundType(DamageSoundType::Sword);
 				Col_Attack->Off();
 			}
 			});
@@ -2957,6 +2981,7 @@ void PlayerActor_Nero::PlayerLoad()
 				WeaponIdle();
 				Col_Attack->On();
 				Col_Attack->SetAttackData(DamageType::Snatch, 0, std::bind(&PlayerActor_Nero::ChangeState, this, FSM_State_Nero::Nero_Snatch_Pull_Air));
+				Col_Attack->SetDamageSoundType(DamageSoundType::Magic);
 				Col_Attack->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
 				Col_Attack->GetTransform()->SetLocalScale({ 100, 100, 100 });
 				if (nullptr == LockOnEnemyTransform)
@@ -2996,6 +3021,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_DevilBreakerCheckFly()) { return; }
 			},
 			.End = [=] {
+				Col_Attack->SetDamageSoundType(DamageSoundType::None);
 				Col_Attack->Off();
 			}
 			});
@@ -3077,6 +3103,7 @@ void PlayerActor_Nero::PlayerLoad()
 			PhysXCapsule->SetLinearVelocityZero();
 			SetInvincibility(0.5f);
 			Col_Attack->SetAttackData(DamageType::Air, 150);
+			Col_Attack->SetDamageSoundType(DamageSoundType::Magic);
 			EffectSystem->PlayFX("Nero_DT_On.effect");
 			Renderer->ChangeAnimation("pl0000_DT_Start", true);
 			InputCheck = false;
@@ -3106,6 +3133,7 @@ void PlayerActor_Nero::PlayerLoad()
 			}
 		},
 		.End = [=] {
+				Col_Attack->SetDamageSoundType(DamageSoundType::Sword);
 		}
 			});
 		// DT Air Start
@@ -3120,6 +3148,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->TurnOffGravity();
 				SetInvincibility(0.5f);
 				Col_Attack->SetAttackData(DamageType::Air, 150);
+				Col_Attack->SetDamageSoundType(DamageSoundType::Magic);
 				EffectSystem->PlayFX("Nero_DT_On.effect");
 				Renderer->ChangeAnimation("pl0000_DT_AirStart", true);
 			},
@@ -3142,6 +3171,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_DevilBreakerCheckFly()) { return; }
 			},
 			.End = [=] {
+				Col_Attack->SetDamageSoundType(DamageSoundType::Sword);
 			}
 			});
 
@@ -3155,6 +3185,7 @@ void PlayerActor_Nero::PlayerLoad()
 			PhysXCapsule->SetLinearVelocityZero();
 			SetInvincibility(0.5f);
 			Col_Attack->SetAttackData(DamageType::Heavy, 150);
+			Col_Attack->SetDamageSoundType(DamageSoundType::Magic);
 			EffectSystem->PlayFX("GT_Bomb.effect");
 			Renderer->ChangeAnimation("pl0000_GT_Bomb", true);
 			InputCheck = false;
@@ -3186,6 +3217,7 @@ void PlayerActor_Nero::PlayerLoad()
 			}
 		},
 		.End = [=] {
+				Col_Attack->SetDamageSoundType(DamageSoundType::Sword);
 		}
 			});
 		// GT Bomb Air
@@ -3199,6 +3231,7 @@ void PlayerActor_Nero::PlayerLoad()
 				PhysXCapsule->TurnOffGravity();
 				SetInvincibility(0.5f);
 				Col_Attack->SetAttackData(DamageType::Heavy, 150);
+				Col_Attack->SetDamageSoundType(DamageSoundType::Magic);
 				EffectSystem->PlayFX("GT_Bomb.effect");
 				Renderer->ChangeAnimation("pl0000_GT_AirBomb", true);
 				IsDelayBomb = true;
@@ -3226,6 +3259,7 @@ void PlayerActor_Nero::PlayerLoad()
 				if (true == Input_DevilBreakerCheckFly()) { return; }
 			},
 			.End = [=] {
+				Col_Attack->SetDamageSoundType(DamageSoundType::Sword);
 			}
 			});
 

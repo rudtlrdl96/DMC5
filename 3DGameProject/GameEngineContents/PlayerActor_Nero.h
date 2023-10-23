@@ -223,6 +223,7 @@ private:
 	bool IsExActTiming = false;	// 익시드 타이밍 여부
 	bool IsMaxActTiming = false;	// 멕스 엑트 타이밍 여부
 	bool IsActFaild = false;		// 엑트 실패 여부
+	bool IsDelayBomb = false;
 
 	bool IsStreak =			true;
 	bool IsSplit =			true;
@@ -230,7 +231,6 @@ private:
 	bool IsRouletteSpin =	true;
 	bool IsShufle =			true;
 	bool IsCalibur =		true;
-	bool IsDelayBomb =		true;
 
 	DevilBreaker CurDevilBreaker = DevilBreaker::None;
 	static std::list<DevilBreaker> BreakerList;

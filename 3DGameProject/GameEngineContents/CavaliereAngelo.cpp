@@ -215,6 +215,7 @@ void CavaliereAngelo::Start()
 		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
 		MinusEnemyHP(Datas.DamageValue);
 		HPClientStackPlus(Datas.DamageValue);
+		PlayDamageSound(Datas.SoundType);
 
 		if (600 < HPClientStack)
 		{
@@ -456,7 +457,7 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 	PlayerAttackCheck(AttackCol.get());
 	MonsterAttackCollision->Off();
 	DamageData Data = AttackCol->GetDamage();
-
+	PlayDamageSound(Data.SoundType);
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
 		IsVergilLight = true;
@@ -729,6 +730,32 @@ void CavaliereAngelo::BossTurn()
 
 	PhysXCapsule->SetWorldRotation(GoalRot);
 	AllDirectSetting_Normal();
+}
+
+void CavaliereAngelo::PlayDamageSound(DamageSoundType _Type)
+{
+	switch (_Type)
+	{
+	case DamageSoundType::None:
+		break;
+	case DamageSoundType::Sword:
+		Sound.PlayRandom("Cavaliere_Damage_", 0, 1);
+		break;
+	case DamageSoundType::Magic:
+		Sound.Play("Cavaliere_Damage_", 5);
+		break;
+	case DamageSoundType::Katana:
+		Sound.PlayRandom("Cavaliere_Damage_", 2, 3);
+		break;
+	case DamageSoundType::Blunt:
+		Sound.Play("Cavaliere_Damage_", 4);
+		break;
+	case DamageSoundType::Gun:
+		Sound.Play("Cavaliere_Damage_", 2);
+		break;
+	default:
+		break;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
