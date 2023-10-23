@@ -95,13 +95,54 @@ void Enemy_HellCaina::EnemyAnimationLoad()
 			},
 			.CallBacks_int =
 			{
-				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
+				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1),
+				std::bind(&SoundController::Play, &Sound, "HellCaina_SFX_",std::placeholders::_1),
+				std::bind(&SoundController::PlayVoice, &Sound, std::placeholders::_1, false),
 			},
 			.CallBacks_float4 =
 			{
 			}
 		}
 	);
+
+	// 사운드 로드
+	Sound.SetVoiceName("HellCaina_V_");
+	if (nullptr == GameEngineSound::Find("HellCaina_V_0.wav")) {
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Sound");
+		NewDir.Move("Voice");
+		NewDir.Move("HellCaina");
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".wav" });
+
+		for (size_t i = 0; i < Files.size(); i++)
+		{
+			GameEngineSound::Load(Files[i].GetFullPath());
+		}
+
+		NewDir.MoveParent();
+		NewDir.MoveParent();
+		NewDir.Move("SFX");
+		NewDir.Move("HellCaina");
+		Files = NewDir.GetAllFile({ ".wav" });
+
+		for (size_t i = 0; i < Files.size(); i++)
+		{
+			GameEngineSound::Load(Files[i].GetFullPath());
+		}
+
+		if (nullptr == GameEngineSound::Find("Enemy_Damage_0.wav"))
+		{
+			NewDir.MoveParent();
+			NewDir.Move("Enemy");
+			Files = NewDir.GetAllFile({ ".wav" });
+			for (size_t i = 0; i < Files.size(); i++)
+			{
+				GameEngineSound::Load(Files[i].GetFullPath());
+			}
+		}
+	}
 }
 
 void Enemy_HellCaina::Start()
@@ -153,7 +194,8 @@ void Enemy_HellCaina::Start()
 		Player = _Attacker; 
 		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
 		MinusEnemyHP(Datas.DamageValue);
-
+		PlayDamageSound(Datas.SoundType);
+		Sound.PlayVoice(3, false);
 		if (DamageType::VergilLight == Datas.DamageTypeValue)
 		{
 			IsVergilLight = true;
@@ -309,7 +351,8 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 	MonsterAttackCollision->Off();
 	DamageData Data = AttackCol->GetDamage();
 	MinusEnemyHP(Data.DamageValue);
-
+	PlayDamageSound(Data.SoundType);
+	Sound.PlayVoice(3, false);
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
 		IsVergilLight = true;
@@ -332,12 +375,14 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 		{
 			StartRenderShaking(8);
 			ChangeState(FSM_State_HellCaina::HellCaina_Air_Damage_Under);
+			AttackDelayCheck = 0.0f;
 			return;
 		}
 
 		if (true == IsCollapse)
 		{
 			StartRenderShaking(8);
+			AttackDelayCheck = 0.0f;
 			return;
 		}
 
@@ -418,6 +463,8 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 	if (nullptr == AttackCol) { return; }
 
 	DamageData Data = AttackCol->GetDamage();
+	PlayDamageSound(Data.SoundType);
+	Sound.PlayVoice(3, false);
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
@@ -440,12 +487,14 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 		{
 			StartRenderShaking(8);
 			ChangeState_Client(FSM_State_HellCaina::HellCaina_Air_Damage_Under);
+			AttackDelayCheck = 0.0f;
 			return;
 		}
 
 		if (true == IsCollapse)
 		{
 			StartRenderShaking(8);
+			AttackDelayCheck = 0.0f;
 			return;
 		}
 
@@ -1661,6 +1710,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 앞으로 쓰러지면서 죽음
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Death_Back,
 	.Start = [=] {
+	Sound.PlayVoice(5, false);
 	EnemyRenderer->ChangeAnimation("em0000_death_back");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1675,6 +1725,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 뒤로 쓰러지면서 죽음
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Death_Front,
 	.Start = [=] {
+	Sound.PlayVoice(5, false);
 	EnemyRenderer->ChangeAnimation("em0000_death_front");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2141,6 +2192,7 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	// 앞으로 쓰러지면서 죽음
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Death_Back,
 	.Start = [=] {
+	Sound.PlayVoice(5, false);
 	EnemyRenderer->ChangeAnimation("em0000_death_back");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2151,6 +2203,7 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	// 뒤로 쓰러지면서 죽음
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Death_Front,
 	.Start = [=] {
+	Sound.PlayVoice(5, false);
 	EnemyRenderer->ChangeAnimation("em0000_death_front");
 	},
 	.Update = [=](float _DeltaTime) {

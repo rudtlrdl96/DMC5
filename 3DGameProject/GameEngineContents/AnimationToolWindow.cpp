@@ -584,11 +584,11 @@ void AnimationToolWindow::AnimationFrameUpdate()
 			// 버질 테스트용
 			if (CurData.Index == 1)
 			{
-				GameEngineSound::Play("Empusa_SFX_" + std::to_string(CurData.IntValue) + ".wav");
+				GameEngineSound::Play("HellCaina_SFX_" + std::to_string(CurData.IntValue) + ".wav");
 			}
 			else if (CurData.Index == 2)
 			{
-				GameEngineSound::Play("Empusa_V_" + std::to_string(CurData.IntValue) + ".wav");
+				GameEngineSound::Play("HellCaina_V_" + std::to_string(CurData.IntValue) + ".wav");
 				//GameEngineSound::Play("BR_" + std::to_string(CurData.IntValue) + ".wav");
 			}
 			else if (CurData.Index == 3)
