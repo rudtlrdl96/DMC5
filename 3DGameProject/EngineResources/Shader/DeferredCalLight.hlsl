@@ -38,7 +38,7 @@ TextureCube PointShadowTex : register(t5); // Box ShadowMap
 
 //Texture2D SSSTex : register(t5); // Subsurface scattering
 
-SamplerState POINTSAMPLER : register(s0);
+SamplerState ENGINEBASE : register(s0);
 
 float GGX_Distribution(float3 normal, float3 halfVector, float roughness)
 {
@@ -112,7 +112,7 @@ float CalShadow(float4 _WorldPos, int _LightType)
             VegelPos.y /= (AllLight[LightCount].ShadowTargetSizeY * 0.5f);
             
             float2 CalPos = ShadowUV + VegelPos;
-            float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, CalPos.xy).r;
+            float ShadowDepthValue = ShadowTex.Sample(ENGINEBASE, CalPos.xy).r;
             
             if (0.001f < ShadowUV.x && 0.999f > ShadowUV.x &&
             0.001f < ShadowUV.y && 0.999f > ShadowUV.y &&
@@ -138,7 +138,7 @@ float CalShadow(float4 _WorldPos, int _LightType)
             
             float3 CalPos = normalize(LightUV) + VegelPos;
             
-            float ShadowDepthValue = PointShadowTex.Sample(POINTSAMPLER, normalize(CalPos)).r;
+            float ShadowDepthValue = PointShadowTex.Sample(ENGINEBASE, normalize(CalPos)).r;
         
             if (CurDepthValue >= (ShadowDepthValue + 5.0f))
             {
@@ -163,7 +163,7 @@ float CalShadow(float4 _WorldPos, int _LightType)
             VegelPos.y /= (AllLight[LightCount].ShadowTargetSizeY * 0.5f);
             
             float2 CalPos = ShadowUV + VegelPos;
-            float ShadowDepthValue = ShadowTex.Sample(POINTSAMPLER, CalPos.xy).r;
+            float ShadowDepthValue = ShadowTex.Sample(ENGINEBASE, CalPos.xy).r;
             
             if (CurDepthValue >= (ShadowDepthValue + 5.0f))
             {
@@ -181,10 +181,10 @@ LightOutPut DeferredCalLight_PS(Output _Input)
 {
     LightOutPut NewOutPut = (LightOutPut) 0;
     
-    float4 DeferredPosition = PositionTex.Sample(POINTSAMPLER, _Input.TEXCOORD.xy);
-    float4 Normal = NormalTex.Sample(POINTSAMPLER, _Input.TEXCOORD.xy);
-    float4 Mat = MatTex.Sample(POINTSAMPLER, _Input.TEXCOORD.xy);
-    float4 Gleam = GleamTex.Sample(POINTSAMPLER, _Input.TEXCOORD.xy);
+    float4 DeferredPosition = PositionTex.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
+    float4 Normal = NormalTex.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
+    float4 Mat = MatTex.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
+    float4 Gleam = GleamTex.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
     //float4 SSSData = SSSTex.Sample(POINTSAMPLER, _Input.TEXCOORD.xy);
     
     float4 DiffuseRatio = (float4) 0.0f;
