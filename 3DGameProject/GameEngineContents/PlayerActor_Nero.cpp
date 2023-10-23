@@ -3675,16 +3675,6 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 		{
 			AddBreaker(DevilBreaker::BusterArm);
 		}
-		if (GameEngineInput::IsDown("SelectLevel_04"))
-		{
-			HP -= 1000;
-			LightDamage();
-		}
-		if (GameEngineInput::IsDown("SelectLevel_05"))
-		{
-			HP -= 1000;
-			HeavyDamage();
-		}
 	}
 }
 

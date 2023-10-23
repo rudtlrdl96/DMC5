@@ -16,11 +16,11 @@
 #include "FXSystem.h"
 #include "Cavaliere_Electric.h"
 
-CavaliereAngelo::CavaliereAngelo() 
+CavaliereAngelo::CavaliereAngelo()
 {
 }
 
-CavaliereAngelo::~CavaliereAngelo() 
+CavaliereAngelo::~CavaliereAngelo()
 {
 }
 
@@ -112,8 +112,8 @@ void CavaliereAngelo::EnemyAnimationLoad()
 		}
 	);
 
-	// 이펙트 시스템 생성
-	if (nullptr == FXData::Find("Cavalier_Attack_1.effect")) {
+	{
+		// 이펙트 시스템 생성
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
 		NewDir.Move("ContentResources");
@@ -125,7 +125,11 @@ void CavaliereAngelo::EnemyAnimationLoad()
 		EffectRenderer_1 = CreateComponent<FXSystem>();
 		for (size_t i = 0; i < FXFiles.size(); i++)
 		{
-			EffectRenderer_0->CreateFX(FXData::Load(FXFiles[i].GetFullPath()));
+			if (nullptr == FXData::Find(FXFiles[i].GetFileName()))
+			{
+				FXData::Load(FXFiles[i].GetFullPath());
+			}
+			EffectRenderer_0->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
 			EffectRenderer_1->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
 		}
 	}
@@ -147,7 +151,7 @@ void CavaliereAngelo::EnemyAnimationLoad()
 		}
 
 		NewDir.MoveParent();
-		NewDir.MoveParent(); 
+		NewDir.MoveParent();
 		NewDir.Move("SFX");
 		NewDir.Move("Cavaliere");
 		Files = NewDir.GetAllFile({ ".wav" });

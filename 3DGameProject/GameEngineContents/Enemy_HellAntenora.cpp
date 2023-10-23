@@ -11,7 +11,7 @@
 #include "AnimationEvent.h"
 #include "BasePlayerActor.h"
 #include "AttackCollision.h"
-
+#include "FXSystem.h"
 Enemy_HellAntenora::Enemy_HellAntenora() 
 {
 }
@@ -142,7 +142,25 @@ void Enemy_HellAntenora::EnemyAnimationLoad()
 			}
 		}
 	);
+	{
+		// 이펙트 시스템 생성
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Effect");
+		NewDir.Move("Enemy");
+		std::vector<GameEngineFile> FXFiles = NewDir.GetAllFile({ ".Effect" });
 
+		EffectRenderer = CreateComponent<FXSystem>();
+		for (size_t i = 0; i < FXFiles.size(); i++)
+		{
+			if (nullptr == FXData::Find(FXFiles[i].GetFileName()))
+			{
+				FXData::Load(FXFiles[i].GetFullPath());
+			}
+			EffectRenderer->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
+		}
+	}
 	// 사운드 로드
 	Sound.SetVoiceName("HellAntenora_V_");
 	if (nullptr == GameEngineSound::Find("HellAntenora_V_0.wav")) {
@@ -271,7 +289,7 @@ void Enemy_HellAntenora::Start()
 		MultiAttackStack = 0;
 		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
 		MinusEnemyHP(Datas.DamageValue);
-		PlayDamageSound(Datas.SoundType);
+		PlayDamageEvent(Datas.DamageTypeValue, Datas.SoundType);
 		Sound.PlayVoice(5);
 
 		if (DamageType::VergilLight == Datas.DamageTypeValue)
@@ -408,7 +426,7 @@ void Enemy_HellAntenora::DamageCollisionCheck(float _DeltaTime)
 	DamageData Data = AttackCol->GetDamage();
 	MinusEnemyHP(Data.DamageValue);
 	MultiAttackStack = 0;
-	PlayDamageSound(Data.SoundType);
+	PlayDamageEvent(Data.DamageTypeValue, Data.SoundType);
 	Sound.PlayVoice(5);
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
@@ -537,7 +555,7 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 	if (nullptr == AttackCol) { return; }
 
 	DamageData Data = AttackCol->GetDamage();
-	PlayDamageSound(Data.SoundType);
+	PlayDamageEvent(Data.DamageTypeValue, Data.SoundType);
 	Sound.PlayVoice(5);
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
@@ -742,6 +760,7 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	// 최초 등장_02
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Appear_01,
 	.Start = [=] {
+	EffectRenderer->PlayFX("Enemy_Appear.effect");
 	EnemyRenderer->ChangeAnimation("em0001_appear_01");
 	},
 	.Update = [=](float _DeltaTime) {

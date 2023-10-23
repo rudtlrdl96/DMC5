@@ -55,8 +55,8 @@ void EffectToolLevel::LevelChangeStart()
 			GameEngineFBXMesh::Load(Dir.GetPlusFileName("SkyBox.fbx").GetFullPath());
 		}
 
-		std::shared_ptr<SkyBox> Sky = CreateActor<SkyBox>();
-		Sky->CreateSkyBox(this, "SkyBox.fbx");
+		std::shared_ptr<SkyBox> Sky = SkyBox::CreateSkyBox(this, "SkyBox.fbx");
+		Sky->GetTransform()->SetLocalScale({-1000, 1000, 1000});
 	}
 
 	GameEngineDirectory NewDir;

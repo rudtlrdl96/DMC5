@@ -11,6 +11,7 @@
 #include "AnimationEvent.h"
 #include "BasePlayerActor.h"
 #include "AttackCollision.h"
+#include "FXSystem.h"
 
 Enemy_ScudoAngelo::Enemy_ScudoAngelo() 
 {
@@ -141,7 +142,25 @@ void Enemy_ScudoAngelo::EnemyAnimationLoad()
 			}
 		}
 	);
+	{
+		// 이펙트 시스템 생성
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Effect");
+		NewDir.Move("Enemy");
+		std::vector<GameEngineFile> FXFiles = NewDir.GetAllFile({ ".Effect" });
 
+		EffectRenderer = CreateComponent<FXSystem>();
+		for (size_t i = 0; i < FXFiles.size(); i++)
+		{
+			if (nullptr == FXData::Find(FXFiles[i].GetFileName()))
+			{
+				FXData::Load(FXFiles[i].GetFullPath());
+			}
+			EffectRenderer->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
+		}
+	}
 	//std::vector<GameEngineFile> FBXFiles = NewDir.GetAllFile({ ".FBX" });
 
 	//for (size_t i = 0; i < FBXFiles.size(); i++)
@@ -654,6 +673,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	// 최초 등장_02
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Idle,
 	.Start = [=] {
+	EffectRenderer->PlayFX("Enemy_Appear.effect");
 	EnemyRenderer->ChangeAnimation("em0000_appear_02");
 	},
 	.Update = [=](float _DeltaTime) {

@@ -2381,17 +2381,6 @@ void PlayerActor_Vergil::Update_Character(float _DeltaTime)
 	{
 		FSM_MirageBlade.Update(_DeltaTime);
 	}
-
-	if (GameEngineInput::IsDown("SelectLevel_04"))
-	{
-		HP -= 1000;
-		LightDamage();
-	}
-	if (GameEngineInput::IsDown("SelectLevel_05"))
-	{
-		HP -= 1000;
-		HeavyDamage();
-	}
 }
 
 void PlayerActor_Vergil::LightDamage()

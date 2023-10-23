@@ -11,7 +11,7 @@
 #include "AnimationEvent.h"
 #include "BasePlayerActor.h"
 #include "AttackCollision.h"
-
+#include "FXSystem.h"
 Enemy_Empusa::Enemy_Empusa() 
 {
 }
@@ -105,6 +105,25 @@ void Enemy_Empusa::EnemyAnimationLoad()
 		}
 	);
 
+	{
+		// 이펙트 시스템 생성
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Effect");
+		NewDir.Move("Enemy");
+		std::vector<GameEngineFile> FXFiles = NewDir.GetAllFile({ ".Effect" });
+
+		EffectRenderer = CreateComponent<FXSystem>();
+		for (size_t i = 0; i < FXFiles.size(); i++)
+		{
+			if (nullptr == FXData::Find(FXFiles[i].GetFileName()))
+			{
+				FXData::Load(FXFiles[i].GetFullPath());
+			}
+			EffectRenderer->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
+		}
+	}
 	// 사운드 로드
 	Sound.SetVoiceName("Empusa_V_");
 	if (nullptr == GameEngineSound::Find("Empusa_V_0.wav")) {
@@ -191,7 +210,7 @@ void Enemy_Empusa::Start()
 	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker) {
 		Player = _Attacker;
 		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
-		PlayDamageSound(Datas.SoundType);
+		PlayDamageEvent(Datas.DamageTypeValue, Datas.SoundType);
 		Sound.PlayVoiceRandom(4, 5, false);
 		MinusEnemyHP(Datas.DamageValue);
 
@@ -397,7 +416,7 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 	MonsterAttackCollision->Off();
 	DamageData Data = AttackCol->GetDamage();
 	MinusEnemyHP(Data.DamageValue);
-	PlayDamageSound(Data.SoundType);
+	PlayDamageEvent(Data.DamageTypeValue, Data.SoundType);
 	Sound.PlayVoiceRandom(4, 5, false);
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
@@ -509,7 +528,7 @@ void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 	if (nullptr == AttackCol) { return; }
 
 	DamageData Data = AttackCol->GetDamage();
-	PlayDamageSound(Data.SoundType);
+	PlayDamageEvent(Data.DamageTypeValue, Data.SoundType);
 	Sound.PlayVoiceRandom(4, 5, false);
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
@@ -703,6 +722,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 최초 등장_A
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Appear_A,
 	.Start = [=] {
+	EffectRenderer->PlayFX("Enemy_Appear.effect");
 	EnemyRenderer->ChangeAnimation("em0100_enter_ground_A");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -719,6 +739,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 최초 등장_B
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Appear_B,
 	.Start = [=] {
+	EffectRenderer->PlayFX("Enemy_Appear.effect");
 	EnemyRenderer->ChangeAnimation("em0100_enter_ground_B");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1855,6 +1876,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 {
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Appear_A,
 	.Start = [=] {
+	EffectRenderer->PlayFX("Enemy_Appear.effect");
 	EnemyRenderer->ChangeAnimation("em0100_enter_ground_A");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1864,6 +1886,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Appear_B,
 	.Start = [=] {
+	EffectRenderer->PlayFX("Enemy_Appear.effect");
 	EnemyRenderer->ChangeAnimation("em0100_enter_ground_B");
 	},
 	.Update = [=](float _DeltaTime) {

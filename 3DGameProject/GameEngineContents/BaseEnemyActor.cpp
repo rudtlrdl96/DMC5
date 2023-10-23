@@ -11,6 +11,7 @@
 #include "FsmChangePacket.h"
 #include "AttackCollision.h"
 #include "Item_EnemyRedOrb.h"
+#include "FXSystem.h"
 BaseEnemyActor::BaseEnemyActor()
 {
 }
@@ -42,6 +43,8 @@ void BaseEnemyActor::Start()
 	RN_MonsterCollision->SetColType(ColType::SPHERE3D);
 	// 죽을때 드랍되는 레드오브
 	RedOrbs = CreateComponent<Item_EnemyRedOrb>();
+	EffectRenderer = CreateComponent<FXSystem>();	// 이펙트
+
 	EnemyMeshLoad();
 
 	EnemyRenderer->ShadowOn();
@@ -890,9 +893,24 @@ void BaseEnemyActor::DeathCheck()
 	}
 }
 
-void BaseEnemyActor::PlayDamageSound(DamageSoundType _Type)
+void BaseEnemyActor::PlayDamageEvent(DamageType _Type, DamageSoundType _SoundType)
 {
 	switch (_Type)
+	{
+	case DamageType::VergilLight:
+	case DamageType::Light:
+		EffectRenderer->PlayFX("Enemy_Damage_Light.effect");
+		break;
+	case DamageType::Heavy:
+	case DamageType::Air:
+	case DamageType::Slam:
+		EffectRenderer->PlayFX("Enemy_Damage_Heavy.effect");
+		break;
+	default:
+		break;
+	}
+
+	switch (_SoundType)
 	{
 	case DamageSoundType::None:
 		break;

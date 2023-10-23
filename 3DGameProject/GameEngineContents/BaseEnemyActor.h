@@ -107,7 +107,7 @@ protected:
 	virtual void DamageCollisionCheck_Client(float _DeltaTime) = 0;   // 클라이언트에서 처리할 데미지 콜리전 체크 함수
 	virtual void RecognizeCollisionCheck(float _DeltaTime) = 0;
 	virtual void DeathCheck();
-	virtual void PlayDamageSound(DamageSoundType _Type);
+	virtual void PlayDamageEvent(DamageType _Type , DamageSoundType _SoundType);
 
 	void DeathEvent();
 	void RedOrbDrop();													// 사망시 실행. 레드오브를 뿌립니다
@@ -123,6 +123,7 @@ protected:
 	std::shared_ptr<class AttackCollision> MonsterAttackCollision_Two = nullptr;  // 몬스터 공격 콜리전
 	std::shared_ptr<class GameEngineCollision> RN_MonsterCollision = nullptr;     // 몬스터 공격 범위 인식 콜리전
 	std::shared_ptr<class Item_EnemyRedOrb> RedOrbs = nullptr;					  // 죽을때 드랍되는 레드오브
+	std::shared_ptr<class FXSystem> EffectRenderer = nullptr;					  // 이펙트
 
 	//하위에서 설정해줘야하는 Data들=====================================================
 	EnemyCode EnemyCodeValue = EnemyCode::None;
