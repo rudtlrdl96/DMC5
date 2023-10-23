@@ -240,6 +240,7 @@ void Enemy_ProtoAngelo::Start()
 		if (DamageType::Stun == Datas.DamageTypeValue)
 		{
 			StopTime(2.9f);
+			AttackDelayCheck = 1.0f;
 		}
 
 		HitStop(Datas.DamageTypeValue);
@@ -503,7 +504,7 @@ void Enemy_ProtoAngelo::DamageCollisionCheck(float _DeltaTime)
 		break;
 	case DamageType::Stun:
 		StopTime(2.9f);
-		break;
+		return;
 	default:
 		break;
 	}

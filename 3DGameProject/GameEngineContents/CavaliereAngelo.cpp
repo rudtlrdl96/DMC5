@@ -260,6 +260,13 @@ void CavaliereAngelo::Start()
 				});
 		}
 
+		if (DamageType::Stun == Datas.DamageTypeValue && true == IsStun)
+		{
+			StopTime(2.9f);
+			AttackDelayCheck = 1.0f;
+		}
+
+
 		if (EnemyHP < 0)
 		{
 			DeathValue = true;
@@ -562,6 +569,11 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 			});
 	}
 
+	if (DamageType::Stun == Data.DamageTypeValue && true == IsStun)
+	{
+		StopTime(2.9f);
+		return;
+	}
 	IsVergilLight = false;
 	AttackDelayCheck = 0.0f;
 }
