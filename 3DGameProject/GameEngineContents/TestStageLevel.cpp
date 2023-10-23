@@ -45,7 +45,7 @@ TestStageLevel::~TestStageLevel()
 void TestStageLevel::Start()
 {
 	CreateActor<FreeCameraActor>();
-
+	BaseLevel::SetNetLevelType(Net_LevelType::TestStageLevel);
 
 	GetCamera(0)->GetCamTarget()->CreateEffect<ColorEffect>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
@@ -157,12 +157,14 @@ void TestStageLevel::LevelChangeStart()
 		Nero->SetUserControllType();
 		Nero->SetWorldPosition({ 8615.f, 0.f, 5060.f });
 		Nero->GetTransform()->SetWorldPosition({ 8615.f, 0.f, 5060.f });
+		NetworkManager::LinkNetwork(Nero.get(), this);
 	}
 	else
 	{
 		std::shared_ptr<PlayerActor_Vergil> Vergil = CreateActor<PlayerActor_Vergil>();
 		Vergil->SetUserControllType();
 		Vergil->SetWorldPosition({ 8615.f, 0, 5060.f });
+		NetworkManager::LinkNetwork(Vergil.get(), this);
 	}
 
 	//std::shared_ptr<GameEngineLight> SpotLight = CreateSpotLight(float4(0, 400, 0), ShadowTextureScale::S_512, 2000, 90);
