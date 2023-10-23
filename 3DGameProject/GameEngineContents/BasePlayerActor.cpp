@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 #include "BasePlayerActor.h"
+#include <algorithm>
 #include <GameEngineBase/GameEngineNet.h>
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
@@ -25,6 +26,28 @@ BasePlayerActor::BasePlayerActor()
 
 BasePlayerActor::~BasePlayerActor()
 {
+}
+
+void BasePlayerActor::On() 
+{
+	GameEngineActor::On();
+
+	std::vector<BasePlayerActor*>::iterator FindIter = std::find(Players.begin(), Players.end(), this);
+	if (Players.end() != FindIter)
+		return;
+
+	Players.push_back(this);
+}
+
+void BasePlayerActor::Off() 
+{
+	GameEngineActor::Off();
+
+	std::vector<BasePlayerActor*>::iterator FindIter = std::find(Players.begin(), Players.end(), this);
+	if (Players.end() == FindIter)
+		return;
+
+	Players.erase(FindIter);
 }
 
 void BasePlayerActor::LookDir(const float4& _LookDir)

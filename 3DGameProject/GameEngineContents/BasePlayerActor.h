@@ -23,6 +23,9 @@ public:
 	BasePlayerActor& operator=(const BasePlayerActor& _Other) = delete;
 	BasePlayerActor& operator=(BasePlayerActor&& _Other) noexcept = delete;
 
+	void On() override;
+	void Off() override;
+
 	void LookDir(const float4& _LookDir);
 	void LookTarget();
 	void RotationToDir(const float4& _Dir , float _MaxValue = 360.0f);
@@ -124,4 +127,5 @@ private:
 	static std::vector<BasePlayerActor*> Players;
 	float InvincibilityTime = 0.0f; // 무적 프레임
 };
+
 
