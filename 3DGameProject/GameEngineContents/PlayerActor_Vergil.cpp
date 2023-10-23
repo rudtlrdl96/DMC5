@@ -56,6 +56,7 @@ void PlayerActor_Vergil::Start()
 					SetTimeScale(1.f);
 				});
 		});
+	Col_Attack->SetDamageSoundType(DamageSoundType::Katana);
 
 	SetNetObjectType(Net_ActorType::Vergil);
 	GetLevel()->CreateActor<RankUI>();
@@ -550,6 +551,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				Sound.PlayVoiceRandom(0, 2, DTValue);
 				Sound.Play("Yamato_", 0);
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(75));
+				Col_Attack->SetDamageSoundType(DamageSoundType::Blunt);
 				PhysXCapsule->TurnOffGravity();
 				PhysXCapsule->SetLinearVelocityZero();
 				RotationToTarget();
@@ -582,6 +584,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 			},
 			.End = [=] {
+				Col_Attack->SetDamageSoundType(DamageSoundType::Katana);
 				WeaponIdle();
 			}
 			});
@@ -590,6 +593,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			.Start = [=] {
 				Sound.Play("Yamato_", 1);
 				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(93));
+				Col_Attack->SetDamageSoundType(DamageSoundType::Blunt);
 				PhysXCapsule->SetLinearVelocityZero();
 				EffectSystem->PlayFX("Yamato_Combo_2.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_Combo_2");
@@ -620,6 +624,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 			},
 			.End = [=] {
+				Col_Attack->SetDamageSoundType(DamageSoundType::Katana);
 				WeaponIdle();
 			}
 			});
@@ -2035,6 +2040,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			PhysXCapsule->TurnOffGravity();
 			PhysXCapsule->SetLinearVelocityZero();
 			Col_Attack->SetAttackData(DamageType::Air, 150);
+			Col_Attack->SetDamageSoundType(DamageSoundType::Magic);
 			EffectSystem->PlayFX("Vergil_DT_On.effect");
 			Renderer->ChangeAnimation("pl0300_Demon_Start", true);
 			InputCheck = false;
@@ -2062,7 +2068,7 @@ void PlayerActor_Vergil::PlayerLoad()
 			}
 		},
 		.End = [=] {
-
+			Col_Attack->SetDamageSoundType(DamageSoundType::Katana);
 		}
 			});
 		// Demon End

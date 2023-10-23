@@ -142,6 +142,7 @@ void Player_MirageBlade::Start()
 	Collision->GetTransform()->SetLocalScale({ 25, 25, 150 });
 	Collision->SetIsPlayerCollision();
 	Collision->SetAttackData(DamageType::VergilLight, 9);
+	Collision->SetDamageSoundType(DamageSoundType::Gun);
 	Collision->Off();
 
 	Effect = CreateComponent<FXSystem>();
