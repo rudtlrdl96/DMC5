@@ -117,6 +117,6 @@ private:
 	bool IsCollapse = false;      // 쓰러져있는 상태
 	bool IsRecognize = false;
 	bool DashAttackSetting = false;
-	
+
 };
 

@@ -55,9 +55,6 @@
     <ClInclude Include="Enemy_Empusa.h">
       <Filter>Actor\Enemy\NormalEnemy\Empusa</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy_HellCaina.h">
-      <Filter>Actor\Enemy\NormalEnemy\HellCaina</Filter>
-    </ClInclude>
     <ClInclude Include="Enemy_HellAntenora.h">
       <Filter>Actor\Enemy\NormalEnemy\HellAntenora</Filter>
     </ClInclude>
@@ -507,6 +504,9 @@
     <ClInclude Include="Item_EnemyRedOrb.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\ItemObj</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy_HellCaina.h">
+      <Filter>Actor\Enemy\NormalEnemy\HellCaina</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -565,9 +565,6 @@
     </ClCompile>
     <ClCompile Include="Enemy_Empusa.cpp">
       <Filter>Actor\Enemy\NormalEnemy\Empusa</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy_HellCaina.cpp">
-      <Filter>Actor\Enemy\NormalEnemy\HellCaina</Filter>
     </ClCompile>
     <ClCompile Include="Enemy_HellAntenora.cpp">
       <Filter>Actor\Enemy\NormalEnemy\HellAntenora</Filter>
@@ -1011,6 +1008,9 @@
     </ClCompile>
     <ClCompile Include="Item_EnemyRedOrb.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\ItemObj</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_HellCaina.cpp">
+      <Filter>Actor\Enemy\NormalEnemy\HellCaina</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
