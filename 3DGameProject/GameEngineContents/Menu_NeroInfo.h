@@ -35,10 +35,14 @@ private:
 	bool ScendMove = false;
 	bool SetPosValue = false;
 	bool StartInven = false;
+	float4 InvenPos = { 0.0f,-200.f,0.0f };
+	float4 BasePos = { 600.0f,60.f,0.0f };
+	float4 BaseScale = { 337.f, 35.f, 1.0f };
+	float4 ArrowScale = { 13.0f,16.0f,0.0f };
 	float4 LeftPos = { 270.0f,-230.0f,0.0f };
 	float4 CenterPos = { 600.0f,-230.0f,0.0f };
 	float4 RightPos = { 930.0f,-230.0f,0.0f };
-
+	float4 WindowRatio = float4::ZERONULL;
 	float Speed = 0.0f;
 	float Ratio = 3.0f;
 };

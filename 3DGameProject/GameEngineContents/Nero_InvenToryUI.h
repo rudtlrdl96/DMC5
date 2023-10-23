@@ -18,7 +18,6 @@ public:
 	{
 		return InvenBaseRender;
 	}
-	//static std::shared_ptr<Nero_InvenToryUI> CreateNeroInven(GameEngineLevel* _Level);
 	
 protected:
 	void Start() override;
@@ -26,5 +25,6 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineUIRenderer> InvenBaseRender = nullptr;
+	float4 Scale = { 440.0f,110.f,0.0f };
 };
 

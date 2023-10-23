@@ -98,14 +98,14 @@ void UIButton::FontCreate()
 	Text = CreateComponent<GameEngineFontRenderer>(4);
 	Text->SetFont(Font);
 	Text->SetFontFlag(FW1_CENTER);
-	Text->SetScale(32);
+	Text->SetScale(32.0f* GameEngineActor::ScreenRatio.x);
 	Text->SetColor(float4::WHITE);
 	Text->GetTransform()->SetLocalPosition({0.0f,22.f,0.0f});
 
 	SeletText = CreateComponent<GameEngineFontRenderer>(5);
 	SeletText->SetFont(Font);
 	SeletText->SetFontFlag(FW1_CENTER);
-	SeletText->SetScale(36);
+	SeletText->SetScale(36.0f * GameEngineActor::ScreenRatio.x);
 	SeletText->SetColor(float4(0.305f,0.96f,0.94f,1.0f));
 	SeletText->GetTransform()->SetLocalPosition({ 0.0f,22.f,0.0f });
 	SeletText->Off();
@@ -113,25 +113,25 @@ void UIButton::FontCreate()
 	ExplaneText = CreateComponent<GameEngineFontRenderer>(5);
 	ExplaneText->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
 	ExplaneText->SetFontFlag(Flag);
-	ExplaneText->SetScale(24);
+	ExplaneText->SetScale(24.0f * GameEngineActor::ScreenRatio.x);
 	ExplaneText->SetColor(float4::WHITE);
 
 	ExplaneText_1 = CreateComponent<GameEngineFontRenderer>(4);
 	ExplaneText_1->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
 	ExplaneText_1->SetFontFlag(Flag);
-	ExplaneText_1->SetScale(24);
+	ExplaneText_1->SetScale(24.0f * GameEngineActor::ScreenRatio.x);
 	ExplaneText_1->SetColor(float4(0.0f, 0.0f, 0.0f, 0.8f));
 
 	ExplaneText_2 = CreateComponent<GameEngineFontRenderer>(4);
 	ExplaneText_2->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
 	ExplaneText_2->SetFontFlag(Flag);
-	ExplaneText_2->SetScale(24);
+	ExplaneText_2->SetScale(24.0f * GameEngineActor::ScreenRatio.x);
 	ExplaneText_2->SetColor(float4(0.0f, 0.0f, 0.0f, 0.8f));
 
 	ExplaneText_3 = CreateComponent<GameEngineFontRenderer>(4);
 	ExplaneText_3->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
 	ExplaneText_3->SetFontFlag(Flag);
-	ExplaneText_3->SetScale(24);
+	ExplaneText_3->SetScale(24.0f * GameEngineActor::ScreenRatio.x);
 	ExplaneText_3->SetColor(float4(0.0f,0.0f,0.0f,0.8f));
 }
 
@@ -161,10 +161,10 @@ void UIButton::RenderOnOff()
 
 void UIButton::SetFontPos()
 {
-	ExplaneText_3->GetTransform()->SetWorldPosition({ ExPlanePos.x + 2.0f,ExPlanePos.y + 2.0f,ExPlanePos.z });
-	ExplaneText_2->GetTransform()->SetWorldPosition({ ExPlanePos.x,ExPlanePos.y + 2,ExPlanePos.z });
-	ExplaneText_1->GetTransform()->SetWorldPosition({ ExPlanePos.x + 2.0f,ExPlanePos.y,ExPlanePos.z });
-	ExplaneText->GetTransform()->SetWorldPosition(ExPlanePos);
+	ExplaneText_3->GetTransform()->SetWorldPosition(float4{ ExPlanePos.x + 2.0f,ExPlanePos.y + 2.0f,ExPlanePos.z }*GameEngineActor::ScreenRatio);
+	ExplaneText_2->GetTransform()->SetWorldPosition(float4{ ExPlanePos.x,ExPlanePos.y + 2,ExPlanePos.z }*GameEngineActor::ScreenRatio);
+	ExplaneText_1->GetTransform()->SetWorldPosition(float4{ ExPlanePos.x + 2.0f,ExPlanePos.y,ExPlanePos.z }*GameEngineActor::ScreenRatio);
+	ExplaneText->GetTransform()->SetWorldPosition(ExPlanePos*GameEngineActor::ScreenRatio);
 	ExplaneText->SetFontFlag(Flag);
 	ExplaneText_1->SetFontFlag(Flag);
 	ExplaneText_2->SetFontFlag(Flag);

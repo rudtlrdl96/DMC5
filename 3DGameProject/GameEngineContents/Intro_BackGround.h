@@ -20,5 +20,6 @@ protected:
 private:
 	std::shared_ptr<class GameEngineSpriteRenderer> BGRender = nullptr;
 	float4 Pos = { 0.0f,0.0f,0.0f };
+	float4 Scale = { 1600.0f,900.0f,0.0f };
 };
 

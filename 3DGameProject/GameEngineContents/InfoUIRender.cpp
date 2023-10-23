@@ -17,17 +17,18 @@ InfoUIRender::~InfoUIRender()
 
 void InfoUIRender::Start()
 {
+	WindowPos = GameEngineActor::ScreenRatio;
 	Render = CreateComponent<GameEngineUIRenderer>(2);
-	Render->GetTransform()->SetLocalScale(float4(170.f, 200.f, 1.0f));
-	Render->GetTransform()->SetLocalPosition(float4(700.f, 50.f, 0.0f));
+	Render->GetTransform()->SetLocalScale(float4(170.f, 200.f, 1.0f)* WindowPos);
+	Render->GetTransform()->SetLocalPosition(float4(700.f, 50.f, 0.0f) * WindowPos);
 	Render->BSCControl(0.3f, 0.4f, 0.5f);
 	Render_Base = CreateComponent<GameEngineUIRenderer>(3);
-	Render_Base->GetTransform()->SetLocalScale(float4(546.f, 25.f, 1.0f));
-	Render_Base->GetTransform()->SetLocalPosition(float4(700.f, 26.f, 0.0f));
+	Render_Base->GetTransform()->SetLocalScale(float4(546.f, 25.f, 1.0f) * WindowPos);
+	Render_Base->GetTransform()->SetLocalPosition(float4(700.f, 26.f, 0.0f) * WindowPos);
 	Render_Base->BSCControl(0.3f, 0.4f, 0.5f);
 	Render_Bar = CreateComponent<GameEngineUIRenderer>(1);
-	Render_Bar->GetTransform()->SetLocalScale(float4(546.f, 5.f, 1.0f));
-	Render_Bar->GetTransform()->SetLocalPosition(float4(700.f, 90.f, 0.0f));
+	Render_Bar->GetTransform()->SetLocalScale(float4(546.f, 5.f, 1.0f) * WindowPos);
+	Render_Bar->GetTransform()->SetLocalPosition(float4(700.f, 90.f, 0.0f) * WindowPos);
 	Render_Bar->BSCControl(0.3f, 0.4f, 0.5f);
 	FontCreate();
 }
@@ -72,31 +73,31 @@ void InfoUIRender::FontCreate()
 	Text = CreateComponent<GameEngineFontRenderer>(4);
 	Text->SetFont(Font);
 	Text->SetFontFlag(FW1_CENTER);
-	Text->SetScale(24);
+	Text->SetScale(24.0f * WindowPos.x);
 	Text->SetColor(FontColor);
-	Text->GetTransform()->SetLocalPosition({ 485.0f,120.f,0.0f });
+	Text->GetTransform()->SetLocalPosition(float4{ 485.0f,120.f,0.0f }*WindowPos);
 
 	SeletText = CreateComponent<GameEngineFontRenderer>(5);
 	SeletText->SetFont(Font);
 	SeletText->SetFontFlag(FW1_CENTER);
-	SeletText->SetScale(40);
+	SeletText->SetScale(40.f * WindowPos.x);
 	SeletText->SetColor(FontColor);
-	SeletText->GetTransform()->SetLocalPosition({ 515.0f,90.f,0.0f });
+	SeletText->GetTransform()->SetLocalPosition(float4{ 515.0f,90.f,0.0f }*WindowPos);
 
 	ExplaneText = CreateComponent<GameEngineFontRenderer>(5);
 	ExplaneText->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
 	ExplaneText->SetFontFlag(FW1_CENTER);
-	ExplaneText->SetScale(16);
+	ExplaneText->SetScale(16.f * WindowPos.x);
 	ExplaneText->SetColor(float4(0.701f,0.772f,0.788f, 1.0f));
-	ExplaneText->GetTransform()->SetLocalPosition({ 515.0f,36.f,0.0f, });
+	ExplaneText->GetTransform()->SetLocalPosition(float4{ 515.0f,36.f,0.0f, }*WindowPos);
 
 
 	ExplaneText_2 = CreateComponent<GameEngineFontRenderer>(8);
 	ExplaneText_2->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
 	ExplaneText_2->SetFontFlag(FW1_CENTER);
-	ExplaneText_2->SetScale(16);
+	ExplaneText_2->SetScale(16.f * WindowPos.x);
 	ExplaneText_2->SetColor(float4(0.656f, 0.668f, 0.665f,1.0f));
-	ExplaneText_2->GetTransform()->SetLocalPosition({ 705.0f,36.f,0.0f });
+	ExplaneText_2->GetTransform()->SetLocalPosition(float4{ 705.0f,36.f,0.0f }*WindowPos);
 
 
 }

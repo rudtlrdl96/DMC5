@@ -14,7 +14,8 @@ void MainMenuBG::Start()
 
 
 	MainMenuBGRender = CreateComponent<GameEngineUIRenderer>(0);
-	MainMenuBGRender->SetScaleToTexture("MainMenuBG2.png");
+	MainMenuBGRender->SetTexture("MainMenuBG2.png");
+	MainMenuBGRender->GetTransform()->SetLocalScale(Scale * GameEngineActor::ScreenRatio);
 	MainMenuBGRender->BSCControl(0.5f, 0.5f, 0.5f);
 }
 

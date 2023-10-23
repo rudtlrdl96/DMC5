@@ -21,6 +21,6 @@ protected:
 	void Update(float _DeltaTime) override;
 private:
 	std::shared_ptr<GameEngineUIRenderer> MainMenuBGRender = nullptr;
-
+	float4 Scale = { 1600.0f,900.0f,0.0f };
 };
 

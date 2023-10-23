@@ -28,6 +28,14 @@ private:
 	bool ContinueValue = false;
 	int SelectValue = 0;
 	float EnterTime = 0.0f;
+	float4 Scale = { 200.0f,40.0f,0.0f };
+	float4 Pos_1 = { 0.0f,-150.0f,0.0f };
+	float4 Pos_2 = { 0.0f,-200.0f,0.0f };
+	float4 Pos_3 = { 0.0f,-250.0f,0.0f };
+	float4 ExplanePos = { 0.0f,-300.0f,0.0f };
+	float4 BarScale = { 800.0f,50.0f,0.0f };
+	float4 BarLeftPos = { -400.0f,0.0f,0.0f };
+	float4 BarRightPos = { 400.0f,0.0f,0.0f };
 
 };
 

@@ -16,11 +16,12 @@ Char_ChoiceUI::~Char_ChoiceUI()
 
 void Char_ChoiceUI::Start()
 {
+	WindowRatio = GameEngineActor::ScreenRatio;
 	Nero_ChoiceUIRender = GetLevel()->CreateActor<Char_ChoiceButton>();
-	Nero_ChoiceUIRender->GetTransform()->SetLocalPosition(NeroPos);
+	Nero_ChoiceUIRender->GetTransform()->SetLocalPosition(NeroPos * WindowRatio);
 	Nero_ChoiceUIRender->GetCharRender()->SetTexture("Character_Nero.png");
-	Nero_ChoiceUIRender->GetTextNoneRender()->GetTransform()->SetLocalPosition({20.0f,-150.0f,0.0f});
-	Nero_ChoiceUIRender->GetTextSelectRender()->GetTransform()->SetLocalPosition({ 20.0f,-150.0f,0.0f });
+	Nero_ChoiceUIRender->GetTextNoneRender()->GetTransform()->SetLocalPosition(TextScale* WindowRatio);
+	Nero_ChoiceUIRender->GetTextSelectRender()->GetTransform()->SetLocalPosition(TextScale * WindowRatio);
 	Nero_ChoiceUIRender->SetEvent([this]()
 		{
 			Type = ChoicePlayerType::NERO;
@@ -33,10 +34,10 @@ void Char_ChoiceUI::Start()
 	Nero_ChoiceUIRender->SetUIText({ ._Text = "NERO",._SeletText = "",
 	._ExplaneText = "The Devil Hunter" });
 	Vergil_ChoiceUIRender = GetLevel()->CreateActor<Char_ChoiceButton>();
-	Vergil_ChoiceUIRender->GetTransform()->SetLocalPosition(VergilPos);
+	Vergil_ChoiceUIRender->GetTransform()->SetLocalPosition(VergilPos * WindowRatio);
 	Vergil_ChoiceUIRender->GetCharRender()->SetTexture("Character_Vergil.png");
-	Vergil_ChoiceUIRender->GetTextNoneRender()->GetTransform()->SetLocalPosition({ 20.0f,-150.0f,0.0f });
-	Vergil_ChoiceUIRender->GetTextSelectRender()->GetTransform()->SetLocalPosition({ 20.0f,-150.0f,0.0f });
+	Vergil_ChoiceUIRender->GetTextNoneRender()->GetTransform()->SetLocalPosition(TextScale * WindowRatio);
+	Vergil_ChoiceUIRender->GetTextSelectRender()->GetTransform()->SetLocalPosition(TextScale * WindowRatio);
 	Vergil_ChoiceUIRender->SetUIText({ ._Text = "VERGIL",._SeletText = "",
 	._ExplaneText = "The Alpha and the Omega" });
 	Vergil_ChoiceUIRender->SetEvent([this]()

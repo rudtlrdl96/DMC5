@@ -15,8 +15,9 @@ void Menu_MissionFont::Start()
 {
 
 	ExPlaneTex = CreateComponent<GameEngineUIRenderer>(0);
-	ExPlaneTex->SetScaleToTexture("extext.png");
-	ExPlaneTex->GetTransform()->SetLocalPosition({ 200.0f,-50.0f,0.0f });
+	ExPlaneTex->SetTexture("extext.png");
+	ExPlaneTex->GetTransform()->SetLocalScale(Scale * GameEngineActor::ScreenRatio);
+	ExPlaneTex->GetTransform()->SetLocalPosition(Pos*GameEngineActor::ScreenRatio);
 	ExPlaneTex->BSCControl(0.5f, 0.5f, 0.5f);
 }
 

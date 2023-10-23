@@ -25,7 +25,7 @@ private:
 	void Blink(float _DeltaTime);
 	std::shared_ptr<class GameEngineFontRenderer> SelectText = nullptr;
 	std::shared_ptr< GameEngineCollision> ButtonCol = nullptr;
-	float4 Pos = { -100.0f,-250.0f,0.0f };
+	float4 Pos = { 0.0f,-250.0f,0.0f };
 	float4 Scale = { 200.0f,50.0f,1.0f };
 	float Time = 0.0f;
 	bool SwichValue = false;

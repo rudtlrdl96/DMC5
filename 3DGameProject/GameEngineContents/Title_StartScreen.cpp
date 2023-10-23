@@ -17,10 +17,10 @@ void Title_StartScreen::Start()
 {
 	SkyColor = { 0.42f,0.73f,0.75f,SkyColor_Alpha };
 	SelectText = CreateComponent<GameEngineFontRenderer>(2);
-	SelectText->GetTransform()->SetLocalPosition(Pos);
+	SelectText->GetTransform()->SetLocalPosition(Pos* GameEngineActor::ScreenRatio);
 	SelectText->SetFont("DMC5Font");
-	SelectText->SetFontFlag(FW1_LEFT);
-	SelectText->SetScale(32);
+	SelectText->SetFontFlag(FW1_CENTER);
+	SelectText->SetScale(32.0f * GameEngineActor::ScreenRatio.x);
 	SelectText->SetText("Select Host OR Client");
 }
 
@@ -31,7 +31,7 @@ void Title_StartScreen::Update(float _DeltaTime)
 		{
 			Death();
 			std::shared_ptr<Title_SelectScreen> Title_SelectScreenPtr = GetLevel()->CreateActor<Title_SelectScreen>();
-			Title_SelectScreenPtr->GetTransform()->SetLocalScale({ 1.0f, 1.0f, 1.0f });
+			Title_SelectScreenPtr->GetTransform()->SetLocalScale(float4{ 1.0f, 1.0f, 1.0f }*GameEngineActor::ScreenRatio);
 			Title_SelectScreenPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
 		});
 }

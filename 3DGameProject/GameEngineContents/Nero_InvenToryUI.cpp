@@ -16,8 +16,8 @@ void Nero_InvenToryUI::Start()
 {
 
 	InvenBaseRender = CreateComponent<GameEngineUIRenderer>(1);
-	InvenBaseRender->GetTransform()->SetLocalScale({330.0f,110.f,0.0f});
-	InvenBaseRender->SetTexture("Nero_Inven.png");
+	InvenBaseRender->GetTransform()->SetLocalScale(Scale);
+	InvenBaseRender->SetTexture("Nero_Inven4.png");
 }
 
 void Nero_InvenToryUI::Update(float _Delta)

@@ -38,10 +38,11 @@ private:
 	void SetButtonIndex();
 	std::shared_ptr<Char_ChoiceButton> Nero_ChoiceUIRender = nullptr;
 	std::shared_ptr<Char_ChoiceButton> Vergil_ChoiceUIRender = nullptr;
-
+	float4 WindowRatio = float4::ZERONULL;
 	static ChoicePlayerType Type;
 	float4 Scale = { 342.0f,627.0f,0.0f };
 	float4 SeletScale = { 376.0f,690.0f,0.0f };
+	float4 TextScale = { 20.0f,-150.0f,0.0f };
 	float ScaleUpTime = 0.0f;
 	float ScaleDownTime = 0.0f;
 	float4 NeroPos = { -300.0f,0.0f,0.0f };

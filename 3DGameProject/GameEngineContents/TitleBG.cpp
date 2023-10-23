@@ -12,7 +12,7 @@ TitleBG::~TitleBG()
 void TitleBG::Start()
 {
 	TitleBGRender = CreateComponent<GameEngineUIRenderer>(0);
-	TitleBGRender->GetTransform()->SetLocalScale(Scale);
+	TitleBGRender->GetTransform()->SetLocalScale(Scale* GameEngineActor::ScreenRatio);
 	TitleBGRender->SetTexture("TitleBG.png");
 }
 

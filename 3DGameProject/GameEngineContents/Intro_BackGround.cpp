@@ -13,7 +13,8 @@ void Intro_BackGround::Start()
 {
 	BGRender = CreateComponent<GameEngineSpriteRenderer>();
 	BGRender->GetTransform()->SetLocalPosition(Pos);
-	BGRender->SetScaleToTexture("IntroBG.png");
+	BGRender->SetTexture("IntroBG.png");
+	BGRender->GetTransform()->SetLocalScale(Scale * GameEngineActor::ScreenRatio);
 }
 
 void Intro_BackGround::Update(float _DeltaTime)

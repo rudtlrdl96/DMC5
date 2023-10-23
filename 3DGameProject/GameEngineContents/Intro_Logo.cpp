@@ -14,11 +14,13 @@ void Intro_Logo::Start()
 {
 	CapComIntro_Logo = CreateComponent<GameEngineSpriteRenderer>();
 	CapComIntro_Logo->GetTransform()->SetLocalPosition(Pos);
-	CapComIntro_Logo->SetScaleToTexture("CapComLogo.png");
+	CapComIntro_Logo->SetTexture("CapComLogo.png");
+	CapComIntro_Logo->GetTransform()->SetLocalScale(Scale * GameEngineActor::ScreenRatio);
 	CapComIntro_Logo->ColorOptionValue.MulColor.a = 0;
 	PhysxIntro_Logo = CreateComponent<GameEngineSpriteRenderer>();
 	PhysxIntro_Logo->GetTransform()->SetLocalPosition(Pos);
-	PhysxIntro_Logo->SetScaleToTexture("PhysxLogo.png");
+	PhysxIntro_Logo->SetTexture("PhysxLogo.png");
+	PhysxIntro_Logo->GetTransform()->SetLocalScale(Scale * GameEngineActor::ScreenRatio);
 	PhysxIntro_Logo->ColorOptionValue.MulColor.a = 0;
 }
 

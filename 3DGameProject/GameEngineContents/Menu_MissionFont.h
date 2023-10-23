@@ -20,6 +20,6 @@ protected:
 	void Update(float _Delta) override;
 private:
 	std::shared_ptr<class GameEngineUIRenderer> ExPlaneTex = nullptr;
-	//float4 Color = { 0.423f, 0.705f, 0.725f };
+	float4 Pos = { -480.0f,280.0f,0.0f };
+	float4 Scale = {452.0f,154.0f,0.0f};
 };
-

@@ -13,7 +13,7 @@ void C_ChoiceBG::Start()
 {
 
 	C_ChoiceBGRender = CreateComponent<GameEngineUIRenderer>(0);
-	C_ChoiceBGRender->GetTransform()->SetLocalScale(Scale);
+	C_ChoiceBGRender->GetTransform()->SetLocalScale(Scale * GameEngineActor::ScreenRatio);
 	C_ChoiceBGRender->SetTexture("CharChoise_Base.png");
 }
 

@@ -84,7 +84,7 @@ private:
 	std::function<void()> Click;
 
 	std::string Font = "DMC5Font";
-
+	float4 WindowRatio = float4::ZERONULL;
 	bool IsSelect = false;
 	bool IsValue = false;
 	bool SwichValue = false;
@@ -98,8 +98,7 @@ private:
 	float4 Char_TextSeletScale = { 413.0f,102.0f,0.0f };
 	float4 Char_BarScale = { 204.0f,4.0f,0.0f };
 	float4 Char_BarScaleUp = { 224.0f,4.4f,0.0f };
-
-
+	float4 SelcetBarScale = { 413.0f,102.0f,0.0f };
 	float EnterTime = 0.0f;
 	float Ratio = 0.1f;
 };

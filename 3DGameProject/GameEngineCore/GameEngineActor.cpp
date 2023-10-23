@@ -2,7 +2,7 @@
 #include "GameEngineActor.h"
 #include "GameEngineComponent.h"
 #include "GameEngineLevel.h"
-
+float4 GameEngineActor::ScreenRatio = { 1.2f,1.2f,1.0f,1.0f };
 GameEngineActor::GameEngineActor()
 {
 	SetName("GameEngineActor");

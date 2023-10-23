@@ -35,6 +35,5 @@ private:
 
 	static void FontUpRelease();
 	static void FontUpload();
-
 };
 

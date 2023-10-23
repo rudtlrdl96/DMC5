@@ -17,6 +17,7 @@ Menu_NeroInfo::~Menu_NeroInfo()
 
 void Menu_NeroInfo::Start()
 {
+	WindowRatio = GameEngineActor::ScreenRatio;
 	NeroInfoPtr = GetLevel()->CreateActor<InfoUIRender>();
 	NeroInfoPtr->GetRender()->SetTexture("NeroLogo.png");
 	NeroInfoPtr->GetRender_Bar()->SetTexture("Menu_InfoBar.png");
@@ -25,17 +26,18 @@ void Menu_NeroInfo::Start()
 	NeroInfoPtr->SetUIText({ ._Text = "PLAYER",._SeletText = "NERO",._ExplaneText = "GAME MODE",._ExplaneText2 = "DEVIL HUNTER" });
 	
 	NeroInvenPtr = GetLevel()->CreateActor<InfoUIRender>();
-	NeroInvenPtr->GetTransform()->SetLocalPosition({ 0.0f,-200.f,0.0f });
+	NeroInvenPtr->GetTransform()->SetLocalPosition(WindowRatio* InvenPos);
 	NeroInvenPtr->GetRender()->SetTexture("NullTexture.png");
 	NeroInvenPtr->GetRender_Bar()->SetTexture("Menu_InfoBar.png");
 	NeroInvenPtr->GetRender_Base()->SetTexture("Menu_TabBase.png");
-	NeroInvenPtr->GetRender_Base()->GetTransform()->SetLocalPosition({ 600.f, 60.f, 0.0f });
-	NeroInvenPtr->GetRender_Base()->GetTransform()->SetLocalScale({ 337.f, 35.f, 1.0f});
+	NeroInvenPtr->GetRender_Base()->GetTransform()->SetLocalPosition(BasePos* WindowRatio);
+	NeroInvenPtr->GetRender_Base()->GetTransform()->SetLocalScale(WindowRatio * BaseScale);
 	NeroInvenPtr->SetUIText({ ._Text = "EQUIPMENT",._SeletText = "",._ExplaneText = "",._ExplaneText2 = "" });
 
 	Arrow1Ptr = GetLevel()->CreateActor<InvenUIButton>();
-	Arrow1Ptr->GetRender()->SetScaleToTexture("Menu_Arrow.png");
-	Arrow1Ptr->SetLerpValue(float4(530.f, -140.f, 0.0f), float4(520.f, -140.f, 0.0f));
+	Arrow1Ptr->GetRender()->SetTexture("Menu_Arrow.png");
+	Arrow1Ptr->GetRender()->GetTransform()->SetLocalScale(ArrowScale);
+	Arrow1Ptr->SetLerpValue(float4(530.f, -140.f, 0.0f)* WindowRatio, float4(520.f, -140.f, 0.0f)* WindowRatio);
 	Arrow1Ptr->SetEvent([this]()
 		{
 			if (InvenMinusValue == false)
@@ -56,8 +58,8 @@ void Menu_NeroInfo::Start()
 		});
 	Arrow2Ptr = GetLevel()->CreateActor<InvenUIButton>();
 	Arrow2Ptr->GetRender()->SetTexture("Menu_Arrow.png");
-	Arrow2Ptr->GetRender()->GetTransform()->SetLocalScale({ -13.0f,16.0f,0.0f });
-	Arrow2Ptr->SetLerpValue(float4(685.f, -140.f, 0.0f), float4(695.f, -140.f, 0.0f));
+	Arrow2Ptr->GetRender()->GetTransform()->SetLocalScale(float4{ -13.0f,16.0f,0.0f }*WindowRatio);
+	Arrow2Ptr->SetLerpValue(float4(685.f, -140.f, 0.0f) * WindowRatio, float4(695.f, -140.f, 0.0f) * WindowRatio);
 	Arrow2Ptr->SetEvent([this]()
 		{
 			if (InvenPlusValue == false)
@@ -79,13 +81,13 @@ void Menu_NeroInfo::Start()
 		});
 	FontRender = CreateComponent<GameEngineFontRenderer>(8);
 	FontRender->SetFont("DMC5Font");
-	FontRender->SetScale(24.0f);
+	FontRender->SetScale(24.0f*WindowRatio.x);
 	FontRender->SetFontFlag(FW1_CENTER);
 	FontRender->SetColor(float4(0.305f, 0.96f, 0.94f, 1.0f));
-	FontRender->GetTransform()->SetLocalPosition(float4(610.f, -125.f, 0.0f));
+	FontRender->GetTransform()->SetLocalPosition(float4(610.f, -125.f, 0.0f) * WindowRatio);
 
 	AcNeroInven = GetLevel()->CreateActor<Nero_Inven>();
-	AcNeroInven->GetInvenVec()[0]->GetTransform()->SetLocalPosition(CenterPos);
+	AcNeroInven->GetInvenVec()[0]->GetTransform()->SetLocalPosition(CenterPos * WindowRatio);
 	AcNeroInven->GetInvenVec()[0]->On();
 	AcNeroInven->GetInvenVec()[1]->Off();
 	AcNeroInven->GetInvenVec()[2]->Off();
@@ -136,8 +138,8 @@ void Menu_NeroInfo::MoveInven(float _Delta)
 		// 0번 러프후 2번 러프
 		if (SetPosValue == false)
 		{
-			AcNeroInven->GetInvenVec()[PrevIndex]->GetTransform()->SetLocalPosition(CenterPos);
-			AcNeroInven->GetInvenVec()[Index]->GetTransform()->SetLocalPosition(LeftPos);
+			AcNeroInven->GetInvenVec()[PrevIndex]->GetTransform()->SetLocalPosition(CenterPos * WindowRatio);
+			AcNeroInven->GetInvenVec()[Index]->GetTransform()->SetLocalPosition(LeftPos * WindowRatio);
 			AcNeroInven->GetInvenVec()[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a = 1.0f;
 			AcNeroInven->GetInvenVec()[PrevIndex]->On();
 			SetPosValue = true;
@@ -146,13 +148,13 @@ void Menu_NeroInfo::MoveInven(float _Delta)
 		{
 			AcNeroInven->GetInvenVec()[Index]->GetRender()->ColorOptionValue.MulColor.a = 0.5f;
 			AcNeroInven->GetInvenVec()[Index]->On();
-			float4 M1 = float4::LerpClamp(LeftPos, CenterPos, Ratio * Speed);
+			float4 M1 = float4::LerpClamp(LeftPos * WindowRatio, CenterPos * WindowRatio, Ratio * Speed);
 			AcNeroInven->GetInvenVec()[Index]->GetTransform()->SetLocalPosition(M1);
 			if (AcNeroInven->GetInvenVec()[Index]->GetRender()->ColorOptionValue.MulColor.a <= 1.0f)
 			{
 				AcNeroInven->GetInvenVec()[Index]->GetRender()->ColorOptionValue.MulColor.a += Speed * 0.5f;
 			}
-			if (AcNeroInven->GetInvenVec()[Index]->GetTransform()->GetLocalPosition() == CenterPos)
+			if (AcNeroInven->GetInvenVec()[Index]->GetTransform()->GetLocalPosition() == CenterPos * WindowRatio)
 			{
 				InvenMinusValue = false;
 				SetPosValue = false;
@@ -164,7 +166,7 @@ void Menu_NeroInfo::MoveInven(float _Delta)
 		}
 		else if (ScendMove == false)
 		{
-			float4 M0 = float4::LerpClamp(CenterPos, RightPos, Ratio * Speed);
+			float4 M0 = float4::LerpClamp(CenterPos * WindowRatio, RightPos * WindowRatio, Ratio * Speed);
 			AcNeroInven->GetInvenVec()[PrevIndex]->GetTransform()->SetLocalPosition(M0);
 			AcNeroInven->GetInvenVec()[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a -= Speed * 0.5f;
 			if (AcNeroInven->GetInvenVec()[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a <= 0.5f)
@@ -181,8 +183,8 @@ void Menu_NeroInfo::MoveInven(float _Delta)
 		// 0번 러프후 2번 러프
 		if (SetPosValue == false)
 		{
-			AcNeroInven->GetInvenVec()[PrevIndex]->GetTransform()->SetLocalPosition(CenterPos);
-			AcNeroInven->GetInvenVec()[Index]->GetTransform()->SetLocalPosition(RightPos);
+			AcNeroInven->GetInvenVec()[PrevIndex]->GetTransform()->SetLocalPosition(CenterPos * WindowRatio);
+			AcNeroInven->GetInvenVec()[Index]->GetTransform()->SetLocalPosition(RightPos * WindowRatio);
 			AcNeroInven->GetInvenVec()[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a = 1.0f;
 			AcNeroInven->GetInvenVec()[PrevIndex]->On();
 			SetPosValue = true;
@@ -191,13 +193,13 @@ void Menu_NeroInfo::MoveInven(float _Delta)
 		{
 			AcNeroInven->GetInvenVec()[Index]->GetRender()->ColorOptionValue.MulColor.a = 0.5f;
 			AcNeroInven->GetInvenVec()[Index]->On();
-			float4 M1 = float4::LerpClamp(RightPos, CenterPos, Ratio * Speed);
+			float4 M1 = float4::LerpClamp(RightPos * WindowRatio, CenterPos * WindowRatio, Ratio * Speed);
 			AcNeroInven->GetInvenVec()[Index]->GetTransform()->SetLocalPosition(M1);
 			if (AcNeroInven->GetInvenVec()[Index]->GetRender()->ColorOptionValue.MulColor.a <= 1.0f)
 			{
 				AcNeroInven->GetInvenVec()[Index]->GetRender()->ColorOptionValue.MulColor.a += Speed * 0.5f;
 			}
-			if (AcNeroInven->GetInvenVec()[Index]->GetTransform()->GetLocalPosition() == CenterPos)
+			if (AcNeroInven->GetInvenVec()[Index]->GetTransform()->GetLocalPosition() == CenterPos * WindowRatio)
 			{
 				InvenPlusValue = false;
 				SetPosValue = false;
@@ -209,7 +211,7 @@ void Menu_NeroInfo::MoveInven(float _Delta)
 		}
 		else if (ScendMove == false)
 		{
-			float4 M0 = float4::LerpClamp(CenterPos, LeftPos, Ratio * Speed);
+			float4 M0 = float4::LerpClamp(CenterPos * WindowRatio, LeftPos * WindowRatio, Ratio * Speed);
 			AcNeroInven->GetInvenVec()[PrevIndex]->GetTransform()->SetLocalPosition(M0);
 			AcNeroInven->GetInvenVec()[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a -= Speed * 0.5f;
 			if (AcNeroInven->GetInvenVec()[PrevIndex]->GetRender()->ColorOptionValue.MulColor.a <= 0.5f)

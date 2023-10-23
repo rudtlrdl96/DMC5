@@ -76,7 +76,7 @@ private:
 	std::shared_ptr<class GameEngineFontRenderer> SeletText = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> ExplaneText = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> ExplaneText_2 = nullptr;
-
+	float4 WindowPos = float4::ZERONULL;
 
 	std::function<void()> Click;
 	std::string Font = "DMC5Font";

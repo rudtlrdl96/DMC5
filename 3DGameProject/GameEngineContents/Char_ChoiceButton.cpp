@@ -17,6 +17,7 @@ Char_ChoiceButton::~Char_ChoiceButton()
 
 void Char_ChoiceButton::Start()
 {
+	WindowRatio = GameEngineActor::ScreenRatio;
 	NoneSelectRender = CreateComponent<GameEngineUIRenderer>(1);
 	NoneSelectRender->SetTexture("Char_NoneSelect.png");
 	SelectRender = CreateComponent<GameEngineUIRenderer>(2);
@@ -27,10 +28,11 @@ void Char_ChoiceButton::Start()
 	TextNoneRender->ColorOptionValue.MulColor.a = 0.8f;
 	TextBarRender = CreateComponent<GameEngineUIRenderer>(7);
 	TextBarRender->SetScaleToTexture("Char_Bar.png");
-	TextBarRender->GetTransform()->SetLocalPosition({0.0f,-135.0f,0.0f});
+	TextBarRender->GetTransform()->SetLocalPosition(float4{0.0f,-135.0f,0.0f} *WindowRatio);
 	TextBarRender->ColorOptionValue.MulColor.a = 0.9f;
 	TextSelectRender = CreateComponent<GameEngineUIRenderer>(6);
-	TextSelectRender->SetScaleToTexture("Char_SelectText.png");
+	TextSelectRender->SetTexture("Char_SelectText.png");
+	TextSelectRender->GetTransform()->SetLocalScale(SelcetBarScale* WindowRatio);
 	TextSelectRender->ImageClippingX(0, ClipXDir::Left);
 	TextSelectRender->ColorOptionValue.MulColor.a = 0.9f;
 	FontCreate();
@@ -73,15 +75,15 @@ void Char_ChoiceButton::Update(float _Delta)
 		ScaleDownTime = 0.0f;
 		ScaleUpTime += _Delta;
 		SelectRender->On();
-		SelectRender->GetTransform()->SetLocalScale(SizeUpCalCulation(Scale, SeletScale, ScaleUpTime * 7.0f));
+		SelectRender->GetTransform()->SetLocalScale(SizeUpCalCulation(Scale * WindowRatio, SeletScale * WindowRatio, ScaleUpTime * 7.0f));
 		NoneSelectRender->Off();
-		NoneSelectRender->GetTransform()->SetLocalScale(Scale);
-		CharRender->GetTransform()->SetLocalScale(SizeUpCalCulation(Char_Scale, Char_SeletScale, ScaleUpTime * 7.0f));
-		TextNoneRender->GetTransform()->SetLocalScale(SizeUpCalCulation(Char_TextScale, Char_TextSeletScale, ScaleUpTime * 7.0f));
-		TextBarRender->GetTransform()->SetLocalScale(SizeUpCalCulation(Char_BarScale, Char_BarScaleUp, ScaleUpTime * 7.0f));
+		NoneSelectRender->GetTransform()->SetLocalScale(Scale * WindowRatio);
+		CharRender->GetTransform()->SetLocalScale(SizeUpCalCulation(Char_Scale * WindowRatio, Char_SeletScale * WindowRatio, ScaleUpTime * 7.0f));
+		TextNoneRender->GetTransform()->SetLocalScale(SizeUpCalCulation(Char_TextScale * WindowRatio, Char_TextSeletScale * WindowRatio, ScaleUpTime * 7.0f));
+		TextBarRender->GetTransform()->SetLocalScale(SizeUpCalCulation(Char_BarScale * WindowRatio, Char_BarScaleUp * WindowRatio, ScaleUpTime * 7.0f));
 		TextSelectRender->ImageClippingX(ScaleUpTime*10.0f, ClipXDir::Left);
-		NameText->SetScale(GameEngineMath::LerpLimit(50.0f,55.0f, ScaleUpTime * 7.0f));
-		ExplaneText->SetScale(GameEngineMath::LerpLimit(20.0f, 22.0f, ScaleUpTime * 7.0f));
+		NameText->SetScale(GameEngineMath::LerpLimit(50.0f * WindowRatio.x,55.0f * WindowRatio.x, ScaleUpTime * 7.0f));
+		ExplaneText->SetScale(GameEngineMath::LerpLimit(20.0f * WindowRatio.x, 22.0f * WindowRatio.x, ScaleUpTime * 7.0f));
 		SetSaturation();
 		if (true == GameEngineInput::IsUp("UI_Enter"))
 		{
@@ -96,15 +98,15 @@ void Char_ChoiceButton::Update(float _Delta)
 		ScaleUpTime = 0.0f;
 		ScaleDownTime += _Delta;
 		SelectRender->Off();
-		SelectRender->GetTransform()->SetLocalScale(Scale);
-		NoneSelectRender->GetTransform()->SetLocalScale(SizeUpCalCulation(SeletScale, Scale, ScaleDownTime * 7.0f));
+		SelectRender->GetTransform()->SetLocalScale(Scale * WindowRatio);
+		NoneSelectRender->GetTransform()->SetLocalScale(SizeUpCalCulation(SeletScale * WindowRatio, Scale * WindowRatio, ScaleDownTime * 7.0f));
 		NoneSelectRender->On();
-		CharRender->GetTransform()->SetLocalScale(SizeUpCalCulation(Char_SeletScale, Char_Scale, ScaleDownTime * 7.0f));
-		TextNoneRender->GetTransform()->SetLocalScale(SizeUpCalCulation(Char_TextSeletScale, Char_TextScale, ScaleDownTime * 7.0f));
-		TextBarRender->GetTransform()->SetLocalScale(SizeUpCalCulation(Char_BarScaleUp, Char_BarScale, ScaleDownTime * 7.0f));
+		CharRender->GetTransform()->SetLocalScale(SizeUpCalCulation(Char_SeletScale * WindowRatio, Char_Scale * WindowRatio, ScaleDownTime * 7.0f));
+		TextNoneRender->GetTransform()->SetLocalScale(SizeUpCalCulation(Char_TextSeletScale * WindowRatio, Char_TextScale * WindowRatio, ScaleDownTime * 7.0f));
+		TextBarRender->GetTransform()->SetLocalScale(SizeUpCalCulation(Char_BarScaleUp * WindowRatio, Char_BarScale * WindowRatio, ScaleDownTime * 7.0f));
 		TextSelectRender->ImageClippingX(1- ScaleDownTime*10.0f, ClipXDir::Left);
-		NameText->SetScale(GameEngineMath::LerpLimit(55.0f, 50.0f, ScaleDownTime * 7.0f));
-		ExplaneText->SetScale(GameEngineMath::LerpLimit(22.0f, 20.0f, ScaleDownTime * 7.0f));
+		NameText->SetScale(GameEngineMath::LerpLimit(55.0f * WindowRatio.x, 50.0f * WindowRatio.x, ScaleDownTime * 7.0f));
+		ExplaneText->SetScale(GameEngineMath::LerpLimit(22.0f * WindowRatio.x, 20.0f * WindowRatio.x, ScaleDownTime * 7.0f));
 		SetSaturation();
 	}
 }
@@ -120,24 +122,24 @@ void Char_ChoiceButton::FontCreate()
 	NameText = CreateComponent<GameEngineFontRenderer>(6);
 	NameText->SetFont(Font);
 	NameText->SetFontFlag(FW1_CENTER);
-	NameText->SetScale(50);
+	NameText->SetScale(50.0f * WindowRatio.x);
 	NameText->SetColor(float4(0.407f,0.682f,0.698f));
-	NameText->GetTransform()->SetLocalPosition({ 0.0f,-130.f,0.0f });
+	NameText->GetTransform()->SetLocalPosition(float4{ 0.0f,-130.f,0.0f }*WindowRatio);
 
 	SelectText = CreateComponent<GameEngineFontRenderer>(6);
 	SelectText->SetFont(Font);
 	SelectText->SetFontFlag(FW1_CENTER);
-	SelectText->SetScale(36);
+	SelectText->SetScale(36.0f * WindowRatio.x);
 	SelectText->SetColor(float4(0.305f, 0.96f, 0.94f, 1.0f));
-	SelectText->GetTransform()->SetLocalPosition({ 0.0f,22.f,0.0f });
+	SelectText->GetTransform()->SetLocalPosition(float4{ 0.0f,22.f,0.0f }*WindowRatio);
 	SelectText->Off();
 
 	ExplaneText = CreateComponent<GameEngineFontRenderer>(6);
 	ExplaneText->SetFont(Font);
 	ExplaneText->SetFontFlag(FW1_CENTER);
-	ExplaneText->SetScale(20);
+	ExplaneText->SetScale(20.0f * WindowRatio.x);
 	ExplaneText->SetColor(float4(0.455f,0.541f,0.572f));
-	ExplaneText->GetTransform()->SetLocalPosition({ 0.0f,-105.0f,0.0f });
+	ExplaneText->GetTransform()->SetLocalPosition(float4{ 0.0f,-105.0f,0.0f }*WindowRatio);
 }
 
 void Char_ChoiceButton::SetSaturation()
