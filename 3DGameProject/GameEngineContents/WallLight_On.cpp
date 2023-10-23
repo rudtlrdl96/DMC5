@@ -21,7 +21,7 @@ void WallLight_On::Start()
 	PointLight = GetLevel()->CreatePointLight(GetTransform()->GetLocalPosition() + LightPosition, ShadowTextureScale::S_512, 1500.f);
 	PointLight->GetTransform()->SetParent(GetTransform());
 	PointLight->SetLightPower(1.f);
-	PointLight->SetLightColor({1.f,0.7f,0.7f});
+	PointLight->SetLightColor({ 0.95f, 0.85f, 0.6f });
 
 	StaticFieldMapObject::Start();
 

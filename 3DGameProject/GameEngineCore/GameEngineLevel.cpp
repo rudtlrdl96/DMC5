@@ -231,6 +231,7 @@ void GameEngineLevel::Render(float _DeltaTime)
 
 		if (false == IsDebugRender)
 		{
+			GameEngineDebug::ClearRender(Cam.get());
 			continue;
 		}
 

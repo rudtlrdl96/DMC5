@@ -19,6 +19,6 @@ protected:
 
 private:
 	std::shared_ptr<class GameEngineLight> SpotLight;
-	float4 LightPosition = { 0.f,10.f,0.f };
+	float4 LightPosition = { 0.f, 20.f, 0.f };
 };
 

@@ -248,8 +248,7 @@ GameEngineObject* GameEngineObject::DrawGUI()
 
 	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow |
 		ImGuiTreeNodeFlags_OpenOnDoubleClick |
-		ImGuiTreeNodeFlags_SpanAvailWidth |
-		ImGuiTreeNodeFlags_DefaultOpen;
+		ImGuiTreeNodeFlags_SpanAvailWidth;
 
 	if (GUI_SelectActorIndex == GetID())
 	{

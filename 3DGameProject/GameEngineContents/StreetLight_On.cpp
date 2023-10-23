@@ -4,7 +4,7 @@
 
 StreetLight_On::StreetLight_On()
 {
-
+	SetName("StreetLight_On");
 }
 
 StreetLight_On::~StreetLight_On()
@@ -19,13 +19,15 @@ void StreetLight_On::Start()
 	PointLight = GetLevel()->CreatePointLight(GetTransform()->GetLocalPosition() + LightPosition, ShadowTextureScale::S_512, 1500.f);
 	PointLight->GetTransform()->SetParent(GetTransform());
 	PointLight->SetLightPower(2.f);
-	PointLight->SetLightColor({1.f,0.7f,0.7f});
+	PointLight->SetLightColor({0.95f, 0.85f, 0.6f});
+	PointLight->IsDebugDraw = true;
 
 	StaticFieldMapObject::Start();
 
 	LightValue = FBXMesh->GetRenderBaseValueRef();
 	LightValue.BaseColor = { 10.0f, 0, 0, 0 };
 	FBXMesh->GetRenderUnit(2, 0)->ShaderResHelper.SetConstantBufferLink("RenderBaseValue", LightValue);
+	FBXMesh->ShadowOff();
 }
 
 void StreetLight_On::Update(float _DeltaTime)

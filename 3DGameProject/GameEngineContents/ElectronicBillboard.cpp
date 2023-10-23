@@ -32,7 +32,7 @@ void ElectronicBillboard::Start()
 
 	LightValue = FBXMesh->GetRenderBaseValueRef();
 	
-	LightValue.BaseColor = { 2.0f, 0, 0, 0 };
+	LightValue.BaseColor = { 4.0f, 0, 0, 0 };
 
 	FBXMesh->GetRenderUnit(0, 0)->ShaderResHelper.SetConstantBufferLink("RenderBaseValue", LightValue);
 	FBXMesh->GetRenderUnit(3, 0)->ShaderResHelper.SetConstantBufferLink("RenderBaseValue", LightValue);

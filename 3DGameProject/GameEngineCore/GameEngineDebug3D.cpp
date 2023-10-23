@@ -111,4 +111,8 @@ namespace GameEngineDebug
 
 		Data.clear();
 	}
+	void ClearRender(GameEngineCamera* _Camera)
+	{
+		DebugDrawDatas[_Camera].clear();
+	}
 }

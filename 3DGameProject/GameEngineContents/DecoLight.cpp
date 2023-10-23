@@ -15,10 +15,12 @@ DecoLight::~DecoLight()
 void DecoLight::Start()
 {
 	FBXFileName = "sm0183_decolight00.fbx";
-	SpotLight = GetLevel()->CreateSpotLight(GetTransform()->GetLocalPosition() + LightPosition, ShadowTextureScale::S_512, 2000.f, 90.f);
+	SpotLight = GetLevel()->CreateSpotLight(GetTransform()->GetLocalPosition() + LightPosition, ShadowTextureScale::S_1024, 3000.f, 120.f);
 	SpotLight->GetTransform()->SetLocalRotation({-90,0,0});
 	SpotLight->GetTransform()->SetParent(GetTransform());
-	SpotLight->SetLightPower(40.f);
+	SpotLight->SetLightPower(3.f);
+	SpotLight->DynamicShadowOn();
+	SpotLight->IsDebugDraw = true;
 
 	StaticFieldMapObject::Start();
 }
