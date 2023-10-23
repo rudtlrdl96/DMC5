@@ -21,7 +21,7 @@ void Location2_EnemySpawner0::Start()
 
 	Event = [this]()
 		{
-			if (false == NetworkManager::IsClient())
+			if (true == NetworkManager::IsClient())
 			{
 				BGMPlayer::SetBattleBGM();
 				MonsterAliveCount = 3;
