@@ -396,8 +396,8 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 	PlayerAttackCheck(AttackCol.get());
 	MonsterAttackCollision->Off();
 	DamageData Data = AttackCol->GetDamage();
-	PlayDamageSound(Data.SoundType);
 	MinusEnemyHP(Data.DamageValue);
+	PlayDamageSound(Data.SoundType);
 	Sound.PlayVoiceRandom(4, 5, false);
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{

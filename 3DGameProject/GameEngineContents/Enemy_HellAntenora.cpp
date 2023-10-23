@@ -133,13 +133,55 @@ void Enemy_HellAntenora::EnemyAnimationLoad()
 			},
 			.CallBacks_int =
 			{
-				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
+				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1),
+				std::bind(&SoundController::Play, &Sound, "HellCaina_SFX_",std::placeholders::_1),
+				std::bind(&SoundController::PlayVoice, &Sound, std::placeholders::_1, false),
 			},
 			.CallBacks_float4 =
 			{
 			}
 		}
 	);
+
+	// 사운드 로드
+	Sound.SetVoiceName("HellAntenora_V_");
+	if (nullptr == GameEngineSound::Find("HellAntenora_V_0.wav")) {
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Sound");
+		NewDir.Move("Voice");
+		NewDir.Move("HellAntenora");
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".wav" });
+
+		for (size_t i = 0; i < Files.size(); i++)
+		{
+			GameEngineSound::Load(Files[i].GetFullPath());
+		}
+
+		NewDir.MoveParent();
+		NewDir.MoveParent();
+		NewDir.Move("SFX");
+		NewDir.Move("HellCaina");
+		Files = NewDir.GetAllFile({ ".wav" });
+
+		if (nullptr == GameEngineSound::Find("HellCaina_SFX_0.wav")) {
+			for (size_t i = 0; i < Files.size(); i++)
+			{
+				GameEngineSound::Load(Files[i].GetFullPath());
+			}
+		}
+		if (nullptr == GameEngineSound::Find("Enemy_Damage_0.wav"))
+		{
+			NewDir.MoveParent();
+			NewDir.Move("Enemy");
+			Files = NewDir.GetAllFile({ ".wav" });
+			for (size_t i = 0; i < Files.size(); i++)
+			{
+				GameEngineSound::Load(Files[i].GetFullPath());
+			}
+		}
+	}
 }
 
 void Enemy_HellAntenora::Start()
@@ -229,6 +271,8 @@ void Enemy_HellAntenora::Start()
 		MultiAttackStack = 0;
 		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
 		MinusEnemyHP(Datas.DamageValue);
+		PlayDamageSound(Datas.SoundType);
+		Sound.PlayVoice(5);
 
 		if (DamageType::VergilLight == Datas.DamageTypeValue)
 		{
@@ -364,6 +408,8 @@ void Enemy_HellAntenora::DamageCollisionCheck(float _DeltaTime)
 	DamageData Data = AttackCol->GetDamage();
 	MinusEnemyHP(Data.DamageValue);
 	MultiAttackStack = 0;
+	PlayDamageSound(Data.SoundType);
+	Sound.PlayVoice(5);
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
@@ -402,12 +448,14 @@ void Enemy_HellAntenora::DamageCollisionCheck(float _DeltaTime)
 		{
 			StartRenderShaking(8);
 			ChangeState(FSM_State_HellAntenora::HellAntenora_Air_Damage_Under);
+			AttackDelayCheck = 0.0f;
 			return;
 		}
 
 		if (true == IsCollapse)
 		{
 			StartRenderShaking(8);
+			AttackDelayCheck = 0.0f;
 			return;
 		}
 
@@ -489,6 +537,8 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 	if (nullptr == AttackCol) { return; }
 
 	DamageData Data = AttackCol->GetDamage();
+	PlayDamageSound(Data.SoundType);
+	Sound.PlayVoice(5);
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
@@ -519,12 +569,14 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 		{
 			StartRenderShaking(8);
 			ChangeState(FSM_State_HellAntenora::HellAntenora_Air_Damage_Under);
+			AttackDelayCheck = 0.0f;
 			return;
 		}
 
 		if (true == IsCollapse)
 		{
 			StartRenderShaking(8);
+			AttackDelayCheck = 0.0f;
 			return;
 		}
 
@@ -2059,6 +2111,7 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	// 앞으로 넘어진 상태에서 Death
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Prone_Death,
 	.Start = [=] {
+	Sound.PlayVoice(9);
 	EnemyRenderer->ChangeAnimation("em0001_prone_death");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2073,6 +2126,7 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	// 앞으로 쓰러지면서 죽음
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Death_Back,
 	.Start = [=] {
+	Sound.PlayVoice(9);
 	EnemyRenderer->ChangeAnimation("em0001_death_back");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2087,6 +2141,7 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	// 뒤로 쓰러지면서 죽음
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Death_Front,
 	.Start = [=] {
+	Sound.PlayVoice(9);
 	EnemyRenderer->ChangeAnimation("em0001_death_front");
 	},
 	.Update = [=](float _DeltaTime) {

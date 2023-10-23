@@ -588,7 +588,7 @@ void AnimationToolWindow::AnimationFrameUpdate()
 			}
 			else if (CurData.Index == 2)
 			{
-				GameEngineSound::Play("HellCaina_V_" + std::to_string(CurData.IntValue) + ".wav");
+				GameEngineSound::Play("HellAntenora_V_" + std::to_string(CurData.IntValue) + ".wav");
 				//GameEngineSound::Play("BR_" + std::to_string(CurData.IntValue) + ".wav");
 			}
 			else if (CurData.Index == 3)
