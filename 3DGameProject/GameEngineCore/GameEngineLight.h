@@ -73,14 +73,15 @@ enum class ShadowTextureScale
     S_2048,
     S_4096,
     S_8192,
+    S_16384,
 };
 
 // Ό³Έν :
 class GameEngineLight : public GameEngineActor
 {
     static const float4 PointViewDatas[6][2];
-    static const float4 ShadowTextureScales[8];
-    static const std::string ShadowTextureEnums[8];
+    static const float4 ShadowTextureScales[9];
+    static const std::string ShadowTextureEnums[9];
 public:
     friend class GameEngineLevel;
     friend class GameEngineCamera;

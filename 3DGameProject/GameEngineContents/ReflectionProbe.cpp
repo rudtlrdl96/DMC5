@@ -30,7 +30,7 @@ void ReflectionProbe::Init(const std::string_view& _CaptureTextureName, const fl
 
 		if (nullptr == CaptureTarget)
 		{
-			CaptureTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM, _Scale, float4::ZERONULL);
+			CaptureTarget = GameEngineRenderTarget::Create(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_UNORM, _Scale, float4::ZERONULL);
 		}
 
 		float4 CenterPos = GetTransform()->GetWorldPosition();

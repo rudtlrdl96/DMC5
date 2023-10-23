@@ -23,7 +23,6 @@ std::shared_ptr<SkyBox> SkyBox::CreateSkyBox(GameEngineLevel* _Level, const std:
 	Result->Sky->SetFBXMesh(_FBXName.data(), "FBX");
 	Result->Sky->LightOff();
 	Result->Sky->ShadowOff();
-	Result->Sky->SetBaseColor({5.f,0.f,0.f});
+	Result->Sky->SetBaseColor({2.0f,0.f,0.f});
 	return Result;
 }
-

@@ -1335,7 +1335,7 @@ HRESULT GameEngineScreenShoot::RenderTargetShoot_DxTex(std::shared_ptr<GameEngin
 
         // 경로 변경
         SetCurrentDirectory(GameEngineString::AnsiToUniCode(_Path).data());
-
+        
         DirectX::ScratchImage image;
         HRESULT result = CaptureTexture(GameEngineDevice::GetDevice(), GameEngineDevice::GetContext(), Resource, image);
 

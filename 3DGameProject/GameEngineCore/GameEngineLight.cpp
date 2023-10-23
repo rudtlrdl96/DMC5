@@ -15,7 +15,7 @@ const float4 GameEngineLight::PointViewDatas[6][2] = {
 /// 0 == EyeDIr, 1 == UpDIr
 
 
-const float4 GameEngineLight::ShadowTextureScales[8] =
+const float4 GameEngineLight::ShadowTextureScales[9] =
 {
 	{64, 64},
 	{128, 128},
@@ -24,10 +24,11 @@ const float4 GameEngineLight::ShadowTextureScales[8] =
 	{1024, 1024},
 	{2048, 2048},
 	{4096, 4096},
-	{8192, 8192}
+	{8192, 8192},
+	{16384, 16384}
 };
 
-const std::string GameEngineLight::ShadowTextureEnums[8] =
+const std::string GameEngineLight::ShadowTextureEnums[9] =
 {
 	"64",
 	"128",
@@ -37,6 +38,7 @@ const std::string GameEngineLight::ShadowTextureEnums[8] =
 	"2048",
 	"4096",
 	"8192",
+	"16384",
 };
 
 GameEngineLight::GameEngineLight()
@@ -349,6 +351,10 @@ void GameEngineLight::DrawEditor()
 		if (ImGui::Selectable("8192"))
 		{
 			ShadowTextureScaleValue = ShadowTextureScale::S_8192;
+		}		
+		if (ImGui::Selectable("16384"))
+		{
+			ShadowTextureScaleValue = ShadowTextureScale::S_16384;
 		}
 
 		if (CurScale != ShadowTextureScaleValue)

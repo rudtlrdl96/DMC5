@@ -43,6 +43,31 @@ void GameEngineCamera::CaptureCubemap(const float4& _Pos, const float4& _Rot, co
 
 	CamAlphaTarget->Clear();
 
+	for (std::shared_ptr<GameEngineLight> Light : GetLevel()->AllLight)
+	{
+		if (false == Light->IsShadow())
+		{
+			continue;
+		}
+
+		std::shared_ptr<GameEngineRenderTarget> ShadowTarget = Light->GetShadowTarget();
+		std::shared_ptr<GameEngineRenderTarget> BakeTarget = Light->GetBakeTarget(Light->GetBakeTargetIndex());
+
+		if (nullptr != ShadowTarget)
+		{
+			ShadowTarget->Clear();
+
+			if (Light->GetLightData().LightType == static_cast<int>(LightType::Point))
+			{
+				ShadowTarget->MergeCubemap(BakeTarget);
+			}
+			else
+			{
+				ShadowTarget->Merge(BakeTarget);
+			}
+		}
+	}
+
 	CameraTransformUpdate();
 	ViewPortSetting();
 
