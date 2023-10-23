@@ -17,6 +17,7 @@
 #include "PlayerActor_Nero.h"
 #include "PlayerActor_Vergil.h"
 #include "Enemy_HellCaina.h"
+#include "Enemy_Empusa.h"
 #include "Player_MirageBlade.h"
 
 const float NetworkManager::PacketFlushTime = 0.01f;
@@ -465,6 +466,9 @@ std::shared_ptr<NetworkObjectBase> NetworkManager::CreateNetActor(Net_ActorType 
 		break;
 	case Net_ActorType::HellCaina:
 		NetObject = Poolable<Enemy_HellCaina>::PopFromPool(CreateLevel, static_cast<int>(ActorOrder::Enemy));
+		break;
+	case Net_ActorType::Empusa:
+		NetObject = Poolable<Enemy_Empusa>::PopFromPool(CreateLevel, static_cast<int>(ActorOrder::Enemy));
 		break;
 	default:
 	{
