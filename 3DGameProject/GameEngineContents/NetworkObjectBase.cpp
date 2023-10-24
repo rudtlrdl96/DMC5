@@ -13,6 +13,30 @@
 NetworkObjectBase* NetworkObjectBase::DebugTarget = nullptr;
 Net_ActorType NetworkObjectBase::DebugType = Net_ActorType::UNKNOWN;
 
+std::map<Net_ActorType, std::list<std::function<void()>>> NetworkObjectBase::ReservedDestroyCallbacks;
+
+void NetworkObjectBase::PushReservedDestroyCallback(Net_ActorType _Type, std::function<void()>&& _CallBack)
+{
+	if (nullptr == _CallBack)
+	{
+		MsgAssert("인자로 들어온 콜백이 nullptr일 수는 없습니다");
+		return;
+	}
+
+	ReservedDestroyCallbacks[_Type].emplace_back(_CallBack);
+}
+
+std::function<void()> NetworkObjectBase::PopReservedDestroyCallback(Net_ActorType _Type)
+{
+	std::list<std::function<void()>>& Group = ReservedDestroyCallbacks[_Type];
+	if (true == Group.empty())
+		return nullptr;
+
+	std::function<void()> Return = Group.front();
+	Group.pop_front();
+	return Return;
+}
+
 NetworkObjectBase* NetworkObjectBase::GetNetObj(unsigned int _ObjID)
 {
 	GameEngineNetObject* GameNetObj = nullptr;
@@ -29,6 +53,8 @@ NetworkObjectBase* NetworkObjectBase::GetNetObj(unsigned int _ObjID)
 
 	return NetObj;
 }
+
+
 
 
 NetworkObjectBase::NetworkObjectBase()
@@ -279,3 +305,17 @@ void NetworkObjectBase::SetActorTrans()
 	ActorTrans = ActorPtr->GetTransform();
 }
 
+void NetworkObjectBase::Destroy()
+{
+	GameEngineActor::Destroy();
+
+	for (const std::function<void()>& CallBack : DestroyCallbacks)
+	{
+		if (nullptr == CallBack)
+			continue;
+
+		CallBack();
+	}
+
+	DestroyCallbacks.clear();
+}

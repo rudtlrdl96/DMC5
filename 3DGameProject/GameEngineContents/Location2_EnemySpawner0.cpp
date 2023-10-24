@@ -22,11 +22,14 @@ void Location2_EnemySpawner0::Start()
 	Event = [this]()
 		{
 			GameEngineLevel* Level = GetLevel();
+
+			//이 부분은 Host가 아닌 클라에서만 실행됩니다.
 			if (true == NetworkManager::IsClient())
 			{
 				BGMPlayer::SetBattleBGM();
 				MonsterAliveCount = 3;
 				Level->DynamicThis<StageBaseLevel>()->RedSealWallOn();
+				NetworkObjectBase::PushReservedDestroyCallback(Net_ActorType::Empusa, std::bind(&EnemySpawner::DestroyMonster, this));
 				return;
 			}
 

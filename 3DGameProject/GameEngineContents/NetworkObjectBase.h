@@ -7,11 +7,14 @@
 class PhysXCapsuleComponent;
 class GameEngineTransform;
 
-class NetworkObjectBase : public GameEngineNetObject
+class NetworkObjectBase : public GameEngineNetObject, public GameEngineActor
 {
 	friend class NetworkManager;
 
 public:
+	static void PushReservedDestroyCallback(Net_ActorType _Type, std::function<void()>&& _CallBack);
+	static std::function<void()> PopReservedDestroyCallback(Net_ActorType _Type);
+
 	static inline NetworkObjectBase* GetDebugTarget()
 	{
 		return DebugTarget;
@@ -45,7 +48,16 @@ public:
 		return ActorTimeScale;
 	}
 
+	//이 몬스터가 삭제될 때 호출될 함수를 등록합니다.
+	inline void PushDestroyCallback(const std::function<void()>& _Callback)
+	{
+		DestroyCallbacks.emplace_back(_Callback);
+	}
+
 protected:
+	//이거 자식에서 쓰실때 푸셔도 돼요. 근데 꼭 NetworkObjectBase::Destroy()는 호출시켜주세요
+	void Destroy() final;
+	
 	inline void SetNetObjectType(Net_ActorType _ActorType)
 	{
 		NetActorType = _ActorType;
@@ -127,6 +139,8 @@ protected:
 	}
 
 private:
+	static std::map<Net_ActorType, std::list<std::function<void()>>> ReservedDestroyCallbacks;
+
 	static NetworkObjectBase* DebugTarget;
 	static Net_ActorType DebugType;
 
@@ -149,9 +163,11 @@ private:
 	std::vector<float*> UpdatePacket_FloatLinkDatas;
 
 	std::map<void*, std::function<void(void* _BeforeData)>> LinkDifferentCallBacks;
-	
-	
 	std::map<PacketEnum, std::function<void(std::shared_ptr<GameEnginePacket> _Packet)>> PacketProcessFunctions;
+	
+	std::vector<std::function<void()>> DestroyCallbacks;
+
+
 
 	inline Net_ActorType GetNetObjectType() const
 	{

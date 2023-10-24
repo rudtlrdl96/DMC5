@@ -477,9 +477,6 @@ std::shared_ptr<NetworkObjectBase> NetworkManager::CreateNetActor(Net_ActorType 
 	}
 	}
 
-	//생성한 객체가 플레이어라면 자료구조에 저장(이거 아마 지금 사용 안함)
-	//RegistPlayer(NetObject.get(), CreateLevel);
-
 	if (-1 == _ObjectID)
 	{
 		NetObject->InitNetObject(GameEngineNetObject::CreateServerID(), NetInst);
@@ -488,6 +485,13 @@ std::shared_ptr<NetworkObjectBase> NetworkManager::CreateNetActor(Net_ActorType 
 	{
 		NetObject->InitNetObject(_ObjectID, NetInst);
 	}
+
+	const std::function<void()>& DestoryCallBack = NetworkObjectBase::PopReservedDestroyCallback(_ActorType);
+	if (nullptr != DestoryCallBack)
+	{
+		NetObject->PushDestroyCallback(DestoryCallBack);
+	}
+	
 
 	return NetObject;
 }

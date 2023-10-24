@@ -3,7 +3,7 @@
 #include "Poolable.h"
 
 // Ό³Έν :
-class Player_MirageBlade : public GameEngineActor, public NetworkObjectBase, public Poolable<Player_MirageBlade>
+class Player_MirageBlade : public NetworkObjectBase, public Poolable<Player_MirageBlade>
 {
 public:
 	// constrcuter destructer

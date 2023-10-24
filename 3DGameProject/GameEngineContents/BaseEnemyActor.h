@@ -37,13 +37,10 @@ enum class EnemyRotation
 	Right_180,
 };
 
-class BaseEnemyActor : public GameEngineActor, public NetworkObjectBase
+class BaseEnemyActor : public NetworkObjectBase
 {
 	friend class EnemySpawnArea;
 public:
-	static void PushReservedDestroyCallback(std::function<void()>&& _CallBack);
-	static std::function<void()> PopReservedDestroyCallback();
-
 	BaseEnemyActor();
 	~BaseEnemyActor();
 
@@ -99,16 +96,11 @@ public:
 	{
 		DeathCallbacks.push_back(_Callback);
 	}
-	//이 몬스터가 삭제될 때 호출될 함수를 등록합니다.
-	inline void PushDestroyCallback(const std::function<void()>& _Callback)
-	{
-		DestroyCallbacks.push_back(_Callback);
-	}
+	
 
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
-	void Destroy() final;
 
 	virtual void EnemyTypeLoad() = 0;                                 // 기본 정보 입력 (HP, EnemyCode)
 	virtual void EnemyMeshLoad() = 0;                                 // 매쉬 로드, 애니메이션 전에 실시한다.
@@ -313,8 +305,5 @@ protected:
 	}
 
 private:
-	static std::list<std::function<void()>> ReservedDestroyCallbacks;
-
 	std::vector<std::function<void()>> DeathCallbacks;
-	std::vector<std::function<void()>> DestroyCallbacks;
 };

@@ -13,29 +13,6 @@
 #include "Item_EnemyRedOrb.h"
 #include "FXSystem.h"
 
-std::list<std::function<void()>> BaseEnemyActor::ReservedDestroyCallbacks;
-
-void BaseEnemyActor::PushReservedDestroyCallback(std::function<void()>&& _CallBack)
-{
-	if (nullptr == _CallBack)
-	{
-		MsgAssert("인자로 들어온 콜백이 nullptr일 수는 없습니다");
-		return;
-	}
-
-	ReservedDestroyCallbacks.emplace_back(_CallBack);
-}
-
-std::function<void()> BaseEnemyActor::PopReservedDestroyCallback()
-{
-	if (true == ReservedDestroyCallbacks.empty())
-		return nullptr;
-
-	std::function<void()> Return = ReservedDestroyCallbacks.front();
-	ReservedDestroyCallbacks.pop_front();
-	return Return;
-}
-
 
 
 BaseEnemyActor::BaseEnemyActor()
@@ -889,20 +866,7 @@ void BaseEnemyActor::RendererBurn(float _DeltaTime)
 
 
 
-void BaseEnemyActor::Destroy()
-{
-	GameEngineActor::Destroy();
 
-	for (const std::function<void()>& CallBack : DestroyCallbacks)
-	{
-		if (nullptr == CallBack)
-			continue;
-
-		CallBack();
-	}
-
-	DestroyCallbacks.clear();
-}
 
 void BaseEnemyActor::DeathCheck()
 {

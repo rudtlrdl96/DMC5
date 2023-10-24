@@ -5,7 +5,7 @@
 
 
 
-class BasePlayerActor : public GameEngineActor, public NetworkObjectBase
+class BasePlayerActor : public NetworkObjectBase
 {
 public:
 	static std::vector<BasePlayerActor*>& GetPlayers()
