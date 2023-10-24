@@ -61,54 +61,54 @@ void Enemy_ScudoAngelo::EnemyMeshLoad()
 		break;
 	}
 
-	//LeftWeapon = CreateComponent<GameEngineFBXRenderer>();
-	//RightWeapon = CreateComponent<GameEngineFBXRenderer>();
+	LeftWeapon = CreateComponent<GameEngineFBXRenderer>();  // 방패
+	RightWeapon = CreateComponent<GameEngineFBXRenderer>(); // 검
 
-	//if (nullptr == GameEngineFBXMesh::Find("wpem0600_00.FBX"))
-	//{
-	//	std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
-	//		{
-	//			"Character", "Enemy", "Scudo", "mesh"
-	//		},
-	//		"wpem0600_00.FBX");
+	if (nullptr == GameEngineFBXMesh::Find("wpem0600_00.FBX"))
+	{
+		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+			{
+				"Character", "Enemy", "Scudo", "mesh"
+			},
+			"wpem0600_00.FBX");
 
-	//	GameEngineFBXMesh::Load(Path);
-	//}
+		GameEngineFBXMesh::Load(Path);
+	}
 
-	//if (nullptr == GameEngineFBXMesh::Find("wpem0600_01.FBX"))
-	//{
-	//	std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
-	//		{
-	//			"Character", "Enemy", "Scudo", "mesh"
-	//		},
-	//		"wpem0600_01.FBX");
+	if (nullptr == GameEngineFBXMesh::Find("wpem0600_01.FBX"))
+	{
+		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+			{
+				"Character", "Enemy", "Scudo", "mesh"
+			},
+			"wpem0600_01.FBX");
 
-	//	GameEngineFBXMesh::Load(Path);
-	//}
+		GameEngineFBXMesh::Load(Path);
+	}
 
-	//switch (GameEngineOption::GetOption("Shader"))
-	//{
-	//case GameEngineOptionValue::Low:
-	//{
-	//	LeftWeapon->SetFBXMesh("wpem0600_01.fbx", "FBX_Low");
-	//	RightWeapon->SetFBXMesh("wpem0600_00.fbx", "FBX_Low");
-	//}
-	//break;
-	//case GameEngineOptionValue::High:
-	//{
-	//	LeftWeapon->SetFBXMesh("wpem0600_01.fbx", "FBX");
-	//	RightWeapon->SetFBXMesh("wpem0600_00.fbx", "FBX");
-	//}
-	//break;
-	//default:
-	//	break;
-	//}
+	switch (GameEngineOption::GetOption("Shader"))
+	{
+	case GameEngineOptionValue::Low:
+	{
+		LeftWeapon->SetFBXMesh("wpem0600_01.fbx", "FBX_Low");
+		RightWeapon->SetFBXMesh("wpem0600_00.fbx", "FBX_Low");
+	}
+	break;
+	case GameEngineOptionValue::High:
+	{
+		LeftWeapon->SetFBXMesh("wpem0600_01.fbx", "FBX");
+		RightWeapon->SetFBXMesh("wpem0600_00.fbx", "FBX");
+	}
+	break;
+	default:
+		break;
+	}
 
-	//LeftWeapon->ShadowOn();
-	//LeftWeapon->SetDynamic();
+	LeftWeapon->ShadowOn();
+	LeftWeapon->SetDynamic();
 
-	//RightWeapon->ShadowOn();
-	//RightWeapon->SetDynamic();
+	RightWeapon->ShadowOn();
+	RightWeapon->SetDynamic();
 
 	if (nullptr == GameEngineTexture::Find("PaperBurnNoise.jpg"))
 	{
@@ -119,8 +119,8 @@ void Enemy_ScudoAngelo::EnemyMeshLoad()
 	}
 
 	EnemyRenderer->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
-	//LeftWeapon->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
-	//RightWeapon->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
+	LeftWeapon->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
+	RightWeapon->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
 }
 
 void Enemy_ScudoAngelo::EnemyAnimationLoad()
@@ -217,32 +217,24 @@ void Enemy_ScudoAngelo::Start()
 	//MonsterCollision->Off();
 	RN_MonsterCollision->Off();
 
+	//LeftWeapon->GetTransform()->AddLocalRotation({ 0.0f, 180.0f, 0.0f });
+	//LeftWeapon->GetTransform()->AddLocalRotation({ -90.0f, 0.0f, 0.0f });
+
 	// 무기 붙이기
-	//EnemyRenderer->SetAttachTransform("L_WeaponHand", LeftWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 170.0f, 180.0f), true);
-	//EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 170.0f, 180.0f), true);
+	EnemyRenderer->SetAttachTransform("L_Hand", LeftWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(180.0f, 70.0f, 0.0f), true);
+	EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 170.0f, 180.0f), true);
 
-	//float4 MeshScale_L = LeftWeapon->GetMeshScale();
-	//// MeshScale = { 77.6 , 10.5 , 171.0 }
-	//MeshScale_L.x *= 0.7f;
-	//MeshScale_L.z *= 0.6f;
-	//float4 MeshScale_R = RightWeapon->GetMeshScale();
-	//MeshScale_R.x *= 0.7f;
-	//MeshScale_R.z *= 0.6f;
+	float4 MeshScale_R = RightWeapon->GetMeshScale();
+	MeshScale_R.x *= 0.7f;
+	MeshScale_R.z *= 0.6f;
 
-	//MonsterAttackCollision->GetTransform()->SetWorldScale(MeshScale_L);
-	//MonsterAttackCollision_Two->GetTransform()->SetWorldScale(MeshScale_R);
+	MonsterAttackCollision->GetTransform()->SetWorldScale(MeshScale_R);
+	MonsterAttackCollision->GetTransform()->SetParent(RightWeapon->GetTransform());
+	MonsterAttackCollision->GetTransform()->AddLocalPosition(float4{ 0.0f, 0.0f, 100.0f });
+	MonsterAttackCollision->GetTransform()->AddLocalRotation(float4{ 0.0f, 0.0f, 0.0f });
 
-	//MonsterAttackCollision->GetTransform()->SetParent(LeftWeapon->GetTransform());
-	//MonsterAttackCollision_Two->GetTransform()->SetParent(RightWeapon->GetTransform());
-
-	//MonsterAttackCollision->GetTransform()->AddLocalPosition(float4{ 0.0f, 0.0f, 80.0f });
-	//MonsterAttackCollision_Two->GetTransform()->AddLocalPosition(float4{ 0.0f, 0.0f, 80.0f });
-
-	//MonsterAttackCollision->GetTransform()->AddLocalRotation(float4{ 0.0f, -10.0f, 0.0f });
-	//MonsterAttackCollision_Two->GetTransform()->AddLocalRotation(float4{ 0.0f, -10.0f, 0.0f });
-
-	//MonsterAttackCollision->Off();
-	//MonsterAttackCollision_Two->Off();
+	MonsterAttackCollision->Off();
+	MonsterAttackCollision_Two->Off();
 
 	// 넷 오브젝트 타입 설정1
 	SetNetObjectType(Net_ActorType::ScudoAngelo);
