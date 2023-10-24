@@ -3,6 +3,7 @@
 
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/PhysXBoxComponent.h>
+#include <GameEngineCore/PhysXTriangleComponent.h>
 
 #include "StageBaseLevel.h"
 
@@ -23,7 +24,7 @@ void StaticFieldMapObject::Start()
 
 void StaticFieldMapObject::Update(float _DeltaTime)
 {
-	if (PhysXBox == nullptr && !GetLevel()->DynamicThis<StageBaseLevel>()->IsEditLevel)
+	if (PhysX == nullptr && !GetLevel()->DynamicThis<StageBaseLevel>()->IsEditLevel)
 	{
 		SetPhysX();
 	}
@@ -57,11 +58,12 @@ void StaticFieldMapObject::SetPhysX()
 		MsgAssert("StaticFieldMapObject : FBXMesh가 nullptr이어서 PhysXBox를 세팅할 수 없습니다")
 	}
 
-	PhysXBox = CreateComponent<PhysXBoxComponent>();
-	const float4& AcScale = GetTransform()->GetLocalScale();
-	const float4& MeshScale = FBXMesh->GetMeshScale();
-	physx::PxVec3 PxScale = { MeshScale.x * AcScale.x, MeshScale.y * AcScale.y, MeshScale.z * AcScale.z };
-	PhysXBox->SetObstacleObject();
-	PhysXBox->SetPositionSetFromParentFlag(true);
-	PhysXBox->CreatePhysXActors(PxScale);
+	PhysX = CreateComponent<PhysXTriangleComponent>();
+	PhysX->SetPhysxMaterial(1.0f, 1.0f, 0.05f);
+	//const float4& AcScale = GetTransform()->GetLocalScale();
+	//const float4& MeshScale = FBXMesh->GetMeshScale();
+	//physx::PxVec3 PxScale = { MeshScale.x * AcScale.x, MeshScale.y * AcScale.y, MeshScale.z * AcScale.z };
+	PhysX->SetObstacleObject();
+	PhysX->SetPositionSetFromParentFlag(true);
+	PhysX->CreatePhysXActors(FBXFileName);
 }
