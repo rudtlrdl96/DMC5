@@ -390,12 +390,6 @@
     <ClInclude Include="ThreadLoadingLevel.h">
       <Filter>Levels</Filter>
     </ClInclude>
-    <ClInclude Include="WallLight_On.h">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
-    </ClInclude>
-    <ClInclude Include="WallLight_Off.h">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
-    </ClInclude>
     <ClInclude Include="BossHpBar.h">
       <Filter>UI\UI_Actor\PlayUI\BossHpBar</Filter>
     </ClInclude>
@@ -414,29 +408,8 @@
     <ClInclude Include="Player_Snatch.h">
       <Filter>Actor\Player\Weapon</Filter>
     </ClInclude>
-    <ClInclude Include="StreetStall.h">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
-    </ClInclude>
-    <ClInclude Include="StreetLight_Off.h">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
-    </ClInclude>
-    <ClInclude Include="StreetLight_On.h">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
-    </ClInclude>
-    <ClInclude Include="Fountain.h">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
-    </ClInclude>
-    <ClInclude Include="Bench.h">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
-    </ClInclude>
-    <ClInclude Include="DecoLight.h">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
-    </ClInclude>
     <ClInclude Include="Item_DevilBreaker.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\ItemObj</Filter>
-    </ClInclude>
-    <ClInclude Include="RedSeal.h">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClInclude>
     <ClInclude Include="UIEffectRenderer.h">
       <Filter>Component\Renderer</Filter>
@@ -474,9 +447,6 @@
     <ClInclude Include="Location2_EnemySpawner0.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\EnemySpawner</Filter>
     </ClInclude>
-    <ClInclude Include="StatueB.h">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
-    </ClInclude>
     <ClInclude Include="BGMPlayer.h">
       <Filter>Component\Sound</Filter>
     </ClInclude>
@@ -495,17 +465,47 @@
     <ClInclude Include="BWColorEffect.h">
       <Filter>PostEffect</Filter>
     </ClInclude>
-    <ClInclude Include="ElectronicBillboard.h">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
-    </ClInclude>
-    <ClInclude Include="illminary.h">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
-    </ClInclude>
     <ClInclude Include="Item_EnemyRedOrb.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\ItemObj</Filter>
     </ClInclude>
     <ClInclude Include="Enemy_HellCaina.h">
       <Filter>Actor\Enemy\NormalEnemy\HellCaina</Filter>
+    </ClInclude>
+    <ClInclude Include="Bench.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClInclude>
+    <ClInclude Include="DecoLight.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClInclude>
+    <ClInclude Include="ElectronicBillboard.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClInclude>
+    <ClInclude Include="Fountain.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClInclude>
+    <ClInclude Include="illminary.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClInclude>
+    <ClInclude Include="RedSeal.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClInclude>
+    <ClInclude Include="StatueB.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClInclude>
+    <ClInclude Include="StreetLight_Off.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClInclude>
+    <ClInclude Include="StreetLight_On.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClInclude>
+    <ClInclude Include="StreetStall.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClInclude>
+    <ClInclude Include="WallLight_Off.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClInclude>
+    <ClInclude Include="WallLight_On.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
     </ClInclude>
     <ClInclude Include="MotionBlurEffect.h">
       <Filter>PostEffect</Filter>
@@ -889,12 +889,6 @@
     <ClCompile Include="ThreadLoadingLevel.cpp">
       <Filter>Levels</Filter>
     </ClCompile>
-    <ClCompile Include="WallLight_On.cpp">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
-    </ClCompile>
-    <ClCompile Include="WallLight_Off.cpp">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
-    </ClCompile>
     <ClCompile Include="BossHpBar.cpp">
       <Filter>UI\UI_Actor\PlayUI\BossHpBar</Filter>
     </ClCompile>
@@ -916,29 +910,8 @@
     <ClCompile Include="Player_Snatch.cpp">
       <Filter>Actor\Player\Weapon</Filter>
     </ClCompile>
-    <ClCompile Include="StreetLight_Off.cpp">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
-    </ClCompile>
-    <ClCompile Include="StreetLight_On.cpp">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
-    </ClCompile>
-    <ClCompile Include="StreetStall.cpp">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
-    </ClCompile>
-    <ClCompile Include="Bench.cpp">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
-    </ClCompile>
-    <ClCompile Include="DecoLight.cpp">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
-    </ClCompile>
-    <ClCompile Include="Fountain.cpp">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
-    </ClCompile>
     <ClCompile Include="Item_DevilBreaker.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\ItemObj</Filter>
-    </ClCompile>
-    <ClCompile Include="RedSeal.cpp">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClCompile>
     <ClCompile Include="UIEffectRenderer.cpp">
       <Filter>Component\Renderer</Filter>
@@ -976,9 +949,6 @@
     <ClCompile Include="Location2_EnemySpawner1.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\EnemySpawner</Filter>
     </ClCompile>
-    <ClCompile Include="StatueB.cpp">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
-    </ClCompile>
     <ClCompile Include="Location2_EnemySpawner0.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\EnemySpawner</Filter>
     </ClCompile>
@@ -1006,17 +976,47 @@
     <ClCompile Include="BWColorEffect.cpp">
       <Filter>PostEffect</Filter>
     </ClCompile>
-    <ClCompile Include="ElectronicBillboard.cpp">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
-    </ClCompile>
-    <ClCompile Include="illminary.cpp">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
-    </ClCompile>
     <ClCompile Include="Item_EnemyRedOrb.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\ItemObj</Filter>
     </ClCompile>
     <ClCompile Include="Enemy_HellCaina.cpp">
       <Filter>Actor\Enemy\NormalEnemy\HellCaina</Filter>
+    </ClCompile>
+    <ClCompile Include="Bench.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClCompile>
+    <ClCompile Include="DecoLight.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClCompile>
+    <ClCompile Include="ElectronicBillboard.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClCompile>
+    <ClCompile Include="Fountain.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClCompile>
+    <ClCompile Include="illminary.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClCompile>
+    <ClCompile Include="RedSeal.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClCompile>
+    <ClCompile Include="StatueB.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClCompile>
+    <ClCompile Include="StreetLight_Off.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClCompile>
+    <ClCompile Include="StreetLight_On.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClCompile>
+    <ClCompile Include="StreetStall.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClCompile>
+    <ClCompile Include="WallLight_Off.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClCompile>
+    <ClCompile Include="WallLight_On.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
     </ClCompile>
     <ClCompile Include="MotionBlurEffect.cpp">
       <Filter>PostEffect</Filter>
@@ -1310,6 +1310,12 @@
     </Filter>
     <Filter Include="Actor\Stage\FieldMap\FieldMapObj\ItemObj">
       <UniqueIdentifier>{f9ad0c49-b904-471b-86a4-a7aae7ee8146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02">
+      <UniqueIdentifier>{47d59e3d-4070-4832-87bd-eeeb2e1dda23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Stage\FieldMap\FieldMapObj\StaticObj\L11">
+      <UniqueIdentifier>{6a294d2f-e2e8-4095-9864-45ff89a67873}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
