@@ -5,6 +5,7 @@
 #include "FXSystem.h"
 #include "UIEffectRenderer.h"
 #include "UIFBXRenderer.h"
+#include "UIMeshRenderer.h"
 void RankUI::StateInit_Wait()
 {
 	RankFSM.CreateState(
@@ -43,7 +44,7 @@ void RankUI::StateInit_RankD()
 			ExplaneSpeed = 0.0F;
 			Ratio = 0.0f;
 			OutRank = false;
-			RankD_Inside->SetClipData(float4::ZERONULL);
+			RankD_Inside->Clip = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 			},
 			.Update = [=](float _DeltaTime)
@@ -102,7 +103,7 @@ void RankUI::StateInit_RankC()
 		{
 			OutRank = false;
 			Ratio = 0.0f;
-			RankC_Inside->SetClipData(float4::ZERONULL);
+			RankC_Inside->Clip = {0.0f,0.0f,0.0f,0.0f};
 		},
 		.Update = [this](float _DeltaTime)
 		{
@@ -149,7 +150,7 @@ void RankUI::StateInit_RankB()
 		{
 			OutRank = false;
 			Ratio = 0.0f;
-			RankB_Inside->SetClipData(float4::ZERONULL);
+			RankC_Inside->Clip = { 0.0f,0.0f,0.0f,0.0f };
 
 		},
 		.Update = [this](float _DeltaTime)
@@ -199,7 +200,7 @@ void RankUI::StateInit_RankA()
 	{
 		OutRank = false;
 		Ratio = 0.0f;
-		RankA_Inside->SetClipData(float4::ZERONULL);
+		RankC_Inside->Clip = { 0.0f,0.0f,0.0f,0.0f };
 		RankAFire->EffectOption.MulColor = float4{ 0.3f,0.3f,1.0f,1.f };
 		RankAFire->EffectOption.PlusColor = float4{ 0.274f,0.583f,1.f,0.0f };
 		EffectValue = false;
@@ -261,7 +262,7 @@ void RankUI::StateInit_RankS()
 	{
 		OutRank = false;
 		Ratio = 0.0f;
-		RankS_Inside->SetClipData(float4::ZERONULL);
+		RankC_Inside->Clip = { 0.0f,0.0f,0.0f,0.0f };
 		RankAFire->EffectOption.MulColor = float4{ 0.913f,0.894f,0.250f,1.f };
 		RankAFire->EffectOption.PlusColor = float4{ 0.588f,0.78f,1.f,0.006f };
 
@@ -319,7 +320,7 @@ void RankUI::StateInit_RankSS()
 	{
 		OutRank = false;
 		Ratio = 0.0f;
-		RankSS_Inside->SetClipData(float4::ZERONULL);
+		RankC_Inside->Clip = { 0.0f,0.0f,0.0f,0.0f };
 		RankAFire->EffectOption.MulColor = float4{ 0.913f,0.894f,0.250f,1.f };
 		RankAFire->EffectOption.PlusColor = float4{ 0.588f,0.78f,1.f,0.006f };
 
@@ -376,7 +377,7 @@ void RankUI::StateInit_RankSSS()
 	.Start = [this]()
 	{
 		OutRank = false;
-		RankSSS_Inside->SetClipData(float4::ZERONULL);
+		RankC_Inside->Clip = { 0.0f,0.0f,0.0f,0.0f };
 		RankAFire->EffectOption.MulColor = float4{ 0.913f,0.894f,0.250f,1.f };
 		RankAFire->EffectOption.PlusColor = float4{ 0.588f,0.78f,1.f,0.006f };
 		Ratio = 0.0f;

@@ -2,6 +2,7 @@
 #include "UI_DTGauge.h"
 #include "UIEffectRenderer.h"
 #include "UIFBXRenderer.h"
+#include "UIMeshRenderer.h"
 #include <GameEngineCore/GameEngineUIRenderer.h>
 UI_DTGauge::UI_DTGauge() 
 {
