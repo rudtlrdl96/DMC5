@@ -15,7 +15,7 @@ Net_ActorType NetworkObjectBase::DebugType = Net_ActorType::UNKNOWN;
 
 std::map<Net_ActorType, std::list<std::function<void()>>> NetworkObjectBase::ReservedDestroyCallbacks;
 
-void NetworkObjectBase::PushReservedDestroyCallback(Net_ActorType _Type, std::function<void()>&& _CallBack)
+void NetworkObjectBase::PushReservedDestroyCallback(Net_ActorType _Type, const std::function<void()>& _CallBack)
 {
 	if (nullptr == _CallBack)
 	{
@@ -23,7 +23,10 @@ void NetworkObjectBase::PushReservedDestroyCallback(Net_ActorType _Type, std::fu
 		return;
 	}
 
-	ReservedDestroyCallbacks[_Type].emplace_back(_CallBack);
+	ReservedDestroyCallbacks[_Type].push_back(_CallBack);
+
+	int Size = static_cast<int>(ReservedDestroyCallbacks[_Type].size());
+	NetworkGUI::GetInst()->PrintLog("[Push] CallBack List Size : " + GameEngineString::ToString(Size));
 }
 
 std::function<void()> NetworkObjectBase::PopReservedDestroyCallback(Net_ActorType _Type)
@@ -32,8 +35,12 @@ std::function<void()> NetworkObjectBase::PopReservedDestroyCallback(Net_ActorTyp
 	if (true == Group.empty())
 		return nullptr;
 
-	std::function<void()> Return = Group.front();
+	const std::function<void()>& Return = Group.front();
 	Group.pop_front();
+
+	int Size = static_cast<int>(ReservedDestroyCallbacks[_Type].size());
+	NetworkGUI::GetInst()->PrintLog("[Pop] CallBack List Size : " + GameEngineString::ToString(Size));
+
 	return Return;
 }
 
@@ -318,4 +325,14 @@ void NetworkObjectBase::Destroy()
 	}
 
 	DestroyCallbacks.clear();
+}
+
+void NetworkObjectBase::PushDestroyCallback(const std::function<void()>& _Callback)
+{
+	DestroyCallbacks.push_back(_Callback);
+
+	int Size = static_cast<int>(DestroyCallbacks.size());
+	std::string Name = GetName().data();
+
+	NetworkGUI::GetInst()->PrintLog(Name + " : " + GameEngineString::ToString(Size));
 }

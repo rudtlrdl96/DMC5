@@ -12,7 +12,7 @@ class NetworkObjectBase : public GameEngineNetObject, public GameEngineActor
 	friend class NetworkManager;
 
 public:
-	static void PushReservedDestroyCallback(Net_ActorType _Type, std::function<void()>&& _CallBack);
+	static void PushReservedDestroyCallback(Net_ActorType _Type, const std::function<void()>& _CallBack);
 	static std::function<void()> PopReservedDestroyCallback(Net_ActorType _Type);
 
 	static inline NetworkObjectBase* GetDebugTarget()
@@ -49,10 +49,7 @@ public:
 	}
 
 	//이 몬스터가 삭제될 때 호출될 함수를 등록합니다.
-	inline void PushDestroyCallback(const std::function<void()>& _Callback)
-	{
-		DestroyCallbacks.emplace_back(_Callback);
-	}
+	void PushDestroyCallback(const std::function<void()>& _Callback);
 
 protected:
 	//이거 자식에서 쓰실때 푸셔도 돼요. 근데 꼭 NetworkObjectBase::Destroy()는 호출시켜주세요
