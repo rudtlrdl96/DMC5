@@ -28,7 +28,8 @@ Enemy_ScudoAngelo::~Enemy_ScudoAngelo()
 void Enemy_ScudoAngelo::EnemyTypeLoad()
 {
 	EnemyCodeValue = EnemyCode::HellAntenora;
-	EnemyHP = 200000;
+	EnemyMaxHP = 200000;
+	EnemyHP = EnemyMaxHP;
 }
 
 void Enemy_ScudoAngelo::EnemyMeshLoad()

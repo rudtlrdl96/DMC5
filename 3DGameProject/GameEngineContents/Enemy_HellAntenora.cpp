@@ -27,7 +27,8 @@ Enemy_HellAntenora::~Enemy_HellAntenora()
 void Enemy_HellAntenora::EnemyTypeLoad()
 {
 	EnemyCodeValue = EnemyCode::HellAntenora;
-	EnemyHP = 2000;
+	EnemyMaxHP = 2000;
+	EnemyHP = EnemyMaxHP;
 }
 
 void Enemy_HellAntenora::EnemyMeshLoad()

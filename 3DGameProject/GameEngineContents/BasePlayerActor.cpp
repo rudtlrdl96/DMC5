@@ -17,6 +17,7 @@
 #include "AttackCollision.h"
 #include "FXSystem.h"
 #include "Item_RedOrb.h"
+#include "EffectRenderer.h"
 std::vector<BasePlayerActor*> BasePlayerActor::Players = std::vector<BasePlayerActor*>();
 
 BasePlayerActor::BasePlayerActor()
@@ -254,6 +255,15 @@ void BasePlayerActor::UserControllLoad()
 	{
 		AddDTGauge(_Value);
 	});
+
+	LockOnRenderer = CreateComponent<EffectRenderer>();
+	LockOnRenderer->GetTransform()->SetParent(GetLevel()->GetMainCamera()->GetTransform());
+	LockOnRenderer->GetTransform()->SetLocalRotation({0, 0, 90});
+	LockOnRenderer->GetTransform()->SetWorldScale({0.4f, 0.4f, 0.4f});
+	LockOnRenderer->SetFBXMesh("Effect_LockOn.fbx", "Effect_2D");
+	LockOnRenderer->SetTexture("DiffuseTexture", "Effect_Texture_09.tga");
+	LockOnRenderer->Off();
+	//LockOnRenderer->LockRotation();
 }
 
 
@@ -282,6 +292,17 @@ void BasePlayerActor::Update(float _DeltaTime)
 			IsShopOn = false;
 			Controller->On();
 			Camera->On();
+		}
+		if (nullptr != LockOnEnemy)
+		{
+			if (true == LockOnEnemy->IsDeath() || LockOnEnemy->GetHP() <= 0)
+			{
+				LockOff();
+			}
+			else
+			{
+				SetLockOnMark();
+			}
 		}
 		InvincibilityTime -= _DeltaTime;
 		DamageColCheck();
@@ -313,16 +334,22 @@ void BasePlayerActor::LockOn()
 			Col_LockOn->Off();
 			return;
 		}
-		LockOnEnemyTransform = MinCol->GetActor()->GetTransform();
+		LockOnEnemy = dynamic_cast<BaseEnemyActor*>(MinCol->GetActor());
+		if (nullptr == LockOnEnemy) { return; }
+		LockOnEnemyTransform = LockOnEnemy->GetTransform();
 		Camera->SetTargetTranform(LockOnEnemyTransform);
+		LockOnRenderer->On();
+		SetLockOnMark();
 	}
 	Col_LockOn->Off();
 }
 
 void BasePlayerActor::LockOff()
 {
+	LockOnEnemy = nullptr;
 	LockOnEnemyTransform = nullptr;
 	Camera->SetTargetTranform(nullptr);
+	LockOnRenderer->Off();
 }
 
 bool BasePlayerActor::FloorCheck()
@@ -430,6 +457,7 @@ void BasePlayerActor::ShopColCheck()
 {
 	if (false == IsShopOn && GameEngineInput::IsUp("Enter"))
 	{
+		if (nullptr == Col_Player->Collision(CollisionOrder::Shop)) { return; }
 		ShopOn();
 		Controller->Off();
 		Camera->Off();
@@ -444,6 +472,18 @@ void BasePlayerActor::ShopColCheck()
 				IsShopOn = true;
 			});
 	}
+}
+
+void BasePlayerActor::SetLockOnMark()
+{
+	// 위치 지정
+	float4 Pos = LockOnEnemyTransform->GetWorldPosition();
+	Pos.y += 60.0f;
+	Pos += LockOnRenderer->GetTransform()->GetWorldBackVector() * 50.0f;
+	LockOnRenderer->GetTransform()->SetWorldPosition(Pos);
+
+	//LockOnEnemy
+	LockOnRenderer->EffectOption.UVX = LockOnEnemy->GetHPRatio() - 1.0f;
 }
 
 void BasePlayerActor::SetForce(float4 _Value)
