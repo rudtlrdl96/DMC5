@@ -16,6 +16,11 @@ public:
 	TestStageLevel& operator=(const TestStageLevel& _Other) = delete;
 	TestStageLevel& operator=(TestStageLevel&& _Other) noexcept = delete;
 
+	inline std::shared_ptr<class BasePlayerActor> GetMyPlayer() const
+	{
+		return MyPlayer;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -23,7 +28,7 @@ protected:
 	void LevelChangeStart() override;
 
 private:
-
+	std::shared_ptr<class BasePlayerActor> MyPlayer = nullptr;
 	std::shared_ptr<class BloomEffect> Bloom = nullptr;
 	std::shared_ptr<class BWColorEffect> BWEffect = nullptr;
 
