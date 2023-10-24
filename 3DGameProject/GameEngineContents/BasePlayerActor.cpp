@@ -295,7 +295,7 @@ void BasePlayerActor::Update(float _DeltaTime)
 		}
 		if (nullptr != LockOnEnemy)
 		{
-			if (true == LockOnEnemy->IsDeath() || LockOnEnemy->GetHP() <= 0)
+			if (true == LockOnEnemy->IsDeath()/* || LockOnEnemy->GetHP() <= 0*/)
 			{
 				LockOff();
 			}
@@ -315,27 +315,31 @@ void BasePlayerActor::Update(float _DeltaTime)
 void BasePlayerActor::LockOn()
 {
 	std::vector<std::shared_ptr<GameEngineCollision>> Cols;
-	std::shared_ptr<GameEngineCollision> MinCol = nullptr;
+	BaseEnemyActor* NearEnemy = nullptr;
 	Col_LockOn->On();
 	if (true == Col_LockOn->CollisionAll(CollisionOrder::Enemy, Cols))
 	{
 		float Min = 9999;
 		for (std::shared_ptr<GameEngineCollision> Col : Cols)
 		{
+			BaseEnemyActor* Enemy = dynamic_cast<BaseEnemyActor*>(Col->GetActor());
+			if (nullptr == Enemy) { continue; }
+			if (Enemy->GetHP() <= 0) { continue; }
+			// 체력이 0이하인 적은 제외
+
 			float Length = (GetTransform()->GetWorldPosition() - Col->GetTransform()->GetWorldPosition()).Size();
 			if (Length < Min)
 			{
 				Min = Length;
-				MinCol = Col;
+				NearEnemy = Enemy;
 			}
 		}
-		if (MinCol == nullptr)
+		if (NearEnemy == nullptr)
 		{
 			Col_LockOn->Off();
 			return;
 		}
-		LockOnEnemy = dynamic_cast<BaseEnemyActor*>(MinCol->GetActor());
-		if (nullptr == LockOnEnemy) { return; }
+		LockOnEnemy = NearEnemy;
 		LockOnEnemyTransform = LockOnEnemy->GetTransform();
 		Camera->SetTargetTranform(LockOnEnemyTransform);
 		LockOnRenderer->On();
