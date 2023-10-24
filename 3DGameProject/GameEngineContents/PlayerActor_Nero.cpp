@@ -71,8 +71,6 @@ void PlayerActor_Nero::Start()
 		});
 	Col_Attack->SetDamageSoundType(DamageSoundType::Sword);
 
-	BreakerList.push_back(DevilBreaker::None);
-
 	SetNetObjectType(Net_ActorType::Nero);
 
 	//NetControllType::NetControll으로 변경될 때 아래 콜백이 실행됩니다. 
@@ -111,6 +109,8 @@ void PlayerActor_Nero::Start()
 void PlayerActor_Nero::PlayerLoad()
 {
 	BGMPlayer::SetCharater(PlayerType::Nero);
+	BreakerList.clear();
+	BreakerList.push_back(DevilBreaker::None);
 	
 	Shop = GetLevel()->CreateActor<Nero_ShopUI>();
 	Shop->Off();

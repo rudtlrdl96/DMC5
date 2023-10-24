@@ -21,6 +21,7 @@
 #include "Item_DevilBreaker.h"
 #include "ElectronicBillboard.h"
 #include "illminary.h"
+#include "DivinityStatue.h"
 
 FieldMapObject::FieldMapObject()
 {
@@ -101,6 +102,9 @@ std::shared_ptr<FieldMapObject> FieldMapObject::CreateFieldMapObj(GameEngineLeve
 		break;
 	case FieldMapObjType::illminary:
 		Result = _Level->CreateActor<illminary>();
+		break;
+	case FieldMapObjType::DivinityStatue:
+		Result = _Level->CreateActor<DivinityStatue>();
 		break;
 	default:
 		MsgAssert("¹Ì±¸Çö");

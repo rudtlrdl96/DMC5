@@ -88,6 +88,7 @@ enum class CollisionOrder
 	EventZone,
 	DevilBreaker,
 	RedOrb,
+	Shop,
 };
 
 enum class DevilBreaker
@@ -120,4 +121,5 @@ enum class FieldMapObjType
 	Item_DevilBreaker_BusterArm,
 	ElectronicBillboard,
 	illminary,
+	DivinityStatue,
 };
