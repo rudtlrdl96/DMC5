@@ -33,13 +33,13 @@ void Enemy_ProtoAngelo::EnemyTypeLoad()
 
 void Enemy_ProtoAngelo::EnemyMeshLoad()
 {
-	if (nullptr == GameEngineFBXMesh::Find("em0001.FBX"))
+	if (nullptr == GameEngineFBXMesh::Find("em0601.FBX"))
 	{
 		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
 			{
-				"Character", "Enemy", "HellAntenora", "mesh"
+				"Character", "Enemy", "Proto", "mesh"
 			},
-			"em0001.FBX");
+			"em0601.FBX");
 
 		GameEngineFBXMesh::Load(Path);
 	}
@@ -48,55 +48,55 @@ void Enemy_ProtoAngelo::EnemyMeshLoad()
 	{
 	case GameEngineOptionValue::Low:
 	{
-		EnemyRenderer->SetFBXMesh("em0001.fbx", "AniFBX_Low");
+		EnemyRenderer->SetFBXMesh("em0601.fbx", "AniFBX_Low");
 	}
 	break;
 	case GameEngineOptionValue::High:
 	{
-		EnemyRenderer->SetFBXMesh("em0001.fbx", "AniFBX");
+		EnemyRenderer->SetFBXMesh("em0601.fbx", "AniFBX");
 	}
 	break;
 	default:
 		break;
 	}
 
-	LeftWeapon = CreateComponent<GameEngineFBXRenderer>();
-	RightWeapon = CreateComponent<GameEngineFBXRenderer>();
+	//LeftWeapon = CreateComponent<GameEngineFBXRenderer>();
+	//RightWeapon = CreateComponent<GameEngineFBXRenderer>();
 
-	if (nullptr == GameEngineFBXMesh::Find("wpem0001_00.FBX"))
-	{
-		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
-			{
-				"Character", "Enemy", "HellAntenora", "mesh"
-			},
-			"wpem0001_00.FBX");
+	//if (nullptr == GameEngineFBXMesh::Find("wpem0001_00.FBX"))
+	//{
+	//	std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+	//		{
+	//			"Character", "Enemy", "Proto", "mesh"
+	//		},
+	//		"wpem0001_00.FBX");
 
-		GameEngineFBXMesh::Load(Path);
-	}
+	//	GameEngineFBXMesh::Load(Path);
+	//}
 
-	switch (GameEngineOption::GetOption("Shader"))
-	{
-	case GameEngineOptionValue::Low:
-	{
-		LeftWeapon->SetFBXMesh("wpem0001_00.fbx", "FBX_Low");
-		RightWeapon->SetFBXMesh("wpem0001_00.fbx", "FBX_Low");
-	}
-	break;
-	case GameEngineOptionValue::High:
-	{
-		LeftWeapon->SetFBXMesh("wpem0001_00.fbx", "FBX");
-		RightWeapon->SetFBXMesh("wpem0001_00.fbx", "FBX");
-	}
-	break;
-	default:
-		break;
-	}
+	//switch (GameEngineOption::GetOption("Shader"))
+	//{
+	//case GameEngineOptionValue::Low:
+	//{
+	//	LeftWeapon->SetFBXMesh("wpem0001_00.fbx", "FBX_Low");
+	//	RightWeapon->SetFBXMesh("wpem0001_00.fbx", "FBX_Low");
+	//}
+	//break;
+	//case GameEngineOptionValue::High:
+	//{
+	//	LeftWeapon->SetFBXMesh("wpem0001_00.fbx", "FBX");
+	//	RightWeapon->SetFBXMesh("wpem0001_00.fbx", "FBX");
+	//}
+	//break;
+	//default:
+	//	break;
+	//}
 
-	LeftWeapon->ShadowOn();
-	LeftWeapon->SetDynamic();
+	//LeftWeapon->ShadowOn();
+	//LeftWeapon->SetDynamic();
 
-	RightWeapon->ShadowOn();
-	RightWeapon->SetDynamic();
+	//RightWeapon->ShadowOn();
+	//RightWeapon->SetDynamic();
 
 	if (nullptr == GameEngineTexture::Find("PaperBurnNoise.jpg"))
 	{
@@ -107,8 +107,8 @@ void Enemy_ProtoAngelo::EnemyMeshLoad()
 	}
 
 	EnemyRenderer->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
-	LeftWeapon->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
-	RightWeapon->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
+	//LeftWeapon->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
+	//RightWeapon->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
 }
 
 void Enemy_ProtoAngelo::EnemyAnimationLoad()
@@ -119,7 +119,7 @@ void Enemy_ProtoAngelo::EnemyAnimationLoad()
 	NewDir.Move("ContentResources");
 	NewDir.Move("Character");
 	NewDir.Move("Enemy");
-	NewDir.Move("HellAntenora");
+	NewDir.Move("Proto");
 	NewDir.Move("Animation");
 	NewDir.Move("attack");
 
@@ -675,7 +675,7 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Idle,
 	.Start = [=] {
 	EffectRenderer->PlayFX("Enemy_Appear.effect");
-	EnemyRenderer->ChangeAnimation("em0601_Idle_Loop");
+	EnemyRenderer->ChangeAnimation("em0601_Idle_Loop.fbx");
 	},
 	.Update = [=](float _DeltaTime) {
 	},

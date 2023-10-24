@@ -34,27 +34,27 @@ void Enemy_ScudoAngelo::EnemyTypeLoad()
 
 void Enemy_ScudoAngelo::EnemyMeshLoad()
 {
-	if (nullptr == GameEngineFBXMesh::Find("em0601.FBX"))
+	if (nullptr == GameEngineFBXMesh::Find("Scudo.FBX"))
 	{
 		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
 			{
-				"Character", "Enemy", "Proto", "mesh"
+				"Character", "Enemy", "Scudo", "mesh"
 			},
-			"em0601.FBX");
+			"Scudo.FBX");
 
 		GameEngineFBXMesh::Load(Path);
 	}
 
-	switch (GameEngineOption::GetOption("em0601"))
+	switch (GameEngineOption::GetOption("Shader"))
 	{
 	case GameEngineOptionValue::Low:
 	{
-		EnemyRenderer->SetFBXMesh("em0601.fbx", "AniFBX_Low");
+		EnemyRenderer->SetFBXMesh("Scudo.fbx", "AniFBX_Low");
 	}
 	break;
 	case GameEngineOptionValue::High:
 	{
-		EnemyRenderer->SetFBXMesh("em0601.fbx", "AniFBX");
+		EnemyRenderer->SetFBXMesh("Scudo.fbx", "AniFBX");
 	}
 	break;
 	default:
@@ -131,9 +131,8 @@ void Enemy_ScudoAngelo::EnemyAnimationLoad()
 	NewDir.Move("ContentResources");
 	NewDir.Move("Character");
 	NewDir.Move("Enemy");
-	NewDir.Move("Proto");
+	NewDir.Move("Scudo");
 	NewDir.Move("Animation");
-	NewDir.Move("attack");
 
 	//AnimationEvent::LoadAll
 	//(
