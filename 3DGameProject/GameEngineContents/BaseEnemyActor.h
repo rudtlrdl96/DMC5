@@ -58,6 +58,15 @@ public:
 		}
 	}
 
+	int GetHP()
+	{
+		return EnemyHP;
+	}
+	float GetHPRatio()
+	{
+		return (float)EnemyHP / (float)EnemyMaxHP;
+	}
+
 	// 몬스터 피직스 컴포넌트 리턴
 	std::shared_ptr<class PhysXCapsuleComponent> GetPhysXComponent()
 	{
@@ -128,6 +137,7 @@ protected:
 	//하위에서 설정해줘야하는 Data들=====================================================
 	EnemyCode EnemyCodeValue = EnemyCode::None;
 	//HP
+	int EnemyMaxHP = 0;
 	int EnemyHP = 0;
 	// FSM 밸류
 	int EnemyFSMValue = -1;

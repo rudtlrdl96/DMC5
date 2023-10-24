@@ -27,7 +27,8 @@ Enemy_Empusa::~Enemy_Empusa()
 void Enemy_Empusa::EnemyTypeLoad()
 {
 	EnemyCodeValue = EnemyCode::Empusa;
-	EnemyHP = 1200;
+	EnemyMaxHP = 1200;
+	EnemyHP = EnemyMaxHP;
 }
 
 void Enemy_Empusa::EnemyMeshLoad()

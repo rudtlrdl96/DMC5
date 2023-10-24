@@ -107,6 +107,8 @@ protected:
 	std::shared_ptr<class PhysXCapsuleComponent> PhysXCapsule = nullptr;
 	std::shared_ptr<class FXSystem> EffectSystem = nullptr;
 	std::shared_ptr<class FXSystem> DTOffEffect = nullptr;
+	std::shared_ptr<class EffectRenderer> LockOnRenderer = nullptr;
+	class BaseEnemyActor* LockOnEnemy = nullptr;
 
 	std::shared_ptr<GameEngineObject> Shop = nullptr;
 	float4 Rot = float4::ZERO;
@@ -124,6 +126,7 @@ private:
 	void DamageColCheck();
 	void OrbColCheck();
 	void ShopColCheck();
+	void SetLockOnMark();
 	static std::vector<BasePlayerActor*> Players;
 	float InvincibilityTime = 0.0f; // 무적 프레임
 };

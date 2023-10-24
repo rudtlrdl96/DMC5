@@ -27,7 +27,8 @@ Enemy_ProtoAngelo::~Enemy_ProtoAngelo()
 void Enemy_ProtoAngelo::EnemyTypeLoad()
 {
 	EnemyCodeValue = EnemyCode::HellAntenora;
-	EnemyHP = 200000;
+	EnemyMaxHP = 200000;
+	EnemyHP = EnemyMaxHP;
 }
 
 void Enemy_ProtoAngelo::EnemyMeshLoad()

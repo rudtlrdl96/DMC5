@@ -27,7 +27,8 @@ Enemy_HellCaina::~Enemy_HellCaina()
 void Enemy_HellCaina::EnemyTypeLoad()
 {
 	EnemyCodeValue = EnemyCode::HellCaina;
-	EnemyHP = 1500;
+	EnemyMaxHP = 1500;
+	EnemyHP = EnemyMaxHP;
 }
 
 void Enemy_HellCaina::EnemyMeshLoad()
