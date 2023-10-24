@@ -4,6 +4,7 @@
 #include <GameEngineCore/GameEngineCollision.h>
 #include "EffectRenderer.h"
 #include "FXSystem.h"
+#include "NeroHPUI.h"
 Item_RedOrb::Item_RedOrb()
 {
 }
@@ -207,6 +208,7 @@ void Item_RedOrb::Start()
 	{
 		FBXMesh->Off();
 		Effect->PlayFX("RedOrb_Disappear.effect");
+		NeroHPUI::AddRedOrb(100);
 		ResetLiveTime();
 	},
 	.Update = [=](float _DeltaTime)
