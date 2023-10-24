@@ -158,8 +158,9 @@ void PlayerActor_Vergil::PlayerLoad()
 		NewDir.Move("Animation");
 
 		Renderer = CreateComponent<GameEngineFBXRenderer>();
-		Renderer->GetTransform()->SetLocalRotation({ 0, 0, 0 });
 		Renderer->GetTransform()->SetLocalPosition({ 0, -75, 0 });
+		
+		//WingRender->GetTransform()->SetLocalPosition({ 0, -75, 0 });
 
 		switch (GameEngineOption::GetOption("Shader"))
 		{
@@ -2034,6 +2035,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Demon Start
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_DT_Start,
 		.Start = [=] {
+			WeaponIdle();
 			Sound.Play("DT_On");
 			Sound.PlayVoice(31, true);
 			Sound.NoSkipOn();
@@ -2075,6 +2077,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Demon End
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_DT_End,
 		.Start = [=] {
+			WeaponIdle();
 			PhysXCapsule->TurnOffGravity();
 			PhysXCapsule->SetLinearVelocityZero();
 			Renderer->ChangeAnimation("pl0300_Demon_End", true);
@@ -2656,6 +2659,7 @@ void PlayerActor_Vergil::SetHuman()
 	{
 		Renderer->GetAllRenderUnit()[0][i]->Off();
 	}
+	Renderer->GetAllRenderUnit()[0][22]->Off();
 }
 
 void PlayerActor_Vergil::SetDemon()
@@ -2669,6 +2673,8 @@ void PlayerActor_Vergil::SetDemon()
 	{
 		Renderer->GetAllRenderUnit()[0][i]->On();
 	}
+	Renderer->GetAllRenderUnit()[0][22]->On();
+
 }
 
 void PlayerActor_Vergil::WeaponIdle()
@@ -2734,4 +2740,5 @@ int PlayerActor_Vergil::DamageCalculate(int _Damage)
 8 왼손 야마토
 
 9 ~ 21 인간
+22 날개
 */

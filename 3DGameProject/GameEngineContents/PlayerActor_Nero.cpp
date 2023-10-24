@@ -166,6 +166,7 @@ void PlayerActor_Nero::PlayerLoad()
 		{
 			GameEngineFBXMesh::Load(NewDir.GetPlusFileName("Nero.fbx").GetFullPath());
 			GameEngineTexture::Load(NewDir.GetPlusFileName("High\\pl0000_03_atos.texout.png").GetFullPath());
+			GameEngineTexture::Load(NewDir.GetPlusFileName("High\\pl0010_01_wing_atos1.texout.png").GetFullPath());
 		}
 		NewDir.MoveParent();
 		NewDir.Move("Animation");
@@ -196,7 +197,9 @@ void PlayerActor_Nero::PlayerLoad()
 
 		Renderer->SetMaterial("pl0000_03_albm.texout.png", "AniFBX_Alpha", nullptr);
 		Renderer->SetSpecularTexture("pl0000_03_albm.texout.png", "pl0000_03_atos.texout.png");
-
+		Renderer->SetMaterial("pl0010_01_wing_atos.texout.png", "AniFBX_Alpha", nullptr);
+		Renderer->SetSpecularTexture("pl0010_01_wing_atos.texout.png", "pl0010_01_wing_atos1.texout.png");
+		AddDTGauge(5.0f);
 		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer, .RendererLocalPos = {0, -75, 0},
 			.Objects = { (GameEngineObject*)Col_Attack.get() },
 			.CallBacks_void = {
