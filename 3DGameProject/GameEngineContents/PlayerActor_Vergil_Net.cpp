@@ -77,7 +77,7 @@ void PlayerActor_Vergil::NetLoad()
 		if (nullptr == GameEngineFBXMesh::Find("Vergil.FBX"))
 		{
 			GameEngineFBXMesh::Load(NewDir.GetPlusFileName("Vergil.fbx").GetFullPath());
-			GameEngineTexture::Load(NewDir.GetPlusFileName("pl0300_03_atos.texout.png").GetFullPath());
+			GameEngineTexture::Load(NewDir.GetPlusFileName("High\\pl0300_03_atos.texout.png").GetFullPath());
 		}
 		NewDir.MoveParent();
 		NewDir.Move("Animation");
@@ -105,6 +105,7 @@ void PlayerActor_Vergil::NetLoad()
 		Renderer->ShadowOn();
 		Renderer->SetDynamic();
 
+		Renderer->SetMaterial("pl0300_03_albm.texout.png", "AniFBX_Alpha", nullptr);
 		Renderer->SetSpecularTexture("pl0300_03_albm.texout.png", "pl0300_03_atos.texout.png");
 
 		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer, .RendererLocalPos = {0, -75, 0},
