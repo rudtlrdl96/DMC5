@@ -3,6 +3,7 @@
 
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
+#include <GameEngineCore/GameEngineFontRenderer.h>
 #include "UIFBXRenderer.h"
 #include "UI_HPGaege.h"
 #include "UI_DTGauge.h"
@@ -72,6 +73,7 @@ void NeroHPUI::Start()
 		GameEngineTexture::Load(NewHPDir.GetPlusFileName("BossGaugeBase.png").GetFullPath());
 		GameEngineTexture::Load(NewHPDir.GetPlusFileName("BossHitGauge.png").GetFullPath());
 		GameEngineTexture::Load(NewHPDir.GetPlusFileName("123123123.png").GetFullPath());
+		GameEngineTexture::Load(NewHPDir.GetPlusFileName("RedOrb.png").GetFullPath());
 
 
 	}
@@ -84,6 +86,18 @@ void NeroHPUI::Start()
 	NeroUI_Back->SetTexture("HudBack.png");
 	NeroUI_Back->GetTransform()->SetLocalScale({ 97.0f,131.0f,0.0f });
 	NeroUI_Back->GetTransform()->SetLocalPosition({ -696.0f,334.0f,40.0f });
+
+	RedOrbRender = CreateComponent<GameEngineUIRenderer>(0);
+	RedOrbRender->SetTexture("RedOrb.png");
+	RedOrbRender->GetTransform()->SetLocalScale({ 43.0f,60.0f,0.0f });
+	RedOrbRender->GetTransform()->SetLocalPosition({ 550.0f,380.0f,40.0f });
+
+	RedOrbFont = CreateComponent<GameEngineFontRenderer>();
+	RedOrbFont->SetFont("DMC5Font");
+	RedOrbFont->SetScale(50.0f);
+	RedOrbFont->SetColor(float4::WHITE);
+	RedOrbFont->SetFontFlag(FW1_TEXT_FLAG::FW1_LEFT);
+	RedOrbFont->GetTransform()->SetLocalPosition({ 582.0f,407.0f,40.0f });
 
 	UI_HPGaegeBar = GetLevel()->CreateActor<UI_HPGaege>();
 	UI_HPGaegeBar->GetTransform()->SetParent(GetTransform());
@@ -98,6 +112,7 @@ void NeroHPUI::Start()
 void NeroHPUI::Update(float _DeltaTime)
 {
 	SetExceed();
+	RedOrbFont->SetText(std::to_string(RedOrbValue));
 }
 
 void NeroHPUI::CreatFireEffect()
