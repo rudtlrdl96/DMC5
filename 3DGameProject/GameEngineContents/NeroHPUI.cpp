@@ -9,6 +9,7 @@
 #include "UI_DTGauge.h"
 #include "UI_BulletGauge.h"
 #include "UIEffectRenderer.h"
+int NeroHPUI::RedOrbValue = 0;;
 NeroHPUI::NeroHPUI() 
 {
 }

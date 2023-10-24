@@ -26,7 +26,7 @@ public:
 	{
 		return UI_DTGaugeBar;
 	}
-	void AddRedOrb(int _Value)
+	static void AddRedOrb(int _Value)
 	{
 		RedOrbValue += _Value;
 	}
@@ -55,6 +55,6 @@ private:
 
 
 	int ExceedCount = 0;
-	int RedOrbValue = 0;
+	static int RedOrbValue;
 };
 
