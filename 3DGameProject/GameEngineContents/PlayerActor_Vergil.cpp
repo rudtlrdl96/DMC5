@@ -2280,6 +2280,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Damage Death
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Death,
 			.Start = [=] {
+				IsDeath = true;
 				Sound.PlayVoice(28, DTValue);
 				SetInvincibility(9999.0f);
 				WeaponIdle();
@@ -2296,6 +2297,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		// Damage Fly Death
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Damage_Fly_Death,
 			.Start = [=] {
+				IsDeath = true;
 				Sound.PlayVoice(28, DTValue);
 				SetInvincibility(9999.0f);
 				WeaponIdle();
@@ -2387,6 +2389,7 @@ void PlayerActor_Vergil::Update_Character(float _DeltaTime)
 {
 	if (LoadCheck == false) { return; }
 	FSM.Update(_DeltaTime);
+	if (true == IsDeath) { return; }
 	if (NetControllType::ActiveControll == GameEngineNetObject::GetControllType())
 	{
 		FSM_MirageBlade.Update(_DeltaTime);

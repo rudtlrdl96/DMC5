@@ -293,6 +293,9 @@ void BasePlayerActor::Update(float _DeltaTime)
 			Controller->On();
 			Camera->On();
 		}
+
+		if (IsDeath == true) { return; }
+
 		if (nullptr != LockOnEnemy)
 		{
 			if (true == LockOnEnemy->IsDeath()/* || LockOnEnemy->GetHP() <= 0*/)
