@@ -133,26 +133,27 @@ void Enemy_ScudoAngelo::EnemyAnimationLoad()
 	NewDir.Move("Enemy");
 	NewDir.Move("Scudo");
 	NewDir.Move("Animation");
+	NewDir.Move("basic");
 
-	AnimationEvent::LoadAll
-	(
-		{
-			.Dir = NewDir.GetFullPath().c_str(),
-			.Renderer = EnemyRenderer,
-			.RendererLocalPos = { 0.0f, -50.0f, 0.0f },
-			.Objects = {(GameEngineObject*)MonsterAttackCollision.get()},
-			.CallBacks_void =
-			{
-			},
-			.CallBacks_int =
-			{
-				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
-			},
-			.CallBacks_float4 =
-			{
-			}
-		}
-	);
+	//AnimationEvent::LoadAll
+	//(
+	//	{
+	//		.Dir = NewDir.GetFullPath().c_str(),
+	//		.Renderer = EnemyRenderer,
+	//		.RendererLocalPos = { 0.0f, -50.0f, 0.0f },
+	//		.Objects = {(GameEngineObject*)MonsterAttackCollision.get()},
+	//		.CallBacks_void =
+	//		{
+	//		},
+	//		.CallBacks_int =
+	//		{
+	//			std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
+	//		},
+	//		.CallBacks_float4 =
+	//		{
+	//		}
+	//	}
+	//);
 	{
 		// 이펙트 시스템 생성
 		GameEngineDirectory NewDir;
@@ -172,13 +173,13 @@ void Enemy_ScudoAngelo::EnemyAnimationLoad()
 			EffectRenderer->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
 		}
 	}
-	//std::vector<GameEngineFile> FBXFiles = NewDir.GetAllFile({ ".FBX" });
+	std::vector<GameEngineFile> FBXFiles = NewDir.GetAllFile({ ".FBX" });
 
-	//for (size_t i = 0; i < FBXFiles.size(); i++)
-	//{
-	//	GameEngineFBXAnimation::Load(FBXFiles[i].GetFullPath());
-	//	EnemyRenderer->CreateFBXAnimation(FBXFiles[i].GetFileName(), FBXFiles[i].GetFileName(), { .Inter = 0.01666f, });
-	//}
+	for (size_t i = 0; i < FBXFiles.size(); i++)
+	{
+		GameEngineFBXAnimation::Load(FBXFiles[i].GetFullPath());
+		EnemyRenderer->CreateFBXAnimation(FBXFiles[i].GetFileName(), FBXFiles[i].GetFileName(), { .Inter = 0.01666f, });
+	}
 }
 
 void Enemy_ScudoAngelo::Start()
@@ -221,8 +222,8 @@ void Enemy_ScudoAngelo::Start()
 	//LeftWeapon->GetTransform()->AddLocalRotation({ -90.0f, 0.0f, 0.0f });
 
 	// 무기 붙이기
-	EnemyRenderer->SetAttachTransform("L_Hand", LeftWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(180.0f, 70.0f, 0.0f), true);
-	EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 170.0f, 180.0f), true);
+	EnemyRenderer->SetAttachTransform("L_Hand", LeftWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 0.0f, 180.0f), true);
+	EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 0.0f, 0.0f), true);
 
 	float4 MeshScale_R = RightWeapon->GetMeshScale();
 	MeshScale_R.x *= 0.7f;
