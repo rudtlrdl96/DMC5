@@ -133,6 +133,7 @@ void Enemy_ScudoAngelo::EnemyAnimationLoad()
 	NewDir.Move("Enemy");
 	NewDir.Move("Scudo");
 	NewDir.Move("Animation");
+	NewDir.Move("special");
 
 	//AnimationEvent::LoadAll
 	//(

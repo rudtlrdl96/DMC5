@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/GameEngineFBXAnimation.h>
+#include "UIMeshRenderer.h"
 RankUI* RankUI::MainRankUI = nullptr;
 
 RankUI::RankUI() 
@@ -99,38 +100,38 @@ void RankUI::Start()
 	Rank_Explane->SetTexture("NullTexture.png");
 	RankD_Frame = UIFBXActorBase::CreateGaugeBar(DefaultPos, StartScale, StartRotation, "RankDFrame.FBX");
 	RankD_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankD_Inside = UIFBXActorBase::CreateGaugeBar(DefaultPos,EndScale, StartRotation, "RankDInside.FBX","FBX_ClipAlpha");
-	RankD_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
-	
+	RankD_Inside = UIFBXActorBase::CreateGaugeBar(DefaultPos,EndScale, StartRotation, "RankDInside.FBX","UIFBXMesh");
+	RankD_Inside->Clip = { 0.0f, 0.0f, 0.0f, 0.0f };
+
 	RankC_Frame = UIFBXActorBase::CreateGaugeBar(DefaultPos, StartScale, StartRotation, "RankCFrame.FBX");
 	RankC_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankC_Inside = UIFBXActorBase::CreateGaugeBar(DefaultPos,EndScale, StartRotation, "RankCInside.FBX", "FBX_ClipAlpha");
-	RankC_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
+	RankC_Inside = UIFBXActorBase::CreateGaugeBar(DefaultPos,EndScale, StartRotation, "RankCInside.FBX", "UIFBXMesh");
+	RankC_Inside->Clip = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 	RankB_Frame = UIFBXActorBase::CreateGaugeBar(DefaultPos, StartScale, StartRotation, "RankBFrame.FBX");
 	RankB_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankB_Inside = UIFBXActorBase::CreateGaugeBar(DefaultPos,EndScale, StartRotation, "RankBInside.FBX", "FBX_ClipAlpha");
-	RankB_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
+	RankB_Inside = UIFBXActorBase::CreateGaugeBar(DefaultPos,EndScale, StartRotation, "RankBInside.FBX", "UIFBXMesh");
+	RankB_Inside->Clip = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 	RankA_Frame = UIFBXActorBase::CreateGaugeBar(DefaultPos, StartScale, StartRotation, "RankAFrame.FBX");
 	RankA_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankA_Inside = UIFBXActorBase::CreateGaugeBar(DefaultPos,EndScale, StartRotation, "RankAInside.FBX", "FBX_ClipAlpha");
-	RankA_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
+	RankA_Inside = UIFBXActorBase::CreateGaugeBar(DefaultPos,EndScale, StartRotation, "RankAInside.FBX", "UIFBXMesh");
+	RankA_Inside->Clip = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 	RankS_Frame = UIFBXActorBase::CreateGaugeBar(DefaultPos, StartScale, StartRotation, "RankSFrame.FBX");
 	RankS_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankS_Inside = UIFBXActorBase::CreateGaugeBar(DefaultPos,EndScale, StartRotation, "RankSInside.FBX", "FBX_ClipAlpha");
-	RankS_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
+	RankS_Inside = UIFBXActorBase::CreateGaugeBar(DefaultPos,EndScale, StartRotation, "RankSInside.FBX", "UIFBXMesh");
+	RankS_Inside->Clip = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 	RankSS_Frame = UIFBXActorBase::CreateGaugeBar(DefaultPos, StartScale, StartRotation, "RankSSFrame.FBX");
 	RankSS_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankSS_Inside = UIFBXActorBase::CreateGaugeBar(DefaultPos,EndScale, StartRotation, "RankSSInside.FBX", "FBX_ClipAlpha");
-	RankSS_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
+	RankSS_Inside = UIFBXActorBase::CreateGaugeBar(DefaultPos,EndScale, StartRotation, "RankSSInside.FBX", "UIFBXMesh");
+	RankSS_Inside->Clip = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 	RankSSS_Frame = UIFBXActorBase::CreateGaugeBar(DefaultPos, StartScale, StartRotation, "RankSSSFrame.FBX");
 	RankSSS_Frame->SetMulColor(float4(1.0f, 1.0f, 1.0f, 0.0f));
-	RankSSS_Inside = UIFBXActorBase::CreateGaugeBar(DefaultPos,EndScale, StartRotation, "RankSSSInside.FBX", "FBX_ClipAlpha");
-	RankSSS_Inside->SetClipData(float4(0.0f, 0.0f, 0.0f, 0.0f));
+	RankSSS_Inside = UIFBXActorBase::CreateGaugeBar(DefaultPos,EndScale, StartRotation, "RankSSSInside.FBX", "UIFBXMesh");
+	RankSSS_Inside->Clip = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 	StateInit_Wait();
 	StateInit_RankD();
@@ -173,7 +174,7 @@ void RankUI::Update(float _DeltaTime)
 	}
 
 }
-void RankUI::RankSpin(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render, std::shared_ptr<class UIFBXRenderer> _InsideRender)
+void RankUI::RankSpin(float _Delta, std::shared_ptr<class UIMeshRenderer> _Render, std::shared_ptr<class UIMeshRenderer> _InsideRender)
 {
 	if (TurnValue == false)
 	{
@@ -220,7 +221,7 @@ void RankUI::RankSpin(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render
 
 }
 
-void RankUI::RankApper(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render, RankState _State, bool _Value, std::shared_ptr<class UIFBXRenderer> _PrevRender)
+void RankUI::RankApper(float _Delta, std::shared_ptr<class UIMeshRenderer> _Render, RankState _State, bool _Value, std::shared_ptr<class UIMeshRenderer> _PrevRender)
 {
 	Ratio += _Delta;
 	//등장하기
@@ -269,7 +270,7 @@ void RankUI::RankApper(float _Delta, std::shared_ptr<class UIFBXRenderer> _Rende
 	}
 }
 
-void RankUI::RankOut(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render)
+void RankUI::RankOut(float _Delta, std::shared_ptr<class UIMeshRenderer> _Render)
 {
 	Ratio += _Delta;
 	if (OutRank == false)
@@ -293,7 +294,7 @@ void RankUI::RankOut(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render)
 
 }
 
-void RankUI::RankScaleUpDown(std::shared_ptr<class UIFBXRenderer> _Render, std::shared_ptr<class UIFBXRenderer> _InsideRender, float _Ratio)
+void RankUI::RankScaleUpDown(std::shared_ptr<class UIMeshRenderer> _Render, std::shared_ptr<class UIMeshRenderer> _InsideRender, float _Ratio)
 {
 	ScaleSpeed += _Ratio;
 
@@ -335,13 +336,13 @@ void RankUI::SetInsideMesh()
 
 }
 
-void RankUI::RankDisApper(float _Delta, std::shared_ptr<class UIFBXRenderer> _Render, std::shared_ptr<class UIFBXRenderer> _InsideRender)
+void RankUI::RankDisApper(float _Delta, std::shared_ptr<class UIMeshRenderer> _Render, std::shared_ptr<class UIMeshRenderer> _InsideRender)
 {
 	if (DisApperValue == true)
 	{
 		DisTime += _Delta;
 		_Render->SetMulColor(float4(1.0f, 1.0f, 1.0f, 1 - DisTime * 2.0f));
-		_InsideRender->SetClipData(float4::ZERONULL);
+		_InsideRender->Clip = { 0.0f,0.0f,0.0f,0.0f };
 		Rank_Explane->Off();
 		if (_Render->GetMulColor().w <= 0.0f)
 		{
@@ -354,7 +355,7 @@ void RankUI::RankDisApper(float _Delta, std::shared_ptr<class UIFBXRenderer> _Re
 
 }
 
-void RankUI::RankClip(float _DeltaTime , std::shared_ptr<class UIFBXRenderer> _Render, std::shared_ptr<class UIFBXRenderer> _InsideRender,int _Value)
+void RankUI::RankClip(float _DeltaTime , std::shared_ptr<class UIMeshRenderer> _Render, std::shared_ptr<class UIMeshRenderer> _InsideRender,int _Value)
 {
 	UpTime += _DeltaTime;
 	float EndUp = (RankScore - _Value) / 100.0f;
@@ -377,11 +378,12 @@ void RankUI::RankClip(float _DeltaTime , std::shared_ptr<class UIFBXRenderer> _R
 	}
 	if (EndUp <= 1.0f && EndUp>0.0f)
 	{
-		_InsideRender->SetClipData(float4::LerpClamp(float4(0.0f, 0.0f, 0.0f, 1.0f), float4(0.0f, EndUp, 0.0f, 1.0f), UpTime));
+		float4 Clip = float4::LerpClamp(float4(0.0f, 0.0f, 0.0f, 1.0f), float4(0.0f, EndUp, 0.0f, 1.0f), UpTime);
+		_InsideRender->Clip = { Clip.x,Clip.y,Clip.z,Clip.w};
 	}
 	else if(EndUp > 1.0f)
 	{
-		_InsideRender->SetClipData(float4(0.0f,1.0f,0.0f,1.0f));
+		_InsideRender->Clip = { 0.0f,1.0f,0.0f,1.0f };
 		EndUp = 0.0f;
 
 	}

@@ -31,7 +31,7 @@ private:
 	std::shared_ptr<class UIEffectRenderer> DTElectroEffect_Down = nullptr;
 	std::shared_ptr<class GameEngineUIRenderer> DTGauge = nullptr;
 
-	std::vector<std::shared_ptr<class UIFBXRenderer>> DTGauges;
+	std::vector<std::shared_ptr<class UIMeshRenderer>> DTGauges;
 	std::vector<std::shared_ptr<class GameEngineUIRenderer>> DTGaugeBars;
 	float TransforTime = 0.0f;
 	float DownTime = 0.0f;
