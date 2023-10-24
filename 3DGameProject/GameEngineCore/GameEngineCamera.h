@@ -156,7 +156,7 @@ private:
 	float Height = 0.0f;
 
 	float FOV = 90.0f;
-	float Near = 0.1f;
+	float Near = 10.f;
 	float Far = 10000.0f;
 
 	void PushRenderer(std::shared_ptr<class GameEngineRenderer> _Render);
@@ -166,6 +166,7 @@ private:
 	void Release();
 
 	std::shared_ptr<class GameEngineRenderTarget> CamTarget = nullptr;
+
 	std::shared_ptr<class GameEngineRenderTarget> CamForwardTarget = nullptr;
 	std::shared_ptr<class GameEngineRenderTarget> CamDeferrdTarget = nullptr;
 	std::shared_ptr<class GameEngineRenderTarget> CamAlphaTarget = nullptr;
