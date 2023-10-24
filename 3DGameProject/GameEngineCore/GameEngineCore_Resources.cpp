@@ -301,10 +301,10 @@ void GameEngineCore::CoreResourcesInit()
 		Vertex[19] = {{ -1.0f, -1.0f, 0.0f}, float4(-1.0f, -1.0f, 1.0f)};
 
 		// µÞ¸é
-		Vertex[20] = {{ -1.0f, 1.0f, 0.0f }, float4(-1.0f, 1.0f,  1.0f).RotationXDegReturn(180)};
-		Vertex[21] = {{ 1.0f, 1.0f, 0.0f  }, float4(1.0f,  1.0f,  1.0f).RotationXDegReturn(180)};
-		Vertex[22] = {{ 1.0f, -1.0f, 0.0f }, float4(1.0f,  -1.0f, 1.0f).RotationXDegReturn(180)};
-		Vertex[23] = {{ -1.0f, -1.0f, 0.0f}, float4(-1.0f, -1.0f, 1.0f).RotationXDegReturn(180)};
+		Vertex[20] = {{ -1.0f, 1.0f, 0.0f }, float4(1.0f, -1.0f,  1.0f).RotationXDegReturn(180)};
+		Vertex[21] = {{ 1.0f, 1.0f, 0.0f  }, float4(-1.0f,  -1.0f,  1.0f).RotationXDegReturn(180)};
+		Vertex[22] = {{ 1.0f, -1.0f, 0.0f }, float4(-1.0f,  1.0f, 1.0f).RotationXDegReturn(180)};
+		Vertex[23] = {{ -1.0f, -1.0f, 0.0f}, float4(1.0f, 1.0f, 1.0f).RotationXDegReturn(180)};
 
 		GameEngineVertexBuffer::Create("FullBox", Vertex);
 	}

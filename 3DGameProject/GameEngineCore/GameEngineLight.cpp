@@ -10,7 +10,7 @@ const float4 GameEngineLight::PointViewDatas[6][2] = {
 	{{0, 1, 0},  {0, 0, -1}},	// Top
 	{{0, -1, 0}, {0, 0, 1}},	// Bot
 	{{0, 0, 1},  {0, 1, 0}},	// Forward
-	{{0, 0, -1}, {0, -1, 0}},	// Back
+	{{0, 0, -1}, {0, 1, 0}},	// Back
 };
 /// 0 == EyeDIr, 1 == UpDIr
 
@@ -47,7 +47,7 @@ GameEngineLight::GameEngineLight()
 
 	LightDataValue.ShadowTargetSizeX = 1024;
 	LightDataValue.ShadowTargetSizeY = 1024;
-	LightDataValue.LightNear = 0.1f;
+	LightDataValue.LightNear = 1.0f;
 	LightDataValue.LightFar = 5000.1f;
 	ShadowRange.x = 1024.0f;
 	ShadowRange.y = 1024.0f;
@@ -153,7 +153,7 @@ void GameEngineLight::SetShadowTextureScale(ShadowTextureScale _Scale)
 
 void GameEngineLight::SetLightRange(float _Range)
 {
-	LightDataValue.LightNear = 0.1f;
+	LightDataValue.LightNear = 1.0f;
 	LightDataValue.LightFar = _Range;
 	LightDataValue.LightRange = _Range;
 }

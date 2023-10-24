@@ -108,8 +108,8 @@ void TestStageLevel::Update(float _DeltaTime)
 void TestStageLevel::LevelChangeStart()
 {
 	// 테스트용 코드
-	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 10000, 0));
-	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 45.f,45.f,45.f });
+	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 5000, 0));
+	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 45.f, 45.f, 45.f });
 	GetDirectionalLight()->SetLightPower(1.f);
 	GetDirectionalLight()->SetLightColor({ 0.5f,0.5,1.f });
 

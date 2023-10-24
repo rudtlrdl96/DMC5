@@ -898,7 +898,7 @@ public:
 
 	//                                           1280 / 720
 	//                         수직시야각        화면의 종횡비   근평면      원평면
-	void PerspectiveFovLH(float _FovAngle, float _AspectRatio, float _NearZ = 0.1f, float _FarZ = 10000.0f)
+	void PerspectiveFovLH(float _FovAngle, float _AspectRatio, float _NearZ = 10.0f, float _FarZ = 10000.0f)
 	{
 		Identity();
 

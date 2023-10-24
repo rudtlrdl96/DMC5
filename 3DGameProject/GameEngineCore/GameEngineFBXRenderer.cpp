@@ -209,8 +209,8 @@ void GameEngineFBXRenderer::Update(float _DeltaTime)
 		// 정말 너무 다양한 상황이 있을수 있기 때문에 월드로 변경해서 넣어줘야 한다.
 		if (true == AttachTransformValue[i].RotEffect)
 		{
-			float4 Results = DirectX::XMQuaternionMultiply(Rot, Data.OffsetRot);
-			Data.Transform->SetWorldRotation(Results.QuaternionToEulerDeg());
+			float4 QuaternionRot = DirectX::XMQuaternionMultiply(Rot, Data.OffsetRot);
+			Data.Transform->SetWorldRotation(QuaternionRot.QuaternionToEulerDeg());
 		}
 
 		Data.Transform->SetWorldPosition(Pos + Data.OffsetPos);
@@ -892,7 +892,7 @@ void GameEngineFBXRenderer::SetAttachTransform(int Index, GameEngineTransform* _
 	Rot.RotationDeg(_OffsetRot);
 	Pos.Pos(_OffsetPos);
 
-	AttachTransformValue.push_back({ Index, _Transform, _OffsetPos, _OffsetRot.EulerDegToQuaternion(), Rot * Pos, _RotEffect });
+	AttachTransformValue.push_back({ Index, _Transform, _OffsetPos, _OffsetRot.EulerDegToQuaternion(), Rot * Pos, _RotEffect});
 }
 
 void GameEngineFBXRenderer::SetDettachTransform()
