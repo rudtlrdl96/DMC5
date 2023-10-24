@@ -165,6 +165,11 @@ void FieldMap::ReflectionSetting()
 
 void FieldMap::Update(float _DeltaTime)
 {
+	if (GetLevel()->DynamicThis<StageBaseLevel>()->IsEditLevel)
+	{
+		return;
+	}
+
 	if (IsPlayerCollsionToCullingCol())
 	{
 		MapCulling();
