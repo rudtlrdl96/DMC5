@@ -134,25 +134,25 @@ void Enemy_ScudoAngelo::EnemyAnimationLoad()
 	NewDir.Move("Scudo");
 	NewDir.Move("Animation");
 
-	//AnimationEvent::LoadAll
-	//(
-	//	{
-	//		.Dir = NewDir.GetFullPath().c_str(),
-	//		.Renderer = EnemyRenderer,
-	//		.RendererLocalPos = { 0.0f, -50.0f, 0.0f },
-	//		.Objects = {(GameEngineObject*)MonsterAttackCollision.get()},
-	//		.CallBacks_void =
-	//		{
-	//		},
-	//		.CallBacks_int =
-	//		{
-	//			std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
-	//		},
-	//		.CallBacks_float4 =
-	//		{
-	//		}
-	//	}
-	//);
+	AnimationEvent::LoadAll
+	(
+		{
+			.Dir = NewDir.GetFullPath().c_str(),
+			.Renderer = EnemyRenderer,
+			.RendererLocalPos = { 0.0f, -50.0f, 0.0f },
+			.Objects = {(GameEngineObject*)MonsterAttackCollision.get()},
+			.CallBacks_void =
+			{
+			},
+			.CallBacks_int =
+			{
+				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
+			},
+			.CallBacks_float4 =
+			{
+			}
+		}
+	);
 	{
 		// 이펙트 시스템 생성
 		GameEngineDirectory NewDir;
@@ -172,13 +172,13 @@ void Enemy_ScudoAngelo::EnemyAnimationLoad()
 			EffectRenderer->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
 		}
 	}
-	std::vector<GameEngineFile> FBXFiles = NewDir.GetAllFile({ ".FBX" });
+	//std::vector<GameEngineFile> FBXFiles = NewDir.GetAllFile({ ".FBX" });
 
-	for (size_t i = 0; i < FBXFiles.size(); i++)
-	{
-		GameEngineFBXAnimation::Load(FBXFiles[i].GetFullPath());
-		EnemyRenderer->CreateFBXAnimation(FBXFiles[i].GetFileName(), FBXFiles[i].GetFileName(), { .Inter = 0.01666f, });
-	}
+	//for (size_t i = 0; i < FBXFiles.size(); i++)
+	//{
+	//	GameEngineFBXAnimation::Load(FBXFiles[i].GetFullPath());
+	//	EnemyRenderer->CreateFBXAnimation(FBXFiles[i].GetFileName(), FBXFiles[i].GetFileName(), { .Inter = 0.01666f, });
+	//}
 }
 
 void Enemy_ScudoAngelo::Start()
