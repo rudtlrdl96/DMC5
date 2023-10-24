@@ -394,6 +394,35 @@ void Enemy_HellAntenora::AttackCalculation()
 
 void Enemy_HellAntenora::DamageCollisionCheck(float _DeltaTime)
 {
+	static float4 Rot = float4::ZERO;
+	if (true == GameEngineInput::IsPress("UI_UP"))
+	{
+		Rot.x -= _DeltaTime * 100;
+	}
+	if (true == GameEngineInput::IsPress("UI_Down"))
+	{
+		Rot.x += _DeltaTime * 100;
+	}
+	if (true == GameEngineInput::IsPress("UI_Left"))
+	{
+		Rot.y -= _DeltaTime * 100;
+	}
+	if (true == GameEngineInput::IsPress("UI_Right"))
+	{
+		Rot.y += _DeltaTime * 100;
+	}
+	if (true == GameEngineInput::IsPress("Player_Exceed"))
+	{
+		Rot.z -= _DeltaTime * 100;
+	}
+	if (true == GameEngineInput::IsPress("Player_GT_Bomb"))
+	{
+		Rot.z += _DeltaTime * 100;
+	}
+	EnemyRenderer->SetDettachTransform();
+	EnemyRenderer->SetAttachTransform("L_WeaponHand", LeftWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), Rot, true);
+	EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), Rot, true);
+
 	if (FSM_State_HellAntenora::HellAntenora_Death_Front == EnemyFSM.GetCurState()
 		|| FSM_State_HellAntenora::HellAntenora_Death_Back == EnemyFSM.GetCurState()
 		|| FSM_State_HellAntenora::HellAntenora_Death_Front == EnemyFSM.GetCurState()

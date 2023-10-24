@@ -3559,6 +3559,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Damage Death1
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Death_1,
 			.Start = [=] {
+				IsDeath = true;
 				Sound.PlayVoice(29, DTValue);
 				SetInvincibility(9999.0f);
 				WeaponIdle();
@@ -3595,6 +3596,7 @@ void PlayerActor_Nero::PlayerLoad()
 		// Damage Fly Death
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Damage_Fly_Death,
 			.Start = [=] {
+				IsDeath = true;
 				Sound.PlayVoiceRandom(27, 28, DTValue);
 				SetInvincibility(9999.0f);
 				Renderer->ChangeAnimation("pl0000_Damage_Away_Death_Ground", true);
@@ -3656,7 +3658,7 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 
 	if (NetControllType::ActiveControll == GameEngineNetObject::GetControllType())
 	{
-		if (true == DTValue)
+		if (true == DTValue && IsDeath == false)
 		{
 			HP = std::clamp(static_cast<int>(HP + 200 * _DeltaTime), 0, MaxHP);
 			HUD->SetPlayerHP(HP);

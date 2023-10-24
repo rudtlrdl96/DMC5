@@ -122,6 +122,7 @@ protected:
 	bool IsBossBattle = false;
 	bool IsEvade = false;
 	bool IsShopOn = false;
+	bool IsDeath = false;
 private:
 	void DamageColCheck();
 	void OrbColCheck();
