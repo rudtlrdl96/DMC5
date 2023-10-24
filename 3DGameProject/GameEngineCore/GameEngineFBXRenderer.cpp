@@ -209,9 +209,10 @@ void GameEngineFBXRenderer::Update(float _DeltaTime)
 		// 정말 너무 다양한 상황이 있을수 있기 때문에 월드로 변경해서 넣어줘야 한다.
 		if (true == AttachTransformValue[i].RotEffect)
 		{
-			Data.Transform->SetWorldRotation(Rot.QuaternionToEulerDeg() + Data.OffsetRot);
+			float4 Results = DirectX::XMQuaternionMultiply(Rot, Data.OffsetRot);
+			Data.Transform->SetWorldRotation(Results.QuaternionToEulerDeg());
 		}
-		
+
 		Data.Transform->SetWorldPosition(Pos + Data.OffsetPos);
 	}
 }
@@ -860,7 +861,7 @@ AnimationBoneData GameEngineFBXRenderer::GetBoneData(std::string _Name)
 		MsgAssert(std::string(_Name) + "존재하지 않는 본의 데이터를 찾으려고 했습니다.");
 		return Data;
 	}
-	
+
 	Data = GetBoneData(BoneData->Index);
 
 	const TransformData& TransFormData = GetTransform()->GetTransDataRef();
@@ -891,7 +892,7 @@ void GameEngineFBXRenderer::SetAttachTransform(int Index, GameEngineTransform* _
 	Rot.RotationDeg(_OffsetRot);
 	Pos.Pos(_OffsetPos);
 
-	AttachTransformValue.push_back({ Index, _Transform, _OffsetPos, _OffsetRot, Rot * Pos, _RotEffect });
+	AttachTransformValue.push_back({ Index, _Transform, _OffsetPos, _OffsetRot.EulerDegToQuaternion(), Rot * Pos, _RotEffect });
 }
 
 void GameEngineFBXRenderer::SetDettachTransform()
