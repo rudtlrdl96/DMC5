@@ -73,12 +73,12 @@ private:
 	static bool DestroyItemValue;
 	void AddMoveBreaker(float _Delta);
 	void DestroyMoveBreaker(float _Delta);
-	std::vector<std::shared_ptr<class UIMeshRenderer>> Arms;
-	std::shared_ptr<class UIMeshRenderer> Render = nullptr;
+	std::vector<std::shared_ptr<class UIFBXRenderer>> Arms;
+	std::shared_ptr<class UIFBXRenderer> Render = nullptr;
 
-	std::shared_ptr<class UIMeshRenderer> Render_0 = nullptr;
-	std::shared_ptr<class UIMeshRenderer> Render_1 = nullptr;
-	std::shared_ptr<class UIMeshRenderer> Render_2= nullptr;
+	std::shared_ptr<class UIFBXRenderer> Render_0 = nullptr;
+	std::shared_ptr<class UIFBXRenderer> Render_1 = nullptr;
+	std::shared_ptr<class UIFBXRenderer> Render_2= nullptr;
 
 };
 

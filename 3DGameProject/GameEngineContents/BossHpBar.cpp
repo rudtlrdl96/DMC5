@@ -34,7 +34,7 @@ void BossHpBar::Start()
 	BossHPUI_Back->GetTransform()->SetLocalScale({973.0f,68.0f,0.0f });
 	BossHPUI_Back->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
 
-	BossHPUI_Base = UIFBXActorBase::CreateGaugeBar({ 0.0f ,-400.0f , 0.0f , 0.0f }, { 9.4f,9.7f,5.0f }, { 0.0f,0.0f,0.0f }, "BossHPBar.FBX", "FBX_ClipAlpha");
+	//BossHPUI_Base = UIFBXActorBase::CreateGaugeBar({ 0.0f ,-400.0f , 0.0f , 0.0f }, { 9.4f,9.7f,5.0f }, { 0.0f,0.0f,0.0f }, "BossHPBar.FBX", "FBX_ClipAlpha");
 	//BossHitGauge = UIFBXActorBase::CreateGaugeBar({ 0.0f ,-400.0f , 0.0f , 0.0f }, { 7.4f,9.7f,5.0f }, { 0.0f,0.0f,0.0f }, "BossHPGauge.FBX", "FBX_ClipAlpha");
 	//BossHitGauge->SetMulColor(float4(1.0f, 0.0f, 0.0f, 1.0f));
 	//BossFrontGaege = UIFBXActorBase::CreateGaugeBar({ -1.7f ,-400.0f , 0.0f , 0.0f }, { 7.6f,10.0f,5.0f }, { 0.0f,0.0f,0.0f }, "BossHPGauge.FBX", "FBX_ClipAlpha");
