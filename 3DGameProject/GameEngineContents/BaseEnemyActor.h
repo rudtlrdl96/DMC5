@@ -41,6 +41,9 @@ class BaseEnemyActor : public GameEngineActor, public NetworkObjectBase
 {
 	friend class EnemySpawnArea;
 public:
+	static void PushReservedDestroyCallback(std::function<void()>&& _CallBack);
+	static std::function<void()> PopReservedDestroyCallback();
+
 	BaseEnemyActor();
 	~BaseEnemyActor();
 
@@ -310,6 +313,8 @@ protected:
 	}
 
 private:
+	static std::list<std::function<void()>> ReservedDestroyCallbacks;
+
 	std::vector<std::function<void()>> DeathCallbacks;
 	std::vector<std::function<void()>> DestroyCallbacks;
 };
