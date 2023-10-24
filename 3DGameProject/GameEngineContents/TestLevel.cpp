@@ -192,12 +192,12 @@ void TestLevel::LevelChangeStart()
 	//	HellAntenora->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
 
-	if (nullptr == Scudo)
-	{
-		Scudo = CreateActor<Enemy_ScudoAngelo>();
-		Scudo->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-		Scudo->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	}
+	//if (nullptr == Scudo)
+	//{
+	//	Scudo = CreateActor<Enemy_ScudoAngelo>();
+	//	Scudo->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//	Scudo->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	//}
 
 	//if (nullptr == Proto)
 	//{

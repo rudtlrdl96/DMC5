@@ -26,6 +26,10 @@ public:
 	{
 		return UI_DTGaugeBar;
 	}
+	void AddRedOrb(int _Value)
+	{
+		RedOrbValue += _Value;
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -40,6 +44,10 @@ private:
 	std::shared_ptr<class GameEngineUIRenderer> ExFire_Effect1 = nullptr;
 	std::shared_ptr<class GameEngineUIRenderer> ExFire_Effect2 = nullptr;
 	std::shared_ptr<class GameEngineUIRenderer> ExFire_Effect3 = nullptr;
+
+	std::shared_ptr<class GameEngineUIRenderer> RedOrbRender= nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> RedOrbFont = nullptr;
+
 	std::shared_ptr<class UI_HPGaege> UI_HPGaegeBar = nullptr;
 	std::shared_ptr<class UI_DTGauge> UI_DTGaugeBar = nullptr;
 	std::shared_ptr<class UI_BulletGauge> UI_BulletGaugeBar = nullptr;
@@ -47,6 +55,6 @@ private:
 
 
 	int ExceedCount = 0;
-
+	int RedOrbValue = 0;
 };
 
