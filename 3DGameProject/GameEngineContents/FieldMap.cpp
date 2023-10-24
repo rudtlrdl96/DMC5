@@ -191,18 +191,17 @@ bool FieldMap::IsPlayerCollsionToCullingCol()
 {
 	for (size_t i = 0; i < FieldMapCullingCol.size(); i++)
 	{
-		std::vector<std::shared_ptr<GameEngineCollision>> Players;
-		if (false == FieldMapCullingCol[i].lock()->CollisionAll(CollisionOrder::Player, Players, ColType::OBBBOX3D, ColType::OBBBOX3D))
-			continue;
-
-		for (std::shared_ptr<GameEngineCollision> PlayerCol : Players)
+		std::shared_ptr<BasePlayerActor> MyPlayer = GetLevel()->DynamicThis<StageBaseLevel>()->GetMyPlayer();
+		if (MyPlayer == nullptr)
 		{
-			BasePlayerActor* TempPlayer = nullptr;
-			TempPlayer = dynamic_cast<BasePlayerActor*>(PlayerCol->GetActor());
+			MsgAssert("MyPlayer가 nullptr입니다 (CullingCol)");
+		}
 
-			if (NetControllType::PassiveControll == TempPlayer->GetControllType())
-				continue;
-			
+		const CollisionData& MyPlayerColData = MyPlayer->GetTransform()->GetCollisionData();
+		const CollisionData& CullingColData = FieldMapCullingCol[i].lock()->GetTransform()->GetCollisionData();
+
+		if (GameEngineTransform::AABBToOBB(MyPlayerColData, CullingColData))
+		{
 			return true;
 		}
 	}

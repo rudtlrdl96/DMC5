@@ -21,14 +21,15 @@ void Location2_EnemySpawner0::Start()
 
 	Event = [this]()
 		{
+			GameEngineLevel* Level = GetLevel();
 			if (true == NetworkManager::IsClient())
 			{
 				BGMPlayer::SetBattleBGM();
 				MonsterAliveCount = 3;
+				Level->DynamicThis<StageBaseLevel>()->RedSealWallOn();
 				return;
 			}
 
-			GameEngineLevel* Level = GetLevel();
 			Level->DynamicThis<StageBaseLevel>()->RedSealWallOn();
 
 			for (size_t i = 0; i < 3; ++i)

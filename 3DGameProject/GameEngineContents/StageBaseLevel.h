@@ -24,11 +24,16 @@ public:
 	void RedSealWallOn();
 	void RedSealWallOff();
 
-	//void FieldMapOn(int _Index = -1);
-	//void FieldMapOff(int _Index = -1);
+	inline std::shared_ptr<class BasePlayerActor> GetMyPlayer() const
+	{
+		return MyPlayer;
+	}
+
 	bool IsEditLevel = false;
 	
 protected:
+	std::shared_ptr<class BasePlayerActor> MyPlayer = nullptr;
+
 	static std::vector<StageData> AllStageDatas;
 	static void LoadAllStageData();
 	std::shared_ptr<class GameEngineGUIWindow> GUI = nullptr;
