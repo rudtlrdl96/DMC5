@@ -18,15 +18,17 @@ void ElectronicBillboard::Start()
 
 	PointLight0 = GetLevel()->CreatePointLight(GetTransform()->GetLocalPosition() + LightPosition0, ShadowTextureScale::S_512, 1500.f);
 	PointLight0->GetTransform()->SetParent(GetTransform());
-	PointLight0->SetLightPower(1.f);
+	PointLight0->SetLightPower(1.5f);
 	PointLight0->SetLightRange(2000.f);
+	PointLight0->SetSpcLightPower(3.0f);
 	PointLight0->SetLightColor({ 1.f, 0.7f, 1.f });
 
 	PointLight1 = GetLevel()->CreatePointLight(GetTransform()->GetLocalPosition() + LightPosition1, ShadowTextureScale::S_512, 1500.f);
 	PointLight1->GetTransform()->SetParent(GetTransform());
-	PointLight1->SetLightPower(1.f);
+	PointLight1->SetLightPower(1.5f);
 	PointLight1->SetLightRange(2000.f);
-	PointLight1->SetLightColor({ 1.f, 0.7f, 1.f });
+	PointLight1->SetSpcLightPower(3.0f);
+	PointLight1->SetLightColor({ 0.7f, 0.7f, 1.f });
 
 	StaticFieldMapObject::Start();
 
