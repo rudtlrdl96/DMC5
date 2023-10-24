@@ -323,6 +323,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="MotionBlurEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="NeroItemGlass.h">
       <SubType>
       </SubType>
@@ -922,6 +926,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="EnemySpawner.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="MotionBlurEffect.cpp">
       <SubType>
       </SubType>
     </ClCompile>

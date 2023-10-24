@@ -408,7 +408,7 @@ void ContentsCore::ContentsResourcesCreate()
 		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("UIFBXMesh");
 
 		Material->SetVertexShader("ContentsUIMesh.hlsl");
-		Material->SetRasterizer("Engine2DBase");
+		Material->SetRasterizer("Engine3DBase");
 		Material->SetPixelShader("ContentsUIMesh.hlsl");
 		Material->SetBlendState("BaseBlend");
 		Material->SetDepthState("AlphaDepth");

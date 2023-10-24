@@ -507,6 +507,9 @@
     <ClInclude Include="Enemy_HellCaina.h">
       <Filter>Actor\Enemy\NormalEnemy\HellCaina</Filter>
     </ClInclude>
+    <ClInclude Include="MotionBlurEffect.h">
+      <Filter>PostEffect</Filter>
+    </ClInclude>
     <ClInclude Include="DivinityStatue.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClInclude>
@@ -1014,6 +1017,9 @@
     </ClCompile>
     <ClCompile Include="Enemy_HellCaina.cpp">
       <Filter>Actor\Enemy\NormalEnemy\HellCaina</Filter>
+    </ClCompile>
+    <ClCompile Include="MotionBlurEffect.cpp">
+      <Filter>PostEffect</Filter>
     </ClCompile>
     <ClCompile Include="DivinityStatue.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
