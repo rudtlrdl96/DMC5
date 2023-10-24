@@ -35,6 +35,8 @@ private:
 	std::shared_ptr<class CavaliereAngelo> Cavaliere = nullptr;
 	std::shared_ptr<class TestObject> TestObj = nullptr;
 	std::shared_ptr<class Plane> Flat = nullptr;
+	std::shared_ptr<class Enemy_ScudoAngelo> Scudo = nullptr;
+	std::shared_ptr<class Enemy_ProtoAngelo> Proto = nullptr;
 
 };
 

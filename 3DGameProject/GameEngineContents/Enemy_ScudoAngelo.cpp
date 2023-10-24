@@ -13,11 +13,11 @@
 #include "AttackCollision.h"
 #include "FXSystem.h"
 
-Enemy_ScudoAngelo::Enemy_ScudoAngelo() 
+Enemy_ScudoAngelo::Enemy_ScudoAngelo()
 {
 }
 
-Enemy_ScudoAngelo::~Enemy_ScudoAngelo() 
+Enemy_ScudoAngelo::~Enemy_ScudoAngelo()
 {
 }
 
@@ -34,13 +34,13 @@ void Enemy_ScudoAngelo::EnemyTypeLoad()
 
 void Enemy_ScudoAngelo::EnemyMeshLoad()
 {
-	if (nullptr == GameEngineFBXMesh::Find("em0001.FBX"))
+	if (nullptr == GameEngineFBXMesh::Find("Scudo.FBX"))
 	{
 		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
 			{
-				"Character", "Enemy", "HellAntenora", "mesh"
+				"Character", "Enemy", "Scudo", "mesh"
 			},
-			"em0001.FBX");
+			"Scudo.FBX");
 
 		GameEngineFBXMesh::Load(Path);
 	}
@@ -49,55 +49,66 @@ void Enemy_ScudoAngelo::EnemyMeshLoad()
 	{
 	case GameEngineOptionValue::Low:
 	{
-		EnemyRenderer->SetFBXMesh("em0001.fbx", "AniFBX_Low");
+		EnemyRenderer->SetFBXMesh("Scudo.fbx", "AniFBX_Low");
 	}
 	break;
 	case GameEngineOptionValue::High:
 	{
-		EnemyRenderer->SetFBXMesh("em0001.fbx", "AniFBX");
+		EnemyRenderer->SetFBXMesh("Scudo.fbx", "AniFBX");
 	}
 	break;
 	default:
 		break;
 	}
 
-	LeftWeapon = CreateComponent<GameEngineFBXRenderer>();
-	RightWeapon = CreateComponent<GameEngineFBXRenderer>();
+	//LeftWeapon = CreateComponent<GameEngineFBXRenderer>();
+	//RightWeapon = CreateComponent<GameEngineFBXRenderer>();
 
-	if (nullptr == GameEngineFBXMesh::Find("wpem0001_00.FBX"))
-	{
-		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
-			{
-				"Character", "Enemy", "HellAntenora", "mesh"
-			},
-			"wpem0001_00.FBX");
+	//if (nullptr == GameEngineFBXMesh::Find("wpem0600_00.FBX"))
+	//{
+	//	std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+	//		{
+	//			"Character", "Enemy", "Scudo", "mesh"
+	//		},
+	//		"wpem0600_00.FBX");
 
-		GameEngineFBXMesh::Load(Path);
-	}
+	//	GameEngineFBXMesh::Load(Path);
+	//}
 
-	switch (GameEngineOption::GetOption("Shader"))
-	{
-	case GameEngineOptionValue::Low:
-	{
-		LeftWeapon->SetFBXMesh("wpem0001_00.fbx", "FBX_Low");
-		RightWeapon->SetFBXMesh("wpem0001_00.fbx", "FBX_Low");
-	}
-	break;
-	case GameEngineOptionValue::High:
-	{
-		LeftWeapon->SetFBXMesh("wpem0001_00.fbx", "FBX");
-		RightWeapon->SetFBXMesh("wpem0001_00.fbx", "FBX");
-	}
-	break;
-	default:
-		break;
-	}
+	//if (nullptr == GameEngineFBXMesh::Find("wpem0600_01.FBX"))
+	//{
+	//	std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+	//		{
+	//			"Character", "Enemy", "Scudo", "mesh"
+	//		},
+	//		"wpem0600_01.FBX");
 
-	LeftWeapon->ShadowOn();
-	LeftWeapon->SetDynamic();
+	//	GameEngineFBXMesh::Load(Path);
+	//}
 
-	RightWeapon->ShadowOn();
-	RightWeapon->SetDynamic();
+	//switch (GameEngineOption::GetOption("Shader"))
+	//{
+	//case GameEngineOptionValue::Low:
+	//{
+	//	LeftWeapon->SetFBXMesh("wpem0600_01.fbx", "FBX_Low");
+	//	RightWeapon->SetFBXMesh("wpem0600_00.fbx", "FBX_Low");
+	//}
+	//break;
+	//case GameEngineOptionValue::High:
+	//{
+	//	LeftWeapon->SetFBXMesh("wpem0600_01.fbx", "FBX");
+	//	RightWeapon->SetFBXMesh("wpem0600_00.fbx", "FBX");
+	//}
+	//break;
+	//default:
+	//	break;
+	//}
+
+	//LeftWeapon->ShadowOn();
+	//LeftWeapon->SetDynamic();
+
+	//RightWeapon->ShadowOn();
+	//RightWeapon->SetDynamic();
 
 	if (nullptr == GameEngineTexture::Find("PaperBurnNoise.jpg"))
 	{
@@ -108,8 +119,8 @@ void Enemy_ScudoAngelo::EnemyMeshLoad()
 	}
 
 	EnemyRenderer->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
-	LeftWeapon->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
-	RightWeapon->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
+	//LeftWeapon->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
+	//RightWeapon->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
 }
 
 void Enemy_ScudoAngelo::EnemyAnimationLoad()
@@ -120,29 +131,28 @@ void Enemy_ScudoAngelo::EnemyAnimationLoad()
 	NewDir.Move("ContentResources");
 	NewDir.Move("Character");
 	NewDir.Move("Enemy");
-	NewDir.Move("HellAntenora");
+	NewDir.Move("Scudo");
 	NewDir.Move("Animation");
-	NewDir.Move("damage");
 
-	AnimationEvent::LoadAll
-	(
-		{
-			.Dir = NewDir.GetFullPath().c_str(),
-			.Renderer = EnemyRenderer,
-			.RendererLocalPos = { 0.0f, -50.0f, 0.0f },
-			.Objects = {(GameEngineObject*)MonsterAttackCollision.get()},
-			.CallBacks_void =
-			{
-			},
-			.CallBacks_int =
-			{
-				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
-			},
-			.CallBacks_float4 =
-			{
-			}
-		}
-	);
+	//AnimationEvent::LoadAll
+	//(
+	//	{
+	//		.Dir = NewDir.GetFullPath().c_str(),
+	//		.Renderer = EnemyRenderer,
+	//		.RendererLocalPos = { 0.0f, -50.0f, 0.0f },
+	//		.Objects = {(GameEngineObject*)MonsterAttackCollision.get()},
+	//		.CallBacks_void =
+	//		{
+	//		},
+	//		.CallBacks_int =
+	//		{
+	//			std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
+	//		},
+	//		.CallBacks_float4 =
+	//		{
+	//		}
+	//	}
+	//);
 	{
 		// 이펙트 시스템 생성
 		GameEngineDirectory NewDir;
@@ -162,13 +172,13 @@ void Enemy_ScudoAngelo::EnemyAnimationLoad()
 			EffectRenderer->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
 		}
 	}
-	//std::vector<GameEngineFile> FBXFiles = NewDir.GetAllFile({ ".FBX" });
+	std::vector<GameEngineFile> FBXFiles = NewDir.GetAllFile({ ".FBX" });
 
-	//for (size_t i = 0; i < FBXFiles.size(); i++)
-	//{
-	//	GameEngineFBXAnimation::Load(FBXFiles[i].GetFullPath());
-	//	EnemyRenderer->CreateFBXAnimation(FBXFiles[i].GetFileName(), FBXFiles[i].GetFileName(), { .Inter = 0.01666f, });
-	//}
+	for (size_t i = 0; i < FBXFiles.size(); i++)
+	{
+		GameEngineFBXAnimation::Load(FBXFiles[i].GetFullPath());
+		EnemyRenderer->CreateFBXAnimation(FBXFiles[i].GetFileName(), FBXFiles[i].GetFileName(), { .Inter = 0.01666f, });
+	}
 }
 
 void Enemy_ScudoAngelo::Start()
@@ -208,31 +218,31 @@ void Enemy_ScudoAngelo::Start()
 	RN_MonsterCollision->Off();
 
 	// 무기 붙이기
-	EnemyRenderer->SetAttachTransform("L_WeaponHand", LeftWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 170.0f, 180.0f), true);
-	EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 170.0f, 180.0f), true);
+	//EnemyRenderer->SetAttachTransform("L_WeaponHand", LeftWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 170.0f, 180.0f), true);
+	//EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 170.0f, 180.0f), true);
 
-	float4 MeshScale_L = LeftWeapon->GetMeshScale();
-	// MeshScale = { 77.6 , 10.5 , 171.0 }
-	MeshScale_L.x *= 0.7f;
-	MeshScale_L.z *= 0.6f;
-	float4 MeshScale_R = RightWeapon->GetMeshScale();
-	MeshScale_R.x *= 0.7f;
-	MeshScale_R.z *= 0.6f;
+	//float4 MeshScale_L = LeftWeapon->GetMeshScale();
+	//// MeshScale = { 77.6 , 10.5 , 171.0 }
+	//MeshScale_L.x *= 0.7f;
+	//MeshScale_L.z *= 0.6f;
+	//float4 MeshScale_R = RightWeapon->GetMeshScale();
+	//MeshScale_R.x *= 0.7f;
+	//MeshScale_R.z *= 0.6f;
 
-	MonsterAttackCollision->GetTransform()->SetWorldScale(MeshScale_L);
-	MonsterAttackCollision_Two->GetTransform()->SetWorldScale(MeshScale_R);
+	//MonsterAttackCollision->GetTransform()->SetWorldScale(MeshScale_L);
+	//MonsterAttackCollision_Two->GetTransform()->SetWorldScale(MeshScale_R);
 
-	MonsterAttackCollision->GetTransform()->SetParent(LeftWeapon->GetTransform());
-	MonsterAttackCollision_Two->GetTransform()->SetParent(RightWeapon->GetTransform());
+	//MonsterAttackCollision->GetTransform()->SetParent(LeftWeapon->GetTransform());
+	//MonsterAttackCollision_Two->GetTransform()->SetParent(RightWeapon->GetTransform());
 
-	MonsterAttackCollision->GetTransform()->AddLocalPosition(float4{ 0.0f, 0.0f, 80.0f });
-	MonsterAttackCollision_Two->GetTransform()->AddLocalPosition(float4{ 0.0f, 0.0f, 80.0f });
+	//MonsterAttackCollision->GetTransform()->AddLocalPosition(float4{ 0.0f, 0.0f, 80.0f });
+	//MonsterAttackCollision_Two->GetTransform()->AddLocalPosition(float4{ 0.0f, 0.0f, 80.0f });
 
-	MonsterAttackCollision->GetTransform()->AddLocalRotation(float4{ 0.0f, -10.0f, 0.0f });
-	MonsterAttackCollision_Two->GetTransform()->AddLocalRotation(float4{ 0.0f, -10.0f, 0.0f });
+	//MonsterAttackCollision->GetTransform()->AddLocalRotation(float4{ 0.0f, -10.0f, 0.0f });
+	//MonsterAttackCollision_Two->GetTransform()->AddLocalRotation(float4{ 0.0f, -10.0f, 0.0f });
 
-	MonsterAttackCollision->Off();
-	MonsterAttackCollision_Two->Off();
+	//MonsterAttackCollision->Off();
+	//MonsterAttackCollision_Two->Off();
 
 	// 넷 오브젝트 타입 설정1
 	SetNetObjectType(Net_ActorType::HellAntenora);
@@ -270,6 +280,7 @@ void Enemy_ScudoAngelo::Start()
 			DeathValue = true;
 		}
 
+		IsChangeState = true;
 		});
 }
 
@@ -675,7 +686,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Idle,
 	.Start = [=] {
 	EffectRenderer->PlayFX("Enemy_Appear.effect");
-	EnemyRenderer->ChangeAnimation("em0000_appear_02");
+	EnemyRenderer->ChangeAnimation("em0600_Idle.fbx");
 	},
 	.Update = [=](float _DeltaTime) {
 	},

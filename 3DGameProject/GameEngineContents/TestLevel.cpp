@@ -22,6 +22,8 @@
 #include "DistortionEffect.h"
 #include "ZoomEffect.h"
 #include "Enemy_HellAntenora.h"
+#include "Enemy_ScudoAngelo.h"
+#include "Enemy_ProtoAngelo.h"
 
 #include "BGMPlayer.h"
 
@@ -189,6 +191,20 @@ void TestLevel::LevelChangeStart()
 		HellAntenora->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
 		HellAntenora->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	}
+
+	//if (nullptr == Scudo)
+	//{
+	//	Scudo = CreateActor<Enemy_ScudoAngelo>();
+	//	Scudo->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//	Scudo->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	//}
+
+	//if (nullptr == Proto)
+	//{
+	//	Proto = CreateActor<Enemy_ProtoAngelo>();
+	//	Proto->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//	Proto->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	//}
 
 	//GameEngineCoreWindow::Clear();
 	//GameEngineCoreWindow::AddDebugRenderTarget(0, "Forward Target", GetCamera(100)->GetCamForwardTarget());
