@@ -27,34 +27,34 @@ Enemy_ScudoAngelo::~Enemy_ScudoAngelo()
 
 void Enemy_ScudoAngelo::EnemyTypeLoad()
 {
-	EnemyCodeValue = EnemyCode::HellAntenora;
+	EnemyCodeValue = EnemyCode::ScudoAngelo;
 	EnemyMaxHP = 200000;
 	EnemyHP = EnemyMaxHP;
 }
 
 void Enemy_ScudoAngelo::EnemyMeshLoad()
 {
-	if (nullptr == GameEngineFBXMesh::Find("Scudo.FBX"))
+	if (nullptr == GameEngineFBXMesh::Find("em0601.FBX"))
 	{
 		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
 			{
-				"Character", "Enemy", "Scudo", "mesh"
+				"Character", "Enemy", "Proto", "mesh"
 			},
-			"Scudo.FBX");
+			"em0601.FBX");
 
 		GameEngineFBXMesh::Load(Path);
 	}
 
-	switch (GameEngineOption::GetOption("Shader"))
+	switch (GameEngineOption::GetOption("em0601"))
 	{
 	case GameEngineOptionValue::Low:
 	{
-		EnemyRenderer->SetFBXMesh("Scudo.fbx", "AniFBX_Low");
+		EnemyRenderer->SetFBXMesh("em0601.fbx", "AniFBX_Low");
 	}
 	break;
 	case GameEngineOptionValue::High:
 	{
-		EnemyRenderer->SetFBXMesh("Scudo.fbx", "AniFBX");
+		EnemyRenderer->SetFBXMesh("em0601.fbx", "AniFBX");
 	}
 	break;
 	default:
@@ -131,9 +131,9 @@ void Enemy_ScudoAngelo::EnemyAnimationLoad()
 	NewDir.Move("ContentResources");
 	NewDir.Move("Character");
 	NewDir.Move("Enemy");
-	NewDir.Move("Scudo");
+	NewDir.Move("Proto");
 	NewDir.Move("Animation");
-	NewDir.Move("move");
+	NewDir.Move("attack");
 
 	//AnimationEvent::LoadAll
 	//(
@@ -246,7 +246,7 @@ void Enemy_ScudoAngelo::Start()
 	//MonsterAttackCollision_Two->Off();
 
 	// 넷 오브젝트 타입 설정1
-	SetNetObjectType(Net_ActorType::HellAntenora);
+	SetNetObjectType(Net_ActorType::ScudoAngelo);
 
 	LinkData_UpdatePacket<bool>(AnimationTurnStart);
 	LinkData_UpdatePacket<bool>(IsHeavyAttack);
@@ -672,6 +672,7 @@ void Enemy_ScudoAngelo::ChangeState(int _StateValue)
 	EnemyFSM.ChangeState(_StateValue);
 	EnemyFSMValue = _StateValue;
 	NetworkManager::SendFsmChangePacket(this, _StateValue);
+	IsChangeState = true;
 }
 
 void Enemy_ScudoAngelo::ChangeState_Client(int _StateValue)

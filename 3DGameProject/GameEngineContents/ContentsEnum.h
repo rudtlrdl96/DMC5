@@ -40,9 +40,9 @@ enum class Net_ActorType
 	//몬스터
 	Empusa,
 	HellCaina,
-	GreenEmpusa,
-	RedEmpusa,
 	HellAntenora,
+	ScudoAngelo,
+	ProtoAngelo,
 
 	//보스
 	CavaliereAngelo,
