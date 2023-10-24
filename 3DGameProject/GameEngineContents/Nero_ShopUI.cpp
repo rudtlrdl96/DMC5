@@ -19,25 +19,24 @@ void Nero_ShopUI::Start()
 	SkillButton = GetLevel()->CreateActor<Shop_TitleButton>();
 	SkillButton->GetTransform()->SetParent(GetTransform());
 	SkillButton->SetUIText("SKILLS");
-	SkillButton->GetTransform()->SetLocalPosition({ -600.0f,370.0f,0.0f });
+	SkillButton->GetTransform()->SetLocalPosition(float4{ -600.0f,370.0f,0.0f } * GameEngineActor::ScreenRatio);
 	SkillButton->SetEvent([this]()
 		{
 			TitleIndex = 0;
 		});
 	DBButton = GetLevel()->CreateActor<Shop_TitleButton>();
 	DBButton->SetUIText("DEVIL BREAKERS");
-	DBButton->GetTransform()->SetLocalPosition({ -300.0f,370.0f,0.0f });
+	DBButton->GetTransform()->SetLocalPosition(float4{ -300.0f,370.0f,0.0f }*GameEngineActor::ScreenRatio);
 	DBButton->GetTransform()->SetParent(GetTransform());
 	DBButton->SetEvent([this]()
 		{
 			TitleIndex = 1;
 		});
-	//Å×½ºÆ®
 	SkillScreen = GetLevel()->CreateActor<Shop_NeroSkillUI>();
-	SkillScreen->GetTransform()->SetLocalPosition(SkillStartPos);
+	SkillScreen->GetTransform()->SetLocalPosition(SkillStartPos * GameEngineActor::ScreenRatio);
 	SkillScreen->GetTransform()->SetParent(GetTransform());
 	ArmScreen = GetLevel()->CreateActor<Shop_NeroArmUI>();
-	ArmScreen->GetTransform()->SetLocalPosition(ItemDefaulPos);
+	ArmScreen->GetTransform()->SetLocalPosition(ItemDefaulPos * GameEngineActor::ScreenRatio);
 	ArmScreen->GetTransform()->SetParent(GetTransform());
 }	
 
@@ -65,7 +64,7 @@ void Nero_ShopUI::Update(float _Delta)
 		SkillButton->SetSelectValue(false);
 		DBButton->SetSelectValue(true);
 	}
-	if (true == GameEngineInput::IsUp("UI_Tab"))
+	if (true == GameEngineInput::IsUp("UI_Tab")&& IsSwichValue==true)
 	{
 		PrevIndex = TitleIndex;
 		if (TitleIndex == 1)
@@ -93,9 +92,11 @@ void Nero_ShopUI::LerpScreen(float _Delta)
 {
 	if (IsValue==true)
 	{
+		IsSwichValue = false;
 		LerpTime += _Delta;
 		if (IsSwichItem == false)
 		{
+			IsSwichValue = false;
 			SkillScreen->GetTransform()->SetLocalPosition(float4::LerpClamp(SkillDefaultPos, SkillStartPos, LerpTime * 2.5f));
 			ArmScreen->GetTransform()->SetLocalPosition(float4::LerpClamp(ItemStartPos, ItemEndPos, LerpTime * 2.5f));
 			if (ArmScreen->GetTransform()->GetLocalPosition() == ItemEndPos)
@@ -105,6 +106,7 @@ void Nero_ShopUI::LerpScreen(float _Delta)
 				IsSwichItem = true;
 				IsValue = false;
 				LerpTime = 0.0f;
+				IsSwichValue = true;
 			}
 		}
 		
@@ -114,6 +116,7 @@ void Nero_ShopUI::LerpScreen(float _Delta)
 		LerpTime += _Delta;
 		if (IsSwichSkill == false)
 		{
+			IsSwichValue = false;
 			SkillScreen->GetTransform()->SetLocalPosition(float4::LerpClamp(SkillStartPos, SkillEndPos, LerpTime * 2.5f));
 			ArmScreen->GetTransform()->SetLocalPosition(float4::LerpClamp(ItemDefaulPos, ItemStartPos, LerpTime * 2.5f));
 			if (SkillScreen->GetTransform()->GetLocalPosition() == SkillEndPos)
@@ -123,6 +126,7 @@ void Nero_ShopUI::LerpScreen(float _Delta)
 				IsSwichItem = false;
 				IsValue2 = false;
 				LerpTime = 0.0f;
+				IsSwichValue = true;
 			}
 		}
 		

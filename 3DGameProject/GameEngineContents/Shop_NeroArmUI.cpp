@@ -20,9 +20,9 @@ Shop_NeroArmUI::~Shop_NeroArmUI()
 
 void Shop_NeroArmUI::Start()
 {
-	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_0, { ._Name = "OVERTURE",._Price = "500",._png = "Nero_Overture.png",._BaseNone = "Shop_ArmBase.png", ._BaseSelect = "Shop_ArmSelect.png",.IsValue = false }, GetTransform(), float4(118.0f, 120.0f, 0.0f), float4(-160.0f, 0.0f, 0.0f));
-	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_1, { ._Name = "GERBERA",._Price = "1200",._png = "Nero_Gerbera.png",._BaseNone = "Shop_ArmBase.png", ._BaseSelect = "Shop_ArmSelect.png" ,.IsValue = false }, GetTransform(), float4(118.0f, 120.0f, 0.0f), float4(-160.0f, 0.0f, 0.0f));
-	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_2, { ._Name = "BUSTER ARM",._Price = "5000",._png = "Nero_BusterArm.png",._BaseNone = "Shop_ArmBase.png", ._BaseSelect = "Shop_ArmSelect.png",.IsValue = false }, GetTransform(), float4(118.0f, 120.0f, 0.0f), float4(-160.0f, 0.0f, 0.0f));
+	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_0 * GameEngineActor::ScreenRatio, { ._Name = "OVERTURE",._Price = "500",._png = "Nero_Overture.png",._BaseNone = "Shop_ArmBase.png", ._BaseSelect = "Shop_ArmSelect.png",.IsValue = false }, GetTransform(), float4(118.0f, 120.0f, 0.0f) * GameEngineActor::ScreenRatio, float4(-160.0f, 0.0f, 0.0f) * GameEngineActor::ScreenRatio);
+	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_1 * GameEngineActor::ScreenRatio, { ._Name = "GERBERA",._Price = "1200",._png = "Nero_Gerbera.png",._BaseNone = "Shop_ArmBase.png", ._BaseSelect = "Shop_ArmSelect.png" ,.IsValue = false }, GetTransform(), float4(118.0f, 120.0f, 0.0f) * GameEngineActor::ScreenRatio, float4(-160.0f, 0.0f, 0.0f) * GameEngineActor::ScreenRatio);
+	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_2 * GameEngineActor::ScreenRatio, { ._Name = "BUSTER ARM",._Price = "5000",._png = "Nero_BusterArm.png",._BaseNone = "Shop_ArmBase.png", ._BaseSelect = "Shop_ArmSelect.png",.IsValue = false }, GetTransform(), float4(118.0f, 120.0f, 0.0f) * GameEngineActor::ScreenRatio, float4(-160.0f, 0.0f, 0.0f) * GameEngineActor::ScreenRatio);
 	ArmExplane = GetLevel()->CreateActor<Shop_ExplaneUI>();
 	ArmExplane->GetTransform()->SetParent(GetTransform());
 	ArmExplane->GetTransform()->SetWorldPosition({ 0.0f,0.0f,0.0f });
@@ -45,7 +45,7 @@ void Shop_NeroArmUI::Update(float _Delta)
 	{
 		//인자로 메인메뉴에서 들고있던 인벤 인덱스 넣어주기
 		AcNeroInven->GetInvenVec()[0]->On();
-		AcNeroInven->GetInvenVec()[0]->GetTransform()->SetLocalPosition({ 665.0f,-233.0f,0.0f });
+		AcNeroInven->GetInvenVec()[0]->GetTransform()->SetLocalPosition(float4{ 665.0f,-233.0f,0.0f }*GameEngineActor::ScreenRatio);
 	}
 
 

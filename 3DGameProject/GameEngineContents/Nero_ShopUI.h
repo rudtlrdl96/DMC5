@@ -32,7 +32,7 @@ private:
 	bool IsValue2 = false;
 	bool IsSwichSkill = false;
 	bool IsSwichItem = false;
-
+	bool IsSwichValue = true;
 	float4 SkillDefaultPos = { -1200.0f,0.0f,0.0f };
 	float4 ItemDefaulPos = { -1200.f,0.0f,0.0f };
 	float4 SkillStartPos = { 0.0f,0.0f,0.0f };

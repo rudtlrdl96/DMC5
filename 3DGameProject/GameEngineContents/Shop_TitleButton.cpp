@@ -18,7 +18,8 @@ Shop_TitleButton::~Shop_TitleButton()
 void Shop_TitleButton::Start()
 {
 	Render = CreateComponent<GameEngineUIRenderer>(1);
-	Render->SetScaleToTexture("Shop_TitleButton.png");
+	Render->SetTexture("Shop_TitleButton.png");
+	Render->GetTransform()->SetLocalScale(Scale * GameEngineActor::ScreenRatio);
 	Render_Bottom = CreateComponent<GameEngineUIRenderer>(1);
 	Render_Bottom->SetScaleToTexture("NullTexture.png");
 	Render_Top = CreateComponent<GameEngineUIRenderer>(1);
@@ -58,7 +59,7 @@ void Shop_TitleButton::Update(float _Delta)
 		FontRender->SetColor(float4::WHITE);
 		if (IsPosValue == false)
 		{
-			FontRender->GetTransform()->SetLocalPosition({ 0.0f,20.f,0.0f });
+			FontRender->GetTransform()->SetLocalPosition({ 0.0f,20.f*GameEngineActor::ScreenRatio.x,0.0f });
 			Render->BSCControl(M0, 0.5f, 0.5f);
 		}
 		else
@@ -87,7 +88,7 @@ void Shop_TitleButton::Update(float _Delta)
 
 		if (IsPosValue == false)
 		{
-			FontRender->GetTransform()->SetLocalPosition({ 0.0f,19.f,0.0f });
+			FontRender->GetTransform()->SetLocalPosition({ 0.0f,19.f * GameEngineActor::ScreenRatio.x,0.0f });
 			Render->Off();
 		}
 		else
@@ -109,9 +110,9 @@ void Shop_TitleButton::FontCreate()
 	FontRender->GetTransform()->SetParent(GetTransform());
 	FontRender->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
 	FontRender->SetFontFlag(FW1_CENTER);
-	FontRender->SetScale(28);
+	FontRender->SetScale(28.0f * GameEngineActor::ScreenRatio.x);
 	FontRender->SetColor(float4::WHITE);
-	FontRender->GetTransform()->SetLocalPosition({ 0.0f,20.f,0.0f });
+	FontRender->GetTransform()->SetLocalPosition({ 0.0f,20.f * GameEngineActor::ScreenRatio.x,0.0f });
 
 }
 

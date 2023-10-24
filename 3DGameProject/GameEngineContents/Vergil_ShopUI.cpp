@@ -21,45 +21,45 @@ void Vergil_ShopUI::Start()
 {
 	SkillButton = GetLevel()->CreateActor<Shop_TitleButton>();
 	SkillButton->SetUIText("SKILLS");
-	SkillButton->GetTransform()->SetLocalPosition({ -600.0f,370.0f,0.0f });
+	SkillButton->GetTransform()->SetLocalPosition(float4{ -600.0f,370.0f,0.0f }*GameEngineActor::ScreenRatio);
 	YamatoButton = GetLevel()->CreateActor<Shop_TitleButton>();
 	YamatoButton->GetTransform()->SetParent(GetTransform());
 	YamatoButton->GetRender()->SetTexture("YamatoBase.png");
-	YamatoButton->GetRender()->GetTransform()->SetLocalScale({ 228.0f,62.0f,0.0f });
-	YamatoButton->GetRender()->GetTransform()->SetLocalPosition({ -630.0f,250.0f,0.0f });
+	YamatoButton->GetRender()->GetTransform()->SetLocalScale(float4{ 228.0f,62.0f,0.0f }*GameEngineActor::ScreenRatio);
+	YamatoButton->GetRender()->GetTransform()->SetLocalPosition(float4{ -630.0f,250.0f,0.0f }*GameEngineActor::ScreenRatio);
 	YamatoButton->GetRender_Bottom()->SetTexture("Shop_SkillUnderBar.png");
-	YamatoButton->GetRender_Bottom()->GetTransform()->SetLocalScale({ 225.0f,28.0f,0.0f });
-	YamatoButton->GetRender_Bottom()->GetTransform()->SetLocalPosition({ -628.0f,205.0f,0.0f });
+	YamatoButton->GetRender_Bottom()->GetTransform()->SetLocalScale(float4{ 225.0f,28.0f,0.0f }*GameEngineActor::ScreenRatio);
+	YamatoButton->GetRender_Bottom()->GetTransform()->SetLocalPosition(float4{ -628.0f,205.0f,0.0f }*GameEngineActor::ScreenRatio);
 	YamatoButton->GetRender_Top()->SetTexture("Shop_SkillTopBar.png");
-	YamatoButton->GetRender_Top()->GetTransform()->SetLocalScale({ 84.0f,23.0f,0.0f });
-	YamatoButton->GetRender_Top()->GetTransform()->SetLocalPosition({ -558.0f,292.0f,0.0f });
+	YamatoButton->GetRender_Top()->GetTransform()->SetLocalScale(float4{ 84.0f,23.0f,0.0f }*GameEngineActor::ScreenRatio);
+	YamatoButton->GetRender_Top()->GetTransform()->SetLocalPosition(float4{ -558.0f,292.0f,0.0f }*GameEngineActor::ScreenRatio);
 	YamatoButton->GetRender_Select()->SetTexture("Shop_SkillSelect.png");
-	YamatoButton->GetRender_Select()->GetTransform()->SetLocalScale({ 228.0f,62.0f,0.0f });
-	YamatoButton->GetRender_Select()->GetTransform()->SetLocalPosition({ -630.0f,250.0f,0.0f });
+	YamatoButton->GetRender_Select()->GetTransform()->SetLocalScale(float4{ 228.0f,62.0f,0.0f }*GameEngineActor::ScreenRatio);
+	YamatoButton->GetRender_Select()->GetTransform()->SetLocalPosition(float4{ -630.0f,250.0f,0.0f }*GameEngineActor::ScreenRatio);
 	YamatoButton->GetFont()->SetFont("DMC5Font");
 	YamatoButton->GetFont()->SetFontFlag(FW1_LEFT);
 	YamatoButton->SetIsPosValue(true);
-	YamatoButton->GetFont()->GetTransform()->SetLocalPosition({ -736.0f,222.0f,0.0f });
+	YamatoButton->GetFont()->GetTransform()->SetLocalPosition(float4{ -736.0f,222.0f,0.0f }*GameEngineActor::ScreenRatio);
 
 	MirgeButton = GetLevel()->CreateActor<Shop_TitleButton>();
 	MirgeButton->GetTransform()->SetParent(GetTransform());
-	MirgeButton->GetTransform()->SetLocalPosition({ 0.0f,-145.0f,0.0f });
+	MirgeButton->GetTransform()->SetLocalPosition(float4{ 0.0f,-145.0f,0.0f }*GameEngineActor::ScreenRatio);
 	MirgeButton->GetRender()->SetTexture("MirgeBladeBase.png");
-	MirgeButton->GetRender()->GetTransform()->SetLocalScale({ 228.0f,62.0f,0.0f });
-	MirgeButton->GetRender()->GetTransform()->SetLocalPosition({ -630.0f,250.0f,0.0f });
+	MirgeButton->GetRender()->GetTransform()->SetLocalScale(float4{ 228.0f,62.0f,0.0f }*GameEngineActor::ScreenRatio);
+	MirgeButton->GetRender()->GetTransform()->SetLocalPosition(float4{ -630.0f,250.0f,0.0f }*GameEngineActor::ScreenRatio);
 	MirgeButton->GetRender_Bottom()->SetTexture("Shop_SkillUnderBar.png");
-	MirgeButton->GetRender_Bottom()->GetTransform()->SetLocalScale({ 225.0f,28.0f,0.0f });
-	MirgeButton->GetRender_Bottom()->GetTransform()->SetLocalPosition({ -628.0f,205.0f,0.0f });
+	MirgeButton->GetRender_Bottom()->GetTransform()->SetLocalScale(float4{ 225.0f,28.0f,0.0f }*GameEngineActor::ScreenRatio);
+	MirgeButton->GetRender_Bottom()->GetTransform()->SetLocalPosition(float4{ -628.0f,205.0f,0.0f }*GameEngineActor::ScreenRatio);
 	MirgeButton->GetRender_Top()->SetTexture("Shop_SkillTopBar.png");
-	MirgeButton->GetRender_Top()->GetTransform()->SetLocalScale({ 84.0f,23.0f,0.0f });
-	MirgeButton->GetRender_Top()->GetTransform()->SetLocalPosition({ -558.0f,292.0f,0.0f });
+	MirgeButton->GetRender_Top()->GetTransform()->SetLocalScale(float4{ 84.0f,23.0f,0.0f }*GameEngineActor::ScreenRatio);
+	MirgeButton->GetRender_Top()->GetTransform()->SetLocalPosition(float4{ -558.0f,292.0f,0.0f }*GameEngineActor::ScreenRatio);
 	MirgeButton->GetRender_Select()->SetTexture("Shop_SkillSelect.png");
-	MirgeButton->GetRender_Select()->GetTransform()->SetLocalScale({ 228.0f,62.0f,0.0f });
-	MirgeButton->GetRender_Select()->GetTransform()->SetLocalPosition({ -630.0f,250.0f,0.0f });
+	MirgeButton->GetRender_Select()->GetTransform()->SetLocalScale(float4{ 228.0f,62.0f,0.0f }*GameEngineActor::ScreenRatio);
+	MirgeButton->GetRender_Select()->GetTransform()->SetLocalPosition(float4{ -630.0f,250.0f,0.0f }*GameEngineActor::ScreenRatio);
 	MirgeButton->GetFont()->SetFont("DMC5Font");
 	MirgeButton->GetFont()->SetFontFlag(FW1_LEFT);
 	MirgeButton->SetIsPosValue(true);
-	MirgeButton->GetFont()->GetTransform()->SetLocalPosition({ -736.0f,222.0f,0.0f });
+	MirgeButton->GetFont()->GetTransform()->SetLocalPosition(float4{ -736.0f,222.0f,0.0f }*GameEngineActor::ScreenRatio);
 	
 	YamatoSkill = GetLevel()->CreateActor<Shop_VergilYamatoUI>();
 	YamatoSkill->GetTransform()->SetParent(GetTransform());
@@ -183,23 +183,23 @@ void Vergil_ShopUI::ScaleUpDown(float _Delta , std::shared_ptr<Shop_TitleButton>
 	LerpTime += _Delta;
 	if (ScaleValue == false)
 	{
-		_Button->GetRender_Select()->GetTransform()->SetLocalScale(float4::LerpClamp(RenderScale, RenderScale * 1.05f, LerpTime * 5.0f));
-		_Button->GetRender()->GetTransform()->SetLocalScale(float4::LerpClamp(RenderScale, RenderScale * 1.05f, LerpTime * 5.0f));
-		_Button->GetRender_Top()->GetTransform()->SetLocalScale(float4::LerpClamp(RenderTopScale, RenderTopScale * 1.05f, LerpTime * 5.0f));
-		_Button->GetRender_Bottom()->GetTransform()->SetLocalScale(float4::LerpClamp(RenderBottomScale, RenderBottomScale * 1.05f, LerpTime * 5.0f));
+		_Button->GetRender_Select()->GetTransform()->SetLocalScale(float4::LerpClamp(RenderScale * GameEngineActor::ScreenRatio, RenderScale * 1.05f * GameEngineActor::ScreenRatio, LerpTime * 5.0f));
+		_Button->GetRender()->GetTransform()->SetLocalScale(float4::LerpClamp(RenderScale * GameEngineActor::ScreenRatio, RenderScale * 1.05f * GameEngineActor::ScreenRatio, LerpTime * 5.0f));
+		_Button->GetRender_Top()->GetTransform()->SetLocalScale(float4::LerpClamp(RenderTopScale * GameEngineActor::ScreenRatio, RenderTopScale * 1.05f * GameEngineActor::ScreenRatio, LerpTime * 5.0f));
+		_Button->GetRender_Bottom()->GetTransform()->SetLocalScale(float4::LerpClamp(RenderBottomScale * GameEngineActor::ScreenRatio, RenderBottomScale * 1.05f * GameEngineActor::ScreenRatio, LerpTime * 5.0f));
 
 	}
 
-	if (ScaleValue == false && _Button->GetRender()->GetTransform()->GetLocalScale() == float4(RenderScale * 1.05f))
+	if (ScaleValue == false && _Button->GetRender()->GetTransform()->GetLocalScale() == float4(RenderScale * 1.05f * GameEngineActor::ScreenRatio))
 	{
 		ScaleValue = true;
 		LerpTime = 0.0f;
 	}
 	if (ScaleValue == true)
 	{
-		_Button->GetRender_Select()->GetTransform()->SetLocalScale(float4::LerpClamp(RenderScale * 1.05f, RenderScale, LerpTime * 5.0f));
-		_Button->GetRender()->GetTransform()->SetLocalScale(float4::LerpClamp(RenderScale * 1.05f, RenderScale, LerpTime * 5.0f));
-		_Button->GetRender_Top()->GetTransform()->SetLocalScale(float4::LerpClamp(RenderTopScale * 1.05f, RenderTopScale, LerpTime * 5.0f));
-		_Button->GetRender_Bottom()->GetTransform()->SetLocalScale(float4::LerpClamp(RenderBottomScale * 1.05f, RenderBottomScale, LerpTime * 5.0f));
+		_Button->GetRender_Select()->GetTransform()->SetLocalScale(float4::LerpClamp(RenderScale * 1.05f * GameEngineActor::ScreenRatio, RenderScale * GameEngineActor::ScreenRatio, LerpTime * 5.0f));
+		_Button->GetRender()->GetTransform()->SetLocalScale(float4::LerpClamp(RenderScale * 1.05f * GameEngineActor::ScreenRatio, RenderScale * GameEngineActor::ScreenRatio, LerpTime * 5.0f));
+		_Button->GetRender_Top()->GetTransform()->SetLocalScale(float4::LerpClamp(RenderTopScale * 1.05f * GameEngineActor::ScreenRatio, RenderTopScale * GameEngineActor::ScreenRatio, LerpTime * 5.0f));
+		_Button->GetRender_Bottom()->GetTransform()->SetLocalScale(float4::LerpClamp(RenderBottomScale * 1.05f * GameEngineActor::ScreenRatio, RenderBottomScale * GameEngineActor::ScreenRatio, LerpTime * 5.0f));
 	}
 }

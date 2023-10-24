@@ -25,8 +25,11 @@ void Shop_ItemButton::CreateItemUI(GameEngineLevel* _Level, float4 _Pos, const S
 	ItemButton->GetTransform()->SetParent(_Trans);
 	ItemButton->GetTransform()->SetLocalPosition(_Pos);
 	ItemButton->GetSkillRender()->SetScaleToTexture(_Param._png);
+	ItemButton->GetSkillRender()->GetTransform()->SetLocalScale(ItemButton->GetSkillRender()->GetTransform()->GetLocalScale() * GameEngineActor::ScreenRatio);
 	ItemButton->GetBaseRender()->SetScaleToTexture(_Param._BaseNone);
+	ItemButton->GetBaseRender()->GetTransform()->SetLocalScale(ItemButton->GetBaseRender()->GetTransform()->GetLocalScale() * GameEngineActor::ScreenRatio);
 	ItemButton->GetSelectRender()->SetScaleToTexture(_Param._BaseSelect);
+	ItemButton->GetSelectRender()->GetTransform()->SetLocalScale(ItemButton->GetSelectRender()->GetTransform()->GetLocalScale() * GameEngineActor::ScreenRatio);
 	ItemButton->GetSelectRender()->GetTransform()->SetLocalScale(_RenderScale);
 	ItemButton->GetSelectRender()->GetTransform()->SetLocalPosition(_RenderPos);
 	ItemButton->GetBaseRender()->GetTransform()->SetLocalScale(_RenderScale);
@@ -36,20 +39,20 @@ void Shop_ItemButton::CreateItemUI(GameEngineLevel* _Level, float4 _Pos, const S
 	IsScaleValue = _Param.IsValue;
 	if (_Param.IsValue == true)
 	{
-		ItemButton->GetRender()->GetTransform()->SetLocalScale({ 480.0f,102.0f,0.0f });
-		ItemButton->GetRender_Select()->GetTransform()->SetLocalScale({ 480.0f,102.0f,0.0f });
+		ItemButton->GetRender()->GetTransform()->SetLocalScale(float4{ 480.0f,102.0f,0.0f }*GameEngineActor::ScreenRatio);
+		ItemButton->GetRender_Select()->GetTransform()->SetLocalScale(float4{ 480.0f,102.0f,0.0f }*GameEngineActor::ScreenRatio);
 		Skills.push_back(ItemButton);
 	}
 	else
 	{
-		ItemButton->GetRender()->GetTransform()->SetLocalScale({ 356.0f,102.0f,0.0f });
-		ItemButton->GetRender_Select()->GetTransform()->SetLocalScale({ 356.0f,102.0f,0.0f });
+		ItemButton->GetRender()->GetTransform()->SetLocalScale(float4{ 356.0f,102.0f,0.0f }*GameEngineActor::ScreenRatio);
+		ItemButton->GetRender_Select()->GetTransform()->SetLocalScale(float4{ 356.0f,102.0f,0.0f }*GameEngineActor::ScreenRatio);
 		Items.push_back(ItemButton);
 	}
 	if (_Param.Value == 1)
 	{
-		ItemButton->GetRender()->GetTransform()->SetLocalScale({ 480.0f,102.0f,0.0f });
-		ItemButton->GetRender_Select()->GetTransform()->SetLocalScale({ 480.0f,102.0f,0.0f });
+		ItemButton->GetRender()->GetTransform()->SetLocalScale(float4{ 480.0f,102.0f,0.0f }*GameEngineActor::ScreenRatio);
+		ItemButton->GetRender_Select()->GetTransform()->SetLocalScale(float4{ 480.0f,102.0f,0.0f }*GameEngineActor::ScreenRatio);
 		SecoundSkills.push_back(ItemButton);
 	}
 }
@@ -74,15 +77,15 @@ void Shop_ItemButton::Start()
 
 	BuyButton_Render = CreateComponent<GameEngineUIRenderer>(5);
 	BuyButton_Render->SetTexture("Shop_ItemBuyBG.png");
-	BuyButton_Render->GetTransform()->SetLocalScale({ 159.0f,34.0f,0.0f });
-	BuyButton_Render->GetTransform()->SetLocalPosition({ 155.0f,-44.0f,0.0f });
+	BuyButton_Render->GetTransform()->SetLocalScale(float4{ 159.0f,34.0f,0.0f }*GameEngineActor::ScreenRatio);
+	BuyButton_Render->GetTransform()->SetLocalPosition(float4{ 155.0f,-44.0f,0.0f }*GameEngineActor::ScreenRatio);
 
 	Money_Render = CreateComponent<GameEngineUIRenderer>(5);
 	Money_Render->SetTexture("Shop_Coin.png");
-	Money_Render->GetTransform()->SetLocalScale({ 31.0f,28.0f,0.0f });
+	Money_Render->GetTransform()->SetLocalScale(float4{ 31.0f,28.0f,0.0f }*GameEngineActor::ScreenRatio);
 
 	Skill_Render = CreateComponent<GameEngineUIRenderer>(4);
-	Skill_Render->GetTransform()->SetLocalPosition({ -160.0f,0.0f,0.0f });
+	Skill_Render->GetTransform()->SetLocalPosition(float4{ -160.0f,0.0f,0.0f }*GameEngineActor::ScreenRatio);
 	FontCreate();
 }
 
@@ -129,20 +132,20 @@ void Shop_ItemButton::FontCreate()
 	NameText_Render->GetTransform()->SetParent(GetTransform());
 	NameText_Render->SetFont(Font);
 	NameText_Render->SetFontFlag(FW1_LEFT);
-	NameText_Render->SetScale(28);
+	NameText_Render->SetScale(28.0f * GameEngineActor::ScreenRatio.x);
 
 
 	PriceText_Render = CreateComponent<GameEngineFontRenderer>(6);
 	PriceText_Render->GetTransform()->SetParent(GetTransform());
 	PriceText_Render->SetFont(Font);
 	PriceText_Render->SetFontFlag(FW1_LEFT);
-	PriceText_Render->SetScale(28);
+	PriceText_Render->SetScale(28.0f * GameEngineActor::ScreenRatio.x);
 
 	BuyText_Render = CreateComponent<GameEngineFontRenderer>(6);
 	BuyText_Render->GetTransform()->SetParent(GetTransform());
 	BuyText_Render->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
 	BuyText_Render->SetFontFlag(FW1_CENTER);
-	BuyText_Render->SetScale(20);
+	BuyText_Render->SetScale(20.0f * GameEngineActor::ScreenRatio.x);
 	BuyText_Render->SetColor(float4::WHITE);
 	BuyText_Render->SetText("¹è¿ì±â");
 
@@ -198,18 +201,18 @@ void Shop_ItemButton::MoveRender(float _Delta)
 	{
 		FillTime += _Delta;
 		FallTime = 0.0f;
-		BuyText_Render->GetTransform()->SetLocalPosition({ 153.0f,-31.f,0.0f });
-		PriceText_Render->GetTransform()->SetLocalPosition(LerpScaleSize({ -40.0f,-18.f,0.0f }, { -9.0f,-18.f,0.0f }, FillTime * Ratio));
-		NameText_Render->GetTransform()->SetLocalPosition(LerpScaleSize({ -66.0f,36.f,0.0f }, { -32.0f,36.f,0.0f }, FillTime * Ratio));
-		Money_Render->GetTransform()->SetLocalPosition(LerpScaleSize({ -56.0f,-36.0f,0.0f }, { -24.0f,-36.0f,0.0f }, FillTime * Ratio));
+		BuyText_Render->GetTransform()->SetLocalPosition(float4{ 153.0f,-31.f,0.0f }*GameEngineActor::ScreenRatio);
+		PriceText_Render->GetTransform()->SetLocalPosition(LerpScaleSize(float4{ -40.0f,-18.f,0.0f }*GameEngineActor::ScreenRatio, float4{ -9.0f,-18.f,0.0f }*GameEngineActor::ScreenRatio, FillTime * Ratio));
+		NameText_Render->GetTransform()->SetLocalPosition(LerpScaleSize(float4{ -66.0f,36.f,0.0f }*GameEngineActor::ScreenRatio, float4{ -32.0f,36.f,0.0f }*GameEngineActor::ScreenRatio, FillTime * Ratio));
+		Money_Render->GetTransform()->SetLocalPosition(LerpScaleSize(float4{ -56.0f,-36.0f,0.0f }*GameEngineActor::ScreenRatio, float4{ -24.0f,-36.0f,0.0f }*GameEngineActor::ScreenRatio, FillTime * Ratio));
 	}
 	else
 	{
 		FallTime += _Delta;
 		FillTime = 0.0f;
-		PriceText_Render->GetTransform()->SetLocalPosition(LerpScaleSize({ -9.0f,-18.f,0.0f }, { -40.0f,-18.f,0.0f }, FallTime * Ratio));
-		NameText_Render->GetTransform()->SetLocalPosition(LerpScaleSize({ -32.0f,36.f,0.0f }, { -66.0f,36.f,0.0f }, FallTime * Ratio));
-		Money_Render->GetTransform()->SetLocalPosition(LerpScaleSize({ -24.0f,-36.0f,0.0f }, { -56.0f,-36.0f,0.0f }, FallTime * Ratio));
+		PriceText_Render->GetTransform()->SetLocalPosition(LerpScaleSize(float4{ -9.0f,-18.f,0.0f }*GameEngineActor::ScreenRatio, float4{ -40.0f,-18.f,0.0f }*GameEngineActor::ScreenRatio, FallTime * Ratio));
+		NameText_Render->GetTransform()->SetLocalPosition(LerpScaleSize(float4{ -32.0f,36.f,0.0f }*GameEngineActor::ScreenRatio, float4{ -66.0f,36.f,0.0f }*GameEngineActor::ScreenRatio, FallTime * Ratio));
+		Money_Render->GetTransform()->SetLocalPosition(LerpScaleSize(float4{ -24.0f,-36.0f,0.0f }*GameEngineActor::ScreenRatio, float4{ -56.0f,-36.0f,0.0f }*GameEngineActor::ScreenRatio, FallTime * Ratio));
 
 	}
 }
@@ -221,7 +224,7 @@ void Shop_ItemButton::SizeUpDown(float _Delta)
 		ScaleUpTime += _Delta;
 		float LerpPos = GameEngineMath::LerpLimit(0.0f, 40.0f, ScaleUpTime * 10.0f);
 		Render_Select->GetTransform()->SetLocalPosition({ LerpPos, 0.0f, 0.0 });
-		float4 LerpUpScale = float4::LerpClamp(DownScale, UpScale, ScaleUpTime * 10.0f);
+		float4 LerpUpScale = float4::LerpClamp(DownScale * GameEngineActor::ScreenRatio, UpScale * GameEngineActor::ScreenRatio, ScaleUpTime * 10.0f);
 		if (SizeValue == true)
 		{
 			SkillSelect_Render->GetTransform()->SetLocalScale(LerpUpScale);
@@ -235,7 +238,7 @@ void Shop_ItemButton::SizeUpDown(float _Delta)
 	{
 		ScaleUpTime = 0.0f;
 		ScaleDownTime += _Delta;
-		float4 LerpDownScale = float4::LerpClamp(UpScale, DownScale, ScaleDownTime * 10.0f);
+		float4 LerpDownScale = float4::LerpClamp(UpScale * GameEngineActor::ScreenRatio, DownScale * GameEngineActor::ScreenRatio, ScaleDownTime * 10.0f);
 		if (SizeValue == true)
 		{
 			SkillSelect_Render->GetTransform()->SetLocalScale(LerpDownScale);
@@ -243,7 +246,7 @@ void Shop_ItemButton::SizeUpDown(float _Delta)
 		}
 		Render_Select->ImageClippingX(1 - ScaleDownTime * 4.0f, ClipXDir::Left);
 		Skill_Render->BSCControl(0.5f, 0.5f, 0.5f);
-		if (LerpDownScale == DownScale)
+		if (LerpDownScale == DownScale * GameEngineActor::ScreenRatio)
 		{
 			SkillBase_Render->On();
 			SkillSelect_Render->Off();

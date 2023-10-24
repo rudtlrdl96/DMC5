@@ -97,6 +97,6 @@ private:
 	float Ratio = 0.0f;
 
 	float M0 = 0.0f;
-	
+	float4 Scale = { 270.0f,38.0f,0.0f };
 };
 
