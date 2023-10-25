@@ -35,7 +35,7 @@ std::function<void()> NetworkObjectBase::PopReservedDestroyCallback(Net_ActorTyp
 	if (true == Group.empty())
 		return nullptr;
 
-	const std::function<void()>& Return = Group.front();
+	std::function<void()> Return = Group.front();
 	Group.pop_front();
 
 	int Size = static_cast<int>(ReservedDestroyCallbacks[_Type].size());

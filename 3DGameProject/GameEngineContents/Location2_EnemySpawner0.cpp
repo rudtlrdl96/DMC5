@@ -25,7 +25,6 @@ void Location2_EnemySpawner0::Start()
 			GameEngineLevel* Level = GetLevel();
 			Level->DynamicThis<StageBaseLevel>()->RedSealWallOn();
 			MonsterAliveCount = 2;
-			NetworkObjectBase::PushReservedDestroyCallback(Net_ActorType::Empusa, std::bind(&EnemySpawner::DestroyMonster, this));
 
 			if (false == NetworkManager::IsClient())
 			{
@@ -48,6 +47,13 @@ void Location2_EnemySpawner0::Start()
 							Empusa->PushDeathCallback(std::bind(&EnemySpawner::DestroyMonster, this));
 					});
 					
+				}
+			}
+			else
+			{
+				for (size_t i = 0; i < MonsterAliveCount; ++i)
+				{
+					NetworkObjectBase::PushReservedDestroyCallback(Net_ActorType::Empusa, std::bind(&EnemySpawner::DestroyMonster, this));
 				}
 			}
 		};
