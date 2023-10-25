@@ -166,12 +166,12 @@ void TestLevel::LevelChangeStart()
 		Flat->GetPhysXComponent()->SetWorldPosition({ 0, -50, 0 });
 	}
 
-	//if (nullptr == HellAntenora)
-	//{
-	//	HellAntenora = CreateActor<Enemy_HellAntenora>();
-	//	HellAntenora->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	//	HellAntenora->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	//}
+	if (nullptr == HellAntenora)
+	{
+		HellAntenora = CreateActor<Enemy_HellAntenora>();
+		HellAntenora->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+		HellAntenora->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	}
 
 	//if (nullptr == Scudo)
 	//{
@@ -180,12 +180,12 @@ void TestLevel::LevelChangeStart()
 	//	Scudo->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
 
-	if (nullptr == Proto)
-	{
-		Proto = CreateActor<Enemy_ProtoAngelo>();
-		Proto->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-		Proto->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	}
+	//if (nullptr == Proto)
+	//{
+	//	Proto = CreateActor<Enemy_ProtoAngelo>();
+	//	Proto->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//	Proto->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	//}
 
 	//GameEngineCoreWindow::Clear();
 	//GameEngineCoreWindow::AddDebugRenderTarget(0, "Forward Target", GetCamera(100)->GetCamForwardTarget());

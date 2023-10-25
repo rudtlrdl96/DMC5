@@ -209,8 +209,15 @@ void GameEngineFBXRenderer::Update(float _DeltaTime)
 		// 정말 너무 다양한 상황이 있을수 있기 때문에 월드로 변경해서 넣어줘야 한다.
 		if (true == AttachTransformValue[i].RotEffect)
 		{
-			float4 QuaternionRot = DirectX::XMQuaternionMultiply(Rot, Data.OffsetRot);
-			Data.Transform->SetWorldRotation(QuaternionRot.QuaternionToEulerDeg());
+			if (false == AttachTransformValue[i].DegCalculation)
+			{
+				float4 QuaternionRot = DirectX::XMQuaternionMultiply(Rot, Data.OffsetRot);
+				Data.Transform->SetWorldRotation(QuaternionRot.QuaternionToEulerDeg());
+			}
+			else
+			{
+				Data.Transform->SetWorldRotation(Rot.QuaternionToEulerDeg() + Data.OffsetRot);
+			}
 		}
 
 		Data.Transform->SetWorldPosition(Pos + Data.OffsetPos);
@@ -871,7 +878,7 @@ AnimationBoneData GameEngineFBXRenderer::GetBoneData(std::string _Name)
 	return Data;
 }
 
-void GameEngineFBXRenderer::SetAttachTransform(std::string_view _Name, GameEngineTransform* _Transform, float4 _OffsetPos, float4 _OffsetRot, bool _RotEffect)
+void GameEngineFBXRenderer::SetAttachTransform(std::string_view _Name, GameEngineTransform* _Transform, float4 _OffsetPos, float4 _OffsetRot, bool _RotEffect, bool _IsDeg)
 {
 	Bone* BoneData = FBXMesh->FindBone(_Name.data());
 
@@ -881,10 +888,10 @@ void GameEngineFBXRenderer::SetAttachTransform(std::string_view _Name, GameEngin
 		return;
 	}
 
-	SetAttachTransform(BoneData->Index, _Transform, _OffsetPos, _OffsetRot, _RotEffect);
+	SetAttachTransform(BoneData->Index, _Transform, _OffsetPos, _OffsetRot, _RotEffect, _IsDeg);
 }
 
-void GameEngineFBXRenderer::SetAttachTransform(int Index, GameEngineTransform* _Transform, float4 _OffsetPos, float4 _OffsetRot, bool _RotEffect)
+void GameEngineFBXRenderer::SetAttachTransform(int Index, GameEngineTransform* _Transform, float4 _OffsetPos, float4 _OffsetRot, bool _RotEffect, bool _IsDeg)
 {
 	float4x4 Rot;
 	float4x4 Pos;
@@ -892,7 +899,15 @@ void GameEngineFBXRenderer::SetAttachTransform(int Index, GameEngineTransform* _
 	Rot.RotationDeg(_OffsetRot);
 	Pos.Pos(_OffsetPos);
 
-	AttachTransformValue.push_back({ Index, _Transform, _OffsetPos, _OffsetRot.EulerDegToQuaternion(), Rot * Pos, _RotEffect});
+	if (false == _IsDeg)
+	{
+		AttachTransformValue.push_back({ Index, _Transform, _OffsetPos, _OffsetRot.EulerDegToQuaternion(), Rot * Pos, _RotEffect, _IsDeg });
+	}
+	else
+	{
+		AttachTransformValue.push_back({ Index, _Transform, _OffsetPos, _OffsetRot, Rot * Pos, _RotEffect, _IsDeg });
+	}
+	
 }
 
 void GameEngineFBXRenderer::SetDettachTransform()

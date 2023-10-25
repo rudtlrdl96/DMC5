@@ -218,12 +218,9 @@ void Enemy_ScudoAngelo::Start()
 	//MonsterCollision->Off();
 	RN_MonsterCollision->Off();
 
-	//LeftWeapon->GetTransform()->AddLocalRotation({ 0.0f, 180.0f, 0.0f });
-	//LeftWeapon->GetTransform()->AddLocalRotation({ -90.0f, 0.0f, 0.0f });
-
 	// 무기 붙이기
 	EnemyRenderer->SetAttachTransform("L_Hand", LeftWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 0.0f, 180.0f), true);
-	EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 0.0f, 0.0f), true);
+	EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(90.0f, -180.0f, 0.0f), true);
 
 	float4 MeshScale_R = RightWeapon->GetMeshScale();
 	MeshScale_R.x *= 0.7f;
@@ -677,9 +674,25 @@ void Enemy_ScudoAngelo::ChangeState_Client(int _StateValue)
 void Enemy_ScudoAngelo::EnemyCreateFSM()
 {
 	// 최초 등장_02
-	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Idle,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Appear_01,
 	.Start = [=] {
 	EffectRenderer->PlayFX("Enemy_Appear.effect");
+	EnemyRenderer->ChangeAnimation("em0600_Appear_01.fbx");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 최초 등장_02
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Idle,
+	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0600_Idle.fbx");
 	},
 	.Update = [=](float _DeltaTime) {

@@ -2,6 +2,7 @@
 
 enum FSM_State_ScudoAngelo
 {
+	ScudoAngelo_Appear_01,                       // em0600_Appear_01, 서있음
 	ScudoAngelo_Idle,                       // em0001_Idle_01_loop, 서있음
 };
 

@@ -86,6 +86,7 @@ struct AttachTransformInfo
 	float4 OffsetRot = float4(0.0f, 0.0f, 0.0f, 0.0f);
 	float4x4 OffsetMat;
 	bool RotEffect = false;
+	bool DegCalculation = false;
 };
 
 // Ό³Έν :
@@ -266,9 +267,9 @@ public:
 		return CurAnimation->End;
 	}
 
-	void SetAttachTransform(std::string_view _Name, GameEngineTransform* _Transform, float4 _OffsetPos = float4(0.0f, 0.0f, 0.0f, 1.0f), float4 _OffsetRot = float4(0.0f, 0.0f, 0.0f, 0.0f), bool _RotEffect = false);
+	void SetAttachTransform(std::string_view _Name, GameEngineTransform* _Transform, float4 _OffsetPos = float4(0.0f, 0.0f, 0.0f, 1.0f), float4 _OffsetRot = float4(0.0f, 0.0f, 0.0f, 0.0f), bool _RotEffect = false, bool _IsDeg = false);
 
-	void SetAttachTransform(int Index, GameEngineTransform* _Transform, float4 _OffsetPos = float4(0.0f, 0.0f, 0.0f, 1.0f), float4 _OffsetRot = float4(0.0f, 0.0f, 0.0f, 0.0f), bool _RotEffect = false);
+	void SetAttachTransform(int Index, GameEngineTransform* _Transform, float4 _OffsetPos = float4(0.0f, 0.0f, 0.0f, 1.0f), float4 _OffsetRot = float4(0.0f, 0.0f, 0.0f, 0.0f), bool _RotEffect = false, bool _IsDeg = false);
 
 	void SetDettachTransform();
 
