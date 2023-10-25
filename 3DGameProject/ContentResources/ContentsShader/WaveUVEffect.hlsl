@@ -10,6 +10,7 @@ struct Input
 struct Output
 {
     float4 POSITION : SV_POSITION;
+    float4 VIEWPOSITION : POSITIONT0;
     float4 TEXCOORD : TEXCOORD;
 };
 
@@ -21,6 +22,7 @@ Output MeshAniTexture_VS(Input _Input)
     InputPos.w = 1.0f;
         
     NewOutPut.POSITION = mul(InputPos, WorldViewProjectionMatrix);
+    NewOutPut.POSITION = mul(InputPos, WorldView);
     NewOutPut.TEXCOORD = _Input.TEXCOORD;
         
     return NewOutPut;
@@ -31,8 +33,16 @@ Texture2D NoiseTexture : register(t1);
 
 SamplerState ENGINEBASE : register(s0);
 
-float4 MeshAniTexture_PS(Output _Input) : SV_Target0
+struct ForwardOutPut
 {
+    float4 ColorTarget : SV_Target0;
+    float4 PosTarget : SV_Target1;
+};
+
+ForwardOutPut MeshAniTexture_PS(Output _Input)
+{
+    ForwardOutPut Result;
+    
     float2 UV = _Input.TEXCOORD.xy;
     float2 Dir = UV - float2(0.5f, 0.5f);
     
@@ -40,12 +50,13 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
     
     UV += sin(Dir * Noise.x);
     
-    float4 Color = DiffuseTexture.Sample(ENGINEBASE, UV);
+    Result.ColorTarget = DiffuseTexture.Sample(ENGINEBASE, UV);
+    Result.PosTarget = _Input.VIEWPOSITION;
         
-    if (Color.a <= 0.0f)
+    if (Result.ColorTarget.a <= 0.0f)
     {
         clip(-1);
     }
     
-    return Color;
+    return Result;
 }

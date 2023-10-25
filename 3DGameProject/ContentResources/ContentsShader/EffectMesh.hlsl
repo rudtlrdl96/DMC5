@@ -18,7 +18,7 @@ struct Output
     float4 POSITION : SV_POSITION;
     float4 TEXCOORD : TEXCOORD;
     float2 ClipUV : TEXCOORD1;
-    //float4 VIEWPOSITION : POSITION0;
+    float4 VIEWPOSITION : POSITION0;
     //float4 WORLDPOSITION : POSITION1;
     //float4 NORMAL : NORMAL;
     //float4 TANGENT : TANGENT;
@@ -56,6 +56,7 @@ Output MeshTexture_VS(Input _Input)
     }
     
     NewOutPut.POSITION = mul(InputPos, WorldViewProjectionMatrix);
+    NewOutPut.VIEWPOSITION = mul(InputPos, WorldView);
         
     float4 VtxUV = _Input.TEXCOORD;
     
@@ -85,7 +86,8 @@ SamplerState ENGINEBASE : register(s0);
 struct AlphaOutPut
 {
     float4 ResultColor : SV_Target0;
-    float4 DistortionColor : SV_Target1;
+    float4 PosTarget : SV_Target1;
+    float4 DistortionColor : SV_Target2;
 };
 
 cbuffer EffectData : register(b2)
@@ -133,6 +135,8 @@ AlphaOutPut MeshTexture_PS(Output _Input)
                
     Result.ResultColor *= EffectMulColor;
     Result.ResultColor += EffectPlusColor;
+    
+    Result.PosTarget = _Input.VIEWPOSITION;
     
     float saturation = HSVColor.r * 2;
     float brightness = HSVColor.g * 2 - 1;

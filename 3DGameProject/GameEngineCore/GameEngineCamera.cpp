@@ -162,6 +162,7 @@ void GameEngineCamera::RenderTargetTextureLoad()
 	CamTarget->CreateDepthTexture();
 
 	CamForwardTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	CamForwardTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 	CamForwardTarget->SetDepthTexture(CamTarget->GetDepthTexture());
 
 	if (nullptr != CamDeferrdTarget)
@@ -205,6 +206,7 @@ void GameEngineCamera::RenderTargetTextureLoad()
 		//DefferdMergeUnit.ShaderResHelper.SetTexture("BackLight", DeferredLightTarget->GetTexture(3));
 	}
 
+	CamAlphaTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 	CamAlphaTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 	CamAlphaTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 	CamAlphaTarget->SetDepthTexture(CamTarget->GetDepthTexture());

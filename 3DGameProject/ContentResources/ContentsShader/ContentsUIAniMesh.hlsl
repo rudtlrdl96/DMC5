@@ -65,7 +65,9 @@ SamplerState ENGINEBASE : register(s0);
 struct AlphaOutPut
 {
     float4 ResultColor : SV_Target0;
+    float4 PosTarget : SV_Target1;
 };
+
 
 cbuffer ColorData : register(b1)
 {
@@ -94,6 +96,8 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     
     AlphaOutPut Result = (AlphaOutPut) 0;
        
+    Result.PosTarget = _Input.VIEWPOSITION;
+    
     // rgb = »ö»ó, a = metallicValue 
     float4 AlbmData = DiffuseTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
     

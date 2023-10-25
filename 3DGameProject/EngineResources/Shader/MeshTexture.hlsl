@@ -48,7 +48,13 @@ Texture2D NormalTexture : register(t1);
 
 SamplerState ENGINEBASE : register(s0);
 
-float4 MeshAniTexture_PS(Output _Input) : SV_Target0
+struct ForwardOutPut
+{
+    float4 ColorTarget : SV_Target0;
+    float4 PosTarget : SV_Target1;
+};
+
+ForwardOutPut MeshAniTexture_PS(Output _Input)
 {
     float4 Color = DiffuseTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
         
@@ -56,8 +62,11 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
     {
         clip(-1);
     }
+
+    ForwardOutPut Result;
     
-    float4 ResultColor = Color;
+    Result.ColorTarget = Color;
+    Result.PosTarget = _Input.VIEWPOSITION;
     
     if (0 != IsLight)
     {
@@ -77,9 +86,9 @@ float4 MeshAniTexture_PS(Output _Input) : SV_Target0
         float4 AmbientRatio = CalAmbientLight(AllLight[0]);
         
         float A = Color.w;
-        ResultColor = Color * (DiffuseRatio + SpacularRatio + AmbientRatio);
-        ResultColor.a = A;
+        Result.ColorTarget = Color * (DiffuseRatio + SpacularRatio + AmbientRatio);
+        Result.ColorTarget.a = A;
     }
     
-    return ResultColor;
+    return Result;
 }

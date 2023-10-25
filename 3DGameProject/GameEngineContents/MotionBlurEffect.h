@@ -17,18 +17,21 @@ protected:
 	void Effect(GameEngineRenderTarget* _Target, float _DeltaTime) override;
 	
 private:
-	std::shared_ptr<GameEngineRenderTarget> PrevFramePosTarget;
-	std::shared_ptr<GameEngineRenderTarget> CurFramePosTarget;
+	std::shared_ptr<GameEngineRenderTarget> PrevFrameDepth;
+	std::shared_ptr<GameEngineRenderTarget> CurFrameDepth;
 
 	void LevelChangeStart() override
 	{
 		ResultTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+		PrevFrameDepth->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+		CurFrameDepth->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 	}
 
 	void LevelChangeEnd() override
 	{
 		ResultTarget->ReleaseTextures();
+		PrevFrameDepth->ReleaseTextures();
+		CurFrameDepth->ReleaseTextures();
 	}
-
 };
 
