@@ -30,5 +30,7 @@ private:
 	std::shared_ptr<class Nero_InvenToryUI> Inven0 = nullptr;
 	std::shared_ptr<class Nero_InvenToryUI> Inven1 = nullptr;
 	std::shared_ptr<class Nero_InvenToryUI> Inven2 = nullptr;
+	std::list<DevilBreaker>* ArmList;
+
 };
 

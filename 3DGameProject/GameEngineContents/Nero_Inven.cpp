@@ -3,7 +3,7 @@
 #include "Nero_InvenToryUI.h"
 
 #include <GameEngineCore/GameEngineUIRenderer.h>
-
+#include "PlayerActor_Nero.h"
 Nero_Inven::Nero_Inven() 
 {
 }
@@ -21,11 +21,11 @@ void Nero_Inven::Start()
 	Inven0->GetTransform()->SetParent(GetTransform());
 	Inven1->GetTransform()->SetParent(GetTransform());
 	Inven2->GetTransform()->SetParent(GetTransform());
+	ArmList = PlayerActor_Nero::GetBreakerListPointer();
 
 }
 
 void Nero_Inven::Update(float _Delta)
 {
-
 }
 

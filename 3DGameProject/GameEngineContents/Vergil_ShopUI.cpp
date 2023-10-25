@@ -144,12 +144,16 @@ void Vergil_ShopUI::ShopOff()
 	SkillButton->Off();
 	YamatoButton->Off();
 	MirgeButton->Off();
+	YamatoSkill->Off();
+	MirgeSkill->Off();
 }
 void Vergil_ShopUI::ShopOn()
 {
 	SkillButton->On();
 	YamatoButton->On();
 	MirgeButton->On();
+	YamatoSkill->On();
+	MirgeSkill->On();
 }
 void Vergil_ShopUI::SetIndexCount()
 {
