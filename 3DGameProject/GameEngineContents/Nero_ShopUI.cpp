@@ -96,11 +96,13 @@ void Nero_ShopUI::LerpScreen(float _Delta)
 		LerpTime += _Delta;
 		if (IsSwichItem == false)
 		{
+			SkillScreen->On();
 			IsSwichValue = false;
 			SkillScreen->GetTransform()->SetLocalPosition(float4::LerpClamp(SkillDefaultPos, SkillStartPos, LerpTime * 2.5f));
 			ArmScreen->GetTransform()->SetLocalPosition(float4::LerpClamp(ItemStartPos, ItemEndPos, LerpTime * 2.5f));
 			if (ArmScreen->GetTransform()->GetLocalPosition() == ItemEndPos)
 			{
+				ArmScreen->Off();
 				ArmScreen->GetTransform()->SetLocalPosition(ItemDefaulPos);
 				IsSwichSkill = false;
 				IsSwichItem = true;
@@ -116,11 +118,13 @@ void Nero_ShopUI::LerpScreen(float _Delta)
 		LerpTime += _Delta;
 		if (IsSwichSkill == false)
 		{
+			ArmScreen->On();
 			IsSwichValue = false;
 			SkillScreen->GetTransform()->SetLocalPosition(float4::LerpClamp(SkillStartPos, SkillEndPos, LerpTime * 2.5f));
 			ArmScreen->GetTransform()->SetLocalPosition(float4::LerpClamp(ItemDefaulPos, ItemStartPos, LerpTime * 2.5f));
 			if (SkillScreen->GetTransform()->GetLocalPosition() == SkillEndPos)
 			{
+				SkillScreen->Off();
 				SkillScreen->GetTransform()->SetLocalPosition(SkillDefaultPos);
 				IsSwichSkill = true;
 				IsSwichItem = false;
