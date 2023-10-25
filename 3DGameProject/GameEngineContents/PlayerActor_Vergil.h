@@ -160,15 +160,15 @@ private:
 	bool DelayCheck = false;	// 다른 콤보로 연결되기 위한 딜레이 여부
 	bool LoadCheck = false;		// FBX 로드가 완료되었는지
 
-	bool IsRapidSlash = false;
-	bool IsUpperSlash = false;
-	bool IsAerialRave = false;
-	bool IsYamatoCombo = false;
-	bool IsJudgmentCutEnd = false;
-	bool IsSpiralBlade = false;
-	bool IsStormBlade = false;
-	bool IsLesteringBlade = false;
-	bool IsHeavyRainBlade = false;
+	bool IsRapidSlash =		true;
+	bool IsUpperSlash =		true;
+	bool IsAerialRave =		true;
+	bool IsYamatoCombo =	true;
+	bool IsJudgmentCutEnd = true;
+	bool IsSpiralBlade =	true;
+	bool IsStormBlade =		true;
+	bool IsLesteringBlade = true;
+	bool IsHeavyRainBlade = true;
 
 	void ChangeState(int _StateValue);
 	void CreateMirageBlade();

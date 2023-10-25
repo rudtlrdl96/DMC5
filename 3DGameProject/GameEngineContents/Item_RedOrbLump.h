@@ -20,6 +20,11 @@ protected:
 private:
 	std::shared_ptr<class FXSystem> Effect = nullptr;
 	std::shared_ptr<class GameEngineCollision> Col = nullptr;
+	std::vector<std::shared_ptr<class Item_RedOrb>> Orbs;
+	std::shared_ptr<class PhysXCapsuleComponent> PhysX = nullptr;
 
+	int HP = 8;
+	void Damage();
+	void Break();
 };
 
