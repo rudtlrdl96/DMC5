@@ -528,6 +528,9 @@
     <ClInclude Include="Shop_EnterWindow.h">
       <Filter>UI\UI_Actor\ShopUI</Filter>
     </ClInclude>
+    <ClInclude Include="BaseShopUI.h">
+      <Filter>UI\UI_Actor\ShopUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -1049,6 +1052,9 @@
       <Filter>Actor\Enemy\NormalEnemy\Qliphoth</Filter>
     </ClCompile>
     <ClCompile Include="Shop_EnterWindow.cpp">
+      <Filter>UI\UI_Actor\ShopUI</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseShopUI.cpp">
       <Filter>UI\UI_Actor\ShopUI</Filter>
     </ClCompile>
   </ItemGroup>

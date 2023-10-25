@@ -1,7 +1,9 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
+#include "BaseShopUI.h"
+
 // Ό³Έν :
-class Vergil_ShopUI : public GameEngineActor
+class Vergil_ShopUI : public BaseShopUI
 {
 public:
 	static Vergil_ShopUI* Vergil_ShopBar;
@@ -18,12 +20,14 @@ public:
 	{
 		return Index;
 	}
-	void ApperCusterWindow(bool _Value);
-	void ShopOff();
-	void ShopOn();
+	void ShopOff() override;
+	void ShopOn() override;
+	void ApperCusterWindow(bool _Value) override;
 protected:
 	void Start() override;
 	void Update(float _Delta) override;
+
+
 private:
 	void SetIndexCount();
 	void ScaleUpDown(float _Delta,std::shared_ptr<class Shop_TitleButton> _Button);

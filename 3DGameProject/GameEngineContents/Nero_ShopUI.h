@@ -1,7 +1,7 @@
 #pragma once
-#include <GameEngineCore/GameEngineActor.h>
+#include "BaseShopUI.h"
 // Ό³Έν :
-class Nero_ShopUI : public GameEngineActor
+class Nero_ShopUI : public BaseShopUI
 {
 public:
 	// constrcuter destructer
@@ -13,12 +13,13 @@ public:
 	Nero_ShopUI(Nero_ShopUI&& _Other) noexcept = delete;
 	Nero_ShopUI& operator=(const Nero_ShopUI& _Other) = delete;
 	Nero_ShopUI& operator=(Nero_ShopUI&& _Other) noexcept = delete;
-	void ApperCusterWindow(bool _Value);
-	void ShopOff();
-	void ShopOn();
+	void ApperCusterWindow(bool _Value) override;
+	void ShopOff() override;;
+	void ShopOn() override;;
 protected:
 	void Start() override;
 	void Update(float _Delta) override;
+
 private:
 	void LerpScreen(float _Delta);
 	std::shared_ptr<class Shop_TitleButton> SkillButton = nullptr;
