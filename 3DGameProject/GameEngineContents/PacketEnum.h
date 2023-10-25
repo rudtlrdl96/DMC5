@@ -8,5 +8,6 @@ enum class PacketEnum
 	MessageChatPacket,
 	LinkObjectPacket,
 	FsmChangePacket,
+	NetEventPacket,
 };
 

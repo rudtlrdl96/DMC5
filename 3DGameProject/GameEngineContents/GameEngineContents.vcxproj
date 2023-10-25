@@ -340,6 +340,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="NetEventPacket.h" />
     <ClInclude Include="NetworkObjectBase.h">
       <SubType>
       </SubType>

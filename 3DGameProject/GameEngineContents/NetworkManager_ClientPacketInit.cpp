@@ -12,6 +12,7 @@
 #include "MessageChatPacket.h"
 #include "LinkObjectPacket.h"
 #include "FsmChangePacket.h"
+#include "NetEventPacket.h"
 
 ////////
 //		클라 패킷 초기화
@@ -187,5 +188,24 @@ void NetworkManager::ClientPacketInit()
 
 		//각자 스스로 처리할 수 있게 자료구조에 저장
 		GameEngineNetObject::PushNetObjectPacket(_Packet);
+	});
+
+
+
+	//----------------------------------------------------------------------------------------------------------------------------------------------------
+	//NetEventPacket처리
+	//----------------------------------------------------------------------------------------------------------------------------------------------------
+
+	NetInst->Dispatcher.AddHandler<NetEventPacket>(
+		[](std::shared_ptr<NetEventPacket> _Packet)
+	{
+		Net_EventType EventType = _Packet->EventType;
+		if (false == AllNetEvent.contains(EventType))
+		{
+			NetworkGUI::GetInst()->PrintLog("Non-existent event detected", float4::RED);
+			return;
+		}
+
+		AllNetEvent[EventType]();
 	});
 }

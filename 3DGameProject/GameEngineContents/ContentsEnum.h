@@ -66,6 +66,13 @@ enum class Net_LevelType
 	UNKNOWN
 };
 
+enum class Net_EventType
+{
+	UNKNOWN,
+
+	RedWallOff_Location2_Spawner0,
+};
+
 enum class ActorOrder
 {
 	Player,

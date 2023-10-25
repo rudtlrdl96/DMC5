@@ -13,6 +13,7 @@
 #include "MessageChatPacket.h"
 #include "LinkObjectPacket.h"
 #include "FsmChangePacket.h"
+#include "NetEventPacket.h"
 
 #include "PlayerActor_Nero.h"
 #include "PlayerActor_Vergil.h"
@@ -44,6 +45,7 @@ const std::string NetworkManager::SystemChatCheck = "[System] : ";
 
 std::map<unsigned int, std::vector<unsigned int>> NetworkManager::AllNetID;
 
+std::map<Net_EventType, std::function<void()>> NetworkManager::AllNetEvent;
 
 
 unsigned int NetworkManager::ServerOpen(int _Port)
@@ -95,6 +97,47 @@ void NetworkManager::ConnectServer(const std::string& _IP, int PortNum, std::fun
 	//서버 접속 실패한 경우
 	std::string ErrorIP = _IP.data();
 	MsgAssert("이 클라이언트가 서버 접속에 실패하였습니다.\n접속을 시도한 IP : " + ErrorIP);
+}
+
+
+
+bool NetworkManager::BindNetworkEvent(Net_EventType Type, std::function<void()> _Event)
+{
+	if (Net_EventType::UNKNOWN == Type)
+	{
+		MsgAssert("Net_EventType::UNKNOWN 에는 이벤트를 설정할 수 없습니다");
+		return false;
+	}
+
+	//이미 이벤트가 등록된 경우 아무것도 하지 않음
+	if (true == AllNetEvent.contains(Type))
+		return false;
+
+	AllNetEvent[Type] = _Event;
+	return true;
+}
+
+
+bool NetworkManager::ExcuteNetworkEvent(Net_EventType Type)
+{
+	//호스트만 동작
+	if (false == IsServer())
+		return false;
+
+	//이벤트를 등록해준 적이 없는 경우
+	if (false == AllNetEvent.contains(Type))
+	{
+		std::string EventNumber = GameEngineString::ToString(static_cast<int>(Type));
+		NetworkGUI::GetInst()->PrintLog(EventNumber + " Event Not Exist!", float4::RED);
+		return false;
+	}
+
+	std::shared_ptr<NetEventPacket> EventPacket = std::make_shared<NetEventPacket>();
+	EventPacket->SetPacketID(PacketEnum::NetEventPacket);
+	EventPacket->SetObjectID(NetID);
+	EventPacket->EventType = Type;
+	AllPacket[PacketEnum::NetEventPacket].push_back(EventPacket);
+	return true;
 }
 
 

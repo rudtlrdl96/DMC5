@@ -55,13 +55,6 @@ public:
 	static void Update_PacketProcess(BaseLevel* _CurrentLevel);
 
 
-	//네트워크용 엑터를 생성합니다. 클라이언트의 경우엔 nullptr을 반환하니 꼭 nullptr를 해주세요
-	/*template <typename ActorPtr, typename OrderType>
-	static std::shared_ptr<ActorPtr> CreateNetworkActor(class GameEngineLevel* _Level, OrderType _Order)
-	{
-		return CreateNetworkActor(_Level, static_cast<int>(_Order));
-	}*/
-
 	template <typename ActorPtr>
 	static std::shared_ptr<ActorPtr> CreateNetworkActor(class GameEngineLevel* _Level, int _Order = 0)
 	{
@@ -100,7 +93,15 @@ public:
 	//쌓여있던 모든 패킷을 전송하는 부분
 	static void FlushPackets();
 
+	//이미 이벤트가 등록된 경우 false를 반환합니다. 터뜨리지는 않습니다
+	static bool BindNetworkEvent(Net_EventType Type, std::function<void()> _Event);
 
+	/// <summary>
+	/// 호스트가 다른 클라이언트들에게 인자로 들어온 이벤트를 호출시키도록 요구합니다
+	/// </summary>
+	/// <param name="Type"> : 해당 타입의 이벤트를 클라이언트들에게 요구합니다</param>
+	/// <returns> : 작업에 실패한 경우 로그를 남기며 false를 반환합니다</returns>
+	static bool ExcuteNetworkEvent(Net_EventType Type);
 
 protected:
 	static GameEngineNet* NetInst;
@@ -137,6 +138,9 @@ private:
 
 	//네트워크 아이디별로 오브젝트를 분류해서 관리
 	static std::map<unsigned int, std::vector<unsigned int>> AllNetID;
+
+	//네트워크를 통해 전달될 게임의 이벤트를 담아놓는 맵 map
+	static std::map<Net_EventType, std::function<void()>> AllNetEvent;
 
 	void DisconnectObjects(unsigned int _NetID);
 
