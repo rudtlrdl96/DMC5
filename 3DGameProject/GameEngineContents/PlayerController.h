@@ -188,7 +188,7 @@ public:
 	bool GetIsBackFrontGun() { return IsBackFrontGun; }
 	bool GetIsFrontGun() { return IsFrontGun; }
 	bool GetIsBackGun() { return IsBackGun; }
-	bool GetLockOnFree() { return GameEngineInput::IsFree("Player_LockOn"); }
+	bool GetLockOnFree() { return true == IsUpdate() && (GameEngineInput::IsFree("Player_LockOn")); }
 	//bool GetJumpDown() { return GameEngineInput::IsDown("Player_Jump"); }
 
 	bool GetIsSword() { return IsSword; }
@@ -196,7 +196,7 @@ public:
 	bool GetIsBackSword() { return IsBackSword; }
 	bool GetIsFrontSword() { return IsFrontSword; }
 	bool GetIsBackFrontSword() { return IsBackFrontSword; }
-	bool GetIsSwordPress() { return GameEngineInput::IsPress("Player_Sword") || GameEngineInput::IsPress("EngineMouseLeft"); }
+	bool GetIsSwordPress() { return true == IsUpdate() && (GameEngineInput::IsPress("Player_Sword") || GameEngineInput::IsPress("EngineMouseLeft")); }
 	bool GetIsSwordChargeUp() { return IsSwordChargeUp; }
 
 	bool GetIsAnyJump() { return IsJump || IsLeftJump || IsRightJump; }
@@ -205,9 +205,9 @@ public:
 	bool GetIsRightJump() { return IsRightJump; }
 
 	bool GetIsSpecialMove() { return IsSpecialMove; }
-	bool GetIsDevilTrigger() { return GameEngineInput::IsDown("Player_DT"); }
-	bool GetIsGTBomb() { return GameEngineInput::IsDown("Player_GT_Bomb"); }
-	bool GetIsProvocation() { return GameEngineInput::IsDown("Player_Provocation"); }
+	bool GetIsDevilTrigger() { return true == IsUpdate() && (GameEngineInput::IsDown("Player_DT")); }
+	bool GetIsGTBomb() { return true == IsUpdate() && (GameEngineInput::IsDown("Player_GT_Bomb")); }
+	bool GetIsProvocation() { return true == IsUpdate() && (GameEngineInput::IsDown("Player_Provocation")); }
 
 	bool GetIsSkill() { return IsSkill; }
 	bool GetIsLockOnSkill() { return IsLockOnSkill; }

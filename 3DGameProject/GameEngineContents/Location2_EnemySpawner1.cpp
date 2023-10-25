@@ -56,7 +56,7 @@ void Location2_EnemySpawner1::Start()
 		BGMPlayer::SetBattleBGM();
 		GameEngineLevel* Level = GetLevel();
 		Level->DynamicThis<StageBaseLevel>()->RedSealWallOn();
-		MonsterAliveCount = 3;
+		MonsterAliveCount = 4;
 		NetworkObjectBase::PushReservedDestroyCallback(Net_ActorType::HellCaina, std::bind(&EnemySpawner::DestroyMonster, this));
 
 		if (false == NetworkManager::IsClient())
@@ -69,7 +69,9 @@ void Location2_EnemySpawner1::Start()
 			{
 				std::shared_ptr<Enemy_HellCaina> Caina = Poolable<Enemy_HellCaina>::PopFromPool(Level, static_cast<int>(ActorOrder::Enemy));
 				Caina->GetPhysXComponent()->SetWorldPosition(CainaPos[i]);
+				Caina->GetPhysXComponent()->SetLinearVelocityZero();
 				Caina->GetTransform()->SetWorldPosition(CainaPos[i]);
+				Caina->GetPhysXComponent()->Off();
 				Caina->PushDeathCallback(std::bind(&EnemySpawner::DestroyMonster, this));
 			}
 		}

@@ -691,6 +691,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+		PhysXCapsule->On();
 	}
 		});
 

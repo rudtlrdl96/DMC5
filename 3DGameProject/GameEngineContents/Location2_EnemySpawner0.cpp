@@ -37,7 +37,9 @@ void Location2_EnemySpawner0::Start()
 				{
 					std::shared_ptr<Enemy_Empusa> Empusa = Poolable<Enemy_Empusa>::PopFromPool(Level, static_cast<int>(ActorOrder::Enemy));
 					Empusa->GetPhysXComponent()->SetWorldPosition(EnemyPos[i]);
+					Empusa->GetPhysXComponent()->SetLinearVelocityZero();
 					Empusa->GetTransform()->SetWorldPosition(EnemyPos[i]);
+					Empusa->GetPhysXComponent()->Off();
 					Empusa->PushDeathCallback(std::bind(&EnemySpawner::DestroyMonster, this));
 				}
 			}

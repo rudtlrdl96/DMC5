@@ -735,6 +735,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+		PhysXCapsule->On();
 	}
 		});
 	// 최초 등장_B
@@ -752,6 +753,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+		PhysXCapsule->On();
 	}
 		});
 

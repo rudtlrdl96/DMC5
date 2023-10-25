@@ -201,7 +201,6 @@ void PlayerActor_Nero::PlayerLoad()
 		Renderer->SetSpecularTexture("pl0000_03_albm.texout.png", "pl0000_03_atos.texout.png");
 		Renderer->SetMaterial("pl0010_01_wing_atos.texout.png", "AniFBX_Alpha", nullptr);
 		Renderer->SetSpecularTexture("pl0010_01_wing_atos.texout.png", "pl0010_01_wing_atos1.texout.png");
-		AddDTGauge(5.0f);
 		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer, .RendererLocalPos = {0, -75, 0},
 			.Objects = { (GameEngineObject*)Col_Attack.get() },
 			.CallBacks_void = {
