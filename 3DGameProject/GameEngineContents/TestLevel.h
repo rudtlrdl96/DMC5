@@ -37,6 +37,7 @@ private:
 	std::shared_ptr<class Plane> Flat = nullptr;
 	std::shared_ptr<class Enemy_ScudoAngelo> Scudo = nullptr;
 	std::shared_ptr<class Enemy_ProtoAngelo> Proto = nullptr;
+	std::shared_ptr<class Enemy_Qliphoth> Qliphoth = nullptr;
 
 };
 

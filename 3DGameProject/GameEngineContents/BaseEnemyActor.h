@@ -13,6 +13,7 @@ enum class EnemyCode
 	HellAntenora = 11,
 	ScudoAngelo = 100,
 	ProtoAngelo = 101,
+	Qliphoth = 1000,
 
 	// 보스 몬스터
 	CavaliereAngelo = 5000,
