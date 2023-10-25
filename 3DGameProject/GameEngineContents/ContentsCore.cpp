@@ -22,6 +22,7 @@
 #include "StageEditLevel.h"
 #include "Location2_Level.h"
 #include "Location11_Level.h"
+#include "Location19_Level.h"
 
 #include "AnimationToolLevel.h"
 #include "EffectToolLevel.h"
@@ -57,6 +58,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<TestStageLevel>();
 	GameEngineCore::CreateLevel<Location2_Level>();
 	GameEngineCore::CreateLevel<Location11_Level>();
+	GameEngineCore::CreateLevel<Location19_Level>();
 	GameEngineCore::CreateLevel<NetworkTestLevel>();
 	GameEngineCore::CreateLevel<PlayUITestLevel>();
 	GameEngineCore::CreateLevel<ThreadLoadingLevel>();

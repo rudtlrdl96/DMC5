@@ -516,6 +516,9 @@
     <ClInclude Include="Item_RedOrbLump.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\ItemObj</Filter>
     </ClInclude>
+    <ClInclude Include="Location19_Level.h">
+      <Filter>Levels\Stage\3.Location19</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -1030,6 +1033,9 @@
     <ClCompile Include="Item_RedOrbLump.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\ItemObj</Filter>
     </ClCompile>
+    <ClCompile Include="Location19_Level.cpp">
+      <Filter>Levels\Stage\3.Location19</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
@@ -1322,6 +1328,9 @@
     </Filter>
     <Filter Include="UI\UI_Actor\PlayUI\PlayerHPGlass">
       <UniqueIdentifier>{20445aa9-d6bf-4ce9-957d-7680ffdfc2d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Levels\Stage\3.Location19">
+      <UniqueIdentifier>{4b01348d-37b0-41af-a57f-90c1c3cffbeb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

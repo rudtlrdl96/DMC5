@@ -172,7 +172,7 @@ void TestStageLevel::LevelChangeStart()
 		MyPlayer->SetWorldPosition({ 8615.f, 0, 5060.f });
 		NetworkManager::LinkNetwork(MyPlayer.get(), this);
 	}
-	CreateStage(AllStageDatas[0]);
+	CreateStage(Location2_StageDatas[0]);
 
 	//std::shared_ptr<GameEngineLight> SpotLight = CreateSpotLight(float4(0, 400, 0), ShadowTextureScale::S_512, 2000, 90);
 	//SpotLight->GetTransform()->SetLocalRotation(float4(90, 0, 0));

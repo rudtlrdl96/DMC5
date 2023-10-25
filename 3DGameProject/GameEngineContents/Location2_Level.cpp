@@ -133,7 +133,7 @@ void Location2_Level::LevelChangeStart()
 	}
 
 	SetCamera({ 0,0,-500 });
-	CreateStage(AllStageDatas[0]);
+	CreateStage(Location2_StageDatas[0]);
 
 	if (false)
 	{

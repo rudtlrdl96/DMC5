@@ -60,7 +60,7 @@ void Location11_Level::LevelChangeStart()
 		}
 	}
 	SetCamera({ 0, 0, 0});
-	CreateStage(AllStageDatas[1]);
+	CreateStage(Location11_StageDatas[0]);
 	//AcWallCol.lock()->RenderOn();
 	//AcGroundCol.lock()->RenderOn();
 

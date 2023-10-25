@@ -11,7 +11,9 @@
 
 #include "RedSeal.h"
 
-std::vector<StageData> StageBaseLevel::AllStageDatas;
+std::vector<StageData> StageBaseLevel::Location2_StageDatas;
+std::vector<StageData> StageBaseLevel::Location11_StageDatas;
+std::vector<StageData> StageBaseLevel::Location19_StageDatas;
 
 StageBaseLevel::StageBaseLevel()
 {
@@ -23,7 +25,8 @@ StageBaseLevel::~StageBaseLevel()
 
 void StageBaseLevel::LoadAllStageData()
 {
-	GameEngineSerializer LoadSerializer = GameEngineSerializer();
+	{
+		GameEngineSerializer LoadSerializer = GameEngineSerializer();
 
 	GameEngineDirectory Dir;
 	Dir.MoveParentToDirectory("ContentData");
@@ -31,17 +34,48 @@ void StageBaseLevel::LoadAllStageData()
 	Dir.Move("StageData");
 	std::filesystem::path temp = Dir.GetPlusFileName("Location2_ver8").GetFullPath();
 
-	GameEngineFile File(temp);
-	File.LoadBin(LoadSerializer);
+		GameEngineFile File(temp);
+		File.LoadBin(LoadSerializer);
 
-	StageData::ReadAllStageData(LoadSerializer, AllStageDatas);
+		StageData::ReadAllStageData(LoadSerializer, Location2_StageDatas);
+	}
+
+	{
+		GameEngineSerializer LoadSerializer = GameEngineSerializer();
+
+		GameEngineDirectory Dir;
+		Dir.MoveParentToDirectory("ContentData");
+		Dir.Move("ContentData");
+		Dir.Move("StageData");
+		std::filesystem::path temp = Dir.GetPlusFileName("Location11").GetFullPath();
+
+		GameEngineFile File(temp);
+		File.LoadBin(LoadSerializer);
+
+		StageData::ReadAllStageData(LoadSerializer, Location11_StageDatas);
+	}
+
+	{
+		GameEngineSerializer LoadSerializer = GameEngineSerializer();
+
+		GameEngineDirectory Dir;
+		Dir.MoveParentToDirectory("ContentData");
+		Dir.Move("ContentData");
+		Dir.Move("StageData");
+		std::filesystem::path temp = Dir.GetPlusFileName("Location19").GetFullPath();
+
+		GameEngineFile File(temp);
+		File.LoadBin(LoadSerializer);
+
+		StageData::ReadAllStageData(LoadSerializer, Location19_StageDatas);
+	}
 }
 
 void StageBaseLevel::Start()
 {
 	BaseLevel::Start();
 	CreateScene(GetName());
-	if (AllStageDatas.empty())
+	if (Location2_StageDatas.empty())
 	{
 		LoadAllStageData();
 	}

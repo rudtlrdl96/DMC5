@@ -34,7 +34,9 @@ public:
 protected:
 	std::shared_ptr<class BasePlayerActor> MyPlayer = nullptr;
 
-	static std::vector<StageData> AllStageDatas;
+	static std::vector<StageData> Location2_StageDatas;
+	static std::vector<StageData> Location11_StageDatas;
+	static std::vector<StageData> Location19_StageDatas;
 	static void LoadAllStageData();
 	std::shared_ptr<class GameEngineGUIWindow> GUI = nullptr;
 

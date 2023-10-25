@@ -311,6 +311,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Location19_Level.h" />
     <ClInclude Include="Location2_EnemySpawner0.h">
       <SubType>
       </SubType>
@@ -921,6 +922,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Location19_Level.cpp" />
     <ClCompile Include="Location2_EnemySpawner0.cpp">
       <SubType>
       </SubType>
