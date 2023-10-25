@@ -11,7 +11,7 @@
 #include "AttackCollision.h"
 #include "BaseEnemyActor.h"
 #include "NeroItemGlass.h"
-#include "NeroHPUI.h"
+#include "PlayerHPUI.h"
 #include "UI_DTGauge.h"
 #include "FXSystem.h"
 #include "PlayerCamera.h"
@@ -115,7 +115,7 @@ void PlayerActor_Nero::PlayerLoad()
 	
 	Shop = GetLevel()->CreateActor<Nero_ShopUI>();
 	Shop->Off();
-	HUD = GetLevel()->CreateActor<NeroHPUI>();
+	HUD = GetLevel()->CreateActor<PlayerHPUI>();
 	HUD->SetPlayerHP(HP);
 	HUD2 = GetLevel()->CreateActor<NeroItemGlass>();
 	Shop_NeroArmUI::CallBack_AddBreaker = std::bind(&PlayerActor_Nero::AddBreaker, this, std::placeholders::_1);

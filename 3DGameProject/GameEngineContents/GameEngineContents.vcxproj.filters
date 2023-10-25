@@ -352,16 +352,13 @@
       <Filter>Server\03.NetworkObjectBase</Filter>
     </ClInclude>
     <ClInclude Include="UI_HPGaege.h">
-      <Filter>UI\UI_Actor\PlayUI\NeroHPGlass</Filter>
-    </ClInclude>
-    <ClInclude Include="NeroHPUI.h">
-      <Filter>UI\UI_Actor\PlayUI\NeroHPGlass</Filter>
+      <Filter>UI\UI_Actor\PlayUI\PlayerHPGlass</Filter>
     </ClInclude>
     <ClInclude Include="UI_BulletGauge.h">
-      <Filter>UI\UI_Actor\PlayUI\NeroHPGlass</Filter>
+      <Filter>UI\UI_Actor\PlayUI\PlayerHPGlass</Filter>
     </ClInclude>
     <ClInclude Include="UI_DTGauge.h">
-      <Filter>UI\UI_Actor\PlayUI\NeroHPGlass</Filter>
+      <Filter>UI\UI_Actor\PlayUI\PlayerHPGlass</Filter>
     </ClInclude>
     <ClInclude Include="NeroItemGlass.h">
       <Filter>UI\UI_Actor\PlayUI\NeroItemGlass\Glass</Filter>
@@ -513,6 +510,7 @@
     <ClInclude Include="DivinityStatue.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerHPUI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -847,17 +845,14 @@
     <ClCompile Include="NetworkObjectBase.cpp">
       <Filter>Server\03.NetworkObjectBase</Filter>
     </ClCompile>
-    <ClCompile Include="NeroHPUI.cpp">
-      <Filter>UI\UI_Actor\PlayUI\NeroHPGlass</Filter>
-    </ClCompile>
     <ClCompile Include="UI_BulletGauge.cpp">
-      <Filter>UI\UI_Actor\PlayUI\NeroHPGlass</Filter>
+      <Filter>UI\UI_Actor\PlayUI\PlayerHPGlass</Filter>
     </ClCompile>
     <ClCompile Include="UI_DTGauge.cpp">
-      <Filter>UI\UI_Actor\PlayUI\NeroHPGlass</Filter>
+      <Filter>UI\UI_Actor\PlayUI\PlayerHPGlass</Filter>
     </ClCompile>
     <ClCompile Include="UI_HPGaege.cpp">
-      <Filter>UI\UI_Actor\PlayUI\NeroHPGlass</Filter>
+      <Filter>UI\UI_Actor\PlayUI\PlayerHPGlass</Filter>
     </ClCompile>
     <ClCompile Include="NeroItemGlass.cpp">
       <Filter>UI\UI_Actor\PlayUI\NeroItemGlass\Glass</Filter>
@@ -1024,6 +1019,7 @@
     <ClCompile Include="DivinityStatue.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerHPUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
@@ -1254,9 +1250,6 @@
     <Filter Include="Server\03.NetworkObjectBase">
       <UniqueIdentifier>{4b8bf97b-98a1-4c9b-a9c7-b69298c7dfe2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UI\UI_Actor\PlayUI\NeroHPGlass">
-      <UniqueIdentifier>{20445aa9-d6bf-4ce9-957d-7680ffdfc2d7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="UI\UI_Actor\PlayUI\NeroItemGlass">
       <UniqueIdentifier>{bd61c884-8ded-499e-b8bf-553022d642ee}</UniqueIdentifier>
     </Filter>
@@ -1316,6 +1309,9 @@
     </Filter>
     <Filter Include="Actor\Stage\FieldMap\FieldMapObj\StaticObj\L11">
       <UniqueIdentifier>{6a294d2f-e2e8-4095-9864-45ff89a67873}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\PlayUI\PlayerHPGlass">
+      <UniqueIdentifier>{20445aa9-d6bf-4ce9-957d-7680ffdfc2d7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

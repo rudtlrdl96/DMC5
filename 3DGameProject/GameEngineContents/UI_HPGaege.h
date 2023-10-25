@@ -28,8 +28,8 @@ protected:
 
 private:
 	void ClipHPBar(float _Delta);
-	std::shared_ptr<class GameEngineUIRenderer> NeroHPUI_Front = nullptr;
-	std::shared_ptr<class GameEngineUIRenderer> NeroHPUI_Back = nullptr;
+	std::shared_ptr<class GameEngineUIRenderer> PlayerHPUI_Front = nullptr;
+	std::shared_ptr<class GameEngineUIRenderer> PlayerHPUI_Back = nullptr;
 	std::shared_ptr<class GameEngineUIRenderer> NeroHpAni = nullptr;
 	float4 HPAniPos = { -104.0f,404.0f,30.0f };
 	int MaxHP = 10000;

@@ -458,7 +458,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="NeroHPUI.h">
+    <ClInclude Include="PlayerHPUI.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -1051,7 +1051,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="NeroHPUI.cpp">
+    <ClCompile Include="PlayerHPUI.cpp">
       <SubType>
       </SubType>
     </ClCompile>

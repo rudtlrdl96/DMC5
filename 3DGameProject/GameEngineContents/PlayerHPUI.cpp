@@ -1,5 +1,5 @@
 #include "PrecompileHeader.h"
-#include "NeroHPUI.h"
+#include "PlayerHPUI.h"
 
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
@@ -9,23 +9,24 @@
 #include "UI_DTGauge.h"
 #include "UI_BulletGauge.h"
 #include "UIEffectRenderer.h"
-int NeroHPUI::RedOrbValue = 0;;
-NeroHPUI::NeroHPUI() 
+#include "PlayerHPUI.h"
+int PlayerHPUI::RedOrbValue = 0;;
+PlayerHPUI::PlayerHPUI() 
 {
 }
 
-NeroHPUI::~NeroHPUI() 
+PlayerHPUI::~PlayerHPUI() 
 {
 }
-void NeroHPUI::SetPlayerHP(int _HP)
+void PlayerHPUI::SetPlayerHP(int _HP)
 {
 	UI_HPGaegeBar->UpdateHPBar(_HP);
 }
-void NeroHPUI::ShootBullet()
+void PlayerHPUI::ShootBullet()
 {
 	UI_BulletGaugeBar->SetBullet();
 }
-bool NeroHPUI::IsChargeBullet()
+bool PlayerHPUI::IsChargeBullet()
 {
 	if (UI_BulletGaugeBar->GetBullet() >= 1)
 	{
@@ -36,13 +37,33 @@ bool NeroHPUI::IsChargeBullet()
 		return false;
 	}
 }
+void PlayerHPUI::SetVergilUI()
+{
+	IsNero = false;
+}
+void PlayerHPUI::SetNeroUI()
+{
+
+	NeroUI_Hud1 = UIFBXActorBase::CreateNoneLightFBX(NeroUI_Hud1, { -711.0f,303.0f,20.0f }, { 0.7f,0.7f,0.7f }, { 30.0f,-90.0f,-30.0f }, "NeroEx01.FBX");
+	NeroUI_Hud2 = UIFBXActorBase::CreateNoneLightFBX(NeroUI_Hud2, { -708.0f,334.0f,0.0f }, { 0.7f,0.7f,0.7f }, { 30.0f,-90.0f,-30.0f }, "NeroEx02.FBX");
+	NeroUI_Hud3 = UIFBXActorBase::CreateNoneLightFBX(NeroUI_Hud3, { -703.0f,365.0f,0.0f }, { 0.7f,0.7f,0.7f }, { 30.0f,-90.0f,-30.0f }, "NeroEx03.FBX");
+
+	std::shared_ptr<GameEngineUIRenderer> NeroUI_Back = CreateComponent<GameEngineUIRenderer>(0);
+	NeroUI_Back->SetTexture("HudBack.png");
+	NeroUI_Back->GetTransform()->SetLocalScale({ 97.0f,131.0f,0.0f });
+	NeroUI_Back->GetTransform()->SetLocalPosition({ -696.0f,334.0f,40.0f });
+	UI_BulletGaugeBar = GetLevel()->CreateActor<UI_BulletGauge>();
+	UI_BulletGaugeBar->GetTransform()->SetParent(GetTransform());
+	CreatFireEffect();
+	IsNero = true;
+}
 /*
 후드,후드불
 HP바 1줄
 변신게이지
 총알
 */
-void NeroHPUI::Start()
+void PlayerHPUI::Start()
 {
 	float Ratio = GameEngineWindow::GetScreenSize().y / 900;
 	GetTransform()->SetLocalScale(float4::ONE * Ratio);
@@ -79,14 +100,7 @@ void NeroHPUI::Start()
 
 	}
 //	NeroUI_HPGlass= UIFBXActorBase::CreateUIFBX(NeroUI_HPGlass, { -535.0f,273.0f,172.0f }, { 0.6f,0.6f,0.6f }, { -90.0f,0.0f,0.0f }, "Nero_HPGlass.FBX","FBX_ALPHA");
-	NeroUI_Hud1 = UIFBXActorBase::CreateNoneLightFBX(NeroUI_Hud1, { -711.0f,303.0f,20.0f }, { 0.7f,0.7f,0.7f }, { 30.0f,-90.0f,-30.0f }, "NeroEx01.FBX");
-	NeroUI_Hud2 = UIFBXActorBase::CreateNoneLightFBX(NeroUI_Hud2, { -708.0f,334.0f,0.0f }, { 0.7f,0.7f,0.7f }, { 30.0f,-90.0f,-30.0f }, "NeroEx02.FBX");
-	NeroUI_Hud3 = UIFBXActorBase::CreateNoneLightFBX(NeroUI_Hud3, { -703.0f,365.0f,0.0f }, { 0.7f,0.7f,0.7f }, { 30.0f,-90.0f,-30.0f }, "NeroEx03.FBX");
 
-	std::shared_ptr<GameEngineUIRenderer> NeroUI_Back = CreateComponent<GameEngineUIRenderer>(0);
-	NeroUI_Back->SetTexture("HudBack.png");
-	NeroUI_Back->GetTransform()->SetLocalScale({ 97.0f,131.0f,0.0f });
-	NeroUI_Back->GetTransform()->SetLocalPosition({ -696.0f,334.0f,40.0f });
 
 	RedOrbRender = CreateComponent<GameEngineUIRenderer>(0);
 	RedOrbRender->SetTexture("RedOrb.png");
@@ -104,19 +118,20 @@ void NeroHPUI::Start()
 	UI_HPGaegeBar->GetTransform()->SetParent(GetTransform());
 	UI_DTGaugeBar = GetLevel()->CreateActor<UI_DTGauge>();
 	UI_DTGaugeBar->GetTransform()->SetParent(GetTransform());
-	UI_BulletGaugeBar = GetLevel()->CreateActor<UI_BulletGauge>();
-	UI_BulletGaugeBar->GetTransform()->SetParent(GetTransform());
 
-	CreatFireEffect();
+
 }
 
-void NeroHPUI::Update(float _DeltaTime)
+void PlayerHPUI::Update(float _DeltaTime)
 {
-	SetExceed();
+	if (IsNero == true)
+	{
+		SetExceed();
+	}
 	RedOrbFont->SetText(std::to_string(RedOrbValue));
 }
 
-void NeroHPUI::CreatFireEffect()
+void PlayerHPUI::CreatFireEffect()
 {
 	ExFire_Effect1 = CreateComponent<GameEngineUIRenderer>(3);
 	ExFire_Effect1->SetTexture("NullTexture.png");
@@ -146,7 +161,7 @@ void NeroHPUI::CreatFireEffect()
 	ExFire_Effect3->Off();
 }
 
-void NeroHPUI::SetExceed()
+void PlayerHPUI::SetExceed()
 {
 	if (ExceedCount == 0)
 	{

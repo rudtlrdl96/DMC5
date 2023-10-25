@@ -280,7 +280,7 @@ private:
 	void UseExceed(int _Level = 1);
 
 	int DamageCalculate(int _Damage, bool _IsSkill = false);
-	std::shared_ptr<class NeroHPUI> HUD = nullptr;
+	std::shared_ptr<class PlayerHPUI> HUD = nullptr;
 	std::shared_ptr<class NeroItemGlass> HUD2 = nullptr;
 
 };

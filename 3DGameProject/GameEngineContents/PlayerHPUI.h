@@ -1,20 +1,18 @@
 #pragma once
 #include "UIFBXActorBase.h"
 // Ό³Έν :
-class NeroHPUI : public UIFBXActorBase
+class PlayerHPUI : public UIFBXActorBase
 {
 public:
-
-public:
 	// constrcuter destructer
-	NeroHPUI();
-	~NeroHPUI();
+	PlayerHPUI();
+	~PlayerHPUI();
 
 	// delete Function
-	NeroHPUI(const NeroHPUI& _Other) = delete;
-	NeroHPUI(NeroHPUI&& _Other) noexcept = delete;
-	NeroHPUI& operator=(const NeroHPUI& _Other) = delete;
-	NeroHPUI& operator=(NeroHPUI&& _Other) noexcept = delete;
+	PlayerHPUI(const PlayerHPUI& _Other) = delete;
+	PlayerHPUI(PlayerHPUI&& _Other) noexcept = delete;
+	PlayerHPUI& operator=(const PlayerHPUI& _Other) = delete;
+	PlayerHPUI& operator=(PlayerHPUI&& _Other) noexcept = delete;
 	void SetPlayerHP(int _HP);
 	void ShootBullet();
 	void SetExceedCount(int _Ex)
@@ -26,6 +24,8 @@ public:
 	{
 		return UI_DTGaugeBar;
 	}
+	void SetVergilUI();
+	void SetNeroUI();
 	static void AddRedOrb(int _Value)
 	{
 		RedOrbValue += _Value;
@@ -56,5 +56,6 @@ private:
 
 	int ExceedCount = 0;
 	static int RedOrbValue;
+	bool IsNero = false;
 };
 
