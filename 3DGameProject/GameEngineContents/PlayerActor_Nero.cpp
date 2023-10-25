@@ -380,8 +380,13 @@ void PlayerActor_Nero::PlayerLoad()
 			.Update = [=](float _DeltaTime) {
 				if (false == FloorCheck())
 				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
-					return;
+					SetFloorPos();
+
+					if (false == FloorCheck())
+					{
+						ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+						return;
+					}
 				}
 				if (true == Input_SpecialCheck()) { return; }
 				if (true == Input_JumpCheck()) { return; }
@@ -423,8 +428,13 @@ void PlayerActor_Nero::PlayerLoad()
 
 				if (false == FloorCheck())
 				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
-					return;
+					SetFloorPos();
+
+					if (false == FloorCheck())
+					{
+						ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+						return;
+					}
 				}
 				if (true == Input_SpecialCheck()) { return; }
 				if (true == Input_JumpCheck()) { return; }
@@ -465,8 +475,13 @@ void PlayerActor_Nero::PlayerLoad()
 			.Update = [=](float _DeltaTime) {
 				if (false == FloorCheck())
 				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
-					return;
+					SetFloorPos();
+
+					if (false == FloorCheck())
+					{
+						ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+						return;
+					}
 				}
 				if (true == Input_SpecialCheck()) { return; }
 				if (true == Input_JumpCheck()) { return; }
@@ -495,8 +510,13 @@ void PlayerActor_Nero::PlayerLoad()
 			.Update = [=](float _DeltaTime) {
 				if (false == FloorCheck())
 				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
-					return;
+					SetFloorPos();
+
+					if (false == FloorCheck())
+					{
+						ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+						return;
+					}
 				}
 				if (true == Input_SpecialCheck()) { return; }
 				if (true == Input_JumpCheck()) { return; }
@@ -531,8 +551,13 @@ void PlayerActor_Nero::PlayerLoad()
 			.Update = [=](float _DeltaTime) {
 				if (false == FloorCheck())
 				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
-					return;
+					SetFloorPos();
+
+					if (false == FloorCheck())
+					{
+						ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+						return;
+					}
 				}
 				if (true == Input_SpecialCheck()) { return; }
 				if (true == Input_JumpCheck()) { return; }
