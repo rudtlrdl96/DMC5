@@ -58,17 +58,16 @@ void ThreadLoadingLevel::Start()
 		PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Character\\Player\\Nero\\Wire", { ".fbx" });
 		PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Character\\Player\\Vergil\\Mesh", { ".fbx" });
 		PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Character\\Player\\Vergil\\MirageBlade", { ".fbx" });
-
-		PushLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character\\Player\\Nero\\Mesh\\pl0000_03_atos.texout.png");
-		PushLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character\\Player\\Nero\\Mesh\\pl0010_03_atos.texout.png");
-		PushLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character\\Player\\Vergil\\Mesh\\pl0300_03_atos.texout.png");
+		PushLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character\\Player\\Nero\\Mesh\\Low\\pl0000_03_atos.texout.png");
+		PushLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character\\Player\\Nero\\Mesh\\Low\\pl0010_03_atos.texout.png");
+		PushLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character\\Player\\Vergil\\Mesh\\Low\\pl0300_03_atos.texout.png");
 		PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXAnimation>("Character\\Player\\Nero\\Animation", { ".fbx" });
 		PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXAnimation>("Character\\Player\\Nero\\Overture\\Animation", { ".fbx" });
 		PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXAnimation>("Character\\Player\\Vergil\\Animation", { ".fbx" });
 
 		PushAllLoadCallBack<NetworkTestLevel, GameEngineSound>("Sound", { ".wav", ".ogg"});
 	}
-
+	
 	//// ³×·Î
 	//{
 	//	PushAllLoadCallBack<NetworkTestLevel, FXData>("Effect\\Nero", { ".effect" });
@@ -124,7 +123,8 @@ void ThreadLoadingLevel::Update(float _DeltaTime)
 	if (LoadWorkCount == ExcuteWorkCount)
 	{
 		GameEngineCore::ChangeLevel(NextLevelName);
-		NetworkGUI::GetInst()->PrintLog("Thread Load Done", float4{ 0.f, 1.f, 1.f, 1.f });
+		int ExcuteSize = static_cast<int>(ExcuteWorkCount);
+		NetworkGUI::GetInst()->PrintLog("Thread Load Done : " + GameEngineString::ToString(ExcuteSize), float4{0.f, 1.f, 1.f, 1.f});
 		return;
 	}
 

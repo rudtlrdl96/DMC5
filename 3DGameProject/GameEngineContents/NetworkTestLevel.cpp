@@ -60,7 +60,7 @@ void NetworkTestLevel::LevelChangeStart()
 	InitPool();
 
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
-	Enemy = NetworkManager::CreateNetworkActor<Enemy_HellCaina>(this);
+	//Enemy = NetworkManager::CreateNetworkActor<Enemy_HellCaina>(this);
 }
 
 
@@ -84,11 +84,11 @@ void NetworkTestLevel::InitPool()
 	Poolable<Player_MirageBlade>::CreatePool(this, static_cast<int>(ActorOrder::Player), 8);
 
 	//Monster TODO
-	Poolable<Enemy_HellCaina>::CreatePool(this, static_cast<int>(ActorOrder::Enemy), 1,
-		[](std::shared_ptr<Enemy_HellCaina> _ActorPtr)
-	{
-		_ActorPtr->SetControll(NetControllType::PassiveControll);
-	});
+	//Poolable<Enemy_HellCaina>::CreatePool(this, static_cast<int>(ActorOrder::Enemy), 1,
+	//	[](std::shared_ptr<Enemy_HellCaina> _ActorPtr)
+	//{
+	//	_ActorPtr->SetControll(NetControllType::PassiveControll);
+	//});
 }
 
 
