@@ -189,7 +189,7 @@ void BasePlayerActor::Start()
 	PhysXCapsule = CreateComponent<PhysXCapsuleComponent>();
 	PhysXCapsule->SetPhysxMaterial(0.1f, 0.1f, 0.0f);
 	PhysXCapsule->IsMainPlayerCapsule();
-	PhysXCapsule->CreatePhysXActors({ 100, 100, 150 });
+	PhysXCapsule->CreatePhysXActors({ 75, 75, 150 });
 	PhysXCapsule->GetDynamic()->setMass(5.0f);
 	PhysXCapsule->GetDynamic()->setLinearDamping(2.0f);
 	BindPhysicsWithNet(PhysXCapsule);
@@ -364,16 +364,16 @@ bool BasePlayerActor::FloorCheck()
 	float4 Point;
 	
 	return GetLevel()->RayCast(GetTransform()->GetWorldPosition(), float4::DOWN, Point, 100.0f)
-		|| GetLevel()->RayCast(GetTransform()->GetWorldPosition() + (GetTransform()->GetWorldForwardVector() * 75), float4::DOWN, Point, 100.0f)
-		|| GetLevel()->RayCast(GetTransform()->GetWorldPosition() + (GetTransform()->GetWorldLeftVector() * 75), float4::DOWN, Point, 100.0f)
-		|| GetLevel()->RayCast(GetTransform()->GetWorldPosition() + (GetTransform()->GetWorldRightVector() * 75), float4::DOWN, Point, 100.0f)
-		|| GetLevel()->RayCast(GetTransform()->GetWorldPosition() + (GetTransform()->GetWorldBackVector() * 75), float4::DOWN, Point, 100.0f);
+		|| GetLevel()->RayCast(GetTransform()->GetWorldPosition() + (GetTransform()->GetWorldForwardVector() * 50), float4::DOWN, Point, 100.0f)
+		|| GetLevel()->RayCast(GetTransform()->GetWorldPosition() + (GetTransform()->GetWorldLeftVector() * 50), float4::DOWN, Point, 100.0f)
+		|| GetLevel()->RayCast(GetTransform()->GetWorldPosition() + (GetTransform()->GetWorldRightVector() * 50), float4::DOWN, Point, 100.0f)
+		|| GetLevel()->RayCast(GetTransform()->GetWorldPosition() + (GetTransform()->GetWorldBackVector() * 50), float4::DOWN, Point, 100.0f);
 }
 
 void BasePlayerActor::SetFloorPos()
 {
 	float4 Point;
-	if (false == GetLevel()->RayCast(GetTransform()->GetWorldPosition(), float4::DOWN, Point, 100.0f)) { return; }
+	if (false == GetLevel()->RayCast(GetTransform()->GetWorldPosition(), float4::DOWN, Point, 120.0f)) { return; }
 
 	Point += float4::UP * 75;
 	SetWorldPosition(Point);

@@ -427,19 +427,19 @@ void ContentsCore::ContentsResourcesCreate()
 
 void ContentsCore::CreateContentsKey()
 {
-	if (false == GameEngineInput::IsKey("SelectLevel_01"))
-	{
-		GameEngineInput::CreateKey("SelectLevel_01", '1');
-		GameEngineInput::CreateKey("SelectLevel_02", '2');
-		GameEngineInput::CreateKey("SelectLevel_03", '3');
-		GameEngineInput::CreateKey("SelectLevel_04", '4');
-		GameEngineInput::CreateKey("SelectLevel_05", '5');
-		GameEngineInput::CreateKey("SelectLevel_06", '6');
-		GameEngineInput::CreateKey("SelectLevel_07", '7');
-		GameEngineInput::CreateKey("SelectLevel_08", '8');
-		GameEngineInput::CreateKey("SelectLevel_09", '9');
-		GameEngineInput::CreateKey("ReturnToMainLevel", '0');
-	}
+	//if (false == GameEngineInput::IsKey("SelectLevel_01"))
+	//{
+	//	GameEngineInput::CreateKey("SelectLevel_01", '1');
+	//	GameEngineInput::CreateKey("SelectLevel_02", '2');
+	//	GameEngineInput::CreateKey("SelectLevel_03", '3');
+	//	GameEngineInput::CreateKey("SelectLevel_04", '4');
+	//	GameEngineInput::CreateKey("SelectLevel_05", '5');
+	//	GameEngineInput::CreateKey("SelectLevel_06", '6');
+	//	GameEngineInput::CreateKey("SelectLevel_07", '7');
+	//	GameEngineInput::CreateKey("SelectLevel_08", '8');
+	//	GameEngineInput::CreateKey("SelectLevel_09", '9');
+	//	GameEngineInput::CreateKey("ReturnToMainLevel", '0');
+	//}
 	if (false == GameEngineInput::IsKey("UIDEBUGMODE"))
 	{
 		GameEngineInput::CreateKey("UIDEBUGMODE", 'U');

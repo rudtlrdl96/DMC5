@@ -1,6 +1,6 @@
 #include "PrecompileHeader.h"
 #include "PlayUITestLevel.h"
-#include "NeroHPUI.h"
+#include "PlayerHPUI.h"
 #include "NeroItemGlass.h"
 #include <GameEngineCore/GameEngineFBXMesh.h>
 #include <GameEngineCore/GameEngineFont.h>

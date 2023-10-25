@@ -14,6 +14,8 @@
 
 void PlayerActor_Vergil::NetLoad()
 {
+	if (true == LoadCheck) { return; }
+
 	// Effect »ý¼º
 	{
 		EffectSystem = CreateComponent<FXSystem>();

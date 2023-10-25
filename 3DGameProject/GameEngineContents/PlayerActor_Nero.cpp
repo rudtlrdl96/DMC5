@@ -11,7 +11,7 @@
 #include "AttackCollision.h"
 #include "BaseEnemyActor.h"
 #include "NeroItemGlass.h"
-#include "NeroHPUI.h"
+#include "PlayerHPUI.h"
 #include "UI_DTGauge.h"
 #include "FXSystem.h"
 #include "PlayerCamera.h"
@@ -108,13 +108,14 @@ void PlayerActor_Nero::Start()
 
 void PlayerActor_Nero::PlayerLoad()
 {
+	if (true == LoadCheck) { return; }
 	BGMPlayer::SetCharater(PlayerType::Nero);
 	BreakerList.clear();
 	BreakerList.push_back(DevilBreaker::None);
 	
 	Shop = GetLevel()->CreateActor<Nero_ShopUI>();
 	Shop->Off();
-	HUD = GetLevel()->CreateActor<NeroHPUI>();
+	HUD = GetLevel()->CreateActor<PlayerHPUI>();
 	HUD->SetPlayerHP(HP);
 	HUD2 = GetLevel()->CreateActor<NeroItemGlass>();
 	Shop_NeroArmUI::CallBack_AddBreaker = std::bind(&PlayerActor_Nero::AddBreaker, this, std::placeholders::_1);
@@ -379,8 +380,13 @@ void PlayerActor_Nero::PlayerLoad()
 			.Update = [=](float _DeltaTime) {
 				if (false == FloorCheck())
 				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
-					return;
+					SetFloorPos();
+
+					if (false == FloorCheck())
+					{
+						ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+						return;
+					}
 				}
 				if (true == Input_SpecialCheck()) { return; }
 				if (true == Input_JumpCheck()) { return; }
@@ -422,8 +428,13 @@ void PlayerActor_Nero::PlayerLoad()
 
 				if (false == FloorCheck())
 				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
-					return;
+					SetFloorPos();
+
+					if (false == FloorCheck())
+					{
+						ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+						return;
+					}
 				}
 				if (true == Input_SpecialCheck()) { return; }
 				if (true == Input_JumpCheck()) { return; }
@@ -464,8 +475,13 @@ void PlayerActor_Nero::PlayerLoad()
 			.Update = [=](float _DeltaTime) {
 				if (false == FloorCheck())
 				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
-					return;
+					SetFloorPos();
+
+					if (false == FloorCheck())
+					{
+						ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+						return;
+					}
 				}
 				if (true == Input_SpecialCheck()) { return; }
 				if (true == Input_JumpCheck()) { return; }
@@ -494,8 +510,13 @@ void PlayerActor_Nero::PlayerLoad()
 			.Update = [=](float _DeltaTime) {
 				if (false == FloorCheck())
 				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
-					return;
+					SetFloorPos();
+
+					if (false == FloorCheck())
+					{
+						ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+						return;
+					}
 				}
 				if (true == Input_SpecialCheck()) { return; }
 				if (true == Input_JumpCheck()) { return; }
@@ -530,8 +551,13 @@ void PlayerActor_Nero::PlayerLoad()
 			.Update = [=](float _DeltaTime) {
 				if (false == FloorCheck())
 				{
-					ChangeState(FSM_State_Nero::Nero_Jump_Fly);
-					return;
+					SetFloorPos();
+
+					if (false == FloorCheck())
+					{
+						ChangeState(FSM_State_Nero::Nero_Jump_Fly);
+						return;
+					}
 				}
 				if (true == Input_SpecialCheck()) { return; }
 				if (true == Input_JumpCheck()) { return; }
@@ -3665,18 +3691,6 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 		}
 
 		ItemColCheck();
-		if (GameEngineInput::IsDown("SelectLevel_01"))
-		{
-			AddBreaker(DevilBreaker::Overture);
-		}
-		if (GameEngineInput::IsDown("SelectLevel_02"))
-		{
-			AddBreaker(DevilBreaker::Gerbera);
-		}
-		if (GameEngineInput::IsDown("SelectLevel_03"))
-		{
-			AddBreaker(DevilBreaker::BusterArm);
-		}
 	}
 }
 

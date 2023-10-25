@@ -17,10 +17,8 @@ public:
 
 protected:
 	void Start() override;
-
-	std::vector<std::weak_ptr<class BaseEnemyActor>> Monsters;
-	size_t MonsterAliveCount = 0;
 	void DestroyMonster();
+	size_t MonsterAliveCount = 0;
 
 private:
 	std::vector<float4> EnemyPositions = std::vector<float4>();

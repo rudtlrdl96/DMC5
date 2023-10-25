@@ -11,7 +11,7 @@
 #include "AttackCollision.h"
 #include "BaseEnemyActor.h"
 #include "NeroItemGlass.h"
-#include "NeroHPUI.h"
+#include "PlayerHPUI.h"
 #include "FXSystem.h"
 #include "PlayerCamera.h"
 #include "Player_Snatch.h"
@@ -21,6 +21,7 @@
 
 void PlayerActor_Nero::NetLoad()
 {
+	if (true == LoadCheck) { return; }
 	// Effect »ý¼º
 	{
 		GameEngineDirectory NewDir;

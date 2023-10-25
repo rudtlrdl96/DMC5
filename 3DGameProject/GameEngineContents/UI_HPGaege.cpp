@@ -37,14 +37,14 @@ void UI_HPGaege::Start()
 	NeroHpAni->GetTransform()->SetLocalRotation({ 0.0f,0.0f,90.0f });
 	NeroHpAni->ChangeAnimation("HPANI");
 
-	NeroHPUI_Front = CreateComponent<GameEngineUIRenderer>(2);
-	NeroHPUI_Front->SetTexture("hpbar.png");
-	NeroHPUI_Front->GetTransform()->SetLocalScale({ 492.0f,8.0f,0.0f });
-	NeroHPUI_Front->GetTransform()->SetLocalPosition({ -350.0f,404.8f,0.0f });
-	NeroHPUI_Back = CreateComponent<GameEngineUIRenderer>(1);
-	NeroHPUI_Back->SetTexture("hpHitbar.png");
-	NeroHPUI_Back->GetTransform()->SetLocalScale({ 492.0f,8.0f,0.0f });
-	NeroHPUI_Back->GetTransform()->SetLocalPosition({ -350.0f,404.8f,0.0f });
+	PlayerHPUI_Front = CreateComponent<GameEngineUIRenderer>(2);
+	PlayerHPUI_Front->SetTexture("hpbar.png");
+	PlayerHPUI_Front->GetTransform()->SetLocalScale({ 492.0f,8.0f,0.0f });
+	PlayerHPUI_Front->GetTransform()->SetLocalPosition({ -350.0f,404.8f,0.0f });
+	PlayerHPUI_Back = CreateComponent<GameEngineUIRenderer>(1);
+	PlayerHPUI_Back->SetTexture("hpHitbar.png");
+	PlayerHPUI_Back->GetTransform()->SetLocalScale({ 492.0f,8.0f,0.0f });
+	PlayerHPUI_Back->GetTransform()->SetLocalPosition({ -350.0f,404.8f,0.0f });
 	for (int i = 0; i < 10; i++)
 	{
 		UIFBXActorBase::CreateGaugeBar({ -570.0f + i * 49.0f , 405.0f , -15.0f },{ 0.7f,0.6f,0.6f }, { 90.0f,0.0f,0.0f }, "HpGauge.FBX");
@@ -60,7 +60,7 @@ void UI_HPGaege::Update(float _DeltaTime)
 
 void UI_HPGaege::ClipHPBar(float _Delta)
 {
-	NeroHPUI_Front->ImageClippingX(static_cast<float>(CurHp) / static_cast<float>(MaxHP), ClipXDir::Left);
+	PlayerHPUI_Front->ImageClippingX(static_cast<float>(CurHp) / static_cast<float>(MaxHP), ClipXDir::Left);
 	float Cal = static_cast<float>(CurHp) / static_cast<float>(MaxHP);
 	float XPos = -104.0f - 492.0f * (1.0f - Cal);
 	NeroHpAni->GetTransform()->SetLocalPosition({ XPos,HPAniPos.y,0.0f });
@@ -68,7 +68,7 @@ void UI_HPGaege::ClipHPBar(float _Delta)
 	{
 		Ratio += _Delta;
 		RedHp = static_cast<int>(GameEngineMath::LerpLimit(static_cast<float>(PrevHp), static_cast<float>(CurHp), _Delta * Ratio * 30.0f));
-		NeroHPUI_Back->ImageClippingX(static_cast<float>(RedHp) / static_cast<float>(MaxHP), ClipXDir::Left);
+		PlayerHPUI_Back->ImageClippingX(static_cast<float>(RedHp) / static_cast<float>(MaxHP), ClipXDir::Left);
 	}
 	else
 	{
