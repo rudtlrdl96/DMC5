@@ -45,7 +45,10 @@ void EnemySpawner::DestroyMonster()
 
 	GetLevel()->TimeEvent.AddEvent(2.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 		{
-			BasePlayerActor::GetMainPlayer()->SetCutScene(CutScenePosStart, CutScenePosEnd, CutSceneRotStart, CutSceneRotEnd, 5.0f);
+			if (CutScenePosStart != float4::ZERO)
+			{
+				BasePlayerActor::GetMainPlayer()->SetCutScene(CutScenePosStart, CutScenePosEnd, CutSceneRotStart, CutSceneRotEnd, 5.0f);
+			}
 		});
 
 	GetLevel()->TimeEvent.AddEvent(3.0f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)

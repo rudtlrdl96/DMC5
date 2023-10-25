@@ -4,10 +4,14 @@
 #include "StageBaseLevel.h"
 #include "BGMPlayer.h"
 #include "NetworkManager.h"
-
+#include "BasePlayerActor.h"
 Location2_EnemySpawner1::Location2_EnemySpawner1()
 {
+	CutScenePosStart = { 2320, 1090, -8865 };
+	CutScenePosEnd = { 2618, 821, -9430 };
 
+	CutSceneRotStart = { 15, 137, 0 };
+	CutSceneRotEnd = { 3, 153, 0 };
 }
 
 Location2_EnemySpawner1::~Location2_EnemySpawner1()
@@ -53,9 +57,13 @@ void Location2_EnemySpawner1::Start()
 
 	Event = [this]()
 	{
-		BGMPlayer::SetBattleBGM();
 		GameEngineLevel* Level = GetLevel();
-		Level->DynamicThis<StageBaseLevel>()->RedSealWallOn();
+		BasePlayerActor::GetMainPlayer()->SetCutScene({ 2842, 1011, -8469 }, { 3128, 1283, -10125 }, { 28, 41, 0 }, { 33, 28, 0 }, 6.0f);
+		Level->TimeEvent.AddEvent(1.0f, [=](GameEngineTimeEvent::TimeEvent& Event, GameEngineTimeEvent* Manager)
+			{
+				Level->DynamicThis<StageBaseLevel>()->RedSealWallOn();
+			});
+		BGMPlayer::SetBattleBGM();
 		MonsterAliveCount = 2;
 		NetworkObjectBase::PushReservedDestroyCallback(Net_ActorType::HellCaina, std::bind(&EnemySpawner::DestroyMonster, this));
 
@@ -69,7 +77,7 @@ void Location2_EnemySpawner1::Start()
 
 			for (size_t i = 0; i < 3; ++i)
 			{
-				Level->TimeEvent.AddEvent(i * 0.3f, [=](GameEngineTimeEvent::TimeEvent& Event, GameEngineTimeEvent* Manager)
+				Level->TimeEvent.AddEvent(i * 0.3f + 2.0f, [=](GameEngineTimeEvent::TimeEvent& Event, GameEngineTimeEvent* Manager)
 				{
 					std::shared_ptr<Enemy_HellCaina> Enemy = Poolable<Enemy_HellCaina>::PopFromPool(Level, static_cast<int>(ActorOrder::Enemy));
 					Enemy->GetPhysXComponent()->SetWorldPosition(EnemyPos[i]);
