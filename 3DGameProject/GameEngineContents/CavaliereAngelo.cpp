@@ -930,12 +930,12 @@ void CavaliereAngelo::EnemyCreateFSM()
 
 		if (PlayerXPos >= -34650.0f)
 		{
-			PhysXCapsule->SetWorldPosition({ -36800, 2050, -365 });
+			PhysXCapsule->SetWorldPosition({ -36500, 1950, -365 });
 			PhysXCapsule->SetWorldRotation({ 0.0f, 90.0f, 0.0f });
 		}
 		else
 		{
-			PhysXCapsule->SetWorldPosition({ -32500, 2050, -370 });
+			PhysXCapsule->SetWorldPosition({ -32200, 1950, -370 });
 			PhysXCapsule->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
 		}
 
@@ -977,12 +977,12 @@ void CavaliereAngelo::EnemyCreateFSM()
 
 		if (PlayerXPos >= -34650.0f)
 		{
-			PhysXCapsule->SetWorldPosition({ -36800, 2050, -365 });
+			PhysXCapsule->SetWorldPosition({ -36500, 1950, -365 });
 			PhysXCapsule->SetWorldRotation({ 0.0f, 90.0f, 0.0f });
 		}
 		else
 		{
-			PhysXCapsule->SetWorldPosition({ -32500, 2050, -370 });
+			PhysXCapsule->SetWorldPosition({ -32200, 1950, -370 });
 			PhysXCapsule->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
 		}
 		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Collider_To_Dengeki);
