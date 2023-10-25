@@ -22,6 +22,7 @@
 #include "ElectronicBillboard.h"
 #include "illminary.h"
 #include "DivinityStatue.h"
+#include "Item_RedOrbLump.h"
 
 FieldMapObject::FieldMapObject()
 {
@@ -105,6 +106,9 @@ std::shared_ptr<FieldMapObject> FieldMapObject::CreateFieldMapObj(GameEngineLeve
 		break;
 	case FieldMapObjType::DivinityStatue:
 		Result = _Level->CreateActor<DivinityStatue>();
+		break;
+	case FieldMapObjType::Item_RedOrbLump:
+		Result = _Level->CreateActor<Item_RedOrbLump>();
 		break;
 	default:
 		MsgAssert("¹Ì±¸Çö");

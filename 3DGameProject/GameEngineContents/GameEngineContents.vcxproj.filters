@@ -513,6 +513,9 @@
     <ClInclude Include="PlayerHPUI.h">
       <Filter>UI\UI_Actor\PlayUI\PlayerHPGlass</Filter>
     </ClInclude>
+    <ClInclude Include="Item_RedOrbLump.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\ItemObj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -1023,6 +1026,9 @@
     </ClCompile>
     <ClCompile Include="PlayerHPUI.cpp">
       <Filter>UI\UI_Actor\PlayUI\PlayerHPGlass</Filter>
+    </ClCompile>
+    <ClCompile Include="Item_RedOrbLump.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\ItemObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

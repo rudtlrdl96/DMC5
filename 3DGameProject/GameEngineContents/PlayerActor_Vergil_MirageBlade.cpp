@@ -25,22 +25,22 @@ void PlayerActor_Vergil::CreateMirageBlade()
 
 	},
 	.Update = [=](float _DeltaTime) {
-		if (true == Controller->GetIsGunCharge())
+		if (true == Controller->GetIsGunCharge() && true == IsSpiralBlade)
 		{
 			FSM_MirageBlade.ChangeState(FSM_State_MirageBlade::MirageBlade_Spiral);
 			return;
 		}
-		//if (true == Controller->GetIsBackFrontGun() && nullptr != LockOnEnemyTransform)
-		//{
-		//	FSM_MirageBlade.ChangeState(FSM_State_MirageBlade::MirageBlade_HeavyRain);
-		//	return;
-		//}
-		if (true == Controller->GetIsFrontGun() && nullptr != LockOnEnemyTransform)
+		if (true == Controller->GetIsBackFrontGun() && nullptr != LockOnEnemyTransform && true == IsHeavyRainBlade)
+		{
+			FSM_MirageBlade.ChangeState(FSM_State_MirageBlade::MirageBlade_HeavyRain);
+			return;
+		}
+		if (true == Controller->GetIsFrontGun() && nullptr != LockOnEnemyTransform && true == IsLesteringBlade)
 		{
 			FSM_MirageBlade.ChangeState(FSM_State_MirageBlade::MirageBlade_Blistering);
 			return;
 		}
-		if (true == Controller->GetIsBackGun() && nullptr != LockOnEnemyTransform)
+		if (true == Controller->GetIsBackGun() && nullptr != LockOnEnemyTransform && true == IsStormBlade)
 		{
 			FSM_MirageBlade.ChangeState(FSM_State_MirageBlade::MirageBlade_Storm);
 			return;
@@ -358,6 +358,7 @@ void PlayerActor_Vergil::CreateMirageBlade()
 
 	FSM_MirageBlade.CreateState({ .StateValue = FSM_State_MirageBlade::MirageBlade_HeavyRain,
 	.Start = [=] {
+		Sound.Play("Mirage_", 3);
 		IsDelay = false;
 		float4 EnemyPos = LockOnEnemyTransform->GetWorldPosition();
 		for (int i = 0; i < 8; i++)
@@ -375,13 +376,14 @@ void PlayerActor_Vergil::CreateMirageBlade()
 		}
 		if (Controller->GetIsGunUp())
 		{
+			Sound.Play("Mirage_", 0);
 			for (int i = 0; i < 8; i++)
 			{
 				TimeEvent.AddEvent(0.03f * i, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
 					AllMirageBlades[i]->GetTransform()->SetWorldPosition(AllMirageBlades[i]->GetTransform()->GetWorldPosition());
 					AllMirageBlades[i]->GetTransform()->SetWorldRotation(AllMirageBlades[i]->GetTransform()->GetWorldRotation());
-					AllMirageBlades[i]->Shoot(390, DamageType::Stun);
+					AllMirageBlades[i]->Shoot(390, DamageType::VergilLight);
 				});
 			}
 			TimeEvent.AddEvent(1.4f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)

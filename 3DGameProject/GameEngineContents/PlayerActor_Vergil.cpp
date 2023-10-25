@@ -14,6 +14,9 @@
 #include "BGMPlayer.h"
 #include "PlayerHPUI.h"
 #include "UI_DTGauge.h"
+#include "Vergil_ShopUI.h"
+#include "Shop_VergilYamatoUI.h"
+#include "Shop_VergilMirgeUI.h"
 PlayerActor_Vergil::~PlayerActor_Vergil()
 {
 }
@@ -96,6 +99,9 @@ void PlayerActor_Vergil::PlayerLoad()
 	HUD = GetLevel()->CreateActor<PlayerHPUI>();
 	HUD->SetVergilUI();
 	HUD->SetPlayerHP(HP);
+	Shop = GetLevel()->CreateActor<Vergil_ShopUI>();
+	Shop->Off();
+
 	// Effect »ý¼º
 	{
 		EffectSystem = CreateComponent<FXSystem>();
@@ -665,7 +671,7 @@ void PlayerActor_Vergil::PlayerLoad()
 
 				if (InputCheck == false) { return; }
 				if (true == Input_JumpCheck()) { return; }
-				if (true == DelayCheck)
+				if (true == DelayCheck && true == IsYamatoCombo )
 				{
 					if (true == Input_SwordCheck(4)) { return; }
 				}
@@ -2461,6 +2467,25 @@ void PlayerActor_Vergil::AddDTGauge(float _Value)
 	}
 }
 
+void PlayerActor_Vergil::ShopOn()
+{
+	HUD->Off();
+}
+
+void PlayerActor_Vergil::ShopOff()
+{
+	HUD->On();
+	IsRapidSlash = Shop_VergilYamatoUI::IsRapidSlash;
+	IsUpperSlash = Shop_VergilYamatoUI::IsUpperSlash;
+	IsAerialRave = Shop_VergilYamatoUI::IsAerialRave;
+	IsYamatoCombo = Shop_VergilYamatoUI::IsYamatoCombo;
+	IsJudgmentCutEnd = Shop_VergilYamatoUI::IsJudgmentCutEnd;
+	IsSpiralBlade = Shop_VergilMirgeUI::IsSpiralBlade;
+	IsStormBlade = Shop_VergilMirgeUI::IsStormBlade;
+	IsLesteringBlade = Shop_VergilMirgeUI::IsLesteringBlade;
+	IsHeavyRainBlade = Shop_VergilMirgeUI::IsHeavyRainBlade;
+}
+
 void PlayerActor_Vergil::ChangeState(int _StateValue)
 {
 	FSM.ChangeState(_StateValue);
@@ -2489,12 +2514,12 @@ bool PlayerActor_Vergil::Input_SwordCheck(int AddState)
 		}
 		return false;
 	}
-	if (Controller->GetIsFrontSword())
+	if (Controller->GetIsFrontSword() && true == IsRapidSlash)
 	{
 		ChangeState(FSM_State_Vergil::pl0300_yamato_Sissonal_1);
 		return true;
 	}
-	if (Controller->GetIsBackSword())
+	if (Controller->GetIsBackSword() && true == IsUpperSlash)
 	{
 		ChangeState(FSM_State_Vergil::pl0300_yamato_Upper_1);
 		return true;
@@ -2528,7 +2553,7 @@ bool PlayerActor_Vergil::Input_SwordCheckFly(int AddState)
 		}
 		return false;
 	}
-	if (Controller->GetIsBackSword())
+	if (Controller->GetIsBackSword() && true == IsAerialRave)
 	{
 		ChangeState(FSM_State_Vergil::Vergil_yamato_Raid1);
 		return true;
@@ -2634,7 +2659,7 @@ bool PlayerActor_Vergil::Input_SpecialCheck()
 			return true;
 		}
 	}
-	if (Controller->GetIsSpecialMove())
+	if (Controller->GetIsSpecialMove() && true == IsJudgmentCutEnd)
 	{
 		ChangeState(FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_1);
 		return true;

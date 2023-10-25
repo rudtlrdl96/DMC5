@@ -139,6 +139,9 @@ protected:
 	void LightDamage() override;
 	void HeavyDamage() override;
 	void AddDTGauge(float _Value) override;
+
+	void ShopOn() override;
+	void ShopOff() override;
 private:
 	std::vector<std::shared_ptr<class Player_MirageBlade>> AllMirageBlades;
 	std::shared_ptr<class FXSystem> EffectSystem_Target = nullptr;
@@ -156,6 +159,16 @@ private:
 	bool MoveCheck = false;		// 애니메이션 재생중 이동 입력을 받아 FSM변경이 가능한지 여부
 	bool DelayCheck = false;	// 다른 콤보로 연결되기 위한 딜레이 여부
 	bool LoadCheck = false;		// FBX 로드가 완료되었는지
+
+	bool IsRapidSlash = false;
+	bool IsUpperSlash = false;
+	bool IsAerialRave = false;
+	bool IsYamatoCombo = false;
+	bool IsJudgmentCutEnd = false;
+	bool IsSpiralBlade = false;
+	bool IsStormBlade = false;
+	bool IsLesteringBlade = false;
+	bool IsHeavyRainBlade = false;
 
 	void ChangeState(int _StateValue);
 	void CreateMirageBlade();
