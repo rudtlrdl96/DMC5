@@ -14,6 +14,8 @@ public:
 	PlayerCamera& operator=(const PlayerCamera& _Other) = delete;
 	PlayerCamera& operator=(PlayerCamera&& _Other) noexcept = delete;
 
+	void SetCameraCutscene(const float4& _StartPos, const float4& _EndPos, const float4& _StartRot, const float4& _EndRot, float _Time);
+
 	static void Shake(float _Power, float _Time, float _FadeIn = 0.0f, float _FadeOut = 0.0f);
 	static void ShakeLight()
 	{
@@ -56,7 +58,16 @@ protected:
 	void WallCheck();
 	void ShakeUpdate(float _DeltaTime);
 	
+	void CutSceneUpdate(float _DeltaTime);
 private:
+	float4 CameraCutsceneStartPos;
+	float4 CameraCutsceneEndPos;
+	float4 CameraCutsceneStartRot;
+	float4 CameraCutsceneEndRot;
+	float CameraCutsceneSpeed;
+	float CameraCutsceneRatio;
+	bool IsCameraCutscene;
+
 	GameEngineTransform* PlayerTransform = nullptr;
 	GameEngineTransform* TargetTransform = nullptr;
 	GameEngineTransform* CameraArm = nullptr;

@@ -12,6 +12,17 @@ enum class FadeState
 class FadeEffect : public GameEnginePostProcess
 {
 public:
+	static FadeEffect* GetFadeEffect()
+	{
+		if (nullptr == CurLevelFade)
+		{
+			MsgAssert("FadeEffect를 생성하지 않고 받아오려 했습니다.");
+		}
+
+		return CurLevelFade;
+	}
+
+
 	// constrcuter destructer
 	FadeEffect();
 	~FadeEffect();
@@ -22,16 +33,18 @@ public:
 	FadeEffect& operator=(const FadeEffect& _Other) = delete;
 	FadeEffect& operator=(FadeEffect&& _Other) noexcept = delete;
 
-	void FadeIn() 
+	void FadeIn(float _Time = 1.0f)
 	{
 		State = FadeState::FadeIn;
-		FadeData.x = 1.0f;
+		FadeData.x = 0.0f;
+		Speed = 1.0f / _Time;
 	}
 
-	void FadeOut() 
+	void FadeOut(float _Time = 1.0f)
 	{
 		State = FadeState::FadeOut;
-		FadeData.x = 0.0f;
+		FadeData.x = 1.0f;
+		Speed = 1.0f / _Time;
 	}
 
 protected:
@@ -39,7 +52,9 @@ protected:
 	void Effect(GameEngineRenderTarget* _Target, float _DeltaTime) override;
 
 private:
+	static FadeEffect* CurLevelFade;
 	float4 FadeData = {1.0f, 1.0f, 1.0f, 1.0f};
+	float Speed = 0.0f;
 
 	FadeState State = FadeState::None;
 
@@ -47,11 +62,13 @@ private:
 
 	void LevelChangeStart() override
 	{
+		CurLevelFade = this;
 		ResultTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 	}
 
 	void LevelChangeEnd() override
 	{
+		CurLevelFade = nullptr;
 		ResultTarget->ReleaseTextures();
 	}
 };

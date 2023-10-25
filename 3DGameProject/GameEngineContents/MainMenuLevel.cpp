@@ -71,7 +71,7 @@ void MainMenuLevel::LevelChangeStart()
 	{
 		std::shared_ptr<Menu_VirgilInfo> Menu_VirgilInfoPtr = CreateActor<Menu_VirgilInfo>();
 	}
-	FEffect->FadeOut();
+	FEffect->FadeIn();
 }
 
 void MainMenuLevel::LevelChangeEnd()

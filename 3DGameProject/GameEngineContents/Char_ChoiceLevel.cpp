@@ -50,7 +50,7 @@ void Char_ChoiceLevel::Update(float _DeltaTime)
 
 void Char_ChoiceLevel::LevelChangeStart()
 {
-	FEffect->FadeOut();
+	FEffect->FadeIn();
 }
 
 void Char_ChoiceLevel::LevelChangeEnd()

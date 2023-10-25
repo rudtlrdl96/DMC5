@@ -4,10 +4,14 @@
 #include "StageBaseLevel.h"
 #include "BGMPlayer.h"
 #include "NetworkManager.h"
-
+#include "BasePlayerActor.h"
 Location2_EnemySpawner0::Location2_EnemySpawner0()
 {
+	CutScenePosStart = { 2245, 856, -300 };
+	CutScenePosEnd = { 1789, 856, -773 };
 
+	CutSceneRotStart = { 15, -56, 0 };
+	CutSceneRotEnd = { 15, -30, 0 };
 }
 
 Location2_EnemySpawner0::~Location2_EnemySpawner0()
@@ -21,9 +25,13 @@ void Location2_EnemySpawner0::Start()
 
 	Event = [this]()
 		{
-			BGMPlayer::SetBattleBGM();
+			BasePlayerActor::GetMainPlayer()->SetCutScene({ 703, 722, 2392 }, { 461, 722, 2386 }, { 10, -165, 0 }, { 10, -179, 0 }, 5.0f);
 			GameEngineLevel* Level = GetLevel();
-			Level->DynamicThis<StageBaseLevel>()->RedSealWallOn();
+			Level->TimeEvent.AddEvent(0.8f, [=](GameEngineTimeEvent::TimeEvent& Event, GameEngineTimeEvent* Manager)
+				{
+					Level->DynamicThis<StageBaseLevel>()->RedSealWallOn();
+				});
+			BGMPlayer::SetBattleBGM();
 			MonsterAliveCount = 2;
 
 			if (false == NetworkManager::IsClient())

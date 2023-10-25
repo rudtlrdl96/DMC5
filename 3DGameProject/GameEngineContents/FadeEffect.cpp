@@ -9,6 +9,8 @@ FadeEffect::~FadeEffect()
 {
 }
 
+FadeEffect* FadeEffect::CurLevelFade = nullptr;
+
 void FadeEffect::Start(GameEngineRenderTarget* _Target)
 {
 	FadeUnit = std::make_shared<GameEngineRenderUnit>();
@@ -37,17 +39,17 @@ void FadeEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 		return;
 	}
 
-	if (State == FadeState::FadeOut && 1.0f <= FadeData.x)
+	if (State == FadeState::FadeIn && 1.0f <= FadeData.x)
 	{
 		return;
 	}
 
-	if (State == FadeState::FadeOut)
+	if (State == FadeState::FadeIn)
 	{
-		FadeData.x += _DeltaTime;
+		FadeData.x += Speed * _DeltaTime;
 	}
 	else {
-		FadeData.x -= _DeltaTime;
+		FadeData.x -= Speed * _DeltaTime;
 	}
 
 
