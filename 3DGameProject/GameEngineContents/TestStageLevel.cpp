@@ -10,6 +10,7 @@
 #include "ZoomEffect.h"
 #include "DistortionEffect.h"
 #include "MotionBlurEffect.h"
+#include "FadeEffect.h"
 
 #include "Plane.h"
 #include "TestObject.h"
@@ -71,6 +72,10 @@ void TestStageLevel::Start()
 		Distortion->SetMaxPixelValue(100, 100);
 	}	
 	
+	{
+		std::shared_ptr<FadeEffect> Fade = GetCamera(0)->GetCamTarget()->CreateEffect<FadeEffect>();
+	}
+
 	//{
 	//	std::shared_ptr<MotionBlurEffect> Blur = GetCamera(0)->GetCamTarget()->CreateEffect<MotionBlurEffect>();
 	//	Blur->SetCamPosTarget(GetMainCamera()->GetCamPosTarget());

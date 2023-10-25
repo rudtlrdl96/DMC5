@@ -69,6 +69,21 @@ void StageBaseLevel::LoadAllStageData()
 
 		StageData::ReadAllStageData(LoadSerializer, Location19_StageDatas);
 	}
+
+	{
+		GameEngineDirectory Dir;
+		Dir.MoveParentToDirectory("ContentResources");
+		Dir.Move("ContentResources");
+		Dir.Move("Sound");
+		Dir.Move("SFX");
+		Dir.Move("RedSeal");
+
+		if (nullptr == GameEngineSound::Find("RedSeal_0.wav"))
+		{
+			GameEngineSound::Load(Dir.GetPlusFileName("RedSeal_0.wav").GetFullPath());
+			GameEngineSound::Load(Dir.GetPlusFileName("RedSeal_1.wav").GetFullPath());
+		}
+	}
 }
 
 void StageBaseLevel::Start()
@@ -188,6 +203,8 @@ void StageBaseLevel::PushBackRedSealWall(std::weak_ptr<class RedSeal> _Wall)
 
 void StageBaseLevel::RedSealWallOn()
 {
+	GameEngineSound::Play("RedSeal_0.wav");
+
 	for (size_t i = 0; i < RedSealWalls.size(); i++)
 	{
 		RedSealWalls[i].lock()->WallOn();
@@ -196,6 +213,8 @@ void StageBaseLevel::RedSealWallOn()
 
 void StageBaseLevel::RedSealWallOff()
 {
+	GameEngineSound::Play("RedSeal_1.wav");
+
 	for (size_t i = 0; i < RedSealWalls.size(); i++)
 	{
 		RedSealWalls[i].lock()->WallOff();

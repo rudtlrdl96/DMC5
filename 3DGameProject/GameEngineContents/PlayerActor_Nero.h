@@ -188,6 +188,9 @@ public:
 		return &BreakerList;
 	}
 
+	void ControllOn();
+	void ControllOff();
+
 protected:
 	void Start() override;
 	void PlayerLoad();
@@ -200,6 +203,8 @@ protected:
 	void AddDTGauge(float _Value) override;
 	void ShopOn() override;
 	void ShopOff() override;
+	void UIOn() override;
+	void UIOff() override;
 private:
 	std::shared_ptr<class GameEngineFBXRenderer> Renderer_Overture = nullptr;
 	std::shared_ptr<class Player_Snatch> Snatch = nullptr;

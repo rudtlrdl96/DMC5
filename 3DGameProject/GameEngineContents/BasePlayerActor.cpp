@@ -18,7 +18,10 @@
 #include "FXSystem.h"
 #include "Item_RedOrb.h"
 #include "EffectRenderer.h"
+#include "PlayerHPUI.h"
+#include "FadeEffect.h"
 std::vector<BasePlayerActor*> BasePlayerActor::Players = std::vector<BasePlayerActor*>();
+BasePlayerActor* BasePlayerActor::MainPlayer = nullptr;
 
 BasePlayerActor::BasePlayerActor()
 {
@@ -29,7 +32,33 @@ BasePlayerActor::~BasePlayerActor()
 {
 }
 
-void BasePlayerActor::On() 
+void BasePlayerActor::SetCutScene(const float4& _StartPos, const float4& _EndPos, const float4& _StartRot, const float4& _EndRot, float _Time)
+{
+	Controller->ResetKey();
+	Controller->Off();
+	FadeEffect::GetFadeEffect()->FadeOut(0.5f);
+	GetLevel()->TimeEvent.AddEvent(0.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+	{
+		UIOff();
+		FadeEffect::GetFadeEffect()->FadeIn(0.5f);
+		Camera->SetCameraCutscene(_StartPos, _EndPos, _StartRot, _EndRot, _Time);
+	});
+	GetLevel()->TimeEvent.AddEvent(_Time, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+	{
+		FadeEffect::GetFadeEffect()->FadeOut(0.5f);
+	});
+	GetLevel()->TimeEvent.AddEvent(_Time + 0.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+	{
+		UIOn();
+		FadeEffect::GetFadeEffect()->FadeIn(0.5f);
+	});
+	GetLevel()->TimeEvent.AddEvent(_Time + 1.2f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+	{
+		Controller->On();
+	});
+}
+
+void BasePlayerActor::On()
 {
 	GameEngineActor::On();
 
@@ -219,6 +248,16 @@ void BasePlayerActor::Start()
 	DTOffEffect = CreateComponent<FXSystem>();
 }
 
+void BasePlayerActor::UIOn()
+{
+	HUD->On();
+}
+
+void BasePlayerActor::UIOff()
+{
+	HUD->Off();
+}
+
 void BasePlayerActor::NetControllLoad()
 {
 	PhysXCapsule->TurnOffGravity();
@@ -226,6 +265,7 @@ void BasePlayerActor::NetControllLoad()
 
 void BasePlayerActor::UserControllLoad()
 {
+	MainPlayer = this;
 	// 유저 컨트롤 엑터인 경우 실행
 	PhysXCapsule->SetMainPlayer();
 	CustomCallback::SetMainPlayer(PhysXCapsule.get());

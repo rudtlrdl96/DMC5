@@ -43,6 +43,14 @@ void PlayerActor_Nero::SetDT(unsigned int _DTValue)
 	}
 }
 
+void PlayerActor_Nero::ControllOn()
+{
+}
+
+void PlayerActor_Nero::ControllOff()
+{
+}
+
 void PlayerActor_Nero::Start()
 {
 	BasePlayerActor::Start();
@@ -3773,6 +3781,16 @@ void PlayerActor_Nero::ShopOff()
 	IsRouletteSpin = Shop_NeroSkillUI::IsRouletteSpin;
 	IsShufle = Shop_NeroSkillUI::IsShufle;
 	IsCalibur = Shop_NeroSkillUI::IsCalibur;
+}
+void PlayerActor_Nero::UIOn()
+{
+	HUD->On();
+	HUD2->ArmRenderOn();
+}
+void PlayerActor_Nero::UIOff()
+{
+	HUD->Off();
+	HUD2->ArmRenderOff();
 }
 bool PlayerActor_Nero::Input_SwordCheck(int AddState /*= 0*/)
 {

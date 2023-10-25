@@ -16,6 +16,18 @@ static float ShakeTimer = 0.0f;
 static float ShakeTime = 0.0f;
 static float ShakeFadeIn = 0.0f;
 static float ShakeFadeOut = 0.0f;
+
+void PlayerCamera::SetCameraCutscene(const float4& _StartPos, const float4& _EndPos, const float4& _StartRot, const float4& _EndRot, float _Time)
+{
+	CameraCutsceneStartPos = _StartPos;
+	CameraCutsceneEndPos = _EndPos;
+	CameraCutsceneStartRot = _StartRot;
+	CameraCutsceneEndRot = _EndRot;
+	CameraCutsceneSpeed = 1.0f / _Time;
+	CameraCutsceneRatio = 0.0f;
+	IsCameraCutscene = true;
+}
+
 void PlayerCamera::Shake(float _Power, float _Time, float _FadeIn, float _FadeOut)
 {
 	IsShake = true;
@@ -43,6 +55,12 @@ void PlayerCamera::Start()
 
 void PlayerCamera::Update(float _DeltaTime)
 {
+	if (true == IsCameraCutscene)
+	{
+		CutSceneUpdate(_DeltaTime);
+		return;
+	}
+
 	if (true == FirstFrame)
 	{
 		GetTransform()->SetWorldPosition(PlayerTransform->GetWorldPosition());
@@ -245,6 +263,24 @@ void PlayerCamera::ShakeUpdate(float _DeltaTime)
 	float z = GameEngineRandom::MainRandom.RandomFloat(-1, 1) * ShakePower * Ratio;
 
 	CameraTransform->AddWorldPosition({ x, y, z });
+}
+
+void PlayerCamera::CutSceneUpdate(float _DeltaTime)
+{
+	CameraCutsceneRatio += CameraCutsceneSpeed * _DeltaTime;
+
+	float4 Pos = float4::LerpClamp(CameraCutsceneStartPos, CameraCutsceneEndPos, CameraCutsceneRatio);
+	float4 Rot = float4::LerpClamp(CameraCutsceneStartRot, CameraCutsceneEndRot, CameraCutsceneRatio);
+
+	CameraTransform->SetWorldPosition(Pos);
+	CameraTransform->SetWorldRotation(Rot);
+
+	if (1 <= CameraCutsceneRatio)
+	{
+		IsCameraCutscene = false;
+		CameraTransform->SetWorldPosition(CameraTargetPos);
+		CameraTransform->SetWorldRotation(CameraTarget->GetWorldRotation());
+	}
 }
 
 void PlayerCamera::DrawEditor()

@@ -55,7 +55,7 @@ void TitleLevel::Update(float _DeltaTime)
 
 void TitleLevel::LevelChangeStart()
 {
-	FEffect->FadeOut();
+	FEffect->FadeIn();
 }
 
 void TitleLevel::LevelChangeEnd()

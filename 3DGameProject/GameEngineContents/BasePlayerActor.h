@@ -12,6 +12,10 @@ public:
 	{
 		return Players;
 	}
+	static BasePlayerActor* GetMainPlayer()
+	{
+		return MainPlayer;
+	}
 	
 	// constrcuter destructer
 	BasePlayerActor();
@@ -22,6 +26,8 @@ public:
 	BasePlayerActor(BasePlayerActor&& _Other) noexcept = delete;
 	BasePlayerActor& operator=(const BasePlayerActor& _Other) = delete;
 	BasePlayerActor& operator=(BasePlayerActor&& _Other) noexcept = delete;
+
+	void SetCutScene(const float4& _StartPos, const float4& _EndPos, const float4& _StartRot, const float4& _EndRot, float _Time);
 
 	void On() override;
 	void Off() override;
@@ -71,7 +77,8 @@ protected:
 	void Start() override;
 	virtual void ShopOn() {}
 	virtual void ShopOff() {}
-
+	virtual void UIOn();
+	virtual void UIOff();
 	void NetControllLoad();
 	void UserControllLoad();
 
@@ -130,6 +137,7 @@ private:
 	void ShopColCheck();
 	void SetLockOnMark();
 	static std::vector<BasePlayerActor*> Players;
+	static BasePlayerActor* MainPlayer;
 	float InvincibilityTime = 0.0f; // 무적 프레임
 };
 

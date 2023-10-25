@@ -3,6 +3,7 @@
 #include "Enemy_Empusa.h"
 #include "TestStageLevel.h"
 #include "ZoomEffect.h"
+#include "BasePlayerActor.h"
 EnemySpawner::EnemySpawner()
 {
 
@@ -29,9 +30,8 @@ void EnemySpawner::DestroyMonster()
 		MonsterWave_Events[MonsterWaveCount++]();
 		return;
 	}
-	BGMPlayer::SetBattleEnd();
-	GetLevel()->DynamicThis<StageBaseLevel>()->RedSealWallOff();
 
+	BGMPlayer::SetBattleEnd();
 	ZoomEffect::GetZoomEffect()->SetSpeed(6.0f);
 	ZoomEffect::GetZoomEffect()->EffectOn(1.5f);
 	float BeforeTimeScale = GameEngineTime::GlobalTime.GetGlobalTimeScale();
@@ -43,5 +43,14 @@ void EnemySpawner::DestroyMonster()
 		ZoomEffect::GetZoomEffect()->EffectOff();
 	});
 
+	GetLevel()->TimeEvent.AddEvent(2.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+		{
+			BasePlayerActor::GetMainPlayer()->SetCutScene(CutScenePosStart, CutScenePosEnd, CutSceneRotStart, CutSceneRotEnd, 5.0f);
+		});
+
+	GetLevel()->TimeEvent.AddEvent(3.0f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+		{
+			GetLevel()->DynamicThis<StageBaseLevel>()->RedSealWallOff();
+		});
 	Death();
 }
