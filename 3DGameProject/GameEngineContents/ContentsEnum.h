@@ -43,6 +43,7 @@ enum class Net_ActorType
 	HellAntenora,
 	ScudoAngelo,
 	ProtoAngelo,
+	Qliphoth,
 
 	//º¸½º
 	CavaliereAngelo,

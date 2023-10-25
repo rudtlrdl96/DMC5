@@ -24,6 +24,7 @@
 #include "Enemy_HellAntenora.h"
 #include "Enemy_ScudoAngelo.h"
 #include "Enemy_ProtoAngelo.h"
+#include "Enemy_Qliphoth.h"
 
 #include "BGMPlayer.h"
 #include "Item_RedOrbLump.h"
@@ -185,6 +186,13 @@ void TestLevel::LevelChangeStart()
 	//	Proto = CreateActor<Enemy_ProtoAngelo>();
 	//	Proto->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
 	//	Proto->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	//}
+
+	//if (nullptr == Qliphoth)
+	//{
+	//	Qliphoth = CreateActor<Enemy_Qliphoth>();
+	//	Qliphoth->GetTransform()->SetWorldPosition({ 0, 0, 0 });
+	//	Qliphoth->GetTransform()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
 
 	//GameEngineCoreWindow::Clear();

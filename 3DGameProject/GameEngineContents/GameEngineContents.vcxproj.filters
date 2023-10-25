@@ -522,6 +522,9 @@
     <ClInclude Include="NetEventPacket.h">
       <Filter>Server\01.Packet\03.ServerToClient</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy_Qliphoth.h">
+      <Filter>Actor\Enemy\NormalEnemy\Qliphoth</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -1039,6 +1042,9 @@
     <ClCompile Include="Location19_Level.cpp">
       <Filter>Levels\Stage\3.Location19</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy_Qliphoth.cpp">
+      <Filter>Actor\Enemy\NormalEnemy\Qliphoth</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
@@ -1334,6 +1340,9 @@
     </Filter>
     <Filter Include="Levels\Stage\3.Location19">
       <UniqueIdentifier>{4b01348d-37b0-41af-a57f-90c1c3cffbeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Enemy\NormalEnemy\Qliphoth">
+      <UniqueIdentifier>{6d66f714-c1f8-47f2-aa4f-8c49d6fc7a1d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
