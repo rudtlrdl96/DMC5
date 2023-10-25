@@ -92,13 +92,13 @@ void Enemy_Qliphoth::EnemyAnimationLoad()
 			},
 			.CallBacks_int =
 			{
-				//std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1),
-				//std::bind(&SoundController::Play, &Sound, "HellCaina_SFX_",std::placeholders::_1),
-				//std::bind(&SoundController::PlayVoice, &Sound, std::placeholders::_1, false),
-			},
-			.CallBacks_float4 =
-			{
-			}
+			//std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1),
+			//std::bind(&SoundController::Play, &Sound, "HellCaina_SFX_",std::placeholders::_1),
+			//std::bind(&SoundController::PlayVoice, &Sound, std::placeholders::_1, false),
+		},
+		.CallBacks_float4 =
+		{
+		}
 		}
 	);
 
@@ -176,11 +176,31 @@ void Enemy_Qliphoth::Start()
 	// 콜리전 옵션, 크기 설정
 	MonsterAttackCollision->SetAttackData(DamageType::Light, MONSTER_LIGHT_DAMAGE);
 	MonsterAttackCollision->SetColType(ColType::OBBBOX3D);
-	MonsterCollision->GetTransform()->SetLocalScale({ 80, 210, 70 });
-	MonsterCollision->GetTransform()->SetLocalPosition({ 0, 65, 0 });
-	MonsterCollision->SetColType(ColType::OBBBOX3D);
-	RN_MonsterCollision->GetTransform()->SetLocalScale({ 600, 0, 0 });
-	RN_MonsterCollision->GetTransform()->SetLocalPosition({ 0, 80, 0 });
+	MonsterCollision->GetTransform()->SetLocalScale({ 200, 200, 200 });
+	MonsterCollision->SetColType(ColType::SPHERE3D);
+
+	MonsterCollision_0 = CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
+	MonsterCollision_0->GetTransform()->SetLocalScale({ 200, 200, 200 });
+	MonsterCollision_0->SetColType(ColType::SPHERE3D);
+	EnemyRenderer->SetAttachTransform("Head02_S", MonsterCollision_0->GetTransform(), float4::ZERO, float4::ZERO, false);
+
+	MonsterCollision_1 = CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
+	MonsterCollision_1->GetTransform()->SetLocalScale({ 200, 200, 200 });
+	MonsterCollision_1->SetColType(ColType::SPHERE3D);
+	EnemyRenderer->SetAttachTransform("Vine05_end", MonsterCollision_1->GetTransform(), float4::ZERO, float4::ZERO, false);
+
+	MonsterCollision_2 = CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
+	MonsterCollision_2->GetTransform()->SetLocalScale({ 200, 200, 200 });
+	MonsterCollision_2->SetColType(ColType::SPHERE3D);
+	EnemyRenderer->SetAttachTransform("Vine03_end", MonsterCollision_2->GetTransform(), float4::ZERO, float4::ZERO, false);
+
+	MonsterCollision_3 = CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
+	MonsterCollision_3->GetTransform()->SetLocalScale({ 200, 200, 200 });
+	MonsterCollision_3->SetColType(ColType::SPHERE3D);
+	EnemyRenderer->SetAttachTransform("Vine01_end", MonsterCollision_3->GetTransform(), float4::ZERO, float4::ZERO, false);
+
+	RN_MonsterCollision->GetTransform()->SetLocalScale({ 2000, 0, 0 });
+	RN_MonsterCollision->GetTransform()->SetLocalPosition({ 0, 200, 0 });
 
 	// 기본 세팅
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
@@ -224,6 +244,20 @@ void Enemy_Qliphoth::Start()
 /////////////////////////// Collision ///////////////////////////////
 ////////////////////////////////////////////////////////////////////
 
+std::shared_ptr<class GameEngineCollision> Enemy_Qliphoth::ColCheck()
+{
+	std::shared_ptr<GameEngineCollision> Col = MonsterCollision->Collision(CollisionOrder::PlayerAttack);
+	if (nullptr != Col) { return Col; }
+	Col = MonsterCollision_0->Collision(CollisionOrder::PlayerAttack);
+	if (nullptr != Col) { return Col; }
+	Col = MonsterCollision_1->Collision(CollisionOrder::PlayerAttack);
+	if (nullptr != Col) { return Col; }
+	Col = MonsterCollision_2->Collision(CollisionOrder::PlayerAttack);
+	if (nullptr != Col) { return Col; }
+	Col = MonsterCollision_3->Collision(CollisionOrder::PlayerAttack);
+	return Col;
+}
+
 void Enemy_Qliphoth::DamageCollisionCheck(float _DeltaTime)
 {
 	if (true == DeathValue)
@@ -240,7 +274,7 @@ void Enemy_Qliphoth::DamageCollisionCheck(float _DeltaTime)
 		return;
 	}
 
-	std::shared_ptr<GameEngineCollision> Col = MonsterCollision->Collision(CollisionOrder::PlayerAttack);
+	std::shared_ptr<GameEngineCollision> Col = ColCheck();
 	if (nullptr == Col) { return; }
 
 	std::shared_ptr<AttackCollision> AttackCol = std::dynamic_pointer_cast<AttackCollision>(Col);
@@ -265,6 +299,7 @@ void Enemy_Qliphoth::DamageCollisionCheck(float _DeltaTime)
 	case DamageType::Heavy:
 	case DamageType::Air:
 	case DamageType::Slam:
+		ChangeState(FSM_State_Qliphoth::Qliphoth_Damage);
 		StartRenderShaking(8);
 		AttackDelayCheck = 0.0f;
 		HitStop(Data.DamageTypeValue);
@@ -294,7 +329,7 @@ void Enemy_Qliphoth::DamageCollisionCheck_Client(float _DeltaTime)
 		return;
 	}
 
-	std::shared_ptr<GameEngineCollision> Col = MonsterCollision->Collision(CollisionOrder::PlayerAttack);
+	std::shared_ptr<GameEngineCollision> Col = ColCheck();
 	if (nullptr == Col) { return; }
 
 	std::shared_ptr<AttackCollision> AttackCol = std::dynamic_pointer_cast<AttackCollision>(Col);
@@ -348,6 +383,22 @@ void Enemy_Qliphoth::RecognizeCollisionCheck(float _DeltaTime)
 	}
 }
 
+void Enemy_Qliphoth::DeathCheck()
+{
+	if (EnemyHP <= 0)
+	{
+		DeathValue = true;
+		RedOrbDrop();
+		DeathEvent();
+	}
+
+	if (true == DeathValue && false == DeathSettig)
+	{
+		DeathSettig = true;
+		MonsterCollision->Off();
+		RN_MonsterCollision->Off();
+	}
+}
 
 ////////////////////////////////////////////////////////////////
 ////////////////////////    회전	////////////////////////////
@@ -359,12 +410,6 @@ void Enemy_Qliphoth::SlerpTurn(float _DeltaTime)
 	RotationValue = float4::SLerpQuaternion(CurRotation, GoalRotation, SlerpTime);
 	GetTransform()->SetWorldRotation(RotationValue);
 }
-
-
-
-
-
-
 
 ////////////////////////////////////////////////////////////////
 ////////////////////////    FSM		////////////////////////////
@@ -391,30 +436,32 @@ void Enemy_Qliphoth::EnemyCreateFSM()
 	// Appear
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Qliphoth::Qliphoth_Appear,
 	.Start = [=] {
-		//EffectRenderer->PlayFX("Enemy_Appear.effect");
-		EnemyRenderer->ChangeAnimation("em1000_Appear");
-	},
-	.Update = [=](float _DeltaTime) {
-		if (true == EnemyRenderer->IsAnimationEnd())
-		{
-			ChangeState(FSM_State_Qliphoth::Qliphoth_Idle);
-			return;
-		}
-	},
-	.End = [=] {
+			//EffectRenderer->PlayFX("Enemy_Appear.effect");
+			EnemyRenderer->ChangeAnimation("em1000_Appear");
+		},
+		.Update = [=](float _DeltaTime) {
+			if (true == EnemyRenderer->IsAnimationEnd())
+			{
+				ChangeState(FSM_State_Qliphoth::Qliphoth_Idle);
+				return;
+			}
+		},
+		.End = [=] {
 
-	}
-	});
+		}
+		});
 
 	// Idle
 	static float RotCheckDelay = 0.0f;
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Qliphoth::Qliphoth_Idle,
 	.Start = [=] {
 			EnemyRenderer->ChangeAnimation("em1000_Idle");
-			RotationCheck();
+			SlerpCalculation();
 			RotCheckDelay = 0;
 		},
 		.Update = [=](float _DeltaTime) {
+			if (false == IsRecognize) { return; }
+
 			RotCheckDelay += _DeltaTime;
 			if (0.1f < RotCheckDelay)
 			{
@@ -441,7 +488,7 @@ void Enemy_Qliphoth::EnemyCreateFSM()
 	.End = [=] {
 
 	}
-	});
+		});
 
 	// Attack
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Qliphoth::Qliphoth_Attack,
@@ -477,6 +524,48 @@ void Enemy_Qliphoth::EnemyCreateFSM()
 
 		}
 		});
+
+	// Damage
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Qliphoth::Qliphoth_Damage,
+	.Start = [=] {
+			//EffectRenderer->PlayFX("Enemy_Appear.effect");
+			EnemyRenderer->ChangeAnimation("em1000_Damage", true);
+		},
+		.Update = [=](float _DeltaTime) {
+			DeathCheck();
+			if (true == DeathValue)
+			{
+				ChangeState(FSM_State_Qliphoth::Qliphoth_Dead);
+				return;
+			}
+			if (true == EnemyRenderer->IsAnimationEnd())
+			{
+				ChangeState(FSM_State_Qliphoth::Qliphoth_Idle);
+				return;
+			}
+		},
+		.End = [=] {
+
+		}
+		});
+
+	// Dead
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Qliphoth::Qliphoth_Dead,
+	.Start = [=] {
+			//EffectRenderer->PlayFX("Enemy_Appear.effect");
+			EnemyRenderer->ChangeAnimation("em1000_Dead");
+		},
+		.Update = [=](float _DeltaTime) {
+			if (true == EnemyRenderer->IsAnimationEnd())
+			{
+				IsBurn = true;
+			}
+		},
+		.End = [=] {
+
+		}
+		});
+
 
 	EnemyFSM.ChangeState(FSM_State_Qliphoth::Qliphoth_Appear);
 }

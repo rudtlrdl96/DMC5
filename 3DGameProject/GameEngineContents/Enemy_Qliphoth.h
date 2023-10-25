@@ -36,13 +36,20 @@ protected:
 	void RecognizeCollisionCheck(float _DeltaTime) override;
 
 	void SlerpTurn(float _DeltaTime);
-
+	void DeathCheck();
 private:
 	void ChangeState(int _StateValue);
 	void ChangeState_Client(int _StateValue);
 
+	std::shared_ptr<class GameEngineCollision> ColCheck();
+	
+	std::shared_ptr<class GameEngineCollision> MonsterCollision_0 = nullptr;
+	std::shared_ptr<class GameEngineCollision> MonsterCollision_1 = nullptr;
+	std::shared_ptr<class GameEngineCollision> MonsterCollision_2 = nullptr;
+	std::shared_ptr<class GameEngineCollision> MonsterCollision_3 = nullptr;
 	float AttackDelayCheck = 0.0f;
 	bool IsRecognize = false;
+
 
 };
 
