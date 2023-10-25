@@ -128,7 +128,9 @@ void TestLevel::LevelChangeStart()
 			NetworkManager::LinkNetwork(Player.get(), this);
 		}
 	}
-	CreateActor<Item_RedOrbLump>();
+
+	//CreateActor<Item_RedOrbLump>();
+
 	//if (nullptr == TestObj)
 	//{
 	//	TestObj = CreateActor<TestObject>();
@@ -136,12 +138,12 @@ void TestLevel::LevelChangeStart()
 	//	TestObj->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
 
-	//if (nullptr == HellCaina)
-	//{
-	//	HellCaina = CreateActor<Enemy_HellCaina>();
-	//	HellCaina->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	//	HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	//}
+	if (nullptr == HellCaina)
+	{
+		HellCaina = CreateActor<Enemy_HellCaina>();
+		HellCaina->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+		HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	}
 
 	//if (nullptr == Empusa)
 	//{
