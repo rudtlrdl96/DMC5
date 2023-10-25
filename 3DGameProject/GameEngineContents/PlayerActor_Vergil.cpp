@@ -12,6 +12,8 @@
 #include "PlayerCamera.h"
 #include "RankUI.h"
 #include "BGMPlayer.h"
+#include "PlayerHPUI.h"
+#include "UI_DTGauge.h"
 PlayerActor_Vergil::~PlayerActor_Vergil()
 {
 }
@@ -69,7 +71,7 @@ void PlayerActor_Vergil::Start()
 			NetLoad();
 			SoundLoad();
 			LoadCheck = true;
-		});	
+		});
 
 	//NetControllType::UserControll으로 변경될 때 아래 콜백이 실행됩니다.
 	SetControllCallBack(NetControllType::ActiveControll, [=]()
@@ -91,7 +93,9 @@ void PlayerActor_Vergil::PlayerLoad()
 {
 	if (true == LoadCheck) { return; }
 	BGMPlayer::SetCharater(PlayerType::Vergil);
-
+	HUD = GetLevel()->CreateActor<PlayerHPUI>();
+	HUD->SetVergilUI();
+	HUD->SetPlayerHP(HP);
 	// Effect 생성
 	{
 		EffectSystem = CreateComponent<FXSystem>();
@@ -161,7 +165,7 @@ void PlayerActor_Vergil::PlayerLoad()
 
 		Renderer = CreateComponent<GameEngineFBXRenderer>();
 		Renderer->GetTransform()->SetLocalPosition({ 0, -75, 0 });
-		
+
 		//WingRender->GetTransform()->SetLocalPosition({ 0, -75, 0 });
 
 		switch (GameEngineOption::GetOption("Shader"))
@@ -881,7 +885,7 @@ void PlayerActor_Vergil::PlayerLoad()
 					ChangeState(FSM_State_Vergil::pl0300_yamato_Sissonal_3);
 					return;
 				}
-				GetTransform()->AddWorldPosition(GetTransform()->GetWorldForwardVector()* _DeltaTime * 2300);
+				GetTransform()->AddWorldPosition(GetTransform()->GetWorldForwardVector() * _DeltaTime * 2300);
 			},
 			.End = [=] {
 				PhysXCapsule->On();
@@ -2034,7 +2038,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		.End = [=] {
 			SetWorldPosition(WarpPos);
 		}
-		});
+			});
 	}
 	/* 데빌 트리거 */
 	{}
@@ -2043,6 +2047,7 @@ void PlayerActor_Vergil::PlayerLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_DT_Start,
 		.Start = [=] {
 			WeaponIdle();
+			HUD->GetDtUI()->SetTransValue(true);
 			Sound.Play("DT_On");
 			Sound.PlayVoice(31, true);
 			Sound.NoSkipOn();
@@ -2393,12 +2398,18 @@ void PlayerActor_Vergil::Update_Character(float _DeltaTime)
 	if (true == IsDeath) { return; }
 	if (NetControllType::ActiveControll == GameEngineNetObject::GetControllType())
 	{
+		if (true == DTValue && IsDeath == false)
+		{
+			HP = std::clamp(static_cast<int>(HP + 200 * _DeltaTime), 0, MaxHP);
+			HUD->SetPlayerHP(HP);
+		}
 		FSM_MirageBlade.Update(_DeltaTime);
 	}
 }
 
 void PlayerActor_Vergil::LightDamage()
 {
+	HUD->SetPlayerHP(HP);
 	if (true == FloorCheck())
 	{
 		if (HP <= 0)
@@ -2417,6 +2428,7 @@ void PlayerActor_Vergil::LightDamage()
 
 void PlayerActor_Vergil::HeavyDamage()
 {
+	HUD->SetPlayerHP(HP);
 	if (true == FloorCheck())
 	{
 		if (HP <= 0)
@@ -2434,8 +2446,19 @@ void PlayerActor_Vergil::HeavyDamage()
 
 void PlayerActor_Vergil::AddDTGauge(float _Value)
 {
-	DTGauge = std::min<float>(10.0f, DTGauge + _Value);
-	BaseLog::PushLog(0, "DT : " + std::to_string(DTGauge));
+	if (true == DTValue && 0 < _Value) { return; }
+	if (false == DTValue && 0 >= _Value) { return; }
+
+	DTGauge = std::clamp(DTGauge + _Value, 0.0f, 10.0f);
+	HUD->GetDtUI()->ActivateDtUI(DTGauge);
+	if (DTGauge <= 0.0f)
+	{
+		HUD->GetDtUI()->SetTransValue(false);
+		Sound.Play("DT_Off");
+		DTValue = false;
+		DTOffEffect->Play();
+		SetHuman();
+	}
 }
 
 void PlayerActor_Vergil::ChangeState(int _StateValue)
@@ -2596,13 +2619,20 @@ bool PlayerActor_Vergil::Input_SpecialCheck()
 	{
 		if (false == DTValue)
 		{
-			ChangeState(FSM_State_Vergil::Vergil_DT_Start);
+			if (3 <= DTGauge)
+			{
+				ChangeState(FSM_State_Vergil::Vergil_DT_Start);
+				return true;
+			}
+		}
+		else
+		{
+			HUD->GetDtUI()->SetTransValue(false);
+			DTOffEffect->Play();
+			Sound.Play("DT_Off");
+			ChangeState(FSM_State_Vergil::Vergil_DT_End);
 			return true;
 		}
-		DTOffEffect->Play();
-		Sound.Play("DT_Off");
-		ChangeState(FSM_State_Vergil::Vergil_DT_End);
-		return true;
 	}
 	if (Controller->GetIsSpecialMove())
 	{
@@ -2628,6 +2658,7 @@ bool PlayerActor_Vergil::Input_SpecialCheckFly()
 	{
 		if (true == DTValue)
 		{
+			HUD->GetDtUI()->SetTransValue(false);
 			DTOffEffect->Play();
 			Sound.Play("DT_Off");
 			SetHuman();

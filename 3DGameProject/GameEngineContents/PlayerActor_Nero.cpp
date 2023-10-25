@@ -116,6 +116,7 @@ void PlayerActor_Nero::PlayerLoad()
 	Shop = GetLevel()->CreateActor<Nero_ShopUI>();
 	Shop->Off();
 	HUD = GetLevel()->CreateActor<PlayerHPUI>();
+	HUD->SetNeroUI();
 	HUD->SetPlayerHP(HP);
 	HUD2 = GetLevel()->CreateActor<NeroItemGlass>();
 	Shop_NeroArmUI::CallBack_AddBreaker = std::bind(&PlayerActor_Nero::AddBreaker, this, std::placeholders::_1);

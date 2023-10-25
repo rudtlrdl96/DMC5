@@ -108,6 +108,7 @@ protected:
 	std::shared_ptr<class FXSystem> EffectSystem = nullptr;
 	std::shared_ptr<class FXSystem> DTOffEffect = nullptr;
 	std::shared_ptr<class EffectRenderer> LockOnRenderer = nullptr;
+	std::shared_ptr<class PlayerHPUI> HUD = nullptr;
 	class BaseEnemyActor* LockOnEnemy = nullptr;
 
 	std::shared_ptr<GameEngineObject> Shop = nullptr;
