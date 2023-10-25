@@ -21,35 +21,25 @@ void Location2_EnemySpawner0::Start()
 
 	Event = [this]()
 		{
-			GameEngineLevel* Level = GetLevel();
-
-			//이 부분은 Host가 아닌 클라에서만 실행됩니다.
-			if (true == NetworkManager::IsClient())
-			{
-				BGMPlayer::SetBattleBGM();
-				MonsterAliveCount = 3;
-				Level->DynamicThis<StageBaseLevel>()->RedSealWallOn();
-				NetworkObjectBase::PushReservedDestroyCallback(Net_ActorType::Empusa, std::bind(&EnemySpawner::DestroyMonster, this));
-				return;
-			}
-
-			Level->DynamicThis<StageBaseLevel>()->RedSealWallOn();
-
-			for (size_t i = 0; i < 3; ++i)
-			{
-				std::shared_ptr<Enemy_Empusa> Enemy = nullptr;
-
-				//싱글이거나 호스트일때만 몬스터를 생성 후 포인터를 반환합니다.(클라이언트인 경우 nullptr 반환)
-				//Enemy = NetworkManager::CreateNetworkActor<Enemy_Empusa>(Level, static_cast<int>(ActorOrder::Enemy));
-				Enemy = Poolable<Enemy_Empusa>::PopFromPool(Level, static_cast<int>(ActorOrder::Enemy));
-				if (nullptr == Enemy)
-					continue;
-
-				++MonsterAliveCount;
-				Enemy->GetPhysXComponent()->SetWorldPosition({ 0, 150.f * i, 0 });
-				Enemy->PushDeathCallback(std::bind(&EnemySpawner::DestroyMonster, this));
-			}
-
 			BGMPlayer::SetBattleBGM();
+			GameEngineLevel* Level = GetLevel();
+			Level->DynamicThis<StageBaseLevel>()->RedSealWallOn();
+			MonsterAliveCount = 3;
+			NetworkObjectBase::PushReservedDestroyCallback(Net_ActorType::Empusa, std::bind(&EnemySpawner::DestroyMonster, this));
+
+			if (false == NetworkManager::IsClient())
+			{
+				std::vector<float4> EnemyPos =
+				{
+					{ 1029, 55, 1337 }, { 91, 55, 82 }, { -1228, 55, 712 }
+				};
+				for (size_t i = 0; i < 3; ++i)
+				{
+					std::shared_ptr<Enemy_Empusa> Empusa = Poolable<Enemy_Empusa>::PopFromPool(Level, static_cast<int>(ActorOrder::Enemy));
+					Empusa->GetPhysXComponent()->SetWorldPosition(EnemyPos[i]);
+					Empusa->GetTransform()->SetWorldPosition(EnemyPos[i]);
+					Empusa->PushDeathCallback(std::bind(&EnemySpawner::DestroyMonster, this));
+				}
+			}
 		};
 }

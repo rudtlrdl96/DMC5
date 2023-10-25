@@ -108,6 +108,7 @@ void PlayerActor_Nero::Start()
 
 void PlayerActor_Nero::PlayerLoad()
 {
+	if (true == LoadCheck) { return; }
 	BGMPlayer::SetCharater(PlayerType::Nero);
 	BreakerList.clear();
 	BreakerList.push_back(DevilBreaker::None);

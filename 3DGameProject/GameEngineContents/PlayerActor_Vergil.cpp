@@ -89,6 +89,7 @@ void PlayerActor_Vergil::Start()
 
 void PlayerActor_Vergil::PlayerLoad()
 {
+	if (true == LoadCheck) { return; }
 	BGMPlayer::SetCharater(PlayerType::Vergil);
 
 	// Effect »ý¼º

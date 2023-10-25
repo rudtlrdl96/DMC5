@@ -21,6 +21,7 @@
 
 void PlayerActor_Nero::NetLoad()
 {
+	if (true == LoadCheck) { return; }
 	// Effect »ý¼º
 	{
 		GameEngineDirectory NewDir;
