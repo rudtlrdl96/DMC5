@@ -16,6 +16,9 @@ public:
 	
 	static std::shared_ptr<SkyBox> CreateSkyBox(GameEngineLevel* _Level, const std::string_view& _FBXName);
 
+	void SetSkyBloom(float _Bloom);
+
+
 protected:
 
 private:

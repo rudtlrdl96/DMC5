@@ -88,6 +88,7 @@ void StageBaseLevel::Update(float _DeltaTime)
 
 void StageBaseLevel::LevelChangeStart()
 {
+	LoadStageFBXMesh();
 	//if (GUI == nullptr)
 	//{
 	//	GUI = GameEngineGUI::GUIWindowCreate<StageGUI>("StageGUI");
@@ -98,6 +99,29 @@ void StageBaseLevel::LevelChangeStart()
 void StageBaseLevel::LevelChangeEnd()
 {
 	/*GUI->Off();*/
+}
+
+void StageBaseLevel::LoadStageFBXMesh()
+{
+	if (GameEngineFBXMesh::Find("ALPHA_l02_01.fbx") != nullptr)
+	{
+		return;
+	}
+
+	{
+		GameEngineDirectory Dir = GameEnginePath::GetFileFullPath
+		(
+			"ContentResources",
+			{
+				"Map", "Location2"
+			}
+		);
+		std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".fbx" });
+		for (GameEngineFile& File : FBXFiles)
+		{
+			GameEngineFBXMesh::Load(File.GetFullPath());
+		}
+	}
 }
 
 void StageBaseLevel::CreateStage(const StageData& _Data)

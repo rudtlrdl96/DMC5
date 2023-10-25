@@ -121,38 +121,6 @@ void TestStageLevel::LevelChangeStart()
 
 	//임시 불러오기, 추후 수정 예정
 	StageBaseLevel::LevelChangeStart();
-	{
-		GameEngineDirectory Dir = GameEnginePath::GetFileFullPath
-		(
-			"ContentResources",
-			{
-				"Map", "TestMap"
-			}
-		);
-		std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".fbx" });
-		for (GameEngineFile& File : FBXFiles)
-		{
-			if (nullptr == GameEngineFBXMesh::Find(File.GetFileName()))
-			{
-				GameEngineFBXMesh::Load(File.GetFullPath());
-			}
-		}
-	}
-
-	{
-		GameEngineDirectory Dir = GameEnginePath::GetFileFullPath
-		(
-			"ContentResources",
-			{
-				"Map", "Location2"
-			}
-		);
-		std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".fbx" });
-		for (GameEngineFile& File : FBXFiles)
-		{
-			GameEngineFBXMesh::Load(File.GetFullPath());
-		}
-	}
 
 	SetCamera({ 0,0,-500 });
 
