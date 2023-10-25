@@ -119,7 +119,7 @@ void FieldMapObjEditGUI::ObjTypeSelectCombo()
 void FieldMapObjEditGUI::InputObject(std::vector<StageData>& _AllData, size_t& _Stage_current, size_t& _FieldMap_current)
 {
 	ObjTypeSelectCombo();
-	
+
 	if (ImGui::Button("AddObj"))
 	{
 		FieldMapObjData& tempData = _AllData[_Stage_current].MapDatas[_FieldMap_current].MapObjData.emplace_back();
@@ -166,6 +166,13 @@ void FieldMapObjEditGUI::ObjCombo(std::vector<StageData>& _AllData, size_t& _Sta
 	}
 
 	ShowTransformInfo(Parent->AcFieldMaps[_FieldMap_current].lock()->FieldMapObj[Obj_current].lock());
+	if (ImGui::Button("Delete"))
+	{
+		_AllData[_Stage_current].MapDatas[_FieldMap_current].MapObjData.erase(_AllData[_Stage_current].MapDatas[_FieldMap_current].MapObjData.begin() + Obj_current);
+		Obj_current = 0;
+		CreateStage(_AllData[_Stage_current]);
+		return;
+	}
 
 	if (ImGui::Button("Input ObjTransform"))
 	{

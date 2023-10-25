@@ -2,7 +2,7 @@
 #include "Item_RedOrbLump.h"
 #include <GameEngineCore/GameEngineFBXMesh.h>
 #include <GameEngineCore/GameEngineCollision.h>
-#include <GameEngineCore/PhysXCapsuleComponent.h>
+#include <GameEngineCore/PhysXBoxComponent.h>
 #include "FXSystem.h"
 #include "Item_RedOrb.h"
 Item_RedOrbLump::Item_RedOrbLump()
@@ -88,20 +88,17 @@ void Item_RedOrbLump::Start()
 		Orbs[i]->GetTransform()->SetLocalRotation(float4::UP * Random * 360.0f);
 	}
 
-	PhysX = CreateComponent<PhysXCapsuleComponent>();
-	PhysX->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
+	PhysX = CreateComponent<PhysXBoxComponent>();
 	const float4& AcScale = GetTransform()->GetLocalScale();
 	const float4& MeshScale = FBXMesh->GetMeshScale();
 	physx::PxVec3 PxScale = { MeshScale.x * AcScale.x, MeshScale.y * AcScale.y, MeshScale.z * AcScale.z };
 	PhysX->SetObstacleObject();
+	PhysX->SetPositionSetFromParentFlag(true);
 	PhysX->CreatePhysXActors(PxScale);
-	PhysX->TurnOffGravity();
-	PhysX->GetDynamic()->setMass(1000.0f);
 }
 
 void Item_RedOrbLump::Update(float _DeltaTime)
 {
-	PhysX->SetLinearVelocityZero();
 	if (GetLiveTime() < 0.12f) { return; }
 	if (nullptr != Col->Collision(CollisionOrder::PlayerAttack))
 	{
