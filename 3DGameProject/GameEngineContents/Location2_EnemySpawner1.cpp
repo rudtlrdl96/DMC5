@@ -56,24 +56,61 @@ void Location2_EnemySpawner1::Start()
 		BGMPlayer::SetBattleBGM();
 		GameEngineLevel* Level = GetLevel();
 		Level->DynamicThis<StageBaseLevel>()->RedSealWallOn();
-		MonsterAliveCount = 4;
+		MonsterAliveCount = 2;
 		NetworkObjectBase::PushReservedDestroyCallback(Net_ActorType::HellCaina, std::bind(&EnemySpawner::DestroyMonster, this));
 
 		if (false == NetworkManager::IsClient())
 		{
-			std::vector<float4> CainaPos =
+			std::vector<float4> EnemyPos =
 			{
-				{ 2808 , 86, -8972 }, { 3178 , 86, -9266 }, { 4095 , 86, -9370 }, { 4443 , 86, -9254 }
+				{ 3652 , 86, -9166 }, { 4289 , 86, -8878 }, { 3032 , 86, -9015 }
 			};
-			for (size_t i = 0; i < 4; ++i)
+			std::vector<float> EnemyRot = { 0, -16, 35};
+
+			for (size_t i = 0; i < 3; ++i)
 			{
-				std::shared_ptr<Enemy_HellCaina> Caina = Poolable<Enemy_HellCaina>::PopFromPool(Level, static_cast<int>(ActorOrder::Enemy));
-				Caina->GetPhysXComponent()->SetWorldPosition(CainaPos[i]);
-				Caina->GetPhysXComponent()->SetLinearVelocityZero();
-				Caina->GetTransform()->SetWorldPosition(CainaPos[i]);
-				Caina->GetPhysXComponent()->Off();
-				Caina->PushDeathCallback(std::bind(&EnemySpawner::DestroyMonster, this));
+				Level->TimeEvent.AddEvent(i * 0.3f, [=](GameEngineTimeEvent::TimeEvent& Event, GameEngineTimeEvent* Manager)
+				{
+					std::shared_ptr<Enemy_HellCaina> Enemy = Poolable<Enemy_HellCaina>::PopFromPool(Level, static_cast<int>(ActorOrder::Enemy));
+					Enemy->GetPhysXComponent()->SetWorldPosition(EnemyPos[i]);
+					Enemy->GetPhysXComponent()->SetWorldRotation(float4::UP * EnemyRot[i]);
+					Enemy->GetTransform()->SetWorldPosition(EnemyPos[i]);
+					Enemy->GetTransform()->SetWorldRotation(float4::UP * EnemyRot[i]);
+					Enemy->GetPhysXComponent()->SetLinearVelocityZero();
+					Enemy->GetPhysXComponent()->Off();
+					Enemy->PushDeathCallback(std::bind(&EnemySpawner::DestroyMonster, this));
+				});
 			}
 		}
+	};
+
+	MonsterWave_Events.resize(1);
+	MonsterWave_Events[0] = [this]()
+		{
+			MonsterAliveCount = 4;
+			if (false == NetworkManager::IsClient())
+			{
+				GameEngineLevel* Level = GetLevel();
+				std::vector<float4> EnemyPos =
+				{
+					{ 2984 , 86, -10050 }, { 4268 , 86, -10000 }, { 3658 , 86, -7647 }
+				};
+				std::vector<float> EnemyRot = { 28, -10, -174 };
+
+				for (size_t i = 0; i < 3; ++i)
+				{
+					Level->TimeEvent.AddEvent(i * 0.3f, [=](GameEngineTimeEvent::TimeEvent& Event, GameEngineTimeEvent* Manager)
+						{
+							std::shared_ptr<Enemy_HellCaina> Enemy = Poolable<Enemy_HellCaina>::PopFromPool(Level, static_cast<int>(ActorOrder::Enemy));
+							Enemy->GetPhysXComponent()->SetWorldPosition(EnemyPos[i]);
+							Enemy->GetPhysXComponent()->SetWorldRotation(float4::UP * EnemyRot[i]);
+							Enemy->GetTransform()->SetWorldPosition(EnemyPos[i]);
+							Enemy->GetTransform()->SetWorldRotation(float4::UP * EnemyRot[i]);
+							Enemy->GetPhysXComponent()->SetLinearVelocityZero();
+							Enemy->GetPhysXComponent()->Off();
+							Enemy->PushDeathCallback(std::bind(&EnemySpawner::DestroyMonster, this));
+						});
+				}
+			}
 	};
 }

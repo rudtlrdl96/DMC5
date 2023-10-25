@@ -262,7 +262,7 @@ void TestStageLevel::InitPool()
 	Poolable<Player_MirageBlade>::CreatePool(this, static_cast<int>(ActorOrder::Player), 8);
 
 	//Enemy_HellCaina
-	Poolable<Enemy_HellCaina>::CreatePool(this, static_cast<int>(ActorOrder::Enemy), 4,
+	Poolable<Enemy_HellCaina>::CreatePool(this, static_cast<int>(ActorOrder::Enemy), 6,
 		[this](std::shared_ptr<Enemy_HellCaina> _ActorPtr)
 	{
 		if (true == NetworkManager::IsClient())

@@ -36,7 +36,7 @@ void Location2_EnemySpawner0::Start()
 				std::vector<float> EnemyRot = { -3, 12};
 				for (size_t i = 0; i < 2; ++i)
 				{
-					Level->TimeEvent.AddEvent(i * 0.15f, [=](GameEngineTimeEvent::TimeEvent& Event, GameEngineTimeEvent* Manager)
+					Level->TimeEvent.AddEvent(i * 0.2f, [=](GameEngineTimeEvent::TimeEvent& Event, GameEngineTimeEvent* Manager)
 					{
 							std::shared_ptr<Enemy_Empusa> Empusa = Poolable<Enemy_Empusa>::PopFromPool(Level, static_cast<int>(ActorOrder::Enemy));
 							Empusa->GetPhysXComponent()->SetWorldPosition(EnemyPos[i]);
@@ -67,7 +67,7 @@ void Location2_EnemySpawner0::Start()
 
 			for (size_t i = 0; i < 5; ++i)
 			{
-				Level->TimeEvent.AddEvent(i * 0.15f, [=](GameEngineTimeEvent::TimeEvent& Event, GameEngineTimeEvent* Manager)
+				Level->TimeEvent.AddEvent(i * 0.3f, [=](GameEngineTimeEvent::TimeEvent& Event, GameEngineTimeEvent* Manager)
 					{
 						std::shared_ptr<Enemy_Empusa> Empusa = Poolable<Enemy_Empusa>::PopFromPool(Level, static_cast<int>(ActorOrder::Enemy));
 						Empusa->GetPhysXComponent()->SetWorldPosition(EnemyPos[i]);
