@@ -98,55 +98,15 @@ void Location2_Level::LevelChangeStart()
 {
 	//임시 불러오기, 추후 수정 예정
 	StageBaseLevel::LevelChangeStart();
-	{
-		GameEngineDirectory Dir = GameEnginePath::GetFileFullPath
-		(
-			"ContentResources",
-			{
-				"Map", "TestMap"
-			}
-		);
-		std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".fbx" });
-		for (GameEngineFile& File : FBXFiles)
-		{
-			if (nullptr == GameEngineFBXMesh::Find(File.GetFileName()))
-			{
-				GameEngineFBXMesh::Load(File.GetFullPath());
-			}
-		}
-	}
-
-
-	{
-		GameEngineDirectory Dir = GameEnginePath::GetFileFullPath
-		(
-			"ContentResources",
-			{
-				"Map", "Location2"
-			}
-		);
-		std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".fbx" });
-		for (GameEngineFile& File : FBXFiles)
-		{
-			GameEngineFBXMesh::Load(File.GetFullPath());
-		}
-	}
 
 	SetCamera({ 0,0,-500 });
 	CreateStage(Location2_StageDatas[0]);
 
-	if (false)
-	{
-		std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
-		Nero->SetUserControllType();
-		Nero->SetWorldPosition(PlayerStartPos);
-	}
-	else
-	{
-		std::shared_ptr<PlayerActor_Vergil> Vergil = CreateActor<PlayerActor_Vergil>();
-		Vergil->SetUserControllType();
-		Vergil->SetWorldPosition(PlayerStartPos);
-	}
+	MyPlayer = CreateActor<PlayerActor_Nero>();
+	MyPlayer->GetPhysXComponent()->SetWorldPosition({ PlayerStartPos });
+	MyPlayer->GetPhysXComponent()->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
+	MyPlayer->SetUserControllType();
+	NetworkManager::LinkNetwork(MyPlayer.get(), this);
 
 	if (nullptr == GameEngineTexture::Find("DistortionSample_00.jpg"))
 	{

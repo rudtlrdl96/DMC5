@@ -69,6 +69,8 @@ void StageEditLevel::Update(float _DeltaTime)
 
 void StageEditLevel::LevelChangeStart()
 {
+	StageBaseLevel::LevelChangeStart();
+
 	if (Editor == nullptr)
 	{
 		std::shared_ptr<GameEngineGUIWindow> EditGUI = GameEngineGUI::GUIWindowCreate<StageEditGUI>("StageEditGUI");
@@ -76,57 +78,6 @@ void StageEditLevel::LevelChangeStart()
 	}
 
 	Editor->On();
-
-	if (!IsResourceLoaded)
-	{
-		{
-			IsResourceLoaded = true;
-			GameEngineDirectory Dir = GameEnginePath::GetFileFullPath
-			(
-				"ContentResources",
-				{
-					"Map", "TestMap"
-				}
-			);
-			std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".fbx" });
-			for (GameEngineFile& File : FBXFiles)
-			{
-				GameEngineFBXMesh::Load(File.GetFullPath());
-			}
-		}
-
-		//{
-		//	IsResourceLoaded = true;
-		//	GameEngineDirectory Dir = GameEnginePath::GetFileFullPath
-		//	(
-		//		"ContentResources",
-		//		{
-		//			"Map", "TestObj"
-		//		}
-		//	);
-		//	std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".fbx" });
-		//	for (GameEngineFile& File : FBXFiles)
-		//	{
-		//		GameEngineFBXMesh::Load(File.GetFullPath());
-		//	}
-		//}
-
-		{
-			IsResourceLoaded = true;
-			GameEngineDirectory Dir = GameEnginePath::GetFileFullPath
-			(
-				"ContentResources",
-				{
-					"Map", "Location2"
-				}
-			);
-			std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".fbx" });
-			for (GameEngineFile& File : FBXFiles)
-			{
-				GameEngineFBXMesh::Load(File.GetFullPath());
-			}
-		}
-	}
 
 	IsDebugSwitch();
 

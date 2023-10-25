@@ -2,6 +2,7 @@
 #include "Location11_Level.h"
 
 #include <GameEngineCore/GameEngineFBXMesh.h>
+#include "SkyBox.h"
 
 #include "NetworkManager.h"
 #include "MapCollisionMesh.h"
@@ -45,20 +46,6 @@ void Location11_Level::Update(float _DeltaTime)
 void Location11_Level::LevelChangeStart()
 {
 	StageBaseLevel::LevelChangeStart();
-	{
-		GameEngineDirectory Dir = GameEnginePath::GetFileFullPath
-		(
-			"ContentResources",
-			{
-				"Map", "Location2"
-			}
-		);
-		std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".fbx" });
-		for (GameEngineFile& File : FBXFiles)
-		{
-			GameEngineFBXMesh::Load(File.GetFullPath());
-		}
-	}
 	SetCamera({ 0, 0, 0});
 	CreateStage(Location11_StageDatas[0]);
 	//AcWallCol.lock()->RenderOn();
@@ -77,4 +64,8 @@ void Location11_Level::LevelChangeStart()
 		BossMonster->GetPhysXComponent()->SetWorldRotation({ 0.0f, 90.0f, 0.0f });
 		Nero->SetBossCam(BossMonster->GetTransform());
 	}
+
+	AcSkyBox.lock()->SetSkyBloom(1);
+	GetDirectionalLight()->GetTransform()->SetWorldPosition({0.f, 10000.f, 0.f});
+	GetDirectionalLight()->GetTransform()->SetWorldRotation({45.f, 45.f, 45.f});
 }

@@ -10,6 +10,7 @@
 #include "ColorEffect.h"
 #include "JudgementCut.h"
 #include "FXAA_Effect.h"
+#include "SkyBox.h"
 
 Location19_Level::Location19_Level()
 {
@@ -43,20 +44,7 @@ void Location19_Level::Update(float _DeltaTime)
 void Location19_Level::LevelChangeStart()
 {
 	StageBaseLevel::LevelChangeStart();
-	{
-		GameEngineDirectory Dir = GameEnginePath::GetFileFullPath
-		(
-			"ContentResources",
-			{
-				"Map", "Location2"
-			}
-		);
-		std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".fbx" });
-		for (GameEngineFile& File : FBXFiles)
-		{
-			GameEngineFBXMesh::Load(File.GetFullPath());
-		}
-	}
+	
 	SetCamera({ 0, 0, 0 });
 	CreateStage(Location19_StageDatas[0]);
 	//AcWallCol.lock()->RenderOn();
@@ -66,4 +54,9 @@ void Location19_Level::LevelChangeStart()
 	Nero->GetPhysXComponent()->SetWorldPosition({ 0, 500, 0 });
 	Nero->SetUserControllType();
 	NetworkManager::LinkNetwork(Nero.get(), this);
+
+	AcSkyBox.lock()->SetSkyBloom(5);
+	GetDirectionalLight()->GetTransform()->SetWorldPosition({ 0.f,10000.f,0.f });
+	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 45.f,45.f,45.f });
+	GetDirectionalLight()->SetLightColor({1.f,0.85f,0.85f});
 }

@@ -55,7 +55,10 @@ protected:
 
 	std::vector<std::weak_ptr<class RedSeal>> RedSealWalls;
 
+	float4 PlayerStartPos = float4::ZERO;
+
 	//스테이지 생성
+	void LoadStageFBXMesh();
 	void CreateStage(const StageData& _Data); // 데이터 넣어주면 스테이지 생성
 
 private:
