@@ -121,7 +121,6 @@ void Enemy_ProtoAngelo::EnemyAnimationLoad()
 	NewDir.Move("Enemy");
 	NewDir.Move("Proto");
 	NewDir.Move("Animation");
-	NewDir.Move("attack");
 
 	//AnimationEvent::LoadAll
 	//(
@@ -183,6 +182,7 @@ void Enemy_ProtoAngelo::Start()
 
 	// 랜더러 크기 설정
 	EnemyRenderer->GetTransform()->AddLocalPosition({ 0.0f, -45.0f, 0.0f });
+	EnemyRenderer->GetTransform()->AddLocalRotation({ 90.0f, 0.0f, 0.0f });
 
 	// 콜리전 옵션, 크기 설정
 	MonsterAttackCollision->SetAttackData(DamageType::Light, 100);
@@ -672,9 +672,24 @@ void Enemy_ProtoAngelo::ChangeState_Client(int _StateValue)
 void Enemy_ProtoAngelo::EnemyCreateFSM()
 {
 	// 최초 등장_02
-	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Idle,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Appear_01,
 	.Start = [=] {
 	EffectRenderer->PlayFX("Enemy_Appear.effect");
+	EnemyRenderer->ChangeAnimation("em0601_Appear_01.fbx");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Idle,
+	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0601_Idle_Loop.fbx");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -683,7 +698,7 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	}
 		});
 
-	EnemyFSM.ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
+	EnemyFSM.ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Appear_01);
 }
 
 void Enemy_ProtoAngelo::EnemyCreateFSM_Client()

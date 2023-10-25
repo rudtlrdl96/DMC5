@@ -2,6 +2,7 @@
 
 enum FSM_State_ProtoAngelo
 {
+	ProtoAngelo_Appear_01,                       // em0601_Appear_01, 서있음
 	ProtoAngelo_Idle,                       // em0001_Idle_01_loop, 서있음
 };
 
