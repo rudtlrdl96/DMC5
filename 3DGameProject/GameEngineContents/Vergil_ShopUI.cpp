@@ -20,6 +20,7 @@ Vergil_ShopUI::~Vergil_ShopUI()
 void Vergil_ShopUI::Start()
 {
 	SkillButton = GetLevel()->CreateActor<Shop_TitleButton>();
+	SkillButton->GetTransform()->SetParent(GetTransform());
 	SkillButton->SetUIText("SKILLS");
 	SkillButton->GetTransform()->SetLocalPosition(float4{ -600.0f,370.0f,0.0f }*GameEngineActor::ScreenRatio);
 	YamatoButton = GetLevel()->CreateActor<Shop_TitleButton>();
@@ -75,7 +76,10 @@ void Vergil_ShopUI::Start()
 
 void Vergil_ShopUI::Update(float _Delta)
 {
-
+	if (true == GameEngineInput::IsUp("UI_ESC"))
+	{
+		Off();
+	}
 	SkillButton->SetSelectValue(true);
 	YamatoButton->SetUIText("YAMATO");
 	MirgeButton->SetUIText("MIRGE BLADE");
