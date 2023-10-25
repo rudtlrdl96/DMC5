@@ -175,6 +175,7 @@
     <FxCompile Include="HDREffect.hlsl" />
     <FxCompile Include="JudgementCutShader.hlsl" />
     <FxCompile Include="Light.fx" />
+    <FxCompile Include="MotionBlurEffect.hlsl" />
     <FxCompile Include="Rain.hlsl" />
     <FxCompile Include="Reflection.fx" />
     <FxCompile Include="MyShader.fx" />

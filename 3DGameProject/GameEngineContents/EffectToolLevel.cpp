@@ -22,7 +22,7 @@ void EffectToolLevel::Start()
 
 	{
 		std::shared_ptr<DistortionEffect> Distortion = GetCamera(0)->GetCamTarget()->CreateEffect<DistortionEffect>();
-		Distortion->SetMaskTexture(GetCamera(0)->GetCamAlphaTarget(), 2);
+		Distortion->SetMaskTexture(GetCamera(0)->GetCamAlphaTarget(), 1);
 		Distortion->SetDistortionValue(8, 4.5);
 	}
 }

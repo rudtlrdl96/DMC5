@@ -302,6 +302,16 @@ void ContentsCore::ContentsResourcesCreate()
 	}	
 	
 	{
+		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("MotionBlur");
+
+		Pipe->SetVertexShader("MotionBlurEffect.hlsl");
+		Pipe->SetRasterizer("Engine2DBase");
+		Pipe->SetPixelShader("MotionBlurEffect.hlsl");
+		Pipe->SetBlendState("MergeBlend");
+		Pipe->SetDepthState("EngineDepth");
+	}	
+
+	{
 		std::shared_ptr<GameEngineMaterial> Pipe = GameEngineMaterial::Create("HDREffect");
 
 		Pipe->SetVertexShader("HDREffect.hlsl");

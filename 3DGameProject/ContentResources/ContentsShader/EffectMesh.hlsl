@@ -86,8 +86,7 @@ SamplerState ENGINEBASE : register(s0);
 struct AlphaOutPut
 {
     float4 ResultColor : SV_Target0;
-    float4 PosTarget : SV_Target1;
-    float4 DistortionColor : SV_Target2;
+    float4 DistortionColor : SV_Target1;
 };
 
 cbuffer EffectData : register(b2)
@@ -135,9 +134,7 @@ AlphaOutPut MeshTexture_PS(Output _Input)
                
     Result.ResultColor *= EffectMulColor;
     Result.ResultColor += EffectPlusColor;
-    
-    Result.PosTarget = _Input.VIEWPOSITION;
-    
+        
     float saturation = HSVColor.r * 2;
     float brightness = HSVColor.g * 2 - 1;
     float contrast = HSVColor.b * 2;

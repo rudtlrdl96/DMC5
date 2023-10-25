@@ -49,6 +49,11 @@ public:
 		return CamTarget;
 	}
 
+	std::shared_ptr<GameEngineRenderTarget> GetCamPosTarget()
+	{
+		return CamPosTarget;
+	}
+
 	std::shared_ptr<GameEngineRenderTarget> GetCamForwardTarget()
 	{
 		return CamForwardTarget;
@@ -166,6 +171,7 @@ private:
 	void Release();
 
 	std::shared_ptr<class GameEngineRenderTarget> CamTarget = nullptr;
+	std::shared_ptr<class GameEngineRenderTarget> CamPosTarget = nullptr;
 
 	std::shared_ptr<class GameEngineRenderTarget> CamForwardTarget = nullptr;
 	std::shared_ptr<class GameEngineRenderTarget> CamDeferrdTarget = nullptr;

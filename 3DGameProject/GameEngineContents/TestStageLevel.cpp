@@ -9,6 +9,7 @@
 #include "FXAA_Effect.h"
 #include "ZoomEffect.h"
 #include "DistortionEffect.h"
+#include "MotionBlurEffect.h"
 
 #include "Plane.h"
 #include "TestObject.h"
@@ -58,17 +59,22 @@ void TestStageLevel::Start()
 
 	{
 		std::shared_ptr<DistortionEffect> Distortion = GetCamera(0)->GetCamTarget()->CreateEffect<DistortionEffect>();
-		Distortion->SetMaskTexture(GetCamera(0)->GetCamAlphaTarget(), 2);
+		Distortion->SetMaskTexture(GetCamera(0)->GetCamAlphaTarget(), 1);
 		Distortion->SetDistortionValue(10, 10);
 		Distortion->SetMaxPixelValue(100, 100);
 	}
 
 	{
 		std::shared_ptr<DistortionEffect> Distortion = GetCamera(0)->GetCamTarget()->CreateEffect<DistortionEffect>();
-		Distortion->SetMaskTexture(GetCamera(0)->GetCamAlphaTarget(), 2);
+		Distortion->SetMaskTexture(GetCamera(100)->GetCamAlphaTarget(), 1);
 		Distortion->SetDistortionValue(10, 10);
 		Distortion->SetMaxPixelValue(100, 100);
-	}
+	}	
+	
+	//{
+	//	std::shared_ptr<MotionBlurEffect> Blur = GetCamera(0)->GetCamTarget()->CreateEffect<MotionBlurEffect>();
+	//	Blur->SetCamPosTarget(GetMainCamera()->GetCamPosTarget());
+	//}
 		
 	StageBaseLevel::Start();
 

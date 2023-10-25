@@ -25,7 +25,7 @@ void StreetLight_On::Start()
 #ifdef _DEBUG
 
 #else
-	PointLight->DynamicShadowOn();
+	//PointLight->DynamicShadowOn();
 #endif // _DEBUG
 
 	StaticFieldMapObject::Start();

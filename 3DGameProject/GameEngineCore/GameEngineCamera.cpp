@@ -34,6 +34,7 @@ void GameEngineCamera::CaptureCubemap(const float4& _Pos, const float4& _Rot, co
 	Height = _CaptureScale.y;
 
 	CamTarget->Clear();
+	CamPosTarget->Clear();
 	CamForwardTarget->Clear();
 
 	if (nullptr != CamDeferrdTarget)
@@ -144,6 +145,8 @@ void GameEngineCamera::Start()
 	Height = ViewPortData.Height;
 
 	CamTarget = GameEngineRenderTarget::Create();
+	CamPosTarget = GameEngineRenderTarget::Create();
+
 	CamForwardTarget = GameEngineRenderTarget::Create();
 
 	CamAlphaTarget = GameEngineRenderTarget::Create();
@@ -159,6 +162,7 @@ void GameEngineCamera::RenderTargetTextureLoad()
 	}
 
 	CamTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	CamPosTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 	CamTarget->CreateDepthTexture();
 
 	CamForwardTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
@@ -208,7 +212,6 @@ void GameEngineCamera::RenderTargetTextureLoad()
 
 	CamAlphaTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 	CamAlphaTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
-	CamAlphaTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 	CamAlphaTarget->SetDepthTexture(CamTarget->GetDepthTexture());
 
 	IsLoad = true;
@@ -225,6 +228,7 @@ void GameEngineCamera::RenderTargetTextureRelease()
 	DefferdMergeUnit.ShaderResHelper.AllResourcesRelease();
 
 	CamTarget->ReleaseTextures();
+	CamPosTarget->ReleaseTextures();
 	CamForwardTarget->ReleaseTextures();
 
 	if (nullptr != CamDeferrdTarget)
@@ -714,6 +718,15 @@ void GameEngineCamera::Render(float _DeltaTime)
 		}
 
 		CamTarget->Merge(CamAlphaTarget);
+
+		CamPosTarget->Clear();
+		CamPosTarget->Merge(CamForwardTarget, 1);
+
+		if (nullptr != CamDeferrdTarget)
+		{		
+			CamPosTarget->Merge(CamDeferrdTarget, 1);
+		}
+
 		CamTarget->Effect(_DeltaTime);
 	}
 }
