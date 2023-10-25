@@ -15,9 +15,9 @@ public:
 	EnemySpawner& operator=(const EnemySpawner& _Other) = delete;
 	EnemySpawner& operator=(EnemySpawner&& _Other) noexcept = delete;
 
+	void DestroyMonster();
 protected:
 	void Start() override;
-	void DestroyMonster();
 
 	std::vector<std::function<void()>> MonsterWave_Events;
 	size_t MonsterAliveCount = 0;

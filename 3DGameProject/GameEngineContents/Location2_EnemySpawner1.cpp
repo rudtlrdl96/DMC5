@@ -22,7 +22,10 @@ Location2_EnemySpawner1::~Location2_EnemySpawner1()
 void Location2_EnemySpawner1::Start()
 {
 	EnemySpawner::Start();
-
+	for (size_t i = 0; i < 6; ++i)
+	{
+		NetworkObjectBase::PushReservedDestroyCallback(Net_ActorType::HellCaina, std::bind(&EnemySpawner::DestroyMonster, this));
+	}
 	//Event = [this]()
 	//	{
 	//		GameEngineLevel* Level = GetLevel();

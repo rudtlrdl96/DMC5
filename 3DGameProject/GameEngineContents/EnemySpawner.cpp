@@ -4,6 +4,7 @@
 #include "TestStageLevel.h"
 #include "ZoomEffect.h"
 #include "BasePlayerActor.h"
+#include "NetworkManager.h"
 EnemySpawner::EnemySpawner()
 {
 
@@ -32,28 +33,36 @@ void EnemySpawner::DestroyMonster()
 	}
 
 	BGMPlayer::SetBattleEnd();
-	ZoomEffect::GetZoomEffect()->SetSpeed(6.0f);
-	ZoomEffect::GetZoomEffect()->EffectOn(1.5f);
-	float BeforeTimeScale = GameEngineTime::GlobalTime.GetGlobalTimeScale();
-	GameEngineTime::GlobalTime.SetGlobalTimeScale(0.5f);
-	GetLevel()->TimeEvent.AddEvent(1.0f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+
+	if (false == NetworkManager::IsClient())
 	{
-		GameEngineTime::GlobalTime.SetGlobalTimeScale(BeforeTimeScale);
-		ZoomEffect::GetZoomEffect()->SetSpeed(3.0f);
-		ZoomEffect::GetZoomEffect()->EffectOff();
-	});
-
-	GetLevel()->TimeEvent.AddEvent(2.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-		{
-			if (CutScenePosStart != float4::ZERO)
+		ZoomEffect::GetZoomEffect()->SetSpeed(6.0f);
+		ZoomEffect::GetZoomEffect()->EffectOn(1.5f);
+		float BeforeTimeScale = GameEngineTime::GlobalTime.GetGlobalTimeScale();
+		GameEngineTime::GlobalTime.SetGlobalTimeScale(0.5f);
+		GetLevel()->TimeEvent.AddEvent(1.0f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 			{
-				BasePlayerActor::GetMainPlayer()->SetCutScene(CutScenePosStart, CutScenePosEnd, CutSceneRotStart, CutSceneRotEnd, 5.0f);
-			}
-		});
+				GameEngineTime::GlobalTime.SetGlobalTimeScale(BeforeTimeScale);
+				ZoomEffect::GetZoomEffect()->SetSpeed(3.0f);
+				ZoomEffect::GetZoomEffect()->EffectOff();
+			});
 
-	GetLevel()->TimeEvent.AddEvent(3.0f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-		{
-			GetLevel()->DynamicThis<StageBaseLevel>()->RedSealWallOff();
-		});
+		GetLevel()->TimeEvent.AddEvent(2.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				if (CutScenePosStart != float4::ZERO)
+				{
+					BasePlayerActor::GetMainPlayer()->SetCutScene(CutScenePosStart, CutScenePosEnd, CutSceneRotStart, CutSceneRotEnd, 5.0f);
+				}
+			});
+
+		GetLevel()->TimeEvent.AddEvent(3.0f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				GetLevel()->DynamicThis<StageBaseLevel>()->RedSealWallOff();
+			});
+	}
+	else
+	{
+		GetLevel()->DynamicThis<StageBaseLevel>()->RedSealWallOff();
+	}
 	Death();
 }
