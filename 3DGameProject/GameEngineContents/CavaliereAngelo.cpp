@@ -1013,7 +1013,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	{
 		SlerpTurn(_DeltaTime);
 		AllDirectSetting_Normal();
-		SetForwardMove(120.0f);
+		SetForwardMove(180.0f);
 	}
 
 	if (true == EnemyRenderer->IsAnimationEnd())
@@ -1046,7 +1046,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	{
 		SlerpTurn(_DeltaTime * 2.0f);
 		AllDirectSetting_Normal();
-		SetForwardMove(140.0f);
+		SetForwardMove(180.0f);
 	}
 
 	if (true == EnemyRenderer->IsAnimationEnd())
@@ -1072,7 +1072,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	{
 		SlerpTurn(_DeltaTime * 2.0f);
 		AllDirectSetting_Normal();
-		SetForwardMove(140.0f);
+		SetForwardMove(180.0f);
 	}
 
 	if (true == EnemyRenderer->IsAnimationEnd())
@@ -1095,7 +1095,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 
 	{
 		BossTurn();
-		SetForwardMove(220.0f);
+		SetForwardMove(280.0f);
 	}
 
 	if (true == IsRecognize)
@@ -1125,7 +1125,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 
 	{
 		AllDirectSetting_Normal();
-		SetForwardMove(140.0f);
+		SetForwardMove(180.0f);
 	}
 
 	if (true == EnemyRenderer->IsAnimationEnd())
@@ -1152,7 +1152,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	{
 		SlerpTurn(_DeltaTime * 2.0f);
 		AllDirectSetting_Normal();
-		SetForwardMove(140.0f);
+		SetForwardMove(180.0f);
 	}
 
 	if (true == IsRecognize)
@@ -1198,7 +1198,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	{
 		BossTurn();
-		SetForwardMove(200.0f);
+		SetForwardMove(240.0f);
 	}
 
 	if (true == IsRecognize)
@@ -1232,7 +1232,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 
 	{
 		BossTurn();
-		SetForwardMove(220.0f);
+		SetForwardMove(200.0f);
 	}
 
 	if (true == EnemyRenderer->IsAnimationEnd())
