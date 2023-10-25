@@ -11,6 +11,8 @@
 #include "JudgementCut.h"
 #include "FXAA_Effect.h"
 
+#include "CavaliereAngelo.h"
+
 Location11_Level::Location11_Level()
 {
 
@@ -63,7 +65,16 @@ void Location11_Level::LevelChangeStart()
 	//AcGroundCol.lock()->RenderOn();
 
 	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
-	Nero->GetPhysXComponent()->SetWorldPosition({ -31000, 3200, -200 });
+	Nero->GetPhysXComponent()->SetWorldPosition({ -31000, 1950, -360 });
+	Nero->GetPhysXComponent()->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
 	Nero->SetUserControllType();
 	NetworkManager::LinkNetwork(Nero.get(), this);
+
+	if (nullptr == BossMonster)
+	{
+		BossMonster = CreateActor<CavaliereAngelo>();
+		BossMonster->GetPhysXComponent()->SetWorldPosition({ -35500, 1950, -365 });
+		BossMonster->GetPhysXComponent()->SetWorldRotation({ 0.0f, 90.0f, 0.0f });
+		Nero->SetBossCam(BossMonster->GetTransform());
+	}
 }
