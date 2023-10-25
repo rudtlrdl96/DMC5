@@ -18,9 +18,10 @@ public:
 protected:
 	void Start() override;
 	void DestroyMonster();
-	size_t MonsterAliveCount = 0;
 
+	std::vector<std::function<void()>> MonsterWave_Events;
+	size_t MonsterAliveCount = 0;
 private:
-	std::vector<float4> EnemyPositions = std::vector<float4>();
+	int MonsterWaveCount = 0;
 };
 

@@ -277,7 +277,7 @@ void TestStageLevel::InitPool()
 	});
 
 	//Enemy_Empusa
-	Poolable<Enemy_Empusa>::CreatePool(this, static_cast<int>(ActorOrder::Enemy), 5,
+	Poolable<Enemy_Empusa>::CreatePool(this, static_cast<int>(ActorOrder::Enemy), 6,
 		[this](std::shared_ptr<Enemy_Empusa> _ActorPtr)
 	{
 		if (true == NetworkManager::IsClient())

@@ -44,4 +44,27 @@ void Location2_EnemySpawner0::Start()
 				}
 			}
 		};
+
+	MonsterWave_Events.resize(1);
+	MonsterWave_Events[0] = [this]()
+	{
+		MonsterAliveCount = 3;
+		if (false == NetworkManager::IsClient())
+		{
+			GameEngineLevel* Level = GetLevel();
+			std::vector<float4> EnemyPos =
+			{
+				{ 1029, 55, 1337 }, { 91, 55, 82 }, { -1228, 55, 712 }
+			};
+			for (size_t i = 0; i < 3; ++i)
+			{
+				std::shared_ptr<Enemy_Empusa> Empusa = Poolable<Enemy_Empusa>::PopFromPool(Level, static_cast<int>(ActorOrder::Enemy));
+				Empusa->GetPhysXComponent()->SetWorldPosition(EnemyPos[i]);
+				Empusa->GetPhysXComponent()->SetLinearVelocityZero();
+				Empusa->GetTransform()->SetWorldPosition(EnemyPos[i]);
+				Empusa->GetPhysXComponent()->Off();
+				Empusa->PushDeathCallback(std::bind(&EnemySpawner::DestroyMonster, this));
+			}
+		}
+	};
 }

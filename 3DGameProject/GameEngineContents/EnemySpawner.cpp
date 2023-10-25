@@ -24,7 +24,11 @@ void EnemySpawner::DestroyMonster()
 
 	if (0 < MonsterAliveCount)
 		return;
-
+	if (MonsterWaveCount < MonsterWave_Events.size())
+	{
+		MonsterWave_Events[MonsterWaveCount++]();
+		return;
+	}
 	BGMPlayer::SetBattleEnd();
 	GetLevel()->DynamicThis<StageBaseLevel>()->RedSealWallOff();
 
