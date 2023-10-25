@@ -26,7 +26,7 @@
 #include "Enemy_ProtoAngelo.h"
 
 #include "BGMPlayer.h"
-
+#include "Item_RedOrbLump.h"
 TestLevel::TestLevel()
 {
 }
@@ -128,6 +128,7 @@ void TestLevel::LevelChangeStart()
 			NetworkManager::LinkNetwork(Player.get(), this);
 		}
 	}
+	CreateActor<Item_RedOrbLump>();
 	//if (nullptr == TestObj)
 	//{
 	//	TestObj = CreateActor<TestObject>();
@@ -163,12 +164,12 @@ void TestLevel::LevelChangeStart()
 		Flat->GetPhysXComponent()->SetWorldPosition({ 0, -50, 0 });
 	}
 
-	if (nullptr == HellAntenora)
-	{
-		HellAntenora = CreateActor<Enemy_HellAntenora>();
-		HellAntenora->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-		HellAntenora->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	}
+	//if (nullptr == HellAntenora)
+	//{
+	//	HellAntenora = CreateActor<Enemy_HellAntenora>();
+	//	HellAntenora->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//	HellAntenora->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	//}
 
 	//if (nullptr == Scudo)
 	//{

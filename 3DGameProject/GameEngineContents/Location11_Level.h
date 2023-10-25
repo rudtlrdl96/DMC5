@@ -21,6 +21,7 @@ protected:
 	void LevelChangeStart() override;
 
 private:
+	std::shared_ptr<class CavaliereAngelo> BossMonster = nullptr;
 
 };
 

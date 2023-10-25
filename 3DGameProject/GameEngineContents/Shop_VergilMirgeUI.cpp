@@ -129,7 +129,7 @@ void Shop_VergilMirgeUI::ActivSkill()
 		if (IsSpiralBlade == false && GameEngineInput::IsUp("UI_Enter") == true)
 		{
 			IsSpiralBlade = true;
-			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
+			Shop_ItemButton::SecoundSkills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 	}
 	else if (Index == 1)
@@ -137,7 +137,7 @@ void Shop_VergilMirgeUI::ActivSkill()
 		if (IsStormBlade == false && GameEngineInput::IsUp("UI_Enter") == true)
 		{
 			IsStormBlade = true;
-			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
+			Shop_ItemButton::SecoundSkills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 	}
 	else if (Index == 2)
@@ -145,7 +145,7 @@ void Shop_VergilMirgeUI::ActivSkill()
 		if (IsLesteringBlade == false && GameEngineInput::IsUp("UI_Enter") == true)
 		{
 			IsLesteringBlade = true;
-			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
+			Shop_ItemButton::SecoundSkills[Index]->GetBuyRender()->SetText("구매완료");
 
 		}
 	}
@@ -154,7 +154,7 @@ void Shop_VergilMirgeUI::ActivSkill()
 		if (IsHeavyRainBlade == false && GameEngineInput::IsUp("UI_Enter") == true)
 		{
 			IsHeavyRainBlade = true;
-			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
+			Shop_ItemButton::SecoundSkills[Index]->GetBuyRender()->SetText("구매완료");
 
 		}
 	}
