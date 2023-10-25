@@ -510,7 +510,9 @@
     <ClInclude Include="DivinityStatue.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerHPUI.h" />
+    <ClInclude Include="PlayerHPUI.h">
+      <Filter>UI\UI_Actor\PlayUI\PlayerHPGlass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -1019,7 +1021,9 @@
     <ClCompile Include="DivinityStatue.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerHPUI.cpp" />
+    <ClCompile Include="PlayerHPUI.cpp">
+      <Filter>UI\UI_Actor\PlayUI\PlayerHPGlass</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
