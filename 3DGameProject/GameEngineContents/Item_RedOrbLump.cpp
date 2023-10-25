@@ -89,17 +89,19 @@ void Item_RedOrbLump::Start()
 	}
 
 	PhysX = CreateComponent<PhysXCapsuleComponent>();
-	PhysX->SetPhysxMaterial(1.0f, 1.0f, 0.05f);
+	PhysX->SetPhysxMaterial(0.0f, 0.0f, 0.0f);
 	const float4& AcScale = GetTransform()->GetLocalScale();
 	const float4& MeshScale = FBXMesh->GetMeshScale();
 	physx::PxVec3 PxScale = { MeshScale.x * AcScale.x, MeshScale.y * AcScale.y, MeshScale.z * AcScale.z };
 	PhysX->SetObstacleObject();
 	PhysX->CreatePhysXActors(PxScale);
 	PhysX->TurnOffGravity();
+	PhysX->GetDynamic()->setMass(1000.0f);
 }
 
 void Item_RedOrbLump::Update(float _DeltaTime)
 {
+	PhysX->SetLinearVelocityZero();
 	if (GetLiveTime() < 0.12f) { return; }
 	if (nullptr != Col->Collision(CollisionOrder::PlayerAttack))
 	{
