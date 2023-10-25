@@ -84,6 +84,11 @@ public:
 		return FrameRate;
 	}
 
+	static const std::map<std::string, std::shared_ptr<GameEngineLevel>> GetLevelMap()
+	{
+		return LevelMap;
+	}
+
 protected:
 
 private:

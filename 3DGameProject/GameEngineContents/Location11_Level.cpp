@@ -59,8 +59,8 @@ void Location11_Level::LevelChangeStart()
 	}
 	SetCamera({ 0, 0, 0});
 	CreateStage(AllStageDatas[1]);
-	AcWallCol.lock()->RenderOn();
-	AcGroundCol.lock()->RenderOn();
+	//AcWallCol.lock()->RenderOn();
+	//AcGroundCol.lock()->RenderOn();
 
 	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
 	Nero->GetPhysXComponent()->SetWorldPosition({ -31000, 3200, -200 });

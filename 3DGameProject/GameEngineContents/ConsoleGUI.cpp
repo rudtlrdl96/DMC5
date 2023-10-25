@@ -49,6 +49,14 @@ void ConsoleGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
 		ImGui::Text("%04d: %s", n, LogDatas[n].data());
 	}
 
+	ImGui::SeparatorText("Move To");
+	
+	for (auto& i : GameEngineCore::GetLevelMap())
+	{
+		if (ImGui::Button(i.first.c_str()))
+			GameEngineCore::ChangeLevel(i.first.c_str());
+	}
+
 	ImGui::EndChild();
 
 }
