@@ -1,6 +1,6 @@
 #include "PrecompileHeader.h"
 #include "Location2_EnemySpawner1.h"
-#include "Enemy_Empusa.h"
+#include "Enemy_HellCaina.h"
 #include "StageBaseLevel.h"
 #include "BGMPlayer.h"
 #include "NetworkManager.h"
@@ -36,10 +36,10 @@ void Location2_EnemySpawner1::Start()
 
 			for (size_t i = 0; i < 3; ++i)
 			{
-				std::shared_ptr<Enemy_Empusa> Enemy = nullptr;
+				std::shared_ptr<Enemy_HellCaina> Enemy = nullptr;
 
 				//싱글이거나 호스트일때만 몬스터를 생성 후 포인터를 반환합니다.(클라이언트인 경우 nullptr 반환)
-				Enemy = NetworkManager::CreateNetworkActor<Enemy_Empusa>(Level, static_cast<int>(ActorOrder::Enemy));
+				Enemy = NetworkManager::CreateNetworkActor<Enemy_HellCaina>(Level, static_cast<int>(ActorOrder::Enemy));
 				if (nullptr == Enemy)
 					continue;
 
