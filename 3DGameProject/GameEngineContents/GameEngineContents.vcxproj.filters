@@ -525,6 +525,9 @@
     <ClInclude Include="Enemy_Qliphoth.h">
       <Filter>Actor\Enemy\NormalEnemy\Qliphoth</Filter>
     </ClInclude>
+    <ClInclude Include="Shop_EnterWindow.h">
+      <Filter>UI\UI_Actor\ShopUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -1044,6 +1047,9 @@
     </ClCompile>
     <ClCompile Include="Enemy_Qliphoth.cpp">
       <Filter>Actor\Enemy\NormalEnemy\Qliphoth</Filter>
+    </ClCompile>
+    <ClCompile Include="Shop_EnterWindow.cpp">
+      <Filter>UI\UI_Actor\ShopUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

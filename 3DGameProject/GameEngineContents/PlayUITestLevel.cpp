@@ -10,7 +10,7 @@
 #include "BossHpBar.h"
 #include "RankUI.h"
 #include "DistortionEffect.h"
-
+#include "Shop_EnterWindow.h"
 PlayUITestLevel::PlayUITestLevel()
 {
 }
@@ -21,7 +21,8 @@ PlayUITestLevel::~PlayUITestLevel()
 
 void PlayUITestLevel::Start()
 {
-
+	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
 }
 
 void PlayUITestLevel::Update(float _DeltaTime)
@@ -34,9 +35,6 @@ void PlayUITestLevel::LevelChangeStart()
 {
 	GameEngineLevel::LevelChangeStart();
 
-	std::shared_ptr<DistortionEffect> Distortion = GetCamera(100)->GetCamTarget()->CreateEffect<DistortionEffect>();
-	Distortion->SetMaskTexture(GetCamera(100)->GetCamAlphaTarget(), 1);
-	Distortion->SetDistortionValue(8, 4.5);
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
@@ -54,6 +52,8 @@ void PlayUITestLevel::LevelChangeStart()
 
 		}
 	}
+
+	std::shared_ptr<Shop_EnterWindow> Test = CreateActor<Shop_EnterWindow>();
 }
 
 void PlayUITestLevel::LevelChangeEnd()

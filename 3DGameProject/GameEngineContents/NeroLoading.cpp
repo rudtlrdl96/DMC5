@@ -81,7 +81,7 @@ void NeroLoading::Start()
 void NeroLoading::Update(float _Delta)
 {
 	// 쓰레드 진행률 = CurLoading
-	GaugeFrontRender->ImageClippingX(static_cast<float>(CurLoading) / static_cast<float>(MaxLoading), ClipXDir::Left);
+	GaugeFrontRender->ImageClippingX(CurLoading, ClipXDir::Left);
 	TextSetting();
 
 }
@@ -114,15 +114,15 @@ void NeroLoading::TextSetting()
 {
 	if (Index == 0)
 	{
-		FirstLine->SetText("무슨 말을 적는게 좋을까요?");
-		SecoundLine->SetText("아! 하고 싶은 말이 있어요");
-		ThirdLine->SetText("옆에 화살표를 눌러주시겠어요?");
+		FirstLine->SetText("설명란에 무슨말을 넣을까");
+		SecoundLine->SetText("그냥 인게임 처럼 할까");
+		ThirdLine->SetText("흠...구조가 이게 맞나");
 	}
 	else
 	{
-		FirstLine->SetText("우리팀 사랑해요");
-		SecoundLine->SetText("우리 모두 힘내봐여");
-		ThirdLine->SetText("더 열심히 할게요");
+		FirstLine->SetText("1주일 남았다");
+		SecoundLine->SetText("타닥..타닥..타닥");
+		ThirdLine->SetText("이겨야만 한다..");
 	}
 }
 

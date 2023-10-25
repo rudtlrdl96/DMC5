@@ -370,6 +370,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="ReflectionSetter.h" />
+    <ClInclude Include="Shop_EnterWindow.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="SoundController.h">
       <SubType>
       </SubType>
@@ -992,6 +996,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="ReflectionSetter.cpp" />
+    <ClCompile Include="Shop_EnterWindow.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="SoundController.cpp">
       <SubType>
       </SubType>

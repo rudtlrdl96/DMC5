@@ -13,6 +13,10 @@ public:
 	NeroLoading(NeroLoading&& _Other) noexcept = delete;
 	NeroLoading& operator=(const NeroLoading& _Other) = delete;
 	NeroLoading& operator=(NeroLoading&& _Other) noexcept = delete;
+	void SetThreedPersent(float _Persent)
+	{
+		CurLoading = _Persent;
+	}
 
 protected:
 	void Start() override;
@@ -34,7 +38,7 @@ private:
 	int Index = 0;
 	float fillTime = 0.0f;
 	int MaxLoading = 100;
-	int CurLoading = 0;
+	float CurLoading = 0.0f;
 
 };
 
