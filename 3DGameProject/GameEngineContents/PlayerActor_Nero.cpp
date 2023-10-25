@@ -3666,18 +3666,6 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 		}
 
 		ItemColCheck();
-		if (GameEngineInput::IsDown("SelectLevel_01"))
-		{
-			AddBreaker(DevilBreaker::Overture);
-		}
-		if (GameEngineInput::IsDown("SelectLevel_02"))
-		{
-			AddBreaker(DevilBreaker::Gerbera);
-		}
-		if (GameEngineInput::IsDown("SelectLevel_03"))
-		{
-			AddBreaker(DevilBreaker::BusterArm);
-		}
 	}
 }
 

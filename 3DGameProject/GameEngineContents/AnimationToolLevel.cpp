@@ -24,10 +24,6 @@ void AnimationToolLevel::Start()
 
 void AnimationToolLevel::Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsDown("ReturnToMainLevel"))
-	{
-		GameEngineCore::ChangeLevel("MainLevel");
-	}
 }
 
 void AnimationToolLevel::LevelChangeStart()
