@@ -54,11 +54,21 @@ Texture2D SpecularTexture : register(t2); // ATOS
 
 SamplerState ENGINEBASE : register(s0);
 
-float4 MeshTexture_PS(Output _Input) : SV_Target0
+struct ForwardOutPut
 {
+    float4 ColorTarget : SV_Target0;
+    float4 PosTarget : SV_Target1;
+};
+
+ForwardOutPut MeshTexture_PS(Output _Input)
+{
+    ForwardOutPut Result;
+    
     float4 AlbmData = DiffuseTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
     float4 NrmrData = NormalTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
     float4 AtosData = SpecularTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
+    
+    Result.PosTarget = _Input.VIEWPOSITION;
     
     if (1.0f != AtosData.a)
     {
@@ -70,5 +80,7 @@ float4 MeshTexture_PS(Output _Input) : SV_Target0
     Color += AddColor;
     Color *= MulColor;
         
-    return Color + (NrmrData * 0.000001f);
+    Result.ColorTarget = Color + (NrmrData * 0.000001f);
+    
+    return Result;
 }

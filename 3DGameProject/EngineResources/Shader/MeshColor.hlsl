@@ -50,16 +50,25 @@ Output MeshColor_VS(Input _Input)
     return NewOutPut;
 }
 
-float4 MeshColor_PS(Output _Input) : SV_Target0
+struct ForwardOutPut
 {
-    float4 Color = BaseColor;
+    float4 ColorTarget : SV_Target0;
+    float4 PosTarget : SV_Target1;
+};
+
+ForwardOutPut MeshColor_PS(Output _Input)
+{
+    ForwardOutPut Result;
     
-    Color += AddColor;
-    Color *= MulColor;
+    Result.ColorTarget = BaseColor;
+    Result.PosTarget = _Input.VIEWPOSITION;
+    
+    Result.ColorTarget += AddColor;
+    Result.ColorTarget *= MulColor;
     
     // 디퓨즈 라이트
     
-    if (Color.a <= 0.0f)
+    if (Result.ColorTarget.a <= 0.0f)
     {
         clip(-1);
     }
@@ -69,11 +78,11 @@ float4 MeshColor_PS(Output _Input) : SV_Target0
     float4 AmbientRatio = CalAmbientLight(AllLight[0]);
     
     
-    float A = Color.w;
-    float4 ResultColor = Color * (DiffuseRatio + SpacularRatio + AmbientRatio);
-    ResultColor.a = A;
+    float A = Result.ColorTarget.w;
+    Result.ColorTarget = Result.ColorTarget * (DiffuseRatio + SpacularRatio + AmbientRatio);
+    Result.ColorTarget.a = A;
     // Color += AllLight[0].LightColor;
     
-    return ResultColor;
+    return Result;
 }
 

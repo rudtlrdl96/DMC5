@@ -35,7 +35,7 @@ void PlayUITestLevel::LevelChangeStart()
 	GameEngineLevel::LevelChangeStart();
 
 	std::shared_ptr<DistortionEffect> Distortion = GetCamera(100)->GetCamTarget()->CreateEffect<DistortionEffect>();
-	Distortion->SetMaskTexture(GetCamera(0)->GetCamAlphaTarget(), 1);
+	Distortion->SetMaskTexture(GetCamera(0)->GetCamAlphaTarget(), 2);
 	Distortion->SetDistortionValue(8, 4.5);
 	{
 		GameEngineDirectory NewDir;

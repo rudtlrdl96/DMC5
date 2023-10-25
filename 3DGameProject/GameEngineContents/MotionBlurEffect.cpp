@@ -16,4 +16,5 @@ void MotionBlurEffect::Start(GameEngineRenderTarget* _Target)
 
 void MotionBlurEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 {
+
 }
