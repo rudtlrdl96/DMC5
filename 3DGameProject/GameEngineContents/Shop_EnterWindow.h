@@ -13,7 +13,10 @@ public:
 	Shop_EnterWindow(Shop_EnterWindow&& _Other) noexcept = delete;
 	Shop_EnterWindow& operator=(const Shop_EnterWindow& _Other) = delete;
 	Shop_EnterWindow& operator=(Shop_EnterWindow&& _Other) noexcept = delete;
-
+	void IsCustermizing(bool IsValue)
+	{
+		IsApper = IsValue;
+	}
 protected:
 	void Start();
 	void Update(float _Delta);
@@ -24,6 +27,5 @@ private:
 	std::shared_ptr<class GameEngineFontRenderer> EnterText = nullptr;
 	float Time = 0.0f;
 	bool IsApper = false;
-	bool IsDisApper = false;
 };
 

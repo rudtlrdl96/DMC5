@@ -18,6 +18,9 @@ public:
 	{
 		return Index;
 	}
+	void ApperCusterWindow(bool _Value);
+	void ShopOff();
+	void ShopOn();
 protected:
 	void Start() override;
 	void Update(float _Delta) override;
@@ -29,7 +32,8 @@ private:
 	std::shared_ptr<class Shop_TitleButton> MirgeButton = nullptr;
 	std::shared_ptr<class Shop_VergilYamatoUI> YamatoSkill = nullptr;
 	std::shared_ptr<class Shop_VergilMirgeUI> MirgeSkill = nullptr;
-	
+	std::shared_ptr<class Shop_EnterWindow> EnterWindow = nullptr;
+
 	float LerpTime = 0.0f;
 	int ButtonIndex = 0;
 	int Index = 0;

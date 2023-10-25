@@ -20,6 +20,7 @@ Shop_NeroSkillUI::~Shop_NeroSkillUI()
 {
 }
 
+
 void Shop_NeroSkillUI::Start()
 {
 	RedQueenButton = GetLevel()->CreateActor<Shop_TitleButton>();

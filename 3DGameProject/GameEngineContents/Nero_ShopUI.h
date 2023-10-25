@@ -13,7 +13,9 @@ public:
 	Nero_ShopUI(Nero_ShopUI&& _Other) noexcept = delete;
 	Nero_ShopUI& operator=(const Nero_ShopUI& _Other) = delete;
 	Nero_ShopUI& operator=(Nero_ShopUI&& _Other) noexcept = delete;
-
+	void ApperCusterWindow(bool _Value);
+	void ShopOff();
+	void ShopOn();
 protected:
 	void Start() override;
 	void Update(float _Delta) override;
@@ -24,6 +26,7 @@ private:
 
 	std::shared_ptr<class Shop_NeroSkillUI> SkillScreen = nullptr;
 	std::shared_ptr<class Shop_NeroArmUI> ArmScreen = nullptr;
+	std::shared_ptr<class Shop_EnterWindow> EnterWindow = nullptr;
 
 	float LerpTime = 0.0f;
 	int TitleIndex = 0;

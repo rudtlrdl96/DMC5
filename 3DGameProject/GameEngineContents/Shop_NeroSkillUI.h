@@ -36,6 +36,7 @@ private:
 	std::shared_ptr<class Shop_TitleButton> RedQueenButton = nullptr;
 	std::shared_ptr<class Shop_ItemButton>  SkillButton = nullptr;
 	std::shared_ptr<class Shop_ExplaneUI> ExplanePtr = nullptr;
+
 	bool Test = false;
 
 	int Index = 0;

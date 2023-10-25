@@ -5,6 +5,7 @@
 #include "Shop_ItemButton.h"
 #include "Shop_VergilYamatoUI.h"
 #include "Shop_VergilMirgeUI.h"
+#include "Shop_EnterWindow.h"
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
 Vergil_ShopUI* Vergil_ShopUI::Vergil_ShopBar = nullptr;
@@ -19,6 +20,8 @@ Vergil_ShopUI::~Vergil_ShopUI()
 
 void Vergil_ShopUI::Start()
 {
+	EnterWindow = GetLevel()->CreateActor<Shop_EnterWindow>();
+	EnterWindow->GetTransform()->SetParent(GetTransform());
 	SkillButton = GetLevel()->CreateActor<Shop_TitleButton>();
 	SkillButton->GetTransform()->SetParent(GetTransform());
 	SkillButton->SetUIText("SKILLS");
@@ -78,57 +81,76 @@ void Vergil_ShopUI::Update(float _Delta)
 {
 	if (true == GameEngineInput::IsUp("UI_ESC"))
 	{
-		Off();
+		ShopOff();
 	}
-	SkillButton->SetSelectValue(true);
-	YamatoButton->SetUIText("YAMATO");
-	MirgeButton->SetUIText("MIRGE BLADE");
-	SetIndexCount();
-	if (ButtonIndex == 0)
+	if (SkillButton->IsUpdate() == true)
 	{
-		ScaleUpDown(_Delta, YamatoButton);
-		YamatoButton->SetSelectValue(true);
-		MirgeButton->SetSelectValue(false);
-		YamatoSkill->On();
-		MirgeSkill->Off();
-		for (int i = 0; i < Shop_ItemButton::Skills.size(); i++)
+		SkillButton->SetSelectValue(true);
+		YamatoButton->SetUIText("YAMATO");
+		MirgeButton->SetUIText("MIRGE BLADE");
+		SetIndexCount();
+		if (ButtonIndex == 0)
 		{
-			Shop_ItemButton::Skills[i]->On();
+			ScaleUpDown(_Delta, YamatoButton);
+			YamatoButton->SetSelectValue(true);
+			MirgeButton->SetSelectValue(false);
+			YamatoSkill->On();
+			MirgeSkill->Off();
+			for (int i = 0; i < Shop_ItemButton::Skills.size(); i++)
+			{
+				Shop_ItemButton::Skills[i]->On();
+			}
+			for (int i = 0; i < Shop_ItemButton::SecoundSkills.size(); i++)
+			{
+				Shop_ItemButton::SecoundSkills[i]->Off();
+			}
 		}
-		for (int i = 0; i < Shop_ItemButton::SecoundSkills.size(); i++)
+		else
 		{
-			Shop_ItemButton::SecoundSkills[i]->Off();
+			ScaleUpDown(_Delta, MirgeButton);
+			MirgeButton->SetSelectValue(true);
+			YamatoButton->SetSelectValue(false);
+			YamatoSkill->Off();
+			MirgeSkill->On();
+			for (int i = 0; i < Shop_ItemButton::Skills.size(); i++)
+			{
+				Shop_ItemButton::Skills[i]->Off();
+			}
+			for (int i = 0; i < Shop_ItemButton::SecoundSkills.size(); i++)
+			{
+				Shop_ItemButton::SecoundSkills[i]->On();
+			}
 		}
-	}
-	else
-	{
-		ScaleUpDown(_Delta, MirgeButton);
-		MirgeButton->SetSelectValue(true);
-		YamatoButton->SetSelectValue(false);
-		YamatoSkill->Off();
-		MirgeSkill->On();
-		for (int i = 0; i < Shop_ItemButton::Skills.size(); i++)
+		if (Index == 1)
 		{
-			Shop_ItemButton::Skills[i]->Off();
-		}
-		for (int i = 0; i < Shop_ItemButton::SecoundSkills.size(); i++)
-		{
-			Shop_ItemButton::SecoundSkills[i]->On();
-		}
-	}
-	if (Index == 1)
-	{
-		YamatoButton->SetBlinkValue(false);
-		MirgeButton->SetBlinkValue(false);
+			YamatoButton->SetBlinkValue(false);
+			MirgeButton->SetBlinkValue(false);
 
+		}
+		else
+		{
+			YamatoButton->SetBlinkValue(true);
+			MirgeButton->SetBlinkValue(true);
+		}
 	}
-	else
-	{
-		YamatoButton->SetBlinkValue(true);
-		MirgeButton->SetBlinkValue(true);
-	}
+	
 }
-
+void Vergil_ShopUI::ApperCusterWindow(bool _Value)
+{
+	EnterWindow->IsCustermizing(_Value);
+}
+void Vergil_ShopUI::ShopOff()
+{
+	SkillButton->Off();
+	YamatoButton->Off();
+	MirgeButton->Off();
+}
+void Vergil_ShopUI::ShopOn()
+{
+	SkillButton->On();
+	YamatoButton->On();
+	MirgeButton->On();
+}
 void Vergil_ShopUI::SetIndexCount()
 {
 	if (Index == 0 && true == GameEngineInput::IsUp("UI_UP"))

@@ -23,14 +23,7 @@ void Shop_EnterWindow::Start()
 
 void Shop_EnterWindow::Update(float _Delta)
 {
-	if (true == GameEngineInput::IsUp("UI_ESC"))
-	{
-		IsApper = true;
-	}
-	if (true == GameEngineInput::IsUp("UI_Tab"))
-	{
-		IsApper = false;
-	}
+
 	ApperWindow(_Delta);
 }
 
@@ -44,14 +37,17 @@ void Shop_EnterWindow::ApperWindow(float _Delta)
 		{
 			ShopWindowRender->ColorOptionValue.MulColor.a = Time+0.3f;
 		}
-		if (Time <= 1.0f)
+		if (Time*2.0f <= 1.0f)
 		{
-			ShopWindowRender->ImageClippingX(Time*1.5f, ClipXDir::Left);
+			ShopWindowRender->ImageClippingX(Time * 2.0f, ClipXDir::Left);
 		}
 
 	}
 	else
 	{
+		ShopWindowRender->Off();
+		ShopWindowRender->ColorOptionValue.MulColor.a = 0.0f;
+		ShopWindowRender->ImageClippingX(0.0f, ClipXDir::Left);
 		Time = 0.0f;
 	}
 }

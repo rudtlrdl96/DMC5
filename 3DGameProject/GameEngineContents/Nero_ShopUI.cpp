@@ -5,6 +5,7 @@
 #include "Shop_ExplaneUI.h"
 #include "Shop_ItemButton.h"
 #include "Shop_NeroArmUI.h"
+#include "Shop_EnterWindow.h"
 #include <GameEngineCore/GameEngineLevel.h>
 Nero_ShopUI::Nero_ShopUI()
 {
@@ -14,8 +15,32 @@ Nero_ShopUI::~Nero_ShopUI()
 {
 }
 
+void Nero_ShopUI::ApperCusterWindow(bool _Value)
+{
+	EnterWindow->IsCustermizing(_Value);
+}
+
+void Nero_ShopUI::ShopOff()
+{
+	SkillButton->Off();
+	DBButton->Off();
+	SkillScreen->Off();
+	ArmScreen->Off();
+}
+
+void Nero_ShopUI::ShopOn()
+{
+	SkillButton->On();
+	DBButton->On();
+	SkillScreen->On();
+	ArmScreen->On();
+}
+
 void Nero_ShopUI::Start()
 {
+	EnterWindow = GetLevel()->CreateActor<Shop_EnterWindow>();
+	EnterWindow->GetTransform()->SetParent(GetTransform());
+
 	SkillButton = GetLevel()->CreateActor<Shop_TitleButton>();
 	SkillButton->GetTransform()->SetParent(GetTransform());
 	SkillButton->SetUIText("SKILLS");
@@ -46,46 +71,50 @@ void Nero_ShopUI::Update(float _Delta)
 {
 	if (true == GameEngineInput::IsUp("UI_ESC"))
 	{
-		Off();
+		ShopOff();
 	}
-	LerpScreen(_Delta);
-	if (TitleIndex == 0)
+	if (SkillButton->IsUpdate() == true)
 	{
-		DBButton->SetSelectValue(false);
-		SkillButton->SetSelectValue(true);
-		SkillScreen->GetExPlane()->On();
-		ArmScreen->GetExPlane()->Off();
-	}
-	else if (TitleIndex == 1)
-	{
+		LerpScreen(_Delta);
+		if (TitleIndex == 0)
+		{
+			DBButton->SetSelectValue(false);
+			SkillButton->SetSelectValue(true);
+			SkillScreen->GetExPlane()->On();
+			ArmScreen->GetExPlane()->Off();
+		}
+		else if (TitleIndex == 1)
+		{
 
-		SkillScreen->GetExPlane()->Off();
-		ArmScreen->GetExPlane()->On();
-		SkillButton->SetSelectValue(false);
-		DBButton->SetSelectValue(true);
+			SkillScreen->GetExPlane()->Off();
+			ArmScreen->GetExPlane()->On();
+			SkillButton->SetSelectValue(false);
+			DBButton->SetSelectValue(true);
+		}
+		if (true == GameEngineInput::IsUp("UI_Tab") && IsSwichValue == true)
+		{
+			PrevIndex = TitleIndex;
+			if (TitleIndex == 1)
+			{
+				TitleIndex = 0;
+			}
+			else
+			{
+				TitleIndex++;
+			}
+			if (TitleIndex == 0 && PrevIndex == 1)
+			{
+				IsValue = true;
+				IsValue2 = false;
+			}
+			else if (PrevIndex == 0 && TitleIndex == 1)
+			{
+				IsValue2 = true;
+				IsValue = false;
+			}
+		}
 	}
-	if (true == GameEngineInput::IsUp("UI_Tab")&& IsSwichValue==true)
-	{
-		PrevIndex = TitleIndex;
-		if (TitleIndex == 1)
-		{
-			TitleIndex = 0;
-		}
-		else
-		{
-			TitleIndex++;
-		}
-		if (TitleIndex == 0 && PrevIndex == 1)
-		{
-			IsValue = true;
-			IsValue2 = false;
-		}
-		else if (PrevIndex == 0 && TitleIndex == 1)
-		{
-			IsValue2 = true;
-			IsValue = false;
-		}
-	}
+	
 }
 
 void Nero_ShopUI::LerpScreen(float _Delta)
