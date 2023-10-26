@@ -8,7 +8,7 @@
 #include "TestStageLevel.h"
 #include "FXData.h"
 #include "NeroLoading.h"
-
+#include "FadeEffect.h"
 std::string ThreadLoadingLevel::NextLevelName;
 ThreadLoadingLevel* ThreadLoadingLevel::Inst = nullptr;
 
@@ -29,7 +29,8 @@ void ThreadLoadingLevel::Start()
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 
 	LoadingUI = CreateActor<NeroLoading>();
-
+	
+	std::shared_ptr<FadeEffect> Fade = GetLastTarget()->CreateEffect<FadeEffect>();
 
 	//스레드 로딩이 잘 작동되는지 확인하려는 임시 엑터입니다. 나중에 삭제할 예정이에요
 	//ThreadTestActor = CreateActor<GameEngineActor>();
@@ -71,8 +72,20 @@ void ThreadLoadingLevel::Start()
 		PushLoadCallBack<TestStageLevel, GameEngineTexture>("Character\\Player\\Vergil\\Mesh\\High\\pl0310_trans_atos.texout.png");
 		PushAllLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Character\\Player\\Vergil\\MirageBlade", { ".fbx" });
 		PushAllLoadCallBack<TestStageLevel, GameEngineFBXAnimation>("Character\\Player\\Vergil\\Animation", { ".fbx" });
-		
+
+
 		// 맵
+		//PushAllLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2", { ".fbx" });
+		//PushAllLoadCallBack<TestStageLevel, GameEngineTexture>("Map\\Location2", { ".tga", ".png"});
+
+		// 텍스쳐
+		// 텍스쳐 현재 High로 로드하는데 추후에 추가로 옵션에 따라 로드되게 바꿔주세요
+		
+		PushAllLoadCallBack<TestStageLevel, GameEngineTexture>("Character\\Player\\Nero\\Mesh\\High", { ".tga", ".png"});
+		PushAllLoadCallBack<TestStageLevel, GameEngineTexture>("Character\\Player\\Vergil\\Mesh\\High", { ".tga", ".png"});
+		PushAllLoadCallBack<TestStageLevel, GameEngineTexture>("Character\\Enemy\\Empusa\\Mesh\\High", { ".tga", ".png"});
+		PushAllLoadCallBack<TestStageLevel, GameEngineTexture>("Character\\Enemy\\HellCaina\\Mesh\\High", { ".tga", ".png"});
+		PushAllLoadCallBack<TestStageLevel, GameEngineTexture>("Character\\Enemy\\Qliphoth\\Mesh\\High", { ".tga", ".png"});
 
 		// 이펙트
 		PushAllLoadCallBack<TestStageLevel, FXData>("Effect", { ".effect" });
@@ -140,22 +153,29 @@ void ThreadLoadingLevel::Update(float _DeltaTime)
 {
 	BaseLevel::Update(_DeltaTime);
 
+
+	LoadingUI->SetThreedPersent(LoadingPercent);
+	if (true == IsLoadLevel) { return; }
 	//모든 로딩이 완료된 순간
 	if (LoadWorkCount == ExcuteWorkCount)
 	{
 		LoadingUI->SetThreedPersent(1.f);
-		GameEngineCore::ChangeLevel(NextLevelName);
+		FadeEffect::GetFadeEffect()->FadeOut(0.8f);
+		IsLoadLevel = true;
+		TimeEvent.AddEvent(1.0f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _TimeEvent)
+		{
+			GameEngineCore::ChangeLevel(NextLevelName);
+		});
 		return;
 	}
-
-	LoadingUI->SetThreedPersent(LoadingPercent);
 }
 
 
 void ThreadLoadingLevel::LevelChangeStart()
 {
 	BaseLevel::LevelChangeStart();
-
+	IsLoadLevel = false;
+	FadeEffect::GetFadeEffect()->FadeIn(0.8f);
 	ThreadLoadStart();
 }
 

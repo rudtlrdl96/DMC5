@@ -42,6 +42,7 @@ protected:
 	void LevelChangeStart() override;
 
 private:
+	bool IsLoadLevel = false;
 	static std::string NextLevelName;
 	static ThreadLoadingLevel* Inst;
 

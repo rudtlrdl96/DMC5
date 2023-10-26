@@ -56,7 +56,6 @@ void TestStageLevel::Start()
 	Bloom = GetCamera(0)->GetDeferredLightTarget()->CreateEffect<BloomEffect>();
 
 	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
-	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
 	BWEffect = GetCamera(0)->GetCamTarget()->CreateEffect<BWColorEffect>();
 
 	{
@@ -72,17 +71,15 @@ void TestStageLevel::Start()
 		Distortion->SetDistortionValue(10, 10);
 		Distortion->SetMaxPixelValue(100, 100);
 	}	
-	
-	{
-		std::shared_ptr<FadeEffect> Fade = GetCamera(0)->GetCamTarget()->CreateEffect<FadeEffect>();
-	}
-
+	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
 	{
 		std::shared_ptr<MotionBlurEffect> Blur = GetCamera(0)->GetCamTarget()->CreateEffect<MotionBlurEffect>();
 		Blur->SetCamPosTarget(GetMainCamera()->GetCamPosTarget());
 		Blur->SetCamMaskTarget(GetMainCamera()->GetCamMaskTarget());
 		Blur->SetCam(GetMainCamera());
 	}
+	
+	std::shared_ptr<FadeEffect> Fade = GetLastTarget()->CreateEffect<FadeEffect>();
 		
 	StageBaseLevel::Start();
 
@@ -129,6 +126,7 @@ void TestStageLevel::LevelChangeStart()
 
 	//임시 불러오기, 추후 수정 예정
 	StageBaseLevel::LevelChangeStart();
+	FadeEffect::GetFadeEffect()->FadeIn();
 
 	SetCamera({ 0,0,-500 });
 
