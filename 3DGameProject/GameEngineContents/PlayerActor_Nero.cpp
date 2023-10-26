@@ -2151,14 +2151,14 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					Sound.Play("BR_", 1);
 					EffectSystem->PlayFX("BR_Shoot_Charge.effect");
-					Col_Attack->SetAttackData(DamageType::Light, 100, std::bind(&GameEngineObjectBase::Off, Col_Attack));
+					Col_Attack->SetAttackData(DamageType::Light, 100, std::bind(&GameEngineObjectBase::Off, Col_Attack.get()));
 					HUD->ShootBullet();
 				}
 				else
 				{
 					Sound.Play("BR_", 0);
 					EffectSystem->PlayFX("BR_Shoot.effect");
-					Col_Attack->SetAttackData(DamageType::Light, 54, std::bind(&GameEngineObjectBase::Off, Col_Attack));
+					Col_Attack->SetAttackData(DamageType::Light, 54, std::bind(&GameEngineObjectBase::Off, Col_Attack.get()));
 				}
 				if (nullptr == LockOnEnemyTransform)
 				{
@@ -2222,14 +2222,14 @@ void PlayerActor_Nero::PlayerLoad()
 				{
 					Sound.Play("BR_", 1);
 					EffectSystem->PlayFX("BR_Shoot_Charge.effect");
-					Col_Attack->SetAttackData(DamageType::Light, 100, std::bind(&GameEngineObjectBase::Off, Col_Attack));
+					Col_Attack->SetAttackData(DamageType::Light, 100, std::bind(&GameEngineObjectBase::Off, Col_Attack.get()));
 					HUD->ShootBullet();
 				}
 				else
 				{
 					Sound.Play("BR_", 0);
 					EffectSystem->PlayFX("BR_Shoot.effect");
-					Col_Attack->SetAttackData(DamageType::Light, 54, std::bind(&GameEngineObjectBase::Off, Col_Attack));
+					Col_Attack->SetAttackData(DamageType::Light, 54, std::bind(&GameEngineObjectBase::Off, Col_Attack.get()));
 				}
 				if (nullptr == LockOnEnemyTransform)
 				{
