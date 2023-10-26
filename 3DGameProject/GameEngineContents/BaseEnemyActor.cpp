@@ -112,7 +112,7 @@ void BaseEnemyActor::Update(float _DeltaTime)
 	{
 		if (true == GameEngineInput::IsDown("MonsterTest"))
 		{
-			EnemyHP = 0;
+			EnemyHP = 1;
 		}
 
 		RecognizeCollisionCheck(_DeltaTime);
@@ -126,7 +126,7 @@ void BaseEnemyActor::Update(float _DeltaTime)
 		{
 			if (true == GameEngineInput::IsDown("MonsterTest"))
 			{
-				EnemyHP = 0;
+				EnemyHP = 1;
 			}
 
 			RecognizeCollisionCheck(_DeltaTime);
