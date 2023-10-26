@@ -39,24 +39,24 @@ void BasePlayerActor::SetCutScene(const float4& _StartPos, const float4& _EndPos
 	Controller->Off();
 	FadeEffect::GetFadeEffect()->FadeOut(0.5f);
 	GetLevel()->TimeEvent.AddEvent(0.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-	{
-		UIOff();
-		FadeEffect::GetFadeEffect()->FadeIn(0.5f);
-		Camera->SetCameraCutscene(_StartPos, _EndPos, _StartRot, _EndRot, _Time);
-	});
+		{
+			UIOff();
+			FadeEffect::GetFadeEffect()->FadeIn(0.5f);
+			Camera->SetCameraCutscene(_StartPos, _EndPos, _StartRot, _EndRot, _Time);
+		});
 	GetLevel()->TimeEvent.AddEvent(_Time, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-	{
-		FadeEffect::GetFadeEffect()->FadeOut(0.5f);
-	});
+		{
+			FadeEffect::GetFadeEffect()->FadeOut(0.5f);
+		});
 	GetLevel()->TimeEvent.AddEvent(_Time + 0.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-	{
-		UIOn();
-		FadeEffect::GetFadeEffect()->FadeIn(0.5f);
-	});
+		{
+			UIOn();
+			FadeEffect::GetFadeEffect()->FadeIn(0.5f);
+		});
 	GetLevel()->TimeEvent.AddEvent(_Time + 1.2f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-	{
-		Controller->On();
-	});
+		{
+			Controller->On();
+		});
 }
 
 void BasePlayerActor::On()
@@ -70,7 +70,7 @@ void BasePlayerActor::On()
 	Players.push_back(this);
 }
 
-void BasePlayerActor::Off() 
+void BasePlayerActor::Off()
 {
 	GameEngineActor::Off();
 
@@ -83,9 +83,9 @@ void BasePlayerActor::Off()
 
 void BasePlayerActor::LookDir(const float4& _LookDir)
 {
- 	float4 LocalForward = GetTransform()->GetWorldForwardVector().NormalizeReturn();
+	float4 LocalForward = GetTransform()->GetWorldForwardVector().NormalizeReturn();
 	float4 LookDir = _LookDir.NormalizeReturn();
- 	float Dot = float4::DotProduct3D(LocalForward, LookDir); 
+	float Dot = float4::DotProduct3D(LocalForward, LookDir);
 	if (1.0f < Dot || LocalForward == LookDir)
 	{
 		return;
@@ -99,9 +99,9 @@ void BasePlayerActor::LookDir(const float4& _LookDir)
 	float Angle = acosf(Dot) * GameEngineMath::RadToDeg;
 	float4 Cross = float4::Cross3DReturnNormal(LocalForward, LookDir);
 
-	if (std::isnan(Angle)) 
+	if (std::isnan(Angle))
 	{
-		return; 
+		return;
 	}
 
 	if (Cross.y < 0.0f)
@@ -238,9 +238,9 @@ void BasePlayerActor::Start()
 	Col_Attack->ParryAttackOn();
 
 	LinkData_UpdatePacket<bool>(DTValue, [this](bool _BeforeData)
-	{
-		SetDT(DTValue);
-	});
+		{
+			SetDT(DTValue);
+		});
 
 	SetFsmPacketCallBack(std::bind(&BasePlayerActor::SetFSMStateValue, this, std::placeholders::_1));
 
@@ -293,14 +293,14 @@ void BasePlayerActor::UserControllLoad()
 	Col_LockOn->Off();
 
 	Col_Attack->SetDamageCallBack([=](float _Value)
-	{
-		AddDTGauge(_Value);
-	});
+		{
+			AddDTGauge(_Value);
+		});
 
 	LockOnRenderer = CreateComponent<EffectRenderer>();
 	LockOnRenderer->GetTransform()->SetParent(GetLevel()->GetMainCamera()->GetTransform());
-	LockOnRenderer->GetTransform()->SetLocalRotation({0, 0, 90});
-	LockOnRenderer->GetTransform()->SetWorldScale({0.4f, 0.4f, 0.4f});
+	LockOnRenderer->GetTransform()->SetLocalRotation({ 0, 0, 90 });
+	LockOnRenderer->GetTransform()->SetWorldScale({ 0.4f, 0.4f, 0.4f });
 	LockOnRenderer->SetFBXMesh("Effect_LockOn.fbx", "Effect_2D");
 	LockOnRenderer->SetTexture("DiffuseTexture", "Effect_Texture_09.tga");
 	LockOnRenderer->Off();
@@ -319,7 +319,7 @@ void BasePlayerActor::Update(float _DeltaTime)
 
 	if (NetControllType::PassiveControll == GameEngineNetObject::GetControllType())
 	{
-		
+
 	}
 	else if (NetControllType::ActiveControll == GameEngineNetObject::GetControllType())
 	{
@@ -404,7 +404,7 @@ void BasePlayerActor::LockOff()
 bool BasePlayerActor::FloorCheck()
 {
 	float4 Point;
-	
+
 	return GetLevel()->RayCast(GetTransform()->GetWorldPosition(), float4::DOWN, Point, 100.0f)
 		|| GetLevel()->RayCast(GetTransform()->GetWorldPosition() + (GetTransform()->GetWorldForwardVector() * 50), float4::DOWN, Point, 100.0f)
 		|| GetLevel()->RayCast(GetTransform()->GetWorldPosition() + (GetTransform()->GetWorldLeftVector() * 50), float4::DOWN, Point, 100.0f)
@@ -425,10 +425,10 @@ void BasePlayerActor::StopTime(float _Time)
 {
 	SetTimeScale(0.0f);
 	GetLevel()->TimeEvent.AddEvent(_Time, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-	{
-		Col_Attack->Off();
-		SetTimeScale(1.0f);
-	});
+		{
+			Col_Attack->Off();
+			SetTimeScale(1.0f);
+		});
 }
 
 void BasePlayerActor::DamageColCheck()
@@ -445,17 +445,17 @@ void BasePlayerActor::DamageColCheck()
 		// 회피 상황시 스톱타임
 		SetTimeScale(0.1f);
 		GetLevel()->TimeEvent.AddEvent(0.1f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-		{
-			SetTimeScale(1.0f);
-		});
+			{
+				SetTimeScale(1.0f);
+			});
 		BaseEnemyActor* Enemy = dynamic_cast<BaseEnemyActor*>(Col->GetActor());
 		if (nullptr != Enemy)
 		{
 			Enemy->SetTimeScale(0.1f);
 			GetLevel()->TimeEvent.AddEvent(0.1f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-			{
-				Enemy->SetTimeScale(1.0f);
-			});
+				{
+					Enemy->SetTimeScale(1.0f);
+				});
 		}
 		RankUI::GetRankInst()->AddRankScore(300);
 		AddDTGauge(0.5f);
@@ -514,19 +514,13 @@ void BasePlayerActor::ShopColCheck()
 
 	if (GameEngineInput::IsUp("Enter"))
 	{
+		Shop->ApperCusterWindow(false);
 		ShopOn();
 		Controller->Off();
 		Camera->Off();
 		Controller->ResetKey();
-		GetLevel()->TimeEvent.AddEvent(0.02f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-			{
-				if (Shop == nullptr)
-				{
-					return;
-				}
-				Shop->ShopOn();
-				IsShopOn = true;
-			});
+		Shop->ShopOn();
+		IsShopOn = true;
 	}
 }
 

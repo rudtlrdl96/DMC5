@@ -102,7 +102,7 @@ void TestLevel::LevelChangeStart()
 
 	if (nullptr == Player)
 	{
-		if (true)
+		if (false)
 		{
 			Player = CreateActor<PlayerActor_Nero>();
 			Player->GetPhysXComponent()->SetWorldPosition({ -1200, 100, -1300 });
@@ -128,6 +128,8 @@ void TestLevel::LevelChangeStart()
 			Player->SetUserControllType();
 			NetworkManager::LinkNetwork(Player.get(), this);
 		}
+
+		Player->CreateComponent<GameEngineCollision>(CollisionOrder::Shop);
 	}
 
 	//CreateActor<Item_RedOrbLump>();
@@ -167,12 +169,12 @@ void TestLevel::LevelChangeStart()
 		Flat->GetPhysXComponent()->SetWorldPosition({ 0, -50, 0 });
 	}
 
-	if (nullptr == HellAntenora)
-	{
-		HellAntenora = CreateActor<Enemy_HellAntenora>();
-		HellAntenora->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-		HellAntenora->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	}
+	//if (nullptr == HellAntenora)
+	//{
+	//	HellAntenora = CreateActor<Enemy_HellAntenora>();
+	//	HellAntenora->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//	HellAntenora->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	//}
 
 	//if (nullptr == Scudo)
 	//{
@@ -188,12 +190,12 @@ void TestLevel::LevelChangeStart()
 	//	Proto->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
 
-	//if (nullptr == Qliphoth)
-	//{
-	//	Qliphoth = CreateActor<Enemy_Qliphoth>();
-	//	Qliphoth->GetTransform()->SetWorldPosition({ 0, 0, 0 });
-	//	Qliphoth->GetTransform()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	//}
+	if (nullptr == Qliphoth)
+	{
+		Qliphoth = CreateActor<Enemy_Qliphoth>();
+		Qliphoth->GetTransform()->SetWorldPosition({ 0, 0, 0 });
+		Qliphoth->GetTransform()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	}
 
 	//GameEngineCoreWindow::Clear();
 	//GameEngineCoreWindow::AddDebugRenderTarget(0, "Forward Target", GetCamera(100)->GetCamForwardTarget());
