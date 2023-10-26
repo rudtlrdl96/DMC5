@@ -250,6 +250,18 @@ void Enemy_ScudoAngelo::Start()
 	LinkData_UpdatePacket<int>(EnemyHP);
 
 	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker) {
+		
+		if (FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Start == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Loop == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Stop == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Start == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Loop == EnemyFSM.GetCurState()
+			|| true == IsSuperArmor)
+		{
+			MinusEnemyHP(70);
+			StartRenderShaking(6);
+			return;
+		}
 		Player = _Attacker;
 		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
 		MinusEnemyHP(Datas.DamageValue);
@@ -552,8 +564,6 @@ void Enemy_ScudoAngelo::DamageCollisionCheck(float _DeltaTime)
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Loop == EnemyFSM.GetCurState()
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Stop == EnemyFSM.GetCurState()
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Group_Command_Attack == EnemyFSM.GetCurState()
-			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Start == EnemyFSM.GetCurState()
-			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Loop == EnemyFSM.GetCurState()
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_M == EnemyFSM.GetCurState()
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_S == EnemyFSM.GetCurState()
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Start == EnemyFSM.GetCurState()
@@ -696,8 +706,6 @@ void Enemy_ScudoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Loop == EnemyFSM.GetCurState()
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Stop == EnemyFSM.GetCurState()
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Group_Command_Attack == EnemyFSM.GetCurState()
-			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Start == EnemyFSM.GetCurState()
-			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Loop == EnemyFSM.GetCurState()
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_M == EnemyFSM.GetCurState()
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_S == EnemyFSM.GetCurState()
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Start == EnemyFSM.GetCurState()
