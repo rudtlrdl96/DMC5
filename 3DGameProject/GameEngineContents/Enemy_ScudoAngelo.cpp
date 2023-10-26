@@ -251,18 +251,15 @@ void Enemy_ScudoAngelo::Start()
 
 	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker) {
 		
-		if (FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Start == EnemyFSM.GetCurState()
-			|| FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Loop == EnemyFSM.GetCurState()
-			|| FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Stop == EnemyFSM.GetCurState()
-			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Start == EnemyFSM.GetCurState()
-			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Loop == EnemyFSM.GetCurState()
-			|| true == IsSuperArmor)
+		if (FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Start != EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Loop != EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Stop != EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Start != EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Loop != EnemyFSM.GetCurState())
 		{
-			MinusEnemyHP(70);
-			StartRenderShaking(6);
-			return;
+			Player = _Attacker;
 		}
-		Player = _Attacker;
+
 		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
 		MinusEnemyHP(Datas.DamageValue);
 
