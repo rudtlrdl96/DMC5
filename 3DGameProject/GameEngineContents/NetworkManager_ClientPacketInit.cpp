@@ -209,10 +209,14 @@ void NetworkManager::ClientPacketInit()
 			return;
 		}
 
+		NetworkGUI* NetGUI = NetworkGUI::GetInst();
+		std::string LogValue = GameEngineString::ToString(Index) + " NetworkEvent be executed";
+
 		const std::vector<std::function<void()>>& Events = AllNetEvent[Index];
 		for (const std::function<void()>& Event : Events)
 		{
 			Event();
+			NetGUI->PrintLog(LogValue, float4::GREEN);
 		}
 	});
 }

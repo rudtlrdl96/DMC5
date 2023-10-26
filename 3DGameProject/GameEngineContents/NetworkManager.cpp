@@ -127,9 +127,10 @@ bool NetworkManager::ExcuteNetworkEvent(Net_EventType _Type)
 
 	//이벤트를 등록해준 적이 없는 경우
 	int Index = static_cast<int>(_Type);
+	NetworkGUI* NetGUI = NetworkGUI::GetInst();
 	if (true == AllNetEvent.empty() || true == AllNetEvent[Index].empty())
 	{
-		NetworkGUI::GetInst()->PrintLog(GameEngineString::ToString(Index) + " Event Not Exist!", float4::RED);
+		NetGUI->PrintLog(GameEngineString::ToString(Index) + " Event Not Exist!", float4::RED);
 		return false;
 	}
 
@@ -139,6 +140,7 @@ bool NetworkManager::ExcuteNetworkEvent(Net_EventType _Type)
 	EventPacket->SetObjectID(NetID);
 	EventPacket->EventType = _Type;
 	AllPacket[PacketEnum::NetEventPacket].push_back(EventPacket);
+	NetGUI->PrintLog(GameEngineString::ToString(Index) + " NetworkEvent be executed", float4::GREEN);
 	return true;
 }
 
