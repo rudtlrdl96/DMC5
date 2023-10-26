@@ -133,7 +133,7 @@ void TestStageLevel::LevelChangeStart()
 	SetCamera({ 0,0,-500 });
 
 	BGMPlayer::BGMLoad();
-	if (true)
+	if (false)
 	{
 		MyPlayer = CreateActor<PlayerActor_Nero>();
 		MyPlayer->SetUserControllType();

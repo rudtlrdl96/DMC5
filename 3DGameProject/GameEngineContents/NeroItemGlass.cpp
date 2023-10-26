@@ -66,9 +66,11 @@ void NeroItemGlass::Start()
 	SetItemText();
 	//NeroUI_ItemGlass = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 560.0f,-380.0f,172.0f }, { 0.6f,0.6f,0.6f }, { -90.0f,0.0f,0.0f }, "NeroItemGlass.FBX","FBX_Alpha");
 	ArmList = PlayerActor_Nero::GetBreakerListPointer();
+
 	Render_0 = CreateComponent<UIFBXRenderer>(3);
 	Render_0->SetFBXMesh("OvertureArmUI.FBX", "FBX_LOW");
 	Render_0->Death();
+
 	Render_1 = CreateComponent<UIFBXRenderer>(3);
 	Render_1->SetFBXMesh("GerberaArmUI.FBX", "FBX_LOW");
 	Render_1->Death();

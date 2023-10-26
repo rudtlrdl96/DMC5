@@ -22,17 +22,17 @@ public:
 
 	inline void SetCamPosTarget(std::shared_ptr<GameEngineRenderTarget> _CamPosTarget)
 	{
-		CamPosTarget = _CamPosTarget;
+		CamPosTarget = _CamPosTarget.get();
 	}	
 	
 	inline void SetCamMaskTarget(std::shared_ptr<GameEngineRenderTarget> _CamMaskTarget)
 	{
-		CamMaskTarget = _CamMaskTarget;
+		CamMaskTarget = _CamMaskTarget.get();
 	}
 
 	inline void SetCam(std::shared_ptr<GameEngineCamera> _Cam)
 	{
-		Cam = _Cam;
+		Cam = _Cam.get();
 		Data.PrevFrameViewProjection = _Cam->GetView() * _Cam->GetProjection();
 	}
 
@@ -44,9 +44,9 @@ private:
 	std::shared_ptr<GameEngineRenderTarget> PrevFramePos = nullptr;
 	std::shared_ptr<GameEngineRenderTarget> CurFramePos = nullptr;
 
-	std::shared_ptr<GameEngineRenderTarget> CamPosTarget = nullptr;
-	std::shared_ptr<GameEngineRenderTarget> CamMaskTarget = nullptr;
-	std::shared_ptr<GameEngineCamera> Cam = nullptr;
+	GameEngineRenderTarget* CamPosTarget = nullptr;
+	GameEngineRenderTarget* CamMaskTarget = nullptr;
+	GameEngineCamera* Cam = nullptr;
 
 	std::shared_ptr<GameEngineRenderUnit> MotionBlurUnit;
 

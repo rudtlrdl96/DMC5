@@ -37,6 +37,26 @@ void GameEngineRenderTarget::ReleaseTextures()
 		Textures[i] = nullptr;
 	}
 
+	for (size_t i = 0; i < RTVs.size(); i++)
+	{
+		if (nullptr != RTVs[i])
+		{
+			RTVs[i]->Release();
+		}
+
+		RTVs[i] = nullptr;
+	}
+
+	for (size_t i = 0; i < SRVs.size(); i++)
+	{
+		if (nullptr != SRVs[i])
+		{
+			SRVs[i]->Release();
+		}
+
+		SRVs[i] = nullptr;
+	}	
+	
 	Textures.clear();
 	RTVs.clear();
 	SRVs.clear();

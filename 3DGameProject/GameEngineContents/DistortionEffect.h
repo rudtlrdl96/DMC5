@@ -25,7 +25,7 @@ public:
 	
 	inline void SetMaskTexture(std::shared_ptr<GameEngineRenderTarget> _RenderTarget, size_t _TextureIndex)
 	{
-		MaskTarget = _RenderTarget;
+		MaskTarget = _RenderTarget.get();
 		MaskTexIndex = _TextureIndex;
 	}
 
@@ -48,7 +48,7 @@ protected:
 private:
 	std::shared_ptr<GameEngineRenderUnit> DistortionUnit = nullptr;
 
-	std::shared_ptr<GameEngineRenderTarget> MaskTarget = nullptr;
+	GameEngineRenderTarget* MaskTarget = nullptr;
 	size_t MaskTexIndex = 0;
 
 	DistortionOption Option;
