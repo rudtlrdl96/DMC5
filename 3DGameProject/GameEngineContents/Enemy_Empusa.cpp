@@ -417,6 +417,7 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 	MonsterAttackCollision->Off();
 	DamageData Data = AttackCol->GetDamage();
 	MinusEnemyHP(Data.DamageValue);
+	AttackDelayCheck = 0.0f;
 	PlayDamageEvent(Data.DamageTypeValue, Data.SoundType);
 	Sound.PlayVoiceRandom(4, 5, false);
 	if (DamageType::VergilLight == Data.DamageTypeValue)
@@ -440,7 +441,6 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 		if (true == IsAirAttack || true == IsSlamAttack || true == IsHeavyAttack)
 		{
 			StartRenderShaking(8);
-			AttackDelayCheck = 0.0f;
 			ChangeState(FSM_State_Empusa::Empusa_Air_Damage_Under);
 			return;
 		}
@@ -448,7 +448,6 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 		if (true == IsCollapse)
 		{
 			StartRenderShaking(8);
-			AttackDelayCheck = 0.0f;
 			return;
 		}
 
@@ -496,7 +495,6 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 	}
 
 	HitStop(Data.DamageTypeValue);
-	AttackDelayCheck = 0.0f;
 }
 
 void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
@@ -529,6 +527,7 @@ void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 	if (nullptr == AttackCol) { return; }
 
 	DamageData Data = AttackCol->GetDamage();
+	AttackDelayCheck = 0.0f;
 	PlayDamageEvent(Data.DamageTypeValue, Data.SoundType);
 	Sound.PlayVoiceRandom(4, 5, false);
 
@@ -603,8 +602,6 @@ void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 	default:
 		break;
 	}
-
-	AttackDelayCheck = 0.0f;
 }
 
 void Enemy_Empusa::RecognizeCollisionCheck(float _DeltaTime)

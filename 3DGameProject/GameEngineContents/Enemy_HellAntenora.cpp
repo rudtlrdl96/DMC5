@@ -426,6 +426,7 @@ void Enemy_HellAntenora::DamageCollisionCheck(float _DeltaTime)
 	MonsterAttackCollision->Off();
 	DamageData Data = AttackCol->GetDamage();
 	MinusEnemyHP(Data.DamageValue);
+	AttackDelayCheck = 0.0f;
 	MultiAttackStack = 0;
 	PlayDamageEvent(Data.DamageTypeValue, Data.SoundType);
 	Sound.PlayVoice(5);
@@ -467,14 +468,12 @@ void Enemy_HellAntenora::DamageCollisionCheck(float _DeltaTime)
 		{
 			StartRenderShaking(8);
 			ChangeState(FSM_State_HellAntenora::HellAntenora_Air_Damage_Under);
-			AttackDelayCheck = 0.0f;
 			return;
 		}
 
 		if (true == IsCollapse)
 		{
 			StartRenderShaking(8);
-			AttackDelayCheck = 0.0f;
 			return;
 		}
 
@@ -522,7 +521,6 @@ void Enemy_HellAntenora::DamageCollisionCheck(float _DeltaTime)
 	}
 
 	HitStop(Data.DamageTypeValue);
-	AttackDelayCheck = 0.0f;
 }
 
 void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
@@ -557,6 +555,7 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 
 	DamageData Data = AttackCol->GetDamage();
 	PlayDamageEvent(Data.DamageTypeValue, Data.SoundType);
+	AttackDelayCheck = 0.0f;
 	Sound.PlayVoice(5);
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
@@ -567,7 +566,6 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 	if (true == DashAttackSetting)
 	{
 		HitStop(Data.DamageTypeValue);
-		AttackDelayCheck = 0.0f;
 		StartRenderShaking(8);
 		return;
 	}
@@ -588,14 +586,12 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 		{
 			StartRenderShaking(8);
 			ChangeState(FSM_State_HellAntenora::HellAntenora_Air_Damage_Under);
-			AttackDelayCheck = 0.0f;
 			return;
 		}
 
 		if (true == IsCollapse)
 		{
 			StartRenderShaking(8);
-			AttackDelayCheck = 0.0f;
 			return;
 		}
 
@@ -641,8 +637,6 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 	default:
 		break;
 	}
-
-	AttackDelayCheck = 0.0f;
 }
 
 void Enemy_HellAntenora::RecognizeCollisionCheck(float _DeltaTime)

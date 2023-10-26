@@ -491,6 +491,7 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 	PlayerAttackCheck(AttackCol.get());
 	MonsterAttackCollision->Off();
 	DamageData Data = AttackCol->GetDamage();
+	AttackDelayCheck = 0.0f;
 	PlayDamageSound(Data.SoundType);
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
@@ -604,7 +605,6 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 		return;
 	}
 	IsVergilLight = false;
-	AttackDelayCheck = 0.0f;
 }
 
 void CavaliereAngelo::DamageCollisionCheck_Client(float _DeltaTime)
@@ -636,6 +636,7 @@ void CavaliereAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 
 	PlayerAttackCheck(AttackCol.get());
 	DamageData Data = AttackCol->GetDamage();
+	AttackDelayCheck = 0.0f;
 	PlayDamageSound(Data.SoundType);
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
@@ -644,7 +645,6 @@ void CavaliereAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 	}
 
 	StartRenderShaking(6);
-	AttackDelayCheck = 0.0f;
 }
 
 void CavaliereAngelo::RecognizeCollisionCheck(float _DeltaTime)

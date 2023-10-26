@@ -28,7 +28,7 @@ Enemy_ScudoAngelo::~Enemy_ScudoAngelo()
 void Enemy_ScudoAngelo::EnemyTypeLoad()
 {
 	EnemyCodeValue = EnemyCode::ScudoAngelo;
-	EnemyMaxHP = 200000;
+	EnemyMaxHP = 2200;
 	EnemyHP = EnemyMaxHP;
 }
 
@@ -207,12 +207,15 @@ void Enemy_ScudoAngelo::Start()
 	FallDistance = 55.0f;
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
 
-	//MonsterCollision->Off();
-	RN_MonsterCollision->Off();
+	// MonsterCollision->Off();
+	// RN_MonsterCollision->Off();
+
+	LeftWeapon->GetTransform()->AddLocalRotation({ 0.0f, 180.0f, 0.0f });
+	LeftWeapon->GetTransform()->AddLocalRotation({ -90.0f, 0.0f, 0.0f });
 
 	// 무기 붙이기
-	EnemyRenderer->SetAttachTransform("L_Hand", LeftWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 0.0f, 180.0f), true);
-	EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(90.0f, -180.0f, 0.0f), true);
+	EnemyRenderer->SetAttachTransform("L_Hand", LeftWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 0.0f, 0.0f));
+	EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 170.0f, 180.0f), true, true);
 
 	float4 MeshScale_R = RightWeapon->GetMeshScale();
 	MeshScale_R.x *= 0.7f;
@@ -270,6 +273,76 @@ void Enemy_ScudoAngelo::Start()
 ///////////////////////////////////////////////// 움직임, 히트 관련 ///////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Enemy_ScudoAngelo::MoveLoop()
+{
+	float4 CrossResult = MonsterAndPlayerCross();
+	float RotationValue = 0.0f;
+	float4 EnemyPosition = GetTransform()->GetWorldPosition();
+	float4 PlayerPosition = Player->GetTransform()->GetWorldPosition();
+
+	float4 EnemyForWardVector = GetTransform()->GetWorldForwardVector();
+	EnemyForWardVector.Normalize();
+
+	PlayerPosition.y = 0.0f;
+	EnemyPosition.y = 0.0f;
+
+	float4 ToPlayerVector = (PlayerPosition - EnemyPosition);
+	float4 RotationDirectNormal = ToPlayerVector.NormalizeReturn();
+	RotationValue = float4::GetAngleVectorToVectorDeg(EnemyForWardVector, RotationDirectNormal);
+
+	if (-1.0f <= RotationValue && 1.0f >= RotationValue)
+	{
+		AllDirectSetting_Normal();
+		return;
+	}
+
+	if (true == isnan(RotationValue))
+	{
+		AllDirectSetting_Normal();
+		return;
+	}
+
+	if (CrossResult.y < 0)
+	{
+		if (RotationValue >= 0)
+		{
+			RotationValue = -RotationValue;
+		}
+	}
+	else if (CrossResult.y > 0)
+	{
+		if (RotationValue < 0)
+		{
+			RotationValue = -RotationValue;
+		}
+	}
+
+	float4 CurRot = GetTransform()->GetWorldRotation();
+
+	if (CurRot.y <= 0.0f)
+	{
+		CurRot.y += 360.f;
+	}
+
+	float4 Value = float4{ 0.0f, RotationValue, 0.0f };
+
+	float4 GoalRot = CurRot + Value;
+
+	if (GoalRot.y <= 0.0f)
+	{
+		CurRot.y += 360.f;
+		GoalRot = CurRot + Value;
+	}
+
+	CurRot.x = 0.0f;
+	CurRot.z = 0.0f;
+	GoalRot.x = 0.0f;
+	GoalRot.z = 0.0f;
+
+	PhysXCapsule->SetWorldRotation(GoalRot);
+	AllDirectSetting_Normal();
+}
+
 void Enemy_ScudoAngelo::MonsterAttackCollisionOn()
 {
 	MonsterAttackCollision->On();
@@ -282,7 +355,7 @@ void Enemy_ScudoAngelo::MonsterAttackCollisionOff()
 	MonsterAttackCollision_Two->Off();
 }
 
-void Enemy_ScudoAngelo::PlayerChase(float _DeltaTime)
+void Enemy_ScudoAngelo::PlayerChase()
 {
 	RotationCheck();
 
@@ -291,118 +364,85 @@ void Enemy_ScudoAngelo::PlayerChase(float _DeltaTime)
 	case EnemyRotation::Forward:
 	{
 		AllDirectSetting();
-		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
+
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 3);
+
 		if (0 == RandC)
 		{
-			//ChangeState(FSM_State_ScudoAngelo::Empusa_Biped_Walk_Start);
+			ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Start);
 		}
 		else
 		{
-			//ChangeState(FSM_State_ScudoAngelo::Empusa_Biped_Run_Start);
+			ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Start);
 		}
-	}
-	break;
-	case EnemyRotation::Left:
-	{
-		AllDirectSetting();
-		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
-		if (0 == RandC)
-		{
-			//ChangeState(FSM_State_ScudoAngelo::Empusa_Biped_Walk_Start);
-		}
-		else
-		{
-			//ChangeState(FSM_State_ScudoAngelo::Empusa_Biped_Run_Start);
-		}
-	}
-	break;
-	case EnemyRotation::Left_90:
-		//ChangeState(FSM_State_ScudoAngelo::Empusa_Turn_Left_90);
-		break;
-	case EnemyRotation::Left_180:
-		//ChangeState(FSM_State_ScudoAngelo::Empusa_Turn_Left_180);
-		break;
-	case EnemyRotation::Right:
-	{
-		AllDirectSetting();
-		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
-		if (0 == RandC)
-		{
-			//ChangeState(FSM_State_ScudoAngelo::Empusa_Biped_Walk_Start);
-		}
-		else
-		{
-			//ChangeState(FSM_State_ScudoAngelo::Empusa_Biped_Run_Start);
-		}
-	}
-	break;
-	case EnemyRotation::Right_90:
-		//ChangeState(FSM_State_ScudoAngelo::Empusa_Turn_Right_90);
-		break;
-	case EnemyRotation::Right_180:
-		//ChangeState(FSM_State_ScudoAngelo::Empusa_Turn_Right_180);
-		break;
-	default:
-		break;
-	}
-}
-
-void Enemy_ScudoAngelo::PlayerAttack(float _DeltaTime)
-{
-	RotationCheck();
-	AllDirectSetting();
-
-	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 3);
-
-	if (0 == RandC)
-	{
-		//ChangeState(FSM_State_ScudoAngelo::Empusa_Continuation_Attack);
 		return;
 	}
-
-	switch (EnemyRotationValue)
-	{
-	case EnemyRotation::Forward:
-		RandomAttack();
-		break;
+	break;
 	case EnemyRotation::Left:
-		//ChangeState(FSM_State_ScudoAngelo::Empusa_Attack_C);
-		break;
+	{
+		AllDirectSetting();
+
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 3);
+
+		if (0 == RandC)
+		{
+			ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Start);
+		}
+		else
+		{
+			ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Start);
+		}
+		return;
+	}
+	break;
 	case EnemyRotation::Left_90:
-		//ChangeState(FSM_State_ScudoAngelo::Empusa_Attack_C);
+		AllDirectSetting();
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_S);
 		break;
 	case EnemyRotation::Left_180:
-		//ChangeState(FSM_State_ScudoAngelo::Empusa_Attack_C);
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Turn_Attack_To_Guard_L_Dummy_Turn_R);
 		break;
 	case EnemyRotation::Right:
-		//ChangeState(FSM_State_ScudoAngelo::Empusa_Attack_D);
-		break;
+	{
+		AllDirectSetting();
+
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 3);
+
+		if (0 == RandC)
+		{
+			ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Start);
+		}
+		else
+		{
+			ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Start);
+		}
+		return;
+	}
+	break;
 	case EnemyRotation::Right_90:
-		//ChangeState(FSM_State_ScudoAngelo::Empusa_Attack_D);
+		AllDirectSetting();
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_S);
 		break;
 	case EnemyRotation::Right_180:
-		//ChangeState(FSM_State_ScudoAngelo::Empusa_Attack_D);
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Turn_Attack_To_Guard_L_Dummy_Turn_L);
 		break;
 	default:
 		break;
 	}
 }
 
-void Enemy_ScudoAngelo::RandomAttack()
+void Enemy_ScudoAngelo::PlayerAttack()
 {
-	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
-
+	int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
 	if (0 == RandC)
 	{
-		//ChangeState(FSM_State_ScudoAngelo::Empusa_Attack_A);
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Group_Command_Attack);
 	}
-	else if (1 == RandC)
+	else
 	{
-		//ChangeState(FSM_State_ScudoAngelo::Empusa_Attack_B);
-	}
-	else if (2 == RandC)
-	{
-		//ChangeState(FSM_State_ScudoAngelo::Empusa_Attack_W);
+		RotationCheck();
+		AllDirectSetting();
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Kesa);
 	}
 }
 
@@ -423,6 +463,13 @@ void Enemy_ScudoAngelo::AttackCalculation()
 
 void Enemy_ScudoAngelo::DamageCollisionCheck(float _DeltaTime)
 {
+	if (FSM_State_ScudoAngelo::ScudoAngelo_Death_Front == EnemyFSM.GetCurState()
+		|| FSM_State_ScudoAngelo::ScudoAngelo_Death_Back == EnemyFSM.GetCurState()
+		|| FSM_State_ScudoAngelo::ScudoAngelo_Death_Front == EnemyFSM.GetCurState())
+	{
+		return;
+	}
+
 	if (true == DeathValue)
 	{
 		return;
@@ -446,6 +493,28 @@ void Enemy_ScudoAngelo::DamageCollisionCheck(float _DeltaTime)
 	PlayerAttackCheck(AttackCol.get());
 	MonsterAttackCollision->Off();
 	DamageData Data = AttackCol->GetDamage();
+	AttackDelayCheck = 0.0f;
+
+	AttackDirectCheck();
+
+	if (EnemyHitDirect::Forward == EnemyHitDirValue)
+	{
+		if (FSM_State_ScudoAngelo::ScudoAngelo_Idle == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Start == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Loop == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Stop == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Group_Command_Attack == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Start == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Loop == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_M == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_S == EnemyFSM.GetCurState())
+		{
+			MinusEnemyHP(50);
+			StartRenderShaking(6);
+			return;
+		}
+	}
+	
 	MinusEnemyHP(Data.DamageValue);
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
@@ -479,7 +548,7 @@ void Enemy_ScudoAngelo::DamageCollisionCheck(float _DeltaTime)
 			return;
 		}
 
-		AttackCalculation();
+		AttackDirectCheck();
 
 		switch (EnemyHitDirValue)
 		{
@@ -523,11 +592,17 @@ void Enemy_ScudoAngelo::DamageCollisionCheck(float _DeltaTime)
 	}
 
 	HitStop(Data.DamageTypeValue);
-	AttackDelayCheck = 0.0f;
 }
 
 void Enemy_ScudoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 {
+	if (FSM_State_ScudoAngelo::ScudoAngelo_Death_Front == EnemyFSM.GetCurState()
+		|| FSM_State_ScudoAngelo::ScudoAngelo_Death_Back == EnemyFSM.GetCurState()
+		|| FSM_State_ScudoAngelo::ScudoAngelo_Death_Front == EnemyFSM.GetCurState())
+	{
+		return;
+	}
+
 	if (true == DeathValue)
 	{
 		return;
@@ -550,9 +625,28 @@ void Enemy_ScudoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 
 	DamageData Data = AttackCol->GetDamage();
 
+	AttackDirectCheck();
+	AttackDelayCheck = 0.0f;
+
+	if (EnemyHitDirect::Forward == EnemyHitDirValue)
+	{
+		if (FSM_State_ScudoAngelo::ScudoAngelo_Idle == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Start == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Loop == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Stop == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Group_Command_Attack == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Start == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Loop == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_M == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_S == EnemyFSM.GetCurState())
+		{
+			StartRenderShaking(6);
+			return;
+		}
+	}
+
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
-		IsVergilLight = true;
 		Data.DamageTypeValue = DamageType::Light;
 	}
 
@@ -571,7 +665,7 @@ void Enemy_ScudoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 		if (true == IsAirAttack || true == IsSlamAttack || true == IsHeavyAttack)
 		{
 			StartRenderShaking(8);
-			//ChangeState_Client(FSM_State_ScudoAngelo::Empusa_Air_Damage_Under);
+			ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Air_Damage);
 			return;
 		}
 
@@ -586,16 +680,16 @@ void Enemy_ScudoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 		switch (EnemyHitDirValue)
 		{
 		case EnemyHitDirect::Forward:
-			//ChangeState_Client(FSM_State_ScudoAngelo::Empusa_Standing_Damage_Weak_Front);
+			ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Standing_Damage_Weak_Front);
 			break;
 		case EnemyHitDirect::Back:
-			//ChangeState_Client(FSM_State_ScudoAngelo::Empusa_Standing_Damage_Weak_Back);
+			ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Standing_Damage_Weak_Back);
 			break;
 		case EnemyHitDirect::Left:
-			//ChangeState_Client(FSM_State_ScudoAngelo::Empusa_Standing_Damage_Weak_Left);
+			ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Standing_Damage_Weak_Front);
 			break;
 		case EnemyHitDirect::Right:
-			//ChangeState_Client(FSM_State_ScudoAngelo::Empusa_Standing_Damage_Weak_Right);
+			ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Standing_Damage_Weak_Front);
 			break;
 		default:
 			break;
@@ -603,27 +697,25 @@ void Enemy_ScudoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 		break;
 
 	case DamageType::Heavy:
-		//ChangeState_Client(FSM_State_ScudoAngelo::Empusa_Blown_Back);
+		ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Blown_Back);
 		break;
 	case DamageType::Air:
-		//ChangeState_Client(FSM_State_ScudoAngelo::Empusa_Air_Damage);
+		ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Blown_Up);
 		break;
 	case DamageType::Snatch:
-		//ChangeState_Client(FSM_State_ScudoAngelo::Empusa_Snatch);
+		ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Snatch);
 		break;
 	case DamageType::Slam:
-		//ChangeState_Client(FSM_State_ScudoAngelo::Empusa_Slam_Damage);
+		ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Slam_Damage);
 		break;
 	case DamageType::Buster:
-		//ChangeState_Client(FSM_State_ScudoAngelo::Empusa_Buster_Start);
+		ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Buster_Start);
 		break;
 	case DamageType::Stun:
 		break;
 	default:
 		break;
 	}
-
-	AttackDelayCheck = 0.0f;
 }
 
 void Enemy_ScudoAngelo::RecognizeCollisionCheck(float _DeltaTime)
@@ -708,8 +800,23 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0600_Idle");
 	},
 	.Update = [=](float _DeltaTime) {
+	WaitTime += _DeltaTime;
+	if (0.35f <= WaitTime)
+	{
+		if (true == IsRecognize)
+		{
+			IsRecognize = false;
+			PlayerAttack();
+		}
+		else
+		{
+			PlayerChase();
+		}
+		return;
+	}
 	},
 	.End = [=] {
+	WaitTime = 0.0f;
 	}
 		});
 
@@ -721,6 +828,476 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 	},
 	.End = [=] {
+	}
+		});
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////      이동      //////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	// 앞으로 걷기 시작, 20프레임 걷기 시작
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Start,
+	.Start = [=]
+	{
+	EnemyRenderer->ChangeAnimation("em0600_Walk_Front_Start");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	{
+		MoveLoop();
+		if (20 <= EnemyRenderer->GetCurFrame())
+		{
+			SetForwardMove(170.0f);
+		}
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Loop);
+		return;
+	}
+	},
+	.End = [=]
+	{
+	}
+		});
+
+	// 앞으로 걷기 루프
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Walk_Front_Loop");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	RunTime += _DeltaTime;
+	{
+		MoveLoop();
+		SetForwardMove(220.0f);
+	}
+
+	if (true == IsRecognize)
+	{
+		IsRecognize = false;
+		PlayerAttack();
+		return;
+	}
+	else if (RunTime >= 3.0f)
+	{
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Stop);
+		return;
+	}
+	},
+	.End = [=] {
+	RunTime = 0.0f;
+	}
+		});
+
+	// 앞으로 걷기 끝, 30프레임 걷기 끝
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Stop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Walk_Front_Stop");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	{
+		AllDirectSetting_Normal();
+		if (30 >= EnemyRenderer->GetCurFrame())
+		{
+			SetForwardMove(170.0f);
+		}
+	}
+
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 왼쪽 180도 돌기(이름 잘못 저장)
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Turn_Attack_To_Guard_L_Dummy_Turn_R,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Turn_Attack_To_Guard_L_Dummy_Turn_R");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+
+	if (10 <= EnemyRenderer->GetCurFrame())
+	{
+		AnimationTurnStart = true;
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		AnimationTurnStart = false;
+		PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 오른쪽 180도 돌기(이름 잘못 저장)
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Turn_Attack_To_Guard_L_Dummy_Turn_L,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Turn_Attack_To_Guard_L_Dummy_Turn_L");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+
+	if (10 <= EnemyRenderer->GetCurFrame())
+	{
+		AnimationTurnStart = true;
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		AnimationTurnStart = false;
+		PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 뒤로 빽스텝 S (90도 회전용)
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_S,
+	.Start = [=] {
+	SetThrowback(33000.0f);
+	EnemyRenderer->ChangeAnimation("em0600_Step_Back_S");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 뒤로 빽스텝 M (공격 후 회피용)
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_M,
+	.Start = [=] {
+	RotationCheck();
+	AllDirectSetting();
+	SetThrowback(43000.0f);
+	EnemyRenderer->ChangeAnimation("em0600_Step_Back_M");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	IsRecognize = false;
+	}
+		});
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////      공격      //////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	// 공격 시작 모션
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Group_Command_Attack,
+	.Start = [=]
+	{
+	RotationCheck();
+	SlerpCalculation();
+	SlerpTime = 0.0f;
+	EnemyRenderer->ChangeAnimation("em0600_Group_Command_Attack");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	{
+		SlerpTurn(_DeltaTime * 2.0f);
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+		if (0 == RandC)
+		{
+			ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Group_Command_Attack_End);
+		}
+		else
+		{
+			ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Hikkake);
+		}
+		return;
+	}
+	},
+	.End = [=]
+	{
+	SlerpTime = 0.0f;
+	}
+		});
+
+	// 앞 공격 후 뒤로, 13프레임 전진, 45프레임 전진 끝 // 52프레임 on, 57프레임 off // 80 프레임 후퇴, 130 프레임 후퇴 끝
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Hikkake,
+	.Start = [=] {
+	RotationCheck();
+	SlerpCalculation();
+	SlerpTime = 0.0f;
+	MonsterAttackCollision->SetAttackData(DamageType::Heavy, MONSTER_HEAVY_DAMAGE);
+	EnemyRenderer->ChangeAnimation("em0600_Attack_T_Hikkake");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	{
+		AllDirectSetting_Normal();
+		if (13 <= EnemyRenderer->GetCurFrame() && 45 >= EnemyRenderer->GetCurFrame())
+		{
+			SetForwardMove(140.0f);
+		}
+		if (80 <= EnemyRenderer->GetCurFrame() && 130 >= EnemyRenderer->GetCurFrame())
+		{
+			SetBackMove(140.0f);
+		}
+		if (52 > EnemyRenderer->GetCurFrame())
+		{
+			SlerpTurn(_DeltaTime * 2.0f);
+		}
+	}
+	if (52 <= EnemyRenderer->GetCurFrame() && 57 > EnemyRenderer->GetCurFrame())
+	{
+		MonsterAttackCollision->On();
+	}
+	else
+	{
+		MonsterAttackCollision->Off();
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_M);
+		return;
+	}
+	},
+	.End = [=] {
+	MonsterAttackCollisionOff();
+	SlerpTime = 0.0f;
+	}
+		});
+
+	// 앞으로 공격, 43프레임 on, 48프레임 off
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Kesa,
+	.Start = [=] {
+	MonsterAttackCollision->SetAttackData(DamageType::Light, MONSTER_LIGHT_DAMAGE);
+	EnemyRenderer->ChangeAnimation("em0600_Attack_T_Kesa");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	if (43 <= EnemyRenderer->GetCurFrame() && 48 > EnemyRenderer->GetCurFrame())
+	{
+		MonsterAttackCollision->On();
+	}
+	else
+	{
+		MonsterAttackCollision->Off();
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	MonsterAttackCollisionOff();
+	IsRecognize = false;
+	}
+		});
+
+	// 공격 시작 앞으로 찌르기(안뛰고 바로 찌르기) // 10프레임 앞으로 이동 시작, 55프레임 앞으로 이동 끝 // 50프레임 on, 55프레임 off // 120 프레임 후퇴 시작, 220 프레임 후퇴 끝
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Group_Command_Attack_End,
+	.Start = [=] {
+	RotationCheck();
+	SlerpCalculation();
+	SlerpTime = 0.0f;
+	MonsterAttackCollision->SetAttackData(DamageType::Heavy, MONSTER_HEAVY_DAMAGE);
+	EnemyRenderer->ChangeAnimation("em0600_Group_Command_Attack_End");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	{
+		AllDirectSetting_Normal();
+		if (10 <= EnemyRenderer->GetCurFrame() && 55 >= EnemyRenderer->GetCurFrame())
+		{
+			SetForwardMove(140.0f);
+		}
+		if (120 <= EnemyRenderer->GetCurFrame() && 220 >= EnemyRenderer->GetCurFrame())
+		{
+			SetBackMove(140.0f);
+		}
+		if (50 > EnemyRenderer->GetCurFrame())
+		{
+			SlerpTurn(_DeltaTime * 2.0f);
+		}
+	}
+	if (50 <= EnemyRenderer->GetCurFrame() && 55 > EnemyRenderer->GetCurFrame())
+	{
+		MonsterAttackCollision->On();
+	}
+	else
+	{
+		MonsterAttackCollision->Off();
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_M);
+		return;
+	}
+	},
+	.End = [=] {
+	MonsterAttackCollisionOff();
+	SlerpTime = 0.0f;
+	}
+		});
+
+	// 달리기 어택 시작
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Start,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Attack_T_Run_Start");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	RunTime += _DeltaTime;
+	{
+		MoveLoop();
+		SetForwardMove(400.0f);
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Loop);
+		return;
+	}
+	},
+	.End = [=] {
+	RunTime = 0.0f;
+	}
+		});
+
+	// 달리기 어택 루프
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Attack_T_Run_Loop");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	RunTime += _DeltaTime;
+	{
+		MoveLoop();
+		SetForwardMove(400.0f);
+	}
+
+	if (true == IsRecognize)
+	{
+		IsRecognize = false;
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Attack);
+		return;
+	}
+	else if (RunTime >= 1.5f)
+	{
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Stop_A);
+		return;
+	}
+	},
+	.End = [=] {
+	RunTime = 0.0f;
+	}
+		});
+
+	// 돌진 공격, 42프레임 on, 47프레임 off // 100프레임 전진 끝 // 110프레임 후퇴 시작, 180 프레임 후퇴 끝
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Attack,
+	.Start = [=] {
+	MonsterAttackCollision->SetAttackData(DamageType::Heavy, MONSTER_HEAVY_DAMAGE);
+	EnemyRenderer->ChangeAnimation("em0600_Attack_T_Run_Attack");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	RunTime += _DeltaTime;
+	{
+		AllDirectSetting_Normal();
+		if (90 >= EnemyRenderer->GetCurFrame())
+		{
+			SetForwardMove(300.0f);
+		}
+		else if (110 <= EnemyRenderer->GetCurFrame() && 180 >= EnemyRenderer->GetCurFrame())
+		{
+			SetBackMove(200.0f);
+		}
+		else
+		{
+			SetMoveStop();
+		}
+	}
+	if (42 <= EnemyRenderer->GetCurFrame() && 47 > EnemyRenderer->GetCurFrame())
+	{
+		MonsterAttackCollision->On();
+	}
+	else
+	{
+		MonsterAttackCollision->Off();
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	RunTime = 0.0f;
+	}
+		});
+
+	// 달리기 어택 종료 // 50프레임 뛰기 끝, 걷기 시작, 100프레임 걷기 끝 // 120프레임 걷기 시작, 195프레임 걷기 끝
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Stop_A,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Attack_T_Run_Stop_A");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	RunTime += _DeltaTime;
+	{
+		AllDirectSetting_Normal();
+		if (50 > EnemyRenderer->GetCurFrame())
+		{
+			SetForwardMove(220.0f);
+		}
+		else if (50 <= EnemyRenderer->GetCurFrame() && 100 > EnemyRenderer->GetCurFrame())
+		{
+			SetForwardMove(140.0f);
+		}
+		else if (120 <= EnemyRenderer->GetCurFrame() && 185 > EnemyRenderer->GetCurFrame())
+		{
+			SetForwardMove(110.0f);
+		}
+		else
+		{
+			SetMoveStop();
+		}
+	}
+	if (42 <= EnemyRenderer->GetCurFrame() && 47 > EnemyRenderer->GetCurFrame())
+	{
+		MonsterAttackCollision->On();
+	}
+	else
+	{
+		MonsterAttackCollision->Off();
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	RunTime = 0.0f;
 	}
 		});
 
@@ -1132,7 +1709,6 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	// 앞으로 넘어진 상태에서 Death
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Prone_Death,
 	.Start = [=] {
-	Sound.PlayVoice(9);
 	EnemyRenderer->ChangeAnimation("em0600_Prone_Death");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1147,7 +1723,6 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	// 앞으로 쓰러지면서 죽음
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Death_Back,
 	.Start = [=] {
-	Sound.PlayVoice(9);
 	EnemyRenderer->ChangeAnimation("em0600_Death_Back");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1162,7 +1737,6 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	// 뒤로 쓰러지면서 죽음
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Death_Front,
 	.Start = [=] {
-	Sound.PlayVoice(9);
 	EnemyRenderer->ChangeAnimation("em0600_Death_Front");
 	},
 	.Update = [=](float _DeltaTime) {

@@ -222,7 +222,6 @@ void Enemy_Qliphoth::Start()
 		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
 		MinusEnemyHP(Datas.DamageValue);
 		PlayDamageEvent(Datas.DamageTypeValue, Datas.SoundType);
-		//Sound.PlayVoice(3, false);
 
 		if (DamageType::Stun == Datas.DamageTypeValue)
 		{
@@ -287,6 +286,7 @@ void Enemy_Qliphoth::DamageCollisionCheck(float _DeltaTime)
 
 	DamageData Data = AttackCol->GetDamage();
 	MinusEnemyHP(Data.DamageValue);
+	AttackDelayCheck = 0.0f;
 	PlayDamageEvent(Data.DamageTypeValue, Data.SoundType);
 
 	//Sound.PlayVoice(3, false);
@@ -341,7 +341,7 @@ void Enemy_Qliphoth::DamageCollisionCheck_Client(float _DeltaTime)
 	MonsterAttackCollision->Off();
 
 	DamageData Data = AttackCol->GetDamage();
-	//MinusEnemyHP(Data.DamageValue);
+	AttackDelayCheck = 0.0f;
 	PlayDamageEvent(Data.DamageTypeValue, Data.SoundType);
 
 	//Sound.PlayVoice(3, false);
@@ -359,7 +359,6 @@ void Enemy_Qliphoth::DamageCollisionCheck_Client(float _DeltaTime)
 	case DamageType::Slam:
 		ChangeState_Client(FSM_State_Qliphoth::Qliphoth_Damage);
 		StartRenderShaking(8);
-		AttackDelayCheck = 0.0f;
 		break;
 	default:
 		break;

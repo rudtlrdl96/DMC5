@@ -372,6 +372,7 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 	MonsterAttackCollision->Off();
 	DamageData Data = AttackCol->GetDamage();
 	MinusEnemyHP(Data.DamageValue);
+	AttackDelayCheck = 0.0f;
 	PlayDamageEvent(Data.DamageTypeValue, Data.SoundType);
 	Sound.PlayVoice(3, false);
 	if (DamageType::VergilLight == Data.DamageTypeValue)
@@ -396,14 +397,12 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 		{
 			StartRenderShaking(8);
 			ChangeState(FSM_State_HellCaina::HellCaina_Air_Damage_Under);
-			AttackDelayCheck = 0.0f;
 			return;
 		}
 
 		if (true == IsCollapse)
 		{
 			StartRenderShaking(8);
-			AttackDelayCheck = 0.0f;
 			return;
 		}
 
@@ -451,7 +450,6 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 	}
 
 	HitStop(Data.DamageTypeValue);
-	AttackDelayCheck = 0.0f;
 }
 
 void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
@@ -484,6 +482,7 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 	if (nullptr == AttackCol) { return; }
 
 	DamageData Data = AttackCol->GetDamage();
+	AttackDelayCheck = 0.0f;
 	PlayDamageEvent(Data.DamageTypeValue, Data.SoundType);
 	Sound.PlayVoice(3, false);
 
@@ -508,14 +507,12 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 		{
 			StartRenderShaking(8);
 			ChangeState_Client(FSM_State_HellCaina::HellCaina_Air_Damage_Under);
-			AttackDelayCheck = 0.0f;
 			return;
 		}
 
 		if (true == IsCollapse)
 		{
 			StartRenderShaking(8);
-			AttackDelayCheck = 0.0f;
 			return;
 		}
 
@@ -560,8 +557,6 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 	default:
 		break;
 	}
-
-	AttackDelayCheck = 0.0f;
 }
 
 void Enemy_HellCaina::RecognizeCollisionCheck(float _DeltaTime)

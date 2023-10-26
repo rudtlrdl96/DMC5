@@ -452,6 +452,7 @@ void Enemy_ProtoAngelo::DamageCollisionCheck(float _DeltaTime)
 	PlayerAttackCheck(AttackCol.get());
 	MonsterAttackCollision->Off();
 	DamageData Data = AttackCol->GetDamage();
+	AttackDelayCheck = 0.0f;
 	MinusEnemyHP(Data.DamageValue);
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
@@ -529,7 +530,6 @@ void Enemy_ProtoAngelo::DamageCollisionCheck(float _DeltaTime)
 	}
 
 	HitStop(Data.DamageTypeValue);
-	AttackDelayCheck = 0.0f;
 }
 
 void Enemy_ProtoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
@@ -555,10 +555,10 @@ void Enemy_ProtoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 	if (nullptr == AttackCol) { return; }
 
 	DamageData Data = AttackCol->GetDamage();
+	AttackDelayCheck = 0.0f;
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
-		IsVergilLight = true;
 		Data.DamageTypeValue = DamageType::Light;
 	}
 
@@ -628,8 +628,6 @@ void Enemy_ProtoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 	default:
 		break;
 	}
-
-	AttackDelayCheck = 0.0f;
 }
 
 void Enemy_ProtoAngelo::RecognizeCollisionCheck(float _DeltaTime)
