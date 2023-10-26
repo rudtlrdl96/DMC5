@@ -102,7 +102,7 @@ void TestLevel::LevelChangeStart()
 
 	if (nullptr == Player)
 	{
-		if (true)
+		if (false)
 		{
 			Player = CreateActor<PlayerActor_Nero>();
 			Player->GetPhysXComponent()->SetWorldPosition({ -1200, 100, -1300 });

@@ -6,6 +6,8 @@
 // 다른 lib나 dll을 사용하기 위한 전처리문을 여기 넣을것입니다.
 // #pragma comment(lib, "GameEngineBase.lib");
 
+std::mutex GameEngineSound::SoundLock;
+
 // lib를 통해서 dll을 사용한다고 하는건.
 // fmod.dll을 쓰겠다.
 #ifdef _DEBUG
@@ -129,6 +131,7 @@ std::shared_ptr<GameEngineSound> GameEngineSound::Find(const std::string_view& _
 {
 	std::string UpperName = GameEngineString::ToUpper(_Name);
 
+	std::lock_guard<std::mutex> Lock(SoundLock);
 	if (AllSound.end() == AllSound.find(UpperName.c_str()))
 	{
 		return nullptr;

@@ -163,6 +163,8 @@ private:
 
 	void SoundLoad(const std::string_view& _Path);
 	FMOD::Channel* SoundPlay();
+
+	static std::mutex SoundLock;
 	// ½ÃÄý½º
 	// ¿¬°ü
 	// ¾îµªÅÍ
