@@ -32,10 +32,13 @@ void EnemySpawner::DestroyMonster()
 		return;
 	}
 
-	BGMPlayer::SetBattleEnd();
-
 	if (false == NetworkManager::IsClient())
 	{
+		if (nullptr != BattleEndEvent)
+		{
+			BattleEndEvent();
+		}
+		BGMPlayer::SetBattleEnd();
 		ZoomEffect::GetZoomEffect()->SetSpeed(6.0f);
 		ZoomEffect::GetZoomEffect()->EffectOn(1.5f);
 		float BeforeTimeScale = GameEngineTime::GlobalTime.GetGlobalTimeScale();
@@ -59,10 +62,6 @@ void EnemySpawner::DestroyMonster()
 			{
 				GetLevel()->DynamicThis<StageBaseLevel>()->RedSealWallOff();
 			});
-	}
-	else
-	{
-		GetLevel()->DynamicThis<StageBaseLevel>()->RedSealWallOff();
 	}
 	Death();
 }

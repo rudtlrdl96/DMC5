@@ -5,6 +5,7 @@
 #include "BGMPlayer.h"
 #include "NetworkManager.h"
 #include "BasePlayerActor.h"
+#include "ZoomEffect.h"
 Location2_EnemySpawner0::Location2_EnemySpawner0()
 {
 	CutScenePosStart = { 2245, 856, -300 };
@@ -23,9 +24,38 @@ void Location2_EnemySpawner0::Start()
 {
 	EnemySpawner::Start();
 
-	for (size_t i = 0; i < 7; ++i)
+	// 클라이언트에서 처리될 BattleEndEvent 지정 (서버에서 패킷을 보내서 실행시킨다)
+	NetworkManager::PushNetworkEvent(Net_EventType::RedWallOff_Location2_Spawner0, [=]
+		{
+			BGMPlayer::SetBattleEnd();
+			ZoomEffect::GetZoomEffect()->SetSpeed(6.0f);
+			ZoomEffect::GetZoomEffect()->EffectOn(1.5f);
+			float BeforeTimeScale = GameEngineTime::GlobalTime.GetGlobalTimeScale();
+			GameEngineTime::GlobalTime.SetGlobalTimeScale(0.5f);
+			GetLevel()->TimeEvent.AddEvent(1.0f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					GameEngineTime::GlobalTime.SetGlobalTimeScale(BeforeTimeScale);
+					ZoomEffect::GetZoomEffect()->SetSpeed(3.0f);
+					ZoomEffect::GetZoomEffect()->EffectOff();
+				});
+
+			GetLevel()->TimeEvent.AddEvent(2.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					if (CutScenePosStart != float4::ZERO)
+					{
+						BasePlayerActor::GetMainPlayer()->SetCutScene(CutScenePosStart, CutScenePosEnd, CutSceneRotStart, CutSceneRotEnd, 5.0f);
+					}
+				});
+
+			GetLevel()->TimeEvent.AddEvent(3.0f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					GetLevel()->DynamicThis<StageBaseLevel>()->RedSealWallOff();
+				});
+
+		});
+	if (true == NetworkManager::IsServer())
 	{
-		NetworkObjectBase::PushReservedDestroyCallback(Net_ActorType::Empusa, std::bind(&EnemySpawner::DestroyMonster, this));
+		BattleEndEvent = std::bind(NetworkManager::ExcuteNetworkEvent, Net_EventType::RedWallOff_Location2_Spawner0);
 	}
 
 	Event = [this]()
@@ -37,10 +67,10 @@ void Location2_EnemySpawner0::Start()
 					Level->DynamicThis<StageBaseLevel>()->RedSealWallOn();
 				});
 			BGMPlayer::SetBattleBGM();
-			MonsterAliveCount = 2;
 
 			if (false == NetworkManager::IsClient())
 			{
+				MonsterAliveCount = 2;
 				std::vector<float4> EnemyPos =
 				{
 					{ 494, 55, 1464 }, { -241, 82, 119 }

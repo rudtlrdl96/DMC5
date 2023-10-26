@@ -5,6 +5,7 @@
 #include "BGMPlayer.h"
 #include "NetworkManager.h"
 #include "BasePlayerActor.h"
+#include "ZoomEffect.h"
 Location2_EnemySpawner1::Location2_EnemySpawner1()
 {
 	CutScenePosStart = { 2320, 1090, -8865 };
@@ -22,41 +23,40 @@ Location2_EnemySpawner1::~Location2_EnemySpawner1()
 void Location2_EnemySpawner1::Start()
 {
 	EnemySpawner::Start();
-	for (size_t i = 0; i < 6; ++i)
+
+	// 클라이언트에서 처리될 BattleEndEvent 지정 (서버에서 패킷을 보내서 실행시킨다)
+	NetworkManager::PushNetworkEvent(Net_EventType::RedWallOff_Location2_Spawner1, [=]
+		{
+			BGMPlayer::SetBattleEnd();
+			ZoomEffect::GetZoomEffect()->SetSpeed(6.0f);
+			ZoomEffect::GetZoomEffect()->EffectOn(1.5f);
+			float BeforeTimeScale = GameEngineTime::GlobalTime.GetGlobalTimeScale();
+			GameEngineTime::GlobalTime.SetGlobalTimeScale(0.5f);
+			GetLevel()->TimeEvent.AddEvent(1.0f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					GameEngineTime::GlobalTime.SetGlobalTimeScale(BeforeTimeScale);
+					ZoomEffect::GetZoomEffect()->SetSpeed(3.0f);
+					ZoomEffect::GetZoomEffect()->EffectOff();
+				});
+
+			GetLevel()->TimeEvent.AddEvent(2.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					if (CutScenePosStart != float4::ZERO)
+					{
+						BasePlayerActor::GetMainPlayer()->SetCutScene(CutScenePosStart, CutScenePosEnd, CutSceneRotStart, CutSceneRotEnd, 5.0f);
+					}
+				});
+
+			GetLevel()->TimeEvent.AddEvent(3.0f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					GetLevel()->DynamicThis<StageBaseLevel>()->RedSealWallOff();
+				});
+
+		});
+	if (true == NetworkManager::IsServer())
 	{
-		NetworkObjectBase::PushReservedDestroyCallback(Net_ActorType::HellCaina, std::bind(&EnemySpawner::DestroyMonster, this));
+		BattleEndEvent = std::bind(NetworkManager::ExcuteNetworkEvent, Net_EventType::RedWallOff_Location2_Spawner1);
 	}
-	//Event = [this]()
-	//	{
-	//		GameEngineLevel* Level = GetLevel();
-	//		//이 부분은 Host가 아닌 클라에서만 실행됩니다.
-	//		if (true == NetworkManager::IsClient())
-	//		{
-	//			BGMPlayer::SetBattleBGM();
-	//			MonsterAliveCount = 3;
-	//			Level->DynamicThis<StageBaseLevel>()->RedSealWallOn();
-	//			NetworkObjectBase::PushReservedDestroyCallback(Net_ActorType::Empusa, std::bind(&EnemySpawner::DestroyMonster, this));
-	//			return;
-	//		}
-
-	//		Level->DynamicThis<StageBaseLevel>()->RedSealWallOn();
-
-	//		for (size_t i = 0; i < 3; ++i)
-	//		{
-	//			std::shared_ptr<Enemy_HellCaina> Enemy = nullptr;
-
-	//			//싱글이거나 호스트일때만 몬스터를 생성 후 포인터를 반환합니다.(클라이언트인 경우 nullptr 반환)
-	//			Enemy = NetworkManager::CreateNetworkActor<Enemy_HellCaina>(Level, static_cast<int>(ActorOrder::Enemy));
-	//			if (nullptr == Enemy)
-	//				continue;
-
-	//			++MonsterAliveCount;
-	//			Enemy->GetPhysXComponent()->SetWorldPosition({ 3725.f, 150.f * i, -8527.f });
-	//			Enemy->PushDeathCallback(std::bind(&EnemySpawner::DestroyMonster, this));
-	//		}
-
-	//		BGMPlayer::SetBattleBGM();
-	//	};
 
 	Event = [this]()
 	{
@@ -67,11 +67,11 @@ void Location2_EnemySpawner1::Start()
 				Level->DynamicThis<StageBaseLevel>()->RedSealWallOn();
 			});
 		BGMPlayer::SetBattleBGM();
-		MonsterAliveCount = 2;
-		NetworkObjectBase::PushReservedDestroyCallback(Net_ActorType::HellCaina, std::bind(&EnemySpawner::DestroyMonster, this));
+		//NetworkObjectBase::PushReservedDestroyCallback(Net_ActorType::HellCaina, std::bind(&EnemySpawner::DestroyMonster, this));
 
 		if (false == NetworkManager::IsClient())
 		{
+			MonsterAliveCount = 2;
 			std::vector<float4> EnemyPos =
 			{
 				{ 3652 , 86, -9166 }, { 4289 , 86, -8878 }, { 3032 , 86, -9015 }
@@ -98,9 +98,9 @@ void Location2_EnemySpawner1::Start()
 	MonsterWave_Events.resize(1);
 	MonsterWave_Events[0] = [this]()
 		{
-			MonsterAliveCount = 4;
 			if (false == NetworkManager::IsClient())
 			{
+				MonsterAliveCount = 4;
 				GameEngineLevel* Level = GetLevel();
 				std::vector<float4> EnemyPos =
 				{

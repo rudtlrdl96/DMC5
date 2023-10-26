@@ -20,6 +20,7 @@ protected:
 	void Start() override;
 
 	std::vector<std::function<void()>> MonsterWave_Events;
+	std::function<void()> BattleEndEvent = nullptr;
 	size_t MonsterAliveCount = 0;
 
 	float4 CutScenePosStart = float4::ZERO;	// 전투 끝날때 컷신 카메라 위치 Start
