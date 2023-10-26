@@ -131,6 +131,26 @@ void BGMPlayer::SetBossBGM()
 	SoundPlayer.SetLoopPoint(4.17f, 208.7f);
 }
 
+void BGMPlayer::SetTitleBGM()
+{
+	if (nullptr == GameEngineSound::Find("Devil Trigger.ogg")) { BGMLoad(); }
+
+	SoundPlayer = GameEngineSound::Play("Titlescreen.ogg");
+	SoundPlayer.SetVolume(Volume);
+	SoundPlayer.SetPosition(15.0f);
+	SoundPlayer.SoundFadeIn(0.5f);
+	SoundPlayer.SetLoop();
+	SoundPlayer.SetLoopPoint(20.0f, 100.f);
+}
+
+void BGMPlayer::SetBGMFadeOut()
+{
+	if (SoundPlayer.IsValid())
+	{
+		SoundPlayer.SoundFadeOut(1.0f);
+	}
+}
+
 void BGMPlayer::SetCharater(PlayerType _Type)
 {
 	if (Type == _Type) { return; }

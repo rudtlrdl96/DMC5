@@ -1,11 +1,12 @@
 #include "PrecompileHeader.h"
 #include "TitleLevel.h"
+#include <GameEnginePlatform/GameEngineInput.h>
+#include <GameEngineCore/GameEngineFont.h>
+#include <GameEngineCore/GameEngineTexture.h>
 #include "Title_StartScreen.h"
 #include "TitleBG.h"
 #include "FadeEffect.h"
-#include <GameEngineCore/GameEngineFont.h>
-#include <GameEngineCore/GameEngineTexture.h>
-#include <GameEnginePlatform/GameEngineInput.h>
+#include "BGMPlayer.h"
 TitleLevel::TitleLevel()
 {
 }
@@ -55,9 +56,11 @@ void TitleLevel::Update(float _DeltaTime)
 
 void TitleLevel::LevelChangeStart()
 {
+	BGMPlayer::SetTitleBGM();
 	FEffect->FadeIn();
 }
 
 void TitleLevel::LevelChangeEnd()
 {
+	BGMPlayer::SetBGMFadeOut();
 }
