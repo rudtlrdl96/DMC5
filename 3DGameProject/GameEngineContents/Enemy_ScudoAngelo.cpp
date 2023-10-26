@@ -200,8 +200,13 @@ void Enemy_ScudoAngelo::Start()
 	MonsterCollision->GetTransform()->SetLocalScale({ 80, 210, 70 });
 	MonsterCollision->GetTransform()->SetLocalPosition({ 0, 65, 0 });
 	MonsterCollision->SetColType(ColType::OBBBOX3D);
-	RN_MonsterCollision->GetTransform()->SetLocalScale({ 600, 0, 0 });
+	RN_MonsterCollision->GetTransform()->SetLocalScale({ 650, 0, 0 });
 	RN_MonsterCollision->GetTransform()->SetLocalPosition({ 0, 80, 0 });
+
+	ParryCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Null);
+	ParryCollision->SetColType(ColType::OBBBOX3D);
+	ParryCollision->GetTransform()->SetLocalScale({ 200, 200, 220 });
+	ParryCollision->GetTransform()->SetLocalPosition({ 0, 100, 170 });
 
 	// 기본 세팅
 	FallDistance = 55.0f;
@@ -272,6 +277,45 @@ void Enemy_ScudoAngelo::Start()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////// 움직임, 히트 관련 ///////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Enemy_ScudoAngelo::ParryCheck()
+{
+	if (false == IsParryCheck || true == ParryOkay || true == DeathValue)
+	{
+		return;
+	}
+
+	std::shared_ptr<GameEngineCollision> Col = ParryCollision->Collision(CollisionOrder::PlayerAttack);
+	if (nullptr == Col) { return; }
+
+	std::shared_ptr<AttackCollision> AttackCol = std::dynamic_pointer_cast<AttackCollision>(Col);
+	if (nullptr == AttackCol) { return; }
+
+	if (false == AttackCol->GetIsParryAttack()) { return; }
+	AttackCol->ParryEvent();
+	ParryOkay = true;
+}
+
+void Enemy_ScudoAngelo::ParryTime()
+{
+	SetTimeScale(0.2f);
+	GetLevel()->TimeEvent.AddEvent(0.4f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+		{
+			SetTimeScale(0.4f);
+		});
+	GetLevel()->TimeEvent.AddEvent(0.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+		{
+			SetTimeScale(0.6f);
+		});
+	GetLevel()->TimeEvent.AddEvent(0.8f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+		{
+			SetTimeScale(0.8f);
+		});
+	GetLevel()->TimeEvent.AddEvent(1.f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+		{
+			SetTimeScale(1.f);
+		});
+}
 
 void Enemy_ScudoAngelo::MoveLoop()
 {
@@ -470,6 +514,8 @@ void Enemy_ScudoAngelo::DamageCollisionCheck(float _DeltaTime)
 		return;
 	}
 
+	ParryCheck();
+
 	if (true == DeathValue)
 	{
 		return;
@@ -507,14 +553,25 @@ void Enemy_ScudoAngelo::DamageCollisionCheck(float _DeltaTime)
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Start == EnemyFSM.GetCurState()
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Loop == EnemyFSM.GetCurState()
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_M == EnemyFSM.GetCurState()
-			|| FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_S == EnemyFSM.GetCurState())
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_S == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Start == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Loop == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Stop_A == EnemyFSM.GetCurState()
+			|| true == IsSuperArmor)
 		{
-			MinusEnemyHP(50);
+			MinusEnemyHP(70);
 			StartRenderShaking(6);
 			return;
 		}
 	}
-	
+
+	if (true == ParryEvent)
+	{
+		MinusEnemyHP(Data.DamageValue);
+		StartRenderShaking(6);
+		return;
+	}
+
 	MinusEnemyHP(Data.DamageValue);
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
@@ -603,6 +660,8 @@ void Enemy_ScudoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 		return;
 	}
 
+	ParryCheck();
+
 	if (true == DeathValue)
 	{
 		return;
@@ -638,12 +697,25 @@ void Enemy_ScudoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Start == EnemyFSM.GetCurState()
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Loop == EnemyFSM.GetCurState()
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_M == EnemyFSM.GetCurState()
-			|| FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_S == EnemyFSM.GetCurState())
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_S == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Start == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Loop == EnemyFSM.GetCurState()
+			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Stop_A == EnemyFSM.GetCurState()
+			|| true == IsSuperArmor)
 		{
+			MinusEnemyHP(70);
 			StartRenderShaking(6);
 			return;
 		}
 	}
+
+	if (true == ParryEvent)
+	{
+		StartRenderShaking(6);
+		return;
+	}
+
+	MinusEnemyHP(Data.DamageValue);
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
@@ -984,12 +1056,16 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	// 뒤로 빽스텝 M (공격 후 회피용)
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_M,
 	.Start = [=] {
-	RotationCheck();
-	AllDirectSetting();
-	SetThrowback(43000.0f);
 	EnemyRenderer->ChangeAnimation("em0600_Step_Back_M");
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		RotationCheck();
+		AllDirectSetting();
+		SetThrowback(43000.0f);
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Idle);
@@ -1073,6 +1149,40 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	{
 		MonsterAttackCollision->Off();
 	}
+	if (false == ParryOkay)
+	{
+		if (42 <= EnemyRenderer->GetCurFrame() && 57 > EnemyRenderer->GetCurFrame())
+		{
+			IsParryCheck = true;
+		}
+		else
+		{
+			IsParryCheck = false;
+		}
+	}
+	if (57 > EnemyRenderer->GetCurFrame())
+	{
+		AttackDirectCheck();
+		if (EnemyHitDirect::Forward == EnemyHitDirValue)
+		{
+			IsSuperArmor = true;
+		}
+	}
+	else
+	{
+		IsSuperArmor = false;
+	}
+	if (true == ParryOkay)
+	{
+		SetMoveStop();
+		MonsterAttackCollisionOff();
+		ParryOkay = false;
+		IsParryCheck = false;
+		ParryEvent = true;
+
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Parry_Lose_Modori);
+		return;
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_M);
@@ -1082,6 +1192,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	.End = [=] {
 	MonsterAttackCollisionOff();
 	SlerpTime = 0.0f;
+	IsSuperArmor = false;
 	}
 		});
 
@@ -1101,6 +1212,40 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	{
 		MonsterAttackCollision->Off();
 	}
+	if (48 > EnemyRenderer->GetCurFrame())
+	{
+		AttackDirectCheck();
+		if (EnemyHitDirect::Forward == EnemyHitDirValue)
+		{
+			IsSuperArmor = true;
+		}
+	}
+	else
+	{
+		IsSuperArmor = false;
+	}
+	if (false == ParryOkay)
+	{
+		if (33 <= EnemyRenderer->GetCurFrame() && 48 > EnemyRenderer->GetCurFrame())
+		{
+			IsParryCheck = true;
+		}
+		else
+		{
+			IsParryCheck = false;
+		}
+	}
+	if (true == ParryOkay)
+	{
+		SetMoveStop();
+		MonsterAttackCollisionOff();
+		ParryOkay = false;
+		IsParryCheck = false;
+		ParryEvent = true;
+
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Parry_Lose_Modori);
+		return;
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Idle);
@@ -1110,6 +1255,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	.End = [=] {
 	MonsterAttackCollisionOff();
 	IsRecognize = false;
+	IsSuperArmor = false;
 	}
 		});
 
@@ -1147,6 +1293,41 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	{
 		MonsterAttackCollision->Off();
 	}
+	if (55 > EnemyRenderer->GetCurFrame())
+	{
+		AttackDirectCheck();
+		if (EnemyHitDirect::Forward == EnemyHitDirValue)
+		{
+			IsSuperArmor = true;
+		}
+	}
+	else
+	{
+		IsSuperArmor = false;
+	}
+	if (false == ParryOkay)
+	{
+		if (40 <= EnemyRenderer->GetCurFrame() && 55 > EnemyRenderer->GetCurFrame())
+		{
+			IsParryCheck = true;
+		}
+		else
+		{
+			IsParryCheck = false;
+		}
+	}
+
+	if (true == ParryOkay)
+	{
+		SetMoveStop();
+		MonsterAttackCollisionOff();
+		ParryOkay = false;
+		IsParryCheck = false;
+		ParryEvent = true;
+
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Parry_Lose_Modori);
+		return;
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_M);
@@ -1156,6 +1337,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	.End = [=] {
 	MonsterAttackCollisionOff();
 	SlerpTime = 0.0f;
+	IsSuperArmor = false;
 	}
 		});
 
@@ -1244,6 +1426,40 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	{
 		MonsterAttackCollision->Off();
 	}
+	if (false == ParryOkay)
+	{
+		if (32 <= EnemyRenderer->GetCurFrame() && 47 > EnemyRenderer->GetCurFrame())
+		{
+			IsParryCheck = true;
+		}
+		else
+		{
+			IsParryCheck = false;
+		}
+	}
+	if (47 > EnemyRenderer->GetCurFrame())
+	{
+		AttackDirectCheck();
+		if (EnemyHitDirect::Forward == EnemyHitDirValue)
+		{
+			IsSuperArmor = true;
+		}
+	}
+	else
+	{
+		IsSuperArmor = false;
+	}
+	if (true == ParryOkay)
+	{
+		SetMoveStop();
+		MonsterAttackCollisionOff();
+		ParryOkay = false;
+		IsParryCheck = false;
+		ParryEvent = true;
+
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Parry_Lose_Modori);
+		return;
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Idle);
@@ -1251,7 +1467,9 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	MonsterAttackCollisionOff();
 	RunTime = 0.0f;
+	IsSuperArmor = false;
 	}
 		});
 
@@ -1304,6 +1522,34 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////      피격      //////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	// 패리 성공 모션
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Parry_Lose_Modori,
+	.Start = [=] {
+	ParryTime();
+	//EffectRenderer_0->PlayFX("Cavalier_Parry.effect");
+	//EffectRenderer_1->Off();
+	EnemyRenderer->ChangeAnimation("em0600_Parry_Lose_Modori");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (25 < EnemyRenderer->GetCurFrame())
+	{
+		ParryEvent = false;
+	}
+	if (30 <= EnemyRenderer->GetCurFrame() && 70 > EnemyRenderer->GetCurFrame())
+	{
+		SetBackMove(140.0f);
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	ParryEvent = false;
+	}
+		});
 
 	/////////////////////////약공격
 	// 정면 약공 히트
@@ -1683,7 +1929,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	/////////////////////////////////      쓰러짐      //////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	// 
-	// 앞으로 엎어졌을 때 일어나는 모션
+	// 앞으로 쓰러져있다가 일어남, 120프레임 뒷걸음 시작, 170프레임 종료
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Prone_Getup,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0600_Prone_Getup");
@@ -1694,6 +1940,10 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	{
 		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Prone_Death);
 		return;
+	}
+	if (120 <= EnemyRenderer->GetCurFrame() && 170 > EnemyRenderer->GetCurFrame())
+	{
+		SetBackMove(140.0f);
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
@@ -1756,31 +2006,31 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	// em0000_Buster_Start, 버스트 히트 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Buster_Start,
 	.Start = [=] {
-			//PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
-			EnemyRenderer->ChangeAnimation("em0600_Air_Buster");
-			},
-			.Update = [=](float _DeltaTime) {
-			if (true == IsChangeState)
-			{
-				IsChangeState = false;
-				AttackCalculation();
-				IsCollapse = false;
-				IsBusterAttack = true;
-				BusterCalculation(float4{ 0.0f, -120.0f, 0.0f });
-				RotationCheck();
-				AllDirectSetting();
-			}
-			SetMoveStop();
-			if (true == EnemyRenderer->IsAnimationEnd())
-			{
-				BusterEnd();
-				SetAir(-120000.0f);
-				ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Buster_Loop);
-				return;
-			}
-			},
-			.End = [=] {
-			}
+	//PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
+	EnemyRenderer->ChangeAnimation("em0600_Air_Buster");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		AttackCalculation();
+		IsCollapse = false;
+		IsBusterAttack = true;
+		BusterCalculation(float4{ 0.0f, -120.0f, 0.0f });
+		RotationCheck();
+		AllDirectSetting();
+	}
+	SetMoveStop();
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		BusterEnd();
+		SetAir(-120000.0f);
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Buster_Loop);
+		return;
+	}
+	},
+	.End = [=] {
+	}
 		});
 	// 버스트 히트 루프
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Buster_Loop,
@@ -1822,22 +2072,405 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	}
 		});
 
-
 	EnemyFSM.ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Appear_01);
 }
 
 void Enemy_ScudoAngelo::EnemyCreateFSM_Client()
 {
-	//// 최초 등장_02
-	//EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Appear_02,
-	//.Start = [=] {
-	//EnemyRenderer->ChangeAnimation("em0000_appear_02");
-	//},
-	//.Update = [=](float _DeltaTime) {
-	//},
-	//.End = [=] {
-	//}
-	//	});
+	// 최초 등장
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Appear_01,
+	.Start = [=] {
+	EffectRenderer->PlayFX("Enemy_Appear.effect");
+	EnemyRenderer->ChangeAnimation("em0600_Appear_01");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
 
-	//EnemyFSM.ChangeState(FSM_State_HellCaina::HellCaina_Appear_02);
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Response_Stay,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Response_Stay");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Idle,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Idle");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Attack_Idle_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Attack_Idle_Loop");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Start,
+	.Start = [=]
+	{
+	EnemyRenderer->ChangeAnimation("em0600_Walk_Front_Start");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=]
+	{
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Walk_Front_Loop");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Stop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Walk_Front_Stop");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Turn_Attack_To_Guard_L_Dummy_Turn_R,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Turn_Attack_To_Guard_L_Dummy_Turn_R");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Turn_Attack_To_Guard_L_Dummy_Turn_L,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Turn_Attack_To_Guard_L_Dummy_Turn_L");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_S,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Step_Back_S");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Step_Back_M,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Step_Back_M");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Group_Command_Attack,
+	.Start = [=]
+	{
+	EnemyRenderer->ChangeAnimation("em0600_Group_Command_Attack");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=]
+	{
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Hikkake,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Attack_T_Hikkake");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Kesa,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Attack_T_Kesa");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Group_Command_Attack_End,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Group_Command_Attack_End");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Start,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Attack_T_Run_Start");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Attack_T_Run_Loop");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Attack,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Attack_T_Run_Attack");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Stop_A,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Attack_T_Run_Stop_A");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Parry_Lose_Modori,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Parry_Lose_Modori");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Standing_Damage_Weak_Front,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Standing_Damage_Weak_Front", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Standing_Damage_Weak_Back,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Standing_Damage_Weak_Back", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Blown_Back,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Blown_Back", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Blown_Back_Landing,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Blown_Back_Landing");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Blown_Up,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Blown_Up", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Air_Damage,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Air_Damage", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Blown_Up_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Blown_Up_Loop", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Blown_Up_Landing,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Blown_Up_Landing");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Slam_Damage,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Slam_Damage");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Slam_Damage_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Slam_Damage_Loop");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Slam_Damage_Landing,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Slam_Damage_Landing");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Snatch,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Snatch");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Stun,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Stun");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Stun_Revive,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Stun_Revive");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Prone_Getup,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Prone_Getup");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Prone_Death,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Prone_Death");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Death_Back,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Death_Back");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Death_Front,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Death_Front");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Buster_Start,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Air_Buster");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Buster_Loop,
+	.Start = [=] {
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Buster_Finish,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Slam_Damage_Landing");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+
+	}
+		});
+
+	EnemyFSM.ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Appear_01);
 }

@@ -48,10 +48,9 @@ enum FSM_State_ScudoAngelo
 													 
 	ScudoAngelo_Lie_Death,							 // em0600_Lie_Death : 뒤에 쓰러진 상태로 죽음
 	ScudoAngelo_Prone_Death,						 // em0600_Prone_Death : 앞으로 쓰러진 상태로 죽음
-	ScudoAngelo_Prone_Getup,						 // em0600_Prone_Getup : 앞으로 쓰러져있다가 일어남
+	ScudoAngelo_Prone_Getup,						 // em0600_Prone_Getup : 앞으로 쓰러져있다가 일어남, 120프레임 뒷걸음 시작, 170프레임 종료
 													 
 	ScudoAngelo_Parry_Lose_Modori,					 // em0600_Parry_Lose_Modori : 패리 성공 모션
-	ScudoAngelo_Attack_T_Tate_BouncedBack,			 // em0600_Attack_T_Tate_BouncedBack : 뒤로 밀려남, 95 프레임 끝
 													 
 	ScudoAngelo_Slam_Damage,						 // em0600_Slam_Damage : 슬램 시작
 	ScudoAngelo_Slam_Damage_Loop,					 // em0600_Slam_Damage_Loop : 슬램 루프
@@ -96,13 +95,16 @@ protected:
 private:
 	void PlayerChase();
 	void PlayerAttack();
-	void RandomAttack();
 	void ChangeState(int _StateValue);
 	void ChangeState_Client(int _StateValue);
 	void AttackCalculation();
 	void MonsterAttackCollisionOn();
 	void MonsterAttackCollisionOff();
 	void MoveLoop();
+	void ParryCheck();
+	void ParryTime();
+
+	std::shared_ptr<class GameEngineCollision> ParryCollision = nullptr;
 
 	float WaitTime = 0.0f;
 	float RunTime = 0.0f;
@@ -121,6 +123,9 @@ private:
 	bool IsCollapse = false;      // 쓰러져있는 상태
 	bool IsRecognize = false;
 	bool AttackTypeChange = false;
-
+	bool IsParryCheck = false;    // 패리 체크 on off
+	bool ParryOkay = false;
+	bool ParryEvent = true;
+	bool IsSuperArmor = true;
 };
 

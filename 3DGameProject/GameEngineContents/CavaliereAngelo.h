@@ -150,8 +150,8 @@ private:
 	bool IsSturn = false;
 	bool IsRecognize = false;
 	bool IsParryCheck = false;    // 패리 체크 on off
-	bool IsStun = false; // 기절상태 (버스터 가능)
 	bool ParryOkay = false;
+	bool IsStun = false; // 기절상태 (버스터 가능)
 	bool Event01 = false;
 	bool Normal01 = false;
 	bool IsCharge = false;

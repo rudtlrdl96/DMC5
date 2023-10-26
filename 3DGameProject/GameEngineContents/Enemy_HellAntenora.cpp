@@ -2247,15 +2247,479 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 
 void Enemy_HellAntenora::EnemyCreateFSM_Client()
 {
-	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Idle,
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Appear_01,
 	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0001_Idle_01_loop");
+	EffectRenderer->PlayFX("Enemy_Appear.effect");
+	EnemyRenderer->ChangeAnimation("em0001_appear_01");
 	},
 	.Update = [=](float _DeltaTime) {
 	},
 	.End = [=] {
 	}
 		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Idle,
+	.Start = [=] {
+	SetMoveStop();
+	EnemyRenderer->ChangeAnimation("em0001_Idle_01_loop");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Walk_Start,
+	.Start = [=]
+	{
+	EnemyRenderer->ChangeAnimation("em0001_walk_start");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=]
+	{
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Walk_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_walk_loop");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Walk_End,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_walk_stop");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Navi_Turn_Left,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_turn_left_90_noTransRot");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Navi_Turn_Right,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_turn_right_90_noTransRot");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Turn_Left_180,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_turn_left_180");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Turn_Right_180,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_turn_right_180");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Attack_Counter_Start,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_Attack_counter_Start");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Attack_Counter_Landing,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_Attack_counter_landing");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Attack_Counter_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_Attack_counter_loop");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Attack_Counter_Attack,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_Attack_counter_attack");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Attack_Counter_Stop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_Attack_counter_stop");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Multiattack_Start,
+	.Start = [=]
+	{
+	EnemyRenderer->ChangeAnimation("em0001_multiattack_Start");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=]
+	{
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Multiattack_SideAttack_to_Right,
+	.Start = [=]
+	{
+	EnemyRenderer->ChangeAnimation("em0001_multiattack_SideAttack_to_R");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=]
+	{
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Multiattack_SideAttack_To_Left,
+	.Start = [=]
+	{
+	EnemyRenderer->ChangeAnimation("em0001_multiattack_SideAttack_to_L");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=]
+	{
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Multiattack_UpAttack_To_Right,
+	.Start = [=]
+	{
+	EnemyRenderer->ChangeAnimation("em0001_multiattack_UpAttack_to_R");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=]
+	{
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Multiattack_UpAttack_To_Left,
+	.Start = [=]
+	{
+	EnemyRenderer->ChangeAnimation("em0001_multiattack_UpAttack_to_L");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=]
+	{
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Multiattack_To_Attack_End_Left,
+	.Start = [=]
+	{
+	EnemyRenderer->ChangeAnimation("em0001_multiattack_to_attack_End_L");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=]
+	{
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Multiattack_To_Attack_End_Right,
+	.Start = [=]
+	{
+	EnemyRenderer->ChangeAnimation("em0001_multiattack_to_attack_End_R");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=]
+	{
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Multiattack_From_Right_End,
+	.Start = [=]
+	{
+	EnemyRenderer->ChangeAnimation("em0001_multiattack_from_R_End");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=]
+	{
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Multiattack_From_Left_End,
+	.Start = [=]
+	{
+	EnemyRenderer->ChangeAnimation("em0001_multiattack_from_L_End");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=]
+	{
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Turn_Attack_Left,
+	.Start = [=]
+	{
+	EnemyRenderer->ChangeAnimation("em0001_turn_attack_L");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=]
+	{
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Turn_Attack_Right,
+	.Start = [=]
+	{
+	EnemyRenderer->ChangeAnimation("em0001_turn_attack_R");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=]
+	{
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Front,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_standing_damage_weak_front_01", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Back,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_standing_damage_weak_back_01", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Left,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_standing_damage_weak_left_01", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Right,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_standing_damage_weak_right", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Blown_Back,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_blown_back", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Blown_Back_Landing,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_blown_back_landing");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Blown_Up,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_blown_up", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Air_Damage_Under,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_air_damage_gun", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Blown_Up_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_blown_up_loop", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Blown_Up_Landing,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_blown_up_landing");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Slam_Damage,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_slam_damage");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Slam_Damage_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_slam_damage_loop");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Slam_Damage_Landing,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_slam_damage_landing");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Snatch,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_snatch");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Stun,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_stun");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Stun_Revive,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_stun_revive");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Prone_Getup,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_prone_getup");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Prone_Death,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_prone_death");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Death_Back,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_death_back");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Death_Front,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_death_front");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Buster_Start,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_air_damage_gun");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Buster_Loop,
+	.Start = [=] {
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Buster_Finish,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_slam_damage_landing");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
 
-	EnemyFSM.ChangeState(FSM_State_HellAntenora::HellAntenora_Idle);
+	}
+		});
+
+	EnemyFSM.ChangeState(FSM_State_HellAntenora::HellAntenora_Appear_01);
 }

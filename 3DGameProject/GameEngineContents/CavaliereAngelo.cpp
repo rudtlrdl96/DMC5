@@ -191,8 +191,6 @@ void CavaliereAngelo::Start()
 	ParryCollision->SetColType(ColType::OBBBOX3D);
 	ParryCollision->GetTransform()->SetLocalScale({ 220, 220, 400 });
 	ParryCollision->GetTransform()->SetLocalPosition({ 0, 150, 220 });
-	//ParryCollision->GetTransform()->SetLocalScale({ 220, 220, 220 });
-	//ParryCollision->GetTransform()->SetLocalPosition({ 0, 150, 240 });
 
 	Electric = GetLevel()->CreateActor<Cavaliere_Electric>();
 	Electric->GetTransform()->SetParent(GetTransform());
