@@ -119,6 +119,9 @@ private:
 			StartIter->second.clear();
 			++StartIter;
 		}
+
+		Pool.clear();
+		CreateCallBack = nullptr;
 	}
 
 public:
