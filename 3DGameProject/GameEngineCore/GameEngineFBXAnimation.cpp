@@ -28,6 +28,13 @@ std::shared_ptr<GameEngineFBXAnimation> GameEngineFBXAnimation::Load(const std::
 
 bool GameEngineFBXAnimation::Initialize()
 {
+	if (true == IsInit)
+	{
+		return false;
+	}
+
+	IsInit = true;
+
 	GameEngineFile DirFile = GetPath();
 	DirFile.ChangeExtension(".AnimationFBX");
 
@@ -44,11 +51,6 @@ bool GameEngineFBXAnimation::Initialize()
 	File.SetPath(GetPathToString());
 	File.ChangeExtension(".AnimationFBX");
 
-	if (true == IsInit)
-	{
-		return false;
-	}
-
 	std::lock_guard<std::mutex> Lock(InitLock);
 
 	FBXInit(GetPathToString());
@@ -64,8 +66,6 @@ bool GameEngineFBXAnimation::Initialize()
 	//	return;
 	//}
 
-
-	IsInit = true;
 	return false;
 }
 
