@@ -110,6 +110,11 @@ void BaseEnemyActor::Update(float _DeltaTime)
 	// 싱글 플레이일 때 실행
 	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
 	{
+		if (true == GameEngineInput::IsDown("MonsterTest"))
+		{
+			Death();
+		}
+
 		RecognizeCollisionCheck(_DeltaTime);
 		DamageCollisionCheck(_DeltaTime);
 		EnemyFSM.Update(_DeltaTime);
@@ -119,6 +124,11 @@ void BaseEnemyActor::Update(float _DeltaTime)
 		// 서버 플레이일 때 실행
 		if (NetControllType::ActiveControll == GetControllType())
 		{
+			if (true == GameEngineInput::IsDown("MonsterTest"))
+			{
+				Death();
+			}
+
 			RecognizeCollisionCheck(_DeltaTime);
 			DamageCollisionCheck(_DeltaTime);
 			EnemyFSM.Update(_DeltaTime);
