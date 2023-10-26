@@ -4,14 +4,17 @@
 class ThreadLoadingLevel : public BaseLevel
 {
 public:
-	static ThreadLoadingLevel* GetInst()
-	{
-		return Inst;
-	}
-
 	//이 함수를 통해 로딩 레벨을 활성화 시킵니다
 	static void ChangeLevel(const std::string_view& _NextLevelName)
 	{
+		//해당 레벨에 로딩할 대상이 없는 경우엔
+		if (true == Inst->AllThreadLoadCallBack[_NextLevelName.data()].empty())
+		{
+			GameEngineCore::ChangeLevel(_NextLevelName);
+			return;
+		}
+		
+
 		NextLevelName = _NextLevelName;
 		GameEngineCore::ChangeLevel("ThreadLoadingLevel");
 	}
@@ -25,9 +28,6 @@ public:
 		ChangeLevel(LevelName);
 	}
 
-	//지울예정
-	std::shared_ptr<class GameEngineActor> ThreadTestActor = nullptr;
-
 	ThreadLoadingLevel();
 	~ThreadLoadingLevel();
 
@@ -36,20 +36,14 @@ public:
 	ThreadLoadingLevel& operator=(const ThreadLoadingLevel& _Other) = delete;
 	ThreadLoadingLevel& operator=(const ThreadLoadingLevel&& _Other) noexcept = delete;
 
-	//현재 로딩 퍼센트를 알려줍니다
-	inline float GetLoadingPercent() const
-	{
-		return LoadingPercent;
-	}
-
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 	void LevelChangeStart() override;
 
 private:
-	static ThreadLoadingLevel* Inst;
 	static std::string NextLevelName;
+	static ThreadLoadingLevel* Inst;
 
 	//<Level이름, 콜백> : 멀티스레드를 사용하는 콜백
 	std::map<std::string, std::vector<std::function<void()>>> AllThreadLoadCallBack;
@@ -60,7 +54,9 @@ private:
 	
 	std::map<std::string, std::mutex> AllResMutex;
 
-	
+
+	std::shared_ptr<class NeroLoading> LoadingUI = nullptr;
+
 	//LevelType 템플릿 인자의 클래스 명 구하기
 	template <typename LevelType>
 	std::string GetLevelName()
@@ -69,7 +65,7 @@ private:
 		std::string LevelName = Info.name();
 		LevelName.replace(0, 6, "");
 
-		return LevelName;
+		return GameEngineString::ToUpper(LevelName);
 	}
 
 
@@ -86,8 +82,8 @@ private:
 		const std::string& LevelName = GetLevelName<LevelType>();
 		
 		GameEnginePath FilePath(_Path);
-		const std::string& FileName = FilePath.GetFileName();
-		AllResMutex[FileName];
+		const std::string& FolderPath = FilePath.GetFolderPath(FilePath.GetFullPath());
+		AllResMutex[FolderPath];
 
 		//콜백 저장
 		AllThreadLoadCallBack[LevelName].push_back([FilePath, this]()
@@ -104,7 +100,8 @@ private:
 				return;
 			}
 
-			std::lock_guard<std::mutex> Lock(AllResMutex[FileName]);
+			const std::string& FolderPath = FilePath.GetFolderPath(FilePath.GetFullPath());
+			std::lock_guard<std::mutex> Lock(AllResMutex[FolderPath]);
 			if (nullptr != ResourceType::Find(FileName))
 				return;
 			

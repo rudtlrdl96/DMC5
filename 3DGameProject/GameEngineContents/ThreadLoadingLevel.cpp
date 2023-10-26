@@ -7,8 +7,10 @@
 #include <GameEngineCore/GameEngineFBXAnimation.h>
 #include "NetworkTestLevel.h"
 #include "FXData.h"
-ThreadLoadingLevel* ThreadLoadingLevel::Inst = nullptr;
+#include "NeroLoading.h"
+
 std::string ThreadLoadingLevel::NextLevelName;
+ThreadLoadingLevel* ThreadLoadingLevel::Inst = nullptr;
 
 ThreadLoadingLevel::ThreadLoadingLevel()
 {
@@ -26,14 +28,17 @@ void ThreadLoadingLevel::Start()
 	BaseLevel::Start();
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 
+	LoadingUI = CreateActor<NeroLoading>();
+
+
 	//스레드 로딩이 잘 작동되는지 확인하려는 임시 엑터입니다. 나중에 삭제할 예정이에요
-	ThreadTestActor = CreateActor<GameEngineActor>();
-	std::shared_ptr<GameEngineRenderer> TestRenderer = nullptr;
-	TestRenderer = ThreadTestActor->CreateComponent<GameEngineRenderer>();
-	TestRenderer->CreateRenderUnit("sphere", "MeshTexture");
-	TestRenderer->GetTransform()->SetLocalScale({ 100.0f, 100.0f, 100.0f });
-	ThreadTestActor->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 100.0f });
-	TestRenderer->GetRenderBaseValueRef().IsNormal = 1;
+	//ThreadTestActor = CreateActor<GameEngineActor>();
+	//std::shared_ptr<GameEngineRenderer> TestRenderer = nullptr;
+	//TestRenderer = ThreadTestActor->CreateComponent<GameEngineRenderer>();
+	//TestRenderer->CreateRenderUnit("sphere", "MeshTexture");
+	//TestRenderer->GetTransform()->SetLocalScale({ 100.0f, 100.0f, 100.0f });
+	//ThreadTestActor->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 100.0f });
+	//TestRenderer->GetRenderBaseValueRef().IsNormal = 1;
 
 
 	//===============================================사용법 & 예시=================================================
@@ -64,8 +69,10 @@ void ThreadLoadingLevel::Start()
 		PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXAnimation>("Character\\Player\\Nero\\Animation", { ".fbx" });
 		PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXAnimation>("Character\\Player\\Nero\\Overture\\Animation", { ".fbx" });
 		PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXAnimation>("Character\\Player\\Vergil\\Animation", { ".fbx" });
-
+		
 		PushAllLoadCallBack<NetworkTestLevel, GameEngineSound>("Sound", { ".wav", ".ogg"});
+
+
 	}
 	
 	//// 네로
@@ -113,8 +120,6 @@ void ThreadLoadingLevel::Start()
 
 }
 
-#include "NetworkGUI.h"
-
 void ThreadLoadingLevel::Update(float _DeltaTime)
 {
 	BaseLevel::Update(_DeltaTime);
@@ -122,15 +127,12 @@ void ThreadLoadingLevel::Update(float _DeltaTime)
 	//모든 로딩이 완료된 순간
 	if (LoadWorkCount == ExcuteWorkCount)
 	{
+		LoadingUI->SetThreedPersent(1.f);
 		GameEngineCore::ChangeLevel(NextLevelName);
-		int ExcuteSize = static_cast<int>(ExcuteWorkCount);
-		NetworkGUI::GetInst()->PrintLog("Thread Load Done : " + GameEngineString::ToString(ExcuteSize), float4{0.f, 1.f, 1.f, 1.f});
 		return;
 	}
 
-	NetworkGUI::GetInst()->PrintLog("Thread Load Percent : " + std::to_string(LoadingPercent), float4{ 0.f, 1.f, 1.f, 1.f });
-	ThreadTestActor->GetTransform()->AddLocalRotation(float4::FORWARD * 360.f * _DeltaTime);
-	//TODO
+	LoadingUI->SetThreedPersent(LoadingPercent);
 }
 
 

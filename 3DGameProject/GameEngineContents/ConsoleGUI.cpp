@@ -5,6 +5,7 @@
 #include <GameEngineCore/GameEngineCore.h>
 
 #include "BaseLog.h"
+#include "ThreadLoadingLevel.h"
 
 ConsoleGUI::ConsoleGUI()
 {
@@ -54,7 +55,10 @@ void ConsoleGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
 	for (auto& i : GameEngineCore::GetLevelMap())
 	{
 		if (ImGui::Button(i.first.c_str()))
-			GameEngineCore::ChangeLevel(i.first.c_str());
+		{
+			ThreadLoadingLevel::ChangeLevel(i.first);
+		}
+			
 	}
 
 	ImGui::EndChild();
