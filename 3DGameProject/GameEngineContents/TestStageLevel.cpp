@@ -77,10 +77,12 @@ void TestStageLevel::Start()
 		std::shared_ptr<FadeEffect> Fade = GetCamera(0)->GetCamTarget()->CreateEffect<FadeEffect>();
 	}
 
-	//{
-	//	std::shared_ptr<MotionBlurEffect> Blur = GetCamera(0)->GetCamTarget()->CreateEffect<MotionBlurEffect>();
-	//	Blur->SetCamPosTarget(GetMainCamera()->GetCamPosTarget());
-	//}
+	{
+		std::shared_ptr<MotionBlurEffect> Blur = GetCamera(0)->GetCamTarget()->CreateEffect<MotionBlurEffect>();
+		Blur->SetCamPosTarget(GetMainCamera()->GetCamPosTarget());
+		Blur->SetCamMaskTarget(GetMainCamera()->GetCamMaskTarget());
+		Blur->SetCam(GetMainCamera());
+	}
 		
 	StageBaseLevel::Start();
 
@@ -210,6 +212,7 @@ void TestStageLevel::LevelChangeStart()
 	GameEngineCoreWindow::AddDebugRenderTarget(4, "Last Target", GetMainCamera()->GetCamTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(5, "Bake Shadow", GetDirectionalLight()->GetBakeTarget(0));
 	GameEngineCoreWindow::AddDebugRenderTarget(6, "Last Shadow", GetDirectionalLight()->GetShadowTarget());
+	GameEngineCoreWindow::AddDebugRenderTarget(7, "Mask Target", GetMainCamera()->GetCamMaskTarget());
 	//GameEngineCoreWindow::AddDebugRenderTarget(7, "Bloom Debug A", Bloom->DebugTargetA);
 	//GameEngineCoreWindow::AddDebugRenderTarget(8, "Bloom Debug B", Bloom->DebugTargetB);
 

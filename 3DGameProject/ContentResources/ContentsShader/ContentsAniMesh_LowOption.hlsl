@@ -65,13 +65,14 @@ struct ForwardOutPut
 {
     float4 ColorTarget : SV_Target0;
     float4 PosTarget : SV_Target1;
+    float4 MaskTarget : SV_Target2;
 };
 
 ForwardOutPut MeshAniTexture_PS(Output _Input)
 {
     ForwardOutPut Result;
     
-    Result.PosTarget = _Input.VIEWPOSITION;
+    Result.PosTarget = _Input.WORLDPOSITION;
     
     float4 AlbmData = DiffuseTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
     float4 NrmrData = NormalTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
@@ -88,6 +89,15 @@ ForwardOutPut MeshAniTexture_PS(Output _Input)
     Color *= MulColor;
     
     Result.ColorTarget = Color + (NrmrData * 0.000001f);
+    
+    if (0 != IsBlurMask)
+    {
+        Result.MaskTarget = Result.ColorTarget;
+    }
+    else
+    {
+        Result.MaskTarget = float4(0, 0, 0, 0);
+    }
     
     return Result;
 }

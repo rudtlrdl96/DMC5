@@ -3,6 +3,14 @@
 
 class MotionBlurEffect : public GameEnginePostProcess
 {
+private:
+	class MotionBlurData
+	{
+	public:
+		float4x4 PrevFrameViewProjection;
+	};
+
+
 public:
 	MotionBlurEffect();
 	~MotionBlurEffect();
@@ -15,6 +23,17 @@ public:
 	inline void SetCamPosTarget(std::shared_ptr<GameEngineRenderTarget> _CamPosTarget)
 	{
 		CamPosTarget = _CamPosTarget;
+	}	
+	
+	inline void SetCamMaskTarget(std::shared_ptr<GameEngineRenderTarget> _CamMaskTarget)
+	{
+		CamMaskTarget = _CamMaskTarget;
+	}
+
+	inline void SetCam(std::shared_ptr<GameEngineCamera> _Cam)
+	{
+		Cam = _Cam;
+		Data.PrevFrameViewProjection = _Cam->GetView() * _Cam->GetProjection();
 	}
 
 protected:
@@ -26,10 +45,13 @@ private:
 	std::shared_ptr<GameEngineRenderTarget> CurFramePos = nullptr;
 
 	std::shared_ptr<GameEngineRenderTarget> CamPosTarget = nullptr;
+	std::shared_ptr<GameEngineRenderTarget> CamMaskTarget = nullptr;
+	std::shared_ptr<GameEngineCamera> Cam = nullptr;
 
 	std::shared_ptr<GameEngineRenderUnit> MotionBlurUnit;
 
 	RenderBaseValue BaseValue;
+	MotionBlurData Data;
 
 	void LevelChangeStart() override
 	{

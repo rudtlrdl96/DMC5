@@ -19,9 +19,10 @@ void MotionBlurEffect::Start(GameEngineRenderTarget* _Target)
 	MotionBlurUnit->SetMesh("FullRect");
 	MotionBlurUnit->SetMaterial("MotionBlur");
 
-	MotionBlurUnit->ShaderResHelper.SetConstantBufferLink("RenderBaseValue", BaseValue);
-
 	BaseValue.ScreenScale = GameEngineWindow::GetScreenSize();
+
+	//MotionBlurUnit->ShaderResHelper.SetConstantBufferLink("RenderBaseValue", BaseValue);
+	MotionBlurUnit->ShaderResHelper.SetConstantBufferLink("MotionBlurData", Data);
 }
 
 void MotionBlurEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
@@ -29,6 +30,18 @@ void MotionBlurEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 	if (nullptr == CamPosTarget)
 	{
 		MsgAssert("카메라 위치 타겟이 설정되지 않았습니다.");
+		return;
+	}	
+	
+	if (nullptr == CamMaskTarget)
+	{
+		MsgAssert("카메라 마스크 타겟이 설정되지 않았습니다.");
+		return;
+	}
+
+	if (nullptr == Cam)
+	{
+		MsgAssert("카메라가 설정되지 않았습니다.");
 		return;
 	}
 
@@ -40,6 +53,7 @@ void MotionBlurEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 	ResultTarget->Setting();
 
 	MotionBlurUnit->ShaderResHelper.SetTexture("DiffuseTex", _Target->GetTexture(0));
+	MotionBlurUnit->ShaderResHelper.SetTexture("MaskTex", CamMaskTarget->GetTexture(0));
 	MotionBlurUnit->ShaderResHelper.SetTexture("PrevPosTex", PrevFramePos->GetTexture(0));
 	MotionBlurUnit->ShaderResHelper.SetTexture("CurPosTex", CurFramePos->GetTexture(0));
 			
@@ -51,4 +65,8 @@ void MotionBlurEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 
 	PrevFramePos ->Clear();
 	PrevFramePos ->Merge(CurFramePos);
+
+	Data.PrevFrameViewProjection = Cam->GetView() * Cam->GetProjection();
+
+	int a = 0;
 }

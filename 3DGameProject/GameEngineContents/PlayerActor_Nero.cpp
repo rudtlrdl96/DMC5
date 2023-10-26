@@ -205,6 +205,9 @@ void PlayerActor_Nero::PlayerLoad()
 		Renderer->ShadowOn();
 		Renderer->SetDynamic();
 
+		// 모션블러 미적용옵션
+		Renderer->GetRenderBaseValueRef().IsBlurMask = 1;
+
 		Renderer->SetMaterial("pl0000_03_albm.texout.png", "AniFBX_Alpha", nullptr);
 		Renderer->SetSpecularTexture("pl0000_03_albm.texout.png", "pl0000_03_atos.texout.png");
 		Renderer->SetMaterial("pl0010_01_wing_atos.texout.png", "AniFBX_Alpha", nullptr);
@@ -306,6 +309,8 @@ void PlayerActor_Nero::PlayerLoad()
 		}
 		Renderer_Overture->ShadowOn();
 		Renderer_Overture->SetDynamic();
+		// 모션블러 미적용옵션
+		Renderer_Overture->GetRenderBaseValueRef().IsBlurMask = 1;
 
 		NewDir.MoveParent();
 		NewDir.Move("Animation");

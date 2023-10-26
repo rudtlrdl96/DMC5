@@ -77,6 +77,8 @@ struct DeferredOutPut
     float4 MatTarget : SV_Target3;
     float4 GlamTarget : SV_Target4;
     float4 SSSTarget : SV_Target5;
+    float4 WorldPosTarget : SV_Target6;
+    float4 MaskTarget : SV_Target7;
 };
 
 DeferredOutPut MeshTexture_PS(Output _Input)
@@ -121,6 +123,7 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     }
     
     Result.PosTarget = _Input.VIEWPOSITION;    
+    Result.WorldPosTarget = _Input.WORLDPOSITION;    
     Result.DifTarget = float4(AlbmData.r, AlbmData.g, AlbmData.b, AtosData.r);
                 
     float4 WorldNormal;
@@ -198,6 +201,15 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     }
        
     Result.GlamTarget.a = 1.0f;
+    
+    if (0 != IsBlurMask)
+    {
+        Result.MaskTarget = Result.DifTarget;
+    }
+    else
+    {
+        Result.MaskTarget = float4(0, 0, 0, 0);
+    }
         
     return Result;
 }

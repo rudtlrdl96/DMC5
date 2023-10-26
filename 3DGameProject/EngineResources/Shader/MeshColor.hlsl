@@ -16,6 +16,7 @@ struct Output
     // viewport 행렬까지 레스터라이저에서 곱해준다.
     float4 POSITION : SV_POSITION;
     float4 VIEWPOSITION : POSITION0;
+    float4 WORLDPOSITION : POSITION1;
     float4 WVPPOSITION : POSITION5;
     float4 NORMAL : NORMAL;
 };
@@ -43,6 +44,7 @@ Output MeshColor_VS(Input _Input)
     // 스크린좌표계 이다.
     NewOutPut.POSITION = mul(InputPos, WorldViewProjectionMatrix);
     NewOutPut.VIEWPOSITION = mul(InputPos, WorldView);
+    NewOutPut.WORLDPOSITION = mul(InputPos, WorldMatrix);
     NewOutPut.WVPPOSITION = NewOutPut.POSITION;
     _Input.NORMAL.w = 0.0f;
     NewOutPut.NORMAL = mul(InputNormal, WorldView);
@@ -61,7 +63,7 @@ ForwardOutPut MeshColor_PS(Output _Input)
     ForwardOutPut Result;
     
     Result.ColorTarget = BaseColor;
-    Result.PosTarget = _Input.VIEWPOSITION;
+    Result.PosTarget = _Input.WORLDPOSITION;
     
     Result.ColorTarget += AddColor;
     Result.ColorTarget *= MulColor;

@@ -9,6 +9,7 @@ cbuffer RenderBaseValue : register(b11)
     int IsLight;
     int IsNormal;
     int IsSpecular;
+    int IsBlurMask;
     float4 ScreenScale;
     float4 Mouse;
     float4 NoiseResolution;

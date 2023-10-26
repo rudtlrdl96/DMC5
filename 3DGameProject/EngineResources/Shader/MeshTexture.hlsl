@@ -16,7 +16,8 @@ struct Input
 struct Output
 {
     float4 POSITION : SV_POSITION;
-    float4 VIEWPOSITION : POSITION;
+    float4 VIEWPOSITION : POSITION0;
+    float4 WORLDPOSITION : POSITION1;
     float4 TEXCOORD : TEXCOORD;
     float4 NORMAL : NORMAL;
     float4 TANGENT : TANGENT;
@@ -34,6 +35,7 @@ Output MeshAniTexture_VS(Input _Input)
     NewOutPut.TEXCOORD = _Input.TEXCOORD;
     
     NewOutPut.VIEWPOSITION = mul(InputPos, WorldView);
+    NewOutPut.WORLDPOSITION = mul(InputPos, WorldMatrix);
         
     _Input.NORMAL.w = 0.0f;
     NewOutPut.NORMAL = mul(_Input.NORMAL, WorldView);
@@ -66,7 +68,7 @@ ForwardOutPut MeshAniTexture_PS(Output _Input)
     ForwardOutPut Result;
     
     Result.ColorTarget = Color;
-    Result.PosTarget = _Input.VIEWPOSITION;
+    Result.PosTarget = _Input.WORLDPOSITION;
     
     if (0 != IsLight)
     {

@@ -87,6 +87,7 @@ struct AlphaOutPut
 {
     float4 ResultColor : SV_Target0;
     float4 DistortionColor : SV_Target1;
+    float4 MaskTarget : SV_Target2;
 };
 
 cbuffer EffectData : register(b2)
@@ -153,6 +154,15 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     {
         Result.DistortionColor = MaskTexture.Sample(ENGINEBASE, UV);
         Result.DistortionColor.a = Result.ResultColor.a;
+    }
+    
+    if (0 != IsBlurMask)
+    {
+        Result.MaskTarget = Result.ResultColor;
+    }
+    else
+    {
+        Result.MaskTarget = float4(0, 0, 0, 0);
     }
     
     return Result;

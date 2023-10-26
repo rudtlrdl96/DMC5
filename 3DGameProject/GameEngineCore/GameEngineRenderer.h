@@ -81,6 +81,7 @@ public:
 	int IsLight = 1;
 	int IsNormal = 0;
 	int IsSpecular = 0;
+	int IsBlurMask = 0;
 	float4 ScreenScale;
 	float4 Mouse;
 	float4 NoiseResolution;

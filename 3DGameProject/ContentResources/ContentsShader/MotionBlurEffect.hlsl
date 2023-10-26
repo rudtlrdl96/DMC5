@@ -22,41 +22,79 @@ OutPut MotionBlur_VS(Input _Value)
 }
 
 Texture2D DiffuseTex : register(t0);
-Texture2D PrevPosTex : register(t1);
-Texture2D CurPosTex : register(t2);
+Texture2D MaskTex : register(t1);
+Texture2D PrevPosTex : register(t2);
+Texture2D CurPosTex : register(t3);
 
 SamplerState ENGINEBASE : register(s0);
 
-#define BlurSampleCount 2
+//#define BlurSampleCount 8
+
+cbuffer MotionBlurData : register(b0)
+{
+    float4x4 PrevFrameViewProjection;
+};
+
+float3 GetBlurColor(float2 _CurUV, float2 _MoveUV, Texture2D _MainTex, Texture2D _MaskTex, SamplerState _Sample, float _Ratio)
+{
+    float4 MaskColor = _MaskTex.Sample(_Sample, _MoveUV);    
+    float4 ResultColor;
+    
+    if (0 != MaskColor.a)
+    {
+        ResultColor = _MainTex.Sample(_Sample, saturate(_CurUV));
+    }
+    else
+    {
+        ResultColor = _MainTex.Sample(_Sample, saturate(_MoveUV));
+    }
+    
+    return ResultColor.rgb * _Ratio;
+}
 
 float4 MotionBlur_PS(OutPut _Value) : SV_Target0
 {    
-    float2 uv = _Value.UV.xy;
-    
-    float4 PreviousPos = PrevPosTex.Sample(ENGINEBASE, uv);
-    float4 CurrentPos = CurPosTex.Sample(ENGINEBASE, uv);
-    
-    float2 Velocity = (CurrentPos - PreviousPos) / 10.0f;
-    
-    Velocity.x /= ScreenScale.x;
-    Velocity.y /= ScreenScale.y;
+    float2 CurUV = _Value.UV.xy;
+    float2 MoveUV = _Value.UV.xy;
+      
+    float4 PreviousPos = PrevPosTex.Sample(ENGINEBASE, CurUV);
+    PreviousPos.w = 1.0f;
+    PreviousPos = mul(PreviousPos, PrevFrameViewProjection);
+    PreviousPos.xyz /= PreviousPos.w;
         
+    float4 CurrentPos = CurPosTex.Sample(ENGINEBASE, CurUV);
+    CurrentPos.w = 1.0f;
+    CurrentPos = mul(CurrentPos, PrevFrameViewProjection);
+    CurrentPos.xyz /= CurrentPos.w;
+    
+    float2 Velocity = (CurrentPos.xy - PreviousPos.xy) / 16.0f;
+    
+    //Velocity.x /= ScreenScale.x;
+    //Velocity.y /= ScreenScale.y;
+            
     // Get the initial color at this pixel.    
-    float4 TexColor = DiffuseTex.Sample(ENGINEBASE, uv);
+    float4 TexColor = DiffuseTex.Sample(ENGINEBASE, CurUV);
+    TexColor.rgb *= 0.25f; 
     float Alpha = TexColor.a;
     
-    uv += Velocity;
+    MoveUV += Velocity;
+    TexColor.rgb += GetBlurColor(CurUV, MoveUV, DiffuseTex, MaskTex, ENGINEBASE, 0.2f);
     
-    for (int i = 1; i < BlurSampleCount; ++i)
-    { 
-        float4 CurrentColor = DiffuseTex.Sample(ENGINEBASE, uv);
-        TexColor += CurrentColor;
-        uv += Velocity;
-    } 
+    MoveUV += Velocity;
+    TexColor.rgb += GetBlurColor(CurUV, MoveUV, DiffuseTex, MaskTex, ENGINEBASE, 0.15f);
     
-    float4 FinalColor = TexColor / BlurSampleCount;
-    FinalColor.a = Alpha;
+    MoveUV += Velocity;
+    TexColor.rgb += GetBlurColor(CurUV, MoveUV, DiffuseTex, MaskTex, ENGINEBASE, 0.1f);
     
+    MoveUV += Velocity;
+    TexColor.rgb += GetBlurColor(CurUV, MoveUV, DiffuseTex, MaskTex, ENGINEBASE, 0.1f);
     
-    return FinalColor;
+    MoveUV += Velocity;
+    TexColor.rgb += GetBlurColor(CurUV, MoveUV, DiffuseTex, MaskTex, ENGINEBASE, 0.1f);
+    
+    MoveUV += Velocity;
+    TexColor.rgb += GetBlurColor(CurUV, MoveUV, DiffuseTex, MaskTex, ENGINEBASE, 0.1f);
+                
+    TexColor.a = Alpha;
+    return TexColor;
 }
