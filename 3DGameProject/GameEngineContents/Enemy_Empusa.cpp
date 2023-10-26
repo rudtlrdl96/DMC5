@@ -1143,9 +1143,6 @@ void Enemy_Empusa::EnemyCreateFSM()
 		}
 		else
 		{
-			PushDirectSetting();
-			RotationCheck();
-			PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 			ChangeState(FSM_State_Empusa::Empusa_Step_Back);
 		}
 		return;
@@ -1174,9 +1171,6 @@ void Enemy_Empusa::EnemyCreateFSM()
 		}
 		else
 		{
-			PushDirectSetting();
-			RotationCheck();
-			PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 			ChangeState(FSM_State_Empusa::Empusa_Step_Back);
 		}
 		return;
@@ -1225,9 +1219,6 @@ void Enemy_Empusa::EnemyCreateFSM()
 		}
 		else
 		{
-			PushDirectSetting();
-			RotationCheck();
-			PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 			ChangeState(FSM_State_Empusa::Empusa_Step_Back);
 		}
 		return;
@@ -1256,9 +1247,6 @@ void Enemy_Empusa::EnemyCreateFSM()
 		}
 		else
 		{
-			PushDirectSetting();
-			RotationCheck();
-			PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 			ChangeState(FSM_State_Empusa::Empusa_Step_Back);
 		}
 		return;
