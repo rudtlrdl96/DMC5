@@ -192,6 +192,8 @@ void PlayerActor_Vergil::PlayerLoad()
 
 		Renderer->ShadowOn();
 		Renderer->SetDynamic();
+		// 모션블러 미적용옵션
+		Renderer->GetRenderBaseValueRef().IsBlurMask = 1;
 
 		Renderer->SetMaterial("pl0300_03_albm.texout.png", "AniFBX_Alpha", nullptr);
 		Renderer->SetMaterial("pl0310_trans_00_alba.texout.png", "AniFBX_Alpha", nullptr);
