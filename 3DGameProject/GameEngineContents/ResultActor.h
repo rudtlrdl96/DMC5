@@ -1,5 +1,5 @@
 #pragma once
-class ResultActor
+class ResultActor : public GameEngineActor
 {
 public:
 	// constructer destructer
@@ -13,7 +13,8 @@ public:
 	ResultActor& operator=(ResultActor&& _Other) = delete;
 
 protected:
-
+	void Start() override;
+	void Update(float _DeltaTime) override;
 private:
 
 };
