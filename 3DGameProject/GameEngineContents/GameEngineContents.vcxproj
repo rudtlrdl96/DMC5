@@ -386,6 +386,14 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="ReflectionSetter.h" />
+    <ClInclude Include="ResultActor.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ResultLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Shop_EnterWindow.h">
       <SubType>
       </SubType>
@@ -1028,6 +1036,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="ReflectionSetter.cpp" />
+    <ClCompile Include="ResultActor.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ResultLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Shop_EnterWindow.cpp">
       <SubType>
       </SubType>

@@ -540,6 +540,12 @@
     <ClInclude Include="ArcadeCafeRoof02.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
     </ClInclude>
+    <ClInclude Include="ResultLevel.h">
+      <Filter>UI\UI_Level\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultActor.h">
+      <Filter>UI\UI_Actor\ResultUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -1075,6 +1081,12 @@
     <ClCompile Include="ArcadeGate.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
     </ClCompile>
+    <ClCompile Include="ResultLevel.cpp">
+      <Filter>UI\UI_Level\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultActor.cpp">
+      <Filter>UI\UI_Actor\ResultUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
@@ -1373,6 +1385,12 @@
     </Filter>
     <Filter Include="Actor\Enemy\NormalEnemy\Qliphoth">
       <UniqueIdentifier>{6d66f714-c1f8-47f2-aa4f-8c49d6fc7a1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Level\Result">
+      <UniqueIdentifier>{27fceb2a-8308-4768-a8d5-407bc7b9750b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\ResultUI">
+      <UniqueIdentifier>{2e230059-70ff-4cd7-af0a-e9daf327a439}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
