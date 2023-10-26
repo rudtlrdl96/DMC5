@@ -5,11 +5,12 @@
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include "UIMeshRenderer.h"
 #include "UIFBXRenderer.h"
-
+#include "Nero_InvenToryUI.h"
 #include "PlayerActor_Nero.h"
 #include <GameEngineCore/GameEngineFontRenderer.h>
 bool NeroItemGlass::AddItemValue = false;
 bool NeroItemGlass::DestroyItemValue = false;
+std::vector<DevilBreaker> NeroItemGlass::DevilBreakers;
 
 NeroItemGlass::NeroItemGlass()
 {
@@ -149,6 +150,8 @@ void NeroItemGlass::AddDestroyValue()
 			Render = CreateComponent<UIFBXRenderer>(3);
 			Render->SetFBXMesh("OvertureArmUI.FBX", "FBX_LOW");
 			Arms.insert(Arms.begin(), Render);
+			DevilBreakers.insert(DevilBreakers.begin(), DevilBreaker::Overture);
+			Nero_InvenToryUI::IsAddInvenItem(true);
 			AddItemValue = false;
 			AddFirst = true;
 			break;
@@ -157,6 +160,8 @@ void NeroItemGlass::AddDestroyValue()
 			Render = CreateComponent<UIFBXRenderer>(3);
 			Render->SetFBXMesh("GerberaArmUI.FBX", "FBX_LOW");
 			Arms.insert(Arms.begin(), Render);
+			DevilBreakers.insert(DevilBreakers.begin(), DevilBreaker::Gerbera);
+			Nero_InvenToryUI::IsAddInvenItem(true);
 			AddItemValue = false;
 			AddFirst = true;
 			break;
@@ -165,6 +170,8 @@ void NeroItemGlass::AddDestroyValue()
 			Render = CreateComponent<UIFBXRenderer>(3);
 			Render->SetFBXMesh("BusterArmUI.FBX", "FBX_LOW");
 			Arms.insert(Arms.begin(), Render);
+			DevilBreakers.insert(DevilBreakers.begin(), DevilBreaker::BusterArm);
+			Nero_InvenToryUI::IsAddInvenItem(true);
 			AddItemValue = false;
 			AddFirst = true;
 			break;
@@ -177,22 +184,30 @@ void NeroItemGlass::AddDestroyValue()
 		switch (CurDevilBreaker)
 		{
 		case DevilBreaker::None:
+			DevilBreakers.erase(DevilBreakers.begin());
+			Nero_InvenToryUI::IsAddInvenItem(true);
 			ItemText->SetText("Donthave");
 			DestroyItemValue = false;
 			DestroyFirst = true;
 			break;
 		case DevilBreaker::Overture:
+			DevilBreakers.erase(DevilBreakers.begin());
+			Nero_InvenToryUI::IsAddInvenItem(true);
 			ItemText->SetText("Overture");
 			DestroyItemValue = false;
 			DestroyFirst = true;
 			break;
 		case DevilBreaker::Gerbera:
+			DevilBreakers.erase(DevilBreakers.begin());
+			Nero_InvenToryUI::IsAddInvenItem(true);
 			ItemText->SetText("Gerbera");
 			DestroyItemValue = false;
 			DestroyFirst = true;
 			break;
 		case DevilBreaker::BusterArm:
 			ItemText->SetText("BusterArm");
+			DevilBreakers.erase(DevilBreakers.begin());
+			Nero_InvenToryUI::IsAddInvenItem(true);
 			DestroyItemValue = false;
 			DestroyFirst = true;
 			break;

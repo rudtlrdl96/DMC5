@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngineCore/GameEngineActor.h>
 #include "Nero_InvenToryUI.h"
+#include "ContentsEnum.h"
 // Ό³Έν :
 class Nero_Inven :public GameEngineActor
 {
@@ -20,7 +21,7 @@ public:
 	{
 		return Inventory;
 	}
-
+	void UpdateInvenTory();
 protected:
 	void Start() override;
 	void Update(float _Delta) override;
@@ -30,7 +31,5 @@ private:
 	std::shared_ptr<class Nero_InvenToryUI> Inven0 = nullptr;
 	std::shared_ptr<class Nero_InvenToryUI> Inven1 = nullptr;
 	std::shared_ptr<class Nero_InvenToryUI> Inven2 = nullptr;
-	std::list<DevilBreaker>* ArmList;
-
 };
 

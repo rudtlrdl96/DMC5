@@ -11,6 +11,7 @@
 #include "RankUI.h"
 #include "DistortionEffect.h"
 #include "Shop_EnterWindow.h"
+#include "Nero_InvenToryUI.h"
 PlayUITestLevel::PlayUITestLevel()
 {
 }
@@ -53,7 +54,7 @@ void PlayUITestLevel::LevelChangeStart()
 		}
 	}
 
-	std::shared_ptr<Shop_EnterWindow> Test = CreateActor<Shop_EnterWindow>();
+	std::shared_ptr<Nero_InvenToryUI> Test = CreateActor<Nero_InvenToryUI>();
 }
 
 void PlayUITestLevel::LevelChangeEnd()

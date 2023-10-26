@@ -13,6 +13,11 @@ Nero_Inven::~Nero_Inven()
 
 }
 
+void Nero_Inven::UpdateInvenTory()
+{
+	
+}
+
 void Nero_Inven::Start()
 {
 	Inventory.push_back(Inven0 = GetLevel()->CreateActor<Nero_InvenToryUI>());
@@ -21,11 +26,9 @@ void Nero_Inven::Start()
 	Inven0->GetTransform()->SetParent(GetTransform());
 	Inven1->GetTransform()->SetParent(GetTransform());
 	Inven2->GetTransform()->SetParent(GetTransform());
-	ArmList = PlayerActor_Nero::GetBreakerListPointer();
 
 }
 
 void Nero_Inven::Update(float _Delta)
 {
 }
-

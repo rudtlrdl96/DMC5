@@ -37,6 +37,11 @@ public:
 	void ArmRenderOff();
 	void ArmRenderOn();
 
+	static const std::vector<DevilBreaker>& GetVectorArmUIPtr()
+	{
+		return DevilBreakers;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -73,7 +78,11 @@ private:
 	static bool DestroyItemValue;
 	void AddMoveBreaker(float _Delta);
 	void DestroyMoveBreaker(float _Delta);
+
+	static std::vector<DevilBreaker> DevilBreakers;
+
 	std::vector<std::shared_ptr<class UIFBXRenderer>> Arms;
+
 	std::shared_ptr<class UIFBXRenderer> Render = nullptr;
 
 	std::shared_ptr<class UIFBXRenderer> Render_0 = nullptr;
