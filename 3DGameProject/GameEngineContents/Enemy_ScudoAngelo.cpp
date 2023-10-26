@@ -146,7 +146,9 @@ void Enemy_ScudoAngelo::EnemyAnimationLoad()
 			},
 			.CallBacks_int =
 			{
-				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
+				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1),
+				std::bind(&SoundController::Play, &Sound, "Scudo_SFX_", std::placeholders::_1),
+				std::bind(&SoundController::PlayVoice, &Sound, std::placeholders::_1, false),
 			},
 			.CallBacks_float4 =
 			{
@@ -172,6 +174,47 @@ void Enemy_ScudoAngelo::EnemyAnimationLoad()
 			EffectRenderer->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
 		}
 	}
+
+	// 사운드 로드
+	Sound.SetVoiceName("Scudo_V_");
+	if (nullptr == GameEngineSound::Find("Scudo_V_0.wav")) {
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Sound");
+		NewDir.Move("Voice");
+		NewDir.Move("Scudo");
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".wav" });
+
+		for (size_t i = 0; i < Files.size(); i++)
+		{
+			GameEngineSound::Load(Files[i].GetFullPath());
+		}
+
+		NewDir.MoveParent();
+		NewDir.MoveParent();
+		NewDir.Move("SFX");
+		NewDir.Move("Scudo");
+		Files = NewDir.GetAllFile({ ".wav" });
+
+		if (nullptr == GameEngineSound::Find("Scudo_SFX_0.wav")) {
+			for (size_t i = 0; i < Files.size(); i++)
+			{
+				GameEngineSound::Load(Files[i].GetFullPath());
+			}
+		}
+		if (nullptr == GameEngineSound::Find("Cavaliere_Damage_0.wav"))
+		{
+			NewDir.MoveParent();
+			NewDir.Move("Cavaliere");
+			Files = NewDir.GetAllFile({ ".wav" });
+			for (size_t i = 0; i < Files.size(); i++)
+			{
+				GameEngineSound::Load(Files[i].GetFullPath());
+			}
+		}
+	}
+
 }
 
 void Enemy_ScudoAngelo::Start()
@@ -254,6 +297,7 @@ void Enemy_ScudoAngelo::Start()
 		Player = _Attacker;
 		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
 		MinusEnemyHP(Datas.DamageValue);
+		PlayDamageEvent(Datas.SoundType);
 
 		if (DamageType::VergilLight == Datas.DamageTypeValue)
 		{
@@ -318,6 +362,35 @@ void Enemy_ScudoAngelo::ParryTime()
 		{
 			SetTimeScale(1.f);
 		});
+}
+
+void Enemy_ScudoAngelo::PlayDamageEvent(DamageSoundType _Type)
+{
+	Sound.PlayVoiceRandom(1, 2);
+	EffectRenderer->PlayFX("Enemy_Damage_Heavy.effect");
+
+	switch (_Type)
+	{
+	case DamageSoundType::None:
+		break;
+	case DamageSoundType::Sword:
+		Sound.PlayRandom("Cavaliere_Damage_", 0, 1);
+		break;
+	case DamageSoundType::Magic:
+		Sound.Play("Cavaliere_Damage_", 5);
+		break;
+	case DamageSoundType::Katana:
+		Sound.PlayRandom("Cavaliere_Damage_", 2, 3);
+		break;
+	case DamageSoundType::Blunt:
+		Sound.Play("Cavaliere_Damage_", 4);
+		break;
+	case DamageSoundType::Gun:
+		Sound.Play("Cavaliere_Damage_", 2);
+		break;
+	default:
+		break;
+	}
 }
 
 void Enemy_ScudoAngelo::MoveLoop()
@@ -542,6 +615,7 @@ void Enemy_ScudoAngelo::DamageCollisionCheck(float _DeltaTime)
 	PlayerAttackCheck(AttackCol.get());
 	MonsterAttackCollision->Off();
 	DamageData Data = AttackCol->GetDamage();
+	PlayDamageEvent(Data.SoundType);
 	AttackDelayCheck = 0.0f;
 
 	AttackDirectCheck();
@@ -699,6 +773,7 @@ void Enemy_ScudoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 	if (nullptr == AttackCol) { return; }
 
 	DamageData Data = AttackCol->GetDamage();
+	PlayDamageEvent(Data.SoundType);
 
 	AttackDirectCheck();
 	AttackDelayCheck = 0.0f;

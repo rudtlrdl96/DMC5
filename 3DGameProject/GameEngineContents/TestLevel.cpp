@@ -140,7 +140,7 @@ void TestLevel::LevelChangeStart()
 			NetworkManager::LinkNetwork(Player.get(), this);
 		}
 	}
-	Player->CreateComponent<GameEngineCollision>(CollisionOrder::Shop);
+	//Player->CreateComponent<GameEngineCollision>(CollisionOrder::Shop);
 	//CreateActor<Item_RedOrbLump>();
 
 	//if (nullptr == TestObj)
