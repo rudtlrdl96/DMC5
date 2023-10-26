@@ -133,4 +133,7 @@ enum class FieldMapObjType
 	illminary,
 	DivinityStatue,
 	Item_RedOrbLump,
+	ArcadeGate,
+	ArcadeCafeRoof01,
+	ArcadeCafeRoof02,
 };

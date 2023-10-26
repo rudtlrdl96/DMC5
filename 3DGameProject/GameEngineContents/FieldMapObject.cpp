@@ -23,6 +23,9 @@
 #include "illminary.h"
 #include "DivinityStatue.h"
 #include "Item_RedOrbLump.h"
+#include "ArcadeGate.h"
+#include "ArcadeCafeRoof01.h"
+#include "ArcadeCafeRoof02.h"
 
 FieldMapObject::FieldMapObject()
 {
@@ -110,6 +113,16 @@ std::shared_ptr<FieldMapObject> FieldMapObject::CreateFieldMapObj(GameEngineLeve
 	case FieldMapObjType::Item_RedOrbLump:
 		Result = _Level->CreateActor<Item_RedOrbLump>();
 		break;
+	case FieldMapObjType::ArcadeGate:
+		Result = _Level->CreateActor<ArcadeGate>();
+		break;
+	case FieldMapObjType::ArcadeCafeRoof01:
+		Result = _Level->CreateActor<ArcadeCafeRoof01>();
+		break;
+	case FieldMapObjType::ArcadeCafeRoof02:
+		Result = _Level->CreateActor<ArcadeCafeRoof02>();
+		break;
+
 	default:
 		MsgAssert("¹Ì±¸Çö");
 		break;

@@ -363,6 +363,16 @@ void ContentsCore::ContentsResourcesCreate()
 	}
 
 	{
+		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("FBX_2D");
+
+		Material->SetVertexShader("ContentsMesh.hlsl");
+		Material->SetRasterizer("Engine2DBase");
+		Material->SetPixelShader("ContentsMesh.hlsl");
+		Material->SetBlendState("BaseBlend");
+		Material->SetDepthState("EngineDepth");
+	}
+
+	{
 		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("AniFBX");
 
 		Material->SetVertexShader("ContentsAniMesh.hlsl");

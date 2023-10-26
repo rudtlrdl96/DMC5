@@ -531,6 +531,15 @@
     <ClInclude Include="BaseShopUI.h">
       <Filter>UI\UI_Actor\ShopUI</Filter>
     </ClInclude>
+    <ClInclude Include="ArcadeGate.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClInclude>
+    <ClInclude Include="ArcadeCafeRoof01.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClInclude>
+    <ClInclude Include="ArcadeCafeRoof02.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -1056,6 +1065,15 @@
     </ClCompile>
     <ClCompile Include="BaseShopUI.cpp">
       <Filter>UI\UI_Actor\ShopUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ArcadeCafeRoof01.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClCompile>
+    <ClCompile Include="ArcadeCafeRoof02.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClCompile>
+    <ClCompile Include="ArcadeGate.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -171,6 +171,18 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ArcadeCafeRoof01.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ArcadeCafeRoof02.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ArcadeGate.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="AttackCollision.h">
       <SubType>
       </SubType>
@@ -775,6 +787,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimationEvent.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ArcadeCafeRoof01.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ArcadeCafeRoof02.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ArcadeGate.cpp">
       <SubType>
       </SubType>
     </ClCompile>
