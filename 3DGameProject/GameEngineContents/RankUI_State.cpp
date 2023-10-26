@@ -13,12 +13,13 @@ void RankUI::StateInit_Wait()
 			.StateValue = RankState::Rank_WaitState,
 			.Start = [=]
 			{
+				RankBackEffect_Up->GetTransform()->SetLocalPosition(InsideOut);
+				RankBackEffect->GetTransform()->SetLocalPosition(InsideOut);
 				DisApperValue = false;
-
-
 			},
 			.Update = [=](float _DeltaTime)
 			{
+
 				RankBackEffect->Loop = false;
 				RankBackEffect_Up->Loop = false;
 				if (RankScore > 0.0f)
@@ -39,6 +40,8 @@ void RankUI::StateInit_RankD()
 			.StateValue = RankState::Appear_RankD,
 			.Start = [=]
 			{
+			RankBackEffect_Up->GetTransform()->SetLocalPosition(InsidePos);
+			RankBackEffect->GetTransform()->SetLocalPosition(InsidePos);
 			RankBackEffect->PlayFX("RankBackEffect.effect");
 			RankBackEffect->Loop = true;
 			ExplaneSpeed = 0.0F;

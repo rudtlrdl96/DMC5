@@ -15,6 +15,7 @@ NeroLoading::~NeroLoading()
 
 void NeroLoading::Start()
 {
+	GetTransform()->SetLocalScale(GetTransform()->GetLocalScale() * GameEngineActor::ScreenRatio);
 	LodingBackRender = CreateComponent<GameEngineUIRenderer>(0);
 	LodingBackRender->SetTexture("LoadingTexture.png");
 	LodingBackRender->GetTransform()->SetLocalScale({ 1920.0f,1080.0f,0.0f });

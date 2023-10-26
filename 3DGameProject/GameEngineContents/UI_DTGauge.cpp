@@ -38,13 +38,13 @@ void UI_DTGauge::Start()
 	DTElectroEffect_Down->Off();
 	for (int i = 0; i < 3; i++)
 	{
-		DTGauges.push_back(UIFBXActorBase::CreateGaugeBar({ -590.0f + i * 16.0f , 372.0f , 30.0f + i *1.0f }, { 0.9f, 0.9f, 0.9f }, { -90.0f,0.0f,0.0f }, "DtGauge.FBX"));
+		DTGauges.push_back(UIFBXActorBase::CreateNoneLightGaugeBar({ -590.0f + i * 16.0f , 372.0f , 30.0f + i *1.0f }, { 0.9f, 0.9f, 0.9f }, { -90.0f,0.0f,0.0f }, "DtGauge.FBX"));
 		CreateDTBar("DTLargeGauge.png", { -590.0f + i * 16.0f , 372.0f , 40.0f }, {34.0f,28.0f,0.0f});
 		DTGauges[i]->SetMulColor(float4::ZERO);
 	}
 	for (int i = 0; i < 7; i++)
 	{
-		DTGauges.push_back(UIFBXActorBase::CreateGaugeBar({ -541.0f + i * 13.0f , 375.0f , 30.0f + i * 1.0f }, { 0.7f, 0.7f, 0.7f }, { -90.0f,0.0f,0.0f }, "DtGauge.FBX"));
+		DTGauges.push_back(UIFBXActorBase::CreateNoneLightGaugeBar({ -541.0f + i * 13.0f , 375.0f , 30.0f + i * 1.0f }, { 0.7f, 0.7f, 0.7f }, { -90.0f,0.0f,0.0f }, "DtGauge.FBX"));
 		CreateDTBar("DTSmallGauge.png", { -541.0f + i * 13.0f , 375.0f , 40.0f }, { 29.0f,28.0f,0.0f });
 		DTGauges[i+3]->SetMulColor(float4::ZERO);
 	}

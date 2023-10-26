@@ -17,6 +17,7 @@ public:
 	std::shared_ptr<class UIMeshRenderer> CreateGaugeBar(float4 _Pos, float4 _Scale,float4 _Rotation, const std::string_view& _FBXName , const std::string_view& _Meterial = "UIFBXMesh");
 	std::shared_ptr<class UIMeshRenderer> CreateUIFBX(std::shared_ptr<class UIMeshRenderer> _Render , float4 _Pos, float4 _Scale, float4 _Rotation, const std::string_view& _FBXName, const std::string_view& _Meterial = "UIFBXMesh");
 	std::shared_ptr<class UIFBXRenderer> CreateNoneLightFBX(std::shared_ptr<class UIFBXRenderer> _Render, float4 _Pos, float4 _Scale, float4 _Rotation, const std::string_view& _FBXName, const std::string_view& _Meterial = "FBX_LOW");
+	std::shared_ptr<class UIFBXRenderer> CreateNoneLightGaugeBar(float4 _Pos, float4 _Scale, float4 _Rotation, const std::string_view& _FBXName, const std::string_view& _Meterial = "FBX_LOW");
 
 	void ShakeUIRender(std::shared_ptr<class UIMeshRenderer> _Render, float4 _ShakeArea, float _Delta);
 protected:

@@ -20,7 +20,17 @@ void UIFBXActorBase::Update(float _Delta)
 {
 }
 
-std::shared_ptr<UIMeshRenderer> UIFBXActorBase::CreateGaugeBar(float4 _Pos,float4 _Scale, float4 _Rotation, const std::string_view& _FBXName, const std::string_view& _Meterial)
+std::shared_ptr<UIFBXRenderer> UIFBXActorBase::CreateNoneLightGaugeBar(float4 _Pos,float4 _Scale, float4 _Rotation, const std::string_view& _FBXName, const std::string_view& _Meterial)
+{
+	std::shared_ptr<UIFBXRenderer> Gaege = nullptr;
+	Gaege = CreateComponent<UIFBXRenderer>(3);
+	Gaege->SetFBXMesh(_FBXName.data(), _Meterial.data());
+	Gaege->GetTransform()->SetLocalRotation(_Rotation);
+	Gaege->GetTransform()->SetLocalScale(_Scale);
+	Gaege->GetTransform()->SetLocalPosition(_Pos);
+	return Gaege;
+}
+std::shared_ptr<UIMeshRenderer> UIFBXActorBase::CreateGaugeBar(float4 _Pos, float4 _Scale, float4 _Rotation, const std::string_view& _FBXName, const std::string_view& _Meterial)
 {
 	std::shared_ptr<UIMeshRenderer> Gaege = nullptr;
 	Gaege = CreateComponent<UIMeshRenderer>(3);
@@ -35,7 +45,6 @@ std::shared_ptr<UIMeshRenderer> UIFBXActorBase::CreateGaugeBar(float4 _Pos,float
 	Gaege->LightDataUpdate();
 	return Gaege;
 }
-
 std::shared_ptr<UIMeshRenderer> UIFBXActorBase::CreateUIFBX(std::shared_ptr<class UIMeshRenderer> _Render, float4 _Pos, float4 _Scale, float4 _Rotation, const std::string_view& _FBXName , const std::string_view& _Meterial)
 {
 	_Render = CreateComponent<UIMeshRenderer>(0);
@@ -61,7 +70,6 @@ std::shared_ptr<class UIFBXRenderer> UIFBXActorBase::CreateNoneLightFBX(std::sha
 	return _Render;
 
 }
-
 void UIFBXActorBase::ShakeUIRender(std::shared_ptr<class UIMeshRenderer> _Render, float4 _ShakeArea, float _Delta)
 {
 	float4 RenderPos = _Render->GetTransform()->GetLocalPosition();
