@@ -142,9 +142,6 @@ protected:
 
 
 private:
-	//이런 콜백 방식 또는 추상함수 방식으로 하자
-	std::function<void()> PopCallBack = nullptr;
-	std::function<void()> PushCallBack = nullptr;
 
 };
 
