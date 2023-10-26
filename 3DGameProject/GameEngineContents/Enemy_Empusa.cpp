@@ -843,12 +843,16 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// ¹é½ºÅÜ
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Step_Back,
 	.Start = [=] {
-	RotationCheck();
-	AllDirectSetting();
-	SetThrowback(45000.0f);
 	EnemyRenderer->ChangeAnimation("em0100_step_back");
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		RotationCheck();
+		AllDirectSetting();
+		SetThrowback(45000.0f);
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_Empusa::Empusa_Quadruped_Idle);
