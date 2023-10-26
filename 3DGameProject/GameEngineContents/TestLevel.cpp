@@ -103,7 +103,7 @@ void TestLevel::LevelChangeStart()
 
 	if (nullptr == Player)
 	{
-		if (false)
+		if (true)
 		{
 			Player = CreateActor<PlayerActor_Nero>();
 			Player->GetPhysXComponent()->SetWorldPosition({ -1200, 100, -1300 });
@@ -118,9 +118,9 @@ void TestLevel::LevelChangeStart()
 			//Item_Gerbera->SetDevilBreaker(DevilBreaker::Gerbera);
 			//Item_Gerbera->GetTransform()->SetLocalPosition({ -1200, 50, -1000 });
 
-			//std::shared_ptr<Item_DevilBreaker> Item_Buster = CreateActor<Item_DevilBreaker>();
-			//Item_Buster->SetDevilBreaker(DevilBreaker::BusterArm);
-			//Item_Buster->GetTransform()->SetLocalPosition({ -800, 50, -1000 });
+			std::shared_ptr<Item_DevilBreaker> Item_Buster = CreateActor<Item_DevilBreaker>();
+			Item_Buster->SetDevilBreaker(DevilBreaker::BusterArm);
+			Item_Buster->GetTransform()->SetLocalPosition({ -800, 50, -1000 });
 		}
 		else
 		{
@@ -175,12 +175,12 @@ void TestLevel::LevelChangeStart()
 	//	HellAntenora->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
 
-	//if (nullptr == Scudo)
-	//{
-	//	Scudo = CreateActor<Enemy_ScudoAngelo>();
-	//	Scudo->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	//	Scudo->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	//}
+	if (nullptr == Scudo)
+	{
+		Scudo = CreateActor<Enemy_ScudoAngelo>();
+		Scudo->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+		Scudo->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	}
 
 	//if (nullptr == Proto)
 	//{
@@ -189,12 +189,12 @@ void TestLevel::LevelChangeStart()
 	//	Proto->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
 
-	if (nullptr == Qliphoth)
-	{
-		Qliphoth = CreateActor<Enemy_Qliphoth>();
-		Qliphoth->GetTransform()->SetWorldPosition({ 0, 0, 0 });
-		Qliphoth->GetTransform()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	}
+	//if (nullptr == Qliphoth)
+	//{
+	//	Qliphoth = CreateActor<Enemy_Qliphoth>();
+	//	Qliphoth->GetTransform()->SetWorldPosition({ 0, 0, 0 });
+	//	Qliphoth->GetTransform()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	//}
 
 	//GameEngineCoreWindow::Clear();
 	//GameEngineCoreWindow::AddDebugRenderTarget(0, "Forward Target", GetCamera(100)->GetCamForwardTarget());
