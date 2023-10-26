@@ -14,12 +14,12 @@ public:
 	BaseShopUI& operator=(const BaseShopUI& _Other) = delete;
 	BaseShopUI& operator=(BaseShopUI&& _Other) noexcept = delete;
 
-protected:
-	void Start();
-	void Update(float _Delta);
 	virtual void ShopOn() {}
 	virtual void ShopOff() {}
 	virtual void ApperCusterWindow(bool _Value) {}
+protected:
+	void Start();
+	void Update(float _Delta);
 private:
 
 };

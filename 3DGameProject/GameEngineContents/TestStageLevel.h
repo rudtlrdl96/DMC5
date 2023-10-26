@@ -29,5 +29,6 @@ private:
 	std::shared_ptr<class BWColorEffect> BWEffect = nullptr;
 
 	void InitPool();
+	void CreateEventZone();
 };
 

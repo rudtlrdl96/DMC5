@@ -20,6 +20,7 @@
 #include "Player_MirageBlade.h"
 #include "Enemy_HellCaina.h"
 #include "Enemy_Empusa.h"
+#include "Enemy_Qliphoth.h"
 
 #include "PlayerActor_Nero.h"
 #include "PlayerActor_Vergil.h"
@@ -213,6 +214,7 @@ void TestStageLevel::LevelChangeStart()
 	//GameEngineCoreWindow::AddDebugRenderTarget(8, "Bloom Debug B", Bloom->DebugTargetB);
 
 	InitPool();
+	CreateEventZone();
 }
 
 void TestStageLevel::InitPool()
@@ -263,4 +265,44 @@ void TestStageLevel::InitPool()
 			NetworkManager::LinkNetwork(_ActorPtr.get(), this);
 		}
 	});
+
+	//Enemy_Qliphoth
+	Poolable<Enemy_Qliphoth>::CreatePool(this, static_cast<int>(ActorOrder::Enemy), 2,
+		[this](std::shared_ptr<Enemy_Qliphoth> _ActorPtr)
+		{
+			if (true == NetworkManager::IsClient())
+			{
+				_ActorPtr->SetControll(NetControllType::PassiveControll);
+			}
+			else
+			{
+				NetworkManager::LinkNetwork(_ActorPtr.get(), this);
+			}
+		});
+}
+
+void TestStageLevel::CreateEventZone()
+{
+	std::shared_ptr<EventZone> NewEvent = CreateActor<EventZone>();
+	NewEvent->SetName("ClipothEventZone");
+	NewEvent->GetTransform()->SetWorldPosition({ 4000, 275, -6122 });
+	NewEvent->GetTransform()->SetWorldScale({ 2500, 500, 3000 });
+	NewEvent->SetEvent([=]
+		{
+			std::vector<float4> EnemyPos =
+			{
+				{ 4424, 105, -4619 }, { 3458, 84, -5820 }
+			};
+			std::vector<float> EnemyRot = { -99, 20 };
+			for (int i = 0; i < 2; i++)
+			{
+				TimeEvent.AddEvent(i * 0.8f, [=](GameEngineTimeEvent::TimeEvent& Event, GameEngineTimeEvent* Manager)
+				{
+					std::shared_ptr<Enemy_Qliphoth> Empusa = Poolable<Enemy_Qliphoth>::PopFromPool(this, static_cast<int>(ActorOrder::Enemy));
+					Empusa->GetTransform()->SetWorldPosition(EnemyPos[i]);
+					Empusa->GetTransform()->SetWorldRotation(float4::UP * EnemyRot[i]);
+				});
+			}
+			NewEvent->Off();
+		});
 }

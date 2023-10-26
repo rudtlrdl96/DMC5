@@ -34,22 +34,25 @@ void Enemy_Qliphoth::EnemyMeshLoad()
 			"ContentResources",
 			{
 				"Character", "Enemy", "Qliphoth", "mesh"
-			},
-			"Qliphoth.FBX"
+			}
 		);
-		GameEngineFBXMesh::Load(Path);
+		GameEngineFBXMesh::Load(Path + "\\Qliphoth.FBX");
+		GameEngineFBXMesh::Load(Path + "\\Qliphoth_Stone.FBX");
 	}
 
+	StoneRenderer = CreateComponent<GameEngineFBXRenderer>();
 	switch (GameEngineOption::GetOption("Shader"))
 	{
 	case GameEngineOptionValue::Low:
 	{
 		EnemyRenderer->SetFBXMesh("Qliphoth.fbx", "AniFBX_Low");
+		StoneRenderer->SetFBXMesh("Qliphoth_Stone.fbx", "FBX_Low");
 	}
 	break;
 	case GameEngineOptionValue::High:
 	{
 		EnemyRenderer->SetFBXMesh("Qliphoth.fbx", "AniFBX");
+		StoneRenderer->SetFBXMesh("Qliphoth_Stone.fbx", "FBX");
 	}
 	break;
 	default:
@@ -65,8 +68,7 @@ void Enemy_Qliphoth::EnemyMeshLoad()
 	}
 
 	EnemyRenderer->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
-
-	EnemyRenderer->GetRenderUnit(0, 2)->Off();
+	//EnemyRenderer->GetRenderUnit(0, 2)->Off();
 }
 
 void Enemy_Qliphoth::EnemyAnimationLoad()
@@ -170,7 +172,8 @@ void Enemy_Qliphoth::Start()
 
 	// 랜더러 크기 설정
 	EnemyRenderer->GetTransform()->AddLocalPosition({ 0.0f, -200.0f, 0.0f });
-
+	StoneRenderer->GetTransform()->AddLocalPosition({ 0.0f, -75.0f, 0.0f });
+	StoneRenderer->GetTransform()->SetWorldRotation(float4::ZERO);
 	// 콜리전 옵션, 크기 설정
 	MonsterAttackCollision->SetAttackData(DamageType::Light, MONSTER_LIGHT_DAMAGE);
 	MonsterAttackCollision->SetColType(ColType::OBBBOX3D);
@@ -432,12 +435,15 @@ void Enemy_Qliphoth::ChangeState_Client(int _StateValue)
 
 void Enemy_Qliphoth::EnemyCreateFSM()
 {
-
+	// Appear
+	EnemyRenderer->SetAnimationStartEvent("em1000_Appear", 1, [=] {
+		Sound.Play("Qliphoth_", 0);
+		Sound.Play("Qliphoth_", 5);
+		});
 	// Appear
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Qliphoth::Qliphoth_Appear,
 	.Start = [=] {
 			EffectRenderer->PlayFX("Qliphoth_Appear.effect");
-			Sound.Play("Qliphoth_", 0);
 			//EffectRenderer->PlayFX("Enemy_Appear.effect");
 			EnemyRenderer->ChangeAnimation("em1000_Appear");
 		},
@@ -536,6 +542,7 @@ void Enemy_Qliphoth::EnemyCreateFSM()
 			Sound.Play("Qliphoth_", 3);
 			//EffectRenderer->PlayFX("Enemy_Appear.effect");
 			EnemyRenderer->ChangeAnimation("em1000_Dead");
+			StoneRenderer->GetTransform()->SetParent(GetLevel()->CreateActor<GameEngineActor>()->GetTransform(), false);
 		},
 		.Update = [=](float _DeltaTime) {
 			if (true == EnemyRenderer->IsAnimationEnd())
@@ -554,9 +561,14 @@ void Enemy_Qliphoth::EnemyCreateFSM()
 
 void Enemy_Qliphoth::EnemyCreateFSM_Client()
 {
+	// Appear
+	EnemyRenderer->SetAnimationStartEvent("em1000_Appear", 1, [=] {
+		Sound.Play("Qliphoth_", 0);
+		Sound.Play("Qliphoth_", 5);
+	});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Qliphoth::Qliphoth_Appear,
-.Start = [=] {
-			//EffectRenderer->PlayFX("Enemy_Appear.effect");
+	.Start = [=] {
+			EffectRenderer->PlayFX("Qliphoth_Appear.effect");
 			EnemyRenderer->ChangeAnimation("em1000_Appear");
 		},
 		.Update = [=](float _DeltaTime) {
@@ -566,9 +578,23 @@ void Enemy_Qliphoth::EnemyCreateFSM_Client()
 		}
 		});
 
+	// Idle
+	static float RotCheckDelay = 0.0f;
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Qliphoth::Qliphoth_Idle,
 	.Start = [=] {
 			EnemyRenderer->ChangeAnimation("em1000_Idle");
+		},
+		.Update = [=](float _DeltaTime) {
+		},
+	.End = [=] {
+
+	}
+		});
+
+	// Attack
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Qliphoth::Qliphoth_Attack,
+	.Start = [=] {
+			EnemyRenderer->ChangeAnimation("em1000_Attack");
 		},
 		.Update = [=](float _DeltaTime) {
 		},
@@ -577,5 +603,31 @@ void Enemy_Qliphoth::EnemyCreateFSM_Client()
 		}
 		});
 
+	// Damage
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Qliphoth::Qliphoth_Damage,
+	.Start = [=] {
+			Sound.PlayRandom("Qliphoth_", 1, 2);
+			EnemyRenderer->ChangeAnimation("em1000_Damage", true);
+		},
+		.Update = [=](float _DeltaTime) {
+		},
+		.End = [=] {
+
+		}
+		});
+
+	// Dead
+	EnemyFSM.CreateState({ .StateValue = FSM_State_Qliphoth::Qliphoth_Dead,
+	.Start = [=] {
+			Sound.Play("Qliphoth_", 3);
+			EnemyRenderer->ChangeAnimation("em1000_Dead");
+			StoneRenderer->GetTransform()->SetParent(GetLevel()->CreateActor<GameEngineActor>()->GetTransform(), false);
+		},
+		.Update = [=](float _DeltaTime) {
+		},
+		.End = [=] {
+
+		}
+		});
 	EnemyFSM.ChangeState(FSM_State_Qliphoth::Qliphoth_Appear);
 }

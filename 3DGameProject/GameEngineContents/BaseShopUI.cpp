@@ -1,3 +1,4 @@
+#include "PrecompileHeader.h"
 #include "BaseShopUI.h"
 
 BaseShopUI::BaseShopUI() 

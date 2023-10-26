@@ -118,7 +118,7 @@ protected:
 	std::shared_ptr<class PlayerHPUI> HUD = nullptr;
 	class BaseEnemyActor* LockOnEnemy = nullptr;
 
-	std::shared_ptr<GameEngineObject> Shop = nullptr;
+	std::shared_ptr<class BaseShopUI> Shop = nullptr;
 	float4 Rot = float4::ZERO;
 
 	const int MaxHP = 10000;

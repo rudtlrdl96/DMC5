@@ -122,7 +122,7 @@ void PlayerActor_Nero::PlayerLoad()
 	BreakerList.push_back(DevilBreaker::None);
 	
 	Shop = GetLevel()->CreateActor<Nero_ShopUI>();
-	Shop->Off();
+	Shop->ShopOff();
 	HUD = GetLevel()->CreateActor<PlayerHPUI>();
 	HUD->SetNeroUI();
 	HUD->SetPlayerHP(HP);

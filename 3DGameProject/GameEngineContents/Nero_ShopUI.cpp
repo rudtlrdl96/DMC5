@@ -69,10 +69,7 @@ void Nero_ShopUI::Start()
 
 void Nero_ShopUI::Update(float _Delta)
 {
-	if (true == GameEngineInput::IsUp("UI_ESC"))
-	{
-		ShopOff();
-	}
+
 	if (SkillButton->IsUpdate() == true)
 	{
 		LerpScreen(_Delta);

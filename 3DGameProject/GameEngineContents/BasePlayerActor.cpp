@@ -20,6 +20,7 @@
 #include "EffectRenderer.h"
 #include "PlayerHPUI.h"
 #include "FadeEffect.h"
+#include "BaseShopUI.h"
 std::vector<BasePlayerActor*> BasePlayerActor::Players = std::vector<BasePlayerActor*>();
 BasePlayerActor* BasePlayerActor::MainPlayer = nullptr;
 
@@ -326,8 +327,9 @@ void BasePlayerActor::Update(float _DeltaTime)
 		{
 			AddDTGauge(-0.5f * _DeltaTime);
 		}
-		if (true == IsShopOn && false == Shop->IsUpdate())
+		if (true == IsShopOn && true == GameEngineInput::IsUp("UI_ESC"))
 		{
+			Shop->ShopOff();
 			ShopOff();
 			IsShopOn = false;
 			Controller->On();
@@ -502,9 +504,16 @@ void BasePlayerActor::OrbColCheck()
 
 void BasePlayerActor::ShopColCheck()
 {
-	if (false == IsShopOn && GameEngineInput::IsUp("Enter"))
+	if (true == IsShopOn) { return; }
+	if (nullptr == Col_Player->Collision(CollisionOrder::Shop))
 	{
-		if (nullptr == Col_Player->Collision(CollisionOrder::Shop)) { return; }
+		Shop->ApperCusterWindow(false);
+		return;
+	}
+	Shop->ApperCusterWindow(true);
+
+	if (GameEngineInput::IsUp("Enter"))
+	{
 		ShopOn();
 		Controller->Off();
 		Camera->Off();
@@ -515,7 +524,7 @@ void BasePlayerActor::ShopColCheck()
 				{
 					return;
 				}
-				Shop->On();
+				Shop->ShopOn();
 				IsShopOn = true;
 			});
 	}

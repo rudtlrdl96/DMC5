@@ -100,7 +100,7 @@ void PlayerActor_Vergil::PlayerLoad()
 	HUD->SetVergilUI();
 	HUD->SetPlayerHP(HP);
 	Shop = GetLevel()->CreateActor<Vergil_ShopUI>();
-	Shop->Off();
+	Shop->ShopOff();
 
 	// Effect »ý¼º
 	{

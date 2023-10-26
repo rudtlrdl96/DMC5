@@ -42,6 +42,7 @@ private:
 
 	std::shared_ptr<class GameEngineCollision> ColCheck();
 	
+	std::shared_ptr<class GameEngineFBXRenderer> StoneRenderer = nullptr;
 	std::shared_ptr<class GameEngineCollision> MonsterCollision_0 = nullptr;
 	std::shared_ptr<class GameEngineCollision> MonsterCollision_1 = nullptr;
 	std::shared_ptr<class GameEngineCollision> MonsterCollision_2 = nullptr;
