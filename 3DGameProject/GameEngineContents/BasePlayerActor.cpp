@@ -557,3 +557,9 @@ void BasePlayerActor::SetWorldPosition(float4 _Value)
 	PhysXCapsule->SetWorldPosition(_Value);
 	GetTransform()->SetWorldPosition(_Value);
 }
+
+void BasePlayerActor::SetWorldRotation(float4 _Value)
+{
+	PhysXCapsule->SetWorldRotation(_Value);
+	GetTransform()->SetWorldRotation(_Value);
+}

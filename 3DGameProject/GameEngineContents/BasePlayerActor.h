@@ -59,6 +59,7 @@ public:
 	void SetPush(float4 _Value);
 	void SetMove(float4 _Value);
 	void SetWorldPosition(float4 _Value);
+	void SetWorldRotation(float4 _Value);
 
 	// FSM상태를 지정하는 함수
 	virtual void SetFSMStateValue(int _StateValue) = 0;
