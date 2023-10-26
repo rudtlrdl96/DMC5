@@ -69,9 +69,9 @@ enum class Net_LevelType
 
 enum class Net_EventType
 {
-	UNKNOWN,
-
 	RedWallOff_Location2_Spawner0,
+
+	COUNT
 };
 
 enum class ActorOrder

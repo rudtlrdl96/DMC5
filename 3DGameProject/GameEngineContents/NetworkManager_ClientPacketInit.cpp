@@ -200,12 +200,19 @@ void NetworkManager::ClientPacketInit()
 		[](std::shared_ptr<NetEventPacket> _Packet)
 	{
 		Net_EventType EventType = _Packet->EventType;
-		if (false == AllNetEvent.contains(EventType))
+
+		//이벤트를 등록해준 적이 없는 경우
+		int Index = static_cast<int>(EventType);
+		if (true == AllNetEvent.empty() || true == AllNetEvent[Index].empty())
 		{
-			NetworkGUI::GetInst()->PrintLog("Non-existent event detected", float4::RED);
+			NetworkGUI::GetInst()->PrintLog(GameEngineString::ToString(Index) + " Event Not Exist!", float4::RED);
 			return;
 		}
 
-		AllNetEvent[EventType]();
+		const std::vector<std::function<void()>>& Events = AllNetEvent[Index];
+		for (const std::function<void()>& Event : Events)
+		{
+			Event();
+		}
 	});
 }

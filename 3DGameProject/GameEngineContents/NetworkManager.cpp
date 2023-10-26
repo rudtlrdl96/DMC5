@@ -45,7 +45,7 @@ const std::string NetworkManager::SystemChatCheck = "[System] : ";
 
 std::map<unsigned int, std::vector<unsigned int>> NetworkManager::AllNetID;
 
-std::map<Net_EventType, std::function<void()>> NetworkManager::AllNetEvent;
+std::vector<std::vector<std::function<void()>>> NetworkManager::AllNetEvent;
 
 
 unsigned int NetworkManager::ServerOpen(int _Port)
@@ -101,41 +101,43 @@ void NetworkManager::ConnectServer(const std::string& _IP, int PortNum, std::fun
 
 
 
-bool NetworkManager::BindNetworkEvent(Net_EventType Type, std::function<void()> _Event)
+void NetworkManager::PushNetworkEvent(Net_EventType _Type, const std::function<void()>& _Event)
 {
-	if (Net_EventType::UNKNOWN == Type)
+	if (Net_EventType::COUNT == _Type)
 	{
-		MsgAssert("Net_EventType::UNKNOWN 에는 이벤트를 설정할 수 없습니다");
-		return false;
+		MsgAssert("Net_EventType::COUNT 에는 이벤트를 설정할 수 없습니다");
 	}
 
-	//이미 이벤트가 등록된 경우 아무것도 하지 않음
-	if (true == AllNetEvent.contains(Type))
-		return false;
+	if (true == AllNetEvent.empty())
+	{
+		AllNetEvent.resize(static_cast<size_t>(Net_EventType::COUNT));
+	}
 
-	AllNetEvent[Type] = _Event;
-	return true;
+	std::vector<std::function<void()>>& EventGroup = AllNetEvent[static_cast<size_t>(_Type)];
+	EventGroup.push_back(_Event);
 }
 
 
-bool NetworkManager::ExcuteNetworkEvent(Net_EventType Type)
+bool NetworkManager::ExcuteNetworkEvent(Net_EventType _Type)
 {
 	//호스트만 동작
 	if (false == IsServer())
 		return false;
 
+
 	//이벤트를 등록해준 적이 없는 경우
-	if (false == AllNetEvent.contains(Type))
+	int Index = static_cast<int>(_Type);
+	if (true == AllNetEvent.empty() || true == AllNetEvent[Index].empty())
 	{
-		std::string EventNumber = GameEngineString::ToString(static_cast<int>(Type));
-		NetworkGUI::GetInst()->PrintLog(EventNumber + " Event Not Exist!", float4::RED);
+		NetworkGUI::GetInst()->PrintLog(GameEngineString::ToString(Index) + " Event Not Exist!", float4::RED);
 		return false;
 	}
+
 
 	std::shared_ptr<NetEventPacket> EventPacket = std::make_shared<NetEventPacket>();
 	EventPacket->SetPacketID(PacketEnum::NetEventPacket);
 	EventPacket->SetObjectID(NetID);
-	EventPacket->EventType = Type;
+	EventPacket->EventType = _Type;
 	AllPacket[PacketEnum::NetEventPacket].push_back(EventPacket);
 	return true;
 }

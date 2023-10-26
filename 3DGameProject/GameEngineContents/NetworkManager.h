@@ -93,15 +93,15 @@ public:
 	//쌓여있던 모든 패킷을 전송하는 부분
 	static void FlushPackets();
 
-	//이미 이벤트가 등록된 경우 false를 반환합니다. 터뜨리지는 않습니다
-	static bool BindNetworkEvent(Net_EventType Type, std::function<void()> _Event);
+	//해당 enum값에 해당되는 이벤트를 등록할 수 있습니다. 이벤트가 중복하여 등록할 수 있기 때문에 주의해야 합니다.
+	static void PushNetworkEvent(Net_EventType _Type, const std::function<void()>& _Event);
 
 	/// <summary>
 	/// 호스트가 다른 클라이언트들에게 인자로 들어온 이벤트를 호출시키도록 요구합니다
 	/// </summary>
 	/// <param name="Type"> : 해당 타입의 이벤트를 클라이언트들에게 요구합니다</param>
 	/// <returns> : 작업에 실패한 경우 로그를 남기며 false를 반환합니다</returns>
-	static bool ExcuteNetworkEvent(Net_EventType Type);
+	static bool ExcuteNetworkEvent(Net_EventType _Type);
 
 protected:
 	static GameEngineNet* NetInst;
@@ -140,7 +140,7 @@ private:
 	static std::map<unsigned int, std::vector<unsigned int>> AllNetID;
 
 	//네트워크를 통해 전달될 게임의 이벤트를 담아놓는 맵 map
-	static std::map<Net_EventType, std::function<void()>> AllNetEvent;
+	static std::vector<std::vector<std::function<void()>>> AllNetEvent;
 
 	void DisconnectObjects(unsigned int _NetID);
 

@@ -42,6 +42,6 @@ protected:
 	}
 
 private:
-	Net_EventType EventType = Net_EventType::UNKNOWN;
+	Net_EventType EventType = Net_EventType::COUNT;
 };
 
