@@ -152,6 +152,8 @@ void GameEngineSound::Load(const std::string_view& _Name, const std::string_view
 	std::shared_ptr<GameEngineSound> NewSound = std::make_shared<GameEngineSound>();
 	NewSound->SoundLoad(_Path);
 	NewSound->Name = UpperName;
+
+	std::lock_guard<std::mutex> Lock(SoundLock);
 	AllSound.insert(std::pair<std::string, std::shared_ptr<GameEngineSound>>(UpperName, NewSound));
 }
 

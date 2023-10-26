@@ -14,6 +14,10 @@ BGMPlayer::BGMPlayer()
 
 BGMPlayer::~BGMPlayer()
 {
+	if (SoundPlayer.IsValid())
+	{
+		SoundPlayer.Stop();
+	}
 }
 
 void BGMPlayer::SetBattleBGM()

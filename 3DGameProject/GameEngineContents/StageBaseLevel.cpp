@@ -21,6 +21,11 @@ StageBaseLevel::StageBaseLevel()
 
 StageBaseLevel::~StageBaseLevel()
 {
+	if (GUI != nullptr)
+	{
+		GUI->Death();
+		GUI->Off();
+	}
 }
 
 void StageBaseLevel::LoadAllStageData()

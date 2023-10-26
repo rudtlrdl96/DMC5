@@ -14,7 +14,7 @@ EventZone::EventZone()
 
 EventZone::~EventZone()
 {
-
+	Event = nullptr;
 }
 
 void EventZone::SetEvent(std::function<void()> _Event)

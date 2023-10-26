@@ -1010,7 +1010,6 @@ void PlayerActor_Nero::NetLoad()
 			.Start = [=] {
 				Sound.Play("BR_", 0);
 				EffectSystem->PlayFX("BR_Shoot.effect");
-				Col_Attack->SetAttackData(DamageType::Light, 54, std::bind(&GameEngineObjectBase::Off, Col_Attack));
 				BlueRoseOn();
 				Renderer->ChangeAnimation("pl0000_BR_Shoot", true);
 			},
@@ -1025,7 +1024,6 @@ void PlayerActor_Nero::NetLoad()
 			.Start = [=] {
 				Sound.Play("BR_", 0);
 				EffectSystem->PlayFX("BR_Shoot.effect");
-				Col_Attack->SetAttackData(DamageType::Light, 54, std::bind(&GameEngineObjectBase::Off, Col_Attack));
 				BlueRoseOn();
 				Renderer->ChangeAnimation("pl0000_BR_Air_Shoot", true);
 			},

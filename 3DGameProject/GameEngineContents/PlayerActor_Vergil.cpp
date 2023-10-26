@@ -211,10 +211,10 @@ void PlayerActor_Vergil::PlayerLoad()
 				std::bind(&PlayerActor_Vergil::YamatoOff, this),
 				std::bind(&PlayerActor_Vergil::SetHuman, this),
 				std::bind(&PlayerActor_Vergil::SetDemon, this),
-				std::bind(&PhysXCapsuleComponent::SetLinearVelocityZero, PhysXCapsule),		// 5
+				std::bind(&PhysXCapsuleComponent::SetLinearVelocityZero, PhysXCapsule.get()),		// 5
 				std::bind([=] {MoveCheck = true; }),
 				std::bind([=] {DelayCheck = true; }),
-				std::bind(&PhysXCapsuleComponent::TurnOnGravity, PhysXCapsule),		// 8 
+				std::bind(&PhysXCapsuleComponent::TurnOnGravity, PhysXCapsule.get()),		// 8 
 				std::bind(&PlayerCamera::ShakeLight),	//9
 				std::bind(&PlayerCamera::ShakeMiddle),	//10
 				std::bind(&PlayerCamera::ShakeHeavy),	//11

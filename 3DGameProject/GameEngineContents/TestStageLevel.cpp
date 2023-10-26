@@ -133,7 +133,7 @@ void TestStageLevel::LevelChangeStart()
 	SetCamera({ 0,0,-500 });
 
 	BGMPlayer::BGMLoad();
-	if (false)
+	if (true)
 	{
 		MyPlayer = CreateActor<PlayerActor_Nero>();
 		MyPlayer->SetUserControllType();
@@ -290,7 +290,7 @@ void TestStageLevel::CreateEventZone()
 	NewEvent->SetName("ClipothEventZone");
 	NewEvent->GetTransform()->SetWorldPosition({ 4000, 275, -6122 });
 	NewEvent->GetTransform()->SetWorldScale({ 2500, 500, 3000 });
-	NewEvent->SetEvent([=]
+	NewEvent->SetEvent([this]
 		{
 			GameEngineSound::Play("Qliphoth_6.wav");
 			PlayerCamera::Shake(5.0f, 2.5f, 0.1f, 0.8f);
@@ -308,6 +308,5 @@ void TestStageLevel::CreateEventZone()
 					Empusa->GetTransform()->SetWorldRotation(float4::UP * EnemyRot[i]);
 				});
 			}
-			NewEvent->Off();
 		});
 }
