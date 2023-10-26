@@ -100,22 +100,22 @@ void ContentsCore::ContentsResourcesCreate()
 	//	}
 	//}
 
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("ContentResources");
-		NewDir.Move("ContentResources");
-		NewDir.Move("Mesh");
-		NewDir.Move("AnimationTest");
-		NewDir.Move("Animation");
+	//{
+	//	GameEngineDirectory NewDir;
+	//	NewDir.MoveParentToDirectory("ContentResources");
+	//	NewDir.Move("ContentResources");
+	//	NewDir.Move("Mesh");
+	//	NewDir.Move("AnimationTest");
+	//	NewDir.Move("Animation");
 
-		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".FBX" });
+	//	std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".FBX" });
 
-		for (size_t i = 0; i < Files.size(); i++)
-		{
-			std::string View = Files[i].GetFullPath().c_str();
-			GameEngineFBXAnimation::Load(Files[i].GetFullPath());
-		}
-	}
+	//	for (size_t i = 0; i < Files.size(); i++)
+	//	{
+	//		std::string View = Files[i].GetFullPath().c_str();
+	//		GameEngineFBXAnimation::Load(Files[i].GetFullPath());
+	//	}
+	//}
 
 	// Map
 	//{
