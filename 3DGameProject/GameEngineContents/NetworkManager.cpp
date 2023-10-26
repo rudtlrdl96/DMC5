@@ -533,13 +533,6 @@ std::shared_ptr<NetworkObjectBase> NetworkManager::CreateNetActor(Net_ActorType 
 		NetObject->InitNetObject(_ObjectID, NetInst);
 	}
 
-	const std::function<void()>& DestoryCallBack = NetworkObjectBase::PopReservedDestroyCallback(_ActorType);
-	if (nullptr != DestoryCallBack)
-	{
-		NetObject->PushDestroyCallback(DestoryCallBack);
-	}
-	
-
 	return NetObject;
 }
 
