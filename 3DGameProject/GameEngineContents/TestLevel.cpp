@@ -71,6 +71,7 @@ void TestLevel::Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsDown("MonsterTest"))
 	{
+		Empusa = CreateActor<Enemy_Empusa>();
 		Is = !Is;
 		cal = 1;
 	}
@@ -128,8 +129,6 @@ void TestLevel::LevelChangeStart()
 			Player->SetUserControllType();
 			NetworkManager::LinkNetwork(Player.get(), this);
 		}
-
-		Player->CreateComponent<GameEngineCollision>(CollisionOrder::Shop);
 	}
 
 	//CreateActor<Item_RedOrbLump>();

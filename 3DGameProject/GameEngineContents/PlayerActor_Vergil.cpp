@@ -2661,8 +2661,10 @@ bool PlayerActor_Vergil::Input_SpecialCheck()
 			return true;
 		}
 	}
-	if (Controller->GetIsSpecialMove() && true == IsJudgmentCutEnd)
+	if (Controller->GetIsSpecialMove() && true == IsJudgmentCutEnd && 3.0f < DTGauge)
 	{
+		DTGauge -= -3.0f;
+		HUD->GetDtUI()->ActivateDtUI(DTGauge);
 		ChangeState(FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_1);
 		return true;
 	}

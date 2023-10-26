@@ -70,7 +70,7 @@ public:
 			{
 				RankUI::GetRankInst()->AddRankScore(Data.DamageValue / 2);
 			}
-			if (nullptr != CallBack_Damage)
+			if (nullptr != CallBack_Damage && Data.DamageValue < 2000)
 			{
 				CallBack_Damage(Data.DamageValue * 0.001f);
 			}

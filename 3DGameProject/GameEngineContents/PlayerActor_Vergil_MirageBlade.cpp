@@ -4,7 +4,8 @@
 #include "Player_MirageBlade.h"
 #include "PlayerController.h"
 #include "AttackCollision.h"
-
+#include "PlayerHPUI.h"
+#include "UI_DTGauge.h"
 void PlayerActor_Vergil::CreateMirageBlade()
 {
 	GameEngineTransform* SpiralPivot = CreateComponent<GameEngineComponent>()->GetTransform();
@@ -25,23 +26,31 @@ void PlayerActor_Vergil::CreateMirageBlade()
 
 	},
 	.Update = [=](float _DeltaTime) {
-		if (true == Controller->GetIsGunCharge() && true == IsSpiralBlade)
+		if (true == Controller->GetIsGunCharge() && true == IsSpiralBlade && 1.0f < DTGauge)
 		{
+			DTGauge -= 1.0f;
+			HUD->GetDtUI()->ActivateDtUI(DTGauge);
 			FSM_MirageBlade.ChangeState(FSM_State_MirageBlade::MirageBlade_Spiral);
 			return;
 		}
-		if (true == Controller->GetIsBackFrontGun() && nullptr != LockOnEnemyTransform && true == IsHeavyRainBlade)
+		if (true == Controller->GetIsBackFrontGun() && nullptr != LockOnEnemyTransform && true == IsHeavyRainBlade && 1.0f < DTGauge)
 		{
+			DTGauge -= 1.0f;
+			HUD->GetDtUI()->ActivateDtUI(DTGauge);
 			FSM_MirageBlade.ChangeState(FSM_State_MirageBlade::MirageBlade_HeavyRain);
 			return;
 		}
-		if (true == Controller->GetIsFrontGun() && nullptr != LockOnEnemyTransform && true == IsLesteringBlade)
+		if (true == Controller->GetIsFrontGun() && nullptr != LockOnEnemyTransform && true == IsLesteringBlade && 1.0f < DTGauge)
 		{
+			DTGauge -= 1.0f;
+			HUD->GetDtUI()->ActivateDtUI(DTGauge);
 			FSM_MirageBlade.ChangeState(FSM_State_MirageBlade::MirageBlade_Blistering);
 			return;
 		}
-		if (true == Controller->GetIsBackGun() && nullptr != LockOnEnemyTransform && true == IsStormBlade)
+		if (true == Controller->GetIsBackGun() && nullptr != LockOnEnemyTransform && true == IsStormBlade && 1.0f < DTGauge)
 		{
+			DTGauge -= 1.0f;
+			HUD->GetDtUI()->ActivateDtUI(DTGauge);
 			FSM_MirageBlade.ChangeState(FSM_State_MirageBlade::MirageBlade_Storm);
 			return;
 		}

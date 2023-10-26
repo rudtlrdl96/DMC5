@@ -234,7 +234,6 @@ void BasePlayerActor::Start()
 	Col_Attack->Off();
 	Col_Attack->SetColType(ColType::OBBBOX3D);
 	Col_Attack->SetHitStopCallBack(std::bind(&BasePlayerActor::StopTime, this, std::placeholders::_1));
-	Col_Attack->SetIsPlayerCollision();
 	Col_Attack->ParryAttackOn();
 
 	LinkData_UpdatePacket<bool>(DTValue, [this](bool _BeforeData)
@@ -292,6 +291,7 @@ void BasePlayerActor::UserControllLoad()
 	Col_LockOn->SetColType(ColType::OBBBOX3D);
 	Col_LockOn->Off();
 
+	Col_Attack->SetIsPlayerCollision();
 	Col_Attack->SetDamageCallBack([=](float _Value)
 		{
 			AddDTGauge(_Value);
