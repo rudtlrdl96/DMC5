@@ -2,6 +2,8 @@
 #include "GameEngineFBX.h"
 #include <GameEngineBase/GameEngineString.h>
 
+std::mutex GameEngineFBX::InitLock;
+
 bool GameEngineFBX::IsCheckAnimationFBX(std::string_view _Path)
 {
 	GameEngineFBX FBX;

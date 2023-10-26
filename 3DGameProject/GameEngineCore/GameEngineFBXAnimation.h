@@ -185,7 +185,8 @@ public:
 		return &AnimationDatas[_Index];
 	}
 
-	void Initialize();
+	// User Save가 존재할 경우 true를 반환합니다.
+	bool Initialize();
 
 protected:
 	void LoadMesh(const std::string_view& _Path, const std::string_view& _Name);

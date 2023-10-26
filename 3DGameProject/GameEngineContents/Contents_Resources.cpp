@@ -69,20 +69,20 @@ void ContentsCore::ContentsResourcesCreate()
 	}
 
 	// 컨텐츠 FBX 파일 로드 (임시)
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("ContentResources");
-		NewDir.Move("ContentResources");
-		NewDir.Move("Mesh");
-		NewDir.Move("TestMesh");
-		// 테스트 메쉬 폴더는 자동으로 로드합니다
-		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".FBX" });
-
-		for (size_t i = 0; i < Files.size(); i++)
-		{
-			GameEngineFBXMesh::Load(Files[i].GetFullPath());
-		}
-	}
+	//{
+	//	GameEngineDirectory NewDir;
+	//	NewDir.MoveParentToDirectory("ContentResources");
+	//	NewDir.Move("ContentResources");
+	//	NewDir.Move("Mesh");
+	//	NewDir.Move("TestMesh");
+	//	// 테스트 메쉬 폴더는 자동으로 로드합니다
+	//	std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".FBX" });
+	//
+	//	for (size_t i = 0; i < Files.size(); i++)
+	//	{
+	//		GameEngineFBXMesh::Load(Files[i].GetFullPath());
+	//	}
+	//}
 	//{
 	//	GameEngineDirectory NewDir;
 	//	NewDir.MoveParentToDirectory("ContentResources");
@@ -100,22 +100,22 @@ void ContentsCore::ContentsResourcesCreate()
 	//	}
 	//}
 
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("ContentResources");
-		NewDir.Move("ContentResources");
-		NewDir.Move("Mesh");
-		NewDir.Move("AnimationTest");
-		NewDir.Move("Animation");
-
-		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".FBX" });
-
-		for (size_t i = 0; i < Files.size(); i++)
-		{
-			std::string View = Files[i].GetFullPath().c_str();
-			GameEngineFBXAnimation::Load(Files[i].GetFullPath());
-		}
-	}
+	//{
+	//	GameEngineDirectory NewDir;
+	//	NewDir.MoveParentToDirectory("ContentResources");
+	//	NewDir.Move("ContentResources");
+	//	NewDir.Move("Mesh");
+	//	NewDir.Move("AnimationTest");
+	//	NewDir.Move("Animation");
+	//
+	//	std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".FBX" });
+	//
+	//	for (size_t i = 0; i < Files.size(); i++)
+	//	{
+	//		std::string View = Files[i].GetFullPath().c_str();
+	//		GameEngineFBXAnimation::Load(Files[i].GetFullPath());
+	//	}
+	//}
 
 	// Map
 	//{

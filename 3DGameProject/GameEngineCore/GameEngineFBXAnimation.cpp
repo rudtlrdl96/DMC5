@@ -22,24 +22,37 @@ std::shared_ptr<GameEngineFBXAnimation> GameEngineFBXAnimation::Load(const std::
 	std::shared_ptr<GameEngineFBXAnimation> NewRes = Create(_Name);
 	NewRes->SetPath(_Path);
 	NewRes->LoadMesh(_Path, _Name);
+	NewRes->Initialize();
 	return NewRes;
 }
 
-void GameEngineFBXAnimation::Initialize()
+bool GameEngineFBXAnimation::Initialize()
 {
+	GameEngineFile DirFile = GetPath();
+	DirFile.ChangeExtension(".AnimationFBX");
+
+	if (DirFile.IsExists())
+	{
+		GameEngineSerializer Ser;
+		DirFile.LoadBin(Ser);
+		Ser >> AnimationDatas;
+
+		return true;
+	}
+
 	GameEngineFile File;
 	File.SetPath(GetPathToString());
 	File.ChangeExtension(".AnimationFBX");
 
 	if (true == IsInit)
 	{
-		return;
+		return false;
 	}
+
+	std::lock_guard<std::mutex> Lock(InitLock);
 
 	FBXInit(GetPathToString());
 	CheckAnimation();
-
-
 
 	// std::string FileName = _Name.data();
 	// FileName += ".AnimationFBX";
@@ -53,6 +66,7 @@ void GameEngineFBXAnimation::Initialize()
 
 
 	IsInit = true;
+	return false;
 }
 
 void GameEngineFBXAnimation::LoadMesh(const std::string_view& _Path, const std::string_view& _Name)
@@ -421,15 +435,11 @@ void GameEngineFBXAnimation::AnimationMatrixLoad(std::shared_ptr <GameEngineFBXM
 {
 	GameEngineFile DirFile = GetPath();
 	DirFile.ChangeExtension(".AnimationFBX");
-	if (DirFile.IsExists())
+
+	if (true == Initialize())
 	{
-		GameEngineSerializer Ser;
-		DirFile.LoadBin(Ser);
-		Ser >> AnimationDatas;
 		return;
 	}
-
-	Initialize();
 
 	if (0 == AnimationDatas.size())
 	{

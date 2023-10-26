@@ -73,6 +73,8 @@ protected:
 
 	bool IsAnimation = false;
 
+	static std::mutex InitLock;
+
 private:
 	bool CheckAnimationFBX(std::string_view _Path);
 };

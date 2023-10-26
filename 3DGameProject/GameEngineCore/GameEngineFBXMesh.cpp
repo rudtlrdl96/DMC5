@@ -16,6 +16,7 @@ std::shared_ptr<GameEngineFBXMesh> GameEngineFBXMesh::Load(const std::string_vie
 {
 	std::shared_ptr<GameEngineFBXMesh> Res = GameEngineResource::Create(_Name);
 	Res->SetPath(_Path);
+	Res->Initialize();
 	return Res;
 }
 
@@ -73,10 +74,14 @@ void GameEngineFBXMesh::Initialize()
 		return;
 	}
 
-	// 여기에서는 유저 정보로 저장한게 있으면 유저 정보로 로드하고 리턴.
-	FBXInit(GetPathToString());
-	MeshLoad();
-	CreateGameEngineStructuredBuffer();
+	{
+		std::lock_guard<std::mutex> Lock(InitLock);
+
+		// 여기에서는 유저 정보로 저장한게 있으면 유저 정보로 로드하고 리턴.
+		FBXInit(GetPathToString());
+		MeshLoad();
+		CreateGameEngineStructuredBuffer();
+	}
 
 	// 유저정보로 저장
 	GameEngineSerializer Ser;
