@@ -28,7 +28,7 @@ Texture2D CurPosTex : register(t3);
 
 SamplerState ENGINEBASE : register(s0);
 
-//#define BlurSampleCount 8
+#define BlurSampleCount 16
 
 cbuffer MotionBlurData : register(b0)
 {
@@ -67,34 +67,24 @@ float4 MotionBlur_PS(OutPut _Value) : SV_Target0
     CurrentPos = mul(CurrentPos, PrevFrameViewProjection);
     CurrentPos.xyz /= CurrentPos.w;
     
-    float2 Velocity = (CurrentPos.xy - PreviousPos.xy) / 16.0f;
+    float2 Velocity = (CurrentPos.xy - PreviousPos.xy) / (BlurSampleCount * 4.0f);
     
     //Velocity.x /= ScreenScale.x;
     //Velocity.y /= ScreenScale.y;
             
     // Get the initial color at this pixel.    
     float4 TexColor = DiffuseTex.Sample(ENGINEBASE, CurUV);
-    TexColor.rgb *= 0.25f; 
+    TexColor.rgb *= 0.4f; 
     float Alpha = TexColor.a;
     
-    MoveUV += Velocity;
-    TexColor.rgb += GetBlurColor(CurUV, MoveUV, DiffuseTex, MaskTex, ENGINEBASE, 0.2f);
+    float Ratio = 0.6f / BlurSampleCount;
     
-    MoveUV += Velocity;
-    TexColor.rgb += GetBlurColor(CurUV, MoveUV, DiffuseTex, MaskTex, ENGINEBASE, 0.15f);
+    for (int i = 0; i < BlurSampleCount; ++i)
+    {
+        MoveUV += Velocity;
+        TexColor.rgb += GetBlurColor(CurUV, MoveUV, DiffuseTex, MaskTex, ENGINEBASE, Ratio);
+    }
     
-    MoveUV += Velocity;
-    TexColor.rgb += GetBlurColor(CurUV, MoveUV, DiffuseTex, MaskTex, ENGINEBASE, 0.1f);
-    
-    MoveUV += Velocity;
-    TexColor.rgb += GetBlurColor(CurUV, MoveUV, DiffuseTex, MaskTex, ENGINEBASE, 0.1f);
-    
-    MoveUV += Velocity;
-    TexColor.rgb += GetBlurColor(CurUV, MoveUV, DiffuseTex, MaskTex, ENGINEBASE, 0.1f);
-    
-    MoveUV += Velocity;
-    TexColor.rgb += GetBlurColor(CurUV, MoveUV, DiffuseTex, MaskTex, ENGINEBASE, 0.1f);
-                
     TexColor.a = Alpha;
     return TexColor;
 }
