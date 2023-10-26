@@ -29,7 +29,7 @@
 #include "FreeCameraActor.h"
 #include "ReflectionProbe.h"
 #include "BWColorEffect.h"
-
+#include "PlayerCamera.h"
 #include <GameEngineCore/GameEngineGUI.h>
 #include <GameEngineCore/BloomEffect.h>
 #include <GameEngineCore/GameEngineCoreWindow.h>
@@ -289,6 +289,8 @@ void TestStageLevel::CreateEventZone()
 	NewEvent->GetTransform()->SetWorldScale({ 2500, 500, 3000 });
 	NewEvent->SetEvent([=]
 		{
+			GameEngineSound::Play("Qliphoth_6.wav");
+			PlayerCamera::Shake(5.0f, 2.5f, 0.1f, 0.8f);
 			std::vector<float4> EnemyPos =
 			{
 				{ 4424, 105, -4619 }, { 3458, 84, -5820 }

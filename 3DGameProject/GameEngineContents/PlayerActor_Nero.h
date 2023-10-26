@@ -237,6 +237,8 @@ private:
 	bool IsShufle =			true;
 	bool IsCalibur =		true;
 
+	float DamageMul = 1.0f;
+
 	DevilBreaker CurDevilBreaker = DevilBreaker::None;
 	static std::list<DevilBreaker> BreakerList;
 
@@ -287,5 +289,6 @@ private:
 	int DamageCalculate(int _Damage, bool _IsSkill = false);
 	std::shared_ptr<class NeroItemGlass> HUD2 = nullptr;
 
+	void DrawEditor() override;
 };
 

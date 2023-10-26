@@ -467,8 +467,11 @@ void Enemy_Qliphoth::EnemyCreateFSM()
 			SlerpCalculation();
 			SlerpTime = 0;
 			RotCheckDelay = 0;
+			IsRecognize = nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D);
 		},
 		.Update = [=](float _DeltaTime) {
+			if (false == IsRecognize) { return; }
+
 			RotCheckDelay += _DeltaTime;
 			if (0.1f < RotCheckDelay)
 			{
@@ -542,7 +545,9 @@ void Enemy_Qliphoth::EnemyCreateFSM()
 			Sound.Play("Qliphoth_", 3);
 			//EffectRenderer->PlayFX("Enemy_Appear.effect");
 			EnemyRenderer->ChangeAnimation("em1000_Dead");
-			StoneRenderer->GetTransform()->SetParent(GetLevel()->CreateActor<GameEngineActor>()->GetTransform(), false);
+			GameEngineTransform* ActorTran = GetLevel()->CreateActor<GameEngineActor>()->GetTransform();
+			ActorTran->SetWorldPosition(GetTransform()->GetWorldPosition());
+			StoneRenderer->GetTransform()->SetParent(ActorTran, false);
 		},
 		.Update = [=](float _DeltaTime) {
 			if (true == EnemyRenderer->IsAnimationEnd())
@@ -621,7 +626,9 @@ void Enemy_Qliphoth::EnemyCreateFSM_Client()
 	.Start = [=] {
 			Sound.Play("Qliphoth_", 3);
 			EnemyRenderer->ChangeAnimation("em1000_Dead");
-			StoneRenderer->GetTransform()->SetParent(GetLevel()->CreateActor<GameEngineActor>()->GetTransform(), false);
+			GameEngineTransform* ActorTran = GetLevel()->CreateActor<GameEngineActor>()->GetTransform();
+			ActorTran->SetWorldPosition(GetTransform()->GetWorldPosition());
+			StoneRenderer->GetTransform()->SetParent(ActorTran, false);
 		},
 		.Update = [=](float _DeltaTime) {
 		},

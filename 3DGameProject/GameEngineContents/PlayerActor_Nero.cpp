@@ -4473,7 +4473,7 @@ int PlayerActor_Nero::DamageCalculate(int _Damage, bool _IsSkill /* = false */)
 	{
 		if (0 < ExceedLevel) { Mul += 0.2f; }
 		if (true == DTValue) { Mul *= 1.3f; }
-		return static_cast<int>(_Damage * Mul);
+		return static_cast<int>(_Damage * Mul * DamageMul);
 	}
 
 	switch (ExceedLevel)
@@ -4489,7 +4489,13 @@ int PlayerActor_Nero::DamageCalculate(int _Damage, bool _IsSkill /* = false */)
 		break;
 	}
 	if (true == DTValue) { Mul *= 1.3f; }
-	return static_cast<int>(_Damage * Mul);
+	return static_cast<int>(_Damage * Mul * DamageMul);
+}
+
+#include <GameEngineCore/imgui.h>
+void PlayerActor_Nero::DrawEditor()
+{
+	ImGui::InputFloat("Damage Mul", &DamageMul);
 }
 
 //³×·Î ·»´õ À¯´Ö

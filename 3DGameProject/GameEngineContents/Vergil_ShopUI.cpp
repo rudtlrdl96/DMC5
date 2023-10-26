@@ -79,10 +79,6 @@ void Vergil_ShopUI::Start()
 
 void Vergil_ShopUI::Update(float _Delta)
 {
-	if (true == GameEngineInput::IsUp("UI_ESC"))
-	{
-		ShopOff();
-	}
 	if (SkillButton->IsUpdate() == true)
 	{
 		SkillButton->SetSelectValue(true);
