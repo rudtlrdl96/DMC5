@@ -125,7 +125,7 @@ private:
 	bool AttackTypeChange = false;
 	bool IsParryCheck = false;    // 패리 체크 on off
 	bool ParryOkay = false;
-	bool ParryEvent = true;
-	bool IsSuperArmor = true;
+	bool ParryEvent = false;
+	bool IsSuperArmor = false;
 };
 

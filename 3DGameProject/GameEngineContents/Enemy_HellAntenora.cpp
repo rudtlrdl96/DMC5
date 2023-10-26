@@ -439,16 +439,25 @@ void Enemy_HellAntenora::DamageCollisionCheck(float _DeltaTime)
 
 	if (true == DashAttackSetting)
 	{
-		IsHeavyAttack = false; 
-		IsAirAttack = false;   
-		IsSlamAttack = false;  
-		IsBusterAttack = false;
-		IsVergilLight = false;
-		IsCollapse = false;    
-		IsRecognize = false;
-		HitStop(Data.DamageTypeValue);
-		AttackDelayCheck = 0.0f;
-		StartRenderShaking(8);
+		if (Data.DamageTypeValue == DamageType::Buster)
+		{
+			MinusEnemyHP(Data.DamageValue);
+			ChangeState(FSM_State_HellAntenora::HellAntenora_Buster_Start);
+		}
+		else
+		{
+			HitStop(Data.DamageTypeValue);
+			IsHeavyAttack = false;
+			IsAirAttack = false;
+			IsSlamAttack = false;
+			IsBusterAttack = false;
+			IsVergilLight = false;
+			IsCollapse = false;
+			IsRecognize = false;
+			HitStop(Data.DamageTypeValue);
+			AttackDelayCheck = 0.0f;
+			StartRenderShaking(8);
+		}
 		return;
 	}
 
@@ -565,8 +574,15 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 
 	if (true == DashAttackSetting)
 	{
-		HitStop(Data.DamageTypeValue);
-		StartRenderShaking(8);
+		if (Data.DamageTypeValue == DamageType::Buster)
+		{
+			ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Buster_Start);
+		}
+		else
+		{
+			HitStop(Data.DamageTypeValue);
+			StartRenderShaking(8);
+		}
 		return;
 	}
 

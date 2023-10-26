@@ -251,15 +251,7 @@ void Enemy_ScudoAngelo::Start()
 
 	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker) {
 		
-		if (FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Start != EnemyFSM.GetCurState()
-			|| FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Loop != EnemyFSM.GetCurState()
-			|| FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Stop != EnemyFSM.GetCurState()
-			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Start != EnemyFSM.GetCurState()
-			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Loop != EnemyFSM.GetCurState())
-		{
-			Player = _Attacker;
-		}
-
+		Player = _Attacker;
 		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
 		MinusEnemyHP(Datas.DamageValue);
 
@@ -568,8 +560,22 @@ void Enemy_ScudoAngelo::DamageCollisionCheck(float _DeltaTime)
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Stop_A == EnemyFSM.GetCurState()
 			|| true == IsSuperArmor)
 		{
-			MinusEnemyHP(70);
-			StartRenderShaking(6);
+			if (Data.DamageTypeValue == DamageType::Buster)
+			{
+				MinusEnemyHP(Data.DamageValue);
+				ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Buster_Start);
+			}
+			else if (Data.DamageTypeValue == DamageType::Stun)
+			{
+				MinusEnemyHP(Data.DamageValue);
+				StopTime(2.9f);
+			}
+			else
+			{
+				MinusEnemyHP(70);
+				StartRenderShaking(6);
+			}
+			HitStop(Data.DamageTypeValue);
 			return;
 		}
 	}
@@ -578,6 +584,7 @@ void Enemy_ScudoAngelo::DamageCollisionCheck(float _DeltaTime)
 	{
 		MinusEnemyHP(Data.DamageValue);
 		StartRenderShaking(6);
+		HitStop(Data.DamageTypeValue);
 		return;
 	}
 
@@ -710,8 +717,15 @@ void Enemy_ScudoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Stop_A == EnemyFSM.GetCurState()
 			|| true == IsSuperArmor)
 		{
-			MinusEnemyHP(70);
-			StartRenderShaking(6);
+			if (Data.DamageTypeValue == DamageType::Buster)
+			{
+				ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Buster_Start);
+			}
+			else
+			{
+				MinusEnemyHP(70);
+				StartRenderShaking(6);
+			}
 			return;
 		}
 	}
