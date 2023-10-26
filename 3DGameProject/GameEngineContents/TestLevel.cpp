@@ -5,6 +5,7 @@
 #include <GameEngineCore/PhysXCapsuleComponent.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include <GameEngineCore/PhysXBoxComponent.h>
+#include <GameEngineCore/GameEngineFBXMesh.h>
 
 #include "NetworkManager.h"
 #include "PlayerActor_Nero.h"
@@ -101,6 +102,15 @@ void TestLevel::LevelChangeStart()
 	//IsDebugSwitch();
 	SetLevelSceneGravity(2000);
 
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Mesh");
+		NewDir.Move("TestMesh");
+		GameEngineFBXMesh::Load(NewDir.GetPlusFileName("Ground_Mesh.fbx").GetFullPath());
+	}
+
 	if (nullptr == Player)
 	{
 		if (true)
@@ -130,7 +140,7 @@ void TestLevel::LevelChangeStart()
 			NetworkManager::LinkNetwork(Player.get(), this);
 		}
 	}
-
+	Player->CreateComponent<GameEngineCollision>(CollisionOrder::Shop);
 	//CreateActor<Item_RedOrbLump>();
 
 	//if (nullptr == TestObj)

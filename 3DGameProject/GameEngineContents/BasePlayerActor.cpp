@@ -519,8 +519,11 @@ void BasePlayerActor::ShopColCheck()
 		Controller->Off();
 		Camera->Off();
 		Controller->ResetKey();
-		Shop->ShopOn();
 		IsShopOn = true;
+		TimeEvent.AddEvent(0.02f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				Shop->ShopOn();
+			});
 	}
 }
 
