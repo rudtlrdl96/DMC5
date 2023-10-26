@@ -85,10 +85,11 @@ void Enemy_Qliphoth::EnemyAnimationLoad()
 		{
 			.Dir = NewDir.GetFullPath().c_str(),
 			.Renderer = EnemyRenderer,
-			.RendererLocalPos = { 0.0f, 0.0f, 0.0f },
+			.RendererLocalPos = { 0.0f, -200.0f, 0.0f },
 			.Objects = {(GameEngineObject*)MonsterAttackCollision.get()},
 			.CallBacks_void =
 			{
+				std::bind(&SoundController::Play, &Sound, "Qliphoth_", 4)
 			},
 			.CallBacks_int =
 			{
@@ -120,34 +121,31 @@ void Enemy_Qliphoth::EnemyAnimationLoad()
 			}
 			EffectRenderer->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
 		}
+
+		NewDir.MoveParent();
+		NewDir.Move("Qliphoth");
+		if (nullptr == FXData::Find("Qliphoth_Appear.effect"))
+		{
+			FXData::Load(NewDir.GetPlusFileName("Qliphoth_Appear.effect").GetFullPath());
+		}
+		EffectRenderer->CreateFX(FXData::Find("Qliphoth_Appear.effect"));
 	}
 
 	// 사운드 로드
-	Sound.SetVoiceName("Qliphoth_V_");
-	if (nullptr == GameEngineSound::Find("Qliphoth_V_0.wav")) {
-		//GameEngineDirectory NewDir;
-		//NewDir.MoveParentToDirectory("ContentResources");
-		//NewDir.Move("ContentResources");
-		//NewDir.Move("Sound");
-		//NewDir.Move("Voice");
-		//NewDir.Move("Qliphoth");
-		//std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".wav" });
+	Sound.SetVoiceName("Qliphoth_");
+	if (nullptr == GameEngineSound::Find("Qliphoth_0.wav")) {
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Sound");
+		NewDir.Move("SFX");
+		NewDir.Move("Qliphoth");
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".wav" });
 
-		//for (size_t i = 0; i < Files.size(); i++)
-		//{
-		//	GameEngineSound::Load(Files[i].GetFullPath());
-		//}
-
-		//NewDir.MoveParent();
-		//NewDir.MoveParent();
-		//NewDir.Move("SFX");
-		//NewDir.Move("Qliphoth");
-		//Files = NewDir.GetAllFile({ ".wav" });
-
-		//for (size_t i = 0; i < Files.size(); i++)
-		//{
-		//	GameEngineSound::Load(Files[i].GetFullPath());
-		//}
+		for (size_t i = 0; i < Files.size(); i++)
+		{
+			GameEngineSound::Load(Files[i].GetFullPath());
+		}
 
 		if (nullptr == GameEngineSound::Find("Enemy_Damage_0.wav"))
 		{
@@ -171,7 +169,7 @@ void Enemy_Qliphoth::Start()
 	BaseEnemyActor::Start();
 
 	// 랜더러 크기 설정
-	EnemyRenderer->GetTransform()->AddLocalPosition({ 0.0f, -45.0f, 0.0f });
+	EnemyRenderer->GetTransform()->AddLocalPosition({ 0.0f, -200.0f, 0.0f });
 
 	// 콜리전 옵션, 크기 설정
 	MonsterAttackCollision->SetAttackData(DamageType::Light, MONSTER_LIGHT_DAMAGE);
@@ -229,6 +227,7 @@ void Enemy_Qliphoth::Start()
 			AttackDelayCheck = 1.0f;
 		}
 
+		StartRenderShaking(8);
 		HitStop(Datas.DamageTypeValue);
 
 		if (EnemyHP < 0)
@@ -355,6 +354,7 @@ void Enemy_Qliphoth::DamageCollisionCheck_Client(float _DeltaTime)
 	case DamageType::Heavy:
 	case DamageType::Air:
 	case DamageType::Slam:
+		ChangeState_Client(FSM_State_Qliphoth::Qliphoth_Damage);
 		StartRenderShaking(8);
 		AttackDelayCheck = 0.0f;
 		break;
@@ -436,6 +436,8 @@ void Enemy_Qliphoth::EnemyCreateFSM()
 	// Appear
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Qliphoth::Qliphoth_Appear,
 	.Start = [=] {
+			EffectRenderer->PlayFX("Qliphoth_Appear.effect");
+			Sound.Play("Qliphoth_", 0);
 			//EffectRenderer->PlayFX("Enemy_Appear.effect");
 			EnemyRenderer->ChangeAnimation("em1000_Appear");
 		},
@@ -457,26 +459,17 @@ void Enemy_Qliphoth::EnemyCreateFSM()
 	.Start = [=] {
 			EnemyRenderer->ChangeAnimation("em1000_Idle");
 			SlerpCalculation();
+			SlerpTime = 0;
 			RotCheckDelay = 0;
 		},
 		.Update = [=](float _DeltaTime) {
-			if (false == IsRecognize) { return; }
-
 			RotCheckDelay += _DeltaTime;
 			if (0.1f < RotCheckDelay)
 			{
 				RotationCheck();
 				if (EnemyRotationValue == EnemyRotation::Forward)
 				{
-					int Random = GameEngineRandom::MainRandom.RandomInt(0, 1);
-					if (Random == 0)
-					{
-						ChangeState(FSM_State_Qliphoth::Qliphoth_Attack);
-					}
-					else
-					{
-						ChangeState(FSM_State_Qliphoth::Qliphoth_Attack_Hard);
-					}
+					ChangeState(FSM_State_Qliphoth::Qliphoth_Attack);
 					return;
 				}
 				SlerpCalculation();
@@ -502,23 +495,11 @@ void Enemy_Qliphoth::EnemyCreateFSM()
 				ChangeState(FSM_State_Qliphoth::Qliphoth_Idle);
 				return;
 			}
-		},
-		.End = [=] {
 
-		}
-		});
-	// Attack Hard
-	EnemyFSM.CreateState({ .StateValue = FSM_State_Qliphoth::Qliphoth_Attack_Hard,
-	.Start = [=] {
-			//EffectRenderer->PlayFX("Enemy_Appear.effect");
-			EnemyRenderer->ChangeAnimation("em1000_Attack_Hard");
-		},
-		.Update = [=](float _DeltaTime) {
-			if (true == EnemyRenderer->IsAnimationEnd())
-			{
-				ChangeState(FSM_State_Qliphoth::Qliphoth_Idle);
-				return;
-			}
+			RotationCheck();
+			SlerpCalculation();
+			SlerpTime = 0.0f;
+			SlerpTurn(_DeltaTime * 10.0f);
 		},
 		.End = [=] {
 
@@ -528,7 +509,7 @@ void Enemy_Qliphoth::EnemyCreateFSM()
 	// Damage
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Qliphoth::Qliphoth_Damage,
 	.Start = [=] {
-			//EffectRenderer->PlayFX("Enemy_Appear.effect");
+			Sound.PlayRandom("Qliphoth_", 1, 2);
 			EnemyRenderer->ChangeAnimation("em1000_Damage", true);
 		},
 		.Update = [=](float _DeltaTime) {
@@ -552,6 +533,7 @@ void Enemy_Qliphoth::EnemyCreateFSM()
 	// Dead
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Qliphoth::Qliphoth_Dead,
 	.Start = [=] {
+			Sound.Play("Qliphoth_", 3);
 			//EffectRenderer->PlayFX("Enemy_Appear.effect");
 			EnemyRenderer->ChangeAnimation("em1000_Dead");
 		},

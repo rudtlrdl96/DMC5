@@ -6,7 +6,6 @@ enum FSM_State_Qliphoth
 	Qliphoth_Appear,		// 등장
 	Qliphoth_Idle,			// Idle
 	Qliphoth_Attack,		// 공격
-	Qliphoth_Attack_Hard,	// 강공격
 	Qliphoth_Damage,		// 대미지 경직
 	Qliphoth_Dead,			// 사망
 };
