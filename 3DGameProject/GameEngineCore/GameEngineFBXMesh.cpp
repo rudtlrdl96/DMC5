@@ -70,6 +70,7 @@ void GameEngineFBXMesh::Initialize()
 		CreateGameEngineStructuredBuffer();
 
 		IsInit = true;
+		TextureLoad();
 
 		return;
 	}
@@ -91,6 +92,7 @@ void GameEngineFBXMesh::Initialize()
 	Ser << AllBones;
 	File.SaveBin(Ser);
 
+	TextureLoad();
 	IsInit = true;
 }
 
@@ -104,6 +106,201 @@ void GameEngineFBXMesh::MeshLoad()
 	AllFindMap;
 	RenderUnitInfos;
 	MeshInfos;
+}
+
+void GameEngineFBXMesh::TextureLoad()
+{
+	for (size_t i = 0; i < RenderUnitInfos.size(); i++)
+	{
+		FbxRenderUnitInfo& Unit = RenderUnitInfos[i];
+
+		if (nullptr == Unit.VertexBuffer)
+		{
+			std::shared_ptr<GameEngineVertexBuffer> VertexBuffer = GameEngineVertexBuffer::Create(Unit.Vertexs);
+
+			if (nullptr == VertexBuffer)
+			{
+				MsgAssert("FBX 버텍스 버퍼 생성 실패.");
+			}
+
+			Unit.VertexBuffer = VertexBuffer;
+		}
+
+		for (size_t j = 0; j < Unit.Indexs.size(); j++)
+		{
+			if (Unit.IndexBuffers.empty())
+			{
+				Unit.IndexBuffers.resize(Unit.Indexs.size());
+			}
+
+			if (nullptr == Unit.IndexBuffers[j])
+			{
+				std::shared_ptr<GameEngineIndexBuffer> IndexBuffer = GameEngineIndexBuffer::Create(Unit.Indexs[j]);
+
+				if (nullptr == IndexBuffer)
+				{
+					MsgAssert("FBX 버텍스 버퍼 생성 실패.");
+				}
+
+				Unit.IndexBuffers[j] = IndexBuffer;
+			}
+
+			if (Unit.Meshs.empty())
+			{
+				Unit.Meshs.resize(Unit.Indexs.size());
+			}
+
+			if (nullptr == Unit.Meshs[j])
+			{
+				Unit.Meshs[j] = GameEngineMesh::Create(Unit.VertexBuffer, Unit.IndexBuffers[j]);
+			}
+
+			// 끝나면 이에 해당하는 메테리얼을 확인합니다.
+			if (
+				false == Unit.MaterialData[j].DifTextureName.empty()
+				&& "" != Unit.MaterialData[j].DifTextureName
+				)
+			{
+				std::shared_ptr<GameEngineTexture> Texture = GameEngineTexture::Find(Unit.MaterialData[j].DifTextureName);
+
+				if (nullptr == Texture)
+				{
+					Path = GameEnginePath::GetFolderPath(GetPath());
+					std::string LoadPath = "";
+					std::string PlusOption = "";
+					std::string Directory = Unit.MaterialData[j].DifTextureName;
+
+					if (GameEngineOptionValue::Low == GameEngineOption::GetOption("Texture"))
+					{
+						PlusOption = "Low\\";
+					}
+					else if (GameEngineOptionValue::High == GameEngineOption::GetOption("Texture"))
+					{
+						PlusOption = "High\\";
+					}
+
+					std::string CheckPath_Plus = Path + PlusOption + Directory;
+					std::string CheckPath = Path + Directory;
+					GameEnginePath Path_Plus = CheckPath_Plus;
+					GameEnginePath Path = CheckPath;
+
+					if (false == Path_Plus.IsExists())
+					{
+						if (false == Path.IsExists())
+						{
+							// 문제없음
+						}
+						else
+						{
+							MsgTextBox("폴더가 분류되어 있지 않습니다. 기존 폴더 내에서 로드합니다.");
+							GameEngineTexture::Load(CheckPath);
+						}
+
+					}
+					else
+					{
+						GameEngineTexture::Load(CheckPath_Plus);
+					}
+				}
+			}
+
+			if (
+				false == Unit.MaterialData[j].NorTextureName.empty()
+				&& "" != Unit.MaterialData[j].NorTextureName
+				)
+			{
+				std::shared_ptr<GameEngineTexture> Texture = GameEngineTexture::Find(Unit.MaterialData[j].NorTextureName);
+
+				if (nullptr == Texture)
+				{
+					Path = GameEnginePath::GetFolderPath(GetPath());
+					std::string LoadPath = "";
+					std::string PlusOption = "";
+					std::string Directory = Unit.MaterialData[j].NorTextureName;
+
+					if (GameEngineOptionValue::Low == GameEngineOption::GetOption("Texture"))
+					{
+						PlusOption = "Low\\";
+					}
+					else if (GameEngineOptionValue::High == GameEngineOption::GetOption("Texture"))
+					{
+						PlusOption = "High\\";
+					}
+
+					std::string CheckPath_Plus = Path + PlusOption + Directory;
+					std::string CheckPath = Path + Directory;
+					GameEnginePath Path_Plus = CheckPath_Plus;
+					GameEnginePath Path = CheckPath;
+
+					if (false == Path_Plus.IsExists())
+					{
+						if (false == Path.IsExists())
+						{
+							// 문제없음
+						}
+						else
+						{
+							MsgTextBox("폴더가 분류되어 있지 않습니다. 기존 폴더 내에서 로드합니다.");
+							GameEngineTexture::Load(CheckPath);
+						}
+
+					}
+					else
+					{
+						GameEngineTexture::Load(CheckPath_Plus);
+					}
+				}
+			}
+
+			if (
+				false == Unit.MaterialData[j].SpcTextureName.empty()
+				&& "" != Unit.MaterialData[j].SpcTextureName
+				)
+			{
+				std::shared_ptr<GameEngineTexture> Texture = GameEngineTexture::Find(Unit.MaterialData[j].SpcTextureName);
+
+				if (nullptr == Texture)
+				{
+					Path = GameEnginePath::GetFolderPath(GetPath());
+					std::string LoadPath = "";
+					std::string PlusOption = "";
+					std::string Directory = Unit.MaterialData[j].SpcTextureName;
+
+					if (GameEngineOptionValue::Low == GameEngineOption::GetOption("Texture"))
+					{
+						PlusOption = "Low\\";
+					}
+					else if (GameEngineOptionValue::High == GameEngineOption::GetOption("Texture"))
+					{
+						PlusOption = "High\\";
+					}
+
+					std::string CheckPath_Plus = Path + PlusOption + Directory;
+					std::string CheckPath = Path + Directory;
+					GameEnginePath Path_Plus = CheckPath_Plus;
+					GameEnginePath Path = CheckPath;
+
+					if (false == Path_Plus.IsExists())
+					{
+						if (false == Path.IsExists())
+						{
+							// 문제없음
+						}
+						else
+						{
+							MsgTextBox("폴더가 분류되어 있지 않습니다. 기존 폴더 내에서 로드합니다.");
+							GameEngineTexture::Load(CheckPath);
+						}
+
+					}
+					else
+					{
+						GameEngineTexture::Load(CheckPath_Plus);
+					}
+				}
+			}
+		}		
+	}
 }
 
 Bone* GameEngineFBXMesh::FindBone(size_t _BoneIndex)

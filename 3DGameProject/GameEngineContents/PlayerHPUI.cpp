@@ -89,16 +89,20 @@ void PlayerHPUI::Start()
 	NewHPDir.Move("Texture");
 	NewHPDir.Move("UI");
 	NewHPDir.Move("PlayLevelUI");
+
 	if (nullptr == GameEngineSprite::Find("HPGaugeAni.png"))
 	{
 		GameEngineSprite::LoadSheet(NewHPDir.GetPlusFileName("HPGaugeAni.png").GetFullPath(), 4, 4);
+	}
+
+	if (nullptr == GameEngineTexture::Find("BossGaugeBase.png"))
+	{
 		GameEngineTexture::Load(NewHPDir.GetPlusFileName("BossGaugeBase.png").GetFullPath());
 		GameEngineTexture::Load(NewHPDir.GetPlusFileName("BossHitGauge.png").GetFullPath());
 		GameEngineTexture::Load(NewHPDir.GetPlusFileName("123123123.png").GetFullPath());
 		GameEngineTexture::Load(NewHPDir.GetPlusFileName("RedOrb.png").GetFullPath());
-
-
 	}
+
 //	NeroUI_HPGlass= UIFBXActorBase::CreateUIFBX(NeroUI_HPGlass, { -535.0f,273.0f,172.0f }, { 0.6f,0.6f,0.6f }, { -90.0f,0.0f,0.0f }, "Nero_HPGlass.FBX","FBX_ALPHA");
 
 

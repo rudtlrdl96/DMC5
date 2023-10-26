@@ -637,6 +637,7 @@ private:
 	bool IsInit = false;
 
 	void MeshLoad();
+	void TextureLoad();
 	void CreateGameEngineStructuredBuffer();
 
 	// ¸Å½¬ Á¤º¸ È¹µæ
