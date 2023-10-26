@@ -137,15 +137,14 @@ void TestStageLevel::LevelChangeStart()
 	{
 		MyPlayer = CreateActor<PlayerActor_Nero>();
 		MyPlayer->SetUserControllType();
-		MyPlayer->SetWorldPosition({ 8615.f, 0.f, 5060.f });
-		MyPlayer->GetTransform()->SetWorldPosition({ 8615.f, 0.f, 5060.f });
+		MyPlayer->SetWorldPosition({ 10815.f, -159.f, 5073.f });
 		NetworkManager::LinkNetwork(MyPlayer.get(), this);
 	}
 	else
 	{
 		MyPlayer = CreateActor<PlayerActor_Vergil>();
 		MyPlayer->SetUserControllType();
-		MyPlayer->SetWorldPosition({ 8615.f, 0, 5060.f });
+		MyPlayer->SetWorldPosition({ 10815.0f , -159.f, 5073.f });
 		NetworkManager::LinkNetwork(MyPlayer.get(), this);
 	}
 	CreateStage(Location2_StageDatas[0]);
