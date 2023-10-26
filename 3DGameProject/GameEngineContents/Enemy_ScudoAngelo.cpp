@@ -245,6 +245,8 @@ void Enemy_ScudoAngelo::Start()
 	LinkData_UpdatePacket<bool>(IsVergilLight);
 	LinkData_UpdatePacket<bool>(IsCollapse);
 	LinkData_UpdatePacket<bool>(IsBurn);
+	LinkData_UpdatePacket<bool>(IsParryCheck);
+	LinkData_UpdatePacket<bool>(ParryOkay);
 	LinkData_UpdatePacket<int>(EnemyHP);
 
 	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker) {
