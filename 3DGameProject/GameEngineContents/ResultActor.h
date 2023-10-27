@@ -51,6 +51,7 @@ private:
 	std::shared_ptr<class GameEngineFontRenderer> ResultText_6 = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> ResultText_6_Num = nullptr;
 	float4 EndPos;
+	float4 RankPos;
 	enum ResultState
 	{
 		ResultState_Wait,

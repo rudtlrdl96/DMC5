@@ -75,8 +75,41 @@ void ResultActor::Start()
 
 	{
 		RankGrade = CreateComponent<GameEngineFBXRenderer>();
-		RankGrade->SetFBXMesh("Result_S.fbx", "FBX");
-		RankGrade->GetTransform()->SetLocalRotation({ 0, 98, 0 });
+		switch ('D')
+		{
+		case 'S':
+			RankGrade->SetFBXMesh("Result_S.fbx", "FBX");
+			RankGrade->GetTransform()->SetLocalRotation({ 0, 98, 0 });
+			RankGrade->GetTransform()->SetLocalScale({ 0.8f, 1.0f, 0.9f });
+			RankPos = { 1480, 0, -1372 };
+			break;
+		case 'A':
+			RankGrade->SetFBXMesh("Result_A.fbx", "FBX");
+			RankGrade->GetTransform()->SetLocalRotation({ 0, 119, 5 });
+			RankGrade->GetTransform()->SetLocalScale({ 0.7f, 0.9f, 0.3f });
+			RankPos = { 1409.500, 0, -1305 };
+			break;
+		case 'B':
+			RankGrade->SetFBXMesh("Result_B.fbx", "FBX");
+			RankGrade->GetTransform()->SetLocalRotation({ 0, 111, 0 });
+			RankGrade->GetTransform()->SetLocalScale({0.8f, 1.0f, 0.9f});
+			RankPos = { 1409.500, 0, -1305 };
+			break;
+		case 'C':
+			RankGrade->SetFBXMesh("Result_C.fbx", "FBX");
+			RankGrade->GetTransform()->SetLocalRotation({ 0, 111, 0 });
+			RankGrade->GetTransform()->SetLocalScale({ 0.7f, 0.9f, 0.8f });
+			RankPos = { 1409.500, 0, -1305 };
+			break;
+		case 'D':
+			RankGrade->SetFBXMesh("Result_D.fbx", "FBX");
+			RankGrade->GetTransform()->SetLocalRotation({ 0, 111, 0 });
+			RankGrade->GetTransform()->SetLocalScale({ 0.7f, 0.9f, 0.8f });
+			RankPos = { 1409.500, 0, -1305 };
+			break;
+		default:
+			break;
+		}
 		RankGrade->Off();
 	}
 
@@ -467,7 +500,7 @@ FSM.CreateState({ .StateValue = ResultState_Rank1,
 	CamTransform->SetWorldRotation(float4::Lerp(StartRot, { 0, 90, 0 }, Ratio));
 	GlassParts_1->GetTransform()->AddLocalPosition({ -50  * Ratio, 0, 0 });
 
-	RankGrade->GetTransform()->SetLocalPosition(float4::LerpClamp(float4::ZERO, { 1480, 0, -1372 }, Ratio));
+	RankGrade->GetTransform()->SetLocalPosition(float4::LerpClamp(float4::ZERO, RankPos, Ratio));
 },
 .End = [=]
 {
