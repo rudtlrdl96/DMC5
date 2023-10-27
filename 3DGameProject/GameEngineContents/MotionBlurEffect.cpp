@@ -1,6 +1,8 @@
 #include "PrecompileHeader.h"
 #include "MotionBlurEffect.h"
 
+bool MotionBlurEffect::IsEffectOff = false;
+
 MotionBlurEffect::MotionBlurEffect()
 {
 }
@@ -27,6 +29,11 @@ void MotionBlurEffect::Start(GameEngineRenderTarget* _Target)
 
 void MotionBlurEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 {
+	if (false == IsEffectOff)
+	{
+		return;
+	}
+
 	if (nullptr == CamPosTarget)
 	{
 		MsgAssert("카메라 위치 타겟이 설정되지 않았습니다.");
@@ -42,6 +49,20 @@ void MotionBlurEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 	if (nullptr == Cam)
 	{
 		MsgAssert("카메라가 설정되지 않았습니다.");
+		return;
+	}
+
+	if (false == FirstCheck)
+	{
+		CurFramePos->Clear();
+		CurFramePos->Merge(CamPosTarget);
+
+		PrevFramePos->Clear();
+		PrevFramePos->Merge(CurFramePos);
+
+		Data.PrevFrameViewProjection = Cam->GetView() * Cam->GetProjection();
+
+		FirstCheck = true;
 		return;
 	}
 

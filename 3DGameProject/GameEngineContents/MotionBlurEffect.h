@@ -3,14 +3,24 @@
 
 class MotionBlurEffect : public GameEnginePostProcess
 {
+public:
+	static void EffectOn()
+	{
+		IsEffectOff = true;
+	}
+
+	static void EffectOff()
+	{
+		IsEffectOff = false;
+	}
+
+
 private:
 	class MotionBlurData
 	{
 	public:
 		float4x4 PrevFrameViewProjection;
 	};
-
-
 public:
 	MotionBlurEffect();
 	~MotionBlurEffect();
@@ -41,6 +51,8 @@ protected:
 	void Effect(GameEngineRenderTarget* _Target, float _DeltaTime) override;
 	
 private:
+	static bool IsEffectOff;
+
 	std::shared_ptr<GameEngineRenderTarget> PrevFramePos = nullptr;
 	std::shared_ptr<GameEngineRenderTarget> CurFramePos = nullptr;
 
@@ -53,11 +65,15 @@ private:
 	RenderBaseValue BaseValue;
 	MotionBlurData Data;
 
+	bool FirstCheck = false;
+
 	void LevelChangeStart() override
 	{
 		ResultTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 		PrevFramePos->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 		CurFramePos->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+
+		FirstCheck = false;
 	}
 
 	void LevelChangeEnd() override
@@ -65,6 +81,8 @@ private:
 		ResultTarget->ReleaseTextures();
 		PrevFramePos->ReleaseTextures();
 		CurFramePos->ReleaseTextures();
+
+		FirstCheck = false;
 	}
 
 };

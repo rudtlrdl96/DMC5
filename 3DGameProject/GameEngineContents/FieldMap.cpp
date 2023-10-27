@@ -9,6 +9,7 @@
 #include "FieldMapObject.h"
 #include "StageBaseLevel.h"
 #include "BasePlayerActor.h"
+#include "MotionBlurEffect.h"
 
 
 FieldMap::FieldMap()
@@ -90,18 +91,13 @@ std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, cons
 		MapCullingColRef[i].lock()->GetTransform()->SetLocalRotation(_CullingCols[i].Rot);
 	}
 
-	const std::list<std::shared_ptr<GameEngineLight>>& AllLight = _Level->GetAllLightRef();
-
-	for (auto& i : AllLight)
-	{
-		i->BakeShadow(_Level->GetMainCamera());
-	}
-
 	std::vector<std::weak_ptr<FieldMapObject>>& FieldMapObjRef = Result->FieldMapObj;
 	FieldMapObjRef.resize(_FieldMapObjs.size());
+
 	for (size_t i = 0; i < FieldMapObjRef.size(); i++)
 	{
 		FieldMapObjRef[i] = FieldMapObject::CreateFieldMapObj(_Level, _FieldMapObjs[i].Type, _FieldMapObjs[i].ObjTransform);
+
 		if (_FieldMapObjs[i].Type == FieldMapObjType::ReflectionSetter)
 		{
 			Result->Reflection = FieldMapObjRef[i].lock()->DynamicThis<ReflectionSetter>();
@@ -140,6 +136,8 @@ void FieldMap::ReflectionSetting()
 
 	static int n = 0;
 
+	MotionBlurEffect::EffectOff();
+
 	Reflection.lock()->Init("TestReflection" + std::to_string(n++), float4(512, 512));
 
 	if (FieldMapRenderer.empty())
@@ -161,6 +159,9 @@ void FieldMap::ReflectionSetting()
 		}
 		FieldMapObj[i].lock()->GetFBXMesh()->SetTexture("ReflectionTexture", Reflection.lock()->GetReflectionCubeTexture());
 	}
+
+
+	MotionBlurEffect::EffectOn();
 }
 
 void FieldMap::Update(float _DeltaTime)
