@@ -9,6 +9,7 @@
 #include "UIMeshRenderer.h"
 RankUI* RankUI::MainRankUI = nullptr;
 int RankUI::TotalScore = 0;
+int RankUI::DamageCount = 0;
 
 RankUI::RankUI() 
 {

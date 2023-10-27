@@ -4,6 +4,8 @@
 #include <GameEngineCore/GameEngineCaptureTexture.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include <GameEngineCore/GameEngineUIRenderer.h>
+#include "RankUI.h"
+#include "BasePlayerActor.h"
 ResultActor::ResultActor()
 {
 }
@@ -16,6 +18,14 @@ void ResultActor::Start()
 {
 	GetTransform()->SetLocalPosition(float4::FORWARD * 450.0f * GameEngineActor::ScreenRatio.y);
 	GetTransform()->SetLocalScale(float4::ONE * GameEngineActor::ScreenRatio.y);
+
+	TotalStylishPoint = RankUI::GetTotalScore();
+	BonusRedOrbs = TotalStylishPoint / 2;
+	if (nullptr != BasePlayerActor::GetMainPlayer())
+	{
+		ExtraBonus = static_cast<int>(std::max<float>(1, (300.0f - BasePlayerActor::GetMainPlayer()->GetLiveTime())) * 100);
+	}
+	TotalRedOrbs = (TotalStylishPoint + BonusRedOrbs + ExtraBonus) / 2;
 
 	{
 		SkyBox = CreateComponent<GameEngineFBXRenderer>();
@@ -75,40 +85,46 @@ void ResultActor::Start()
 
 	{
 		RankGrade = CreateComponent<GameEngineFBXRenderer>();
-		switch ('D')
+
+		if (5000 < TotalStylishPoint)
 		{
-		case 'S':
+			// S
 			RankGrade->SetFBXMesh("Result_S.fbx", "FBX");
 			RankGrade->GetTransform()->SetLocalRotation({ 0, 98, 0 });
 			RankGrade->GetTransform()->SetLocalScale({ 0.8f, 1.0f, 0.9f });
 			RankPos = { 1480, 0, -1372 };
-			break;
-		case 'A':
+		}
+		else if (3000 < TotalStylishPoint)
+		{
+			// A
 			RankGrade->SetFBXMesh("Result_A.fbx", "FBX");
 			RankGrade->GetTransform()->SetLocalRotation({ 0, 119, 5 });
 			RankGrade->GetTransform()->SetLocalScale({ 0.7f, 0.9f, 0.3f });
 			RankPos = { 1409.500, 0, -1305 };
-			break;
-		case 'B':
+		}
+		else if (2000 < TotalStylishPoint)
+		{
+			// B
 			RankGrade->SetFBXMesh("Result_B.fbx", "FBX");
 			RankGrade->GetTransform()->SetLocalRotation({ 0, 111, 0 });
-			RankGrade->GetTransform()->SetLocalScale({0.8f, 1.0f, 0.9f});
+			RankGrade->GetTransform()->SetLocalScale({ 0.8f, 1.0f, 0.9f });
 			RankPos = { 1409.500, 0, -1305 };
-			break;
-		case 'C':
+		}
+		else if (500 < TotalStylishPoint)
+		{
+			// C
 			RankGrade->SetFBXMesh("Result_C.fbx", "FBX");
 			RankGrade->GetTransform()->SetLocalRotation({ 0, 111, 0 });
 			RankGrade->GetTransform()->SetLocalScale({ 0.7f, 0.9f, 0.8f });
 			RankPos = { 1409.500, 0, -1305 };
-			break;
-		case 'D':
+		}
+		else
+		{
+			// D
 			RankGrade->SetFBXMesh("Result_D.fbx", "FBX");
 			RankGrade->GetTransform()->SetLocalRotation({ 0, 111, 0 });
 			RankGrade->GetTransform()->SetLocalScale({ 0.7f, 0.9f, 0.8f });
 			RankPos = { 1409.500, 0, -1305 };
-			break;
-		default:
-			break;
 		}
 		RankGrade->Off();
 	}
@@ -239,7 +255,7 @@ void ResultActor::Start()
 		ResultText_3_Num->SetScale(48.0f * GameEngineActor::ScreenRatio.y);
 		ResultText_3_Num->SetColor(float4(0.74f, 0.7f, 0.48f, 0.0f));
 		ResultText_3_Num->GetTransform()->SetLocalPosition({ 175, 70, 0 });
-		ResultText_3_Num->SetText("0000");
+		ResultText_3_Num->SetText(std::to_string(TotalStylishPoint));
 		ResultText_3_Num->Off();
 	}
 
@@ -263,7 +279,7 @@ void ResultActor::Start()
 		ResultText_4_Num->SetScale(48.0f * GameEngineActor::ScreenRatio.y);
 		ResultText_4_Num->SetColor(float4(0.407f, 0.682f, 0.698f, 0.0f));
 		ResultText_4_Num->GetTransform()->SetLocalPosition({ 175, -30, 0 });
-		ResultText_4_Num->SetText("0000");
+		ResultText_4_Num->SetText(std::to_string(BonusRedOrbs));
 		ResultText_4_Num->Off();
 	}
 
@@ -287,7 +303,7 @@ void ResultActor::Start()
 		ResultText_5_Num->SetScale(48.0f * GameEngineActor::ScreenRatio.y);
 		ResultText_5_Num->SetColor(float4(0.407f, 0.682f, 0.698f, 0.0f));
 		ResultText_5_Num->GetTransform()->SetLocalPosition({ 175, -130, 0 });
-		ResultText_5_Num->SetText("0000");
+		ResultText_5_Num->SetText(std::to_string(ExtraBonus));
 		ResultText_5_Num->Off();
 	}
 
@@ -311,7 +327,7 @@ void ResultActor::Start()
 		ResultText_6_Num->SetScale(64.0f * GameEngineActor::ScreenRatio.y);
 		ResultText_6_Num->SetColor(float4(0.407f, 0.682f, 0.698f, 0.0f));
 		ResultText_6_Num->GetTransform()->SetLocalPosition({ 170, -225, 0 });
-		ResultText_6_Num->SetText("0000");
+		ResultText_6_Num->SetText(std::to_string(TotalRedOrbs));
 		ResultText_6_Num->Off();
 	}
 

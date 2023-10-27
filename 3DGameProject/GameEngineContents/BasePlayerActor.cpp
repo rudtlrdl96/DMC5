@@ -457,7 +457,7 @@ void BasePlayerActor::DamageColCheck()
 					Enemy->SetTimeScale(1.0f);
 				});
 		}
-		RankUI::GetRankInst()->AddRankScore(300);
+		RankUI::GetRankInst()->AddRankScore(30);
 		AddDTGauge(0.5f);
 		IsEvade = false;
 		return;

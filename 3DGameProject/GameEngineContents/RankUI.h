@@ -41,7 +41,7 @@ public:
 	{
 		DisApperValue = true;
 		RankScore = 0;
-		TotalScore -= 500;
+		DamageCount++;
 		ResetLiveTime();
 	}
 	static RankUI* GetRankInst()
@@ -50,13 +50,14 @@ public:
 	}
 	static int GetTotalScore()
 	{
-		return TotalScore;
+		return TotalScore - static_cast<int>(std::sqrtf((float)DamageCount) * 1000.0f);
 	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 private:
 	static int TotalScore;
+	static int DamageCount;
 	static RankUI* MainRankUI;
 	void RankSpin(float _Delta , std::shared_ptr<class UIMeshRenderer> _Render, std::shared_ptr<class UIMeshRenderer> _InsideRender);
 	void RankApper(float _Delta, std::shared_ptr<class UIMeshRenderer> _Render , RankState _State, bool _Value, std::shared_ptr<class UIMeshRenderer> _PrevRender);

@@ -56,7 +56,7 @@ void PlayerActor_Nero::Start()
 	BasePlayerActor::Start();
 	Col_Attack->SetParryCallBack([=]
 		{
-			RankUI::GetRankInst()->AddRankScore(1000);
+			RankUI::GetRankInst()->AddRankScore(100);
 			AddDTGauge(1.5f);
 			Sound.Play("Nero_Parry");
 			SetTimeScale(0.2f);
@@ -1484,7 +1484,7 @@ void PlayerActor_Nero::PlayerLoad()
 			.Start = [=] {
 				Sound.Play("RQ_", 0);
 				Sound.PlayVoiceRandom(4, 5, DTValue);
-				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(150));
+				Col_Attack->SetAttackData(DamageType::Light, DamageCalculate(110));
 				if (0 < ExceedLevel)
 				{
 					Sound.Play("RQ_", 12);
@@ -1581,7 +1581,7 @@ void PlayerActor_Nero::PlayerLoad()
 			.Start = [=] {
 				Sound.Play("RQ_", 7);
 				Sound.PlayVoiceRandom(6, 7, DTValue);
-				Col_Attack->SetAttackData(DamageType::Slam, DamageCalculate(180));
+				Col_Attack->SetAttackData(DamageType::Slam, DamageCalculate(130));
 				if (0 < ExceedLevel)
 				{
 					Sound.Play("RQ_", 14);
@@ -1626,7 +1626,7 @@ void PlayerActor_Nero::PlayerLoad()
 			.Start = [=] {
 				Sound.Play("RQ_", 2);
 				Sound.PlayVoiceRandom(7, 8, DTValue);
-				Col_Attack->SetAttackData(DamageType::Air, DamageCalculate(405));
+				Col_Attack->SetAttackData(DamageType::Air, DamageCalculate(305));
 				if (0 < ExceedLevel)
 				{
 					Sound.Play("RQ_", 14);
@@ -1671,7 +1671,7 @@ void PlayerActor_Nero::PlayerLoad()
 			.Start = [=] {
 				Sound.Play("RQ_", 3);
 				Sound.PlayVoiceRandom(13, 14, DTValue);
-				Col_Attack->SetAttackData(DamageType::Slam, DamageCalculate(22, true));
+				Col_Attack->SetAttackData(DamageType::Slam, DamageCalculate(52, true));
 				if (0 < ExceedLevel)
 				{
 					Sound.Play("RQ_", 14);
@@ -1818,7 +1818,7 @@ void PlayerActor_Nero::PlayerLoad()
 			.Start = [=] {
 				Sound.Play("RQ_", 8);
 				Sound.PlayVoiceRandom(19, 20, DTValue);
-				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(180, true));
+				Col_Attack->SetAttackData(DamageType::Heavy, DamageCalculate(210, true));
 				if (0 < ExceedLevel)
 				{
 					Sound.Play("RQ_", 12);

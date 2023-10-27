@@ -44,9 +44,9 @@ void ResultLevel::LevelChangeStart()
 		NewDir.Move("Texture");
 		NewDir.Move("UI");
 		NewDir.Move("ResultLevel");
-		if (nullptr == GameEngineTexture::Find("Result_ScreenShot.jpg"))
+		if (nullptr == GameEngineTexture::Find("a_albm.texout.tga"))
 		{
-			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".jpg", ".tga", ".png"});
+			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".tga", ".png"});
 			for (GameEngineFile File : Files)
 			{
 				GameEngineTexture::Load(File.GetFullPath());

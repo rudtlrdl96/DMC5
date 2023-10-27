@@ -64,11 +64,11 @@ public:
 		{
 			if (Data.DamageTypeValue == DamageType::Buster)
 			{
-				RankUI::GetRankInst()->AddRankScore(300);
+				RankUI::GetRankInst()->AddRankScore(200);
 			}
 			else
 			{
-				RankUI::GetRankInst()->AddRankScore(static_cast<int>(Data.DamageValue * 0.1));
+				RankUI::GetRankInst()->AddRankScore(static_cast<int>(Data.DamageValue * 0.02) + 3);
 			}
 			if (nullptr != CallBack_Damage && Data.DamageValue < 2000)
 			{

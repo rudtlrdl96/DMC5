@@ -17,6 +17,12 @@ protected:
 	void Update(float _DeltaTime) override;
 private:
 	GameEngineFSM FSM;
+
+	int TotalStylishPoint = 0;
+	int BonusRedOrbs = 0;
+	int ExtraBonus = 0;
+	int TotalRedOrbs = 0;
+
 	bool CameraRotLock = true;
 	std::shared_ptr<class GameEngineFBXRenderer> SkyBox = nullptr;
 	std::shared_ptr<class GameEngineFBXRenderer> ScreenShotRenderer = nullptr;
