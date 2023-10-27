@@ -31,6 +31,9 @@ public:
 	//ID·Î GameEngineNetObject*¸¦ ¹Þ¾Æ¿È
 	static GameEngineNetObject* GetNetObject(int _ID);
 
+	//ID·Î GameEngineNetObject*¸¦ ¹Þ¾Æ¿È
+	static std::vector<GameEngineNetObject*> GetNetObjects(const std::vector<int>& _AllID);
+
 	static void ReleaseNetObject();
 
 	GameEngineNetObject();

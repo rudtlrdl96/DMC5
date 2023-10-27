@@ -93,6 +93,26 @@ GameEngineNetObject* GameEngineNetObject::GetNetObject(int _ID)
 	return FindIter->second;
 }
 
+std::vector<GameEngineNetObject*> GameEngineNetObject::GetNetObjects(const std::vector<int>& _AllID)
+{
+	std::map<int, GameEngineNetObject*>::iterator FindIter;
+	std::vector<GameEngineNetObject*> Result(_AllID.size(), nullptr);
+
+	ObjectLock.lock();
+	for (size_t i = 0; i < _AllID.size(); ++i)
+	{
+		int ID = _AllID[i];
+		FindIter = AllNetObjects.find(ID);
+		if (AllNetObjects.end() == FindIter)
+			continue;
+
+		Result[i] = FindIter->second;
+	}
+	ObjectLock.unlock();
+
+	return Result;
+}
+
 
 void GameEngineNetObject::ReleaseNetObject()
 {

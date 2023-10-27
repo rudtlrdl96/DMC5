@@ -173,7 +173,10 @@ private:
 		}
 	}
 
-	static void PushNetworkEventPacket(int _EventType, int _NetObjID = -1);
+	static void PushNetworkEventPacket(
+		int _EventType, 
+		const std::vector<int>& _AllTargetID = std::vector<int>(), 
+		int _NetObjID = -1);
 
 	NetworkManager(){}
 	virtual ~NetworkManager() = 0{}

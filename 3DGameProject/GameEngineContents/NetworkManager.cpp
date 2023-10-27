@@ -140,12 +140,21 @@ bool NetworkManager::ExcuteNetworkEvent(Net_EventType _Type)
 	return true;
 }
 
-void NetworkManager::PushNetworkEventPacket(int _EventType, int _NetObjID /*= -1*/)
+void NetworkManager::PushNetworkEventPacket(
+	int _EventType,
+	const std::vector<int>& _AllTargetID /*= std::vector<int>()*/,
+	int _NetObjID /*= -1*/)
 {
 	std::shared_ptr<NetEventPacket> EventPacket = std::make_shared<NetEventPacket>();
 	EventPacket->SetPacketID(PacketEnum::NetEventPacket);
 	EventPacket->SetObjectID(_NetObjID);
 	EventPacket->EventType = _EventType;
+
+	if (-1 != _NetObjID)
+	{
+		EventPacket->AllTargetID = _AllTargetID;
+	}
+
 	AllPacket[PacketEnum::NetEventPacket].push_back(EventPacket);
 }
 

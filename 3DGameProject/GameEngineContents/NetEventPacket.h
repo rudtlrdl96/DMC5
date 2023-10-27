@@ -28,12 +28,18 @@ public:
 		return EventType;
 	}
 
+	inline std::vector<int> GetAllTarget() const
+	{
+		return AllTargetID;
+	}
+
 protected:
 	void Serialize(GameEngineSerializer& _Ser) override
 	{
 		GameEnginePacket::Serialize(_Ser);
 
 		_Ser << EventType;
+		_Ser << AllTargetID;
 	}
 
 	void DeSeralize(GameEngineSerializer& _Ser) override
@@ -41,9 +47,11 @@ protected:
 		GameEnginePacket::DeSeralize(_Ser);
 
 		_Ser >> EventType;
+		_Ser >> AllTargetID;
 	}
 
 private:
 	int EventType = -1;
+	std::vector<int> AllTargetID;
 };
 

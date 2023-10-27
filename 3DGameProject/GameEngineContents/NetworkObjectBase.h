@@ -133,26 +133,27 @@ protected:
 	}
 
 	template <typename EnumType>
-	void BindNetObjEvent(EnumType _EventType, const std::function<void()>& _EventCallBack)
+	void BindNetObjEvent(EnumType _EventType, const std::function<void(std::vector<NetworkObjectBase*>)>& _EventCallBack)
 	{
 		BindNetObjEvent(static_cast<int>(_EventType), _EventCallBack);
 	}
 
 	template <typename EnumType>
-	void ExcuteNetObjEvent(EnumType _EventType, NetObjEventPath _Path)
+	void ExcuteNetObjEvent(EnumType _EventType, NetObjEventPath _Path, const std::vector<NetworkObjectBase*>& _Targets)
 	{
 		ExcuteNetObjEvent(static_cast<int>(_EventType), _Path);
 	}
 
-	void BindNetObjEvent(int _EventType, const std::function<void()>& _EventCallBack);
+	void BindNetObjEvent(int _EventType, const std::function<void(const std::vector<NetworkObjectBase*>&)>& _EventCallBack);
 
-	void ExcuteNetObjEvent(int _EventType, NetObjEventPath _Path);
+	void ExcuteNetObjEvent(int _EventType, NetObjEventPath _Path, const std::vector<NetworkObjectBase*>& _Targets = std::vector<NetworkObjectBase*>());
 
 private:
 	static NetworkObjectBase* DebugTarget;
 	static Net_ActorType DebugType;
 
 	static NetworkObjectBase* GetNetObj(unsigned int _ObjID);
+	static std::vector<NetworkObjectBase*> GetNetObjs(const std::vector<int>& _AllID);
 
 	std::function<void(NetworkObjectBase*)> DamagedCallBack = nullptr;
 	std::shared_ptr<PhysXCapsuleComponent> PhysXCapsule = nullptr;
@@ -172,7 +173,7 @@ private:
 
 	std::map<void*, std::function<void(void* _BeforeData)>> LinkDifferentCallBacks;
 	std::map<PacketEnum, std::function<void(std::shared_ptr<GameEnginePacket> _Packet)>> PacketProcessFunctions;
-	std::map<int, std::function<void()>> NetworkEvents;
+	std::map<int, std::function<void(const std::vector<NetworkObjectBase*>&)>> NetworkEvents;
 	
 	inline Net_ActorType GetNetObjectType() const
 	{

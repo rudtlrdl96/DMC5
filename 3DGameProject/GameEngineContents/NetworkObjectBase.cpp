@@ -32,6 +32,22 @@ NetworkObjectBase* NetworkObjectBase::GetNetObj(unsigned int _ObjID)
 }
 
 
+std::vector<NetworkObjectBase*> NetworkObjectBase::GetNetObjs(const std::vector<int>& _AllID)
+{
+	std::vector<GameEngineNetObject*> BaseNetObjects = GameEngineNetObject::GetNetObjects(_AllID);
+	std::vector<NetworkObjectBase*> Result(BaseNetObjects.size(), nullptr);
+
+	for (size_t i = 0; i < BaseNetObjects.size(); ++i)
+	{
+		GameEngineNetObject* BasePtr = BaseNetObjects[i];
+		if (nullptr == BasePtr)
+			continue;
+
+		Result[i] = dynamic_cast<NetworkObjectBase*>(BasePtr);
+	}
+
+	return Result;
+}
 
 
 NetworkObjectBase::NetworkObjectBase()
@@ -169,7 +185,7 @@ void NetworkObjectBase::SetFsmPacketCallBack(std::function<void(int _State)> _Ca
 }
 
 
-void NetworkObjectBase::BindNetObjEvent(int _EventType, const std::function<void()>& _EventCallBack)
+void NetworkObjectBase::BindNetObjEvent(int _EventType, const std::function<void(const std::vector<NetworkObjectBase*>&)>& _EventCallBack)
 {
 	if (true == NetworkEvents.contains(_EventType))
 	{
@@ -182,7 +198,7 @@ void NetworkObjectBase::BindNetObjEvent(int _EventType, const std::function<void
 }
 
 
-void NetworkObjectBase::ExcuteNetObjEvent(int _EventType, NetObjEventPath _Path)
+void NetworkObjectBase::ExcuteNetObjEvent(int _EventType, NetObjEventPath _Path, const std::vector<NetworkObjectBase*>& _Targets /*= std::vector<NetworkObjectBase*>()*/)
 {
 	NetControllType CtrlType = GetControllType();
 
@@ -192,15 +208,26 @@ void NetworkObjectBase::ExcuteNetObjEvent(int _EventType, NetObjEventPath _Path)
 	if (NetObjEventPath::PassiveToActive == _Path && NetControllType::ActiveControll == CtrlType)
 		return;
 
-	const std::function<void()>& EventCallBack = NetworkEvents[_EventType];
+	const std::function<void(std::vector<NetworkObjectBase*>)>& EventCallBack = NetworkEvents[_EventType];
 	if (nullptr == EventCallBack)
 	{
 		MsgAssert("등록되지 않은 NetObjEvent를 사용하려고 했습니다");
 		return;
 	}
 
+
+	std::vector<int> AllTargetID(_Targets.size(), 0);
+	for (size_t i = 0; i < AllTargetID.size(); ++i)
+	{
+		if (nullptr == _Targets[i])
+			continue;
+
+		AllTargetID[i] = _Targets[i]->GetNetObjectID();
+	}
+
+
 	int NetObjID = GetNetObjectID();
-	NetworkManager::PushNetworkEventPacket(_EventType, NetObjID);
+	NetworkManager::PushNetworkEventPacket(_EventType, AllTargetID, NetObjID);
 
 	std::string Name = GetName().data();
 	NetworkGUI::GetInst()->PrintLog(Name + " Send NetObjEvent : " + GameEngineString::ToString(_EventType), float4::GREEN);
@@ -218,7 +245,10 @@ void NetworkObjectBase::Process_NetObjEventPacket(std::shared_ptr<class NetEvent
 		return;
 	}
 
-	NetworkEvents[EventType]();
+	std::vector<int> AllTargetID = _Packet->GetAllTarget();
+	std::vector<NetworkObjectBase*> AllTarget = GetNetObjs(AllTargetID);
+
+	NetworkEvents[EventType](AllTarget);
 	NetGUI->PrintLog(Name + " Success " + GameEngineString::ToString(EventType) + "Network Object Event", float4::GREEN);
 }
 
