@@ -2,6 +2,7 @@
 #include "Location11_Level.h"
 
 #include <GameEngineCore/GameEngineFBXMesh.h>
+#include <GameEngineCore/GameEngineCaptureTexture.h>
 #include "SkyBox.h"
 
 #include "NetworkManager.h"
@@ -13,7 +14,6 @@
 #include "FXAA_Effect.h"
 
 #include "CavaliereAngelo.h"
-
 Location11_Level::Location11_Level()
 {
 
@@ -62,10 +62,20 @@ void Location11_Level::LevelChangeStart()
 		BossMonster = CreateActor<CavaliereAngelo>();
 		BossMonster->GetPhysXComponent()->SetWorldPosition({ -35500, 1950, -365 });
 		BossMonster->GetPhysXComponent()->SetWorldRotation({ 0.0f, 90.0f, 0.0f });
+		BossMonster->PushDeathCallback(std::bind(&Location11_Level::LevelChangeToResultLevel, this));
 		Nero->SetBossCam(BossMonster->GetTransform());
 	}
 
 	AcSkyBox.lock()->SetSkyBloom(1);
 	GetDirectionalLight()->GetTransform()->SetWorldPosition({0.f, 10000.f, 0.f});
 	GetDirectionalLight()->GetTransform()->SetWorldRotation({45.f, 45.f, 45.f});
+}
+
+void Location11_Level::LevelChangeToResultLevel()
+{
+	TimeEvent.AddEvent(5.0f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* TimeEvent)
+		{
+			GameEngineCaptureTexture::CaptureTexture("Capture_Result", GameEngineWindow::GetScreenSize(), GetLevel()->GetMainCamera()->GetCamTarget());
+			GameEngineCore::ChangeLevel("ResultLevel");
+		});
 }

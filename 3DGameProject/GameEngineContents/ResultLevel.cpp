@@ -5,6 +5,7 @@
 #include "FXAA_Effect.h"
 #include "FadeEffect.h"
 #include "BGMPlayer.h"
+
 ResultLevel::ResultLevel()
 {
 }
@@ -31,8 +32,9 @@ void ResultLevel::LevelChangeStart()
 {
 	GameEngineLevel::LevelChangeStart();
 	GetDirectionalLight()->SetLightColor({0.9f, 0.9f, 1.0f});
-	GetDirectionalLight()->SetLightPower(9.0f);
+	GetDirectionalLight()->SetLightPower(2.0f);
 	GetDirectionalLight()->SetDifLightPower(0.7f);
+	GetDirectionalLight()->SetAmbLightPower(5.0f);
 	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 20, 0, 0 });
 
 	{
@@ -68,6 +70,16 @@ void ResultLevel::LevelChangeStart()
 			}
 		}
 	}
+	if (nullptr == GameEngineFBXMesh::Find("l02_SkyBox.fbx"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Map");
+		NewDir.Move("Location2");
+		GameEngineFBXMesh::Load(NewDir.GetPlusFileName("l02_SkyBox.fbx").GetFullPath());
+	}
+
 	BGMPlayer::BGMLoad();
 	{
 		GameEngineDirectory NewDir;
