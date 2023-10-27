@@ -466,6 +466,7 @@ void BasePlayerActor::DamageColCheck()
 	Sound.Play("Player_Damage");
 	DamageData Data = AttackCol->GetDamage();
 	HP -= Data.DamageValue;
+	RankUI::GetRankInst()->RankDisApper();
 	switch (Data.DamageTypeValue)
 	{
 	case DamageType::None:

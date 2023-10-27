@@ -223,6 +223,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				std::bind(&PlayerActor_Vergil::ChangeState, this, std::placeholders::_1),
 				std::bind(&SoundController::Play, &Sound, "Yamato_", std::placeholders::_1),
 				std::bind(&SoundController::Play, &Sound, "FootStep_", std::placeholders::_1),
+				std::bind(&RankUI::AddRankScore, RankUI::GetRankInst(), std::placeholders::_1),
 			},
 			.CallBacks_float = {
 				std::bind(&BasePlayerActor::RotationToTarget, this, std::placeholders::_1),

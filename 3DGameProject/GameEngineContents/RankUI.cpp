@@ -8,6 +8,7 @@
 #include <GameEngineCore/GameEngineFBXAnimation.h>
 #include "UIMeshRenderer.h"
 RankUI* RankUI::MainRankUI = nullptr;
+int RankUI::TotalScore = 0;
 
 RankUI::RankUI() 
 {
@@ -25,7 +26,8 @@ RankUI::~RankUI()
 */
 void RankUI::AddRankScore(int _Score)
 {
-	RankScore += _Score*0.1f;
+	RankScore += _Score;
+	TotalScore += _Score;
 	ResetLiveTime();
 }
 void RankUI::Start()

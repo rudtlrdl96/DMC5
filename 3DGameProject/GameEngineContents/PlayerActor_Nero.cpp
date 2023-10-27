@@ -238,6 +238,7 @@ void PlayerActor_Nero::PlayerLoad()
 				std::bind(&SoundController::Play, &Sound, "RQ_", std::placeholders::_1),
 				std::bind(&SoundController::Play, &Sound, "BR_", std::placeholders::_1),
 				std::bind(&SoundController::Play, &Sound, "FootStep_", std::placeholders::_1),
+				std::bind(&RankUI::AddRankScore, RankUI::GetRankInst(), std::placeholders::_1),
 			},
 			.CallBacks_float = {
 				std::bind(&BasePlayerActor::RotationToTarget, this, std::placeholders::_1),

@@ -37,15 +37,26 @@ public:
 	{
 		RankFSM.ChangeState(_Value);
 	}
+	void RankDisApper()
+	{
+		DisApperValue = true;
+		RankScore = 0;
+		TotalScore -= 500;
+		ResetLiveTime();
+	}
 	static RankUI* GetRankInst()
 	{
 		return MainRankUI;
 	}
-
+	static int GetTotalScore()
+	{
+		return TotalScore;
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 private:
+	static int TotalScore;
 	static RankUI* MainRankUI;
 	void RankSpin(float _Delta , std::shared_ptr<class UIMeshRenderer> _Render, std::shared_ptr<class UIMeshRenderer> _InsideRender);
 	void RankApper(float _Delta, std::shared_ptr<class UIMeshRenderer> _Render , RankState _State, bool _Value, std::shared_ptr<class UIMeshRenderer> _PrevRender);
