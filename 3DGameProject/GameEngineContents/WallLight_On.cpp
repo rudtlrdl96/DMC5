@@ -22,6 +22,7 @@ void WallLight_On::Start()
 	PointLight->GetTransform()->SetParent(GetTransform());
 	PointLight->SetLightPower(1.f);
 	PointLight->SetLightColor({ 0.95f, 0.85f, 0.6f });
+	PointLight->DynamicShadowOn();
 
 	StaticFieldMapObject::Start();
 

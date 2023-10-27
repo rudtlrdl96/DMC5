@@ -133,7 +133,7 @@ public:
 	// Spot Light를 생성합니다.
 	std::shared_ptr<GameEngineLight> CreateSpotLight(const float4& _Pos, ShadowTextureScale _ShadowScale, float _Range, float _Angle);
 
-	inline const std::list<std::shared_ptr<GameEngineLight>>& GetAllLightRef()
+	inline const std::vector<std::shared_ptr<GameEngineLight>>& GetAllLightRef()
 	{
 		return AllLight;
 	}
@@ -170,7 +170,7 @@ private:
 	std::map<int, std::shared_ptr<GameEngineCamera>> Cameras;
 	std::shared_ptr<GameEngineCamera> MainCamera;
 
-	std::list<std::shared_ptr<GameEngineLight>> AllLight;
+	std::vector<std::shared_ptr<GameEngineLight>> AllLight;
 
 	LightDatas LightDataObject;
 

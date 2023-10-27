@@ -255,7 +255,7 @@ void StageBaseLevel::CreateStageFieldMap(const std::vector<FieldMapData>& _MapDa
 		AcFieldMaps[i] = FieldMap::CreateFieldMap(this, _MapDatas[i].PartsMeshFileNames, _MapDatas[i].CullingColTransform, _MapDatas[i].MapObjData);
 	}
 
-	const std::list<std::shared_ptr<GameEngineLight>>& AllLight = GetLevel()->GetAllLightRef();
+	const std::vector<std::shared_ptr<GameEngineLight>>& AllLight = GetLevel()->GetAllLightRef();
 
 	for (auto& i : AllLight)
 	{

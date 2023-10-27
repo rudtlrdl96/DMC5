@@ -902,6 +902,9 @@ void GameEngineCore::CoreOptionInit()
 
 	// 쉐이더 적용
 	GameEngineOption::CreateOption("Shader", GameEngineOptionValue::High);
+
+	// 다이나믹 그림자 
+	GameEngineOption::CreateOption("DynamicShadow", GameEngineOptionValue::Low);
 }
 
 void GameEngineCore::CoreResourcesEnd()

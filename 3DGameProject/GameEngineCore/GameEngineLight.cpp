@@ -283,6 +283,14 @@ void GameEngineLight::LightViewSetting(size_t _Index)
 	LightDataValue.LightViewProjectionMatrix = ViewDatas[_Index].LightViewProjectionMatrix;
 }
 
+void GameEngineLight::CalCameraDistance(GameEngineCamera* _Camera)
+{
+	float4 CamPos = _Camera->GetTransform()->GetWorldPosition();
+	float4 Light = GetTransform()->GetWorldPosition();
+
+	CameraDistance = (CamPos - Light).Size();
+}
+
 void GameEngineLight::CreateShadowTarget(std::shared_ptr<class GameEngineRenderTarget> _Target, LightType _Type)
 {
 	switch (_Type)

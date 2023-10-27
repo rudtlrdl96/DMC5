@@ -238,6 +238,12 @@ public:
     {
         return LightDataValue.AmbLightPower;
     }
+
+    inline float GetCameraDistance() const
+    {
+        return CameraDistance;
+    }
+
 protected:
 
 private:
@@ -255,6 +261,8 @@ private:
     bool IsShadowLight = false;
     bool IsDynamicLight = false;
 
+    float CameraDistance = 0.0f;
+
     inline void SetLightType(LightType _Type)
     {
         LightDataValue.LightType = static_cast<int>(_Type);
@@ -269,4 +277,6 @@ private:
     void ShadowTargetTextureRelease();
 
     void LightViewSetting(size_t _Index);
+
+    void CalCameraDistance(GameEngineCamera* _Camera);
 };

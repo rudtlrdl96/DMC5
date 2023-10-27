@@ -585,8 +585,8 @@ void GameEngineLevel::ActorRelease()
 
 void GameEngineLevel::LightRelease()
 {
-	std::list<std::shared_ptr<GameEngineLight>>::iterator LoopIter = AllLight.begin();
-	std::list<std::shared_ptr<GameEngineLight>>::iterator EndIter = AllLight.end();
+	std::vector<std::shared_ptr<GameEngineLight>>::iterator LoopIter = AllLight.begin();
+	std::vector<std::shared_ptr<GameEngineLight>>::iterator EndIter = AllLight.end();
 
 	while (LoopIter != EndIter)
 	{

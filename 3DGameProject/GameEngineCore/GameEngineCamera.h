@@ -162,6 +162,8 @@ private:
 
 	D3D11_VIEWPORT ViewPortData;
 
+	std::vector<std::shared_ptr<GameEngineLight>> DynamicAllLight;
+
 	float Width = 0.0f;
 	float Height = 0.0f;
 

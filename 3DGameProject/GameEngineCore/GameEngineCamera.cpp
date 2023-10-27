@@ -10,6 +10,7 @@
 #include "GameEngineMaterial.h"
 #include "GameEnginePixelShader.h"
 #include "GameEngineLight.h"
+#include "GameEngineOption.h"
 
 GameEngineCamera::GameEngineCamera()
 {
@@ -470,6 +471,11 @@ void GameEngineCamera::Setting()
 
 }
 
+static bool SortLight(const std::shared_ptr<GameEngineLight>& _Left, const std::shared_ptr<GameEngineLight>& _Right)
+{
+	return _Left->GetCameraDistance() > _Right->GetCameraDistance();
+}
+
 void GameEngineCamera::Render(float _DeltaTime)
 {
 	CamForwardTarget->Clear();
@@ -598,11 +604,56 @@ void GameEngineCamera::Render(float _DeltaTime)
 			}
 		}
 
+
+		GameEngineOptionValue DynamicShadowOption = GameEngineOption::GetOption("DynamicShadow");
+		
+		int DrawDynamicShadowMaxCount = 0;
+		
+		if (DynamicShadowOption == GameEngineOptionValue::None)
+		{
+			DrawDynamicShadowMaxCount = 1;
+		}
+		else if (DynamicShadowOption == GameEngineOptionValue::Low)
+		{
+			DrawDynamicShadowMaxCount = 6;
+		}
+		else if (DynamicShadowOption == GameEngineOptionValue::High)
+		{
+			DrawDynamicShadowMaxCount = 11;
+		}
+		
+		int DrawDynamicShadowCurCount = 0;
+		
 		GameEngineRenderUnit AniUnit;
 
-		// 여기에서 이미 그림자를 그려야하는 애들은 다 그려져 있어야 합니다.
-		for (std::shared_ptr<GameEngineLight> Light : GetLevel()->AllLight)
+		if (DynamicAllLight.size() != GetLevel()->AllLight.size())
 		{
+			DynamicAllLight.resize(GetLevel()->AllLight.size());
+		}
+
+		for (size_t i = 0; i < DynamicAllLight.size(); i++)
+		{
+			DynamicAllLight[i] = GetLevel()->AllLight[i];
+		}
+
+		for (std::shared_ptr<GameEngineLight>& Light : DynamicAllLight)
+		{
+			Light->CalCameraDistance(this);
+		}
+
+		std::sort(DynamicAllLight.begin() + 1, DynamicAllLight.end(), [](const std::shared_ptr<GameEngineLight>& _Left, const std::shared_ptr<GameEngineLight>& _Right)
+			{
+				return _Left->CameraDistance < _Right->CameraDistance;
+			});
+
+		// 여기에서 이미 그림자를 그려야하는 애들은 다 그려져 있어야 합니다.
+		for (std::shared_ptr<GameEngineLight> Light : DynamicAllLight)
+		{
+			if (DrawDynamicShadowMaxCount <= DrawDynamicShadowCurCount)
+			{
+				break;
+			}
+
 			if (false == Light->IsShadow())
 			{
 				continue;
@@ -612,6 +663,8 @@ void GameEngineCamera::Render(float _DeltaTime)
 			{
 				continue;
 			}
+
+			++DrawDynamicShadowCurCount;
 
 			std::shared_ptr<GameEngineMaterial> Pipe = nullptr;
 

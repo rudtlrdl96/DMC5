@@ -97,7 +97,7 @@ void TestStageLevel::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::IsDown("BakeTestKey"))
 	{
-		const std::list<std::shared_ptr<GameEngineLight>>& AllLightRef = GetAllLightRef();
+		const std::vector<std::shared_ptr<GameEngineLight>>& AllLightRef = GetAllLightRef();
 		
 		for (std::shared_ptr<GameEngineLight> Ref: AllLightRef)
 		{
