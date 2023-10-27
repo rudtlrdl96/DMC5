@@ -115,25 +115,25 @@ void Enemy_ProtoAngelo::EnemyAnimationLoad()
 	NewDir.Move("Proto");
 	NewDir.Move("Animation");
 
-	//AnimationEvent::LoadAll
-	//(
-	//	{
-	//		.Dir = NewDir.GetFullPath().c_str(),
-	//		.Renderer = EnemyRenderer,
-	//		.RendererLocalPos = { 0.0f, -50.0f, 0.0f },
-	//		.Objects = {(GameEngineObject*)MonsterAttackCollision.get()},
-	//		.CallBacks_void =
-	//		{
-	//		},
-	//		.CallBacks_int =
-	//		{
-	//			std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
-	//		},
-	//		.CallBacks_float4 =
-	//		{
-	//		}
-	//	}
-	//);
+	AnimationEvent::LoadAll
+	(
+		{
+			.Dir = NewDir.GetFullPath().c_str(),
+			.Renderer = EnemyRenderer,
+			.RendererLocalPos = { 0.0f, -50.0f, 0.0f },
+			.Objects = {(GameEngineObject*)MonsterAttackCollision.get()},
+			.CallBacks_void =
+			{
+			},
+			.CallBacks_int =
+			{
+				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
+			},
+			.CallBacks_float4 =
+			{
+			}
+		}
+	);
 	{
 		// 이펙트 시스템 생성
 		GameEngineDirectory NewDir;
@@ -152,13 +152,6 @@ void Enemy_ProtoAngelo::EnemyAnimationLoad()
 			}
 			EffectRenderer->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
 		}
-	}
-	std::vector<GameEngineFile> FBXFiles = NewDir.GetAllFile({ ".FBX" });
-
-	for (size_t i = 0; i < FBXFiles.size(); i++)
-	{
-		GameEngineFBXAnimation::Load(FBXFiles[i].GetFullPath());
-		EnemyRenderer->CreateFBXAnimation(FBXFiles[i].GetFileName(), FBXFiles[i].GetFileName(), { .Inter = 0.01666f, });
 	}
 }
 
@@ -181,23 +174,23 @@ void Enemy_ProtoAngelo::Start()
 	MonsterAttackCollision->SetAttackData(DamageType::Light, 100);
 	MonsterAttackCollision->SetColType(ColType::OBBBOX3D);
 
-	MonsterAttackCollision_Two = CreateComponent<AttackCollision>(CollisionOrder::EnemyAttack);
-	MonsterAttackCollision_Two->GetTransform()->SetWorldScale(float4::ZERO);
-	MonsterAttackCollision_Two->SetAttackData(DamageType::Light, 100);
-	MonsterAttackCollision_Two->SetColType(ColType::OBBBOX3D);
-
 	MonsterCollision->GetTransform()->SetLocalScale({ 80, 210, 70 });
 	MonsterCollision->GetTransform()->SetLocalPosition({ 0, 65, 0 });
 	MonsterCollision->SetColType(ColType::OBBBOX3D);
-	RN_MonsterCollision->GetTransform()->SetLocalScale({ 600, 0, 0 });
+	RN_MonsterCollision->GetTransform()->SetLocalScale({ 700, 0, 0 });
 	RN_MonsterCollision->GetTransform()->SetLocalPosition({ 0, 80, 0 });
+
+	ParryCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Null);
+	ParryCollision->SetColType(ColType::OBBBOX3D);
+	ParryCollision->GetTransform()->SetLocalScale({ 200, 200, 220 });
+	ParryCollision->GetTransform()->SetLocalPosition({ 0, 100, 170 });
 
 	// 기본 세팅
 	FallDistance = 55.0f;
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
 
 	//MonsterCollision->Off();
-	RN_MonsterCollision->Off();
+	//RN_MonsterCollision->Off();
 
 	// 무기 붙이기
 	EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(180.0f, 0.0f, 0.0f), true, true);
@@ -223,6 +216,8 @@ void Enemy_ProtoAngelo::Start()
 	LinkData_UpdatePacket<bool>(IsVergilLight);
 	LinkData_UpdatePacket<bool>(IsCollapse);
 	LinkData_UpdatePacket<bool>(IsBurn);
+	LinkData_UpdatePacket<bool>(IsParryCheck);
+	LinkData_UpdatePacket<bool>(ParryOkay);
 	LinkData_UpdatePacket<int>(EnemyHP);
 
 	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker) {
@@ -255,6 +250,144 @@ void Enemy_ProtoAngelo::Start()
 ///////////////////////////////////////////////// 움직임, 히트 관련 ///////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void Enemy_ProtoAngelo::ParryCheck()
+{
+	if (false == IsParryCheck || true == ParryOkay || true == DeathValue)
+	{
+		return;
+	}
+
+	std::shared_ptr<GameEngineCollision> Col = ParryCollision->Collision(CollisionOrder::PlayerAttack);
+	if (nullptr == Col) { return; }
+
+	std::shared_ptr<AttackCollision> AttackCol = std::dynamic_pointer_cast<AttackCollision>(Col);
+	if (nullptr == AttackCol) { return; }
+
+	if (false == AttackCol->GetIsParryAttack()) { return; }
+	AttackCol->ParryEvent();
+	ParryOkay = true;
+}
+
+void Enemy_ProtoAngelo::ParryTime()
+{
+	SetTimeScale(0.2f);
+	GetLevel()->TimeEvent.AddEvent(0.4f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+		{
+			SetTimeScale(0.4f);
+		});
+	GetLevel()->TimeEvent.AddEvent(0.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+		{
+			SetTimeScale(0.6f);
+		});
+	GetLevel()->TimeEvent.AddEvent(0.8f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+		{
+			SetTimeScale(0.8f);
+		});
+	GetLevel()->TimeEvent.AddEvent(1.f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+		{
+			SetTimeScale(1.f);
+		});
+}
+
+void Enemy_ProtoAngelo::PlayDamageEvent(DamageSoundType _Type)
+{
+	//Sound.PlayVoiceRandom(1, 2);
+	//EffectRenderer->PlayFX("Enemy_Damage_Heavy.effect");
+
+	//switch (_Type)
+	//{
+	//case DamageSoundType::None:
+	//	break;
+	//case DamageSoundType::Sword:
+	//	Sound.PlayRandom("Cavaliere_Damage_", 0, 1);
+	//	break;
+	//case DamageSoundType::Magic:
+	//	Sound.Play("Cavaliere_Damage_", 5);
+	//	break;
+	//case DamageSoundType::Katana:
+	//	Sound.PlayRandom("Cavaliere_Damage_", 2, 3);
+	//	break;
+	//case DamageSoundType::Blunt:
+	//	Sound.Play("Cavaliere_Damage_", 4);
+	//	break;
+	//case DamageSoundType::Gun:
+	//	Sound.Play("Cavaliere_Damage_", 2);
+	//	break;
+	//default:
+	//	break;
+	//}
+}
+
+void Enemy_ProtoAngelo::MoveLoop()
+{
+	float4 CrossResult = MonsterAndPlayerCross();
+	float RotationValue = 0.0f;
+	float4 EnemyPosition = GetTransform()->GetWorldPosition();
+	float4 PlayerPosition = Player->GetTransform()->GetWorldPosition();
+
+	float4 EnemyForWardVector = GetTransform()->GetWorldForwardVector();
+	EnemyForWardVector.Normalize();
+
+	PlayerPosition.y = 0.0f;
+	EnemyPosition.y = 0.0f;
+
+	float4 ToPlayerVector = (PlayerPosition - EnemyPosition);
+	float4 RotationDirectNormal = ToPlayerVector.NormalizeReturn();
+	RotationValue = float4::GetAngleVectorToVectorDeg(EnemyForWardVector, RotationDirectNormal);
+
+	if (-1.0f <= RotationValue && 1.0f >= RotationValue)
+	{
+		AllDirectSetting_Normal();
+		return;
+	}
+
+	if (true == isnan(RotationValue))
+	{
+		AllDirectSetting_Normal();
+		return;
+	}
+
+	if (CrossResult.y < 0)
+	{
+		if (RotationValue >= 0)
+		{
+			RotationValue = -RotationValue;
+		}
+	}
+	else if (CrossResult.y > 0)
+	{
+		if (RotationValue < 0)
+		{
+			RotationValue = -RotationValue;
+		}
+	}
+
+	float4 CurRot = GetTransform()->GetWorldRotation();
+
+	if (CurRot.y <= 0.0f)
+	{
+		CurRot.y += 360.f;
+	}
+
+	float4 Value = float4{ 0.0f, RotationValue, 0.0f };
+
+	float4 GoalRot = CurRot + Value;
+
+	if (GoalRot.y <= 0.0f)
+	{
+		CurRot.y += 360.f;
+		GoalRot = CurRot + Value;
+	}
+
+	CurRot.x = 0.0f;
+	CurRot.z = 0.0f;
+	GoalRot.x = 0.0f;
+	GoalRot.z = 0.0f;
+
+	PhysXCapsule->SetWorldRotation(GoalRot);
+	AllDirectSetting_Normal();
+}
+
 void Enemy_ProtoAngelo::MonsterAttackCollisionOn()
 {
 	MonsterAttackCollision->On();
@@ -279,11 +412,11 @@ void Enemy_ProtoAngelo::PlayerChase(float _DeltaTime)
 		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
 		if (0 == RandC)
 		{
-			//ChangeState(FSM_State_HellAntenora::Empusa_Biped_Walk_Start);
+			//ChangeState(FSM_State_ProtoAngelo::Empusa_Biped_Walk_Start);
 		}
 		else
 		{
-			//ChangeState(FSM_State_HellAntenora::Empusa_Biped_Run_Start);
+			//ChangeState(FSM_State_ProtoAngelo::Empusa_Biped_Run_Start);
 		}
 	}
 	break;
@@ -293,19 +426,19 @@ void Enemy_ProtoAngelo::PlayerChase(float _DeltaTime)
 		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
 		if (0 == RandC)
 		{
-			//ChangeState(FSM_State_HellAntenora::Empusa_Biped_Walk_Start);
+			//ChangeState(FSM_State_ProtoAngelo::Empusa_Biped_Walk_Start);
 		}
 		else
 		{
-			//ChangeState(FSM_State_HellAntenora::Empusa_Biped_Run_Start);
+			//ChangeState(FSM_State_ProtoAngelo::Empusa_Biped_Run_Start);
 		}
 	}
 	break;
 	case EnemyRotation::Left_90:
-		//ChangeState(FSM_State_HellAntenora::Empusa_Turn_Left_90);
+		//ChangeState(FSM_State_ProtoAngelo::Empusa_Turn_Left_90);
 		break;
 	case EnemyRotation::Left_180:
-		//ChangeState(FSM_State_HellAntenora::Empusa_Turn_Left_180);
+		//ChangeState(FSM_State_ProtoAngelo::Empusa_Turn_Left_180);
 		break;
 	case EnemyRotation::Right:
 	{
@@ -313,19 +446,19 @@ void Enemy_ProtoAngelo::PlayerChase(float _DeltaTime)
 		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
 		if (0 == RandC)
 		{
-			//ChangeState(FSM_State_HellAntenora::Empusa_Biped_Walk_Start);
+			//ChangeState(FSM_State_ProtoAngelo::Empusa_Biped_Walk_Start);
 		}
 		else
 		{
-			//ChangeState(FSM_State_HellAntenora::Empusa_Biped_Run_Start);
+			//ChangeState(FSM_State_ProtoAngelo::Empusa_Biped_Run_Start);
 		}
 	}
 	break;
 	case EnemyRotation::Right_90:
-		//ChangeState(FSM_State_HellAntenora::Empusa_Turn_Right_90);
+		//ChangeState(FSM_State_ProtoAngelo::Empusa_Turn_Right_90);
 		break;
 	case EnemyRotation::Right_180:
-		//ChangeState(FSM_State_HellAntenora::Empusa_Turn_Right_180);
+		//ChangeState(FSM_State_ProtoAngelo::Empusa_Turn_Right_180);
 		break;
 	default:
 		break;
@@ -341,7 +474,7 @@ void Enemy_ProtoAngelo::PlayerAttack(float _DeltaTime)
 
 	if (0 == RandC)
 	{
-		//ChangeState(FSM_State_HellAntenora::Empusa_Continuation_Attack);
+		//ChangeState(FSM_State_ProtoAngelo::Empusa_Continuation_Attack);
 		return;
 	}
 
@@ -351,22 +484,22 @@ void Enemy_ProtoAngelo::PlayerAttack(float _DeltaTime)
 		RandomAttack();
 		break;
 	case EnemyRotation::Left:
-		//ChangeState(FSM_State_HellAntenora::Empusa_Attack_C);
+		//ChangeState(FSM_State_ProtoAngelo::Empusa_Attack_C);
 		break;
 	case EnemyRotation::Left_90:
-		//ChangeState(FSM_State_HellAntenora::Empusa_Attack_C);
+		//ChangeState(FSM_State_ProtoAngelo::Empusa_Attack_C);
 		break;
 	case EnemyRotation::Left_180:
-		//ChangeState(FSM_State_HellAntenora::Empusa_Attack_C);
+		//ChangeState(FSM_State_ProtoAngelo::Empusa_Attack_C);
 		break;
 	case EnemyRotation::Right:
-		//ChangeState(FSM_State_HellAntenora::Empusa_Attack_D);
+		//ChangeState(FSM_State_ProtoAngelo::Empusa_Attack_D);
 		break;
 	case EnemyRotation::Right_90:
-		//ChangeState(FSM_State_HellAntenora::Empusa_Attack_D);
+		//ChangeState(FSM_State_ProtoAngelo::Empusa_Attack_D);
 		break;
 	case EnemyRotation::Right_180:
-		//ChangeState(FSM_State_HellAntenora::Empusa_Attack_D);
+		//ChangeState(FSM_State_ProtoAngelo::Empusa_Attack_D);
 		break;
 	default:
 		break;
@@ -379,15 +512,15 @@ void Enemy_ProtoAngelo::RandomAttack()
 
 	if (0 == RandC)
 	{
-		//ChangeState(FSM_State_HellAntenora::Empusa_Attack_A);
+		//ChangeState(FSM_State_ProtoAngelo::Empusa_Attack_A);
 	}
 	else if (1 == RandC)
 	{
-		//ChangeState(FSM_State_HellAntenora::Empusa_Attack_B);
+		//ChangeState(FSM_State_ProtoAngelo::Empusa_Attack_B);
 	}
 	else if (2 == RandC)
 	{
-		//ChangeState(FSM_State_HellAntenora::Empusa_Attack_W);
+		//ChangeState(FSM_State_ProtoAngelo::Empusa_Attack_W);
 	}
 }
 
@@ -440,6 +573,8 @@ void Enemy_ProtoAngelo::DamageCollisionCheck(float _DeltaTime)
 		Data.DamageTypeValue = DamageType::Light;
 	}
 
+	HitStop(Data.DamageTypeValue);
+
 	switch (Data.DamageTypeValue)
 	{
 	case DamageType::None:
@@ -455,7 +590,7 @@ void Enemy_ProtoAngelo::DamageCollisionCheck(float _DeltaTime)
 		if (true == IsAirAttack || true == IsSlamAttack || true == IsHeavyAttack)
 		{
 			StartRenderShaking(8);
-			//ChangeState(FSM_State_HellAntenora::HellAntenora_Air_Damage_Under);
+			ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Air_Damage);
 			return;
 		}
 
@@ -465,21 +600,21 @@ void Enemy_ProtoAngelo::DamageCollisionCheck(float _DeltaTime)
 			return;
 		}
 
-		AttackCalculation();
+		AttackDirectCheck();
 
 		switch (EnemyHitDirValue)
 		{
 		case EnemyHitDirect::Forward:
-			//ChangeState(FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Front);
+			ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Standing_Damage_Weak_Front);
 			break;
 		case EnemyHitDirect::Back:
-			//ChangeState(FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Back);
+			ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Standing_Damage_Weak_Back);
 			break;
 		case EnemyHitDirect::Left:
-			//ChangeState(FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Left);
+			ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Standing_Damage_Weak_Front);
 			break;
 		case EnemyHitDirect::Right:
-			//ChangeState(FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Right);
+			ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Standing_Damage_Weak_Front);
 			break;
 		default:
 			break;
@@ -487,19 +622,19 @@ void Enemy_ProtoAngelo::DamageCollisionCheck(float _DeltaTime)
 		break;
 
 	case DamageType::Heavy:
-		//ChangeState(FSM_State_HellAntenora::HellAntenora_Blown_Back);
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Blown_Back);
 		break;
 	case DamageType::Air:
-		//ChangeState(FSM_State_HellAntenora::HellAntenora_Blown_Up);
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Blown_Up);
 		break;
 	case DamageType::Snatch:
-		//ChangeState(FSM_State_HellAntenora::HellAntenora_Snatch);
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Snatch);
 		break;
 	case DamageType::Slam:
-		//ChangeState(FSM_State_HellAntenora::HellAntenora_Slam_Damage);
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Slam_Damage);
 		break;
 	case DamageType::Buster:
-		//ChangeState(FSM_State_HellAntenora::HellAntenora_Buster_Start);
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Buster_Start);
 		break;
 	case DamageType::Stun:
 		StopTime(2.9f);
@@ -507,8 +642,6 @@ void Enemy_ProtoAngelo::DamageCollisionCheck(float _DeltaTime)
 	default:
 		break;
 	}
-
-	HitStop(Data.DamageTypeValue);
 }
 
 void Enemy_ProtoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
@@ -556,7 +689,7 @@ void Enemy_ProtoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 		if (true == IsAirAttack || true == IsSlamAttack || true == IsHeavyAttack)
 		{
 			StartRenderShaking(8);
-			//ChangeState_Client(FSM_State_HellAntenora::Empusa_Air_Damage_Under);
+			ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Air_Damage);
 			return;
 		}
 
@@ -571,16 +704,16 @@ void Enemy_ProtoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 		switch (EnemyHitDirValue)
 		{
 		case EnemyHitDirect::Forward:
-			//ChangeState_Client(FSM_State_HellAntenora::Empusa_Standing_Damage_Weak_Front);
+			ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Standing_Damage_Weak_Front);
 			break;
 		case EnemyHitDirect::Back:
-			//ChangeState_Client(FSM_State_HellAntenora::Empusa_Standing_Damage_Weak_Back);
+			ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Standing_Damage_Weak_Back);
 			break;
 		case EnemyHitDirect::Left:
-			//ChangeState_Client(FSM_State_HellAntenora::Empusa_Standing_Damage_Weak_Left);
+			ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Standing_Damage_Weak_Front);
 			break;
 		case EnemyHitDirect::Right:
-			//ChangeState_Client(FSM_State_HellAntenora::Empusa_Standing_Damage_Weak_Right);
+			ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Standing_Damage_Weak_Front);
 			break;
 		default:
 			break;
@@ -588,19 +721,19 @@ void Enemy_ProtoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 		break;
 
 	case DamageType::Heavy:
-		//ChangeState_Client(FSM_State_HellAntenora::Empusa_Blown_Back);
+		ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Blown_Back);
 		break;
 	case DamageType::Air:
-		//ChangeState_Client(FSM_State_HellAntenora::Empusa_Air_Damage);
+		ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Blown_Up);
 		break;
 	case DamageType::Snatch:
-		//ChangeState_Client(FSM_State_HellAntenora::Empusa_Snatch);
+		ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Snatch);
 		break;
 	case DamageType::Slam:
-		//ChangeState_Client(FSM_State_HellAntenora::Empusa_Slam_Damage);
+		ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Slam_Damage);
 		break;
 	case DamageType::Buster:
-		//ChangeState_Client(FSM_State_HellAntenora::Empusa_Buster_Start);
+		ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Buster_Start);
 		break;
 	case DamageType::Stun:
 		break;
@@ -652,7 +785,7 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Appear_01,
 	.Start = [=] {
 	EffectRenderer->PlayFX("Enemy_Appear.effect");
-	EnemyRenderer->ChangeAnimation("em0601_Appear_01.fbx");
+	EnemyRenderer->ChangeAnimation("em0601_Appear_01");
 	},
 	.Update = [=](float _DeltaTime) {
 	if (true == EnemyRenderer->IsAnimationEnd())
@@ -667,11 +800,564 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Idle,
 	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0601_Idle_Loop.fbx");
+	EnemyRenderer->ChangeAnimation("em0601_Idle_Loop");
 	},
 	.Update = [=](float _DeltaTime) {
 	},
 	.End = [=] {
+	}
+		});
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////      피격      //////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	// 패리 성공 모션
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Parry_Lose_Modori,
+	.Start = [=] {
+	ParryTime();
+	//EffectRenderer_0->PlayFX("Cavalier_Parry.effect");
+	//EffectRenderer_1->Off();
+	EnemyRenderer->ChangeAnimation("em0601_Parry_Lose_Modori");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (25 < EnemyRenderer->GetCurFrame())
+	{
+		ParryEvent = false;
+	}
+	if (30 <= EnemyRenderer->GetCurFrame() && 70 > EnemyRenderer->GetCurFrame())
+	{
+		SetBackMove(140.0f);
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	ParryEvent = false;
+	}
+		});
+
+	/////////////////////////약공격
+	// 정면 약공 히트
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Standing_Damage_Weak_Front,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Standing_Damage_Weak_Front", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		AttackCalculation();
+		RotationCheck();
+		AllDirectSetting_Normal();
+
+		if (true == IsVergilLight)
+		{
+			IsVergilLight = false;
+			SetPush(10000.0f);
+		}
+		else
+		{
+			SetPush(24000.0f);
+		}
+	}
+	DeathCheck();
+	if (true == DeathValue)
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Death_Front);
+		return;
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 뒤에서 약공 히트시, 65프레임 애니메이션 턴
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Standing_Damage_Weak_Back,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Standing_Damage_Weak_Back", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		AttackCalculation();
+		RotationCheck();
+		AllDirectSetting_Normal();
+
+		if (true == IsVergilLight)
+		{
+			IsVergilLight = false;
+			SetPush(10000.0f);
+		}
+		else
+		{
+			SetPush(24000.0f);
+		}
+	}
+	DeathCheck();
+	if (true == DeathValue)
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Death_Back);
+		return;
+	}
+	if (65 <= EnemyRenderer->GetCurFrame())
+	{
+		AnimationTurnStart = true;
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		AnimationTurnStart = false;
+		PhysXCapsule->AddWorldRotation({ 0.0f, 180.0f, 0.0f });
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	/////////////////////////강공격
+	// 헤비어택 히트시
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Blown_Back,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Blown_Back", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		IsCollapse = false;
+		IsHeavyAttack = true;
+		AttackCalculation();
+		RotationCheck();
+		AllDirectSetting();
+		SetPush(50000.0f);
+		SetAir(42000.0f);
+	}
+	FallCheckDelayTime += _DeltaTime;
+	if (true == FloorCheck(FallDistance) && 0.2f <= FallCheckDelayTime)
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Blown_Up_Landing);
+		return;
+	}
+	},
+	.End = [=] {
+	FallCheckDelayTime = 0.0f;
+	}
+		});
+
+	// 헤비어택 랜딩
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Blown_Back_Landing,
+	.Start = [=] {
+	IsHeavyAttack = false;
+	IsAirAttack = false;
+	IsSlamAttack = false;
+	IsBusterAttack = false;
+	IsCollapse = true;
+	EnemyRenderer->ChangeAnimation("em0601_Blown_Back_Landing");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Prone_Getup);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	/////////////////////////에어피격
+	// 띄우기 시작
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Blown_Up,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Blown_Up", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		IsCollapse = false;
+		IsAirAttack = true;
+		AttackCalculation();
+		RotationCheck();
+		AllDirectSetting();
+		PhysXCapsule->SetAirState(110000.0f);
+	}
+	FallCheckDelayTime += _DeltaTime;
+
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Blown_Up_Loop);
+		return;
+	}
+	if (true == FloorCheck(FallDistance) && 0.5f <= FallCheckDelayTime)
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Blown_Up_Landing);
+		return;
+	}
+	},
+	.End = [=] {
+	FallCheckDelayTime = 0.0f;
+	}
+		});
+
+	{
+		EnemyRenderer->SetAnimationStartEvent("em0601_Air_Damage", 1, [=] {
+			if (true == IsVergilLight)
+			{
+				IsVergilLight = false;
+				SetAir(10000.0f);
+			}
+			else
+			{
+				SetAir(30000.0f);
+			}
+			});
+	}
+
+	// 에어 상태에서 약공격 맞을때
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Air_Damage,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Air_Damage", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Blown_Up_Loop);
+		return;
+	}
+	if (true == FloorCheck(FallDistance))
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Blown_Up_Landing);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 에어어택 루프
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Blown_Up_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Blown_Up_Loop", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == FloorCheck(FallDistance))
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Blown_Up_Landing);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	{
+		EnemyRenderer->SetAnimationStartEvent("em0601_Blown_Up_Landing", 1,
+			[=]
+			{
+				SetPush(37000.0f);
+			});
+	}
+
+	// 에어 어택 끝나고 랜딩
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Blown_Up_Landing,
+	.Start = [=] {
+	IsHeavyAttack = false;
+	IsAirAttack = false;
+	IsSlamAttack = false;
+	IsBusterAttack = false;
+	IsCollapse = true;
+	EnemyRenderer->ChangeAnimation("em0601_Blown_Up_Landing");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Prone_Getup);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	/////////////////////////슬램
+
+	{
+		EnemyRenderer->SetAnimationStartEvent("em0601_Slam_Damage", 1, [=] { SetAir(-120000.0f); });
+	}
+
+	// 슬램 피격 start
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Slam_Damage,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Slam_Damage");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		IsCollapse = false;
+		IsSlamAttack = true;
+		AttackCalculation();
+	}
+	if (true == EnemyRenderer->IsAnimationEnd() || true == FloorCheck(FallDistance))
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Slam_Damage_Loop);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+	// 슬램 피격 공중 loop
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Slam_Damage_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Slam_Damage_Loop");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == FloorCheck(FallDistance))
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Slam_Damage_Landing);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+	// 슬램 피격 후 땅에 부딫힘
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Slam_Damage_Landing,
+	.Start = [=] {
+	IsHeavyAttack = false;
+	IsAirAttack = false;
+	IsSlamAttack = false;
+	IsBusterAttack = false;
+	IsCollapse = true;
+	EnemyRenderer->ChangeAnimation("em0601_Slam_Damage_Landing");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Prone_Getup);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	/////////////////////////스내치
+	// 스내치 start
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Snatch,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Snatch");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		IsCollapse = false;
+		IsAirAttack = true;
+		AttackCalculation();
+		StartMonsterSnatch();
+		RotationCheck();
+		AllDirectSetting();
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Air_Damage);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	/////////////////////////스턴
+	// 스턴 start
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Stun,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Stun");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Stun_Revive);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+	// 스턴 end
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Stun_Revive,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Stun_Revive");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////      쓰러짐      //////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	// 
+	// 앞으로 쓰러져있다가 일어남, 120프레임 뒷걸음 시작, 170프레임 종료
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Prone_Getup,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Prone_Getup");
+	},
+	.Update = [=](float _DeltaTime) {
+	DeathCheck();
+	if (true == DeathValue)
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Prone_Death);
+		return;
+	}
+	if (120 <= EnemyRenderer->GetCurFrame() && 170 > EnemyRenderer->GetCurFrame())
+	{
+		SetBackMove(140.0f);
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	IsRecognize = false;
+	IsCollapse = false;
+	}
+		});
+	// 앞으로 넘어진 상태에서 Death
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Prone_Death,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Prone_Death");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		IsBurn = true;
+	}
+	},
+	.End = [=] {
+	}
+		});
+	// 앞으로 쓰러지면서 죽음
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Death_Back,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Death_Back");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		IsBurn = true;
+	}
+	},
+	.End = [=] {
+	}
+		});
+	// 뒤로 쓰러지면서 죽음
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Death_Front,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Death_Front");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		IsBurn = true;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////      버스트      //////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	// em0000_Buster_Start, 버스트 히트 시작
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Buster_Start,
+	.Start = [=] {
+			//PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
+			EnemyRenderer->ChangeAnimation("em0601_Air_Buster");
+			},
+			.Update = [=](float _DeltaTime) {
+			if (true == IsChangeState)
+			{
+				IsChangeState = false;
+				AttackCalculation();
+				IsCollapse = false;
+				IsBusterAttack = true;
+				BusterCalculation(float4{ 0.0f, -120.0f, 0.0f });
+				RotationCheck();
+				AllDirectSetting();
+			}
+			SetMoveStop();
+			if (true == EnemyRenderer->IsAnimationEnd())
+			{
+				BusterEnd();
+				SetAir(-120000.0f);
+				ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Buster_Loop);
+				return;
+			}
+			},
+			.End = [=] {
+			}
+		});
+	// 버스트 히트 루프
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Buster_Loop,
+	.Start = [=] {
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == FloorCheck(FallDistance))
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Buster_Finish);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+	// em0000_Buster_Finish, 버스트 히트 땅에 떨어짐
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Buster_Finish,
+	.Start = [=] {
+	MinusEnemyHP(500);
+	//Sound.Play("Enemy_Damage_", 12);
+	//Sound.PlayVoice(5);
+	IsHeavyAttack = false;
+	IsAirAttack = false;
+	IsSlamAttack = false;
+	IsBusterAttack = false;
+	IsCollapse = true;
+	EnemyRenderer->ChangeAnimation("em0601_Slam_Damage_Landing");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		//PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Prone_Getup);
+		return;
+	}
+	},
+	.End = [=] {
+
 	}
 		});
 

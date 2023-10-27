@@ -420,11 +420,14 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 	AttackDelayCheck = 0.0f;
 	PlayDamageEvent(Data.DamageTypeValue, Data.SoundType);
 	Sound.PlayVoiceRandom(4, 5, false);
+
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
 		IsVergilLight = true;
 		Data.DamageTypeValue = DamageType::Light;
 	}
+
+	HitStop(Data.DamageTypeValue);
 
 	switch (Data.DamageTypeValue)
 	{
@@ -493,8 +496,6 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 	default:
 		break;
 	}
-
-	HitStop(Data.DamageTypeValue);
 }
 
 void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)

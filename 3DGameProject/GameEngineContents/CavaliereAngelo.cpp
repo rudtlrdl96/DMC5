@@ -609,7 +609,6 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 		StopTime(2.9f);
 		return;
 	}
-	IsVergilLight = false;
 }
 
 void CavaliereAngelo::DamageCollisionCheck_Client(float _DeltaTime)

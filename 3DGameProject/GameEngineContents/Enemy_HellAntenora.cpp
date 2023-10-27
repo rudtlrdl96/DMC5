@@ -461,6 +461,8 @@ void Enemy_HellAntenora::DamageCollisionCheck(float _DeltaTime)
 		return;
 	}
 
+	HitStop(Data.DamageTypeValue);
+
 	switch (Data.DamageTypeValue)
 	{
 	case DamageType::None:
@@ -528,8 +530,6 @@ void Enemy_HellAntenora::DamageCollisionCheck(float _DeltaTime)
 	default:
 		break;
 	}
-
-	HitStop(Data.DamageTypeValue);
 }
 
 void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)

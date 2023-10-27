@@ -670,6 +670,8 @@ void Enemy_ScudoAngelo::DamageCollisionCheck(float _DeltaTime)
 		Data.DamageTypeValue = DamageType::Light;
 	}
 
+	HitStop(Data.DamageTypeValue);
+
 	switch (Data.DamageTypeValue)
 	{
 	case DamageType::None:
@@ -737,8 +739,6 @@ void Enemy_ScudoAngelo::DamageCollisionCheck(float _DeltaTime)
 	default:
 		break;
 	}
-
-	HitStop(Data.DamageTypeValue);
 }
 
 void Enemy_ScudoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
@@ -810,8 +810,6 @@ void Enemy_ScudoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 		StartRenderShaking(6);
 		return;
 	}
-
-	MinusEnemyHP(Data.DamageValue);
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
