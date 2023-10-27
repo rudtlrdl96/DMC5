@@ -31,6 +31,11 @@ public:
 		FontColor = _FontColor;
 	}
 
+	void SetAlpha(float _FontAlpha)
+	{
+		FontColor.a = _FontAlpha;
+	}
+
 	inline void SetFontFlag(FW1_TEXT_FLAG _Flag)
 	{
 		FwTextFlag = _Flag;
