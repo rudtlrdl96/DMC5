@@ -60,43 +60,37 @@ void Enemy_ProtoAngelo::EnemyMeshLoad()
 		break;
 	}
 
-	//LeftWeapon = CreateComponent<GameEngineFBXRenderer>();
-	//RightWeapon = CreateComponent<GameEngineFBXRenderer>();
+	RightWeapon = CreateComponent<GameEngineFBXRenderer>();
 
-	//if (nullptr == GameEngineFBXMesh::Find("wpem0001_00.FBX"))
-	//{
-	//	std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
-	//		{
-	//			"Character", "Enemy", "Proto", "mesh"
-	//		},
-	//		"wpem0001_00.FBX");
+	if (nullptr == GameEngineFBXMesh::Find("wpem0601_00.FBX"))
+	{
+		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+			{
+				"Character", "Enemy", "Proto", "mesh"
+			},
+			"wpem0601_00.FBX");
 
-	//	GameEngineFBXMesh::Load(Path);
-	//}
+		GameEngineFBXMesh::Load(Path);
+	}
 
-	//switch (GameEngineOption::GetOption("Shader"))
-	//{
-	//case GameEngineOptionValue::Low:
-	//{
-	//	LeftWeapon->SetFBXMesh("wpem0001_00.fbx", "FBX_Low");
-	//	RightWeapon->SetFBXMesh("wpem0001_00.fbx", "FBX_Low");
-	//}
-	//break;
-	//case GameEngineOptionValue::High:
-	//{
-	//	LeftWeapon->SetFBXMesh("wpem0001_00.fbx", "FBX");
-	//	RightWeapon->SetFBXMesh("wpem0001_00.fbx", "FBX");
-	//}
-	//break;
-	//default:
-	//	break;
-	//}
+	switch (GameEngineOption::GetOption("Shader"))
+	{
+	case GameEngineOptionValue::Low:
+	{
+		RightWeapon->SetFBXMesh("wpem0601_00.fbx", "FBX_Low");
+	}
+	break;
+	case GameEngineOptionValue::High:
+	{
+		RightWeapon->SetFBXMesh("wpem0601_00.fbx", "FBX");
+	}
+	break;
+	default:
+		break;
+	}
 
-	//LeftWeapon->ShadowOn();
-	//LeftWeapon->SetDynamic();
-
-	//RightWeapon->ShadowOn();
-	//RightWeapon->SetDynamic();
+	RightWeapon->ShadowOn();
+	RightWeapon->SetDynamic();
 
 	if (nullptr == GameEngineTexture::Find("PaperBurnNoise.jpg"))
 	{
@@ -107,8 +101,7 @@ void Enemy_ProtoAngelo::EnemyMeshLoad()
 	}
 
 	EnemyRenderer->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
-	//LeftWeapon->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
-	//RightWeapon->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
+	RightWeapon->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
 }
 
 void Enemy_ProtoAngelo::EnemyAnimationLoad()
@@ -207,31 +200,17 @@ void Enemy_ProtoAngelo::Start()
 	RN_MonsterCollision->Off();
 
 	// 무기 붙이기
-	//EnemyRenderer->SetAttachTransform("L_WeaponHand", LeftWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 170.0f, 180.0f), true);
-	//EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 170.0f, 180.0f), true);
+	EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(180.0f, 0.0f, 0.0f), true, true);
 
-	//float4 MeshScale_L = LeftWeapon->GetMeshScale();
-	//// MeshScale = { 77.6 , 10.5 , 171.0 }
-	//MeshScale_L.x *= 0.7f;
-	//MeshScale_L.z *= 0.6f;
-	//float4 MeshScale_R = RightWeapon->GetMeshScale();
-	//MeshScale_R.x *= 0.7f;
-	//MeshScale_R.z *= 0.6f;
+	float4 MeshScale_R = RightWeapon->GetMeshScale();
+	MeshScale_R.x *= 0.7f;
+	MeshScale_R.z *= 0.65f;
 
-	//MonsterAttackCollision->GetTransform()->SetWorldScale(MeshScale_L);
-	//MonsterAttackCollision_Two->GetTransform()->SetWorldScale(MeshScale_R);
-
-	//MonsterAttackCollision->GetTransform()->SetParent(LeftWeapon->GetTransform());
-	//MonsterAttackCollision_Two->GetTransform()->SetParent(RightWeapon->GetTransform());
-
-	//MonsterAttackCollision->GetTransform()->AddLocalPosition(float4{ 0.0f, 0.0f, 80.0f });
-	//MonsterAttackCollision_Two->GetTransform()->AddLocalPosition(float4{ 0.0f, 0.0f, 80.0f });
-
-	//MonsterAttackCollision->GetTransform()->AddLocalRotation(float4{ 0.0f, -10.0f, 0.0f });
-	//MonsterAttackCollision_Two->GetTransform()->AddLocalRotation(float4{ 0.0f, -10.0f, 0.0f });
-
-	//MonsterAttackCollision->Off();
-	//MonsterAttackCollision_Two->Off();
+	MonsterAttackCollision->GetTransform()->SetWorldScale(MeshScale_R);
+	MonsterAttackCollision->GetTransform()->SetParent(RightWeapon->GetTransform());
+	MonsterAttackCollision->GetTransform()->AddLocalPosition(float4{ 0.0f, 0.0f, 140.0f });
+	MonsterAttackCollision->GetTransform()->AddLocalRotation(float4{ 0.0f, 0.0f, 0.0f });
+	MonsterAttackCollision->Off();
 
 	// 넷 오브젝트 타입 설정1
 	SetNetObjectType(Net_ActorType::ProtoAngelo);

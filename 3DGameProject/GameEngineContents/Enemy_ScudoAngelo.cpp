@@ -1289,6 +1289,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	MonsterAttackCollisionOff();
 	SlerpTime = 0.0f;
 	IsSuperArmor = false;
+	IsParryCheck = false;
 	}
 		});
 
@@ -1352,6 +1353,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	MonsterAttackCollisionOff();
 	IsRecognize = false;
 	IsSuperArmor = false;
+	IsParryCheck = false;
 	}
 		});
 
@@ -1434,6 +1436,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	MonsterAttackCollisionOff();
 	SlerpTime = 0.0f;
 	IsSuperArmor = false;
+	IsParryCheck = false;
 	}
 		});
 
@@ -1566,6 +1569,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	MonsterAttackCollisionOff();
 	RunTime = 0.0f;
 	IsSuperArmor = false;
+	IsParryCheck = false;
 	}
 		});
 
