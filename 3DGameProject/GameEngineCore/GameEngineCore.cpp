@@ -16,6 +16,7 @@
 #include "GameEnginePhysics.h"
 #include "GameEngineOption.h"
 #include "GameEngineScreenShoot.h"
+#include "GameEngineCaptureTexture.h"
 
 GameEngineThreadJobQueue GameEngineCore::JobQueue;
 
@@ -26,6 +27,8 @@ std::shared_ptr<GameEngineLevel> GameEngineCore::NextLevel = nullptr;
 std::shared_ptr<class GameEngineLevel> GameEngineCore::CurLoadLevel;
 float GameEngineCore::FrameTime = 0.0f;
 float GameEngineCore::FrameRate = 0.0f;
+
+std::vector<GameEngineCore::CaptureData> GameEngineCore::CaptureList;
 
 GameEngineCore::GameEngineCore()
 {
@@ -199,19 +202,26 @@ void GameEngineCore::EngineUpdate()
 		GameEngineDevice::RenderEnd();
 	}
 
-	if (true == GameEngineInput::IsDown("ScreenShoot"))
+	for (size_t i = 0; i < CaptureList.size(); i++)
 	{
-		GameEngineScreenShoot::ScreenShoot();
+		GameEngineCaptureTexture::CaptureTexture(CaptureList[i].CaptureName, CaptureList[i].Scale, CaptureList[i].CaptureTarget, CaptureList[i].TexIndex);
 	}
-	if (true == GameEngineInput::IsDown("RenderTargetShoot"))
-	{
-		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
-			{
-				"Texture", "ScreenShot"
-			});
 
-		GameEngineScreenShoot::RenderTargetShoot(MainLevel->GetScreenShootTarget(), Path, "RenderTargetShoot.DDS");
-	}
+	CaptureList.clear();
+
+	//if (true == GameEngineInput::IsDown("ScreenShoot"))
+	//{
+	//	GameEngineScreenShoot::ScreenShoot();
+	//}
+	//if (true == GameEngineInput::IsDown("RenderTargetShoot"))
+	//{
+	//	std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+	//		{
+	//			"Texture", "ScreenShot"
+	//		});
+	//
+	//	GameEngineScreenShoot::RenderTargetShoot(MainLevel->GetScreenShootTarget(), Path, "RenderTargetShoot.DDS");
+	//}
 
 	MainLevel->LightRelease();
 	MainLevel->ActorRelease();

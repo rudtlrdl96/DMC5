@@ -323,7 +323,7 @@ void GameEngineRenderTarget::EffectInit(std::shared_ptr<GameEnginePostProcess> _
 	_PostProcess->Start(this);
 }
 
-void GameEngineRenderTarget::ChangeViewPort(float4 _Scale, int _Index)
+void GameEngineRenderTarget::ChangeViewPort(const float4& _Scale, int _Index)
 {
 	D3D11_VIEWPORT ViewPortData;
 	ViewPortData.TopLeftX = 0;

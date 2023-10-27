@@ -118,6 +118,16 @@ void GameEngineSpriteRenderer::SetTexture(const std::string_view& _Name)
 
 }
 
+void GameEngineSpriteRenderer::SetTexture(std::shared_ptr<GameEngineTexture> _Tex)
+{
+	GetShaderResHelper().SetTexture("DiffuseTex", _Tex);
+
+	CurAnimation = nullptr;
+	AtlasData = float4{ 0.0f, 0.0f, 1.0f, 1.0f };
+
+	CurTexture = _Tex;
+}
+
 void GameEngineSpriteRenderer::SetFlipX()
 {
 	Flip.x = Flip.x != 0.0f ? 0.0f : 1.0f;

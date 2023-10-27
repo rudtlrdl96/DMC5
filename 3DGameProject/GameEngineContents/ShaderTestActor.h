@@ -16,15 +16,14 @@ public:
 	ShaderTestActor& operator=(const ShaderTestActor& _Other) = delete;
 	ShaderTestActor& operator=(ShaderTestActor&& _Other) noexcept = delete;
 
+protected:
 	void Start() override;
+	void Update(float _DeltaTime) override;
 
 	void InitTest(int _Index);
-
-
-protected:
-
 private:
-	std::shared_ptr<class GameEngineFBXRenderer> TestRenderer = nullptr;
+	//std::shared_ptr<class GameEngineFBXRenderer> TestRenderer = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> TestRenderer = nullptr;
 	//std::shared_ptr<EffectRenderer> TestRenderer = nullptr;
 
 	void DrawEditor() override;

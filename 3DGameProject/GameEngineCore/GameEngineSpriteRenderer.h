@@ -97,6 +97,7 @@ public:
 	void SetScaleToTexture(const std::string_view& _Name);
 
 	void SetTexture(const std::string_view& _Name);
+	void SetTexture(std::shared_ptr<GameEngineTexture> _Tex);
 
 	void SetScaleRatio(float _Ratio)
 	{

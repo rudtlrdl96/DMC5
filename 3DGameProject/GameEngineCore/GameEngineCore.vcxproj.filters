@@ -892,6 +892,9 @@
     <ClInclude Include="GameEngineComputeShader.h">
       <Filter>Resources\Shader</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineCaptureTexture.h">
+      <Filter>Content\ScreenShoot</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -1121,6 +1124,9 @@
     </ClCompile>
     <ClCompile Include="GameEngineComputeShader.cpp">
       <Filter>Resources\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineCaptureTexture.cpp">
+      <Filter>Content\ScreenShoot</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

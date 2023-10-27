@@ -38,7 +38,7 @@ void MainLevel::Start()
 	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
 
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -100.0f });
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
 
 	CreateScene(GetName());
 }
@@ -111,8 +111,6 @@ void MainLevel::LevelChangeStart()
 	GameEngineCoreWindow::AddDebugRenderTarget(2, "Light Target", GetMainCamera()->GetDeferredLightTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(3, "Alpha Target", GetMainCamera()->GetCamAlphaTarget());
 	GameEngineCoreWindow::AddDebugRenderTarget(4, "Last Target", GetMainCamera()->GetCamTarget());
-
-	//std::shared_ptr<ShaderTestActor> TestActor = CreateActor<ShaderTestActor>();
 }
 
 void MainLevel::LevelChangeEnd()

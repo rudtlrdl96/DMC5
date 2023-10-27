@@ -22,6 +22,15 @@ class GameEngineCore
 	friend class GameEngineTexture;
 	friend class GameEngineSprite;
 
+	class CaptureData
+	{
+	public:
+		std::string CaptureName = "";
+		std::shared_ptr<GameEngineRenderTarget> CaptureTarget = nullptr;
+		size_t TexIndex = 0;
+		float4 Scale = float4::ZERO;
+	};
+
 public:
 	// constrcuter destructer
 	GameEngineCore();
@@ -89,6 +98,30 @@ public:
 		return LevelMap;
 	}
 
+	static void CaptureTexture(const std::string_view& _Name, std::shared_ptr<GameEngineRenderTarget> _CaptureTarget, const float4& _Scale = {float4::ZERO}, size_t _TexIndex = 0)
+	{	
+		if (nullptr == _CaptureTarget)
+		{
+			MsgAssert("존재 하지 않는 랜더타겟으로 캡쳐 하려 했습니다.");
+			return;
+		}
+
+		CaptureData& NewData = CaptureList.emplace_back();
+
+		NewData.CaptureName = _Name;
+		NewData.CaptureTarget = _CaptureTarget;
+		NewData.TexIndex = _TexIndex;
+
+		if (_Scale == float4::ZERO)
+		{
+			NewData.Scale = GameEngineWindow::GetScreenSize();
+		}
+		else
+		{
+			NewData.Scale = _Scale;
+		}
+	}
+
 protected:
 
 private:
@@ -110,5 +143,8 @@ private:
 
 	static float FrameTime;
 	static float FrameRate;
+
+	static std::vector<CaptureData> CaptureList;
+
 };
 

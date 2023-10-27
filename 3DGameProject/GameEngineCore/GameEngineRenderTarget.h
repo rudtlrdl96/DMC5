@@ -45,14 +45,14 @@ public:
 		return NewRenderTarget;
 	}
 
-	static std::shared_ptr<GameEngineRenderTarget> Create(const std::string_view& _Name, std::shared_ptr<GameEngineTexture> _Texture, float4 _Color)
+	static std::shared_ptr<GameEngineRenderTarget> Create(const std::string_view& _Name, std::shared_ptr<GameEngineTexture> _Texture, const float4& _Color)
 	{
 		std::shared_ptr<GameEngineRenderTarget> NewRenderTarget = GameEngineResource::Create(_Name);
 		NewRenderTarget->ResCreate(_Texture, _Color);
 		return NewRenderTarget;
 	}
 
-	static std::shared_ptr<GameEngineRenderTarget> Create(DXGI_FORMAT _Format, float4 _Scale, float4 _Color)
+	static std::shared_ptr<GameEngineRenderTarget> Create(DXGI_FORMAT _Format, const float4& _Scale, const float4& _Color)
 	{
 		std::shared_ptr<GameEngineRenderTarget> NewRenderTarget = GameEngineResource::CreateUnNamed();
 		NewRenderTarget->ResCreate(_Format, _Scale, _Color);
@@ -113,19 +113,19 @@ public:
 		DepthSetting = false;
 	}
 
-	void AddNewTexture(DXGI_FORMAT _Format, float4 _Scale, float4 _Color)
+	void AddNewTexture(DXGI_FORMAT _Format, const float4& _Scale, const float4& _Color)
 	{
 		ResCreate(_Format, _Scale, _Color);
 	}
 
-	void AddNewCubeTexture(DXGI_FORMAT _Format, float4 _Scale, float4 _Color)
+	void AddNewCubeTexture(DXGI_FORMAT _Format, const float4& _Scale, const float4& _Color)
 	{
 		ResCubemapCreate(_Format, _Scale, _Color);
 	}
 
 	void ReleaseTextures();
 
-	void ChangeViewPort(float4 _Scale, int _Index = 0);
+	void ChangeViewPort(const float4& _Scale, int _Index = 0);
 
 protected:
 

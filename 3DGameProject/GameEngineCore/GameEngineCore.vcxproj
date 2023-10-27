@@ -191,6 +191,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GameEngineCaptureTexture.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameEngineComputeShader.h">
       <SubType>
       </SubType>
@@ -680,6 +684,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="GameEngineCamera.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameEngineCaptureTexture.cpp">
       <SubType>
       </SubType>
     </ClCompile>
