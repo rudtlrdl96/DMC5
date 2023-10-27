@@ -7,14 +7,16 @@ public:
 	//이 함수를 통해 로딩 레벨을 활성화 시킵니다
 	static void ChangeLevel(const std::string_view& _NextLevelName)
 	{
+		std::string UpperName = GameEngineString::ToUpper(_NextLevelName);
+
 		//해당 레벨에 로딩할 대상이 없는 경우엔
-		if (true == Inst->AllThreadLoadCallBack[_NextLevelName.data()].empty())
+		if (true == Inst->AllThreadLoadCallBack[UpperName].empty())
 		{
-			GameEngineCore::ChangeLevel(_NextLevelName);
+			GameEngineCore::ChangeLevel(UpperName);
 			return;
 		}
 		
-		NextLevelName = _NextLevelName;
+		NextLevelName = UpperName;
 		GameEngineCore::ChangeLevel("ThreadLoadingLevel");
 	}
 

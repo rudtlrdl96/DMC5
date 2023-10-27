@@ -552,6 +552,12 @@
     <ClInclude Include="StoreWood01.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L11</Filter>
     </ClInclude>
+    <ClInclude Include="LevelChangeZone.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\LevelChange</Filter>
+    </ClInclude>
+    <ClInclude Include="ToLocation11.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\LevelChange</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -1099,6 +1105,12 @@
     <ClCompile Include="StoreWood01.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L11</Filter>
     </ClCompile>
+    <ClCompile Include="LevelChangeZone.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\LevelChange</Filter>
+    </ClCompile>
+    <ClCompile Include="ToLocation11.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\LevelChange</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
@@ -1403,6 +1415,9 @@
     </Filter>
     <Filter Include="UI\UI_Actor\ResultUI">
       <UniqueIdentifier>{2e230059-70ff-4cd7-af0a-e9daf327a439}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Stage\FieldMap\FieldMapObj\EventZone\LevelChange">
+      <UniqueIdentifier>{4580a466-a5f7-47c4-a7fc-36acfb3fca8b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

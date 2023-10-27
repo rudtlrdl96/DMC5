@@ -28,6 +28,7 @@
 #include "ArcadeCafeRoof02.h"
 #include "StoreWhite01.h"
 #include "StoreWood01.h"
+#include "ToLocation11.h"
 
 FieldMapObject::FieldMapObject()
 {
@@ -130,7 +131,9 @@ std::shared_ptr<FieldMapObject> FieldMapObject::CreateFieldMapObj(GameEngineLeve
 	case FieldMapObjType::StoreWood01:
 		Result = _Level->CreateActor<StoreWood01>();
 		break;
-
+	case FieldMapObjType::ToLocation11:
+		Result = _Level->CreateActor<ToLocation11>();
+		break;
 	default:
 		MsgAssert("¹Ì±¸Çö");
 		break;

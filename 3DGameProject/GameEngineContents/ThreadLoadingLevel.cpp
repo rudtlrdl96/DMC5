@@ -9,6 +9,7 @@
 #include "FXData.h"
 #include "NeroLoading.h"
 #include "FadeEffect.h"
+#include "Location11_Level.h"
 std::string ThreadLoadingLevel::NextLevelName;
 ThreadLoadingLevel* ThreadLoadingLevel::Inst = nullptr;
 
@@ -109,6 +110,18 @@ void ThreadLoadingLevel::Start()
 		PushLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\WATER_l02_03.fbx");
 		PushLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\WATER_l02_04.fbx");
 		PushLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\LOD_1_Group_0_Sub_3__m02m_illminary01.fbx");
+
+		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\l11_12.fbx");
+		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\l11_13.fbx");
+		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\l11_14.fbx");
+		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\l11_15.fbx");
+		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\l11_16.fbx");
+		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\l11_20.fbx");
+		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\l11_floor.fbx");
+		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\l11_SkyBox.fbx");
+		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\l11_wall.fbx");
+		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\sm0028_storewhite01.fbx");
+		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\sm0038_storewood01.fbx");
 
 		//PushAllLoadCallBack<TestStageLevel, GameEngineTexture>("Map\\Location2", { ".tga", ".png"});
 

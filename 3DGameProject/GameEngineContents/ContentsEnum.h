@@ -138,4 +138,5 @@ enum class FieldMapObjType
 	ArcadeCafeRoof02,
 	StoreWhite01,
 	StoreWood01,
+	ToLocation11,
 };

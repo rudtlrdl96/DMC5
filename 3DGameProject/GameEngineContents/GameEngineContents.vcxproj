@@ -331,6 +331,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="LevelChangeZone.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Location19_Level.h" />
     <ClInclude Include="Location2_EnemySpawner0.h">
       <SubType>
@@ -450,6 +454,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="ThreadLoadingLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ToLocation11.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -983,6 +991,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="LevelChangeZone.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Location19_Level.cpp" />
     <ClCompile Include="Location2_EnemySpawner0.cpp">
       <SubType>
@@ -1089,6 +1101,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="ThreadLoadingLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ToLocation11.cpp">
       <SubType>
       </SubType>
     </ClCompile>
