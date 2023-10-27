@@ -96,8 +96,8 @@ void GameEngineLevel::LevelLightInit()
 		DirectionalLight->ShadowTextureScaleValue = ShadowTextureScale::S_8192;
 		DirectionalLight->LightDataValue.ShadowTargetSizeX = 8192;
 		DirectionalLight->LightDataValue.ShadowTargetSizeY = 8192;
-		DirectionalLight->ShadowRange.x = 8192 * 4;
-		DirectionalLight->ShadowRange.y = 8192 * 4;
+		DirectionalLight->ShadowRange.x = 8192 * 4.0f;
+		DirectionalLight->ShadowRange.y = 8192 * 4.0f;
 		DirectionalLight->LightDataValue.LightColor = float4(1.0f, 1.0f, 1.0f);
 		DirectionalLight->SetSpcLightPower(0.1f);
 		DirectionalLight->SetLightRange(20000.0f);

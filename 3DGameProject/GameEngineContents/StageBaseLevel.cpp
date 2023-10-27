@@ -123,11 +123,6 @@ void StageBaseLevel::LevelChangeEnd()
 
 void StageBaseLevel::LoadStageFBXMesh()
 {
-	if (GameEngineFBXMesh::Find("ALPHA_l02_01.fbx") != nullptr)
-	{
-		return;
-	}
-
 	{
 		GameEngineDirectory Dir = GameEnginePath::GetFileFullPath
 		(
@@ -137,8 +132,14 @@ void StageBaseLevel::LoadStageFBXMesh()
 			}
 		);
 		std::vector<GameEngineFile> FBXFiles = Dir.GetAllFile({ ".fbx" });
+
 		for (GameEngineFile& File : FBXFiles)
 		{
+			if (GameEngineFBXMesh::Find(File.GetFileName()) != nullptr)
+			{
+				continue;
+			}
+
 			GameEngineFBXMesh::Load(File.GetFullPath());
 		}
 	}

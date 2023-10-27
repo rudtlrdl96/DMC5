@@ -18,6 +18,9 @@
 #include "Player_MirageBlade.h"
 #include "Enemy_HellCaina.h"
 #include "Enemy_Empusa.h"
+#include "FadeEffect.h"
+#include "MotionBlurEffect.h"
+#include "BWColorEffect.h"
 
 #include "ShaderTestActor.h"
 #include "FreeCameraActor.h"
@@ -43,6 +46,11 @@ Location2_Level::~Location2_Level()
 
 void Location2_Level::Start()
 {
+	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 5000, -4500));
+	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 45.f,45.f,45.f });
+	GetDirectionalLight()->SetLightPower(1.f);
+	GetDirectionalLight()->SetLightColor({ 0.5f,0.5,1.f });
+
 	BaseLevel::Start();
 	BaseLevel::SetNetLevelType(Net_LevelType::Location2);
 
@@ -51,10 +59,10 @@ void Location2_Level::Start()
 	GetCamera(0)->GetCamTarget()->CreateEffect<ColorEffect>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
 
-	GetCamera(0)->GetDeferredLightTarget()->CreateEffect<BloomEffect>();
+	 GetCamera(0)->GetDeferredLightTarget()->CreateEffect<BloomEffect>();
 
 	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
-	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
+	GetCamera(0)->GetCamTarget()->CreateEffect<BWColorEffect>();
 
 	{
 		std::shared_ptr<DistortionEffect> Distortion = GetCamera(0)->GetCamTarget()->CreateEffect<DistortionEffect>();
@@ -62,6 +70,23 @@ void Location2_Level::Start()
 		Distortion->SetDistortionValue(10, 10);
 		Distortion->SetMaxPixelValue(100, 100);
 	}
+
+	{
+		std::shared_ptr<DistortionEffect> Distortion = GetCamera(0)->GetCamTarget()->CreateEffect<DistortionEffect>();
+		Distortion->SetMaskTexture(GetCamera(100)->GetCamAlphaTarget(), 1);
+		Distortion->SetDistortionValue(10, 10);
+		Distortion->SetMaxPixelValue(100, 100);
+	}
+	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
+
+	{
+		std::shared_ptr<MotionBlurEffect> Blur = GetCamera(0)->GetCamTarget()->CreateEffect<MotionBlurEffect>();
+		Blur->SetCamPosTarget(GetMainCamera()->GetCamPosTarget());
+		Blur->SetCamMaskTarget(GetMainCamera()->GetCamMaskTarget());
+		Blur->SetCam(GetMainCamera());
+	}
+
+	std::shared_ptr<FadeEffect> Fade = GetLastTarget()->CreateEffect<FadeEffect>();
 
 	StageBaseLevel::Start();
 
@@ -82,11 +107,6 @@ void Location2_Level::Start()
 			//std::shared_ptr<EnemySpawner> Spawner = GetLevel()->CreateActor<Location2_EnemySpawner1>();
 			RedSealWallOn();
 		});
-
-	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 10000, 0));
-	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 45.f,45.f,45.f });
-	GetDirectionalLight()->SetLightPower(1.f);
-	GetDirectionalLight()->SetLightColor({ 0.5f,0.5,1.f });
 }
 
 void Location2_Level::Update(float _DeltaTime)

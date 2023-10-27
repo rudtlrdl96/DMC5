@@ -2,6 +2,7 @@
 #include "Location19_Level.h"
 
 #include <GameEngineCore/GameEngineFBXMesh.h>
+#include <GameEngineCore/BloomEffect.h>
 
 #include "NetworkManager.h"
 #include "MapCollisionMesh.h"
@@ -11,6 +12,11 @@
 #include "JudgementCut.h"
 #include "FXAA_Effect.h"
 #include "SkyBox.h"
+#include "BWColorEffect.h"
+#include "DistortionEffect.h"
+#include "ZoomEffect.h"
+#include "MotionBlurEffect.h"
+#include "FadeEffect.h"
 
 Location19_Level::Location19_Level()
 {
@@ -29,7 +35,35 @@ void Location19_Level::Start()
 
 	GetCamera(0)->GetCamTarget()->CreateEffect<ColorEffect>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
+
+	GetCamera(0)->GetDeferredLightTarget()->CreateEffect<BloomEffect>();
+
 	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
+	GetCamera(0)->GetCamTarget()->CreateEffect<BWColorEffect>();
+
+	{
+		std::shared_ptr<DistortionEffect> Distortion = GetCamera(0)->GetCamTarget()->CreateEffect<DistortionEffect>();
+		Distortion->SetMaskTexture(GetCamera(0)->GetCamAlphaTarget(), 1);
+		Distortion->SetDistortionValue(10, 10);
+		Distortion->SetMaxPixelValue(100, 100);
+	}
+
+	{
+		std::shared_ptr<DistortionEffect> Distortion = GetCamera(0)->GetCamTarget()->CreateEffect<DistortionEffect>();
+		Distortion->SetMaskTexture(GetCamera(100)->GetCamAlphaTarget(), 1);
+		Distortion->SetDistortionValue(10, 10);
+		Distortion->SetMaxPixelValue(100, 100);
+	}
+	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
+
+	{
+		std::shared_ptr<MotionBlurEffect> Blur = GetCamera(0)->GetCamTarget()->CreateEffect<MotionBlurEffect>();
+		Blur->SetCamPosTarget(GetMainCamera()->GetCamPosTarget());
+		Blur->SetCamMaskTarget(GetMainCamera()->GetCamMaskTarget());
+		Blur->SetCam(GetMainCamera());
+	}
+
+	std::shared_ptr<FadeEffect> Fade = GetLastTarget()->CreateEffect<FadeEffect>();
 
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, 0 });

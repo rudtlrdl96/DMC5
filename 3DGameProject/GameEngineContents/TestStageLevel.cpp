@@ -72,6 +72,7 @@ void TestStageLevel::Start()
 		Distortion->SetMaxPixelValue(100, 100);
 	}	
 	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
+
 	{
 		std::shared_ptr<MotionBlurEffect> Blur = GetCamera(0)->GetCamTarget()->CreateEffect<MotionBlurEffect>();
 		Blur->SetCamPosTarget(GetMainCamera()->GetCamPosTarget());
@@ -119,7 +120,7 @@ void TestStageLevel::Update(float _DeltaTime)
 void TestStageLevel::LevelChangeStart()
 {
 	// 테스트용 코드
-	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 5000, 0));
+	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 5000, -4500));
 	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 45.f, 45.f, 45.f });
 	GetDirectionalLight()->SetLightPower(1.f);
 	GetDirectionalLight()->SetLightColor({ 0.5f,0.5,1.f });
