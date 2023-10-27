@@ -364,7 +364,7 @@ FSM.CreateState({ .StateValue = ResultState_Wait,
 	TextBackgroundBar_4->Off();
 
 	RankBackgroundRenderer->Off();
-	GetLevel()->TimeEvent.AddEvent(1.0f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* TimeEvent)
+	GetLevel()->TimeEvent.AddEvent(0.15f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* TimeEvent)
 		{
 			TimeEvent->AddEvent(0.2f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _TimeEvent)
 				{
