@@ -211,6 +211,37 @@ void Enemy_HellCaina::Start()
 	LinkData_UpdatePacket<bool>(IsBurn);
 	LinkData_UpdatePacket<int>(EnemyHP);
 
+	BindNetObjEvent(2, [this](std::vector<NetworkObjectBase*> _Actors)
+		{
+			if (_Actors.size() <= 0)
+			{ 
+				MsgAssert("잘못된 DamageCallBack 이벤트입니다");
+				return;
+			}
+			BasePlayerActor* _Player = dynamic_cast<BasePlayerActor*>(_Actors[0]);
+			if (nullptr == _Player) 
+			{ 
+				MsgAssert("잘못된 DamageCallBack 이벤트입니다");
+				return; 
+			}
+			Player = _Player;
+
+			DamageData Datas = Player->GetAttackCollision()->GetDamage();
+			MinusEnemyHP(Datas.DamageValue);
+			PlayDamageEvent(Datas.DamageTypeValue, Datas.SoundType);
+			Sound.PlayVoice(3, false);
+			if (DamageType::Stun == Datas.DamageTypeValue)
+			{
+				StopTime(2.8f);
+				AttackDelayCheck = 1.0f;
+			}
+			HitStop(Datas.DamageTypeValue);
+			if (EnemyHP < 0)
+			{
+				DeathValue = true;
+			}
+		});
+
 	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker) {
 		Player = _Attacker;
 		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
@@ -220,12 +251,6 @@ void Enemy_HellCaina::Start()
 		if (DamageType::VergilLight == Datas.DamageTypeValue)
 		{
 			IsVergilLight = true;
-		}
-
-		if (DamageType::Stun == Datas.DamageTypeValue)
-		{
-			StopTime(2.9f);
-			AttackDelayCheck = 1.0f;
 		}
 
 		HitStop(Datas.DamageTypeValue);
@@ -446,6 +471,7 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 		break;
 	case DamageType::Stun:
 		StopTime(2.9f);
+		AttackDelayCheck = 1.0f;
 		return;
 	default:
 		break;
@@ -481,6 +507,7 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 	std::shared_ptr<AttackCollision> AttackCol = std::dynamic_pointer_cast<AttackCollision>(Col);
 	if (nullptr == AttackCol) { return; }
 
+	PlayerAttackCheck(AttackCol.get());
 	DamageData Data = AttackCol->GetDamage();
 	AttackDelayCheck = 0.0f;
 	PlayDamageEvent(Data.DamageTypeValue, Data.SoundType);
@@ -513,6 +540,7 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 		if (true == IsCollapse)
 		{
 			StartRenderShaking(8);
+			ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
 			return;
 		}
 
@@ -553,6 +581,8 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 		ChangeState_Client(FSM_State_HellCaina::HellCaina_Buster_Start);
 		break;
 	case DamageType::Stun:
+		ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
+		AttackDelayCheck = 1.0f;
 		break;
 	default:
 		break;

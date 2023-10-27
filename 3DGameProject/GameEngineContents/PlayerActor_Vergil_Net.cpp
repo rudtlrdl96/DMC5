@@ -683,6 +683,7 @@ void PlayerActor_Vergil::NetLoad()
 		// JudgementCutEnd 1
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_1,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Stun, 0);
 				Sound.Play("Yamato_", 15);
 				Sound.Play("Yamato_", 17);
 				Sound.PlayVoice(21, DTValue);
@@ -729,6 +730,7 @@ void PlayerActor_Vergil::NetLoad()
 		// Vergil_yamato_JudgementCutEnd_2
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_yamato_JudgementCutEnd_2,
 			.Start = [=] {
+				Col_Attack->SetAttackData(DamageType::Heavy, 3000);
 				Renderer->On();
 				EffectSystem->PlayFX("Yamato_JudgementCut_End_2.effect");
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCutEnd_2");

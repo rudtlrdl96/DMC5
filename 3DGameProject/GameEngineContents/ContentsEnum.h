@@ -71,6 +71,7 @@ enum class Net_EventType
 {
 	RedWallOff_Location2_Spawner0,
 	RedWallOff_Location2_Spawner1,
+	DamageCallBack,
 
 	COUNT
 };
