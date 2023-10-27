@@ -16,7 +16,6 @@ std::shared_ptr<GameEngineFBXMesh> GameEngineFBXMesh::Load(const std::string_vie
 {
 	std::shared_ptr<GameEngineFBXMesh> Res = GameEngineResource::Create(_Name);
 	Res->SetPath(_Path);
-	Res->Initialize();
 	return Res;
 }
 

@@ -120,7 +120,7 @@ private:
 				return;
 
 			std::shared_ptr<ResourceType> ResPtr = ResourceType::Find(FileName);
-			InitResource(ResPtr.get());
+			InitResource(ResPtr.get());	
 		});
 	}
 

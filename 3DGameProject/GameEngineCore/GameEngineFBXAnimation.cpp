@@ -22,7 +22,6 @@ std::shared_ptr<GameEngineFBXAnimation> GameEngineFBXAnimation::Load(const std::
 	std::shared_ptr<GameEngineFBXAnimation> NewRes = Create(_Name);
 	NewRes->SetPath(_Path);
 	NewRes->LoadMesh(_Path, _Name);
-	NewRes->Initialize();
 	return NewRes;
 }
 
