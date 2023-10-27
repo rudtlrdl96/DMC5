@@ -102,6 +102,7 @@ void TestLevel::LevelChangeStart()
 	//IsDebugSwitch();
 	SetLevelSceneGravity(2000);
 
+	if(nullptr == GameEngineFBXMesh::Find("Ground_Mesh.fbx"))
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
