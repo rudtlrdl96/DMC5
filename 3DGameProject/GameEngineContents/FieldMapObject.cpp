@@ -26,6 +26,8 @@
 #include "ArcadeGate.h"
 #include "ArcadeCafeRoof01.h"
 #include "ArcadeCafeRoof02.h"
+#include "StoreWhite01.h"
+#include "StoreWood01.h"
 
 FieldMapObject::FieldMapObject()
 {
@@ -122,6 +124,12 @@ std::shared_ptr<FieldMapObject> FieldMapObject::CreateFieldMapObj(GameEngineLeve
 	case FieldMapObjType::ArcadeCafeRoof02:
 		Result = _Level->CreateActor<ArcadeCafeRoof02>();
 		break;
+	case FieldMapObjType::StoreWhite01:
+		Result = _Level->CreateActor<StoreWhite01>();
+		break;
+	case FieldMapObjType::StoreWood01:
+		Result = _Level->CreateActor<StoreWood01>();
+		break;
 
 	default:
 		MsgAssert("¹Ì±¸Çö");
@@ -131,8 +139,6 @@ std::shared_ptr<FieldMapObject> FieldMapObject::CreateFieldMapObj(GameEngineLeve
 	Result->GetTransform()->SetLocalPosition(_ObjTransform.Pos);
 	Result->GetTransform()->SetLocalScale(_ObjTransform.Scale);
 	Result->GetTransform()->SetLocalRotation(_ObjTransform.Rot);
-
-
 
 	return Result;
 }

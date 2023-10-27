@@ -406,6 +406,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="StoreWhite01.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="StoreWood01.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="StreetLight_Off.h">
       <SubType>
       </SubType>
@@ -1053,6 +1061,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="StatueB.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="StoreWhite01.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="StoreWood01.cpp">
       <SubType>
       </SubType>
     </ClCompile>

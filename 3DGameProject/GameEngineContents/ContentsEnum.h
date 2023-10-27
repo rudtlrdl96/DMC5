@@ -136,4 +136,6 @@ enum class FieldMapObjType
 	ArcadeGate,
 	ArcadeCafeRoof01,
 	ArcadeCafeRoof02,
+	StoreWhite01,
+	StoreWood01,
 };

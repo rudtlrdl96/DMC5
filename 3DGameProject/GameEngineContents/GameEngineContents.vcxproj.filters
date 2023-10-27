@@ -546,6 +546,12 @@
     <ClInclude Include="ResultActor.h">
       <Filter>UI\UI_Actor\ResultUI</Filter>
     </ClInclude>
+    <ClInclude Include="StoreWhite01.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L11</Filter>
+    </ClInclude>
+    <ClInclude Include="StoreWood01.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L11</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -1086,6 +1092,12 @@
     </ClCompile>
     <ClCompile Include="ResultActor.cpp">
       <Filter>UI\UI_Actor\ResultUI</Filter>
+    </ClCompile>
+    <ClCompile Include="StoreWhite01.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L11</Filter>
+    </ClCompile>
+    <ClCompile Include="StoreWood01.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L11</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
