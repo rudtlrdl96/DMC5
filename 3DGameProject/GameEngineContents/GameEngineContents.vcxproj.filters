@@ -519,9 +519,6 @@
     <ClInclude Include="Location19_Level.h">
       <Filter>Levels\Stage\3.Location19</Filter>
     </ClInclude>
-    <ClInclude Include="NetEventPacket.h">
-      <Filter>Server\01.Packet\03.ServerToClient</Filter>
-    </ClInclude>
     <ClInclude Include="Enemy_Qliphoth.h">
       <Filter>Actor\Enemy\NormalEnemy\Qliphoth</Filter>
     </ClInclude>
@@ -551,6 +548,9 @@
     </ClInclude>
     <ClInclude Include="StoreWood01.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L11</Filter>
+    </ClInclude>
+    <ClInclude Include="NetEventPacket.h">
+      <Filter>Server\01.Packet\02.Global</Filter>
     </ClInclude>
     <ClInclude Include="LevelChangeZone.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\LevelChange</Filter>

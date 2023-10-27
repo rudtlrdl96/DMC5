@@ -8,6 +8,7 @@
 #include "NetworkManager.h"
 #include "ObjectUpdatePacket.h"
 #include "FsmChangePacket.h"
+#include "NetEventPacket.h"
 
 
 NetworkObjectBase* NetworkObjectBase::DebugTarget = nullptr;
@@ -35,13 +36,17 @@ NetworkObjectBase* NetworkObjectBase::GetNetObj(unsigned int _ObjID)
 
 NetworkObjectBase::NetworkObjectBase()
 {
-
+	BindPacketCallBack<NetEventPacket>(PacketEnum::NetEventPacket, std::bind(&NetworkObjectBase::Process_NetObjEventPacket, this, std::placeholders::_1));
 }
 
 NetworkObjectBase::~NetworkObjectBase()
 {
 
 }
+
+
+
+
 
 
 void NetworkObjectBase::Update_ProcessPacket()
@@ -161,6 +166,60 @@ void NetworkObjectBase::SetFsmPacketCallBack(std::function<void(int _State)> _Ca
 		//다시 자신이 이 FSM State로 변경되었다는 것을 다른 네트워크에게 알림
 		NetworkManager::SendFsmChangePacket(this, _Packet->FsmState);
 	});
+}
+
+
+void NetworkObjectBase::BindNetObjEvent(int _EventType, const std::function<void()>& _EventCallBack)
+{
+	if (true == NetworkEvents.contains(_EventType))
+	{
+		std::string Name = GetName().data();
+		MsgAssert(Name  + "객체의 " + GameEngineString::ToString(_EventType) + "번 위치에는 이미 NetObjEvent가 존재합니다");
+		return;
+	}
+
+	NetworkEvents[_EventType] = _EventCallBack;
+}
+
+
+void NetworkObjectBase::ExcuteNetObjEvent(int _EventType, NetObjEventPath _Path)
+{
+	NetControllType CtrlType = GetControllType();
+
+	if (NetObjEventPath::ActiveToPassive == _Path && NetControllType::PassiveControll == CtrlType)
+		return;
+
+	if (NetObjEventPath::PassiveToActive == _Path && NetControllType::ActiveControll == CtrlType)
+		return;
+
+	const std::function<void()>& EventCallBack = NetworkEvents[_EventType];
+	if (nullptr == EventCallBack)
+	{
+		MsgAssert("등록되지 않은 NetObjEvent를 사용하려고 했습니다");
+		return;
+	}
+
+	int NetObjID = GetNetObjectID();
+	NetworkManager::PushNetworkEventPacket(_EventType, NetObjID);
+
+	std::string Name = GetName().data();
+	NetworkGUI::GetInst()->PrintLog(Name + " Send NetObjEvent : " + GameEngineString::ToString(_EventType), float4::GREEN);
+}
+
+void NetworkObjectBase::Process_NetObjEventPacket(std::shared_ptr<class NetEventPacket> _Packet)
+{
+	int EventType = _Packet->GetEventType();
+	NetworkGUI* NetGUI = NetworkGUI::GetInst();
+	std::string Name = GetName().data();
+
+	if (false == NetworkEvents.contains(EventType))
+	{
+		NetGUI->PrintLog(Name + " Faild " + GameEngineString::ToString(EventType) + "Network Object Event", float4::RED);
+		return;
+	}
+
+	NetworkEvents[EventType]();
+	NetGUI->PrintLog(Name + " Success " + GameEngineString::ToString(EventType) + "Network Object Event", float4::GREEN);
 }
 
 

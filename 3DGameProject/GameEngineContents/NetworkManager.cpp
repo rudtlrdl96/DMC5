@@ -135,14 +135,18 @@ bool NetworkManager::ExcuteNetworkEvent(Net_EventType _Type)
 		return false;
 	}
 
-
-	std::shared_ptr<NetEventPacket> EventPacket = std::make_shared<NetEventPacket>();
-	EventPacket->SetPacketID(PacketEnum::NetEventPacket);
-	EventPacket->SetObjectID(NetID);
-	EventPacket->EventType = _Type;
-	AllPacket[PacketEnum::NetEventPacket].push_back(EventPacket);
+	PushNetworkEventPacket(static_cast<int>(_Type));
 	NetGUI->PrintLog(GameEngineString::ToString(Index) + " NetworkEvent be executed", float4::GREEN);
 	return true;
+}
+
+void NetworkManager::PushNetworkEventPacket(int _EventType, int _NetObjID /*= -1*/)
+{
+	std::shared_ptr<NetEventPacket> EventPacket = std::make_shared<NetEventPacket>();
+	EventPacket->SetPacketID(PacketEnum::NetEventPacket);
+	EventPacket->SetObjectID(_NetObjID);
+	EventPacket->EventType = _EventType;
+	AllPacket[PacketEnum::NetEventPacket].push_back(EventPacket);
 }
 
 

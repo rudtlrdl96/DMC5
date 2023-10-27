@@ -7,6 +7,12 @@
 class PhysXCapsuleComponent;
 class GameEngineTransform;
 
+enum class NetObjEventPath
+{
+	ActiveToPassive,	//Host -> Client
+	PassiveToActive,	//Client -> Host
+};
+
 class NetworkObjectBase : public GameEngineNetObject, public GameEngineActor
 {
 	friend class NetworkManager;
@@ -93,7 +99,7 @@ protected:
 			MsgAssert("해당 데이터에는 이미 DifferentCallBack이 존재합니다");
 			return;
 		}
-		
+
 		LinkDifferentCallBacks[Ptr] = [=](void* _BeforeData)
 		{
 			DataType* BeforePtr = reinterpret_cast<DataType*>(_BeforeData);
@@ -103,7 +109,7 @@ protected:
 
 	void SetFsmPacketCallBack(std::function<void(int _State)> _CallBack);
 
-	
+
 	template <typename AttackerType>
 	void SetDamagedNetCallBack(std::function<void(AttackerType* _Attacker)> _CallBack)
 	{
@@ -125,6 +131,22 @@ protected:
 			_CallBack(AttackerPtr);
 		};
 	}
+
+	template <typename EnumType>
+	void BindNetObjEvent(EnumType _EventType, const std::function<void()>& _EventCallBack)
+	{
+		BindNetObjEvent(static_cast<int>(_EventType), _EventCallBack);
+	}
+
+	template <typename EnumType>
+	void ExcuteNetObjEvent(EnumType _EventType, NetObjEventPath _Path)
+	{
+		ExcuteNetObjEvent(static_cast<int>(_EventType), _Path);
+	}
+
+	void BindNetObjEvent(int _EventType, const std::function<void()>& _EventCallBack);
+
+	void ExcuteNetObjEvent(int _EventType, NetObjEventPath _Path);
 
 private:
 	static NetworkObjectBase* DebugTarget;
@@ -150,6 +172,7 @@ private:
 
 	std::map<void*, std::function<void(void* _BeforeData)>> LinkDifferentCallBacks;
 	std::map<PacketEnum, std::function<void(std::shared_ptr<GameEnginePacket> _Packet)>> PacketProcessFunctions;
+	std::map<int, std::function<void()>> NetworkEvents;
 	
 	inline Net_ActorType GetNetObjectType() const
 	{
@@ -228,5 +251,6 @@ private:
 	}
 
 	void SetActorTrans();
+	void Process_NetObjEventPacket(std::shared_ptr<class NetEventPacket> _Packet);
 };
 

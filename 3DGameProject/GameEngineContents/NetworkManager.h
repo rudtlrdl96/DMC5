@@ -14,6 +14,8 @@ class BasePlayerActor;
 class NetworkManager
 {
 public:
+	friend class NetworkObjectBase;
+
 	static const float PacketFlushTime;
 	
 	enum class NetworkState
@@ -170,6 +172,8 @@ private:
 			_Left[i] = *_Right[i];
 		}
 	}
+
+	static void PushNetworkEventPacket(int _EventType, int _NetObjID = -1);
 
 	NetworkManager(){}
 	virtual ~NetworkManager() = 0{}

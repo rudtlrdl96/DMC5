@@ -199,20 +199,31 @@ void NetworkManager::ClientPacketInit()
 	NetInst->Dispatcher.AddHandler<NetEventPacket>(
 		[](std::shared_ptr<NetEventPacket> _Packet)
 	{
-		Net_EventType EventType = _Packet->EventType;
+		unsigned int ObjID = _Packet->GetObjectID();
+		int EventType = _Packet->EventType;
 
-		//이벤트를 등록해준 적이 없는 경우
-		int Index = static_cast<int>(EventType);
-		if (true == AllNetEvent.empty() || true == AllNetEvent[Index].empty())
+		//게임 오브젝트의 네트워크 이벤트인 경우
+		if (-1 != ObjID)
 		{
-			NetworkGUI::GetInst()->PrintLog(GameEngineString::ToString(Index) + " Event Not Exist!", float4::RED);
+			//Active여도 받을수 있게 처리
+			_Packet->SetActiveRecv();
+
+			//각자 스스로 처리할 수 있게 자료구조에 저장
+			GameEngineNetObject::PushNetObjectPacket(_Packet);
+			return;
+		}
+
+		//게임의 네트워크 이벤트인 경우
+		if (true == AllNetEvent.empty() || true == AllNetEvent[EventType].empty())
+		{
+			NetworkGUI::GetInst()->PrintLog(GameEngineString::ToString(EventType) + " Event Not Exist!", float4::RED);
 			return;
 		}
 
 		NetworkGUI* NetGUI = NetworkGUI::GetInst();
-		std::string LogValue = GameEngineString::ToString(Index) + " NetworkEvent be executed";
+		std::string LogValue = GameEngineString::ToString(EventType) + " NetworkEvent be executed";
 
-		const std::vector<std::function<void()>>& Events = AllNetEvent[Index];
+		const std::vector<std::function<void()>>& Events = AllNetEvent[EventType];
 		for (const std::function<void()>& Event : Events)
 		{
 			Event();

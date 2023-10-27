@@ -23,25 +23,27 @@ public:
 
 	}
 
+	inline int GetEventType() const
+	{
+		return EventType;
+	}
+
 protected:
 	void Serialize(GameEngineSerializer& _Ser) override
 	{
 		GameEnginePacket::Serialize(_Ser);
 
-		unsigned short EvtType = static_cast<unsigned int>(EventType);
-		_Ser << EvtType;
+		_Ser << EventType;
 	}
 
 	void DeSeralize(GameEngineSerializer& _Ser) override
 	{
 		GameEnginePacket::DeSeralize(_Ser);
 
-		unsigned short EvtType;
-		_Ser >> EvtType;
-		EventType = static_cast<Net_EventType>(EvtType);
+		_Ser >> EventType;
 	}
 
 private:
-	Net_EventType EventType = Net_EventType::COUNT;
+	int EventType = -1;
 };
 
