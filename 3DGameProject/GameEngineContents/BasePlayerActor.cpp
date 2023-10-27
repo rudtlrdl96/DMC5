@@ -340,7 +340,7 @@ void BasePlayerActor::Update(float _DeltaTime)
 
 		if (nullptr != LockOnEnemy)
 		{
-			if (true == LockOnEnemy->IsDeath()/* || LockOnEnemy->GetHP() <= 0*/)
+			if (LockOnEnemy->GetHP() <= 0 || true == LockOnEnemy->IsDeath())
 			{
 				LockOff();
 			}
