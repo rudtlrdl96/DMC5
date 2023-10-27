@@ -14,7 +14,6 @@ public:
 			return;
 		}
 		
-
 		NextLevelName = _NextLevelName;
 		GameEngineCore::ChangeLevel("ThreadLoadingLevel");
 	}
@@ -42,21 +41,28 @@ protected:
 	void LevelChangeStart() override;
 
 private:
-	bool IsLoadLevel = false;
 	static std::string NextLevelName;
 	static ThreadLoadingLevel* Inst;
 
+
+	bool IsLoadLevel = false;
+	std::shared_ptr<class NeroLoading> LoadingUI = nullptr;
+
+
 	//<Level이름, 콜백> : 멀티스레드를 사용하는 콜백
 	std::map<std::string, std::vector<std::function<void()>>> AllThreadLoadCallBack;
+	std::map<std::string, std::mutex> AllResMutex;
+
+
+
 
 	size_t LoadWorkCount = 0;
 	std::atomic<size_t> ExcuteWorkCount = 0;
 	float LoadingPercent = 0.f;
 	
-	std::map<std::string, std::mutex> AllResMutex;
 
 
-	std::shared_ptr<class NeroLoading> LoadingUI = nullptr;
+
 
 	//LevelType 템플릿 인자의 클래스 명 구하기
 	template <typename LevelType>
@@ -105,10 +111,21 @@ private:
 			std::lock_guard<std::mutex> Lock(AllResMutex[FolderPath]);
 			if (nullptr != ResourceType::Find(FileName))
 				return;
-			
+
+			//로딩
 			ResourceType::Load(CheckDir.GetFullPath());
+
+			//사운드는 Initialize함수가 없으므로 제외
+			if (true == std::is_base_of<GameEngineSound, ResourceType>::value)
+				return;
+
+			std::shared_ptr<ResourceType> ResPtr = ResourceType::Find(FileName);
+			InitResource(ResPtr.get());
 		});
 	}
+
+	void InitResource(void* _Ptr);
+
 
 	/// <summary>
 	/// 특정 레벨로 전환될 때 해당 경로의 모든 리소스를 찾아 스레드 로딩 시키는 함수입니다
@@ -144,10 +161,12 @@ private:
 			std::string RelativePath = File.GetFullPath();
 			size_t CutIdx = RelativePath.find("ContentResources");
 			RelativePath.replace(0, CutIdx + 17, "");
+
 			PushLoadCallBack<LevelType, ResourceType>(RelativePath);
 		}
 	}
 
+	
 
 	void ThreadLoadStart();
 };

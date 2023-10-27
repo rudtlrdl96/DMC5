@@ -41,11 +41,11 @@ void GameEngineFBXMesh::Release()
 	IsInit = false;
 }
 
-void GameEngineFBXMesh::Initialize()
+bool GameEngineFBXMesh::Initialize()
 {
 	if (true == IsInit)
 	{
-		return;
+		return true;
 	}
 
 	GameEngineFile File;
@@ -72,7 +72,7 @@ void GameEngineFBXMesh::Initialize()
 		IsInit = true;
 		TextureLoad();
 
-		return;
+		return true;
 	}
 
 	{
@@ -94,6 +94,7 @@ void GameEngineFBXMesh::Initialize()
 
 	TextureLoad();
 	IsInit = true;
+	return true;
 }
 
 void GameEngineFBXMesh::MeshLoad()

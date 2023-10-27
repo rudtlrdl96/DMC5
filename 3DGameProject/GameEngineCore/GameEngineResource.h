@@ -11,9 +11,18 @@
 
 #include "GameEngineDevice.h"
 
+class GameEngineResourceBase
+{
+public:
+	GameEngineResourceBase(){}
+	virtual ~GameEngineResourceBase() = 0 {}
+
+	virtual bool Initialize() { return false; }
+};
+
 // Ό³Έν :
 template<typename ResourcesType>
-class GameEngineResource : public GameEngineNameObject
+class GameEngineResource : public GameEngineNameObject, public GameEngineResourceBase
 {
 public:
 	friend class GameEngineCore;

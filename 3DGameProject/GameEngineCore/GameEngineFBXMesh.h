@@ -561,7 +561,7 @@ public:
 	GameEngineFBXMesh& operator=(const GameEngineFBXMesh& _Other) = delete;
 	GameEngineFBXMesh& operator=(GameEngineFBXMesh&& _Other) noexcept = delete;
 
-	void Initialize();
+	bool Initialize() override;
 
 	static std::shared_ptr<GameEngineFBXMesh> Load(const std::string_view& _Path)
 	{
