@@ -18,5 +18,6 @@ protected:
 private:
 	std::shared_ptr<class GameEngineFBXRenderer> ScreenShotRenderer = nullptr;
 	std::shared_ptr<class GameEngineFBXRenderer> GlassRenderer = nullptr;
+	std::shared_ptr<class GameEngineFBXRenderer> GlassParts_0 = nullptr;
 };
 

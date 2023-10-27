@@ -22,7 +22,6 @@ BGMPlayer::~BGMPlayer()
 
 void BGMPlayer::SetBattleBGM()
 {
-	if (nullptr == GameEngineSound::Find("Devil Trigger.ogg")) { BGMLoad(); }
 	if (SoundPlayer.IsValid())
 	{
 		SoundPlayer.Stop();
@@ -34,6 +33,7 @@ void BGMPlayer::SetBattleBGM()
 		break;
 	case PlayerType::Nero:
 	{
+		if (nullptr == GameEngineSound::Find("Devil Trigger.ogg")) { BGMLoad(); }
 		SoundPlayer = GameEngineSound::Play("Devil Trigger.ogg");
 		SoundPlayer.SoundFadeIn(1.0f);
 		SoundPlayer.SetLoop();
@@ -54,6 +54,7 @@ void BGMPlayer::SetBattleBGM()
 	}
 	case PlayerType::Vergil:
 	{
+		if (nullptr == GameEngineSound::Find("Bury the Light.ogg")) { BGMLoad(); }
 		SoundPlayer = GameEngineSound::Play("Bury the Light.ogg");
 		SoundPlayer.SoundFadeIn(2.0f);
 		SoundPlayer.SetLoop();
@@ -81,7 +82,6 @@ void BGMPlayer::SetBattleBGM()
 
 void BGMPlayer::SetBattleEnd()
 {
-	if (nullptr == GameEngineSound::Find("Devil Trigger.ogg")) { BGMLoad(); }
 	if (SoundPlayer.IsValid())
 	{
 		if (true == BossBGM)
@@ -121,7 +121,7 @@ void BGMPlayer::SetBattleEnd()
 
 void BGMPlayer::SetBossBGM()
 {
-	if (nullptr == GameEngineSound::Find("Devil Trigger.ogg")) { BGMLoad(); }
+	if (nullptr == GameEngineSound::Find("Voltaic Black Knight.ogg")) { BGMLoad(); }
 
 	BossBGM = true;
 	if (SoundPlayer.IsValid())
@@ -137,7 +137,7 @@ void BGMPlayer::SetBossBGM()
 
 void BGMPlayer::SetTitleBGM()
 {
-	if (nullptr == GameEngineSound::Find("Devil Trigger.ogg")) { BGMLoad(); }
+	if (nullptr == GameEngineSound::Find("Titlescreen.ogg")) { BGMLoad(); }
 
 	SoundPlayer = GameEngineSound::Play("Titlescreen.ogg");
 	SoundPlayer.SetVolume(Volume);
@@ -145,6 +145,16 @@ void BGMPlayer::SetTitleBGM()
 	SoundPlayer.SoundFadeIn(0.5f);
 	SoundPlayer.SetLoop();
 	SoundPlayer.SetLoopPoint(20.0f, 100.f);
+}
+
+void BGMPlayer::SetClearBGM()
+{
+	if (nullptr == GameEngineSound::Find("Reflection.ogg")) { BGMLoad(); }
+
+	SoundPlayer = GameEngineSound::Play("Reflection.ogg");
+	SoundPlayer.SetPosition(0.5f);
+	SoundPlayer.SoundFadeIn(0.5f);
+	SoundPlayer.SetVolume(Volume);
 }
 
 void BGMPlayer::SetBGMFadeOut()
@@ -164,8 +174,6 @@ void BGMPlayer::SetCharater(PlayerType _Type)
 
 void BGMPlayer::BGMLoad()
 {
-	if (nullptr != GameEngineSound::Find("Devil Trigger.ogg")) { return; }
-
 	GameEngineDirectory NewDir;
 	NewDir.MoveParentToDirectory("ContentResources");
 	NewDir.Move("ContentResources");
@@ -174,7 +182,10 @@ void BGMPlayer::BGMLoad()
 	std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".ogg" });
 	for (GameEngineFile File : Files)
 	{
-		GameEngineSound::Load(File.GetFullPath());
+		if (nullptr == GameEngineSound::Find(File.GetFileName()))
+		{
+			GameEngineSound::Load(File.GetFullPath());
+		}
 	}
 
 }

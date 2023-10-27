@@ -22,6 +22,9 @@ public:
 	static void SetBossBGM();
 
 	static void SetTitleBGM();
+
+	static void SetClearBGM();
+
 	static void SetBGMFadeOut();
 
 	static void SetCharater(PlayerType _Type);

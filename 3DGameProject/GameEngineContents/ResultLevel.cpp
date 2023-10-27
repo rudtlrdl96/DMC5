@@ -4,6 +4,7 @@
 #include "ResultActor.h"
 #include "FXAA_Effect.h"
 #include "FadeEffect.h"
+#include "BGMPlayer.h"
 ResultLevel::ResultLevel()
 {
 }
@@ -31,20 +32,8 @@ void ResultLevel::LevelChangeStart()
 	GameEngineLevel::LevelChangeStart();
 	GetDirectionalLight()->SetLightColor({0.9f, 0.9f, 1.0f});
 	GetDirectionalLight()->SetLightPower(9.0f);
-	GetDirectionalLight()->SetDifLightPower(0.3f);
+	GetDirectionalLight()->SetDifLightPower(0.7f);
 	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 20, 0, 0 });
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("ContentResources");
-		NewDir.Move("ContentResources");
-		NewDir.Move("Mesh");
-		NewDir.Move("UIMesh");
-		NewDir.Move("ResultMesh");
-		if (nullptr == GameEngineFBXMesh::Find("shape_plane.fbx"))
-		{
-			GameEngineFBXMesh::Load(NewDir.GetPlusFileName("shape_plane.fbx").GetFullPath());
-		}
-	}
 
 	{
 		GameEngineDirectory NewDir;
@@ -67,6 +56,23 @@ void ResultLevel::LevelChangeStart()
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
 		NewDir.Move("ContentResources");
+		NewDir.Move("Mesh");
+		NewDir.Move("UIMesh");
+		NewDir.Move("ResultMesh");
+		if (nullptr == GameEngineFBXMesh::Find("shape_plane.fbx"))
+		{
+			std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".fbx" });
+			for (GameEngineFile File : Files)
+			{
+				GameEngineFBXMesh::Load(File.GetFullPath());
+			}
+		}
+	}
+	BGMPlayer::BGMLoad();
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
 		NewDir.Move("Sound");
 		NewDir.Move("SFX");
 		NewDir.Move("Result");
@@ -79,9 +85,10 @@ void ResultLevel::LevelChangeStart()
 			}
 		}
 	}
-	Actor = CreateActor<ResultActor>();
 
-	GameEngineSound::Play("Result_SFX_0.wav");
+	BGMPlayer::SetClearBGM();
+
+	Actor = CreateActor<ResultActor>();
 }
 
 void ResultLevel::LevelChangeEnd()
