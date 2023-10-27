@@ -16,6 +16,7 @@ protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 private:
-	std::shared_ptr<class GameEngineSpriteRenderer> Renderer = nullptr;
+	std::shared_ptr<class GameEngineFBXRenderer> ScreenShotRenderer = nullptr;
+	std::shared_ptr<class GameEngineFBXRenderer> GlassRenderer = nullptr;
 };
 
