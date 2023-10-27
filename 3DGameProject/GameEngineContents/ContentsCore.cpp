@@ -16,6 +16,7 @@
 #include "MainMenuLevel.h"
 #include "ShopLevel.h"
 #include "PlayUITestLevel.h"
+#include "ResultLevel.h"
 
 //Map
 #include "TestStageLevel.h"
@@ -67,6 +68,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<StageEditLevel>();
 	GameEngineCore::CreateLevel<ShopLevel>();
 	GameEngineCore::CreateLevel<EffectToolLevel>();
+	GameEngineCore::CreateLevel<ResultLevel>();
 	
 	GameEngineCore::ChangeLevel("MainLevel");
 }
