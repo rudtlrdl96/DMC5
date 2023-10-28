@@ -58,6 +58,7 @@ SamplerState ENGINEBASE : register(s0);
 struct AlphaOutPut
 {
     float4 ResultColor : SV_Target0;
+    float4 DistortionColor : SV_Target1;
     float4 MaskTarget : SV_Target2;
 };
 
@@ -133,6 +134,8 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     Result.ResultColor.a = AtosData.r;
     Result.ResultColor += AddColor;
     Result.ResultColor *= MulColor;
+    
+    Result.DistortionColor = (float4) 0;
     
     if (0 != IsBlurMask)
     {

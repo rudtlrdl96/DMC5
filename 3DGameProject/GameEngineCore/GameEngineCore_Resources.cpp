@@ -583,6 +583,7 @@ void GameEngineCore::CoreResourcesInit()
 
 		GameEngineBlend::Create("LightBlend", Desc);
 	}
+
 	{
 		D3D11_BLEND_DESC Desc = { 0, };
 

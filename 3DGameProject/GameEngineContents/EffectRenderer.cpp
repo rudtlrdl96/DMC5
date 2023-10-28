@@ -9,7 +9,7 @@ EffectRenderer::~EffectRenderer()
 {
 }
 
-void EffectRenderer::SetDistortionTexture(const std::string_view& _TextureName)
+void EffectRenderer::SetDistortionTexture(const std::string_view& _TextureName, const float4& _DistortionPower/* = { 1, 1, 1, 1 }*/)
 {
 	for (size_t i = 0; i < Unit.size(); i++)
 	{
@@ -26,7 +26,7 @@ void EffectRenderer::SetDistortionTexture(const std::string_view& _TextureName)
 		}
 	}
 
-	DistortionOption.IsDistortion = float4(1, 0, 0, 0);
+	DistortionOption.IsDistortion = _DistortionPower;
 }
 
 void EffectRenderer::UnSetDistortionTexture()

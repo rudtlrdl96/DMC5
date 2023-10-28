@@ -152,7 +152,7 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     }
     else
     {
-        Result.DistortionColor = MaskTexture.Sample(ENGINEBASE, UV);
+        Result.DistortionColor = MaskTexture.Sample(ENGINEBASE, UV) * IsDistortion;
         Result.DistortionColor.a = Result.ResultColor.a;
     }
     

@@ -208,8 +208,8 @@ void PlayerActor_Nero::PlayerLoad()
 		// 모션블러 미적용옵션
 		Renderer->GetRenderBaseValueRef().IsBlurMask = 1;
 
-		Renderer->SetMaterial("pl0000_03_albm.texout.png", "AniFBX_2DAlpha", nullptr);
-		Renderer->SetSpecularTexture("pl0000_03_albm.texout.png", "pl0000_03_atos.texout.png");
+		//Renderer->SetMaterial("pl0000_03_albm.texout.png", "AniFBX_2DAlpha", nullptr);
+		//Renderer->SetSpecularTexture("pl0000_03_albm.texout.png", "pl0000_03_atos.texout.png");
 		Renderer->SetMaterial("pl0010_01_wing_atos.texout.png", "AniFBX_2DAlpha", nullptr);
 		Renderer->SetSpecularTexture("pl0010_01_wing_atos.texout.png", "pl0010_01_wing_atos1.texout.png");
 		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer, .RendererLocalPos = {0, -75, 0},

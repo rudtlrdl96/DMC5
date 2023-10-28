@@ -32,7 +32,9 @@ cbuffer DistortionOption : register(b2)
 
 float4 DistortionEffect_PS(OutPut _Value) : SV_Target0
 {
+    float2 CurUV = _Value.UV.xy;
     float2 UV = _Value.UV.xy;
+    
     float4 MaskColor = MaskTex.Sample(CLAMPSAMPLER, UV);
 	
     if (0 != MaskColor.a)
@@ -41,16 +43,22 @@ float4 DistortionEffect_PS(OutPut _Value) : SV_Target0
         float PixelSizeY = MaxPixel.y / ScreenSize.y;
         
         float AddUV_X = (cos(MaskColor.x * DistortionValue.x) * PixelSizeX) * max(0.1245f, MaskColor.a);
-        float AddUV_Y = (sin(MaskColor.x * DistortionValue.y) * PixelSizeY) * max(0.213f, MaskColor.a);
+        float AddUV_Y = (sin(MaskColor.y * DistortionValue.y) * PixelSizeY) * max(0.213f, MaskColor.a);
         
         UV.x += AddUV_X;
         UV.y += AddUV_Y;
     }
 	    
-    UV.x = saturate(UV.x);
-    UV.y = saturate(UV.y);
+    float4 ResultColor;
     
-    float4 ResultColor = DiffuseTex.Sample(CLAMPSAMPLER, UV);
-    	
+    if (UV.x < 0 || UV.x > 1 || UV.y < 0 || UV.y > 1)
+    {
+        ResultColor = DiffuseTex.Sample(CLAMPSAMPLER, CurUV);
+    }
+    else
+    {
+        ResultColor = DiffuseTex.Sample(CLAMPSAMPLER, UV);
+    }
+    
 	return ResultColor;
 }

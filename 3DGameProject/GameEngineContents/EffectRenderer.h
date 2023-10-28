@@ -143,13 +143,14 @@ public:
 		return ScaleRatio;
 	}
 
-	void SetDistortionTexture(const std::string_view& _TextureName = "");
+	void SetDistortionTexture(const std::string_view& _TextureName = "", const float4& _DistortionPower = {1.0f, 1.0f, 1.0f, 1.0f });
 	void UnSetDistortionTexture();
 
 	bool IsDistortion()
 	{
-		return DistortionOption.IsDistortion.x == 1;
+		return DistortionOption.IsDistortion.Size() != 0;
 	}
+
 	void SetSprite(const std::string_view& _SpriteName, size_t _Frame = 0);
 	void SetFrame(size_t _Frame);
 
