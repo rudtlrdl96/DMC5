@@ -215,6 +215,98 @@ void CavaliereAngelo::Start()
 	LinkData_UpdatePacket<int>(HPServerStack);
 	LinkData_UpdatePacket<int>(HPClientStack);
 
+	BindNetObjEvent(2, [this](std::vector<NetworkObjectBase*> _Actors)
+		{
+			if (_Actors.size() <= 0)
+			{
+				MsgAssert("잘못된 DamageCallBack 이벤트입니다");
+				return;
+			}
+			BasePlayerActor* _Player = dynamic_cast<BasePlayerActor*>(_Actors[0]);
+			if (nullptr == _Player)
+			{
+				MsgAssert("잘못된 DamageCallBack 이벤트입니다");
+				return;
+			}
+			// Player = _Player;
+
+			DamageData Datas = _Player->GetAttackCollision()->GetDamage();
+			MinusEnemyHP(Datas.DamageValue);
+			HPClientStackPlus(Datas.DamageValue);
+			PlayDamageSound(Datas.SoundType);
+
+			if (600 < HPClientStack)
+			{
+				HPServerStack = 0;
+				HPClientStack = 0;
+				Player = _Player;
+			}
+
+			if (DamageType::Buster == Datas.DamageTypeValue && true == IsStun)
+			{
+				IsStun = false;
+				SetTimeScale(0.4f);
+				GetLevel()->TimeEvent.AddEvent(.316f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						StartRenderShaking(8);
+						MinusEnemyHP(300);
+						HPClientStackPlus(300);
+					});
+				GetLevel()->TimeEvent.AddEvent(.683f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						StartRenderShaking(8);
+						MinusEnemyHP(300);
+						HPClientStackPlus(300);
+					});
+				GetLevel()->TimeEvent.AddEvent(1.13f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						StartRenderShaking(8);
+						MinusEnemyHP(300);
+						HPClientStackPlus(300);
+					});
+				GetLevel()->TimeEvent.AddEvent(1.4f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						StartRenderShaking(8);
+						MinusEnemyHP(300);
+						HPClientStackPlus(300);
+					});
+				GetLevel()->TimeEvent.AddEvent(1.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						Sound.Play("Cavaliere_Damage_", 3);
+						StartRenderShaking(8);
+						MinusEnemyHP(300);
+						HPClientStackPlus(300);
+					});
+				GetLevel()->TimeEvent.AddEvent(1.7f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						SetTimeScale(0.3f);
+					});
+				GetLevel()->TimeEvent.AddEvent(2.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						Sound.Play("Cavaliere_Damage_", 6);
+						StartRenderShaking(8);
+						MinusEnemyHP(800);
+						HPClientStackPlus(800);
+						SetTimeScale(0.0f);
+					});
+				GetLevel()->TimeEvent.AddEvent(3.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						SetTimeScale(1.0f);
+					});
+			}
+
+			if (DamageType::Stun == Datas.DamageTypeValue)
+			{
+				StopTime(2.9f);
+				AttackDelayCheck = 1.0f;
+			}
+
+			if (EnemyHP < 0)
+			{
+				DeathValue = true;
+			}
+		});
+
 	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker) {
 		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
 		MinusEnemyHP(Datas.DamageValue);

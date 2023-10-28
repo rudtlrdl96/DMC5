@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Poolable.h"
+
 enum FSM_State_CavaliereAngelo
 {
 	// <basic> ==================================================================================
@@ -76,7 +78,7 @@ enum FSM_State_CavaliereAngelo
 };
 
 // Ό³Έν :
-class CavaliereAngelo : public BaseEnemyActor
+class CavaliereAngelo : public BaseEnemyActor, public Poolable<CavaliereAngelo>
 {
 public:
 	// constrcuter destructer

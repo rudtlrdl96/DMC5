@@ -15,6 +15,8 @@
 #include "Enemy_HellCaina.h"
 #include "JudgementCut.h"
 #include "ColorEffect.h"
+#include "Enemy_Empusa.h"
+#include "Enemy_HellAntenora.h"
 
 NetworkTestLevel::NetworkTestLevel()
 {
@@ -157,7 +159,7 @@ void NetworkTestLevel::Update(float _DeltaTime)
 	{
 		if (nullptr == Enemy)
 		{
-			Enemy = NetworkManager::CreateNetworkActor<Enemy_HellCaina>(this);
+			Enemy = NetworkManager::CreateNetworkActor<Enemy_Empusa>(this);
 		}
 		else
 		{

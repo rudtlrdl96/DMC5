@@ -224,18 +224,23 @@ void Enemy_HellCaina::Start()
 				MsgAssert("잘못된 DamageCallBack 이벤트입니다");
 				return; 
 			}
-			Player = _Player;
+			//Player = _Player;
 
-			DamageData Datas = Player->GetAttackCollision()->GetDamage();
+			//DamageData Datas = Player->GetAttackCollision()->GetDamage();
+			MonsterAttackCollision->Off();
+			DamageData Datas = _Player->GetAttackCollision()->GetDamage();
 			MinusEnemyHP(Datas.DamageValue);
 			PlayDamageEvent(Datas.DamageTypeValue, Datas.SoundType);
 			Sound.PlayVoice(3, false);
+
 			if (DamageType::Stun == Datas.DamageTypeValue)
 			{
 				StopTime(2.8f);
 				AttackDelayCheck = 1.0f;
 			}
+
 			HitStop(Datas.DamageTypeValue);
+
 			if (EnemyHP < 0)
 			{
 				DeathValue = true;
@@ -243,11 +248,15 @@ void Enemy_HellCaina::Start()
 		});
 
 	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker) {
+		
 		Player = _Attacker;
+
+		MonsterAttackCollision->Off();
 		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
 		MinusEnemyHP(Datas.DamageValue);
 		PlayDamageEvent(Datas.DamageTypeValue, Datas.SoundType);
 		Sound.PlayVoice(3, false);
+
 		if (DamageType::VergilLight == Datas.DamageTypeValue)
 		{
 			IsVergilLight = true;
@@ -395,11 +404,13 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 
 	PlayerAttackCheck(AttackCol.get());
 	MonsterAttackCollision->Off();
+	AttackDelayCheck = 0.0f;
+
 	DamageData Data = AttackCol->GetDamage();
 	MinusEnemyHP(Data.DamageValue);
-	AttackDelayCheck = 0.0f;
 	PlayDamageEvent(Data.DamageTypeValue, Data.SoundType);
 	Sound.PlayVoice(3, false);
+
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
 		IsVergilLight = true;

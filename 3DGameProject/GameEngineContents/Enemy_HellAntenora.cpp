@@ -280,13 +280,47 @@ void Enemy_HellAntenora::Start()
 	LinkData_UpdatePacket<bool>(IsBurn);
 	LinkData_UpdatePacket<int>(EnemyHP);
 
+	BindNetObjEvent(2, [this](std::vector<NetworkObjectBase*> _Actors)
+		{
+			if (_Actors.size() <= 0)
+			{
+				MsgAssert("잘못된 DamageCallBack 이벤트입니다");
+				return;
+			}
+			BasePlayerActor* _Player = dynamic_cast<BasePlayerActor*>(_Actors[0]);
+			if (nullptr == _Player)
+			{
+				MsgAssert("잘못된 DamageCallBack 이벤트입니다");
+				return;
+			}
+			Player = _Player;
+
+			MonsterAttackCollision->Off();
+			MultiAttackStack = 0;
+			DamageData Datas = _Player->GetAttackCollision()->GetDamage();
+			PlayDamageEvent(Datas.DamageTypeValue, Datas.SoundType);
+			MinusEnemyHP(Datas.DamageValue);
+			Sound.PlayVoice(5);
+
+			if (DamageType::Stun == Datas.DamageTypeValue)
+			{
+				StopTime(2.8f);
+				AttackDelayCheck = 1.0f;
+			}
+
+			HitStop(Datas.DamageTypeValue);
+
+			if (EnemyHP < 0)
+			{
+				DeathValue = true;
+			}
+		});
+
 	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker) {
 		
-		if (false == DashAttackSetting)
-		{
-			Player = _Attacker;
-		}
+		Player = _Attacker;
 		
+		MonsterAttackCollision->Off();
 		MultiAttackStack = 0;
 		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
 		MinusEnemyHP(Datas.DamageValue);
@@ -299,12 +333,6 @@ void Enemy_HellAntenora::Start()
 			{
 				IsVergilLight = true;
 			}
-		}
-
-		if (DamageType::Stun == Datas.DamageTypeValue)
-		{
-			StopTime(2.9f);
-			AttackDelayCheck = 1.0f;
 		}
 
 		HitStop(Datas.DamageTypeValue);

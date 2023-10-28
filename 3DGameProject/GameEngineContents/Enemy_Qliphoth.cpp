@@ -217,8 +217,44 @@ void Enemy_Qliphoth::Start()
 	LinkData_UpdatePacket<bool>(IsBurn);
 	LinkData_UpdatePacket<int>(EnemyHP);
 
+	BindNetObjEvent(2, [this](std::vector<NetworkObjectBase*> _Actors)
+		{
+			if (_Actors.size() <= 0)
+			{
+				MsgAssert("잘못된 DamageCallBack 이벤트입니다");
+				return;
+			}
+			BasePlayerActor* _Player = dynamic_cast<BasePlayerActor*>(_Actors[0]);
+			if (nullptr == _Player)
+			{
+				MsgAssert("잘못된 DamageCallBack 이벤트입니다");
+				return;
+			}
+			//Player = _Player;
+
+			//DamageData Datas = Player->GetAttackCollision()->GetDamage();
+			DamageData Datas = _Player->GetAttackCollision()->GetDamage();
+			MinusEnemyHP(Datas.DamageValue);
+			PlayDamageEvent(Datas.DamageTypeValue, Datas.SoundType);
+
+			if (DamageType::Stun == Datas.DamageTypeValue)
+			{
+				StopTime(2.8f);
+				AttackDelayCheck = 1.0f;
+			}
+
+			StartRenderShaking(8);
+			HitStop(Datas.DamageTypeValue);
+
+			if (EnemyHP < 0)
+			{
+				DeathValue = true;
+			}
+		});
+
 	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker) {
 		Player = _Attacker;
+
 		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
 		MinusEnemyHP(Datas.DamageValue);
 		PlayDamageEvent(Datas.DamageTypeValue, Datas.SoundType);

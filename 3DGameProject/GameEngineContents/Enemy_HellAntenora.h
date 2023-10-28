@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Poolable.h"
+
 enum FSM_State_HellAntenora
 {
 	HellAntenora_Idle,                       // em0001_Idle_01_loop, 서있음
@@ -88,7 +90,7 @@ enum FSM_State_HellAntenora
 };
 
 // 설명 :
-class Enemy_HellAntenora : public BaseEnemyActor
+class Enemy_HellAntenora : public BaseEnemyActor, public Poolable<Enemy_HellAntenora>
 {
 public:
 	// constrcuter destructer

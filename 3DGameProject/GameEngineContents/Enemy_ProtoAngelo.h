@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Poolable.h"
+
 enum FSM_State_ProtoAngelo
 {
 	ProtoAngelo_Appear_01,							 // em0600_Appear_01, 등장
@@ -78,7 +80,7 @@ enum FSM_State_ProtoAngelo
 };
 
 // 설명 :
-class Enemy_ProtoAngelo : public BaseEnemyActor
+class Enemy_ProtoAngelo : public BaseEnemyActor, public Poolable<Enemy_ProtoAngelo>
 {
 public:
 	// constrcuter destructer
