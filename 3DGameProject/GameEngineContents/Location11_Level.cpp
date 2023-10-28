@@ -20,7 +20,7 @@
 #include "DistortionEffect.h"
 #include "ZoomEffect.h"
 #include "BWColorEffect.h"
-
+#include "BGMPlayer.h"
 Location11_Level::Location11_Level()
 {
 
@@ -87,9 +87,9 @@ void Location11_Level::LevelChangeStart()
 	//AcGroundCol.lock()->RenderOn();
 
 	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
+	Nero->SetUserControllType();
 	Nero->SetWorldPosition({ -31000, 1950, -360 });
 	Nero->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
-	Nero->SetUserControllType();
 	NetworkManager::LinkNetwork(Nero.get(), this);
 
 	if (nullptr == BossMonster)
@@ -104,10 +104,13 @@ void Location11_Level::LevelChangeStart()
 	AcSkyBox.lock()->SetSkyBloom(1);
 	GetDirectionalLight()->GetTransform()->SetWorldPosition({0.f, 10000.f, 0.f});
 	GetDirectionalLight()->GetTransform()->SetWorldRotation({45.f, 45.f, 45.f});
+
+	BGMPlayer::SetBossBGM();
 }
 
 void Location11_Level::LevelChangeToResultLevel()
 {
+	BGMPlayer::SetBattleEnd();
 	TimeEvent.AddEvent(5.0f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* TimeEvent)
 		{
 			GameEngineCaptureTexture::CaptureTexture("Capture_Result", GameEngineWindow::GetScreenSize(), GetLevel()->GetMainCamera()->GetCamTarget());

@@ -24,6 +24,17 @@
 std::vector<BasePlayerActor*> BasePlayerActor::Players = std::vector<BasePlayerActor*>();
 BasePlayerActor* BasePlayerActor::MainPlayer = nullptr;
 
+void BasePlayerActor::CameraLookBoss(const float4& _Pos)
+{
+	for (BasePlayerActor* _Player : Players)
+	{
+		if (nullptr != _Player->Camera)
+		{
+			_Player->Camera->SetLookTarget(_Pos);
+		}
+	}
+}
+
 BasePlayerActor::BasePlayerActor()
 {
 	Players.push_back(this);
@@ -211,6 +222,11 @@ void BasePlayerActor::SetBossCam(GameEngineTransform* _BossCam)
 {
 	Camera->SetBossCam(_BossCam);
 	IsBossBattle = true;
+}
+
+void BasePlayerActor::CameraLookTarget(const float4& _TargetPos)
+{
+	Camera->SetLookTarget(_TargetPos);
 }
 
 void BasePlayerActor::Start()
@@ -568,5 +584,8 @@ void BasePlayerActor::SetWorldRotation(float4 _Value)
 	GetTransform()->SetWorldRotation(_Value);
 	Rot.y = _Value.y;
 
-	Camera->SetRotation(_Value);
+	if (nullptr != Camera)
+	{
+		Camera->SetRotation(_Value);
+	}
 }

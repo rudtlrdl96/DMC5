@@ -49,6 +49,33 @@ void PlayerCamera::SetRotation(const float4& _Rot)
 	CameraArm->SetLocalRotation(XRot);
 }
 
+void PlayerCamera::SetLookTarget(const float4& TargetPos)
+{
+	float4 Forward = GetTransform()->GetWorldForwardVector();
+	Forward.y = 0;
+	Forward.Normalize();
+	float4 Dir = TargetPos - GetTransform()->GetWorldPosition();
+	Dir.y = 0;
+	Dir.Normalize();
+	float Dot = float4::DotProduct3D(Forward, Dir);
+
+	float Angle = acosf(Dot) * GameEngineMath::RadToDeg;
+	float4 Cross = float4::Cross3DReturnNormal(Forward, Dir);
+
+	if (std::isnan(Angle))
+	{
+		return;
+	}
+	if (Cross.y < 0.0f)
+	{
+		GetTransform()->AddWorldRotation({ 0, -Angle, 0 });
+	}
+	else
+	{
+		GetTransform()->AddWorldRotation({ 0, Angle, 0 });
+	}
+}
+
 void PlayerCamera::Start()
 {
 	GetTransform()->SetWorldRotation(float4::ZERO);

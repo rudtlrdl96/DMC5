@@ -16,7 +16,8 @@ public:
 	{
 		return MainPlayer;
 	}
-	
+	static void CameraLookBoss(const float4& _Pos);
+
 	// constrcuter destructer
 	BasePlayerActor();
 	~BasePlayerActor();
@@ -74,6 +75,8 @@ public:
 	void SetInvincibility(float _Time);
 
 	void SetBossCam(GameEngineTransform* _BossCam);
+	void CameraLookTarget(const float4& _TargetPos);
+
 protected:
 	void Start() override;
 	virtual void ShopOn() {}
@@ -125,7 +128,7 @@ protected:
 	const int MaxHP = 10000;
 	int HP = 10000;
 	int FSMValue = -1;
-	int ArmValue;
+	int ArmValue = 0;
 	float DTGauge = 0.0f;
 	bool DTValue = false;
 	bool IsBossBattle = false;

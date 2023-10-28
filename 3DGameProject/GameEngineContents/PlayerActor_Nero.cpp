@@ -4502,6 +4502,14 @@ int PlayerActor_Nero::DamageCalculate(int _Damage, bool _IsSkill /* = false */)
 void PlayerActor_Nero::DrawEditor()
 {
 	ImGui::InputFloat("Damage Mul", &DamageMul);
+
+	static float4 WarpPos = { 3645, 130, -11805 };
+	ImGui::InputFloat4("Warp Pos", WarpPos.Arr1D);
+
+	if (ImGui::Button("Warp"))
+	{
+		SetWorldPosition(WarpPos);
+	}
 }
 
 //³×·Î ·»´õ À¯´Ö

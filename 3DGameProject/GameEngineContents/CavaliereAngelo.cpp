@@ -15,7 +15,6 @@
 #include "AttackCollision.h"
 #include "FXSystem.h"
 #include "Cavaliere_Electric.h"
-
 CavaliereAngelo::CavaliereAngelo()
 {
 }
@@ -942,7 +941,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 			PhysXCapsule->SetWorldPosition({ -32200, 1950, -370 });
 			PhysXCapsule->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
 		}
-
+		BasePlayerActor::CameraLookBoss(PhysXCapsule->GetWorldPosition());
 		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Dengeki_Reload_Start);
 		return;
 	}
@@ -989,6 +988,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 			PhysXCapsule->SetWorldPosition({ -32200, 1950, -370 });
 			PhysXCapsule->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
 		}
+		BasePlayerActor::CameraLookBoss(PhysXCapsule->GetWorldPosition());
 		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Collider_To_Dengeki);
 		return;
 	}
