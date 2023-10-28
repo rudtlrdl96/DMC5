@@ -80,6 +80,7 @@ void PlayerActor_Vergil::NetLoad()
 		{
 			GameEngineFBXMesh::Load(NewDir.GetPlusFileName("Vergil.fbx").GetFullPath());
 			GameEngineTexture::Load(NewDir.GetPlusFileName("High\\pl0300_03_atos.texout.png").GetFullPath());
+			GameEngineTexture::Load(NewDir.GetPlusFileName("High\\pl0310_trans_atos.texout.png").GetFullPath());
 		}
 		NewDir.MoveParent();
 		NewDir.Move("Animation");
