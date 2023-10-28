@@ -161,7 +161,7 @@ void NetworkTestLevel::Update(float _DeltaTime)
 	{
 		if (nullptr == Enemy)
 		{
-			Enemy = NetworkManager::CreateNetworkActor<CavaliereAngelo>(this);
+			Enemy = NetworkManager::CreateNetworkActor<Enemy_HellCaina>(this);
 		}
 		else
 		{

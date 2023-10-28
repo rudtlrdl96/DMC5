@@ -22,7 +22,7 @@ protected:
 
 private:
 	bool IsConnect = false;
-	std::shared_ptr<class CavaliereAngelo> Enemy = nullptr;
+	std::shared_ptr<class Enemy_HellCaina> Enemy = nullptr;
 
 	void InitPool();
 	void InitHost(Net_ActorType _PlayerType);
