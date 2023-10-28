@@ -109,7 +109,7 @@ void PlayerActor_Nero::Start()
 	LinkData_UpdatePacket<float>(LockOnPosition.z);
 
 	Sound.SetVoiceName("Nero_V_");
-	Sound.VFXVolume = 0.5f;
+	Sound.SFXVolume = 0.5f;
 	Effect_Zoom = ZoomEffect::GetZoomEffect();
 	
 }

@@ -18,10 +18,10 @@ public:
 	{
 		if (_Number == -1)
 		{
-			GameEngineSound::Play(std::string(_Name) + ".wav").SetVolume(VFXVolume);
+			GameEngineSound::Play(std::string(_Name) + ".wav").SetVolume(SFXVolume);
 			return;
 		}
-		GameEngineSound::Play(std::string(_Name) + std::to_string(_Number) + ".wav").SetVolume(VFXVolume);
+		GameEngineSound::Play(std::string(_Name) + std::to_string(_Number) + ".wav").SetVolume(SFXVolume);
 	}
 
 	bool IsVoicePlay()
@@ -45,7 +45,7 @@ public:
 
 	void PlaySetVolume(const std::string_view& _Name, int _Number, float _Volume)
 	{
-		GameEngineSound::Play(std::string(_Name) + std::to_string(_Number) + ".wav").SetVolume(VFXVolume * _Volume);
+		GameEngineSound::Play(std::string(_Name) + std::to_string(_Number) + ".wav").SetVolume(SFXVolume * _Volume);
 	}
 
 	void PlayRandom(const std::string_view& _Name, int _Min, int _Max)
@@ -63,6 +63,8 @@ public:
 		if (true == IsVoicePlay())
 		{
 			if (true == NoSkip) { return; }
+			// 재생 시작된지 0.5초 미만이라면 재생안함
+			if (VoicePlayer.getPosition() < 500) { return; }
 			VoiceStop();
 		}
 		NoSkip = false;
@@ -88,7 +90,7 @@ public:
 		NoSkip = true;
 	}
 
-	float VFXVolume = 1.0f;
+	float SFXVolume = 1.0f;
 	float VoiceVolume = 1.0f;
 protected:
 

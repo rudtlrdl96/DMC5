@@ -153,6 +153,49 @@ void Enemy_ProtoAngelo::EnemyAnimationLoad()
 			EffectRenderer->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
 		}
 	}
+
+	// 사운드 로드
+	Sound.SetVoiceName("Proto_V_");
+	Sound.SFXVolume = 0.5f;
+	Sound.VoiceVolume = 0.35f;
+	if (nullptr == GameEngineSound::Find("Proto_V_0.wav")) {
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Sound");
+		NewDir.Move("Voice");
+		NewDir.Move("Proto");
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".wav" });
+
+		for (size_t i = 0; i < Files.size(); i++)
+		{
+			GameEngineSound::Load(Files[i].GetFullPath());
+		}
+
+		NewDir.MoveParent();
+		NewDir.MoveParent();
+		NewDir.Move("SFX");
+		NewDir.Move("Proto");
+		Files = NewDir.GetAllFile({ ".wav" });
+
+		if (nullptr == GameEngineSound::Find("Proto_SFX_0.wav")) {
+			for (size_t i = 0; i < Files.size(); i++)
+			{
+				GameEngineSound::Load(Files[i].GetFullPath());
+			}
+		}
+		if (nullptr == GameEngineSound::Find("Cavaliere_Damage_0.wav"))
+		{
+			NewDir.MoveParent();
+			NewDir.Move("Cavaliere");
+			Files = NewDir.GetAllFile({ ".wav" });
+			for (size_t i = 0; i < Files.size(); i++)
+			{
+				GameEngineSound::Load(Files[i].GetFullPath());
+			}
+		}
+	}
+
 }
 
 void Enemy_ProtoAngelo::Start()
@@ -289,33 +332,36 @@ void Enemy_ProtoAngelo::ParryTime()
 		});
 }
 
-void Enemy_ProtoAngelo::PlayDamageEvent(DamageSoundType _Type)
+void Enemy_ProtoAngelo::PlayDamageEvent(DamageSoundType _Type, bool _PlayVoice)
 {
-	//Sound.PlayVoiceRandom(1, 2);
-	//EffectRenderer->PlayFX("Enemy_Damage_Heavy.effect");
+	if (true == _PlayVoice)
+	{
+		Sound.PlayVoiceRandom(14, 16);
+	}
+	EffectRenderer->PlayFX("Enemy_Damage_Heavy.effect");
 
-	//switch (_Type)
-	//{
-	//case DamageSoundType::None:
-	//	break;
-	//case DamageSoundType::Sword:
-	//	Sound.PlayRandom("Cavaliere_Damage_", 0, 1);
-	//	break;
-	//case DamageSoundType::Magic:
-	//	Sound.Play("Cavaliere_Damage_", 5);
-	//	break;
-	//case DamageSoundType::Katana:
-	//	Sound.PlayRandom("Cavaliere_Damage_", 2, 3);
-	//	break;
-	//case DamageSoundType::Blunt:
-	//	Sound.Play("Cavaliere_Damage_", 4);
-	//	break;
-	//case DamageSoundType::Gun:
-	//	Sound.Play("Cavaliere_Damage_", 2);
-	//	break;
-	//default:
-	//	break;
-	//}
+	switch (_Type)
+	{
+	case DamageSoundType::None:
+		break;
+	case DamageSoundType::Sword:
+		Sound.PlayRandom("Cavaliere_Damage_", 0, 1);
+		break;
+	case DamageSoundType::Magic:
+		Sound.Play("Cavaliere_Damage_", 5);
+		break;
+	case DamageSoundType::Katana:
+		Sound.PlayRandom("Cavaliere_Damage_", 2, 3);
+		break;
+	case DamageSoundType::Blunt:
+		Sound.Play("Cavaliere_Damage_", 4);
+		break;
+	case DamageSoundType::Gun:
+		Sound.Play("Cavaliere_Damage_", 2);
+		break;
+	default:
+		break;
+	}
 }
 
 void Enemy_ProtoAngelo::MoveLoop()
@@ -567,6 +613,7 @@ void Enemy_ProtoAngelo::DamageCollisionCheck(float _DeltaTime)
 	AttackDelayCheck = 0.0f;
 	MinusEnemyHP(Data.DamageValue);
 
+	PlayDamageEvent(Data.SoundType, true);
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
 		IsVergilLight = true;

@@ -89,7 +89,7 @@ void PlayerActor_Vergil::Start()
 	LinkData_UpdatePacket<float>(LockOnPosition.z);
 
 	Sound.SetVoiceName("Vergil_V_");
-	Sound.VFXVolume = 0.3f;
+	Sound.SFXVolume = 0.3f;
 }
 
 void PlayerActor_Vergil::PlayerLoad()

@@ -114,7 +114,7 @@ private:
 	void MoveLoop();
 	void ParryCheck();
 	void ParryTime();
-	void PlayDamageEvent(DamageSoundType _Type);
+	void PlayDamageEvent(DamageSoundType _Type, bool _PlayVoice);
 
 	std::shared_ptr<class GameEngineCollision> ParryCollision = nullptr;
 
