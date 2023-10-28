@@ -28,7 +28,8 @@
 #include "ArcadeCafeRoof02.h"
 #include "StoreWhite01.h"
 #include "StoreWood01.h"
-#include "ToLocation11.h"
+#include "LevelChangeZone.h"
+#include "l02_03_StreetLine.h"
 
 FieldMapObject::FieldMapObject()
 {
@@ -132,7 +133,15 @@ std::shared_ptr<FieldMapObject> FieldMapObject::CreateFieldMapObj(GameEngineLeve
 		Result = _Level->CreateActor<StoreWood01>();
 		break;
 	case FieldMapObjType::ToLocation11:
-		Result = _Level->CreateActor<ToLocation11>();
+		Result = _Level->CreateActor<LevelChangeZone>();
+		Result->DynamicThis<LevelChangeZone>()->SetChangeLevel("Location11_Level");
+		break;
+	case FieldMapObjType::ToLocation19:
+		Result = _Level->CreateActor<LevelChangeZone>();
+		Result->DynamicThis<LevelChangeZone>()->SetChangeLevel("Location19_Level");
+		break;
+	case FieldMapObjType::l02_03_StreetLine:
+		Result = _Level->CreateActor<l02_03_StreetLine>();
 		break;
 	default:
 		MsgAssert("¹Ì±¸Çö");

@@ -140,4 +140,6 @@ enum class FieldMapObjType
 	StoreWhite01,
 	StoreWood01,
 	ToLocation11,
+	ToLocation19,
+	l02_03_StreetLine
 };

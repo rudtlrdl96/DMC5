@@ -15,6 +15,10 @@ public:
 	LevelChangeZone& operator=(LevelChangeZone&& _Other) noexcept = delete;
 
 	void ChangeLevel();
+	inline void SetChangeLevel(const std::string_view& _LevelName)
+	{
+		ChangeLevelName = _LevelName;
+	}
 
 protected:
 	void Start() override;

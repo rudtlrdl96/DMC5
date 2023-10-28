@@ -555,8 +555,8 @@
     <ClInclude Include="LevelChangeZone.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\LevelChange</Filter>
     </ClInclude>
-    <ClInclude Include="ToLocation11.h">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\LevelChange</Filter>
+    <ClInclude Include="l02_03_StreetLine.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1108,8 +1108,8 @@
     <ClCompile Include="LevelChangeZone.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\LevelChange</Filter>
     </ClCompile>
-    <ClCompile Include="ToLocation11.cpp">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\LevelChange</Filter>
+    <ClCompile Include="l02_03_StreetLine.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -28,7 +28,8 @@ std::shared_ptr<MapCollisionMesh> MapCollisionMesh::CreateMapCollisionMesh(GameE
 	Result->Collision = Result->CreateComponent<PhysXTriangleComponent>(); // 콜라이더 생성
 	Result->Collision->SetName("Collision");
 	Result->Collision->SetPhysxMaterial(1.0f, 1.0f, 0.05f);
-	
+	Result->Collision->SetPositionSetFromParentFlag(true);
+
 	if (_IsGround)
 	{
 		Result->Collision->SetGroundObject();

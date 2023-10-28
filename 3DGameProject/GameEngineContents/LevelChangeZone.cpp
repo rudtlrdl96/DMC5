@@ -25,4 +25,8 @@ void LevelChangeZone::ChangeLevel()
 void LevelChangeZone::Start()
 {
 	EventZone::Start();
+	Event = [this]()
+		{
+			LevelChangeZone::ChangeLevel();
+		};
 }
