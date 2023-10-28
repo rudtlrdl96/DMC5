@@ -87,8 +87,8 @@ void Location11_Level::LevelChangeStart()
 	//AcGroundCol.lock()->RenderOn();
 
 	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
-	Nero->GetPhysXComponent()->SetWorldPosition({ -31000, 1950, -360 });
-	Nero->GetPhysXComponent()->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
+	Nero->SetWorldPosition({ -31000, 1950, -360 });
+	Nero->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
 	Nero->SetUserControllType();
 	NetworkManager::LinkNetwork(Nero.get(), this);
 

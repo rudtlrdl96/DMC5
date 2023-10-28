@@ -38,6 +38,17 @@ void PlayerCamera::Shake(float _Power, float _Time, float _FadeIn, float _FadeOu
 	ShakeFadeOut = _FadeOut;
 }
 
+void PlayerCamera::SetRotation(const float4& _Rot)
+{
+	float4 YRot = GetTransform()->GetLocalRotation();
+	YRot.y = _Rot.y;
+	GetTransform()->SetLocalRotation(YRot);
+
+	float4 XRot = CameraArm->GetLocalRotation();
+	XRot.x = _Rot.x;
+	CameraArm->SetLocalRotation(XRot);
+}
+
 void PlayerCamera::Start()
 {
 	GetTransform()->SetWorldRotation(float4::ZERO);

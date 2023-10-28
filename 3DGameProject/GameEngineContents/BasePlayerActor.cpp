@@ -566,4 +566,7 @@ void BasePlayerActor::SetWorldRotation(float4 _Value)
 {
 	PhysXCapsule->SetWorldRotation(_Value);
 	GetTransform()->SetWorldRotation(_Value);
+	Rot.y = _Value.y;
+
+	Camera->SetRotation(_Value);
 }

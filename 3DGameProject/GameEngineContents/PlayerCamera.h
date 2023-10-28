@@ -50,6 +50,9 @@ public:
 		MinDistance = 380.0f;
 		CameraDistance.z = -200 ;
 	}
+
+	void SetRotation(const float4& _Rot);
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
