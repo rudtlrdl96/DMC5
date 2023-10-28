@@ -57,6 +57,9 @@ class DistortionData
 {
 public:
 	float4 IsDistortion = float4::ZERONULL;
+	float4 DisAnimationSpeed = {0, 0, 0, 0};
+	float PatternX = 1.0f;
+	float PatternY = 1.0f;
 };
 
 // 설명 : 해당 랜더러는 Effect 전용 렌더러 입니다 Effect_2D 또는 Effect_3D 머티리얼을 사용해야 합니다.
@@ -145,6 +148,13 @@ public:
 
 	void SetDistortionTexture(const std::string_view& _TextureName = "", const float4& _DistortionPower = {1.0f, 1.0f, 1.0f, 1.0f });
 	void UnSetDistortionTexture();
+
+	void PlayDistortionAnimation(const float4& _DisAnimationSpeed, float _PatternX, float _PatternY)
+	{
+		DistortionOption.DisAnimationSpeed = _DisAnimationSpeed;
+		DistortionOption.PatternX = _PatternX;
+		DistortionOption.PatternY = _PatternY;
+	}
 
 	bool IsDistortion()
 	{

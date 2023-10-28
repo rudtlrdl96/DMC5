@@ -13,24 +13,31 @@ ShaderTestActor::~ShaderTestActor()
 
 void ShaderTestActor::Start()
 {
-	//if (nullptr == GameEngineTexture::Find("PaperBurnNoise.jpg"))
-	//{
-	//	GameEngineTexture::Load(GameEnginePath::GetFileFullPath("ContentResources",
-	//		{
-	//			"Texture", "BurnNoiseTexture"
-	//		}, "PaperBurnNoise.jpg"));
-	//}
-
-	TestRenderer = CreateComponent<GameEngineSpriteRenderer>();		 	
-	TestRenderer->GetTransform()->SetLocalScale({ 1600, 900, 1 });
-
-	if (false == GameEngineInput::IsKey("Capture_Self"))
+	if (nullptr == GameEngineTexture::Find("DistortionSample_02.jpg"))
 	{
-		GameEngineInput::CreateKey("Capture_Self", VK_INSERT);
-		GameEngineInput::CreateKey("Capture_Core", VK_HOME);
-		GameEngineInput::CreateKey("SetTexture_Self", VK_DELETE);
-		GameEngineInput::CreateKey("SetTexture_Core", VK_END);
+		GameEngineTexture::Load(GameEnginePath::GetFileFullPath("ContentResources",
+			{
+				"Texture", "DistortionTexture"
+			}, "DistortionSample_02.jpg"));
 	}
+
+	// 디스토션 이펙트 
+	TestRenderer = CreateComponent<EffectRenderer>();
+	TestRenderer->RectInit("Effect_2D");
+	TestRenderer->SetTexture("DiffuseTexture", "EngineBaseNormal.png");
+
+	TestRenderer->GetTransform()->SetLocalScale({ 500, 1000, 1 });
+	TestRenderer->EffectOption.MulColor = {0.5, 0, 1, 0.2f};
+	TestRenderer->SetDistortionTexture("noise_02.png");
+	TestRenderer->PlayDistortionAnimation({4.0f, 2.0f}, 8.0f, 8.0f);
+
+	//if (false == GameEngineInput::IsKey("Capture_Self"))
+	//{
+	//	GameEngineInput::CreateKey("Capture_Self", VK_INSERT);
+	//	GameEngineInput::CreateKey("Capture_Core", VK_HOME);
+	//	GameEngineInput::CreateKey("SetTexture_Self", VK_DELETE);
+	//	GameEngineInput::CreateKey("SetTexture_Core", VK_END);
+	//}
 
 	//FBX파일경로를 찾아서 로드
 	//if (nullptr == GameEngineFBXMesh::Find("House1.FBX"))
@@ -92,28 +99,28 @@ void ShaderTestActor::Update(float _DeltaTime)
 	//GameEngineInput::CreateKey("SetTexture_Self", VK_INSERT);
 	//GameEngineInput::CreateKey("SetTexture_Core", VK_DELETE);
 
-	if (true == GameEngineInput::IsDown("Capture_Self"))
-	{
-		// 호출하는 즉시 캡쳐를 실행합니다 이미 중복된 이름이 존재할 경우 해당 텍스쳐로 캡쳐합니다
-		GameEngineCaptureTexture::CaptureTexture("Capture_Self", {1600, 900}, GetLevel()->GetMainCamera()->GetCamTarget());
-	}
-
-	if (true == GameEngineInput::IsDown("Capture_Core"))
-	{
-		// 랜더링이 모두 끝난 후 캡쳐를 실행합니다 이미 중복된 이름이 존재할 경우 해당 텍스쳐로 캡쳐합니다
-		GameEngineCore::CaptureTexture("Capture_Core", GetLevel()->GetMainCamera()->GetCamTarget(), {1600, 900});
-	}	
-	
-	if (true == GameEngineInput::IsDown("SetTexture_Self"))
-	{
-		// 캡쳐된 텍스쳐를 반환합니다 텍스쳐가 존재하지 않을 경우 nullptr를 반환합니다.
-		std::shared_ptr<GameEngineRenderTarget> CaptureTarget = GameEngineCaptureTexture::FindTexture("Capture_Self");
-
-		if (nullptr != CaptureTarget)
-		{
-			TestRenderer->SetTexture(CaptureTarget->GetTexture(0));
-		}
-	}
+	//if (true == GameEngineInput::IsDown("Capture_Self"))
+	//{
+	//	// 호출하는 즉시 캡쳐를 실행합니다 이미 중복된 이름이 존재할 경우 해당 텍스쳐로 캡쳐합니다
+	//	GameEngineCaptureTexture::CaptureTexture("Capture_Self", {1600, 900}, GetLevel()->GetMainCamera()->GetCamTarget());
+	//}
+	//
+	//if (true == GameEngineInput::IsDown("Capture_Core"))
+	//{
+	//	// 랜더링이 모두 끝난 후 캡쳐를 실행합니다 이미 중복된 이름이 존재할 경우 해당 텍스쳐로 캡쳐합니다
+	//	GameEngineCore::CaptureTexture("Capture_Core", GetLevel()->GetMainCamera()->GetCamTarget(), {1600, 900});
+	//}	
+	//
+	//if (true == GameEngineInput::IsDown("SetTexture_Self"))
+	//{
+	//	// 캡쳐된 텍스쳐를 반환합니다 텍스쳐가 존재하지 않을 경우 nullptr를 반환합니다.
+	//	std::shared_ptr<GameEngineRenderTarget> CaptureTarget = GameEngineCaptureTexture::FindTexture("Capture_Self");
+	//
+	//	if (nullptr != CaptureTarget)
+	//	{
+	//		TestRenderer->SetTexture(CaptureTarget->GetTexture(0));
+	//	}
+	//}
 
 	// 캡쳐된 텍스쳐를 삭제합니다, 메모리 관리를 위해 안쓰는 텍스쳐를 삭제해 주세요
 	//GameEngineCaptureTexture::ReleaseTexture("Capture_Self");
@@ -122,16 +129,16 @@ void ShaderTestActor::Update(float _DeltaTime)
 	// 캡쳐된 모든 텍스쳐를 삭제합니다, 메모리 관리를 위해 안쓰는 텍스쳐를 삭제해 주세요
 	//GameEngineCaptureTexture::ClearAllTexture();
 
-	if (true == GameEngineInput::IsDown("SetTexture_Core"))
-	{
-		// 캡쳐된 텍스쳐를 반환합니다 텍스쳐가 존재하지 않을 경우 nullptr를 반환합니다.
-		std::shared_ptr<GameEngineRenderTarget> CaptureTarget = GameEngineCaptureTexture::FindTexture("Capture_Core");
-
-		if (nullptr != CaptureTarget)
-		{
-			TestRenderer->SetTexture(CaptureTarget->GetTexture(0));
-		}
-	}
+	//if (true == GameEngineInput::IsDown("SetTexture_Core"))
+	//{
+	//	// 캡쳐된 텍스쳐를 반환합니다 텍스쳐가 존재하지 않을 경우 nullptr를 반환합니다.
+	//	std::shared_ptr<GameEngineRenderTarget> CaptureTarget = GameEngineCaptureTexture::FindTexture("Capture_Core");
+	//
+	//	if (nullptr != CaptureTarget)
+	//	{
+	//		TestRenderer->SetTexture(CaptureTarget->GetTexture(0));
+	//	}
+	//}
 }
 
 void ShaderTestActor::InitTest(int _Index)

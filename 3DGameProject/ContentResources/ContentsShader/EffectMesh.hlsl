@@ -105,6 +105,9 @@ cbuffer EffectData : register(b2)
 cbuffer DistortionData : register(b3)
 {
     float4 IsDistortion;
+    float4 DisAnimationSpeed;
+    float PatternX;
+    float PatternY;
 };
 
 cbuffer HSVColorData : register(b4)
@@ -153,6 +156,18 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     else
     {
         Result.DistortionColor = MaskTexture.Sample(ENGINEBASE, UV) * IsDistortion;
+        
+        if (0 != length(DisAnimationSpeed))
+        {           
+            float2 TimeUV;
+            
+            TimeUV.x = SumDeltaTime * DisAnimationSpeed.x;
+            TimeUV.y = SumDeltaTime * DisAnimationSpeed.y;
+            
+            Result.DistortionColor.x += (UV.x * PatternX) + TimeUV.x;
+            Result.DistortionColor.y += (UV.y * PatternY) + TimeUV.y;
+        }
+        
         Result.DistortionColor.a = Result.ResultColor.a;
     }
     

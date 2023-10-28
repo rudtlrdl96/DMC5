@@ -197,8 +197,7 @@ void TestStageLevel::LevelChangeStart()
 	//	NewEffect->SetDistortionTexture("DistortionSample_02.jpg");
 	//}
 
-
-	//CreateActor<ShaderTestActor>()->GetTransform()->SetWorldPosition(float4(0, 400, 0));
+	//CreateActor<ShaderTestActor>()->GetTransform()->SetWorldPosition(float4(10315.f, 500.f, 5073.f));
 
 	//PointLight = CreatePointLight(float4(0, 300, 0), ShadowTextureScale::S_512, 1024);
 	//PointLight->SetLightPower(2.0f);
