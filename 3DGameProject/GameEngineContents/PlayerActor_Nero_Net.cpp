@@ -69,6 +69,7 @@ void PlayerActor_Nero::NetLoad()
 		{
 			GameEngineFBXMesh::Load(NewDir.GetPlusFileName("Nero.fbx").GetFullPath());
 			GameEngineTexture::Load(NewDir.GetPlusFileName("High\\pl0000_03_atos.texout.png").GetFullPath());
+			GameEngineTexture::Load(NewDir.GetPlusFileName("High\\pl0010_01_wing_atos1.texout.png").GetFullPath());
 		}
 		NewDir.MoveParent();
 		NewDir.Move("Animation");
