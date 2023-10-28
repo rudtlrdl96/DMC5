@@ -12,11 +12,13 @@
 #include "PlayerActor_Vergil.h"
 #include "Player_MirageBlade.h"
 #include "Plane.h"
-#include "Enemy_HellCaina.h"
 #include "JudgementCut.h"
 #include "ColorEffect.h"
 #include "Enemy_Empusa.h"
+#include "Enemy_HellCaina.h"
 #include "Enemy_HellAntenora.h"
+#include "Enemy_ScudoAngelo.h"
+#include "CavaliereAngelo.h"
 
 NetworkTestLevel::NetworkTestLevel()
 {
@@ -159,7 +161,7 @@ void NetworkTestLevel::Update(float _DeltaTime)
 	{
 		if (nullptr == Enemy)
 		{
-			Enemy = NetworkManager::CreateNetworkActor<Enemy_Empusa>(this);
+			Enemy = NetworkManager::CreateNetworkActor<CavaliereAngelo>(this);
 		}
 		else
 		{

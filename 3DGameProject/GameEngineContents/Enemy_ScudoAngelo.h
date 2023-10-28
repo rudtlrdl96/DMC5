@@ -104,6 +104,7 @@ private:
 	void MonsterAttackCollisionOff();
 	void MoveLoop();
 	void ParryCheck();
+	void ParryCheck_Client();
 	void ParryTime();
 	void PlayDamageEvent(DamageSoundType _Type);
 

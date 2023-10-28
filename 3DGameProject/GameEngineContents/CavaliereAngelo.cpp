@@ -212,6 +212,7 @@ void CavaliereAngelo::Start()
 	LinkData_UpdatePacket<bool>(ParryOkay);
 	LinkData_UpdatePacket<int>(ChargeDamageStack);
 	LinkData_UpdatePacket<int>(EnemyHP);
+	LinkData_UpdatePacket<int>(ParryStack);
 	LinkData_UpdatePacket<int>(HPServerStack);
 	LinkData_UpdatePacket<int>(HPClientStack);
 
@@ -240,59 +241,6 @@ void CavaliereAngelo::Start()
 				HPServerStack = 0;
 				HPClientStack = 0;
 				Player = _Player;
-			}
-
-			if (DamageType::Buster == Datas.DamageTypeValue && true == IsStun)
-			{
-				IsStun = false;
-				SetTimeScale(0.4f);
-				GetLevel()->TimeEvent.AddEvent(.316f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-					{
-						StartRenderShaking(8);
-						MinusEnemyHP(300);
-						HPClientStackPlus(300);
-					});
-				GetLevel()->TimeEvent.AddEvent(.683f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-					{
-						StartRenderShaking(8);
-						MinusEnemyHP(300);
-						HPClientStackPlus(300);
-					});
-				GetLevel()->TimeEvent.AddEvent(1.13f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-					{
-						StartRenderShaking(8);
-						MinusEnemyHP(300);
-						HPClientStackPlus(300);
-					});
-				GetLevel()->TimeEvent.AddEvent(1.4f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-					{
-						StartRenderShaking(8);
-						MinusEnemyHP(300);
-						HPClientStackPlus(300);
-					});
-				GetLevel()->TimeEvent.AddEvent(1.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-					{
-						Sound.Play("Cavaliere_Damage_", 3);
-						StartRenderShaking(8);
-						MinusEnemyHP(300);
-						HPClientStackPlus(300);
-					});
-				GetLevel()->TimeEvent.AddEvent(1.7f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-					{
-						SetTimeScale(0.3f);
-					});
-				GetLevel()->TimeEvent.AddEvent(2.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-					{
-						Sound.Play("Cavaliere_Damage_", 6);
-						StartRenderShaking(8);
-						MinusEnemyHP(800);
-						HPClientStackPlus(800);
-						SetTimeScale(0.0f);
-					});
-				GetLevel()->TimeEvent.AddEvent(3.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-					{
-						SetTimeScale(1.0f);
-					});
 			}
 
 			if (DamageType::Stun == Datas.DamageTypeValue)
@@ -414,13 +362,13 @@ void CavaliereAngelo::Update(float _DeltaTime)
 
 		RendererBurn(_DeltaTime);
 		RenderShake(_DeltaTime);
-		ParryCheck();
 	}
 
 	// 싱글 플레이일 때 실행
 	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
 	{
 		DeathCheck();
+		ParryCheck();
 		RecognizeCollisionCheck(_DeltaTime);
 		DamageCollisionCheck(_DeltaTime);
 		EnemyFSM.Update(_DeltaTime);
@@ -436,6 +384,7 @@ void CavaliereAngelo::Update(float _DeltaTime)
 		if (NetControllType::ActiveControll == GetControllType())
 		{
 			DeathCheck();
+			ParryCheck();
 			RecognizeCollisionCheck(_DeltaTime);
 			DamageCollisionCheck(_DeltaTime);
 			EnemyFSM.Update(_DeltaTime);
@@ -443,6 +392,7 @@ void CavaliereAngelo::Update(float _DeltaTime)
 		// 클라이언트 플레이일 때 실행
 		else
 		{
+			ParryCheck_Client();
 			Update_NetworkTrans(_DeltaTime);
 			DamageCollisionCheck_Client(_DeltaTime);
 			EnemyFSM.Update(_DeltaTime);
@@ -740,6 +690,11 @@ void CavaliereAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 	}
 
 	StartRenderShaking(6);
+
+	if (DamageType::Buster != Data.DamageTypeValue && false == IsStun)
+	{
+		ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
+	}
 }
 
 void CavaliereAngelo::RecognizeCollisionCheck(float _DeltaTime)
@@ -776,6 +731,37 @@ void CavaliereAngelo::ParryCheck()
 	if (false == AttackCol->GetIsParryAttack()) { return; }
 	AttackCol->ParryEvent();
 	ParryOkay = true;
+}
+
+void CavaliereAngelo::ParryCheck_Client()
+{
+	if (false == IsParryCheck || true == ParryOkay || true == DeathValue)
+	{
+		return;
+	}
+
+	std::shared_ptr<GameEngineCollision> Col = ParryCollision->Collision(CollisionOrder::PlayerAttack);
+	if (nullptr == Col) { return; }
+
+	std::shared_ptr<AttackCollision> AttackCol = std::dynamic_pointer_cast<AttackCollision>(Col);
+	if (nullptr == AttackCol) { return; }
+
+	if (false == AttackCol->GetIsParryAttack()) { return; }
+	AttackCol->ParryEvent();
+
+	if (ParryStack <= 1)
+	{
+		ChangeState_Client(FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_Even01);
+	}
+	else if (ParryStack >= 2 && ParryStack < 5)
+	{
+		ChangeState_Client(FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_normal01);
+	}
+	else if (ParryStack >= 5)
+	{
+		ParryStack = 0;
+		ChangeState_Client(FSM_State_CavaliereAngelo::CavaliereAngelo_Damage_Drill);
+	}
 }
 
 void CavaliereAngelo::ParryTime()
@@ -1584,9 +1570,6 @@ void CavaliereAngelo::EnemyCreateFSM()
 	{
 		SetMoveStop();
 		MonsterAttackCollision->Off();
-		ParryOkay = false;
-		IsParryCheck = false;
-		++ParryStack;
 
 		if (ParryStack <= 1)
 		{
@@ -1598,7 +1581,6 @@ void CavaliereAngelo::EnemyCreateFSM()
 		}
 		else if (ParryStack >= 5)
 		{
-			ParryStack = 0;
 			ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Damage_Drill);
 		}
 		return;
@@ -1686,9 +1668,6 @@ void CavaliereAngelo::EnemyCreateFSM()
 	{
 		SetMoveStop();
 		MonsterAttackCollision->Off();
-		ParryOkay = false;
-		IsParryCheck = false;
-		++ParryStack;
 
 		if (ParryStack <= 1)
 		{
@@ -1787,9 +1766,6 @@ void CavaliereAngelo::EnemyCreateFSM()
 	{
 		SetMoveStop();
 		MonsterAttackCollision->Off();
-		ParryOkay = false;
-		IsParryCheck = false;
-		++ParryStack;
 
 		if (ParryStack <= 1)
 		{
@@ -1822,6 +1798,9 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 플레이어 패리 성공 후 바로 공격
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_Even01,
 	.Start = [=] {
+	ParryOkay = false;
+	IsParryCheck = false;
+	++ParryStack;
 	ParryTime();
 	EffectRenderer_0->PlayFX("Cavalier_Parry.effect");
 	EffectRenderer_1->Off();
@@ -1852,6 +1831,9 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 플레이어 패리 후 성공 후 약경직
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_normal01,
 	.Start = [=] {
+	ParryOkay = false;
+	IsParryCheck = false;
+	++ParryStack;
 	ParryTime();
 	EffectRenderer_0->PlayFX("Cavalier_Parry.effect");
 	EffectRenderer_1->Off();
@@ -2036,9 +2018,6 @@ void CavaliereAngelo::EnemyCreateFSM()
 	{
 		SetMoveStop();
 		MonsterAttackCollision->Off();
-		ParryOkay = false;
-		IsParryCheck = false;
-		++ParryStack;
 
 		if (ParryStack <= 1)
 		{

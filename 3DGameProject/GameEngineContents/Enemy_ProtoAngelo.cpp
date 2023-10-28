@@ -280,7 +280,7 @@ void Enemy_ProtoAngelo::Start()
 
 			DamageData Datas = _Player->GetAttackCollision()->GetDamage();
 			MinusEnemyHP(Datas.DamageValue);
-			PlayDamageEvent(Datas.SoundType);
+			PlayDamageEvent(Datas.SoundType, true);
 
 			if (DamageType::VergilLight == Datas.DamageTypeValue)
 			{

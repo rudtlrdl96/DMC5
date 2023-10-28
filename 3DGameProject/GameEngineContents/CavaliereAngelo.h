@@ -130,6 +130,7 @@ private:
 	void ChangeState_Client(int _StateValue);
 	void AttackCalculation();
 	void ParryCheck();
+	void ParryCheck_Client();
 	void ParryTime();
 	void BossTurn();
 	void PlayDamageSound(DamageSoundType _Type);
@@ -141,12 +142,12 @@ private:
 	float AttackDelayTime = 0.0f;
 	float ElectroTime = 0.0f;
 
-	short ParryStack = 0;
 	short ColliderStack = 0;
 
 	int ChargeDamageStack = 0;
 	int HPServerStack = 0;
 	int HPClientStack = 0;
+	int ParryStack = 0;
 
 	bool IsVergilLight = false;
 	bool IsSturn = false;

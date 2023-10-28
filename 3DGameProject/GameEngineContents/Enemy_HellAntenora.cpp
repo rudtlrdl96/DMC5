@@ -293,7 +293,7 @@ void Enemy_HellAntenora::Start()
 				MsgAssert("잘못된 DamageCallBack 이벤트입니다");
 				return;
 			}
-			Player = _Player;
+			//Player = _Player;
 
 			MonsterAttackCollision->Off();
 			MultiAttackStack = 0;
@@ -483,7 +483,6 @@ void Enemy_HellAntenora::DamageCollisionCheck(float _DeltaTime)
 			IsCollapse = false;
 			IsRecognize = false;
 			HitStop(Data.DamageTypeValue);
-			AttackDelayCheck = 0.0f;
 			StartRenderShaking(8);
 		}
 		return;
@@ -608,6 +607,7 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 		}
 		else
 		{
+			ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
 			HitStop(Data.DamageTypeValue);
 			StartRenderShaking(8);
 		}
@@ -629,13 +629,14 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 		if (true == IsAirAttack || true == IsSlamAttack || true == IsHeavyAttack)
 		{
 			StartRenderShaking(8);
-			ChangeState(FSM_State_HellAntenora::HellAntenora_Air_Damage_Under);
+			ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Air_Damage_Under);
 			return;
 		}
 
 		if (true == IsCollapse)
 		{
 			StartRenderShaking(8);
+			ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
 			return;
 		}
 

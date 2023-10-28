@@ -17,10 +17,15 @@
 
 #include "PlayerActor_Nero.h"
 #include "PlayerActor_Vergil.h"
-#include "Enemy_HellCaina.h"
-#include "Enemy_Empusa.h"
-#include "Enemy_Qliphoth.h"
 #include "Player_MirageBlade.h"
+
+#include "Enemy_Qliphoth.h"
+#include "Enemy_Empusa.h"
+#include "Enemy_HellCaina.h"
+#include "Enemy_HellAntenora.h"
+#include "Enemy_ScudoAngelo.h"
+#include "Enemy_ProtoAngelo.h"
+#include "CavaliereAngelo.h"
 
 const float NetworkManager::PacketFlushTime = 0.01f;
 
@@ -533,6 +538,18 @@ std::shared_ptr<NetworkObjectBase> NetworkManager::CreateNetActor(Net_ActorType 
 		break;
 	case Net_ActorType::Qliphoth:
 		NetObject = Poolable<Enemy_Qliphoth>::PopFromPool(CreateLevel, static_cast<int>(ActorOrder::Enemy));
+		break;
+	case Net_ActorType::HellAntenora:
+		NetObject = Poolable<Enemy_HellAntenora>::PopFromPool(CreateLevel, static_cast<int>(ActorOrder::Enemy));
+		break;
+	case Net_ActorType::ScudoAngelo:
+		NetObject = Poolable<Enemy_ScudoAngelo>::PopFromPool(CreateLevel, static_cast<int>(ActorOrder::Enemy));
+		break;
+	case Net_ActorType::ProtoAngelo:
+		NetObject = Poolable<Enemy_ProtoAngelo>::PopFromPool(CreateLevel, static_cast<int>(ActorOrder::Enemy));
+		break;
+	case Net_ActorType::CavaliereAngelo:
+		NetObject = Poolable<CavaliereAngelo>::PopFromPool(CreateLevel, static_cast<int>(ActorOrder::Enemy));
 		break;
 	default:
 	{

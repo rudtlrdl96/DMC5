@@ -476,7 +476,7 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 		if (true == IsAirAttack || true == IsSlamAttack || true == IsHeavyAttack)
 		{
 			StartRenderShaking(8);
-			ChangeState(FSM_State_Empusa::Empusa_Air_Damage_Under);
+			ChangeState_Client(FSM_State_Empusa::Empusa_Air_Damage_Under);
 			return;
 		}
 
@@ -591,6 +591,7 @@ void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 		if (true == IsCollapse)
 		{
 			StartRenderShaking(8);
+			ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
 			return;
 		}
 

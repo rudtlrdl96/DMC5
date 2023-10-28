@@ -308,7 +308,16 @@ void Enemy_ScudoAngelo::Start()
 			// Player = _Player;
 
 			DamageData Datas = _Player->GetAttackCollision()->GetDamage();
-			MinusEnemyHP(Datas.DamageValue);
+
+			if (true == IsCollapse)
+			{
+				MinusEnemyHP(Datas.DamageValue);
+			}
+			else
+			{
+				MinusEnemyHP(70);
+			}
+			
 			PlayDamageEvent(Datas.SoundType);
 
 			if (DamageType::Stun == Datas.DamageTypeValue)
@@ -374,6 +383,24 @@ void Enemy_ScudoAngelo::ParryCheck()
 	if (false == AttackCol->GetIsParryAttack()) { return; }
 	AttackCol->ParryEvent();
 	ParryOkay = true;
+}
+
+void Enemy_ScudoAngelo::ParryCheck_Client()
+{
+	if (false == IsParryCheck || true == ParryOkay || true == DeathValue)
+	{
+		return;
+	}
+
+	std::shared_ptr<GameEngineCollision> Col = ParryCollision->Collision(CollisionOrder::PlayerAttack);
+	if (nullptr == Col) { return; }
+
+	std::shared_ptr<AttackCollision> AttackCol = std::dynamic_pointer_cast<AttackCollision>(Col);
+	if (nullptr == AttackCol) { return; }
+
+	if (false == AttackCol->GetIsParryAttack()) { return; }
+	AttackCol->ParryEvent();
+	ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Parry_Lose_Modori);
 }
 
 void Enemy_ScudoAngelo::ParryTime()
@@ -783,7 +810,7 @@ void Enemy_ScudoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 		return;
 	}
 
-	ParryCheck();
+	ParryCheck_Client();
 
 	if (true == DeathValue)
 	{
@@ -831,7 +858,7 @@ void Enemy_ScudoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 			}
 			else
 			{
-				MinusEnemyHP(70);
+				ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
 				StartRenderShaking(6);
 			}
 			return;
@@ -871,6 +898,7 @@ void Enemy_ScudoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 		if (true == IsCollapse)
 		{
 			StartRenderShaking(8);
+			ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
 			return;
 		}
 
