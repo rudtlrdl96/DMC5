@@ -168,7 +168,7 @@ void Enemy_ProtoAngelo::Start()
 
 	// 랜더러 크기 설정
 	EnemyRenderer->GetTransform()->AddLocalPosition({ 0.0f, -45.0f, 0.0f });
-	EnemyRenderer->GetTransform()->AddLocalRotation({ 90.0f, 0.0f, 0.0f });
+	//EnemyRenderer->GetTransform()->AddLocalRotation({ 90.0f, 0.0f, 0.0f });
 
 	// 콜리전 옵션, 크기 설정
 	MonsterAttackCollision->SetAttackData(DamageType::Light, 100);
