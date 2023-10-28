@@ -349,6 +349,24 @@ void Enemy_ProtoAngelo::ParryCheck()
 	ParryOkay = true;
 }
 
+void Enemy_ProtoAngelo::ParryCheck_Client()
+{
+	if (false == IsParryCheck || true == ParryOkay || true == DeathValue)
+	{
+		return;
+	}
+
+	std::shared_ptr<GameEngineCollision> Col = ParryCollision->Collision(CollisionOrder::PlayerAttack);
+	if (nullptr == Col) { return; }
+
+	std::shared_ptr<AttackCollision> AttackCol = std::dynamic_pointer_cast<AttackCollision>(Col);
+	if (nullptr == AttackCol) { return; }
+
+	if (false == AttackCol->GetIsParryAttack()) { return; }
+	AttackCol->ParryEvent();
+	ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Parry_Lose_Modori);
+}
+
 void Enemy_ProtoAngelo::ParryTime()
 {
 	SetTimeScale(0.2f);
@@ -484,7 +502,7 @@ void Enemy_ProtoAngelo::MonsterAttackCollisionOff()
 	MonsterAttackCollision_Two->Off();
 }
 
-void Enemy_ProtoAngelo::PlayerChase(float _DeltaTime)
+void Enemy_ProtoAngelo::PlayerChase()
 {
 	RotationCheck();
 
@@ -493,63 +511,79 @@ void Enemy_ProtoAngelo::PlayerChase(float _DeltaTime)
 	case EnemyRotation::Forward:
 	{
 		AllDirectSetting();
-		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
-		if (0 == RandC)
-		{
-			//ChangeState(FSM_State_ProtoAngelo::Empusa_Biped_Walk_Start);
-		}
-		else
-		{
-			//ChangeState(FSM_State_ProtoAngelo::Empusa_Biped_Run_Start);
-		}
+
+		//int RandC = GameEngineRandom::MainRandom.RandomInt(0, 3);
+
+		//if (0 == RandC)
+		//{
+		//	ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Attack_T_Run_Start);
+		//}
+		//else
+		//{
+		//	ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start);
+		//}
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start);
+		return;
 	}
 	break;
 	case EnemyRotation::Left:
 	{
 		AllDirectSetting();
-		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
-		if (0 == RandC)
-		{
-			//ChangeState(FSM_State_ProtoAngelo::Empusa_Biped_Walk_Start);
-		}
-		else
-		{
-			//ChangeState(FSM_State_ProtoAngelo::Empusa_Biped_Run_Start);
-		}
+
+		//int RandC = GameEngineRandom::MainRandom.RandomInt(0, 3);
+
+		//if (0 == RandC)
+		//{
+		//	ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Attack_T_Run_Start);
+		//}
+		//else
+		//{
+		//	ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start);
+		//}
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start);
+		return;
 	}
 	break;
 	case EnemyRotation::Left_90:
-		//ChangeState(FSM_State_ProtoAngelo::Empusa_Turn_Left_90);
+		AllDirectSetting();
+		//ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Step_Back_S);
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start);
 		break;
 	case EnemyRotation::Left_180:
-		//ChangeState(FSM_State_ProtoAngelo::Empusa_Turn_Left_180);
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Turn_Attack_To_Guard_L_Dummy_Turn_R);
 		break;
 	case EnemyRotation::Right:
 	{
 		AllDirectSetting();
-		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 2);
-		if (0 == RandC)
-		{
-			//ChangeState(FSM_State_ProtoAngelo::Empusa_Biped_Walk_Start);
-		}
-		else
-		{
-			//ChangeState(FSM_State_ProtoAngelo::Empusa_Biped_Run_Start);
-		}
+
+		//int RandC = GameEngineRandom::MainRandom.RandomInt(0, 3);
+
+		//if (0 == RandC)
+		//{
+		//	ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Attack_T_Run_Start);
+		//}
+		//else
+		//{
+		//	ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start);
+		//}
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start);
+		return;
 	}
 	break;
 	case EnemyRotation::Right_90:
-		//ChangeState(FSM_State_ProtoAngelo::Empusa_Turn_Right_90);
+		AllDirectSetting();
+		//ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Step_Back_S);
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start);
 		break;
 	case EnemyRotation::Right_180:
-		//ChangeState(FSM_State_ProtoAngelo::Empusa_Turn_Right_180);
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Turn_Attack_To_Guard_L_Dummy_Turn_L);
 		break;
 	default:
 		break;
 	}
 }
 
-void Enemy_ProtoAngelo::PlayerAttack(float _DeltaTime)
+void Enemy_ProtoAngelo::PlayerAttack()
 {
 	RotationCheck();
 	AllDirectSetting();
@@ -625,6 +659,15 @@ void Enemy_ProtoAngelo::AttackCalculation()
 
 void Enemy_ProtoAngelo::DamageCollisionCheck(float _DeltaTime)
 {
+	if (FSM_State_ProtoAngelo::ProtoAngelo_Death_Front == EnemyFSM.GetCurState()
+		|| FSM_State_ProtoAngelo::ProtoAngelo_Death_Back == EnemyFSM.GetCurState()
+		|| FSM_State_ProtoAngelo::ProtoAngelo_Death_Front == EnemyFSM.GetCurState())
+	{
+		return;
+	}
+
+	ParryCheck();
+
 	if (true == DeathValue)
 	{
 		return;
@@ -648,17 +691,50 @@ void Enemy_ProtoAngelo::DamageCollisionCheck(float _DeltaTime)
 	PlayerAttackCheck(AttackCol.get());
 	MonsterAttackCollision->Off();
 	DamageData Data = AttackCol->GetDamage();
-	AttackDelayCheck = 0.0f;
-	MinusEnemyHP(Data.DamageValue);
-
 	PlayDamageEvent(Data.SoundType, true);
-	if (DamageType::VergilLight == Data.DamageTypeValue)
-	{
-		IsVergilLight = true;
-		Data.DamageTypeValue = DamageType::Light;
-	}
+	AttackDelayCheck = 0.0f;
 
-	HitStop(Data.DamageTypeValue);
+	//if (EnemyHitDirect::Forward == EnemyHitDirValue)
+	//{
+	//	if (FSM_State_ProtoAngelo::ProtoAngelo_Idle == EnemyFSM.GetCurState()
+	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start == EnemyFSM.GetCurState()
+	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Loop == EnemyFSM.GetCurState()
+	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Stop == EnemyFSM.GetCurState()
+	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Group_Command_Attack == EnemyFSM.GetCurState()
+	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Step_Back_M == EnemyFSM.GetCurState()
+	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Step_Back_S == EnemyFSM.GetCurState()
+	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Attack_T_Run_Start == EnemyFSM.GetCurState()
+	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Attack_T_Run_Loop == EnemyFSM.GetCurState()
+	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Attack_T_Run_Stop_A == EnemyFSM.GetCurState()
+	//		|| true == IsSuperArmor)
+	//	{
+	//		if (Data.DamageTypeValue == DamageType::Buster)
+	//		{
+	//			MinusEnemyHP(Data.DamageValue);
+	//			ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Buster_Start);
+	//		}
+	//		else if (Data.DamageTypeValue == DamageType::Stun)
+	//		{
+	//			MinusEnemyHP(Data.DamageValue);
+	//			StopTime(2.9f);
+	//		}
+	//		else
+	//		{
+	//			MinusEnemyHP(70);
+	//			StartRenderShaking(6);
+	//		}
+	//		HitStop(Data.DamageTypeValue);
+	//		return;
+	//	}
+	//}
+
+	if (true == ParryEvent)
+	{
+		MinusEnemyHP(Data.DamageValue);
+		StartRenderShaking(6);
+		HitStop(Data.DamageTypeValue);
+		return;
+	}
 
 	switch (Data.DamageTypeValue)
 	{
@@ -731,6 +807,15 @@ void Enemy_ProtoAngelo::DamageCollisionCheck(float _DeltaTime)
 
 void Enemy_ProtoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 {
+	if (FSM_State_ProtoAngelo::ProtoAngelo_Death_Front == EnemyFSM.GetCurState()
+		|| FSM_State_ProtoAngelo::ProtoAngelo_Death_Back == EnemyFSM.GetCurState()
+		|| FSM_State_ProtoAngelo::ProtoAngelo_Death_Front == EnemyFSM.GetCurState())
+	{
+		return;
+	}
+
+	ParryCheck_Client();
+
 	if (true == DeathValue)
 	{
 		return;
@@ -752,7 +837,41 @@ void Enemy_ProtoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 	if (nullptr == AttackCol) { return; }
 
 	DamageData Data = AttackCol->GetDamage();
+	PlayDamageEvent(Data.SoundType, true);
 	AttackDelayCheck = 0.0f;
+
+	//if (EnemyHitDirect::Forward == EnemyHitDirValue)
+	//{
+	//	if (FSM_State_ProtoAngelo::ProtoAngelo_Idle == EnemyFSM.GetCurState()
+	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start == EnemyFSM.GetCurState()
+	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Loop == EnemyFSM.GetCurState()
+	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Stop == EnemyFSM.GetCurState()
+	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Group_Command_Attack == EnemyFSM.GetCurState()
+	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Step_Back_M == EnemyFSM.GetCurState()
+	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Step_Back_S == EnemyFSM.GetCurState()
+	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Attack_T_Run_Start == EnemyFSM.GetCurState()
+	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Attack_T_Run_Loop == EnemyFSM.GetCurState()
+	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Attack_T_Run_Stop_A == EnemyFSM.GetCurState()
+	//		|| true == IsSuperArmor)
+	//	{
+	//		if (Data.DamageTypeValue == DamageType::Buster)
+	//		{
+	//			ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Buster_Start);
+	//		}
+	//		else
+	//		{
+	//			ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
+	//			StartRenderShaking(6);
+	//		}
+	//		return;
+	//	}
+	//}
+
+	if (true == ParryEvent)
+	{
+		StartRenderShaking(6);
+		return;
+	}
 
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
@@ -781,6 +900,7 @@ void Enemy_ProtoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 		if (true == IsCollapse)
 		{
 			StartRenderShaking(8);
+			ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
 			return;
 		}
 
@@ -885,9 +1005,171 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Idle,
 	.Start = [=] {
+	IsRecognize = false;
 	EnemyRenderer->ChangeAnimation("em0601_Idle_Loop");
 	},
 	.Update = [=](float _DeltaTime) {
+	WaitTime += _DeltaTime;
+	if (0.35f <= WaitTime)
+	{
+		//if (true == IsRecognize)
+		//{
+		//	IsRecognize = false;
+		//	PlayerAttack();
+		//}
+		//else
+		//{
+		//	PlayerChase();
+		//}
+		//return;
+		PlayerChase();
+	}
+	},
+	.End = [=] {
+	WaitTime = 0.0f;
+	}
+		});
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////      이동      //////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	// 앞으로 걷기 시작, 18프레임 걷기 시작
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start,
+	.Start = [=]
+	{
+	RotationCheck();
+	AllDirectSetting_Normal();
+	SlerpCalculation();
+	EnemyRenderer->ChangeAnimation("em0601_A_Walk_Start_L0");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	{
+		{
+			SlerpTurn(_DeltaTime * 2.5f);
+			AllDirectSetting_Normal();
+			if (18 <= EnemyRenderer->GetCurFrame())
+			{
+				SetForwardMove(170.0f);
+			}
+		}
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Loop);
+		return;
+	}
+	},
+	.End = [=]
+	{
+	SlerpTime = 0.0f;
+	}
+		});
+
+	// 앞으로 걷기 루프
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_A_Walk_Loop");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	RunTime += _DeltaTime;
+	{
+		MoveLoop();
+		SetForwardMove(220.0f);
+	}
+
+/*	if (true == IsRecognize)
+	{
+		IsRecognize = false;
+		PlayerAttack();
+		return;
+	}
+	else */if (RunTime >= 3.0f)
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Stop);
+		return;
+	}
+	},
+	.End = [=] {
+	RunTime = 0.0f;
+	}
+		});
+
+	// 앞으로 걷기 끝, 20프레임 걷기 끝
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Stop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_A_Walk_End_L0");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	{
+		AllDirectSetting_Normal();
+		if (20 >= EnemyRenderer->GetCurFrame())
+		{
+			SetForwardMove(170.0f);
+		}
+	}
+
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 왼쪽 돌기(이름 잘못 저장), 20프레임 애니메이션 턴 // 10프레임 전진 시작, 64프레임 전진 종료
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Turn_Attack_To_Guard_L_Dummy_Turn_R,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Turn_Attack_To_Quard_R");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	if (20 <= EnemyRenderer->GetCurFrame())
+	{
+		AnimationTurnStart = true;
+	}
+
+	if (10 > EnemyRenderer->GetCurFrame() && 64 <= EnemyRenderer->GetCurFrame())
+	{
+		SetForwardMove(140.0f);
+	}
+
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		AnimationTurnStart = false;
+		PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 오른쪽 돌기(이름 잘못 저장), 23프레임 애니메이션 턴
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Turn_Attack_To_Guard_L_Dummy_Turn_L,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Turn_Attack_To_Quard_L");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+
+	if (23 <= EnemyRenderer->GetCurFrame())
+	{
+		AnimationTurnStart = true;
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		AnimationTurnStart = false;
+		PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
+		return;
+	}
 	},
 	.End = [=] {
 	}

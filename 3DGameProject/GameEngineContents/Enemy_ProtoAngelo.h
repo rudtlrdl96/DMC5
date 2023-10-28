@@ -105,8 +105,8 @@ protected:
 	void RecognizeCollisionCheck(float _DeltaTime) override;
 
 private:
-	void PlayerChase(float _DeltaTime);
-	void PlayerAttack(float _DeltaTime);
+	void PlayerChase();
+	void PlayerAttack();
 	void RandomAttack();
 	void ChangeState(int _StateValue);
 	void ChangeState_Client(int _StateValue);
@@ -115,6 +115,7 @@ private:
 	void MonsterAttackCollisionOff();
 	void MoveLoop();
 	void ParryCheck();
+	void ParryCheck_Client();
 	void ParryTime();
 	void PlayDamageEvent(DamageSoundType _Type, bool _PlayVoice);
 

@@ -738,6 +738,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// Idle
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Idle,
 	.Start = [=] {
+	IsRecognize = false;
 	SetMoveStop();
 	EnemyRenderer->ChangeAnimation("em0000_Idle_01");
 	},

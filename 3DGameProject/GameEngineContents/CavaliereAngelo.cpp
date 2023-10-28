@@ -908,6 +908,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 방어자세로 서있음
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Idle,
 	.Start = [=] {
+	IsRecognize = false;
 	EnemyRenderer->ChangeAnimation("em5501_defense-Idle");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1086,6 +1087,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 충전 완료 후 Dengeki 걷기 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Collider_To_Dengeki,
 	.Start = [=] {
+	IsRecognize = false;
 	EffectRenderer_1->PlayFX("Cavalier_Collider_To_Dengeki.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack_collider_to_Dengeki");
 	},
@@ -1118,6 +1120,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 서있다가 방어자세 취하면서 걷기 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Wark_Attack_To_Guard_Start,
 	.Start = [=] {
+	IsRecognize = false;
 	RotationCheck();
 	AllDirectSetting_Normal();
 	SlerpCalculation();

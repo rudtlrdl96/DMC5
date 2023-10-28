@@ -795,6 +795,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 嘐橫贏 Idle
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Biped_Idle,
 	.Start = [=] {
+	IsRecognize = false;
 	SetMoveStop();
 	EnemyRenderer->ChangeAnimation("em0100_biped_idle");
 	},
@@ -837,6 +838,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 給問 Idle
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Quadruped_Idle,
 	.Start = [=] {
+	IsRecognize = false;
 	SetMoveStop();
 	EnemyRenderer->ChangeAnimation("em0100_quadruped_idle");
 	},
@@ -856,6 +858,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 給問 -> 嘐橫贏 Idle
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Quadruped_To_Biped,
 	.Start = [=] {
+	IsRecognize = false;
 	SetMoveStop();
 	EnemyRenderer->ChangeAnimation("em0100_quadruped_to_biped");
 	},

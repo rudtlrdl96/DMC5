@@ -821,6 +821,7 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	// Idle
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Idle,
 	.Start = [=] {
+	IsRecognize = false;
 	SetMoveStop();
 	EnemyRenderer->ChangeAnimation("em0001_Idle_01_loop");
 	},

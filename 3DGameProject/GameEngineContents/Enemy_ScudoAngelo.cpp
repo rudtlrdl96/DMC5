@@ -1024,6 +1024,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	// ¼­ÀÖÀ½
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Idle,
 	.Start = [=] {
+	IsRecognize = false;
 	EnemyRenderer->ChangeAnimation("em0600_Idle");
 	},
 	.Update = [=](float _DeltaTime) {
