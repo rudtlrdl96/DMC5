@@ -97,9 +97,9 @@ void PlayerHPUI::Start()
 
 	if (nullptr == GameEngineTexture::Find("BossGaugeBase.png"))
 	{
-		GameEngineTexture::Load(NewHPDir.GetPlusFileName("BossGaugeBase.png").GetFullPath());
-		GameEngineTexture::Load(NewHPDir.GetPlusFileName("BossHitGauge.png").GetFullPath());
-		GameEngineTexture::Load(NewHPDir.GetPlusFileName("123123123.png").GetFullPath());
+		//GameEngineTexture::Load(NewHPDir.GetPlusFileName("BossGaugeBase.png").GetFullPath());
+		//GameEngineTexture::Load(NewHPDir.GetPlusFileName("BossHitGauge.png").GetFullPath());
+		//GameEngineTexture::Load(NewHPDir.GetPlusFileName("123123123.png").GetFullPath());
 		GameEngineTexture::Load(NewHPDir.GetPlusFileName("RedOrb.png").GetFullPath());
 	}
 

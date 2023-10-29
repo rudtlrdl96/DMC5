@@ -125,6 +125,8 @@ private:
 
 	short WalkCount = 0;
 
+	int SuperArmorStack = 0;
+
 	bool IsHeavyAttack = false;   // 강공격 히트
 	bool IsAirAttack = false;     // 에어공격 히트
 	bool IsSlamAttack = false;    // 슬램공격 히트
@@ -136,7 +138,7 @@ private:
 	bool IsParryCheck = false;    // 패리 체크 on off
 	bool ParryOkay = false;
 	bool ParryEvent = false;
-	bool IsSuperArmor = false;
+	bool IsSuperArmor = true;
 
 	bool RightAttackEvent = false;
 };

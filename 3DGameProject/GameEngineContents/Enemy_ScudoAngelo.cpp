@@ -299,6 +299,7 @@ void Enemy_ScudoAngelo::Start()
 	LinkData_UpdatePacket<bool>(IsBurn);
 	LinkData_UpdatePacket<bool>(IsParryCheck);
 	LinkData_UpdatePacket<bool>(ParryOkay);
+	LinkData_UpdatePacket<bool>(IsSuperArmor);
 	LinkData_UpdatePacket<int>(EnemyHP);
 
 	BindNetObjEvent(2, [this](std::vector<NetworkObjectBase*> _Actors)

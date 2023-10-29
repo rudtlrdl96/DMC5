@@ -270,6 +270,7 @@ void Enemy_ProtoAngelo::Start()
 	LinkData_UpdatePacket<bool>(IsBurn);
 	LinkData_UpdatePacket<bool>(IsParryCheck);
 	LinkData_UpdatePacket<bool>(ParryOkay);
+	LinkData_UpdatePacket<bool>(IsSuperArmor);
 	LinkData_UpdatePacket<int>(EnemyHP);
 
 	BindNetObjEvent(2, [this](std::vector<NetworkObjectBase*> _Actors)
@@ -626,47 +627,40 @@ void Enemy_ProtoAngelo::DamageCollisionCheck(float _DeltaTime)
 	MonsterAttackCollision->Off();
 	DamageData Data = AttackCol->GetDamage();
 	PlayDamageEvent(Data.SoundType, true);
+	MinusEnemyHP(Data.DamageValue);
 	AttackDelayCheck = 0.0f;
 
-	//if (EnemyHitDirect::Forward == EnemyHitDirValue)
-	//{
-	//	if (FSM_State_ProtoAngelo::ProtoAngelo_Idle == EnemyFSM.GetCurState()
-	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start == EnemyFSM.GetCurState()
-	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Loop == EnemyFSM.GetCurState()
-	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Stop == EnemyFSM.GetCurState()
-	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Group_Command_Attack == EnemyFSM.GetCurState()
-	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Step_Back_M == EnemyFSM.GetCurState()
-	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Step_Back_S == EnemyFSM.GetCurState()
-	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Attack_T_Run_Start == EnemyFSM.GetCurState()
-	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Attack_T_Run_Loop == EnemyFSM.GetCurState()
-	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Attack_T_Run_Stop_A == EnemyFSM.GetCurState()
-	//		|| true == IsSuperArmor)
-	//	{
-	//		if (Data.DamageTypeValue == DamageType::Buster)
-	//		{
-	//			MinusEnemyHP(Data.DamageValue);
-	//			ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Buster_Start);
-	//		}
-	//		else if (Data.DamageTypeValue == DamageType::Stun)
-	//		{
-	//			MinusEnemyHP(Data.DamageValue);
-	//			StopTime(2.9f);
-	//		}
-	//		else
-	//		{
-	//			MinusEnemyHP(70);
-	//			StartRenderShaking(6);
-	//		}
-	//		HitStop(Data.DamageTypeValue);
-	//		return;
-	//	}
-	//}
-
-	if (true == ParryEvent)
+	if (2 <= SuperArmorStack)
 	{
-		MinusEnemyHP(Data.DamageValue);
-		StartRenderShaking(6);
-		HitStop(Data.DamageTypeValue);
+		IsSuperArmor = false;
+	}
+
+	if (true == IsSuperArmor)
+	{
+		if (DamageType::Buster == Data.DamageTypeValue)
+		{
+			IsSuperArmor = false;
+			HitStop(Data.DamageTypeValue);
+			ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Buster_Start);
+		}
+
+		if (DamageType::Stun == Data.DamageTypeValue)
+		{
+			++SuperArmorStack;
+			HitStop(Data.DamageTypeValue);
+			StopTime(2.9f);
+			StartRenderShaking(8);
+		}
+
+		if (DamageType::Heavy == Data.DamageTypeValue
+			|| DamageType::Air == Data.DamageTypeValue
+			|| DamageType::Slam == Data.DamageTypeValue)
+		{
+			++SuperArmorStack;
+			HitStop(Data.DamageTypeValue);
+			StartRenderShaking(8);
+		}
+
 		return;
 	}
 
@@ -773,33 +767,6 @@ void Enemy_ProtoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 	DamageData Data = AttackCol->GetDamage();
 	PlayDamageEvent(Data.SoundType, true);
 	AttackDelayCheck = 0.0f;
-
-	//if (EnemyHitDirect::Forward == EnemyHitDirValue)
-	//{
-	//	if (FSM_State_ProtoAngelo::ProtoAngelo_Idle == EnemyFSM.GetCurState()
-	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start == EnemyFSM.GetCurState()
-	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Loop == EnemyFSM.GetCurState()
-	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Stop == EnemyFSM.GetCurState()
-	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Group_Command_Attack == EnemyFSM.GetCurState()
-	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Step_Back_M == EnemyFSM.GetCurState()
-	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Step_Back_S == EnemyFSM.GetCurState()
-	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Attack_T_Run_Start == EnemyFSM.GetCurState()
-	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Attack_T_Run_Loop == EnemyFSM.GetCurState()
-	//		|| FSM_State_ProtoAngelo::ProtoAngelo_Attack_T_Run_Stop_A == EnemyFSM.GetCurState()
-	//		|| true == IsSuperArmor)
-	//	{
-	//		if (Data.DamageTypeValue == DamageType::Buster)
-	//		{
-	//			ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Buster_Start);
-	//		}
-	//		else
-	//		{
-	//			ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
-	//			StartRenderShaking(6);
-	//		}
-	//		return;
-	//	}
-	//}
 
 	if (true == ParryEvent)
 	{
@@ -1275,6 +1242,28 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	{
 		SetBackMove(140.0f);
 	}
+	if (false == ParryOkay)
+	{
+		if (50 <= EnemyRenderer->GetCurFrame() && 65 > EnemyRenderer->GetCurFrame())
+		{
+			IsParryCheck = true;
+		}
+		else
+		{
+			IsParryCheck = false;
+		}
+	}
+	if (true == ParryOkay)
+	{
+		SetMoveStop();
+		MonsterAttackCollision->Off();
+		ParryOkay = false;
+		IsParryCheck = false;
+		IsSuperArmor = false;
+
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Parry_Lose_Modori);
+		return;
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		WaitTime = 0.2f;
@@ -1349,6 +1338,28 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	{
 		SetForwardMove(140.0f);
 	}
+	if (false == ParryOkay)
+	{
+		if (18 <= EnemyRenderer->GetCurFrame() && 33 > EnemyRenderer->GetCurFrame())
+		{
+			IsParryCheck = true;
+		}
+		else
+		{
+			IsParryCheck = false;
+		}
+	}
+	if (true == ParryOkay)
+	{
+		SetMoveStop();
+		MonsterAttackCollision->Off();
+		ParryOkay = false;
+		IsParryCheck = false;
+		IsSuperArmor = false;
+
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Parry_Lose_Modori);
+		return;
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		WaitTime = 0.2f;
@@ -1392,6 +1403,28 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	if (165 <= EnemyRenderer->GetCurFrame() && 227 > EnemyRenderer->GetCurFrame())
 	{
 		SetForwardMove(140.0f);
+	}
+	if (false == ParryOkay)
+	{
+		if (78 <= EnemyRenderer->GetCurFrame() && 93 > EnemyRenderer->GetCurFrame())
+		{
+			IsParryCheck = true;
+		}
+		else
+		{
+			IsParryCheck = false;
+		}
+	}
+	if (true == ParryOkay)
+	{
+		SetMoveStop();
+		MonsterAttackCollision->Off();
+		ParryOkay = false;
+		IsParryCheck = false;
+		IsSuperArmor = false;
+
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Parry_Lose_Modori);
+		return;
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
@@ -1487,6 +1520,28 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	else
 	{
 		MonsterAttackCollision->Off();
+	}
+	if (false == ParryOkay)
+	{
+		if (53 <= EnemyRenderer->GetCurFrame() && 68 > EnemyRenderer->GetCurFrame())
+		{
+			IsParryCheck = true;
+		}
+		else
+		{
+			IsParryCheck = false;
+		}
+	}
+	if (true == ParryOkay)
+	{
+		SetMoveStop();
+		MonsterAttackCollision->Off();
+		ParryOkay = false;
+		IsParryCheck = false;
+		IsSuperArmor = false;
+
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Parry_Lose_Modori);
+		return;
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
@@ -1615,6 +1670,28 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	{
 		MonsterAttackCollision->Off();
 	}
+	if (false == ParryOkay)
+	{
+		if (53 <= EnemyRenderer->GetCurFrame() && 68 > EnemyRenderer->GetCurFrame())
+		{
+			IsParryCheck = true;
+		}
+		else
+		{
+			IsParryCheck = false;
+		}
+	}
+	if (true == ParryOkay)
+	{
+		SetMoveStop();
+		MonsterAttackCollision->Off();
+		ParryOkay = false;
+		IsParryCheck = false;
+		IsSuperArmor = false;
+
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Parry_Lose_Modori);
+		return;
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Parry_Attack_End);
@@ -1685,21 +1762,20 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Parry_Lose_Modori,
 	.Start = [=] {
 	ParryTime();
-	//EffectRenderer_0->PlayFX("Cavalier_Parry.effect");
-	//EffectRenderer_1->Off();
 	EnemyRenderer->ChangeAnimation("em0601_Parry_Lose_Modori");
 	},
 	.Update = [=](float _DeltaTime) {
-	if (25 < EnemyRenderer->GetCurFrame())
-	{
-		ParryEvent = false;
-	}
+	//if (25 < EnemyRenderer->GetCurFrame())
+	//{
+	//	ParryEvent = false;
+	//}
 	if (30 <= EnemyRenderer->GetCurFrame() && 70 > EnemyRenderer->GetCurFrame())
 	{
 		SetBackMove(140.0f);
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
+		IsSuperArmor = true;
 		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
 		return;
 	}
@@ -1741,6 +1817,8 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
+		SuperArmorStack = 0;
+		IsSuperArmor = true;
 		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
 		return;
 	}
@@ -1786,6 +1864,8 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	{
 		AnimationTurnStart = false;
 		PhysXCapsule->AddWorldRotation({ 0.0f, 180.0f, 0.0f });
+		SuperArmorStack = 0;
+		IsSuperArmor = true;
 		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
 		return;
 	}
@@ -2105,6 +2185,8 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
+		SuperArmorStack = 0;
+		IsSuperArmor = true;
 		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
 		return;
 	}
