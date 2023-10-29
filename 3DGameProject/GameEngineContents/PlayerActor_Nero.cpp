@@ -24,7 +24,7 @@
 #include "Nero_ShopUI.h"
 #include "Shop_NeroSkillUI.h"
 #include "Shop_NeroArmUI.h"
-std::list<DevilBreaker> PlayerActor_Nero::BreakerList;
+std::list<DevilBreaker> PlayerActor_Nero::BreakerList = { DevilBreaker::None };
 PlayerActor_Nero::~PlayerActor_Nero()
 {
 }
@@ -118,9 +118,7 @@ void PlayerActor_Nero::PlayerLoad()
 {
 	if (true == LoadCheck) { return; }
 	BGMPlayer::SetCharater(PlayerType::Nero);
-	BreakerList.clear();
-	BreakerList.push_back(DevilBreaker::None);
-	
+
 	Shop = GetLevel()->CreateActor<Nero_ShopUI>();
 	Shop->ShopOff();
 	HUD = GetLevel()->CreateActor<PlayerHPUI>();
@@ -129,6 +127,38 @@ void PlayerActor_Nero::PlayerLoad()
 	HUD2 = GetLevel()->CreateActor<NeroItemGlass>();
 	Shop_NeroArmUI::CallBack_AddBreaker = std::bind(&PlayerActor_Nero::AddBreaker, this, std::placeholders::_1);
 	GetLevel()->CreateActor <RankUI>();
+
+	if (1 < BreakerList.size())
+	{
+		HUD2->ArmRenderOff();
+		std::list<DevilBreaker> BeforeList = BreakerList;
+		BreakerList.clear();
+		int i = 0;
+		for (DevilBreaker _Breaker : BeforeList)
+		{
+			if (_Breaker == DevilBreaker::None)
+			{
+				BreakerList.push_back(DevilBreaker::None);
+				continue;
+			}
+			TimeEvent.AddEvent(0.05f * i, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+				{
+					AddBreaker(_Breaker);
+				});
+			i++;
+
+		}
+		TimeEvent.AddEvent(0.05f * i, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+			{
+				HUD2->ArmRenderOn();
+			});
+	}
+	else
+	{
+		BreakerList.clear();
+		BreakerList.push_back(DevilBreaker::None);
+	}
+
 	// Effect »ý¼º
 	{
 		GameEngineDirectory NewDir;
