@@ -11,7 +11,6 @@ UI_BulletGauge::~UI_BulletGauge()
 
 void UI_BulletGauge::Start()
 {
-	return;
 	float Ratio = GameEngineWindow::GetScreenSize().y / 900;
 	GetTransform()->SetWorldScale(float4::ONE * Ratio);
 
@@ -25,14 +24,11 @@ void UI_BulletGauge::Start()
 
 void UI_BulletGauge::Update(float _DeltaTime)
 {
-	return;
 	ClipGauge(_DeltaTime);
 }
 
 void UI_BulletGauge::ClipGauge(float _DeltaTime)
 {
-	return;
-
 	if (ExBulletCount == 0)
 	{
 		BulletGauge->ImageClippingX(0.0f, ClipXDir::Left);
