@@ -86,6 +86,9 @@ void Location11_Level::LevelChangeStart()
 	//AcWallCol.lock()->RenderOn();
 	//AcGroundCol.lock()->RenderOn();
 
+	// 플레이어 생성전 플레이어 벡터 초기화
+	BasePlayerActor::LevelChangeClear(this);
+
 	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
 	Nero->SetUserControllType();
 	Nero->SetWorldPosition({ -31000, 1950, -360 });

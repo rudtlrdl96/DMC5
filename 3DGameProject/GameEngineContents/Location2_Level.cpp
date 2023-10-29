@@ -122,6 +122,9 @@ void Location2_Level::LevelChangeStart()
 	SetCamera({ 0,0,-500 });
 	CreateStage(Location2_StageDatas[0]);
 
+	// 플레이어 생성전 플레이어 벡터 초기화
+	BasePlayerActor::LevelChangeClear(this);
+
 	MyPlayer = CreateActor<PlayerActor_Nero>();
 	MyPlayer->GetPhysXComponent()->SetWorldPosition({ PlayerStartPos });
 	MyPlayer->GetPhysXComponent()->SetWorldRotation({ 0.0f, -90.0f, 0.0f });

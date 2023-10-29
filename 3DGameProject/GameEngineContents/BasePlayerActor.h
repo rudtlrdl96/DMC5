@@ -8,6 +8,25 @@
 class BasePlayerActor : public NetworkObjectBase
 {
 public:
+	static void LevelChangeClear(GameEngineLevel* _Level)
+	{
+		if (Players.size() == 0) { return; }
+		std::vector<BasePlayerActor*>::iterator StartIter = Players.begin();
+		std::vector<BasePlayerActor*>::iterator EndIter = Players.end();
+
+		while (StartIter != EndIter)
+		{
+			BasePlayerActor* _Player = (*StartIter);
+			// 현재 레벨과 다른 플레이어는 벡터에서 제거
+			if (_Player->GetLevel() != _Level)
+			{
+				Players.erase(StartIter);
+				if (Players.size() == 0) { return; }
+				continue;
+			}
+			StartIter++;
+		}
+	}
 	static std::vector<BasePlayerActor*>& GetPlayers()
 	{
 		return Players;
