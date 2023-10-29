@@ -50,7 +50,7 @@ public:
 	}
 	static int GetTotalScore()
 	{
-		return TotalScore - static_cast<int>(std::sqrtf((float)DamageCount) * 1000.0f);
+		return std::max<int>(0, TotalScore - static_cast<int>(std::sqrtf((float)DamageCount) * 200.0f));
 	}
 protected:
 	void Start() override;
