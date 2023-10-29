@@ -6,6 +6,8 @@
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include "UIButton.h"
+#include "FadeEffect.h"
+#include "ThreadLoadingLevel.h"
 Menu_SelectScreen::Menu_SelectScreen()
 {
 }
@@ -33,7 +35,11 @@ void Menu_SelectScreen::Start()
 	MissionButton->GetRender_Enter2()->GetTransform()->SetLocalPosition(float4{ 200.0f,0.0f,0.0f }*GameEngineActor::ScreenRatio);
 	MissionButton->SetEvent([this]()
 		{
-			GameEngineCore::ChangeLevel("TestStageLevel");
+			FadeEffect::GetFadeEffect()->FadeOut(0.25f);
+			GetLevel()->TimeEvent.AddEvent(0.25f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+				{
+					ThreadLoadingLevel::ChangeLevel("TestStageLevel");
+				});
 		});
 	CustomizeButton = GetLevel()->CreateActor<UIButton>();
 	CustomizeButton->GetTransform()->SetLocalPosition(float4{ -670.0f,90.0f,0.0f }*GameEngineActor::ScreenRatio);
