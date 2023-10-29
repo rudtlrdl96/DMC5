@@ -4,6 +4,7 @@
 #include "InfoUIRender.h"
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
+#include "FXSystem.h"
 
 NeroLoading::NeroLoading() 
 {
@@ -15,11 +16,29 @@ NeroLoading::~NeroLoading()
 
 void NeroLoading::Start()
 {
+	LodingEffect = CreateComponent<FXSystem>();
+	LodingEffect->GetTransform()->SetLocalScale({ 1000.0f,0.0f,0.0f });
+	GameEngineDirectory NewDir;
+	NewDir.MoveParentToDirectory("ContentResources");
+	NewDir.Move("ContentResources");
+	NewDir.Move("Effect");
+	NewDir.Move("EffectUI");
+	std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".effect" });
+	for (GameEngineFile File : Files)
+	{
+		if (nullptr == FXData::Find(File.GetFileName()))
+		{
+			FXData::Load(File.GetFullPath());
+		}
+		LodingEffect->CreateFX(FXData::Find(File.GetFileName()));
+	}
+	LodingEffect->PlayFX("LodingBar.effect");
+	LodingEffect->Loop = true;
 	GetTransform()->SetLocalScale(GetTransform()->GetLocalScale() * GameEngineActor::ScreenRatio);
 	LodingBackRender = CreateComponent<GameEngineUIRenderer>(0);
 	LodingBackRender->SetTexture("LoadingTexture.png");
-	LodingBackRender->GetTransform()->SetLocalScale({ 1920.0f,1080.0f,0.0f });
-	LodingBackRender->GetTransform()->SetLocalPosition({ 155.0f,0.0f,0.0f });
+	LodingBackRender->GetTransform()->SetLocalScale(Screenscale);
+	LodingBackRender->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
 
 	GaugeBackRender = CreateComponent<GameEngineUIRenderer>(2);
 	GaugeBackRender->SetTexture("LoadingGaugeBar.png");
@@ -81,10 +100,9 @@ void NeroLoading::Start()
 
 void NeroLoading::Update(float _Delta)
 {
-	// 쓰레드 진행률 = CurLoading
 	GaugeFrontRender->ImageClippingX(CurLoading, ClipXDir::Left);
 	TextSetting();
-
+	BlinkLodingBar(_Delta);
 }
 
 void NeroLoading::TextStart()
@@ -124,6 +142,35 @@ void NeroLoading::TextSetting()
 		FirstLine->SetText("1주일 남았다");
 		SecoundLine->SetText("타닥..타닥..타닥");
 		ThirdLine->SetText("이겨야만 한다..");
+	}
+}
+
+
+void NeroLoading::BlinkLodingBar(float _Delta)
+{
+	if (UpValue == true)
+	{
+		AddTime += _Delta;
+		float Ratio = GameEngineMath::LerpLimit(0.5, 1.0f, AddTime * 0.5f);
+		GaugeFrontRender->BSCControl(0.5, Ratio, 0.5f);
+		if (Ratio >= 1.0f)
+		{
+			UpValue = false;
+			DownValue = true;
+			AddTime = 0.0f;
+		}
+	}
+	if (DownValue == true)
+	{
+		AddTime += _Delta;
+		float Ratio = GameEngineMath::LerpLimit(1.0, 0.5f, AddTime*0.5f);
+		GaugeFrontRender->BSCControl(0.5, Ratio, 0.5f);
+		if (Ratio <= 0.5f)
+		{
+			UpValue = true;
+			DownValue = false;
+			AddTime = 0.0f;
+		}
 	}
 }
 

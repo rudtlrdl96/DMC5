@@ -8,7 +8,7 @@
 #include "NeroLoading.h"
 #include "C_ChoiceBG.h"
 #include "BossHpBar.h"
-#include "RankUI.h"
+#include "NeroLoading.h"
 #include "DistortionEffect.h"
 #include "Shop_EnterWindow.h"
 #include "Nero_InvenToryUI.h"
@@ -36,7 +36,7 @@ void PlayUITestLevel::LevelChangeStart()
 {
 	GameEngineLevel::LevelChangeStart();
 
-	std::shared_ptr<BossHpBar> Test = CreateActor<BossHpBar>();
+	std::shared_ptr<NeroLoading> Test = CreateActor<NeroLoading>();
 }
 
 void PlayUITestLevel::LevelChangeEnd()

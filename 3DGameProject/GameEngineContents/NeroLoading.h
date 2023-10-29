@@ -24,6 +24,7 @@ protected:
 private:
 	void TextStart();
 	void TextSetting();
+	void BlinkLodingBar(float _Delta);
 	std::shared_ptr<class GameEngineUIRenderer> LodingBackRender = nullptr;
 	std::shared_ptr<class GameEngineUIRenderer> GaugeBackRender = nullptr;
 	std::shared_ptr<class GameEngineUIRenderer> GaugeFrontRender = nullptr;
@@ -34,11 +35,16 @@ private:
 	std::shared_ptr<class GameEngineFontRenderer> FirstLine = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> SecoundLine = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> ThirdLine = nullptr;
-
+	std::shared_ptr<class FXSystem> LodingEffect = nullptr;
+	float4 Screenscale = { 1700.0f,930.0f,0.0f };
 	int Index = 0;
 	float fillTime = 0.0f;
 	int MaxLoading = 100;
 	float CurLoading = 0.0f;
+	float AddTime = 0.0f;
+
+	bool UpValue = true;
+	bool DownValue = false;
 
 };
 
