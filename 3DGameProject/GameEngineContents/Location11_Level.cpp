@@ -71,15 +71,35 @@ void Location11_Level::Start()
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ -30000, 3200, -200 });
 	GetCamera(100)->GetCamTarget()->DepthSettingOff();
+
+	if (false == GameEngineInput::IsKey("BakeTestKey"))
+	{
+		GameEngineInput::CreateKey("BakeTestKey", VK_PRIOR);
+	}
 }
 
 void Location11_Level::Update(float _DeltaTime)
 {
 	StageBaseLevel::Update(_DeltaTime);
+
+	if (true == GameEngineInput::IsDown("BakeTestKey"))
+	{
+		const std::vector<std::shared_ptr<GameEngineLight>>& AllLightRef = GetAllLightRef();
+
+		for (std::shared_ptr<GameEngineLight> Ref : AllLightRef)
+		{
+			Ref->BakeShadow(GetMainCamera());
+		}
+	}
 }
 
 void Location11_Level::LevelChangeStart()
 {
+	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(-33000, 5000, 0));
+	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 90.f, 45.f, 0.f });
+	GetDirectionalLight()->SetLightPower(1.0f);
+	GetDirectionalLight()->SetLightColor({ 0.5f,0.5,1.f });
+
 	StageBaseLevel::LevelChangeStart();
 	SetCamera({ 0, 0, 0});
 	CreateStage(Location11_StageDatas[0]);
@@ -105,8 +125,6 @@ void Location11_Level::LevelChangeStart()
 	}
 
 	AcSkyBox.lock()->SetSkyBloom(1);
-	GetDirectionalLight()->GetTransform()->SetWorldPosition({0.f, 10000.f, 0.f});
-	GetDirectionalLight()->GetTransform()->SetWorldRotation({45.f, 45.f, 45.f});
 
 	BGMPlayer::SetBossBGM();
 }

@@ -102,16 +102,16 @@ DeferredOutPut MeshTexture_PS(Output _Input)
         {
             clip(-1);
         }
-
-        if (BurnTexData.r >= BaseColor.b - 0.025 && BurnTexData.r <= BaseColor.b + 0.025)
+                
+        if (BurnTexData.r <= BaseColor.b + 0.01)
         {
-            AlbmData = float4(1, 1, 1, 1); // Èò
+            AlbmData = float4(0.6, 0, 0, 1);
         }
-        else if (BurnTexData.r >= BaseColor.b - 0.03 && BurnTexData.r <= BaseColor.b + 0.03)
+        else if (BurnTexData.r <= BaseColor.b + 0.02)
         {
-            AlbmData = float4(1, 1, 0, 1); // ³ë
+            AlbmData = float4(0.8, 0, 0, 1);
         }
-        else if (BurnTexData.r >= BaseColor.b - 0.05 && BurnTexData.r <= BaseColor.b + 0.05)
+        else if (BurnTexData.r <= BaseColor.b + 0.05)
         {
             AlbmData = float4(1, 0, 0, 1); // »¡
         }
@@ -197,7 +197,7 @@ DeferredOutPut MeshTexture_PS(Output _Input)
     
     if(0 != BaseColor.r)
     {
-        Result.GlamTarget.rgb = AlbmData.rgb * BaseColor.r;
+        Result.GlamTarget.rgb = Result.DifTarget.rgb * BaseColor.r;
     }
        
     Result.GlamTarget.a = 1.0f;
