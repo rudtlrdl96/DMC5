@@ -76,6 +76,12 @@ void CavaliereAngelo::EnemyMeshLoad()
 	}
 
 	EnemyRenderer->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
+
+	std::shared_ptr<GameEngineLight> EffectLight = GetLevel()->CreatePointLight({}, ShadowTextureScale::S_64, 450);
+	EffectLight->ShadowOff();
+	EffectLight->SetLightPower(3.0f);
+	EffectLight->SetLightColor({ 0.5f, 0.0f, 1.0f });
+	EnemyRenderer->SetAttachTransform("R_Hand", EffectLight->GetTransform(), { 0, 100, 0 }, {0, 0, 0});
 }
 
 void CavaliereAngelo::EnemyAnimationLoad()

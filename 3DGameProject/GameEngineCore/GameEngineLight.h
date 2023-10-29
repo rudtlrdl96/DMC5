@@ -102,6 +102,16 @@ public:
 
     bool IsDebugDraw = false;
 
+    inline void ShadowOn()
+    {
+        IsShadowLight = true;
+    }       
+    
+    inline void ShadowOff()
+    {
+        IsShadowLight = false;
+    }   
+    
     inline void DynamicShadowOn()
     {
         IsDynamicLight = true;

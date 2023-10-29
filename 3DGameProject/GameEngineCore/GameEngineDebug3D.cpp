@@ -2,6 +2,8 @@
 #include "GameEngineDebug3D.h"
 
 #include "GameEngineRenderer.h"
+#include "GameEngineCamera.h"
+#include "GameEngineRenderTarget.h"
 
 namespace GameEngineDebug
 {
@@ -50,6 +52,8 @@ namespace GameEngineDebug
 		{
 			DebugRenderUnit.SetMaterial("DebugMeshRender");
 		}
+
+		_Camera->GetCamTarget()->Setting();
 
 		std::vector<DebugData>& Data = DebugDrawDatas[_Camera];
 
@@ -102,6 +106,7 @@ namespace GameEngineDebug
 			}
 			DrawData.SetViewAndProjection(_Camera->GetView(), _Camera->GetProjection());
 
+			CurData.Color = { 0, 1, 0, 1 };
 
 			DebugRenderUnit.ShaderResHelper.SetConstantBufferLink("TransformData", DrawData);
 			DebugRenderUnit.ShaderResHelper.SetConstantBufferLink("DebugColor", CurData.Color);
