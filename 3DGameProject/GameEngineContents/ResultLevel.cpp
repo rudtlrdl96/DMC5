@@ -36,7 +36,7 @@ void ResultLevel::LevelChangeStart()
 	GetDirectionalLight()->SetDifLightPower(0.7f);
 	GetDirectionalLight()->SetAmbLightPower(5.0f);
 	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 20, 0, 0 });
-
+	GameEngineTime::GlobalTime.SetGlobalTimeScale(1.0f);
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
