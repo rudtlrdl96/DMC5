@@ -9,7 +9,6 @@
 #include <GameEngineCore/GameEngineFont.h>
 #include <GameEngineCore/GameEngineTexture.h>
 #include <GameEnginePlatform/GameEngineInput.h>
-
 //Å×½ºÆ®
 #include "testarea.h"
 ShopLevel::ShopLevel()
@@ -33,7 +32,10 @@ void ShopLevel::Start()
 	ShopBGPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
 	//std::shared_ptr<testarea> testareaPtr = CreateActor<testarea>();
 	//testareaPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
-
+	Nero_ShopUIPtr = CreateActor<Nero_ShopUI>();
+	Nero_ShopUIPtr->Off();
+	Vergil_ShopUIPtr = CreateActor<Vergil_ShopUI>();
+	Vergil_ShopUIPtr->Off();
 }
 
 void ShopLevel::Update(float _DeltaTime)
@@ -43,17 +45,29 @@ void ShopLevel::Update(float _DeltaTime)
 		IsDebugSwitch();
 	}
 	BaseLevel::Update(_DeltaTime);
+	if (GameEngineInput::IsDown("UI_ESC"))
+	{
+		if (Char_ChoiceUI::GetPlayerType() == ChoicePlayerType::NERO)
+		{
+			Nero_ShopUIPtr->Off();
+		}
+		else if (Char_ChoiceUI::GetPlayerType() == ChoicePlayerType::VERGIL)
+		{
+			Vergil_ShopUIPtr->Off();
+		}
+		GameEngineCore::ChangeLevel("MainMenuLevel");
+	}
 }
 
 void ShopLevel::LevelChangeStart()
 {
 	if (Char_ChoiceUI::GetPlayerType() == ChoicePlayerType::NERO)
 	{
-		std::shared_ptr<Nero_ShopUI> Nero_ShopUIPtr = CreateActor<Nero_ShopUI>();
+		Nero_ShopUIPtr->On();
 	}
 	else if (Char_ChoiceUI::GetPlayerType() == ChoicePlayerType::VERGIL)
 	{
-		std::shared_ptr<Vergil_ShopUI> Vergil_ShopUIPtr = CreateActor<Vergil_ShopUI>();
+		Vergil_ShopUIPtr->Off();
 	}
 }
 

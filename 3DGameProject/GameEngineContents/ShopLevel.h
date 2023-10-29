@@ -3,7 +3,7 @@
 // Ό³Έν :
 class ShopLevel : public BaseLevel
 {
-public:
+public: 
 	// constrcuter destructer
 	ShopLevel();
 	~ShopLevel();
@@ -23,6 +23,7 @@ protected:
 	void LevelChangeEnd() override;
 private:
 	std::shared_ptr<class FadeEffect> FEffect;
-
+	std::shared_ptr<class Nero_ShopUI> Nero_ShopUIPtr = nullptr;
+	std::shared_ptr<class Vergil_ShopUI> Vergil_ShopUIPtr = nullptr;
 };
 
