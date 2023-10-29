@@ -32,6 +32,9 @@ private:
 	std::shared_ptr<class GameEngineUIRenderer> PlayerHPUI_Back = nullptr;
 	std::shared_ptr<class GameEngineUIRenderer> NeroHpAni = nullptr;
 	float4 HPAniPos = { -104.0f,404.0f,30.0f };
+	float4 HpAniScale = { 30.0f,170.0f,0.0f };
+	float4 HPScale = { 492.0f,8.0f,0.0f };
+	float4 HPPos = { -350.0f,404.8f,0.0f };
 	int MaxHP = 10000;
 	int RedHp = 0;
 	int PrevHp = 0;
