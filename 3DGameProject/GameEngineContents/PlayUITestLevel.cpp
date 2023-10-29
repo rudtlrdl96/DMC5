@@ -36,25 +36,7 @@ void PlayUITestLevel::LevelChangeStart()
 {
 	GameEngineLevel::LevelChangeStart();
 
-	{
-		GameEngineDirectory NewDir;
-		NewDir.MoveParentToDirectory("ContentResources");
-		NewDir.Move("ContentResources");
-		NewDir.Move("Texture");
-		NewDir.Move("UI");
-		NewDir.Move("PlayLevelUI");
-		if (nullptr == GameEngineSprite::Find("HPGaugeAni.png"))
-		{
-			GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("HPGaugeAni.png").GetFullPath(), 4, 4);
-			GameEngineTexture::Load(NewDir.GetPlusFileName("BossGaugeBase.png").GetFullPath());
-			GameEngineTexture::Load(NewDir.GetPlusFileName("BossHitGauge.png").GetFullPath());
-			GameEngineTexture::Load(NewDir.GetPlusFileName("123123123.png").GetFullPath());
-
-
-		}
-	}
-
-	std::shared_ptr<Nero_InvenToryUI> Test = CreateActor<Nero_InvenToryUI>();
+	std::shared_ptr<BossHpBar> Test = CreateActor<BossHpBar>();
 }
 
 void PlayUITestLevel::LevelChangeEnd()

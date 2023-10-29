@@ -27,7 +27,15 @@ Enemy_Empusa::~Enemy_Empusa()
 void Enemy_Empusa::EnemyTypeLoad()
 {
 	EnemyCodeValue = EnemyCode::Empusa;
-	EnemyMaxHP = 1200;
+	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
+	{
+		EnemyMaxHP = 1200;
+	}
+	else
+	{
+		EnemyMaxHP = 2400;
+	}
+
 	EnemyHP = EnemyMaxHP;
 }
 

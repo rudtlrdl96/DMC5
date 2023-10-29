@@ -27,7 +27,15 @@ Enemy_HellAntenora::~Enemy_HellAntenora()
 void Enemy_HellAntenora::EnemyTypeLoad()
 {
 	EnemyCodeValue = EnemyCode::HellAntenora;
-	EnemyMaxHP = 2000;
+	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
+	{
+		EnemyMaxHP = 2500;
+	}
+	else
+	{
+		EnemyMaxHP = 5000;
+	}
+
 	EnemyHP = EnemyMaxHP;
 }
 

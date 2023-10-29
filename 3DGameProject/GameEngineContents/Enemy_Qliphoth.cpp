@@ -21,7 +21,16 @@ Enemy_Qliphoth::~Enemy_Qliphoth()
 void Enemy_Qliphoth::EnemyTypeLoad()
 {
 	EnemyCodeValue = EnemyCode::HellCaina;
-	EnemyMaxHP = 1000;
+	
+	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
+	{
+		EnemyMaxHP = 1000;
+	}
+	else
+	{
+		EnemyMaxHP = 2000;
+	}
+
 	EnemyHP = EnemyMaxHP;
 }
 

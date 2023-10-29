@@ -28,7 +28,16 @@ Enemy_ScudoAngelo::~Enemy_ScudoAngelo()
 void Enemy_ScudoAngelo::EnemyTypeLoad()
 {
 	EnemyCodeValue = EnemyCode::ScudoAngelo;
-	EnemyMaxHP = 2200;
+	
+	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
+	{
+		EnemyMaxHP = 2200;
+	}
+	else
+	{
+		EnemyMaxHP = 4400;
+	}
+
 	EnemyHP = EnemyMaxHP;
 }
 
@@ -381,8 +390,14 @@ void Enemy_ScudoAngelo::ParryCheck()
 	if (nullptr == AttackCol) { return; }
 
 	if (false == AttackCol->GetIsParryAttack()) { return; }
-	AttackCol->ParryEvent();
-	ParryOkay = true;
+
+	AttackDirectCheck();
+
+	if (EnemyHitDirect::Forward == EnemyHitDirValue)
+	{
+		AttackCol->ParryEvent();
+		ParryOkay = true;
+	}
 }
 
 void Enemy_ScudoAngelo::ParryCheck_Client()
@@ -399,8 +414,14 @@ void Enemy_ScudoAngelo::ParryCheck_Client()
 	if (nullptr == AttackCol) { return; }
 
 	if (false == AttackCol->GetIsParryAttack()) { return; }
-	AttackCol->ParryEvent();
-	ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Parry_Lose_Modori);
+
+	AttackDirectCheck();
+
+	if (EnemyHitDirect::Forward == EnemyHitDirValue)
+	{
+		AttackCol->ParryEvent();
+		ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Parry_Lose_Modori);
+	}
 }
 
 void Enemy_ScudoAngelo::ParryTime()

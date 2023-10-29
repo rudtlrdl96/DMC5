@@ -27,7 +27,15 @@ Enemy_HellCaina::~Enemy_HellCaina()
 void Enemy_HellCaina::EnemyTypeLoad()
 {
 	EnemyCodeValue = EnemyCode::HellCaina;
-	EnemyMaxHP = 1500;
+	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
+	{
+		EnemyMaxHP = 1500;
+	}
+	else
+	{
+		EnemyMaxHP = 3000;
+	}
+	
 	EnemyHP = EnemyMaxHP;
 }
 
