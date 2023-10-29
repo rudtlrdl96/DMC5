@@ -30,7 +30,16 @@ CavaliereAngelo::~CavaliereAngelo()
 void CavaliereAngelo::EnemyTypeLoad()
 {
 	EnemyCodeValue = EnemyCode::CavaliereAngelo;
-	EnemyMaxHP = 10000;
+
+	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
+	{
+		EnemyMaxHP = 10000;
+	}
+	else
+	{
+		EnemyMaxHP = 20000;
+	}
+
 	EnemyHP = EnemyMaxHP;
 	HPServerStack = 0;
 	HPClientStack = 0;
@@ -765,8 +774,14 @@ void CavaliereAngelo::ParryCheck()
 	if (nullptr == AttackCol) { return; }
 
 	if (false == AttackCol->GetIsParryAttack()) { return; }
-	AttackCol->ParryEvent();
-	ParryOkay = true;
+
+	AttackDirectCheck();
+
+	if (EnemyHitDirect::Forward == EnemyHitDirValue)
+	{
+		AttackCol->ParryEvent();
+		ParryOkay = true;
+	}
 }
 
 void CavaliereAngelo::ParryCheck_Client()
@@ -783,20 +798,26 @@ void CavaliereAngelo::ParryCheck_Client()
 	if (nullptr == AttackCol) { return; }
 
 	if (false == AttackCol->GetIsParryAttack()) { return; }
-	AttackCol->ParryEvent();
 
-	if (ParryStack <= 1)
+	AttackDirectCheck();
+
+	if (EnemyHitDirect::Forward == EnemyHitDirValue)
 	{
-		ChangeState_Client(FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_Even01);
-	}
-	else if (ParryStack >= 2 && ParryStack < 5)
-	{
-		ChangeState_Client(FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_normal01);
-	}
-	else if (ParryStack >= 5)
-	{
-		ParryStack = 0;
-		ChangeState_Client(FSM_State_CavaliereAngelo::CavaliereAngelo_Damage_Drill);
+		AttackCol->ParryEvent();
+
+		if (ParryStack <= 1)
+		{
+			ChangeState_Client(FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_Even01);
+		}
+		else if (ParryStack >= 2 && ParryStack < 5)
+		{
+			ChangeState_Client(FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_normal01);
+		}
+		else if (ParryStack >= 5)
+		{
+			ParryStack = 0;
+			ChangeState_Client(FSM_State_CavaliereAngelo::CavaliereAngelo_Damage_Drill);
+		}
 	}
 }
 
