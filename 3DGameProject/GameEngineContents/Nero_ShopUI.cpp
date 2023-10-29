@@ -32,8 +32,18 @@ void Nero_ShopUI::ShopOn()
 {
 	SkillButton->On();
 	DBButton->On();
-	SkillScreen->On();
-	ArmScreen->On();
+	ArmScreen->UpdateArm();
+	//SkillScreen->On();
+	//ArmScreen->On();
+
+	if (TitleIndex == 0)
+	{
+		SkillScreen->On();
+	}
+	else if (TitleIndex == 1)
+	{
+		ArmScreen->On();
+	}
 }
 
 void Nero_ShopUI::Start()
@@ -63,7 +73,7 @@ void Nero_ShopUI::Start()
 	ArmScreen = GetLevel()->CreateActor<Shop_NeroArmUI>();
 	ArmScreen->GetTransform()->SetLocalPosition(ItemDefaulPos * GameEngineActor::ScreenRatio);
 	ArmScreen->GetTransform()->SetParent(GetTransform());
-}	
+}
 
 
 
@@ -111,12 +121,12 @@ void Nero_ShopUI::Update(float _Delta)
 			}
 		}
 	}
-	
+
 }
 
 void Nero_ShopUI::LerpScreen(float _Delta)
 {
-	if (IsValue==true)
+	if (IsValue == true)
 	{
 		IsSwichValue = false;
 		LerpTime += _Delta;
@@ -137,9 +147,9 @@ void Nero_ShopUI::LerpScreen(float _Delta)
 				IsSwichValue = true;
 			}
 		}
-		
+
 	}
-	else if(IsValue2== true)
+	else if (IsValue2 == true)
 	{
 		LerpTime += _Delta;
 		if (IsSwichSkill == false)
@@ -159,7 +169,7 @@ void Nero_ShopUI::LerpScreen(float _Delta)
 				IsSwichValue = true;
 			}
 		}
-		
+
 	}
 }
 

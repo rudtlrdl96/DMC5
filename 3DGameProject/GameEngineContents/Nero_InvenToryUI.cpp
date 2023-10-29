@@ -51,6 +51,7 @@ void Nero_InvenToryUI::AddInvenArm()
 		for (size_t t = 0; t < InvenDevil.size(); t++)
 		{
 			CurDevilBreaker = InvenDevil[t];
+			DevilBreakerRender[t]->On();
 			switch (CurDevilBreaker)
 			{
 			case DevilBreaker::None:
@@ -67,6 +68,10 @@ void Nero_InvenToryUI::AddInvenArm()
 			default:
 				break;
 			}
+		}
+		for (size_t i = InvenDevil.size(); i < 4; i++)
+		{
+			DevilBreakerRender[i]->Off();
 		}
 		IsAddInvenArm = false;
 	}

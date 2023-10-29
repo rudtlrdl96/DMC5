@@ -18,6 +18,11 @@ Shop_NeroArmUI::~Shop_NeroArmUI()
 {
 }
 
+void Shop_NeroArmUI::UpdateArm()
+{
+	AcNeroInven->UpdateInvenTory();
+}
+
 void Shop_NeroArmUI::Start()
 {
 	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_0 * GameEngineActor::ScreenRatio, { ._Name = "OVERTURE",._Price = "500",._png = "Nero_Overture.png",._BaseNone = "Shop_ArmBase.png", ._BaseSelect = "Shop_ArmSelect.png",.IsValue = false }, GetTransform(), float4(118.0f, 120.0f, 0.0f) * GameEngineActor::ScreenRatio, float4(-160.0f, 0.0f, 0.0f) * GameEngineActor::ScreenRatio);
@@ -29,6 +34,10 @@ void Shop_NeroArmUI::Start()
 	AcNeroInven = GetLevel()->CreateActor<Nero_Inven>();
 	AcNeroInven->GetTransform()->SetParent(GetTransform());
 	ArmList = PlayerActor_Nero::GetBreakerListPointer();
+
+	AcNeroInven->GetInvenVec()[1]->Off();
+	AcNeroInven->GetInvenVec()[2]->Off();
+	AcNeroInven->GetInvenVec()[0]->Off();
 
 }
 
