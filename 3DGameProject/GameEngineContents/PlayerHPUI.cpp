@@ -95,11 +95,8 @@ void PlayerHPUI::Start()
 		GameEngineSprite::LoadSheet(NewHPDir.GetPlusFileName("HPGaugeAni.png").GetFullPath(), 4, 4);
 	}
 
-	if (nullptr == GameEngineTexture::Find("BossGaugeBase.png"))
+	if (nullptr == GameEngineTexture::Find("RedOrb.png"))
 	{
-		//GameEngineTexture::Load(NewHPDir.GetPlusFileName("BossGaugeBase.png").GetFullPath());
-		//GameEngineTexture::Load(NewHPDir.GetPlusFileName("BossHitGauge.png").GetFullPath());
-		//GameEngineTexture::Load(NewHPDir.GetPlusFileName("123123123.png").GetFullPath());
 		GameEngineTexture::Load(NewHPDir.GetPlusFileName("RedOrb.png").GetFullPath());
 	}
 
