@@ -211,7 +211,8 @@ void GameEngineFBXRenderer::Update(float _DeltaTime)
 		{
 			if (false == AttachTransformValue[i].DegCalculation)
 			{
-				float4 QuaternionRot = DirectX::XMQuaternionMultiply(Rot, Data.OffsetRot);
+				float4 QuaternionRot = DirectX::XMQuaternionMultiply(Data.OffsetRot, Rot);
+				//float4 QuaternionRot = DirectX::XMQuaternionMultiply(Rot, Data.OffsetRot);
 				Data.Transform->SetWorldRotation(QuaternionRot.QuaternionToEulerDeg());
 			}
 			else

@@ -77,11 +77,35 @@ void CavaliereAngelo::EnemyMeshLoad()
 
 	EnemyRenderer->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
 
+	///////////////// 무기 부분 라이트 예제 코드 /////////////////
+	WeaponEffectPivot = CreateComponent<GameEngineComponent>();
+
 	std::shared_ptr<GameEngineLight> EffectLight = GetLevel()->CreatePointLight({}, ShadowTextureScale::S_64, 450);
+	EffectLight->GetTransform()->SetParent(WeaponEffectPivot->GetTransform());
+	EffectLight->GetTransform()->SetLocalPosition({0, 200, 0});
+
 	EffectLight->ShadowOff();
 	EffectLight->SetLightPower(3.0f);
 	EffectLight->SetLightColor({ 0.5f, 0.0f, 1.0f });
-	EnemyRenderer->SetAttachTransform("R_Hand", EffectLight->GetTransform(), { 0, 100, 0 }, {0, 0, 0});
+	EffectLight->IsDebugDraw = true;
+
+	EnemyRenderer->SetAttachTransform("R_WeaponHand", WeaponEffectPivot->GetTransform(), { 0, 0, 0}, {-85, 0, 0}, true);
+
+	// 느리구나 쓰러지는 것 조차
+	//SetTimeScale(0.0f);
+}
+
+void CavaliereAngelo::DrawEditor()
+{
+	static float AttRot[4] = { 0, 0, 0, 1};
+
+	ImGui::DragFloat4("Attach Rot", AttRot, 1.0f);
+
+	if (true == ImGui::Button("Weapon Effect Pivot Change"))
+	{
+		EnemyRenderer->SetDettachTransform();
+		EnemyRenderer->SetAttachTransform("R_WeaponHand", WeaponEffectPivot->GetTransform(), { 0, 0, 0 }, { AttRot[0], AttRot[1], AttRot[2] }, true);
+	}
 }
 
 void CavaliereAngelo::EnemyAnimationLoad()

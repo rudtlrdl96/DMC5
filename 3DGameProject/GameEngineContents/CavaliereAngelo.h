@@ -124,6 +124,7 @@ private:
 	std::shared_ptr<class FXSystem> EffectRenderer_0 = nullptr;
 	std::shared_ptr<class FXSystem> EffectRenderer_1 = nullptr;
 	std::shared_ptr<class Cavaliere_Electric> Electric = nullptr;
+	std::shared_ptr<class GameEngineComponent> WeaponEffectPivot = nullptr;
 
 	void PlayerChase();
 	void ChangeState(int _StateValue);
@@ -134,6 +135,8 @@ private:
 	void ParryTime();
 	void BossTurn();
 	void PlayDamageSound(DamageSoundType _Type);
+
+	void DrawEditor() override;
 
 	float WaitTime = 0.0f;
 	float RotationDelayTime = 0.0f;
