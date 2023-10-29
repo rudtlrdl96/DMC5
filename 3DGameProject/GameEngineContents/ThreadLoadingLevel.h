@@ -46,8 +46,6 @@ private:
 	static std::string NextLevelName;
 	static ThreadLoadingLevel* Inst;
 
-
-	bool IsLoadLevel = false;
 	std::shared_ptr<class NeroLoading> LoadingUI = nullptr;
 
 

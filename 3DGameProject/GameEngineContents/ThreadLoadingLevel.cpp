@@ -200,21 +200,12 @@ void ThreadLoadingLevel::Update(float _DeltaTime)
 	BaseLevel::Update(_DeltaTime);
 
 	LoadingUI->SetThreedPersent(LoadingPercent);
-	if (true == IsLoadLevel) 
-		return;
-
 
 	//모든 로딩이 완료된 순간
 	if (LoadWorkCount == ExcuteWorkCount)
 	{
 		LoadingUI->SetThreedPersent(1.f);
-		FadeEffect::GetFadeEffect()->FadeOut(0.8f);
-
-		IsLoadLevel = true;
-		TimeEvent.AddEvent(1.0f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _TimeEvent)
-		{
-			GameEngineCore::ChangeLevel(NextLevelName);
-		});
+		GameEngineCore::ChangeLevel(NextLevelName);
 		return;
 	}
 }
@@ -224,8 +215,6 @@ void ThreadLoadingLevel::LevelChangeStart()
 {
 	BaseLevel::LevelChangeStart();
 
-	IsLoadLevel = false;
-	FadeEffect::GetFadeEffect()->FadeIn(0.8f);
 	ThreadLoadStart();
 }
 

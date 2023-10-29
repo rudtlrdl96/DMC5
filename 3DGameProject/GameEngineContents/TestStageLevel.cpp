@@ -127,7 +127,6 @@ void TestStageLevel::LevelChangeStart()
 
 	//임시 불러오기, 추후 수정 예정
 	StageBaseLevel::LevelChangeStart();
-	FadeEffect::GetFadeEffect()->FadeIn();
 
 	SetCamera({ 0,0,-500 });
 
