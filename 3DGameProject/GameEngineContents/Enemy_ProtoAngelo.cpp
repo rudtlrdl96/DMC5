@@ -220,7 +220,7 @@ void Enemy_ProtoAngelo::Start()
 	MonsterCollision->GetTransform()->SetLocalScale({ 80, 210, 70 });
 	MonsterCollision->GetTransform()->SetLocalPosition({ 0, 65, 0 });
 	MonsterCollision->SetColType(ColType::OBBBOX3D);
-	RN_MonsterCollision->GetTransform()->SetLocalScale({ 700, 0, 0 });
+	RN_MonsterCollision->GetTransform()->SetLocalScale({ 750, 0, 0 });
 	RN_MonsterCollision->GetTransform()->SetLocalPosition({ 0, 80, 0 });
 
 	ParryCollision = CreateComponent<GameEngineCollision>(CollisionOrder::Null);
@@ -488,18 +488,6 @@ void Enemy_ProtoAngelo::MoveLoop()
 
 	PhysXCapsule->SetWorldRotation(GoalRot);
 	AllDirectSetting_Normal();
-}
-
-void Enemy_ProtoAngelo::MonsterAttackCollisionOn()
-{
-	MonsterAttackCollision->On();
-	MonsterAttackCollision_Two->On();
-}
-
-void Enemy_ProtoAngelo::MonsterAttackCollisionOff()
-{
-	MonsterAttackCollision->Off();
-	MonsterAttackCollision_Two->Off();
 }
 
 void Enemy_ProtoAngelo::PlayerChase()
@@ -1022,7 +1010,9 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 		//	PlayerChase();
 		//}
 		//return;
-		PlayerChase();
+		//PlayerChase();
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Parry_Attack_Start);
+		return;
 	}
 	},
 	.End = [=] {
@@ -1038,20 +1028,23 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start,
 	.Start = [=]
 	{
-	RotationCheck();
-	AllDirectSetting_Normal();
-	SlerpCalculation();
 	EnemyRenderer->ChangeAnimation("em0601_A_Walk_Start_L0");
 	},
 	.Update = [=](float _DeltaTime)
 	{
+	if (true == IsChangeState)
+	{
+		RotationCheck();
+		AllDirectSetting_Normal();
+		SlerpCalculation();
+	}
 	{
 		{
-			SlerpTurn(_DeltaTime * 2.5f);
+			SlerpTurn(_DeltaTime * 5.5f);
 			AllDirectSetting_Normal();
 			if (18 <= EnemyRenderer->GetCurFrame())
 			{
-				SetForwardMove(170.0f);
+				SetForwardMove(180.0f);
 			}
 		}
 	}
@@ -1088,7 +1081,7 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	}
 	else */if (RunTime >= 3.0f)
 	{
-		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Stop);
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Attack_Tossin_Parry_Start);
 		return;
 	}
 	},
@@ -1174,6 +1167,355 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	.End = [=] {
 	}
 		});
+
+	// 뒤로 빽스텝
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Step_Back,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Step_Back");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		RotationCheck();
+		AllDirectSetting();
+	}
+	if (75 >= EnemyRenderer->GetCurFrame())
+	{
+		SetBackMove(240.0f);
+	}
+	else if (100 <= EnemyRenderer->GetCurFrame() && 195 > EnemyRenderer->GetCurFrame())
+	{
+		SetBackMove(120.0f);
+	}
+	else if (240 <= EnemyRenderer->GetCurFrame() && 250 > EnemyRenderer->GetCurFrame())
+	{
+		SetBackMove(100.0f);
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	IsRecognize = false;
+	}
+		});
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////      공격      //////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	// 왼쪽으로 180도 돌면서 내려찍기(04) 공격 시작 전, 10프레임 애니메이션 턴
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Attack_01_Turn_L,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Attack_01_Turn_L");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Attack_01_Turn_R);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 오른쪽으로 180도 돌면서 발도(03) 공격 시작 전, 40프레임 애니메이션 턴
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Attack_01_Turn_R,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Attack_01_Turn_R");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Attack_02);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 오른쪽 위에서 대각선 아래로 공격(02) 후 걷기 시작, 35프레임 세팅 시 오른쪽 대각선 아래 공격(02)으로 전환 가능, 90프레임 세팅 시 발도(03)로 전환 // 43프레임 on 48프레임 off // 141프레임 걷기 시작
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Attack_02,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Attack_02");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Attack_03);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 발도, 38프레임 세팅 시 내려찍기(04)로 전환 가능 // 28프레임 on 33프레임 off // 115프레임 전진, 165프레임(End) 끝 // 
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Attack_03,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Attack_03");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Attack_04);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 발도 후 내려찍기, 53프레임 세팅 시 내려찍기 공격(04)으로 전환 가능 // 88프레임 on 93프레임 off // 165프레임 전진, 227프레임(End) 끝
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Attack_04,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Attack_04");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Attack_Kesa);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 앞으로 짧게 베기 // 30프레임 전진, 54프레임 전진 끝 // 60프레임 on, 65프레임 off // 169 프레임 후퇴 시작, 203프레임 후퇴 끝
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Attack_Kesa,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Attack_Kesa");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 서있다가 토신 자세로 변경 // 15프레임 후퇴 시작, 45프레임 후퇴 종료
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Parry_Attack_Start,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Parry_Attack_Start");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		RotationCheck();
+		AllDirectSetting();
+	}
+	if (15 <= EnemyRenderer->GetCurFrame() && 45 > EnemyRenderer->GetCurFrame())
+	{
+		SetBackMove(210.0f);
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Parry_Attack_Loop);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 토신 달리기 직전 자세 루프
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Parry_Attack_Loop,
+	.Start = [=] {
+	IsRecognize = false;
+	EnemyRenderer->ChangeAnimation("em0601_Parry_Attack_Loop");
+	},
+	.Update = [=](float _DeltaTime) {
+	WaitTime += _DeltaTime;
+	if (true == IsRecognize)
+	{
+		IsRecognize = false;
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Attack_Tossin_Parry_Yokonagi);
+		return;
+	}
+	if (6.0f <= WaitTime)
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Parry_Attack_End);
+		return;
+	}
+	},
+	.End = [=] {
+	WaitTime = 0.0f;
+	}
+		});
+
+	// 돌진 중 발견 시 회전베기(발도, 03) // 45프레임 돌진 종료 // 63프레임 On 68프레임 Off
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Attack_Tossin_Parry_Yokonagi,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Attack_Tossin_Parry_Yokonagi");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		RotationCheck();
+		AllDirectSetting();
+		SlerpCalculation();
+	}
+	if (46 > EnemyRenderer->GetCurFrame())
+	{
+		SetForwardMove(300.0f);
+	}
+	if (63 > EnemyRenderer->GetCurFrame())
+	{
+		AllDirectSetting_Normal();
+		SlerpTurn(_DeltaTime * 5.5f);
+	}
+	if (63 < EnemyRenderer->GetCurFrame() && 68 >= EnemyRenderer->GetCurFrame())
+	{
+		MonsterAttackCollision->On();
+	}
+	else
+	{
+		MonsterAttackCollision->Off();
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Step_Back);
+		return;
+	}
+	},
+	.End = [=] {
+	SlerpTime = 0.0f;
+	MonsterAttackCollision->Off();
+	}
+		});
+
+	// 토신 패리자세에서 서있는 자세로 변경
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Parry_Attack_End,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Parry_Attack_End");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	// 자세잡고 돌진 시작, Tossin은 왼쪽으로 검을 들고있음 // 60프레임 돌진 시작
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Attack_Tossin_Parry_Start,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Attack_Tossin_Parry_Start");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		RotationCheck();
+		AllDirectSetting_Normal();
+		SlerpCalculation();
+	}
+	{
+		{
+			SlerpTurn(_DeltaTime * 5.5f);
+			AllDirectSetting_Normal();
+			if (60 <= EnemyRenderer->GetCurFrame())
+			{
+				SetForwardMove(300.0f);
+			}
+		}
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Attack_Tossin_Parry_Loop);
+		return;
+	}
+	},
+	.End = [=] {
+	SlerpTime = 0.0f;
+	}
+		});
+
+	// 토신 돌진 루프
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Attack_Tossin_Parry_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Attack_Tossin_Parry_Loop");
+	},
+	.Update = [=](float _DeltaTime) {
+	RunTime += _DeltaTime;
+	SetForwardMove(300.0f);
+	if (2.0f <= RunTime)
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Attack_Tossin_Parry_End);
+		return;
+	}
+	},
+	.End = [=] {
+	RunTime = 0.0f;
+	}
+		});
+
+	// 돌진 끝 // 45프레임 돌진 종료 // 85프레임 전진 시작, 151프레임 전진 종료
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Attack_Tossin_Parry_End,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Attack_Tossin_Parry_End");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (45 >= EnemyRenderer->GetCurFrame())
+	{
+		SetForwardMove(300.0f);
+	}
+	if (85 < EnemyRenderer->GetCurFrame() && 151 >= EnemyRenderer->GetCurFrame())
+	{
+		SetForwardMove(140.0f);
+	}
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+		ProtoAngelo_Attack_Tossin_Parry_End_Turn,		 // em0601_Attack_Tossin_Parry_End_Turn : 돌진 끝난 뒤 뒤로 돔 // 140프레임 돌진 종료 // 75프레임 애니메이션 턴 
+
+	//// 토신 준비 자세에서 바로 04 공격, 04를 87프레임으로 세팅해야함
+	//EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Parry_Hurimuki_Attack_L,
+	//.Start = [=] {
+	//RotationCheck();
+	//AllDirectSetting_Normal();
+	//SlerpCalculation();
+	//EnemyRenderer->ChangeAnimation("em0601_Parry_Hurimuki_Attack_L");
+	//},
+	//.Update = [=](float _DeltaTime) {
+	//{
+	//	SlerpTurn(_DeltaTime * 2.0f);
+	//	//AllDirectSetting_Normal();
+	//	//if (18 <= EnemyRenderer->GetCurFrame())
+	//	//{
+	//	//	SetForwardMove(170.0f);
+	//	//}
+	//}
+	//if (true == EnemyRenderer->IsAnimationEnd())
+	//{
+	//	ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
+	//	return;
+	//}
+	//},
+	//.End = [=] {
+	//}
+	//	});
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////      피격      //////////////////////////////////////////
@@ -1599,7 +1941,7 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	}
 	if (120 <= EnemyRenderer->GetCurFrame() && 170 > EnemyRenderer->GetCurFrame())
 	{
-		SetBackMove(140.0f);
+		SetBackMove(120.0f);
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{

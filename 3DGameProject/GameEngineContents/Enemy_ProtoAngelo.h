@@ -23,23 +23,22 @@ enum FSM_State_ProtoAngelo
 	ProtoAngelo_Attack_02,							 // em0601_Attack_02 : 오른쪽 위에서 대각선 아래로 공격(02) 후 걷기 시작, 35프레임 세팅 시 오른쪽 대각선 아래 공격(02)으로 전환 가능, 90프레임 세팅 시 발도(03)로 전환 // 43프레임 on 48프레임 off // 141프레임 걷기 시작
 	ProtoAngelo_Attack_03,							 // em0601_Attack_03 : 발도, 38프레임 세팅 시 내려찍기(04)로 전환 가능 // 28프레임 on 33프레임 off // 115프레임 전진, 165프레임(End) 끝 // 
 	ProtoAngelo_Attack_04,							 // em0601_Attack_04 : 발도 후 내려찍기, 53프레임 세팅 시 내려찍기 공격(04)으로 전환 가능 // 88프레임 on 93프레임 off // 165프레임 전진, 227프레임(End) 끝
+	ProtoAngelo_Attack_Kesa,						 // em0601_Attack_Kesa : 앞으로 짧게 베기 // 30프레임 전진, 54프레임 전진 끝 // 60프레임 on, 65프레임 off // 169 프레임 후퇴 시작, 203프레임 후퇴 끝
+
 	ProtoAngelo_Attack_Dash_Tatakituke_Start,		 // em0601_Attack_Dash_Tatakituke_Start : 자세 잡고 돌진 시작, Tatakituke는 오른쪽으로 검을 들고있음 // 100프레임 돌진 시작
 	ProtoAngelo_Attack_Dash_Tatakituke_Loop,		 // em0601_Attack_Dash_Tatakituke_Loop : 타타키 돌진 루프
 	ProtoAngelo_Attack_Dash_Tatakituke,				 // em0601_Attack_Dash_Tatakituke : 돌진 후 발견 시 공격 // 10프레임 공격 모션 시작 // 40프레임 멈춤 // 51프레임 on 56프레임 off // 56프레임 전진 시작 81프레임 전진 끝 // 134프레임 후퇴 시작 158프레임 후퇴 끝
-	ProtoAngelo_Attack_Kesa,						 // em0601_Attack_Kesa : 앞으로 짧게 베기 // 30프레임 전진, 54프레임 전진 끝 // 60프레임 on, 65프레임 off // 169 프레임 후퇴 시작, 203프레임 후퇴 끝
 	
-	ProtoAngelo_Attack_Tossin_Parry_Start,			 // em0601_Attack_Tossin_Parry_Start : 자세잡고 돌진 시작, Tossin은 왼쪽으로 검을 들고있음 // 60프레임 돌진 시작
 	ProtoAngelo_Attack_03_To_Tossin,				 // em0601_Attack_03_To_Tossin : 발도 공격 후 돌진 시작 전, Tossin은 왼쪽으로 검을 들고있음 // 65프레임 돌진 시작
-	ProtoAngelo_Attack_Tossin_Parry_Yokonagi,		 // em0601_Attack_Tossin_Parry_Yokonagi : 돌진 중 발견 시 회전베기(발도, 03) // 45프레임 돌진 종료 // 64프레임 On 69프레임 Off
+	ProtoAngelo_Attack_Tossin_Parry_Start,			 // em0601_Attack_Tossin_Parry_Start : 자세잡고 돌진 시작, Tossin은 왼쪽으로 검을 들고있음 // 60프레임 돌진 시작
 	ProtoAngelo_Attack_Tossin_Parry_Loop,			 // em0601_Attack_Tossin_Parry_Loop : 토신 돌진 루프
 	ProtoAngelo_Attack_Tossin_Parry_End,			 // em0601_Attack_Tossin_Parry_End : 돌진 끝 // 45프레임 돌진 종료 // 85프레임 전진 시작, 151프레임 전진 종료
 	ProtoAngelo_Attack_Tossin_Parry_End_Turn,		 // em0601_Attack_Tossin_Parry_End_Turn : 돌진 끝난 뒤 뒤로 돔 // 140프레임 돌진 종료 // 75프레임 애니메이션 턴 
 
 	ProtoAngelo_Parry_Attack_Start,					 // em0601_Parry_Attack_Start : 서있다가 토신 자세로 변경 // 15프레임 후퇴 시작, 45프레임 후퇴 종료
-	ProtoAngelo_Parry_Attack_End,					 // em0601_Parry_Attack_End : 토신 패리자세에서 서있는 자세로 변경 //  
 	ProtoAngelo_Parry_Attack_Loop,					 // em0601_Parry_Attack_Loop : 토신 달리기 직전 자세 루프
-	ProtoAngelo_Parry_Attack_To_Kesagiri,			 // em0601_Parry_Attack_To_Kesagiri : 토신 준비 자세에서 바로 04 공격, 04를 87프레임으로 세팅해야함
-	ProtoAngelo_Parry_Hurimuki_Attack_L,			 // em0601_Parry_Hurimuki_Attack_L : 토신 준비 자세에서 뒤로 180도 돌면서 발도 시작, 03을 20프레임으로 바꿔야함
+	ProtoAngelo_Parry_Attack_End,					 // em0601_Parry_Attack_End : 토신 패리자세에서 서있는 자세로 변경
+	ProtoAngelo_Attack_Tossin_Parry_Yokonagi,		 // em0601_Attack_Tossin_Parry_Yokonagi : 돌진 중 발견 시 회전베기(발도, 03) // 45프레임 돌진 종료 // 64프레임 On 69프레임 Off
 
 	// <damage> ======================================================================================== =	
 	ProtoAngelo_Standing_Damage_Weak_Front,			 // em0601_Standing_Damage_Weak_Front : 앞에서 약공 맞음
@@ -111,8 +110,6 @@ private:
 	void ChangeState(int _StateValue);
 	void ChangeState_Client(int _StateValue);
 	void AttackCalculation();
-	void MonsterAttackCollisionOn();
-	void MonsterAttackCollisionOff();
 	void MoveLoop();
 	void ParryCheck();
 	void ParryCheck_Client();

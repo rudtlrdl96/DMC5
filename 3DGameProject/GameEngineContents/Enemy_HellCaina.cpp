@@ -214,126 +214,62 @@ void Enemy_HellCaina::Start()
 	BindNetObjEvent(2, [this](std::vector<NetworkObjectBase*> _Actors)
 		{
 			if (_Actors.size() <= 0)
-			{ 
+			{
 				MsgAssert("잘못된 DamageCallBack 이벤트입니다");
 				return;
 			}
 			BasePlayerActor* _Player = dynamic_cast<BasePlayerActor*>(_Actors[0]);
-			if (nullptr == _Player) 
-			{ 
+			if (nullptr == _Player)
+			{
 				MsgAssert("잘못된 DamageCallBack 이벤트입니다");
-				return; 
+				return;
 			}
-			Player = _Player;
+			//Player = _Player;
 
-			DamageData Data = Player->GetAttackCollision()->GetDamage();
+			//DamageData Datas = Player->GetAttackCollision()->GetDamage();
 			MonsterAttackCollision->Off();
-
-			MinusEnemyHP(Data.DamageValue);
-			PlayDamageEvent(Data.DamageTypeValue, Data.SoundType);
+			DamageData Datas = _Player->GetAttackCollision()->GetDamage();
+			MinusEnemyHP(Datas.DamageValue);
+			PlayDamageEvent(Datas.DamageTypeValue, Datas.SoundType);
 			Sound.PlayVoice(3, false);
 
-			if (DamageType::VergilLight == Data.DamageTypeValue)
+			if (DamageType::Stun == Datas.DamageTypeValue)
 			{
-				IsVergilLight = true;
-				Data.DamageTypeValue = DamageType::Light;
+				StopTime(2.8f);
+				AttackDelayCheck = 1.0f;
 			}
 
-			HitStop(Data.DamageTypeValue);
+			HitStop(Datas.DamageTypeValue);
 
-			switch (Data.DamageTypeValue)
+			if (EnemyHP < 0)
 			{
-			case DamageType::None:
-				return;
-				break;
-			case DamageType::Light:
-
-				if (true == IsBusterAttack)
-				{
-					return;
-				}
-
-				if (true == IsAirAttack || true == IsSlamAttack || true == IsHeavyAttack)
-				{
-					StartRenderShaking(8);
-					ChangeState(FSM_State_HellCaina::HellCaina_Air_Damage_Under);
-					return;
-				}
-
-				if (true == IsCollapse)
-				{
-					StartRenderShaking(8);
-					return;
-				}
-
-				AttackDirectCheck();
-
-				switch (EnemyHitDirValue)
-				{
-				case EnemyHitDirect::Forward:
-					ChangeState(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Front);
-					break;
-				case EnemyHitDirect::Back:
-					ChangeState(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Back);
-					break;
-				case EnemyHitDirect::Left:
-					ChangeState(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Left);
-					break;
-				case EnemyHitDirect::Right:
-					ChangeState(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Right);
-					break;
-				default:
-					break;
-				}
-				break;
-
-			case DamageType::Heavy:
-				ChangeState(FSM_State_HellCaina::HellCaina_Blown_Back);
-				break;
-			case DamageType::Air:
-				ChangeState(FSM_State_HellCaina::HellCaina_Blown_Up);
-				break;
-			case DamageType::Snatch:
-				ChangeState(FSM_State_HellCaina::HellCaina_Snatch);
-				break;
-			case DamageType::Slam:
-				ChangeState(FSM_State_HellCaina::HellCaina_Slam_Damage);
-				break;
-			case DamageType::Buster:
-				ChangeState(FSM_State_HellCaina::HellCaina_Buster_Start);
-				break;
-			case DamageType::Stun:
-				StopTime(2.9f);
-				AttackDelayCheck = 1.0f;
-				return;
-			default:
-				break;
+				DeathValue = true;
 			}
 		});
 
 	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker) {
-		
-		//Player = _Attacker;
 
-		//MonsterAttackCollision->Off();
-		//DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
-		//MinusEnemyHP(Datas.DamageValue);
-		//PlayDamageEvent(Datas.DamageTypeValue, Datas.SoundType);
-		//Sound.PlayVoice(3, false);
+		Player = _Attacker;
 
-		//if (DamageType::VergilLight == Datas.DamageTypeValue)
-		//{
-		//	IsVergilLight = true;
-		//}
+		MonsterAttackCollision->Off();
+		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
+		MinusEnemyHP(Datas.DamageValue);
+		PlayDamageEvent(Datas.DamageTypeValue, Datas.SoundType);
+		Sound.PlayVoice(3, false);
 
-		//HitStop(Datas.DamageTypeValue);
+		if (DamageType::VergilLight == Datas.DamageTypeValue)
+		{
+			IsVergilLight = true;
+		}
 
-		//if (EnemyHP < 0)
-		//{
-		//	DeathValue = true;
-		//}
+		HitStop(Datas.DamageTypeValue);
 
-		//IsChangeState = true;
+		if (EnemyHP < 0)
+		{
+			DeathValue = true;
+		}
+
+		IsChangeState = true;
 		});
 }
 
@@ -582,88 +518,86 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 	std::shared_ptr<AttackCollision> AttackCol = std::dynamic_pointer_cast<AttackCollision>(Col);
 	if (nullptr == AttackCol) { return; }
 
-	//PlayerAttackCheck(AttackCol.get());
-	//DamageData Data = AttackCol->GetDamage();
+	PlayerAttackCheck(AttackCol.get());
+	DamageData Data = AttackCol->GetDamage();
 	AttackDelayCheck = 0.0f;
-	//PlayDamageEvent(Data.DamageTypeValue, Data.SoundType);
+	PlayDamageEvent(Data.DamageTypeValue, Data.SoundType);
 	Sound.PlayVoice(3, false);
 
-	ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
+	if (DamageType::VergilLight == Data.DamageTypeValue)
+	{
+		Data.DamageTypeValue = DamageType::Light;
+	}
 
-	//if (DamageType::VergilLight == Data.DamageTypeValue)
-	//{
-	//	Data.DamageTypeValue = DamageType::Light;
-	//}
+	switch (Data.DamageTypeValue)
+	{
+	case DamageType::None:
+		return;
+		break;
+	case DamageType::Light:
 
-	//switch (Data.DamageTypeValue)
-	//{
-	//case DamageType::None:
-	//	return;
-	//	break;
-	//case DamageType::Light:
+		if (true == IsBusterAttack)
+		{
+			return;
+		}
 
-	//	if (true == IsBusterAttack)
-	//	{
-	//		return;
-	//	}
+		if (true == IsAirAttack || true == IsSlamAttack || true == IsHeavyAttack)
+		{
+			StartRenderShaking(8);
+			ChangeState_Client(FSM_State_HellCaina::HellCaina_Air_Damage_Under);
+			return;
+		}
 
-	//	if (true == IsAirAttack || true == IsSlamAttack || true == IsHeavyAttack)
-	//	{
-	//		StartRenderShaking(8);
-	//		ChangeState_Client(FSM_State_HellCaina::HellCaina_Air_Damage_Under);
-	//		return;
-	//	}
+		if (true == IsCollapse)
+		{
+			StartRenderShaking(8);
+			ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
+			return;
+		}
 
-	//	if (true == IsCollapse)
-	//	{
-	//		StartRenderShaking(8);
-	//		ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
-	//		return;
-	//	}
+		AttackDirectCheck();
 
-	//	AttackDirectCheck();
+		switch (EnemyHitDirValue)
+		{
+		case EnemyHitDirect::Forward:
+			ChangeState_Client(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Front);
+			break;
+		case EnemyHitDirect::Back:
+			ChangeState_Client(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Back);
+			break;
+		case EnemyHitDirect::Left:
+			ChangeState_Client(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Left);
+			break;
+		case EnemyHitDirect::Right:
+			ChangeState_Client(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Right);
+			break;
+		default:
+			break;
+		}
+		break;
 
-	//	switch (EnemyHitDirValue)
-	//	{
-	//	case EnemyHitDirect::Forward:
-	//		ChangeState_Client(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Front);
-	//		break;
-	//	case EnemyHitDirect::Back:
-	//		ChangeState_Client(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Back);
-	//		break;
-	//	case EnemyHitDirect::Left:
-	//		ChangeState_Client(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Left);
-	//		break;
-	//	case EnemyHitDirect::Right:
-	//		ChangeState_Client(FSM_State_HellCaina::HellCaina_Standing_Damage_Weak_Right);
-	//		break;
-	//	default:
-	//		break;
-	//	}
-	//	break;
-
-	//case DamageType::Heavy:
-	//	ChangeState_Client(FSM_State_HellCaina::HellCaina_Blown_Back);
-	//	break;
-	//case DamageType::Air:
-	//	ChangeState_Client(FSM_State_HellCaina::HellCaina_Blown_Up);
-	//	break;
-	//case DamageType::Snatch:
-	//	ChangeState_Client(FSM_State_HellCaina::HellCaina_Snatch);
-	//	break;
-	//case DamageType::Slam:
-	//	ChangeState_Client(FSM_State_HellCaina::HellCaina_Slam_Damage);
-	//	break;
-	//case DamageType::Buster:
-	//	ChangeState_Client(FSM_State_HellCaina::HellCaina_Buster_Start);
-	//	break;
-	//case DamageType::Stun:
-	//	ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
-	//	AttackDelayCheck = 1.0f;
-	//	break;
-	//default:
-	//	break;
-	//}
+	case DamageType::Heavy:
+		ChangeState_Client(FSM_State_HellCaina::HellCaina_Blown_Back);
+		break;
+	case DamageType::Air:
+		ChangeState_Client(FSM_State_HellCaina::HellCaina_Blown_Up);
+		break;
+	case DamageType::Snatch:
+		ChangeState_Client(FSM_State_HellCaina::HellCaina_Snatch);
+		break;
+	case DamageType::Slam:
+		ChangeState_Client(FSM_State_HellCaina::HellCaina_Slam_Damage);
+		break;
+	case DamageType::Buster:
+		ChangeState_Client(FSM_State_HellCaina::HellCaina_Buster_Start);
+		break;
+	case DamageType::Stun:
+		ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
+		AttackDelayCheck = 1.0f;
+		break;
+	default:
+		break;
+	}
 }
 
 void Enemy_HellCaina::RecognizeCollisionCheck(float _DeltaTime)
