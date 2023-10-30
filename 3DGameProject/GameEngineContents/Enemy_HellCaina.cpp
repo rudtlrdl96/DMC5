@@ -489,8 +489,8 @@ void Enemy_HellCaina::DamageCollisionCheck(float _DeltaTime)
 		ChangeState(FSM_State_HellCaina::HellCaina_Buster_Start);
 		break;
 	case DamageType::Stun:
-		StopTime(2.9f);
 		AttackDelayCheck = 1.0f;
+		StopTime(2.9f);
 		return;
 	default:
 		break;
@@ -600,8 +600,8 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 		ChangeState_Client(FSM_State_HellCaina::HellCaina_Buster_Start);
 		break;
 	case DamageType::Stun:
-		ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
 		AttackDelayCheck = 1.0f;
+		ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
 		break;
 	default:
 		break;

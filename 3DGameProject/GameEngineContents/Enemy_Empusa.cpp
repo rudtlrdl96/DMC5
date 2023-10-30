@@ -484,7 +484,7 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 		if (true == IsAirAttack || true == IsSlamAttack || true == IsHeavyAttack)
 		{
 			StartRenderShaking(8);
-			ChangeState_Client(FSM_State_Empusa::Empusa_Air_Damage_Under);
+			ChangeState(FSM_State_Empusa::Empusa_Air_Damage_Under);
 			return;
 		}
 
@@ -531,6 +531,7 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 		ChangeState(FSM_State_Empusa::Empusa_Buster_Start);
 		break;
 	case DamageType::Stun:
+		AttackDelayCheck = 1.0f;
 		StopTime(2.9f);
 		return;
 	default:
@@ -640,6 +641,8 @@ void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 		ChangeState_Client(FSM_State_Empusa::Empusa_Buster_Start);
 		break;
 	case DamageType::Stun:
+		AttackDelayCheck = 1.0f;
+		ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
 		break;
 	default:
 		break;
