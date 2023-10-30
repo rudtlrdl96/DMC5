@@ -9,6 +9,7 @@
 #include "Nero_Inven.h"
 #include "NeroItemGlass.h"
 #include "PlayerActor_Nero.h"
+#include "RedOrbUI.h"
  std::function<void(DevilBreaker _Value)> Shop_NeroArmUI::CallBack_AddBreaker = nullptr;
  std::vector<DevilBreaker> Shop_NeroArmUI::DevilBreakers;
 
@@ -132,8 +133,9 @@ void Shop_NeroArmUI::BuyBreaker()
 {
 	if (Index == 0)
 	{
-		if (ArmList->size() <= 4 &&GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true)
+		if (ArmList->size() <= 4 &&GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true && RedOrbUI::GetRedOrb() >500)
 		{
+			RedOrbUI::SubRedOrb(500);
 			if (nullptr != CallBack_AddBreaker)
 			{
 				CallBack_AddBreaker(DevilBreaker::Overture);
@@ -152,8 +154,9 @@ void Shop_NeroArmUI::BuyBreaker()
 	else if (Index == 1)
 	{
 
-		if (ArmList->size() <= 4 && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true)
+		if (ArmList->size() <= 4 && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true && RedOrbUI::GetRedOrb() > 1200)
 		{
+			RedOrbUI::SubRedOrb(1200);
 			if (nullptr != CallBack_AddBreaker)
 			{
 				CallBack_AddBreaker(DevilBreaker::Gerbera);
@@ -171,8 +174,9 @@ void Shop_NeroArmUI::BuyBreaker()
 	}
 	else if (Index == 2)
 	{
-		if (ArmList->size() <= 4 && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true)
+		if (ArmList->size() <= 4 && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true && RedOrbUI::GetRedOrb() > 5000)
 		{
+			RedOrbUI::SubRedOrb(5000);
 			if (nullptr != CallBack_AddBreaker)
 			{
 				CallBack_AddBreaker(DevilBreaker::BusterArm);

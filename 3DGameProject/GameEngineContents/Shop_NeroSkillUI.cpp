@@ -3,7 +3,7 @@
 #include "Shop_TitleButton.h"
 #include "Shop_ItemButton.h"
 #include "Shop_ExplaneUI.h"
-
+#include "RedOrbUI.h"
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include <GameEngineCore/GameEngineLevel.h>
 bool Shop_NeroSkillUI::IsStreak =false;
@@ -221,8 +221,9 @@ void Shop_NeroSkillUI::ActivSkill()
 {
 	if (Index == 0)
 	{
-		if (IsStreak == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect ==true)
+		if (IsStreak == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect ==true && RedOrbUI::GetRedOrb() > 800)
 		{
+			RedOrbUI::SubRedOrb(800);
 			IsStreak = true;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 		}
@@ -233,8 +234,9 @@ void Shop_NeroSkillUI::ActivSkill()
 	}
 	else if (Index == 1)
 	{
-		if (IsSplit == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true)
+		if (IsSplit == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true && RedOrbUI::GetRedOrb() > 1200)
 		{
+			RedOrbUI::SubRedOrb(1200);
 			IsSplit = true;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 		}
@@ -245,8 +247,10 @@ void Shop_NeroSkillUI::ActivSkill()
 	}
 	else if (Index == 2)
 	{
-		if (IsRedqueen == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true)
+		if (IsRedqueen == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true && RedOrbUI::GetRedOrb() > 5000)
 		{
+			RedOrbUI::SubRedOrb(5000);
+
 			IsRedqueen = true;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
@@ -258,8 +262,9 @@ void Shop_NeroSkillUI::ActivSkill()
 	}
 	else if (Index == 3)
 	{
-		if (IsRouletteSpin == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true)
+		if (IsRouletteSpin == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true && RedOrbUI::GetRedOrb() > 7000)
 		{
+			RedOrbUI::SubRedOrb(7000);
 			IsRouletteSpin = true;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
@@ -271,8 +276,10 @@ void Shop_NeroSkillUI::ActivSkill()
 	}
 	else if (Index == 4)
 	{
-		if (IsShufle == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true)
+		if (IsShufle == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true && RedOrbUI::GetRedOrb() > 8000)
 		{
+			RedOrbUI::SubRedOrb(8000);
+
 			IsShufle = true;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
@@ -284,8 +291,9 @@ void Shop_NeroSkillUI::ActivSkill()
 	}
 	else if (Index == 5)
 	{
-		if (IsCalibur == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true)
+		if (IsCalibur == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true && RedOrbUI::GetRedOrb() > 25000)
 		{
+			RedOrbUI::SubRedOrb(2500);
 			IsCalibur = true;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 

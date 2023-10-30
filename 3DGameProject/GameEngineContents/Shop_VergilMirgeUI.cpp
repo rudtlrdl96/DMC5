@@ -4,6 +4,7 @@
 #include "Shop_ItemButton.h"
 #include "Shop_ExplaneUI.h"
 #include "Vergil_ShopUI.h"
+#include "RedOrbUI.h"
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include <GameEngineCore/GameEngineLevel.h>
 bool Shop_VergilMirgeUI::IsSpiralBlade = false;
@@ -129,24 +130,27 @@ void Shop_VergilMirgeUI::ActivSkill()
 {
 	if (Index == 0)
 	{
-		if (IsSpiralBlade == false && GameEngineInput::IsUp("UI_Enter") == true)
+		if (IsSpiralBlade == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() > 1200)
 		{
+			RedOrbUI::SubRedOrb(1200);
 			IsSpiralBlade = true;
 			Shop_ItemButton::SecoundSkills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 	}
 	else if (Index == 1)
 	{
-		if (IsStormBlade == false && GameEngineInput::IsUp("UI_Enter") == true)
+		if (IsStormBlade == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() > 4000)
 		{
+			RedOrbUI::SubRedOrb(4000);
 			IsStormBlade = true;
 			Shop_ItemButton::SecoundSkills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 	}
 	else if (Index == 2)
 	{
-		if (IsLesteringBlade == false && GameEngineInput::IsUp("UI_Enter") == true)
+		if (IsLesteringBlade == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() > 7500)
 		{
+			RedOrbUI::SubRedOrb(7500);
 			IsLesteringBlade = true;
 			Shop_ItemButton::SecoundSkills[Index]->GetBuyRender()->SetText("구매완료");
 
@@ -154,8 +158,9 @@ void Shop_VergilMirgeUI::ActivSkill()
 	}
 	else if (Index == 3)
 	{
-		if (IsHeavyRainBlade == false && GameEngineInput::IsUp("UI_Enter") == true)
+		if (IsHeavyRainBlade == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() > 9000)
 		{
+			RedOrbUI::SubRedOrb(9000);
 			IsHeavyRainBlade = true;
 			Shop_ItemButton::SecoundSkills[Index]->GetBuyRender()->SetText("구매완료");
 

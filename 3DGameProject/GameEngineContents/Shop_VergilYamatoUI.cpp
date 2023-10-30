@@ -4,6 +4,7 @@
 #include "Shop_ItemButton.h"
 #include "Shop_ExplaneUI.h"
 #include "Vergil_ShopUI.h"
+#include "RedOrbUI.h"
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include <GameEngineCore/GameEngineLevel.h>
 bool Shop_VergilYamatoUI::IsRapidSlash = false;
@@ -139,24 +140,27 @@ void Shop_VergilYamatoUI::ActivSkill()
 {
 	if (Index == 0)
 	{
-		if (IsRapidSlash == false && GameEngineInput::IsUp("UI_Enter") == true)
+		if (IsRapidSlash == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() > 1200)
 		{
+			RedOrbUI::SubRedOrb(1200);
 			IsRapidSlash = true;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 	}
 	else if (Index == 1)
 	{
-		if (IsUpperSlash == false && GameEngineInput::IsUp("UI_Enter") == true)
+		if (IsUpperSlash == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() > 4000)
 		{
+			RedOrbUI::SubRedOrb(4000);
 			IsUpperSlash = true;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 	}
 	else if (Index == 2)
 	{
-		if (IsAerialRave == false && GameEngineInput::IsUp("UI_Enter") == true)
+		if (IsAerialRave == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() > 7500)
 		{
+			RedOrbUI::SubRedOrb(7500);
 			IsAerialRave = true;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
@@ -164,8 +168,9 @@ void Shop_VergilYamatoUI::ActivSkill()
 	}
 	else if (Index == 3)
 	{
-		if (IsYamatoCombo == false && GameEngineInput::IsUp("UI_Enter") == true)
+		if (IsYamatoCombo == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() > 9000)
 		{
+			RedOrbUI::SubRedOrb(9000);
 			IsYamatoCombo = true;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
@@ -173,8 +178,9 @@ void Shop_VergilYamatoUI::ActivSkill()
 	}
 	else if (Index == 4)
 	{
-		if (IsJudgmentCutEnd == false && GameEngineInput::IsUp("UI_Enter") == true)
+		if (IsJudgmentCutEnd == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() > 35000)
 		{
+			RedOrbUI::SubRedOrb(35000);
 			IsJudgmentCutEnd = true;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 

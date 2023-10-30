@@ -17,6 +17,14 @@ public:
 	{
 		RedOrbValue += _Value;
 	}
+	static int GetRedOrb()
+	{
+		return RedOrbValue;
+	}
+	static void SubRedOrb(int _Value)
+	{
+		RedOrbValue -= _Value;
+	}
 protected:
 	void Start() override;
 	void Update(float _Delta) override;
