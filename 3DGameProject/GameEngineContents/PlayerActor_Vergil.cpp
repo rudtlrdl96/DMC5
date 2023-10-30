@@ -2797,6 +2797,22 @@ int PlayerActor_Vergil::DamageCalculate(int _Damage)
 	}
 }
 
+void PlayerActor_Vergil::DrawEditor()
+{
+	static float4 WarpPos = { 3645, 130, -11805 };
+	ImGui::InputFloat4("Warp Pos", WarpPos.Arr1D);
+
+	if (ImGui::Button("Warp"))
+	{
+		SetWorldPosition(WarpPos);
+	}
+
+	if (ImGui::Button("Add DTGauge"))
+	{
+		AddDTGauge(10.0f);
+	}
+}
+
 
 /*
 ¹öÁú ·»´õ À¯´Ö

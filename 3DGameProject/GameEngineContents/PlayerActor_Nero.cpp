@@ -4547,6 +4547,26 @@ void PlayerActor_Nero::DrawEditor()
 	{
 		SetWorldPosition(WarpPos);
 	}
+
+	if (ImGui::Button("Add Overture"))
+	{
+		AddBreaker(DevilBreaker::Overture);
+	}
+
+	if (ImGui::Button("Add Gerbera"))
+	{
+		AddBreaker(DevilBreaker::Gerbera);
+	}
+
+	if (ImGui::Button("Add Buster"))
+	{
+		AddBreaker(DevilBreaker::BusterArm);
+	}
+
+	if (ImGui::Button("Add DTGauge"))
+	{
+		AddDTGauge(10.0f);
+	}
 }
 
 //³×·Î ·»´õ À¯´Ö

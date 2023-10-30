@@ -197,5 +197,7 @@ private:
 	void YamatoOn();
 
 	int DamageCalculate(int _Damage);
+
+	void DrawEditor() override;
 };
 
