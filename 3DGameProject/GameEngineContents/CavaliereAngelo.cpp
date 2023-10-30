@@ -16,7 +16,6 @@
 #include "FXSystem.h"
 #include "Cavaliere_Electric.h"
 #include "Player_MirageBlade.h"
-
 #include "EffectRenderer.h"
 
 CavaliereAngelo::CavaliereAngelo()
