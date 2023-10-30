@@ -183,6 +183,12 @@ void Enemy_Empusa::Start()
 	PhysXCapsule->SetPhysxMaterial(0, 0, 0);
 	PhysXCapsule->CreatePhysXActors({ 90, 110, 90 });
 	PhysXCapsule->GetDynamic()->setMass(80.0f);
+
+	if (true == NetworkManager::IsClient())
+	{
+		PhysXCapsule->TurnOffGravity();
+	}
+	
 	BindPhysicsWithNet(PhysXCapsule);
 
 	// 랜더러 크기 설정

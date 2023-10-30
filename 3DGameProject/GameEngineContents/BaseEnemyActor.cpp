@@ -138,6 +138,7 @@ void BaseEnemyActor::Update(float _DeltaTime)
 		// 클라이언트 플레이일 때 실행
 		else
 		{
+			PhysXCapsule->SetLinearVelocityZero();
 			Update_NetworkTrans(_DeltaTime);
 			DamageCollisionCheck_Client(_DeltaTime);
 			EnemyFSM.Update(_DeltaTime);
