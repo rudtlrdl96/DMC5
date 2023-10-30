@@ -265,19 +265,6 @@ void Enemy_Empusa::Start()
 		{
 			Player_MirageBlade* _Mirage = dynamic_cast<Player_MirageBlade*>(_Attacker);
 			if (nullptr == _Mirage) { return; }
-			std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
-			size_t Playersize = Players.size();
-
-			for (size_t i = 0; i < Playersize; i++)
-			{
-				int PlayersID = Players[i]->GetNetObjectID();
-
-				if (_Mirage->VergilId == PlayersID)
-				{
-					Player = Players[i];
-					break;
-				}
-			}
 			Datas = _Mirage->Collision->GetDamage();
 		}
 		else

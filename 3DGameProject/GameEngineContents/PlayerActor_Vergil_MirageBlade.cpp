@@ -16,10 +16,6 @@ void PlayerActor_Vergil::CreateMirageBlade()
 		AllMirageBlades[i] = GetLevel()->CreateActor<Player_MirageBlade>(ActorOrder::Player);
 		AllMirageBlades[i]->GetTransform()->SetParent(SpiralPivot);
 		AllMirageBlades[i]->Off();
-		TimeEvent.AddEvent(0.1f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
-			{
-				AllMirageBlades[i]->VergilId = GetNetObjectID();
-			});
 		NetworkManager::LinkNetwork(AllMirageBlades[i].get());
 	}
 	static int BladesIndex = 0;

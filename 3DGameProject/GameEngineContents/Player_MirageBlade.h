@@ -28,7 +28,6 @@ public:
 	bool IsSpiralStop = false;
 
 	std::shared_ptr<class AttackCollision> Collision = nullptr;
-	int VergilId = 0;
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
