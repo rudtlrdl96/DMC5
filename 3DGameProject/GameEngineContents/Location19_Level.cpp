@@ -120,6 +120,34 @@ void Location19_Level::InitPool()
 				NetworkManager::LinkNetwork(_ActorPtr.get(), this);
 			}
 		});
+
+	//Enemy_Scudo
+	Poolable<Enemy_ScudoAngelo>::CreatePool(this, static_cast<int>(ActorOrder::Enemy), 4,
+		[this](std::shared_ptr<Enemy_ScudoAngelo> _ActorPtr)
+		{
+			if (true == NetworkManager::IsClient())
+			{
+				_ActorPtr->SetControll(NetControllType::PassiveControll);
+			}
+			else
+			{
+				NetworkManager::LinkNetwork(_ActorPtr.get(), this);
+			}
+		});
+
+	//Enemy_Proto
+	Poolable<Enemy_ProtoAngelo>::CreatePool(this, static_cast<int>(ActorOrder::Enemy), 1,
+		[this](std::shared_ptr<Enemy_ProtoAngelo> _ActorPtr)
+		{
+			if (true == NetworkManager::IsClient())
+			{
+				_ActorPtr->SetControll(NetControllType::PassiveControll);
+			}
+			else
+			{
+				NetworkManager::LinkNetwork(_ActorPtr.get(), this);
+			}
+		});
 }
 
 void Location19_Level::CreateEventZone()
