@@ -18,6 +18,9 @@
 #include "MotionBlurEffect.h"
 #include "FadeEffect.h"
 #include "Location19_EnemySpawner.h"
+#include "Enemy_HellAntenora.h"
+#include "Enemy_ScudoAngelo.h"
+#include "Enemy_ProtoAngelo.h"
 Location19_Level::Location19_Level()
 {
 
@@ -97,8 +100,26 @@ void Location19_Level::LevelChangeStart()
 	GetDirectionalLight()->GetTransform()->SetWorldPosition({ 0.f,10000.f,0.f });
 	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 45.f,45.f,45.f });
 	GetDirectionalLight()->SetLightColor({1.f,0.85f,0.85f});
-
+	
+	InitPool();
 	CreateEventZone();
+}
+
+void Location19_Level::InitPool()
+{
+	//Enemy_Antenora
+	Poolable<Enemy_HellAntenora>::CreatePool(this, static_cast<int>(ActorOrder::Enemy), 4,
+		[this](std::shared_ptr<Enemy_HellAntenora> _ActorPtr)
+		{
+			if (true == NetworkManager::IsClient())
+			{
+				_ActorPtr->SetControll(NetControllType::PassiveControll);
+			}
+			else
+			{
+				NetworkManager::LinkNetwork(_ActorPtr.get(), this);
+			}
+		});
 }
 
 void Location19_Level::CreateEventZone()
