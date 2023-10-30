@@ -1,5 +1,11 @@
 #pragma once
 #include "FieldMapObject.h"
+enum class EventZoneOption
+{
+	AllPlayer,
+	OnePlayer
+};
+
 
 class EventZone : public FieldMapObject
 {
@@ -24,8 +30,7 @@ protected:
 	std::shared_ptr<GameEngineCollision> TriggerZone = nullptr;
 	std::function<void()> Event = nullptr;
 	bool IsEventStart = false;
-	
-
+	EventZoneOption Option = EventZoneOption::AllPlayer;
 
 private:
 };

@@ -558,6 +558,9 @@
     <ClInclude Include="l02_03_StreetLine.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
     </ClInclude>
+    <ClInclude Include="FieldMapSpotLight.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -1109,6 +1112,9 @@
       <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\LevelChange</Filter>
     </ClCompile>
     <ClCompile Include="l02_03_StreetLine.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
+    </ClCompile>
+    <ClCompile Include="FieldMapSpotLight.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
     </ClCompile>
   </ItemGroup>

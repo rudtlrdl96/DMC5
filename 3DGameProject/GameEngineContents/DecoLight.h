@@ -18,7 +18,7 @@ protected:
 	void Update(float _DeltaTime) override;
 
 private:
-	std::shared_ptr<class GameEngineLight> SpotLight;
+	std::shared_ptr<class GameEngineLight> SpotLight = nullptr;
 	float4 LightPosition = { 0.f, 20.f, 0.f };
 };
 
