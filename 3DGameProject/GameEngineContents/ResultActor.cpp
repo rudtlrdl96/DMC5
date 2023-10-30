@@ -44,7 +44,7 @@ void ResultActor::Start()
 		}
 		else
 		{
-			ScreenShotRenderer->SetTexture("DiffuseTexture", "Result_ScreenShot.jpg");
+			ScreenShotRenderer->SetTexture("DiffuseTexture", "EngineBaseTex.png");
 		}
 		ScreenShotRenderer->SetTexture("NormalTexture", "gun_center_nm.texout.tga");
 	}
@@ -331,6 +331,115 @@ void ResultActor::Start()
 		ResultText_6_Num->Off();
 	}
 
+	{
+		CreditActor = GetLevel()->CreateActor<GameEngineActor>();
+		CreditActor->GetTransform()->SetParent(GetTransform());
+		CreditActor->SetName("Credit");
+		CreditActor->GetTransform()->SetLocalPosition({ -1600, 0, 0 });
+
+		CreditText_0 = CreditActor->CreateComponent<GameEngineFontRenderer>();
+		CreditText_0->SetFont("DMC5Font");
+		CreditText_0->SetFontFlag(FW1_LEFT);
+		CreditText_0->SetScale(48.0f * GameEngineActor::ScreenRatio.y);
+		CreditText_0->SetColor(float4(0.407f, 0.682f, 0.698f, 1.0f));
+		CreditText_0->SetText("Player & Effect & Sound");
+		CreditText_0->GetTransform()->SetLocalPosition({ -700, 300, 0 });
+
+		CreditText_1 = CreditActor->CreateComponent<GameEngineFontRenderer>();
+		CreditText_1->SetFont("DMC5Font");
+		CreditText_1->SetFontFlag(FW1_LEFT);
+		CreditText_1->SetScale(64.0f * GameEngineActor::ScreenRatio.y);
+		CreditText_1->SetColor(float4(0.707f, 0.982f, 0.998f, 1.0f));
+		CreditText_1->SetText("Kim Kyunghak");
+		CreditText_1->GetTransform()->SetLocalPosition({ -600, 240, 0 });
+
+		CreditText_2 = CreditActor->CreateComponent<GameEngineFontRenderer>();
+		CreditText_2->SetFont("DMC5Font");
+		CreditText_2->SetFontFlag(FW1_LEFT);
+		CreditText_2->SetScale(48.0f * GameEngineActor::ScreenRatio.y);
+		CreditText_2->SetColor(float4(0.407f, 0.682f, 0.698f, 1.0f));
+		CreditText_2->SetText("Engine & Monster & Physics");
+		CreditText_2->GetTransform()->SetLocalPosition({ -700, 60, 0 });
+
+		CreditText_3 = CreditActor->CreateComponent<GameEngineFontRenderer>();
+		CreditText_3->SetFont("DMC5Font");
+		CreditText_3->SetFontFlag(FW1_LEFT);
+		CreditText_3->SetScale(64.0f * GameEngineActor::ScreenRatio.y);
+		CreditText_3->SetColor(float4(0.707f, 0.982f, 0.998f, 1.0f));
+		CreditText_3->SetText("Um Taegun");
+		CreditText_3->GetTransform()->SetLocalPosition({ -600, 0, 0 });
+
+		CreditText_4 = CreditActor->CreateComponent<GameEngineFontRenderer>();
+		CreditText_4->SetFont("DMC5Font");
+		CreditText_4->SetFontFlag(FW1_LEFT);
+		CreditText_4->SetScale(48.0f * GameEngineActor::ScreenRatio.y);
+		CreditText_4->SetColor(float4(0.407f, 0.682f, 0.698f, 1.0f));
+		CreditText_4->SetText("Engine & Shader");
+		CreditText_4->GetTransform()->SetLocalPosition({ -700, -160, 0 });
+
+		CreditText_5 = CreditActor->CreateComponent<GameEngineFontRenderer>();
+		CreditText_5->SetFont("DMC5Font");
+		CreditText_5->SetFontFlag(FW1_LEFT);
+		CreditText_5->SetScale(64.0f * GameEngineActor::ScreenRatio.y);
+		CreditText_5->SetColor(float4(0.707f, 0.982f, 0.998f, 1.0f));
+		CreditText_5->SetText("Kim Kyeongsik");
+		CreditText_5->GetTransform()->SetLocalPosition({ -600, -220, 0 });
+
+
+		CreditText_6 = CreditActor->CreateComponent<GameEngineFontRenderer>();
+		CreditText_6->SetFont("DMC5Font");
+		CreditText_6->SetFontFlag(FW1_LEFT);
+		CreditText_6->SetScale(48.0f * GameEngineActor::ScreenRatio.y);
+		CreditText_6->SetColor(float4(0.407f, 0.682f, 0.698f, 1.0f));
+		CreditText_6->SetText("Server");
+		CreditText_6->GetTransform()->SetLocalPosition({ 0, 300, 0 });
+
+		CreditText_7 = CreditActor->CreateComponent<GameEngineFontRenderer>();
+		CreditText_7->SetFont("DMC5Font");
+		CreditText_7->SetFontFlag(FW1_LEFT);
+		CreditText_7->SetScale(64.0f * GameEngineActor::ScreenRatio.y);
+		CreditText_7->SetColor(float4(0.707f, 0.982f, 0.998f, 1.0f));
+		CreditText_7->SetText("Min Kyungwoon");
+		CreditText_7->GetTransform()->SetLocalPosition({ 100, 240, 0 });
+
+		CreditText_8 = CreditActor->CreateComponent<GameEngineFontRenderer>();
+		CreditText_8->SetFont("DMC5Font");
+		CreditText_8->SetFontFlag(FW1_LEFT);
+		CreditText_8->SetScale(48.0f * GameEngineActor::ScreenRatio.y);
+		CreditText_8->SetColor(float4(0.407f, 0.682f, 0.698f, 1.0f));
+		CreditText_8->SetText("Map");
+		CreditText_8->GetTransform()->SetLocalPosition({ 0, 60, 0 });
+
+		CreditText_9 = CreditActor->CreateComponent<GameEngineFontRenderer>();
+		CreditText_9->SetFont("DMC5Font");
+		CreditText_9->SetFontFlag(FW1_LEFT);
+		CreditText_9->SetScale(64.0f * GameEngineActor::ScreenRatio.y);
+		CreditText_9->SetColor(float4(0.707f, 0.982f, 0.998f, 1.0f));
+		CreditText_9->SetText("Hwang Seungmin");
+		CreditText_9->GetTransform()->SetLocalPosition({ 100, 0, 0 });
+
+		CreditText_10 = CreditActor->CreateComponent<GameEngineFontRenderer>();
+		CreditText_10->SetFont("DMC5Font");
+		CreditText_10->SetFontFlag(FW1_LEFT);
+		CreditText_10->SetScale(48.0f * GameEngineActor::ScreenRatio.y);
+		CreditText_10->SetColor(float4(0.407f, 0.682f, 0.698f, 1.0f));
+		CreditText_10->SetText("UI");
+		CreditText_10->GetTransform()->SetLocalPosition({ 0, -160, 0 });
+
+		CreditText_11 = CreditActor->CreateComponent<GameEngineFontRenderer>();
+		CreditText_11->SetFont("DMC5Font");
+		CreditText_11->SetFontFlag(FW1_LEFT);
+		CreditText_11->SetScale(64.0f * GameEngineActor::ScreenRatio.y);
+		CreditText_11->SetColor(float4(0.707f, 0.982f, 0.998f, 1.0f));
+		CreditText_11->SetText("Kim Minseok");
+		CreditText_11->GetTransform()->SetLocalPosition({ 100, -220, 0 });
+
+		Credit_Render_0 = CreditActor->CreateComponent<GameEngineUIRenderer>();
+		Credit_Render_0->SetTexture("PressAnyKey.png");
+		Credit_Render_0->GetTransform()->SetLocalPosition({ 600, -360, 0 });
+		Credit_Render_0->GetTransform()->SetLocalScale({ 215, 50, 0 });
+	}
+
 	//////////////// FSM //////////////////
 FSM.CreateState({ .StateValue = ResultState_Wait,
 .Start = [this]
@@ -393,34 +502,9 @@ FSM.CreateState({ .StateValue = ResultState_Wait,
 
 			TimeEvent->AddEvent(3.0f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _TimeEvent)
 				{
-					GameEngineSound::Play("Result_SFX_5.wav");
-					FSM.ChangeState(ResultState_Rank1);
+					FSM.ChangeState(ResultState_Credit);
 				});
-
-			TimeEvent->AddEvent(3.2f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _TimeEvent)
-				{
-					GameEngineSound::Play("Result_SFX_9.wav");
-				});
-			TimeEvent->AddEvent(3.5f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _TimeEvent)
-				{
-					FSM.ChangeState(ResultState_Text1);
-				});
-			TimeEvent->AddEvent(3.9f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _TimeEvent)
-				{
-					FSM.ChangeState(ResultState_Text2);
-				});
-			TimeEvent->AddEvent(4.3f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _TimeEvent)
-				{
-					FSM.ChangeState(ResultState_Text3);
-				});
-			TimeEvent->AddEvent(4.7f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _TimeEvent)
-				{
-					FSM.ChangeState(ResultState_Text4);
-				});
-			TimeEvent->AddEvent(5.6f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _TimeEvent)
-				{
-					FSM.ChangeState(ResultState_Text5);
-				});
+			
 		});
 },
 .Update = [=](float _DeltaTime)
@@ -490,6 +574,54 @@ FSM.CreateState({ .StateValue = ResultState_Shoot2,
 }
 });
 
+FSM.CreateState({ .StateValue = ResultState_Credit,
+.Start = [this]
+{
+	CreditActor->On();
+	Timer = 0;
+},
+.Update = [=](float _DeltaTime)
+{
+	Timer += _DeltaTime;
+	float Ratio = std::sinf(std::min<float>(1.0f, Timer) * GameEngineMath::PIE * 0.5f);
+
+	if (GameEngineInput::IsAnyKey())
+	{
+		GameEngineSound::Play("Result_SFX_5.wav");
+		FSM.ChangeState(ResultState_Rank1);
+	}
+	CreditActor->GetTransform()->SetLocalPosition(float4::Lerp({ -1600, 0, 0 }, float4::ZERO, Ratio));
+	GlassParts_1->GetTransform()->AddLocalRotation(float4::ONE * _DeltaTime);
+},
+.End = [=]
+{
+	GameEngineTimeEvent& TimeEvent = GetLevel()->TimeEvent;
+	TimeEvent.AddEvent(0.2f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _TimeEvent)
+			{
+				GameEngineSound::Play("Result_SFX_9.wav");
+			});
+	TimeEvent.AddEvent(0.5f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _TimeEvent)
+		{
+			FSM.ChangeState(ResultState_Text1);
+		});
+	TimeEvent.AddEvent(0.9f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _TimeEvent)
+		{
+			FSM.ChangeState(ResultState_Text2);
+		});
+	TimeEvent.AddEvent(1.3f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _TimeEvent)
+		{
+			FSM.ChangeState(ResultState_Text3);
+		});
+	TimeEvent.AddEvent(1.7f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _TimeEvent)
+		{
+			FSM.ChangeState(ResultState_Text4);
+		});
+	TimeEvent.AddEvent(2.6f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _TimeEvent)
+		{
+			FSM.ChangeState(ResultState_Text5);
+		});
+}
+});
 
 EndPos = RankBackgroundRenderer->GetTransform()->GetWorldPosition() + (float4::LEFT * 350.0f * GameEngineActor::ScreenRatio.y);
 
@@ -517,6 +649,7 @@ FSM.CreateState({ .StateValue = ResultState_Rank1,
 	GlassParts_1->GetTransform()->AddLocalPosition({ -50  * Ratio, 0, 0 });
 
 	RankGrade->GetTransform()->SetLocalPosition(float4::LerpClamp(float4::ZERO, RankPos, Ratio));
+	CreditActor->GetTransform()->SetLocalPosition(float4::Lerp(float4::ZERO, { 1600, 0, 0 }, Ratio));
 },
 .End = [=]
 {
@@ -529,6 +662,7 @@ FSM.CreateState({ .StateValue = ResultState_Text1,
 {
 	GameEngineSound::Play("Result_SFX_8.wav");
 	GameEngineSound::Play("Result_SFX_10.wav");
+	CreditActor->Off();
 	ResultText_0->On();
 	ResultText_0->SetAlpha(0);
 	ResultText_1->On();

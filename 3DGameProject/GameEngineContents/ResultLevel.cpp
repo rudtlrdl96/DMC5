@@ -52,6 +52,13 @@ void ResultLevel::LevelChangeStart()
 				GameEngineTexture::Load(File.GetFullPath());
 			}
 		}
+
+		NewDir.MoveParent();
+		NewDir.Move("TitleTexture");
+		if (nullptr == GameEngineTexture::Find("PressAnyKey.png"))
+		{
+			GameEngineTexture::Load(NewDir.GetPlusFileName("PressAnyKey.png").GetFullPath());
+		}
 	}
 
 	{
