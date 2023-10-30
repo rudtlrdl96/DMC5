@@ -72,22 +72,22 @@ void NetworkTestLevel::LevelChangeStart()
 
 void NetworkTestLevel::InitPool()
 {
-	//Passive컨트롤 용 네로 오브젝트 풀링
-	Poolable<PlayerActor_Nero>::CreatePool(this, static_cast<int>(ActorOrder::Player), 1,
-		[](std::shared_ptr<PlayerActor_Nero> _ActorPtr)
-	{
-		_ActorPtr->SetControll(NetControllType::PassiveControll);
-	});
+	////Passive컨트롤 용 네로 오브젝트 풀링
+	//Poolable<PlayerActor_Nero>::CreatePool(this, static_cast<int>(ActorOrder::Player), 1,
+	//	[](std::shared_ptr<PlayerActor_Nero> _ActorPtr)
+	//{
+	//	_ActorPtr->SetControll(NetControllType::PassiveControll);
+	//});
 
-	//Passive컨트롤 용 버질 오브젝트 풀링
-	Poolable<PlayerActor_Vergil>::CreatePool(this, static_cast<int>(ActorOrder::Player), 1,
-		[](std::shared_ptr<PlayerActor_Vergil> _ActorPtr)
-	{
-		_ActorPtr->SetControll(NetControllType::PassiveControll);
-	});
+	////Passive컨트롤 용 버질 오브젝트 풀링
+	//Poolable<PlayerActor_Vergil>::CreatePool(this, static_cast<int>(ActorOrder::Player), 1,
+	//	[](std::shared_ptr<PlayerActor_Vergil> _ActorPtr)
+	//{
+	//	_ActorPtr->SetControll(NetControllType::PassiveControll);
+	//});
 
-	//Passive컨트롤 용 미자리 블레이드 오브젝트 풀링
-	Poolable<Player_MirageBlade>::CreatePool(this, static_cast<int>(ActorOrder::Player), 8);
+	////Passive컨트롤 용 미자리 블레이드 오브젝트 풀링
+	//Poolable<Player_MirageBlade>::CreatePool(this, static_cast<int>(ActorOrder::Player), 8);
 
 	//Monster TODO
 	//Poolable<Enemy_HellCaina>::CreatePool(this, static_cast<int>(ActorOrder::Enemy), 1,
