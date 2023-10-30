@@ -2395,6 +2395,7 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Dengeki_Reload_Start,
 	.Start = [=] {
+	EffectRenderer_0->PlayFX("Cavalier_Charge_1.effect");
 	BasePlayerActor::CameraLookBoss(PhysXCapsule->GetWorldPosition());
 	EnemyRenderer->ChangeAnimation("em5501_dengeki_reload_start");
 	},
@@ -2441,6 +2442,7 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Collider,
 	.Start = [=] {
+	EffectRenderer_0->PlayFX("Cavalier_Colider.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack_collider");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2450,6 +2452,7 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Collider_To_Dengeki,
 	.Start = [=] {
+	EffectRenderer_1->PlayFX("Cavalier_Collider_To_Dengeki.effect");
 	BasePlayerActor::CameraLookBoss(PhysXCapsule->GetWorldPosition());
 	EnemyRenderer->ChangeAnimation("em5501_Attack_collider_to_Dengeki");
 	},
@@ -2496,6 +2499,7 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Dengeki_Start,
 	.Start = [=] {
+	EffectRenderer_0->PlayFX("Cavalier_Dengeki_Start.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack_Dengeki_Start");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2505,6 +2509,7 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Dengeki_Loop,
 	.Start = [=] {
+	EffectRenderer_0->PlayFX("Cavalier_Dengeki_Loop.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack_Dengeki_Loop");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2514,6 +2519,7 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Dengeki_End,
 	.Start = [=] {
+	EffectRenderer_0->PlayFX("Cavalier_Dengeki_End.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack_Dengeki_End");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2541,6 +2547,7 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack01,
 	.Start = [=] {
+	EffectRenderer_0->PlayFX("Cavalier_Attack_1.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack01_R");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2550,6 +2557,7 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack02,
 	.Start = [=] {
+	EffectRenderer_1->PlayFX("Cavalier_Attack_2.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack02");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2559,6 +2567,7 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack03,
 	.Start = [=] {
+	EffectRenderer_0->PlayFX("Cavalier_Attack_3.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack03");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2568,6 +2577,8 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_Even01,
 	.Start = [=] {
+	EffectRenderer_0->PlayFX("Cavalier_Parry.effect");
+	EffectRenderer_1->Off();
 	EnemyRenderer->ChangeAnimation("em5501_Parry_even01");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2577,6 +2588,8 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_normal01,
 	.Start = [=] {
+	EffectRenderer_0->PlayFX("Cavalier_Parry.effect");
+	EffectRenderer_1->Off();
 	EnemyRenderer->ChangeAnimation("em5501_Parry_normal01");
 		},
 	.Update = [=](float _DeltaTime) {
@@ -2622,6 +2635,7 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack04,
 	.Start = [=] {
+	EffectRenderer_1->PlayFX("Cavalier_Attack_4.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack04");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2631,6 +2645,8 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Damage_Drill,
 	.Start = [=] {
+	EffectRenderer_0->PlayFX("Cavalier_Parry.effect");
+	EffectRenderer_1->Off();
 	EnemyRenderer->ChangeAnimation("em5501_Damage_Drill");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2640,6 +2656,8 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Stun_Start,
 	.Start = [=] {
+	EffectRenderer_0->PlayFX("Cavalier_Parry.effect");
+	EffectRenderer_1->Off();
 	EnemyRenderer->ChangeAnimation("em5501_stun_start");
 	},
 	.Update = [=](float _DeltaTime) {

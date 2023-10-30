@@ -1757,8 +1757,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Parry_Lose_Modori,
 	.Start = [=] {
 	ParryTime();
-	//EffectRenderer_0->PlayFX("Cavalier_Parry.effect");
-	//EffectRenderer_1->Off();
+	MonsterEffectRenderer->PlayFX("Damage_Parry.effect");
 	EnemyRenderer->ChangeAnimation("em0600_Parry_Lose_Modori");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2506,6 +2505,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Parry_Lose_Modori,
 	.Start = [=] {
+	MonsterEffectRenderer->PlayFX("Damage_Parry.effect");
 	EnemyRenderer->ChangeAnimation("em0600_Parry_Lose_Modori");
 	},
 	.Update = [=](float _DeltaTime) {

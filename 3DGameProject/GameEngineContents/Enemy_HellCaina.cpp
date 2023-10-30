@@ -1531,7 +1531,6 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 강공격 맞고 날아감
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Blown_Back,
 	.Start = [=] {
-
 	EnemyRenderer->ChangeAnimation("em0000_blown_back", true);
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1792,6 +1791,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	// 앞으로 넘어진 상태에서 Death
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Prone_Death,
 	.Start = [=] {
+	Sound.PlayVoice(5, false);
 	EnemyRenderer->ChangeAnimation("em0000_prone_death");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2287,6 +2287,7 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Prone_Death,
 	.Start = [=] {
 	DeathSetting_Client();
+	Sound.PlayVoice(5, false);
 	EnemyRenderer->ChangeAnimation("em0000_prone_death");
 	},
 	.Update = [=](float _DeltaTime) {

@@ -300,6 +300,7 @@ void Enemy_ProtoAngelo::Start()
 	LinkData_UpdatePacket<bool>(IsParryCheck);
 	LinkData_UpdatePacket<bool>(ParryOkay);
 	LinkData_UpdatePacket<bool>(IsSuperArmor);
+	LinkData_UpdatePacket<int>(SuperArmorStack);
 	LinkData_UpdatePacket<int>(EnemyHP);
 	LinkData_UpdatePacket<int>(ServerPlayerID);
 
@@ -1819,6 +1820,7 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Parry_Lose_Modori,
 	.Start = [=] {
 	ParryTime();
+	MonsterEffectRenderer->PlayFX("Damage_Parry.effect");
 	EnemyRenderer->ChangeAnimation("em0601_Parry_Lose_Modori");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2378,16 +2380,465 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 
 void Enemy_ProtoAngelo::EnemyCreateFSM_Client()
 {
-	//// 최초 등장_02
-	//EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Appear_02,
-	//.Start = [=] {
-	//EnemyRenderer->ChangeAnimation("em0000_appear_02");
-	//},
-	//.Update = [=](float _DeltaTime) {
-	//},
-	//.End = [=] {
-	//}
-	//	});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Appear_01,
+	.Start = [=] {
+	MonsterEffectRenderer->PlayFX("Enemy_Appear.effect");
+	EnemyRenderer->ChangeAnimation("em0601_Appear_01");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
 
-	//EnemyFSM.ChangeState(FSM_State_HellCaina::HellCaina_Appear_02);
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Idle,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Idle_Loop");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start,
+	.Start = [=]
+	{
+	EnemyRenderer->ChangeAnimation("em0601_A_Walk_Start_L0");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=]
+	{
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_A_Walk_Loop");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Stop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_A_Walk_End_L0");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Turn_Attack_To_Guard_L_Dummy_Turn_R,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Turn_Attack_To_Quard_R");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Turn_Attack_To_Guard_L_Dummy_Turn_L,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Turn_Attack_To_Quard_L");
+	},
+	.Update = [=](float _DeltaTime)
+	{
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Step_Back,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Step_Back");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Attack_01_Turn_L,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Attack_01_Turn_L");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Attack_01_Turn_R,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Attack_01_Turn_R");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Attack_Kesa,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Attack_Kesa");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Attack_03,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Attack_03");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Attack_04,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Attack_04");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Parry_Attack_Start,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Parry_Attack_Start");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Parry_Attack_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Parry_Attack_Loop");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Attack_Tossin_Parry_Yokonagi,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Attack_Tossin_Parry_Yokonagi");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Parry_Attack_End,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Parry_Attack_End");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Attack_Tossin_Parry_Start,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Attack_Tossin_Parry_Start");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Attack_Tossin_Parry_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Attack_Tossin_Parry_Loop");
+	},
+	.Update = [=](float _DeltaTime) {
+	RunTime += _DeltaTime;
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Attack_Tossin_Parry_Attack,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Attack_Tossin_Parry_Yokonagi");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Attack_Tossin_Parry_End,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Attack_Tossin_Parry_End");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Attack_Tossin_Parry_End_Turn,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Attack_Tossin_Parry_End_Turn");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Parry_Lose_Modori,
+	.Start = [=] {
+	MonsterEffectRenderer->PlayFX("Damage_Parry.effect");
+	EnemyRenderer->ChangeAnimation("em0601_Parry_Lose_Modori");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Standing_Damage_Weak_Front,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Standing_Damage_Weak_Front", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Standing_Damage_Weak_Back,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Standing_Damage_Weak_Back", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Blown_Back,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Blown_Back", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Blown_Back_Landing,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Blown_Back_Landing");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Blown_Up,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Blown_Up", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Air_Damage,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Air_Damage", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Blown_Up_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Blown_Up_Loop", true);
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Blown_Up_Landing,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Blown_Up_Landing");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Slam_Damage,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Slam_Damage");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Slam_Damage_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Slam_Damage_Loop");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Slam_Damage_Landing,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Slam_Damage_Landing");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Snatch,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Snatch");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Stun,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Stun");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Stun_Revive,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Stun_Revive");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Prone_Getup,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0601_Prone_Getup");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Prone_Death,
+	.Start = [=] {
+	Sound.PlayVoice(17);
+	EnemyRenderer->ChangeAnimation("em0601_Prone_Death");
+	},
+	.Update = [=](float _DeltaTime) {
+	if (true == EnemyRenderer->IsAnimationEnd())
+	{
+		IsBurn = true;
+	}
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Death_Back,
+	.Start = [=] {
+	Sound.PlayVoice(17);
+	EnemyRenderer->ChangeAnimation("em0601_Death_Back");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Death_Front,
+	.Start = [=] {
+	Sound.PlayVoice(17);
+	EnemyRenderer->ChangeAnimation("em0601_Death_Front");
+	},
+	.Update = [=](float _DeltaTime) {
+
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Buster_Start,
+	.Start = [=] {
+	BusterCalculation_Client(float4{ 0.f, -45.f, 0.f });
+	EnemyRenderer->ChangeAnimation("em0601_Air_Buster");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Buster_Loop,
+	.Start = [=] {
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Buster_Finish,
+	.Start = [=] {
+	Sound.Play("Enemy_Damage_", 12);
+	EnemyRenderer->ChangeAnimation("em0601_Slam_Damage_Landing");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+
+	}
+		});
+
+	EnemyFSM.ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Appear_01);
 }
