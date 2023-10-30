@@ -44,7 +44,10 @@ void MainMenuLevel::Start()
 	FEffect = GetLastTarget()->CreateEffect<FadeEffect>();
 	std::shared_ptr<Menu_SelectScreen> Menu_SelectScreenPtr = CreateActor<Menu_SelectScreen>();
 	std::shared_ptr<Menu_MissionFont> Menu_MissionFontPtr = CreateActor<Menu_MissionFont>();
-
+	Menu_VirgilInfoPtr = CreateActor<Menu_VirgilInfo>();
+	Menu_VirgilInfoPtr->Off();
+	Menu_NeroInfoPtr = CreateActor<Menu_NeroInfo>();
+	Menu_NeroInfoPtr->Off();
 	//만약 플레이어가 네로라면
 	//
 
@@ -65,11 +68,11 @@ void MainMenuLevel::LevelChangeStart()
 {
 	if (Char_ChoiceUI::GetPlayerType() == ChoicePlayerType::NERO)
 	{
-		std::shared_ptr<Menu_NeroInfo> Menu_NeroInfoPtr = CreateActor<Menu_NeroInfo>();
+		Menu_NeroInfoPtr->On();
 	}
 	else if (Char_ChoiceUI::GetPlayerType() == ChoicePlayerType::VERGIL)
 	{
-		std::shared_ptr<Menu_VirgilInfo> Menu_VirgilInfoPtr = CreateActor<Menu_VirgilInfo>();
+		Menu_VirgilInfoPtr->On();
 	}
 	FEffect->FadeIn();
 }

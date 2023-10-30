@@ -23,6 +23,7 @@ protected:
 	void LevelChangeEnd() override;
 private:
 	std::shared_ptr<class FadeEffect> FEffect;
-
+	std::shared_ptr<class Menu_VirgilInfo> Menu_VirgilInfoPtr = nullptr;
+	std::shared_ptr<class Menu_NeroInfo> Menu_NeroInfoPtr = nullptr;
 };
 

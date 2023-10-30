@@ -85,7 +85,6 @@ void Menu_NeroInfo::Start()
 	FontRender->SetFontFlag(FW1_CENTER);
 	FontRender->SetColor(float4(0.305f, 0.96f, 0.94f, 1.0f));
 	FontRender->GetTransform()->SetLocalPosition(float4(610.f, -125.f, 0.0f) * WindowRatio);
-
 	AcNeroInven = GetLevel()->CreateActor<Nero_Inven>();
 	AcNeroInven->GetInvenVec()[0]->GetTransform()->SetLocalPosition(CenterPos * WindowRatio);
 	AcNeroInven->GetInvenVec()[0]->On();
@@ -95,11 +94,7 @@ void Menu_NeroInfo::Start()
 
 void Menu_NeroInfo::Update(float _Delta)
 {
-	//if (StartInven == false)
-	//{
-	//	AcNeroInven->GetInvenVec()[0]->On();
-	//	StartInven
-	//}
+	AcNeroInven->GetInvenVec()[Index]->IsAddInvenItem(true);
 	MoveInven(_Delta);
 	if (Index == 0)
 	{
@@ -113,7 +108,6 @@ void Menu_NeroInfo::Update(float _Delta)
 	{
 		FontRender->SetText("MAGAZINE02");
 	}
-
 	if (InvenPlusValue == false && true == GameEngineInput::IsUp("UI_Tab") && InvenMinusValue == false)
 	{
 		PrevIndex = Index;
