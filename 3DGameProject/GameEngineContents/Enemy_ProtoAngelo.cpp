@@ -12,11 +12,11 @@
 #include "BasePlayerActor.h"
 #include "AttackCollision.h"
 #include "FXSystem.h"
-Enemy_ProtoAngelo::Enemy_ProtoAngelo() 
+Enemy_ProtoAngelo::Enemy_ProtoAngelo()
 {
 }
 
-Enemy_ProtoAngelo::~Enemy_ProtoAngelo() 
+Enemy_ProtoAngelo::~Enemy_ProtoAngelo()
 {
 }
 
@@ -27,7 +27,7 @@ Enemy_ProtoAngelo::~Enemy_ProtoAngelo()
 void Enemy_ProtoAngelo::EnemyTypeLoad()
 {
 	EnemyCodeValue = EnemyCode::ProtoAngelo;
-	
+
 	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
 	{
 		EnemyMaxHP = 4000;
@@ -36,7 +36,7 @@ void Enemy_ProtoAngelo::EnemyTypeLoad()
 	{
 		EnemyMaxHP = 8000;
 	}
-	
+
 	EnemyHP = EnemyMaxHP;
 }
 
@@ -136,7 +136,9 @@ void Enemy_ProtoAngelo::EnemyAnimationLoad()
 			},
 			.CallBacks_int =
 			{
-				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1)
+				std::bind(&GameEngineFSM::ChangeState, &EnemyFSM, std::placeholders::_1),
+				std::bind(&SoundController::Play, &Sound, "Proto_SFX_", std::placeholders::_1),
+				std::bind(&SoundController::PlayVoice, &Sound, std::placeholders::_1, false),
 			},
 			.CallBacks_float4 =
 			{
@@ -180,28 +182,34 @@ void Enemy_ProtoAngelo::EnemyAnimationLoad()
 		{
 			GameEngineSound::Load(Files[i].GetFullPath());
 		}
+	}
 
-		NewDir.MoveParent();
-		NewDir.MoveParent();
+	if (nullptr == GameEngineSound::Find("Proto_SFX_0.wav")) {
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Sound");
 		NewDir.Move("SFX");
 		NewDir.Move("Proto");
-		Files = NewDir.GetAllFile({ ".wav" });
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".wav" });
 
-		if (nullptr == GameEngineSound::Find("Proto_SFX_0.wav")) {
-			for (size_t i = 0; i < Files.size(); i++)
-			{
-				GameEngineSound::Load(Files[i].GetFullPath());
-			}
-		}
-		if (nullptr == GameEngineSound::Find("Cavaliere_Damage_0.wav"))
+		for (size_t i = 0; i < Files.size(); i++)
 		{
-			NewDir.MoveParent();
-			NewDir.Move("Cavaliere");
-			Files = NewDir.GetAllFile({ ".wav" });
-			for (size_t i = 0; i < Files.size(); i++)
-			{
-				GameEngineSound::Load(Files[i].GetFullPath());
-			}
+			GameEngineSound::Load(Files[i].GetFullPath());
+		}
+	}
+	if (nullptr == GameEngineSound::Find("Cavaliere_Damage_0.wav"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Sound");
+		NewDir.Move("SFX");
+		NewDir.Move("Cavaliere");
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".wav" });
+		for (size_t i = 0; i < Files.size(); i++)
+		{
+			GameEngineSound::Load(Files[i].GetFullPath());
 		}
 	}
 
@@ -1190,9 +1198,9 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 
 	{
 		EnemyRenderer->SetAnimationStartEvent("em0601_Attack_Kesa", 90, [=] {
-			int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+			int RandC = GameEngineRandom::MainRandom.RandomInt(0, 3);
 			IsRecognize = false;
-			if (0 == RandC)
+			if (0 != RandC)
 			{
 				if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
 				{
@@ -1278,9 +1286,9 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 
 	{
 		EnemyRenderer->SetAnimationStartEvent("em0601_Attack_03", 38, [=] {
-			int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+			int RandC = GameEngineRandom::MainRandom.RandomInt(0, 3);
 			IsRecognize = false;
-			if (0 == RandC)
+			if (0 != RandC)
 			{
 				if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
 				{
@@ -1752,7 +1760,7 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	},
 	.End = [=] {
 	}
-	});
+		});
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////      피격      //////////////////////////////////////////
@@ -1765,24 +1773,24 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0601_Parry_Lose_Modori");
 	},
 	.Update = [=](float _DeltaTime) {
-	//if (25 < EnemyRenderer->GetCurFrame())
-	//{
-	//	ParryEvent = false;
-	//}
-	if (30 <= EnemyRenderer->GetCurFrame() && 70 > EnemyRenderer->GetCurFrame())
-	{
-		SetBackMove(140.0f);
-	}
-	if (true == EnemyRenderer->IsAnimationEnd())
-	{
-		IsSuperArmor = true;
-		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
-		return;
-	}
-	},
-	.End = [=] {
-	ParryEvent = false;
-	}
+			//if (25 < EnemyRenderer->GetCurFrame())
+			//{
+			//	ParryEvent = false;
+			//}
+			if (30 <= EnemyRenderer->GetCurFrame() && 70 > EnemyRenderer->GetCurFrame())
+			{
+				SetBackMove(140.0f);
+			}
+			if (true == EnemyRenderer->IsAnimationEnd())
+			{
+				IsSuperArmor = true;
+				ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
+				return;
+			}
+			},
+			.End = [=] {
+			ParryEvent = false;
+			}
 		});
 
 	/////////////////////////약공격

@@ -491,7 +491,7 @@ void AnimationToolWindow::MeshCreate(std::shared_ptr<GameEngineLevel> _Level)
 
 	if (MeshName != "")
 	{
-		Renderer->SetFBXMesh(MeshName, "AniFBX_Low");
+		Renderer->SetFBXMesh(MeshName, "AniFBX");
 	}
 }
 
@@ -584,11 +584,11 @@ void AnimationToolWindow::AnimationFrameUpdate()
 			// 버질 테스트용
 			if (CurData.Index == 1)
 			{
-				GameEngineSound::Play("Scudo_SFX_" + std::to_string(CurData.IntValue) + ".wav");
+				GameEngineSound::Play("Proto_SFX_" + std::to_string(CurData.IntValue) + ".wav");
 			}
 			else if (CurData.Index == 2)
 			{
-				GameEngineSound::Play("Scudo_V_" + std::to_string(CurData.IntValue) + ".wav");
+				GameEngineSound::Play("Proto_V_" + std::to_string(CurData.IntValue) + ".wav");
 				//GameEngineSound::Play("BR_" + std::to_string(CurData.IntValue) + ".wav");
 			}
 			else if (CurData.Index == 3)
