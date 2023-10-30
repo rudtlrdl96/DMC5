@@ -26,7 +26,7 @@ void UI_HPGaege::Start()
 	NeroHpAni->GetTransform()->SetLocalPosition(HPAniPos);
 	NeroHpAni->GetTransform()->SetLocalRotation({ 0.0f,0.0f,90.0f });
 	NeroHpAni->ChangeAnimation("HPANI");
-
+	NeroHpAni->Off();
 	PlayerHPUI_Front = CreateComponent<GameEngineUIRenderer>(2);
 	PlayerHPUI_Front->SetTexture("hpbar.png");
 	PlayerHPUI_Front->GetTransform()->SetLocalScale(HPScale);
@@ -45,6 +45,10 @@ void UI_HPGaege::Start()
 
 void UI_HPGaege::Update(float _DeltaTime)
 {
+	if (CurHp != MaxHP)
+	{
+		NeroHpAni->On();
+	}
 	ClipHPBar(_DeltaTime);
 }
 
@@ -52,7 +56,7 @@ void UI_HPGaege::ClipHPBar(float _Delta)
 {
 	PlayerHPUI_Front->ImageClippingX(static_cast<float>(CurHp) / static_cast<float>(MaxHP), ClipXDir::Left);
 	float Cal = static_cast<float>(CurHp) / static_cast<float>(MaxHP);
-	float XPos = HPAniPos.x - HPPos.x * (1.0f - Cal);
+	float XPos = HPAniPos.x - HPScale.x * (1.0f - Cal);
 	NeroHpAni->GetTransform()->SetLocalPosition({ XPos,HPAniPos.y,0.0f });
 	if (CurHp != RedHp)
 	{
