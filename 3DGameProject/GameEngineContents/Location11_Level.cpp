@@ -136,22 +136,20 @@ void Location11_Level::LevelChangeStart()
 			{
 				_ActorPtr->SetControll(NetControllType::PassiveControll);
 				_ActorPtr->PushDeathCallback(std::bind(&Location11_Level::LevelChangeToResultLevel, this));
-				MainPlayer->SetBossCam(BossMonster->GetTransform());
 			}
 			else
 			{
 				NetworkManager::LinkNetwork(_ActorPtr.get(), this);
 				_ActorPtr->PushDeathCallback(std::bind(&Location11_Level::LevelChangeToResultLevel, this));
-				MainPlayer->SetBossCam(BossMonster->GetTransform());
 			}
 		});
 
 	if (false == NetworkManager::IsClient())
 	{
-		BossMonster = CreateActor<CavaliereAngelo>();
-		BossMonster->GetPhysXComponent()->SetWorldPosition({ -35500, 1950, -365 });
-		BossMonster->GetPhysXComponent()->SetWorldRotation({ 0.0f, 90.0f, 0.0f });
-		BossMonster->PushDeathCallback(std::bind(&Location11_Level::LevelChangeToResultLevel, this));
+		std::shared_ptr<CavaliereAngelo> Cavaliere = Poolable<CavaliereAngelo>::PopFromPool(this, static_cast<int>(ActorOrder::Enemy));
+		Cavaliere->GetTransform()->SetWorldPosition({ -35500, 1950, -365 });
+		Cavaliere->GetTransform()->SetWorldRotation({ 0.0f, 90.0f, 0.0f });
+		MainPlayer->SetBossCam(Cavaliere->GetTransform());
 	}
 
 	AcSkyBox.lock()->SetSkyBloom(1);
