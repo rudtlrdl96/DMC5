@@ -68,10 +68,6 @@ void BossHpBar::Start()
 
 void BossHpBar::Update(float _Delta)
 {
-	if (GameEngineInput::IsDown("UI_ESC"))
-	{
-		CurBossHp -= 100;
-	}
 	if (CurBossHp != MaxBossHP)
 	{
 		BossHpAni->On();

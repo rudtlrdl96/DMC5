@@ -14,9 +14,13 @@ public:
 	BossHpBar(BossHpBar&& _Other) noexcept = delete;
 	BossHpBar& operator=(const BossHpBar& _Other) = delete;
 	BossHpBar& operator=(BossHpBar&& _Other) noexcept = delete;
-	void UpdateBossHP(int CurHP)
+	void UpdateBossHP(int _CurHP)
 	{
-		CurBossHp = CurHP;
+		CurBossHp = _CurHP;
+	};
+	void SetBossMaxHP(int _CurMaxHP)
+	{
+		MaxBossHP = _CurMaxHP;
 	};
 protected:
 	void Start() override;
@@ -33,10 +37,10 @@ private:
 	float4 AniScale = { 46.0f,170.0f,0.0f };
 	float4 Scale = { 906.0f,26.0f,0.0f };
 	float4 Pos = { 10.0f,-399.0f,0.0f };
-	int MaxBossHP = 10000;
-	int RedBossHp = 10000;
-	int PrevBossHp = 10000;
-	int CurBossHp = 10000;
+	int MaxBossHP = 0;
+	int RedBossHp = 0;
+	int PrevBossHp = 0;
+	int CurBossHp = 0;
 	float Ratio = 0.0f;
 
 
