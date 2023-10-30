@@ -17,7 +17,7 @@ void Nero_InvenToryUI::Start()
 {
 
 	InvenBaseRender = CreateComponent<GameEngineUIRenderer>(1);
-	InvenBaseRender->GetTransform()->SetLocalScale(Scale);
+	InvenBaseRender->GetTransform()->SetLocalScale(Scale*GameEngineActor::ScreenRatio);
 	InvenBaseRender->SetTexture("Nero_Inven4.png");
 	ItemRender_0 = CreateComponent<GameEngineUIRenderer>(1);
 	ItemRender_0->GetTransform()->SetLocalPosition({ -159.0f,0.0f,0.0f });

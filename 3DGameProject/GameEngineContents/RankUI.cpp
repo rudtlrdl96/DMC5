@@ -177,6 +177,23 @@ void RankUI::Update(float _DeltaTime)
 	}
 
 }
+void RankUI::ResetRank()
+{
+	RankD_Frame->GetTransform()->SetLocalPosition(DefaultPos);
+	RankD_Inside->GetTransform()->SetLocalPosition(DefaultPos);
+	RankC_Frame->GetTransform()->SetLocalPosition(DefaultPos);
+	RankC_Inside->GetTransform()->SetLocalPosition(DefaultPos);
+	RankB_Frame->GetTransform()->SetLocalPosition(DefaultPos);
+	RankB_Inside->GetTransform()->SetLocalPosition(DefaultPos);
+	RankA_Frame->GetTransform()->SetLocalPosition(DefaultPos);
+	RankA_Inside->GetTransform()->SetLocalPosition(DefaultPos);
+	RankS_Frame->GetTransform()->SetLocalPosition(DefaultPos);
+	RankS_Inside->GetTransform()->SetLocalPosition(DefaultPos);
+	RankSS_Frame->GetTransform()->SetLocalPosition(DefaultPos);
+	RankSS_Inside->GetTransform()->SetLocalPosition(DefaultPos);
+	RankSSS_Frame->GetTransform()->SetLocalPosition(DefaultPos);
+	RankSSS_Inside->GetTransform()->SetLocalPosition(DefaultPos);
+}
 void RankUI::RankSpin(float _Delta, std::shared_ptr<class UIMeshRenderer> _Render, std::shared_ptr<class UIMeshRenderer> _InsideRender)
 {
 	if (TurnValue == false)

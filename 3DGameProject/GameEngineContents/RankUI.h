@@ -65,6 +65,7 @@ private:
 	static int TotalScore;
 	static int DamageCount;
 	static RankUI* MainRankUI;
+	void ResetRank();
 	void RankSpin(float _Delta , std::shared_ptr<class UIMeshRenderer> _Render, std::shared_ptr<class UIMeshRenderer> _InsideRender);
 	void RankApper(float _Delta, std::shared_ptr<class UIMeshRenderer> _Render , RankState _State, bool _Value, std::shared_ptr<class UIMeshRenderer> _PrevRender);
 	void RankOut(float _Delta, std::shared_ptr<class UIMeshRenderer> _Render);

@@ -16,6 +16,7 @@ void RankUI::StateInit_Wait()
 				RankBackEffect_Up->GetTransform()->SetLocalPosition(InsideOut);
 				RankBackEffect->GetTransform()->SetLocalPosition(InsideOut);
 				DisApperValue = false;
+				ResetRank();
 			},
 			.Update = [=](float _DeltaTime)
 			{
