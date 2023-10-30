@@ -10,6 +10,7 @@
 #include "MapCollisionMesh.h"
 #include "FreeCameraActor.h"
 #include "PlayerActor_Nero.h"
+#include "PlayerActor_Vergil.h"
 #include "ColorEffect.h"
 #include "JudgementCut.h"
 #include "FXAA_Effect.h"
@@ -110,19 +111,47 @@ void Location11_Level::LevelChangeStart()
 	// 플레이어 생성전 플레이어 벡터 초기화
 	BasePlayerActor::LevelChangeClear(this);
 
-	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
-	Nero->SetUserControllType();
-	Nero->SetWorldPosition({ -31000, 1950, -360 });
-	Nero->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
-	NetworkManager::LinkNetwork(Nero.get(), this);
+	if (true == NetworkManager::IsClient())
+	{
+		MainPlayer = CreateActor<PlayerActor_Vergil>();
+		MainPlayer->SetUserControllType();
+		MainPlayer->SetWorldPosition({ -31000, 1950, -360 });
+		MainPlayer->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
+		NetworkManager::LinkNetwork(MainPlayer.get(), this);
+	}
+	else
+	{
+		MainPlayer = CreateActor<PlayerActor_Nero>();
+		MainPlayer->SetUserControllType();
+		MainPlayer->SetWorldPosition({ -31000, 1950, -360 });
+		MainPlayer->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
+		NetworkManager::LinkNetwork(MainPlayer.get(), this);
+	}
 
-	if (nullptr == BossMonster)
+	//Enemy_Qliphoth
+	Poolable<CavaliereAngelo>::CreatePool(this, static_cast<int>(ActorOrder::Enemy), 1,
+		[this](std::shared_ptr<CavaliereAngelo> _ActorPtr)
+		{
+			if (true == NetworkManager::IsClient())
+			{
+				_ActorPtr->SetControll(NetControllType::PassiveControll);
+				_ActorPtr->PushDeathCallback(std::bind(&Location11_Level::LevelChangeToResultLevel, this));
+				MainPlayer->SetBossCam(BossMonster->GetTransform());
+			}
+			else
+			{
+				NetworkManager::LinkNetwork(_ActorPtr.get(), this);
+				_ActorPtr->PushDeathCallback(std::bind(&Location11_Level::LevelChangeToResultLevel, this));
+				MainPlayer->SetBossCam(BossMonster->GetTransform());
+			}
+		});
+
+	if (false == NetworkManager::IsClient())
 	{
 		BossMonster = CreateActor<CavaliereAngelo>();
 		BossMonster->GetPhysXComponent()->SetWorldPosition({ -35500, 1950, -365 });
 		BossMonster->GetPhysXComponent()->SetWorldRotation({ 0.0f, 90.0f, 0.0f });
 		BossMonster->PushDeathCallback(std::bind(&Location11_Level::LevelChangeToResultLevel, this));
-		Nero->SetBossCam(BossMonster->GetTransform());
 	}
 
 	AcSkyBox.lock()->SetSkyBloom(1);
