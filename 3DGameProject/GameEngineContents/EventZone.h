@@ -21,7 +21,7 @@ public:
 	EventZone& operator=(EventZone&& _Other) noexcept = delete;
 	
 	void SetEvent(std::function<void()> _Event);
-	static size_t ServerPlayerCount;
+	static int ServerPlayerCount;
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

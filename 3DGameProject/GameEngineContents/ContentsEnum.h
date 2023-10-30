@@ -74,6 +74,8 @@ enum class Net_EventType
 	RedWallOff_Location2_Spawner1,
 	Location11_Start,
 	Location11_End,
+	Location19_Start,
+	Location19_End,
 	DamageCallBack,
 
 	COUNT

@@ -109,7 +109,7 @@ void Location11_Level::LevelChangeStart()
 	//AcWallCol.lock()->RenderOn();
 	//AcGroundCol.lock()->RenderOn();
 
-	EventZone::ServerPlayerCount = BasePlayerActor::GetPlayers().size();
+	EventZone::ServerPlayerCount = static_cast<int>(BasePlayerActor::GetPlayers().size());
 	// 플레이어 생성전 플레이어 벡터 초기화
 	BasePlayerActor::LevelChangeClear(this);
 

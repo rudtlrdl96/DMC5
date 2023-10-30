@@ -16,6 +16,7 @@ public:
 	Location19_EnemySpawner& operator=(Location19_EnemySpawner&& _Other) noexcept = delete;
 
 protected:
+	void Start() override;
 
 private:
 

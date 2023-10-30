@@ -21,6 +21,7 @@ protected:
 	void LevelChangeStart() override;
 
 private:
+	void CreateEventZone();
 
 };
 

@@ -17,7 +17,7 @@
 #include "ZoomEffect.h"
 #include "MotionBlurEffect.h"
 #include "FadeEffect.h"
-
+#include "Location19_EnemySpawner.h"
 Location19_Level::Location19_Level()
 {
 
@@ -89,7 +89,7 @@ void Location19_Level::LevelChangeStart()
 	BasePlayerActor::LevelChangeClear(this);
 
 	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
-	Nero->GetPhysXComponent()->SetWorldPosition({ 0, 500, 0 });
+	Nero->GetPhysXComponent()->SetWorldPosition({ 0, 15.0f, 0 });
 	Nero->SetUserControllType();
 	NetworkManager::LinkNetwork(Nero.get(), this);
 
@@ -97,4 +97,13 @@ void Location19_Level::LevelChangeStart()
 	GetDirectionalLight()->GetTransform()->SetWorldPosition({ 0.f,10000.f,0.f });
 	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 45.f,45.f,45.f });
 	GetDirectionalLight()->SetLightColor({1.f,0.85f,0.85f});
+
+	CreateEventZone();
+}
+
+void Location19_Level::CreateEventZone()
+{
+	std::shared_ptr<Location19_EnemySpawner> NewEvent = CreateActor<Location19_EnemySpawner>();
+	NewEvent->GetTransform()->SetWorldPosition({ 0, 1000, 0});
+	NewEvent->GetTransform()->SetWorldScale({ 8000, 3000, 8000 });
 }

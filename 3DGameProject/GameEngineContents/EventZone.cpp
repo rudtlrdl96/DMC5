@@ -7,7 +7,7 @@
 
 #include "BasePlayerActor.h"
 
-size_t EventZone::ServerPlayerCount = -1;
+int EventZone::ServerPlayerCount = -1;
 EventZone::EventZone()
 {
 
