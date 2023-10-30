@@ -531,6 +531,7 @@ void BasePlayerActor::ShopColCheck()
 
 	if (GameEngineInput::IsUp("Enter"))
 	{
+		RankUI::GetRankInst()->RankOff();
 		Shop->ApperCusterWindow(false);
 		ShopOn();
 		Controller->Off();

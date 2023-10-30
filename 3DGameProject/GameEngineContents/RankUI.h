@@ -37,6 +37,11 @@ public:
 	{
 		RankFSM.ChangeState(_Value);
 	}
+	void RankOff()
+	{
+		DisApperValue = true;
+		ResetLiveTime();
+	}
 	void RankDisApper()
 	{
 		DisApperValue = true;
