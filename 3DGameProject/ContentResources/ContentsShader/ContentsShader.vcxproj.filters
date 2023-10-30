@@ -88,6 +88,9 @@
     <FxCompile Include="MotionBlurEffect.hlsl">
       <Filter>PostEffect</Filter>
     </FxCompile>
+    <FxCompile Include="EmpusaAniMesh.hlsl">
+      <Filter>MeshShader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header">

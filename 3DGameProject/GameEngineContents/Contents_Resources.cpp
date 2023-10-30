@@ -387,6 +387,16 @@ void ContentsCore::ContentsResourcesCreate()
 		Material->SetPixelShader("ContentsAniMesh_LowOption.hlsl");
 		Material->SetBlendState("BaseBlend");
 		Material->SetDepthState("EngineDepth");
+	}		
+	
+	{
+		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("Empusa");
+
+		Material->SetVertexShader("EmpusaAniMesh.hlsl");
+		Material->SetRasterizer("Engine2DBase");
+		Material->SetPixelShader("EmpusaAniMesh.hlsl");
+		Material->SetBlendState("BaseBlend");
+		Material->SetDepthState("EngineDepth");
 	}	
 
 	// 3D Effect

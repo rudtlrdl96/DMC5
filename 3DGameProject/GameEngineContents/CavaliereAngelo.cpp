@@ -105,13 +105,13 @@ void CavaliereAngelo::EnemyMeshLoad()
 
 	// CircleLight
 
-	if (nullptr == GameEngineTexture::Find("CavaliereAngeloWeaponEffect.tga"))
+	if (nullptr == GameEngineSprite::Find("Effect_Electric_05.tga"))
 	{
 		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
 			{ "Effect", "Texture" },
-			"CavaliereAngeloWeaponEffect.tga");
+			"Effect_Electric_05.tga");
 
-		GameEngineTexture::Load(Path);
+		GameEngineSprite::LoadSheet(Path, 8, 4);
 	}	
 	
 	if (nullptr == GameEngineFBXMesh::Find("wpem5501_00.fbx"))
@@ -138,6 +138,31 @@ void CavaliereAngelo::EnemyMeshLoad()
 		WeaponEffect->SetBloomColor({ 2.0f, 0.8f, 2.8f });
 
 		WeaponEffect->SetDistortionTexture("", {0.1f, 0.1f});
+
+	}
+
+	{
+		WeaponElectric = CreateComponent<EffectRenderer>();
+		WeaponElectric->RectInit("Effect_2D");
+
+		WeaponElectric->GetTransform()->SetParent(WeaponEffectPivot->GetTransform());
+		WeaponElectric->GetTransform()->SetLocalPosition({ 0.0f, 100.0f, 0.0f });
+		WeaponElectric->GetTransform()->SetLocalRotation({ 0.0f, 0.0f, 0.0f });
+		WeaponElectric->GetTransform()->SetLocalScale({ 40.0f, 300.0f, 1.0f });
+		WeaponElectric->EffectOption.MulColor = { 0.5, 0.2f, 0.7f, 0.5f };
+
+		// std::string_view AnimationName = "";
+		// std::string_view SpriteName = "";
+		// size_t Start = static_cast<size_t>(-1);
+		// size_t End = static_cast<size_t>(-1);
+		// float FrameInter = 0.1f;
+		// bool Loop = true;
+		// bool ScaleToTexture = false;
+		// std::vector<size_t> FrameIndex = std::vector<size_t>();
+		// std::vector<float> FrameTime = std::vector<float>();
+
+		WeaponElectric->CreateAnimation({"Loop", "Effect_Electric_05.tga", size_t(-1), size_t(-1), 0.05f});
+		WeaponElectric->ChangeAnimation("Loop");
 	}
 
 	// 느리구나 쓰러지는 것 조차
@@ -163,7 +188,7 @@ void CavaliereAngelo::DrawEditor()
 
 	if (true == ImGui::Button("Weapon Effect Rot Change"))
 	{
-		WeaponEffect->GetTransform()->SetLocalRotation({ EffectRot[0], EffectRot[1], EffectRot[2]});
+		WeaponElectric->GetTransform()->SetLocalRotation({ EffectRot[0], EffectRot[1], EffectRot[2]});
 	}
 }
 

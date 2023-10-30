@@ -65,7 +65,7 @@ void Enemy_Empusa::EnemyMeshLoad()
 	break;
 	case GameEngineOptionValue::High:
 	{
-		EnemyRenderer->SetFBXMesh("em0100.fbx", "AniFBX");
+		EnemyRenderer->SetFBXMesh("em0100.fbx", "Empusa");
 	}
 	break;
 	default:
@@ -81,6 +81,54 @@ void Enemy_Empusa::EnemyMeshLoad()
 	}
 
 	EnemyRenderer->SetTexture("PaperBurnTexture", "PaperBurnNoise.jpg");
+
+	if (nullptr == GameEngineTexture::Find("em0100_nrmr.texout.tga"))
+	{
+		if (GameEngineOptionValue::Low == GameEngineOption::GetOption("Texture"))
+		{
+			std::string Path = GameEnginePath::GetFileFullPath("ContentResources", { "Character","Enemy", "Empusa", "mesh", "Low" }, "em0100_nrmr.texout.tga");
+			GameEngineTexture::Load(Path);
+		}
+		else if(GameEngineOptionValue::High == GameEngineOption::GetOption("Texture"))
+		{
+			std::string Path = GameEnginePath::GetFileFullPath("ContentResources", { "Character","Enemy", "Empusa", "mesh", "High" }, "em0100_nrmr.texout.tga");
+			GameEngineTexture::Load(Path);
+		}
+	}
+
+	EnemyRenderer->SetTexture("NormalTexture", "em0100_nrmr.texout.tga");
+	
+	if (nullptr == GameEngineTexture::Find("em0100_atos.texout.tga"))
+	{
+		if (GameEngineOptionValue::Low == GameEngineOption::GetOption("Texture"))
+		{
+			std::string Path = GameEnginePath::GetFileFullPath("ContentResources", { "Character", "Enemy","Empusa", "mesh", "Low" }, "em0100_atos.texout.tga");
+			GameEngineTexture::Load(Path);
+		}
+		else if (GameEngineOptionValue::High == GameEngineOption::GetOption("Texture"))
+		{
+			std::string Path = GameEnginePath::GetFileFullPath("ContentResources", { "Character","Enemy","Empusa", "mesh", "High" }, "em0100_atos.texout.tga");
+			GameEngineTexture::Load(Path);
+		}
+	}	
+	
+	EnemyRenderer->SetTexture("SpecularTexture", "em0100_atos.texout.tga");
+
+	if (nullptr == GameEngineTexture::Find("em0100_appear_albm.tga"))
+	{
+		if (GameEngineOptionValue::Low == GameEngineOption::GetOption("Texture"))
+		{
+			std::string Path = GameEnginePath::GetFileFullPath("ContentResources", { "Character", "Enemy","Empusa", "mesh", "Low" }, "em0100_appear_albm.tga");
+			GameEngineTexture::Load(Path);
+		}
+		else if (GameEngineOptionValue::High == GameEngineOption::GetOption("Texture"))
+		{
+			std::string Path = GameEnginePath::GetFileFullPath("ContentResources", { "Character","Enemy","Empusa", "mesh", "High" }, "em0100_appear_albm.tga");
+			GameEngineTexture::Load(Path);
+		}
+	}
+
+	EnemyRenderer->SetTexture("BloodVesselTexture", "em0100_appear_albm.tga");
 }
 
 void Enemy_Empusa::EnemyAnimationLoad()

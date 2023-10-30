@@ -126,6 +126,7 @@ private:
 	std::shared_ptr<class Cavaliere_Electric> Electric = nullptr;
 	std::shared_ptr<class GameEngineComponent> WeaponEffectPivot = nullptr;
 	std::shared_ptr<class EffectRenderer> WeaponEffect = nullptr;
+	std::shared_ptr<class EffectRenderer> WeaponElectric = nullptr;
 
 	void PlayerChase();
 	void ChangeState(int _StateValue);
