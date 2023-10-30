@@ -17,6 +17,10 @@ public:
 	{
 		return ExplanePtr;
 	}
+	void IsNeroSkill(bool _Value)
+	{
+		IsSelect = _Value;
+	}
 	static bool IsStreak;
 	static bool IsSplit;
 	static bool IsRedqueen;
@@ -36,7 +40,7 @@ private:
 	std::shared_ptr<class Shop_TitleButton> RedQueenButton = nullptr;
 	std::shared_ptr<class Shop_ItemButton>  SkillButton = nullptr;
 	std::shared_ptr<class Shop_ExplaneUI> ExplanePtr = nullptr;
-
+	bool IsSelect = false;
 	bool Test = false;
 
 	int Index = 0;

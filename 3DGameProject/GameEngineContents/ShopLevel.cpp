@@ -32,10 +32,7 @@ void ShopLevel::Start()
 	ShopBGPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
 	//std::shared_ptr<testarea> testareaPtr = CreateActor<testarea>();
 	//testareaPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
-	Nero_ShopUIPtr = CreateActor<Nero_ShopUI>();
-	Nero_ShopUIPtr->ShopOff();
-	Vergil_ShopUIPtr = CreateActor<Vergil_ShopUI>();
-	Vergil_ShopUIPtr->ShopOff();
+
 }
 
 void ShopLevel::Update(float _DeltaTime)
@@ -47,14 +44,6 @@ void ShopLevel::Update(float _DeltaTime)
 	BaseLevel::Update(_DeltaTime);
 	if (GameEngineInput::IsDown("UI_ESC"))
 	{
-		if (Char_ChoiceUI::GetPlayerType() == ChoicePlayerType::NERO)
-		{
-			Nero_ShopUIPtr->ShopOff();
-		}
-		else if (Char_ChoiceUI::GetPlayerType() == ChoicePlayerType::VERGIL)
-		{
-			Vergil_ShopUIPtr->ShopOff();
-		}
 		GameEngineCore::ChangeLevel("MainMenuLevel");
 	}
 }
@@ -63,14 +52,22 @@ void ShopLevel::LevelChangeStart()
 {
 	if (Char_ChoiceUI::GetPlayerType() == ChoicePlayerType::NERO)
 	{
-		Nero_ShopUIPtr->ShopOn();
+		Nero_ShopUIPtr = CreateActor<Nero_ShopUI>();
 	}
 	else if (Char_ChoiceUI::GetPlayerType() == ChoicePlayerType::VERGIL)
 	{
-		Vergil_ShopUIPtr->ShopOn();
+		Vergil_ShopUIPtr = CreateActor<Vergil_ShopUI>();
 	}
 }
 
 void ShopLevel::LevelChangeEnd()
 {
+	if (Char_ChoiceUI::GetPlayerType() == ChoicePlayerType::NERO)
+	{
+		Nero_ShopUIPtr->Death();
+	}
+	else if (Char_ChoiceUI::GetPlayerType() == ChoicePlayerType::VERGIL)
+	{
+		Vergil_ShopUIPtr->Death();
+	}
 }

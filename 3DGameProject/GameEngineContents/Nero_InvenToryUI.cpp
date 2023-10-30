@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include "Nero_InvenToryUI.h"
-#include "NeroItemGlass.h"
+#include "Shop_NeroArmUI.h"
+#include "PlayerActor_Nero.h"
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include <GameEngineCore/GameEngineLevel.h>
 bool Nero_InvenToryUI::IsAddInvenArm = false;
@@ -44,32 +45,32 @@ void Nero_InvenToryUI::Update(float _Delta)
 
 void Nero_InvenToryUI::AddInvenArm()
 {
-	InvenDevil = NeroItemGlass::GetVectorArmUIPtr();
 	if (IsAddInvenArm == true)
 	{
-
-		for (size_t t = 0; t < InvenDevil.size(); t++)
+		InvenDevil.clear();
+		std::copy(PlayerActor_Nero::GetBreakerListPointer()->begin(), PlayerActor_Nero::GetBreakerListPointer()->end(), std::back_inserter(InvenDevil));
+		for (size_t t = InvenDevil.size(); t >1 ; t--)
 		{
-			CurDevilBreaker = InvenDevil[t];
-			DevilBreakerRender[t]->On();
+			CurDevilBreaker = InvenDevil[t-1];
+			DevilBreakerRender[InvenDevil.size()-t]->On();
 			switch (CurDevilBreaker)
 			{
 			case DevilBreaker::None:
 				break;
 			case DevilBreaker::Overture:
-				DevilBreakerRender[t]->SetScaleToTexture("Nero_Overture.png");
+				DevilBreakerRender[InvenDevil.size() - t]->SetScaleToTexture("Nero_Overture.png");
 				break;
 			case DevilBreaker::Gerbera:
-				DevilBreakerRender[t]->SetScaleToTexture("Nero_Gerbera.png");
+				DevilBreakerRender[InvenDevil.size() - t]->SetScaleToTexture("Nero_Gerbera.png");
 				break;
 			case DevilBreaker::BusterArm:
-				DevilBreakerRender[t]->SetScaleToTexture("Nero_BusterArm.png");
+				DevilBreakerRender[InvenDevil.size() - t]->SetScaleToTexture("Nero_BusterArm.png");
 				break;
 			default:
 				break;
 			}
 		}
-		for (size_t i = InvenDevil.size(); i < 4; i++)
+		for (size_t i = InvenDevil.size()-1; i < 4; i++)
 		{
 			DevilBreakerRender[i]->Off();
 		}

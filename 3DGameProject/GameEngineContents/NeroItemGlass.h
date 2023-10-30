@@ -37,10 +37,6 @@ public:
 	void ArmRenderOff();
 	void ArmRenderOn();
 
-	static const std::vector<DevilBreaker>& GetVectorArmUIPtr()
-	{
-		return DevilBreakers;
-	}
 
 protected:
 	void Start() override;
@@ -56,7 +52,7 @@ private:
 	std::shared_ptr<class GameEngineFontRenderer> SlashText = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> MaxCount = nullptr;
 	DevilBreaker CurDevilBreaker = DevilBreaker::None;
-
+	std::vector<DevilBreaker> InvenDevils;
 	std::list<DevilBreaker>* ArmList;
 	int MaxItem = 4;
 	float Time = 0.0f;
@@ -78,8 +74,6 @@ private:
 	static bool DestroyItemValue;
 	void AddMoveBreaker(float _Delta);
 	void DestroyMoveBreaker(float _Delta);
-
-	static std::vector<DevilBreaker> DevilBreakers;
 
 	std::vector<std::shared_ptr<class UIFBXRenderer>> Arms;
 

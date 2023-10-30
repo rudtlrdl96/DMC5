@@ -7,8 +7,10 @@
 #include <GameEngineCore/GameEngineFontRenderer.h>
 #include <GameEngineCore/GameEngineLevel.h>
 #include "Nero_Inven.h"
+#include "NeroItemGlass.h"
 #include "PlayerActor_Nero.h"
  std::function<void(DevilBreaker _Value)> Shop_NeroArmUI::CallBack_AddBreaker = nullptr;
+ std::vector<DevilBreaker> Shop_NeroArmUI::DevilBreakers;
 
 Shop_NeroArmUI::Shop_NeroArmUI()
 {
@@ -25,6 +27,10 @@ void Shop_NeroArmUI::UpdateArm()
 
 void Shop_NeroArmUI::Start()
 {
+	if (Shop_ItemButton::Items.size() != 0)
+	{
+		Shop_ItemButton::Items.clear();
+	}
 	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_0 * GameEngineActor::ScreenRatio, { ._Name = "OVERTURE",._Price = "500",._png = "Nero_Overture.png",._BaseNone = "Shop_ArmBase.png", ._BaseSelect = "Shop_ArmSelect.png",.IsValue = false }, GetTransform(), float4(118.0f, 120.0f, 0.0f) * GameEngineActor::ScreenRatio, float4(-160.0f, 0.0f, 0.0f) * GameEngineActor::ScreenRatio);
 	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_1 * GameEngineActor::ScreenRatio, { ._Name = "GERBERA",._Price = "1200",._png = "Nero_Gerbera.png",._BaseNone = "Shop_ArmBase.png", ._BaseSelect = "Shop_ArmSelect.png" ,.IsValue = false }, GetTransform(), float4(118.0f, 120.0f, 0.0f) * GameEngineActor::ScreenRatio, float4(-160.0f, 0.0f, 0.0f) * GameEngineActor::ScreenRatio);
 	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_2 * GameEngineActor::ScreenRatio, { ._Name = "BUSTER ARM",._Price = "5000",._png = "Nero_BusterArm.png",._BaseNone = "Shop_ArmBase.png", ._BaseSelect = "Shop_ArmSelect.png",.IsValue = false }, GetTransform(), float4(118.0f, 120.0f, 0.0f) * GameEngineActor::ScreenRatio, float4(-160.0f, 0.0f, 0.0f) * GameEngineActor::ScreenRatio);
@@ -38,7 +44,7 @@ void Shop_NeroArmUI::Start()
 	AcNeroInven->GetInvenVec()[1]->Off();
 	AcNeroInven->GetInvenVec()[2]->Off();
 	AcNeroInven->GetInvenVec()[0]->Off();
-
+	Nero_InvenToryUI::IsAddInvenItem(true);
 }
 
 void Shop_NeroArmUI::Update(float _Delta)
@@ -126,24 +132,56 @@ void Shop_NeroArmUI::BuyBreaker()
 {
 	if (Index == 0)
 	{
-		if (ArmList->size() <= 4 &&GameEngineInput::IsUp("UI_Enter") == true)
+		if (ArmList->size() <= 4 &&GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true)
 		{
-			CallBack_AddBreaker(DevilBreaker::Overture);
+			if (nullptr != CallBack_AddBreaker)
+			{
+				CallBack_AddBreaker(DevilBreaker::Overture);
+			}
+			else
+			{ 
+				PlayerActor_Nero::GetBreakerListPointer()->push_back(DevilBreaker::Overture);
+				DevilBreakers.insert(DevilBreakers.begin(), DevilBreaker::Overture);
+				NeroItemGlass::AddItemUI(true);
+				Nero_InvenToryUI::IsAddInvenItem(true);
+			}
+
 		}
 	}
 	else if (Index == 1)
 	{
-		if (ArmList->size() <= 4 && GameEngineInput::IsUp("UI_Enter") == true)
+
+		if (ArmList->size() <= 4 && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true)
 		{
-			CallBack_AddBreaker(DevilBreaker::Gerbera);
+			if (nullptr != CallBack_AddBreaker)
+			{
+				CallBack_AddBreaker(DevilBreaker::Gerbera);
+			}
+			else
+			{
+				PlayerActor_Nero::GetBreakerListPointer()->push_back(DevilBreaker::Gerbera);
+				DevilBreakers.insert(DevilBreakers.begin(), DevilBreaker::Gerbera);
+				NeroItemGlass::AddItemUI(true);
+				Nero_InvenToryUI::IsAddInvenItem(true);
+			}
 
 		}
 	}
 	else if (Index == 2)
 	{
-		if (ArmList->size() <= 4 && GameEngineInput::IsUp("UI_Enter") == true)
+		if (ArmList->size() <= 4 && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true)
 		{
-			CallBack_AddBreaker(DevilBreaker::BusterArm);
+			if (nullptr != CallBack_AddBreaker)
+			{
+				CallBack_AddBreaker(DevilBreaker::BusterArm);
+			}
+			else
+			{
+				PlayerActor_Nero::GetBreakerListPointer()->push_back(DevilBreaker::BusterArm);
+				DevilBreakers.insert(DevilBreakers.begin(), DevilBreaker::BusterArm);
+				NeroItemGlass::AddItemUI(true);
+				Nero_InvenToryUI::IsAddInvenItem(true);
+			}
 
 		}
 	}

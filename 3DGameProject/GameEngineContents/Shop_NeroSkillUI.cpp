@@ -42,13 +42,16 @@ void Shop_NeroSkillUI::Start()
 	RedQueenButton->GetFont()->SetFont("DMC5Font");
 	RedQueenButton->SetIsPosValue(true);
 	RedQueenButton->GetFont()->GetTransform()->SetLocalPosition(float4{ -680.0f,224.0f,0.0f }*GameEngineActor::ScreenRatio);
+	if (Shop_ItemButton::Skills.size() != 0)
+	{
+		Shop_ItemButton::Skills.clear();
+	}
 	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_0 * GameEngineActor::ScreenRatio, { ._Name = "STREAK",._Price = "800",._png = "StreakSkill.png",._BaseNone = "Shop_SkillMovieNone.png", ._BaseSelect = "Shop_SkillMovie.png",.IsValue = true }, GetTransform(), float4(157.0f, 100.0f, 0.0f) * GameEngineActor::ScreenRatio, float4(-160.0f, 0.0f, 0.0f) * GameEngineActor::ScreenRatio);
-	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_1 * GameEngineActor::ScreenRatio, { ._Name = "SPLIT",._Price = "1200",._png = "SplitSkill.png",._BaseNone = "Shop_SkillMovieNone.png", ._BaseSelect = "Shop_SkillMovie.png" ,.IsValue = true }, GetTransform(), float4(157.0f, 100.0f, 0.0f)* GameEngineActor::ScreenRatio, float4(-160.0f, 0.0f, 0.0f) * GameEngineActor::ScreenRatio);
+	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_1 * GameEngineActor::ScreenRatio, { ._Name = "SPLIT",._Price = "1200",._png = "SplitSkill.png",._BaseNone = "Shop_SkillMovieNone.png", ._BaseSelect = "Shop_SkillMovie.png" ,.IsValue = true }, GetTransform(), float4(157.0f, 100.0f, 0.0f) * GameEngineActor::ScreenRatio, float4(-160.0f, 0.0f, 0.0f) * GameEngineActor::ScreenRatio);
 	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_2 * GameEngineActor::ScreenRatio, { ._Name = "RED QUEEN COMBO C",._Price = "5000",._png = "RedQuennCSkill.png",._BaseNone = "Shop_SkillMovieNone.png", ._BaseSelect = "Shop_SkillMovie.png",.IsValue = true }, GetTransform(), float4(157.0f, 100.0f, 0.0f) * GameEngineActor::ScreenRatio, float4(-160.0f, 0.0f, 0.0f) * GameEngineActor::ScreenRatio);
 	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_3 * GameEngineActor::ScreenRatio, { ._Name = "ROULETTE SPIN",._Price = "7000",._png = "RouletteSpinSkill.png",._BaseNone = "Shop_SkillMovieNone.png", ._BaseSelect = "Shop_SkillMovie.png" ,.IsValue = true }, GetTransform(), float4(157.0f, 100.0f, 0.0f) * GameEngineActor::ScreenRatio, float4(-160.0f, 0.0f, 0.0f) * GameEngineActor::ScreenRatio);
 	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_4 * GameEngineActor::ScreenRatio, { ._Name = "SHUFLE",._Price = "8000",._png = "ShuffleSkill.png",._BaseNone = "Shop_SkillMovieNone.png", ._BaseSelect = "Shop_SkillMovie.png",.IsValue = true }, GetTransform(), float4(157.0f, 100.0f, 0.0f) * GameEngineActor::ScreenRatio, float4(-160.0f, 0.0f, 0.0f) * GameEngineActor::ScreenRatio);
 	Shop_ItemButton::CreateItemUI(GetLevel(), Pos_5 * GameEngineActor::ScreenRatio, { ._Name = "CALIBUR",._Price = "25000",._png = "CaliburSkill.png", ._BaseNone = "Shop_SkillMovieNone.png", ._BaseSelect = "Shop_SkillMovie.png",.IsValue = true }, GetTransform(), float4(157.0f, 100.0f, 0.0f) * GameEngineActor::ScreenRatio, float4(-160.0f, 0.0f, 0.0f) * GameEngineActor::ScreenRatio);
-
 	ExplanePtr = GetLevel()->CreateActor<Shop_ExplaneUI>();
 	ExplanePtr->GetTransform()->SetParent(GetTransform());
 	ExplanePtr->GetTransform()->SetWorldPosition({ 0.0f,0.0f,0.0f });
@@ -63,7 +66,6 @@ void Shop_NeroSkillUI::Update(float _Delta)
 	ActivSkill();
 	LerpItem(_Delta);
 	SetExText();
-
 
 }
 
@@ -124,7 +126,6 @@ void Shop_NeroSkillUI::LerpItem(float _Delta)
 
 void Shop_NeroSkillUI::SetIndex()
 {
-	
 	RedQueenButton->SetUIText("RED QUEEN");
 	if (IsValue == false && true == GameEngineInput::IsUp("UI_UP"))
 	{
@@ -220,54 +221,78 @@ void Shop_NeroSkillUI::ActivSkill()
 {
 	if (Index == 0)
 	{
-		if (IsStreak == false && GameEngineInput::IsUp("UI_Enter") == true)
+		if (IsStreak == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect ==true)
 		{
 			IsStreak = true;
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
+		}
+		else if (IsStreak == true)
+		{
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 	}
 	else if (Index == 1)
 	{
-		if (IsSplit == false && GameEngineInput::IsUp("UI_Enter") == true)
+		if (IsSplit == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true)
 		{
 			IsSplit = true;
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
+		}
+		else if (IsSplit == true)
+		{
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 	}
 	else if (Index == 2)
 	{
-		if (IsRedqueen == false && GameEngineInput::IsUp("UI_Enter") == true)
+		if (IsRedqueen == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true)
 		{
 			IsRedqueen = true;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
 		}
+		else if (IsRedqueen == true)
+		{
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
+		}
 	}
 	else if (Index == 3)
 	{
-		if (IsRouletteSpin == false && GameEngineInput::IsUp("UI_Enter") == true)
+		if (IsRouletteSpin == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true)
 		{
 			IsRouletteSpin = true;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
 		}
+		else if (IsRouletteSpin == true)
+		{
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
+		}
 	}
 	else if (Index == 4)
 	{
-		if (IsShufle == false && GameEngineInput::IsUp("UI_Enter") == true)
+		if (IsShufle == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true)
 		{
 			IsShufle = true;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
 		}
+		else if (IsShufle == true)
+		{
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
+		}
 	}
 	else if (Index == 5)
 	{
-		if (IsCalibur == false && GameEngineInput::IsUp("UI_Enter") == true)
+		if (IsCalibur == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true)
 		{
 			IsCalibur = true;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
+		}
+		else if (IsCalibur == true)
+		{
+			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 	}
 }

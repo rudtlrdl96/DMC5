@@ -89,6 +89,8 @@ void Nero_ShopUI::Update(float _Delta)
 			SkillButton->SetSelectValue(true);
 			SkillScreen->GetExPlane()->On();
 			ArmScreen->GetExPlane()->Off();
+			ArmScreen->IsNeroArm(false);
+			SkillScreen->IsNeroSkill(true);
 		}
 		else if (TitleIndex == 1)
 		{
@@ -97,6 +99,9 @@ void Nero_ShopUI::Update(float _Delta)
 			ArmScreen->GetExPlane()->On();
 			SkillButton->SetSelectValue(false);
 			DBButton->SetSelectValue(true);
+			ArmScreen->IsNeroArm(true);
+			SkillScreen->IsNeroSkill(false);
+
 		}
 		if (true == GameEngineInput::IsUp("UI_Tab") && IsSwichValue == true)
 		{
