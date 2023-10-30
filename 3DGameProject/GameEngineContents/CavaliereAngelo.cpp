@@ -2307,6 +2307,7 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Dengeki_Reload_Start,
 	.Start = [=] {
+	BasePlayerActor::CameraLookBoss(PhysXCapsule->GetWorldPosition());
 	EnemyRenderer->ChangeAnimation("em5501_dengeki_reload_start");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2361,6 +2362,7 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Collider_To_Dengeki,
 	.Start = [=] {
+	BasePlayerActor::CameraLookBoss(PhysXCapsule->GetWorldPosition());
 	EnemyRenderer->ChangeAnimation("em5501_Attack_collider_to_Dengeki");
 	},
 	.Update = [=](float _DeltaTime) {
