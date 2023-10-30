@@ -74,12 +74,12 @@ void TestStageLevel::Start()
 
 	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
 
-	//{
-	//	std::shared_ptr<MotionBlurEffect> Blur = GetCamera(0)->GetCamTarget()->CreateEffect<MotionBlurEffect>();
-	//	Blur->SetCamPosTarget(GetMainCamera()->GetCamPosTarget());
-	//	Blur->SetCamMaskTarget(GetMainCamera()->GetCamMaskTarget());
-	//	Blur->SetCam(GetMainCamera());
-	//}
+	{
+		std::shared_ptr<MotionBlurEffect> Blur = GetCamera(0)->GetCamTarget()->CreateEffect<MotionBlurEffect>();
+		Blur->SetCamPosTarget(GetMainCamera()->GetCamPosTarget());
+		Blur->SetCamMaskTarget(GetMainCamera()->GetCamMaskTarget());
+		Blur->SetCam(GetMainCamera());
+	}
 	
 	std::shared_ptr<FadeEffect> Fade = GetLastTarget()->CreateEffect<FadeEffect>();
 		
