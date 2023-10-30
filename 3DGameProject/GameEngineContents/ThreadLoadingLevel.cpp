@@ -117,8 +117,14 @@ void ThreadLoadingLevel::Start()
 		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\l11_floor.fbx");
 		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\l11_SkyBox.fbx");
 		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\l11_wall.fbx");
+
 		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\sm0028_storewhite01.fbx");
 		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\sm0038_storewood01.fbx");
+		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\sm0536_toplight.fbx");
+		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\sm0680_floatingisland01.fbx");
+		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\sm0680_floatingisland01_01.fbx");
+		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\sm0680_floatingisland01_02.fbx");
+		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\sm0026_streetlight01.fbx");
 
 		PushAllLoadCallBack<Location11_Level, GameEngineFBXMesh>("Mesh\\UIMesh\\ResultMesh", { ".fbx" });
 		PushAllLoadCallBack<Location11_Level, GameEngineTexture>("Texture\\UI\\ResultLevel", { ".tga", ".png"});
