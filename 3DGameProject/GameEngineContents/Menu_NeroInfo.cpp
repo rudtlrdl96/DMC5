@@ -19,6 +19,7 @@ void Menu_NeroInfo::Start()
 {
 	WindowRatio = GameEngineActor::ScreenRatio;
 	NeroInfoPtr = GetLevel()->CreateActor<InfoUIRender>();
+	NeroInfoPtr->GetTransform()->SetParent(GetTransform());
 	NeroInfoPtr->GetRender()->SetTexture("NeroLogo.png");
 	NeroInfoPtr->GetRender_Bar()->SetTexture("Menu_InfoBar.png");
 	NeroInfoPtr->GetRender_Base()->SetTexture("Menu_difficultyBase.png");
@@ -26,6 +27,8 @@ void Menu_NeroInfo::Start()
 	NeroInfoPtr->SetUIText({ ._Text = "PLAYER",._SeletText = "NERO",._ExplaneText = "GAME MODE",._ExplaneText2 = "DEVIL HUNTER" });
 	
 	NeroInvenPtr = GetLevel()->CreateActor<InfoUIRender>();
+	NeroInvenPtr->GetTransform()->SetParent(GetTransform());
+
 	NeroInvenPtr->GetTransform()->SetLocalPosition(WindowRatio* InvenPos);
 	NeroInvenPtr->GetRender()->SetTexture("NullTexture.png");
 	NeroInvenPtr->GetRender_Bar()->SetTexture("Menu_InfoBar.png");
@@ -35,6 +38,8 @@ void Menu_NeroInfo::Start()
 	NeroInvenPtr->SetUIText({ ._Text = "EQUIPMENT",._SeletText = "",._ExplaneText = "",._ExplaneText2 = "" });
 
 	Arrow1Ptr = GetLevel()->CreateActor<InvenUIButton>();
+	Arrow1Ptr->GetTransform()->SetParent(GetTransform());
+
 	Arrow1Ptr->GetRender()->SetTexture("Menu_Arrow.png");
 	Arrow1Ptr->GetRender()->GetTransform()->SetLocalScale(ArrowScale);
 	Arrow1Ptr->SetLerpValue(float4(530.f, -140.f, 0.0f)* WindowRatio, float4(520.f, -140.f, 0.0f)* WindowRatio);
@@ -57,6 +62,7 @@ void Menu_NeroInfo::Start()
 		
 		});
 	Arrow2Ptr = GetLevel()->CreateActor<InvenUIButton>();
+	Arrow2Ptr->GetTransform()->SetParent(GetTransform());
 	Arrow2Ptr->GetRender()->SetTexture("Menu_Arrow.png");
 	Arrow2Ptr->GetRender()->GetTransform()->SetLocalScale(float4{ -13.0f,16.0f,0.0f }*WindowRatio);
 	Arrow2Ptr->SetLerpValue(float4(685.f, -140.f, 0.0f) * WindowRatio, float4(695.f, -140.f, 0.0f) * WindowRatio);
@@ -86,6 +92,7 @@ void Menu_NeroInfo::Start()
 	FontRender->SetColor(float4(0.305f, 0.96f, 0.94f, 1.0f));
 	FontRender->GetTransform()->SetLocalPosition(float4(610.f, -125.f, 0.0f) * WindowRatio);
 	AcNeroInven = GetLevel()->CreateActor<Nero_Inven>();
+	AcNeroInven->GetTransform()->SetParent(GetTransform());
 	AcNeroInven->GetInvenVec()[0]->GetTransform()->SetLocalPosition(CenterPos * WindowRatio);
 	AcNeroInven->GetInvenVec()[0]->On();
 	AcNeroInven->GetInvenVec()[1]->Off();

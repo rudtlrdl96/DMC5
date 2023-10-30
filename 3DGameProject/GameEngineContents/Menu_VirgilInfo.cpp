@@ -15,6 +15,7 @@ Menu_VirgilInfo::~Menu_VirgilInfo()
 void Menu_VirgilInfo::Start()
 {
 	VergilInfoPtr = GetLevel()->CreateActor<InfoUIRender>();
+	VergilInfoPtr->GetTransform()->SetParent(GetTransform());
 	VergilInfoPtr->GetRender()->SetTexture("VirgilLogo.png");
 	VergilInfoPtr->GetRender_Bar()->SetTexture("Menu_InfoBar.png");
 	VergilInfoPtr->GetRender_Base()->SetTexture("Menu_difficultyBase.png");
