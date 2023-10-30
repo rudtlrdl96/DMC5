@@ -586,14 +586,16 @@ void GameEngineLevel::ActorRelease()
 void GameEngineLevel::LightRelease()
 {
 	std::vector<std::shared_ptr<GameEngineLight>>::iterator LoopIter = AllLight.begin();
+	std::vector<std::shared_ptr<GameEngineLight>>::iterator EndIter = AllLight.end();
 
-	while (LoopIter != AllLight.end())
+	while (LoopIter != EndIter)
 	{
 		std::shared_ptr<GameEngineLight> LightPtr = *LoopIter;
 
 		if (true == LightPtr->IsDeath())
 		{
 			LoopIter = AllLight.erase(LoopIter);
+			EndIter = AllLight.end();
 		}
 		else
 		{
