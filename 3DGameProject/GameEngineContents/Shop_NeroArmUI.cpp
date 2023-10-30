@@ -137,6 +137,7 @@ void Shop_NeroArmUI::BuyBreaker()
 			if (nullptr != CallBack_AddBreaker)
 			{
 				CallBack_AddBreaker(DevilBreaker::Overture);
+				Nero_InvenToryUI::IsAddInvenItem(true);
 			}
 			else
 			{ 
@@ -156,6 +157,7 @@ void Shop_NeroArmUI::BuyBreaker()
 			if (nullptr != CallBack_AddBreaker)
 			{
 				CallBack_AddBreaker(DevilBreaker::Gerbera);
+				Nero_InvenToryUI::IsAddInvenItem(true);
 			}
 			else
 			{
@@ -174,6 +176,7 @@ void Shop_NeroArmUI::BuyBreaker()
 			if (nullptr != CallBack_AddBreaker)
 			{
 				CallBack_AddBreaker(DevilBreaker::BusterArm);
+				Nero_InvenToryUI::IsAddInvenItem(true);
 			}
 			else
 			{
