@@ -110,38 +110,58 @@ void NeroLoading::TextStart()
 	FirstLine = CreateComponent<GameEngineFontRenderer>(5);
 	FirstLine->SetFont("나눔바른고딕 옛한글");
 	FirstLine->SetFontFlag(FW1_LEFT);
-	FirstLine->SetScale(24);
+	FirstLine->SetScale(20);
 	FirstLine->SetColor(float4(0.48f,0.556f,0.623f));
 	FirstLine->GetTransform()->SetLocalPosition({ 141.0f,80.f,0.0f });
 
 	SecoundLine = CreateComponent<GameEngineFontRenderer>(5);
 	SecoundLine->SetFont("나눔바른고딕 옛한글");
 	SecoundLine->SetFontFlag(FW1_LEFT);
-	SecoundLine->SetScale(24);
+	SecoundLine->SetScale(20);
 	SecoundLine->SetColor(float4(0.48f, 0.556f, 0.623f));
 	SecoundLine->GetTransform()->SetLocalPosition({ 141.0f,47.5f,0.0f });
+
 	ThirdLine = CreateComponent<GameEngineFontRenderer>(5);
 	ThirdLine->SetFont("나눔바른고딕 옛한글");
 	ThirdLine->SetFontFlag(FW1_LEFT);
-	ThirdLine->SetScale(24);
+	ThirdLine->SetScale(20);
 	ThirdLine->SetColor(float4(0.48f, 0.556f, 0.623f));
-	ThirdLine->GetTransform()->SetLocalPosition({ 141.0f,15.0f,0.0f });
+	ThirdLine->GetTransform()->SetLocalPosition({ 141.0f,14.0f,0.0f });
 
+	ForthLine = CreateComponent<GameEngineFontRenderer>(5);
+	ForthLine->SetFont("나눔바른고딕 옛한글");
+	ForthLine->SetFontFlag(FW1_LEFT);
+	ForthLine->SetScale(20);
+	ForthLine->SetColor(float4(0.48f, 0.556f, 0.623f));
+	ForthLine->GetTransform()->SetLocalPosition({ 141.0f,-19.0f,0.0f });
+
+	FifthLine = CreateComponent<GameEngineFontRenderer>(5);
+	FifthLine->SetFont("나눔바른고딕 옛한글");
+	FifthLine->SetFontFlag(FW1_LEFT);
+	FifthLine->SetScale(20);
+	FifthLine->SetColor(float4(0.48f, 0.556f, 0.623f));
+	FifthLine->GetTransform()->SetLocalPosition({ 141.0f,-52.0f,0.0f });
+	
+		
 }
 
 void NeroLoading::TextSetting()
 {
 	if (Index == 0)
 	{
-		FirstLine->SetText("설명란에 무슨말을 넣을까");
-		SecoundLine->SetText("그냥 인게임 처럼 할까");
-		ThirdLine->SetText("흠...구조가 이게 맞나");
+		FirstLine->SetText("게임 내 튜토리얼 팁은 일지 중지 메뉴에서");
+		SecoundLine->SetText("언제든지 볼 수 있습니다. 혹시 놓쳤을지");
+		ThirdLine->SetText("모르는 게임 정보를 확인해 보십시오!");
+		ForthLine->SetText("");
+		FifthLine->SetText("");
 	}
 	else
 	{
-		FirstLine->SetText("1주일 남았다");
-		SecoundLine->SetText("타닥..타닥..타닥");
-		ThirdLine->SetText("이겨야만 한다..");
+		FirstLine->SetText("콤보를 깔끔하게 연결하고 싶다면 자동");
+		SecoundLine->SetText("지원을 사용해 보십시오. 같은 공격 명령을");
+		ThirdLine->SetText("사용하여 쉽게 스타일리시한 기술을 펼칠 수");
+		ForthLine->SetText("있습니다. 자동 지원은 게임 플레이 중에");
+		FifthLine->SetText("ALT를 홀드해 켜고 끌 수 있습니다.");
 	}
 }
 

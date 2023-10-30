@@ -35,6 +35,9 @@ private:
 	std::shared_ptr<class GameEngineFontRenderer> FirstLine = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> SecoundLine = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> ThirdLine = nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> ForthLine = nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> FifthLine = nullptr;
+
 	std::shared_ptr<class FXSystem> LodingEffect = nullptr;
 	float4 Screenscale = { 1700.0f,930.0f,0.0f };
 	int Index = 0;
