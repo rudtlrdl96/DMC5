@@ -14,6 +14,7 @@ public:
 	Location19_Level& operator=(const Location19_Level& _Other) = delete;
 	Location19_Level& operator=(Location19_Level&& _Other) noexcept = delete;
 
+	void CreatePotal();
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -23,6 +24,5 @@ protected:
 private:
 	void InitPool();
 	void CreateEventZone();
-
 };
 

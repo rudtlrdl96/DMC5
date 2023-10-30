@@ -128,3 +128,9 @@ void Location19_Level::CreateEventZone()
 	NewEvent->GetTransform()->SetWorldPosition({ 0, 1000, 0});
 	NewEvent->GetTransform()->SetWorldScale({ 8000, 3000, 8000 });
 }
+
+void Location19_Level::CreatePotal()
+{
+	// 모든 적 처치시 실행됨
+	int a = 0;
+}

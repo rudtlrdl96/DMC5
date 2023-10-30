@@ -9,12 +9,12 @@
 #include "Enemy_HellAntenora.h"
 #include "Enemy_ScudoAngelo.h"
 #include "Enemy_ProtoAngelo.h"
-
-Location19_EnemySpawner::Location19_EnemySpawner() 
+#include "Location19_Level.h"
+Location19_EnemySpawner::Location19_EnemySpawner()
 {
 }
 
-Location19_EnemySpawner::~Location19_EnemySpawner() 
+Location19_EnemySpawner::~Location19_EnemySpawner()
 {
 }
 
@@ -41,10 +41,20 @@ void Location19_EnemySpawner::Start()
 				{
 				});
 
+			Location19_Level* Level = dynamic_cast<Location19_Level*>(GetLevel());
+			if (nullptr != Level)
+			{
+				Level->CreatePotal();
+			}
 		});
 	if (true == NetworkManager::IsServer())
 	{
 		BattleEndEvent = std::bind(NetworkManager::ExcuteNetworkEvent, Net_EventType::Location19_End);
+		Location19_Level* Level = dynamic_cast<Location19_Level*>(GetLevel());
+		if (nullptr != Level)
+		{
+			Level->CreatePotal();
+		}
 	}
 
 	Event = [this]()
@@ -84,28 +94,36 @@ void Location19_EnemySpawner::Start()
 		{
 			if (false == NetworkManager::IsClient())
 			{
-				MonsterAliveCount = 4;
+				MonsterAliveCount = 5;
 				GameEngineLevel* Level = GetLevel();
 				std::vector<float4> EnemyPos =
 				{
-					{ 2984 , 86, -10050 }, { 4268 , 86, -10000 }, { 3658 , 86, -7647 }
+					{ 1330 , 81, 483 }, { 1310 , 71, -194 }, { 943 , 60, 481 }, { 1616 , 106, 702 }, { 1880 , 77, -158 }
 				};
-				std::vector<float> EnemyRot = { 28, -10, -174 };
+				std::vector<float> EnemyRot = { -115, -91, -118, -118, -87 };
 
-				//for (size_t i = 0; i < 3; ++i)
-				//{
-				//	Level->TimeEvent.AddEvent(i * 0.3f, [=](GameEngineTimeEvent::TimeEvent& Event, GameEngineTimeEvent* Manager)
-				//		{
-				//			std::shared_ptr<Enemy_HellCaina> Enemy = Poolable<Enemy_HellCaina>::PopFromPool(Level, static_cast<int>(ActorOrder::Enemy));
-				//			Enemy->GetPhysXComponent()->SetWorldPosition(EnemyPos[i]);
-				//			Enemy->GetPhysXComponent()->SetWorldRotation(float4::UP * EnemyRot[i]);
-				//			Enemy->GetTransform()->SetWorldPosition(EnemyPos[i]);
-				//			Enemy->GetTransform()->SetWorldRotation(float4::UP * EnemyRot[i]);
-				//			Enemy->GetPhysXComponent()->SetLinearVelocityZero();
-				//			Enemy->GetPhysXComponent()->Off();
-				//			Enemy->PushDeathCallback(std::bind(&EnemySpawner::DestroyMonster, this));
-				//		});
-				//}
+				for (size_t i = 0; i < 5; ++i)
+				{
+					Level->TimeEvent.AddEvent(i * 0.3f, [=](GameEngineTimeEvent::TimeEvent& Event, GameEngineTimeEvent* Manager)
+						{
+							std::shared_ptr<BaseEnemyActor> Enemy;
+							if (i == 0)
+							{
+								Enemy = Poolable<Enemy_ProtoAngelo>::PopFromPool(Level, static_cast<int>(ActorOrder::Enemy));
+							}
+							else
+							{
+								Enemy = Poolable<Enemy_ScudoAngelo>::PopFromPool(Level, static_cast<int>(ActorOrder::Enemy));
+							}
+							Enemy->GetPhysXComponent()->SetWorldPosition(EnemyPos[i]);
+							Enemy->GetPhysXComponent()->SetWorldRotation(float4::UP * EnemyRot[i]);
+							Enemy->GetTransform()->SetWorldPosition(EnemyPos[i]);
+							Enemy->GetTransform()->SetWorldRotation(float4::UP * EnemyRot[i]);
+							Enemy->GetPhysXComponent()->SetLinearVelocityZero();
+							Enemy->GetPhysXComponent()->Off();
+							Enemy->PushDeathCallback(std::bind(&EnemySpawner::DestroyMonster, this));
+						});
+				}
 			}
 		};
 }
