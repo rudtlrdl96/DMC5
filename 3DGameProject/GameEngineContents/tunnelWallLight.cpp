@@ -23,7 +23,6 @@ void tunnelWallLight::Start()
 	PointLight->SetLightPower(1.f);
 	PointLight->SetLightColor({ 0.95f, 0.85f, 0.6f });
 	PointLight->DynamicShadowOn();
-	PointLight->ShadowOn();
 	PointLight->IsDebugDraw = true;
 
 	StaticFieldMapObject::Start();
