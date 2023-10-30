@@ -447,6 +447,7 @@ void CavaliereAngelo::Update(float _DeltaTime)
 		else
 		{
 			ParryCheck_Client();
+			RecognizeCollisionCheck(_DeltaTime);
 			Update_NetworkTrans(_DeltaTime);
 			DamageCollisionCheck_Client(_DeltaTime);
 			EnemyFSM.Update(_DeltaTime);
