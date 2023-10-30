@@ -25,6 +25,7 @@ void LevelChangeZone::ChangeLevel()
 void LevelChangeZone::Start()
 {
 	EventZone::Start();
+	Option = EventZoneOption::OnePlayer;
 	Event = [this]()
 		{
 			LevelChangeZone::ChangeLevel();

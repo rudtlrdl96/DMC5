@@ -57,11 +57,25 @@ void EventZone::Update(float _DeltaTime)
 
 	TriggerZone->CollisionAll(CollisionOrder::Player, Temp, ColType::OBBBOX3D, ColType::OBBBOX3D);
 
-	if (Temp.size() == PlayerCount)
+	if (Option == EventZoneOption::AllPlayer)
 	{
-		Event();
-		IsEventStart = true;
+		if (Temp.size() == PlayerCount)
+		{
+			Event();
+			IsEventStart = true;
+		}
 	}
+
+	if (Option == EventZoneOption::OnePlayer)
+	{
+		if (Temp.size() >= 1)
+		{
+			Event();
+			IsEventStart = true;
+		}
+	}
+	
+
 }
 
 
