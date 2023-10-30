@@ -28,6 +28,7 @@ private:
 	std::shared_ptr<class Shop_NeroSkillUI> SkillScreen = nullptr;
 	std::shared_ptr<class Shop_NeroArmUI> ArmScreen = nullptr;
 	std::shared_ptr<class Shop_EnterWindow> EnterWindow = nullptr;
+	std::shared_ptr<class RedOrbUI> RedOrbUIPtr = nullptr;
 
 	float LerpTime = 0.0f;
 	int TitleIndex = 0;

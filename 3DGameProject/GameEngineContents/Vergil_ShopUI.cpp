@@ -6,6 +6,7 @@
 #include "Shop_VergilYamatoUI.h"
 #include "Shop_VergilMirgeUI.h"
 #include "Shop_EnterWindow.h"
+#include "RedOrbUI.h"
 #include <GameEngineCore/GameEngineLevel.h>
 #include <GameEngineCore/GameEngineFontRenderer.h>
 Vergil_ShopUI* Vergil_ShopUI::Vergil_ShopBar = nullptr;
@@ -72,7 +73,8 @@ void Vergil_ShopUI::Start()
 	MirgeSkill = GetLevel()->CreateActor<Shop_VergilMirgeUI>();
 	MirgeSkill->GetTransform()->SetParent(GetTransform());
 	MirgeSkill->Off();
-
+	RedOrbUIPtr = GetLevel()->CreateActor<RedOrbUI>();
+	RedOrbUIPtr->GetTransform()->SetParent(GetTransform());
 }
 
 
@@ -142,6 +144,7 @@ void Vergil_ShopUI::ShopOff()
 	MirgeButton->Off();
 	YamatoSkill->Off();
 	MirgeSkill->Off();
+	RedOrbUIPtr->Off();
 }
 void Vergil_ShopUI::ShopOn()
 {
@@ -150,6 +153,7 @@ void Vergil_ShopUI::ShopOn()
 	MirgeButton->On();
 	YamatoSkill->On();
 	MirgeSkill->On();
+	RedOrbUIPtr->On();
 }
 void Vergil_ShopUI::SetIndexCount()
 {

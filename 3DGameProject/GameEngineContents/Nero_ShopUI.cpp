@@ -6,6 +6,7 @@
 #include "Shop_ItemButton.h"
 #include "Shop_NeroArmUI.h"
 #include "Shop_EnterWindow.h"
+#include "RedOrbUI.h"
 #include <GameEngineCore/GameEngineLevel.h>
 Nero_ShopUI::Nero_ShopUI()
 {
@@ -25,6 +26,7 @@ void Nero_ShopUI::ShopOff()
 	SkillButton->Off();
 	DBButton->Off();
 	SkillScreen->Off();
+	RedOrbUIPtr->Off();
 	ArmScreen->Off();
 }
 
@@ -32,6 +34,7 @@ void Nero_ShopUI::ShopOn()
 {
 	SkillButton->On();
 	DBButton->On();
+	RedOrbUIPtr->On();
 	ArmScreen->UpdateArm();
 	//SkillScreen->On();
 	//ArmScreen->On();
@@ -73,6 +76,8 @@ void Nero_ShopUI::Start()
 	ArmScreen = GetLevel()->CreateActor<Shop_NeroArmUI>();
 	ArmScreen->GetTransform()->SetLocalPosition(ItemDefaulPos * GameEngineActor::ScreenRatio);
 	ArmScreen->GetTransform()->SetParent(GetTransform());
+	RedOrbUIPtr = GetLevel()->CreateActor<RedOrbUI>();
+	RedOrbUIPtr->GetTransform()->SetParent(GetTransform());
 }
 
 

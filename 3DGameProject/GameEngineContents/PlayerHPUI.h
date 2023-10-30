@@ -26,10 +26,7 @@ public:
 	}
 	void SetVergilUI();
 	void SetNeroUI();
-	static void AddRedOrb(int _Value)
-	{
-		RedOrbValue += _Value;
-	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -47,7 +44,7 @@ private:
 
 	std::shared_ptr<class GameEngineUIRenderer> RedOrbRender= nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> RedOrbFont = nullptr;
-
+	std::shared_ptr<class RedOrbUI> RedOrbUIPtr = nullptr;
 	std::shared_ptr<class UI_HPGaege> UI_HPGaegeBar = nullptr;
 	std::shared_ptr<class UI_DTGauge> UI_DTGaugeBar = nullptr;
 	std::shared_ptr<class UI_BulletGauge> UI_BulletGaugeBar = nullptr;

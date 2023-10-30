@@ -576,6 +576,9 @@
     <ClInclude Include="Location19_EnemySpawner.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\EnemySpawner</Filter>
     </ClInclude>
+    <ClInclude Include="RedOrbUI.h">
+      <Filter>UI\UI_Actor\PlayUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -1146,6 +1149,9 @@
     </ClCompile>
     <ClCompile Include="Location19_EnemySpawner.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\EnemySpawner</Filter>
+    </ClCompile>
+    <ClCompile Include="RedOrbUI.cpp">
+      <Filter>UI\UI_Actor\PlayUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -37,6 +37,7 @@ private:
 	std::shared_ptr<class Shop_VergilYamatoUI> YamatoSkill = nullptr;
 	std::shared_ptr<class Shop_VergilMirgeUI> MirgeSkill = nullptr;
 	std::shared_ptr<class Shop_EnterWindow> EnterWindow = nullptr;
+	std::shared_ptr<class RedOrbUI> RedOrbUIPtr = nullptr;
 
 	float LerpTime = 0.0f;
 	int ButtonIndex = 0;

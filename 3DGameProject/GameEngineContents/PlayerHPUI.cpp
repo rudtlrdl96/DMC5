@@ -8,9 +8,9 @@
 #include "UI_HPGaege.h"
 #include "UI_DTGauge.h"
 #include "UI_BulletGauge.h"
+#include "RedOrbUI.h"
 #include "UIEffectRenderer.h"
 #include "PlayerHPUI.h"
-int PlayerHPUI::RedOrbValue = 0;
 PlayerHPUI::PlayerHPUI() 
 {
 }
@@ -103,23 +103,13 @@ void PlayerHPUI::Start()
 //	NeroUI_HPGlass= UIFBXActorBase::CreateUIFBX(NeroUI_HPGlass, { -535.0f,273.0f,172.0f }, { 0.6f,0.6f,0.6f }, { -90.0f,0.0f,0.0f }, "Nero_HPGlass.FBX","FBX_ALPHA");
 
 
-	RedOrbRender = CreateComponent<GameEngineUIRenderer>(0);
-	RedOrbRender->SetTexture("RedOrb.png");
-	RedOrbRender->GetTransform()->SetLocalScale({ 43.0f,60.0f,0.0f });
-	RedOrbRender->GetTransform()->SetLocalPosition({ 550.0f,380.0f,40.0f });
-
-	RedOrbFont = CreateComponent<GameEngineFontRenderer>();
-	RedOrbFont->SetFont("DMC5Font");
-	RedOrbFont->SetScale(50.0f);
-	RedOrbFont->SetColor(float4::WHITE);
-	RedOrbFont->SetFontFlag(FW1_TEXT_FLAG::FW1_LEFT);
-	RedOrbFont->GetTransform()->SetLocalPosition({ 582.0f,407.0f,40.0f });
 
 	UI_HPGaegeBar = GetLevel()->CreateActor<UI_HPGaege>();
 	UI_HPGaegeBar->GetTransform()->SetParent(GetTransform());
 	UI_DTGaugeBar = GetLevel()->CreateActor<UI_DTGauge>();
 	UI_DTGaugeBar->GetTransform()->SetParent(GetTransform());
-
+	RedOrbUIPtr = GetLevel()->CreateActor<RedOrbUI>();
+	RedOrbUIPtr->GetTransform()->SetParent(GetTransform());
 
 }
 
@@ -129,11 +119,7 @@ void PlayerHPUI::Update(float _DeltaTime)
 	{
 		SetExceed();
 	}
-	RedOrbFont->SetText(std::to_string(RedOrbValue));
-	if (GameEngineInput::IsUp("UI_OrbCheat"))
-	{
-		RedOrbValue += 1000;
-	}
+
 }
 
 void PlayerHPUI::CreatFireEffect()

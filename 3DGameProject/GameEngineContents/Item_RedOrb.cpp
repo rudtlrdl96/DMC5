@@ -5,6 +5,7 @@
 #include "EffectRenderer.h"
 #include "FXSystem.h"
 #include "PlayerHPUI.h"
+#include "RedOrbUI.h"
 Item_RedOrb::Item_RedOrb()
 {
 }
@@ -208,7 +209,7 @@ void Item_RedOrb::Start()
 	{
 		FBXMesh->Off();
 		Effect->PlayFX("RedOrb_Disappear.effect");
-		PlayerHPUI::AddRedOrb(100);
+		RedOrbUI::AddRedOrb(100);
 		ResetLiveTime();
 	},
 	.Update = [=](float _DeltaTime)
