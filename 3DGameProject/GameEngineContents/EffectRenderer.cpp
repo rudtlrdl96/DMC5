@@ -149,13 +149,25 @@ void EffectRenderer::RectInit(const std::string_view& _MaterialName)
 	CustomOptionSetting();
 }
 
+void EffectRenderer::BoxInit(const std::string_view& _MaterialName)
+{
+	GetTransform()->SetLocalScale({ 100, 100, 100 });
+	Unit.resize(1);
+	Unit[0].resize(1);
+
+	Unit[0][0] = CreateRenderUnit();
+	Unit[0][0]->SetMesh("Box");
+	Unit[0][0]->SetMaterial(_MaterialName);
+	CustomOptionSetting();
+}
+
 void EffectRenderer::SphereInit(const std::string_view& _MaterialName)
 {
 	Unit.resize(1);
 	Unit[0].resize(1);
 
 	Unit[0][0] = CreateRenderUnit();
-	Unit[0][0]->SetMesh("DebugSphere");
+	Unit[0][0]->SetMesh("Sphere");
 	Unit[0][0]->SetMaterial(_MaterialName);
 	CustomOptionSetting();
 }

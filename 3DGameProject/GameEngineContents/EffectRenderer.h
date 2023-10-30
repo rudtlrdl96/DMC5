@@ -96,6 +96,7 @@ public:
 
 	// Engine Rect 매쉬를 기준으로 초기화 합니다.
 	void RectInit(const std::string_view& _MaterialName);
+	void BoxInit(const std::string_view& _MaterialName);
 	void SphereInit(const std::string_view& _MaterialName);
 
 	// FBX 매쉬를 기준으로 초기화 합니다.

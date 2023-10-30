@@ -131,37 +131,41 @@ void CavaliereAngelo::EnemyMeshLoad()
 		WeaponEffect->GetTransform()->SetParent(WeaponEffectPivot->GetTransform());
 		WeaponEffect->GetTransform()->SetLocalPosition({ -6.6f, -38.8f, -1.8f });
 		WeaponEffect->GetTransform()->SetLocalRotation({ 97.0f, 38.0f, 90.0f });
-		WeaponEffect->GetTransform()->SetLocalScale({ 1.3f, 1.3f, 1.05f });
+		WeaponEffect->GetTransform()->SetLocalScale({ 1.15f, 1.15f, 1.025f });
 
 		WeaponEffect->SetTexture("DiffuseTexture", "EngineBaseNormal.png");
 		WeaponEffect->EffectOption.MulColor = { 0.5, 0.2f, 0.7f, 0.2f};
 		WeaponEffect->SetBloomColor({ 2.0f, 0.8f, 2.8f });
 
-		WeaponEffect->SetDistortionTexture("", {0.1f, 0.1f});
+		//WeaponEffect->SetDistortionTexture("", {0.1f, 0.1f});
 
 	}
 
+	//{
+	//	WeaponElectric = CreateComponent<EffectRenderer>();
+	//	WeaponElectric->RectInit("Effect_2D");
+	//
+	//	WeaponElectric->GetTransform()->SetParent(WeaponEffectPivot->GetTransform());
+	//	WeaponElectric->GetTransform()->SetLocalPosition({ -24.5f, -212.0f, -26.0f });
+	//	WeaponElectric->GetTransform()->SetLocalRotation({ 4.0f, 0.0f, 0.0f });
+	//	WeaponElectric->GetTransform()->SetLocalScale({ 80.0f, 300.0f, 1.0f });
+	//	WeaponElectric->EffectOption.MulColor = { 0.5, 0.2f, 0.8f, 1.0f };
+	//
+	//	WeaponElectric->CreateAnimation({"Loop", "Effect_Electric_05.tga", size_t(-1), size_t(-1), 0.05f});
+	//	WeaponElectric->ChangeAnimation("Loop");
+	//}	
+	
 	{
 		WeaponElectric = CreateComponent<EffectRenderer>();
-		WeaponElectric->RectInit("Effect_2D");
+		WeaponElectric->SphereInit("Effect_2D");
 
 		WeaponElectric->GetTransform()->SetParent(WeaponEffectPivot->GetTransform());
-		WeaponElectric->GetTransform()->SetLocalPosition({ 0.0f, 100.0f, 0.0f });
-		WeaponElectric->GetTransform()->SetLocalRotation({ 0.0f, 0.0f, 0.0f });
-		WeaponElectric->GetTransform()->SetLocalScale({ 40.0f, 300.0f, 1.0f });
-		WeaponElectric->EffectOption.MulColor = { 0.5, 0.2f, 0.7f, 0.5f };
+		WeaponElectric->GetTransform()->SetLocalPosition({ -17.2f, -212.0f, -18.8f });
+		WeaponElectric->GetTransform()->SetLocalRotation({ 1.7f, -30.1f, -5.6f });
+		WeaponElectric->GetTransform()->SetLocalScale({ 35.0f, 360.0f, 35.0f });
+		WeaponElectric->EffectOption.MulColor = { 0.5, 0.0f, 1.0f, 1.0f };
 
-		// std::string_view AnimationName = "";
-		// std::string_view SpriteName = "";
-		// size_t Start = static_cast<size_t>(-1);
-		// size_t End = static_cast<size_t>(-1);
-		// float FrameInter = 0.1f;
-		// bool Loop = true;
-		// bool ScaleToTexture = false;
-		// std::vector<size_t> FrameIndex = std::vector<size_t>();
-		// std::vector<float> FrameTime = std::vector<float>();
-
-		WeaponElectric->CreateAnimation({"Loop", "Effect_Electric_05.tga", size_t(-1), size_t(-1), 0.05f});
+		WeaponElectric->CreateAnimation({"Loop", "Effect_Electric_05.tga", size_t(-1), size_t(-1), 0.045f});
 		WeaponElectric->ChangeAnimation("Loop");
 	}
 
