@@ -49,6 +49,7 @@ public:
 		DamageCount++;
 		ResetLiveTime();
 	}
+	
 	static RankUI* GetRankInst()
 	{
 		return MainRankUI;

@@ -535,7 +535,7 @@ void BasePlayerActor::ShopColCheck()
 		Shop->ApperCusterWindow(false);
 		ShopOn();
 		Controller->Off();
-		Camera->Off();
+		//Camera->Off();
 		Controller->ResetKey();
 		IsShopOn = true;
 		TimeEvent.AddEvent(0.02f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
