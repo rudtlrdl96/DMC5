@@ -2722,6 +2722,7 @@ void Enemy_HellAntenora::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Prone_Death,
 	.Start = [=] {
+	Sound.PlayVoice(9);
 	EnemyRenderer->ChangeAnimation("em0001_prone_death");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2731,6 +2732,7 @@ void Enemy_HellAntenora::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Death_Back,
 	.Start = [=] {
+	Sound.PlayVoice(9);
 	EnemyRenderer->ChangeAnimation("em0001_death_back");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2740,6 +2742,7 @@ void Enemy_HellAntenora::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Death_Front,
 	.Start = [=] {
+	Sound.PlayVoice(9);
 	EnemyRenderer->ChangeAnimation("em0001_death_front");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2766,6 +2769,7 @@ void Enemy_HellAntenora::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Buster_Finish,
 	.Start = [=] {
+	Sound.Play("Enemy_Damage_", 12);
 	EnemyRenderer->ChangeAnimation("em0001_slam_damage_landing");
 	},
 	.Update = [=](float _DeltaTime) {

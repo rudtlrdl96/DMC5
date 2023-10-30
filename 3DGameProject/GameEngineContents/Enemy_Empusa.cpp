@@ -2305,6 +2305,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Buster_Finish,
 	.Start = [=] {
+	Sound.Play("Enemy_Damage_", 12);
 	EnemyRenderer->ChangeAnimation("em0100_blown_back_landing");
 	},
 	.Update = [=](float _DeltaTime) {

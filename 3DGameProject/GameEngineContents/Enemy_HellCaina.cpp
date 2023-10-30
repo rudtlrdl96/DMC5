@@ -2306,6 +2306,7 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	// em0000_Buster_Finish, ¹ö½ºÆ® È÷Æ® ¶¥¿¡ ¶³¾îÁü
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Buster_Finish,
 	.Start = [=] {
+	Sound.Play("Enemy_Damage_", 12);
 	EnemyRenderer->ChangeAnimation("em0000_Buster_Finish");
 	},
 	.Update = [=](float _DeltaTime) {

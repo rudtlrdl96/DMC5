@@ -212,7 +212,20 @@ void Enemy_ProtoAngelo::EnemyAnimationLoad()
 			GameEngineSound::Load(Files[i].GetFullPath());
 		}
 	}
-
+	if (nullptr == GameEngineSound::Find("Enemy_Damage_0.wav"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Sound");
+		NewDir.Move("SFX");
+		NewDir.Move("Enemy");
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".wav" });
+		for (size_t i = 0; i < Files.size(); i++)
+		{
+			GameEngineSound::Load(Files[i].GetFullPath());
+		}
+	}
 }
 
 void Enemy_ProtoAngelo::Start()
@@ -2207,6 +2220,7 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	// 앞으로 넘어진 상태에서 Death
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Prone_Death,
 	.Start = [=] {
+	Sound.PlayVoice(17);
 	EnemyRenderer->ChangeAnimation("em0601_Prone_Death");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2221,6 +2235,7 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	// 앞으로 쓰러지면서 죽음
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Death_Back,
 	.Start = [=] {
+	Sound.PlayVoice(17);
 	EnemyRenderer->ChangeAnimation("em0601_Death_Back");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2235,6 +2250,7 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	// 뒤로 쓰러지면서 죽음
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Death_Front,
 	.Start = [=] {
+	Sound.PlayVoice(17);
 	EnemyRenderer->ChangeAnimation("em0601_Death_Front");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2298,8 +2314,7 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Buster_Finish,
 	.Start = [=] {
 	MinusEnemyHP(500);
-	//Sound.Play("Enemy_Damage_", 12);
-	//Sound.PlayVoice(5);
+	Sound.Play("Enemy_Damage_", 12);
 	IsHeavyAttack = false;
 	IsAirAttack = false;
 	IsSlamAttack = false;

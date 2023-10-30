@@ -224,6 +224,20 @@ void Enemy_ScudoAngelo::EnemyAnimationLoad()
 		}
 	}
 
+	if (nullptr == GameEngineSound::Find("Enemy_Damage_0.wav"))
+	{
+		GameEngineDirectory NewDir;
+		NewDir.MoveParentToDirectory("ContentResources");
+		NewDir.Move("ContentResources");
+		NewDir.Move("Sound");
+		NewDir.Move("SFX");
+		NewDir.Move("Enemy");
+		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".wav" });
+		for (size_t i = 0; i < Files.size(); i++)
+		{
+			GameEngineSound::Load(Files[i].GetFullPath());
+		}
+	}
 }
 
 void Enemy_ScudoAngelo::Start()
@@ -2141,6 +2155,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	// 앞으로 넘어진 상태에서 Death
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Prone_Death,
 	.Start = [=] {
+	Sound.PlayVoiceRandom(10, 11);
 	EnemyRenderer->ChangeAnimation("em0600_Prone_Death");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2155,6 +2170,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	// 앞으로 쓰러지면서 죽음
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Death_Back,
 	.Start = [=] {
+	Sound.PlayVoiceRandom(10, 11);
 	EnemyRenderer->ChangeAnimation("em0600_Death_Back");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2169,6 +2185,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	// 뒤로 쓰러지면서 죽음
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Death_Front,
 	.Start = [=] {
+	Sound.PlayVoiceRandom(10, 11);
 	EnemyRenderer->ChangeAnimation("em0600_Death_Front");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2232,8 +2249,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Buster_Finish,
 	.Start = [=] {
 	MinusEnemyHP(500);
-	//Sound.Play("Enemy_Damage_", 12);
-	//Sound.PlayVoice(5);
+	Sound.Play("Enemy_Damage_", 12);
 	IsHeavyAttack = false;
 	IsAirAttack = false;
 	IsSlamAttack = false;
@@ -2601,6 +2617,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Prone_Death,
 	.Start = [=] {
+	Sound.PlayVoiceRandom(10, 11);
 	EnemyRenderer->ChangeAnimation("em0600_Prone_Death");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2610,6 +2627,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Death_Back,
 	.Start = [=] {
+	Sound.PlayVoiceRandom(10, 11);
 	EnemyRenderer->ChangeAnimation("em0600_Death_Back");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2619,6 +2637,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Death_Front,
 	.Start = [=] {
+	Sound.PlayVoiceRandom(10, 11);
 	EnemyRenderer->ChangeAnimation("em0600_Death_Front");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2645,6 +2664,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Buster_Finish,
 	.Start = [=] {
+	Sound.Play("Enemy_Damage_", 12);
 	EnemyRenderer->ChangeAnimation("em0600_Slam_Damage_Landing");
 	},
 	.Update = [=](float _DeltaTime) {
