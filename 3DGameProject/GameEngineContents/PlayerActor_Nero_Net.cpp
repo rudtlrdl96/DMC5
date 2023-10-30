@@ -1010,6 +1010,7 @@ void PlayerActor_Nero::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_Shoot,
 			.Start = [=] {
 				Sound.Play("BR_", 0);
+				Col_Attack->SetAttackData(DamageType::Light, 54);
 				EffectSystem->PlayFX("BR_Shoot.effect");
 				BlueRoseOn();
 				Renderer->ChangeAnimation("pl0000_BR_Shoot", true);
@@ -1024,6 +1025,7 @@ void PlayerActor_Nero::NetLoad()
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_BR_AirShoot,
 			.Start = [=] {
 				Sound.Play("BR_", 0);
+				Col_Attack->SetAttackData(DamageType::Light, 54);
 				EffectSystem->PlayFX("BR_Shoot.effect");
 				BlueRoseOn();
 				Renderer->ChangeAnimation("pl0000_BR_Air_Shoot", true);
