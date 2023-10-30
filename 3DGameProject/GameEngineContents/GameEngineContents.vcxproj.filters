@@ -561,6 +561,18 @@
     <ClInclude Include="FieldMapSpotLight.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
     </ClInclude>
+    <ClInclude Include="FloatingIsland.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L11</Filter>
+    </ClInclude>
+    <ClInclude Include="FloatingIsland01.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L11</Filter>
+    </ClInclude>
+    <ClInclude Include="FloatingIsland02.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L11</Filter>
+    </ClInclude>
+    <ClInclude Include="tunnelWallLight.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L11</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -1117,6 +1129,18 @@
     <ClCompile Include="FieldMapSpotLight.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
     </ClCompile>
+    <ClCompile Include="FloatingIsland.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L11</Filter>
+    </ClCompile>
+    <ClCompile Include="FloatingIsland01.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L11</Filter>
+    </ClCompile>
+    <ClCompile Include="FloatingIsland02.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L11</Filter>
+    </ClCompile>
+    <ClCompile Include="tunnelWallLight.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L11</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
@@ -1424,6 +1448,9 @@
     </Filter>
     <Filter Include="Actor\Stage\FieldMap\FieldMapObj\EventZone\LevelChange">
       <UniqueIdentifier>{4580a466-a5f7-47c4-a7fc-36acfb3fca8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19">
+      <UniqueIdentifier>{1a94f4c3-5471-41c3-8664-d9dba4457a45}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

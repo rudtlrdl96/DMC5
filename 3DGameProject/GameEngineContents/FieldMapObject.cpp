@@ -30,6 +30,10 @@
 #include "StoreWood01.h"
 #include "LevelChangeZone.h"
 #include "l02_03_StreetLine.h"
+#include "FloatingIsland.h"
+#include "FloatingIsland01.h"
+#include "FloatingIsland02.h"
+#include "tunnelWallLight.h"
 
 FieldMapObject::FieldMapObject()
 {
@@ -143,6 +147,19 @@ std::shared_ptr<FieldMapObject> FieldMapObject::CreateFieldMapObj(GameEngineLeve
 	case FieldMapObjType::l02_03_StreetLine:
 		Result = _Level->CreateActor<l02_03_StreetLine>();
 		break;
+	case FieldMapObjType::FloatingIsland:
+		Result = _Level->CreateActor<FloatingIsland>();
+		break;
+	case FieldMapObjType::FloatingIsland01:
+		Result = _Level->CreateActor<FloatingIsland01>();
+		break;
+	case FieldMapObjType::FloatingIsland02:
+		Result = _Level->CreateActor<FloatingIsland02>();
+		break;
+	case FieldMapObjType::tunnelWallLight:
+		Result = _Level->CreateActor<tunnelWallLight>();
+		break;
+
 	default:
 		MsgAssert("¹Ì±¸Çö");
 		break;

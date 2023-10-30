@@ -143,5 +143,9 @@ enum class FieldMapObjType
 	StoreWood01,
 	ToLocation11,
 	ToLocation19,
-	l02_03_StreetLine
+	l02_03_StreetLine,
+	FloatingIsland,
+	FloatingIsland01,
+	FloatingIsland02,
+	tunnelWallLight,
 };

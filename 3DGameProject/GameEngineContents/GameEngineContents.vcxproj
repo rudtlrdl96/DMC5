@@ -305,6 +305,18 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="FloatingIsland.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="FloatingIsland01.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="FloatingIsland02.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Fountain.h">
       <SubType>
       </SubType>
@@ -462,6 +474,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="ThreadLoadingLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="tunnelWallLight.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -969,6 +985,18 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="FloatingIsland.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="FloatingIsland01.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="FloatingIsland02.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Fountain.cpp">
       <SubType>
       </SubType>
@@ -1113,6 +1141,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="ThreadLoadingLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="tunnelWallLight.cpp">
       <SubType>
       </SubType>
     </ClCompile>

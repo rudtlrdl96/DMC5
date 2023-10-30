@@ -101,7 +101,7 @@ void Location11_Level::LevelChangeStart()
 	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(-33000, 5000, 0));
 	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 90.f, 45.f, 0.f });
 	GetDirectionalLight()->SetLightPower(1.0f);
-	GetDirectionalLight()->SetLightColor({ 0.5f,0.5,1.f });
+	GetDirectionalLight()->SetLightColor({ 0.75f,0.75,1.f });
 
 	StageBaseLevel::LevelChangeStart();
 	SetCamera({ 0, 0, 0 });
