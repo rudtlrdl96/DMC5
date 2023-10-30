@@ -29,9 +29,22 @@ protected:
 	void Start() override;
 	void Update(float _Delta) override;
 private:
+	void AniCreate();
+	void UpdateOrb(float _Delta);
 	std::shared_ptr<class GameEngineUIRenderer> RedOrbRender = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> RedOrbFont = nullptr;
-	static int RedOrbValue;
+	std::shared_ptr<class GameEngineUIRenderer> Num_Ani1 = nullptr;
+	std::shared_ptr<class GameEngineUIRenderer> Num_Ani2 = nullptr;
+	std::shared_ptr<class GameEngineUIRenderer> Num_Ani3 = nullptr;
+	std::shared_ptr<class GameEngineUIRenderer> Num_Ani4 = nullptr;
+	std::shared_ptr<class GameEngineUIRenderer> Num_Ani5 = nullptr;
+	std::shared_ptr<class GameEngineUIRenderer> Num_Ani6 = nullptr;
+	float4 Scale = { 43.0f,60.0f,0.0f };
+	float4 AniScale = { 33.0f,60.0f,0.0f };
 
+	static int RedOrbValue;
+	static bool IsRedOrbAni;
+	bool IsOff = false;
+	float AniTime = 0.0f;
 };
 

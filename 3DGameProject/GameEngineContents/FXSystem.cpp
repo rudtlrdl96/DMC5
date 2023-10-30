@@ -68,7 +68,8 @@ void FXSystem::EffectTextureLoad()
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Explosion_01.tga").GetFullPath(), 8, 8);
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Explosion_02.tga").GetFullPath(), 8, 8);
 		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_Electric_04.tga").GetFullPath(), 4, 1);
-
+		GameEngineSprite::LoadSheet(NewDir.GetPlusFileName("Effect_NumCount.tga").GetFullPath(), 1, 11);
+		
 	}
 	if (nullptr == GameEngineTexture::Find("DistortionSample_00.jpg"))
 	{
