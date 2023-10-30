@@ -326,13 +326,18 @@ void Enemy_ProtoAngelo::Start()
 
 			PlayDamageEvent(Datas.SoundType, true);
 
+			if (true == IsSuperArmor)
+			{
+				++SuperArmorStack;
+			}
+
 			MinusEnemyHP(Datas.DamageValue);
 			HitStop(Datas.DamageTypeValue);
 
-			if (DamageType::VergilLight == Datas.DamageTypeValue)
-			{
-				IsVergilLight = true;
-			}
+			//if (DamageType::VergilLight == Datas.DamageTypeValue)
+			//{
+			//	IsVergilLight = true;
+			//}
 
 			if (DamageType::Stun == Datas.DamageTypeValue)
 			{
@@ -690,11 +695,30 @@ void Enemy_ProtoAngelo::DamageCollisionCheck(float _DeltaTime)
 
 	if (true == IsSuperArmor)
 	{
+		DeathCheck();
+
+		if (true == DeathValue)
+		{
+			AttackCalculation();
+
+			if (EnemyHitDirect::Forward == EnemyHitDirValue
+				|| EnemyHitDirect::Forward == EnemyHitDirValue
+				|| EnemyHitDirect::Forward == EnemyHitDirValue)
+			{
+				ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Death_Back);
+			}
+			else if (EnemyHitDirect::Back == EnemyHitDirValue)
+			{
+				ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Death_Back);
+			}
+			return;
+		}
+
 		if (DamageType::Buster == Data.DamageTypeValue)
 		{
-			IsSuperArmor = false;
 			HitStop(Data.DamageTypeValue);
 			ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Buster_Start);
+			return;
 		}
 
 		if (DamageType::Stun == Data.DamageTypeValue)
@@ -703,6 +727,7 @@ void Enemy_ProtoAngelo::DamageCollisionCheck(float _DeltaTime)
 			HitStop(Data.DamageTypeValue);
 			StopTime(2.9f);
 			StartRenderShaking(8);
+			return;
 		}
 
 		if (DamageType::Heavy == Data.DamageTypeValue
@@ -712,9 +737,8 @@ void Enemy_ProtoAngelo::DamageCollisionCheck(float _DeltaTime)
 			++SuperArmorStack;
 			HitStop(Data.DamageTypeValue);
 			StartRenderShaking(8);
+			return;
 		}
-
-		return;
 	}
 
 	switch (Data.DamageTypeValue)
@@ -822,9 +846,52 @@ void Enemy_ProtoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 	PlayDamageEvent(Data.SoundType, true);
 	AttackDelayCheck = 0.0f;
 
-	if (true == ParryEvent)
+	NetworkObjectBase* Obj = dynamic_cast<NetworkObjectBase*>(AttackCol->GetActor());
+
+	if (true == IsSuperArmor)
 	{
-		StartRenderShaking(6);
+		DeathCheck();
+
+		if (true == DeathValue)
+		{
+			AttackCalculation();
+
+			if (EnemyHitDirect::Forward == EnemyHitDirValue
+				|| EnemyHitDirect::Forward == EnemyHitDirValue
+				|| EnemyHitDirect::Forward == EnemyHitDirValue)
+			{
+				ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Death_Back);
+			}
+			else if (EnemyHitDirect::Back == EnemyHitDirValue)
+			{
+				ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Death_Back);
+			}
+			return;
+		}
+
+		if (DamageType::Buster == Data.DamageTypeValue)
+		{
+			ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Buster_Start, Obj);
+			return;
+		}
+
+		if (DamageType::Stun == Data.DamageTypeValue)
+		{
+			StopTime(2.9f);
+			StartRenderShaking(8);
+			ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Obj });
+			return;
+		}
+
+		if (DamageType::Heavy == Data.DamageTypeValue
+			|| DamageType::Air == Data.DamageTypeValue
+			|| DamageType::Slam == Data.DamageTypeValue)
+		{
+			StartRenderShaking(8);
+			ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Obj });
+			return;
+		}
+
 		return;
 	}
 
@@ -832,8 +899,6 @@ void Enemy_ProtoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 	{
 		Data.DamageTypeValue = DamageType::Light;
 	}
-
-	NetworkObjectBase* Obj = dynamic_cast<NetworkObjectBase*>(AttackCol->GetActor());
 
 	switch (Data.DamageTypeValue)
 	{
@@ -2308,6 +2373,7 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	// em0000_Buster_Start, 버스트 히트 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Buster_Start,
 	.Start = [=] {
+	IsSuperArmor = false;
 	EnemyRenderer->ChangeAnimation("em0601_Air_Buster");
 	},
 	.Update = [=](float _DeltaTime) {
