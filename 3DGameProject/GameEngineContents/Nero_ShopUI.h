@@ -14,8 +14,8 @@ public:
 	Nero_ShopUI& operator=(const Nero_ShopUI& _Other) = delete;
 	Nero_ShopUI& operator=(Nero_ShopUI&& _Other) noexcept = delete;
 	void ApperCusterWindow(bool _Value) override;
-	void ShopOff() override;;
-	void ShopOn() override;;
+	void ShopOff() override;
+	void ShopOn() override;
 protected:
 	void Start() override;
 	void Update(float _Delta) override;
