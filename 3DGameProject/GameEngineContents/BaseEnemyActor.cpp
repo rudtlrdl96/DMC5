@@ -688,6 +688,45 @@ void BaseEnemyActor::BusterCalculation(float4 _attachposition)
 	Player->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer->GetTransform(), _attachposition/*, float4(0.0f, 0.0f, 0.0f)*/);
 }
 
+void BaseEnemyActor::BusterCalculation_Client(float4 _attachposition)
+{
+	if (nullptr == Player)
+	{
+		return;
+	}
+
+	CurRenderPosition = EnemyRenderer->GetTransform()->GetLocalPosition();
+
+	if (Player->GetNetObjectID() == ServerPlayerID)
+	{
+		float4 Forword = Player->GetTransform()->GetWorldForwardVector() * 120.0f;
+		float4 BusterPosition = Player->GetTransform()->GetWorldPosition() + Forword + float4{0.f, 40.f, 0.f};
+
+		PhysXCapsule->SetWorldPosition(BusterPosition);
+		Player->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer->GetTransform(), _attachposition/*, float4(0.0f, 0.0f, 0.0f)*/);
+	}
+	else if (Player->GetNetObjectID() != ServerPlayerID)
+	{
+		std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
+		size_t Playersize = Players.size();
+
+		for (size_t i = 0; i < Playersize; i++)
+		{
+			int PlayersID = Players[i]->GetNetObjectID();
+
+			if (Player->GetNetObjectID() == ServerPlayerID)
+			{
+				float4 Forword = Players[i]->GetTransform()->GetWorldForwardVector() * 120.0f;
+				float4 BusterPosition = Players[i]->GetTransform()->GetWorldPosition() + Forword + float4{0.f, 40.f, 0.f};
+
+				PhysXCapsule->SetWorldPosition(BusterPosition);
+				Players[i]->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer->GetTransform(), _attachposition/*, float4(0.0f, 0.0f, 0.0f)*/);
+				break;
+			}
+		}
+	}
+}
+
 /// <summary>
 /// 버스터 종료 시 몬스터 랜더러의 위치를 원래 위치로 되돌린다.
 /// </summary>

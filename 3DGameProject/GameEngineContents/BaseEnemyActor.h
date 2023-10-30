@@ -208,6 +208,7 @@ protected:
 	void SlerpCalculation();				         // Slerp로 회전해야 하는 경우에 대한 값을 계산합니다. 계산 결과는 float4 CurRotation, float4 GoalRotation에 저장됩니다. Y축에 대한 회전만 따집니다.
 	void SlerpTurn(float _DeltaTime);                // 일정 시간 동안 SlerpCalculation()()로 계산된  값을 향해 몬스터를 Slerp시킨다. 값이 실시간으로 float4 RotationValue에 저장된다.
 	void BusterCalculation(float4 _attachposition);  // 버스터 히트 시 몬스터를 Player FBX Bone의 어떤 위치에 부착할지 결정한다.
+	void BusterCalculation_Client(float4 _attachposition);  // 버스터 히트 시 몬스터를 Player FBX Bone의 어떤 위치에 부착할지 결정한다.
 	void BusterEnd();                                // 버스터 종료 시 몬스터 랜더러의 위치를 원래 위치로 되돌린다.
 	void SnatchCalculation();                        // 스내치 히트 시 Lerp할 몬스터와 Player의 위치값을 float4 SnatchStartPosition, float4 SnatchEndPosition에 값을 저장한다.
 	void MonsterSnatch(float _DeltaTime);            // 일정 시간(1.0f) 동안 SnatchCalculation()로 계산된 값을 향해 몬스터를 Lerp시킨다.
