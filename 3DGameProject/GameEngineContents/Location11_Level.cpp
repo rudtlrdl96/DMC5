@@ -147,8 +147,8 @@ void Location11_Level::LevelChangeStart()
 	if (false == NetworkManager::IsClient())
 	{
 		std::shared_ptr<CavaliereAngelo> Cavaliere = Poolable<CavaliereAngelo>::PopFromPool(this, static_cast<int>(ActorOrder::Enemy));
-		Cavaliere->GetTransform()->SetWorldPosition({ -35500, 1950, -365 });
-		Cavaliere->GetTransform()->SetWorldRotation({ 0.0f, 90.0f, 0.0f });
+		Cavaliere->GetPhysXComponent()->SetWorldPosition({ -35500, 1950, -365 });
+		Cavaliere->GetPhysXComponent()->SetWorldRotation({ 0.0f, 90.0f, 0.0f });
 		MainPlayer->SetBossCam(Cavaliere->GetTransform());
 	}
 
