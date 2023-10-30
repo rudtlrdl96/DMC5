@@ -116,6 +116,7 @@ protected:
 
 	void DeathEvent();
 	void RedOrbDrop();													// 사망시 실행. 레드오브를 뿌립니다
+	void DeathSetting_Client();
 
 	std::shared_ptr<class GameEngineFBXRenderer> EnemyRenderer = nullptr;         // 랜더러
 																			      

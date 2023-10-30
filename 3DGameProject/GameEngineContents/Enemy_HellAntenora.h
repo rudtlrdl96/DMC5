@@ -117,7 +117,7 @@ protected:
 private:
 	void PlayerChase();
 	void ChangeState(int _StateValue);
-	void ChangeState_Client(int _StateValue);
+	void ChangeState_Client(int _StateValue, NetworkObjectBase* _Obj);
 	void AttackCalculation();
 	void MonsterAttackCollisionOn();
 	void MonsterAttackCollisionOff();

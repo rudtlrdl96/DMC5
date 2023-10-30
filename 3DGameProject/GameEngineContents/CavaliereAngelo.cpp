@@ -15,6 +15,8 @@
 #include "AttackCollision.h"
 #include "FXSystem.h"
 #include "Cavaliere_Electric.h"
+#include "Player_MirageBlade.h"
+
 #include "EffectRenderer.h"
 
 CavaliereAngelo::CavaliereAngelo()
@@ -260,6 +262,12 @@ void CavaliereAngelo::Start()
 	PhysXCapsule->SetPhysxMaterial(0, 0, 0);
 	PhysXCapsule->CreatePhysXActors({ 100, 200, 100 });
 	PhysXCapsule->GetDynamic()->setMass(200.0f);
+
+	if (true == NetworkManager::IsClient())
+	{
+		PhysXCapsule->TurnOffGravity();
+	}
+
 	BindPhysicsWithNet(PhysXCapsule);
 
 	// 랜더러 크기 설정
@@ -312,17 +320,22 @@ void CavaliereAngelo::Start()
 				return;
 			}
 			BasePlayerActor* _Player = dynamic_cast<BasePlayerActor*>(_Actors[0]);
+			DamageData Datas;
 			if (nullptr == _Player)
 			{
-				MsgAssert("잘못된 DamageCallBack 이벤트입니다");
-				return;
+				Player_MirageBlade* _Mirage = dynamic_cast<Player_MirageBlade*>(_Actors[0]);
+				if (nullptr == _Mirage) { return; }
+				Datas = _Mirage->Collision->GetDamage();
 			}
-			// Player = _Player;
+			else
+			{
+				Datas = _Player->GetAttackCollision()->GetDamage();
+			}
 
-			DamageData Datas = _Player->GetAttackCollision()->GetDamage();
+			PlayDamageSound(Datas.SoundType);
+
 			MinusEnemyHP(Datas.DamageValue);
 			HPClientStackPlus(Datas.DamageValue);
-			PlayDamageSound(Datas.SoundType);
 
 			if (600 < HPClientStack)
 			{
@@ -343,8 +356,21 @@ void CavaliereAngelo::Start()
 			}
 		});
 
-	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker) {
-		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
+	SetDamagedNetCallBack<NetworkObjectBase>([this](NetworkObjectBase* _Attacker) {
+
+		BasePlayerActor* _Player = dynamic_cast<BasePlayerActor*>(_Attacker);
+		DamageData Datas;
+		if (nullptr == _Player)
+		{
+			Player_MirageBlade* _Mirage = dynamic_cast<Player_MirageBlade*>(_Attacker);
+			if (nullptr == _Mirage) { return; }
+			Datas = _Mirage->Collision->GetDamage();
+		}
+		else
+		{
+			Datas = _Player->GetAttackCollision()->GetDamage();
+		}
+
 		MinusEnemyHP(Datas.DamageValue);
 		HPClientStackPlus(Datas.DamageValue);
 		PlayDamageSound(Datas.SoundType);
@@ -435,7 +461,6 @@ void CavaliereAngelo::Start()
 			AttackDelayCheck = 1.0f;
 		}
 
-
 		if (EnemyHP < 0)
 		{
 			DeathValue = true;
@@ -495,6 +520,7 @@ void CavaliereAngelo::Update(float _DeltaTime)
 		// 클라이언트 플레이일 때 실행
 		else
 		{
+			PhysXCapsule->SetLinearVelocityZero();
 			ParryCheck_Client();
 			RecognizeCollisionCheck(_DeltaTime);
 			Update_NetworkTrans(_DeltaTime);
@@ -766,6 +792,7 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 
 	if (DamageType::Stun == Data.DamageTypeValue)
 	{
+		AttackDelayCheck = 1.0f;
 		StopTime(2.9f);
 		return;
 	}
@@ -810,9 +837,19 @@ void CavaliereAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 
 	StartRenderShaking(6);
 
+	NetworkObjectBase* Obj = dynamic_cast<NetworkObjectBase*>(AttackCol->GetActor());
+
 	if (DamageType::Buster != Data.DamageTypeValue && false == IsStun)
 	{
-		ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
+		ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Obj });
+		return;
+	}
+
+	if (DamageType::Stun == Data.DamageTypeValue)
+	{
+		AttackDelayCheck = 1.0f;
+		ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Obj });
+		return;
 	}
 }
 
@@ -875,22 +912,24 @@ void CavaliereAngelo::ParryCheck_Client()
 
 	AttackDirectCheck();
 
+	NetworkObjectBase* Obj = dynamic_cast<NetworkObjectBase*>(AttackCol->GetActor());
+
 	if (EnemyHitDirect::Forward == EnemyHitDirValue)
 	{
 		AttackCol->ParryEvent();
 
 		if (ParryStack <= 1)
 		{
-			ChangeState_Client(FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_Even01);
+			ChangeState_Client(FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_Even01, Obj);
 		}
 		else if (ParryStack >= 2 && ParryStack < 5)
 		{
-			ChangeState_Client(FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_normal01);
+			ChangeState_Client(FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_normal01, Obj);
 		}
 		else if (ParryStack >= 5)
 		{
 			ParryStack = 0;
-			ChangeState_Client(FSM_State_CavaliereAngelo::CavaliereAngelo_Damage_Drill);
+			ChangeState_Client(FSM_State_CavaliereAngelo::CavaliereAngelo_Damage_Drill, Obj);
 		}
 	}
 }
@@ -1023,11 +1062,11 @@ void CavaliereAngelo::ChangeState(int _StateValue)
 	NetworkManager::SendFsmChangePacket(this, _StateValue);
 }
 
-void CavaliereAngelo::ChangeState_Client(int _StateValue)
+void CavaliereAngelo::ChangeState_Client(int _StateValue, NetworkObjectBase* _Obj)
 {
 	EnemyFSM.ChangeState(_StateValue);
 	EnemyFSMValue = _StateValue;
-	NetworkManager::SendFsmChangePacket(this, _StateValue, Player);
+	NetworkManager::SendFsmChangePacket(this, _StateValue, _Obj);
 }
 
 void CavaliereAngelo::EnemyCreateFSM()

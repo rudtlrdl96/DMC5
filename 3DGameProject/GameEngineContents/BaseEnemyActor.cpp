@@ -842,45 +842,6 @@ void BaseEnemyActor::RendererBurn(float _DeltaTime)
 	}
 }
 
-//void BaseEnemyActor::ChasePlayer(float _DeltaTime)
-//{
-//	//서버에서 Player가 vector로 담아져있음. 그 벡터를 돌면서 따라감
-//	for (BasePlayerActor* Players : BasePlayerActor::GetPlayers())
-//	{
-//		float4 EnemyPosition = EnemyRenderer->GetTransform()->GetWorldPosition();
-//		float4 PlayerPosition = Players->GetTransform()->GetWorldPosition();
-//		CapsulCol->SetMove((PlayerPosition - EnemyPosition));
-//		//자연스럽게 돌리기
-//		ColValue = ForWardCollision->Collision(CollisionOrder::RN_Player, ColType::OBBBOX3D, ColType::OBBBOX3D);
-//		if (nullptr == ColValue)
-//		{
-//			float4 EnemyForWardVector = EnemyRenderer->GetTransform()->GetWorldForwardVector();
-//			EnemyForWardVector.y = 0;
-//			EnemyForWardVector.Normalize();
-//			float4 ToPlayerVector = (PlayerPosition - EnemyPosition);
-//			ToPlayerVector.y = 0;
-//			ToPlayerVector.Normalize();
-//			float4 CrossVector = float4::Cross3DReturnNormal(EnemyForWardVector, ToPlayerVector);
-//			if (CrossVector.y < 0)
-//			{
-//				EnemyRenderer->GetTransform()->AddLocalRotation({ 0,-2,0 });
-//				ForWardCollision->GetTransform()->AddLocalRotation({ 0,-2,0 });
-//			}
-//			else
-//			{
-//				EnemyRenderer->GetTransform()->AddLocalRotation({ 0,2,0 });
-//				ForWardCollision->GetTransform()->AddLocalRotation({ 0,2,0 });
-//			}
-//		}
-//
-//	}
-//}
-
-
-
-
-
-
 void BaseEnemyActor::DeathCheck()
 {
 	if (EnemyHP <= 0)
@@ -897,6 +858,14 @@ void BaseEnemyActor::DeathCheck()
 		RN_MonsterCollision->Off();
 		PhysXCapsule->Off();
 	}
+}
+
+void BaseEnemyActor::DeathSetting_Client()
+{
+	RedOrbDrop();
+	MonsterCollision->Off();
+	RN_MonsterCollision->Off();
+	PhysXCapsule->Off();
 }
 
 void BaseEnemyActor::PlayDamageEvent(DamageType _Type, DamageSoundType _SoundType)

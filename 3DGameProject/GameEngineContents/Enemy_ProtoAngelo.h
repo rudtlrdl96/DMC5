@@ -106,7 +106,7 @@ private:
 	void PlayerChase();
 	void PlayerAttack();
 	void ChangeState(int _StateValue);
-	void ChangeState_Client(int _StateValue);
+	void ChangeState_Client(int _StateValue, NetworkObjectBase* _Obj);
 	void AttackCalculation();
 	void MoveLoop();
 	void ParryCheck();

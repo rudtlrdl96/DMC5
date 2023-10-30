@@ -13,6 +13,7 @@
 #include "AttackCollision.h"
 #include "FXSystem.h"
 #include "Player_MirageBlade.h"
+
 Enemy_Empusa::Enemy_Empusa() 
 {
 }
@@ -242,21 +243,18 @@ void Enemy_Empusa::Start()
 			{
 				Datas = _Player->GetAttackCollision()->GetDamage();
 			}
-			//Player = _Player;
 
-			//DamageData Datas = Player->GetAttackCollision()->GetDamage();
-			MonsterAttackCollision->Off();
 			PlayDamageEvent(Datas.DamageTypeValue, Datas.SoundType);
-			MinusEnemyHP(Datas.DamageValue);
 			Sound.PlayVoiceRandom(4, 5, false);
+
+			MinusEnemyHP(Datas.DamageValue);
+			HitStop(Datas.DamageTypeValue);
 
 			if (DamageType::Stun == Datas.DamageTypeValue)
 			{
 				StopTime(2.8f);
 				AttackDelayCheck = 1.0f;
 			}
-
-			HitStop(Datas.DamageTypeValue);
 
 			if (EnemyHP < 0)
 			{
@@ -279,17 +277,17 @@ void Enemy_Empusa::Start()
 			Player = _Player;
 		}
 
-		MonsterAttackCollision->Off();
 		PlayDamageEvent(Datas.DamageTypeValue, Datas.SoundType);
-		MinusEnemyHP(Datas.DamageValue);
 		Sound.PlayVoiceRandom(4, 5, false);
+
+		MonsterAttackCollision->Off();
+		MinusEnemyHP(Datas.DamageValue);
+		HitStop(Datas.DamageTypeValue);
 
 		if (DamageType::VergilLight == Datas.DamageTypeValue)
 		{
 			IsVergilLight = true;
 		}
-
-		HitStop(Datas.DamageTypeValue);
 
 		if (EnemyHP < 0)
 		{
@@ -596,12 +594,12 @@ void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 	PlayDamageEvent(Data.DamageTypeValue, Data.SoundType);
 	Sound.PlayVoiceRandom(4, 5, false);
 
-	NetworkObjectBase* Obj = dynamic_cast<NetworkObjectBase*>(AttackCol->GetActor());
-
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
 		Data.DamageTypeValue = DamageType::Light;
 	}
+
+	NetworkObjectBase* Obj = dynamic_cast<NetworkObjectBase*>(AttackCol->GetActor());
 
 	switch (Data.DamageTypeValue)
 	{
@@ -2286,6 +2284,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Downward_Death,
 	.Start = [=] {
 	Sound.PlayVoice(15);
+	DeathSetting_Client();
 	EnemyRenderer->ChangeAnimation("em0100_downward_die");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2296,6 +2295,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Death_Back,
 	.Start = [=] {
 	Sound.PlayVoice(15);
+	DeathSetting_Client();
 	EnemyRenderer->ChangeAnimation("em0100_death_back");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2306,6 +2306,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Death_Front,
 	.Start = [=] {
 	Sound.PlayVoice(15);
+	DeathSetting_Client();
 	EnemyRenderer->ChangeAnimation("em0100_death_front");
 	},
 	.Update = [=](float _DeltaTime) {

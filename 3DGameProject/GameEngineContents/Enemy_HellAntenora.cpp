@@ -12,6 +12,8 @@
 #include "BasePlayerActor.h"
 #include "AttackCollision.h"
 #include "FXSystem.h"
+#include "Player_MirageBlade.h"
+
 Enemy_HellAntenora::Enemy_HellAntenora() 
 {
 }
@@ -220,6 +222,12 @@ void Enemy_HellAntenora::Start()
 	PhysXCapsule->SetPhysxMaterial(0, 0, 0);
 	PhysXCapsule->CreatePhysXActors({ 90, 120, 90 });
 	PhysXCapsule->GetDynamic()->setMass(80.0f);
+
+	if (true == NetworkManager::IsClient())
+	{
+		PhysXCapsule->TurnOffGravity();
+	}
+
 	BindPhysicsWithNet(PhysXCapsule);
 
 	// 랜더러 크기 설정
@@ -296,19 +304,24 @@ void Enemy_HellAntenora::Start()
 				return;
 			}
 			BasePlayerActor* _Player = dynamic_cast<BasePlayerActor*>(_Actors[0]);
+			DamageData Datas;
 			if (nullptr == _Player)
 			{
-				MsgAssert("잘못된 DamageCallBack 이벤트입니다");
-				return;
+				Player_MirageBlade* _Mirage = dynamic_cast<Player_MirageBlade*>(_Actors[0]);
+				if (nullptr == _Mirage) { return; }
+				Datas = _Mirage->Collision->GetDamage();
 			}
-			//Player = _Player;
+			else
+			{
+				Datas = _Player->GetAttackCollision()->GetDamage();
+			}
 
-			MonsterAttackCollision->Off();
-			MultiAttackStack = 0;
-			DamageData Datas = _Player->GetAttackCollision()->GetDamage();
 			PlayDamageEvent(Datas.DamageTypeValue, Datas.SoundType);
-			MinusEnemyHP(Datas.DamageValue);
 			Sound.PlayVoice(5);
+
+			MultiAttackStack = 0;
+			MinusEnemyHP(Datas.DamageValue);
+			HitStop(Datas.DamageTypeValue);
 
 			if (DamageType::Stun == Datas.DamageTypeValue)
 			{
@@ -316,24 +329,34 @@ void Enemy_HellAntenora::Start()
 				AttackDelayCheck = 1.0f;
 			}
 
-			HitStop(Datas.DamageTypeValue);
-
 			if (EnemyHP < 0)
 			{
 				DeathValue = true;
 			}
 		});
 
-	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker) {
-		
-		Player = _Attacker;
+	SetDamagedNetCallBack<NetworkObjectBase>([this](NetworkObjectBase* _Attacker) {
+		BasePlayerActor* _Player = dynamic_cast<BasePlayerActor*>(_Attacker);
+		DamageData Datas;
+		if (nullptr == _Player)
+		{
+			Player_MirageBlade* _Mirage = dynamic_cast<Player_MirageBlade*>(_Attacker);
+			if (nullptr == _Mirage) { return; }
+			Datas = _Mirage->Collision->GetDamage();
+		}
+		else
+		{
+			Datas = _Player->GetAttackCollision()->GetDamage();
+			Player = _Player;
+		}
+
+		PlayDamageEvent(Datas.DamageTypeValue, Datas.SoundType);
+		Sound.PlayVoice(5);
 		
 		MonsterAttackCollision->Off();
 		MultiAttackStack = 0;
-		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
 		MinusEnemyHP(Datas.DamageValue);
-		PlayDamageEvent(Datas.DamageTypeValue, Datas.SoundType);
-		Sound.PlayVoice(5);
+		HitStop(Datas.DamageTypeValue);
 
 		if (DamageType::VergilLight == Datas.DamageTypeValue)
 		{
@@ -342,8 +365,6 @@ void Enemy_HellAntenora::Start()
 				IsVergilLight = true;
 			}
 		}
-
-		HitStop(Datas.DamageTypeValue);
 
 		if (EnemyHP < 0)
 		{
@@ -560,6 +581,7 @@ void Enemy_HellAntenora::DamageCollisionCheck(float _DeltaTime)
 		ChangeState(FSM_State_HellAntenora::HellAntenora_Buster_Start);
 		break;
 	case DamageType::Stun:
+		AttackDelayCheck = 1.0f;
 		StopTime(2.9f);
 		return;
 	default:
@@ -602,6 +624,8 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 	AttackDelayCheck = 0.0f;
 	Sound.PlayVoice(5);
 
+	NetworkObjectBase* Obj = dynamic_cast<NetworkObjectBase*>(AttackCol->GetActor());
+
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
 		Data.DamageTypeValue = DamageType::Light;
@@ -611,11 +635,11 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 	{
 		if (Data.DamageTypeValue == DamageType::Buster)
 		{
-			ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Buster_Start);
+			ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Buster_Start, Obj);
 		}
 		else
 		{
-			ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
+			ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Obj });
 			HitStop(Data.DamageTypeValue);
 			StartRenderShaking(8);
 		}
@@ -637,14 +661,14 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 		if (true == IsAirAttack || true == IsSlamAttack || true == IsHeavyAttack)
 		{
 			StartRenderShaking(8);
-			ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Air_Damage_Under);
+			ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Air_Damage_Under, Obj);
 			return;
 		}
 
 		if (true == IsCollapse)
 		{
 			StartRenderShaking(8);
-			ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
+			ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Obj });
 			return;
 		}
 
@@ -653,16 +677,16 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 		switch (EnemyHitDirValue)
 		{
 		case EnemyHitDirect::Forward:
-			ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Front);
+			ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Front, Obj);
 			break;
 		case EnemyHitDirect::Back:
-			ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Back);
+			ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Back, Obj);
 			break;
 		case EnemyHitDirect::Left:
-			ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Left);
+			ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Left, Obj);
 			break;
 		case EnemyHitDirect::Right:
-			ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Right);
+			ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Standing_Damage_Weak_Right, Obj);
 			break;
 		default:
 			break;
@@ -670,22 +694,23 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 		break;
 
 	case DamageType::Heavy:
-		ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Blown_Back);
+		ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Blown_Back, Obj);
 		break;
 	case DamageType::Air:
-		ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Blown_Up);
+		ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Blown_Up, Obj);
 		break;
 	case DamageType::Snatch:
-		ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Snatch);
+		ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Snatch, Obj);
 		break;
 	case DamageType::Slam:
-		ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Slam_Damage);
+		ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Slam_Damage, Obj);
 		break;
 	case DamageType::Buster:
-		ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Buster_Start);
+		ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Buster_Start, Obj);
 		break;
 	case DamageType::Stun:
-		StopTime(2.9f);
+		AttackDelayCheck = 1.0f;
+		ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Obj });
 		break;
 	default:
 		break;
@@ -792,11 +817,11 @@ void Enemy_HellAntenora::ChangeState(int _StateValue)
 	IsChangeState = true;
 }
 
-void Enemy_HellAntenora::ChangeState_Client(int _StateValue)
+void Enemy_HellAntenora::ChangeState_Client(int _StateValue, NetworkObjectBase* _Obj)
 {
 	EnemyFSM.ChangeState(_StateValue);
 	EnemyFSMValue = _StateValue;
-	NetworkManager::SendFsmChangePacket(this, _StateValue, Player);
+	NetworkManager::SendFsmChangePacket(this, _StateValue, _Obj);
 }
 
 void Enemy_HellAntenora::EnemyCreateFSM()
@@ -2246,13 +2271,13 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	SetMoveStop();
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		BusterEnd();
 		SetAir(-120000.0f);
 		ChangeState(FSM_State_HellAntenora::HellAntenora_Buster_Loop);
 		return;
 	}
 	},
 	.End = [=] {
+	BusterEnd();
 	}
 		});
 	// 버스트 히트 루프
@@ -2285,7 +2310,6 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		//PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
 		ChangeState(FSM_State_HellAntenora::HellAntenora_Prone_Getup);
 		return;
 	}
@@ -2722,6 +2746,7 @@ void Enemy_HellAntenora::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Prone_Death,
 	.Start = [=] {
+	DeathSetting_Client();
 	Sound.PlayVoice(9);
 	EnemyRenderer->ChangeAnimation("em0001_prone_death");
 	},
@@ -2732,6 +2757,7 @@ void Enemy_HellAntenora::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Death_Back,
 	.Start = [=] {
+	DeathSetting_Client();
 	Sound.PlayVoice(9);
 	EnemyRenderer->ChangeAnimation("em0001_death_back");
 	},
@@ -2742,6 +2768,7 @@ void Enemy_HellAntenora::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Death_Front,
 	.Start = [=] {
+	DeathSetting_Client();
 	Sound.PlayVoice(9);
 	EnemyRenderer->ChangeAnimation("em0001_death_front");
 	},
