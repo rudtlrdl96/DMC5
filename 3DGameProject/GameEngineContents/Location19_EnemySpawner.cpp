@@ -98,7 +98,7 @@ void Location19_EnemySpawner::Start()
 				GameEngineLevel* Level = GetLevel();
 				std::vector<float4> EnemyPos =
 				{
-					{ 1330 , 81, 483 }, { 1310 , 71, -194 }, { 943 , 60, 481 }, { 1616 , 106, 702 }, { 1880 , 77, -158 }
+					{ 1330 , 90, 483 }, { 1310 , 71, -194 }, { 943 , 60, 481 }, { 1616 , 106, 702 }, { 1880 , 77, -158 }
 				};
 				std::vector<float> EnemyRot = { -115, -91, -118, -118, -87 };
 
@@ -114,13 +114,13 @@ void Location19_EnemySpawner::Start()
 							else
 							{
 								Enemy = Poolable<Enemy_ScudoAngelo>::PopFromPool(Level, static_cast<int>(ActorOrder::Enemy));
+								Enemy->GetPhysXComponent()->Off();
 							}
 							Enemy->GetPhysXComponent()->SetWorldPosition(EnemyPos[i]);
 							Enemy->GetPhysXComponent()->SetWorldRotation(float4::UP * EnemyRot[i]);
 							Enemy->GetTransform()->SetWorldPosition(EnemyPos[i]);
 							Enemy->GetTransform()->SetWorldRotation(float4::UP * EnemyRot[i]);
 							Enemy->GetPhysXComponent()->SetLinearVelocityZero();
-							Enemy->GetPhysXComponent()->Off();
 							Enemy->PushDeathCallback(std::bind(&EnemySpawner::DestroyMonster, this));
 						});
 				}
