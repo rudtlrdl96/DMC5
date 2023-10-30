@@ -152,11 +152,11 @@ void NetworkTestLevel::Update(float _DeltaTime)
 	BaseLevel::Update(_DeltaTime);
 
 	//0¹ø
-	if (true == GameEngineInput::IsDown("Test_BackMainLevel"))
-	{
-		GameEngineCore::ChangeLevel("MainLevel");
-		return;
-	}
+	//if (true == GameEngineInput::IsDown("Test_BackMainLevel"))
+	//{
+	//	GameEngineCore::ChangeLevel("MainLevel");
+	//	return;
+	//}
 
 
 	if (true == GameEngineInput::IsDown("Test_EnemyDeath"))

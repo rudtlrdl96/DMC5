@@ -1850,13 +1850,13 @@ void Enemy_Empusa::EnemyCreateFSM()
 	SetMoveStop();
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		BusterEnd();
 		SetAir(-120000.0f);
 		ChangeState(FSM_State_Empusa::Empusa_Buster_Loop);
 		return;
 	}
 	},
 	.End = [=] {
+	BusterEnd();
 	}
 		});
 	// 버스트 히트 루프

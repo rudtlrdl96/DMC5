@@ -93,12 +93,14 @@ void BaseEnemyActor::Update(float _DeltaTime)
 			TimeStop = false;
 			if (true == IsTimeStop)
 			{
+				MonsterCollision->Off();
 				MonsterAttackCollision->Off();
 				PhysXCapsule->Off();
 			}
 			else if (false == IsTimeStop)
 			{
 				PhysXCapsule->On();
+				MonsterCollision->On();
 			}
 		}
 
