@@ -165,13 +165,13 @@ void TestLevel::LevelChangeStart()
 	//	Empusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
 
-	//if (nullptr == Cavaliere)
-	//{
-	//	Cavaliere = CreateActor<CavaliereAngelo>();
-	//	Cavaliere->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	//	Cavaliere->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	//	Player->SetBossCam(Cavaliere->GetTransform());
-	//}
+	if (nullptr == Cavaliere)
+	{
+		Cavaliere = CreateActor<CavaliereAngelo>();
+		Cavaliere->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+		Cavaliere->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+		Player->SetBossCam(Cavaliere->GetTransform());
+	}
 
 	if (nullptr == Flat)
 	{
@@ -193,12 +193,12 @@ void TestLevel::LevelChangeStart()
 	//	Scudo->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
 
-	if (nullptr == Proto)
-	{
-		Proto = CreateActor<Enemy_ProtoAngelo>();
-		Proto->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-		Proto->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	}
+	//if (nullptr == Proto)
+	//{
+	//	Proto = CreateActor<Enemy_ProtoAngelo>();
+	//	Proto->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//	Proto->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	//}
 
 	//if (nullptr == Qliphoth)
 	//{

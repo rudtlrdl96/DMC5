@@ -1090,19 +1090,27 @@ void CavaliereAngelo::EnemyCreateFSM()
 	.Update = [=](float _DeltaTime) {
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		float PlayerXPos = Player->GetTransform()->GetWorldPosition().x;
-
-		if (PlayerXPos >= -34650.0f)
+		if (false == IsInit)
 		{
-			PhysXCapsule->SetWorldPosition({ -36500, 1950, -365 });
-			PhysXCapsule->SetWorldRotation({ 0.0f, 90.0f, 0.0f });
+			IsInit = true;
 		}
 		else
 		{
-			PhysXCapsule->SetWorldPosition({ -32200, 1950, -370 });
-			PhysXCapsule->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
+			float PlayerXPos = Player->GetTransform()->GetWorldPosition().x;
+
+			if (PlayerXPos >= -34650.0f)
+			{
+				PhysXCapsule->SetWorldPosition({ -36500, 1950, -365 });
+				PhysXCapsule->SetWorldRotation({ 0.0f, 90.0f, 0.0f });
+			}
+			else
+			{
+				PhysXCapsule->SetWorldPosition({ -32200, 1950, -370 });
+				PhysXCapsule->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
+			}
+			BasePlayerActor::CameraLookBoss(PhysXCapsule->GetWorldPosition());
 		}
-		BasePlayerActor::CameraLookBoss(PhysXCapsule->GetWorldPosition());
+
 		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Dengeki_Reload_Start);
 		return;
 	}
@@ -2283,7 +2291,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 		});
 
-	EnemyFSM.ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
+	EnemyFSM.ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Warp_Start);
 }
 
 void CavaliereAngelo::EnemyCreateFSM_Client()
@@ -2569,5 +2577,5 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 	}
 		});
 
-	EnemyFSM.ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
+	EnemyFSM.ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Warp_Start);
 }

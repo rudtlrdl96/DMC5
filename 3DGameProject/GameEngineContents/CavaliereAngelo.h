@@ -163,5 +163,6 @@ private:
 	bool IsCharge = false;
 	bool IsPowerUp = false;
 	bool IsFastCharge = false;
+	bool IsInit = false;
 
 };
