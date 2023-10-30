@@ -669,6 +669,7 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 	DamageData Data = AttackCol->GetDamage();
 	AttackDelayCheck = 0.0f;
 	PlayDamageSound(Data.SoundType);
+
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
 		IsVergilLight = true;
@@ -679,7 +680,7 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 	MinusEnemyHP(Data.DamageValue);
 	HPSeverStackPlus(Data.DamageValue);
 
-	if (NetControllType::ActiveControll == GetControllType())
+	if (true == NetworkManager::IsServer())
 	{
 		if (600 < HPServerStack)
 		{
@@ -689,13 +690,11 @@ void CavaliereAngelo::DamageCollisionCheck(float _DeltaTime)
 			std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
 			size_t Playersize = Players.size();
 
-			int PlayerID = Player->GetNetObjectID();
-
 			for (size_t i = 0; i < Playersize; i++)
 			{
 				int PlayersID = Players[i]->GetNetObjectID();
 
-				if (ServerPlayerID == PlayersID)
+				if (PlayersID == ServerPlayerID)
 				{
 					Player = Players[i];
 				}
