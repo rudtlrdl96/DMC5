@@ -230,7 +230,6 @@ void Enemy_Empusa::Start()
 			{
 				Player_MirageBlade* _Mirage = dynamic_cast<Player_MirageBlade*>(_Actors[0]);
 				Datas = _Mirage->Collision->GetDamage();
-				return;
 			}
 			else
 			{
@@ -240,7 +239,6 @@ void Enemy_Empusa::Start()
 
 			//DamageData Datas = Player->GetAttackCollision()->GetDamage();
 			MonsterAttackCollision->Off();
-			Datas = _Player->GetAttackCollision()->GetDamage();
 			PlayDamageEvent(Datas.DamageTypeValue, Datas.SoundType);
 			MinusEnemyHP(Datas.DamageValue);
 			Sound.PlayVoiceRandom(4, 5, false);
@@ -266,7 +264,6 @@ void Enemy_Empusa::Start()
 		{
 			Player_MirageBlade* _Mirage = dynamic_cast<Player_MirageBlade*>(_Attacker);
 			Datas = _Mirage->Collision->GetDamage();
-			return;
 		}
 		else
 		{
