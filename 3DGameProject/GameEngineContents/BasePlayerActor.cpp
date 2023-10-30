@@ -21,6 +21,8 @@
 #include "PlayerHPUI.h"
 #include "FadeEffect.h"
 #include "BaseShopUI.h"
+#include "BWColorEffect.h"
+#include "TestStageLevel.h"
 std::vector<BasePlayerActor*> BasePlayerActor::Players = std::vector<BasePlayerActor*>();
 BasePlayerActor* BasePlayerActor::MainPlayer = nullptr;
 
@@ -345,6 +347,7 @@ void BasePlayerActor::Update(float _DeltaTime)
 		}
 		if (true == IsShopOn && true == GameEngineInput::IsUp("UI_ESC"))
 		{
+			TestStageLevel::Inst->GetBWEffect()->BWColorEffectOff();
 			Shop->ShopOff();
 			ShopOff();
 			IsShopOn = false;
@@ -531,6 +534,7 @@ void BasePlayerActor::ShopColCheck()
 
 	if (GameEngineInput::IsUp("Enter"))
 	{
+		TestStageLevel::Inst->GetBWEffect()->BWColorEffectOn();
 		RankUI::GetRankInst()->RankOff();
 		Shop->ApperCusterWindow(false);
 		ShopOn();

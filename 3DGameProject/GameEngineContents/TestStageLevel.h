@@ -16,8 +16,10 @@ public:
 	TestStageLevel& operator=(const TestStageLevel& _Other) = delete;
 	TestStageLevel& operator=(TestStageLevel&& _Other) noexcept = delete;
 
-
-
+	std::shared_ptr<class BWColorEffect> GetBWEffect()
+	{
+		return BWEffect;
+	}
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -25,6 +27,7 @@ protected:
 	void LevelChangeStart() override;
 
 private:
+
 	std::shared_ptr<class BloomEffect> Bloom = nullptr;
 	std::shared_ptr<class BWColorEffect> BWEffect = nullptr;
 

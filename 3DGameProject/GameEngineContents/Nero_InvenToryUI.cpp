@@ -20,19 +20,19 @@ void Nero_InvenToryUI::Start()
 	InvenBaseRender->GetTransform()->SetLocalScale(Scale*GameEngineActor::ScreenRatio);
 	InvenBaseRender->SetTexture("Nero_Inven4.png");
 	ItemRender_0 = CreateComponent<GameEngineUIRenderer>(1);
-	ItemRender_0->GetTransform()->SetLocalPosition({ -159.0f,0.0f,0.0f });
+	ItemRender_0->GetTransform()->SetLocalPosition({ -132.5f * GameEngineActor::ScreenRatio.x,0.0f,0.0f });
 	ItemRender_0->SetTexture("NullTexture.png");
 	DevilBreakerRender.push_back(ItemRender_0);
 	ItemRender_1 = CreateComponent<GameEngineUIRenderer>(1);
-	ItemRender_1->GetTransform()->SetLocalPosition({ -54.0f,0.0f,0.0f });
+	ItemRender_1->GetTransform()->SetLocalPosition({ -45.0f * GameEngineActor::ScreenRatio.x,0.0f,0.0f });
 	ItemRender_1->SetTexture("NullTexture.png");
 	DevilBreakerRender.push_back(ItemRender_1);
 	ItemRender_2 = CreateComponent<GameEngineUIRenderer>(1);
-	ItemRender_2->GetTransform()->SetLocalPosition({ 52.0f,0.0f,0.0f });
+	ItemRender_2->GetTransform()->SetLocalPosition({ 44.0f * GameEngineActor::ScreenRatio.x,0.0f,0.0f });
 	ItemRender_2->SetTexture("NullTexture.png");
 	DevilBreakerRender.push_back(ItemRender_2);
 	ItemRender_3 = CreateComponent<GameEngineUIRenderer>(1);	
-	ItemRender_3->GetTransform()->SetLocalPosition({ 159.0f,0.0f,0.0f });
+	ItemRender_3->GetTransform()->SetLocalPosition({ 132.5f * GameEngineActor::ScreenRatio.x,0.0f,0.0f });
 	ItemRender_3->SetTexture("NullTexture.png");
 	DevilBreakerRender.push_back(ItemRender_3);
 }
@@ -58,13 +58,16 @@ void Nero_InvenToryUI::AddInvenArm()
 			case DevilBreaker::None:
 				break;
 			case DevilBreaker::Overture:
-				DevilBreakerRender[InvenDevil.size() - t]->SetScaleToTexture("Nero_Overture.png");
+				DevilBreakerRender[InvenDevil.size() - t]->SetTexture("Nero_Overture.png");
+				DevilBreakerRender[InvenDevil.size() - t]->GetTransform()->SetLocalScale(ArmScale * GameEngineActor::ScreenRatio.x);
 				break;
 			case DevilBreaker::Gerbera:
-				DevilBreakerRender[InvenDevil.size() - t]->SetScaleToTexture("Nero_Gerbera.png");
+				DevilBreakerRender[InvenDevil.size() - t]->SetTexture("Nero_Gerbera.png");
+				DevilBreakerRender[InvenDevil.size() - t]->GetTransform()->SetLocalScale(ArmScale * GameEngineActor::ScreenRatio.x);
 				break;
 			case DevilBreaker::BusterArm:
-				DevilBreakerRender[InvenDevil.size() - t]->SetScaleToTexture("Nero_BusterArm.png");
+				DevilBreakerRender[InvenDevil.size() - t]->SetTexture("Nero_BusterArm.png");
+				DevilBreakerRender[InvenDevil.size() - t]->GetTransform()->SetLocalScale(ArmScale * GameEngineActor::ScreenRatio.x);
 				break;
 			default:
 				break;

@@ -36,6 +36,7 @@ private:
 	std::shared_ptr<class GameEngineUIRenderer> ItemRender_3 = nullptr;
 
 	float4 Scale = { 367.0f,91.7f,0.0f };
+	float4 ArmScale = { 75.f,33.f,0.0f };
 	DevilBreaker CurDevilBreaker = DevilBreaker::None;
 	std::vector<DevilBreaker> InvenDevil;
 	std::vector<std::shared_ptr<class GameEngineUIRenderer>> DevilBreakerRender;
