@@ -697,15 +697,15 @@ void BaseEnemyActor::BusterCalculation_Client(float4 _attachposition)
 
 	CurRenderPosition = EnemyRenderer->GetTransform()->GetLocalPosition();
 
-	if (Player->GetNetObjectID() == ServerPlayerID)
+	if (BusterClientStart == true)
 	{
-		float4 Forword = Player->GetTransform()->GetWorldForwardVector() * 120.0f;
-		float4 BusterPosition = Player->GetTransform()->GetWorldPosition() + Forword + float4{0.f, 40.f, 0.f};
+		//float4 Forword = Player->GetTransform()->GetWorldForwardVector() * 120.0f;
+		//float4 BusterPosition = Player->GetTransform()->GetWorldPosition() + Forword + float4{0.f, 40.f, 0.f};
 
-		PhysXCapsule->SetWorldPosition(BusterPosition);
+		//PhysXCapsule->SetWorldPosition(BusterPosition);
 		Player->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer->GetTransform(), _attachposition/*, float4(0.0f, 0.0f, 0.0f)*/);
 	}
-	else if (Player->GetNetObjectID() != ServerPlayerID)
+	else
 	{
 		std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
 		size_t Playersize = Players.size();
@@ -714,13 +714,14 @@ void BaseEnemyActor::BusterCalculation_Client(float4 _attachposition)
 		{
 			int PlayersID = Players[i]->GetNetObjectID();
 
-			if (Player->GetNetObjectID() == ServerPlayerID)
+			if (PlayersID == ServerPlayerID)
 			{
-				float4 Forword = Players[i]->GetTransform()->GetWorldForwardVector() * 120.0f;
-				float4 BusterPosition = Players[i]->GetTransform()->GetWorldPosition() + Forword + float4{0.f, 40.f, 0.f};
+				ServerPlayer = Players[i];
+				//float4 Forword = ServerPlayer->GetTransform()->GetWorldForwardVector() * 120.0f;
+				//float4 BusterPosition = ServerPlayer->GetTransform()->GetWorldPosition() + Forword + float4{0.f, 40.f, 0.f};
 
-				PhysXCapsule->SetWorldPosition(BusterPosition);
-				Players[i]->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer->GetTransform(), _attachposition/*, float4(0.0f, 0.0f, 0.0f)*/);
+				//PhysXCapsule->SetWorldPosition(BusterPosition);
+				ServerPlayer->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer->GetTransform(), _attachposition/*, float4(0.0f, 0.0f, 0.0f)*/);
 				break;
 			}
 		}
@@ -739,6 +740,26 @@ void BaseEnemyActor::BusterEnd()
 
 	Player->GetPlayerRenderer()->SetDettachTransform();
 	EnemyRenderer->GetTransform()->SetLocalPosition(CurRenderPosition);
+}
+
+void BaseEnemyActor::BusterEnd_Client()
+{
+	if (nullptr == Player)
+	{
+		return;
+	}
+
+	if (BusterClientStart == true)
+	{
+		BusterClientStart = false;
+		Player->GetPlayerRenderer()->SetDettachTransform();
+		EnemyRenderer->GetTransform()->SetLocalPosition(CurRenderPosition);
+	}
+	else
+	{
+		ServerPlayer->GetPlayerRenderer()->SetDettachTransform();
+		EnemyRenderer->GetTransform()->SetLocalPosition(CurRenderPosition);
+	}
 }
 
 /// <summary>

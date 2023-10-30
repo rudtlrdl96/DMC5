@@ -297,6 +297,11 @@ void Enemy_Empusa::Start()
 
 		IsChangeState = true;
 		});
+
+	BindNetObjEvent(3, [this](std::vector<NetworkObjectBase*> _Actors)
+		{
+			BusterEnd_Client();
+		});
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -662,6 +667,7 @@ void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 		ChangeState_Client(FSM_State_Empusa::Empusa_Slam_Damage, Obj);
 		break;
 	case DamageType::Buster:
+		BusterClientStart = true;
 		ChangeState_Client(FSM_State_Empusa::Empusa_Buster_Start, Obj);
 		break;
 	case DamageType::Stun:
@@ -1881,6 +1887,10 @@ void Enemy_Empusa::EnemyCreateFSM()
 	},
 	.End = [=] {
 	BusterEnd();
+	if (true == NetworkManager::IsServer())
+	{
+		ExcuteNetObjEvent(3, NetObjEventPath::ActiveToPassive, { Player });
+	}
 	}
 		});
 	// 버스트 히트 루프
@@ -2323,7 +2333,6 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.Update = [=](float _DeltaTime) {
 	},
 	.End = [=] {
-	BusterEnd();
 	}
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Buster_Loop,

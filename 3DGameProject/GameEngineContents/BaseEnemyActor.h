@@ -157,6 +157,7 @@ protected:
 	GameEngineFSM EnemyFSM;
 	SoundController Sound;
 	class BasePlayerActor* Player = nullptr;
+	class BasePlayerActor* ServerPlayer = nullptr;
 	float AppearDelayTime = 0.0f;
 	float ContactDelayTime = 0.0f;
 	int ServerPlayerID = 0;
@@ -199,6 +200,7 @@ protected:
 	float DotProductValue = 0.0f;                               // MonsterAndPlayerDotProductDegree() 실행 후 내적 결과값
 	bool IsSnatch = false;									    // true로 변경 시 Snatch 실시, 끝나면 false로 변경됨
 	bool AnimationTurnStart = false;						    // true로 변경 시 랜더러가 턴 됐을 때 RotationCheck()를 실시할지 결정, 히트 시 false로 변경되며 몬스터를 해당 위치로 바로 회전시킴
+	bool BusterClientStart = false;
 
 	float4 MonsterAndPlayerCross();			         // Player에 대해 현재 몬스터의 위치를 외적합니다. (어디로 돌 것인지 결정하기 위함)
 	float MonsterAndPlayerDotProduct();              // Player에 대해 현재 몬스터의 위치를 내적합니다. (해당 방향으로 몇도를 회전해야 하는지 알기 위함)
@@ -210,6 +212,7 @@ protected:
 	void BusterCalculation(float4 _attachposition);  // 버스터 히트 시 몬스터를 Player FBX Bone의 어떤 위치에 부착할지 결정한다.
 	void BusterCalculation_Client(float4 _attachposition);  // 버스터 히트 시 몬스터를 Player FBX Bone의 어떤 위치에 부착할지 결정한다.
 	void BusterEnd();                                // 버스터 종료 시 몬스터 랜더러의 위치를 원래 위치로 되돌린다.
+	void BusterEnd_Client();
 	void SnatchCalculation();                        // 스내치 히트 시 Lerp할 몬스터와 Player의 위치값을 float4 SnatchStartPosition, float4 SnatchEndPosition에 값을 저장한다.
 	void MonsterSnatch(float _DeltaTime);            // 일정 시간(1.0f) 동안 SnatchCalculation()로 계산된 값을 향해 몬스터를 Lerp시킨다.
 	//====================================================
