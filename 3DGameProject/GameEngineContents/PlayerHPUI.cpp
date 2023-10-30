@@ -10,7 +10,7 @@
 #include "UI_BulletGauge.h"
 #include "UIEffectRenderer.h"
 #include "PlayerHPUI.h"
-int PlayerHPUI::RedOrbValue = 0;;
+int PlayerHPUI::RedOrbValue = 0;
 PlayerHPUI::PlayerHPUI() 
 {
 }
@@ -130,6 +130,10 @@ void PlayerHPUI::Update(float _DeltaTime)
 		SetExceed();
 	}
 	RedOrbFont->SetText(std::to_string(RedOrbValue));
+	if (GameEngineInput::IsUp("UI_OrbCheat"))
+	{
+		RedOrbValue += 1000;
+	}
 }
 
 void PlayerHPUI::CreatFireEffect()

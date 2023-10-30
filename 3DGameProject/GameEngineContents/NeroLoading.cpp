@@ -110,35 +110,35 @@ void NeroLoading::TextStart()
 	FirstLine = CreateComponent<GameEngineFontRenderer>(5);
 	FirstLine->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
 	FirstLine->SetFontFlag(FW1_LEFT);
-	FirstLine->SetScale(20);
+	FirstLine->SetScale(22);
 	FirstLine->SetColor(float4(0.48f,0.556f,0.623f));
 	FirstLine->GetTransform()->SetLocalPosition({ 141.0f,80.f,0.0f });
 
 	SecoundLine = CreateComponent<GameEngineFontRenderer>(5);
 	SecoundLine->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
 	SecoundLine->SetFontFlag(FW1_LEFT);
-	SecoundLine->SetScale(20);
+	SecoundLine->SetScale(22);
 	SecoundLine->SetColor(float4(0.48f, 0.556f, 0.623f));
 	SecoundLine->GetTransform()->SetLocalPosition({ 141.0f,47.5f,0.0f });
 
 	ThirdLine = CreateComponent<GameEngineFontRenderer>(5);
 	ThirdLine->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
 	ThirdLine->SetFontFlag(FW1_LEFT);
-	ThirdLine->SetScale(20);
+	ThirdLine->SetScale(22);
 	ThirdLine->SetColor(float4(0.48f, 0.556f, 0.623f));
 	ThirdLine->GetTransform()->SetLocalPosition({ 141.0f,14.0f,0.0f });
 
 	ForthLine = CreateComponent<GameEngineFontRenderer>(5);
 	ForthLine->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
 	ForthLine->SetFontFlag(FW1_LEFT);
-	ForthLine->SetScale(20);
+	ForthLine->SetScale(22);
 	ForthLine->SetColor(float4(0.48f, 0.556f, 0.623f));
 	ForthLine->GetTransform()->SetLocalPosition({ 141.0f,-19.0f,0.0f });
 
 	FifthLine = CreateComponent<GameEngineFontRenderer>(5);
 	FifthLine->SetFont("³ª´®¹Ù¸¥°íµñ ¿¾ÇÑ±Û");
 	FifthLine->SetFontFlag(FW1_LEFT);
-	FifthLine->SetScale(20);
+	FifthLine->SetScale(22);
 	FifthLine->SetColor(float4(0.48f, 0.556f, 0.623f));
 	FifthLine->GetTransform()->SetLocalPosition({ 141.0f,-52.0f,0.0f });
 	
