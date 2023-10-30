@@ -860,11 +860,11 @@ void Enemy_ProtoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 				|| EnemyHitDirect::Forward == EnemyHitDirValue
 				|| EnemyHitDirect::Forward == EnemyHitDirValue)
 			{
-				ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Death_Back);
+				ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Death_Front, Obj);
 			}
 			else if (EnemyHitDirect::Back == EnemyHitDirValue)
 			{
-				ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Death_Back);
+				ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Death_Back, Obj);
 			}
 			return;
 		}

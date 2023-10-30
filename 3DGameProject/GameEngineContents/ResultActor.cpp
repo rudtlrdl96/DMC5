@@ -585,11 +585,12 @@ FSM.CreateState({ .StateValue = ResultState_Credit,
 	Timer += _DeltaTime;
 	float Ratio = std::sinf(std::min<float>(1.0f, Timer) * GameEngineMath::PIE * 0.5f);
 
-	if (GameEngineInput::IsAnyKey())
+	if (true == GameEngineInput::IsAnyKey())
 	{
 		GameEngineSound::Play("Result_SFX_5.wav");
 		FSM.ChangeState(ResultState_Rank1);
 	}
+
 	CreditActor->GetTransform()->SetLocalPosition(float4::Lerp({ -1600, 0, 0 }, float4::ZERO, Ratio));
 	GlassParts_1->GetTransform()->AddLocalRotation(float4::ONE * _DeltaTime);
 },
