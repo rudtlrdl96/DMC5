@@ -22,6 +22,7 @@
 #include "ZoomEffect.h"
 #include "BWColorEffect.h"
 #include "BGMPlayer.h"
+#include "EventZone.h"
 Location11_Level::Location11_Level()
 {
 
@@ -103,11 +104,12 @@ void Location11_Level::LevelChangeStart()
 	GetDirectionalLight()->SetLightColor({ 0.5f,0.5,1.f });
 
 	StageBaseLevel::LevelChangeStart();
-	SetCamera({ 0, 0, 0});
+	SetCamera({ 0, 0, 0 });
 	CreateStage(Location11_StageDatas[0]);
 	//AcWallCol.lock()->RenderOn();
 	//AcGroundCol.lock()->RenderOn();
 
+	EventZone::ServerPlayerCount = BasePlayerActor::GetPlayers().size();
 	// 플레이어 생성전 플레이어 벡터 초기화
 	BasePlayerActor::LevelChangeClear(this);
 
@@ -144,17 +146,18 @@ void Location11_Level::LevelChangeStart()
 			}
 		});
 
-	if (false == NetworkManager::IsClient())
-	{
-		std::shared_ptr<CavaliereAngelo> Cavaliere = Poolable<CavaliereAngelo>::PopFromPool(this, static_cast<int>(ActorOrder::Enemy));
-		Cavaliere->GetPhysXComponent()->SetWorldPosition({ -35500, 1950, -365 });
-		Cavaliere->GetPhysXComponent()->SetWorldRotation({ 0.0f, 90.0f, 0.0f });
-		MainPlayer->SetBossCam(Cavaliere->GetTransform());
-	}
-
 	AcSkyBox.lock()->SetSkyBloom(1);
 
 	BGMPlayer::SetBossBGM();
+
+	if (false == NetworkManager::IsClient())
+	{
+		CreateEventZone();
+	}
+	NetworkManager::PushNetworkEvent(Net_EventType::Location11_Start, [=]
+		{
+			CutSceneStart();
+		});
 }
 
 void Location11_Level::LevelChangeToResultLevel()
@@ -164,5 +167,35 @@ void Location11_Level::LevelChangeToResultLevel()
 		{
 			GameEngineCaptureTexture::CaptureTexture("Capture_Result", GameEngineWindow::GetScreenSize(), GetLevel()->GetMainCamera()->GetCamTarget());
 			GameEngineCore::ChangeLevel("ResultLevel");
+		});
+}
+
+void Location11_Level::CreateEventZone()
+{
+	std::shared_ptr<EventZone> NewEvent = CreateActor<EventZone>();
+	NewEvent->GetTransform()->SetWorldPosition({ -32700, 2389, -290 });
+	NewEvent->GetTransform()->SetWorldScale({ 5000, 1110, 3000 });
+	NewEvent->SetEvent([this]
+		{
+			std::shared_ptr<CavaliereAngelo> Cavaliere = Poolable<CavaliereAngelo>::PopFromPool(this, static_cast<int>(ActorOrder::Enemy));
+			Cavaliere->GetPhysXComponent()->SetWorldPosition({ -35500, 1950, -365 });
+			Cavaliere->GetPhysXComponent()->SetWorldRotation({ 0.0f, 90.0f, 0.0f });
+			MainPlayer->SetBossCam(Cavaliere->GetTransform());
+			NetworkManager::ExcuteNetworkEvent(Net_EventType::Location11_Start);
+			CutSceneStart();
+		});
+
+}
+
+void Location11_Level::CutSceneStart()
+{
+	BasePlayerActor::GetMainPlayer()->SetCutScene({ -33314, 3107, -1659 }, { -33767, 3100, -1517 }, { 21, 47, 0 }, { 27, 27, 0 }, 3.0f);
+	TimeEvent.AddEvent(3.0f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* TimeEvent)
+		{
+			BasePlayerActor::GetMainPlayer()->SetCutScene({ -34184, 3671, -414 }, { -34244, 2300, -411 }, { -6, -90, 0 }, { 0, -90, 0 }, 5.0f);
+		});
+	TimeEvent.AddEvent(8.0f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* TimeEvent)
+		{
+			BasePlayerActor::GetMainPlayer()->SetCutScene({ -35000, 2000, -365 }, { -35000, 2000, -365 }, { 0, -90, 0 }, { 0, -90, 0 }, 5.0f);
 		});
 }

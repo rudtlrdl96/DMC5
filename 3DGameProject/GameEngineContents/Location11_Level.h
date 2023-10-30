@@ -23,6 +23,9 @@ protected:
 private:
 	// 결과화면 레벨로 이동합니다. 레벨 전환전 스크린샷을 촬영합니다.
 	void LevelChangeToResultLevel();
+	void CreateEventZone();
+	void CutSceneStart();
+
 	std::shared_ptr<class CavaliereAngelo> BossMonster = nullptr;
 	std::shared_ptr<class BasePlayerActor> MainPlayer = nullptr;
 };

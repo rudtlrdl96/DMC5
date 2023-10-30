@@ -7,6 +7,7 @@
 
 #include "BasePlayerActor.h"
 
+size_t EventZone::ServerPlayerCount = -1;
 EventZone::EventZone()
 {
 
@@ -59,6 +60,11 @@ void EventZone::Update(float _DeltaTime)
 
 	if (Option == EventZoneOption::AllPlayer)
 	{
+		if (0 < ServerPlayerCount && Temp.size() != ServerPlayerCount)
+		{
+			return;
+		}
+
 		if (Temp.size() == PlayerCount)
 		{
 			Event();
