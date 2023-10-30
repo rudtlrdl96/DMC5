@@ -92,6 +92,7 @@ private:
 		ResultState_Text3,
 		ResultState_Text4,
 		ResultState_Text5,
+		ResultState_None,
 	};
 };
 

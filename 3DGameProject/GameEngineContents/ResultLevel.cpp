@@ -19,7 +19,7 @@ void ResultLevel::Start()
 	GetMainCamera()->SetProjectionType(CameraType::Perspective);
 
 	//GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
-	//GetLastTarget()->CreateEffect<FadeEffect>();
+	GetLastTarget()->CreateEffect<FadeEffect>();
 }
 
 void ResultLevel::Update(float _DeltaTime)
@@ -106,7 +106,6 @@ void ResultLevel::LevelChangeStart()
 	}
 
 	BGMPlayer::SetClearBGM();
-
 	Actor = CreateActor<ResultActor>();
 }
 

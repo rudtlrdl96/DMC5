@@ -6,6 +6,7 @@
 #include <GameEngineCore/GameEngineUIRenderer.h>
 #include "RankUI.h"
 #include "BasePlayerActor.h"
+#include "FadeEffect.h"
 ResultActor::ResultActor()
 {
 }
@@ -585,7 +586,7 @@ FSM.CreateState({ .StateValue = ResultState_Credit,
 	Timer += _DeltaTime;
 	float Ratio = std::sinf(std::min<float>(1.0f, Timer) * GameEngineMath::PIE * 0.5f);
 
-	if (true == GameEngineInput::IsAnyKey())
+	if (GameEngineInput::IsDown("UI_Enter"))
 	{
 		GameEngineSound::Play("Result_SFX_5.wav");
 		FSM.ChangeState(ResultState_Rank1);
@@ -824,36 +825,58 @@ FSM.CreateState({ .StateValue = ResultState_Text5,
 	ResultText_6_Num->SetAlpha(Timer);
 	TextBackgroundBar_4->ColorOptionValue.MulColor.a = Timer;
 	TextBackground_3->ColorOptionValue.MulColor.a = Timer * 0.5f;
+
+	if (GameEngineInput::IsDown("UI_Enter"))
+	{
+		FadeEffect::GetFadeEffect()->FadeOut(0.3f);
+		FSM.ChangeState(ResultState_None);
+		GetLevel()->TimeEvent.AddEvent(0.32f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* TimeEvent)
+			{
+				GameEngineCore::ChangeLevel("TitleLevel");
+			});
+		return;
+	}
 	},
 .End = [=]
 {
 
 }
 	});
+FSM.CreateState({ .StateValue = ResultState_None,
+.Start = [this]
+{
+},
+.Update = [=](float _DeltaTime)
+{
+},
+.End = [=]
+{
 
+}
+});
 	FSM.ChangeState(ResultState_Wait);
 
 }
 
 void ResultActor::Update(float _DeltaTime)
 {
-	static bool IsStop = false;
-	if (true == IsStop)
-	{
-		if (GameEngineInput::IsDown("Player_Exceed"))
-		{
-			IsStop = false;
-		}
-		return; 
-	}
+	//static bool IsStop = false;
+	//if (true == IsStop)
+	//{
+	//	if (GameEngineInput::IsDown("Player_Exceed"))
+	//	{
+	//		IsStop = false;
+	//	}
+	//	return; 
+	//}
 	FSM.Update(_DeltaTime);
 
-	if (GameEngineInput::IsDown("Player_GT_Bomb"))
-	{
-		FSM.ChangeState(ResultState_Wait);
-	}
-	if (GameEngineInput::IsDown("Player_Exceed"))
-	{
-		IsStop = true;
-	}
+	//if (GameEngineInput::IsDown("Player_GT_Bomb"))
+	//{
+	//	FSM.ChangeState(ResultState_Wait);
+	//}
+	//if (GameEngineInput::IsDown("Player_Exceed"))
+	//{
+	//	IsStop = true;
+	//}
 }
