@@ -12,6 +12,7 @@
 #include "BasePlayerActor.h"
 #include "AttackCollision.h"
 #include "FXSystem.h"
+#include "Player_MirageBlade.h"
 Enemy_Empusa::Enemy_Empusa() 
 {
 }
@@ -224,16 +225,22 @@ void Enemy_Empusa::Start()
 				return;
 			}
 			BasePlayerActor* _Player = dynamic_cast<BasePlayerActor*>(_Actors[0]);
+			DamageData Datas;
 			if (nullptr == _Player)
 			{
-				MsgAssert("잘못된 DamageCallBack 이벤트입니다");
+				Player_MirageBlade* _Mirage = dynamic_cast<Player_MirageBlade*>(_Actors[0]);
+				Datas = _Mirage->Collision->GetDamage();
 				return;
+			}
+			else
+			{
+				Datas = _Player->GetAttackCollision()->GetDamage();
 			}
 			//Player = _Player;
 
 			//DamageData Datas = Player->GetAttackCollision()->GetDamage();
 			MonsterAttackCollision->Off();
-			DamageData Datas = _Player->GetAttackCollision()->GetDamage();
+			Datas = _Player->GetAttackCollision()->GetDamage();
 			PlayDamageEvent(Datas.DamageTypeValue, Datas.SoundType);
 			MinusEnemyHP(Datas.DamageValue);
 			Sound.PlayVoiceRandom(4, 5, false);
@@ -252,11 +259,22 @@ void Enemy_Empusa::Start()
 			}
 		});
 
-	SetDamagedNetCallBack<BasePlayerActor>([this](BasePlayerActor* _Attacker) {
-		Player = _Attacker;
+	SetDamagedNetCallBack<NetworkObjectBase>([this](NetworkObjectBase* _Attacker) {
+		BasePlayerActor* _Player = dynamic_cast<BasePlayerActor*>(_Attacker);
+		DamageData Datas;
+		if (nullptr == _Player)
+		{
+			Player_MirageBlade* _Mirage = dynamic_cast<Player_MirageBlade*>(_Attacker);
+			Datas = _Mirage->Collision->GetDamage();
+			return;
+		}
+		else
+		{
+			Datas = _Player->GetAttackCollision()->GetDamage();
+			Player = _Player;
+		}
 
 		MonsterAttackCollision->Off();
-		DamageData Datas = _Attacker->GetAttackCollision()->GetDamage();
 		PlayDamageEvent(Datas.DamageTypeValue, Datas.SoundType);
 		MinusEnemyHP(Datas.DamageValue);
 		Sound.PlayVoiceRandom(4, 5, false);
@@ -573,6 +591,8 @@ void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 	PlayDamageEvent(Data.DamageTypeValue, Data.SoundType);
 	Sound.PlayVoiceRandom(4, 5, false);
 
+	NetworkObjectBase* Obj = dynamic_cast<NetworkObjectBase*>(AttackCol->GetActor());
+
 	if (DamageType::VergilLight == Data.DamageTypeValue)
 	{
 		Data.DamageTypeValue = DamageType::Light;
@@ -593,14 +613,14 @@ void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 		if (true == IsAirAttack || true == IsSlamAttack || true == IsHeavyAttack)
 		{
 			StartRenderShaking(8);
-			ChangeState_Client(FSM_State_Empusa::Empusa_Air_Damage_Under);
+			ChangeState_Client(FSM_State_Empusa::Empusa_Air_Damage_Under, Obj);
 			return;
 		}
 
 		if (true == IsCollapse)
 		{
 			StartRenderShaking(8);
-			ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
+			ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Obj });
 			return;
 		}
 
@@ -609,16 +629,16 @@ void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 		switch (EnemyHitDirValue)
 		{
 		case EnemyHitDirect::Forward:
-			ChangeState_Client(FSM_State_Empusa::Empusa_Standing_Damage_Weak_Front);
+			ChangeState_Client(FSM_State_Empusa::Empusa_Standing_Damage_Weak_Front, Obj);
 			break;
 		case EnemyHitDirect::Back:
-			ChangeState_Client(FSM_State_Empusa::Empusa_Standing_Damage_Weak_Back);
+			ChangeState_Client(FSM_State_Empusa::Empusa_Standing_Damage_Weak_Back, Obj);
 			break;
 		case EnemyHitDirect::Left:
-			ChangeState_Client(FSM_State_Empusa::Empusa_Standing_Damage_Weak_Left);
+			ChangeState_Client(FSM_State_Empusa::Empusa_Standing_Damage_Weak_Left, Obj);
 			break;
 		case EnemyHitDirect::Right:
-			ChangeState_Client(FSM_State_Empusa::Empusa_Standing_Damage_Weak_Right);
+			ChangeState_Client(FSM_State_Empusa::Empusa_Standing_Damage_Weak_Right, Obj);
 			break;
 		default:
 			break;
@@ -626,23 +646,23 @@ void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 		break;
 
 	case DamageType::Heavy:
-		ChangeState_Client(FSM_State_Empusa::Empusa_Blown_Back);
+		ChangeState_Client(FSM_State_Empusa::Empusa_Blown_Back, Obj);
 		break;
 	case DamageType::Air:
-		ChangeState_Client(FSM_State_Empusa::Empusa_Air_Damage);
+		ChangeState_Client(FSM_State_Empusa::Empusa_Air_Damage, Obj);
 		break;
 	case DamageType::Snatch:
-		ChangeState_Client(FSM_State_Empusa::Empusa_Snatch);
+		ChangeState_Client(FSM_State_Empusa::Empusa_Snatch, Obj);
 		break;
 	case DamageType::Slam:
-		ChangeState_Client(FSM_State_Empusa::Empusa_Slam_Damage);
+		ChangeState_Client(FSM_State_Empusa::Empusa_Slam_Damage, Obj);
 		break;
 	case DamageType::Buster:
-		ChangeState_Client(FSM_State_Empusa::Empusa_Buster_Start);
+		ChangeState_Client(FSM_State_Empusa::Empusa_Buster_Start, Obj);
 		break;
 	case DamageType::Stun:
 		AttackDelayCheck = 1.0f;
-		ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Player });
+		ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Obj });
 		break;
 	default:
 		break;
@@ -749,11 +769,11 @@ void Enemy_Empusa::ChangeState(int _StateValue)
 	IsChangeState = true;
 }
 
-void Enemy_Empusa::ChangeState_Client(int _StateValue)
+void Enemy_Empusa::ChangeState_Client(int _StateValue, NetworkObjectBase* _Obj)
 {
 	EnemyFSM.ChangeState(_StateValue);
 	EnemyFSMValue = _StateValue;
-	NetworkManager::SendFsmChangePacket(this, _StateValue, Player);
+	NetworkManager::SendFsmChangePacket(this, _StateValue, _Obj);
 }
 
 void Enemy_Empusa::EnemyCreateFSM()
