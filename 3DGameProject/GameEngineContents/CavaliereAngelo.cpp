@@ -310,6 +310,7 @@ void CavaliereAngelo::Start()
 	LinkData_UpdatePacket<int>(ParryStack);
 	LinkData_UpdatePacket<int>(HPServerStack);
 	LinkData_UpdatePacket<int>(HPClientStack);
+	LinkData_UpdatePacket<int>(ServerPlayerID);
 
 	BindNetObjEvent(2, [this](std::vector<NetworkObjectBase*> _Actors)
 		{

@@ -295,6 +295,7 @@ void Enemy_HellAntenora::Start()
 	LinkData_UpdatePacket<bool>(DashAttackSetting);
 	LinkData_UpdatePacket<bool>(IsBurn);
 	LinkData_UpdatePacket<int>(EnemyHP);
+	LinkData_UpdatePacket<int>(ServerPlayerID);
 
 	BindNetObjEvent(2, [this](std::vector<NetworkObjectBase*> _Actors)
 		{
@@ -372,6 +373,11 @@ void Enemy_HellAntenora::Start()
 		}
 
 		IsChangeState = true;
+		});
+
+	BindNetObjEvent(3, [this](std::vector<NetworkObjectBase*> _Actors)
+		{
+			BusterEnd_Client();
 		});
 }
 
@@ -2278,6 +2284,10 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	},
 	.End = [=] {
 	BusterEnd();
+	if (true == NetworkManager::IsServer())
+	{
+		ExcuteNetObjEvent(3, NetObjEventPath::ActiveToPassive, { Player });
+	}
 	}
 		});
 	// 버스트 히트 루프
@@ -2779,6 +2789,7 @@ void Enemy_HellAntenora::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Buster_Start,
 	.Start = [=] {
+	BusterCalculation_Client(float4{ 0.f, -45.f, 0.f });
 	EnemyRenderer->ChangeAnimation("em0001_air_damage_gun");
 	},
 	.Update = [=](float _DeltaTime) {

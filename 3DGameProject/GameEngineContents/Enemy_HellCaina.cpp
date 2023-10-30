@@ -226,6 +226,7 @@ void Enemy_HellCaina::Start()
 	LinkData_UpdatePacket<bool>(IsCollapse);
 	LinkData_UpdatePacket<bool>(IsBurn);
 	LinkData_UpdatePacket<int>(EnemyHP);
+	LinkData_UpdatePacket<int>(ServerPlayerID);
 
 	BindNetObjEvent(2, [this](std::vector<NetworkObjectBase*> _Actors)
 		{
@@ -298,6 +299,11 @@ void Enemy_HellCaina::Start()
 		}
 
 		IsChangeState = true;
+		});
+
+	BindNetObjEvent(3, [this](std::vector<NetworkObjectBase*> _Actors)
+		{
+			BusterEnd_Client();
 		});
 }
 
@@ -1859,6 +1865,10 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	},
 	.End = [=] {
 	BusterEnd();
+	if (true == NetworkManager::IsServer())
+	{
+		ExcuteNetObjEvent(3, NetObjEventPath::ActiveToPassive, { Player });
+	}
 	}
 		});
 	// 버스트 히트 루프
@@ -2312,6 +2322,7 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	// em0000_Buster_Start, 버스트 히트 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Buster_Start,
 	.Start = [=] {
+	BusterCalculation_Client(float4{ 0.f, -45.f, 0.f });
 	EnemyRenderer->ChangeAnimation("em0000_Buster_Start");
 	},
 	.Update = [=](float _DeltaTime) {

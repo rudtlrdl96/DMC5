@@ -301,6 +301,7 @@ void Enemy_ProtoAngelo::Start()
 	LinkData_UpdatePacket<bool>(ParryOkay);
 	LinkData_UpdatePacket<bool>(IsSuperArmor);
 	LinkData_UpdatePacket<int>(EnemyHP);
+	LinkData_UpdatePacket<int>(ServerPlayerID);
 
 	BindNetObjEvent(2, [this](std::vector<NetworkObjectBase*> _Actors)
 		{
@@ -378,6 +379,11 @@ void Enemy_ProtoAngelo::Start()
 			DeathValue = true;
 		}
 
+		});
+
+	BindNetObjEvent(3, [this](std::vector<NetworkObjectBase*> _Actors)
+		{
+			BusterEnd_Client();
 		});
 }
 
@@ -2323,6 +2329,10 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	},
 	.End = [=] {
 	BusterEnd();
+	if (true == NetworkManager::IsServer())
+	{
+		ExcuteNetObjEvent(3, NetObjEventPath::ActiveToPassive, { Player });
+	}
 	}
 		});
 	// 버스트 히트 루프

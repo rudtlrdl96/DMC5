@@ -322,6 +322,7 @@ void Enemy_ScudoAngelo::Start()
 	LinkData_UpdatePacket<bool>(ParryOkay);
 	LinkData_UpdatePacket<bool>(IsSuperArmor);
 	LinkData_UpdatePacket<int>(EnemyHP);
+	LinkData_UpdatePacket<int>(ServerPlayerID);
 
 	BindNetObjEvent(2, [this](std::vector<NetworkObjectBase*> _Actors)
 		{
@@ -404,6 +405,11 @@ void Enemy_ScudoAngelo::Start()
 		}
 
 		IsChangeState = true;
+		});
+
+	BindNetObjEvent(3, [this](std::vector<NetworkObjectBase*> _Actors)
+		{
+			BusterEnd_Client();
 		});
 }
 
@@ -2257,6 +2263,10 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	},
 	.End = [=] {
 	BusterEnd();
+	if (true == NetworkManager::IsServer())
+	{
+		ExcuteNetObjEvent(3, NetObjEventPath::ActiveToPassive, { Player });
+	}
 	}
 		});
 	// 버스트 히트 루프
@@ -2678,6 +2688,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Buster_Start,
 	.Start = [=] {
+	BusterCalculation_Client(float4{ 0.f, -45.f, 0.f });
 	EnemyRenderer->ChangeAnimation("em0600_Air_Buster");
 	},
 	.Update = [=](float _DeltaTime) {
