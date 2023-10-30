@@ -527,6 +527,6 @@ void ContentsCore::SetOption()
 #ifdef _DEBUG
 	GameEngineOption::ChangeOption("DynamicShadow", GameEngineOptionValue::None);
 #else
-	GameEngineOption::ChangeOption("DynamicShadow", GameEngineOptionValue::Low);
+	GameEngineOption::ChangeOption("DynamicShadow", GameEngineOptionValue::None);
 #endif // _DEBUG
 }

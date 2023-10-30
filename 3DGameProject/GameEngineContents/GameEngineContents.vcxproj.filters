@@ -573,6 +573,9 @@
     <ClInclude Include="tunnelWallLight.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L11</Filter>
     </ClInclude>
+    <ClInclude Include="Location19_EnemySpawner.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\EnemySpawner</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -1140,6 +1143,9 @@
     </ClCompile>
     <ClCompile Include="tunnelWallLight.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L11</Filter>
+    </ClCompile>
+    <ClCompile Include="Location19_EnemySpawner.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\EnemySpawner</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

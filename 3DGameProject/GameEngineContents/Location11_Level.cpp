@@ -137,12 +137,15 @@ void Location11_Level::LevelChangeStart()
 			if (true == NetworkManager::IsClient())
 			{
 				_ActorPtr->SetControll(NetControllType::PassiveControll);
-				_ActorPtr->PushDeathCallback(std::bind(&Location11_Level::LevelChangeToResultLevel, this));
 			}
 			else
 			{
 				NetworkManager::LinkNetwork(_ActorPtr.get(), this);
-				_ActorPtr->PushDeathCallback(std::bind(&Location11_Level::LevelChangeToResultLevel, this));
+				_ActorPtr->PushDeathCallback([this]
+					{
+						NetworkManager::ExcuteNetworkEvent(Net_EventType::Location11_End);
+						BossDeathEvent();
+					});
 			}
 		});
 
@@ -157,6 +160,10 @@ void Location11_Level::LevelChangeStart()
 	NetworkManager::PushNetworkEvent(Net_EventType::Location11_Start, [=]
 		{
 			CutSceneStart();
+		});
+	NetworkManager::PushNetworkEvent(Net_EventType::Location11_End, [=]
+		{
+			BossDeathEvent();
 		});
 }
 
@@ -197,5 +204,21 @@ void Location11_Level::CutSceneStart()
 	TimeEvent.AddEvent(8.0f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* TimeEvent)
 		{
 			BasePlayerActor::GetMainPlayer()->SetCutScene({ -35000, 2000, -365 }, { -35000, 2000, -365 }, { 0, -90, 0 }, { 0, -90, 0 }, 5.0f);
+		});
+}
+
+void Location11_Level::BossDeathEvent()
+{
+	BGMPlayer::SetBattleEnd();
+	ZoomEffect::GetZoomEffect()->SetSpeed(6.0f);
+	ZoomEffect::GetZoomEffect()->EffectOn(1.5f);
+	float BeforeTimeScale = GameEngineTime::GlobalTime.GetGlobalTimeScale();
+	GameEngineTime::GlobalTime.SetGlobalTimeScale(0.5f);
+	GetLevel()->TimeEvent.AddEvent(1.0f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+		{
+			GameEngineTime::GlobalTime.SetGlobalTimeScale(BeforeTimeScale);
+			ZoomEffect::GetZoomEffect()->SetSpeed(3.0f);
+			ZoomEffect::GetZoomEffect()->EffectOff();
+			LevelChangeToResultLevel();
 		});
 }

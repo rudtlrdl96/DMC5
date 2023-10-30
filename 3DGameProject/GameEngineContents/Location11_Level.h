@@ -25,6 +25,7 @@ private:
 	void LevelChangeToResultLevel();
 	void CreateEventZone();
 	void CutSceneStart();
+	void BossDeathEvent();
 
 	std::shared_ptr<class CavaliereAngelo> BossMonster = nullptr;
 	std::shared_ptr<class BasePlayerActor> MainPlayer = nullptr;
