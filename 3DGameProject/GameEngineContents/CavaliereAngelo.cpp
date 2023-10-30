@@ -378,7 +378,7 @@ void CavaliereAngelo::Start()
 		{
 			HPServerStack = 0;
 			HPClientStack = 0;
-			Player = _Attacker;
+			Player = _Player;
 		}
 
 		if (DamageType::VergilLight == Datas.DamageTypeValue)

@@ -2316,11 +2316,13 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Buster_Start,
 	.Start = [=] {
+	BusterCalculation(float4{ 0.f, -45.f, 0.f });
 	EnemyRenderer->ChangeAnimation("em0100_air_damage_under");
 	},
 	.Update = [=](float _DeltaTime) {
 	},
 	.End = [=] {
+	BusterEnd();
 	}
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Buster_Loop,
