@@ -331,6 +331,7 @@ void EffectRenderer::CustomOptionSetting()
 			Unit[i][j]->ShaderResHelper.SetConstantBufferLink("EffectVertextData", VertexOption);
 			Unit[i][j]->ShaderResHelper.SetConstantBufferLink("DistortionData", DistortionOption);
 			Unit[i][j]->ShaderResHelper.SetConstantBufferLink("HSVColorData", HSVColor);
+			Unit[i][j]->ShaderResHelper.SetConstantBufferLink("BloomBlurData", BloomColor);
 		}
 	}
 }

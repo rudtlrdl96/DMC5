@@ -46,7 +46,7 @@ void BaseEnemyActor::Start()
 	RN_MonsterCollision->SetColType(ColType::SPHERE3D);
 	// 죽을때 드랍되는 레드오브
 	RedOrbs = CreateComponent<Item_EnemyRedOrb>();
-	EffectRenderer = CreateComponent<FXSystem>();	// 이펙트
+	MonsterEffectRenderer = CreateComponent<FXSystem>();	// 이펙트
 
 	EnemyMeshLoad();
 
@@ -905,12 +905,12 @@ void BaseEnemyActor::PlayDamageEvent(DamageType _Type, DamageSoundType _SoundTyp
 	{
 	case DamageType::VergilLight:
 	case DamageType::Light:
-		EffectRenderer->PlayFX("Enemy_Damage_Light.effect");
+		MonsterEffectRenderer->PlayFX("Enemy_Damage_Light.effect");
 		break;
 	case DamageType::Heavy:
 	case DamageType::Air:
 	case DamageType::Slam:
-		EffectRenderer->PlayFX("Enemy_Damage_Heavy.effect");
+		MonsterEffectRenderer->PlayFX("Enemy_Damage_Heavy.effect");
 		break;
 	default:
 		break;

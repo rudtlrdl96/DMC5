@@ -15,6 +15,8 @@
 #include "AttackCollision.h"
 #include "FXSystem.h"
 #include "Cavaliere_Electric.h"
+#include "EffectRenderer.h"
+
 CavaliereAngelo::CavaliereAngelo()
 {
 }
@@ -91,14 +93,51 @@ void CavaliereAngelo::EnemyMeshLoad()
 
 	std::shared_ptr<GameEngineLight> EffectLight = GetLevel()->CreatePointLight({}, ShadowTextureScale::S_64, 450);
 	EffectLight->GetTransform()->SetParent(WeaponEffectPivot->GetTransform());
-	EffectLight->GetTransform()->SetLocalPosition({0, 200, 0});
+	EffectLight->GetTransform()->SetLocalPosition({0, -200, 0});
 
 	EffectLight->ShadowOff();
-	EffectLight->SetLightPower(3.0f);
-	EffectLight->SetLightColor({ 0.5f, 0.0f, 1.0f });
+	EffectLight->SetLightPower(5.0f);
+	EffectLight->SetLightColor({ 0.5f, 0.2f, 0.7f });
 	EffectLight->IsDebugDraw = true;
 
-	EnemyRenderer->SetAttachTransform("R_WeaponHand", WeaponEffectPivot->GetTransform(), { 0, 0, 0}, {-85, 0, 0}, true);
+	EnemyRenderer->SetAttachTransform("R_WeaponHand", WeaponEffectPivot->GetTransform(), { 0, 0, 0}, {90, 0, 0}, true);
+
+	// CircleLight
+
+	if (nullptr == GameEngineTexture::Find("CavaliereAngeloWeaponEffect.tga"))
+	{
+		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+			{ "Effect", "Texture" },
+			"CavaliereAngeloWeaponEffect.tga");
+
+		GameEngineTexture::Load(Path);
+	}	
+	
+	if (nullptr == GameEngineFBXMesh::Find("wpem5501_00.fbx"))
+	{
+		std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
+			{ "Character", "Enemy", "CavaliereAngelo", "mesh"},
+			"wpem5501_00.fbx");
+
+		GameEngineFBXMesh::Load(Path);
+	}
+
+	{
+		WeaponEffect = CreateComponent<EffectRenderer>();
+
+		WeaponEffect->SetFBXMesh("wpem5501_00.fbx", "Effect_3D");
+
+		WeaponEffect->GetTransform()->SetParent(WeaponEffectPivot->GetTransform());
+		WeaponEffect->GetTransform()->SetLocalPosition({ -6.6f, -38.8f, -1.8f });
+		WeaponEffect->GetTransform()->SetLocalRotation({ 97.0f, 38.0f, 90.0f });
+		WeaponEffect->GetTransform()->SetLocalScale({ 1.3f, 1.3f, 1.05f });
+
+		WeaponEffect->SetTexture("DiffuseTexture", "EngineBaseNormal.png");
+		WeaponEffect->EffectOption.MulColor = { 0.5, 0.2f, 0.7f, 0.2f};
+		WeaponEffect->SetBloomColor({ 2.0f, 0.8f, 2.8f });
+
+		WeaponEffect->SetDistortionTexture("", {0.1f, 0.1f});
+	}
 
 	// 느리구나 쓰러지는 것 조차
 	//SetTimeScale(0.0f);
@@ -106,14 +145,24 @@ void CavaliereAngelo::EnemyMeshLoad()
 
 void CavaliereAngelo::DrawEditor()
 {
-	static float AttRot[4] = { 0, 0, 0, 1};
+	ImGui::Spacing();
 
-	ImGui::DragFloat4("Attach Rot", AttRot, 1.0f);
+	static float AttRot[4] = { 90, 0, 0, 1};
+
+	ImGui::DragFloat4("Attach Rot", AttRot, 1.0f);	
 
 	if (true == ImGui::Button("Weapon Effect Pivot Change"))
 	{
 		EnemyRenderer->SetDettachTransform();
 		EnemyRenderer->SetAttachTransform("R_WeaponHand", WeaponEffectPivot->GetTransform(), { 0, 0, 0 }, { AttRot[0], AttRot[1], AttRot[2] }, true);
+	}
+
+	static float EffectRot[4] = { -90, 0, 0, 1};
+	ImGui::DragFloat4("Effect Rot", EffectRot, 1.0f);
+
+	if (true == ImGui::Button("Weapon Effect Rot Change"))
+	{
+		WeaponEffect->GetTransform()->SetLocalRotation({ EffectRot[0], EffectRot[1], EffectRot[2]});
 	}
 }
 

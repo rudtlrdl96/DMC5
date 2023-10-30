@@ -88,6 +88,7 @@ struct AlphaOutPut
     float4 ResultColor : SV_Target0;
     float4 DistortionColor : SV_Target1;
     float4 MaskTarget : SV_Target2;
+    float4 BloomTarget : SV_Target3;
 };
 
 cbuffer EffectData : register(b2)
@@ -113,6 +114,11 @@ cbuffer DistortionData : register(b3)
 cbuffer HSVColorData : register(b4)
 {
     float4 HSVColor;
+};
+
+cbuffer BloomBlurData : register(b5)
+{
+    float4 BloomBlurColor;
 };
 
 AlphaOutPut MeshTexture_PS(Output _Input)
@@ -168,6 +174,8 @@ AlphaOutPut MeshTexture_PS(Output _Input)
             Result.DistortionColor.y += (UV.y * PatternY) + TimeUV.y;
         }
         
+        
+        
         Result.DistortionColor.a = Result.ResultColor.a;
     }
     
@@ -179,6 +187,9 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     {
         Result.MaskTarget = float4(0, 0, 0, 0);
     }
+        
+    Result.BloomTarget.rgb = BloomBlurColor.rgb * Result.ResultColor.a;
+    Result.BloomTarget.a = BloomBlurColor.a;
     
     return Result;
 }

@@ -124,14 +124,14 @@ void Enemy_Empusa::EnemyAnimationLoad()
 		NewDir.Move("Enemy");
 		std::vector<GameEngineFile> FXFiles = NewDir.GetAllFile({ ".Effect" });
 
-		EffectRenderer = CreateComponent<FXSystem>();
+		MonsterEffectRenderer = CreateComponent<FXSystem>();
 		for (size_t i = 0; i < FXFiles.size(); i++)
 		{
 			if (nullptr == FXData::Find(FXFiles[i].GetFileName()))
 			{
 				FXData::Load(FXFiles[i].GetFullPath());
 			}
-			EffectRenderer->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
+			MonsterEffectRenderer->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
 		}
 	}
 	// 사운드 로드
@@ -790,8 +790,8 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 최초 등장_A
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Appear_A,
 	.Start = [=] {
-	EffectRenderer->PlayFX("Enemy_Appear.effect");
-	EnemyRenderer->ChangeAnimation("em0100_enter_ground_A");
+	MonsterEffectRenderer->PlayFX("Enemy_Appear.effect");
+	EnemyRenderer->ChangeAnimation("em0100_enter_ground_A"); 
 	},
 	.Update = [=](float _DeltaTime) {
 	EnemyRenderer->On();
@@ -808,7 +808,7 @@ void Enemy_Empusa::EnemyCreateFSM()
 	// 최초 등장_B
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Appear_B,
 	.Start = [=] {
-	EffectRenderer->PlayFX("Enemy_Appear.effect");
+	MonsterEffectRenderer->PlayFX("Enemy_Appear.effect");
 	EnemyRenderer->ChangeAnimation("em0100_enter_ground_B");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1941,7 +1941,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 {
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Appear_A,
 	.Start = [=] {
-	EffectRenderer->PlayFX("Enemy_Appear.effect");
+	MonsterEffectRenderer->PlayFX("Enemy_Appear.effect");
 	EnemyRenderer->ChangeAnimation("em0100_enter_ground_A");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1951,7 +1951,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Appear_B,
 	.Start = [=] {
-	EffectRenderer->PlayFX("Enemy_Appear.effect");
+	MonsterEffectRenderer->PlayFX("Enemy_Appear.effect");
 	EnemyRenderer->ChangeAnimation("em0100_enter_ground_B");
 	},
 	.Update = [=](float _DeltaTime) {

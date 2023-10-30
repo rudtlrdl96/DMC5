@@ -217,6 +217,7 @@ void GameEngineCamera::RenderTargetTextureLoad()
 	CamAlphaTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 	CamAlphaTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 	CamAlphaTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
+	CamAlphaTarget->AddNewTexture(DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT, GameEngineWindow::GetScreenSize(), float4::ZERONULL);
 	CamAlphaTarget->SetDepthTexture(CamTarget->GetDepthTexture());
 
 	IsLoad = true;
@@ -758,6 +759,11 @@ void GameEngineCamera::Render(float _DeltaTime)
 				CalLightUnit.Render(_DeltaTime);
 				++GetLevel()->LightDataObject.LightCount;
 			}
+
+			DeferredLightTarget->Setting(1);
+			GameEngineRenderTarget::MergeUnit.ShaderResHelper.SetTexture("DiffuseTex", CamAlphaTarget->Textures[3]);
+			GameEngineRenderTarget::MergeUnit.Render(0.0f);
+			GameEngineRenderTarget::MergeUnit.ShaderResHelper.AllResourcesReset();
 
 			DeferredLightTarget->Effect(_DeltaTime);
 			CalLightUnit.ShaderResHelper.AllResourcesReset();

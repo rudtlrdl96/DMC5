@@ -173,14 +173,14 @@ void Enemy_ScudoAngelo::EnemyAnimationLoad()
 		NewDir.Move("Enemy");
 		std::vector<GameEngineFile> FXFiles = NewDir.GetAllFile({ ".Effect" });
 
-		EffectRenderer = CreateComponent<FXSystem>();
+		MonsterEffectRenderer = CreateComponent<FXSystem>();
 		for (size_t i = 0; i < FXFiles.size(); i++)
 		{
 			if (nullptr == FXData::Find(FXFiles[i].GetFileName()))
 			{
 				FXData::Load(FXFiles[i].GetFullPath());
 			}
-			EffectRenderer->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
+			MonsterEffectRenderer->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
 		}
 	}
 
@@ -463,7 +463,7 @@ void Enemy_ScudoAngelo::ParryTime()
 void Enemy_ScudoAngelo::PlayDamageEvent(DamageSoundType _Type)
 {
 	Sound.PlayVoiceRandom(1, 2);
-	EffectRenderer->PlayFX("Enemy_Damage_Heavy.effect");
+	MonsterEffectRenderer->PlayFX("Enemy_Damage_Heavy.effect");
 
 	switch (_Type)
 	{
@@ -1023,7 +1023,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	// 최초 등장
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Appear_01,
 	.Start = [=] {
-	EffectRenderer->PlayFX("Enemy_Appear.effect");
+	MonsterEffectRenderer->PlayFX("Enemy_Appear.effect");
 	EnemyRenderer->ChangeAnimation("em0600_Appear_01");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2278,7 +2278,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM_Client()
 	// 최초 등장
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Appear_01,
 	.Start = [=] {
-	EffectRenderer->PlayFX("Enemy_Appear.effect");
+	MonsterEffectRenderer->PlayFX("Enemy_Appear.effect");
 	EnemyRenderer->ChangeAnimation("em0600_Appear_01");
 	},
 	.Update = [=](float _DeltaTime) {

@@ -4,10 +4,12 @@
 
 class GameEngineRenderTarget;
 class GameEngineLevel;
+class GameEngineCamera;
 class GameEnginePostProcess : std::enable_shared_from_this<GameEnginePostProcess>
 {
 	friend GameEngineRenderTarget;
-	friend  GameEngineLevel;
+	friend GameEngineLevel;
+	friend GameEngineCamera;
 
 public:
 	std::shared_ptr<GameEngineRenderTarget> ResultTarget;
@@ -27,6 +29,7 @@ class GameEngineRenderTarget : public GameEngineResource<GameEngineRenderTarget>
 	friend class GameEngineCoreWindow;
 	friend class GameEngineCore;
 	friend class GameEngineLevel;
+	friend class GameEngineCamera;
 
 public:
 	// constrcuter destructer

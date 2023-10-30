@@ -154,14 +154,14 @@ void Enemy_ProtoAngelo::EnemyAnimationLoad()
 		NewDir.Move("Enemy");
 		std::vector<GameEngineFile> FXFiles = NewDir.GetAllFile({ ".Effect" });
 
-		EffectRenderer = CreateComponent<FXSystem>();
+		MonsterEffectRenderer = CreateComponent<FXSystem>();
 		for (size_t i = 0; i < FXFiles.size(); i++)
 		{
 			if (nullptr == FXData::Find(FXFiles[i].GetFileName()))
 			{
 				FXData::Load(FXFiles[i].GetFullPath());
 			}
-			EffectRenderer->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
+			MonsterEffectRenderer->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
 		}
 	}
 
@@ -437,7 +437,7 @@ void Enemy_ProtoAngelo::PlayDamageEvent(DamageSoundType _Type, bool _PlayVoice)
 	{
 		Sound.PlayVoiceRandom(14, 16);
 	}
-	EffectRenderer->PlayFX("Enemy_Damage_Heavy.effect");
+	MonsterEffectRenderer->PlayFX("Enemy_Damage_Heavy.effect");
 
 	switch (_Type)
 	{
@@ -911,7 +911,7 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	// 최초 등장_02
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Appear_01,
 	.Start = [=] {
-	EffectRenderer->PlayFX("Enemy_Appear.effect");
+	MonsterEffectRenderer->PlayFX("Enemy_Appear.effect");
 	EnemyRenderer->ChangeAnimation("em0601_Appear_01");
 	},
 	.Update = [=](float _DeltaTime) {

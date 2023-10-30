@@ -62,6 +62,12 @@ public:
 	float PatternY = 1.0f;
 };
 
+class BloomBlurData
+{
+public:
+	float4 BloomBlurColor = float4::ZERONULL;
+};
+
 // 설명 : 해당 랜더러는 Effect 전용 렌더러 입니다 Effect_2D 또는 Effect_3D 머티리얼을 사용해야 합니다.
 class EffectRenderer : public GameEngineFBXRenderer
 {
@@ -203,6 +209,11 @@ public:
 		HSVColor.b = _contrast;
 	}
 
+	inline void SetBloomColor(const float4& _Color)
+	{
+		BloomColor.BloomBlurColor = _Color;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -210,6 +221,7 @@ protected:
 private:
 	EffectVertextData VertexOption = EffectVertextData();
 	DistortionData DistortionOption = DistortionData();
+	BloomBlurData BloomColor = BloomBlurData();
 	float4 HSVColor = { 0.5f, 0.5f, 0.5f, 0.5f};
 
 	std::map<std::string, std::shared_ptr<AnimationInfo>> Animations;

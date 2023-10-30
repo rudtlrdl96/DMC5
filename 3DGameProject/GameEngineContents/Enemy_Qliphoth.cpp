@@ -123,14 +123,14 @@ void Enemy_Qliphoth::EnemyAnimationLoad()
 		NewDir.Move("Enemy");
 		std::vector<GameEngineFile> FXFiles = NewDir.GetAllFile({ ".Effect" });
 
-		EffectRenderer = CreateComponent<FXSystem>();
+		MonsterEffectRenderer = CreateComponent<FXSystem>();
 		for (size_t i = 0; i < FXFiles.size(); i++)
 		{
 			if (nullptr == FXData::Find(FXFiles[i].GetFileName()))
 			{
 				FXData::Load(FXFiles[i].GetFullPath());
 			}
-			EffectRenderer->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
+			MonsterEffectRenderer->CreateFX(FXData::Find(FXFiles[i].GetFileName()));
 		}
 
 		NewDir.MoveParent();
@@ -139,7 +139,7 @@ void Enemy_Qliphoth::EnemyAnimationLoad()
 		{
 			FXData::Load(NewDir.GetPlusFileName("Qliphoth_Appear.effect").GetFullPath());
 		}
-		EffectRenderer->CreateFX(FXData::Find("Qliphoth_Appear.effect"));
+		MonsterEffectRenderer->CreateFX(FXData::Find("Qliphoth_Appear.effect"));
 	}
 
 	// 사운드 로드
@@ -487,7 +487,7 @@ void Enemy_Qliphoth::EnemyCreateFSM()
 	// Appear
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Qliphoth::Qliphoth_Appear,
 	.Start = [=] {
-			EffectRenderer->PlayFX("Qliphoth_Appear.effect");
+			MonsterEffectRenderer->PlayFX("Qliphoth_Appear.effect");
 			//EffectRenderer->PlayFX("Enemy_Appear.effect");
 			EnemyRenderer->ChangeAnimation("em1000_Appear");
 		},
@@ -617,7 +617,7 @@ void Enemy_Qliphoth::EnemyCreateFSM_Client()
 	});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Qliphoth::Qliphoth_Appear,
 	.Start = [=] {
-			EffectRenderer->PlayFX("Qliphoth_Appear.effect");
+			MonsterEffectRenderer->PlayFX("Qliphoth_Appear.effect");
 			EnemyRenderer->ChangeAnimation("em1000_Appear");
 		},
 		.Update = [=](float _DeltaTime) {

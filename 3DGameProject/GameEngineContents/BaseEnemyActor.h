@@ -128,7 +128,7 @@ protected:
 	std::shared_ptr<class AttackCollision> MonsterAttackCollision_Two = nullptr;  // 몬스터 공격 콜리전
 	std::shared_ptr<class GameEngineCollision> RN_MonsterCollision = nullptr;     // 몬스터 공격 범위 인식 콜리전
 	std::shared_ptr<class Item_EnemyRedOrb> RedOrbs = nullptr;					  // 죽을때 드랍되는 레드오브
-	std::shared_ptr<class FXSystem> EffectRenderer = nullptr;					  // 이펙트
+	std::shared_ptr<class FXSystem> MonsterEffectRenderer = nullptr;			  // 이펙트
 
 	//하위에서 설정해줘야하는 Data들=====================================================
 	EnemyCode EnemyCodeValue = EnemyCode::None;
