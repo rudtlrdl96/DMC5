@@ -61,6 +61,7 @@ enum class Net_LevelType
 {
 	Location2,
 	Location11,
+	Location19,
 	NetTestLevel,
 	TestStageLevel,
 

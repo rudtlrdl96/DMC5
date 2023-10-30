@@ -33,6 +33,7 @@ Location11_Level::~Location11_Level()
 
 void Location11_Level::Start()
 {
+	SetNetLevelType(Net_LevelType::Location11);
 	CreateActor<FreeCameraActor>();
 	StageBaseLevel::Start();
 

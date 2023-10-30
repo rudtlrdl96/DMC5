@@ -30,6 +30,7 @@ Location19_Level::~Location19_Level()
 
 void Location19_Level::Start()
 {
+	SetNetLevelType(Net_LevelType::Location19);
 	CreateActor<FreeCameraActor>();
 	StageBaseLevel::Start();
 
