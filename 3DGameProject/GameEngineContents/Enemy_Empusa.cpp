@@ -229,6 +229,7 @@ void Enemy_Empusa::Start()
 			if (nullptr == _Player)
 			{
 				Player_MirageBlade* _Mirage = dynamic_cast<Player_MirageBlade*>(_Actors[0]);
+				if (nullptr == _Mirage) { return; }
 				Datas = _Mirage->Collision->GetDamage();
 			}
 			else
@@ -263,6 +264,7 @@ void Enemy_Empusa::Start()
 		if (nullptr == _Player)
 		{
 			Player_MirageBlade* _Mirage = dynamic_cast<Player_MirageBlade*>(_Attacker);
+			if (nullptr == _Mirage) { return; }
 			Datas = _Mirage->Collision->GetDamage();
 		}
 		else
