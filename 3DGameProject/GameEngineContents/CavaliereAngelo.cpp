@@ -496,6 +496,7 @@ void CavaliereAngelo::Start()
 			DeathValue = true;
 		}
 
+		IsChangeState = true;
 		});
 }
 
