@@ -333,6 +333,16 @@ void ContentsCore::ContentsResourcesCreate()
 		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("FBX_Low");
 
 		Material->SetVertexShader("ContentsMesh_LowOption.hlsl");
+		Material->SetRasterizer("Engine3DBase");
+		Material->SetPixelShader("ContentsMesh_LowOption.hlsl");
+		Material->SetBlendState("BaseBlend");
+		Material->SetDepthState("EngineDepth");
+	}	
+	
+	{
+		std::shared_ptr<GameEngineMaterial> Material = GameEngineMaterial::Create("FBX2D_Low");
+
+		Material->SetVertexShader("ContentsMesh_LowOption.hlsl");
 		Material->SetRasterizer("Engine2DBase");
 		Material->SetPixelShader("ContentsMesh_LowOption.hlsl");
 		Material->SetBlendState("BaseBlend");
@@ -530,7 +540,7 @@ void ContentsCore::SetOption()
 	//GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::Low);
 
 	GameEngineOption::ChangeOption("Texture", GameEngineOptionValue::High);
-	GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::High);
+	GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::Low);
 
 	// FXAA 可记 积己
 	GameEngineOption::CreateOption("FXAA", GameEngineOptionValue::High);
