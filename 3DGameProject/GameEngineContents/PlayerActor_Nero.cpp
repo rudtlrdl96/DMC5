@@ -1738,6 +1738,7 @@ void PlayerActor_Nero::PlayerLoad()
 		static float4 SplitTargetPos;
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_RQ_Skill_Split_2,
 			.Start = [=] {
+				PhysXCapsule->Off();
 				if (0 < ExceedLevel)
 				{
 					EffectSystem->PlayFX("RQ_Split_2_EX.effect");
@@ -1752,7 +1753,8 @@ void PlayerActor_Nero::PlayerLoad()
 				SplitTargetPos += float4::UP * 100;
 			},
 			.Update = [=](float _DeltaTime) {
-				PhysXCapsule->SetMove(float4::DOWN * 500);
+				GetTransform()->AddWorldPosition(float4::DOWN * 3000 * _DeltaTime);
+				//PhysXCapsule->SetMove(float4::DOWN * 500);
 				if (GetTransform()->GetWorldPosition().y < SplitTargetPos.y)
 				{
 					PhysXCapsule->SetWorldPosition(SplitTargetPos);
@@ -1768,6 +1770,8 @@ void PlayerActor_Nero::PlayerLoad()
 				}
 			},
 			.End = [=] {
+				PhysXCapsule->On();
+				PhysXCapsule->SetLinearVelocityZero();
 				EffectSystem->Loop = false;
 			}
 			});
@@ -1795,7 +1799,7 @@ void PlayerActor_Nero::PlayerLoad()
 				Renderer->ChangeAnimation("pl0000_RQ_Skill_Split_3");
 			},
 			.Update = [=](float _DeltaTime) {
-
+				PhysXCapsule->SetLinearVelocityZero();
 				if (true == Input_SpecialCheck()) { return; }
 				if (InputCheck == false) { return; }
 				if (false == FloorCheck())

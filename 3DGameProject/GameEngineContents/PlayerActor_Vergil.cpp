@@ -1298,9 +1298,11 @@ void PlayerActor_Vergil::PlayerLoad()
 				Renderer->ChangeAnimation("pl0300_yamato_Raid2_Loop");
 				GetLevel()->RayCast(GetTransform()->GetWorldPosition(), float4::DOWN, RaidTargetPos, 9999.0f);
 				RaidTargetPos += float4::UP * 100;
+				PhysXCapsule->Off();
 			},
 			.Update = [=](float _DeltaTime) {
-				PhysXCapsule->SetMove(float4::DOWN * 500);
+				GetTransform()->AddWorldPosition(float4::DOWN * 3000 * _DeltaTime);
+				//PhysXCapsule->SetMove(float4::DOWN * 500);
 				if (GetTransform()->GetWorldPosition().y < RaidTargetPos.y)
 				{
 					PhysXCapsule->SetWorldPosition(RaidTargetPos);
@@ -1316,6 +1318,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 			},
 			.End = [=] {
+				PhysXCapsule->On();
 				WeaponIdle();
 			}
 			});
@@ -1332,6 +1335,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				Renderer->ChangeAnimation("pl0300_yamato_Raid3");
 			},
 			.Update = [=](float _DeltaTime) {
+				PhysXCapsule->SetLinearVelocityZero();
 
 				if (true == Input_SpecialCheck()) { return; }
 
