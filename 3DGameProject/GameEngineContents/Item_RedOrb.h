@@ -39,6 +39,7 @@ private:
 
 	float4 Force = float4::ZERO;
 	float4 StartPos = float4::ZERO;
+	float4 GroundPos = float4::ZERO;
 	float Gravity = 0.0f;
 	float FloorHeight = 0.0f;
 	bool IsTake = false;

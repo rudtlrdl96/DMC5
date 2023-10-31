@@ -24,7 +24,7 @@ void FXAA_Effect::Start(GameEngineRenderTarget* _Target)
 
 void FXAA_Effect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 {
-	if (GameEngineOptionValue::None == GameEngineOption::GetOption("FXAA"))
+	if (GameEngineOption::GetOption("PostEffect") == GameEngineOptionValue::None)
 	{
 		return;
 	}

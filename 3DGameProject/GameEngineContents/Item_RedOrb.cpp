@@ -98,7 +98,8 @@ void Item_RedOrb::Start()
 		Effect->PlayFX("RedOrb_Disappear.effect");
 		float Random = GameEngineRandom::MainRandom.RandomFloat(0.3f, 1);
 		Force = GetTransform()->GetLocalForwardVector() * 1000 * Random;
-		FloorHeight = GetTransform()->GetLocalPosition().y - 10;
+		GetLevel()->RayCast(GetTransform()->GetWorldPosition(), float4::DOWN, GroundPos);
+		FloorHeight = GroundPos.y + 5;
 		Gravity = 350;
 
 		ResetLiveTime();

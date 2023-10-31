@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 #include "BlurEffect.h"
+#include "GameEngineOption.h"
 
 BlurEffect::BlurEffect()
 {
@@ -20,6 +21,11 @@ void BlurEffect::Start(GameEngineRenderTarget* _Target)
 
 void BlurEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 {
+	if (GameEngineOption::GetOption("PostEffect") == GameEngineOptionValue::None)
+	{
+		return;
+	}
+
 	ResultTarget->Clear();
 
 	BlurUnit->ShaderResHelper.SetTexture("DiffuseTex", _Target->GetTexture(0));
