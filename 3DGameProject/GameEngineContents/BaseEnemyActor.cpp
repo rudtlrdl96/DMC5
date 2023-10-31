@@ -730,32 +730,7 @@ void BaseEnemyActor::BusterEnd()
 		return;
 	}
 
-	if (true == NetworkManager::IsServer())
-	{
-		if (Player->GetNetObjectID() == ServerPlayerID)
-		{
-			Player->GetPlayerRenderer()->SetDettachTransform();
-		}
-		else
-		{
-			std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
-			size_t Playersize = Players.size();
-
-			for (size_t i = 0; i < Playersize; i++)
-			{
-				BasePlayerActor* NeroP = dynamic_cast<BasePlayerActor*>(Players[i]);
-
-				if (nullptr != NeroP && Players[i]->GetNetObjectID() != ServerPlayerID)
-				{
-					NeroP->GetPlayerRenderer()->SetDettachTransform();
-				}
-			}
-		}
-	}
-	else
-	{
-		Player->GetPlayerRenderer()->SetDettachTransform();
-	}
+	Player->GetPlayerRenderer()->SetDettachTransform();
 
 	if (EnemyCode::Empusa == EnemyCodeValue)
 	{
@@ -945,6 +920,7 @@ void BaseEnemyActor::DeathCheck()
 		DeathValue = true;
 		RedOrbDrop();
 		DeathEvent();
+		BusterEnd();
 	}
 
 	if (true == DeathValue && false == DeathSettig)
