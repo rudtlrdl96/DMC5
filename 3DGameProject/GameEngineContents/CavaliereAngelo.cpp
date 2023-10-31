@@ -17,6 +17,7 @@
 #include "Cavaliere_Electric.h"
 #include "Player_MirageBlade.h"
 #include "EffectRenderer.h"
+#include "BossHpBar.h"
 
 CavaliereAngelo::CavaliereAngelo()
 {
@@ -326,6 +327,10 @@ void CavaliereAngelo::Start()
 	MonsterAttackCollision->SetAttackData(DamageType::Heavy, BOSS_HEAVY_DAMAGE);
 	MonsterAttackCollision->Off();
 
+	HPUI = GetLevel()->CreateActor<BossHpBar>();
+	HPUI->SetBossMaxHP(EnemyMaxHP);
+	HPUI->Off();
+
 	// 넷 오브젝트 타입 설정
 	SetNetObjectType(Net_ActorType::CavaliereAngelo);
 
@@ -523,6 +528,11 @@ void CavaliereAngelo::Update(float _DeltaTime)
 
 		RendererBurn(_DeltaTime);
 		RenderShake(_DeltaTime);
+
+		if (true == HPUI->IsUpdate())
+		{
+			HPUI->UpdateBossHP(EnemyHP);
+		}
 	}
 
 	// 싱글 플레이일 때 실행
@@ -1191,6 +1201,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em5501_dengeki_reload_end");
 	},
 	.Update = [=](float _DeltaTime) {
+	HPUI->On();
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
@@ -2467,6 +2478,7 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 	EnemyRenderer->ChangeAnimation("em5501_dengeki_reload_end");
 	},
 	.Update = [=](float _DeltaTime) {
+	HPUI->On();
 	},
 	.End = [=] {
 	}

@@ -40,9 +40,20 @@ void BossHpBar::Start()
 	if (nullptr == GameEngineSprite::Find("HPGaugeAni.png"))
 	{
 		GameEngineSprite::LoadSheet(TextureDir.GetPlusFileName("HPGaugeAni.png").GetFullPath(), 4, 4);
+	}
+	if (nullptr == GameEngineTexture::Find("BossHPBase.png"))
+	{
 		GameEngineTexture::Load(TextureDir.GetPlusFileName("BossHPBase.png").GetFullPath());
+	}
+	if (nullptr == GameEngineTexture::Find("BossHitGauge.png"))
+	{
 		GameEngineTexture::Load(TextureDir.GetPlusFileName("BossHitGauge.png").GetFullPath());
 	}
+	if (nullptr == GameEngineTexture::Find("BossHPhit.png"))
+	{
+		GameEngineTexture::Load(TextureDir.GetPlusFileName("BossHPhit.png").GetFullPath());
+	}
+
 	BossHpAni = CreateComponent<GameEngineUIRenderer>(4);
 	BossHpAni->SetTexture("HPGaugeAni.png");
 	BossHpAni->CreateAnimation({ .AnimationName = "BossHPANI", .SpriteName = "HPGaugeAni.png", .Start = 5, .End = 7, .Loop = true, .FrameTime = {.15f, .15f,.15f, .15f,.15f, .15f,.15f, .15f} });

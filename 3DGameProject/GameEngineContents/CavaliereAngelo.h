@@ -127,6 +127,7 @@ private:
 	std::shared_ptr<class GameEngineComponent> WeaponEffectPivot = nullptr;
 	std::shared_ptr<class EffectRenderer> WeaponEffect = nullptr;
 	std::shared_ptr<class EffectRenderer> WeaponElectric = nullptr;
+	std::shared_ptr<class BossHpBar> HPUI = nullptr;
 
 	void PlayerChase();
 	void ChangeState(int _StateValue);
