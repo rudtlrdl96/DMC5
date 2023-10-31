@@ -46,14 +46,17 @@ BasePlayerActor::~BasePlayerActor()
 {
 }
 
-void BasePlayerActor::SetCutScene(const float4& _StartPos, const float4& _EndPos, const float4& _StartRot, const float4& _EndRot, float _Time)
+void BasePlayerActor::SetCutScene(const float4& _StartPos, const float4& _EndPos, const float4& _StartRot, const float4& _EndRot, float _Time, bool ControllOff /* = true*/, bool _UIOff /* = true*/)
 {
 	Controller->ResetKey();
 	Controller->Off();
 	FadeEffect::GetFadeEffect()->FadeOut(0.5f);
 	GetLevel()->TimeEvent.AddEvent(0.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 		{
-			UIOff();
+			if (true == _UIOff)
+			{
+				UIOff();
+			}
 			FadeEffect::GetFadeEffect()->FadeIn(0.5f);
 			Camera->SetCameraCutscene(_StartPos, _EndPos, _StartRot, _EndRot, _Time);
 		});
@@ -63,13 +66,19 @@ void BasePlayerActor::SetCutScene(const float4& _StartPos, const float4& _EndPos
 		});
 	GetLevel()->TimeEvent.AddEvent(_Time + 0.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 		{
-			UIOn();
+			if (true == _UIOff)
+			{
+				UIOn();
+			}
 			FadeEffect::GetFadeEffect()->FadeIn(0.5f);
 		});
-	GetLevel()->TimeEvent.AddEvent(_Time + 1.2f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-		{
-			Controller->On();
-		});
+	if (true == ControllOff)
+	{
+		GetLevel()->TimeEvent.AddEvent(_Time + 1.2f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				Controller->On();
+			});
+	}
 }
 
 void BasePlayerActor::On()

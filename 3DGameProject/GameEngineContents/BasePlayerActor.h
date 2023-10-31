@@ -47,10 +47,13 @@ public:
 	BasePlayerActor& operator=(const BasePlayerActor& _Other) = delete;
 	BasePlayerActor& operator=(BasePlayerActor&& _Other) noexcept = delete;
 
-	void SetCutScene(const float4& _StartPos, const float4& _EndPos, const float4& _StartRot, const float4& _EndRot, float _Time);
+	void SetCutScene(const float4& _StartPos, const float4& _EndPos, const float4& _StartRot, const float4& _EndRot, float _Time, bool ControllOff = true, bool _UIOff = true);
 
 	void On() override;
 	void Off() override;
+
+	virtual void UIOn();
+	virtual void UIOff();
 
 	void LookDir(const float4& _LookDir);
 	void LookTarget();
@@ -100,8 +103,7 @@ protected:
 	void Start() override;
 	virtual void ShopOn() {}
 	virtual void ShopOff() {}
-	virtual void UIOn();
-	virtual void UIOff();
+
 	void NetControllLoad();
 	void UserControllLoad();
 
