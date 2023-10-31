@@ -20,7 +20,7 @@ Enemy_Qliphoth::~Enemy_Qliphoth()
 
 void Enemy_Qliphoth::EnemyTypeLoad()
 {
-	EnemyCodeValue = EnemyCode::HellCaina;
+	EnemyCodeValue = EnemyCode::Qliphoth;
 	
 	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
 	{
