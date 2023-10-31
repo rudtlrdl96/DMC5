@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 #include "TentacleE.h"
+#include <GameEngineCore/GameEngineFBXRenderer.h>
 
 TentacleE::TentacleE()
 {

@@ -118,10 +118,10 @@ void Location19_Level::LevelChangeStart()
 	}
 	}
 
-	AcSkyBox.lock()->SetSkyBloom(20);
-	GetDirectionalLight()->GetTransform()->SetWorldPosition({ 0.f,10000.f,0.f });
+	AcSkyBox.lock()->SetSkyBloom(3);
+	GetDirectionalLight()->GetTransform()->SetWorldPosition({ 0.f,1000000.f,0.f });
 	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 45.f,45.f,45.f });
-	GetDirectionalLight()->SetLightColor({1.f,0.85f,0.85f});
+	GetDirectionalLight()->SetLightColor({1.f,1.f,1.f});
 	
 	InitPool();
 	CreateEventZone();
