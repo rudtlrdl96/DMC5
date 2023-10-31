@@ -204,10 +204,11 @@ void Location11_Level::CreateEventZone()
 
 void Location11_Level::CutSceneStart()
 {
-	BasePlayerActor::GetMainPlayer()->SetCutScene({ -33314, 3107, -1659 }, { -33767, 3100, -1517 }, { 21, 47, 0 }, { 27, 27, 0 }, 3.0f);
+	BasePlayerActor::GetMainPlayer()->UIOff();
+	BasePlayerActor::GetMainPlayer()->SetCutScene({ -33314, 3107, -1659 }, { -33767, 3100, -1517 }, { 21, 47, 0 }, { 27, 27, 0 }, 3.0f, false, false);
 	TimeEvent.AddEvent(3.0f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* TimeEvent)
 		{
-			BasePlayerActor::GetMainPlayer()->SetCutScene({ -34184, 3671, -414 }, { -34244, 2300, -411 }, { -6, -90, 0 }, { 0, -90, 0 }, 5.0f);
+			BasePlayerActor::GetMainPlayer()->SetCutScene({ -34184, 3671, -414 }, { -34244, 2300, -411 }, { -6, -90, 0 }, { 0, -90, 0 }, 5.0f, false, false);
 		});
 	TimeEvent.AddEvent(8.0f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* TimeEvent)
 		{
