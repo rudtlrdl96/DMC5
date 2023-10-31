@@ -294,6 +294,7 @@ void Enemy_HellAntenora::Start()
 	LinkData_UpdatePacket<bool>(IsCollapse);
 	LinkData_UpdatePacket<bool>(DashAttackSetting);
 	LinkData_UpdatePacket<bool>(IsBurn);
+	LinkData_UpdatePacket<bool>(DeathValue);
 	LinkData_UpdatePacket<int>(EnemyHP);
 	LinkData_UpdatePacket<int>(ServerPlayerID);
 

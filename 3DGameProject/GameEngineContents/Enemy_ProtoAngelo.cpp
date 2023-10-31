@@ -296,6 +296,7 @@ void Enemy_ProtoAngelo::Start()
 	LinkData_UpdatePacket<bool>(IsParryCheck);
 	LinkData_UpdatePacket<bool>(ParryOkay);
 	LinkData_UpdatePacket<bool>(IsSuperArmor);
+	LinkData_UpdatePacket<bool>(DeathValue);
 	LinkData_UpdatePacket<int>(SuperArmorStack);
 	LinkData_UpdatePacket<int>(EnemyHP);
 	LinkData_UpdatePacket<int>(ServerPlayerID);
@@ -325,6 +326,11 @@ void Enemy_ProtoAngelo::Start()
 			if (true == IsSuperArmor)
 			{
 				++SuperArmorStack;
+			}
+
+			if (2 <= SuperArmorStack)
+			{
+				IsSuperArmor = false;
 			}
 
 			MinusEnemyHP(Datas.DamageValue);
@@ -843,6 +849,11 @@ void Enemy_ProtoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 	AttackDelayCheck = 0.0f;
 
 	NetworkObjectBase* Obj = dynamic_cast<NetworkObjectBase*>(AttackCol->GetActor());
+
+	//if (2 <= SuperArmorStack)
+	//{
+	//	IsSuperArmor = false;
+	//}
 
 	if (true == IsSuperArmor)
 	{

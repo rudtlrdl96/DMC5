@@ -223,6 +223,7 @@ void Enemy_HellCaina::Start()
 	LinkData_UpdatePacket<bool>(IsVergilLight);
 	LinkData_UpdatePacket<bool>(IsCollapse);
 	LinkData_UpdatePacket<bool>(IsBurn);
+	LinkData_UpdatePacket<bool>(DeathValue);
 	LinkData_UpdatePacket<int>(EnemyHP);
 	LinkData_UpdatePacket<int>(ServerPlayerID);
 

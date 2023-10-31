@@ -318,6 +318,7 @@ void Enemy_ScudoAngelo::Start()
 	LinkData_UpdatePacket<bool>(IsParryCheck);
 	LinkData_UpdatePacket<bool>(ParryOkay);
 	LinkData_UpdatePacket<bool>(IsSuperArmor);
+	LinkData_UpdatePacket<bool>(DeathValue);
 	LinkData_UpdatePacket<int>(EnemyHP);
 	LinkData_UpdatePacket<int>(ServerPlayerID);
 
