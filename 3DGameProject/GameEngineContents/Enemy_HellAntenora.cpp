@@ -466,10 +466,10 @@ void Enemy_HellAntenora::DamageCollisionCheck(float _DeltaTime)
 		return;
 	}
 
-	if (true == DeathValue)
-	{
-		return;
-	}
+	//if (true == DeathValue)
+	//{
+	//	return;
+	//}
 
 	AttackDelayCheck += _DeltaTime;
 
@@ -606,10 +606,10 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 		return;
 	}
 
-	if (true == DeathValue)
-	{
-		return;
-	}
+	//if (true == DeathValue)
+	//{
+	//	return;
+	//}
 
 	AttackDelayCheck += _DeltaTime;
 

@@ -714,10 +714,10 @@ void Enemy_ScudoAngelo::DamageCollisionCheck(float _DeltaTime)
 
 	ParryCheck();
 
-	if (true == DeathValue)
-	{
-		return;
-	}
+	//if (true == DeathValue)
+	//{
+	//	return;
+	//}
 
 	AttackDelayCheck += _DeltaTime;
 
@@ -875,10 +875,10 @@ void Enemy_ScudoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 
 	ParryCheck_Client();
 
-	if (true == DeathValue)
-	{
-		return;
-	}
+	//if (true == DeathValue)
+	//{
+	//	return;
+	//}
 
 	AttackDelayCheck += _DeltaTime;
 

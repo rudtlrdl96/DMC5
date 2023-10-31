@@ -509,10 +509,10 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 		return;
 	}
 
-	if (true == DeathValue)
-	{
-		return;
-	}
+	//if (true == DeathValue)
+	//{
+	//	return;
+	//}
 
 	AttackDelayCheck += _DeltaTime;
 
@@ -624,10 +624,10 @@ void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 		return;
 	}
 
-	if (true == DeathValue)
-	{
-		return;
-	}
+	//if (true == DeathValue)
+	//{
+	//	return;
+	//}
 
 	AttackDelayCheck += _DeltaTime;
 
