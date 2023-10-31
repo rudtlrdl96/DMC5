@@ -313,7 +313,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="FieldMapSpotLight.h">
+    <ClInclude Include="FieldMapPointLight.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -1045,7 +1045,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="FieldMapSpotLight.cpp">
+    <ClCompile Include="FieldMapPointLight.cpp">
       <SubType>
       </SubType>
     </ClCompile>

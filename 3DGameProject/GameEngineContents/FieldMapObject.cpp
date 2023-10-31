@@ -45,8 +45,7 @@
 #include "TentacleB.h"
 #include "TentacleC.h"
 #include "TentacleE.h"
-
-
+#include "FieldMapPointLight.h"
 
 FieldMapObject::FieldMapObject()
 {
@@ -205,7 +204,9 @@ std::shared_ptr<FieldMapObject> FieldMapObject::CreateFieldMapObj(GameEngineLeve
 	case FieldMapObjType::TentacleE:
 		Result = _Level->CreateActor<TentacleE>();
 		break;
-
+	case FieldMapObjType::FieldMapPointLight:
+		Result = _Level->CreateActor<FieldMapPointLight>();
+		break;
 	default:
 		MsgAssert("¹Ì±¸Çö");
 		break;

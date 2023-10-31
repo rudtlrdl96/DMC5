@@ -162,4 +162,5 @@ enum class FieldMapObjType
 	TentacleB,
 	TentacleC,
 	TentacleE,
+	FieldMapPointLight,
 };

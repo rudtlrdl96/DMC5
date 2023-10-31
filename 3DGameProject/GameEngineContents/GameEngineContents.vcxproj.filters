@@ -558,7 +558,7 @@
     <ClInclude Include="l02_03_StreetLine.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
     </ClInclude>
-    <ClInclude Include="FieldMapSpotLight.h">
+    <ClInclude Include="FieldMapPointLight.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
     </ClInclude>
     <ClInclude Include="FloatingIsland.h">
@@ -1162,7 +1162,7 @@
     <ClCompile Include="l02_03_StreetLine.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
     </ClCompile>
-    <ClCompile Include="FieldMapSpotLight.cpp">
+    <ClCompile Include="FieldMapPointLight.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L02</Filter>
     </ClCompile>
     <ClCompile Include="FloatingIsland.cpp">
