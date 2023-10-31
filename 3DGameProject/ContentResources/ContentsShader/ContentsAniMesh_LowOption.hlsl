@@ -78,12 +78,12 @@ ForwardOutPut MeshAniTexture_PS(Output _Input)
     float4 NrmrData = NormalTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
     float4 AtosData = SpecularTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
     
-    if (1.0f > AtosData.a)
+    if (1.0f != AtosData.r)
     {
         clip(-1);
     }
     
-    float4 Color = float4(AlbmData.rgb, AtosData.a);
+    float4 Color = float4(AlbmData.rgb, AtosData.r);
     
     Color += AddColor;
     Color *= MulColor;

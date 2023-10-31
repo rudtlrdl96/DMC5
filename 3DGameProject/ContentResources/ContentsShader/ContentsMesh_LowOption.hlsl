@@ -71,18 +71,16 @@ ForwardOutPut MeshTexture_PS(Output _Input)
     
     Result.PosTarget = _Input.WORLDPOSITION;
     
-    if (1.0f != AtosData.a)
+    if (1.0f != AtosData.r)
     {
         clip(-1);
     }
     
-    float4 Color = float4(AlbmData.rgb, AtosData.a);
+    float4 Color = float4(AlbmData.rgb, AtosData.r);
     
     Color += AddColor;
     Color *= MulColor;
         
-    Result.ColorTarget = Color + (NrmrData * 0.000001f);
-    
     Result.ColorTarget = Color + (NrmrData * 0.000001f);
     
     if (0 != IsBlurMask)

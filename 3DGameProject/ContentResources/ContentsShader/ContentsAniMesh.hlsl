@@ -113,14 +113,14 @@ DeferredOutPut MeshAniTexture_PS(Output _Input)
         }
     }    
 
-    if (0.0f >= AtosData.r)
+    if (1.0f != AtosData.r)
     {
         clip(-1);
     }
     
     Result.PosTarget = _Input.VIEWPOSITION;
     Result.WorldPosTarget = _Input.WORLDPOSITION;
-    Result.DifTarget = float4(AlbmData.r, AlbmData.g, AlbmData.b, AtosData.r);
+    Result.DifTarget = float4(AlbmData.r, AlbmData.g, AlbmData.b, 1.0f);
             
     if (0 != IsNormal)
     {
