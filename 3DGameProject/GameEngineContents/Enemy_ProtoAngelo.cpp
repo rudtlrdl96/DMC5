@@ -696,11 +696,6 @@ void Enemy_ProtoAngelo::DamageCollisionCheck(float _DeltaTime)
 
 	ParryCheck();
 
-	//if (true == DeathValue)
-	//{
-	//	return;
-	//}
-
 	AttackDelayCheck += _DeltaTime;
 
 	float FrameTime = (1.0f / 60.0f) * 5.0f;
@@ -774,6 +769,10 @@ void Enemy_ProtoAngelo::DamageCollisionCheck(float _DeltaTime)
 			StartRenderShaking(8);
 			return;
 		}
+
+		HitStop(Data.DamageTypeValue);
+		StartRenderShaking(8);
+		return;
 	}
 
 	switch (Data.DamageTypeValue)
@@ -923,6 +922,7 @@ void Enemy_ProtoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 			return;
 		}
 
+		StartRenderShaking(8);
 		return;
 	}
 
