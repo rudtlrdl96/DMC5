@@ -32,6 +32,7 @@ enum FSM_State_HellAntenora
 	HellAntenora_Attack_Counter_Start,			  // em0001_Attack_counter_Start : 돌진 전 뒤구르기
 	HellAntenora_Attack_Counter_Landing,		  // em0001_Attack_counter_landing : 엎드렸다가 돌진
 	HellAntenora_Attack_Counter_Loop,			  // em0001_Attack_counter_loop : 돌진 루프
+	HellAntenora_Attack_Miss_Loop,                // em0001_Attack_counter_loop : y축 벗어나면 앞으로 돌진
 	HellAntenora_Attack_Counter_Attack,			  // em0001_Attack_counter_attack : 앞으로 휘두르고 뒤로 돔, 38 on, 43 off / 55 프레임 애니메이션 턴
 	HellAntenora_Attack_Counter_Stop,			  // em0001_Attack_counter_stop : 돌진 종료
 

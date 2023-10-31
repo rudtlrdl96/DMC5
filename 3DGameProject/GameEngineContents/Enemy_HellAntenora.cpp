@@ -1105,6 +1105,7 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	EnemyRenderer->ChangeAnimation("em0001_Attack_counter_Start");
 	},
 	.Update = [=](float _DeltaTime) {
+	
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		ChangeState(FSM_State_HellAntenora::HellAntenora_Attack_Counter_Landing);
@@ -1112,6 +1113,8 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	IsRecognize = false;
+	DashAttackSetting = false;
 	}
 		});
 
@@ -1129,12 +1132,8 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	// 엎드렸다가 돌진, 36 ~ 60 ~ 105(end)
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Attack_Counter_Landing,
 	.Start = [=] {
-	DashAttackSetting = true;
-	IsHeavyAttack = false;
-	IsAirAttack = false;
-	IsSlamAttack = false;
-	IsBusterAttack = false;
 	IsRecognize = false;
+	DashAttackSetting = true;
 	EnemyRenderer->ChangeAnimation("em0001_Attack_counter_landing");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1155,7 +1154,17 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 		{
 			SetForwardMove(500.0f);
 		}
-		
+	}
+	if (60 <= EnemyRenderer->GetCurFrame())
+	{
+		float4 EnemyPosition = GetTransform()->GetWorldPosition();
+		float4 PlayerPosition = Player->GetTransform()->GetWorldPosition();
+
+		if (EnemyPosition.y + 200.0f < PlayerPosition.y)
+		{
+			ChangeState(FSM_State_HellAntenora::HellAntenora_Attack_Miss_Loop);
+			return;
+		}
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
@@ -1164,18 +1173,16 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	DashAttackSetting = false;
+	IsRecognize = false;
 	}
 	});
 
 	// 돌진 루프
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Attack_Counter_Loop,
 	.Start = [=] {
-	DashAttackSetting = true;
-	IsHeavyAttack = false;
-	IsAirAttack = false;
-	IsSlamAttack = false;
-	IsBusterAttack = false;
 	IsRecognize = false;
+	DashAttackSetting = true;
 	EnemyRenderer->ChangeAnimation("em0001_Attack_counter_loop");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -1193,20 +1200,57 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	}
 	if (true == IsRecognize && true == DashAttackSetting)
 	{
-		IsRecognize = false;
-		DashAttackSetting = false;
+
 		ChangeState(FSM_State_HellAntenora::HellAntenora_Attack_Counter_Attack);
 		return;
 	}
+	{
+		float4 EnemyPosition = GetTransform()->GetWorldPosition();
+		float4 PlayerPosition = Player->GetTransform()->GetWorldPosition();
+
+		if (EnemyPosition.y + 200.0f < PlayerPosition.y)
+		{
+			ChangeState(FSM_State_HellAntenora::HellAntenora_Attack_Miss_Loop);
+			return;
+		}
+	}
 	if (3.0f <= RunTime)
 	{
-		DashAttackSetting = false;
 		ChangeState(FSM_State_HellAntenora::HellAntenora_Attack_Counter_Stop);
 		return;
 	}
 	},
 	.End = [=] {
+	IsRecognize = false;
 	DashAttackSetting = false;
+	RunTime = 0.0f;
+	}
+		});
+
+	// y축 벗어나면 앞으로만 돌진 루프 후 종료
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Attack_Miss_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_Attack_counter_loop");
+	},
+	.Update = [=](float _DeltaTime) {
+	DeathCheck();
+	if (true == DeathValue)
+	{
+		SetMoveStop();
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Death_Front);
+		return;
+	}
+	RunTime += _DeltaTime;
+	{
+		SetForwardMove(500.0f);
+	}
+	if (0.5f <= RunTime)
+	{
+		ChangeState(FSM_State_HellAntenora::HellAntenora_Attack_Counter_Stop);
+		return;
+	}
+	},
+	.End = [=] {
 	RunTime = 0.0f;
 	}
 		});
@@ -2446,6 +2490,15 @@ void Enemy_HellAntenora::EnemyCreateFSM_Client()
 	}
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Attack_Counter_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0001_Attack_counter_loop");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+		});
+	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Attack_Miss_Loop,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0001_Attack_counter_loop");
 	},
