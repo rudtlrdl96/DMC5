@@ -638,6 +638,7 @@ private:
 
 	void MeshLoad();
 	void TextureLoad();
+	void TextureUnLoad();
 	void CreateGameEngineStructuredBuffer();
 
 	// ¸Å½¬ Á¤º¸ È¹µæ

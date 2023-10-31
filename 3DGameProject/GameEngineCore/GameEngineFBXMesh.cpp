@@ -23,8 +23,8 @@ void GameEngineFBXMesh::UnLoad(const std::string_view& _Name)
 {
 	std::shared_ptr<GameEngineFBXMesh> Mesh = Find(_Name);
 	GameEngineResource::Remove(_Name);
+	Mesh->TextureUnLoad();
 	Mesh->Release();
-
 	return;
 }
 
@@ -303,6 +303,41 @@ void GameEngineFBXMesh::TextureLoad()
 				}
 			}
 		}		
+	}
+}
+
+void GameEngineFBXMesh::TextureUnLoad()
+{
+	for (size_t i = 0; i < RenderUnitInfos.size(); i++)
+	{
+		FbxRenderUnitInfo& Unit = RenderUnitInfos[i];
+
+		for (size_t j = 0; j < Unit.Indexs.size(); j++)
+		{
+			if (
+				false == Unit.MaterialData[j].DifTextureName.empty()
+				&& "" != Unit.MaterialData[j].DifTextureName
+				)
+			{
+				GameEngineTexture::UnLoad(Unit.MaterialData[j].DifTextureName);
+			}
+
+			if (
+				false == Unit.MaterialData[j].NorTextureName.empty()
+				&& "" != Unit.MaterialData[j].NorTextureName
+				)
+			{
+				GameEngineTexture::UnLoad(Unit.MaterialData[j].NorTextureName);
+			}
+
+			if (
+				false == Unit.MaterialData[j].SpcTextureName.empty()
+				&& "" != Unit.MaterialData[j].SpcTextureName
+				)
+			{
+				GameEngineTexture::UnLoad(Unit.MaterialData[j].SpcTextureName);
+			}
+		}
 	}
 }
 
