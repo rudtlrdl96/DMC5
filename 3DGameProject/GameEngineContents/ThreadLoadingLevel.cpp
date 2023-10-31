@@ -10,6 +10,7 @@
 #include "NeroLoading.h"
 #include "FadeEffect.h"
 #include "Location11_Level.h"
+#include "Location19_Level.h"
 std::string ThreadLoadingLevel::NextLevelName;
 ThreadLoadingLevel* ThreadLoadingLevel::Inst = nullptr;
 
@@ -75,6 +76,7 @@ void ThreadLoadingLevel::Start()
 		PushAllLoadCallBack<TestStageLevel, GameEngineFBXAnimation>("Character\\Player\\Vergil\\Animation", { ".fbx" });
 
 		// 맵
+		////Location2
 		PushLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\ALPHA_l02_01.fbx");
 		PushLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\l02_01.fbx");
 		PushLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\l02_01_p0.fbx");
@@ -108,6 +110,10 @@ void ThreadLoadingLevel::Start()
 		PushLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\LOD_1_Group_0_Sub_3__m02m_illminary01.fbx");
 		PushLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\l02_03StreetLine.fbx");
 
+		PushAllLoadCallBack<TestStageLevel, GameEngineTexture>("Texture\\UI", { ".tga", ".png" });
+		PushAllLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Mesh\\UIMesh", { ".fbx" });
+		
+		////Location11
 		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\l11_12.fbx");
 		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\l11_13.fbx");
 		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\l11_14.fbx");
@@ -129,13 +135,31 @@ void ThreadLoadingLevel::Start()
 		PushAllLoadCallBack<Location11_Level, GameEngineFBXMesh>("Mesh\\UIMesh\\ResultMesh", { ".fbx" });
 		PushAllLoadCallBack<Location11_Level, GameEngineTexture>("Texture\\UI\\ResultLevel", { ".tga", ".png"});
 
+		////Location19
+		PushLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\l19_01_start.fbx");
+		PushLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\l19_floor.fbx");
+		PushLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\l19_SkyBox.fbx");
+		PushLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\l19_wall.fbx");
+
+		PushLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm0666_qliphothl19parts_tentacleb.fbx");
+		PushLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm0667_qliphothl19parts_tentaclec.fbx");
+		PushLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm0669_qliphothl19parts_tentaclee.fbx");
+		PushLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm1369_qliphothpillara.fbx");
+		PushLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm1370_qliphothpillara_blade.fbx");
+		PushLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm1371_qliphothpillarb.fbx");
+		PushLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm1372_qliphothpillarb_under.fbx");
+		PushLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm1456_qliphoth_cliffa.fbx");
+		PushLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm1457_qliphoth_cliffb.fbx");
+		PushLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm1570_clouds00.fbx");
+		PushLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm1641_spike.fbx");
+
+		PushAllLoadCallBack<Location19_Level, GameEngineFBXMesh>("Mesh\\UIMesh\\ResultMesh", { ".fbx" });
+		PushAllLoadCallBack<Location19_Level, GameEngineTexture>("Texture\\UI\\ResultLevel", { ".tga", ".png" });
+
 		//PushAllLoadCallBack<TestStageLevel, GameEngineTexture>("Map\\Location2", { ".tga", ".png"});
 
 		// 텍스쳐
 		// 텍스쳐 현재 High로 로드하는데 추후에 추가로 옵션에 따라 로드되게 바꿔주세요
-		
-		PushAllLoadCallBack<TestStageLevel, GameEngineTexture>("Texture\\UI", { ".tga", ".png"});
-		PushAllLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Mesh\\UIMesh", { ".fbx" });
 
 		//PushAllLoadCallBack<TestStageLevel, GameEngineTexture>("Character\\Player\\Vergil\\Mesh\\High", { ".tga", ".png"});
 		//PushAllLoadCallBack<TestStageLevel, GameEngineTexture>("Character\\Enemy\\Empusa\\Mesh\\High", { ".tga", ".png"});
