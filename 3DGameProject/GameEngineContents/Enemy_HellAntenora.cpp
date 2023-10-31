@@ -1198,7 +1198,7 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 		MoveLoop();
 		SetForwardMove(500.0f);
 	}
-	if (true == IsRecognize && true == DashAttackSetting)
+	if (true == IsRecognize)
 	{
 
 		ChangeState(FSM_State_HellAntenora::HellAntenora_Attack_Counter_Attack);
