@@ -28,26 +28,30 @@ void MainMenuLevel::Start()
 	NewDir.Move("Texture");
 	NewDir.Move("UI");
 	NewDir.Move("MainMenuTexture");
-
-	std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
-
-
-	for (size_t i = 0; i < File.size(); i++)
+	NewDir.Move("MenuTexture");
+	if (nullptr == GameEngineTexture::Find("extext.png"))
 	{
-		GameEngineTexture::Load(File[i].GetFullPath());
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
 	}
-	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
-	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
-	GetMainCamera()->GetCamTarget()->DepthSettingOff();
 
 	std::shared_ptr<MainMenuBG> MainMenuBGPtr = CreateActor<MainMenuBG>();
-	FEffect = GetLastTarget()->CreateEffect<FadeEffect>();
 	std::shared_ptr<Menu_SelectScreen> Menu_SelectScreenPtr = CreateActor<Menu_SelectScreen>();
 	std::shared_ptr<Menu_MissionFont> Menu_MissionFontPtr = CreateActor<Menu_MissionFont>();
 	Menu_VirgilInfoPtr = CreateActor<Menu_VirgilInfo>();
 	Menu_VirgilInfoPtr->Off();
 	Menu_NeroInfoPtr = CreateActor<Menu_NeroInfo>();
 	Menu_NeroInfoPtr->Off();
+	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
+	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
+	GetMainCamera()->GetCamTarget()->DepthSettingOff();
+
+	FEffect = GetLastTarget()->CreateEffect<FadeEffect>();
+	FEffect->FadeIn();
+
 	//만약 플레이어가 네로라면
 	//
 
@@ -66,6 +70,7 @@ void MainMenuLevel::Update(float _DeltaTime)
 
 void MainMenuLevel::LevelChangeStart()
 {
+
 	if (Char_ChoiceUI::GetPlayerType() == ChoicePlayerType::NERO)
 	{
 		Menu_NeroInfoPtr->On();
@@ -75,6 +80,7 @@ void MainMenuLevel::LevelChangeStart()
 		Menu_VirgilInfoPtr->On();
 	}
 	FEffect->FadeIn();
+
 }
 
 void MainMenuLevel::LevelChangeEnd()

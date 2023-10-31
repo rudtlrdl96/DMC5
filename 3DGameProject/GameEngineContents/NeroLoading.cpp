@@ -32,6 +32,22 @@ void NeroLoading::Start()
 		}
 		LodingEffect->CreateFX(FXData::Find(File.GetFileName()));
 	}
+
+	GameEngineDirectory LoadingDir;
+	LoadingDir.MoveParentToDirectory("ContentResources");
+	LoadingDir.Move("ContentResources");
+	LoadingDir.Move("Texture");
+	LoadingDir.Move("UI");
+	LoadingDir.Move("MainMenuTexture");
+	LoadingDir.Move("LodingTexture");
+	if (nullptr == GameEngineTexture::Find("LoadingTexture.png"))
+	{
+		std::vector<GameEngineFile> Files = LoadingDir.GetAllFile({ ".png" });
+		for (GameEngineFile File : Files)
+		{
+			GameEngineTexture::Load(File.GetFullPath());
+		}
+	}
 	LodingEffect->PlayFX("LodingBar.effect");
 	LodingEffect->Loop = true;
 	GetTransform()->SetLocalScale(GetTransform()->GetLocalScale() * GameEngineActor::ScreenRatio);
