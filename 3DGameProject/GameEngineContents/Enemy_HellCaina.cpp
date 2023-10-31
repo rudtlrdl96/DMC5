@@ -625,6 +625,7 @@ void Enemy_HellCaina::DamageCollisionCheck_Client(float _DeltaTime)
 		ChangeState_Client(FSM_State_HellCaina::HellCaina_Slam_Damage, Obj);
 		break;
 	case DamageType::Buster:
+		BusterClientStart = true;
 		ChangeState_Client(FSM_State_HellCaina::HellCaina_Buster_Start, Obj);
 		break;
 	case DamageType::Stun:

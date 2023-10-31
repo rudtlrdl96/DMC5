@@ -871,6 +871,7 @@ void Enemy_ProtoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 
 		if (DamageType::Buster == Data.DamageTypeValue)
 		{
+			BusterClientStart = true;
 			ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Buster_Start, Obj);
 			return;
 		}
@@ -960,6 +961,7 @@ void Enemy_ProtoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 		ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Slam_Damage, Obj);
 		break;
 	case DamageType::Buster:
+		BusterClientStart = true;
 		ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Buster_Start, Obj);
 		break;
 	case DamageType::Stun:

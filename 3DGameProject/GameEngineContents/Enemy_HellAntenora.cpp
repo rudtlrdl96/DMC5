@@ -641,6 +641,7 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 	{
 		if (Data.DamageTypeValue == DamageType::Buster)
 		{
+			BusterClientStart = true;
 			ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Buster_Start, Obj);
 		}
 		else
@@ -712,6 +713,7 @@ void Enemy_HellAntenora::DamageCollisionCheck_Client(float _DeltaTime)
 		ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Slam_Damage, Obj);
 		break;
 	case DamageType::Buster:
+		BusterClientStart = true;
 		ChangeState_Client(FSM_State_HellAntenora::HellAntenora_Buster_Start, Obj);
 		break;
 	case DamageType::Stun:

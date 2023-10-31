@@ -306,6 +306,11 @@ std::shared_ptr<class GameEngineCollision> Enemy_Qliphoth::ColCheck()
 
 void Enemy_Qliphoth::DamageCollisionCheck(float _DeltaTime)
 {
+	if (FSM_State_Qliphoth::Qliphoth_Dead == EnemyFSM.GetCurState())
+	{
+		return;
+	}
+
 	if (true == DeathValue)
 	{
 		return;
@@ -362,6 +367,11 @@ void Enemy_Qliphoth::DamageCollisionCheck(float _DeltaTime)
 
 void Enemy_Qliphoth::DamageCollisionCheck_Client(float _DeltaTime)
 {
+	if (FSM_State_Qliphoth::Qliphoth_Dead == EnemyFSM.GetCurState())
+	{
+		return;
+	}
+
 	if (true == DeathValue)
 	{
 		return;
