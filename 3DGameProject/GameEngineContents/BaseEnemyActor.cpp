@@ -734,11 +734,13 @@ void BaseEnemyActor::BusterEnd()
 
 	if (EnemyCode::Empusa == EnemyCodeValue)
 	{
-		EnemyRenderer->GetTransform()->SetLocalPosition({ 0.0f, -50.0f, 0.0f });
+		EnemyRenderer->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
+		EnemyRenderer->GetTransform()->AddLocalPosition({ 0.0f, -50.0f, 0.0f });
 	}
 	else
 	{
-		EnemyRenderer->GetTransform()->SetLocalPosition({ 0.0f, -45.0f, 0.0f });
+		EnemyRenderer->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
+		EnemyRenderer->GetTransform()->AddLocalPosition({ 0.0f, -45.0f, 0.0f });
 	}
 }
 
@@ -761,11 +763,13 @@ void BaseEnemyActor::BusterEnd_Client()
 
 	if (EnemyCode::Empusa == EnemyCodeValue)
 	{
-		EnemyRenderer->GetTransform()->SetLocalPosition({ 0.0f, -50.0f, 0.0f });
+		EnemyRenderer->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
+		EnemyRenderer->GetTransform()->AddLocalPosition({ 0.0f, -50.0f, 0.0f });
 	}
 	else
 	{
-		EnemyRenderer->GetTransform()->SetLocalPosition({ 0.0f, -45.0f, 0.0f });
+		EnemyRenderer->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
+		EnemyRenderer->GetTransform()->AddLocalPosition({ 0.0f, -45.0f, 0.0f });
 	}
 }
 

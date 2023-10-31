@@ -74,9 +74,12 @@ void TestLevel::Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::IsDown("MonsterTest"))
 	{
-		Empusa = CreateActor<Enemy_Empusa>();
-		Is = !Is;
-		cal = 1;
+		if (nullptr == HellCaina)
+		{
+			HellCaina = CreateActor<Enemy_HellCaina>();
+			HellCaina->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+			HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+		}
 	}
 
 	if (1 == cal)
@@ -153,12 +156,12 @@ void TestLevel::LevelChangeStart()
 	//	TestObj->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
 
-	//if (nullptr == HellCaina)
-	//{
-	//	HellCaina = CreateActor<Enemy_HellCaina>();
-	//	HellCaina->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	//	HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	//}
+	if (nullptr == HellCaina)
+	{
+		HellCaina = CreateActor<Enemy_HellCaina>();
+		HellCaina->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+		HellCaina->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	}
 
 	//if (nullptr == Empusa)
 	//{
@@ -181,12 +184,12 @@ void TestLevel::LevelChangeStart()
 		Flat->GetPhysXComponent()->SetWorldPosition({ 0, -50, 0 });
 	}
 
-	if (nullptr == HellAntenora)
-	{
-		HellAntenora = CreateActor<Enemy_HellAntenora>();
-		HellAntenora->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-		HellAntenora->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	}
+	//if (nullptr == HellAntenora)
+	//{
+	//	HellAntenora = CreateActor<Enemy_HellAntenora>();
+	//	HellAntenora->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//	HellAntenora->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	//}
 
 	//if (nullptr == Scudo)
 	//{
