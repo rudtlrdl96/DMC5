@@ -579,6 +579,39 @@
     <ClInclude Include="RedOrbUI.h">
       <Filter>UI\UI_Actor\PlayUI</Filter>
     </ClInclude>
+    <ClInclude Include="TentacleE.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
+    </ClInclude>
+    <ClInclude Include="CliffA.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
+    </ClInclude>
+    <ClInclude Include="CliffB.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
+    </ClInclude>
+    <ClInclude Include="Clouds.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
+    </ClInclude>
+    <ClInclude Include="PillarA.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
+    </ClInclude>
+    <ClInclude Include="Pillara_Blade.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
+    </ClInclude>
+    <ClInclude Include="PillarB.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
+    </ClInclude>
+    <ClInclude Include="PillarB_under.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
+    </ClInclude>
+    <ClInclude Include="Spike.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
+    </ClInclude>
+    <ClInclude Include="TentacleB.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
+    </ClInclude>
+    <ClInclude Include="TentacleC.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -901,9 +934,6 @@
     <ClCompile Include="FieldMap.cpp">
       <Filter>Actor\Stage\FieldMap</Filter>
     </ClCompile>
-    <ClCompile Include="FieldMapObject.cpp">
-      <Filter>Actor\Stage\FieldMap\FieldMapObj</Filter>
-    </ClCompile>
     <ClCompile Include="StaticFieldMapObject.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
     </ClCompile>
@@ -1152,6 +1182,42 @@
     </ClCompile>
     <ClCompile Include="RedOrbUI.cpp">
       <Filter>UI\UI_Actor\PlayUI</Filter>
+    </ClCompile>
+    <ClCompile Include="FieldMapObject.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj</Filter>
+    </ClCompile>
+    <ClCompile Include="CliffA.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
+    </ClCompile>
+    <ClCompile Include="CliffB.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
+    </ClCompile>
+    <ClCompile Include="Clouds.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
+    </ClCompile>
+    <ClCompile Include="PillarA.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
+    </ClCompile>
+    <ClCompile Include="Pillara_Blade.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
+    </ClCompile>
+    <ClCompile Include="PillarB.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
+    </ClCompile>
+    <ClCompile Include="PillarB_under.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
+    </ClCompile>
+    <ClCompile Include="Spike.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
+    </ClCompile>
+    <ClCompile Include="TentacleB.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
+    </ClCompile>
+    <ClCompile Include="TentacleC.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
+    </ClCompile>
+    <ClCompile Include="TentacleE.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

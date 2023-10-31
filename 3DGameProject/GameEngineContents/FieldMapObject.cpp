@@ -34,6 +34,19 @@
 #include "FloatingIsland01.h"
 #include "FloatingIsland02.h"
 #include "tunnelWallLight.h"
+#include "CliffA.h"
+#include "CliffB.h"
+#include "Clouds.h"
+#include "PillarA.h"
+#include "Pillara_Blade.h"
+#include "PillarB.h"
+#include "PillarB_under.h"
+#include "Spike.h"
+#include "TentacleB.h"
+#include "TentacleC.h"
+#include "TentacleE.h"
+
+
 
 FieldMapObject::FieldMapObject()
 {
@@ -158,6 +171,39 @@ std::shared_ptr<FieldMapObject> FieldMapObject::CreateFieldMapObj(GameEngineLeve
 		break;
 	case FieldMapObjType::tunnelWallLight:
 		Result = _Level->CreateActor<tunnelWallLight>();
+		break;
+	case FieldMapObjType::CliffA:
+		Result = _Level->CreateActor<CliffA>();
+		break;
+	case FieldMapObjType::CliffB:
+		Result = _Level->CreateActor<CliffB>();
+		break;
+	case FieldMapObjType::Clouds:
+		Result = _Level->CreateActor<Clouds>();
+		break;
+	case FieldMapObjType::PillarA:
+		Result = _Level->CreateActor<PillarA>();
+		break;
+	case FieldMapObjType::Pillara_Blade:
+		Result = _Level->CreateActor<Pillara_Blade>();
+		break;
+	case FieldMapObjType::PillarB:
+		Result = _Level->CreateActor<PillarB>();
+		break;
+	case FieldMapObjType::PillarB_under:
+		Result = _Level->CreateActor<PillarB_under>();
+		break;
+	case FieldMapObjType::Spike:
+		Result = _Level->CreateActor<Spike>();
+		break;
+	case FieldMapObjType::TentacleB:
+		Result = _Level->CreateActor<TentacleB>();
+		break;
+	case FieldMapObjType::TentacleC:
+		Result = _Level->CreateActor<TentacleC>();
+		break;
+	case FieldMapObjType::TentacleE:
+		Result = _Level->CreateActor<TentacleE>();
 		break;
 
 	default:

@@ -247,6 +247,18 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="CliffA.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="CliffB.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Clouds.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="DecoLight.h">
       <SubType>
       </SubType>
@@ -393,6 +405,22 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="PillarA.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Pillara_Blade.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PillarB.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PillarB_under.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Player_MirageBlade.h">
       <SubType>
       </SubType>
@@ -431,6 +459,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="SoundController.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Spike.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -478,6 +510,18 @@
     <ClInclude Include="C_ChoiceBG.h" />
     <ClInclude Include="FieldMap.h" />
     <ClInclude Include="FreeCameraActor.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TentacleB.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TentacleC.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TentacleE.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -921,6 +965,18 @@
     <ClCompile Include="Char_ChoiceButton.cpp" />
     <ClCompile Include="Char_ChoiceLevel.cpp" />
     <ClCompile Include="Char_ChoiceUI.cpp" />
+    <ClCompile Include="CliffA.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="CliffB.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Clouds.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ColorEffect.cpp">
       <SubType>
       </SubType>
@@ -1080,6 +1136,22 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="PillarA.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Pillara_Blade.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PillarB.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PillarB_under.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="PlayerActor_Nero_Net.cpp" />
     <ClCompile Include="PlayerActor_Vergil_MirageBlade.cpp">
       <SubType>
@@ -1128,6 +1200,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Spike.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="StatueB.cpp">
       <SubType>
       </SubType>
@@ -1153,6 +1229,18 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="FreeCameraActor.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TentacleB.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TentacleC.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TentacleE.cpp">
       <SubType>
       </SubType>
     </ClCompile>

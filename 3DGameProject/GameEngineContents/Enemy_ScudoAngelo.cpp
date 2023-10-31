@@ -285,9 +285,6 @@ void Enemy_ScudoAngelo::Start()
 	FallDistance = 55.0f;
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
 
-	// MonsterCollision->Off();
-	// RN_MonsterCollision->Off();
-
 	LeftWeapon->GetTransform()->AddLocalRotation({ 0.0f, 180.0f, 0.0f });
 	LeftWeapon->GetTransform()->AddLocalRotation({ -90.0f, 0.0f, 0.0f });
 
@@ -321,6 +318,7 @@ void Enemy_ScudoAngelo::Start()
 	LinkData_UpdatePacket<bool>(IsParryCheck);
 	LinkData_UpdatePacket<bool>(ParryOkay);
 	LinkData_UpdatePacket<bool>(IsSuperArmor);
+	LinkData_UpdatePacket<bool>(DeathValue);
 	LinkData_UpdatePacket<int>(EnemyHP);
 	LinkData_UpdatePacket<int>(ServerPlayerID);
 

@@ -209,8 +209,6 @@ void Enemy_HellCaina::Start()
 	FallDistance = 55.0f;
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
 
-	//MonsterCollision->Off();
-	//RN_MonsterCollision->Off();
 	MonsterAttackCollision->SetAttackData(DamageType::Heavy, MONSTER_HEAVY_DAMAGE);
 	MonsterAttackCollision->Off();
 
@@ -225,6 +223,7 @@ void Enemy_HellCaina::Start()
 	LinkData_UpdatePacket<bool>(IsVergilLight);
 	LinkData_UpdatePacket<bool>(IsCollapse);
 	LinkData_UpdatePacket<bool>(IsBurn);
+	LinkData_UpdatePacket<bool>(DeathValue);
 	LinkData_UpdatePacket<int>(EnemyHP);
 	LinkData_UpdatePacket<int>(ServerPlayerID);
 

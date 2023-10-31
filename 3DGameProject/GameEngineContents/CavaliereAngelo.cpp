@@ -334,6 +334,7 @@ void CavaliereAngelo::Start()
 	LinkData_UpdatePacket<bool>(IsStun);
 	LinkData_UpdatePacket<bool>(IsParryCheck);
 	LinkData_UpdatePacket<bool>(ParryOkay);
+	LinkData_UpdatePacket<bool>(DeathValue);
 	LinkData_UpdatePacket<int>(ChargeDamageStack);
 	LinkData_UpdatePacket<int>(EnemyHP);
 	LinkData_UpdatePacket<int>(ParryStack);

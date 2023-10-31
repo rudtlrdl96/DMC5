@@ -8,6 +8,7 @@
 #include "MapCollisionMesh.h"
 #include "FreeCameraActor.h"
 #include "PlayerActor_Nero.h"
+#include "PlayerActor_Vergil.h"
 #include "ColorEffect.h"
 #include "JudgementCut.h"
 #include "FXAA_Effect.h"
@@ -21,6 +22,7 @@
 #include "Enemy_HellAntenora.h"
 #include "Enemy_ScudoAngelo.h"
 #include "Enemy_ProtoAngelo.h"
+#include "Char_ChoiceUI.h"
 Location19_Level::Location19_Level()
 {
 
@@ -72,6 +74,7 @@ void Location19_Level::Start()
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, 0 });
 	GetCamera(100)->GetCamTarget()->DepthSettingOff();
+
 }
 
 void Location19_Level::Update(float _DeltaTime)
@@ -91,12 +94,31 @@ void Location19_Level::LevelChangeStart()
 	// 플레이어 생성전 플레이어 벡터 초기화
 	BasePlayerActor::LevelChangeClear(this);
 
-	std::shared_ptr<PlayerActor_Nero> Nero = CreateActor<PlayerActor_Nero>();
-	Nero->GetPhysXComponent()->SetWorldPosition({ 0, 15.0f, 0 });
-	Nero->SetUserControllType();
-	NetworkManager::LinkNetwork(Nero.get(), this);
+	switch (Char_ChoiceUI::GetPlayerType())
+	{
+	default:
+	case ChoicePlayerType::NONE:
+	case ChoicePlayerType::NERO:
+	{
+		MyPlayer = CreateActor<PlayerActor_Nero>();
+		MyPlayer->SetUserControllType();
+		MyPlayer->SetWorldPosition({ 0, 15.0f, 0 });
+		MyPlayer->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
+		NetworkManager::LinkNetwork(MyPlayer.get(), this);
+		break;
+	}
+	case ChoicePlayerType::VERGIL:
+	{
+		MyPlayer = CreateActor<PlayerActor_Vergil>();
+		MyPlayer->SetUserControllType();
+		MyPlayer->SetWorldPosition({ 0, 15.0f, 0 });
+		MyPlayer->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
+		NetworkManager::LinkNetwork(MyPlayer.get(), this);
+		break;
+	}
+	}
 
-	AcSkyBox.lock()->SetSkyBloom(5);
+	AcSkyBox.lock()->SetSkyBloom(20);
 	GetDirectionalLight()->GetTransform()->SetWorldPosition({ 0.f,10000.f,0.f });
 	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 45.f,45.f,45.f });
 	GetDirectionalLight()->SetLightColor({1.f,0.85f,0.85f});

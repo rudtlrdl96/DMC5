@@ -64,7 +64,7 @@ protected:
 	void ShakeUpdate(float _DeltaTime);
 	
 	void CutSceneUpdate(float _DeltaTime);
-	void LerpLookUpdate(float _DeltaTime);
+
 private:
 	float4 CameraCutsceneStartPos;
 	float4 CameraCutsceneEndPos;

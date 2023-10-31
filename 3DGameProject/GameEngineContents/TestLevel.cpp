@@ -116,7 +116,7 @@ void TestLevel::LevelChangeStart()
 
 	if (nullptr == Player)
 	{
-		if (false)
+		if (true)
 		{
 			Player = CreateActor<PlayerActor_Nero>();
 			Player->GetPhysXComponent()->SetWorldPosition({ -1200, 100, -1300 });
@@ -181,12 +181,12 @@ void TestLevel::LevelChangeStart()
 		Flat->GetPhysXComponent()->SetWorldPosition({ 0, -50, 0 });
 	}
 
-	//if (nullptr == HellAntenora)
-	//{
-	//	HellAntenora = CreateActor<Enemy_HellAntenora>();
-	//	HellAntenora->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	//	HellAntenora->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	//}
+	if (nullptr == HellAntenora)
+	{
+		HellAntenora = CreateActor<Enemy_HellAntenora>();
+		HellAntenora->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+		HellAntenora->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	}
 
 	//if (nullptr == Scudo)
 	//{
