@@ -28,7 +28,8 @@ void ShopLevel::Start()
 	GetMainCamera()->GetCamTarget()->DepthSettingOff();
 
 	FEffect = GetLastTarget()->CreateEffect<FadeEffect>();
-
+	std::shared_ptr<ShopBG> ShopBGPtr = CreateActor<ShopBG>();
+	ShopBGPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
 
 }
 
@@ -56,8 +57,7 @@ void ShopLevel::LevelChangeStart()
 	{
 		Vergil_ShopUIPtr = CreateActor<Vergil_ShopUI>();
 	}
-	std::shared_ptr<ShopBG> ShopBGPtr = CreateActor<ShopBG>();
-	ShopBGPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
+
 }
 
 void ShopLevel::LevelChangeEnd()

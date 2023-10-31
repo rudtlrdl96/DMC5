@@ -51,6 +51,11 @@ void TitleLevel::Start()
 	GetMainCamera()->GetCamTarget()->DepthSettingOff();
 
 	FEffect = GetLastTarget()->CreateEffect<FadeEffect>();
+
+	std::shared_ptr<TitleBG> TitleBGPtr = CreateActor<TitleBG>();
+	TitleBGPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
+	std::shared_ptr<Title_StartScreen> Title_StartScreenPtr = CreateActor<Title_StartScreen>();
+	Title_StartScreenPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
 	//ø¢≈Õ
 
 }
@@ -73,10 +78,6 @@ void TitleLevel::LevelChangeStart()
 {
 
 
-	std::shared_ptr<TitleBG> TitleBGPtr = CreateActor<TitleBG>();
-	TitleBGPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
-	std::shared_ptr<Title_StartScreen> Title_StartScreenPtr = CreateActor<Title_StartScreen>();
-	Title_StartScreenPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
 	BGMPlayer::SetTitleBGM();
 	FEffect->FadeIn();
 }
