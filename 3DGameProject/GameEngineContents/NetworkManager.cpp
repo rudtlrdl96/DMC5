@@ -167,6 +167,12 @@ void NetworkManager::PushNetworkEventPacket(
 
 void NetworkManager::Update_PacketProcess(BaseLevel* _CurrentLevel)
 {
+	if (nullptr == _CurrentLevel)
+	{
+		MsgAssert("인자로 들어온 Level포인터가 nullptr입니다");
+		return;
+	}
+
 	//레벨 저장(패킷 처리할때 사용됨)
 	CurLevel = _CurrentLevel;
 	CurLevelType = CurLevel->GetNetLevelType();

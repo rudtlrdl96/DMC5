@@ -22,7 +22,7 @@ public:
 		return AllNetObjects.contains(_Id);
 	}
 
-	//Death처리된 NetObeject들을 AllNetObjects에서 제거합니다
+	//수신받은 패킷을 처리합니다
 	static void Update_ProcessPackets();
 
 	//모든 Actor들의 Update가 끝난 이후 패킷을 전송하는 부분
@@ -34,6 +34,7 @@ public:
 	//ID로 GameEngineNetObject*를 받아옴
 	static std::vector<GameEngineNetObject*> GetNetObjects(const std::vector<int>& _AllID);
 
+	//Death처리된 NetObeject들을 AllNetObjects에서 제거합니다
 	static void ReleaseNetObject();
 
 	GameEngineNetObject();

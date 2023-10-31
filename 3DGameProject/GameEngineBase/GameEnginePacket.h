@@ -101,7 +101,7 @@ private:
 	//패킷의 크기는 모든 맴버변수를 GameEngineSerializer에 집어 넣고 결정된다. 직렬화가 끝난 이후 이 패킷의 총 크기를 알기위한 함수
 	void SerializeEnd(GameEngineSerializer& _Ser, unsigned int _PacketStartPos)
 	{
-		Size = _Ser.GetWriteOffSet();
+		Size = _Ser.GetWriteOffSet() - _PacketStartPos;
 		if (Size <= 0)
 		{
 			MsgAssert("0바이트 패킷이 감지되었습니다.");
