@@ -1,5 +1,6 @@
 #include "PrecompileHeader.h"
 #include "BloomEffect.h"
+#include "GameEngineOption.h"
 
 BloomEffect::BloomEffect()
 {
@@ -37,6 +38,10 @@ void BloomEffect::Start(GameEngineRenderTarget* _Target)
 
 void BloomEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 {
+	if (GameEngineOption::GetOption("PostEffect") == GameEngineOptionValue::None)
+	{
+		return;
+	}
 
 	ResultTarget->Clear();
 	ResultTarget->Setting();

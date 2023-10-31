@@ -541,9 +541,9 @@ void ContentsCore::SetOption()
 
 	GameEngineOption::ChangeOption("Texture", GameEngineOptionValue::High);
 	GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::High);
-
-	// FXAA 可记 积己
-	GameEngineOption::CreateOption("FXAA", GameEngineOptionValue::High);
+	
+	// PostEffect 可记 积己
+	GameEngineOption::ChangeOption("PostEffect", GameEngineOptionValue::High);
 
 #ifdef _DEBUG
 	GameEngineOption::ChangeOption("DynamicShadow", GameEngineOptionValue::None);

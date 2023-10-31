@@ -23,6 +23,11 @@ void DistortionEffect::Start(GameEngineRenderTarget* _Target)
 
 void DistortionEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 {
+	if (GameEngineOption::GetOption("PostEffect") == GameEngineOptionValue::None)
+	{
+		return;
+	}
+
 	if (nullptr == MaskTarget)
 	{
 		return;

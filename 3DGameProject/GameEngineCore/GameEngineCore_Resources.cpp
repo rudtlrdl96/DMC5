@@ -906,6 +906,9 @@ void GameEngineCore::CoreOptionInit()
 
 	// 다이나믹 그림자 
 	GameEngineOption::CreateOption("DynamicShadow", GameEngineOptionValue::Low);
+
+	// 포스트 이펙트
+	GameEngineOption::CreateOption("PostEffect", GameEngineOptionValue::High);
 }
 
 void GameEngineCore::CoreResourcesEnd()
