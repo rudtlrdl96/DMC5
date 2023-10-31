@@ -249,7 +249,6 @@ void Enemy_ProtoAngelo::Start()
 
 	// 랜더러 크기 설정
 	EnemyRenderer->GetTransform()->AddLocalPosition({ 0.0f, -45.0f, 0.0f });
-	//EnemyRenderer->GetTransform()->AddLocalRotation({ 90.0f, 0.0f, 0.0f });
 
 	// 콜리전 옵션, 크기 설정
 	MonsterAttackCollision->SetAttackData(DamageType::Light, 100);
@@ -269,9 +268,6 @@ void Enemy_ProtoAngelo::Start()
 	// 기본 세팅
 	FallDistance = 55.0f;
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
-
-	//MonsterCollision->Off();
-	//RN_MonsterCollision->Off();
 
 	// 무기 붙이기
 	EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(180.0f, 0.0f, 0.0f), true, true);

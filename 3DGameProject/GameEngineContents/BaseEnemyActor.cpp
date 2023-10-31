@@ -683,8 +683,6 @@ void BaseEnemyActor::BusterCalculation(float4 _attachposition)
 		return;
 	}
 
-	CurRenderPosition = EnemyRenderer->GetTransform()->GetLocalPosition();
-
 	float4 Forword = Player->GetTransform()->GetWorldForwardVector() * 120.0f;
 	float4 BusterPosition = Player->GetTransform()->GetWorldPosition() + Forword + float4{0.f, 40.f, 0.f};
 	
@@ -699,14 +697,8 @@ void BaseEnemyActor::BusterCalculation_Client(float4 _attachposition)
 		return;
 	}
 
-	CurRenderPosition = EnemyRenderer->GetTransform()->GetLocalPosition();
-
 	if (BusterClientStart == true)
 	{
-		//float4 Forword = Player->GetTransform()->GetWorldForwardVector() * 120.0f;
-		//float4 BusterPosition = Player->GetTransform()->GetWorldPosition() + Forword + float4{0.f, 40.f, 0.f};
-
-		//PhysXCapsule->SetWorldPosition(BusterPosition);
 		Player->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer->GetTransform(), _attachposition/*, float4(0.0f, 0.0f, 0.0f)*/);
 	}
 	else
@@ -721,10 +713,6 @@ void BaseEnemyActor::BusterCalculation_Client(float4 _attachposition)
 			if (PlayersID == ServerPlayerID)
 			{
 				ServerPlayer = Players[i];
-				//float4 Forword = ServerPlayer->GetTransform()->GetWorldForwardVector() * 120.0f;
-				//float4 BusterPosition = ServerPlayer->GetTransform()->GetWorldPosition() + Forword + float4{0.f, 40.f, 0.f};
-
-				//PhysXCapsule->SetWorldPosition(BusterPosition);
 				ServerPlayer->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer->GetTransform(), _attachposition/*, float4(0.0f, 0.0f, 0.0f)*/);
 				break;
 			}
@@ -743,7 +731,15 @@ void BaseEnemyActor::BusterEnd()
 	}
 
 	Player->GetPlayerRenderer()->SetDettachTransform();
-	EnemyRenderer->GetTransform()->SetLocalPosition(CurRenderPosition);
+
+	if (EnemyCode::Empusa == EnemyCodeValue)
+	{
+		EnemyRenderer->GetTransform()->SetLocalPosition({ 0.0f, -50.0f, 0.0f });
+	}
+	else
+	{
+		EnemyRenderer->GetTransform()->SetLocalPosition({ 0.0f, -45.0f, 0.0f });
+	}
 }
 
 void BaseEnemyActor::BusterEnd_Client()
@@ -757,12 +753,19 @@ void BaseEnemyActor::BusterEnd_Client()
 	{
 		BusterClientStart = false;
 		Player->GetPlayerRenderer()->SetDettachTransform();
-		EnemyRenderer->GetTransform()->SetLocalPosition(CurRenderPosition);
 	}
 	else
 	{
 		ServerPlayer->GetPlayerRenderer()->SetDettachTransform();
-		EnemyRenderer->GetTransform()->SetLocalPosition(CurRenderPosition);
+	}
+
+	if (EnemyCode::Empusa == EnemyCodeValue)
+	{
+		EnemyRenderer->GetTransform()->SetLocalPosition({ 0.0f, -50.0f, 0.0f });
+	}
+	else
+	{
+		EnemyRenderer->GetTransform()->SetLocalPosition({ 0.0f, -45.0f, 0.0f });
 	}
 }
 

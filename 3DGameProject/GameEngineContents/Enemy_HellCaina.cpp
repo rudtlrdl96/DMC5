@@ -209,8 +209,6 @@ void Enemy_HellCaina::Start()
 	FallDistance = 55.0f;
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
 
-	//MonsterCollision->Off();
-	//RN_MonsterCollision->Off();
 	MonsterAttackCollision->SetAttackData(DamageType::Heavy, MONSTER_HEAVY_DAMAGE);
 	MonsterAttackCollision->Off();
 
