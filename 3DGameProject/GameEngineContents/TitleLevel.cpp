@@ -51,6 +51,11 @@ void TitleLevel::Update(float _DeltaTime)
 	{
 		IsDebugSwitch();
 	}
+	if (GameEngineInput::IsDown("UI_ESC"))
+	{
+		GameEngineWindow::AppOff();
+	}
+	
 	BaseLevel::Update(_DeltaTime);
 }
 
