@@ -120,6 +120,7 @@ void TestStageLevel::Update(float _DeltaTime)
 
 void TestStageLevel::LevelChangeStart()
 {
+	BGMPlayer::SetBGMFadeOut();
 	// 테스트용 코드
 	GetDirectionalLight()->GetTransform()->SetWorldPosition(float4(0, 5000, -4500));
 	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 45.f, 45.f, 45.f });

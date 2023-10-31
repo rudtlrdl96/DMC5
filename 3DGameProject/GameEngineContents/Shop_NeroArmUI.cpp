@@ -76,6 +76,8 @@ void Shop_NeroArmUI::SetIndex()
 {
 	if (IsValue == false && true == GameEngineInput::IsUp("UI_UP"))
 	{
+		GameEngineSound::Play("ButtonSound.wav");
+
 		PrevIndex = Index;
 		if (Index == 0)
 		{
@@ -89,6 +91,7 @@ void Shop_NeroArmUI::SetIndex()
 	}
 	if (IsValue == false && true == GameEngineInput::IsUp("UI_DOWN"))
 	{
+		GameEngineSound::Play("ButtonSound.wav");
 		PrevIndex = Index;
 		if (Index == 2)
 		{
@@ -138,11 +141,13 @@ void Shop_NeroArmUI::BuyBreaker()
 			RedOrbUI::SubRedOrb(500);
 			if (nullptr != CallBack_AddBreaker)
 			{
+				GameEngineSound::Play("UIButtonSelectSound.wav");
 				CallBack_AddBreaker(DevilBreaker::Overture);
 				Nero_InvenToryUI::IsAddInvenItem(true);
 			}
 			else
-			{ 
+			{
+				GameEngineSound::Play("UIButtonSelectSound.wav");
 				PlayerActor_Nero::GetBreakerListPointer()->push_back(DevilBreaker::Overture);
 				DevilBreakers.insert(DevilBreakers.begin(), DevilBreaker::Overture);
 				NeroItemGlass::AddItemUI(true);
@@ -159,11 +164,13 @@ void Shop_NeroArmUI::BuyBreaker()
 			RedOrbUI::SubRedOrb(1200);
 			if (nullptr != CallBack_AddBreaker)
 			{
+				GameEngineSound::Play("UIButtonSelectSound.wav");
 				CallBack_AddBreaker(DevilBreaker::Gerbera);
 				Nero_InvenToryUI::IsAddInvenItem(true);
 			}
 			else
 			{
+				GameEngineSound::Play("UIButtonSelectSound.wav");
 				PlayerActor_Nero::GetBreakerListPointer()->push_back(DevilBreaker::Gerbera);
 				DevilBreakers.insert(DevilBreakers.begin(), DevilBreaker::Gerbera);
 				NeroItemGlass::AddItemUI(true);
@@ -179,11 +186,13 @@ void Shop_NeroArmUI::BuyBreaker()
 			RedOrbUI::SubRedOrb(5000);
 			if (nullptr != CallBack_AddBreaker)
 			{
+				GameEngineSound::Play("UIButtonSelectSound.wav");
 				CallBack_AddBreaker(DevilBreaker::BusterArm);
 				Nero_InvenToryUI::IsAddInvenItem(true);
 			}
 			else
 			{
+				GameEngineSound::Play("UIButtonSelectSound.wav");
 				PlayerActor_Nero::GetBreakerListPointer()->push_back(DevilBreaker::BusterArm);
 				DevilBreakers.insert(DevilBreakers.begin(), DevilBreaker::BusterArm);
 				NeroItemGlass::AddItemUI(true);

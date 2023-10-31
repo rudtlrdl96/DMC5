@@ -41,19 +41,6 @@ void IntroLevel::Update(float _DeltaTime)
 
 void IntroLevel::LevelChangeStart()
 {
-	GameEngineDirectory SoundDir;
-	SoundDir.MoveParentToDirectory("ContentResources");
-	SoundDir.Move("ContentResources");
-	SoundDir.Move("Sound");
-	SoundDir.Move("UISound");
-	if (nullptr == GameEngineSound::Find("StartButtonSelect.wav"))
-	{
-		std::vector<GameEngineFile> SoundFile = SoundDir.GetAllFile({ ".wav", });
-		for (size_t i = 0; i < SoundFile.size(); i++)
-		{
-			GameEngineSound::Load(SoundFile[i].GetFullPath());
-		}
-	}
 
 	GameEngineDirectory NewDir;
 	NewDir.MoveParentToDirectory("ContentResources");

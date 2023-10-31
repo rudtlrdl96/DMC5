@@ -41,6 +41,7 @@ void ShopLevel::Update(float _DeltaTime)
 	BaseLevel::Update(_DeltaTime);
 	if (GameEngineInput::IsDown("UI_ESC"))
 	{
+		GameEngineSound::Play("UIESCSound.wav");
 		GameEngineCore::ChangeLevel("MainMenuLevel");
 	}
 }

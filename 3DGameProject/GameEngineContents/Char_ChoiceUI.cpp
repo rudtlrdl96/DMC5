@@ -24,6 +24,7 @@ void Char_ChoiceUI::Start()
 	Nero_ChoiceUIRender->GetTextSelectRender()->GetTransform()->SetLocalPosition(TextScale * WindowRatio);
 	Nero_ChoiceUIRender->SetEvent([this]()
 		{
+			GameEngineSound::Play("UIButtonSelectSound.wav");
 			Type = ChoicePlayerType::NERO;
 			GameEngineCore::ChangeLevel("MainMenuLevel");
 			if (nullptr != CharTypeCallBack)
@@ -41,7 +42,8 @@ void Char_ChoiceUI::Start()
 	Vergil_ChoiceUIRender->SetUIText({ ._Text = "VERGIL",._SeletText = "",
 	._ExplaneText = "The Alpha and the Omega" });
 	Vergil_ChoiceUIRender->SetEvent([this]()
-		{
+		{			
+			GameEngineSound::Play("UIButtonSelectSound.wav");
 			Type = ChoicePlayerType::VERGIL;
 			GameEngineCore::ChangeLevel("MainMenuLevel");
 			if (nullptr != CharTypeCallBack)
@@ -57,6 +59,8 @@ void Char_ChoiceUI::Update(float _DeltaTime)
 	SetButtonIndex();
 	if (GameEngineInput::IsDown("UI_Left"))
 	{
+		GameEngineSound::Play("ButtonSound2.wav");
+
 		if (SelectIndex == 1)
 		{
 			SelectIndex = 0;
@@ -68,6 +72,8 @@ void Char_ChoiceUI::Update(float _DeltaTime)
 	}
 	if (GameEngineInput::IsDown("UI_Right"))
 	{
+		GameEngineSound::Play("ButtonSound2.wav");
+
 		if (SelectIndex == 0)
 		{
 			SelectIndex = 1;

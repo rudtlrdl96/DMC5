@@ -2,7 +2,7 @@
 #include "Char_ChoiceLevel.h"
 #include "C_ChoiceBG.h"
 #include "Char_ChoiceUI.h"
-
+#include "BGMPlayer.h"
 #include "FadeEffect.h"
 #include <GameEngineCore/GameEngineFont.h>
 #include <GameEngineCore/GameEngineTexture.h>
@@ -53,6 +53,7 @@ void Char_ChoiceLevel::LevelChangeStart()
 
 	std::shared_ptr<C_ChoiceBG> C_ChoiceBGPtr = CreateActor<C_ChoiceBG>();
 	std::shared_ptr<Char_ChoiceUI> Char_ChoiceUIPtr = CreateActor<Char_ChoiceUI>();
+	BGMPlayer::SetMissionBGM();
 	FEffect->FadeIn();
 }
 

@@ -34,7 +34,8 @@ void Menu_SelectScreen::Start()
 	MissionButton->GetRender_Enter2()->GetTransform()->SetLocalScale(T_EnterScale* GameEngineActor::ScreenRatio);
 	MissionButton->GetRender_Enter2()->GetTransform()->SetLocalPosition(float4{ 200.0f,0.0f,0.0f }*GameEngineActor::ScreenRatio);
 	MissionButton->SetEvent([this]()
-		{
+		{			
+			GameEngineSound::Play("StartButtonSelect.wav");
 			FadeEffect::GetFadeEffect()->FadeOut(0.25f);
 			GetLevel()->TimeEvent.AddEvent(0.25f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 				{
@@ -52,7 +53,8 @@ void Menu_SelectScreen::Start()
 	CustomizeButton->GetRender_Select2()->GetTransform()->SetLocalScale(float4{ 579.0f,50.0f,0.0f }*GameEngineActor::ScreenRatio);
 	CustomizeButton->GetRender_Select2()->GetTransform()->SetLocalPosition(float4{ 250.0f,0.0f,0.0f }*GameEngineActor::ScreenRatio);
 	CustomizeButton->SetEvent([this]()
-		{
+		{	
+			GameEngineSound::Play("UIButtonSelectSound.wav");
 			GameEngineCore::ChangeLevel("ShopLevel");
 		});
 	PrevButton = GetLevel()->CreateActor<UIButton>();
@@ -74,6 +76,8 @@ void Menu_SelectScreen::Update(float _DeltaTime)
 	SetButtonIndex();
 	if (GameEngineInput::IsDown("UI_UP"))
 	{
+		GameEngineSound::Play("ButtonSound2.wav");
+
 		if (SelectValue == 0)
 		{
 			SelectValue = 2;
@@ -85,6 +89,8 @@ void Menu_SelectScreen::Update(float _DeltaTime)
 	}
 	if (GameEngineInput::IsDown("UI_Down"))
 	{
+		GameEngineSound::Play("ButtonSound2.wav");
+
 		if (SelectValue == 2)
 		{
 			SelectValue = 0;

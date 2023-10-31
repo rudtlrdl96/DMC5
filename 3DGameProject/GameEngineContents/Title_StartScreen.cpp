@@ -30,6 +30,7 @@ void Title_StartScreen::Update(float _DeltaTime)
 	NetworkGUI::GetInst()->SetEntryCallBack([this]()
 		{
 			Death();
+			GameEngineSound::Play("UIButtonSelectSound.wav");
 			std::shared_ptr<Title_SelectScreen> Title_SelectScreenPtr = GetLevel()->CreateActor<Title_SelectScreen>();
 			Title_SelectScreenPtr->GetTransform()->SetLocalScale(float4{ 1.0f, 1.0f, 1.0f }*GameEngineActor::ScreenRatio);
 			Title_SelectScreenPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });

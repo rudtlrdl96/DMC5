@@ -25,13 +25,26 @@ void TitleLevel::Start()
 	NewDir.Move("Texture");
 	NewDir.Move("UI");
 	NewDir.Move("TitleTexture");
-
-	std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
-
-
-	for (size_t i = 0; i < File.size(); i++)
+	if (nullptr == GameEngineTexture::Find("NullTexture.png"))
 	{
-		GameEngineTexture::Load(File[i].GetFullPath());
+		std::vector<GameEngineFile> File = NewDir.GetAllFile({ ".Png", });
+		for (size_t i = 0; i < File.size(); i++)
+		{
+			GameEngineTexture::Load(File[i].GetFullPath());
+		}
+	}
+	GameEngineDirectory SoundDir;
+	SoundDir.MoveParentToDirectory("ContentResources");
+	SoundDir.Move("ContentResources");
+	SoundDir.Move("Sound");
+	SoundDir.Move("UISound");
+	if (nullptr == GameEngineSound::Find("StartButtonSelect.wav"))
+	{
+		std::vector<GameEngineFile> SoundFile = SoundDir.GetAllFile({ ".wav", });
+		for (size_t i = 0; i < SoundFile.size(); i++)
+		{
+			GameEngineSound::Load(SoundFile[i].GetFullPath());
+		}
 	}
 	GetMainCamera()->SetProjectionType(CameraType::Orthogonal);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, -1000.0f });
@@ -39,10 +52,7 @@ void TitleLevel::Start()
 
 	FEffect = GetLastTarget()->CreateEffect<FadeEffect>();
 	//ø¢≈Õ
-	std::shared_ptr<TitleBG> TitleBGPtr = CreateActor<TitleBG>();
-	TitleBGPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
-	std::shared_ptr<Title_StartScreen> Title_StartScreenPtr = CreateActor<Title_StartScreen>();
-	Title_StartScreenPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
+
 }
 
 void TitleLevel::Update(float _DeltaTime)
@@ -61,6 +71,12 @@ void TitleLevel::Update(float _DeltaTime)
 
 void TitleLevel::LevelChangeStart()
 {
+
+
+	std::shared_ptr<TitleBG> TitleBGPtr = CreateActor<TitleBG>();
+	TitleBGPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
+	std::shared_ptr<Title_StartScreen> Title_StartScreenPtr = CreateActor<Title_StartScreen>();
+	Title_StartScreenPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
 	BGMPlayer::SetTitleBGM();
 	FEffect->FadeIn();
 }

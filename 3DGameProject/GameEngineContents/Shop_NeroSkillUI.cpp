@@ -129,6 +129,7 @@ void Shop_NeroSkillUI::SetIndex()
 	RedQueenButton->SetUIText("RED QUEEN");
 	if (IsValue == false && true == GameEngineInput::IsUp("UI_UP"))
 	{
+		GameEngineSound::Play("ButtonSound2.wav");
 		PrevIndex = Index;
 		if (Index == 0)
 		{
@@ -148,6 +149,7 @@ void Shop_NeroSkillUI::SetIndex()
 	}
 	if (IsValue == false && true == GameEngineInput::IsUp("UI_DOWN"))
 	{
+		GameEngineSound::Play("ButtonSound2.wav");
 		PrevIndex = Index;
 		if (Index == 5)
 		{
@@ -223,12 +225,14 @@ void Shop_NeroSkillUI::ActivSkill()
 	{
 		if (IsStreak == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect ==true && RedOrbUI::GetRedOrb() > 800)
 		{
+			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(800);
 			IsStreak = true;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 		}
-		else if (IsStreak == true)
+		else if (IsStreak == true && GameEngineInput::IsUp("UI_Enter"))
 		{
+			GameEngineSound::Play("ButtonLockSound.wav");
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 	}
@@ -236,12 +240,14 @@ void Shop_NeroSkillUI::ActivSkill()
 	{
 		if (IsSplit == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true && RedOrbUI::GetRedOrb() > 1200)
 		{
+			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(1200);
 			IsSplit = true;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 		}
-		else if (IsSplit == true)
+		else if (IsSplit == true && GameEngineInput::IsUp("UI_Enter"))
 		{
+			GameEngineSound::Play("ButtonLockSound.wav");
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 	}
@@ -249,14 +255,16 @@ void Shop_NeroSkillUI::ActivSkill()
 	{
 		if (IsRedqueen == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true && RedOrbUI::GetRedOrb() > 5000)
 		{
+			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(5000);
 
 			IsRedqueen = true;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
 		}
-		else if (IsRedqueen == true)
+		else if (IsRedqueen == true && GameEngineInput::IsUp("UI_Enter"))
 		{
+			GameEngineSound::Play("ButtonLockSound.wav");
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 	}
@@ -264,13 +272,15 @@ void Shop_NeroSkillUI::ActivSkill()
 	{
 		if (IsRouletteSpin == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true && RedOrbUI::GetRedOrb() > 7000)
 		{
+			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(7000);
 			IsRouletteSpin = true;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
 		}
-		else if (IsRouletteSpin == true)
+		else if (IsRouletteSpin == true && GameEngineInput::IsUp("UI_Enter"))
 		{
+			GameEngineSound::Play("ButtonLockSound.wav");
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 	}
@@ -278,14 +288,15 @@ void Shop_NeroSkillUI::ActivSkill()
 	{
 		if (IsShufle == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true && RedOrbUI::GetRedOrb() > 8000)
 		{
+			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(8000);
-
 			IsShufle = true;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
 		}
-		else if (IsShufle == true)
+		else if (IsShufle == true && GameEngineInput::IsUp("UI_Enter"))
 		{
+			GameEngineSound::Play("ButtonLockSound.wav");
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 	}
@@ -293,13 +304,15 @@ void Shop_NeroSkillUI::ActivSkill()
 	{
 		if (IsCalibur == false && GameEngineInput::IsUp("UI_Enter") == true && IsSelect == true && RedOrbUI::GetRedOrb() > 25000)
 		{
+			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(2500);
 			IsCalibur = true;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
 		}
-		else if (IsCalibur == true)
+		else if (IsCalibur == true && GameEngineInput::IsUp("UI_Enter"))
 		{
+			GameEngineSound::Play("ButtonLockSound.wav");
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 	}

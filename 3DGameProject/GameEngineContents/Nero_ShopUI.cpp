@@ -110,6 +110,7 @@ void Nero_ShopUI::Update(float _Delta)
 		}
 		if (true == GameEngineInput::IsUp("UI_Tab") && IsSwichValue == true)
 		{
+			GameEngineSound::Play("ButtonSound.wav");
 			PrevIndex = TitleIndex;
 			if (TitleIndex == 1)
 			{

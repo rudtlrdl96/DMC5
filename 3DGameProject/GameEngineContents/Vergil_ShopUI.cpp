@@ -157,8 +157,9 @@ void Vergil_ShopUI::ShopOn()
 }
 void Vergil_ShopUI::SetIndexCount()
 {
-	if (Index == 0 && true == GameEngineInput::IsUp("UI_UP"))
+	if (Index == 0 && true == GameEngineInput::IsDown("UI_UP"))
 	{
+		GameEngineSound::Play("ButtonSound.wav");
 		ScaleValue = false;
 		if (ButtonIndex == 0)
 		{
@@ -171,8 +172,9 @@ void Vergil_ShopUI::SetIndexCount()
 		}
 
 	}
-	if (Index == 0 && true == GameEngineInput::IsUp("UI_DOWN"))
+	if (Index == 0 && true == GameEngineInput::IsDown("UI_DOWN"))
 	{
+		GameEngineSound::Play("ButtonSound.wav");
 		ScaleValue = false;
 		if (ButtonIndex == 1)
 		{
@@ -191,6 +193,7 @@ void Vergil_ShopUI::SetIndexCount()
 		}
 		else
 		{
+			GameEngineSound::Play("UIButtonSelectSound.wav");
 			Index++;
 		}
 
@@ -203,6 +206,7 @@ void Vergil_ShopUI::SetIndexCount()
 		}
 		else
 		{
+			GameEngineSound::Play("UIButtonSelectSound.wav");
 			Index--;
 		}
 	}

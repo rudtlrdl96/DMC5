@@ -28,7 +28,8 @@ void Title_SelectScreen::Start()
 	ContinueButton->GetRender_Enter2()->GetTransform()->SetLocalPosition(BarRightPos* GameEngineActor::ScreenRatio);
 	ContinueButton->SetExplanePos(ExplanePos);
 	ContinueButton->SetEvent([this]()
-		{
+		{			
+			GameEngineSound::Play("StartButtonSelect.wav");
 			ContinueValue = true;
 		});
 	OptionButton = GetLevel()->CreateActor<UIButton>();
@@ -42,7 +43,10 @@ void Title_SelectScreen::Start()
 	OptionButton->GetRender_Select2()->GetTransform()->SetLocalScale(BarScale * GameEngineActor::ScreenRatio);
 	OptionButton->GetRender_Select2()->GetTransform()->SetLocalPosition(BarRightPos * GameEngineActor::ScreenRatio);
 	OptionButton->SetExplanePos(ExplanePos);
-
+	OptionButton->SetEvent([this]()
+		{
+			GameEngineSound::Play("UIButtonSelectSound.wav");
+		});
 	ExitButton = GetLevel()->CreateActor<UIButton>();
 	ExitButton->GetTransform()->SetLocalPosition(Pos_3 * GameEngineActor::ScreenRatio);
 	ExitButton->GetRender()->GetTransform()->SetLocalScale(Scale * GameEngineActor::ScreenRatio);
@@ -54,7 +58,10 @@ void Title_SelectScreen::Start()
 	ExitButton->GetRender_Select2()->GetTransform()->SetLocalScale(BarScale * GameEngineActor::ScreenRatio);
 	ExitButton->GetRender_Select2()->GetTransform()->SetLocalPosition(BarRightPos * GameEngineActor::ScreenRatio);
 	ExitButton->SetExplanePos(ExplanePos);
-
+	ExitButton->SetEvent([this]()
+		{
+			GameEngineSound::Play("UIButtonSelectSound.wav");
+		});
 	SetFontText();
 
 }
@@ -64,6 +71,7 @@ void Title_SelectScreen::Update(float _DeltaTime)
 	SetButtonIndex();
 	if (GameEngineInput::IsDown("UI_UP"))
 	{
+		GameEngineSound::Play("ButtonSound.wav");
 		if (SelectValue == 0)
 		{
 			SelectValue = 2;
@@ -75,6 +83,7 @@ void Title_SelectScreen::Update(float _DeltaTime)
 	}
 	if (GameEngineInput::IsDown("UI_Down"))
 	{
+		GameEngineSound::Play("ButtonSound.wav");
 		if (SelectValue == 2)
 		{
 			SelectValue = 0;
