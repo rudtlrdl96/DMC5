@@ -247,6 +247,10 @@ void FXSystem::Update(float _DeltaTime)
 				{
 					CurFrame = EndFrame;
 					Pause = true;
+					if (true == IsEndOff)
+					{
+						Off();
+					}
 				}
 			}
 		}

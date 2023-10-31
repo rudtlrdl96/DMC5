@@ -56,7 +56,7 @@ public:
 
 	bool Loop = false;
 	bool Pause = false;
-
+	bool IsEndOff = false;
 	bool IsUI = false;
 protected:
 	void Start() override;

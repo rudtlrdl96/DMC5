@@ -264,6 +264,7 @@ void BasePlayerActor::Start()
 	Renderer = CreateComponent<GameEngineFBXRenderer>();
 	EffectSystem = CreateComponent<FXSystem>();
 	DTOffEffect = CreateComponent<FXSystem>();
+	DTOffEffect->IsEndOff = true;
 }
 
 void BasePlayerActor::UIOn()
