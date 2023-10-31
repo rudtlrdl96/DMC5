@@ -453,6 +453,10 @@ void BasePlayerActor::StopTime(float _Time)
 
 void BasePlayerActor::DamageColCheck()
 {
+	if (HP <= 0)
+	{
+		return;
+	}
 	std::shared_ptr<GameEngineCollision> Col = Col_Player->Collision(CollisionOrder::EnemyAttack);
 	if (nullptr == Col) { return; }
 
@@ -485,7 +489,11 @@ void BasePlayerActor::DamageColCheck()
 
 	Sound.Play("Player_Damage");
 	DamageData Data = AttackCol->GetDamage();
-	HP -= Data.DamageValue;
+	if (DTValue == true)
+	{
+		Data.DamageValue * 0.5f;
+	}
+	HP -= std::max<int>(0, Data.DamageValue);
 	RankUI::GetRankInst()->RankDisApper();
 	switch (Data.DamageTypeValue)
 	{
@@ -511,6 +519,17 @@ void BasePlayerActor::DamageColCheck()
 		break;
 	}
 
+	if (HP <= 0)
+	{
+		GetLevel()->TimeEvent.AddEvent(3.0f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				FadeEffect::GetFadeEffect()->FadeOut();
+				_Manager->AddEvent(1.0f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						GameEngineCore::ChangeLevel("TitleLevel");
+					});
+			});
+	}
 }
 
 void BasePlayerActor::OrbColCheck()

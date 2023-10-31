@@ -3741,7 +3741,7 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 	{
 		if (true == DTValue && IsDeath == false)
 		{
-			HP = std::clamp(static_cast<int>(HP + 200 * _DeltaTime), 0, MaxHP);
+			HP = std::clamp(static_cast<int>(HP + 500 * _DeltaTime), 0, MaxHP);
 			HUD->SetPlayerHP(HP);
 		}
 
