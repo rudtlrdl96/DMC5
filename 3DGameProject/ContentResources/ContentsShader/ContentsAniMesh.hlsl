@@ -115,7 +115,8 @@ DeferredOutPut MeshAniTexture_PS(Output _Input)
 
     if (1.0f != AtosData.r)
     {
-        clip(-1);
+        AtosData.r = 1.0f;
+        AtosData.g = 0.0f;
     }
     
     Result.PosTarget = _Input.VIEWPOSITION;
