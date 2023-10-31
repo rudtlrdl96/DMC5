@@ -80,8 +80,6 @@ void EventZone::Update(float _DeltaTime)
 			IsEventStart = true;
 		}
 	}
-	
-
 }
 
 

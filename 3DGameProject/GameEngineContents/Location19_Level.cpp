@@ -72,6 +72,7 @@ void Location19_Level::Start()
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 	GetMainCamera()->GetTransform()->SetLocalPosition({ 0, 0, 0 });
 	GetCamera(100)->GetCamTarget()->DepthSettingOff();
+
 }
 
 void Location19_Level::Update(float _DeltaTime)
@@ -96,7 +97,7 @@ void Location19_Level::LevelChangeStart()
 	Nero->SetUserControllType();
 	NetworkManager::LinkNetwork(Nero.get(), this);
 
-	AcSkyBox.lock()->SetSkyBloom(5);
+	AcSkyBox.lock()->SetSkyBloom(20);
 	GetDirectionalLight()->GetTransform()->SetWorldPosition({ 0.f,10000.f,0.f });
 	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 45.f,45.f,45.f });
 	GetDirectionalLight()->SetLightColor({1.f,0.85f,0.85f});
