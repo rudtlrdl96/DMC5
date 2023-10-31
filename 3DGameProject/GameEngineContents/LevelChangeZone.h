@@ -23,6 +23,7 @@ public:
 protected:
 	void Start() override;
 	std::string ChangeLevelName = std::string();
+	std::vector<std::shared_ptr<class EffectRenderer>> DistortionEffect = {};
 
 private:
 

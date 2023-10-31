@@ -37,6 +37,21 @@ void MainMenuLevel::Start()
 			GameEngineTexture::Load(File[i].GetFullPath());
 		}
 	}
+	GameEngineDirectory TextureDir;
+	TextureDir.MoveParentToDirectory("ContentResources");
+	TextureDir.Move("ContentResources");
+	TextureDir.Move("Texture");
+	TextureDir.Move("UI");
+	TextureDir.Move("MainMenuTexture");
+	TextureDir.Move("PlayLevelTexture");
+	if (nullptr == GameEngineTexture::Find("RankD_Explane.png"))
+	{
+		std::vector<GameEngineFile> Files = TextureDir.GetAllFile({ ".png" });
+		for (GameEngineFile File : Files)
+		{
+			GameEngineTexture::Load(File.GetFullPath());
+		}
+	}
 
 	std::shared_ptr<MainMenuBG> MainMenuBGPtr = CreateActor<MainMenuBG>();
 	std::shared_ptr<Menu_SelectScreen> Menu_SelectScreenPtr = CreateActor<Menu_SelectScreen>();
