@@ -491,7 +491,7 @@ void BasePlayerActor::DamageColCheck()
 	DamageData Data = AttackCol->GetDamage();
 	if (DTValue == true)
 	{
-		Data.DamageValue * 0.5f;
+		Data.DamageValue /= 2;
 	}
 	HP -= std::max<int>(0, Data.DamageValue);
 	RankUI::GetRankInst()->RankDisApper();
