@@ -105,7 +105,10 @@ void GameEngineWindow::WindowCreate(HINSTANCE _hInstance, const std::string_view
     }
 
     WindowBackBufferHdc = GetDC(HWnd);
-
+    if (true == _IsFullScreen)
+    {
+        SetWindowLong(HWnd, GWL_STYLE, 0);
+    }
     ShowWindow(HWnd, SW_SHOW); // 창 표시 방법 제어, SW_SHOW는 창을 활성화하고 현재 크기와 위치에 표시
     UpdateWindow(HWnd);        // 창의 업데이트 영역이 비어 있지 않은 경우 창에 WM_PAINT 메시지를 보내 지정된 창의 클라이언트 영역을 업데이트
 
