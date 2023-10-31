@@ -582,29 +582,67 @@ void Enemy_ProtoAngelo::PlayerChase()
 	break;
 	case EnemyRotation::Left:
 	{
-		AllDirectSetting();
-		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start);
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+		if (0 == RandC)
+		{
+			ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Step_Back);
+		}
+		else
+		{
+			AllDirectSetting();
+			ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start);
+		}
 		return;
 	}
 	break;
 	case EnemyRotation::Left_90:
-		AllDirectSetting();
-		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start);
-		break;
+	{
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+		if (0 == RandC)
+		{
+			ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Step_Back);
+		}
+		else
+		{
+			AllDirectSetting();
+			ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start);
+		}
+		return;
+	}
+	break;
 	case EnemyRotation::Left_180:
 		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Turn_Attack_To_Guard_L_Dummy_Turn_R);
 		break;
 	case EnemyRotation::Right:
 	{
-		AllDirectSetting();
-		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start);
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+		if (0 == RandC)
+		{
+			ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Step_Back);
+		}
+		else
+		{
+			AllDirectSetting();
+			ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start);
+		}
 		return;
 	}
 	break;
 	case EnemyRotation::Right_90:
-		AllDirectSetting();
-		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start);
-		break;
+	{
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 1);
+		if (0 == RandC)
+		{
+			ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Step_Back);
+		}
+		else
+		{
+			AllDirectSetting();
+			ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Walk_Front_Start);
+		}
+		return;
+	}
+	break;
 	case EnemyRotation::Right_180:
 		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Turn_Attack_To_Guard_L_Dummy_Turn_L);
 		break;
@@ -1896,6 +1934,7 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 			if (true == EnemyRenderer->IsAnimationEnd())
 			{
 				IsSuperArmor = true;
+				SuperArmorStack = 0;
 				ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
 				return;
 			}
@@ -1937,8 +1976,8 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		SuperArmorStack = 0;
 		IsSuperArmor = true;
+		SuperArmorStack = 0;
 		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
 		return;
 	}
@@ -1984,8 +2023,8 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	{
 		AnimationTurnStart = false;
 		PhysXCapsule->AddWorldRotation({ 0.0f, 180.0f, 0.0f });
-		SuperArmorStack = 0;
 		IsSuperArmor = true;
+		SuperArmorStack = 0;
 		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
 		return;
 	}
@@ -2305,8 +2344,8 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		SuperArmorStack = 0;
 		IsSuperArmor = true;
+		SuperArmorStack = 0;
 		ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Idle);
 		return;
 	}

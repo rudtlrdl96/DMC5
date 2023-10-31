@@ -1086,6 +1086,23 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	.End = [=] {
 	}
 		});
+	
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Attack_Idle_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Attack_Idle_Loop");
+	},
+	.Update = [=](float _DeltaTime) {
+	WaitTime += _DeltaTime;
+	if (WaitTime += 1.0f)
+	{
+		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Idle);
+		return;
+	}
+	},
+	.End = [=] {
+	WaitTime = 0.0f;
+	}
+		});
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////      서있음      //////////////////////////////////////////
@@ -1101,6 +1118,14 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	WaitTime += _DeltaTime;
 	if (0.35f <= WaitTime)
 	{
+		int RandC = GameEngineRandom::MainRandom.RandomInt(0, 3);
+
+		if (0 == RandC)
+		{
+			ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Attack_Idle_Loop);
+			return;
+		}
+
 		if (true == IsRecognize)
 		{
 			IsRecognize = false;
@@ -1115,17 +1140,6 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	},
 	.End = [=] {
 	WaitTime = 0.0f;
-	}
-		});
-
-	// 공격 자세로 서있음
-	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Attack_Idle_Loop,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0600_Attack_Idle_Loop");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
 	}
 		});
 
@@ -2333,6 +2347,17 @@ void Enemy_ScudoAngelo::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
+
+	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Attack_Idle_Loop,
+	.Start = [=] {
+	EnemyRenderer->ChangeAnimation("em0600_Attack_Idle_Loop");
+	},
+	.Update = [=](float _DeltaTime) {
+	},
+	.End = [=] {
+	}
+			});
+
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Idle,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0600_Idle");
@@ -2342,15 +2367,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM_Client()
 	.End = [=] {
 	}
 		});
-	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Attack_Idle_Loop,
-	.Start = [=] {
-	EnemyRenderer->ChangeAnimation("em0600_Attack_Idle_Loop");
-	},
-	.Update = [=](float _DeltaTime) {
-	},
-	.End = [=] {
-	}
-		});
+
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Walk_Front_Start,
 	.Start = [=]
 	{
