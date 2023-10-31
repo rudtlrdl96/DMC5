@@ -12,7 +12,7 @@
 #include "AttackCollision.h"
 #include "Item_EnemyRedOrb.h"
 #include "FXSystem.h"
-
+#include "PlayerActor_Nero.h"
 
 
 BaseEnemyActor::BaseEnemyActor()
@@ -730,7 +730,18 @@ void BaseEnemyActor::BusterEnd()
 		return;
 	}
 
-	Player->GetPlayerRenderer()->SetDettachTransform();
+	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
+	size_t Playersize = Players.size();
+
+	for (size_t i = 0; i < Playersize; i++)
+	{
+		PlayerActor_Nero* NeP = dynamic_cast<PlayerActor_Nero*>(Players[i]);
+
+		if (nullptr != NeP)
+		{
+			Players[i]->GetPlayerRenderer()->SetDettachTransform();
+		}
+	}
 
 	if (EnemyCode::Empusa == EnemyCodeValue)
 	{
@@ -754,11 +765,24 @@ void BaseEnemyActor::BusterEnd_Client()
 	if (BusterClientStart == true)
 	{
 		BusterClientStart = false;
-		Player->GetPlayerRenderer()->SetDettachTransform();
+		//Player->GetPlayerRenderer()->SetDettachTransform();
 	}
 	else
 	{
-		ServerPlayer->GetPlayerRenderer()->SetDettachTransform();
+		//ServerPlayer->GetPlayerRenderer()->SetDettachTransform();
+	}
+
+	std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
+	size_t Playersize = Players.size();
+
+	for (size_t i = 0; i < Playersize; i++)
+	{
+		PlayerActor_Nero* NeP = dynamic_cast<PlayerActor_Nero*>(Players[i]);
+
+		if (nullptr != NeP)
+		{
+			Players[i]->GetPlayerRenderer()->SetDettachTransform();
+		}
 	}
 
 	if (EnemyCode::Empusa == EnemyCodeValue)
