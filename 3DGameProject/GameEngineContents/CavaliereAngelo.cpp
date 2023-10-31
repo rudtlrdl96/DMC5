@@ -497,6 +497,7 @@ void CavaliereAngelo::Start()
 			DeathValue = true;
 		}
 
+		IsParryEvent = true;
 		IsChangeState = true;
 		});
 }
@@ -2323,6 +2324,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	IsParryEvent = false;
 	IsStun = false;
 	}
 		});
@@ -2366,6 +2368,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	IsParryEvent = false;
 	IsStun = false;
 	}
 		});
