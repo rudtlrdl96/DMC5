@@ -11,6 +11,7 @@
 #include "FadeEffect.h"
 #include "Location11_Level.h"
 #include "Location19_Level.h"
+#include "ResultLevel.h"
 std::string ThreadLoadingLevel::NextLevelName;
 std::string ThreadLoadingLevel::PrevLevelName;
 ThreadLoadingLevel* ThreadLoadingLevel::Inst = nullptr;
@@ -157,16 +158,6 @@ void ThreadLoadingLevel::Start()
 		PushAllLoadCallBack<Location19_Level, GameEngineFBXMesh>("Mesh\\UIMesh\\ResultMesh", { ".fbx" });
 		PushAllLoadCallBack<Location19_Level, GameEngineTexture>("Texture\\UI\\ResultLevel", { ".tga", ".png" });
 
-		//PushAllLoadCallBack<TestStageLevel, GameEngineTexture>("Map\\Location2", { ".tga", ".png"});
-
-		// 텍스쳐
-		// 텍스쳐 현재 High로 로드하는데 추후에 추가로 옵션에 따라 로드되게 바꿔주세요
-
-		//PushAllLoadCallBack<TestStageLevel, GameEngineTexture>("Character\\Player\\Vergil\\Mesh\\High", { ".tga", ".png"});
-		//PushAllLoadCallBack<TestStageLevel, GameEngineTexture>("Character\\Enemy\\Empusa\\Mesh\\High", { ".tga", ".png"});
-		//PushAllLoadCallBack<TestStageLevel, GameEngineTexture>("Character\\Enemy\\HellCaina\\Mesh\\High", { ".tga", ".png"});
-		//PushAllLoadCallBack<TestStageLevel, GameEngineTexture>("Character\\Enemy\\Qliphoth\\Mesh\\High", { ".tga", ".png"});
-
 		// 이펙트
 		PushAllLoadCallBack<TestStageLevel, FXData>("Effect", { ".effect" });
 
@@ -183,18 +174,19 @@ void ThreadLoadingLevel::Start()
 		// 클리포드
 		PushAllLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Character\\Enemy\\Qliphoth\\Mesh", { ".fbx" });
 		PushAllLoadCallBack<TestStageLevel, GameEngineFBXAnimation>("Character\\Enemy\\Qliphoth\\Animation", { ".fbx" });
+
 		// 헬안테노라
-		//PushAllLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Character\\Enemy\\HellAntenora\\Mesh", { ".fbx" });
-		//PushAllLoadCallBack<TestStageLevel, GameEngineFBXAnimation>("Character\\Enemy\\HellAntenora\\Animation", { ".fbx" });
+		PushAllLoadCallBack<Location19_Level, GameEngineFBXMesh>("Character\\Enemy\\HellAntenora\\Mesh", { ".fbx" });
+		PushAllLoadCallBack<Location19_Level, GameEngineFBXAnimation>("Character\\Enemy\\HellAntenora\\Animation", { ".fbx" });
 		// 스쿠토안젤로
-		//PushAllLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Character\\Enemy\\Scudo\\Mesh", { ".fbx" });
-		//PushAllLoadCallBack<TestStageLevel, GameEngineFBXAnimation>("Character\\Enemy\\Scudo\\Animation", { ".fbx" });
+		PushAllLoadCallBack<Location19_Level, GameEngineFBXMesh>("Character\\Enemy\\Scudo\\Mesh", { ".fbx" });
+		PushAllLoadCallBack<Location19_Level, GameEngineFBXAnimation>("Character\\Enemy\\Scudo\\Animation", { ".fbx" });
 		// 프로토안젤로
-		//PushAllLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Character\\Enemy\\Proto\\Mesh", { ".fbx" });
-		//PushAllLoadCallBack<TestStageLevel, GameEngineFBXAnimation>("Character\\Enemy\\Proto\\Animation", { ".fbx" });
+		PushAllLoadCallBack<Location19_Level, GameEngineFBXMesh>("Character\\Enemy\\Proto\\Mesh", { ".fbx" });
+		PushAllLoadCallBack<Location19_Level, GameEngineFBXAnimation>("Character\\Enemy\\Proto\\Animation", { ".fbx" });
 		// 카발리에안젤로(보스)
-		//PushAllLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Character\\Enemy\\CavaliereAngelo\\Mesh", { ".fbx" });
-		//PushAllLoadCallBack<TestStageLevel, GameEngineFBXAnimation>("Character\\Enemy\\CavaliereAngelo\\Animation", { ".fbx" });
+		PushAllLoadCallBack<Location11_Level, GameEngineFBXMesh>("Character\\Enemy\\CavaliereAngelo\\Mesh", { ".fbx" });
+		PushAllLoadCallBack<Location11_Level, GameEngineFBXAnimation>("Character\\Enemy\\CavaliereAngelo\\Animation", { ".fbx" });
 	}
 
 	// 언로드
@@ -241,6 +233,62 @@ void ThreadLoadingLevel::Start()
 		PushAllUnLoadCallBack<TestStageLevel, GameEngineFBXAnimation>("Character\\Enemy\\HellCaina\\Animation", { ".fbx" });
 		PushAllUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Character\\Enemy\\Qliphoth\\Mesh", { ".fbx" });
 		PushAllUnLoadCallBack<TestStageLevel, GameEngineFBXAnimation>("Character\\Enemy\\Qliphoth\\Animation", { ".fbx" });
+
+
+		// 19스테이지 언로드
+		PushUnLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\l19_01_start.fbx");
+		PushUnLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\l19_floor.fbx");
+		PushUnLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\l19_SkyBox.fbx");
+		PushUnLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\l19_wall.fbx");
+
+		PushUnLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm0666_qliphothl19parts_tentacleb.fbx");
+		PushUnLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm0667_qliphothl19parts_tentaclec.fbx");
+		PushUnLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm0669_qliphothl19parts_tentaclee.fbx");
+		PushUnLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm1369_qliphothpillara.fbx");
+		PushUnLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm1370_qliphothpillara_blade.fbx");
+		PushUnLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm1371_qliphothpillarb.fbx");
+		PushUnLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm1372_qliphothpillarb_under.fbx");
+		PushUnLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm1456_qliphoth_cliffa.fbx");
+		PushUnLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm1457_qliphoth_cliffb.fbx");
+		PushUnLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm1570_clouds00.fbx");
+		PushUnLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm1641_spike.fbx");
+		
+		// 19스테이지 몬스터
+		// 헬안테노라
+		PushAllUnLoadCallBack<Location19_Level, GameEngineFBXMesh>("Character\\Enemy\\HellAntenora\\Mesh", { ".fbx" });
+		PushAllUnLoadCallBack<Location19_Level, GameEngineFBXAnimation>("Character\\Enemy\\HellAntenora\\Animation", { ".fbx" });
+		// 스쿠토안젤로
+		PushAllUnLoadCallBack<Location19_Level, GameEngineFBXMesh>("Character\\Enemy\\Scudo\\Mesh", { ".fbx" });
+		PushAllUnLoadCallBack<Location19_Level, GameEngineFBXAnimation>("Character\\Enemy\\Scudo\\Animation", { ".fbx" });
+		// 프로토안젤로
+		PushAllUnLoadCallBack<Location19_Level, GameEngineFBXMesh>("Character\\Enemy\\Proto\\Mesh", { ".fbx" });
+		PushAllUnLoadCallBack<Location19_Level, GameEngineFBXAnimation>("Character\\Enemy\\Proto\\Animation", { ".fbx" });
+
+
+		// 11스테이지 맵 언로드
+		// 마지막 스테이지라 언로드 할 필요 없겠지만 일단 언로드한다면 ResultLevel에서 하면 될듯
+		//PushUnLoadCallBack<ResultLevel, GameEngineFBXMesh>("Map\\Location2\\l11_12.fbx");
+		//PushUnLoadCallBack<ResultLevel, GameEngineFBXMesh>("Map\\Location2\\l11_13.fbx");
+		//PushUnLoadCallBack<ResultLevel, GameEngineFBXMesh>("Map\\Location2\\l11_14.fbx");
+		//PushUnLoadCallBack<ResultLevel, GameEngineFBXMesh>("Map\\Location2\\l11_15.fbx");
+		//PushUnLoadCallBack<ResultLevel, GameEngineFBXMesh>("Map\\Location2\\l11_16.fbx");
+		//PushUnLoadCallBack<ResultLevel, GameEngineFBXMesh>("Map\\Location2\\l11_20.fbx");
+		//PushUnLoadCallBack<ResultLevel, GameEngineFBXMesh>("Map\\Location2\\l11_floor.fbx");
+		//PushUnLoadCallBack<ResultLevel, GameEngineFBXMesh>("Map\\Location2\\l11_SkyBox.fbx");
+		//PushUnLoadCallBack<ResultLevel, GameEngineFBXMesh>("Map\\Location2\\l11_wall.fbx");
+
+		//PushUnLoadCallBack<ResultLevel, GameEngineFBXMesh>("Map\\Location2\\sm0028_storewhite01.fbx");
+		//PushUnLoadCallBack<ResultLevel, GameEngineFBXMesh>("Map\\Location2\\sm0038_storewood01.fbx");
+		//PushUnLoadCallBack<ResultLevel, GameEngineFBXMesh>("Map\\Location2\\sm0536_toplight.fbx");
+		//PushUnLoadCallBack<ResultLevel, GameEngineFBXMesh>("Map\\Location2\\sm0680_floatingisland01.fbx");
+		//PushUnLoadCallBack<ResultLevel, GameEngineFBXMesh>("Map\\Location2\\sm0680_floatingisland01_01.fbx");
+		//PushUnLoadCallBack<ResultLevel, GameEngineFBXMesh>("Map\\Location2\\sm0680_floatingisland01_02.fbx");
+		//PushUnLoadCallBack<ResultLevel, GameEngineFBXMesh>("Map\\Location2\\sm0026_streetlight01.fbx");
+
+		//// 카발리에안젤로(보스)
+		//PushAllUnLoadCallBack<ResultLevel, GameEngineFBXMesh>("Character\\Enemy\\CavaliereAngelo\\Mesh", { ".fbx" });
+		//PushAllUnLoadCallBack<ResultLevel, GameEngineFBXAnimation>("Character\\Enemy\\CavaliereAngelo\\Animation", { ".fbx" });
+
 	}
 
 }
