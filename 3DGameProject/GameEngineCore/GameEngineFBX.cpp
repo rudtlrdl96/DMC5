@@ -62,6 +62,7 @@ GameEngineFBX::GameEngineFBX()
 
 GameEngineFBX::~GameEngineFBX()
 {
+	std::lock_guard<std::mutex> Lock(InitLock);
 	if (nullptr != Scene)
 	{
 		Scene->Destroy();

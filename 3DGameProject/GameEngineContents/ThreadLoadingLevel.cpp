@@ -12,6 +12,7 @@
 #include "Location11_Level.h"
 #include "Location19_Level.h"
 std::string ThreadLoadingLevel::NextLevelName;
+std::string ThreadLoadingLevel::PrevLevelName;
 ThreadLoadingLevel* ThreadLoadingLevel::Inst = nullptr;
 
 ThreadLoadingLevel::ThreadLoadingLevel()
@@ -31,7 +32,7 @@ void ThreadLoadingLevel::Start()
 	GetCamera(0)->SetProjectionType(CameraType::Perspective);
 
 	LoadingUI = CreateActor<NeroLoading>();
-	
+
 	std::shared_ptr<FadeEffect> Fade = GetLastTarget()->CreateEffect<FadeEffect>();
 
 	//스레드 로딩이 잘 작동되는지 확인하려는 임시 엑터입니다. 나중에 삭제할 예정이에요
@@ -112,7 +113,7 @@ void ThreadLoadingLevel::Start()
 
 		PushAllLoadCallBack<TestStageLevel, GameEngineTexture>("Texture\\UI", { ".tga", ".png" });
 		PushAllLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Mesh\\UIMesh", { ".fbx" });
-		
+
 		////Location11
 		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\l11_12.fbx");
 		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\l11_13.fbx");
@@ -133,7 +134,7 @@ void ThreadLoadingLevel::Start()
 		PushLoadCallBack<Location11_Level, GameEngineFBXMesh>("Map\\Location2\\sm0026_streetlight01.fbx");
 
 		PushAllLoadCallBack<Location11_Level, GameEngineFBXMesh>("Mesh\\UIMesh\\ResultMesh", { ".fbx" });
-		PushAllLoadCallBack<Location11_Level, GameEngineTexture>("Texture\\UI\\ResultLevel", { ".tga", ".png"});
+		PushAllLoadCallBack<Location11_Level, GameEngineTexture>("Texture\\UI\\ResultLevel", { ".tga", ".png" });
 
 		////Location19
 		PushLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\l19_01_start.fbx");
@@ -170,7 +171,7 @@ void ThreadLoadingLevel::Start()
 		PushAllLoadCallBack<TestStageLevel, FXData>("Effect", { ".effect" });
 
 		// 사운드
-		PushAllLoadCallBack<TestStageLevel, GameEngineSound>("Sound", { ".wav", ".ogg"});
+		PushAllLoadCallBack<TestStageLevel, GameEngineSound>("Sound", { ".wav", ".ogg" });
 
 		/////////////////// 몬스터 
 		// 엠푸사
@@ -196,22 +197,51 @@ void ThreadLoadingLevel::Start()
 		//PushAllLoadCallBack<TestStageLevel, GameEngineFBXAnimation>("Character\\Enemy\\CavaliereAngelo\\Animation", { ".fbx" });
 	}
 
-	// 공용
+	// 언로드
 	{
-		//PushAllLoadCallBack<NetworkTestLevel, GameEngineSound>("Sound\\BGM", { ".ogg" });
-		//PushAllLoadCallBack<NetworkTestLevel, GameEngineSound>("Sound\\SFX\\Player", { ".wav" });
-		//PushAllLoadCallBack<NetworkTestLevel, FXData>("Effect\\Damage", { ".effect" });
-	}
 
-	//NetwortTestLevel(레벨별로 구분시켜주세요)
-	{
-		//PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Effect\\Mesh", { ".fbx" });
-		//PushAllLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Effect\\Texture", { ".png" });
-		//PushLoadCallBack<NetworkTestLevel, GameEngineFBXMesh>("Character\\Player\\Nero\\Mesh\\Nero.fbx");
-		//PushLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character\\Player\\Nero\\Mesh\\pl0010_03_atos.texout.png");
-		//PushLoadCallBack<NetworkTestLevel, GameEngineTexture>("Character\\Player\\Nero\\Mesh\\pl0000_03_atos.texout.png");
-	}
+		// 2스테이지 맵
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\ALPHA_l02_01.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\l02_01.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\l02_01_p0.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\l02_01_p1.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\l02_02_p0.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\l02_03_p0.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\l02_03_p1.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\l02_04_p0.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\l02_07.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\l02_floor.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\l02_SkyBox.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\l02_wall.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\WATER_l02_01.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\WATER_l02_02.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\WATER_l02_03.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\WATER_l02_04.fbx");
 
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\sm0003_wall_light.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\sm0012_arcadegate01.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\sm0026_streetlight01.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\sm0039_arcadecaferoof01.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\sm0039_arcadecaferoof01_01.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\sm0041_fountain01.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\sm0044_bench01.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\sm0071_electronicbillboard00.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\sm0139_statueb.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\sm0140_streetstall.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\sm0183_decolight00.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\sm0994_statue.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\sm7001_seal_02.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\LOD_1_Group_0_Sub_3__m02m_illminary01.fbx");
+		PushUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Map\\Location2\\l02_03StreetLine.fbx");
+
+		// 2스테이지 몬스터
+		PushAllUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Character\\Enemy\\Empusa\\Mesh", { ".fbx" });
+		PushAllUnLoadCallBack<TestStageLevel, GameEngineFBXAnimation>("Character\\Enemy\\Empusa\\Animation", { ".fbx" });
+		PushAllUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Character\\Enemy\\HellCaina\\Mesh", { ".fbx" });
+		PushAllUnLoadCallBack<TestStageLevel, GameEngineFBXAnimation>("Character\\Enemy\\HellCaina\\Animation", { ".fbx" });
+		PushAllUnLoadCallBack<TestStageLevel, GameEngineFBXMesh>("Character\\Enemy\\Qliphoth\\Mesh", { ".fbx" });
+		PushAllUnLoadCallBack<TestStageLevel, GameEngineFBXAnimation>("Character\\Enemy\\Qliphoth\\Animation", { ".fbx" });
+	}
 
 }
 
@@ -231,8 +261,13 @@ void ThreadLoadingLevel::Update(float _DeltaTime)
 
 	LoadingUI->SetThreedPersent(LoadingPercent);
 
-	//모든 로딩이 완료된 순간
-	if (LoadWorkCount == ExcuteWorkCount)
+	// 언로드가 끝난 순간
+	if (true == IsUnload && UnLoadWorkCount == ExcuteWorkCount)
+	{
+		StartLoad();
+	}
+	// 언로드 밑 로드가 끝난 순간
+	if (true == IsLoad && AllWorkCount == ExcuteWorkCount)
 	{
 		LoadingUI->SetThreedPersent(1.f);
 		GameEngineCore::ChangeLevel(NextLevelName);
@@ -248,20 +283,11 @@ void ThreadLoadingLevel::LevelChangeStart()
 	ThreadLoadStart();
 }
 
-void ThreadLoadingLevel::ThreadLoadStart()
+void ThreadLoadingLevel::StartUnLoad()
 {
-	const std::vector<std::function<void()>>& CallBacks = AllThreadLoadCallBack[NextLevelName];
-	LoadWorkCount = CallBacks.size();
-	ExcuteWorkCount = 0;
-	LoadingPercent = 0.f;
-
-	if (true == CallBacks.empty())
-	{
-		LoadWorkCount = 1;
-		ExcuteWorkCount = 1;
-		LoadingPercent = 1.f;
-		return;
-	}
+	IsUnload = true;
+	IsLoad = false;
+	const std::vector<std::function<void()>>& CallBacks = AllThreadUnLoadCallBack[PrevLevelName];
 
 	for (const std::function<void()>& CallBack : CallBacks)
 	{
@@ -269,8 +295,56 @@ void ThreadLoadingLevel::ThreadLoadStart()
 			{
 				CallBack();
 				++ExcuteWorkCount;
-				LoadingPercent = static_cast<float>(ExcuteWorkCount) / static_cast<float>(LoadWorkCount);
+				LoadingPercent = static_cast<float>(ExcuteWorkCount) / static_cast<float>(AllWorkCount);
 			});
 	}
+}
+
+void ThreadLoadingLevel::StartLoad()
+{
+	IsUnload = false;
+	IsLoad = true;
+	const std::vector<std::function<void()>>& CallBacks = AllThreadLoadCallBack[NextLevelName];
+
+	for (const std::function<void()>& CallBack : CallBacks)
+	{
+		GameEngineCore::JobQueue.Work([this, CallBack](GameEngineThread*)
+			{
+				CallBack();
+				++ExcuteWorkCount;
+				LoadingPercent = static_cast<float>(ExcuteWorkCount) / static_cast<float>(AllWorkCount);
+			});
+	}
+}
+
+void ThreadLoadingLevel::ThreadLoadStart()
+{
+	const std::vector<std::function<void()>>& UnLoadCallBacks = AllThreadUnLoadCallBack[PrevLevelName];
+	ExcuteWorkCount = 0;
+	LoadingPercent = 0.f;
+	if (UnLoadCallBacks.empty())
+	{
+		UnLoadWorkCount = 1;
+		ExcuteWorkCount += 1;
+	}
+	else
+	{
+		UnLoadWorkCount = UnLoadCallBacks.size();
+	}
+
+	const std::vector<std::function<void()>>& LoadCallBacks = AllThreadLoadCallBack[NextLevelName];
+	if (LoadCallBacks.empty())
+	{
+		LoadWorkCount = 1;
+		ExcuteWorkCount += 1;
+	}
+	else
+	{
+		LoadWorkCount = LoadCallBacks.size();
+	}
+
+	AllWorkCount = UnLoadWorkCount + LoadWorkCount;
+
+	StartUnLoad();
 }
 

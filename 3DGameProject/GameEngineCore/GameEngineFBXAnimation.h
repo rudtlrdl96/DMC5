@@ -170,7 +170,9 @@ public:
 
 	static void UnLoad(const std::string_view& _Name)
 	{
+		std::shared_ptr<GameEngineFBXAnimation> Anim = Find(_Name);
 		GameEngineResource::Remove(_Name);		
+		Anim->Release();
 	}
 
 	void AnimationMatrixLoad(std::shared_ptr <GameEngineFBXMesh> _Mesh, const std::string_view& _Name, int _AnimationIndex);

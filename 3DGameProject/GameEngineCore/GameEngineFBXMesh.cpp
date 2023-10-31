@@ -21,7 +21,10 @@ std::shared_ptr<GameEngineFBXMesh> GameEngineFBXMesh::Load(const std::string_vie
 
 void GameEngineFBXMesh::UnLoad(const std::string_view& _Name)
 {
+	std::shared_ptr<GameEngineFBXMesh> Mesh = Find(_Name);
 	GameEngineResource::Remove(_Name);
+	Mesh->Release();
+
 	return;
 }
 
