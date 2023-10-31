@@ -2,6 +2,7 @@
 #include "Item_RedOrb.h"
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
+#include <GameEnginePlatform/GameEngineSound.h>
 #include "EffectRenderer.h"
 #include "FXSystem.h"
 #include "PlayerHPUI.h"
@@ -210,6 +211,8 @@ void Item_RedOrb::Start()
 	{
 		FBXMesh->Off();
 		Effect->PlayFX("RedOrb_Disappear.effect");
+		GetSound = GameEngineSound::Play("GetRedOrb.wav");
+		GetSound.SetVolume(0.1f);
 		RedOrbUI::AddRedOrb(100);
 		ResetLiveTime();
 	},

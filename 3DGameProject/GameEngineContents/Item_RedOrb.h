@@ -36,7 +36,7 @@ private:
 		RedOrb_SuckIn,	// 플레이어가 흡수
 		RedOrb_Disappear// 사라짐
 	};
-
+	GameEngineSoundPlayer GetSound;
 	float4 Force = float4::ZERO;
 	float4 StartPos = float4::ZERO;
 	float4 GroundPos = float4::ZERO;
