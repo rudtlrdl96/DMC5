@@ -33,7 +33,7 @@
 #include <GameEngineCore/GameEngineGUI.h>
 #include <GameEngineCore/BloomEffect.h>
 #include <GameEngineCore/GameEngineCoreWindow.h>
-
+#include "Char_ChoiceUI.h"
 TestStageLevel* TestStageLevel::Inst = nullptr;
 
 TestStageLevel::TestStageLevel()
@@ -64,7 +64,7 @@ void TestStageLevel::Start()
 		Distortion->SetDistortionValue(10, 10);
 		Distortion->SetMaxPixelValue(100, 100);
 	}
-	
+
 	//{
 	//	std::shared_ptr<DistortionEffect> Distortion = GetCamera(0)->GetCamTarget()->CreateEffect<DistortionEffect>();
 	//	Distortion->SetMaskTexture(GetCamera(100)->GetCamAlphaTarget(), 1);
@@ -80,9 +80,9 @@ void TestStageLevel::Start()
 		Blur->SetCamMaskTarget(GetMainCamera()->GetCamMaskTarget());
 		Blur->SetCam(GetMainCamera());
 	}
-	
+
 	std::shared_ptr<FadeEffect> Fade = GetLastTarget()->CreateEffect<FadeEffect>();
-		
+
 	StageBaseLevel::Start();
 
 	if (false == GameEngineInput::IsKey("BakeTestKey"))
@@ -100,8 +100,8 @@ void TestStageLevel::Update(float _DeltaTime)
 	if (true == GameEngineInput::IsDown("BakeTestKey"))
 	{
 		const std::vector<std::shared_ptr<GameEngineLight>>& AllLightRef = GetAllLightRef();
-		
-		for (std::shared_ptr<GameEngineLight> Ref: AllLightRef)
+
+		for (std::shared_ptr<GameEngineLight> Ref : AllLightRef)
 		{
 			Ref->BakeShadow(GetMainCamera());
 		}
@@ -132,22 +132,31 @@ void TestStageLevel::LevelChangeStart()
 	SetCamera({ 0,0,-500 });
 
 	BGMPlayer::BGMLoad();
-	if (true)
+
+	switch (Char_ChoiceUI::GetPlayerType())
+	{
+	default:
+	case ChoicePlayerType::NONE:
+	case ChoicePlayerType::NERO:
 	{
 		MyPlayer = CreateActor<PlayerActor_Nero>();
 		MyPlayer->SetUserControllType();
 		MyPlayer->SetWorldPosition({ 10815.f, -159.f, 5073.f });
 		MyPlayer->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
 		NetworkManager::LinkNetwork(MyPlayer.get(), this);
+		break;
 	}
-	else
+	case ChoicePlayerType::VERGIL:
 	{
 		MyPlayer = CreateActor<PlayerActor_Vergil>();
 		MyPlayer->SetUserControllType();
 		MyPlayer->SetWorldPosition({ 10815.0f , -159.f, 5073.f });
 		MyPlayer->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
 		NetworkManager::LinkNetwork(MyPlayer.get(), this);
+		break;
 	}
+	}
+
 	CreateStage(Location2_StageDatas[0]);
 
 	//std::shared_ptr<GameEngineLight> SpotLight = CreateSpotLight(float4(0, 400, 0), ShadowTextureScale::S_512, 2000, 90);
@@ -224,16 +233,16 @@ void TestStageLevel::InitPool()
 	//Passive컨트롤 용 네로 오브젝트 풀링
 	Poolable<PlayerActor_Nero>::CreatePool(this, static_cast<int>(ActorOrder::Player), 1,
 		[](std::shared_ptr<PlayerActor_Nero> _ActorPtr)
-	{
-		_ActorPtr->SetControll(NetControllType::PassiveControll);
-	});
+		{
+			_ActorPtr->SetControll(NetControllType::PassiveControll);
+		});
 
 	//Passive컨트롤 용 버질 오브젝트 풀링
 	Poolable<PlayerActor_Vergil>::CreatePool(this, static_cast<int>(ActorOrder::Player), 1,
 		[](std::shared_ptr<PlayerActor_Vergil> _ActorPtr)
-	{
-		_ActorPtr->SetControll(NetControllType::PassiveControll);
-	});
+		{
+			_ActorPtr->SetControll(NetControllType::PassiveControll);
+		});
 
 	//Passive컨트롤 용 미자리 블레이드 오브젝트 풀링
 	Poolable<Player_MirageBlade>::CreatePool(this, static_cast<int>(ActorOrder::Player), 8);
@@ -241,32 +250,32 @@ void TestStageLevel::InitPool()
 	//Enemy_HellCaina
 	Poolable<Enemy_HellCaina>::CreatePool(this, static_cast<int>(ActorOrder::Enemy), 6,
 		[this](std::shared_ptr<Enemy_HellCaina> _ActorPtr)
-	{
-		if (true == NetworkManager::IsClient())
 		{
-			_ActorPtr->SetControll(NetControllType::PassiveControll);
-		}
-		else
-		{
-			//_ActorPtr->SetControll(NetControllType::ActiveControll);
-			NetworkManager::LinkNetwork(_ActorPtr.get(), this);
-		}
-	});
+			if (true == NetworkManager::IsClient())
+			{
+				_ActorPtr->SetControll(NetControllType::PassiveControll);
+			}
+			else
+			{
+				//_ActorPtr->SetControll(NetControllType::ActiveControll);
+				NetworkManager::LinkNetwork(_ActorPtr.get(), this);
+			}
+		});
 
 	//Enemy_Empusa
 	Poolable<Enemy_Empusa>::CreatePool(this, static_cast<int>(ActorOrder::Enemy), 7,
 		[this](std::shared_ptr<Enemy_Empusa> _ActorPtr)
-	{
-		if (true == NetworkManager::IsClient())
 		{
-			_ActorPtr->SetControll(NetControllType::PassiveControll);
-		}
-		else
-		{
-			//_ActorPtr->SetControll(NetControllType::ActiveControll);
-			NetworkManager::LinkNetwork(_ActorPtr.get(), this);
-		}
-	});
+			if (true == NetworkManager::IsClient())
+			{
+				_ActorPtr->SetControll(NetControllType::PassiveControll);
+			}
+			else
+			{
+				//_ActorPtr->SetControll(NetControllType::ActiveControll);
+				NetworkManager::LinkNetwork(_ActorPtr.get(), this);
+			}
+		});
 
 	//Enemy_Qliphoth
 	Poolable<Enemy_Qliphoth>::CreatePool(this, static_cast<int>(ActorOrder::Enemy), 2,
@@ -301,11 +310,11 @@ void TestStageLevel::CreateEventZone()
 			for (int i = 0; i < 2; i++)
 			{
 				TimeEvent.AddEvent(i * 0.8f, [=](GameEngineTimeEvent::TimeEvent& Event, GameEngineTimeEvent* Manager)
-				{
-					std::shared_ptr<Enemy_Qliphoth> Empusa = Poolable<Enemy_Qliphoth>::PopFromPool(this, static_cast<int>(ActorOrder::Enemy));
-					Empusa->GetTransform()->SetWorldPosition(EnemyPos[i]);
-					Empusa->GetTransform()->SetWorldRotation(float4::UP * EnemyRot[i]);
-				});
+					{
+						std::shared_ptr<Enemy_Qliphoth> Empusa = Poolable<Enemy_Qliphoth>::PopFromPool(this, static_cast<int>(ActorOrder::Enemy));
+						Empusa->GetTransform()->SetWorldPosition(EnemyPos[i]);
+						Empusa->GetTransform()->SetWorldRotation(float4::UP * EnemyRot[i]);
+					});
 			}
 		});
 }

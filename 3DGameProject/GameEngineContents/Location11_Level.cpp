@@ -23,6 +23,7 @@
 #include "BWColorEffect.h"
 #include "BGMPlayer.h"
 #include "EventZone.h"
+#include "Char_ChoiceUI.h"
 Location11_Level::Location11_Level()
 {
 
@@ -113,21 +114,28 @@ void Location11_Level::LevelChangeStart()
 	// 플레이어 생성전 플레이어 벡터 초기화
 	BasePlayerActor::LevelChangeClear(this);
 
-	if (true == NetworkManager::IsClient())
+	switch (Char_ChoiceUI::GetPlayerType())
 	{
-		MainPlayer = CreateActor<PlayerActor_Vergil>();
-		MainPlayer->SetUserControllType();
-		MainPlayer->SetWorldPosition({ -31000, 1950, -360 });
-		MainPlayer->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
-		NetworkManager::LinkNetwork(MainPlayer.get(), this);
+	default:
+	case ChoicePlayerType::NONE:
+	case ChoicePlayerType::NERO:
+	{
+		MyPlayer = CreateActor<PlayerActor_Nero>();
+		MyPlayer->SetUserControllType();
+		MyPlayer->SetWorldPosition({ -31000, 1950, -360 });
+		MyPlayer->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
+		NetworkManager::LinkNetwork(MyPlayer.get(), this);
+		break;
 	}
-	else
+	case ChoicePlayerType::VERGIL:
 	{
-		MainPlayer = CreateActor<PlayerActor_Nero>();
-		MainPlayer->SetUserControllType();
-		MainPlayer->SetWorldPosition({ -31000, 1950, -360 });
-		MainPlayer->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
-		NetworkManager::LinkNetwork(MainPlayer.get(), this);
+		MyPlayer = CreateActor<PlayerActor_Vergil>();
+		MyPlayer->SetUserControllType();
+		MyPlayer->SetWorldPosition({ -31000, 1950, -360 });
+		MyPlayer->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
+		NetworkManager::LinkNetwork(MyPlayer.get(), this);
+		break;
+	}
 	}
 
 	//Enemy_Qliphoth
@@ -187,7 +195,7 @@ void Location11_Level::CreateEventZone()
 			std::shared_ptr<CavaliereAngelo> Cavaliere = Poolable<CavaliereAngelo>::PopFromPool(this, static_cast<int>(ActorOrder::Enemy));
 			Cavaliere->GetPhysXComponent()->SetWorldPosition({ -35500, 1950, -365 });
 			Cavaliere->GetPhysXComponent()->SetWorldRotation({ 0.0f, 90.0f, 0.0f });
-			MainPlayer->SetBossCam(Cavaliere->GetTransform());
+			MyPlayer->SetBossCam(Cavaliere->GetTransform());
 			NetworkManager::ExcuteNetworkEvent(Net_EventType::Location11_Start);
 			CutSceneStart();
 		});
