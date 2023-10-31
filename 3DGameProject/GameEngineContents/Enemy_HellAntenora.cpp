@@ -2791,7 +2791,7 @@ void Enemy_HellAntenora::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Buster_Start,
 	.Start = [=] {
-	BusterCalculation_Client(float4{ 0.f, -45.f, 0.f });
+	BusterCalculation_Client(float4{ 0.0f, -120.0f, 0.0f });
 	EnemyRenderer->ChangeAnimation("em0001_air_damage_gun");
 	},
 	.Update = [=](float _DeltaTime) {

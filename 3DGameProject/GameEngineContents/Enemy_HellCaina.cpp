@@ -2324,7 +2324,7 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	// em0000_Buster_Start, 버스트 히트 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellCaina::HellCaina_Buster_Start,
 	.Start = [=] {
-	BusterCalculation_Client(float4{ 0.f, -45.f, 0.f });
+	BusterCalculation_Client(float4{ 0.0f, -120.0f, 0.0f });
 	EnemyRenderer->ChangeAnimation("em0000_Buster_Start");
 	},
 	.Update = [=](float _DeltaTime) {

@@ -2690,7 +2690,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Buster_Start,
 	.Start = [=] {
-	BusterCalculation_Client(float4{ 0.f, -45.f, 0.f });
+	BusterCalculation_Client(float4{ 0.0f, -120.0f, 0.0f });
 	EnemyRenderer->ChangeAnimation("em0600_Air_Buster");
 	},
 	.Update = [=](float _DeltaTime) {
