@@ -248,6 +248,7 @@ void NeroItemGlass::AddMoveBreaker(float _Delta)
 
 		if (AddFirst  == true && Time > 0.5f)
 		{
+			GameEngineSound::Play("DevilBreakerUISound.wav");
 			AddSecound  = true;
 			Time = 0.0f;
 			AddFirst  = false;
@@ -320,6 +321,7 @@ void NeroItemGlass::DestroyMoveBreaker(float _Delta)
 
 		if (DestroyFirst == true && Time > 0.5f)
 		{
+			GameEngineSound::Play("DevilBreakerUISound.wav");
 			DestroyFirst = false;
 			DestroySecond = true;
 			Time = 0.0f;
