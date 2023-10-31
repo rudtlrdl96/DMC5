@@ -147,6 +147,15 @@ void BGMPlayer::SetTitleBGM()
 	SoundPlayer.SetLoopPoint(20.0f, 100.f);
 }
 
+void BGMPlayer::SetMissionBGM()
+{
+	if (nullptr == GameEngineSound::Find("Ugh Come On.ogg")) { BGMLoad(); }
+
+	SoundPlayer = GameEngineSound::Play("Ugh Come On.ogg");
+	SoundPlayer.SetVolume(Volume);
+	SoundPlayer.SetLoop();
+}
+
 void BGMPlayer::SetClearBGM()
 {
 	if (nullptr == GameEngineSound::Find("Reflection.ogg")) { BGMLoad(); }

@@ -23,6 +23,8 @@ public:
 
 	static void SetTitleBGM();
 
+	static void SetMissionBGM();
+
 	static void SetClearBGM();
 
 	static void SetBGMFadeOut();
