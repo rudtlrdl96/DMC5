@@ -205,14 +205,14 @@ void PlayerCamera::CameraControll(float _DeltaTime)
 	CameraArm->SetLocalRotation(ArmRot);
 
 	// 거리조절
-	if (GameEngineInput::IsPress("UI_UP"))
-	{
-		CameraDistance += float4::FORWARD * 100.0f * _DeltaTime;
-	}
-	if (GameEngineInput::IsPress("UI_Down"))
-	{
-		CameraDistance += float4::BACK * 100.0f * _DeltaTime;
-	}
+	//if (GameEngineInput::IsPress("UI_UP"))
+	//{
+	//	CameraDistance += float4::FORWARD * 100.0f * _DeltaTime;
+	//}
+	//if (GameEngineInput::IsPress("UI_Down"))
+	//{
+	//	CameraDistance += float4::BACK * 100.0f * _DeltaTime;
+	//}
 }
 
 void PlayerCamera::TargetCheck(float _DeltaTime)
