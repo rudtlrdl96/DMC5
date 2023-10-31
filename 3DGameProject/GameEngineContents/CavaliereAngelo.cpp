@@ -399,6 +399,7 @@ void CavaliereAngelo::Start()
 		else
 		{
 			Datas = _Player->GetAttackCollision()->GetDamage();
+			Player = _Player;
 		}
 
 		MinusEnemyHP(Datas.DamageValue);
@@ -1620,7 +1621,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 			}
 
 			// 근처에 플레이어가 있으면 후속타로 이행
-			if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
+			if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D) && IsParryEvent == false)
 			{
 				std::shared_ptr<GameEngineCollision> Collision = RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D);
 				bool Iscontact = PlayerContactCheck_Normal(Collision.get());
@@ -1658,7 +1659,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 					return;
 				}
 			}
-			if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
+			if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D) && IsParryEvent == false)
 			{
 				std::shared_ptr<GameEngineCollision> Collision = RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D);
 				bool Iscontact = PlayerContactCheck_Normal(Collision.get());
@@ -1694,7 +1695,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 					return;
 				}
 			}
-			if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D))
+			if (nullptr != RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D) && IsParryEvent == false)
 			{
 				std::shared_ptr<GameEngineCollision> Collision = RN_MonsterCollision->Collision(CollisionOrder::Player, ColType::SPHERE3D, ColType::SPHERE3D);
 				bool Iscontact = PlayerContactCheck_Normal(Collision.get());
@@ -2012,6 +2013,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 플레이어 패리 성공 후 바로 공격
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_Even01,
 	.Start = [=] {
+	IsParryEvent = true;
 	EnemyRenderer->ChangeAnimation("em5501_Parry_even01");
 	},
 	.Update = [=](float _DeltaTime) {
@@ -2042,12 +2044,14 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	IsParryEvent = false;
 	}
 		});
 
 	// 플레이어 패리 후 성공 후 약경직
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_normal01,
 	.Start = [=] {
+	IsParryEvent = true;
 	EffectRenderer_0->PlayFX("Cavalier_Parry.effect");
 	EffectRenderer_1->Off();
 	EnemyRenderer->ChangeAnimation("em5501_Parry_normal01");
@@ -2088,6 +2092,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+	IsParryEvent = false;
 	}
 		});
 

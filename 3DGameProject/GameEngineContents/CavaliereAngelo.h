@@ -167,4 +167,5 @@ private:
 	bool IsFastCharge = false;
 	bool IsInit = false;
 
+	bool IsParryEvent = false;
 };
