@@ -336,11 +336,6 @@ void Enemy_ProtoAngelo::Start()
 			MinusEnemyHP(Datas.DamageValue);
 			HitStop(Datas.DamageTypeValue);
 
-			//if (DamageType::VergilLight == Datas.DamageTypeValue)
-			//{
-			//	IsVergilLight = true;
-			//}
-
 			if (DamageType::Stun == Datas.DamageTypeValue)
 			{
 				StopTime(2.9f);
@@ -824,11 +819,6 @@ void Enemy_ProtoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 
 	ParryCheck_Client();
 
-	//if (true == DeathValue)
-	//{
-	//	return;
-	//}
-
 	AttackDelayCheck += _DeltaTime;
 
 	float FrameTime = (1.0f / 60.0f) * 5.0f;
@@ -849,11 +839,6 @@ void Enemy_ProtoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 	AttackDelayCheck = 0.0f;
 
 	NetworkObjectBase* Obj = dynamic_cast<NetworkObjectBase*>(AttackCol->GetActor());
-
-	//if (2 <= SuperArmorStack)
-	//{
-	//	IsSuperArmor = false;
-	//}
 
 	if (true == IsSuperArmor)
 	{
@@ -1894,6 +1879,8 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ProtoAngelo::ProtoAngelo_Parry_Lose_Modori,
 	.Start = [=] {
 	ParryTime();
+	IsParryCheck = false;
+	IsSuperArmor = false;
 	MonsterEffectRenderer->PlayFX("Damage_Parry.effect");
 	EnemyRenderer->ChangeAnimation("em0601_Parry_Lose_Modori");
 	},
