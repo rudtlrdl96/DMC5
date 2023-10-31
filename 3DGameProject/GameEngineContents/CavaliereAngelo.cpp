@@ -1089,6 +1089,7 @@ void CavaliereAngelo::ChangeState(int _StateValue)
 	EnemyFSM.ChangeState(_StateValue);
 	EnemyFSMValue = _StateValue;
 	NetworkManager::SendFsmChangePacket(this, _StateValue);
+	IsChangeState = true;
 }
 
 void CavaliereAngelo::ChangeState_Client(int _StateValue, NetworkObjectBase* _Obj)
@@ -1634,7 +1635,6 @@ void CavaliereAngelo::EnemyCreateFSM()
 					PhysXCapsule->AddWorldRotation({ 0.f, DotProductValue, 0.f });
 					Event01 = false;
 					Normal01 = false;
-					ParryStack = 0;
 					++ColliderStack;
 					SetMoveStop();
 					ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Attack02);
@@ -1778,6 +1778,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 
 	if (true == ParryOkay)
 	{
+		ParryOkay = false;
 		SetMoveStop();
 		MonsterAttackCollision->Off();
 
@@ -1797,7 +1798,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
-		ParryStack = 0;
+		//ParryStack = 0;
 		++ColliderStack;
 		ChangeState(FSM_State_CavaliereAngelo::CavaliereAngelo_Idle);
 		return;
@@ -1876,6 +1877,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 
 	if (true == ParryOkay)
 	{
+		ParryOkay = false;
 		SetMoveStop();
 		MonsterAttackCollision->Off();
 
@@ -1974,6 +1976,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 
 	if (true == ParryOkay)
 	{
+		ParryOkay = false;
 		SetMoveStop();
 		MonsterAttackCollision->Off();
 
@@ -2008,15 +2011,18 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 플레이어 패리 성공 후 바로 공격
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_Even01,
 	.Start = [=] {
-	ParryOkay = false;
-	IsParryCheck = false;
-	++ParryStack;
-	ParryTime();
-	EffectRenderer_0->PlayFX("Cavalier_Parry.effect");
-	EffectRenderer_1->Off();
 	EnemyRenderer->ChangeAnimation("em5501_Parry_even01");
 	},
 	.Update = [=](float _DeltaTime) {
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		IsParryCheck = false;
+		++ParryStack;
+		ParryTime();
+		EffectRenderer_0->PlayFX("Cavalier_Parry.effect");
+		EffectRenderer_1->Off();
+	}
 	if (true == EnemyRenderer->IsAnimationEnd())
 	{
 		float4 Direction = MonsterAndPlayerCross();
@@ -2041,16 +2047,18 @@ void CavaliereAngelo::EnemyCreateFSM()
 	// 플레이어 패리 후 성공 후 약경직
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Parry_normal01,
 	.Start = [=] {
-	ParryOkay = false;
-	IsParryCheck = false;
-	++ParryStack;
-	ParryTime();
 	EffectRenderer_0->PlayFX("Cavalier_Parry.effect");
 	EffectRenderer_1->Off();
 	EnemyRenderer->ChangeAnimation("em5501_Parry_normal01");
 		},
 	.Update = [=](float _DeltaTime) {
-
+	if (true == IsChangeState)
+	{
+		IsChangeState = false;
+		IsParryCheck = false;
+		++ParryStack;
+		ParryTime();
+	}
 	{
 		AllDirectSetting_Normal();
 
@@ -2226,6 +2234,7 @@ void CavaliereAngelo::EnemyCreateFSM()
 
 	if (true == ParryOkay)
 	{
+		ParryOkay = false;
 		SetMoveStop();
 		MonsterAttackCollision->Off();
 
