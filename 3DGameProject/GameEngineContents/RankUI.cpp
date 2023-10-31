@@ -253,9 +253,9 @@ void RankUI::RankApper(float _Delta, std::shared_ptr<class UIMeshRenderer> _Rend
 			float4::LerpClamp(StartScale,EndScale, Ratio * 3.0f));
 	}
 	//alpha값 줄이기
-	if (Ratio + 0.5f <= 1.0f)
+	if (Ratio + 0.2f <= 1.0f)
 	{
-		_Render->SetMulColor(float4(1.0f, 1.0f, 1.0f, Ratio + 0.5f));
+		_Render->SetMulColor(float4(1.0f, 1.0f, 1.0f, Ratio + 0.2f));
 	}
 	if (_Render->GetTransform()->GetLocalPosition().x == StartPos.x)
 	{

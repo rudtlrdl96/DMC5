@@ -119,7 +119,7 @@ private:
 	float4 StartRotation = { -90.0f,0.0f,0.0f };
 	float4 LeftTurn = { -90.0f,0.0f,-30.0f };
 	float4 RightTurn = { -90.0f,0.0f,30.0f };
-	float4 StartScale = { 9.0f,9.0f,9.0f };
+	float4 StartScale = { 12.0f,12.0f,12.0f };
 	float4 UpScale = { 6.0f,6.0f,6.0f };
 	float4 EndScale = { 5.0f,5.0f,5.0f };
 	float4 StartPos = { 660.0f,90.0f,-10.0f };
