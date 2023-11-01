@@ -47,7 +47,8 @@ void GameEngineCloth::CreateFactory()
 
 void GameEngineCloth::CreateCloth(std::shared_ptr<GameEngineFBXRenderer> _Renderer)
 {
-	std::vector<std::vector<std::shared_ptr<GameEngineRenderUnit>>> Unit = _Renderer->GetAllRenderUnit();
+	std::vector<std::vector<std::shared_ptr<GameEngineRenderUnit>>> Units = _Renderer->GetAllRenderUnit();
+	std::vector<std::shared_ptr<GameEngineRenderUnit>>* Unit = _Renderer->GetRenderUnit(0);
 
 	nv::cloth::ClothMeshDesc meshDesc;
 

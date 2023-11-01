@@ -107,6 +107,8 @@ void TestLevel::LevelChangeStart()
 	//IsDebugSwitch();
 	SetLevelSceneGravity(2000);
 
+	GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::Low);
+
 	if(nullptr == GameEngineFBXMesh::Find("Ground_Mesh.fbx"))
 	{
 		GameEngineDirectory NewDir;
@@ -134,9 +136,9 @@ void TestLevel::LevelChangeStart()
 			//Item_Gerbera->SetDevilBreaker(DevilBreaker::Gerbera);
 			//Item_Gerbera->GetTransform()->SetLocalPosition({ -1200, 50, -1000 });
 
-			std::shared_ptr<Item_DevilBreaker> Item_Buster = CreateActor<Item_DevilBreaker>();
-			Item_Buster->SetDevilBreaker(DevilBreaker::BusterArm);
-			Item_Buster->GetTransform()->SetLocalPosition({ -800, 50, -1000 });
+			//std::shared_ptr<Item_DevilBreaker> Item_Buster = CreateActor<Item_DevilBreaker>();
+			//Item_Buster->SetDevilBreaker(DevilBreaker::BusterArm);
+			//Item_Buster->GetTransform()->SetLocalPosition({ -800, 50, -1000 });
 		}
 		else
 		{
@@ -170,13 +172,13 @@ void TestLevel::LevelChangeStart()
 	//	Empusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
 
-	if (nullptr == Cavaliere)
-	{
-		Cavaliere = CreateActor<CavaliereAngelo>();
-		Cavaliere->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-		Cavaliere->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-		Player->SetBossCam(Cavaliere->GetTransform());
-	}
+	//if (nullptr == Cavaliere)
+	//{
+	//	Cavaliere = CreateActor<CavaliereAngelo>();
+	//	Cavaliere->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+	//	Cavaliere->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+	//	Player->SetBossCam(Cavaliere->GetTransform());
+	//}
 
 	if (nullptr == Flat)
 	{

@@ -879,7 +879,10 @@ void Enemy_ProtoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 
 	if (true == IsSuperArmor)
 	{
-		DeathCheck();
+		if (EnemyHP < 0)
+		{
+			DeathValue = true;
+		}
 
 		if (true == DeathValue)
 		{

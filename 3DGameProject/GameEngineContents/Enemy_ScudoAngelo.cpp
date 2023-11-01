@@ -352,7 +352,7 @@ void Enemy_ScudoAngelo::Start()
 			}
 			else
 			{
-				MinusEnemyHP(70);
+				MinusEnemyHP(50);
 			}
 
 			if (DamageType::Stun == Datas.DamageTypeValue)
@@ -756,6 +756,25 @@ void Enemy_ScudoAngelo::DamageCollisionCheck(float _DeltaTime)
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Stop_A == EnemyFSM.GetCurState()
 			|| true == IsSuperArmor)
 		{
+			DeathCheck();
+
+			if (true == DeathValue)
+			{
+				AttackCalculation();
+
+				if (EnemyHitDirect::Forward == EnemyHitDirValue
+					|| EnemyHitDirect::Left == EnemyHitDirValue
+					|| EnemyHitDirect::Right == EnemyHitDirValue)
+				{
+					ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Death_Back);
+				}
+				else if (EnemyHitDirect::Back == EnemyHitDirValue)
+				{
+					ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Death_Back);
+				}
+				return;
+			}
+
 			if (Data.DamageTypeValue == DamageType::Buster)
 			{
 				MinusEnemyHP(Data.DamageValue);
@@ -768,7 +787,7 @@ void Enemy_ScudoAngelo::DamageCollisionCheck(float _DeltaTime)
 			}
 			else
 			{
-				MinusEnemyHP(70);
+				MinusEnemyHP(50);
 				StartRenderShaking(6);
 			}
 			HitStop(Data.DamageTypeValue);
@@ -917,6 +936,28 @@ void Enemy_ScudoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Stop_A == EnemyFSM.GetCurState()
 			|| true == IsSuperArmor)
 		{
+			if (EnemyHP < 0)
+			{
+				DeathValue = true;
+			}
+
+			if (true == DeathValue)
+			{
+				AttackCalculation();
+
+				if (EnemyHitDirect::Forward == EnemyHitDirValue
+					|| EnemyHitDirect::Left == EnemyHitDirValue
+					|| EnemyHitDirect::Right == EnemyHitDirValue)
+				{
+					ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Death_Front, Obj);
+				}
+				else if (EnemyHitDirect::Back == EnemyHitDirValue)
+				{
+					ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Death_Back, Obj);
+				}
+				return;
+			}
+
 			if (Data.DamageTypeValue == DamageType::Buster)
 			{
 				BusterClientStart = true;
@@ -941,7 +982,6 @@ void Enemy_ScudoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 	{
 		Data.DamageTypeValue = DamageType::Light;
 	}
-
 
 	switch (Data.DamageTypeValue)
 	{

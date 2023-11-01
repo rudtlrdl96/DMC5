@@ -112,8 +112,6 @@ void PlayerActor_Nero::Start()
 	Sound.SetVoiceName("Nero_V_");
 	Sound.SFXVolume = 0.5f;
 	Effect_Zoom = ZoomEffect::GetZoomEffect();
-
-	//GameEngineCloth::CreateCloth(GetPlayerRenderer());
 }
 
 void PlayerActor_Nero::PlayerLoad()
@@ -313,6 +311,7 @@ void PlayerActor_Nero::PlayerLoad()
 		//콜백 float4 = 0 : SetPush
 		//콜백 float4 = 0 : SetMove
 
+		GameEngineCloth::CreateCloth(GetPlayerRenderer());
 	}
 
 	// OvertureRenderer 생성
