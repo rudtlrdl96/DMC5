@@ -6,6 +6,7 @@ enum class FadeState
 	None,
 	FadeIn,
 	FadeOut,
+	Wait,
 };
 
 // 설명 :
@@ -45,6 +46,13 @@ public:
 		State = FadeState::FadeOut;
 		FadeData.x = 1.0f;
 		Speed = 1.0f / _Time;
+	}
+	
+	// 페이드 사용이 있을때까지 화면을 검은색으로 유지합니다
+	void WaitCutScene()
+	{
+		State = FadeState::Wait;
+		FadeData.x = 0.0f;
 	}
 
 protected:

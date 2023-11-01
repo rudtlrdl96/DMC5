@@ -173,6 +173,8 @@ void Location11_Level::LevelChangeStart()
 		{
 			BossDeathEvent();
 		});
+
+	FadeEffect::GetFadeEffect()->WaitCutScene();
 }
 
 void Location11_Level::LevelChangeToResultLevel()
@@ -218,6 +220,7 @@ void Location11_Level::CutSceneStart()
 
 void Location11_Level::BossDeathEvent()
 {
+	BasePlayerActor::GetMainPlayer()->UIOff();
 	BGMPlayer::SetBattleEnd();
 	ZoomEffect::GetZoomEffect()->SetSpeed(6.0f);
 	ZoomEffect::GetZoomEffect()->EffectOn(1.5f);

@@ -50,7 +50,10 @@ void BasePlayerActor::SetCutScene(const float4& _StartPos, const float4& _EndPos
 {
 	Controller->ResetKey();
 	Controller->Off();
-	FadeEffect::GetFadeEffect()->FadeOut(0.5f);
+	if (true == _UIOff)
+	{
+		FadeEffect::GetFadeEffect()->FadeOut(0.5f);
+	}
 	GetLevel()->TimeEvent.AddEvent(0.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 		{
 			if (true == _UIOff)

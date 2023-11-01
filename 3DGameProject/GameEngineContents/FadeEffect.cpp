@@ -48,7 +48,7 @@ void FadeEffect::Effect(GameEngineRenderTarget* _Target, float _DeltaTime)
 	{
 		FadeData.x += Speed * _DeltaTime;
 	}
-	else {
+	else if (State == FadeState::FadeOut) {
 		FadeData.x -= Speed * _DeltaTime;
 	}
 

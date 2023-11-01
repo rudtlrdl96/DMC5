@@ -3,7 +3,7 @@
 #include <GameEngineCore/GameEngineCollision.h>
 #include "ThreadLoadingLevel.h"
 #include "EffectRenderer.h"
-
+#include "FadeEffect.h"
 LevelChangeZone::LevelChangeZone()
 {
 
@@ -20,7 +20,11 @@ void LevelChangeZone::ChangeLevel()
 	{
 		MsgAssert("ChangeLevelName가 정해지지 않았습니다");
 	}
-	ThreadLoadingLevel::ChangeLevel(ChangeLevelName);
+	FadeEffect::GetFadeEffect()->FadeOut(0.5f);
+	GetLevel()->TimeEvent.AddEvent(.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+		{
+			ThreadLoadingLevel::ChangeLevel(ChangeLevelName);
+		});
 }
 
 void LevelChangeZone::Start()
