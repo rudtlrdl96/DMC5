@@ -112,12 +112,7 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     
     // rgb = NormalMap, a = smoothnessValue 
     float4 NrmrData = NormalTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
-    
-    if (0.0f >= AtosData.r)
-    {
-        clip(-1);
-    }
-        
+            
     Result.ResultColor = AlbmData;
         
     float4 Normal = _Input.NORMAL;
