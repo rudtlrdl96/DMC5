@@ -99,14 +99,15 @@ void Item_RedOrb::Start()
 		Effect->PlayFX("RedOrb_Disappear.effect");
 		float Random = GameEngineRandom::MainRandom.RandomFloat(0.3f, 1);
 		Force = GetTransform()->GetLocalForwardVector() * 1000 * Random;
-		GetLevel()->RayCast(GetTransform()->GetWorldPosition(), float4::DOWN, GroundPos);
-		FloorHeight = GroundPos.y + 5;
 		Gravity = 350;
 
 		ResetLiveTime();
 	},
 	.Update = [=](float _DeltaTime)
 	{
+		GetLevel()->RayCast(GetTransform()->GetWorldPosition(), float4::DOWN, GroundPos);
+		FloorHeight = GroundPos.y + 15;
+
 		FBXMesh->GetTransform()->SetLocalScale(float4::ONE * std::clamp(GetLiveTime() * 7.0f, 0.0f, 3.0f));
 
 		Force = float4::LerpClamp(Force, float4::ZERO, 0.05f);

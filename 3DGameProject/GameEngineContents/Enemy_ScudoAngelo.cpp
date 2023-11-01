@@ -29,7 +29,7 @@ Enemy_ScudoAngelo::~Enemy_ScudoAngelo()
 void Enemy_ScudoAngelo::EnemyTypeLoad()
 {
 	EnemyCodeValue = EnemyCode::ScudoAngelo;
-	
+
 	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
 	{
 		EnemyMaxHP = 2200;
@@ -756,38 +756,79 @@ void Enemy_ScudoAngelo::DamageCollisionCheck(float _DeltaTime)
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Stop_A == EnemyFSM.GetCurState()
 			|| true == IsSuperArmor)
 		{
-			DeathCheck();
-
-			if (true == DeathValue)
-			{
-				AttackCalculation();
-
-				if (EnemyHitDirect::Forward == EnemyHitDirValue
-					|| EnemyHitDirect::Left == EnemyHitDirValue
-					|| EnemyHitDirect::Right == EnemyHitDirValue)
-				{
-					ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Death_Back);
-				}
-				else if (EnemyHitDirect::Back == EnemyHitDirValue)
-				{
-					ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Death_Back);
-				}
-				return;
-			}
-
 			if (Data.DamageTypeValue == DamageType::Buster)
 			{
 				MinusEnemyHP(Data.DamageValue);
+
+				DeathCheck();
+
+				if (true == DeathValue)
+				{
+					AttackCalculation();
+
+					if (EnemyHitDirect::Forward == EnemyHitDirValue
+						|| EnemyHitDirect::Left == EnemyHitDirValue
+						|| EnemyHitDirect::Right == EnemyHitDirValue)
+					{
+						ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Death_Front);
+					}
+					else if (EnemyHitDirect::Back == EnemyHitDirValue)
+					{
+						ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Death_Back);
+					}
+					return;
+				}
+
 				ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Buster_Start);
 			}
 			else if (Data.DamageTypeValue == DamageType::Stun)
 			{
 				MinusEnemyHP(Data.DamageValue);
+
+				DeathCheck();
+
+				if (true == DeathValue)
+				{
+					AttackCalculation();
+
+					if (EnemyHitDirect::Forward == EnemyHitDirValue
+						|| EnemyHitDirect::Left == EnemyHitDirValue
+						|| EnemyHitDirect::Right == EnemyHitDirValue)
+					{
+						ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Death_Front);
+					}
+					else if (EnemyHitDirect::Back == EnemyHitDirValue)
+					{
+						ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Death_Back);
+					}
+					return;
+				}
+
 				StopTime(2.9f);
 			}
 			else
 			{
 				MinusEnemyHP(50);
+
+				DeathCheck();
+
+				if (true == DeathValue)
+				{
+					AttackCalculation();
+
+					if (EnemyHitDirect::Forward == EnemyHitDirValue
+						|| EnemyHitDirect::Left == EnemyHitDirValue
+						|| EnemyHitDirect::Right == EnemyHitDirValue)
+					{
+						ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Death_Front);
+					}
+					else if (EnemyHitDirect::Back == EnemyHitDirValue)
+					{
+						ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Death_Back);
+					}
+					return;
+				}
+
 				StartRenderShaking(6);
 			}
 			HitStop(Data.DamageTypeValue);
@@ -798,6 +839,26 @@ void Enemy_ScudoAngelo::DamageCollisionCheck(float _DeltaTime)
 	if (true == ParryEvent)
 	{
 		MinusEnemyHP(Data.DamageValue);
+
+		DeathCheck();
+
+		if (true == DeathValue)
+		{
+			AttackCalculation();
+
+			if (EnemyHitDirect::Forward == EnemyHitDirValue
+				|| EnemyHitDirect::Left == EnemyHitDirValue
+				|| EnemyHitDirect::Right == EnemyHitDirValue)
+			{
+				ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Death_Front);
+			}
+			else if (EnemyHitDirect::Back == EnemyHitDirValue)
+			{
+				ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Death_Back);
+			}
+			return;
+		}
+
 		StartRenderShaking(6);
 		HitStop(Data.DamageTypeValue);
 		return;
@@ -936,35 +997,58 @@ void Enemy_ScudoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 			|| FSM_State_ScudoAngelo::ScudoAngelo_Attack_T_Run_Stop_A == EnemyFSM.GetCurState()
 			|| true == IsSuperArmor)
 		{
-			if (EnemyHP < 0)
-			{
-				DeathValue = true;
-			}
-
-			if (true == DeathValue)
-			{
-				AttackCalculation();
-
-				if (EnemyHitDirect::Forward == EnemyHitDirValue
-					|| EnemyHitDirect::Left == EnemyHitDirValue
-					|| EnemyHitDirect::Right == EnemyHitDirValue)
-				{
-					ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Death_Front, Obj);
-				}
-				else if (EnemyHitDirect::Back == EnemyHitDirValue)
-				{
-					ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Death_Back, Obj);
-				}
-				return;
-			}
-
 			if (Data.DamageTypeValue == DamageType::Buster)
 			{
 				BusterClientStart = true;
+
+				if (EnemyHP < 0)
+				{
+					DeathValue = true;
+				}
+
+				if (true == DeathValue)
+				{
+					AttackCalculation();
+
+					if (EnemyHitDirect::Forward == EnemyHitDirValue
+						|| EnemyHitDirect::Left == EnemyHitDirValue
+						|| EnemyHitDirect::Right == EnemyHitDirValue)
+					{
+						ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Death_Front, Obj);
+					}
+					else if (EnemyHitDirect::Back == EnemyHitDirValue)
+					{
+						ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Death_Back, Obj);
+					}
+					return;
+				}
+
 				ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Buster_Start, Obj);
 			}
 			else
 			{
+				if (EnemyHP < 0)
+				{
+					DeathValue = true;
+				}
+
+				if (true == DeathValue)
+				{
+					AttackCalculation();
+
+					if (EnemyHitDirect::Forward == EnemyHitDirValue
+						|| EnemyHitDirect::Left == EnemyHitDirValue
+						|| EnemyHitDirect::Right == EnemyHitDirValue)
+					{
+						ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Death_Front, Obj);
+					}
+					else if (EnemyHitDirect::Back == EnemyHitDirValue)
+					{
+						ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Death_Back, Obj);
+					}
+					return;
+				}
+
 				ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Obj });
 				StartRenderShaking(6);
 			}
@@ -974,6 +1058,28 @@ void Enemy_ScudoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 
 	if (true == ParryEvent)
 	{
+		if (EnemyHP < 0)
+		{
+			DeathValue = true;
+		}
+
+		if (true == DeathValue)
+		{
+			AttackCalculation();
+
+			if (EnemyHitDirect::Forward == EnemyHitDirValue
+				|| EnemyHitDirect::Left == EnemyHitDirValue
+				|| EnemyHitDirect::Right == EnemyHitDirValue)
+			{
+				ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Death_Front, Obj);
+			}
+			else if (EnemyHitDirect::Back == EnemyHitDirValue)
+			{
+				ChangeState_Client(FSM_State_ScudoAngelo::ScudoAngelo_Death_Back, Obj);
+			}
+			return;
+		}
+
 		StartRenderShaking(6);
 		return;
 	}
@@ -1108,6 +1214,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+		PhysXCapsule->On();
 	}
 		});
 
@@ -1126,7 +1233,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	.End = [=] {
 	}
 		});
-	
+
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Attack_Idle_Loop,
 	.Start = [=] {
 	EnemyRenderer->ChangeAnimation("em0600_Attack_Idle_Loop");
@@ -2292,35 +2399,35 @@ void Enemy_ScudoAngelo::EnemyCreateFSM()
 	// em0000_Buster_Start, 버스트 히트 시작
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Buster_Start,
 	.Start = [=] {
-	//PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
-	EnemyRenderer->ChangeAnimation("em0600_Air_Buster");
-	},
-	.Update = [=](float _DeltaTime) {
-	if (true == IsChangeState)
-	{
-		IsChangeState = false;
-		AttackCalculation();
-		IsCollapse = false;
-		IsBusterAttack = true;
-		BusterCalculation(float4{ 0.0f, -120.0f, 0.0f });
-		RotationCheck();
-		AllDirectSetting();
-	}
-	SetMoveStop();
-	if (true == EnemyRenderer->IsAnimationEnd())
-	{
-		SetAir(-120000.0f);
-		ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Buster_Loop);
-		return;
-	}
-	},
-	.End = [=] {
-	BusterEnd();
-	if (true == NetworkManager::IsServer())
-	{
-		ExcuteNetObjEvent(3, NetObjEventPath::ActiveToPassive, { Player });
-	}
-	}
+			//PhysXCapsule->AddWorldRotation({ 0.f, 180.f, 0.f });
+			EnemyRenderer->ChangeAnimation("em0600_Air_Buster");
+			},
+			.Update = [=](float _DeltaTime) {
+			if (true == IsChangeState)
+			{
+				IsChangeState = false;
+				AttackCalculation();
+				IsCollapse = false;
+				IsBusterAttack = true;
+				BusterCalculation(float4{ 0.0f, -120.0f, 0.0f });
+				RotationCheck();
+				AllDirectSetting();
+			}
+			SetMoveStop();
+			if (true == EnemyRenderer->IsAnimationEnd())
+			{
+				SetAir(-120000.0f);
+				ChangeState(FSM_State_ScudoAngelo::ScudoAngelo_Buster_Loop);
+				return;
+			}
+			},
+			.End = [=] {
+			BusterEnd();
+			if (true == NetworkManager::IsServer())
+			{
+				ExcuteNetObjEvent(3, NetObjEventPath::ActiveToPassive, { Player });
+			}
+			}
 		});
 	// 버스트 히트 루프
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Buster_Loop,
@@ -2396,7 +2503,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM_Client()
 	},
 	.End = [=] {
 	}
-			});
+		});
 
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Idle,
 	.Start = [=] {

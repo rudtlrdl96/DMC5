@@ -94,13 +94,14 @@ void Location19_EnemySpawner::Start()
 	MonsterWave_Events.resize(1);
 	MonsterWave_Events[0] = [this]()
 		{
+			GameEngineSound::Play("RedSeal_0.wav");
 			if (false == NetworkManager::IsClient())
 			{
 				MonsterAliveCount = 5;
 				GameEngineLevel* Level = GetLevel();
 				std::vector<float4> EnemyPos =
 				{
-					{ 1330 , 100, 483 }, { 1310 , 71, -194 }, { 943 , 60, 481 }, { 1616 , 106, 702 }, { 1880 , 77, -158 }
+					{ 1330 , 90, 483 }, { 1310 , 71, -194 }, { 943 , 60, 481 }, { 1616 , 106, 702 }, { 1880 , 77, -158 }
 				};
 				std::vector<float> EnemyRot = { -115, -91, -118, -118, -87 };
 
@@ -116,8 +117,9 @@ void Location19_EnemySpawner::Start()
 							else
 							{
 								Enemy = Poolable<Enemy_ScudoAngelo>::PopFromPool(Level, static_cast<int>(ActorOrder::Enemy));
-								Enemy->GetPhysXComponent()->Off();
 							}
+							Enemy->GetPhysXComponent()->Off();
+							Enemy->GetPhysXComponent()->SetLinearVelocityZero();
 							Enemy->GetPhysXComponent()->SetWorldPosition(EnemyPos[i]);
 							Enemy->GetPhysXComponent()->SetWorldRotation(float4::UP * EnemyRot[i]);
 							Enemy->GetTransform()->SetWorldPosition(EnemyPos[i]);

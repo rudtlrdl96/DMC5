@@ -12,11 +12,11 @@
 nv::cloth::Factory* GameEngineCloth::m_pFactory = nullptr;
 nv::cloth::Fabric* GameEngineCloth::m_pFabric = nullptr;
 
-GameEngineCloth::GameEngineCloth() 
+GameEngineCloth::GameEngineCloth()
 {
 }
 
-GameEngineCloth::~GameEngineCloth() 
+GameEngineCloth::~GameEngineCloth()
 {
 }
 
@@ -47,8 +47,18 @@ void GameEngineCloth::CreateFactory()
 
 void GameEngineCloth::CreateCloth(std::shared_ptr<GameEngineFBXRenderer> _Renderer)
 {
-	std::vector<std::vector<std::shared_ptr<GameEngineRenderUnit>>> Units = _Renderer->GetAllRenderUnit();
-	std::vector<std::shared_ptr<GameEngineRenderUnit>>* Unit = _Renderer->GetRenderUnit(0);
+
+	//std::map<FbxMesh*, std::vector<GameEngineVertex>*> FbxVertexMap;
+	//std::map<FbxMesh*, std::map<int, std::vector<FbxExIW>>> MapWI;   // 애니메이션이 있다면 채워져 있을겁니다.
+	//std::vector<GameEngineVertex> Vertexs;
+	//std::vector<std::vector<unsigned int>> Indexs;
+	//std::vector<FbxExMaterialSettingData> MaterialData;
+	//std::shared_ptr<GameEngineVertexBuffer> VertexBuffer;
+	//std::vector< std::shared_ptr<GameEngineIndexBuffer>> IndexBuffers;
+	//std::vector<std::shared_ptr<class GameEngineMesh>> Meshs;
+
+	FbxRenderUnitInfo* unif = _Renderer->GetFBXMesh()->GetRenderUnit(0);
+	std::map<FbxMesh*, std::vector<GameEngineVertex>*> Mapif = _Renderer->GetFBXMesh()->GetRenderUnit(0)->FbxVertexMap;
 
 	nv::cloth::ClothMeshDesc meshDesc;
 

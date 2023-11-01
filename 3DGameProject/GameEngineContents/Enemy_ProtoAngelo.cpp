@@ -1059,6 +1059,7 @@ void Enemy_ProtoAngelo::EnemyCreateFSM()
 	}
 	},
 	.End = [=] {
+		PhysXCapsule->On();
 	}
 		});
 
