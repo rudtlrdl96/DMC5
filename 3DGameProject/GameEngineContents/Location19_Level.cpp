@@ -124,6 +124,7 @@ void Location19_Level::LevelChangeStart()
 	CreateEventZone();
 	Portal = CreateActor<l19_Portal>();
 	Portal->GetTransform()->SetWorldPosition({1000.f, 0.f, 1000.f});
+	Portal->Off();
 }
 
 void Location19_Level::InitPool()
@@ -181,7 +182,8 @@ void Location19_Level::CreateEventZone()
 void Location19_Level::CreatePotal()
 {
 	// 모든 적 처치시 실행됨
-	Portal = CreateActor<l19_Portal>();
+	//Portal = CreateActor<l19_Portal>();
+	Portal->On();
 
 	int a = 0;
 }

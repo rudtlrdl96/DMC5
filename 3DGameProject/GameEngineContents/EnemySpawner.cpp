@@ -52,7 +52,7 @@ void EnemySpawner::DestroyMonster()
 
 		GetLevel()->TimeEvent.AddEvent(2.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 			{
-				if (CutScenePosStart != float4::ZERO)
+				if (true == IsCutScene)
 				{
 					BasePlayerActor::GetMainPlayer()->SetCutScene(CutScenePosStart, CutScenePosEnd, CutSceneRotStart, CutSceneRotEnd, 5.0f);
 				}
@@ -60,7 +60,10 @@ void EnemySpawner::DestroyMonster()
 
 		GetLevel()->TimeEvent.AddEvent(3.0f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 			{
-				GetLevel()->DynamicThis<StageBaseLevel>()->RedSealWallOff();
+				if (true == IsRedSeal)
+				{
+					GetLevel()->DynamicThis<StageBaseLevel>()->RedSealWallOff();
+				}
 			});
 	}
 	Death();

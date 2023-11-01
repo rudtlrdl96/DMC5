@@ -21,7 +21,8 @@ Location19_EnemySpawner::~Location19_EnemySpawner()
 void Location19_EnemySpawner::Start()
 {
 	EnemySpawner::Start();
-
+	IsRedSeal = false;
+	IsCutScene = false;
 	// 클라이언트에서 처리될 BattleEndEvent 지정 (서버에서 패킷을 보내서 실행시킨다)
 	NetworkManager::PushNetworkEvent(Net_EventType::Location19_End, [=]
 		{
@@ -37,28 +38,29 @@ void Location19_EnemySpawner::Start()
 					ZoomEffect::GetZoomEffect()->EffectOff();
 				});
 
-			GetLevel()->TimeEvent.AddEvent(3.0f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-				{
-				});
-
 			Location19_Level* Level = dynamic_cast<Location19_Level*>(GetLevel());
 			if (nullptr != Level)
 			{
 				Level->CreatePotal();
 			}
 		});
-	if (true == NetworkManager::IsServer())
+
+	if (false == NetworkManager::IsClient())
 	{
-		BattleEndEvent = std::bind(NetworkManager::ExcuteNetworkEvent, Net_EventType::Location19_End);
-		Location19_Level* Level = dynamic_cast<Location19_Level*>(GetLevel());
-		if (nullptr != Level)
-		{
-			Level->CreatePotal();
-		}
+		BattleEndEvent = [this]
+			{
+				NetworkManager::ExcuteNetworkEvent(Net_EventType::Location19_End);
+				Location19_Level* Level = dynamic_cast<Location19_Level*>(GetLevel());
+				if (nullptr != Level)
+				{
+					Level->CreatePotal();
+				}
+			};
 	}
 
 	Event = [this]()
 		{
+			GameEngineSound::Play("RedSeal_0.wav");
 			GameEngineLevel* Level = GetLevel();
 			BasePlayerActor::GetMainPlayer()->SetCutScene({ -2307, 1085, 1618 }, { -1250, 1085, 2358 }, { 30, 132, 0 }, { 20, 160, 0 }, 5.0f);
 			BGMPlayer::SetBattleBGM();
@@ -98,7 +100,7 @@ void Location19_EnemySpawner::Start()
 				GameEngineLevel* Level = GetLevel();
 				std::vector<float4> EnemyPos =
 				{
-					{ 1330 , 90, 483 }, { 1310 , 71, -194 }, { 943 , 60, 481 }, { 1616 , 106, 702 }, { 1880 , 77, -158 }
+					{ 1330 , 100, 483 }, { 1310 , 71, -194 }, { 943 , 60, 481 }, { 1616 , 106, 702 }, { 1880 , 77, -158 }
 				};
 				std::vector<float> EnemyRot = { -115, -91, -118, -118, -87 };
 
