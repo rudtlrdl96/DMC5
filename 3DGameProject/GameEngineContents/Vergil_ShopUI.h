@@ -30,6 +30,7 @@ protected:
 
 private:
 	void SetIndexCount();
+	void SetPercent();
 	void ScaleUpDown(float _Delta,std::shared_ptr<class Shop_TitleButton> _Button);
 	std::shared_ptr<class Shop_TitleButton> SkillButton = nullptr;
 	std::shared_ptr<class Shop_TitleButton> YamatoButton = nullptr;
@@ -37,8 +38,10 @@ private:
 	std::shared_ptr<class Shop_VergilYamatoUI> YamatoSkill = nullptr;
 	std::shared_ptr<class Shop_VergilMirgeUI> MirgeSkill = nullptr;
 	std::shared_ptr<class Shop_EnterWindow> EnterWindow = nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> MiregePersent = nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> YamatoPersent = nullptr;
 	std::shared_ptr<class RedOrbUI> RedOrbUIPtr = nullptr;
-
+	
 	float LerpTime = 0.0f;
 	int ButtonIndex = 0;
 	int Index = 0;

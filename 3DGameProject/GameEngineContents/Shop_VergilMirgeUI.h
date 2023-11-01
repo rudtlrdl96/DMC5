@@ -17,6 +17,10 @@ public:
 	{
 		return ExplanePtr;
 	}
+	int GetMirgeCount()
+	{
+		return Count;
+	}
 	static bool IsSpiralBlade;
 	static bool IsStormBlade;
 	static bool IsLesteringBlade;
@@ -33,7 +37,7 @@ private:
 	std::shared_ptr<class Shop_ItemButton>  SkillButton = nullptr;
 	std::shared_ptr<class Shop_ExplaneUI> ExplanePtr = nullptr;
 	bool Test = false;
-
+	int Count = 0;
 	int Index = 0;
 	int PrevIndex = 3;
 	float4 Pos_0 = { -190.0f,234.0f,0.0f };

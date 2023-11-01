@@ -55,6 +55,13 @@ void Shop_NeroSkillUI::Start()
 	ExplanePtr = GetLevel()->CreateActor<Shop_ExplaneUI>();
 	ExplanePtr->GetTransform()->SetParent(GetTransform());
 	ExplanePtr->GetTransform()->SetWorldPosition({ 0.0f,0.0f,0.0f });
+
+	RedQueenPersent = CreateComponent<GameEngineFontRenderer>(4);
+	RedQueenPersent->SetFont("DMC5Font");
+	RedQueenPersent->SetFontFlag(FW1_CENTER);
+	RedQueenPersent->SetScale(24.0f);
+	RedQueenPersent->SetColor(float4(0.67f, 0.721f, 0.720f));
+	RedQueenPersent->GetTransform()->SetLocalPosition(float4{-540.0f,308.0f,0.0f}*GameEngineActor::ScreenRatio);
 	SetValue();
 }
 
@@ -66,7 +73,7 @@ void Shop_NeroSkillUI::Update(float _Delta)
 	ActivSkill();
 	LerpItem(_Delta);
 	SetExText();
-
+	SetPercent();
 }
 
 void Shop_NeroSkillUI::LerpItem(float _Delta)
@@ -228,6 +235,7 @@ void Shop_NeroSkillUI::ActivSkill()
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(800);
 			IsStreak = true;
+			Count++;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 		else if (IsStreak == true && GameEngineInput::IsUp("UI_Enter"))
@@ -243,6 +251,7 @@ void Shop_NeroSkillUI::ActivSkill()
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(1200);
 			IsSplit = true;
+			Count++;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 		else if (IsSplit == true && GameEngineInput::IsUp("UI_Enter"))
@@ -257,7 +266,7 @@ void Shop_NeroSkillUI::ActivSkill()
 		{
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(5000);
-
+			Count++;
 			IsRedqueen = true;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
@@ -275,6 +284,7 @@ void Shop_NeroSkillUI::ActivSkill()
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(7000);
 			IsRouletteSpin = true;
+			Count++;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
 		}
@@ -291,6 +301,7 @@ void Shop_NeroSkillUI::ActivSkill()
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(8000);
 			IsShufle = true;
+			Count++;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
 		}
@@ -307,6 +318,7 @@ void Shop_NeroSkillUI::ActivSkill()
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(2500);
 			IsCalibur = true;
+			Count++;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
 		}
@@ -316,5 +328,12 @@ void Shop_NeroSkillUI::ActivSkill()
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 	}
+}
+
+void Shop_NeroSkillUI::SetPercent()
+{
+	float Ratio= static_cast<float>(Count) / static_cast<float>(6);
+	Percent = static_cast<int>(Ratio * 100);
+	RedQueenPersent->SetText(std::to_string(Percent) + "%");
 }
 

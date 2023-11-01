@@ -75,6 +75,19 @@ void Vergil_ShopUI::Start()
 	MirgeSkill->Off();
 	RedOrbUIPtr = GetLevel()->CreateActor<RedOrbUI>();
 	RedOrbUIPtr->GetTransform()->SetParent(GetTransform());
+
+	MiregePersent = CreateComponent<GameEngineFontRenderer>(4);
+	MiregePersent->SetFont("DMC5Font");
+	MiregePersent->SetFontFlag(FW1_CENTER);
+	MiregePersent->SetScale(24.0f);
+	MiregePersent->SetColor(float4(0.67f, 0.721f, 0.720f));
+	MiregePersent->GetTransform()->SetLocalPosition(float4{ -540.0f,160.0f,0.0f }*GameEngineActor::ScreenRatio);
+	YamatoPersent = CreateComponent<GameEngineFontRenderer>(4);
+	YamatoPersent->SetFont("DMC5Font");
+	YamatoPersent->SetFontFlag(FW1_CENTER);
+	YamatoPersent->SetScale(24.0f);
+	YamatoPersent->SetColor(float4(0.67f, 0.721f, 0.720f));
+	YamatoPersent->GetTransform()->SetLocalPosition(float4{ -540.0f,306.0f,0.0f }*GameEngineActor::ScreenRatio);
 }
 
 
@@ -131,7 +144,7 @@ void Vergil_ShopUI::Update(float _Delta)
 			MirgeButton->SetBlinkValue(true);
 		}
 	}
-	
+	SetPercent();
 }
 void Vergil_ShopUI::ApperCusterWindow(bool _Value)
 {
@@ -212,6 +225,17 @@ void Vergil_ShopUI::SetIndexCount()
 	}
 }
 
+void Vergil_ShopUI::SetPercent()
+{
+	float MirgeRatio = static_cast<float>(MirgeSkill->GetMirgeCount()) / static_cast<float>(4);
+	int MirgePercent = static_cast<int>(MirgeRatio * 100);
+	MiregePersent->SetText(std::to_string(MirgePercent) + "%");
+
+	float YamatoRatio = static_cast<float>(YamatoSkill->GetYamatoCount()) / static_cast<float>(5);
+	int YamatoPercent = static_cast<int>(YamatoRatio * 100);
+	YamatoPersent->SetText(std::to_string(YamatoPercent) + "%");
+}
+
 void Vergil_ShopUI::ScaleUpDown(float _Delta , std::shared_ptr<Shop_TitleButton> _Button)
 {
 	LerpTime += _Delta;
@@ -221,7 +245,6 @@ void Vergil_ShopUI::ScaleUpDown(float _Delta , std::shared_ptr<Shop_TitleButton>
 		_Button->GetRender()->GetTransform()->SetLocalScale(float4::LerpClamp(RenderScale * GameEngineActor::ScreenRatio, RenderScale * 1.05f * GameEngineActor::ScreenRatio, LerpTime * 5.0f));
 		_Button->GetRender_Top()->GetTransform()->SetLocalScale(float4::LerpClamp(RenderTopScale * GameEngineActor::ScreenRatio, RenderTopScale * 1.05f * GameEngineActor::ScreenRatio, LerpTime * 5.0f));
 		_Button->GetRender_Bottom()->GetTransform()->SetLocalScale(float4::LerpClamp(RenderBottomScale * GameEngineActor::ScreenRatio, RenderBottomScale * 1.05f * GameEngineActor::ScreenRatio, LerpTime * 5.0f));
-
 	}
 
 	if (ScaleValue == false && _Button->GetRender()->GetTransform()->GetLocalScale() == float4(RenderScale * 1.05f * GameEngineActor::ScreenRatio))
