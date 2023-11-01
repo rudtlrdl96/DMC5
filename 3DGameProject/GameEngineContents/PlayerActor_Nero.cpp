@@ -24,6 +24,7 @@
 #include "Nero_ShopUI.h"
 #include "Shop_NeroSkillUI.h"
 #include "Shop_NeroArmUI.h"
+#include <GameEngineCore/GameEngineCloth.h>
 std::list<DevilBreaker> PlayerActor_Nero::BreakerList = { DevilBreaker::None };
 PlayerActor_Nero::~PlayerActor_Nero()
 {
@@ -111,7 +112,8 @@ void PlayerActor_Nero::Start()
 	Sound.SetVoiceName("Nero_V_");
 	Sound.SFXVolume = 0.5f;
 	Effect_Zoom = ZoomEffect::GetZoomEffect();
-	
+
+	//GameEngineCloth::CreateCloth(GetPlayerRenderer());
 }
 
 void PlayerActor_Nero::PlayerLoad()

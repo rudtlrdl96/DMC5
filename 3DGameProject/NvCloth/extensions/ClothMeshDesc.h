@@ -34,7 +34,7 @@
 @{
 */
 
-#include "foundation/PxVec3.h"
+#include "../PhysXSDK/pxshared/include/foundation/PxVec3.h"
 
 namespace nv
 {

@@ -36,8 +36,8 @@
 */
 
 #include "ClothMeshDesc.h"
-#include "NvCloth/Fabric.h"
-#include "NvCloth/Factory.h"
+#include "../GameEngineCore/ThirdParty/NvCloth/inc/Fabric.h"
+#include "../GameEngineCore/ThirdParty/NvCloth/inc/Factory.h"
 
 namespace nv
 {

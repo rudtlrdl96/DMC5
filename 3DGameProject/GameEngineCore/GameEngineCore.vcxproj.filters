@@ -895,6 +895,9 @@
     <ClInclude Include="GameEngineCaptureTexture.h">
       <Filter>Content\ScreenShoot</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineCloth.h">
+      <Filter>Physics\Cloth</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineCore.cpp" />
@@ -1128,6 +1131,9 @@
     <ClCompile Include="GameEngineCaptureTexture.cpp">
       <Filter>Content\ScreenShoot</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineCloth.cpp">
+      <Filter>Physics\Cloth</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -1351,6 +1357,9 @@
     </Filter>
     <Filter Include="ThirdParty\NvCloth\Header\ps\unix">
       <UniqueIdentifier>{c47c5b23-e29f-4a2d-bb15-45fbc2474315}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\Cloth">
+      <UniqueIdentifier>{34100811-ea11-42fc-8799-0970d22d6241}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
