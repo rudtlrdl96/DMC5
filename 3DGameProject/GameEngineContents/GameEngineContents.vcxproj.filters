@@ -1257,9 +1257,6 @@
     <Filter Include="Actor\Enemy">
       <UniqueIdentifier>{ec2193ef-b7a7-4594-9b3c-3a16e74bb1c2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UI">
-      <UniqueIdentifier>{0040d815-701d-4a4b-880b-41d2d45bb226}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Actor\Enemy\BossEnemy">
       <UniqueIdentifier>{2ee8e063-f548-41c2-9fbc-aa29201e1468}</UniqueIdentifier>
     </Filter>
@@ -1353,68 +1350,8 @@
     <Filter Include="Levels\Stage\StageEditor">
       <UniqueIdentifier>{e15b0962-4074-4325-88f2-8fe4391fd4fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UI\UI_Actor">
-      <UniqueIdentifier>{77054d83-a4d1-4fc6-8dfb-82d743721b38}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Actor\IntroUI">
-      <UniqueIdentifier>{81a0b393-c3f3-42b4-b9f6-d9e8aae62f9e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Actor\TitleUI">
-      <UniqueIdentifier>{6b842466-cfb3-431a-8392-fe392dbdf103}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Actor\TitleUI\ButtonScreen">
-      <UniqueIdentifier>{55ee2600-f38a-4185-b9af-c259d61311cb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Actor\C_ChoiceUI">
-      <UniqueIdentifier>{0ce3c064-c04d-4698-b513-4610ca1d869e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Actor\MenuUI">
-      <UniqueIdentifier>{8f71627c-5fda-4bc6-9c5e-f2b8dc1cc3ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Actor\MenuUI\MenuScreen">
-      <UniqueIdentifier>{4e87bf65-3b70-4d0f-9346-7fbf1154d1c8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Base">
-      <UniqueIdentifier>{cc61b815-9ebe-44d8-8edf-5af5c97aba73}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Level">
-      <UniqueIdentifier>{b3378528-f9a9-49d4-b7fb-822d878fa728}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Actor\MenuUI\NeroInfo">
-      <UniqueIdentifier>{f0bc3ac9-333b-4dd0-91a9-9f3950798902}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Actor\MenuUI\VergilInfo">
-      <UniqueIdentifier>{36a1e7d4-64de-4998-9d21-564401e4c1aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Actor\PlayUI">
-      <UniqueIdentifier>{01de2a75-fe35-4d04-b19c-2361fd3bfb7b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Actor\ShopUI">
-      <UniqueIdentifier>{968321d7-bf95-417c-a9b6-a46b044cebc2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Actor\ShopUI\NeroShopUI">
-      <UniqueIdentifier>{711e0297-d179-4b53-b97c-47c0c667a37b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Actor\TestObject">
       <UniqueIdentifier>{839ddcf0-fa0f-4e30-a291-488d8933e823}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Actor\MenuUI\NeroInfo\Nero_Inven">
-      <UniqueIdentifier>{cc08c3f7-0476-4cc8-a589-1c0f7d4beeb2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Level\Intro">
-      <UniqueIdentifier>{112ad33f-5ed3-425f-bf82-f93cbdbd6cd9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Level\Title">
-      <UniqueIdentifier>{e3870555-e01d-4d24-af46-048e392396e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Level\Menu">
-      <UniqueIdentifier>{0704f51b-d411-4fa6-bd4e-e6a4275befc7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Level\Shop">
-      <UniqueIdentifier>{bacbd842-2d89-49ea-b9bd-037d9d04714b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Actor\ShopUI\VergilShopUI">
-      <UniqueIdentifier>{0ad76571-dc6e-4190-868c-f1bcd206ef0d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Component\Light">
       <UniqueIdentifier>{ef3c6322-abc7-42f5-8d92-d842b4482801}</UniqueIdentifier>
@@ -1424,15 +1361,6 @@
     </Filter>
     <Filter Include="Levels\Stage\2.Location11">
       <UniqueIdentifier>{f7a513fc-0b82-4a83-926f-3438719e303f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Base\Button">
-      <UniqueIdentifier>{f575a9bc-2f1e-4167-8218-5d7a80bed3b2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Base\Button\ShopItemButton">
-      <UniqueIdentifier>{36189945-f06e-4396-8641-f1980811982c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Base\Button\ShopTitleButton">
-      <UniqueIdentifier>{4b4d624e-f4f6-473c-b4a2-fdbcf8cc9b34}</UniqueIdentifier>
     </Filter>
     <Filter Include="Component\Collision">
       <UniqueIdentifier>{7e5754f2-87f0-49ad-be86-2715ede33692}</UniqueIdentifier>
@@ -1449,35 +1377,14 @@
     <Filter Include="Actor\Stage\FieldMap\FieldMapObj\EventZone">
       <UniqueIdentifier>{26318846-c671-43a0-a6cb-f98239013a7a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UI\UI_Base\Gauge">
-      <UniqueIdentifier>{22d8574b-3874-4e4b-8bde-6152f6653423}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Server\03.NetworkObjectBase">
       <UniqueIdentifier>{4b8bf97b-98a1-4c9b-a9c7-b69298c7dfe2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Actor\PlayUI\NeroItemGlass">
-      <UniqueIdentifier>{bd61c884-8ded-499e-b8bf-553022d642ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Actor\PlayUI\NeroItemGlass\Glass">
-      <UniqueIdentifier>{4ed1ebd5-7a40-4d71-b0d2-a3ecf41b758b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Actor\PlayUI\NeroItemGlass\ItemFont">
-      <UniqueIdentifier>{0d8d70d7-1945-463e-bf78-29027711b0d0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Actor\Player\Weapon">
       <UniqueIdentifier>{045eba55-1dc2-4e34-99fd-7aab7918a35e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UI\UI_Actor\LodingUI">
-      <UniqueIdentifier>{c9ed4d53-41a7-45b8-9ae9-7deec8f2c8e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Actor\PlayUI\BossHpBar">
-      <UniqueIdentifier>{3dec81e5-686e-4cf5-bc5e-aa19e3d7d4fc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Server\04.Poolable">
       <UniqueIdentifier>{b00816ea-3aa6-4d6b-ac61-f3a1151dd372}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Actor\PlayUI\RankUI">
-      <UniqueIdentifier>{8a97f163-1d84-4c77-913b-2e1de7481972}</UniqueIdentifier>
     </Filter>
     <Filter Include="Actor\Stage\FieldMap\FieldMapObj\FunctionObj">
       <UniqueIdentifier>{398524c7-d8ae-4d50-a2b0-75dfcca4ab68}</UniqueIdentifier>
@@ -1515,26 +1422,119 @@
     <Filter Include="Actor\Stage\FieldMap\FieldMapObj\StaticObj\L11">
       <UniqueIdentifier>{6a294d2f-e2e8-4095-9864-45ff89a67873}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UI\UI_Actor\PlayUI\PlayerHPGlass">
-      <UniqueIdentifier>{20445aa9-d6bf-4ce9-957d-7680ffdfc2d7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Levels\Stage\3.Location19">
       <UniqueIdentifier>{4b01348d-37b0-41af-a57f-90c1c3cffbeb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Actor\Enemy\NormalEnemy\Qliphoth">
       <UniqueIdentifier>{6d66f714-c1f8-47f2-aa4f-8c49d6fc7a1d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UI\UI_Level\Result">
-      <UniqueIdentifier>{27fceb2a-8308-4768-a8d5-407bc7b9750b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\UI_Actor\ResultUI">
-      <UniqueIdentifier>{2e230059-70ff-4cd7-af0a-e9daf327a439}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Actor\Stage\FieldMap\FieldMapObj\EventZone\LevelChange">
       <UniqueIdentifier>{4580a466-a5f7-47c4-a7fc-36acfb3fca8b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19">
       <UniqueIdentifier>{1a94f4c3-5471-41c3-8664-d9dba4457a45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{0040d815-701d-4a4b-880b-41d2d45bb226}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor">
+      <UniqueIdentifier>{77054d83-a4d1-4fc6-8dfb-82d743721b38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\IntroUI">
+      <UniqueIdentifier>{81a0b393-c3f3-42b4-b9f6-d9e8aae62f9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\TitleUI">
+      <UniqueIdentifier>{6b842466-cfb3-431a-8392-fe392dbdf103}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\TitleUI\ButtonScreen">
+      <UniqueIdentifier>{55ee2600-f38a-4185-b9af-c259d61311cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\C_ChoiceUI">
+      <UniqueIdentifier>{0ce3c064-c04d-4698-b513-4610ca1d869e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\MenuUI">
+      <UniqueIdentifier>{8f71627c-5fda-4bc6-9c5e-f2b8dc1cc3ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\MenuUI\MenuScreen">
+      <UniqueIdentifier>{4e87bf65-3b70-4d0f-9346-7fbf1154d1c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\MenuUI\NeroInfo">
+      <UniqueIdentifier>{f0bc3ac9-333b-4dd0-91a9-9f3950798902}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\MenuUI\NeroInfo\Nero_Inven">
+      <UniqueIdentifier>{cc08c3f7-0476-4cc8-a589-1c0f7d4beeb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\MenuUI\VergilInfo">
+      <UniqueIdentifier>{36a1e7d4-64de-4998-9d21-564401e4c1aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\PlayUI">
+      <UniqueIdentifier>{01de2a75-fe35-4d04-b19c-2361fd3bfb7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\PlayUI\NeroItemGlass">
+      <UniqueIdentifier>{bd61c884-8ded-499e-b8bf-553022d642ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\PlayUI\NeroItemGlass\Glass">
+      <UniqueIdentifier>{4ed1ebd5-7a40-4d71-b0d2-a3ecf41b758b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\PlayUI\NeroItemGlass\ItemFont">
+      <UniqueIdentifier>{0d8d70d7-1945-463e-bf78-29027711b0d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\PlayUI\BossHpBar">
+      <UniqueIdentifier>{3dec81e5-686e-4cf5-bc5e-aa19e3d7d4fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\PlayUI\RankUI">
+      <UniqueIdentifier>{8a97f163-1d84-4c77-913b-2e1de7481972}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\PlayUI\PlayerHPGlass">
+      <UniqueIdentifier>{20445aa9-d6bf-4ce9-957d-7680ffdfc2d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\ShopUI">
+      <UniqueIdentifier>{968321d7-bf95-417c-a9b6-a46b044cebc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\ShopUI\NeroShopUI">
+      <UniqueIdentifier>{711e0297-d179-4b53-b97c-47c0c667a37b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\ShopUI\VergilShopUI">
+      <UniqueIdentifier>{0ad76571-dc6e-4190-868c-f1bcd206ef0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\LodingUI">
+      <UniqueIdentifier>{c9ed4d53-41a7-45b8-9ae9-7deec8f2c8e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\ResultUI">
+      <UniqueIdentifier>{2e230059-70ff-4cd7-af0a-e9daf327a439}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Base">
+      <UniqueIdentifier>{cc61b815-9ebe-44d8-8edf-5af5c97aba73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Base\Button">
+      <UniqueIdentifier>{f575a9bc-2f1e-4167-8218-5d7a80bed3b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Base\Button\ShopItemButton">
+      <UniqueIdentifier>{36189945-f06e-4396-8641-f1980811982c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Base\Button\ShopTitleButton">
+      <UniqueIdentifier>{4b4d624e-f4f6-473c-b4a2-fdbcf8cc9b34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Base\Gauge">
+      <UniqueIdentifier>{22d8574b-3874-4e4b-8bde-6152f6653423}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Level">
+      <UniqueIdentifier>{b3378528-f9a9-49d4-b7fb-822d878fa728}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Level\Intro">
+      <UniqueIdentifier>{112ad33f-5ed3-425f-bf82-f93cbdbd6cd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Level\Title">
+      <UniqueIdentifier>{e3870555-e01d-4d24-af46-048e392396e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Level\Menu">
+      <UniqueIdentifier>{0704f51b-d411-4fa6-bd4e-e6a4275befc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Level\Shop">
+      <UniqueIdentifier>{bacbd842-2d89-49ea-b9bd-037d9d04714b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Level\Result">
+      <UniqueIdentifier>{27fceb2a-8308-4768-a8d5-407bc7b9750b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
