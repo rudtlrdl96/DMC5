@@ -20,6 +20,7 @@ StaticFieldMapObject::~StaticFieldMapObject()
 void StaticFieldMapObject::Start()
 {
 	SetRenderer("FBX");
+	CullingExeption = false;
 }
 
 void StaticFieldMapObject::Update(float _DeltaTime)

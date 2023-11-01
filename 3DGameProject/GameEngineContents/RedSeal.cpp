@@ -74,7 +74,6 @@ void RedSeal::Start()
 		//FBXMesh = CreateComponent<GameEngineFBXRenderer>();
 		//FBXMesh->SetFBXMesh("sm7001_seal_02.fbx", "FBX");
 	}
-	
 }
 
 void RedSeal::Update(float _DeltaTime)

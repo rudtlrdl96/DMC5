@@ -40,6 +40,7 @@ private:
 	std::vector<std::weak_ptr<FieldMap>> RenderOnNode;
 	std::vector<std::weak_ptr<FieldMap>> RenderOffNode;
 	std::vector<std::weak_ptr<class FieldMapObject>> FieldMapObj;
+	std::list<std::weak_ptr<class FieldMapObject>> CullingObj;
 	std::weak_ptr<class ReflectionSetter> Reflection;
 	
 	void ClearFieldMapRenderer();

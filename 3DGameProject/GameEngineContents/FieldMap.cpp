@@ -92,11 +92,17 @@ std::shared_ptr<FieldMap> FieldMap::CreateFieldMap(GameEngineLevel* _Level, cons
 	}
 
 	std::vector<std::weak_ptr<FieldMapObject>>& FieldMapObjRef = Result->FieldMapObj;
+	std::list<std::weak_ptr<FieldMapObject>>& CullingObjRef = Result->CullingObj;
 	FieldMapObjRef.resize(_FieldMapObjs.size());
 
 	for (size_t i = 0; i < FieldMapObjRef.size(); i++)
 	{
 		FieldMapObjRef[i] = FieldMapObject::CreateFieldMapObj(_Level, _FieldMapObjs[i].Type, _FieldMapObjs[i].ObjTransform);
+		
+		if (!FieldMapObjRef[i].lock()->CullingExeption)
+		{
+			CullingObjRef.emplace_back(FieldMapObjRef[i]);
+		}
 
 		if (_FieldMapObjs[i].Type == FieldMapObjType::ReflectionSetter)
 		{
@@ -233,30 +239,42 @@ void FieldMap::MapCulling()
 {
 	for (size_t i = 0; i < RenderOnNode.size(); i++)
 	{
-		RenderOnNode[i].lock()->FieldMapRendererOn();
-		//RenderOnNode[i].lock()->FieldMapObjOn();
+		if (!RenderOnNode[i].expired())
+		{
+			RenderOnNode[i].lock()->FieldMapRendererOn();
+			RenderOnNode[i].lock()->FieldMapObjOn();
+		}
 	}
 
 	for (size_t i = 0; i < RenderOffNode.size(); i++)
 	{
-		RenderOffNode[i].lock()->FieldMapRendererOff();
-		//RenderOffNode[i].lock()->FieldMapObjOff();
+		if (!RenderOffNode[i].expired())
+		{
+			RenderOffNode[i].lock()->FieldMapRendererOff();
+			RenderOffNode[i].lock()->FieldMapObjOff();
+		}
 	}
 }
 
 void FieldMap::FieldMapObjOn()
 {
-	for (size_t i = 0; i < FieldMapObj.size(); i++)
+	for (auto& i : CullingObj)
 	{
-		FieldMapObj[i].lock()->On();
+		if (!i.expired())
+		{
+			i.lock()->On();
+		}
 	}
 }
 
 void FieldMap::FieldMapObjOff()
 {
-	for (size_t i = 0; i < FieldMapObj.size(); i++)
+	for (auto& i : CullingObj)
 	{
-		FieldMapObj[i].lock()->Off();
+		if (!i.expired())
+		{
+			i.lock()->Off();
+		}
 	}
 }
 
@@ -264,7 +282,10 @@ void FieldMap::FieldMapRendererOn()
 {
 	for (size_t i = 0; i < FieldMapRenderer.size(); i++)
 	{
-		FieldMapRenderer[i].lock()->On();
+		if (!FieldMapRenderer[i].expired())
+		{
+			FieldMapRenderer[i].lock()->On();
+		}
 	}
 }
 
@@ -272,7 +293,10 @@ void FieldMap::FieldMapRendererOff()
 {
 	for (size_t i = 0; i < FieldMapRenderer.size(); i++)
 	{
-		FieldMapRenderer[i].lock()->Off();
+		if (!FieldMapRenderer[i].expired())
+		{
+			FieldMapRenderer[i].lock()->Off();
+		}
 	}
 }
 
