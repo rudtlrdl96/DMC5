@@ -438,7 +438,7 @@ void ContentsCore::ContentsResourcesCreate()
 		Material->SetRasterizer("Engine3DBase");
 		Material->SetPixelShader("ContentsUIMesh.hlsl");
 		Material->SetBlendState("BaseBlend");
-		Material->SetDepthState("AlphaDepth");
+		Material->SetDepthState("EngineDepth");
 	}
 
 	{
@@ -448,7 +448,7 @@ void ContentsCore::ContentsResourcesCreate()
 		Material->SetRasterizer("Engine3DBase");
 		Material->SetPixelShader("ContentsUIAniMesh.hlsl");
 		Material->SetBlendState("BaseBlend");
-		Material->SetDepthState("AlphaDepth");
+		Material->SetDepthState("EngineDepth");
 	}
 }
 
@@ -540,13 +540,13 @@ void ContentsCore::SetOption()
 	//GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::Low);
 
 	GameEngineOption::ChangeOption("Texture", GameEngineOptionValue::High);
-	GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::Low);
+	GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::High);
 	
 	// PostEffect 可记 积己
 	GameEngineOption::ChangeOption("PostEffect", GameEngineOptionValue::High);
 
 #ifdef _DEBUG
-	GameEngineOption::ChangeOption("DynamicShadow", GameEngineOptionValue::Low);
+	GameEngineOption::ChangeOption("DynamicShadow", GameEngineOptionValue::None);
 #else
 	GameEngineOption::ChangeOption("DynamicShadow", GameEngineOptionValue::Low);
 #endif // _DEBUG

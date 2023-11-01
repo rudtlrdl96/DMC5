@@ -55,10 +55,10 @@ Texture2D SpecularTexture : register(t2); // ATOS
 
 SamplerState ENGINEBASE : register(s0);
 
-struct AlphaOutPut
+struct ForwardOutPut
 {
-    float4 ResultColor : SV_Target0;
-    float4 DistortionColor : SV_Target1;
+    float4 ColorTarget : SV_Target0;
+    float4 PosTarget : SV_Target1;
     float4 MaskTarget : SV_Target2;
 };
 
@@ -75,7 +75,7 @@ cbuffer ClipData : register(b2)
     float ClipEndY;
 };
 
-AlphaOutPut MeshTexture_PS(Output _Input)
+ForwardOutPut MeshTexture_PS(Output _Input)
 {
     if (ClipStartX > _Input.TEXCOORD.x || ClipEndX < _Input.TEXCOORD.x)
     {
@@ -87,15 +87,13 @@ AlphaOutPut MeshTexture_PS(Output _Input)
         clip(-1);
     }
     
-    AlphaOutPut Result = (AlphaOutPut) 0;
-           
+    ForwardOutPut Result = (ForwardOutPut) 0;
+       
     // rgb = »ö»ó, a = metallicValue 
     float4 AlbmData = DiffuseTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
     
     // r = Alpha, gba = sss (subsurface scattering)
     float4 AtosData = SpecularTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
-    
-    AlbmData.a = AtosData.r;
     
     AlbmData += AddColor;
     AlbmData *= MulColor;
@@ -112,8 +110,8 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     
     // rgb = NormalMap, a = smoothnessValue 
     float4 NrmrData = NormalTexture.Sample(ENGINEBASE, _Input.TEXCOORD.xy);
-            
-    Result.ResultColor = AlbmData;
+    
+    Result.ColorTarget = AlbmData;
         
     float4 Normal = _Input.NORMAL;
     
@@ -136,12 +134,14 @@ AlphaOutPut MeshTexture_PS(Output _Input)
     SpacularRatio += CalLightData.CurLightSpacularRatio;
     AmbientRatio += CalLightData.CurLightAmbientRatio;
     
-    Result.ResultColor.rgb = Result.ResultColor.rgb * (DiffuseRatio + SpacularRatio + AmbientRatio);
-    Result.DistortionColor = (float4) 0;
+    Result.ColorTarget.rgb = Result.ColorTarget.rgb * (DiffuseRatio + SpacularRatio + AmbientRatio);
+    Result.ColorTarget.a = AtosData.r;
+    
+    Result.PosTarget = _Input.WORLDPOSITION;
     
     if (0 != IsBlurMask)
     {
-        Result.MaskTarget = Result.ResultColor;
+        Result.MaskTarget = Result.ColorTarget;
     }
     else
     {
