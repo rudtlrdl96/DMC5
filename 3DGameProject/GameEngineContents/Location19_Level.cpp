@@ -184,6 +184,7 @@ void Location19_Level::CreatePotal()
 	// 모든 적 처치시 실행됨
 	//Portal = CreateActor<l19_Portal>();
 	Portal->On();
+	BasePlayerActor::GetMainPlayer()->SetCutScene({ 912, 1722, 2260 }, { 912, 600, 1966 }, { -15, 178, 0 }, { 10, 178, 0 }, 4.0f);
 
 	int a = 0;
 }
