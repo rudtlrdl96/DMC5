@@ -518,15 +518,17 @@ void CavaliereAngelo::Update(float _DeltaTime)
 		EffectRenderer_0->TimeScale = GetTimeScale();
 		EffectRenderer_1->TimeScale = GetTimeScale();
 
-		//if (GetTimeScale() == 0.0f)
-		//{
-		//	MonsterAttackCollision->Off();
-		//	PhysXCapsule->Off();
-		//}
-		//else if (false == PhysXCapsule->IsUpdate())
-		//{
-		//	PhysXCapsule->On();
-		//}
+		if (GetTimeScale() == 0.0f)
+		{
+			MonsterAttackCollision->Off();
+			ParryCollision->Off();
+			PhysXCapsule->Off();
+		}
+		else if (false == PhysXCapsule->IsUpdate())
+		{
+			PhysXCapsule->On();
+			ParryCollision->On();
+		}
 
 		RendererBurn(_DeltaTime);
 		RenderShake(_DeltaTime);
