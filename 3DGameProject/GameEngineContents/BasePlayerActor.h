@@ -18,9 +18,9 @@ public:
 		{
 			BasePlayerActor* _Player = (*StartIter);
 			// 현재 레벨과 다른 플레이어는 벡터에서 제거
-			if (_Player->GetLevel() != _Level)
+			if (_Player->GetLevel()->GetName() != _Level->GetName())
 			{
-				Players.erase(StartIter);
+				StartIter = Players.erase(StartIter);
 				if (Players.size() == 0) { return; }
 				continue;
 			}
