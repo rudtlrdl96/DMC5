@@ -311,7 +311,7 @@ void PlayerActor_Nero::PlayerLoad()
 		//콜백 float4 = 0 : SetPush
 		//콜백 float4 = 0 : SetMove
 
-		GameEngineCloth::CreateCloth(GetPlayerRenderer());
+		//GameEngineCloth::CreateCloth(GetPlayerRenderer());
 	}
 
 	// OvertureRenderer 생성
@@ -3748,6 +3748,8 @@ void PlayerActor_Nero::Update_Character(float _DeltaTime)
 
 		ItemColCheck();
 	}
+
+	//GameEngineCloth::Simulate(_DeltaTime);
 }
 
 void PlayerActor_Nero::ItemColCheck()

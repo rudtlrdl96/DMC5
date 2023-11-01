@@ -50,6 +50,16 @@ public:
 
 	void Setting() override;
 
+	UINT GetVertexCount()
+	{
+		return VertexCount;
+	}
+
+	UINT GetVertexSize()
+	{
+		return VertexSize;
+	}
+
 protected:
 
 private:

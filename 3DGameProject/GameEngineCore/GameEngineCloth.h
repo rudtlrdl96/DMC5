@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../GameEngineCore/ThirdParty/NvCloth/inc/Factory.h"
+#include "../GameEngineCore/ThirdParty/NvCloth/inc/PhaseConfig.h"
 
 // Ό³Έν :
 class GameEngineCloth
@@ -18,6 +19,7 @@ public:
 
 	static void CreateFactory();
 	static void CreateCloth(std::shared_ptr<class GameEngineFBXRenderer> _Renderer);
+	static void Simulate(float _DeltaTime);
 
 protected:
 
@@ -26,5 +28,7 @@ private:
 
 	static nv::cloth::Factory* m_pFactory;
 	static nv::cloth::Fabric* m_pFabric;
+	static nv::cloth::Cloth* m_pCloth;
+	static nv::cloth::PhaseConfig* m_pPhases;
 };
 

@@ -11,6 +11,8 @@
 
 nv::cloth::Factory* GameEngineCloth::m_pFactory = nullptr;
 nv::cloth::Fabric* GameEngineCloth::m_pFabric = nullptr;
+nv::cloth::Cloth* GameEngineCloth::m_pCloth = nullptr;
+nv::cloth::PhaseConfig* GameEngineCloth::m_pPhases = nullptr;
 
 GameEngineCloth::GameEngineCloth()
 {
@@ -37,25 +39,17 @@ void GameEngineCloth::CreateFactory()
 	//nv::cloth::Factory* factory = NvClothCreateFactoryDX11(GraphicsContextManager);
 	////We need to release all DX objects after destroying the factory.
 
+
+}
+
+void GameEngineCloth::CreateCloth(std::shared_ptr<GameEngineFBXRenderer> _Renderer)
+{
 	m_pFactory = NvClothCreateFactoryCPU();
 
 	if (m_pFactory == nullptr)
 	{
 		MsgAssert("NvClothFactory 생성 실패");
 	}
-}
-
-void GameEngineCloth::CreateCloth(std::shared_ptr<GameEngineFBXRenderer> _Renderer)
-{
-
-	//std::map<FbxMesh*, std::vector<GameEngineVertex>*> FbxVertexMap;
-	//std::map<FbxMesh*, std::map<int, std::vector<FbxExIW>>> MapWI;   // 애니메이션이 있다면 채워져 있을겁니다.
-	//std::vector<GameEngineVertex> Vertexs;
-	//std::vector<std::vector<unsigned int>> Indexs;
-	//std::vector<FbxExMaterialSettingData> MaterialData;
-	//std::shared_ptr<GameEngineVertexBuffer> VertexBuffer;
-	//std::vector< std::shared_ptr<GameEngineIndexBuffer>> IndexBuffers;
-	//std::vector<std::shared_ptr<class GameEngineMesh>> Meshs;
 
 	FbxRenderUnitInfo* unif = _Renderer->GetFBXMesh()->GetRenderUnit(0);
 	std::map<FbxMesh*, std::vector<GameEngineVertex>*> Mapif = _Renderer->GetFBXMesh()->GetRenderUnit(0)->FbxVertexMap;
@@ -64,15 +58,57 @@ void GameEngineCloth::CreateCloth(std::shared_ptr<GameEngineFBXRenderer> _Render
 
 	//Fill meshDesc with data
 	meshDesc.setToDefault();
-	//meshDesc.points.data = vertexArray;
-	//meshDesc.points.stride = sizeof(vertexArray[0]);
-	//meshDesc.points.count = vertexCount;
+	meshDesc.points.data = &unif->VertexBuffer;
+	meshDesc.points.stride = unif->VertexBuffer->GetVertexSize();
+	meshDesc.points.count = unif->VertexBuffer->GetVertexCount();
 
 	//etc. for quads, triangles and invMasses
 	physx::PxVec3 gravity(0.0f, -9.8f, 0.0f);
 	nv::cloth::Vector<int32_t>::Type phaseTypeInfo;
 
 	m_pFabric = NvClothCookFabricFromMesh(m_pFactory, meshDesc, gravity, &phaseTypeInfo);
+
+	if (m_pFabric == nullptr)
+	{
+		MsgAssert("NvClothFabric 생성 실패");
+	}
+
+	physx::PxVec4 particlePositions = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+	m_pCloth = m_pFactory->createCloth(nv::cloth::Range<physx::PxVec4>(&particlePositions, &particlePositions + 1), *m_pFabric);
+	m_pPhases = new nv::cloth::PhaseConfig[m_pFabric->getNumPhases()];
+}
+
+void GameEngineCloth::Simulate(float _DeltaTime)
+{
+	for (unsigned int i = 0; i < m_pFabric->getNumPhases(); i++)
+	{
+		m_pPhases[i].mPhaseIndex = i; // Set index to the corresponding set (constraint group)
+
+		//Give phases different configs depending on type
+		//switch (phaseTypeInfo[i])
+		//{
+		//case nv::cloth::ClothFabricPhaseType::eINVALID:
+		//	//ERROR
+		//	break;
+		//case nv::cloth::ClothFabricPhaseType::eVERTICAL:
+		//	break;
+		//case nv::cloth::ClothFabricPhaseType::eHORIZONTAL:
+		//	break;
+		//case nv::cloth::ClothFabricPhaseType::eBENDING:
+		//	break;
+		//case nv::cloth::ClothFabricPhaseType::eSHEARING:
+		//	break;
+		//}
+
+		//For this example we give very phase the same config
+		m_pPhases[i].mStiffness = 1.0f;
+		m_pPhases[i].mStiffnessMultiplier = 1.0f;
+		m_pPhases[i].mCompressionLimit = 1.0f;
+		m_pPhases[i].mStretchLimit = 1.0f;
+	}
+
+	m_pCloth->setPhaseConfig(nv::cloth::Range<nv::cloth::PhaseConfig>(m_pPhases, m_pPhases + m_pFabric->getNumPhases()));
 }
 
 void GameEngineCloth::Release()
@@ -80,5 +116,16 @@ void GameEngineCloth::Release()
 	if (nullptr != m_pFactory)
 	{
 		NvClothDestroyFactory(m_pFactory);
+		m_pFactory = nullptr;
+	}
+	if (nullptr != m_pCloth)
+	{
+		NV_CLOTH_DELETE(m_pCloth);
+		m_pCloth = nullptr;
+	}
+	if (nullptr != m_pPhases)
+	{
+		delete[] m_pPhases;
+		m_pPhases = nullptr;
 	}
 }
