@@ -7,6 +7,10 @@
 #include "BaseLog.h"
 #include "ThreadLoadingLevel.h"
 
+float ConsoleGUI::FrameTime = 0.0f;
+int ConsoleGUI::FrameCount = 0;
+int ConsoleGUI::DrawFrame = 0;
+
 ConsoleGUI::ConsoleGUI()
 {
 }
@@ -23,6 +27,21 @@ void ConsoleGUI::Start()
 
 void ConsoleGUI::OnGUI(std::shared_ptr<GameEngineLevel> Level, float _DeltaTime)
 {
+	FrameTime += _DeltaTime;
+	++FrameCount;
+
+	if (1.0f <= FrameTime)
+	{
+		DrawFrame = FrameCount;
+
+		FrameTime -= 1.0f;
+		FrameCount = 0;
+	}
+
+
+	ImGui::Text((std::string("Frame : ") + std::to_string(DrawFrame)).data());
+
+	ImGui::Spacing();
 	ImGui::InputText("Move Level Name : ", MoveLevelName, 255);
 
 	if(true == ImGui::Button("Move Button"))

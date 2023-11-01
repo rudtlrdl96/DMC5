@@ -26,5 +26,9 @@ private:
 	const char* LogTypeNames[(int)LogOrder::Count] = {0};
 	char MoveLevelName[255] = "MainLevel";
 
+	static float FrameTime;
+	static int FrameCount;
+	static int DrawFrame;
+
 };
 

@@ -1,7 +1,7 @@
-//#define FXAA_PC 1
-//#define FXAA_HLSL_5 1
-//#define FXAA_QUALITY__PRESET 39
-//#define FXAA_GREEN_AS_LUMA 1
+#define FXAA_PC 1
+#define FXAA_HLSL_5 1
+#define FXAA_QUALITY__PRESET 39
+#define FXAA_GREEN_AS_LUMA 1
 
 #include "RenderBaseValue.fx"
 
@@ -205,7 +205,7 @@ A. Or use FXAA_GREEN_AS_LUMA.
     //
     // Might want to lower the settings for both,
     //    fxaaConsoleEdgeThresholdMin
-    //    fxaaQualityEdgeThresholdMin
+    //    fxaaQualityEdgeThresholdMinwwwww
     // In order to insure AA does not get turned off on colors 
     // which contain a minor amount of green.
     //

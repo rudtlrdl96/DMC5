@@ -546,8 +546,8 @@ void ContentsCore::SetOption()
 	GameEngineOption::ChangeOption("PostEffect", GameEngineOptionValue::High);
 
 #ifdef _DEBUG
-	GameEngineOption::ChangeOption("DynamicShadow", GameEngineOptionValue::None);
+	GameEngineOption::ChangeOption("DynamicShadow", GameEngineOptionValue::Low);
 #else
-	GameEngineOption::ChangeOption("DynamicShadow", GameEngineOptionValue::None);
+	GameEngineOption::ChangeOption("DynamicShadow", GameEngineOptionValue::Low);
 #endif // _DEBUG
 }

@@ -28,7 +28,7 @@ Texture2D CurPosTex : register(t3);
 
 SamplerState ENGINEBASE : register(s0);
 
-#define BlurSampleCount 16
+#define BlurSampleCount 6
 
 cbuffer MotionBlurData : register(b0)
 {
