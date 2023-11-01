@@ -49,7 +49,6 @@ void TestStageLevel::Start()
 {
 	CreateActor<FreeCameraActor>();
 	BaseLevel::SetNetLevelType(Net_LevelType::TestStageLevel);
-
 	GetCamera(0)->GetCamTarget()->CreateEffect<ColorEffect>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
 
@@ -65,22 +64,7 @@ void TestStageLevel::Start()
 		Distortion->SetMaxPixelValue(100, 100);
 	}
 
-	//{
-	//	std::shared_ptr<DistortionEffect> Distortion = GetCamera(0)->GetCamTarget()->CreateEffect<DistortionEffect>();
-	//	Distortion->SetMaskTexture(GetCamera(100)->GetCamAlphaTarget(), 1);
-	//	Distortion->SetDistortionValue(10, 10);
-	//	Distortion->SetMaxPixelValue(100, 100);
-	//}	
-
 	GetCamera(0)->GetCamTarget()->CreateEffect<ZoomEffect>();
-
-	{
-		std::shared_ptr<MotionBlurEffect> Blur = GetCamera(0)->GetCamTarget()->CreateEffect<MotionBlurEffect>();
-		Blur->SetCamPosTarget(GetMainCamera()->GetCamPosTarget());
-		Blur->SetCamMaskTarget(GetMainCamera()->GetCamMaskTarget());
-		Blur->SetCam(GetMainCamera());
-	}
-
 	std::shared_ptr<FadeEffect> Fade = GetLastTarget()->CreateEffect<FadeEffect>();
 
 	StageBaseLevel::Start();

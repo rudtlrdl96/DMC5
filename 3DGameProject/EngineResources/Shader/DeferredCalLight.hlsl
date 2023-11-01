@@ -75,7 +75,7 @@ float GGX_Distribution(float3 normal, float3 halfVector, float roughness)
 //    return Result;
 //}
 
-#define SAMPLES_COUNT 32 
+#define SAMPLES_COUNT 8 
 #define INV_SAMPLES_COUNT (1.0f / SAMPLES_COUNT)
 
 float2 VogelDiskSample(int sampleIndex, int samplesCount, float phi)
