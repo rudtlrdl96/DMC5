@@ -124,6 +124,7 @@ private:
 	std::shared_ptr<class FXSystem> EffectRenderer_0 = nullptr;
 	std::shared_ptr<class FXSystem> EffectRenderer_1 = nullptr;
 	std::shared_ptr<class Cavaliere_Electric> Electric = nullptr;
+	std::shared_ptr<class Cavaliere_Electric> Electric2 = nullptr;
 	std::shared_ptr<class GameEngineComponent> WeaponEffectPivot = nullptr;
 	std::shared_ptr<class EffectRenderer> WeaponEffect = nullptr;
 	std::shared_ptr<class EffectRenderer> WeaponElectric = nullptr;

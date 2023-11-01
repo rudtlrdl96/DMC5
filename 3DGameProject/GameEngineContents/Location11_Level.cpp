@@ -122,7 +122,6 @@ void Location11_Level::LevelChangeStart()
 	{
 		MyPlayer = CreateActor<PlayerActor_Nero>();
 		MyPlayer->SetUserControllType();
-		MyPlayer->SetWorldPosition({ -31000, 1950, -360 });
 		MyPlayer->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
 		NetworkManager::LinkNetwork(MyPlayer.get(), this);
 		break;
@@ -131,11 +130,19 @@ void Location11_Level::LevelChangeStart()
 	{
 		MyPlayer = CreateActor<PlayerActor_Vergil>();
 		MyPlayer->SetUserControllType();
-		MyPlayer->SetWorldPosition({ -31000, 1950, -360 });
 		MyPlayer->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
 		NetworkManager::LinkNetwork(MyPlayer.get(), this);
 		break;
 	}
+	}
+
+	if (true == NetworkManager::IsClient())
+	{
+		MyPlayer->SetWorldPosition({ -30800, 1950, -360 });
+	}
+	else
+	{
+		MyPlayer->SetWorldPosition({ -31000, 1950, -360 });
 	}
 
 	//Enemy_Qliphoth
