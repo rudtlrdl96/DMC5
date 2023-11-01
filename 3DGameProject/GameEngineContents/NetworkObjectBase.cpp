@@ -180,7 +180,7 @@ void NetworkObjectBase::SetFsmPacketCallBack(std::function<void(int _State)> _Ca
 		DamagedCallBack(AttacketPtr);
 
 		//다시 자신이 이 FSM State로 변경되었다는 것을 다른 네트워크에게 알림
-		NetworkManager::SendFsmChangePacket(this, _Packet->FsmState);
+		//NetworkManager::SendFsmChangePacket(this, _Packet->FsmState);
 	});
 }
 
