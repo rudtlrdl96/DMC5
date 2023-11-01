@@ -179,7 +179,6 @@ void Location11_Level::LevelChangeStart()
 
 void Location11_Level::LevelChangeToResultLevel()
 {
-	BGMPlayer::SetBattleEnd();
 	TimeEvent.AddEvent(5.0f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* TimeEvent)
 		{
 			GameEngineCaptureTexture::CaptureTexture("Capture_Result", GameEngineWindow::GetScreenSize(), GetLevel()->GetMainCamera()->GetCamTarget());

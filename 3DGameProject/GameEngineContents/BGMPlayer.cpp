@@ -86,7 +86,6 @@ void BGMPlayer::SetBattleEnd()
 	{
 		if (true == BossBGM)
 		{
-			BossBGM = false;
 			SoundPlayer.SoundFadeOut(5.0f);
 			SoundPlayer = GameEngineSound::Play("Voltaic Black Knight.ogg");
 			SoundPlayer.SetVolume(Volume);
@@ -197,4 +196,13 @@ void BGMPlayer::BGMLoad()
 		}
 	}
 
+}
+
+void BGMPlayer::SetBGMVolume(float _Volume)
+{
+	if (false == SoundPlayer.IsValid())
+	{
+		return;
+	}
+	SoundPlayer.SetVolume(Volume * _Volume);
 }

@@ -95,11 +95,17 @@ void BaseEnemyActor::Update(float _DeltaTime)
 			{
 				MonsterCollision->Off();
 				MonsterAttackCollision->Off();
-				PhysXCapsule->Off();
+				if (EnemyCodeValue != EnemyCode::Qliphoth)
+				{
+					PhysXCapsule->Off();
+				}
 			}
 			else if (false == IsTimeStop)
 			{
-				PhysXCapsule->On();
+				if (EnemyCodeValue != EnemyCode::Qliphoth)
+				{
+					PhysXCapsule->On();
+				}
 				MonsterCollision->On();
 			}
 		}

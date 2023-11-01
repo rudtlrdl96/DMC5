@@ -1546,6 +1546,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCutEnd_1");
 				TimeEvent.AddEvent(1.58f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
+					BGMPlayer::SetBGMVolume(0.3f);
 					Sound.Play("Yamato_", 16);
 					Renderer->Off();
 					Effect_Color->SetStartColor(float4::ZERO);
@@ -1626,6 +1627,7 @@ void PlayerActor_Vergil::PlayerLoad()
 				});
 				TimeEvent.AddEvent(1.9f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
+					BGMPlayer::SetBGMVolume(1.0f);
 					Col_Attack->Off();
 				});
 			},

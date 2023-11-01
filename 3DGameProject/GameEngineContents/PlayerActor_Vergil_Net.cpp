@@ -11,6 +11,7 @@
 #include "ColorEffect.h"
 #include "PlayerCamera.h"
 #include "RankUI.h"
+#include "BGMPlayer.h"
 
 void PlayerActor_Vergil::NetLoad()
 {
@@ -692,6 +693,7 @@ void PlayerActor_Vergil::NetLoad()
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCutEnd_1");
 				TimeEvent.AddEvent(1.58f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
+					BGMPlayer::SetBGMVolume(0.3f);
 					Sound.Play("Yamato_", 16);
 					Renderer->Off();
 					Effect_Color->SetStartColor(float4::ZERO);
@@ -737,6 +739,7 @@ void PlayerActor_Vergil::NetLoad()
 				Renderer->ChangeAnimation("pl0300_yamato_JudgementCutEnd_2");
 				TimeEvent.AddEvent(1.82f, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
+					BGMPlayer::SetBGMVolume(1.0f);
 					Sound.Play("Yamato_", 18);
 					Sound.Play("Yamato_", 20);
 					Effect_JC->JudgementCutOff();

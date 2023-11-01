@@ -33,6 +33,8 @@ public:
 
 	static void BGMLoad();
 
+	static void SetBGMVolume(float _Volume);
+
 	static float Volume;
 
 protected:
