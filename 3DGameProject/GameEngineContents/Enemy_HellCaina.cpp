@@ -1867,7 +1867,7 @@ void Enemy_HellCaina::EnemyCreateFSM()
 	BusterEnd();
 	if (true == NetworkManager::IsServer())
 	{
-		ExcuteNetObjEvent(3, NetObjEventPath::ActiveToPassive, { Player });
+		//ExcuteNetObjEvent(3, NetObjEventPath::ActiveToPassive, { Player });
 	}
 	}
 		});
@@ -2327,9 +2327,9 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	EnemyRenderer->ChangeAnimation("em0000_Buster_Start");
 	},
 	.Update = [=](float _DeltaTime) {
-	BusterEnd_Client();
 	},
 	.End = [=] {
+	BusterEnd_Client();
 	}
 		});
 	// 버스트 히트 루프

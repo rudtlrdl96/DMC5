@@ -710,9 +710,12 @@ void BaseEnemyActor::BusterCalculation_Client(float4 _attachposition)
 	else
 	{
 		std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
-		size_t Playersize = Players.size();
+		int Playersize = static_cast<int>(Players.size());
 
-		for (size_t i = 0; i < Playersize; i++)
+		float Min = 99999.0f;
+		int Target = -1;
+
+		for (int i = 0; i < Playersize; i++)
 		{
 			int PlayersID = Players[i]->GetNetObjectID();
 
@@ -722,12 +725,18 @@ void BaseEnemyActor::BusterCalculation_Client(float4 _attachposition)
 			{
 				continue;
 			}
-			else
+			float Length = (Players[i]->GetTransform()->GetWorldPosition() - GetTransform()->GetWorldPosition()).Size();
+			if (Length < Min)
 			{
-				Players[i]->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer->GetTransform(), _attachposition/*, float4(0.0f, 0.0f, 0.0f)*/);
-				break;
+				Min = Length;
+				Target = i;
 			}
 		}
+		if (Target == -1)
+		{
+			Target = 0;
+		}
+		Players[Target]->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer->GetTransform(), _attachposition/*, float4(0.0f, 0.0f, 0.0f)*/);
 	}
 }
 

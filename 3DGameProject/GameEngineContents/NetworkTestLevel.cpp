@@ -185,7 +185,7 @@ void NetworkTestLevel::Update(float _DeltaTime)
 	}
 	
 
-	if (true)
+	if (false)
 	{
 		if (GameEngineInput::IsDown("SelectLevel_01"))
 		{
