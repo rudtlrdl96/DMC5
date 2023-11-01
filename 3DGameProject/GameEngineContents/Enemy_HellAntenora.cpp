@@ -375,11 +375,6 @@ void Enemy_HellAntenora::Start()
 
 		IsChangeState = true;
 		});
-
-	BindNetObjEvent(3, [this](std::vector<NetworkObjectBase*> _Actors)
-		{
-			BusterEnd_Client();
-		});
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2333,10 +2328,6 @@ void Enemy_HellAntenora::EnemyCreateFSM()
 	},
 	.End = [=] {
 	BusterEnd();
-	if (true == NetworkManager::IsServer())
-	{
-		ExcuteNetObjEvent(3, NetObjEventPath::ActiveToPassive, { Player });
-	}
 	}
 		});
 	// 버스트 히트 루프
