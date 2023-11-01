@@ -192,22 +192,22 @@ void Enemy_Qliphoth::Start()
 	MonsterCollision_0 = CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
 	MonsterCollision_0->GetTransform()->SetLocalScale({ 200, 200, 200 });
 	MonsterCollision_0->SetColType(ColType::SPHERE3D);
-	EnemyRenderer->SetAttachTransform("Head02_S", MonsterCollision_0->GetTransform(), float4::ZERO, float4::ZERO, false);
+	EnemyRenderer->SetAttachTransform("Head02_S", MonsterCollision_0, float4::ZERO, float4::ZERO, false);
 
 	MonsterCollision_1 = CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
 	MonsterCollision_1->GetTransform()->SetLocalScale({ 200, 200, 200 });
 	MonsterCollision_1->SetColType(ColType::SPHERE3D);
-	EnemyRenderer->SetAttachTransform("Vine05_end", MonsterCollision_1->GetTransform(), float4::ZERO, float4::ZERO, false);
+	EnemyRenderer->SetAttachTransform("Vine05_end", MonsterCollision_1, float4::ZERO, float4::ZERO, false);
 
 	MonsterCollision_2 = CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
 	MonsterCollision_2->GetTransform()->SetLocalScale({ 200, 200, 200 });
 	MonsterCollision_2->SetColType(ColType::SPHERE3D);
-	EnemyRenderer->SetAttachTransform("Vine03_end", MonsterCollision_2->GetTransform(), float4::ZERO, float4::ZERO, false);
+	EnemyRenderer->SetAttachTransform("Vine03_end", MonsterCollision_2, float4::ZERO, float4::ZERO, false);
 
 	MonsterCollision_3 = CreateComponent<GameEngineCollision>(CollisionOrder::Enemy);
 	MonsterCollision_3->GetTransform()->SetLocalScale({ 200, 200, 200 });
 	MonsterCollision_3->SetColType(ColType::SPHERE3D);
-	EnemyRenderer->SetAttachTransform("Vine01_end", MonsterCollision_3->GetTransform(), float4::ZERO, float4::ZERO, false);
+	EnemyRenderer->SetAttachTransform("Vine01_end", MonsterCollision_3, float4::ZERO, float4::ZERO, false);
 
 	RN_MonsterCollision->GetTransform()->SetLocalScale({ 2000, 0, 0 });
 	RN_MonsterCollision->GetTransform()->SetLocalPosition({ 0, 200, 0 });

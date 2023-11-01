@@ -193,7 +193,11 @@ void GameEngineFBXRenderer::Update(float _DeltaTime)
 	for (size_t i = 0; i < AttachTransformValue.size(); i++)
 	{
 		AttachTransformInfo& Data = AttachTransformValue[i];
-
+		if (true == Data.Object->IsDeath())
+		{
+			AttachTransformValue.erase(AttachTransformValue.begin() + i);
+			break;
+		}
 		// 오프셋이 곱해지지 않은 행렬이 실제 본의 위치를 담고 있는 행렬이다.
 		// 버텍스는 오프셋을 기반으로 만들어져있기 때문이다.
 		float4x4 Mat = AnimationBoneMatrixsNotOffset[Data.Index];
@@ -213,15 +217,15 @@ void GameEngineFBXRenderer::Update(float _DeltaTime)
 			{
 				float4 QuaternionRot = DirectX::XMQuaternionMultiply(Data.OffsetRot, Rot);
 				//float4 QuaternionRot = DirectX::XMQuaternionMultiply(Rot, Data.OffsetRot);
-				Data.Transform->SetWorldRotation(QuaternionRot.QuaternionToEulerDeg());
+				Data.Object->GetTransform()->SetWorldRotation(QuaternionRot.QuaternionToEulerDeg());
 			}
 			else
 			{
-				Data.Transform->SetWorldRotation(Rot.QuaternionToEulerDeg() + Data.OffsetRot);
+				Data.Object->GetTransform()->SetWorldRotation(Rot.QuaternionToEulerDeg() + Data.OffsetRot);
 			}
 		}
 
-		Data.Transform->SetWorldPosition(Pos + Data.OffsetPos);
+		Data.Object->GetTransform()->SetWorldPosition(Pos + Data.OffsetPos);
 	}
 }
 
@@ -879,7 +883,7 @@ AnimationBoneData GameEngineFBXRenderer::GetBoneData(std::string _Name)
 	return Data;
 }
 
-void GameEngineFBXRenderer::SetAttachTransform(std::string_view _Name, GameEngineTransform* _Transform, float4 _OffsetPos, float4 _OffsetRot, bool _RotEffect, bool _IsDeg)
+void GameEngineFBXRenderer::SetAttachTransform(std::string_view _Name, std::shared_ptr<GameEngineObject> _Object, float4 _OffsetPos, float4 _OffsetRot, bool _RotEffect, bool _IsDeg)
 {
 	Bone* BoneData = FBXMesh->FindBone(_Name.data());
 
@@ -889,10 +893,10 @@ void GameEngineFBXRenderer::SetAttachTransform(std::string_view _Name, GameEngin
 		return;
 	}
 
-	SetAttachTransform(BoneData->Index, _Transform, _OffsetPos, _OffsetRot, _RotEffect, _IsDeg);
+	SetAttachTransform(BoneData->Index, _Object, _OffsetPos, _OffsetRot, _RotEffect, _IsDeg);
 }
 
-void GameEngineFBXRenderer::SetAttachTransform(int Index, GameEngineTransform* _Transform, float4 _OffsetPos, float4 _OffsetRot, bool _RotEffect, bool _IsDeg)
+void GameEngineFBXRenderer::SetAttachTransform(int Index, std::shared_ptr<GameEngineObject> _Object, float4 _OffsetPos, float4 _OffsetRot, bool _RotEffect, bool _IsDeg)
 {
 	float4x4 Rot;
 	float4x4 Pos;
@@ -902,11 +906,11 @@ void GameEngineFBXRenderer::SetAttachTransform(int Index, GameEngineTransform* _
 
 	if (false == _IsDeg)
 	{
-		AttachTransformValue.push_back({ Index, _Transform, _OffsetPos, _OffsetRot.EulerDegToQuaternion(), Rot * Pos, _RotEffect, _IsDeg });
+		AttachTransformValue.push_back({ Index, _Object, _OffsetPos, _OffsetRot.EulerDegToQuaternion(), Rot * Pos, _RotEffect, _IsDeg });
 	}
 	else
 	{
-		AttachTransformValue.push_back({ Index, _Transform, _OffsetPos, _OffsetRot, Rot * Pos, _RotEffect, _IsDeg });
+		AttachTransformValue.push_back({ Index, _Object, _OffsetPos, _OffsetRot, Rot * Pos, _RotEffect, _IsDeg });
 	}
 	
 }

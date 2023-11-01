@@ -693,7 +693,7 @@ void BaseEnemyActor::BusterCalculation(float4 _attachposition)
 	float4 BusterPosition = Player->GetTransform()->GetWorldPosition() + Forword + float4{0.f, 40.f, 0.f};
 	
 	PhysXCapsule->SetWorldPosition(BusterPosition);
-	Player->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer->GetTransform(), _attachposition/*, float4(0.0f, 0.0f, 0.0f)*/);
+	Player->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer, _attachposition/*, float4(0.0f, 0.0f, 0.0f)*/);
 }
 
 void BaseEnemyActor::BusterCalculation_Client(float4 _attachposition)
@@ -705,7 +705,7 @@ void BaseEnemyActor::BusterCalculation_Client(float4 _attachposition)
 
 	if (BusterClientStart == true)
 	{
-		Player->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer->GetTransform(), _attachposition/*, float4(0.0f, 0.0f, 0.0f)*/);
+		Player->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer, _attachposition/*, float4(0.0f, 0.0f, 0.0f)*/);
 	}
 	else
 	{
@@ -736,7 +736,7 @@ void BaseEnemyActor::BusterCalculation_Client(float4 _attachposition)
 		{
 			Target = 0;
 		}
-		Players[Target]->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer->GetTransform(), _attachposition/*, float4(0.0f, 0.0f, 0.0f)*/);
+		Players[Target]->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer, _attachposition/*, float4(0.0f, 0.0f, 0.0f)*/);
 	}
 }
 

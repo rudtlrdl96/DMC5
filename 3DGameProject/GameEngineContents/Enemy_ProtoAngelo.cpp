@@ -270,7 +270,7 @@ void Enemy_ProtoAngelo::Start()
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
 
 	// 무기 붙이기
-	EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(180.0f, 0.0f, 0.0f), true, true);
+	EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon, float4(0.0f, 0.0f, 0.0f), float4(180.0f, 0.0f, 0.0f), true, true);
 
 	float4 MeshScale_R = RightWeapon->GetMeshScale();
 	MeshScale_R.x *= 0.7f;

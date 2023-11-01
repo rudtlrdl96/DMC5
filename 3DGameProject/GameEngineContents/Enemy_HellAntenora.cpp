@@ -256,8 +256,8 @@ void Enemy_HellAntenora::Start()
 	//RN_MonsterCollision->Off();
 
 	// 무기 붙이기
-	EnemyRenderer->SetAttachTransform("L_WeaponHand", LeftWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(30.0f, 170.0f, 180.0f), true, true);
-	EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(30.0f, 170.0f, 180.0f), true, true);
+	EnemyRenderer->SetAttachTransform("L_WeaponHand", LeftWeapon, float4(0.0f, 0.0f, 0.0f), float4(30.0f, 170.0f, 180.0f), true, true);
+	EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon, float4(0.0f, 0.0f, 0.0f), float4(30.0f, 170.0f, 180.0f), true, true);
 
 	float4 MeshScale_L = LeftWeapon->GetMeshScale();
 	// MeshScale = { 77.6 , 10.5 , 171.0 }

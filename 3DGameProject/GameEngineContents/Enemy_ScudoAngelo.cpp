@@ -289,8 +289,8 @@ void Enemy_ScudoAngelo::Start()
 	LeftWeapon->GetTransform()->AddLocalRotation({ -90.0f, 0.0f, 0.0f });
 
 	// 무기 붙이기
-	EnemyRenderer->SetAttachTransform("L_Hand", LeftWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 0.0f, 0.0f));
-	EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon->GetTransform(), float4(0.0f, 0.0f, 0.0f), float4(0.0f, 170.0f, 180.0f), true, true);
+	EnemyRenderer->SetAttachTransform("L_Hand", LeftWeapon, float4(0.0f, 0.0f, 0.0f), float4(0.0f, 0.0f, 0.0f));
+	EnemyRenderer->SetAttachTransform("R_WeaponHand", RightWeapon, float4(0.0f, 0.0f, 0.0f), float4(0.0f, 170.0f, 180.0f), true, true);
 
 	float4 MeshScale_R = RightWeapon->GetMeshScale();
 	MeshScale_R.x *= 0.7f;

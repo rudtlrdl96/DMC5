@@ -102,7 +102,7 @@ void CavaliereAngelo::EnemyMeshLoad()
 	EffectLight->SetLightColor({ 0.5f, 0.2f, 0.7f });
 	EffectLight->IsDebugDraw = true;
 
-	EnemyRenderer->SetAttachTransform("R_WeaponHand", WeaponEffectPivot->GetTransform(), { 0, 0, 0}, {90, 0, 0}, true);
+	EnemyRenderer->SetAttachTransform("R_WeaponHand", WeaponEffectPivot, { 0, 0, 0}, {90, 0, 0}, true);
 
 	// CircleLight
 
@@ -185,7 +185,7 @@ void CavaliereAngelo::DrawEditor()
 	if (true == ImGui::Button("Weapon Effect Pivot Change"))
 	{
 		EnemyRenderer->SetDettachTransform();
-		EnemyRenderer->SetAttachTransform("R_WeaponHand", WeaponEffectPivot->GetTransform(), { 0, 0, 0 }, { AttRot[0], AttRot[1], AttRot[2] }, true);
+		EnemyRenderer->SetAttachTransform("R_WeaponHand", WeaponEffectPivot, { 0, 0, 0 }, { AttRot[0], AttRot[1], AttRot[2] }, true);
 	}
 
 	static float EffectRot[4] = { -90, 0, 0, 1};
