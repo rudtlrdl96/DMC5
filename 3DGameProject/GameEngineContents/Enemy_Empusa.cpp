@@ -346,11 +346,6 @@ void Enemy_Empusa::Start()
 
 		IsChangeState = true;
 		});
-
-	BindNetObjEvent(3, [this](std::vector<NetworkObjectBase*> _Actors)
-		{
-			BusterEnd_Client();
-		});
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -509,11 +504,6 @@ void Enemy_Empusa::DamageCollisionCheck(float _DeltaTime)
 		return;
 	}
 
-	//if (true == DeathValue)
-	//{
-	//	return;
-	//}
-
 	AttackDelayCheck += _DeltaTime;
 
 	float FrameTime = (1.0f / 60.0f) * 5.0f;
@@ -623,11 +613,6 @@ void Enemy_Empusa::DamageCollisionCheck_Client(float _DeltaTime)
 	{
 		return;
 	}
-
-	//if (true == DeathValue)
-	//{
-	//	return;
-	//}
 
 	AttackDelayCheck += _DeltaTime;
 
@@ -1936,10 +1921,6 @@ void Enemy_Empusa::EnemyCreateFSM()
 	},
 	.End = [=] {
 	BusterEnd();
-	if (true == NetworkManager::IsServer())
-	{
-		ExcuteNetObjEvent(3, NetObjEventPath::ActiveToPassive, { Player });
-	}
 	}
 		});
 	// 버스트 히트 루프

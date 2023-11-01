@@ -137,24 +137,7 @@ void CavaliereAngelo::EnemyMeshLoad()
 		WeaponEffect->SetTexture("DiffuseTexture", "EngineBaseNormal.png");
 		WeaponEffect->EffectOption.MulColor = { 0.5, 0.2f, 0.7f, 0.2f};
 		WeaponEffect->SetBloomColor({ 2.0f, 0.8f, 2.8f });
-
-		//WeaponEffect->SetDistortionTexture("", {0.1f, 0.1f});
-
 	}
-
-	//{
-	//	WeaponElectric = CreateComponent<EffectRenderer>();
-	//	WeaponElectric->RectInit("Effect_2D");
-	//
-	//	WeaponElectric->GetTransform()->SetParent(WeaponEffectPivot->GetTransform());
-	//	WeaponElectric->GetTransform()->SetLocalPosition({ -24.5f, -212.0f, -26.0f });
-	//	WeaponElectric->GetTransform()->SetLocalRotation({ 4.0f, 0.0f, 0.0f });
-	//	WeaponElectric->GetTransform()->SetLocalScale({ 80.0f, 300.0f, 1.0f });
-	//	WeaponElectric->EffectOption.MulColor = { 0.5, 0.2f, 0.8f, 1.0f };
-	//
-	//	WeaponElectric->CreateAnimation({"Loop", "Effect_Electric_05.tga", size_t(-1), size_t(-1), 0.05f});
-	//	WeaponElectric->ChangeAnimation("Loop");
-	//}	
 	
 	{
 		WeaponElectric = CreateComponent<EffectRenderer>();
@@ -387,6 +370,74 @@ void CavaliereAngelo::Start()
 				AttackDelayCheck = 1.0f;
 			}
 
+			if (DamageType::Buster == Datas.DamageTypeValue && true == IsStun)
+			{
+				IsStun = false;
+				SetTimeScale(0.4f);
+				GetLevel()->TimeEvent.AddEvent(.316f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						StartRenderShaking(8);
+						if (300 < EnemyHP)
+						{
+							MinusEnemyHP(300);
+							HPClientStackPlus(300);
+						}
+					});
+				GetLevel()->TimeEvent.AddEvent(.683f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						StartRenderShaking(8);
+						if (300 < EnemyHP)
+						{
+							MinusEnemyHP(300);
+							HPClientStackPlus(300);
+						}
+					});
+				GetLevel()->TimeEvent.AddEvent(1.13f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						StartRenderShaking(8);
+						if (300 < EnemyHP)
+						{
+							MinusEnemyHP(300);
+							HPClientStackPlus(300);
+						}
+					});
+				GetLevel()->TimeEvent.AddEvent(1.4f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						StartRenderShaking(8);
+						if (300 < EnemyHP)
+						{
+							MinusEnemyHP(300);
+							HPClientStackPlus(300);
+						}
+					});
+				GetLevel()->TimeEvent.AddEvent(1.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						Sound.Play("Cavaliere_Damage_", 3);
+						StartRenderShaking(8);
+						if (300 < EnemyHP)
+						{
+							MinusEnemyHP(300);
+							HPClientStackPlus(300);
+						}
+					});
+				GetLevel()->TimeEvent.AddEvent(1.7f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						SetTimeScale(0.3f);
+					});
+				GetLevel()->TimeEvent.AddEvent(2.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						Sound.Play("Cavaliere_Damage_", 6);
+						StartRenderShaking(8);
+						MinusEnemyHP(800);
+						HPClientStackPlus(800);
+						SetTimeScale(0.0f);
+					});
+				GetLevel()->TimeEvent.AddEvent(3.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+					{
+						SetTimeScale(1.0f);
+					});
+			}
+
 			if (EnemyHP < 0)
 			{
 				DeathValue = true;
@@ -425,74 +476,6 @@ void CavaliereAngelo::Start()
 			IsVergilLight = true;
 		}
 
-		if (DamageType::Buster == Datas.DamageTypeValue && true == IsStun)
-		{
-			IsStun = false;
-			SetTimeScale(0.4f);
-			GetLevel()->TimeEvent.AddEvent(.316f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-				{
-					StartRenderShaking(8);
-					if (300 < EnemyHP)
-					{
-						MinusEnemyHP(300);
-						HPClientStackPlus(300);
-					}
-				});
-			GetLevel()->TimeEvent.AddEvent(.683f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-				{
-					StartRenderShaking(8);
-					if (300 < EnemyHP)
-					{
-						MinusEnemyHP(300);
-						HPClientStackPlus(300);
-					}
-				});
-			GetLevel()->TimeEvent.AddEvent(1.13f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-				{
-					StartRenderShaking(8);
-					if (300 < EnemyHP)
-					{
-						MinusEnemyHP(300);
-						HPClientStackPlus(300);
-					}
-				});
-			GetLevel()->TimeEvent.AddEvent(1.4f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-				{
-					StartRenderShaking(8);
-					if (300 < EnemyHP)
-					{
-						MinusEnemyHP(300);
-						HPClientStackPlus(300);
-					}
-				});
-			GetLevel()->TimeEvent.AddEvent(1.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-				{
-					Sound.Play("Cavaliere_Damage_", 3);
-					StartRenderShaking(8);
-					if (300 < EnemyHP)
-					{
-						MinusEnemyHP(300);
-						HPClientStackPlus(300);
-					}
-				});
-			GetLevel()->TimeEvent.AddEvent(1.7f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-				{
-					SetTimeScale(0.3f);
-				});
-			GetLevel()->TimeEvent.AddEvent(2.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-				{
-					Sound.Play("Cavaliere_Damage_", 6);
-					StartRenderShaking(8);
-					MinusEnemyHP(800);
-					HPClientStackPlus(800);
-					SetTimeScale(0.0f);
-				});
-			GetLevel()->TimeEvent.AddEvent(3.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
-				{
-					SetTimeScale(1.0f);
-				});
-		}
-
 		if (DamageType::Stun == Datas.DamageTypeValue)
 		{
 			StopTime(2.9f);
@@ -523,6 +506,7 @@ void CavaliereAngelo::Update(float _DeltaTime)
 			MonsterAttackCollision->Off();
 			ParryCollision->Off();
 			PhysXCapsule->Off();
+			PhysXCapsule->SetLinearVelocityZero();
 		}
 		else if (false == PhysXCapsule->IsUpdate())
 		{
@@ -896,6 +880,47 @@ void CavaliereAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 		AttackDelayCheck = 1.0f;
 		ExcuteNetObjEvent(2, NetObjEventPath::PassiveToActive, { Obj });
 		return;
+	}
+
+	if (DamageType::Buster == Data.DamageTypeValue && true == IsStun)
+	{
+		IsStun = false;
+		SetTimeScale(0.4f);
+		GetLevel()->TimeEvent.AddEvent(.316f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				StartRenderShaking(8);
+			});
+		GetLevel()->TimeEvent.AddEvent(.683f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				StartRenderShaking(8);
+			});
+		GetLevel()->TimeEvent.AddEvent(1.13f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				StartRenderShaking(8);
+			});
+		GetLevel()->TimeEvent.AddEvent(1.4f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				StartRenderShaking(8);
+			});
+		GetLevel()->TimeEvent.AddEvent(1.6f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				Sound.Play("Cavaliere_Damage_", 3);
+				StartRenderShaking(8);
+			});
+		GetLevel()->TimeEvent.AddEvent(1.7f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				SetTimeScale(0.3f);
+			});
+		GetLevel()->TimeEvent.AddEvent(2.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				Sound.Play("Cavaliere_Damage_", 6);
+				StartRenderShaking(8);
+				SetTimeScale(0.0f);
+			});
+		GetLevel()->TimeEvent.AddEvent(3.5f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+			{
+				SetTimeScale(1.0f);
+			});
 	}
 }
 
