@@ -23,17 +23,13 @@ OutPut Bloom_VS(Input _Value)
 // 
 
 // ¥Î√Ê
-static float Gau[9][9] =
+static float Gau[5][5] =
 {
-    { 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0001f, 0.0000f, 0.0000f, 0.0000f, 0.0000f},
-    { 0.0000f, 0.0000f, 0.0002f, 0.0011f, 0.0018f, 0.0011f, 0.0002f, 0.0000f, 0.0000f},
-    { 0.0000f, 0.0002f, 0.0029f, 0.0131f, 0.0215f, 0.0131f, 0.0029f, 0.0002f, 0.0000f},
-    { 0.0000f, 0.0011f, 0.0131f, 0.0585f, 0.0965f, 0.0585f, 0.0131f, 0.0011f, 0.0000f},
-    { 0.0001f, 0.0018f, 0.0215f, 0.0965f, 0.1592f, 0.0965f, 0.0215f, 0.0018f, 0.0001f},
-    { 0.0000f, 0.0011f, 0.0131f, 0.0585f, 0.0965f, 0.0585f, 0.0131f, 0.0011f, 0.0000f},
-    { 0.0000f, 0.0002f, 0.0029f, 0.0131f, 0.0215f, 0.0131f, 0.0029f, 0.0002f, 0.0000f},
-    { 0.0000f, 0.0000f, 0.0002f, 0.0011f, 0.0018f, 0.0011f, 0.0002f, 0.0000f, 0.0000f},
-    { 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0001f, 0.0000f, 0.0000f, 0.0000f, 0.0000f},
+    { 1, 4, 6, 4, 1 },
+    { 4, 16, 24, 16, 4 },
+    { 6, 24, 36, 24, 6 },
+    { 4, 16, 24, 16, 4 },
+    { 1, 4, 6, 4, 1 }
 };
 
 Texture2D SmallBloomTex : register(t0);
@@ -52,14 +48,14 @@ float4 Blur_PS(OutPut _Value) : SV_Target0
     PixelSize.x = ScreenRatio.x;
     PixelSize.y = ScreenRatio.y;
         
-    float2 StartUV = _Value.UV.xy - (PixelSize * 4.0f);
+    float2 StartUV = _Value.UV.xy - (PixelSize * 2.0f);
     float2 CurUV = StartUV;
     
     float4 ResultColor = (float4) 0.0f;
  
-    for (int y = 0; y < 9; ++y)
+    for (int y = 0; y < 5; ++y)
     {
-        for (int x = 0; x < 9; ++x)
+        for (int x = 0; x < 5; ++x)
         {
             ResultColor += SmallBloomTex.Sample(POINTSAMPLER, saturate(CurUV.xy)) * Gau[y][x];
             CurUV.x += PixelSize.x;
@@ -69,6 +65,7 @@ float4 Blur_PS(OutPut _Value) : SV_Target0
         CurUV.y += PixelSize.y;
     }
             
+    ResultColor.rgb /= 256.0f;
     ResultColor.a = 1.0f;
     
     return ResultColor;

@@ -112,13 +112,7 @@ DeferredOutPut MeshAniTexture_PS(Output _Input)
             AlbmData = float4(1, 0, 0, 1); // 빨
         }
     }    
-
-    if (1.0f != AtosData.r)
-    {
-        AtosData.r = 1.0f;
-        AtosData.g = 0.0f;
-    }
-    
+        
     Result.PosTarget = _Input.VIEWPOSITION;
     Result.WorldPosTarget = _Input.WORLDPOSITION;
     Result.DifTarget = float4(AlbmData.r, AlbmData.g, AlbmData.b, 1.0f);
@@ -133,13 +127,8 @@ DeferredOutPut MeshAniTexture_PS(Output _Input)
         Result.NorTarget = _Input.NORMAL;
     }
         
-    // 반사량 계산 공식 러프니스 값에 따라서 결정된다        
-    float roughness = 1.0 - NrmrData.r; // smoothness는 러프니스 값입니다.
-    float3 reflection = reflect(AllLight[0].LightRevDir.xyz, Result.NorTarget.xyz); // 빛의 반사 방향 계산
-    float distribution = GGX_Distribution(Result.NorTarget.xyz, reflection, roughness); // 반사 분포 계산
-                
-    // 계산된 메탈릭 값
-    float metallic = saturate(AlbmData.a - distribution);
+    float roughness = NrmrData.r;
+    float metallic = saturate(AlbmData.a);
      
     // AlbmData -> metallicValue 값에 따라서 결정되어야 한다        
     //Result.DifTarget.rgb = lerp(float3(0, 0, 0), AlbmData.rgb, metallic); 
