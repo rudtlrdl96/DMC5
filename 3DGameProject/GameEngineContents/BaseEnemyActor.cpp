@@ -112,7 +112,7 @@ void BaseEnemyActor::Update(float _DeltaTime)
 	// 싱글 플레이일 때 실행
 	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
 	{
-		if (true == GameEngineInput::IsDown("MonsterTest"))
+		if (GameEngineInput::IsPress("Player_Jump2") && GameEngineInput::IsDown("SelectLevel_05"))
 		{
 			EnemyHP = 1;
 		}

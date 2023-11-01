@@ -550,7 +550,7 @@ void BasePlayerActor::DamageColCheck()
 
 	if (HP <= 0)
 	{
-		GetLevel()->TimeEvent.AddEvent(3.0f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
+		GetLevel()->TimeEvent.AddEvent(8.0f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 			{
 				FadeEffect::GetFadeEffect()->FadeOut();
 				_Manager->AddEvent(1.0f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)

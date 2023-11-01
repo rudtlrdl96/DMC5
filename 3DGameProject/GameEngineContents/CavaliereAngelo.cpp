@@ -544,7 +544,7 @@ void CavaliereAngelo::Update(float _DeltaTime)
 		DamageCollisionCheck(_DeltaTime);
 		EnemyFSM.Update(_DeltaTime);
 
-		if (true == GameEngineInput::IsDown("MonsterTest"))
+		if (GameEngineInput::IsPress("Player_Jump2") && GameEngineInput::IsDown("SelectLevel_05"))
 		{
 			EnemyHP = 1;
 		}
