@@ -123,6 +123,7 @@ void PlayerActor_Vergil::NetLoad()
 			},
 			.CallBacks_int = {
 				std::bind(&GameEngineFSM::ChangeState, &FSM, std::placeholders::_1),
+				std::bind(&SoundController::Play, &Sound, "Yamato_", std::placeholders::_1),
 			},
 			});
 		SetHuman();

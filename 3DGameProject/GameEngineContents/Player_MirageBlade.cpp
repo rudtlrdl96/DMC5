@@ -177,15 +177,18 @@ void Player_MirageBlade::Start()
 			{
 			case 0:
 				Effect->PlayFX("Mirage_On.effect");
+				GameEngineSound::Play("Mirage_1.wav");
 				break;
 			case 1:
 				Effect->PlayFX("Mirage_Spiral_1.effect");
+				GameEngineSound::Play("Mirage_2.wav");
 				break;
 			case 2:
 				Effect->PlayFX("Mirage_Spiral_2.effect");
 				break;
 			case 3:
 				Effect->PlayFX("Mirage_Spiral_3.effect");
+				GameEngineSound::Play("Mirage_2.wav");
 				break;
 			default:
 				break;
