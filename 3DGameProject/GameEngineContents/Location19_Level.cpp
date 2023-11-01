@@ -182,9 +182,12 @@ void Location19_Level::CreateEventZone()
 void Location19_Level::CreatePotal()
 {
 	// 모든 적 처치시 실행됨
-	//Portal = CreateActor<l19_Portal>();
-	Portal->On();
-	BasePlayerActor::GetMainPlayer()->SetCutScene({ 912, 1722, 2260 }, { 912, 600, 1966 }, { -15, 178, 0 }, { 10, 178, 0 }, 4.0f);
-
-	int a = 0;
+	TimeEvent.AddEvent(3.0f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* TimeEvent)
+		{
+			BasePlayerActor::GetMainPlayer()->SetCutScene({ 912, 800, 2260 }, { 912, 600, 1966 }, { -15, 178, 0 }, { 10, 178, 0 }, 4.0f);
+		});
+	TimeEvent.AddEvent(3.5f, [this](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* TimeEvent)
+		{
+			Portal->On();
+		});
 }

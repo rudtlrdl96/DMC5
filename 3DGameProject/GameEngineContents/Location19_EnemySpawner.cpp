@@ -60,11 +60,13 @@ void Location19_EnemySpawner::Start()
 
 	Event = [this]()
 		{
-			GameEngineSound::Play("RedSeal_0.wav");
 			GameEngineLevel* Level = GetLevel();
 			BasePlayerActor::GetMainPlayer()->SetCutScene({ -2307, 1085, 1618 }, { -1250, 1085, 2358 }, { 30, 132, 0 }, { 20, 160, 0 }, 5.0f);
 			BGMPlayer::SetBattleBGM();
-
+			Level->TimeEvent.AddEvent(1.2f, [=](GameEngineTimeEvent::TimeEvent& Event, GameEngineTimeEvent* Manager)
+				{
+					GameEngineSound::Play("RedSeal_0.wav");
+				});
 			if (false == NetworkManager::IsClient())
 			{
 				MonsterAliveCount = 4;
@@ -94,11 +96,14 @@ void Location19_EnemySpawner::Start()
 	MonsterWave_Events.resize(1);
 	MonsterWave_Events[0] = [this]()
 		{
-			GameEngineSound::Play("RedSeal_0.wav");
+			GameEngineLevel* Level = GetLevel();
+			Level->TimeEvent.AddEvent(0.3f, [=](GameEngineTimeEvent::TimeEvent& Event, GameEngineTimeEvent* Manager)
+				{
+					GameEngineSound::Play("RedSeal_0.wav");
+				});
 			if (false == NetworkManager::IsClient())
 			{
 				MonsterAliveCount = 5;
-				GameEngineLevel* Level = GetLevel();
 				std::vector<float4> EnemyPos =
 				{
 					{ 1330 , 90, 483 }, { 1310 , 71, -194 }, { 943 , 60, 481 }, { 1616 , 106, 702 }, { 1880 , 77, -158 }
