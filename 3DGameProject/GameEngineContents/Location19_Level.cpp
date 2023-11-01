@@ -118,6 +118,15 @@ void Location19_Level::LevelChangeStart()
 	}
 	}
 
+	if (true == NetworkManager::IsClient())
+	{
+		MyPlayer->SetWorldPosition({ 50, 15.0f, 50 });
+	}
+	else
+	{
+		MyPlayer->SetWorldPosition({ -50, 15.0f, -50 });
+	}
+
 	AcSkyBox.lock()->SetSkyBloom(3);
 	GetDirectionalLight()->GetTransform()->SetWorldPosition({ 0.f,1000000.f,0.f });
 	GetDirectionalLight()->GetTransform()->SetWorldRotation({ 45.f,45.f,45.f });

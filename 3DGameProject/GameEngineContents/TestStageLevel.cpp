@@ -142,7 +142,6 @@ void TestStageLevel::LevelChangeStart()
 	{
 		MyPlayer = CreateActor<PlayerActor_Nero>();
 		MyPlayer->SetUserControllType();
-		MyPlayer->SetWorldPosition({ 10815.f, -159.f, 5073.f });
 		MyPlayer->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
 		NetworkManager::LinkNetwork(MyPlayer.get(), this);
 		break;
@@ -151,11 +150,19 @@ void TestStageLevel::LevelChangeStart()
 	{
 		MyPlayer = CreateActor<PlayerActor_Vergil>();
 		MyPlayer->SetUserControllType();
-		MyPlayer->SetWorldPosition({ 10815.0f , -159.f, 5073.f });
 		MyPlayer->SetWorldRotation({ 0.0f, -90.0f, 0.0f });
 		NetworkManager::LinkNetwork(MyPlayer.get(), this);
 		break;
 	}
+	}
+
+	if (true == NetworkManager::IsClient())
+	{
+		MyPlayer->SetWorldPosition({ 10089, -159.f, 4793.f });
+	}
+	else
+	{
+		MyPlayer->SetWorldPosition({ 10815.0f , -159.f, 5073.f });
 	}
 
 	CreateStage(Location2_StageDatas[0]);

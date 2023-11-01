@@ -319,7 +319,9 @@ void CavaliereAngelo::Start()
 	Electric = GetLevel()->CreateActor<Cavaliere_Electric>();
 	Electric->GetTransform()->SetParent(GetTransform());
 	Electric->Off();
-
+	Electric2 = GetLevel()->CreateActor<Cavaliere_Electric>();
+	Electric2->GetTransform()->SetParent(GetTransform());
+	Electric2->Off();
 	// 기본 세팅
 	FallDistance = 55.0f;
 	AttackDelayCheck = (1.0f / 60.0f) * 5.0f;
@@ -1493,13 +1495,11 @@ void CavaliereAngelo::EnemyCreateFSM()
 	WaitTime -= _DeltaTime;
 	if (WaitTime < 0)
 	{
-		if (nullptr == Player)
+		std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
+		Electric->Shoot(Players[0]);
+		if (1 < Players.size())
 		{
-			Electric->Shoot(GetTransform()->GetLocalForwardVector());
-		}
-		else
-		{
-			Electric->Shoot(Player);
+			Electric2->Shoot(Players[1]);
 		}
 		WaitTime = 1.0f;
 	}
@@ -2573,8 +2573,20 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 	.Start = [=] {
 	EffectRenderer_0->PlayFX("Cavalier_Dengeki_Loop.effect");
 	EnemyRenderer->ChangeAnimation("em5501_Attack_Dengeki_Loop");
+	WaitTime = 0.2f;
 	},
 	.Update = [=](float _DeltaTime) {
+	WaitTime -= _DeltaTime;
+	if (WaitTime < 0)
+	{
+		std::vector<BasePlayerActor*>& Players = BasePlayerActor::GetPlayers();
+		Electric->Shoot(Players[0]);
+		if (1 < Players.size())
+		{
+			Electric2->Shoot(Players[1]);
+		}
+		WaitTime = 1.0f;
+	}
 	},
 	.End = [=] {
 	}
