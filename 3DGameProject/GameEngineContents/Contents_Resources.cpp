@@ -540,7 +540,7 @@ void ContentsCore::SetOption()
 	//GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::Low);
 
 	GameEngineOption::ChangeOption("Texture", GameEngineOptionValue::High);
-	GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::High);
+	GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::Low);
 	
 	// PostEffect 可记 积己
 	GameEngineOption::ChangeOption("PostEffect", GameEngineOptionValue::High);

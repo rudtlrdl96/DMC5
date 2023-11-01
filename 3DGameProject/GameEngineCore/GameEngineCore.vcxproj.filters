@@ -1384,6 +1384,9 @@
     <None Include="ThirdParty\FBX\lib\x64\Debug\libfbxsdk-mt.zip">
       <Filter>ThirdParty\FBX\bin\Debug</Filter>
     </None>
+    <None Include="ThirdParty\NvCloth\bin\Release\NvCloth_x64.pdb">
+      <Filter>ThirdParty\NvCloth\bin\Release</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="ThirdParty\FW1Font\lib\x64\Debug\FW1FontWrapper.lib">
@@ -1552,6 +1555,15 @@
       <Filter>ThirdParty\NvCloth\bin\Debug</Filter>
     </CopyFileToFolders>
     <CopyFileToFolders Include="ThirdParty\NvCloth\bin\Release\NvCloth_x64.lib">
+      <Filter>ThirdParty\NvCloth\bin\Release</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\NvCloth\bin\Debug\NvClothDEBUG_x64.dll">
+      <Filter>ThirdParty\NvCloth\bin\Debug</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\NvCloth\bin\Debug\NvClothDEBUG_x64.pdb">
+      <Filter>ThirdParty\NvCloth\bin\Debug</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\NvCloth\bin\Release\NvCloth_x64.dll">
       <Filter>ThirdParty\NvCloth\bin\Release</Filter>
     </CopyFileToFolders>
   </ItemGroup>
