@@ -37,18 +37,22 @@ private:
 	void SetExText();
 	void SetValue();
 	void ActivSkill();
+	void SetPercent();
 	std::shared_ptr<class Shop_TitleButton> RedQueenButton = nullptr;
 	std::shared_ptr<class Shop_ItemButton>  SkillButton = nullptr;
 	std::shared_ptr<class Shop_ExplaneUI> ExplanePtr = nullptr;
+	std::shared_ptr<class GameEngineFontRenderer> RedQueenPersent= nullptr;
+
 	bool IsSelect = false;
 	bool Test = false;
-
+	int Count = 0;
 	int Index = 0;
 	int PrevIndex = 5;
 	bool Exception = false;
 	bool IsValue = false;
 	bool DownSwich = false;
 	bool UpSwich = false;
+	int Percent = 0;
 	float LerpTime = 0.0f;
 	float4 Pos_Null = { -190.0f,364.0f,0.0f };
 	float4 Pos_0 = { -190.0f,234.0f,0.0f };
@@ -57,5 +61,6 @@ private:
 	float4 Pos_3 = { -190.0f,-164.0f,0.0f };
 	float4 Pos_4 = { -190.0f,-294.0f,0.0f };
 	float4 Pos_5 = { -190.0f,-424.0f,0.0f };
+
 };
 

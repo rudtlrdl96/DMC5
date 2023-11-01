@@ -147,6 +147,7 @@ void Shop_VergilYamatoUI::ActivSkill()
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(1200);
 			IsRapidSlash = true;
+			Count++;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 		else if (IsRapidSlash == true && GameEngineInput::IsUp("UI_Enter"))
@@ -162,6 +163,7 @@ void Shop_VergilYamatoUI::ActivSkill()
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(4000);
 			IsUpperSlash = true;
+			Count++;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 		else if (IsUpperSlash == true && GameEngineInput::IsUp("UI_Enter"))
@@ -177,6 +179,7 @@ void Shop_VergilYamatoUI::ActivSkill()
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(7500);
 			IsAerialRave = true;
+			Count++;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
 		}
@@ -193,6 +196,7 @@ void Shop_VergilYamatoUI::ActivSkill()
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(9000);
 			IsYamatoCombo = true;
+			Count++;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
 		}
@@ -209,6 +213,7 @@ void Shop_VergilYamatoUI::ActivSkill()
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(35000);
 			IsJudgmentCutEnd = true;
+			Count++;
 			Shop_ItemButton::Skills[Index]->GetBuyRender()->SetText("구매완료");
 
 		}

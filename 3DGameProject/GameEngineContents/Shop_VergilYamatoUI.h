@@ -16,6 +16,10 @@ public:
 	std::shared_ptr<class Shop_ExplaneUI> GetExPlane()
 	{
 		return ExplanePtr;
+	}	
+	int GetYamatoCount()
+	{
+		return Count;
 	}
 	static bool IsRapidSlash;
 	static bool IsUpperSlash;
@@ -36,7 +40,7 @@ private:
 	std::shared_ptr<class Shop_ItemButton>  SkillButton = nullptr;
 	std::shared_ptr<class Shop_ExplaneUI> ExplanePtr = nullptr;
 	bool Test = false;
-
+	int Count = 0;
 	int Index = 0;
 	int PrevIndex = 4;
 	float4 Pos_0 = { -190.0f,234.0f,0.0f };

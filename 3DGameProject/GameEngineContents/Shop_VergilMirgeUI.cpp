@@ -33,6 +33,7 @@ void Shop_VergilMirgeUI::Start()
 	ExplanePtr = GetLevel()->CreateActor<Shop_ExplaneUI>();
 	ExplanePtr->GetTransform()->SetParent(GetTransform());
 	ExplanePtr->GetTransform()->SetWorldPosition({ 0.0f,0.0f,0.0f });
+
 	SetValue();
 }
 
@@ -137,6 +138,7 @@ void Shop_VergilMirgeUI::ActivSkill()
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(1200);
 			IsSpiralBlade = true;
+			Count++;
 			Shop_ItemButton::SecoundSkills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 		else if (IsSpiralBlade == true && GameEngineInput::IsUp("UI_Enter"))
@@ -152,6 +154,7 @@ void Shop_VergilMirgeUI::ActivSkill()
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(4000);
 			IsStormBlade = true;
+			Count++;
 			Shop_ItemButton::SecoundSkills[Index]->GetBuyRender()->SetText("구매완료");
 		}
 		else if (IsStormBlade == true && GameEngineInput::IsUp("UI_Enter"))
@@ -167,6 +170,7 @@ void Shop_VergilMirgeUI::ActivSkill()
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(7500);
 			IsLesteringBlade = true;
+			Count++;
 			Shop_ItemButton::SecoundSkills[Index]->GetBuyRender()->SetText("구매완료");
 
 		}
@@ -183,6 +187,7 @@ void Shop_VergilMirgeUI::ActivSkill()
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(9000);
 			IsHeavyRainBlade = true;
+			Count++;
 			Shop_ItemButton::SecoundSkills[Index]->GetBuyRender()->SetText("구매완료");
 
 		}
