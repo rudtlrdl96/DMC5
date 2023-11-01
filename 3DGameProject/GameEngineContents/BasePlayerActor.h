@@ -123,7 +123,6 @@ protected:
 	virtual void HeavyDamage() {}
 
 	void StopTime(float _Time);
-
 	GameEngineTimeEvent TimeEvent;
 	SoundController	Sound;
 
@@ -156,6 +155,9 @@ protected:
 	bool IsEvade = false;
 	bool IsShopOn = false;
 	bool IsDeath = false;
+	
+	virtual void Cheat();
+	bool IsGod = false;
 private:
 	void DamageColCheck();
 	void OrbColCheck();

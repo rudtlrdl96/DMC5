@@ -4573,6 +4573,24 @@ void PlayerActor_Nero::DrawEditor()
 	}
 }
 
+void PlayerActor_Nero::Cheat()
+{
+	BasePlayerActor::Cheat();
+
+	if (GameEngineInput::IsPress("Player_Jump2") && GameEngineInput::IsDown("SelectLevel_02"))
+	{
+		AddBreaker(DevilBreaker::Overture);
+	}
+	if (GameEngineInput::IsPress("Player_Jump2") && GameEngineInput::IsDown("SelectLevel_03"))
+	{
+		AddBreaker(DevilBreaker::Gerbera);
+	}
+	if (GameEngineInput::IsPress("Player_Jump2") && GameEngineInput::IsDown("SelectLevel_04"))
+	{
+		AddBreaker(DevilBreaker::BusterArm);
+	}
+}
+
 //³×·Î ·»´õ À¯´Ö
 
 

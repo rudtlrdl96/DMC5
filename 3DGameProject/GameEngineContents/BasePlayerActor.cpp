@@ -354,7 +354,8 @@ void BasePlayerActor::Update(float _DeltaTime)
 	}
 	else if (NetControllType::ActiveControll == GameEngineNetObject::GetControllType())
 	{
-		if (true == DTValue)
+		Cheat();
+		if (true == DTValue && false == IsGod)
 		{
 			AddDTGauge(-0.5f * _DeltaTime);
 		}
@@ -463,6 +464,19 @@ void BasePlayerActor::StopTime(float _Time)
 		});
 }
 
+void BasePlayerActor::Cheat()
+{
+	if (GameEngineInput::IsPress("Player_Jump2") && GameEngineInput::IsDown("SelectLevel_01"))
+	{
+		// 무적치트
+		IsGod = !IsGod;
+		if (true == IsGod)
+		{
+			AddDTGauge(10.0f);
+		}
+	}
+}
+
 void BasePlayerActor::DamageColCheck()
 {
 	if (HP <= 0)
@@ -505,7 +519,10 @@ void BasePlayerActor::DamageColCheck()
 	{
 		Data.DamageValue /= 2;
 	}
-	HP -= std::max<int>(0, Data.DamageValue);
+	if (false == IsGod)
+	{
+		HP -= std::max<int>(0, Data.DamageValue);
+	}
 	RankUI::GetRankInst()->RankDisApper();
 	switch (Data.DamageTypeValue)
 	{

@@ -290,5 +290,6 @@ private:
 	std::shared_ptr<class NeroItemGlass> HUD2 = nullptr;
 
 	void DrawEditor() override;
+	void Cheat() override;
 };
 
