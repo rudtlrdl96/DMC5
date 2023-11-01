@@ -102,6 +102,16 @@ void PlayerActor_Vergil::PlayerLoad()
 	Shop = GetLevel()->CreateActor<Vergil_ShopUI>();
 	Shop->ShopOff();
 
+	IsRapidSlash = Shop_VergilYamatoUI::IsRapidSlash;
+	IsUpperSlash = Shop_VergilYamatoUI::IsUpperSlash;
+	IsAerialRave = Shop_VergilYamatoUI::IsAerialRave;
+	IsYamatoCombo = Shop_VergilYamatoUI::IsYamatoCombo;
+	IsJudgmentCutEnd = Shop_VergilYamatoUI::IsJudgmentCutEnd;
+	IsSpiralBlade = Shop_VergilMirgeUI::IsSpiralBlade;
+	IsStormBlade = Shop_VergilMirgeUI::IsStormBlade;
+	IsLesteringBlade = Shop_VergilMirgeUI::IsLesteringBlade;
+	IsHeavyRainBlade = Shop_VergilMirgeUI::IsHeavyRainBlade;
+
 	// Effect »ý¼º
 	{
 		EffectSystem = CreateComponent<FXSystem>();
@@ -2819,6 +2829,23 @@ void PlayerActor_Vergil::DrawEditor()
 	if (ImGui::Button("Add DTGauge"))
 	{
 		AddDTGauge(10.0f);
+	}
+}
+
+void PlayerActor_Vergil::Cheat()
+{
+	BasePlayerActor::Cheat();
+	if (GameEngineInput::IsPress("Player_Jump2") && GameEngineInput::IsDown("SelectLevel_01"))
+	{
+		IsRapidSlash = true;
+		IsUpperSlash = true;
+		IsAerialRave = true;
+		IsYamatoCombo = true;
+		IsJudgmentCutEnd = true;
+		IsSpiralBlade = true;
+		IsStormBlade = true;
+		IsLesteringBlade = true;
+		IsHeavyRainBlade = true;
 	}
 }
 

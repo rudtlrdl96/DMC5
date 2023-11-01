@@ -230,12 +230,12 @@ private:
 	bool IsActFaild = false;		// 엑트 실패 여부
 	bool IsDelayBomb = false;
 
-	bool IsStreak =			true;
-	bool IsSplit =			true;
-	bool IsRedqueen =		true;
-	bool IsRouletteSpin =	true;
-	bool IsShufle =			true;
-	bool IsCalibur =		true;
+	bool IsStreak =			false;
+	bool IsSplit =			false;
+	bool IsRedqueen =		false;
+	bool IsRouletteSpin =	false;
+	bool IsShufle =			false;
+	bool IsCalibur =		false;
 
 	float DamageMul = 1.0f;
 

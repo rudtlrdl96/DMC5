@@ -119,12 +119,12 @@ void PlayerActor_Nero::PlayerLoad()
 	if (true == LoadCheck) { return; }
 	BGMPlayer::SetCharater(PlayerType::Nero);
 
-	//IsStreak = Shop_NeroSkillUI::IsStreak;
-	//IsSplit = Shop_NeroSkillUI::IsSplit;
-	//IsRedqueen = Shop_NeroSkillUI::IsRedqueen;
-	//IsRouletteSpin = Shop_NeroSkillUI::IsRouletteSpin;
-	//IsShufle = Shop_NeroSkillUI::IsShufle;
-	//IsCalibur = Shop_NeroSkillUI::IsCalibur;
+	IsStreak = Shop_NeroSkillUI::IsStreak;
+	IsSplit = Shop_NeroSkillUI::IsSplit;
+	IsRedqueen = Shop_NeroSkillUI::IsRedqueen;
+	IsRouletteSpin = Shop_NeroSkillUI::IsRouletteSpin;
+	IsShufle = Shop_NeroSkillUI::IsShufle;
+	IsCalibur = Shop_NeroSkillUI::IsCalibur;
 
 	Shop = GetLevel()->CreateActor<Nero_ShopUI>();
 	Shop->ShopOff();
@@ -4577,6 +4577,15 @@ void PlayerActor_Nero::Cheat()
 {
 	BasePlayerActor::Cheat();
 
+	if (GameEngineInput::IsPress("Player_Jump2") && GameEngineInput::IsDown("SelectLevel_01"))
+	{
+		IsStreak = true;
+		IsSplit = true;
+		IsRedqueen = true;
+		IsRouletteSpin = true;
+		IsShufle = true;
+		IsCalibur = true;
+	}
 	if (GameEngineInput::IsPress("Player_Jump2") && GameEngineInput::IsDown("SelectLevel_02"))
 	{
 		AddBreaker(DevilBreaker::Overture);
