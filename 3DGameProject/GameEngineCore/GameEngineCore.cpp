@@ -164,10 +164,10 @@ void GameEngineCore::EngineUpdate()
 
 	float TimeDeltaTime = GameEngineTime::GlobalTime.TimeCheck();
 
-	if (TimeDeltaTime > 1 / 30.0f)
+	/*if (TimeDeltaTime > 1 / 30.0f)
 	{
 		TimeDeltaTime = 1 / 30.0f;
-	}
+	}*/
 	
 	FrameTime += TimeDeltaTime;
 	float FrameLimit = 1.0f / 60.0f;
