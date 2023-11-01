@@ -1,7 +1,7 @@
 #pragma once
 #include "NetworkObjectBase.h"
 #include "Poolable.h"
-
+#include "SoundController.h"
 // Ό³Έν :
 class Player_MirageBlade : public NetworkObjectBase, public Poolable<Player_MirageBlade>
 {
@@ -24,6 +24,7 @@ public:
 	void Shoot(int _Damage, DamageType _Type);
 	void SetSpiral();
 	void SpiralStop();
+	void SetSound(int _Value);
 
 	bool IsSpiralStop = false;
 
@@ -36,9 +37,13 @@ private:
 	std::shared_ptr<class EffectRenderer> Renderer = nullptr;
 	std::shared_ptr<class FXSystem> Effect = nullptr;
 	GameEngineTransform* TargetTransform = nullptr;
+	SoundController Sound;
 	float ShootSpeed = 5000.0f;
 	float RenderAlpha = 0.0f;
 	int EffectValue = -1;
+	int SoundValue = -1;
+	bool EffectPlay = false;
+	bool SoundPlay = false;
 	bool IsShoot = false;
 };
 

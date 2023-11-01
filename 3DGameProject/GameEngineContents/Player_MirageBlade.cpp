@@ -20,6 +20,7 @@ void Player_MirageBlade::On()
 	RenderAlpha = 0.0f;
 	Effect->PlayFX("Mirage_On.effect");
 	EffectValue = 0;
+	EffectPlay = !EffectPlay;
 }
 
 void Player_MirageBlade::Reset()
@@ -104,10 +105,12 @@ void Player_MirageBlade::SetSpiral()
 	Collision->Off();
 	Effect->PlayFX("Mirage_Spiral_1.effect");
 	EffectValue = 1;
+	EffectPlay = !EffectPlay;
 	GetLevel()->TimeEvent.AddEvent(0.08f, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 		{
 			Effect->PlayFX("Mirage_Spiral_2.effect");
 			EffectValue = 2;
+			EffectPlay = !EffectPlay;
 		});
 }
 
@@ -117,6 +120,14 @@ void Player_MirageBlade::SpiralStop()
 	Collision->Off();
 	Effect->PlayFX("Mirage_Spiral_3.effect");
 	EffectValue = 3;
+	EffectPlay = !EffectPlay;
+}
+
+void Player_MirageBlade::SetSound(int _Value)
+{
+	Sound.Play("Mirage_", _Value);
+	SoundValue = _Value;
+	SoundPlay = !SoundPlay;
 }
 
 void Player_MirageBlade::Start()
@@ -132,7 +143,7 @@ void Player_MirageBlade::Start()
 		NewDir.Move("MirageBlade");
 		GameEngineFBXMesh::Load(NewDir.GetPlusFileName("MirageBlade.fbx").GetFullPath());
 	}
-
+	Sound.SFXVolume = 0.3f;
 	Renderer = CreateComponent<EffectRenderer>();
 	Renderer->SetFBXMesh("MirageBlade.FBX", "Effect_2D");
 	Renderer->GetTransform()->SetLocalRotation({ 0, 180, 0 });
@@ -171,28 +182,31 @@ void Player_MirageBlade::Start()
 
 	SetNetObjectType(Net_ActorType::MirageBlade);
 
-	LinkData_UpdatePacket<int>(EffectValue, [this](int _BeforeData)
+	LinkData_UpdatePacket<int>(EffectValue);
+	LinkData_UpdatePacket<int>(SoundValue);
+	LinkData_UpdatePacket<bool>(EffectPlay, [this](bool _BeforeData)
 		{
 			switch (EffectValue)
 			{
 			case 0:
 				Effect->PlayFX("Mirage_On.effect");
-				GameEngineSound::Play("Mirage_1.wav");
 				break;
 			case 1:
 				Effect->PlayFX("Mirage_Spiral_1.effect");
-				GameEngineSound::Play("Mirage_2.wav");
 				break;
 			case 2:
 				Effect->PlayFX("Mirage_Spiral_2.effect");
 				break;
 			case 3:
 				Effect->PlayFX("Mirage_Spiral_3.effect");
-				GameEngineSound::Play("Mirage_2.wav");
 				break;
 			default:
 				break;
 			}
+		});
+	LinkData_UpdatePacket<bool>(SoundPlay, [this](bool _BeforeData)
+		{
+			Sound.Play("Mirage_", SoundValue);
 		});
 	LinkData_UpdatePacket<float>(RenderAlpha);
 }
