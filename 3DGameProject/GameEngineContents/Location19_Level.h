@@ -24,5 +24,7 @@ protected:
 private:
 	void InitPool();
 	void CreateEventZone();
+
+	std::shared_ptr<class l19_Portal> Portal = nullptr;
 };
 

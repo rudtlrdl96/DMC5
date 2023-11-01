@@ -163,4 +163,5 @@ enum class FieldMapObjType
 	TentacleC,
 	TentacleE,
 	FieldMapPointLight,
+	l19_Portal,
 };

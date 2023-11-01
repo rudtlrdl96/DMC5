@@ -23,6 +23,8 @@
 #include "Enemy_ScudoAngelo.h"
 #include "Enemy_ProtoAngelo.h"
 #include "Char_ChoiceUI.h"
+#include "l19_Portal.h"
+
 Location19_Level::Location19_Level()
 {
 
@@ -120,6 +122,8 @@ void Location19_Level::LevelChangeStart()
 	
 	InitPool();
 	CreateEventZone();
+	Portal = CreateActor<l19_Portal>();
+	Portal->GetTransform()->SetWorldPosition({1000.f, 0.f, 1000.f});
 }
 
 void Location19_Level::InitPool()
@@ -177,5 +181,7 @@ void Location19_Level::CreateEventZone()
 void Location19_Level::CreatePotal()
 {
 	// 모든 적 처치시 실행됨
+	Portal = CreateActor<l19_Portal>();
+
 	int a = 0;
 }

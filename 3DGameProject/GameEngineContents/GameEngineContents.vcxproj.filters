@@ -612,6 +612,9 @@
     <ClInclude Include="TentacleC.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
     </ClInclude>
+    <ClInclude Include="l19_Portal.h">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\LevelChange</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -1218,6 +1221,9 @@
     </ClCompile>
     <ClCompile Include="TentacleE.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\StaticObj\L19</Filter>
+    </ClCompile>
+    <ClCompile Include="l19_Portal.cpp">
+      <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\LevelChange</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
