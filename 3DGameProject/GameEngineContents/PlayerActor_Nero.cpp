@@ -134,6 +134,9 @@ void PlayerActor_Nero::PlayerLoad()
 	HUD2 = GetLevel()->CreateActor<NeroItemGlass>();
 	Shop_NeroArmUI::CallBack_AddBreaker = std::bind(&PlayerActor_Nero::AddBreaker, this, std::placeholders::_1);
 	GetLevel()->CreateActor <RankUI>();
+	//HUD2->ArmRenderOff();
+	//HUD2->SetDevilBreakerUI();
+	//HUD2->ArmRenderOn();
 
 	if (1 < BreakerList.size())
 	{
@@ -153,7 +156,7 @@ void PlayerActor_Nero::PlayerLoad()
 					AddBreaker(_Breaker);
 				});
 			i++;
-
+	
 		}
 		TimeEvent.AddEvent(0.05f * i, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 			{
