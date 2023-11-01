@@ -732,8 +732,8 @@ void Enemy_ProtoAngelo::DamageCollisionCheck(float _DeltaTime)
 			AttackCalculation();
 
 			if (EnemyHitDirect::Forward == EnemyHitDirValue
-				|| EnemyHitDirect::Forward == EnemyHitDirValue
-				|| EnemyHitDirect::Forward == EnemyHitDirValue)
+				|| EnemyHitDirect::Left == EnemyHitDirValue
+				|| EnemyHitDirect::Right == EnemyHitDirValue)
 			{
 				ChangeState(FSM_State_ProtoAngelo::ProtoAngelo_Death_Back);
 			}
@@ -886,8 +886,8 @@ void Enemy_ProtoAngelo::DamageCollisionCheck_Client(float _DeltaTime)
 			AttackCalculation();
 
 			if (EnemyHitDirect::Forward == EnemyHitDirValue
-				|| EnemyHitDirect::Forward == EnemyHitDirValue
-				|| EnemyHitDirect::Forward == EnemyHitDirValue)
+				|| EnemyHitDirect::Left == EnemyHitDirValue
+				|| EnemyHitDirect::Right == EnemyHitDirValue)
 			{
 				ChangeState_Client(FSM_State_ProtoAngelo::ProtoAngelo_Death_Front, Obj);
 			}
