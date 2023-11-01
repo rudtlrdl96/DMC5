@@ -138,7 +138,7 @@ void Location11_Level::LevelChangeStart()
 
 	if (true == NetworkManager::IsClient())
 	{
-		MyPlayer->SetWorldPosition({ -30800, 1950, -360 });
+		MyPlayer->SetWorldPosition({ -30800, 1950, -200 });
 	}
 	else
 	{

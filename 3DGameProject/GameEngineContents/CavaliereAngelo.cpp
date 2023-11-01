@@ -2589,6 +2589,8 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 	}
 	},
 	.End = [=] {
+	WaitTime = 0.0f;
+	EffectRenderer_0->Off();
 	}
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Attack_Dengeki_End,
@@ -2599,6 +2601,7 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 	.Update = [=](float _DeltaTime) {
 	},
 	.End = [=] {
+	EffectRenderer_0->Off();
 	}
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Guard_Quick_Turn_Left,
@@ -2751,6 +2754,8 @@ void CavaliereAngelo::EnemyCreateFSM_Client()
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_CavaliereAngelo::CavaliereAngelo_Daeth_Front,
 	.Start = [=] {
+	EffectRenderer_0->Off();
+	EffectRenderer_1->Off();
 	EnemyRenderer->ChangeAnimation("em5501_daeth_front");
 	},
 	.Update = [=](float _DeltaTime) {

@@ -22,6 +22,7 @@ public:
 	
 	void SetEvent(std::function<void()> _Event);
 	static int ServerPlayerCount;
+	EventZoneOption Option = EventZoneOption::AllPlayer;
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -30,7 +31,6 @@ protected:
 	std::shared_ptr<GameEngineCollision> TriggerZone = nullptr;
 	std::function<void()> Event = nullptr;
 	bool IsEventStart = false;
-	EventZoneOption Option = EventZoneOption::AllPlayer;
 
 private:
 };

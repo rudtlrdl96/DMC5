@@ -303,6 +303,7 @@ void TestStageLevel::InitPool()
 void TestStageLevel::CreateEventZone()
 {
 	std::shared_ptr<EventZone> NewEvent = CreateActor<EventZone>();
+	NewEvent->Option = EventZoneOption::OnePlayer;
 	NewEvent->SetName("ClipothEventZone");
 	NewEvent->GetTransform()->SetWorldPosition({ 4000, 275, -6122 });
 	NewEvent->GetTransform()->SetWorldScale({ 2500, 500, 3000 });
@@ -310,6 +311,8 @@ void TestStageLevel::CreateEventZone()
 		{
 			GameEngineSound::Play("Qliphoth_6.wav");
 			PlayerCamera::Shake(5.0f, 2.5f, 0.1f, 0.8f);
+
+			if (true == NetworkManager::IsClient()) { return; }
 			std::vector<float4> EnemyPos =
 			{
 				{ 4424, 105, -4619 }, { 3458, 84, -5820 }
