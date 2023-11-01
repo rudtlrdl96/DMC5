@@ -102,7 +102,7 @@ void Cavaliere_Electric::Start()
 
 	Col = CreateComponent<AttackCollision>(CollisionOrder::EnemyAttack);
 	Col->GetTransform()->SetLocalScale({ 100, 100, 100 });
-	Col->SetAttackData(DamageType::Light, 100, [=] {
+	Col->SetAttackData(DamageType::Light, 1000, [=] {
 		GameEngineSound::Play("Cavaliere_SFX_10.wav");
 		IsShoot = false;
 		Col->Off();
