@@ -916,6 +916,10 @@ void BaseEnemyActor::StopTime(float _DeltaTime)
 {
 	TimeStop = true;
 	IsTimeStop = true;
+	if (EnemyCodeValue != EnemyCode::Qliphoth)
+	{
+		PhysXCapsule->SetLinearVelocityZero();
+	}
 	SetTimeScale(0.0f);
 	GetLevel()->TimeEvent.AddEvent(_DeltaTime, [=](GameEngineTimeEvent::TimeEvent _Event, GameEngineTimeEvent* _Manager)
 	{

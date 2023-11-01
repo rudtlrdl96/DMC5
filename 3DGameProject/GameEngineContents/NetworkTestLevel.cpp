@@ -60,9 +60,9 @@ void NetworkTestLevel::LevelChangeStart()
 	BaseLevel::LevelChangeStart();
 
 	//호스트일때 어떤 캐릭터로 플레이할지 결정합니다
-	InitHost(Net_ActorType::Nero);
+	InitHost(Net_ActorType::Vergil);
 	//클라이언트일때 어떤 캐릭터로 플레이할지 결정합니다
-	InitClient(Net_ActorType::Nero);
+	InitClient(Net_ActorType::Vergil);
 	InitPool();
 
 	std::shared_ptr<Plane> Flat = CreateActor<Plane>();
@@ -187,22 +187,22 @@ void NetworkTestLevel::Update(float _DeltaTime)
 
 	if (true)
 	{
-		if (GameEngineInput::IsDown("SelectLevel_01"))
-		{
-			NetworkManager::CreateNetworkActor<Enemy_Empusa>(this);
-		}
-		if (GameEngineInput::IsDown("SelectLevel_02"))
-		{
-			NetworkManager::CreateNetworkActor<Enemy_HellCaina>(this);
-		}
-		if (GameEngineInput::IsDown("SelectLevel_03"))
-		{
-			NetworkManager::CreateNetworkActor<Enemy_Qliphoth>(this);
-		}
-		if (GameEngineInput::IsDown("SelectLevel_04"))
-		{
-			NetworkManager::CreateNetworkActor<Enemy_HellAntenora>(this);
-		}
+		//if (GameEngineInput::IsDown("SelectLevel_01"))
+		//{
+		//	NetworkManager::CreateNetworkActor<Enemy_Empusa>(this);
+		//}
+		//if (GameEngineInput::IsDown("SelectLevel_02"))
+		//{
+		//	NetworkManager::CreateNetworkActor<Enemy_HellCaina>(this);
+		//}
+		//if (GameEngineInput::IsDown("SelectLevel_03"))
+		//{
+		//	NetworkManager::CreateNetworkActor<Enemy_Qliphoth>(this);
+		//}
+		//if (GameEngineInput::IsDown("SelectLevel_04"))
+		//{
+		//	NetworkManager::CreateNetworkActor<Enemy_HellAntenora>(this);
+		//}
 		if (GameEngineInput::IsDown("SelectLevel_05"))
 		{
 			NetworkManager::CreateNetworkActor<Enemy_ScudoAngelo>(this);

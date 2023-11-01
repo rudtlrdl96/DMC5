@@ -121,7 +121,7 @@ void TestLevel::LevelChangeStart()
 
 	if (nullptr == Player)
 	{
-		if (true)
+		if (false)
 		{
 			Player = CreateActor<PlayerActor_Nero>();
 			Player->GetPhysXComponent()->SetWorldPosition({ -1200, 100, -1300 });
@@ -172,13 +172,13 @@ void TestLevel::LevelChangeStart()
 	//	Empusa->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
 	//}
 
-	//if (nullptr == Cavaliere)
-	//{
-	//	Cavaliere = CreateActor<CavaliereAngelo>();
-	//	Cavaliere->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
-	//	Cavaliere->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
-	//	Player->SetBossCam(Cavaliere->GetTransform());
-	//}
+	if (nullptr == Cavaliere)
+	{
+		Cavaliere = CreateActor<CavaliereAngelo>();
+		Cavaliere->GetPhysXComponent()->SetWorldPosition({ 0, 100, 0 });
+		Cavaliere->GetPhysXComponent()->SetWorldRotation({ 0.0f, 180.0f, 0.0f });
+		Player->SetBossCam(Cavaliere->GetTransform());
+	}
 
 	if (nullptr == Flat)
 	{

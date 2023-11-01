@@ -275,7 +275,10 @@ protected:
 	/// </summary>
 	void SetForwardMove(float _Value)
 	{
-		PhysXCapsule->SetMove(ForwardDirect * _Value);
+		if (false == IsTimeStop)
+		{
+			PhysXCapsule->SetMove(ForwardDirect * _Value);
+		}
 	}
 
 	/// <summary>
@@ -283,7 +286,10 @@ protected:
 	/// </summary>
 	void SetBackMove(float _Value)
 	{
-		PhysXCapsule->SetMove(BackDirect * _Value);
+		if (false == IsTimeStop)
+		{
+			PhysXCapsule->SetMove(BackDirect * _Value);
+		}
 	}
 
 	/// <summary>
@@ -291,7 +297,10 @@ protected:
 	/// </summary>
 	void SetRightMove(float _Value)
 	{
-		PhysXCapsule->SetMove(RightDirect * _Value);
+		if (false == IsTimeStop)
+		{
+			PhysXCapsule->SetMove(RightDirect * _Value);
+		}
 	}
 
 	/// <summary>
@@ -299,7 +308,10 @@ protected:
 	/// </summary>
 	void SetLeftMove(float _Value)
 	{
-		PhysXCapsule->SetMove(LeftDirect * _Value);
+		if (false == IsTimeStop)
+		{
+			PhysXCapsule->SetMove(LeftDirect * _Value);
+		}
 	}
 
 	/// <summary>
