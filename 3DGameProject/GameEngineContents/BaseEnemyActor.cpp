@@ -625,6 +625,14 @@ void BaseEnemyActor::PushDirectSetting()
 	PushDirect = Player->GetTransform()->GetWorldForwardVector().NormalizeReturn();
 }
 
+void BaseEnemyActor::DrawEditor()
+{
+	if (ImGui::Button("Death"))
+	{
+		Death();
+	}
+}
+
 /// <summary>
 /// 슈퍼아머 상태에서 히트 시 랜더러를 좌우로 흔든다.
 /// </summary>

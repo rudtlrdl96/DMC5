@@ -312,4 +312,5 @@ protected:
 
 private:
 	std::vector<std::function<void()>> DeathCallbacks;
+	void DrawEditor() override;
 };
