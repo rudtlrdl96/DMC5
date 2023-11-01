@@ -2858,6 +2858,7 @@ void Enemy_ScudoAngelo::EnemyCreateFSM_Client()
 	.Update = [=](float _DeltaTime) {
 	},
 	.End = [=] {
+	BusterEnd_Client();
 	}
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_ScudoAngelo::ScudoAngelo_Buster_Loop,

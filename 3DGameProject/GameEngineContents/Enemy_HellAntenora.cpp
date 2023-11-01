@@ -2853,6 +2853,7 @@ void Enemy_HellAntenora::EnemyCreateFSM_Client()
 	.Update = [=](float _DeltaTime) {
 	},
 	.End = [=] {
+	BusterEnd_Client();
 	}
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_HellAntenora::HellAntenora_Buster_Loop,

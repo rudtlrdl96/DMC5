@@ -50,29 +50,32 @@ public:
 	{
 		CallBack_Damage = _CallBack;
 	}
-	const DamageData& GetDamage()
+	const DamageData& GetDamage(bool UseCallback = true)
 	{
-		if (nullptr != CallBack)
+		if (true == UseCallback)
 		{
-			CallBack();
-		}
-		if (nullptr != CallBack_HitStop)
-		{
-			CallBack_HitStop(HitStopTime);
-		}
-		if (true == IsPlayerCollision)
-		{
-			if (Data.DamageTypeValue == DamageType::Buster)
+			if (nullptr != CallBack)
 			{
-				RankUI::GetRankInst()->AddRankScore(200);
+				CallBack();
 			}
-			else
+			if (nullptr != CallBack_HitStop)
 			{
-				RankUI::GetRankInst()->AddRankScore(static_cast<int>(Data.DamageValue * 0.02) + 3);
+				CallBack_HitStop(HitStopTime);
 			}
-			if (nullptr != CallBack_Damage && Data.DamageValue < 2000)
+			if (true == IsPlayerCollision)
 			{
-				CallBack_Damage(Data.DamageValue * 0.001f);
+				if (Data.DamageTypeValue == DamageType::Buster)
+				{
+					RankUI::GetRankInst()->AddRankScore(200);
+				}
+				else
+				{
+					RankUI::GetRankInst()->AddRankScore(static_cast<int>(Data.DamageValue * 0.02) + 3);
+				}
+				if (nullptr != CallBack_Damage && Data.DamageValue < 2000)
+				{
+					CallBack_Damage(Data.DamageValue * 0.001f);
+				}
 			}
 		}
 		return Data;

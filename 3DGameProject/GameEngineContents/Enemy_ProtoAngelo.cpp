@@ -2919,6 +2919,7 @@ void Enemy_ProtoAngelo::EnemyCreateFSM_Client()
 	EnemyRenderer->ChangeAnimation("em0601_Air_Buster");
 	},
 	.Update = [=](float _DeltaTime) {
+	BusterEnd_Client();
 	},
 	.End = [=] {
 	}

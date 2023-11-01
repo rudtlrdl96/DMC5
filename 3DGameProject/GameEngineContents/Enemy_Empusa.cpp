@@ -2382,6 +2382,7 @@ void Enemy_Empusa::EnemyCreateFSM_Client()
 	.Update = [=](float _DeltaTime) {
 	},
 	.End = [=] {
+	BusterEnd_Client();
 	}
 		});
 	EnemyFSM.CreateState({ .StateValue = FSM_State_Empusa::Empusa_Buster_Loop,

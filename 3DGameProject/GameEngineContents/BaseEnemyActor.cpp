@@ -716,10 +716,15 @@ void BaseEnemyActor::BusterCalculation_Client(float4 _attachposition)
 		{
 			int PlayersID = Players[i]->GetNetObjectID();
 
-			if (PlayersID == ServerPlayerID)
+			DamageData Data = Players[i]->GetAttackCollision()->GetDamage(false);
+			
+			if (Data.DamageTypeValue != DamageType::Buster)
 			{
-				ServerPlayer = Players[i];
-				ServerPlayer->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer->GetTransform(), _attachposition/*, float4(0.0f, 0.0f, 0.0f)*/);
+				continue;
+			}
+			else
+			{
+				Players[i]->GetPlayerRenderer()->SetAttachTransform("R_Hand", EnemyRenderer->GetTransform(), _attachposition/*, float4(0.0f, 0.0f, 0.0f)*/);
 				break;
 			}
 		}

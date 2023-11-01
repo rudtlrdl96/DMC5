@@ -2327,6 +2327,7 @@ void Enemy_HellCaina::EnemyCreateFSM_Client()
 	EnemyRenderer->ChangeAnimation("em0000_Buster_Start");
 	},
 	.Update = [=](float _DeltaTime) {
+	BusterEnd_Client();
 	},
 	.End = [=] {
 	}
