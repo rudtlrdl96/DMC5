@@ -14,6 +14,8 @@ RedOrbUI::~RedOrbUI()
 
 void RedOrbUI::Start()
 {
+	float Ratio = GameEngineWindow::GetScreenSize().y / 900;
+	GetTransform()->SetLocalScale(float4::ONE * Ratio);
 	GameEngineDirectory RedOrbDir;
 	RedOrbDir.MoveParentToDirectory("ContentResources");
 	RedOrbDir.Move("ContentResources");
@@ -48,11 +50,13 @@ void RedOrbUI::Update(float _Delta)
 	else
 	{
 		AddTime = 0.0f;
+		RedOrbFont->SetText(std::to_string(static_cast<int>(RedOrbValue)));
+
 	}
 	if (GameEngineInput::IsUp("UI_OrbCheat"))
 	{
 		PrevOrb = RedOrbValue;
-		RedOrbValue += 5000;
+		RedOrbValue += 9999;
 	}
 	
 }

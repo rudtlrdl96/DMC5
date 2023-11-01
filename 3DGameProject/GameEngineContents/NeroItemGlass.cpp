@@ -67,16 +67,16 @@ void NeroItemGlass::Start()
 	//NeroUI_ItemGlass = UIFBXActorBase::CreateUIFBX(NeroUI_ItemGlass, { 560.0f,-380.0f,172.0f }, { 0.6f,0.6f,0.6f }, { -90.0f,0.0f,0.0f }, "NeroItemGlass.FBX","FBX_Alpha");
 	ArmList = PlayerActor_Nero::GetBreakerListPointer();
 
-	Render_0 = CreateComponent<UIFBXRenderer>(3);
-	Render_0->SetFBXMesh("OvertureArmUI.FBX", "FBX_LOW");
+	Render_0 = CreateComponent<UIMeshRenderer>(3);
+	Render_0->SetFBXMesh("OvertureArmUI.FBX", "UIFBXMesh");
 	Render_0->Death();
 
-	Render_1 = CreateComponent<UIFBXRenderer>(3);
-	Render_1->SetFBXMesh("GerberaArmUI.FBX", "FBX_LOW");
+	Render_1 = CreateComponent<UIMeshRenderer>(3);
+	Render_1->SetFBXMesh("GerberaArmUI.FBX", "UIFBXMesh");
 	Render_1->Death();
 
-	Render_2 = CreateComponent<UIFBXRenderer>(3);
-	Render_2->SetFBXMesh("BusterArmUI.FBX", "FBX_LOW");
+	Render_2 = CreateComponent<UIMeshRenderer>(3);
+	Render_2->SetFBXMesh("BusterArmUI.FBX", "UIFBXMesh");
 	Render_2->Death();
 
 }
@@ -146,24 +146,39 @@ void NeroItemGlass::AddDestroyValue()
 			break;
 		case DevilBreaker::Overture:
 			ItemText->SetText("Overture");
-			Render = CreateComponent<UIFBXRenderer>(3);
-			Render->SetFBXMesh("OvertureArmUI.FBX", "FBX_LOW");
+			Render = CreateComponent<UIMeshRenderer>(3);
+			Render->SetFBXMesh("OvertureArmUI.FBX", "UIFBXMesh");
+			Render->LightDataValue.LightPos = Render->GetTransform()->GetWorldPosition();
+			Render->LightDataValue.LightDir = { 0, 0, 1 };
+			Render->LightDataValue.LightColor = { 1, 1, 1, 1 };
+			Render->LightDataValue.LightPower = 1.0f;
+			Render->LightDataUpdate();
 			Arms.insert(Arms.begin(), Render);
 			AddItemValue = false;
 			AddFirst = true;
 			break;
 		case DevilBreaker::Gerbera:
 			ItemText->SetText("Gerbera");
-			Render = CreateComponent<UIFBXRenderer>(3);
-			Render->SetFBXMesh("GerberaArmUI.FBX", "FBX_LOW");
+			Render = CreateComponent<UIMeshRenderer>(3);
+			Render->SetFBXMesh("GerberaArmUI.FBX", "UIFBXMesh");
+			Render->LightDataValue.LightPos = Render->GetTransform()->GetWorldPosition();
+			Render->LightDataValue.LightDir = { 0, 0, 1 };
+			Render->LightDataValue.LightColor = { 1, 1, 1, 1 };
+			Render->LightDataValue.LightPower = 1.0f;
+			Render->LightDataUpdate();
 			Arms.insert(Arms.begin(), Render);
 			AddItemValue = false;
 			AddFirst = true;
 			break;
 		case DevilBreaker::BusterArm:
 			ItemText->SetText("BusterArm");
-			Render = CreateComponent<UIFBXRenderer>(3);
-			Render->SetFBXMesh("BusterArmUI.FBX", "FBX_LOW");
+			Render = CreateComponent<UIMeshRenderer>(3);
+			Render->SetFBXMesh("BusterArmUI.FBX", "UIFBXMesh");
+			Render->LightDataValue.LightPos = Render->GetTransform()->GetWorldPosition();
+			Render->LightDataValue.LightDir = { 0, 0, 1 };
+			Render->LightDataValue.LightColor = { 1, 1, 1, 1 };
+			Render->LightDataValue.LightPower = 1.0f;
+			Render->LightDataUpdate();
 			Arms.insert(Arms.begin(), Render);
 			AddItemValue = false;
 			AddFirst = true;
