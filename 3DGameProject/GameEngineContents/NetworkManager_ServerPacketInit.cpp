@@ -19,6 +19,8 @@ void NetworkManager::AcceptCallback(SOCKET _Socket, GameEngineNetServer* _Server
 {
 	// 접속한 사람에게만 보냄, ConnectIDPacket패킷
 	std::shared_ptr<ConnectIDPacket> Packet = std::make_shared<ConnectIDPacket>();
+	++ClientCount;
+	Packet->IsObserver = (1 < ClientCount);
 
 	//방금 들어온 클라이언트의 네트워크 아이디 지정
 	int ClientID = GameEngineNetObject::CreateServerID();

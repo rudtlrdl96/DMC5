@@ -121,6 +121,11 @@ protected:
 	static void ClientPacketInit();
 
 private:
+	//3번째 클라이언트부터 옵저버
+	static bool IsObserverValue;
+	static std::atomic_int ClientCount;
+
+
 	//네트워크에서 이 프로세스 고유의 번호
 	static unsigned int NetID;
 

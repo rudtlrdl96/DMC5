@@ -53,6 +53,8 @@ std::map<unsigned int, std::vector<unsigned int>> NetworkManager::AllNetID;
 
 std::vector<std::vector<std::function<void()>>> NetworkManager::AllNetEvent;
 
+bool NetworkManager::IsObserverValue = false;
+std::atomic_int NetworkManager::ClientCount = 0;
 
 unsigned int NetworkManager::ServerOpen(int _Port)
 {

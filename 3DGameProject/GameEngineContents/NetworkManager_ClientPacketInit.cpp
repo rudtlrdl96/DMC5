@@ -29,6 +29,7 @@ void NetworkManager::ClientPacketInit()
 	{
 		//이 클라이언트의 네트워크 아이디 지정
 		NetID = _Packet->GetObjectID();
+		IsObserverValue = _Packet->IsObserver;
 
 		if (nullptr != ConnectCallBack)
 		{

@@ -23,8 +23,21 @@ public:
 	}
 
 protected:
+	void Serialize(GameEngineSerializer& _Ser) override
+	{
+		GameEnginePacket::Serialize(_Ser);
+
+		_Ser << IsObserver;
+	}
+
+	void DeSeralize(GameEngineSerializer& _Ser) override
+	{
+		GameEnginePacket::DeSeralize(_Ser);
+
+		_Ser >> IsObserver;
+	}
 
 private:
-
+	bool IsObserver = false;
 };
 
