@@ -7,6 +7,7 @@
 #include "TitleBG.h"
 #include "FadeEffect.h"
 #include "BGMPlayer.h"
+#include "Title_SelectScreen.h"
 TitleLevel::TitleLevel()
 {
 }
@@ -54,7 +55,7 @@ void TitleLevel::Start()
 
 	std::shared_ptr<TitleBG> TitleBGPtr = CreateActor<TitleBG>();
 	TitleBGPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
-	std::shared_ptr<Title_StartScreen> Title_StartScreenPtr = CreateActor<Title_StartScreen>();
+	std::shared_ptr<Title_SelectScreen> Title_StartScreenPtr = CreateActor<Title_SelectScreen>();
 	Title_StartScreenPtr->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
 	//ø¢≈Õ
 
