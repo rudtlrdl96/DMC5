@@ -21,11 +21,14 @@ private:
 
 	std::shared_ptr<class GameEngineSpriteRenderer> CapComIntro_Logo = nullptr;
 	std::shared_ptr<class GameEngineSpriteRenderer> PhysxIntro_Logo = nullptr;
+	std::shared_ptr<class GameEngineSpriteRenderer> FmodIntro_Logo = nullptr;
 	//º¯¼ö
 	bool Value = false;
 	float Time = 0.0f;
 	float Ratio = 0.5f;
-	float4 Pos = { 0.0f,0.0f,-1.0f };
+	float4 Pos = { 0.0f,0.0f,0.0f };
 	float4 Scale = { 640.0f,320.0f,0.0f };
+	float4 LogoPos = { 400.0f,0.0f,0.0f };
+
 };
 
