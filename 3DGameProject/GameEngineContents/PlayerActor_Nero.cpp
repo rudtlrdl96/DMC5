@@ -2552,12 +2552,36 @@ void PlayerActor_Nero::PlayerLoad()
 	// 버스터암
 	{}
 	{
+		static CavaliereAngelo* BusterTarget = nullptr;
 		// BusterArm Catch
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Catch,
 			.Start = [=] {
 				Sound.PlayVoiceRandom(6, 7, DTValue);
 				Sound.Play("BusterArm_Catch");
-				Col_Attack->SetAttackData(DamageType::Buster, 0, std::bind(&PlayerActor_Nero::ChangeState, this, Nero_Buster_Strike));
+				Col_Attack->SetAttackData(DamageType::Buster, 0, [this] {
+					std::shared_ptr<GameEngineCollision> Col = Col_Attack->Collision(CollisionOrder::Enemy);
+					Col_Attack->Off();
+					if (nullptr != Col)
+					{
+						BusterTarget = dynamic_cast<CavaliereAngelo*>(Col->GetActor());
+						if (nullptr != BusterTarget)
+						{
+							if (true == BusterTarget->GetIsStun())
+							{
+								ChangeState(FSM_State_Nero::Nero_Buster_em5501);
+							}
+							else
+							{
+								ChangeState(FSM_State_Nero::Nero_Buster_Repelled);
+							}
+							return;
+						}
+						else
+						{
+							ChangeState(FSM_State_Nero::Nero_Buster_Strike);
+						}
+					}
+					});
 				Col_Attack->SetDamageSoundType(DamageSoundType::Magic);
 				WeaponIdle();
 				PhysXCapsule->TurnOffGravity();
@@ -2601,29 +2625,9 @@ void PlayerActor_Nero::PlayerLoad()
 			});
 
 
-		static CavaliereAngelo* BusterTarget = nullptr;
 		// BusterArm Strike
 		FSM.CreateState({ .StateValue = FSM_State_Nero::Nero_Buster_Strike,
 			.Start = [=] {
-				Col_Attack->On();
-				std::shared_ptr<GameEngineCollision> Col = Col_Attack->Collision(CollisionOrder::Enemy);
-				Col_Attack->Off();
-				if (nullptr != Col)
-				{
-					BusterTarget = dynamic_cast<CavaliereAngelo*>(Col->GetActor());
-					if (nullptr != BusterTarget)
-					{
-						if (true == BusterTarget->GetIsStun())
-						{
-							ChangeState(FSM_State_Nero::Nero_Buster_em5501);
-						}
-						else
-						{
-							ChangeState(FSM_State_Nero::Nero_Buster_Repelled);
-						}
-						return;
-					}
-				}
 				Sound.Play("BusterArm_Strike");
 				EffectSystem->PlayFX("Buster_Strike.effect");
 				Renderer->ChangeAnimation("pl0000_Buster_Strike_Common");
@@ -2772,7 +2776,23 @@ void PlayerActor_Nero::PlayerLoad()
 			.Start = [=] {
 				Sound.PlayVoiceRandom(6, 7, DTValue);
 				Sound.Play("BusterArm_Catch");
-				Col_Attack->SetAttackData(DamageType::Buster, 50, std::bind(&PlayerActor_Nero::ChangeState, this, Nero_Buster_Strike_Air));
+				Col_Attack->SetAttackData(DamageType::Buster, 0, [this] {
+					std::shared_ptr<GameEngineCollision> Col = Col_Attack->Collision(CollisionOrder::Enemy);
+					Col_Attack->Off();
+					if (nullptr != Col)
+					{
+						BusterTarget = dynamic_cast<CavaliereAngelo*>(Col->GetActor());
+						if (nullptr != BusterTarget)
+						{
+							ChangeState(FSM_State_Nero::Nero_Buster_Repelled_Air);
+							return;
+						}
+						else
+						{
+							ChangeState(FSM_State_Nero::Nero_Buster_Strike_Air);
+						}
+					}
+					});
 				Col_Attack->SetDamageSoundType(DamageSoundType::Magic);
 				WeaponIdle();
 				PhysXCapsule->SetLinearVelocityZero();
