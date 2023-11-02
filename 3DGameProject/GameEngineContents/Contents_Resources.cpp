@@ -26,7 +26,7 @@ void ContentsCore::ContentsResourcesCreate()
 
 	// GameEngineGUI::GUIWindowCreate<GameEngineCoreWindow>("CoreWindow");
 	GameEngineGUI::GUIWindowCreate<NetworkGUI>("NetworkGUI");
-	GameEngineGUI::GUIWindowCreate<ConsoleGUI>("ConsoleGUI");
+	//GameEngineGUI::GUIWindowCreate<ConsoleGUI>("ConsoleGUI");
 	GameEngineGUI::GUIWindowCreate<HierarchyGUI>("HierarchyGUI");
 	GameEngineGUI::GUIWindowCreate<GameEngineCoreWindow>("CoreWindow");
 

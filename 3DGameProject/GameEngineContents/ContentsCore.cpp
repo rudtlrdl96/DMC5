@@ -42,8 +42,6 @@ ContentsCore::~ContentsCore()
 
 void ContentsCore::GameStart() 
 {
-	new int();
-
 	SetOption();
 	ContentsResourcesCreate();
 	CreateContentsKey();
@@ -70,7 +68,7 @@ void ContentsCore::GameStart()
 	GameEngineCore::CreateLevel<EffectToolLevel>();
 	GameEngineCore::CreateLevel<ResultLevel>();
 	
-	GameEngineCore::ChangeLevel("MainLevel");
+	GameEngineCore::ChangeLevel("IntroLevel");
 }
 
 void ContentsCore::GameEnd() 
