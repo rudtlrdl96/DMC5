@@ -542,14 +542,14 @@ void ContentsCore::SetOption()
 	//GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::Low);
 
 	GameEngineOption::ChangeOption("Texture", GameEngineOptionValue::High);
-	GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::Low);
+	GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::High);
 	
 	// PostEffect 可记 积己
-	GameEngineOption::ChangeOption("PostEffect", GameEngineOptionValue::None);
+	GameEngineOption::ChangeOption("PostEffect", GameEngineOptionValue::High);
 
 #ifdef _DEBUG
 	GameEngineOption::ChangeOption("DynamicShadow", GameEngineOptionValue::None);
 #else
-	GameEngineOption::ChangeOption("DynamicShadow", GameEngineOptionValue::None);
+	GameEngineOption::ChangeOption("DynamicShadow", GameEngineOptionValue::Low);
 #endif // _DEBUG
 }
