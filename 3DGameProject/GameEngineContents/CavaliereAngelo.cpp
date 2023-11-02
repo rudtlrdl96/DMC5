@@ -37,11 +37,11 @@ void CavaliereAngelo::EnemyTypeLoad()
 
 	if (false == NetworkManager::IsClient() && false == NetworkManager::IsServer())
 	{
-		EnemyMaxHP = 100000;
+		EnemyMaxHP = 10000;
 	}
 	else
 	{
-		EnemyMaxHP = 200000;
+		EnemyMaxHP = 20000;
 	}
 
 	EnemyHP = EnemyMaxHP;
