@@ -158,6 +158,8 @@ void Vergil_ShopUI::ShopOff()
 	YamatoSkill->Off();
 	MirgeSkill->Off();
 	RedOrbUIPtr->Off();
+	MiregePersent->Off();
+	YamatoPersent->Off();
 }
 void Vergil_ShopUI::ShopOn()
 {
@@ -167,6 +169,8 @@ void Vergil_ShopUI::ShopOn()
 	YamatoSkill->On();
 	MirgeSkill->On();
 	RedOrbUIPtr->On();
+	MiregePersent->On();
+	YamatoPersent->On();
 }
 void Vergil_ShopUI::SetIndexCount()
 {
