@@ -1,6 +1,7 @@
 #include "PrecompileHeader.h"
 #include <GameEngineBase/GameEngineRandom.h>
 #include "PlayerCamera.h"
+#include "FreeCameraActor.h"
 PlayerCamera::PlayerCamera()
 {
 	SetName("PlayerCamera");
@@ -88,11 +89,31 @@ void PlayerCamera::Start()
 	CameraTarget->SetLocalPosition(CameraDistance);
 	CameraTransform = GetLevel()->GetMainCamera()->GetTransform();
 
+	FreeCamActor = GetLevel()->CreateActor<FreeCameraActor>();
+	FreeCamActor->Off();
 	//GameEngineInput::ShowMouseCursor(false);
 }
 
 void PlayerCamera::Update(float _DeltaTime)
 {
+	if (true == GameEngineInput::IsDown("FreeCameraSwitch"))
+	{
+		IsFreeCamera = !IsFreeCamera;
+		if (true == IsFreeCamera)
+		{
+			FreeCamActor->GetTransform()->SetWorldPosition(CameraTransform->GetWorldPosition());
+			FreeCamActor->On();
+			return;
+		}
+		else
+		{
+			FreeCamActor->Off();
+		}
+	}
+	if (true == IsFreeCamera)
+	{
+		return;
+	}
 	if (true == IsCameraCutscene)
 	{
 		CutSceneUpdate(_DeltaTime);

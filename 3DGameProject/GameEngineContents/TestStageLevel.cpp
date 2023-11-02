@@ -47,7 +47,6 @@ TestStageLevel::~TestStageLevel()
 
 void TestStageLevel::Start()
 {
-	CreateActor<FreeCameraActor>();
 	BaseLevel::SetNetLevelType(Net_LevelType::TestStageLevel);
 	GetCamera(0)->GetCamTarget()->CreateEffect<ColorEffect>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();

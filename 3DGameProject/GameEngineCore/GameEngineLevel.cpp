@@ -290,11 +290,11 @@ void GameEngineLevel::LevelChangeEnd()
 
 void GameEngineLevel::ActorUpdate(float _DeltaTime)
 {
-	if (true == GameEngineInput::IsDown("FreeCameraSwitch"))
-	{
-		MainCamera->FreeCameraSwitch();
-		// GameEngineInput::CreateKey("FreeCameraSwitch", VK_F1);
-	}
+	//if (true == GameEngineInput::IsDown("FreeCameraSwitch"))
+	//{
+	//	// MainCamera->FreeCameraSwitch();
+	//	// GameEngineInput::CreateKey("FreeCameraSwitch", VK_F1);
+	//}
 	if (true == GameEngineInput::IsDown("CollisionDebugSwitch"))
 	{
 		IsDebugSwitch();

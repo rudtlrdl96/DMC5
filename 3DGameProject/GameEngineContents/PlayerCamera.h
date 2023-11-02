@@ -73,7 +73,8 @@ private:
 	float CameraCutsceneSpeed;
 	float CameraCutsceneRatio;
 	bool IsCameraCutscene;
-
+	
+	std::shared_ptr<GameEngineActor> FreeCamActor;
 	GameEngineTransform* PlayerTransform = nullptr;
 	GameEngineTransform* TargetTransform = nullptr;
 	GameEngineTransform* CameraArm = nullptr;
@@ -104,6 +105,8 @@ private:
 
 	bool IsMouseControll = false;
 	bool FirstFrame = true;
+
+	bool IsFreeCamera = false;
 
 	void DrawEditor() override;
 

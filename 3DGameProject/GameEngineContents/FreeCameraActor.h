@@ -13,7 +13,7 @@ public:
 	FreeCameraActor& operator=(const FreeCameraActor& _Other) = delete;
 	FreeCameraActor& operator=(FreeCameraActor&& _Other) noexcept = delete;
 
-	float MoveSpeed = 500;
+	float MoveSpeed = 1000;
 
 protected:
 	void Start() override;

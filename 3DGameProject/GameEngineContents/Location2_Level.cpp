@@ -54,7 +54,6 @@ void Location2_Level::Start()
 	BaseLevel::Start();
 	BaseLevel::SetNetLevelType(Net_LevelType::Location2);
 
-	CreateActor<FreeCameraActor>();
 
 	GetCamera(0)->GetCamTarget()->CreateEffect<ColorEffect>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();

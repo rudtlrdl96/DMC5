@@ -18,36 +18,28 @@ void FreeCameraActor::Start()
 
 void FreeCameraActor::Update(float _DeltaTime)
 {
-	if (GameEngineInput::IsPress("CamMoveLeft"))
+	if (GameEngineInput::IsPress("UI_Left"))
 	{
 		GetTransform()->AddLocalPosition(GetTransform()->GetWorldLeftVector() * _DeltaTime * MoveSpeed);
 	}
-	if (GameEngineInput::IsPress("CamMoveRight"))
+	if (GameEngineInput::IsPress("UI_Right"))
 	{
 		GetTransform()->AddLocalPosition(GetTransform()->GetWorldRightVector() * _DeltaTime * MoveSpeed);
 	}
-	if (GameEngineInput::IsPress("CamMoveForward"))
+	if (GameEngineInput::IsPress("UI_UP"))
 	{
 		GetTransform()->AddLocalPosition(GetTransform()->GetWorldForwardVector() * _DeltaTime * MoveSpeed);
 	}
-	if (GameEngineInput::IsPress("CamMoveBack"))
+	if (GameEngineInput::IsPress("UI_Down"))
 	{
 		GetTransform()->AddLocalPosition(GetTransform()->GetWorldBackVector() * _DeltaTime * MoveSpeed);
 	}
-	if (GameEngineInput::IsPress("CamMoveUp"))
-	{
-		GetTransform()->AddLocalPosition(GetTransform()->GetWorldUpVector() * _DeltaTime * MoveSpeed);
-	}
-	if (GameEngineInput::IsPress("CamMoveDown"))
-	{
-		GetTransform()->AddLocalPosition(GetTransform()->GetWorldDownVector() * _DeltaTime * MoveSpeed);
-	}
 
-	if (GameEngineInput::IsPress("FreeCam_SpeedUp"))
+	if (GameEngineInput::IsPress("CamMoveUp"))
 	{
 		MoveSpeed += 1000 * _DeltaTime;
 	}
-	if (GameEngineInput::IsPress("FreeCam_SpeedDown"))
+	if (GameEngineInput::IsPress("CamMoveDown"))
 	{
 		MoveSpeed -= 1000 * _DeltaTime;
 	}
