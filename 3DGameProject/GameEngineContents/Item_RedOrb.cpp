@@ -106,7 +106,7 @@ void Item_RedOrb::Start()
 	.Update = [=](float _DeltaTime)
 	{
 		GetLevel()->RayCast(GetTransform()->GetWorldPosition(), float4::DOWN, GroundPos);
-		FloorHeight = GroundPos.y + 15;
+		FloorHeight = GroundPos.y + 25;
 
 		FBXMesh->GetTransform()->SetLocalScale(float4::ONE * std::clamp(GetLiveTime() * 7.0f, 0.0f, 3.0f));
 

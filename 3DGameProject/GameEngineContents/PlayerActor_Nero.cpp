@@ -140,7 +140,7 @@ void PlayerActor_Nero::PlayerLoad()
 
 	if (1 < BreakerList.size())
 	{
-		HUD2->ArmRenderOff();
+		HUD2->SetRatio(100.0f);
 		std::list<DevilBreaker> BeforeList = BreakerList;
 		BreakerList.clear();
 		int i = 0;
@@ -151,16 +151,16 @@ void PlayerActor_Nero::PlayerLoad()
 				BreakerList.push_back(DevilBreaker::None);
 				continue;
 			}
-			TimeEvent.AddEvent(0.05f * i, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+			TimeEvent.AddEvent(0.1f * i, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 				{
 					AddBreaker(_Breaker);
 				});
 			i++;
 	
 		}
-		TimeEvent.AddEvent(0.05f * i, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
+		TimeEvent.AddEvent(0.1f * (i + 1), [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
 			{
-				HUD2->ArmRenderOn();
+				HUD2->SetRatio(1.0f);
 			});
 	}
 	else

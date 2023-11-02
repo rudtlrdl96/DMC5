@@ -36,6 +36,10 @@ public:
 	}
 	void ArmRenderOff();
 	void ArmRenderOn();
+	void SetRatio(float _Ratio)
+	{
+		Ratio = _Ratio;
+	}
 	//void SetDevilBreakerUI();
 
 
