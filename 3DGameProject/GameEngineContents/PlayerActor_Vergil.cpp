@@ -189,11 +189,15 @@ void PlayerActor_Vergil::PlayerLoad()
 		case GameEngineOptionValue::Low:
 		{
 			Renderer->SetFBXMesh("Vergil.FBX", "AniFBX_Low");
+			Renderer->SetMaterial("pl0310_trans_00_alba.texout.png", "AniFBX_2DAlpha", nullptr);
+			Renderer->SetMaterial("pl0310_trans_01_alba.texout.png", "AniFBX_2DAlpha", nullptr);
 		}
 		break;
 		case GameEngineOptionValue::High:
 		{
 			Renderer->SetFBXMesh("Vergil.FBX", "AniFBX");
+			Renderer->SetMaterial("pl0310_trans_00_alba.texout.png", "AniFBX_2DAlpha", nullptr);
+			Renderer->SetMaterial("pl0310_trans_01_alba.texout.png", "AniFBX_2DAlpha", nullptr);
 			Renderer->SetSpecularTexture("pl0300_03_albm.texout.png", "pl0300_03_atos.texout.png");
 			Renderer->SetSpecularTexture("pl0310_trans_00_alba.texout.png", "pl0310_trans_atos.texout.png");
 			Renderer->SetSpecularTexture("pl0310_trans_01_alba.texout.png", "pl0310_trans_atos.texout.png");
@@ -207,9 +211,6 @@ void PlayerActor_Vergil::PlayerLoad()
 		Renderer->SetDynamic();
 		// 모션블러 미적용옵션
 		Renderer->GetRenderBaseValueRef().IsBlurMask = 1;
-
-		Renderer->SetMaterial("pl0310_trans_00_alba.texout.png", "AniFBX_2DAlpha", nullptr);
-		Renderer->SetMaterial("pl0310_trans_01_alba.texout.png", "AniFBX_2DAlpha", nullptr);
 
 		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer, .RendererLocalPos = {0, -75, 0},
 			.Objects = { (GameEngineObject*)Col_Attack.get() },

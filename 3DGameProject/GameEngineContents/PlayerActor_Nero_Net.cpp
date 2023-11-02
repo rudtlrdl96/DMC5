@@ -82,11 +82,13 @@ void PlayerActor_Nero::NetLoad()
 		case GameEngineOptionValue::Low:
 		{
 			Renderer->SetFBXMesh("Nero.FBX", "AniFBX_Low");
+			Renderer->SetMaterial("pl0010_01_wing_atos.texout.png", "AniFBX_2DAlpha", nullptr);
 		}
 		break;
 		case GameEngineOptionValue::High:
 		{
 			Renderer->SetFBXMesh("Nero.FBX", "AniFBX");
+			Renderer->SetMaterial("pl0010_01_wing_atos.texout.png", "AniFBX_2DAlpha", nullptr);
 			Renderer->SetSpecularTexture("pl0010_01_wing_atos.texout.png", "pl0010_01_wing_atos1.texout.png");
 		}
 		break;
@@ -96,7 +98,6 @@ void PlayerActor_Nero::NetLoad()
 		Renderer->ShadowOn();
 		Renderer->SetDynamic();
 
-		Renderer->SetMaterial("pl0010_01_wing_atos.texout.png", "AniFBX_2DAlpha", nullptr);
 		AnimationEvent::LoadAll({ .Dir = NewDir.GetFullPath().c_str(), .Renderer = Renderer,
 			//.Objects = { (GameEngineObject*)Col_Attack.get() },
 			.CallBacks_void = {
