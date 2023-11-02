@@ -123,8 +123,6 @@ void Location19_Level::LevelChangeStart()
 	InitPool();
 	CreateEventZone();
 	Portal = CreateActor<l19_Portal>();
-	Portal->GetTransform()->SetWorldPosition({1000.f, 0.f, 1000.f});
-	Portal->Off();
 }
 
 void Location19_Level::InitPool()

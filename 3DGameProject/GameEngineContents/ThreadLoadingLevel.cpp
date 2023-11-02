@@ -154,6 +154,7 @@ void ThreadLoadingLevel::Start()
 		PushLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm1457_qliphoth_cliffb.fbx");
 		PushLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm1570_clouds00.fbx");
 		PushLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm1641_spike.fbx");
+		PushLoadCallBack<Location19_Level, GameEngineFBXMesh>("Map\\Location2\\sm0906_m14finaldoor_o.fbx");
 
 		PushAllLoadCallBack<Location19_Level, GameEngineFBXMesh>("Mesh\\UIMesh\\ResultMesh", { ".fbx" });
 		PushAllLoadCallBack<Location19_Level, GameEngineTexture>("Texture\\UI\\ResultLevel", { ".tga", ".png" });
