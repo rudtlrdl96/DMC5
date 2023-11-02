@@ -481,6 +481,7 @@ void ContentsCore::CreateContentsKey()
 		GameEngineInput::CreateKey("UI_bullet", VK_RBUTTON);
 		GameEngineInput::CreateKey("UI_ESC", VK_ESCAPE);
 		GameEngineInput::CreateKey("UI_OrbCheat", VK_F7);
+		GameEngineInput::CreateKey("UI_KeyBordDebug", VK_F6);
 
 	}
 	if (false == GameEngineInput::IsKey("Player_Up"))

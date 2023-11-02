@@ -615,6 +615,9 @@
     <ClInclude Include="l19_Portal.h">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\LevelChange</Filter>
     </ClInclude>
+    <ClInclude Include="DebugKeyUI.h">
+      <Filter>UI\UI_Actor\DebugKeyUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FadeEffect.cpp">
@@ -1225,6 +1228,9 @@
     <ClCompile Include="l19_Portal.cpp">
       <Filter>Actor\Stage\FieldMap\FieldMapObj\EventZone\LevelChange</Filter>
     </ClCompile>
+    <ClCompile Include="DebugKeyUI.cpp">
+      <Filter>UI\UI_Actor\DebugKeyUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="PostEffect">
@@ -1535,6 +1541,9 @@
     </Filter>
     <Filter Include="UI\UI_Level\Result">
       <UniqueIdentifier>{27fceb2a-8308-4768-a8d5-407bc7b9750b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\UI_Actor\DebugKeyUI">
+      <UniqueIdentifier>{ebbd787f-5531-472d-960b-797235f29fcf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

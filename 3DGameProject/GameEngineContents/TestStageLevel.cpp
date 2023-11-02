@@ -34,6 +34,7 @@
 #include <GameEngineCore/BloomEffect.h>
 #include <GameEngineCore/GameEngineCoreWindow.h>
 #include "Char_ChoiceUI.h"
+#include "DebugKeyUI.h"
 TestStageLevel* TestStageLevel::Inst = nullptr;
 
 TestStageLevel::TestStageLevel()
@@ -50,7 +51,6 @@ void TestStageLevel::Start()
 	BaseLevel::SetNetLevelType(Net_LevelType::TestStageLevel);
 	GetCamera(0)->GetCamTarget()->CreateEffect<ColorEffect>();
 	GetCamera(0)->GetCamTarget()->CreateEffect<JudgementCut>();
-
 	Bloom = GetCamera(0)->GetDeferredLightTarget()->CreateEffect<BloomEffect>();
 
 	GetCamera(0)->GetCamTarget()->CreateEffect<FXAA_Effect>();
@@ -72,6 +72,7 @@ void TestStageLevel::Start()
 	{
 		GameEngineInput::CreateKey("BakeTestKey", VK_PRIOR);
 	}
+	DebugKeyUIPtr = CreateActor<DebugKeyUI>();
 }
 
 std::shared_ptr<GameEngineLight> PointLight = nullptr;

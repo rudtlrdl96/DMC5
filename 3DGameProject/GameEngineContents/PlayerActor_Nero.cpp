@@ -24,6 +24,7 @@
 #include "Nero_ShopUI.h"
 #include "Shop_NeroSkillUI.h"
 #include "Shop_NeroArmUI.h"
+#include "DebugKeyUI.h"
 #include <GameEngineCore/GameEngineCloth.h>
 std::list<DevilBreaker> PlayerActor_Nero::BreakerList = { DevilBreaker::None };
 PlayerActor_Nero::~PlayerActor_Nero()
@@ -125,7 +126,6 @@ void PlayerActor_Nero::PlayerLoad()
 	IsRouletteSpin = Shop_NeroSkillUI::IsRouletteSpin;
 	IsShufle = Shop_NeroSkillUI::IsShufle;
 	IsCalibur = Shop_NeroSkillUI::IsCalibur;
-
 	Shop = GetLevel()->CreateActor<Nero_ShopUI>();
 	Shop->ShopOff();
 	HUD = GetLevel()->CreateActor<PlayerHPUI>();
