@@ -21,6 +21,10 @@ public:
 	{
 		return Count;
 	}
+	void IsActiveMirge(bool _Value)
+	{
+		IsActive = _Value;
+	}
 	static bool IsSpiralBlade;
 	static bool IsStormBlade;
 	static bool IsLesteringBlade;
@@ -37,6 +41,7 @@ private:
 	std::shared_ptr<class Shop_ItemButton>  SkillButton = nullptr;
 	std::shared_ptr<class Shop_ExplaneUI> ExplanePtr = nullptr;
 	bool Test = false;
+	bool IsActive = false;
 	int Count = 0;
 	int Index = 0;
 	int PrevIndex = 3;

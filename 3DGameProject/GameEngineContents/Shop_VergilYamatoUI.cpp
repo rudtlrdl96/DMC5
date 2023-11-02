@@ -142,7 +142,7 @@ void Shop_VergilYamatoUI::ActivSkill()
 {
 	if (Index == 0)
 	{
-		if (IsRapidSlash == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() > 1200)
+		if (IsRapidSlash == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() >= 1200 && IsActive == true)
 		{
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(1200);
@@ -158,7 +158,7 @@ void Shop_VergilYamatoUI::ActivSkill()
 	}
 	else if (Index == 1)
 	{
-		if (IsUpperSlash == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() > 4000)
+		if (IsUpperSlash == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() >= 4000 && IsActive == true)
 		{
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(4000);
@@ -174,7 +174,7 @@ void Shop_VergilYamatoUI::ActivSkill()
 	}
 	else if (Index == 2)
 	{
-		if (IsAerialRave == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() > 7500)
+		if (IsAerialRave == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() >= 7500 && IsActive == true)
 		{
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(7500);
@@ -191,7 +191,7 @@ void Shop_VergilYamatoUI::ActivSkill()
 	}
 	else if (Index == 3)
 	{
-		if (IsYamatoCombo == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() > 9000)
+		if (IsYamatoCombo == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() >= 9000 && IsActive == true)
 		{
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(9000);
@@ -208,7 +208,7 @@ void Shop_VergilYamatoUI::ActivSkill()
 	}
 	else if (Index == 4)
 	{
-		if (IsJudgmentCutEnd == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() > 35000)
+		if (IsJudgmentCutEnd == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() >= 35000 && IsActive == true)
 		{
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(35000);

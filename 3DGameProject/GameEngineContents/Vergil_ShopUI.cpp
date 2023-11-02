@@ -174,6 +174,16 @@ void Vergil_ShopUI::ShopOn()
 }
 void Vergil_ShopUI::SetIndexCount()
 {
+	if (Index == 0)
+	{
+		YamatoSkill->IsActiveYamato(false);
+		MirgeSkill->IsActiveMirge(false);
+	}
+	else if (Index == 1)
+	{
+		YamatoSkill->IsActiveYamato(true);
+		MirgeSkill->IsActiveMirge(true);
+	}
 	if (Index == 0 && true == GameEngineInput::IsDown("UI_UP"))
 	{
 		GameEngineSound::Play("ButtonSound.wav");

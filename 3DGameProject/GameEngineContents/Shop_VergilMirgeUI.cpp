@@ -133,7 +133,7 @@ void Shop_VergilMirgeUI::ActivSkill()
 {
 	if (Index == 0)
 	{
-		if (IsSpiralBlade == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() > 1200)
+		if (IsSpiralBlade == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() >= 1200 && IsActive == true)
 		{
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(1200);
@@ -149,7 +149,7 @@ void Shop_VergilMirgeUI::ActivSkill()
 	}
 	else if (Index == 1)
 	{
-		if (IsStormBlade == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() > 4000)
+		if (IsStormBlade == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() >= 4000 && IsActive == true)
 		{
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(4000);
@@ -165,7 +165,7 @@ void Shop_VergilMirgeUI::ActivSkill()
 	}
 	else if (Index == 2)
 	{
-		if (IsLesteringBlade == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() > 7500)
+		if (IsLesteringBlade == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() >= 7500 && IsActive == true)
 		{
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(7500);
@@ -182,7 +182,7 @@ void Shop_VergilMirgeUI::ActivSkill()
 	}
 	else if (Index == 3)
 	{
-		if (IsHeavyRainBlade == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() > 9000)
+		if (IsHeavyRainBlade == false && GameEngineInput::IsUp("UI_Enter") == true && RedOrbUI::GetRedOrb() >= 9000 && IsActive == true)
 		{
 			GameEngineSound::Play("UIButtonSelectSound.wav");
 			RedOrbUI::SubRedOrb(9000);

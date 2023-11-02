@@ -26,7 +26,10 @@ public:
 	static bool IsAerialRave;
 	static bool IsYamatoCombo;
 	static bool IsJudgmentCutEnd;
-
+	void IsActiveYamato(bool _Value)
+	{
+		IsActive = _Value;
+	}
 protected:
 	void Start() override;
 	void Update(float _Delta) override;
@@ -43,6 +46,7 @@ private:
 	int Count = 0;
 	int Index = 0;
 	int PrevIndex = 4;
+	bool IsActive = false;
 	float4 Pos_0 = { -190.0f,234.0f,0.0f };
 	float4 Pos_1 = { -190.0f,104.0f,0.0f };
 	float4 Pos_2 = { -190.0f,-34.0f,0.0f };
