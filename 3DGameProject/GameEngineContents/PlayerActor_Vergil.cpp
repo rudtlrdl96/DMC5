@@ -413,13 +413,17 @@ void PlayerActor_Vergil::PlayerLoad()
 
 			}
 			});
+
+		static float DashTimer = 0;
 		// Run
 		FSM.CreateState({ .StateValue = FSM_State_Vergil::Vergil_Run,
 			.Start = [=] {
 				PhysXCapsule->TurnOnGravity();
 				Renderer->ChangeAnimation("pl0300_Run_Loop");
+				DashTimer = 0;
 			},
 			.Update = [=](float _DeltaTime) {
+				DashTimer += _DeltaTime;
 				if (false == FloorCheck())
 				{
 					ChangeState(FSM_State_Vergil::Vergil_Jump_Fly);
@@ -441,7 +445,16 @@ void PlayerActor_Vergil::PlayerLoad()
 				}
 
 				LookDir(Controller->GetMoveVector());
-				float4 MoveDir = Controller->GetMoveVector() * RunSpeed;
+
+				float4 MoveDir;
+				if (1 < DashTimer)
+				{
+					MoveDir = Controller->GetMoveVector() * DashSpeed;
+				}
+				else
+				{
+					MoveDir = Controller->GetMoveVector() * RunSpeed;
+				}
 				PhysXCapsule->SetMove(MoveDir);
 			},
 			.End = [=] {

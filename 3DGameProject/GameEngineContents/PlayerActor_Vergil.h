@@ -152,6 +152,7 @@ private:
 	float4 LockOnPosition = float4::ZERO;
 	float WalkSpeed = 300;
 	float RunSpeed = 550;
+	float DashSpeed = 700;
 	float JumpMoveForce = 7000.0f;
 	float FlyDownForce = 2400.0f;
 
