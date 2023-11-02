@@ -36,11 +36,7 @@ public:
 	}
 	void ArmRenderOff();
 	void ArmRenderOn();
-	void SetRatio(float _Ratio)
-	{
-		Ratio = _Ratio;
-	}
-	//void SetDevilBreakerUI();
+	void SetDevilBreakerUI();
 
 
 protected:
@@ -57,7 +53,7 @@ private:
 	std::shared_ptr<class GameEngineFontRenderer> SlashText = nullptr;
 	std::shared_ptr<class GameEngineFontRenderer> MaxCount = nullptr;
 	DevilBreaker CurDevilBreaker = DevilBreaker::None;
-	//std::vector<DevilBreaker> DevilBreakers;
+	std::vector<DevilBreaker> DevilBreakers;
 	std::list<DevilBreaker>* ArmList;
 	int MaxItem = 4;
 	float Time = 0.0f;

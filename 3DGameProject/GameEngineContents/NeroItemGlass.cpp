@@ -43,88 +43,86 @@ void NeroItemGlass::ArmRenderOn()
 	Ratio = 1.0f;
 }
 
-//void NeroItemGlass::SetDevilBreakerUI()
-//{
-//	std::copy(ArmList->begin(), ArmList->end(), std::back_inserter(DevilBreakers));
-//	PlayerActor_Nero::GetBreakerListPointer()->clear();
-//	PlayerActor_Nero::GetBreakerListPointer()->push_back(DevilBreaker::None);
-//	for (int i = 1; i<DevilBreakers.size(); i++)
-//	{
-//		DevilBreaker CurDevilBreaker;
-//		CurDevilBreaker = DevilBreakers[i];
-//		switch (CurDevilBreaker)
-//		{
-//		case DevilBreaker::None:
-//			continue;
-//			break;
-//		case DevilBreaker::Overture:
-//			ItemText->SetText("Overture");
-//			Render = CreateComponent<UIMeshRenderer>(3);
-//			Render->SetFBXMesh("OvertureArmUI.FBX", "UIFBXMesh");
-//			Render->LightDataValue.LightPos = Render->GetTransform()->GetWorldPosition();
-//			Render->LightDataValue.LightDir = { 0, 0, 1 };
-//			Render->LightDataValue.LightColor = { 1, 1, 1, 1 };
-//			Render->LightDataValue.LightPower = 1.0f;
-//			Render->LightDataUpdate();
-//			Arms.insert(Arms.begin(), Render);
-//			Shop_NeroArmUI::CallBack_AddBreaker(DevilBreaker::Overture);
-//			AddItemValue = false;
-//			break;
-//		case DevilBreaker::Gerbera:
-//			ItemText->SetText("Gerbera");
-//			Render = CreateComponent<UIMeshRenderer>(3);
-//			Render->SetFBXMesh("GerberaArmUI.FBX", "UIFBXMesh");
-//			Render->LightDataValue.LightPos = Render->GetTransform()->GetWorldPosition();
-//			Render->LightDataValue.LightDir = { 0, 0, 1 };
-//			Render->LightDataValue.LightColor = { 1, 1, 1, 1 };
-//			Render->LightDataValue.LightPower = 1.0f;
-//			Render->LightDataUpdate();
-//			Arms.insert(Arms.begin(), Render);
-//			Shop_NeroArmUI::CallBack_AddBreaker(DevilBreaker::Gerbera);
-//			AddItemValue = false;
-//			break;
-//		case DevilBreaker::BusterArm:
-//			ItemText->SetText("BusterArm");
-//			Render = CreateComponent<UIMeshRenderer>(3);
-//			Render->SetFBXMesh("BusterArmUI.FBX", "UIFBXMesh");
-//			Render->LightDataValue.LightPos = Render->GetTransform()->GetWorldPosition();
-//			Render->LightDataValue.LightDir = { 0, 0, 1 };
-//			Render->LightDataValue.LightColor = { 1, 1, 1, 1 };
-//			Render->LightDataValue.LightPower = 1.0f;
-//			Render->LightDataUpdate();
-//			Arms.insert(Arms.begin(), Render);
-//			Shop_NeroArmUI::CallBack_AddBreaker(DevilBreaker::BusterArm);
-//			AddItemValue = false;
-//			break;
-//		default:
-//			break;
-//		}
-//		if (Arms.size() >= 1)
-//		{
-//			Arms[0]->GetTransform()->SetLocalPosition(StartPos);
-//			Arms[0]->GetTransform()->SetLocalScale(FirstScale);
-//			Arms[0]->GetTransform()->SetLocalRotation({ 90.0f,0.0f,180.0f });
-//		}
-//		if (Arms.size() >= 2)
-//		{
-//			Arms[1]->GetTransform()->SetLocalPosition(StartPos);
-//			Arms[1]->GetTransform()->SetLocalScale(SecondScale);
-//			Arms[1]->GetTransform()->SetLocalRotation({ 150.0f,00.0f,210.0f });
-//			if (Arms.size() >= 3)
-//			{
-//				Arms[2]->GetTransform()->SetLocalPosition(StartPos);
-//				Arms[2]->GetTransform()->SetLocalScale(ThirdScale);
-//				Arms[2]->GetTransform()->SetLocalRotation({ 210.0f,00.0f,240.0f });
-//				if (Arms.size() >= 4)
-//				{
-//					Arms[3]->GetTransform()->SetLocalPosition({ 741.0f,-270.0f,50.0f });
-//					Arms[3]->GetTransform()->SetLocalScale(ThirdScale);
-//					Arms[3]->GetTransform()->SetLocalRotation({ 210.0f,00.0f,320.0f });
-//				}
-//			}
-//		}
-//	}
-//}
+void NeroItemGlass::SetDevilBreakerUI()
+{
+	std::copy(ArmList->begin(), ArmList->end(), std::back_inserter(DevilBreakers));
+	for (int i = 1; i<DevilBreakers.size(); i++)
+	{
+		DevilBreaker CurDevilBreaker;
+		CurDevilBreaker = DevilBreakers[i];
+		switch (CurDevilBreaker)
+		{
+		case DevilBreaker::None:
+			continue;
+			break;
+		case DevilBreaker::Overture:
+			ItemText->SetText("Overture");
+			Render = CreateComponent<UIMeshRenderer>(3);
+			Render->SetFBXMesh("OvertureArmUI.FBX", "UIFBXMesh");
+			Render->LightDataValue.LightPos = Render->GetTransform()->GetWorldPosition();
+			Render->LightDataValue.LightDir = { 0, 0, 1 };
+			Render->LightDataValue.LightColor = { 1, 1, 1, 1 };
+			Render->LightDataValue.LightPower = 1.0f;
+			Render->LightDataUpdate();
+			Arms.insert(Arms.begin(), Render);
+			//Shop_NeroArmUI::CallBack_AddBreaker(DevilBreaker::Overture);
+			AddItemValue = false;
+			break;
+		case DevilBreaker::Gerbera:
+			ItemText->SetText("Gerbera");
+			Render = CreateComponent<UIMeshRenderer>(3);
+			Render->SetFBXMesh("GerberaArmUI.FBX", "UIFBXMesh");
+			Render->LightDataValue.LightPos = Render->GetTransform()->GetWorldPosition();
+			Render->LightDataValue.LightDir = { 0, 0, 1 };
+			Render->LightDataValue.LightColor = { 1, 1, 1, 1 };
+			Render->LightDataValue.LightPower = 1.0f;
+			Render->LightDataUpdate();
+			Arms.insert(Arms.begin(), Render);
+			//Shop_NeroArmUI::CallBack_AddBreaker(DevilBreaker::Gerbera);
+			AddItemValue = false;
+			break;
+		case DevilBreaker::BusterArm:
+			ItemText->SetText("BusterArm");
+			Render = CreateComponent<UIMeshRenderer>(3);
+			Render->SetFBXMesh("BusterArmUI.FBX", "UIFBXMesh");
+			Render->LightDataValue.LightPos = Render->GetTransform()->GetWorldPosition();
+			Render->LightDataValue.LightDir = { 0, 0, 1 };
+			Render->LightDataValue.LightColor = { 1, 1, 1, 1 };
+			Render->LightDataValue.LightPower = 1.0f;
+			Render->LightDataUpdate();
+			Arms.insert(Arms.begin(), Render);
+			//Shop_NeroArmUI::CallBack_AddBreaker(DevilBreaker::BusterArm);
+			AddItemValue = false;
+			break;
+		default:
+			break;
+		}
+		if (Arms.size() >= 1)
+		{
+			Arms[0]->GetTransform()->SetLocalPosition(StartPos);
+			Arms[0]->GetTransform()->SetLocalScale(FirstScale);
+			Arms[0]->GetTransform()->SetLocalRotation({ 90.0f,0.0f,180.0f });
+		}
+		if (Arms.size() >= 2)
+		{
+			Arms[1]->GetTransform()->SetLocalPosition(StartPos);
+			Arms[1]->GetTransform()->SetLocalScale(SecondScale);
+			Arms[1]->GetTransform()->SetLocalRotation({ 150.0f,00.0f,210.0f });
+			if (Arms.size() >= 3)
+			{
+				Arms[2]->GetTransform()->SetLocalPosition(StartPos);
+				Arms[2]->GetTransform()->SetLocalScale(ThirdScale);
+				Arms[2]->GetTransform()->SetLocalRotation({ 210.0f,00.0f,240.0f });
+				if (Arms.size() >= 4)
+				{
+					Arms[3]->GetTransform()->SetLocalPosition({ 741.0f,-270.0f,50.0f });
+					Arms[3]->GetTransform()->SetLocalScale(ThirdScale);
+					Arms[3]->GetTransform()->SetLocalRotation({ 210.0f,00.0f,320.0f });
+				}
+			}
+		}
+	}
+}
 
 void NeroItemGlass::Start()
 {

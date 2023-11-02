@@ -134,40 +134,8 @@ void PlayerActor_Nero::PlayerLoad()
 	HUD2 = GetLevel()->CreateActor<NeroItemGlass>();
 	Shop_NeroArmUI::CallBack_AddBreaker = std::bind(&PlayerActor_Nero::AddBreaker, this, std::placeholders::_1);
 	GetLevel()->CreateActor <RankUI>();
-	//HUD2->ArmRenderOff();
-	//HUD2->SetDevilBreakerUI();
-	//HUD2->ArmRenderOn();
-
-	if (1 < BreakerList.size())
-	{
-		HUD2->SetRatio(100.0f);
-		std::list<DevilBreaker> BeforeList = BreakerList;
-		BreakerList.clear();
-		int i = 0;
-		for (DevilBreaker _Breaker : BeforeList)
-		{
-			if (_Breaker == DevilBreaker::None)
-			{
-				BreakerList.push_back(DevilBreaker::None);
-				continue;
-			}
-			TimeEvent.AddEvent(0.1f * i, [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
-				{
-					AddBreaker(_Breaker);
-				});
-			i++;
-	
-		}
-		TimeEvent.AddEvent(0.1f * (i + 1), [=](GameEngineTimeEvent::TimeEvent& _Event, GameEngineTimeEvent* _Manager)
-			{
-				HUD2->SetRatio(1.0f);
-			});
-	}
-	else
-	{
-		BreakerList.clear();
-		BreakerList.push_back(DevilBreaker::None);
-	}
+	HUD2->SetDevilBreakerUI();
+	CurDevilBreaker = BreakerList.back();
 
 	// Effect 생성
 	{
@@ -386,6 +354,7 @@ void PlayerActor_Nero::PlayerLoad()
 
 	SetHuman();
 	WeaponIdle();
+	OnDevilBraeker();
 
 	// 기본 움직임
 	{
