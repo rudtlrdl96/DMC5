@@ -10,6 +10,9 @@
 #include "Enemy_ScudoAngelo.h"
 #include "Enemy_ProtoAngelo.h"
 #include "Location19_Level.h"
+
+const float YPos = 125.f;
+
 Location19_EnemySpawner::Location19_EnemySpawner()
 {
 }
@@ -72,7 +75,7 @@ void Location19_EnemySpawner::Start()
 				MonsterAliveCount = 4;
 				std::vector<float4> EnemyPos =
 				{
-					{ -2000 , 97, 438 }, { -145 , 105, 1750 }, { 1524 , 86, 386 }, { 549 , 70, -1810 }
+					{ -2000 , 97 + YPos, 438 }, { -145 , 105 + YPos, 1750 }, { 1524 , 86 + YPos, 386 }, { 549 , 70 + YPos, -1810 }
 				};
 				std::vector<float> EnemyRot = { 105, -179, -95, -28 };
 
@@ -81,12 +84,9 @@ void Location19_EnemySpawner::Start()
 					Level->TimeEvent.AddEvent(i * 0.3f + 1.3f, [=](GameEngineTimeEvent::TimeEvent& Event, GameEngineTimeEvent* Manager)
 						{
 							std::shared_ptr<Enemy_HellAntenora> Enemy = Poolable<Enemy_HellAntenora>::PopFromPool(Level, static_cast<int>(ActorOrder::Enemy));
+							Enemy->GetPhysXComponent()->Off();
 							Enemy->GetPhysXComponent()->SetWorldPosition(EnemyPos[i]);
 							Enemy->GetPhysXComponent()->SetWorldRotation(float4::UP * EnemyRot[i]);
-							Enemy->GetTransform()->SetWorldPosition(EnemyPos[i]);
-							Enemy->GetTransform()->SetWorldRotation(float4::UP * EnemyRot[i]);
-							Enemy->GetPhysXComponent()->SetLinearVelocityZero();
-							Enemy->GetPhysXComponent()->Off();
 							Enemy->PushDeathCallback(std::bind(&EnemySpawner::DestroyMonster, this));
 						});
 				}

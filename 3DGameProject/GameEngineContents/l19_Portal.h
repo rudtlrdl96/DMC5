@@ -29,6 +29,7 @@ protected:
 
 private:
 	std::shared_ptr<class LevelChangeZone> AcLevelChangeZone = nullptr;
+	std::shared_ptr<class GameEngineCollision> BanCircle = nullptr;
 	float Time = 0.f;
 	float Ratio = 0.f;
 	float4 StartPos = {0,-1000.f,0};

@@ -46,6 +46,7 @@ void ContentsCore::ContentsResourcesCreate()
 
 		std::vector<GameEngineFile> Files = NewDir.GetAllFile({ ".hlsl", ".fx" });
 
+
 		for (size_t i = 0; i < Files.size(); i++)
 		{
 			GameEngineShader::AutoCompile(Files[i]);
@@ -541,14 +542,14 @@ void ContentsCore::SetOption()
 	//GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::Low);
 
 	GameEngineOption::ChangeOption("Texture", GameEngineOptionValue::High);
-	GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::High);
+	GameEngineOption::ChangeOption("Shader", GameEngineOptionValue::Low);
 	
 	// PostEffect 可记 积己
-	GameEngineOption::ChangeOption("PostEffect", GameEngineOptionValue::High);
+	GameEngineOption::ChangeOption("PostEffect", GameEngineOptionValue::None);
 
 #ifdef _DEBUG
 	GameEngineOption::ChangeOption("DynamicShadow", GameEngineOptionValue::None);
 #else
-	GameEngineOption::ChangeOption("DynamicShadow", GameEngineOptionValue::Low);
+	GameEngineOption::ChangeOption("DynamicShadow", GameEngineOptionValue::None);
 #endif // _DEBUG
 }
