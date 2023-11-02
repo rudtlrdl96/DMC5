@@ -80,6 +80,7 @@ void Location19_Level::LevelChangeStart()
 	//AcGroundCol.lock()->RenderOn();
 
 	// 플레이어 생성전 플레이어 벡터 초기화
+	EventZone::ServerPlayerCount = static_cast<int>(BasePlayerActor::GetPlayers().size());
 	BasePlayerActor::LevelChangeClear(this);
 
 	switch (Char_ChoiceUI::GetPlayerType())
