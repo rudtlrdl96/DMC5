@@ -87,7 +87,7 @@ void ResultActor::Start()
 	{
 		RankGrade = CreateComponent<GameEngineFBXRenderer>();
 
-		if (5000 < TotalStylishPoint)
+		if (2800 < TotalStylishPoint)
 		{
 			// S
 			RankGrade->SetFBXMesh("Result_S.fbx", "FBX");
@@ -95,7 +95,7 @@ void ResultActor::Start()
 			RankGrade->GetTransform()->SetLocalScale({ 0.8f, 1.0f, 0.9f });
 			RankPos = { 1480, 0, -1372 };
 		}
-		else if (3000 < TotalStylishPoint)
+		else if (1800 < TotalStylishPoint)
 		{
 			// A
 			RankGrade->SetFBXMesh("Result_A.fbx", "FBX");
@@ -103,7 +103,7 @@ void ResultActor::Start()
 			RankGrade->GetTransform()->SetLocalScale({ 0.7f, 0.9f, 0.3f });
 			RankPos = { 1409.500, 0, -1305 };
 		}
-		else if (2000 < TotalStylishPoint)
+		else if (1000 < TotalStylishPoint)
 		{
 			// B
 			RankGrade->SetFBXMesh("Result_B.fbx", "FBX");
