@@ -3,6 +3,7 @@
 #include <GameEngineCore/GameEngineFBXRenderer.h>
 #include <GameEngineCore/GameEngineCollision.h>
 #include "EffectRenderer.h"
+#include "Char_ChoiceUI.h"
 Item_DevilBreaker::Item_DevilBreaker() 
 {
 }
@@ -13,6 +14,10 @@ Item_DevilBreaker::~Item_DevilBreaker()
 
 void Item_DevilBreaker::SetDevilBreaker(DevilBreaker _Value)
 {
+	if (Char_ChoiceUI::GetPlayerType() == ChoicePlayerType::VERGIL)
+	{
+		return;
+	}
 	Type = _Value;
 	IconRenderer->RectInit("Effect_2D");
 	IconRenderer->LockRotation();
@@ -46,6 +51,12 @@ DevilBreaker Item_DevilBreaker::Take()
 
 void Item_DevilBreaker::Start()
 {
+	if (Char_ChoiceUI::GetPlayerType() == ChoicePlayerType::VERGIL)
+	{
+		Off();
+		return;
+	}
+
 	{
 		GameEngineDirectory NewDir;
 		NewDir.MoveParentToDirectory("ContentResources");
