@@ -209,10 +209,10 @@ void GameEngineCore::EngineUpdate()
 
 	CaptureList.clear();
 
-	//if (true == GameEngineInput::IsDown("ScreenShoot"))
-	//{
-	//	GameEngineScreenShoot::ScreenShoot();
-	//}
+	if (true == GameEngineInput::IsDown("ScreenShoot"))
+	{
+		GameEngineScreenShoot::ScreenShoot();
+	}
 	//if (true == GameEngineInput::IsDown("RenderTargetShoot"))
 	//{
 	//	std::string Path = GameEnginePath::GetFileFullPath("ContentResources",
