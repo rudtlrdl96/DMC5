@@ -44,9 +44,9 @@ void PlayerHPUI::SetVergilUI()
 void PlayerHPUI::SetNeroUI()
 {
 
-	NeroUI_Hud1 = UIFBXActorBase::CreateNoneLightFBX(NeroUI_Hud1, { -711.0f,303.0f,20.0f }, { 0.7f,0.7f,0.7f }, { 30.0f,-90.0f,-30.0f }, "NeroEx01.FBX");
-	NeroUI_Hud2 = UIFBXActorBase::CreateNoneLightFBX(NeroUI_Hud2, { -708.0f,334.0f,0.0f }, { 0.7f,0.7f,0.7f }, { 30.0f,-90.0f,-30.0f }, "NeroEx02.FBX");
-	NeroUI_Hud3 = UIFBXActorBase::CreateNoneLightFBX(NeroUI_Hud3, { -703.0f,365.0f,0.0f }, { 0.7f,0.7f,0.7f }, { 30.0f,-90.0f,-30.0f }, "NeroEx03.FBX");
+	NeroUI_Hud1 = UIFBXActorBase::CreateUIFBX(NeroUI_Hud3,{ -711.0f,303.0f,20.0f }, { 0.7f,0.7f,0.7f }, { 30.0f,-90.0f,-30.0f }, "NeroEx01.FBX");
+	NeroUI_Hud2 = UIFBXActorBase::CreateUIFBX(NeroUI_Hud3,{ -708.0f,334.0f,0.0f }, { 0.7f,0.7f,0.7f }, { 30.0f,-90.0f,-30.0f }, "NeroEx02.FBX");
+	NeroUI_Hud3 = UIFBXActorBase::CreateUIFBX(NeroUI_Hud3,{ -703.0f,365.0f,0.0f }, { 0.7f,0.7f,0.7f }, { 30.0f,-90.0f,-30.0f }, "NeroEx03.FBX");
 
 	std::shared_ptr<GameEngineUIRenderer> NeroUI_Back = CreateComponent<GameEngineUIRenderer>(0);
 	NeroUI_Back->SetTexture("HudBack.png");
