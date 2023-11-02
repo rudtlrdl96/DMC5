@@ -102,6 +102,7 @@ void PlayerCamera::Update(float _DeltaTime)
 		if (true == IsFreeCamera)
 		{
 			FreeCamActor->GetTransform()->SetWorldPosition(CameraTransform->GetWorldPosition());
+			FreeCamActor->GetTransform()->SetWorldRotation(CameraTransform->GetWorldRotation());
 			FreeCamActor->On();
 			return;
 		}
