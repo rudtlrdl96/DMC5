@@ -373,7 +373,7 @@ void BasePlayerActor::Update(float _DeltaTime)
 
 		if (nullptr != LockOnEnemy)
 		{
-			if (LockOnEnemy->GetHP() <= 0 || true == LockOnEnemy->IsDeath())
+			if (true == LockOnEnemy->IsDeath())
 			{
 				LockOff();
 			}
@@ -393,14 +393,14 @@ void BasePlayerActor::Update(float _DeltaTime)
 void BasePlayerActor::LockOn()
 {
 	std::vector<std::shared_ptr<GameEngineCollision>> Cols;
-	BaseEnemyActor* NearEnemy = nullptr;
+	std::shared_ptr<BaseEnemyActor> NearEnemy = nullptr;
 	Col_LockOn->On();
 	if (true == Col_LockOn->CollisionAll(CollisionOrder::Enemy, Cols))
 	{
 		float Min = 9999;
 		for (std::shared_ptr<GameEngineCollision> Col : Cols)
 		{
-			BaseEnemyActor* Enemy = dynamic_cast<BaseEnemyActor*>(Col->GetActor());
+			std::shared_ptr <BaseEnemyActor> Enemy = Col->GetActor()->DynamicThis<BaseEnemyActor>();
 			if (nullptr == Enemy) { continue; }
 			if (Enemy->GetHP() <= 0) { continue; }
 			// 체력이 0이하인 적은 제외

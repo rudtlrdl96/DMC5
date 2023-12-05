@@ -140,7 +140,7 @@ protected:
 	std::shared_ptr<class FXSystem> DTOffEffect = nullptr;
 	std::shared_ptr<class EffectRenderer> LockOnRenderer = nullptr;
 	std::shared_ptr<class PlayerHPUI> HUD = nullptr;
-	class BaseEnemyActor* LockOnEnemy = nullptr;
+	std::shared_ptr<class BaseEnemyActor> LockOnEnemy = nullptr;
 
 	std::shared_ptr<class BaseShopUI> Shop = nullptr;
 	float4 Rot = float4::ZERO;
