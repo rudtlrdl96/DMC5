@@ -1,4 +1,7 @@
 #pragma once
+
+#include <atomic>
+#include <mutex>
 #include "GameEngineDispatcher.h"
 
 //서버와 클라가 공통으로 사용하는 클래스

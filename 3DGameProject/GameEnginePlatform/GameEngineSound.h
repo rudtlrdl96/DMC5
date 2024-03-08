@@ -1,7 +1,10 @@
 #pragma once
+
 #include <GameEnginePlatform/ThirdParty/FMOD/inc/fmod.hpp>
 #include <string_view>
-#include <unordered_map> 
+#include <unordered_map>
+#include <atomic>
+#include <mutex>
 
 class GameEngineSoundPlayer
 {

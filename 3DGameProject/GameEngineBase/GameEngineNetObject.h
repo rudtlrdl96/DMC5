@@ -1,5 +1,8 @@
 #pragma once
 
+#include <atomic>
+#include <mutex>
+
 //해당 오브젝트를 이 클라이언트가 조종하는지 여부
 enum class NetControllType
 {
